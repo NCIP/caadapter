@@ -26,3 +26,6 @@
 *.xml -k 'kv'
 *.sql -k 'kv'
 *.ddl -k 'kv'
+*.jsp -k 'kv'
+*.htm -k 'kv'
+*.html -k 'kv'
