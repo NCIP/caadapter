@@ -24,8 +24,11 @@
 #DEFAULT (echo ""; id; echo %s; date; cat) >> $CVSROOT/CVSROOT/commitlog
 # or
 #ALL (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
+#
+UseNewInfoFmtStrings=yes
+
 #kernel-grid/ogsadai-3.1 mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/Doc mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/src mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/caGridBrowser mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
-umlclassdiagramloader mail -s "CVS commit notification" %{sv} ludetc@mail.nih.gov
+umlclassdiagramloader mail -s "CVS commit notification" %1{sv} ludetc@mail.nih.gov
