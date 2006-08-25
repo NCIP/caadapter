@@ -1,6 +1,8 @@
 # Set this to "no" if pserver shouldn't check system users/passwords
 #SystemAuth=no
 
+UseNewInfoFmtStrings=yes
+
 # Put CVS lock files in this directory rather than directly in the repository.
 LockDir=/share/content/cvsroot/CVSLOCKDIR
 

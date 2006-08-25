@@ -25,8 +25,6 @@
 # or
 #ALL (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 #
-UseNewInfoFmtStrings=yes
-
 #kernel-grid/ogsadai-3.1 mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/Doc mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/src mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
