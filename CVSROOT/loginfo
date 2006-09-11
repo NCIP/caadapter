@@ -31,4 +31,4 @@
 #kernel-grid/caGridBrowser mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 umlclassdiagramloader mail -s "CVS commit notification" %1{sv} ludetc@mail.nih.gov
 
-downloadsite CVSROOT/log_verify.py
+downloadsite /usr/local/bin/log_verify.py
