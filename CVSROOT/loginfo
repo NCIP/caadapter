@@ -29,7 +29,7 @@
 #kernel-grid/Doc mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/src mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
 #kernel-grid/caGridBrowser mail -s "CVS Notification" %{sv} spouros@pantherinformatics.com sanchezw@mail.nih.gov gilmanb@jforge.net kherm@mail.nih.gov sahnih@mail.nih.gov
-umlclassdiagramloader mail -s "CVS commit notification" %{sv} ludetc@mail.nih.gov
+umlclassdiagramloader mail -s "CVS commit notification %{sv}" ludetc@mail.nih.gov
 
 #downloadsite /share/content/cvsroot/CVSROOT/log_verify.py $USER
-downloadsite mail -s "CVS commit notification" %{sVv} kanozad@mail.nih.gov
+downloadsite mail -s "CVS commit notification %{sVv}" kanozad@mail.nih.gov
