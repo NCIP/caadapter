@@ -22,4 +22,4 @@
 
 #REGULAR_EXPRESSION PROGRAM [ARGUMENTS]
 
-#^hl7sdk
+^downloadsite /share/content/cvsroot/CSVSROOT/log_verify.py %l
