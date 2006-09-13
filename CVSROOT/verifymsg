@@ -22,4 +22,4 @@
 
 #REGULAR_EXPRESSION PROGRAM [ARGUMENTS]
 
-^downloadsite /share/content/cvsroot/CVSROOT/log_verify.py %l
+^downloadsite /share/content/cvsroot/CVSROOT/log_verify.py %l "downloadsite"
