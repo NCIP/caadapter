@@ -4,12 +4,14 @@ import sys
 
 def main(args):
 	tmp = open("/tmp/loginfo.tmp", "w")
-	tmp.write("%s" % '---------------------------------------------------------------')
+	log = open(args[0], "r");
 	
-	for arg in args:
-		tmp.write("%s\t" % arg)
+	tmp.write("%s\n" % '---------------------------------------------------------------')
+
+	tmp.writelines(log);	
+	
+	tmp.write("%s\n" % '---------------------------------------------------------------')
 		
-	tmp.write('\n')
 	tmp.close()
 	
 	return 0
