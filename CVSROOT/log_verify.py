@@ -3,14 +3,25 @@
 # We expect comments to be of the form GF0000 : <comment text>
 #
 # The length of <comment text> can not be zero or all blanks
+#
+# The first parameter to the script must be the comment file.
+# The second (optional) parameter is the minimum comment length
+# The third (optional and as yet unused) should be the module, to 
+# allow this script to be used for different projects
 
 import sys
-
-MIN_COMMENT_LENGTH = 5
 
 def main(args):
 	log = open(args[0], "r");
 	
+	if len(args) > 1:
+		try:
+			MIN_COMMENT_LENGTH = int(args[1])
+		except:
+			MIN_COMMENT_LENGTH = 5
+	else:
+		MIN_COMMENT_LENGTH = 5
+		
 	log_comment = ' '.join(log)
 	log_comment = log_comment.splitlines()
 	log_comment = ' '.join(log_comment)	
@@ -24,7 +35,6 @@ def main(args):
 		return 1
 		
 	contents = log_comment.split(':', 1)
-#	print contents
 	
 	""" comment line must include a colon and non-zero length comment after the colon """
 	if len(contents) < 2:
@@ -36,13 +46,13 @@ def main(args):
 	
 	""" reconstruct the comment text as a single string, with all blanks removed """
 	comment_text = contents[1].replace(" ", "")	
-	print comment_text
+#	print comment_text
 	
 	if not gf_number.isdigit():
 #		print "GF tracker number not numeric: [%s]" % gf_number
 		return 1
 
-	if not len(comment_text.strip()) > MIN_COMMENT_LENGTH:	
+	if not len(comment_text.strip()) >= MIN_COMMENT_LENGTH:	
 #		print "comment text not greater than pre-defined minimum"
 		return 1
 	
