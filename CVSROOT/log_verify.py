@@ -12,16 +12,16 @@
 import sys
 
 def main(args):
-	log = open(args[0], "r");
-	
+
+	MIN_COMMENT_LENGTH = 0
+		
 	if len(args) > 1:
 		try:
 			MIN_COMMENT_LENGTH = int(args[1])
 		except:
-			MIN_COMMENT_LENGTH = 5
-	else:
-		MIN_COMMENT_LENGTH = 5
-		
+			pass
+	
+	log = open(args[0], "r");	
 	log_comment = ' '.join(log)
 	log_comment = log_comment.splitlines()
 	log_comment = ' '.join(log_comment)	
