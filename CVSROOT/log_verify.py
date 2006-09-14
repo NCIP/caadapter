@@ -37,6 +37,8 @@ def main(args):
 	contents = log_comment.split(':', 1)
 	
 	""" comment line must include a colon and non-zero length comment after the colon """
+	""" note that it would also be easy enough to allow them to skip the colon if the 
+	    required minimum length is 0 """
 	if len(contents) < 2:
 #		print "log comment does not include colon"
 		return 1
