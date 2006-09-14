@@ -2,7 +2,8 @@
 
 # We expect comments to be of the form GF0000 : <comment text>
 #
-# The length of <comment text> can not be zero or all blanks
+# The length of <comment text> can not be zero or all blanks, but it
+# can span multiple lines.
 #
 # The first parameter to the script must be the comment file.
 # The second (optional) parameter is the minimum comment length
