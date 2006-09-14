@@ -23,7 +23,7 @@ def main(args):
 #		print "log comment does not start with 'GF'"
 		return 1
 		
-	contents = log_comment.split(':')
+	contents = log_comment.split(':', 1)
 #	print contents
 	
 	""" comment line must include a colon and non-zero length comment after the colon """
@@ -34,8 +34,9 @@ def main(args):
 	""" get the numeric part of the GF tracker identifier (everything except the leading 'GF') """
 	gf_number = contents[0][2:].strip()
 	
-	""" reconstruct the comment text as a single string """
-	comment_text = "".join(contents[1:])	
+	""" reconstruct the comment text as a single string, with all blanks removed """
+	comment_text = contents[1].replace(" ", "")	
+	print comment_text
 	
 	if not gf_number.isdigit():
 #		print "GF tracker number not numeric: [%s]" % gf_number
