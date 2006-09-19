@@ -22,4 +22,5 @@
 
 #REGULAR_EXPRESSION PROGRAM [ARGUMENTS]
 
-\bdownload /share/content/cvsroot/CVSROOT/log_verify.py %l "evs"
+#\bevs\b /share/content/cvsroot/CVSROOT/log_verify.py %l 5 "evs"
+^cacoresystem\b /share/content/cvsroot/CVSROOT/log_verify.py %l 5 "cacoresystem"
