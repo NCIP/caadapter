@@ -4,7 +4,7 @@
 #UseNewInfoFmtStrings=yes
 
 # Put CVS lock files in this directory rather than directly in the repository.
-LockDir=/share/content/cvsroot/CVSLOCKDIR
+LockDir=/tmp
 
 # Set `TopLevelAdmin' to `yes' to create a CVS directory at the top
 # level of the new working directory when using the `cvs checkout'
