@@ -25,7 +25,7 @@
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
 core &cacoresystem &cacoresdk
-caadapter &hl7sdk &javasig
+#caadapter &hl7sdk &javasig
 rembrandt_family &caintegrator &caintegrator-spec &caintegrator-analysis-commons
 cgems_family &cgems &caintegrator-spec &caintegrator-analysis-commons
 ispy_family &ispyportal &caintegrator-spec &caintegrator-analysis-commons
