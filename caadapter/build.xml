@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!-- 
+	************************************************************************** 
+                     caAdapter ANT BUILD SCRIPT                           
+	************************************************************************** 
+-->
+<project name="caAdapter" default="build" basedir=".">
+
+  
+  <!-- Define project properties !-->
+  <property name="project.name"    value="caAdapter"/>
+  <property name="build.dir"    value="${basedir}/build"/>
+  <property name="dist.dir"    value="${basedir}/dist"/>
+  <property name="config.dir"    value="${basedir}/conf"/>
+  <property name="docs.dir"    value="${basedir}/docs"/>
+  
+  <!-- Define common module properties !-->
+  <property name="common.module.home"    value="${basedir}/components/common"/>
+  <property name="common.module.build"   value="${common.module.home}/build.xml"/>
+    
+  <!-- Define hl7Transformation module properties !-->
+  <property name="hl7.module.home"    value="${basedir}/components/hl7Transformation"/>
+  <property name="hl7.module.build"    value="${hl7.module.home}/build.xml"/>
+  
+  <!-- Define modelMapping module properties !-->
+  <property name="modelMapping.module.home"    value="${basedir}/components/modelMapping"/>
+  <property name="modelMapping.module.build"    value="${modelMapping.module.home}/build.xml"/>
+    
+  
+  <!-- Define SDTM transformation module properties !-->
+  <property name="sdtm.module.home"    value="${basedir}/components/sdtmTransformation"/>
+  <property name="sdtm.module.build"    value="${sdtm.module.home}/build.xml"/>
+    
+  <!-- Define uerInterface module properties !-->
+  <property name="ui.module.home"    value="${basedir}/components/userInterface"/>
+  <property name="ui.module.build"    value="${ui.module.home}/build.xml"/>
+    
+  <!-- Define webservices module properties !-->
+  <property name="ws.module.home"    value="${basedir}/components/webservices"/>
+  <property name="ws.module.build"    value="${ws.module.home}/build.xml"/>
+    
+  
+  
+  
+  <target name="init">
+      	<echo message="-------- initialize ${project.name}  --------"/>
+      	<mkdir dir="${build.dir}"/>
+  	<mkdir dir="${dist.dir}"/>
+  	<ant antfile="${common.module.build}" target="init"/>
+  	<ant antfile="${hl7.module.build}" target="init"/>
+  	<ant antfile="${modelMapping.module.build}" target="init"/>
+  	<ant antfile="${sdtm.module.build}" target="init"/>
+  	<ant antfile="${ui.module.build}" target="init"/>
+  	<ant antfile="${ws.module.build}" target="init"/>
+  </target>
+  
+  
+  <target name="clean">
+  	<echo message="-------- clean ${project.name}  --------"/>
+      	<delete dir="${build.dir}"/>
+      	<delete dir="${dist.dir}"/>
+      	<ant antfile="${common.module.build}" target="clean"/>
+	<ant antfile="${hl7.module.build}" target="clean"/>
+	<ant antfile="${modelMapping.module.build}" target="clean"/>
+	<ant antfile="${sdtm.module.build}" target="clean"/>
+	<ant antfile="${ui.module.build}" target="clean"/>
+  	<ant antfile="${ws.module.build}" target="clean"/>
+  </target>
+  
+  <property name="build.dir"    value="${basedir}/build"/>
+  	
+</project>
