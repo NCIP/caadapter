@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!-- 
+	************************************************************************** 
+                     caAdapter WEBSERVICES module                          
+	************************************************************************** 
+-->
+<project name="caadapter_webservices" default="build" basedir=".">
+	<description>
+		webservices
+	</description>	
+  
+  <!-- Define project properties !-->
+  <property name="ws.module.home" value="${basedir}"/>
+  <property name="ws.module.name" value="${ant.project.name}"/>
+  <property name="module.build.dir" value="${ws.module.home}/build"/>
+  <property name="module.dist.dir" value="${ws.module.home}/dist"/>
+  <property name="module.lib.dir" value="${ws.module.home}/lib"/>
+  <property name="module.conf.dir" value="${ws.module.home}/conf"/>
+  <property name="module.etc.dir" value="${ws.module.home}/etc"/>
+  <property name="module.src.dir" value="${ws.module.home}/src"/>
+
+
+  
+  <path id="module.class.path">
+  	<fileset dir="${module.lib.dir}">
+  		<include name="**/*.jar"/>
+  		<include name="**/*.zip"/>
+  	</fileset>
+  </path>
+
+   
+  <target name="compile.source" description="compile the source">
+  	<javac destdir="${module.build.dir}" 
+  		classpathref="module.class.path"
+  		   fork="yes" debug="on">
+ 		<!-- src path="${module.gencode.dir}"/ -->
+ 		<src path="${module.src.dir}"/>
+  		<exclude name="test/**"/>
+  	</javac>
+   </target>
+   
+  <target name="init">
+      	<echo message="-------- initialize ${ws.module.name}  --------"/>
+      	<mkdir dir="${module.build.dir}"/>
+  	<mkdir dir="${module.dist.dir}"/>
+  </target>
+  
+  <target name="clean">
+  	<echo message="-------- clean ${ws.module.name}  --------"/>
+      	<delete dir="${module.build.dir}"/>
+      	<delete dir="${module.dist.dir}"/>
+      	<delete dir="${module.gencode.dir}"/>
+  </target>
+  	
+</project>
