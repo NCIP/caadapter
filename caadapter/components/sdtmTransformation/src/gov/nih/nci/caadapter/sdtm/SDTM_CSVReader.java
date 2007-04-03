@@ -1,0 +1,66 @@
+package gov.nih.nci.caadapter.sdtm;
+
+import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
+
+/**
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ */
+public class SDTM_CSVReader
+{
+	HashMap<String, String> _CSVData = new HashMap<String, String>();
+
+	MultiMap _mhm = new MultiHashMap();
+
+	public SDTM_CSVReader() {
+	}
+
+	// MultiMap mhm = new MultiHashMap();
+	// mhm.put(key, "A");
+	// mhm.put(key, "B");
+	// mhm.put(key, "C");
+	// Collection coll = (Collection) mhm.get(key);
+	public MultiMap readCSVFile(String filename) throws Exception
+	{
+		BufferedReader inputTMP = new BufferedReader(new FileReader(filename));
+		String lineTMP = null;
+		EmptyStringTokenizer strTk = null;
+		while ((lineTMP = inputTMP.readLine()) != null) {
+			String columnName = "";
+			ArrayList<String> dataForEachColumn = new ArrayList<String>();
+			strTk = new EmptyStringTokenizer(lineTMP.toString(), ",");
+			columnName = strTk.nextToken();
+			StringBuffer _strBuf = new StringBuffer();
+			while (strTk.hasMoreTokens()) {
+				_strBuf.append(strTk.nextToken() + ",");
+			}
+			_mhm.put(columnName, _strBuf);
+		}
+		return _mhm;
+	}
+
+	public static void main(String[] args) throws Exception
+	{
+		SDTM_CSVReader s = new SDTM_CSVReader();
+		s.readCSVFile("c:\\b.csv");
+		System.out.println(" " + s._mhm.toString());
+	}
+
+	public HashMap<String, String> get_CSVData()
+	{
+		return _CSVData;
+	}
+
+	public MultiMap getCSVData()
+	{
+		return _mhm;
+	}
+}

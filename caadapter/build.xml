@@ -1,73 +1,149 @@
 <?xml version="1.0"?>
+<project name="caAdapter" default="jar.all" basedir=".">
+	<description>
+		************************************************************************** 
+			caAdapter ANT BUILD SCRIPT                           
+		************************************************************************** 
+	</description>
 
-<!-- 
-	************************************************************************** 
-                     caAdapter ANT BUILD SCRIPT                           
-	************************************************************************** 
--->
-<project name="caAdapter" default="build" basedir=".">
+	<!-- Define project properties !-->
+	<property name="project.name"    value="caAdapter"/>
+	<property name="build.dir"    value="${basedir}/build"/>
+	<property name="dist.dir"    value="${basedir}/dist"/>
+	<property name="lib.dir"    value="${basedir}/lib"/>
+	<property name="config.dir"    value="${basedir}/conf"/>
+	<property name="docs.dir"    value="${basedir}/docs"/>
+	<property name="project.jar.name"    value="caAdapter.jar"/>
 
-  
-  <!-- Define project properties !-->
-  <property name="project.name"    value="caAdapter"/>
-  <property name="build.dir"    value="${basedir}/build"/>
-  <property name="dist.dir"    value="${basedir}/dist"/>
-  <property name="config.dir"    value="${basedir}/conf"/>
-  <property name="docs.dir"    value="${basedir}/docs"/>
-  
-  <!-- Define common module properties !-->
-  <property name="common.module.home"    value="${basedir}/components/common"/>
-  <property name="common.module.build"   value="${common.module.home}/build.xml"/>
-    
-  <!-- Define hl7Transformation module properties !-->
-  <property name="hl7.module.home"    value="${basedir}/components/hl7Transformation"/>
-  <property name="hl7.module.build"    value="${hl7.module.home}/build.xml"/>
-  
-  <!-- Define modelMapping module properties !-->
-  <property name="modelMapping.module.home"    value="${basedir}/components/modelMapping"/>
-  <property name="modelMapping.module.build"    value="${modelMapping.module.home}/build.xml"/>
-    
-  
-  <!-- Define SDTM transformation module properties !-->
-  <property name="sdtm.module.home"    value="${basedir}/components/sdtmTransformation"/>
-  <property name="sdtm.module.build"    value="${sdtm.module.home}/build.xml"/>
-    
-  <!-- Define uerInterface module properties !-->
-  <property name="ui.module.home"    value="${basedir}/components/userInterface"/>
-  <property name="ui.module.build"    value="${ui.module.home}/build.xml"/>
-    
-  <!-- Define webservices module properties !-->
-  <property name="ws.module.home"    value="${basedir}/components/webservices"/>
-  <property name="ws.module.build"    value="${ws.module.home}/build.xml"/>
-    
-  
-  
-  
-  <target name="init">
-      	<echo message="-------- initialize ${project.name}  --------"/>
-      	<mkdir dir="${build.dir}"/>
-  	<mkdir dir="${dist.dir}"/>
-  	<ant antfile="${common.module.build}" target="init"/>
-  	<ant antfile="${hl7.module.build}" target="init"/>
-  	<ant antfile="${modelMapping.module.build}" target="init"/>
-  	<ant antfile="${sdtm.module.build}" target="init"/>
-  	<ant antfile="${ui.module.build}" target="init"/>
-  	<ant antfile="${ws.module.build}" target="init"/>
-  </target>
-  
-  
-  <target name="clean">
-  	<echo message="-------- clean ${project.name}  --------"/>
-      	<delete dir="${build.dir}"/>
-      	<delete dir="${dist.dir}"/>
-      	<ant antfile="${common.module.build}" target="clean"/>
-	<ant antfile="${hl7.module.build}" target="clean"/>
-	<ant antfile="${modelMapping.module.build}" target="clean"/>
-	<ant antfile="${sdtm.module.build}" target="clean"/>
-	<ant antfile="${ui.module.build}" target="clean"/>
-  	<ant antfile="${ws.module.build}" target="clean"/>
-  </target>
-  
-  <property name="build.dir"    value="${basedir}/build"/>
-  	
+	<!-- Define common module properties !-->
+	<property name="common.module.home"    value="${basedir}/components/common"/>
+	<property name="common.module.build"   value="${common.module.home}/build.xml"/>
+
+	<!-- Define hl7Transformation module properties !-->
+	<property name="hl7.module.home"    value="${basedir}/components/hl7Transformation"/>
+	<property name="hl7.module.build"    value="${hl7.module.home}/build.xml"/>
+
+	<!-- Define mms module properties !-->
+	<property name="mms.module.home"    value="${basedir}/components/modelMapping"/>
+	<property name="mms.module.build"    value="${mms.module.home}/build.xml"/>
+
+
+	<!-- Define SDTM transformation module properties !-->
+	<property name="sdtm.module.home"    value="${basedir}/components/sdtmTransformation"/>
+	<property name="sdtm.module.build"    value="${sdtm.module.home}/build.xml"/>
+
+	<!-- Define uerInterface module properties !-->
+	<property name="ui.module.home"    value="${basedir}/components/userInterface"/>
+	<property name="ui.module.build"    value="${ui.module.home}/build.xml"/>
+
+	<!-- Define webservices module properties !-->
+	<property name="ws.module.home"    value="${basedir}/components/webservices"/>
+	<property name="ws.module.build"    value="${ws.module.home}/build.xml"/>
+
+	<target name="jar.all" depends="build.modules, copy.modules.lib" >
+		<echo message="-------- build jar for all modules  --------"/>
+		<copy todir="${build.dir}">
+				<fileset dir="${common.module.home}/build"/>
+				<fileset dir="${hl7.module.home}/build"/>
+				<fileset dir="${mms.module.home}/build"/>
+				<fileset dir="${sdtm.module.home}/build"/>
+				<fileset dir="${ui.module.home}/build"/>
+		</copy>
+		
+		<copy todir="${build.dir}">
+			<fileset dir="${ui.module.home}/resources">
+				<exclude name="CSV/**"/>
+			</fileset>
+			<fileset dir="${basedir}/etc">
+				<exclude name="*.html"/>
+			</fileset>			
+		</copy>
+		
+		<jar destfile="${lib.dir}/${project.jar.name}">
+			<fileset dir="${build.dir}"/>
+		</jar>
+	</target>
+	
+	<target name="demo.dist" depends="copy.modules.lib">
+		<echo message="build demo_ui.jar...."  />
+		<ant antfile="build_demo.xml" target="demo.ui.jar"/>
+
+		<!-- delete dir="C:/distBin/testCaAdapter/lib"/ -->
+		<mkdir dir="C:/distBin/testCaAdapter/lib"/>
+		<copy todir="C:/distBin/testCaAdapter/lib">
+			<fileset dir="${lib.dir}">
+				<exclude name="*.zip, *.jar"/>
+			</fileset>			
+		</copy>
+		<copy todir="C:/distBin/testCaAdapter/conf">
+			<fileset dir="${config.dir}">
+				<include name="*.properties"/>
+			</fileset>			
+		</copy>
+
+		<copy file="demo_ui.jar" todir="C:/distBin/testCaAdapter"/>
+	</target>
+	
+	<target name="demo">
+		<echo message="Call Generating castor CODE...."  />
+		<ant antfile="build_demo.xml" target="demo.ui.jar"/>
+	</target>
+	
+	<target name="copy.modules.lib">
+		<!-- delete dir="${lib.dir}"/ -->
+		<copy todir="${lib.dir}" >
+			<fileset dir="${common.module.home}/lib"/>
+			<fileset dir="${hl7.module.home}/lib"/>
+			<fileset dir="${mms.module.home}/lib"/>
+			<fileset dir="${sdtm.module.home}/lib"/>
+			<fileset dir="${ui.module.home}/lib"/>
+		</copy>
+	</target>
+	
+	<target name="build.modules" depends="init">
+		<echo message="-------- build all modules in ${project.name}  --------"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<ant antfile="${common.module.build}" />
+		<ant antfile="${hl7.module.build}" />
+		<ant antfile="${mms.module.build}" />
+		<ant antfile="${sdtm.module.build}" />
+		<ant antfile="${ui.module.build}" />
+		<!-- ant antfile="${ws.module.build}"/ -->
+	</target>
+
+	<target name="build.test" >
+		<echo message="-------- test ${project.name}  --------"/>
+		<ant antfile="${mms.module.build}" target="init"/>
+	</target>
+
+	<target name="init" depends="clean" >
+		<echo message="-------- initialize ${project.name}  --------"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+ 
+		<ant antfile="${common.module.build}" target="init"/>
+		<ant antfile="${hl7.module.build}" target="init"/>
+		<ant antfile="${mms.module.build}" target="init"/>
+		<ant antfile="${sdtm.module.build}" target="init"/>
+		<ant antfile="${ui.module.build}" target="init"/>
+		<ant antfile="${ws.module.build}" target="init"/>
+	</target>
+
+	<target name="clean">
+		<echo message="-------- clean ${project.name}  --------"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+		<delete dir="gencode"/>
+		<ant antfile="${common.module.build}" target="clean"/>
+		<ant antfile="${hl7.module.build}" target="clean"/>
+		<ant antfile="${mms.module.build}" target="clean"/>
+		<ant antfile="${sdtm.module.build}" target="clean"/>
+		<ant antfile="${ui.module.build}" target="clean"/>
+		<ant antfile="${ws.module.build}" target="clean"/>
+	</target>
+
+	<target name="build" description ="build caadapter">
+		<echo message="-------- clean ${project.name}  --------"/>
+	</target>
 </project>

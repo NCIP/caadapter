@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry path="components/common/src" kind="src"/>
+	<classpathentry path="gencode" kind="src"/>
+	<classpathentry path="components/sdtmTransformation/src" kind="src"/>
+	<classpathentry path="components/common/gencode" kind="src"/>
+	<classpathentry path="components/hl7Transformation/src" kind="src"/>
+	<classpathentry path="components/hl7Transformation/gencode" kind="src"/>
+	<classpathentry path="components/modelMapping/src" kind="src"/>
+	<classpathentry path="components/userInterface/src" kind="src"/>
+	<classpathentry path="components/userInterface/resources" kind="src"/>
+	<classpathentry path="demo" kind="src"/>
+	<classpathentry path="etc" kind="src"/>
+	<classpathentry path="conf" kind="src"/>
+	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+	<classpathentry path="org.eclipse.jdt.USER_LIBRARY/commonModuleLib" kind="con"/>
+	<classpathentry path="org.eclipse.jdt.USER_LIBRARY/mmsModuleLib" kind="con"/>
+	<classpathentry path="org.eclipse.jdt.USER_LIBRARY/sdtmModuleLib" kind="con"/>
+	<classpathentry path="org.eclipse.jdt.USER_LIBRARY/uiModuleLib" kind="con"/>
+	<classpathentry path="org.eclipse.jdt.USER_LIBRARY/hl7ModuleLib" kind="con"/>
+	<classpathentry path="bin" kind="output"/>
+</classpath>

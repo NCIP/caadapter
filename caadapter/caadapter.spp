@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+	<Folder FolderName="XML Files" ExtStr="xml;cml;math;mtx;rdf;smil;svg;wml">
+		<ExtMountFolder FolderName="C:\CVS\caadapter\workingspace\examples"/>
+	</Folder>
+	<Folder FolderName="XSL Files" ExtStr="xsl;xslt"/>
+	<Folder FolderName="XQuery Files" ExtStr="xq;xql;xquery"/>
+	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
+	<Folder FolderName="DTD/Schema" ExtStr="dtd;dcd;xdr;biz;xsd">
+		<ExtMountFolder FolderName="C:\CVS\caadapter\hl7Mifs"/>
+		<ExtMountFolder FolderName="C:\CVS\caadapter\etc\schemas207"/>
+	</Folder>
+	<Folder FolderName="Entities" ExtStr="ent"/>
+</Project>

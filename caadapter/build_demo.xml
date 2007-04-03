@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<project name="caadapter.demo" default="buid.demo">
+	<description>
+					caAdapter: Demo
+		************************************************************************** 
+					caAdapter demo
+		************************************************************************** 
+	</description>	
+
+	<path id="execution.class.path">
+		<fileset dir="lib">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
+		<!-- fileset dir="dist/conf">
+			<include name="**/*.*"/>
+		</fileset -->
+	</path>
+
+	<pathconvert pathsep=" " 
+			targetos="unix" 
+			property="distribution.manifest.class.property"
+			refid="execution.class.path">
+		<!-- make paths relative-->
+		<map from="lib" to="./lib"/>
+		<map from="${javasig}" to="."/>
+		<map from="${basedir}" to="."/>
+	</pathconvert>
+	
+	<target name="jarcaadapter"  description="create the distribution jars">
+		<jar destfile="caadapterTotal.jar">
+			<fileset dir="dist"
+				excludes="**/Test.class,org/hl7/**"	/>
+			<fileset dir="etc"/>
+			<fileset dir="conf"/>
+		</jar>
+	</target>
+
+	<target name="demo.ui.jar" depends="compile.demo" description="create the distribution jars">
+		<!-- Create an executable jar that runs the UI.-->
+		<echo message="${distribution.manifest.class.property}"/>
+		<jar destfile="demo_ui.jar">
+			<fileset dir="build" includes="**/LaunchUI.class"/>
+			<!-- fileset dir="etc"/ -->
+			<!-- fileset dir="conf"/ -->
+			<manifest>
+				<attribute name="Main-Class" value="gov.nih.nci.caadapter.hl7.demo.LaunchUI"/>
+				<attribute name="Class-Path" value=". ./conf/ ${distribution.manifest.class.property}"/>
+			</manifest>
+			</jar>
+	</target>
+
+
+	<target name="compile.demo"  description="compile the source">
+		<javac destdir="build" 
+				classpathref="execution.class.path"
+				fork="yes" debug="on">
+			<src path="demo" />
+			<exclude name="test/**"/>
+		</javac>
+	</target>
+</project>
