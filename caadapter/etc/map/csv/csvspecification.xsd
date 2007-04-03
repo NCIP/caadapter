@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="csvMetadata">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="segment"/>
+      </xs:sequence>
+      <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="version" use="optional" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="segment">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="segment"/>
+        <xs:element ref="field"/>
+      </xs:choice>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="field">
+    <xs:complexType>
+      <xs:attribute name="column" use="required" type="xs:integer"/>
+      <xs:attribute name="name"/>
+      <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
