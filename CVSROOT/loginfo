@@ -32,3 +32,4 @@
 umlclassdiagramloader mail -s "CVS commit notification [%{sv}]" ludetc@mail.nih.gov
 umlmodelbrowser mail -s "CVS commit notification [%{sv}]" ludetc@mail.nih.gov
 cdebrowser mail -s "CVS commit notification [%{sv}]" ludetc@mail.nih.gov
+cpath mail -s "CVS commit notification [%{sv}]" cpath-commits@gforge.nci.nih.gov
