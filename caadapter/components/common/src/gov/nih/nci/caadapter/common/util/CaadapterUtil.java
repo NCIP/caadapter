@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.2 2007-04-19 13:56:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,8 +48,8 @@ import java.util.Enumeration;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-04-19 13:56:54 $
  * @since caAdapter v1.2
  */
 
@@ -176,6 +176,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
@@ -189,7 +192,7 @@ public class CaadapterUtil {
  * HISTORY      : caAdapter generic enhancement
  * HISTORY      :
  * HISTORY      : Revision 1.13  2006/01/04 18:12:57  giordanm
- * HISTORY      : remove some of the hard coded values from CaadapterUtil and TransformationService - extract some of that logic to the message-types.properties file.
+ * HISTORY      : remove some of the hard coded values from CaadapterUtil and TransformationServiceCsvToHL7V3 - extract some of that logic to the message-types.properties file.
  * HISTORY      :
  * HISTORY      : Revision 1.12  2006/01/03 19:16:53  jiangsc
  * HISTORY      : License Update

@@ -3,9 +3,8 @@
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.ws;
-
-import gov.nih.nci.hl7.map.TransformationResult;
-import gov.nih.nci.hl7.map.TransformationService;
+import gov.nih.nci.caadapter.hl7.map.TransformationResult;
+import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ import java.util.Properties;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-01-26 20:53:51 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-04-19 13:57:56 $
  * @since caadapter v1.3.1
  */
 
@@ -42,9 +41,9 @@ public class caAdapterTransformationService {
 		    if (exists) {
 		    	
 		    	String mappingFileName = path+mappingScenario+"/"+mappingScenario + ".map";
-				TransformationService transformationService = 
-					new TransformationService(mappingFileName,csvString,true);
-				List<TransformationResult> mapGenerateResults = transformationService.process();
+				TransformationServiceCsvToHL7V3 transformationService = 
+					new TransformationServiceCsvToHL7V3(mappingFileName,csvString,true);
+				List<TransformationResult> mapGenerateResults = transformationService.process(null);
 				for (int i = 0; i < mapGenerateResults.size(); i++)
 				{
 					TransformationResult mapGenerateResult = mapGenerateResults.get(i);
