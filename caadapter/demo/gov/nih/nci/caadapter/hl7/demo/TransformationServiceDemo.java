@@ -1,5 +1,5 @@
 /**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.1 2007-04-03 16:19:04 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.2 2007-04-19 14:08:26 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,26 +57,26 @@ package gov.nih.nci.caadapter.hl7.demo;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
-import gov.nih.nci.caadapter.hl7.map.TransformationService;
+import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
 
 import java.util.List;
 
 /**
- * A tiny driver which demo the usage of TransformationService.
+ * A tiny driver which demo the usage of TransformationServiceCsvToHL7V3.
  *
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @since caAdapter v1.2
  */
 public class TransformationServiceDemo {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.1 2007-04-03 16:19:04 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.2 2007-04-19 14:08:26 wangeug Exp $";
 
     public static void main(String[] args) {
         String mapFile040001 =  FileUtil.getExamplesDirPath() + "/040001/040001.map";
         String csvSource040001 = FileUtil.getExamplesDirPath() + "/040001/040001.csv";
-        TransformationService transformationService = new TransformationService(mapFile040001, csvSource040001);
-        List<TransformationResult> mapGenerateResults = transformationService.process();
+        TransformationServiceCsvToHL7V3 transformationService = new TransformationServiceCsvToHL7V3(mapFile040001, csvSource040001);
+        List<TransformationResult> mapGenerateResults = transformationService.process(null);
         for (int i = 0; i < mapGenerateResults.size(); i++)
         {
             TransformationResult transformationResult = mapGenerateResults.get(i);
