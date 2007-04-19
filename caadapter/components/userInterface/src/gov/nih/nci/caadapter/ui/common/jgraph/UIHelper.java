@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.2 2007-04-19 14:05:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,11 @@ import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
+import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
+import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
 
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
@@ -63,8 +68,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 14:05:44 $
  */
 public final class UIHelper
 {
@@ -73,6 +78,10 @@ public final class UIHelper
 	public static final int VERTEX_CELL_HEIGHT = 3;
 	public static final Color DEFAULT_VERTEX_COLOR = Color.BLACK;
 	public static final Color DEFAULT_VERTEX_BORDER_COLOR = Color.BLACK;
+	public static final Color DEFAULT_MAPPING_LINK_COLOR = Color.BLUE.darker().darker();
+	public static final Color MAPPING_LINK_OBJECT_COLOR = Color.YELLOW;
+	public static final Color MAPPING_LINK_ATTRIBUTE_COLOR = Color.GREEN;
+	public static final Color MAPPING_LINK_ASSOCIATION_COLOR = Color.RED;
 	private static final Dimension invisibleVertexDimension = new Dimension(VERTEX_CELL_WIDTH, VERTEX_CELL_HEIGHT);
 	//location of port in cell
 	public static final int PORT_LEFT = 0;
@@ -111,10 +120,10 @@ public final class UIHelper
 		return PORT_OUTPUT_STRING;
 	}
 
-	public static final void timeMessage(Object sender, String msg, long timeLapse)
-	{
-		Log.logInfo(sender, msg + " time(milisec): " + timeLapse);
-	}
+//	public static final void timeMessage(Object sender, String msg, long timeLapse)
+//	{
+//		Log.logInfo(sender, msg + " time(milisec): " + timeLapse);
+//	}
 
 	private static final boolean isPortOrientationMatch(DefaultGraphCell cell, boolean isInputData)
 	{
@@ -211,11 +220,34 @@ public final class UIHelper
 		return invisibleVertexDimension;
 	}
 
-	public static final AttributeMap getDefaultUnmovableEdgeStyle()
+	public static final Color getLinkColor(Object metaData)
+	{
+		Color linkColor=DEFAULT_MAPPING_LINK_COLOR;
+		if (metaData instanceof ObjectMetadata)
+			linkColor=MAPPING_LINK_OBJECT_COLOR;
+		else if(metaData instanceof TableMetadata)
+			linkColor=MAPPING_LINK_OBJECT_COLOR;
+		else if (metaData instanceof AttributeMetadata)
+			linkColor=MAPPING_LINK_ATTRIBUTE_COLOR;
+		else if(metaData instanceof ColumnMetadata)
+			linkColor=MAPPING_LINK_ATTRIBUTE_COLOR;
+		else if (metaData instanceof AssociationMetadata)
+			linkColor=MAPPING_LINK_ASSOCIATION_COLOR;
+	
+		return linkColor;
+	}
+	
+	public static final AttributeMap getDefaultUnmovableEdgeStyle(Object metaData)
+	{
+		Color linkColor=getLinkColor(metaData);
+		return getDefaultUnmovableMappingEdgeStyle(linkColor);
+	}
+	
+	private static final AttributeMap getDefaultUnmovableMappingEdgeStyle(Color lineColor)
 	{
 		AttributeMap lineStyle = new AttributeMap();
 		GraphConstants.setLineBegin(lineStyle, GraphConstants.ARROW_NONE);
-		GraphConstants.setLineColor(lineStyle, Color.BLUE.darker().darker());
+		GraphConstants.setLineColor(lineStyle,lineColor);
 		GraphConstants.setBeginSize(lineStyle, 10);
 		GraphConstants.setFont(lineStyle, GraphConstants.DEFAULTFONT.deriveFont(10));
 		GraphConstants.setBendable(lineStyle, false);
@@ -223,7 +255,6 @@ public final class UIHelper
 		GraphConstants.setMoveable(lineStyle, false);
 		GraphConstants.setResize(lineStyle, false);
 		GraphConstants.setSizeable(lineStyle, false);
-//		GraphConstants.setLineWidth(lineStyle, (float)1.5);
 		return lineStyle;
 	}
 
@@ -313,15 +344,6 @@ public final class UIHelper
 			DefaultMappableTreeNode root = (DefaultMappableTreeNode) treeRoot;
 			result = (MappableNode) root.findFirstTreeNodeMatchUserObject(metaObject);
 		}
-//		else if(treeRoot instanceof PseudoRootTreeNode)
-//		{
-//			PseudoRootTreeNode pseudoRoot = (PseudoRootTreeNode) treeRoot;
-//			TreeNode actualRoot = pseudoRoot.getChildAt(0);
-//			if(actualRoot instanceof DefaultMappableTreeNode)
-//			{
-//				result = (MappableNode) ((DefaultMappableTreeNode) actualRoot).findFirstTreeNodeMatchUserObject(metaObject);
-//			}
-//		}
 		if(result==null)
 		{
 			Log.logError(internalInstance, "Could not find the metaObject '" + metaObject + "' in the given tree rooted by '" + treeRoot + "'.");
@@ -367,6 +389,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.26  2006/08/02 18:44:23  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

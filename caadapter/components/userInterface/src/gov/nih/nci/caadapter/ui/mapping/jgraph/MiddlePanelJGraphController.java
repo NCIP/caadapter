@@ -88,7 +88,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.1 $ date $Date: 2007-04-03 16:17:57 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.2 $ date $Date: 2007-04-19 14:07:37 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.2 2007-04-19 14:07:37 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -357,7 +357,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		DefaultEdge edge = new DefaultEdge();
 		edge.setSource(source);
 		edge.setTarget(target);
-		AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle();
+		AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(source);
 		if ( graph.getModel().acceptsSource(edge, source) && graph.getModel().acceptsTarget(edge, target) ) {
 			// Create a Map that holds the attributes for the edge
 			edge.getAttributes().applyMap(lineStyle);
@@ -975,79 +975,6 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		return result;
 	}
 
-	public boolean showMapping(MappableNode sourceNode, MappableNode targetNode)
-	{
-		boolean result = false;
-		// to remember the list of cells, edges, etc. that involve in the mapping.
-		List graphCellList = new ArrayList();
-		try {
-			if ( sourceNode == null || targetNode == null ) {
-				String msg = (sourceNode == null) ? "source node is null" : "";
-				if ( targetNode == null ) {
-					if ( msg.length() > 0 ) {
-						msg += " and ";
-					}
-					msg += "target node is null";
-				}
-				msg += "!";
-				Log.logInfo(this, msg);
-				result = false;
-				return result;
-			}
-			if ( sourceNode instanceof FunctionBoxDefaultPort ) {// drag from FunctionBoxCell
-				if ( targetNode instanceof FunctionBoxDefaultPort ) {
-					result = createFunctionBoxPortToFunctionBoxPortMapping((FunctionBoxDefaultPort) sourceNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
-				} else if ( targetNode instanceof DefaultMutableTreeNode ) {// functional box to tree link
-					DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
-					result = createTreeToFunctionBoxPortMapping(treeNode, (FunctionBoxDefaultPort) sourceNode, graphCellList);
-				}
-			} else if ( sourceNode instanceof DefaultMutableTreeNode ) {// drag from tree to middle panel
-				// todo: will source tree always stays at left? If not, the implicit logic between source is left and target is right should have been changed.
-				DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) sourceNode;
-				if ( targetNode instanceof FunctionBoxDefaultPort ) {
-					result = createTreeToFunctionBoxPortMapping(treeNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
-				} else if ( targetNode instanceof DefaultTargetTreeNode )// targetNode instanceof DefaultMutableTreeNode
-				{// mapping between source and target tree node
-					result = createTreeToTreeDirectMapping((DefaultSourceTreeNode) sourceNode, (DefaultTargetTreeNode) targetNode, graphCellList);
-				} else if ( targetNode instanceof DefaultSourceTreeNode )// targetNode instanceof DefaultMutableTreeNode
-				{// mapping between source and target tree node
-					// reversed drag and drop
-					result = createTreeToTreeDirectMapping((DefaultSourceTreeNode) targetNode, (DefaultTargetTreeNode) sourceNode, graphCellList);
-				} else {
-					Log.logInfo(this, "Not a graph cell or tree node, what is it? '" + (targetNode == null ? "null" : targetNode.toString() + " " + targetNode.getClass().getName()) + "'");
-				}
-				// Log.logInfo(this, "object is '" + object.getClass().getName() + "'");
-			} else {
-				Log.logInfo(this, sourceNode + " is not accepted by " + getClass().getName());
-			}
-		} catch (Exception e) {
-			Log.logException(this, e);
-		}
-		if ( result ) {// successfully mapped, add to mapping
-			DefaultGraphCell temp1 = (DefaultGraphCell) graphCellList.get(0);
-			DefaultGraphCell temp2 = (DefaultGraphCell) graphCellList.get(1);
-			DefaultEdge edge = (DefaultEdge) graphCellList.get(2);
-			DefaultGraphCell sourceCell = null;
-			DefaultGraphCell targetCell = null;
-			if ( sourceNode instanceof FunctionBoxDefaultPort ) {
-				sourceCell = temp1 == sourceNode ? temp1 : temp2;
-			} else {
-				sourceCell = temp1.getUserObject() == sourceNode ? temp1 : temp2;
-			}
-			if ( targetNode instanceof FunctionBoxDefaultPort ) {
-				targetCell = temp1 == targetNode ? temp1 : temp2;
-			} else {
-				targetCell = temp1.getUserObject() == targetNode ? temp1 : temp2;
-			}
-			MappingViewCommonComponent viewComp = new MappingViewCommonComponent(sourceNode, targetNode, sourceCell, targetCell, edge);
-			edge.setUserObject(viewComp);
-			// Log.logInfo(this, "mapped: "+viewComp);
-			mappingViewList.add(viewComp);
-			setGraphChanged(true);
-		}
-		return result;
-	}
-
 	private boolean createTreeToTreeDirectMapping(DefaultSourceTreeNode sourceNode, DefaultTargetTreeNode targetNode, List graphCellList)
 	{
 		// boolean result = sourceNode.isMapped() || targetNode.isMapped();
@@ -1056,7 +983,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		if ( !result ) {// neither one has been mapped before
 			ConnectionSet cs = new ConnectionSet();
 			Map attributes = new Hashtable();
-			AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle();
+			AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(sourceNode.getUserObject());//.getDefaultUnmovableEdgeStyle();
 			Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
 			DefaultGraphCell sourceCell = null;
 			DefaultGraphCell targetCell = null;
@@ -1159,7 +1086,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		}
 		attributes.put(treeNodeCell, treeNodeAttribute);
 		attributes.put(port, port.getAttributes());
-		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle());
+		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle(treeNode.getUserObject()));
 		// return back those being affected.
 		graphCellList.add(treeNodeCell);
 		graphCellList.add(port);
@@ -1186,7 +1113,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		cs.connect(linkEdge, source, target);
 		attributes.put(source, source.getAttributes());
 		attributes.put(target, target.getAttributes());
-		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle());
+		attributes.put(linkEdge, UIHelper.getDefaultUnmovableEdgeStyle(source));
 		// return back those being affected.
 		graphCellList.add(source);
 		graphCellList.add(target);
@@ -1516,6 +1443,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY : initial loading
+ * HISTORY :
  * HISTORY : Revision 1.67  2006/11/27 20:38:08  jayannah
  * HISTORY : Changes to handle delete action on the "Open Map File" use case
  * HISTORY : HISTORY : Revision 1.65 2006/10/10 17:18:26 wuye HISTORY : Use getKind to determine what to do with

@@ -16,13 +16,14 @@ import java.awt.Point;
 import java.awt.Component;
 
 import gov.nih.nci.caadapter.ui.common.MappableNode;
-
+import gov.nih.nci.caadapter.ui.common.jgraph.UIHelper;
+import gov.nih.nci.caadapter.common.SDKMetaData;;
 public class MappingTreeScrollPane extends JScrollPane 
 {
 	final public static String DRAW_NODE_TO_LEFT="MAPPING_SOURCE";
 	final public static String DRAW_NODE_TO_RIGHT="MAPPING_TARGET";
 	final private static Color highlightColor=Color.blue;
-	final private static Color normalColor=Color.gray;
+//	final private static Color normalColor=Color.gray;
 	final private static int BROKEN_LINE_PIECE=3;
 	
 	private String paneType;
@@ -74,48 +75,84 @@ public class MappingTreeScrollPane extends JScrollPane
 	 */
 	private void recursiveDrawLeaf(Graphics g, JTree tree, DefaultMutableTreeNode treeNode )
     {
-		if (treeNode.isLeaf()&&treeNode instanceof MappableNode)
+		if (treeNode instanceof MappableNode)
     	{
+			boolean drawNode=false;
 			MappableNode mappedNode =(MappableNode)treeNode;
-			if (!mappedNode.isMapped())
-				return;
+			if (mappedNode.isMapped())
+					drawNode=true;
+			
+			if ((!drawNode)&&(treeNode.getChildCount()>0))
+			{
+				//check the userObject for SDKMeta
+				Object userObject=treeNode.getUserObject();	
+				if (userObject  instanceof SDKMetaData )
+				{
+					SDKMetaData sdkMeta=(SDKMetaData)userObject;
+					if (sdkMeta.isMapped())
+						drawNode=true;
+					else
+					{
+						//For TableMeteData
+						int nodeCnt=treeNode.getChildCount();
+			    		for (int i=0; i<nodeCnt;i++)
+			    		{
+			    			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(i);
+			    			MappableNode mappedChild =(MappableNode)childNode;		    				
+		    				if (mappedChild.isMapped())
+			    			{
+		    					//as long as one Column is mapped, the Table is mapped
+			    				drawNode=true;
+			    				break;
+			    			}
+			    		}
+					}
+				}
+			}
+
+			if (drawNode)
+			{
+				//go following if link-to-border is required
+				Rectangle treeNodeBound =findVisibleTreeNodeOnPath(tree, treeNode);
+	    		//convert the position from Tree to ScrollPane
+				Point panelPoint =SwingUtilities.convertPoint(tree, treeNodeBound.getLocation(), this);
+	    		//do not draw if the node is out of view bound
+				int yPos=panelPoint.y+treeNodeBound.height - treeNodeBound.height/2;
     		
-			Rectangle treeNodeBound =findVisibleTreeNodeOnPath(tree, treeNode);
-    		//convert the position from Tree to ScrollPane
-    		Point panelPoint =SwingUtilities.convertPoint(tree, treeNodeBound.getLocation(), this);
-    		//do not draw if the node is out of view bound
-    		int yPos=panelPoint.y+treeNodeBound.height - treeNodeBound.height/2;
-    		if (panelPoint.y<0||yPos>this.getViewportBorderBounds().height)
-    			return;
-    		
-    		int xStart=panelPoint.x+treeNodeBound.width + BROKEN_LINE_PIECE;
-    		int xEnd=this.getBounds().width;
-    		
-    		//set line ends with target tree 
-    		if (paneType.equals(DRAW_NODE_TO_LEFT))
-    		{
-    			xStart=0;
-    			xEnd =panelPoint.x;
-    		}
-   			Font dftFont=g.getFont();
-   			TreePath slctPath=tree.getSelectionPath();
-   			if (slctPath!=null)
-   			{
-   				//draw "highlight" line
-    			DefaultMutableTreeNode slctNode=(DefaultMutableTreeNode)slctPath.getLastPathComponent();
-    			if (treeNode==slctNode)
-    			{
-    				g.setColor(highlightColor);
-    				g.setFont(new Font(dftFont.getName(), dftFont.getStyle(), dftFont.getSize()*4));
-    				drawHorizontalLinkFromNodeToPaneBorder(g, xStart, xEnd, yPos-1);
-    			}
-   			}
-   			//draw the regular line with default  color and font
-   			g.setColor(normalColor);
-   			g.setFont(dftFont);
-   			drawHorizontalLinkFromNodeToPaneBorder(g, xStart, xEnd, yPos);
+	    		if (yPos>this.getViewportBorderBounds().height)
+	    			return;
+			
+				int xStart=panelPoint.x+treeNodeBound.width + BROKEN_LINE_PIECE;
+	    		int xEnd=this.getBounds().width;
+	    		
+	    		//set line ends with target tree 
+	    		if (paneType.equals(DRAW_NODE_TO_LEFT))
+	    		{
+	    			xStart=0;
+	    			xEnd =panelPoint.x;
+	    		}
+	   			Font dftFont=g.getFont();
+	   			TreePath slctPath=tree.getSelectionPath();
+	   			if (slctPath!=null)
+	   			{
+	   				//draw "highlight" line
+	    			DefaultMutableTreeNode slctNode=(DefaultMutableTreeNode)slctPath.getLastPathComponent();
+	    			if (treeNode==slctNode)
+	    			{
+	    				g.setColor(highlightColor);
+	    				g.setFont(new Font(dftFont.getName(), dftFont.getStyle(), dftFont.getSize()*4));
+	    				drawHorizontalLinkFromNodeToPaneBorder(g, xStart, xEnd, yPos-1);
+	    			}
+	   			}
+	   			//draw the regular line with default  color and font
+	   			Color linkColor=UIHelper.getLinkColor(treeNode.getUserObject());
+	   			g.setColor(linkColor);
+	   			g.setFont(dftFont);
+	   			drawHorizontalLinkFromNodeToPaneBorder(g, xStart, xEnd, yPos);
+			}
     	}
-    	else
+		
+		if (treeNode.getChildCount()>0)
     	{
     		//Recursively process all children nodes
     		int nodeCnt=treeNode.getChildCount();
@@ -157,7 +194,6 @@ public class MappingTreeScrollPane extends JScrollPane
 	 */
 	private void drawHorizontalLinkFromNodeToPaneBorder(Graphics g, int xStart, int xEnd, int yPos)
 	{
-//		g.drawLine(xStart, yPos, xEnd, yPos);
 		int xPieceStart=xStart;
 		while (xPieceStart<xEnd)
 		{
