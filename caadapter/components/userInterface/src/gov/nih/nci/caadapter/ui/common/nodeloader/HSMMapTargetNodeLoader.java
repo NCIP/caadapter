@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMMapTargetNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMMapTargetNodeLoader.java,v 1.2 2007-04-19 14:03:45 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,7 +36,7 @@ package gov.nih.nci.caadapter.ui.common.nodeloader;
 
 import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
-import gov.nih.nci.caadapter.ui.common.tree.PseudoRootTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -49,8 +49,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.1 $
- * date        $Date: 2007-04-03 16:17:13 $
+ * revision    $Revision: 1.2 $
+ * date        $Date: 2007-04-19 14:03:45 $
  */
 public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 {
@@ -80,7 +80,7 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 		TreeNode realRoot = super.loadData(o);
 		if (o instanceof HL7V3Meta)
 		{//construct the pseudo root.
-			PseudoRootTreeNode node = new PseudoRootTreeNode("Target Tree", true);
+			DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
 			node.add((MutableTreeNode) realRoot);
 			resultRoot = node;
 		}
@@ -106,7 +106,7 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 	public HL7V3Meta unLoadData(DefaultMutableTreeNode treeNode, boolean resetUUID) throws MetaDataloadException
 	{
 		DefaultMutableTreeNode realRoot = treeNode;
-		if(treeNode instanceof PseudoRootTreeNode)
+		if(treeNode instanceof DefaultMappableTreeNode)
 		{
 			realRoot = (DefaultMutableTreeNode) treeNode.getChildAt(0);
 		}
@@ -115,6 +115,9 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

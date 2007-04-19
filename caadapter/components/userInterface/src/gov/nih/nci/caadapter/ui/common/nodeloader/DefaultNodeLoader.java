@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DefaultNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DefaultNodeLoader.java,v 1.2 2007-04-19 14:02:55 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,24 +42,11 @@ import javax.swing.tree.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:13 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 14:02:55 $
  */
 public class DefaultNodeLoader implements NodeLoader
 {
-//	/**
-//	 * To descendant of this class:
-//	 * This is an overridable function to allow descendant class to provide different tree node implementations for the "root node".
-//	 * @param userObject
-//	 * @return a tree node that wraps the user object.
-//	 */
-//	protected DefaultMutableTreeNode constructRootTreeNode(Object userObject, boolean allowsChildren)
-//	{
-//		/**
-//		 * The default implementation is to return the same value as the constructTreeNode();
-//		 */
-//		return constructTreeNode(userObject, allowsChildren);
-//	}
 
 	/**
 	 * To descendant of this class:
@@ -145,6 +132,9 @@ public class DefaultNodeLoader implements NodeLoader
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

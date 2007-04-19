@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMMapSourceNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMMapSourceNodeLoader.java,v 1.2 2007-04-19 14:04:24 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,8 +36,7 @@ package gov.nih.nci.caadapter.ui.common.nodeloader;
 
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
-
-import gov.nih.nci.caadapter.ui.common.tree.PseudoRootTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -49,8 +48,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:13 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 14:04:24 $
  */
 public class SCMMapSourceNodeLoader extends SCMBasicNodeLoader
 {
@@ -93,7 +92,8 @@ public class SCMMapSourceNodeLoader extends SCMBasicNodeLoader
 		TreeNode realRoot = super.loadData(o);
 		if (o instanceof CSVMeta)
 		{//construct the pseudo root.
-			PseudoRootTreeNode node = new PseudoRootTreeNode("Source Tree", true);
+//			PseudoRootTreeNode node = new PseudoRootTreeNode("Source Tree", true);
+			DefaultMappableTreeNode node = new DefaultMappableTreeNode("Source Tree", true);
 			node.add((MutableTreeNode) realRoot);
 			resultRoot = node;
 		}
@@ -119,7 +119,7 @@ public class SCMMapSourceNodeLoader extends SCMBasicNodeLoader
 	public CSVMeta unLoadData(DefaultMutableTreeNode treeNode, boolean resetUUID) throws MetaDataloadException
 	{
 		DefaultMutableTreeNode realRoot = treeNode;
-		if (treeNode instanceof PseudoRootTreeNode)
+		if (treeNode instanceof DefaultMappableTreeNode)
 		{
 			realRoot = (DefaultMutableTreeNode) treeNode.getChildAt(0);
 		}
@@ -128,6 +128,9 @@ public class SCMMapSourceNodeLoader extends SCMBasicNodeLoader
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

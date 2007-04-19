@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/GenerateReportAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/GenerateReportAction.java,v 1.2 2007-04-19 14:00:32 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,8 +52,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 14:00:32 $
  */
 public class GenerateReportAction extends AbstractContextAction
 {
@@ -72,7 +72,7 @@ public class GenerateReportAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/GenerateReportAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/GenerateReportAction.java,v 1.2 2007-04-19 14:00:32 wangeug Exp $";
 
 	protected CSVPanel csvPanel;
 
@@ -130,17 +130,10 @@ public class GenerateReportAction extends AbstractContextAction
 			//			Log.logInfo(this, "GenerateReportAction will do something now.");
 			CSVMeta csvMeta = csvPanel.getCSVMeta(false);
 			CSVMetaReportGenerator generator = new CSVMetaReportGenerator();
-//			try
-//			{
 			generator.generate(file, csvMeta);
 			JOptionPane.showMessageDialog(csvPanel.getParent(), "Report has been successfully generated.", "Action Complete", JOptionPane.INFORMATION_MESSAGE);
 			setSuccessfullyPerformed(true);
-//			}
-//			catch (MetaException e1)
-//			{
-//				Log.logException(this, e1);
-//				reportThrowableToUI(e1, csvPanel);
-//			}
+
 		}
 		return isSuccessfullyPerformed();
 	}
@@ -157,6 +150,9 @@ public class GenerateReportAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
@@ -176,7 +172,7 @@ public class GenerateReportAction extends AbstractContextAction
  * HISTORY      : Updated License
  * HISTORY      :
  * HISTORY      : Revision 1.7  2005/11/02 20:34:10  chene
- * HISTORY      : Rename the MapDriver to TransformationService
+ * HISTORY      : Rename the MapDriver to TransformationServiceCsvToHL7V3
  * HISTORY      :
  * HISTORY      : Revision 1.6  2005/10/25 22:00:42  jiangsc
  * HISTORY      : Re-arranged system output strings within UI packages.

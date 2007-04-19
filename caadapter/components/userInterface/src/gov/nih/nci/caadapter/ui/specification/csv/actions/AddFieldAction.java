@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddFieldAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddFieldAction.java,v 1.2 2007-04-19 14:01:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 14:01:08 $
  */
 public class AddFieldAction extends AbstractCsvContextCRUDAction
 {
@@ -73,7 +73,7 @@ public class AddFieldAction extends AbstractCsvContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddFieldAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddFieldAction.java,v 1.2 2007-04-19 14:01:08 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Add Field...";
 	private static final Character COMMAND_MNEMONIC = new Character('F');
@@ -198,20 +198,6 @@ public class AddFieldAction extends AbstractCsvContextCRUDAction
 				//per meeting discussion on defect #164, will only validate the name not the whole CSV tree.
 				validatorResults.addValidatorResults(CSVMetaValidator.validateFieldMetaName(fieldMeta));
 
-//				//add only for validation purpose
-//				parentSegmentMeta.addField(fieldMeta);
-//
-//				CSVMetaValidator validator = new CSVMetaValidator(rootMeta);
-//				//Check if 2 or more fields with same name in same segment in SCM (case-insensitive).
-//				validatorResults.addValidatorResults(validator.ScmRule2());
-//				//Check if field with default field name in SCM.
-//				validatorResults.addValidatorResults(validator.ScmRule7());
-//				//Field name valiation
-//				validatorResults.addValidatorResults(validator.ScmRule8());
-//
-//				//clean up after validation purpose
-//				parentSegmentMeta.removeField(fieldMeta);
-
 				if (validatorResults.getAllMessages().size() == 0)
 				{
 					break;
@@ -225,6 +211,9 @@ public class AddFieldAction extends AbstractCsvContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

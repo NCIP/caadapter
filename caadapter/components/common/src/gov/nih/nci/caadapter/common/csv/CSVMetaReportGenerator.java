@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaReportGenerator.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaReportGenerator.java,v 1.2 2007-04-19 13:55:53 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,35 +55,25 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-04-19 13:55:53 $
  * @since caAdapter v1.2
  */
 public class CSVMetaReportGenerator {
     private static final String LOGID = "$RCSfile: CSVMetaReportGenerator.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaReportGenerator.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaReportGenerator.java,v 1.2 2007-04-19 13:55:53 wangeug Exp $";
 
-    private HSSFWorkbook workbook = null;
-    private HSSFSheet worksheet = null;
-    int maxfields = 0;
-    int rowcount = 1;
-    int indent = 0;
-
-    public CSVMetaReportGenerator() {
-    }
+    private int maxfields = 0;
 
     public void generate(File file, CSVMeta meta) throws MetaException
 	{
-		generate(file.getAbsolutePath(), meta);
-	}
-
-	public void generate(String filename, CSVMeta meta){
-        workbook = new HSSFWorkbook();
-        worksheet = workbook.createSheet("CSV Specification Report");
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		HSSFSheet worksheet = workbook.createSheet("CSV Specification Report");
         try {
-            FileOutputStream fileOut = new FileOutputStream(filename);
-            processSegment(meta.getRootSegment());
-            printHeading();
+            FileOutputStream fileOut = new FileOutputStream(file);//filename);
+            //start from the first row and the first field
+            processSegment(meta.getRootSegment(),worksheet, 1, 0);
+            printHeading(worksheet);
             workbook.write(fileOut);
             fileOut.close();
         }catch (IOException e) {
@@ -91,7 +81,7 @@ public class CSVMetaReportGenerator {
         }
     }
 
-    private void printHeading(){
+    private void printHeading( HSSFSheet worksheet){
         HSSFRow row = worksheet.createRow(0);
         HSSFCell segmentcell = row.createCell((short)0);
         segmentcell.setCellValue("Segment Name");
@@ -101,16 +91,14 @@ public class CSVMetaReportGenerator {
         }
     }
 
-    private void processSegment(CSVSegmentMeta segment){
-        HSSFRow row = worksheet.createRow(rowcount++);
+    private void processSegment(CSVSegmentMeta segment, HSSFSheet worksheet, int currentRow, int indent){
+        HSSFRow row = worksheet.createRow(currentRow++);
         HSSFCell segmentcell = row.createCell((short)0);
-        segmentcell.setCellValue(getIndent() + segment.getName());
-        indent++;
+        segmentcell.setCellValue(getIndent(indent) + segment.getName());
 
         List<CSVFieldMeta> fields = segment.getFields();
-        if(fields.size()>maxfields){
+        if(fields.size()>maxfields)
             maxfields = fields.size();
-        }
 
         for (int i = 0; i < fields.size(); i++) {
             CSVFieldMeta csvFieldMeta =  fields.get(i);
@@ -121,14 +109,13 @@ public class CSVMetaReportGenerator {
         List<CSVSegmentMeta> childSegments = segment.getChildSegments();
         for (int i = 0; i < childSegments.size(); i++) {
             CSVSegmentMeta csvSegmentMeta =  childSegments.get(i);
-            processSegment(csvSegmentMeta);
+            processSegment(csvSegmentMeta, worksheet, currentRow++, indent+1);
         }
-        indent--;
     }
 
-    private String getIndent(){
+    private String getIndent(int ind){
         String s = "";
-        for(int i = 0;i<indent;i++){
+        for(int i = 0;i<ind;i++){
             s+="    ";
         }
         return s;

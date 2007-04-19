@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVPanel.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVPanel.java,v 1.2 2007-04-19 13:59:51 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -73,8 +73,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 13:59:51 $
  */
 public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implements ContextManagerClient
 {
@@ -302,7 +302,6 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
             propertiesPaneVisible = newValue;
             if (propertiesPaneVisible)
             {
-//				CSVMetadataTreeNodePropertiesPane propPane = getPropertiesPane();
                 rightSplitPane.setBottomComponent(getPropertiesPane());
             }
             else
@@ -312,15 +311,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
         }
     }
 
-//    public DefaultMutableTreeNode getDefaultTreeNode(Object userObject, boolean allowsChildren)
-//    {
-//        return nodeLoader.constructTreeNode(userObject, allowsChildren);
-//    }
-//
-//    SCMTreeNodeLoader getNodeLoader()
-//    {
-//        return nodeLoader;
-//    }
+
 
     CSVTreeChangeAdapter getDefaultNavigationAdapter()
     {
@@ -481,6 +472,9 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.37  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

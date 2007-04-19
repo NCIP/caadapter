@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelWizard.java,v 1.2 2007-04-19 14:01:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,40 +57,20 @@ import java.io.FileReader;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-04-19 14:01:48 $
  */
 public class NewCSVPanelWizard extends JDialog implements ActionListener
 {
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
 
-	//north
-//	private JPanel captionNorthPanel;
-//	private JTextField captionField;
-
-	//south
-	private JPanel southPanel;
-	private JPanel buttonPanel;
-	private JButton okButton;
-	private JButton cancelButton;
-//	private JPanel statusBarPanel;
-//	private JTextField statusField;
-
 	//centerWindow
 	private NewCSVPanelFrontPage frontPage;
-
 	private boolean okButtonClicked = false;
-
 	private CSVMeta csvMeta;
 
 	public NewCSVPanelWizard(Frame owner, String title, boolean modal) throws HeadlessException
-	{
-		super(owner, title, modal);
-		initialize();
-	}
-
-	public NewCSVPanelWizard(Dialog owner, String title, boolean modal) throws HeadlessException
 	{
 		super(owner, title, modal);
 		initialize();
@@ -101,20 +81,15 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 		Container contentPane = this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
-//		captionNorthPanel = new JPanel(new BorderLayout());
-//		captionField = new JTextField();
-//		captionNorthPanel.add(captionField, BorderLayout.CENTER);
-//		contentPane.add(captionNorthPanel, BorderLayout.NORTH);
-
 		frontPage = new NewCSVPanelFrontPage();
 		contentPane.add(frontPage, BorderLayout.CENTER);
 
-		southPanel = new JPanel(new BorderLayout());
-		buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
-		okButton = new JButton(OK_COMMAND);
+		JPanel southPanel = new JPanel(new BorderLayout());
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
+		JButton okButton = new JButton(OK_COMMAND);
 		okButton.setMnemonic('O');
 		okButton.addActionListener(this);
-		cancelButton = new JButton(CANCEL_COMMAND);
+		JButton cancelButton = new JButton(CANCEL_COMMAND);
 		cancelButton.setMnemonic('C');
 		cancelButton.addActionListener(this);
 		JPanel tempPanel = new JPanel(new GridLayout(1, 2));
@@ -123,30 +98,16 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 		buttonPanel.add(tempPanel);//, BorderLayout.EAST);
 		southPanel.add(buttonPanel, BorderLayout.NORTH);
 
-//		statusBarPanel = new JPanel(new BorderLayout());
-//		statusField = new JTextField();
-//		statusField.setEditable(false);
-//		statusField.setEnabled(false);
-//		statusBarPanel.add(statusField, BorderLayout.CENTER);
-//		southPanel.add(statusBarPanel, BorderLayout.SOUTH);
 		contentPane.add(southPanel, BorderLayout.SOUTH);
 		pack();
 	}
 
-//	public void setStatusText(String text)
-//	{
-//		statusField.setText(text);
-//	}
 
 	public boolean isOkButtonClicked()
 	{
 		return okButtonClicked;
 	}
 
-	public File getUserSelectionFile()
-	{
-		return frontPage.getUserSelectionFile();
-	}
 
 	/**
 	 * Invoked when an action occurs.
@@ -259,6 +220,9 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
