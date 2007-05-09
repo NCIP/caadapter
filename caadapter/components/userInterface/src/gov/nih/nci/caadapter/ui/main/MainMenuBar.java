@@ -66,6 +66,7 @@ import gov.nih.nci.caadapter.ui.mapping.mms.actions.OpenObjectToDbMapAction;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.Database2SDTMAction;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.NewSDTMStructureAction;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.OpenSDTMMapAction;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.OpenQueryBuilderAction;
 import gov.nih.nci.caadapter.ui.specification.csv.actions.NewCsvSpecificationAction;
 import gov.nih.nci.caadapter.ui.specification.csv.actions.OpenCsvSpecificationAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.NewHSMAction;
@@ -84,8 +85,8 @@ import javax.swing.JMenuItem;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.1 $ date $Date:
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v1.2 revision $Revision: 1.2 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -102,7 +103,7 @@ public class MainMenuBar extends AbstractMenuBar
 	//JMenu newMenu = null;
 
 //	JMenuItem newMapFileItem = null;
-	
+
 //	JMenuItem newCsvToV3MapFileItem = null;
 
 //	JMenuItem newCSVSpecificationItem = null;
@@ -182,7 +183,7 @@ public class MainMenuBar extends AbstractMenuBar
 	// HelpAction2 helpTopicAction2 = null;
 	// HelpContentManageAction helpManageAction = null; // Kisung add
 	//NewMapFileAction newMapAction = null;
-	
+
 //	NewMapFileAction newMapAction1 = null;
 
 //	OpenMapFileAction openMapAction = null;
@@ -221,7 +222,7 @@ public class MainMenuBar extends AbstractMenuBar
 	private Map <String, AbstractContextAction>actionMap;
 	private Map <String, JMenuItem>menuItemMap;
 	private Map <String, JMenu>menuMap;
-	
+
 	public MainMenuBar(MainFrame mf)  //ContextManager contextManager) {
 	{	//this.contextManager = contextManager;
 		this.mainFrame = mf;//contextManager.getMainFrame();
@@ -234,7 +235,9 @@ public class MainMenuBar extends AbstractMenuBar
 		menuItemMap=Collections.synchronizedMap(new HashMap<String, JMenuItem>());;
 		menuMap=Collections.synchronizedMap(new HashMap<String, JMenu>());;
 		add(constructFileMenu());
+		 add(constructOpenQueryBuilderMenu());
 		add(constructReportMenu());
+
 		add(constructHelpMenu());
 //		constructActionMap();
 	}
@@ -265,44 +268,44 @@ public class MainMenuBar extends AbstractMenuBar
 	{
 		return (JMenuItem) menuItemMap.get(actionConstant);
 	}
-	
+
 	public  JMenu getDefinedMenu(String actionConstant)
 	{
 		return (JMenu) menuMap.get(actionConstant);
 	}
-	
+
 	private JMenu constructFileMenu()
 	{
 		DefaultSaveAction defaultSaveAction = new DefaultSaveAction(mainFrame);
 		JMenuItem saveMenuItem = new JMenuItem(defaultSaveAction);
 		actionMap.put(ActionConstants.SAVE, defaultSaveAction);
 		menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
-		
+
 		DefaultSaveAsAction defaultSaveAsAction = new DefaultSaveAsAction(mainFrame);
 		JMenuItem saveAsMenuItem = new JMenuItem(defaultSaveAsAction);
 		actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
 		menuItemMap.put(ActionConstants.SAVE_AS, saveAsMenuItem);
-		
+
 		DefaultAnotateAction defaultAnotateAction = new DefaultAnotateAction(mainFrame);
 		JMenuItem anotateMenuItem = new JMenuItem(defaultAnotateAction);
 		actionMap.put(ActionConstants.ANOTATE, defaultAnotateAction);
 		menuItemMap.put(ActionConstants.ANOTATE, anotateMenuItem);
-		
+
 		DefaultValidateAction defaultValidateAction = new DefaultValidateAction(mainFrame);
 		JMenuItem validateMenuItem = new JMenuItem(defaultValidateAction);
 		actionMap.put(ActionConstants.VALIDATE, defaultValidateAction);
 		menuItemMap.put(ActionConstants.VALIDATE, validateMenuItem);
-		
+
 		DefaultCloseAction defaultCloseAction = new DefaultCloseAction(mainFrame);
 		JMenuItem closeMenuItem = new JMenuItem(defaultCloseAction);
 		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
 		menuItemMap.put(ActionConstants.CLOSE, closeMenuItem);
-		
+
 		CloseAllAction closeAllAction = new CloseAllAction(mainFrame);
 		JMenuItem closeAllMenuItem = new JMenuItem(closeAllAction);
 		actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
 		menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
-		
+
 		ExitAction exitAction = new ExitAction(mainFrame);
 		JMenuItem exitMenuItem = new JMenuItem(exitAction);
 		actionMap.put(ActionConstants.EXIT, exitAction);
@@ -354,7 +357,7 @@ public class MainMenuBar extends AbstractMenuBar
 
 		JMenu helpMenu = new JMenu(MenuConstants.HELP_MENU_NAME);
 		helpMenu.setMnemonic('H');
-		JMenuItem helpTopicItem=new JMenuItem(helpTopicAction); 
+		JMenuItem helpTopicItem=new JMenuItem(helpTopicAction);
 		helpMenu.add(helpTopicItem); // eric addied
 		JMenuItem helpAboutItem=new JMenuItem(aboutAction);
 		helpMenu.add(helpAboutItem);
@@ -362,7 +365,7 @@ public class MainMenuBar extends AbstractMenuBar
 		menuItemMap.put(ActionConstants.HELP_TOPIC, helpTopicItem);
 		actionMap.put(ActionConstants.ABOUT, aboutAction);
 		menuItemMap.put(ActionConstants.ABOUT, helpAboutItem);
-		
+
 		menuMap.put(MenuConstants.HELP_MENU_NAME, helpMenu);
 		return helpMenu;
 	}
@@ -380,7 +383,7 @@ public class MainMenuBar extends AbstractMenuBar
 		{
 			//load each activated component
 			if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
-			{		
+			{
 				newGroup.add(constructNewCSVTOV3Menu());
 			}
 			if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
@@ -408,6 +411,14 @@ public class MainMenuBar extends AbstractMenuBar
 
 		return newGroup;
 	}
+	private JMenu constructOpenQueryBuilderMenu(){
+	        OpenQueryBuilderAction _qbAction = new   OpenQueryBuilderAction(mainFrame);
+	        JMenu _qb = new JMenu("Querybuilder");
+	        JMenuItem _menuItem = new JMenuItem(_qbAction);
+	        _qb.add(_menuItem);
+	        //_menuItem.setEnabled(fa);
+	        return _qb;
+    }
 	private JMenu constructNewCSVTOV3Menu() {
 		JMenu newGroup = new JMenu("CSV To HL7 v3 Mapping and Transformation Service");
 		NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
@@ -429,7 +440,7 @@ public class MainMenuBar extends AbstractMenuBar
 		JMenuItem newHL7V3MessageItem = new JMenuItem(newHL7V3MessageAction);
 		actionMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageAction);
 		menuItemMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageItem);
-		
+
 		newGroup.setMnemonic('N');
 		newGroup.add(newCSVSpecificationItem);
 		newGroup.add(newHSMFileItem);
@@ -471,31 +482,31 @@ public class MainMenuBar extends AbstractMenuBar
 		JMenuItem openMapFileItem = new JMenuItem(openMapAction);
 		actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
 		menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
-		
+
 		OpenObjectToDbMapAction openO2DBMapAction = new OpenObjectToDbMapAction(mainFrame);
 		JMenuItem openO2DBMapFileItem = new JMenuItem(openO2DBMapAction);
 		actionMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapAction);
 		menuItemMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapFileItem);
-		
+
 		OpenSDTMMapAction openSDTMMapAction =new OpenSDTMMapAction(mainFrame);
 		JMenuItem openSDTMMapFile = new JMenuItem( openSDTMMapAction);
-		
+
 		OpenCsvSpecificationAction openCSVSpecificationAction = new OpenCsvSpecificationAction(mainFrame);
 		JMenuItem openCSVSpecificationItem = new JMenuItem(openCSVSpecificationAction);
 		actionMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationAction);
 		menuItemMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationItem);
-	
+
 		OpenHSMAction openHSMAction = new OpenHSMAction(mainFrame);
 		JMenuItem openHSMFileItem = new JMenuItem(openHSMAction);
 		actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
 		menuItemMap.put(ActionConstants.OPEN_HSM_FILE, openHSMFileItem);
 
-		
+
 		OpenHL7V3MessageAction openHL7V3MessageAction = new OpenHL7V3MessageAction(mainFrame);
 		JMenuItem openHL7V3MessageItem = new JMenuItem(openHL7V3MessageAction);
 		actionMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageAction);
 		menuItemMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageItem);
-		
+
 		// link them together
 		JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
 		openMenu.setMnemonic('O');
@@ -510,7 +521,7 @@ public class MainMenuBar extends AbstractMenuBar
 		{
 			//load each activated component
 			if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
-			{		
+			{
 				openMenu.add(openCSVSpecificationItem);
 				openMenu.add(openHSMFileItem);
 				openMenu.add(openMapFileItem);
@@ -530,7 +541,7 @@ public class MainMenuBar extends AbstractMenuBar
 				openMenu.add(openO2DBMapFileItem);
 			}
 		}
-			
+
 		return openMenu;
 	}
 
@@ -556,7 +567,7 @@ public class MainMenuBar extends AbstractMenuBar
 		JMenuItem closeMenuItem=menuItemMap.get(ActionConstants.CLOSE);
 		JMenuItem closeAllMenuItem=menuItemMap.get(ActionConstants.CLOSE_ALL);
 		JMenuItem anotateMenuItem =menuItemMap.get(ActionConstants.ANOTATE);
-		
+
 //		saveMenuItem.setAction(null);
 //		saveMenuItem.setAction(defaultSaveAction);
 //		actionMap.put(ActionConstants.SAVE, defaultSaveAction);
@@ -651,7 +662,7 @@ public class MainMenuBar extends AbstractMenuBar
 //		menuItemMap.put(ActionConstants.ABOUT, closeMenuItem);
 //		actionMap.put(ActionConstants.HELP_TOPIC, helpTopicAction);
 //		menuItemMap.put(ActionConstants.HELP_TOPIC, anotateMenuItem);
-//		
+//
 //		actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
 //		menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, this.newO2DBMapFileItem);
 //		actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
@@ -679,6 +690,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2007/04/03 16:17:36  wangeug
+ * HISTORY : initial loading
+ * HISTORY :
  * HISTORY : Revision 1.50  2006/12/06 20:24:08  wuye
  * HISTORY : Change the command name to align the menu items
  * HISTORY :
