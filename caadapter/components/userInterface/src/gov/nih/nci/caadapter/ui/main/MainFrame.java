@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.1 2007-04-03 16:17:36 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.2 2007-05-09 21:06:31 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,14 +54,16 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
-/**
+import nickyb.sqleonardo.environment.Preferences;
+
+ /**
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:36 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-05-09 21:06:31 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -303,7 +305,8 @@ public class MainFrame extends AbstractMainFrame
 
     public static void main(String[] args)
     {
-	    try
+        Preferences.loadDefaults();
+        try
         {
 	        try
             {
@@ -483,6 +486,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:36  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.72  2007/01/08 21:20:49  umkis
  * HISTORY      : some lines set up indentation
  * HISTORY      :
