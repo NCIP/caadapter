@@ -29,22 +29,17 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
+
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -90,7 +85,9 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 
 	JPanel fileZone1 = new JPanel(new GridLayout(7, 1, 2, 2));
 
-	JPanel csvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel fileZone2 = new JPanel(new GridLayout(4,3));
+
+    JPanel csvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 	// New fields begin here
 	JButton directoryLocation, hl7MessageFilelocation, hl7csvlocation, defineXMLLocation;
@@ -124,9 +121,11 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 
 	public NewSDTMWizard(AbstractMainFrame _callingFrame) {
 		// super("Create SDTM Structure");
-		callingFrame = _callingFrame;
-		Color logColor = new Color(220, 220, 220);
-		setBounds(355, 355, 670, 275);
+
+        callingFrame = _callingFrame;
+
+        Color logColor = new Color(220, 220, 220);
+		setBounds(355, 355, 670, 180);
 		setResizable(false);
 		sourceField1.setEnabled(false);
 		reportField1.setEnabled(false);
@@ -145,16 +144,21 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 		HL7V24Message = new JFileChooser(_defaultLoc);
 		directoryLocation = new JButton("Browse..");
 		directoryLocation.addActionListener(this);
-		dirLocTextField = new JTextField("");
+        
+        dirLocTextField = new JTextField("");
 		dirLocTextField.setColumns(30);
-		JLabel dirLabel = new JLabel("Data File (csv)                                           ");
-		JLabel hl7fileLabel = new JLabel("Choose the Map File                               ");
-		JLabel defineXMLfileLabel = new JLabel("Choose the SCS File                              ");
-		JLabel hl7csvfileLabel = new JLabel("Path to save the SDTM TXT file             ");
-		dirBrowsePanel.add(dirLabel);
-		dirBrowsePanel.add(dirLocTextField);
-		dirBrowsePanel.add(directoryLocation);
-		hl7MessageFilelocation = new JButton("Browse..");
+		JLabel dirLabel = new JLabel("Data File (csv)");
+		JLabel hl7fileLabel = new JLabel("Choose the Map File");
+		JLabel defineXMLfileLabel = new JLabel("Choose the SCS File");
+		JLabel hl7csvfileLabel = new JLabel("Path to save the SDTM TXT file");
+
+        fileZone2.add(dirLabel);
+		fileZone2.add(dirLocTextField);
+        directoryLocation.setSize(2, 10);
+        fileZone2.add(directoryLocation);
+
+
+        hl7MessageFilelocation = new JButton("Browse..");
 		hl7MessageFilelocation.addActionListener(this);
 		hl7MesLocTextField = new JTextField("");
 		defineXMLLocation = new JButton("Browse..");
@@ -162,25 +166,29 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 		defineXMLTextField = new JTextField("");
 		defineXMLTextField.setColumns(30);
 		defineXMLPanel.setBackground(logColor);
-		defineXMLPanel.add(defineXMLfileLabel);
-		defineXMLPanel.add(defineXMLTextField);
-		defineXMLPanel.add(defineXMLLocation);
+
+        fileZone2.add(defineXMLfileLabel);
+		fileZone2.add(defineXMLTextField);
+		fileZone2.add(defineXMLLocation);
 		hl7csvlocation = new JButton("Browse..");
 		hl7csvlocation.addActionListener(this);
 		hl7csvTextField = new JTextField("");
 		hl7MesLocTextField.setColumns(30);
-		hl7MessagePanel.add(hl7fileLabel);
-		hl7MessagePanel.add(hl7MesLocTextField);
-		hl7MessagePanel.add(hl7MessageFilelocation);
+		fileZone2.add(hl7fileLabel);
+		fileZone2.add(hl7MesLocTextField);
+		fileZone2.add(hl7MessageFilelocation);
 		saveCSVLocation = new JFileChooser(_defaultLoc);
 		choosedefineXMLLocation = new JFileChooser(_defaultLoc);
 		hl7csvTextField.setColumns(30);
-		csvPanel.add(hl7csvfileLabel);
-		csvPanel.add(hl7csvTextField);
-		csvPanel.add(hl7csvlocation);
+		fileZone2.add(hl7csvfileLabel);
+		fileZone2.add(hl7csvTextField);
+		fileZone2.add(hl7csvlocation);
 		emptyPanel.setBackground(logColor);
-		_bPanel.setBackground(logColor);
-		emptyPanel.add(new JLabel("                                                     "));
+		//_bPanel.setBackground(logColor);
+        EtchedBorder lineBorder = (EtchedBorder) BorderFactory.createEtchedBorder();
+                //createLineBorder(Color.black);
+        _bPanel.setBorder(lineBorder);
+        emptyPanel.add(new JLabel("                                                     "));
 		_bPanel.add(process);
 		process.addActionListener(this);
 		_bPanel.add(new JLabel("    "));
@@ -190,6 +198,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 		cancel.addActionListener(this);
 		/**
 		 * new code end
+         *
 		 */
 		fileZone1.add(dirBrowsePanel);
 		fileZone1.add(hl7MessagePanel);
@@ -199,7 +208,8 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 		fileZone1.add(emptyPanel);
 		fileZone1.add(_bPanel);
 		fileZone1.setBackground(logColor);
-		fileZone1.setBorder(new TitledBorder("File Settings"));
+        //fileZone2.add(new JLabel(""));fileZone2.add(process);fileZone2.add(cancel);
+        fileZone2.setBorder(new TitledBorder("File Settings"));
 		// fileZone1.setBorder(new TitledBorder("Command"));
 		curDir = System.getProperty("user.dir") + File.separator;
 		javax.swing.JScrollPane s = new javax.swing.JScrollPane();// javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
@@ -210,10 +220,11 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 		log.setEnabled(false);
 		log.setBorder(new TitledBorder("Log Information"));
 		log.setBackground(logColor);
-		// center.add("Center", scrollPane);
-		main.add("North", fileZone1);
-		// main.add("Center", log);
-		this.getContentPane().add("Center", main);
+		//center.add("Center", _bPanel);
+		main.add("North", fileZone2);
+        main.add("South",_bPanel);
+
+        this.getContentPane().add("Center", main);
 		setVisible(true);
 	}
 
