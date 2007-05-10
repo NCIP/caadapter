@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.2 2007-05-10 14:27:50 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,8 +49,8 @@ import javax.swing.KeyStroke;
  * it.
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $ date $Date:
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
  *          2006/10/03 13:50:47 $
  */
 public class Database2SDTMAction extends AbstractContextAction {
@@ -108,7 +108,7 @@ public class Database2SDTMAction extends AbstractContextAction {
 	 *         false.
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception {
-		Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel("Test");
+		Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame,"Test");
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
@@ -125,6 +125,9 @@ public class Database2SDTMAction extends AbstractContextAction {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY : initial loading
+ * HISTORY :
  * HISTORY : Revision 1.5  2006/11/28 15:13:43  jayannah
  * HISTORY : Changed the order and names of the menuitems
  * HISTORY :
