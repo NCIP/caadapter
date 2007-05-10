@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.2 2007-05-09 21:06:31 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.3 2007-05-10 15:23:04 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,7 +54,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
-import nickyb.sqleonardo.environment.Preferences;
+//import nickyb.sqleonardo.environment.Preferences;
 
  /**
  * This class is the main entry of this sdk application.
@@ -62,8 +62,8 @@ import nickyb.sqleonardo.environment.Preferences;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-05-09 21:06:31 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-05-10 15:23:04 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -120,7 +120,7 @@ public class MainFrame extends AbstractMainFrame
 	    DefaultSettings.centerWindow(this);
 	    this.setFocusable(true);
 		this.setFocusableWindowState(true);
-		helpContentViewer = new HelpContentViewer(this);
+//		helpContentViewer = new HelpContentViewer(this);
 		
 	
 		InitialSplashWindow isw = new InitialSplashWindow();
@@ -305,7 +305,7 @@ public class MainFrame extends AbstractMainFrame
 
     public static void main(String[] args)
     {
-        Preferences.loadDefaults();
+        //Preferences.loadDefaults();
         try
         {
 	        try
@@ -486,6 +486,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/05/09 21:06:31  jayannah
+ * HISTORY      : *** empty log message ***
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:36  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
