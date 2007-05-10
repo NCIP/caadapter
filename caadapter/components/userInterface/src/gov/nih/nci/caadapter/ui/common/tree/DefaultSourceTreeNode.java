@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultSourceTreeNode.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultSourceTreeNode.java,v 1.2 2007-05-10 14:24:03 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,14 +41,19 @@ package gov.nih.nci.caadapter.ui.common.tree;
  * One of primary reasons to have a distinct class is for differentiation purpose for future use of instanceof, for example.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-05-10 14:24:03 $
  */
 public class DefaultSourceTreeNode extends DefaultMappableTreeNode
 {
+   
 
+	public DefaultSourceTreeNode(Object userObject)
+	{
+		super(userObject);
+	}
 	public DefaultSourceTreeNode(Object userObject, boolean allowsChildren)
 	{
 		super(userObject, allowsChildren);
@@ -56,6 +61,9 @@ public class DefaultSourceTreeNode extends DefaultMappableTreeNode
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
