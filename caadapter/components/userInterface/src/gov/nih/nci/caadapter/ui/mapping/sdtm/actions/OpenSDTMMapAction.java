@@ -26,7 +26,7 @@ import java.io.File;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.2 $ date $Date: 2007-05-10 14:29:11 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date: 2007-05-10 15:40:52 $
  */
 public class OpenSDTMMapAction extends DefaultContextOpenAction
 {
@@ -138,7 +138,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 					/*
 					 * TODO verify whether needs to call the validator
 					 */
-					// mainFrame.getMainContextManager().getContextFileManager().registerFileUsageListener(mappingPanel);
+					// mainFrame.getMainContextMana/ger().getContextFileManager().registerFileUsageListener(mappingPanel);
 				} catch (Throwable e1) {
 					// reportThrowableToUI(e1, mainFrame);
 					// log the exception, but not report
