@@ -456,4 +456,42 @@
         <parameters>
         </parameters>
     </message>
+    
+    <!-- validate transformation service: from HL7V3 to CSV -->
+    <message id="HL7TOCSV0" level="INFO">
+		<template>HL7V3ToCSV Transformation service ... {0}.</template>
+		<parameters>
+			<parameter number="0" value="message"/>
+		</parameters>
+	</message>
+    <message id="HL7TOCSV1" level="INFO">
+			<template>CSV segment has not been found for field: {0} ... value: {1}</template>
+			<parameters>
+				<parameter number="0" value="fieldName"/>
+				<parameter number="1" value="fieldValue"/>
+			</parameters>
+	</message>
+	<message id="HL7TOCSV2" level="ERROR">
+		<template>Error message {0} datatype {1} value: {2}</template>
+		<parameters>
+			<parameter number="0" value="parameter.one"/>
+			<parameter number="1" value="parameter.two"/>
+			<parameter number="2" value="parameter.three"/>
+		</parameters>
+	</message>
+
+	<message id="HL7TOCSV3" level="WARNING">
+		<template>Warning ... {0}</template>
+		<parameters>
+			<parameter number="0" value="Warning Name"/>
+		</parameters>
+	</message>
+
+	<message id="HL7TOCSV4" level="FATAL">
+		<template>Fatal message type:{0} ... value: {1}</template>
+		<parameters>
+			<parameter number="0" value="type"/>
+			<parameter number="1" value="Error Message"/>
+		</parameters>
+	</message>
 </messages>

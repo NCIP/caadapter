@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/Stats.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/Stats.java,v 1.2 2007-05-15 20:05:36 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,24 +39,24 @@ package gov.nih.nci.caadapter.common.util;
  *
  * @author OWNER: Eric Chen  Date: Dec 2, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-05-15 20:05:36 $
  * @since caAdapter v1.2
  */
 public class Stats{
-    public String mapfile = null;
-    public String csvfile = null;
+    public String mapFileName = null;
+    public String sourceFileName = null;
 
-    public long mapfilesize = 0;
-    public long scsfilesize = 0;
-    public long h3sfilesize = 0;
-    public long csvfilesize = 0;
+    public long mapFilesize = 0;
+    public long scsFilesize = 0;
+    public long h3sFilesize = 0;
+    public long sourceFilesize = 0;
 
     public long begintime = 0;
     public long endtime = 0;
 
     public long mapParseTime = 0;
-    public long csvParseTime = 0;
+    public long sourceParseTime = 0;
     public long mapProcessTime = 0;
     public long rimGenTime = 0;
     public long buildTime = 0;
@@ -69,6 +69,9 @@ public class Stats{
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
