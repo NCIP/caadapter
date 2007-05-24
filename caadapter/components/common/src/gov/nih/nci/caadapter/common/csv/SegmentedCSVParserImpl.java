@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.2 2007-05-24 15:10:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -63,14 +63,14 @@ import java.util.Stack;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-05-24 15:10:54 $
  * @since caAdapter v1.2
  */
 
 public class SegmentedCSVParserImpl {
     private static final String LOGID = "$RCSfile: SegmentedCSVParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.2 2007-05-24 15:10:54 wangeug Exp $";
 
     public CSVDataResult parse(File dataFile, File metaFile) {
         // parse the metafile
@@ -293,7 +293,7 @@ public class SegmentedCSVParserImpl {
         if (dataFields > metaFields) {
             Message msg = MessageResources.getMessage("CSV3", new Object[]{meta.getName(), dataFields, metaFields});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-        }
+        }        
         //setup the fields.
         ArrayList<CSVField> fields = new ArrayList<CSVField>();
         List<CSVFieldMeta> fieldMeta = meta.getFields();
