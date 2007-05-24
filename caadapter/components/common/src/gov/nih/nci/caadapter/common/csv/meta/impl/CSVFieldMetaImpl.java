@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.2 2007-05-24 15:03:10 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,13 +49,13 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-05-24 15:03:10 $
  */
 
 public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 	private static final String LOGID = "$RCSfile: CSVFieldMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.2 2007-05-24 15:03:10 wangeug Exp $";
 
 	int column;
 //	String name; 
@@ -147,5 +147,21 @@ public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
+	public String getXmlPath()
+	{
+		CSVSegmentMeta parentMeta=this.getSegment();
+//		build xmpPath to root
+        StringBuffer sbXmlPath=new StringBuffer();
+        while (parentMeta!=null)
+        {
+        	sbXmlPath.insert(0,parentMeta.getName()+".");
+        	parentMeta=parentMeta.getParent();
+        }
+        return sbXmlPath.toString()+getName();
+	}
+    public String getUUID()
+    {
+    	return getXmlPath();
+    }
 
 }

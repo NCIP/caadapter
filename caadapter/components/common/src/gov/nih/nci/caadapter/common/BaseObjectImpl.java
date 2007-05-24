@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.2 2007-05-24 15:00:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,15 +41,15 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
  *
  * @author OWNER: Eric Chen  Date: Jun 3, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-05-24 15:00:13 $
  * @since caAdapter v1.2
  */
 
 public class BaseObjectImpl implements BaseObject
 {
 	protected String UUID;
-
+	protected String xmlPath;
 	public String getUUID()
 	{
 		if (UUID == null)
@@ -146,10 +146,22 @@ public class BaseObjectImpl implements BaseObject
 	{
 		return clone(true);
 	}
+
+	public String getXmlPath() {
+		// TODO Auto-generated method stub
+		return xmlPath;
+	}
+
+	public void setXmlPath(String newPath) {
+		xmlPath=newPath;
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:20  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
