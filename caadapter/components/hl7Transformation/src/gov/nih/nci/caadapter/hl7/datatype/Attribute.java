@@ -6,15 +6,16 @@ package gov.nih.nci.caadapter.hl7.datatype;
 
 import java.io.Serializable;
 
+
 /**
  * The class defines attributes of a HL7 Datatype.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:09:59 $
  */
 
-public class Attribute implements Serializable {
+public class Attribute extends DatatypeBaseObject implements Serializable {
 	static final long serialVersionUID = 1L;
 	
 	private String name;

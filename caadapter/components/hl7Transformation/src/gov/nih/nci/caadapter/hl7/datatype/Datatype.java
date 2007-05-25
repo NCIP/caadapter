@@ -8,10 +8,10 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-05-16 20:20:58 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-05-25 15:10:34 $
  */
 
 import java.io.Serializable;
@@ -22,7 +22,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
-public class Datatype implements Serializable {
+
+public class Datatype extends DatatypeBaseObject implements Serializable {
 	static final long serialVersionUID = 2L;
 
 	private Hashtable attributes = new Hashtable();
