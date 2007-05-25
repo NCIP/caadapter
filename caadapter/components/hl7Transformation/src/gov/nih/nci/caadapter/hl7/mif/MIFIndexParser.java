@@ -17,10 +17,10 @@ public class MIFIndexParser {
 	 * Read MIF names from MIF file directory
 	 * @throws Exception
 	 */
-	public MIFIndex readMIFIndexInfo()throws Exception 
+	public MIFIndex readMIFIndexInfo(String mifDirPath)throws Exception 
 	{
 		MIFIndex mifIndexInfos = new MIFIndex();
-		File fileDir=new File("C:/myProject/HL7 Datatype Parser/extractedMIF");
+		File fileDir=new File(mifDirPath);
 		if (fileDir.isDirectory())
 		{
 			File[] filesInDir=fileDir.listFiles();

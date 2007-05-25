@@ -4,17 +4,19 @@
  */
 package gov.nih.nci.caadapter.hl7.mif;
 
-import java.io.Serializable;
 
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+
+import java.io.Serializable;
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:05:17 $
  */
 
-public class MIFAttribute implements Serializable {
+public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>{
 	static final long serialVersionUID = 5L;
 	private String sortKey;
 	private String defaultValue;
@@ -238,5 +240,9 @@ public class MIFAttribute implements Serializable {
 	 */
 	public void setStrutural(boolean strutural) {
 		this.strutural = strutural;
+	}
+	public int compareTo(MIFAttribute attr) {
+		// TODO Auto-generated method stub	
+		return (this.getSortKey().compareToIgnoreCase(attr.getSortKey()));	
 	}
 }

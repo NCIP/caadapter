@@ -5,21 +5,25 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.TreeSet;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:05:19 $
  */
 
- public class MIFClass implements Serializable{
+ public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass> {
 		static final long serialVersionUID = 6L;
 	 private HashSet<MIFAttribute> attributes = new HashSet<MIFAttribute>();
 	 private HashSet<MIFAssociation> associations = new HashSet<MIFAssociation>();
@@ -48,6 +52,15 @@ import java.util.HashSet;
 	 	return attributes;
 	 }
 	 
+	 public TreeSet<MIFAttribute> getSortedAttributes ()
+	 {
+		TreeSet<MIFAttribute> rtnSet =new TreeSet<MIFAttribute>(); 
+		Iterator it=getAttributes().iterator();
+		while(it.hasNext())
+			rtnSet.add((MIFAttribute)(it.next()));
+		return rtnSet;
+	 }
+
 	 /**
 	  * This method will add an association object to a given MIF object.
 	  * 
@@ -63,6 +76,15 @@ import java.util.HashSet;
 	  */
 	 public HashSet<MIFAssociation> getAssociations() {
 	 	return associations;
+	 }
+	 
+	 public TreeSet<MIFAssociation> getSortedAssociations ()
+	 {
+		TreeSet<MIFAssociation> rtnSet =new TreeSet<MIFAssociation>(); 
+		Iterator it=getAssociations().iterator();
+		while(it.hasNext())
+			rtnSet.add((MIFAssociation)(it.next()));
+		return rtnSet;
 	 }
 	 /**
 	  * This method will add an choice object to a given MIF object.
@@ -81,6 +103,14 @@ import java.util.HashSet;
 	 	return choices;
 	 }
 
+	 public TreeSet<MIFClass> getSortedChoices ()
+	 {
+		TreeSet<MIFClass> rtnSet =new TreeSet<MIFClass>(); 
+		Iterator it=getChoices().iterator();
+		while(it.hasNext())
+			rtnSet.add((MIFClass)(it.next()));
+		return rtnSet;
+	 }
 	 /**
 	  * This method will set the reference name to a CMET.
 	  * 
@@ -178,7 +208,7 @@ import java.util.HashSet;
 	}
 	public void printAttribute(int level) {
 		if (this.getAttributes().size()==0) return;
-		for(MIFAttribute mifAttribute:this.getAttributes()) {
+		for(MIFAttribute mifAttribute:this.getSortedAttributes()){ //.getAttributes()) {
 			for(int i=0;i<level;i++) {
 				System.out.print("   ");
 			}
@@ -188,9 +218,12 @@ import java.util.HashSet;
 		}
 	}
 	public void printAssociation(int level, HashSet visitedMIFClass) {
-		if (this.getAssociations().size()==0) return;
-		for(MIFAssociation mifAssociation:this.getAssociations()) {
-			for(int i=0;i<level;i++) {
+//		if (this.getAssociations().size()==0) return;
+//		for(MIFAssociation mifAssociation:this.getAssociations()) {
+		if (this.getSortedAssociations().size()==0) return;
+		for(MIFAssociation mifAssociation:this.getSortedAssociations()) {
+
+		for(int i=0;i<level;i++) {
 				System.out.print("   ");
 			}
 			System.out.println("Association name:" + mifAssociation.getName());
@@ -231,5 +264,12 @@ import java.util.HashSet;
 	 */
 	public String getReferenceName() {
 		return referenceName;
+	}
+	public int compareTo(MIFClass mifClass) {
+		// TODO Auto-generated method stub
+		if (this.getSortKey()==null||mifClass.getSortKey()==null)
+			return (this.getName().compareToIgnoreCase(mifClass.getName()));
+		else
+			return (this.getSortKey().compareToIgnoreCase(mifClass.getSortKey()));
 	}
  }

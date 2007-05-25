@@ -6,6 +6,8 @@
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
+import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,34 +15,21 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Stack;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-
-import dom.ParserWrapper;
 
 /**
  * The class load a MIF document into the MIF class object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-05-16 20:20:59 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-05-25 15:08:17 $
  */
 
 public class MIFParser {
@@ -116,7 +105,8 @@ public class MIFParser {
   		} else {
   			for (int i=0; i<children.length; i++) {
               String filename = children[i];
-            if (filename.contains("POLB_MT004000.mif")) {//templateParameter
+              if (filename.indexOf(".mif")>-1){
+//            if (filename.contains("POLB_MT004000.mif")) {//templateParameter
 //                if (filename.contains("_MT")) {//templateParameter
 //            if (filename.contains("COCT_MT7100")) {//templateParameter
 //                  if (filename.contains("MCAI_MT700201UV01.mif")) {//templateParameter and has recursion
@@ -127,10 +117,14 @@ public class MIFParser {
             	  Document mifDoc = db.parse("T:/YeWu/Edition2006/mif/" + filename);
             	  MIFParser mifParser = new MIFParser();
             	  mifParser.parse(mifDoc);
-            	  mifParser.saveMIFs("c:/temp/mif/" + filename);
-            	  mifParser.getMIFClass().printMIFClass(0, new HashSet());
+            	  mifParser.saveMIFs("C:/temp/serializedMIF/resource/mif/" + filename);
+//            	  mifParser.getMIFClass().printMIFClass(0, new HashSet());
               }
   			}
+  			MIFIndexParser mifInfoParser = new MIFIndexParser();
+  			MIFIndex mifIndexInfos=mifInfoParser.readMIFIndexInfo("C:/temp/serializedMIF/resource/mif/");
+  			mifInfoParser.saveMIFIndex("C:/temp/serializedMIF/resource/mifIndexInfos",mifIndexInfos);
+
   		}
 
     }

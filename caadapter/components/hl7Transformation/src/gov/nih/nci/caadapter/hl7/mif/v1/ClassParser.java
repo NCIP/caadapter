@@ -16,8 +16,8 @@ import org.w3c.dom.Node;
  * The class will parse a MIF class from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:08:48 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix) {
@@ -38,11 +38,12 @@ public class ClassParser {
         		mifClass.addAttribute(mifAttribute);
         	}
         	if (child.getNodeName().equals(prefix+"specializationChild")) {
-        		Node specializedChild = child.getFirstChild();
+           		Node specializedChild = child.getFirstChild();
         		while (specializedChild != null) {
         			if (specializedChild.getNodeName().equals(prefix+"specializedClass")) {
         				SpecializedClassParser specializedClass = new SpecializedClassParser();
         				MIFClass specializedMIFClass = specializedClass.parseSpecializedClass(specializedChild, prefix);
+        				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
         				mifClass.addChoice(specializedMIFClass);
         			}
         			specializedChild = specializedChild.getNextSibling();

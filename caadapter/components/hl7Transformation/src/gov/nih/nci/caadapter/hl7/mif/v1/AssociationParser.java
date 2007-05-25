@@ -15,15 +15,17 @@ import org.w3c.dom.Node;
  * The class will parse an MIF association section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:08:28 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
 		MIFAssociation mifAssociation = new MIFAssociation();
 		
 		Node child = node.getFirstChild();
-		
+//		set the association sortedKey
+		mifAssociation.setSortKey(XSDParserUtil.getAttribute(node, "sortKey"));
+       
 		while (child != null) {
         	if (child.getNodeName().equals(prefix+"targetConnection")) {
         		mifAssociation.setName(XSDParserUtil.getAttribute(child, "name"));
@@ -49,7 +51,7 @@ public class AssociationParser {
         		else {
         			mifAssociation.setMaximumMultiplicity(-2);							
         		}
-        		mifAssociation.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
+//        		mifAssociation.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
         		
         		Node targetConnectionChild = child.getFirstChild();
         		while (targetConnectionChild != null) {
@@ -63,7 +65,7 @@ public class AssociationParser {
         	}
 			child = child.getNextSibling();
 		}
-        
+		 
         return mifAssociation;
 	}
 }

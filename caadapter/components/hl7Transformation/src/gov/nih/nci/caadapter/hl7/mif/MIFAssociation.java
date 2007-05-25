@@ -5,17 +5,19 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
 
-import java.io.Serializable;
 
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+
+import java.io.Serializable;
 /**
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:05:19 $
  */
 
-public class MIFAssociation implements Serializable {
+public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation> {
 	static final long serialVersionUID = 4L;
 	private String sortKey;
 	private String updateModeDefault;//not populate yet
@@ -109,6 +111,7 @@ public class MIFAssociation implements Serializable {
 	 * @param sortKey the sortKey to set
 	 */
 	public void setSortKey(String sortKey) {
+		System.out.println("MIFAssociation.setSortKey():"+sortKey);
 		this.sortKey = sortKey;
 	}
 	/**
@@ -134,5 +137,9 @@ public class MIFAssociation implements Serializable {
 	 */
 	public void setUpdateModesAllowd(String updateModesAllowd) {
 		this.updateModesAllowd = updateModesAllowd;
+	}
+	public int compareTo(MIFAssociation mifAssc) {
+		// TODO Auto-generated method stub
+		return (this.getSortKey().compareToIgnoreCase(mifAssc.getSortKey()));//.getSortKey()));
 	}
 }	
