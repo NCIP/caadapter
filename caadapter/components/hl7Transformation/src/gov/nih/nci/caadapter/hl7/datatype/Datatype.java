@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-05-25 15:10:34 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-05-30 13:54:02 $
  */
 
 import java.io.Serializable;
@@ -21,9 +21,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
+import java.util.Enumeration;
 
-
-public class Datatype extends DatatypeBaseObject implements Serializable {
+public class Datatype extends DatatypeBaseObject implements Serializable, Cloneable {
 	static final long serialVersionUID = 2L;
 
 	private Hashtable attributes = new Hashtable();
@@ -134,5 +134,30 @@ public class Datatype extends DatatypeBaseObject implements Serializable {
 	 */
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
+	}
+	
+	public Object clone()
+	{
+		 try {
+			 Datatype clonnedObj = (Datatype)super.clone();
+			 Hashtable  attrHash=getAttributes();
+			 
+			 Enumeration eleEnum=attrHash.elements();
+			 while (eleEnum.hasMoreElements())
+			 {
+				 Attribute oneAttr=(Attribute)eleEnum.nextElement();
+				 clonnedObj.addAttribute(oneAttr.getName(),(Attribute) oneAttr.clone());
+			 }
+			 HashSet valueSet=getPredefinedValues();
+			 for (String oneValue:(String[])valueSet.toArray())
+			 {
+				 clonnedObj.addPredefinedValue(oneValue);
+			 }
+             return clonnedObj;
+         }
+         catch (CloneNotSupportedException e) {
+             throw new InternalError(e.toString());
+         }
+
 	}
 }

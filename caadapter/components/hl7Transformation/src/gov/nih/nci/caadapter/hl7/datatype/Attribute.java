@@ -12,10 +12,10 @@ import java.io.Serializable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:09:59 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-05-30 13:54:02 $
  */
 
-public class Attribute extends DatatypeBaseObject implements Serializable {
+public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
 	static final long serialVersionUID = 1L;
 	
 	private String name;
@@ -161,4 +161,16 @@ public class Attribute extends DatatypeBaseObject implements Serializable {
 		this.type = type;
 	}
 
+	public Object clone()
+	{
+		 try {
+             Attribute clonnedObj = (Attribute)super.clone();
+
+             return clonnedObj;
+         }
+         catch (CloneNotSupportedException e) {
+             throw new InternalError(e.toString());
+         }
+
+	}
 }
