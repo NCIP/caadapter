@@ -3,7 +3,6 @@ package gov.nih.nci.caadapter.mms.metadata;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 
-
 /**
  * @version 1.0
  * @created 11-Aug-2006 8:18:15 AM

@@ -1,9 +1,8 @@
 package gov.nih.nci.caadapter.mms.metadata;
 
 import java.util.HashMap;
-
-import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.SDKMetaData;
+import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 
 /**

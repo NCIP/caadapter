@@ -1,11 +1,11 @@
 package gov.nih.nci.caadapter.mms;
 import java.io.File;
 
-import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
+
 import gov.nih.nci.caadapter.mms.validator.MasterValidator;
 import gov.nih.nci.caadapter.mms.validator.SemanticMappingValidator;
-
+import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 
 /**
  * This is a singleton class whose purpose is to coordinate the mapping
@@ -30,11 +30,5 @@ public class SDKIntegrationService {
 
 	private SDKIntegrationService(){
 	}
-
 	
-
-
-
-
-
 }
