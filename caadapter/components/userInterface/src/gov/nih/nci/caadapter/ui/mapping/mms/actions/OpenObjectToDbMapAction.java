@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.2 2007-06-07 18:31:19 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,17 +59,16 @@ import java.io.File;
  * This class defines the open Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:57 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-07 18:31:19 $
  */
 public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 {
 	protected static String COMMAND_NAME = ActionConstants.OPEN_O2DB_MAP_FILE_TXT;
 	protected static Character COMMAND_MNEMONIC = new Character('O');
 	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_5, Event.CTRL_MASK + Event.SHIFT_MASK, false);
-//	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
 	protected static String TOOL_TIP_DESCRIPTION = "Open a Object-2-Database Mapping File";
 
     private transient File openFile;
@@ -100,33 +99,6 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 	{
 		super(name, icon, mainFrame);
 	}
-
-//	/**
-//	 * Defines an <code>Action</code> object with a default
-//	 * description string and default icon.
-//	 */
-//	public OpenObjectToDbMapAction(HL7MappingPanel mappingPanel)
-//	{
-//		this(COMMAND_NAME, mappingPanel);
-//	}
-//
-//	/**
-//	 * Defines an <code>Action</code> object with the specified
-//	 * description string and a default icon.
-//	 */
-//	public OpenObjectToDbMapAction(String name, HL7MappingPanel mappingPanel)
-//	{
-//		this(name, IMAGE_ICON, mappingPanel);
-//	}
-//
-//	/**
-//	 * Defines an <code>Action</code> object with the specified
-//	 * description string and a the specified icon.
-//	 */
-//	public OpenObjectToDbMapAction(String name, Icon icon, HL7MappingPanel mappingPanel)
-//	{
-//		super(name, icon, null);
-//	}
 
     protected void setAdditionalAttributes()
 	{
@@ -195,13 +167,22 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 					return;
 				}
 				//this variable will help determine whether or not to close the created panel in the event of validation errors or exceptions.
+				
 				boolean everythingGood = true;
 				ValidatorResults validatorResults = null;
 				try
 				{
 					GeneralUtilities.setCursorWaiting(mainFrame);
-					validatorResults = mappingPanel.processOpenMapFile(file);
+					if( file.getAbsolutePath().contains(".map") || file.getAbsolutePath().contains(".MAP"))
+					{
+						validatorResults = mappingPanel.processOpenOldMapFile(file);
+					}
+					else
+					{
+						validatorResults = mappingPanel.processOpenMapFile(file);
+					}
 					Thread.sleep(1);
+					
 //					everythingGood = handleValidatorResults(validatorResults);
 					/*
 					 * TODO verify whether needs to call the validator
@@ -215,6 +196,7 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 					//log the exception, but not report
 					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
 					Message msg = MessageResources.getMessage("GEN3", new Object[0]);
+					
 					//report the nice to have message
 					DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), mainFrame, false, false);
 					everythingGood = false;
@@ -249,7 +231,7 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 	protected boolean doAction(ActionEvent e)
 	{
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
-				Config.MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
+				Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
 		if (file != null)
 		{
 			openFile = file;
@@ -266,6 +248,9 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2006/12/20 16:37:17  wuye
  * HISTORY      : delay 1 second
  * HISTORY      :

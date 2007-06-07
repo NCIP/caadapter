@@ -14,6 +14,10 @@
 	<property name="config.dir"    value="${basedir}/conf"/>
 	<property name="docs.dir"    value="${basedir}/docs"/>
 	<property name="project.jar.name"    value="caAdapter.jar"/>
+	<property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
+	<property name="webstart.config.files" value="${basedir}/etc/webstart"/>	
+	<property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
+	<property name="webstart.warfile.name" value="hl7sdk.war"/>
 
 	<!-- Define common module properties !-->
 	<property name="common.module.home"    value="${basedir}/components/common"/>
@@ -26,7 +30,6 @@
 	<!-- Define mms module properties !-->
 	<property name="mms.module.home"    value="${basedir}/components/modelMapping"/>
 	<property name="mms.module.build"    value="${mms.module.home}/build.xml"/>
-
 
 	<!-- Define SDTM transformation module properties !-->
 	<property name="sdtm.module.home"    value="${basedir}/components/sdtmTransformation"/>
@@ -64,17 +67,65 @@
 		</jar>
 	</target>
 	
+	<target name="webstart">
+		<echo message="------- cleaning webstart deploy directory ------"/>	
+		<delete dir="${webstart.deploy.dir}"/>
+		
+		<echo message="------- copying jar files to webstart deploy directory ------"/>	
+		<copy todir="${webstart.deploy.dir}">
+			<fileset dir="${lib.dir}">
+				<exclude name="*.zip, *.jar"/>
+			</fileset>
+		</copy>
+		
+		<echo message="------ copying webstart files to webstart deploy directory ------"/>
+		<copy todir="${webstart.deploy.dir}">
+			<fileset dir="${webstart.config.files}">
+				<exclude name="*.zip, *.jar"/>
+			</fileset>	
+		</copy>
+		
+		<echo message="-------- Create a keyStore --------"/>
+<!--		<genkey alias="myKeyStore" storepass="saic123" keystore="myKeyStore" dname="CN=ncicbp, OU=caadapter, O=nih.gov, C=US"/>-->
+		
+		<echo message="-------- Signing all jar files --------"/>
+		<signjar
+		    alias="myKeyStore" storepass="saic123" keystore="myKeyStore" lazy="true">
+		    <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip" />
+		</signjar>
+				
+		<echo message="-------- creating hl7sdk.war file (copied to deploy/webstart) --------"/>	
+		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="">
+			<fileset dir="${webstart.deploy.dir}">					  
+				<exclude name="myKeyStore"/>
+			</fileset>
+		</war>
+		
+		<echo message="-------- Deploying to Apache --------"/>
+		<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>			
+
+	</target>
+	
 	<target name="demo.dist" depends="copy.modules.lib">
 		<echo message="build demo_ui.jar...."  />
 		<ant antfile="build_demo.xml" target="demo.ui.jar"/>
 
-		<!-- delete dir="C:/distBin/testCaAdapter/lib"/ -->
+		<delete dir="C:/distBin/testCaAdapter/lib"/>
+		<delete dir="C:/distBin/testCaAdapter/dist"/>
+		
 		<mkdir dir="C:/distBin/testCaAdapter/lib"/>
 		<copy todir="C:/distBin/testCaAdapter/lib">
 			<fileset dir="${lib.dir}">
 				<exclude name="*.zip, *.jar"/>
-			</fileset>			
+			</fileset>				
 		</copy>
+
+		<copy todir="C:/distBin/testCaAdapter/dist">
+			<fileset dir="${dist.dir}">
+				<exclude name="*.zip, *.jar"/>
+			</fileset>	
+		</copy>
+		
 		<copy todir="C:/distBin/testCaAdapter/conf">
 			<fileset dir="${config.dir}">
 				<include name="*.properties"/>
@@ -110,6 +161,22 @@
 		<ant antfile="${sdtm.module.build}" />
 		<ant antfile="${ui.module.build}" />
 		<!-- ant antfile="${ws.module.build}"/ -->
+	</target>
+
+	<target name="mms.update">
+		<ant antfile="${mms.module.build}" target="clean"/>
+		<ant antfile="${ui.module.build}" target="clean"/>
+		<ant antfile="${mms.module.build}" target="init"/>
+		<ant antfile="${ui.module.build}" target="init"/>
+		<ant antfile="${mms.module.build}" />
+		<ant antfile="${ui.module.build}" />
+
+		<echo message="-------- updating demo.dist  --------"/>
+		<copy todir="C:/distBin/testCaAdapter/dist">
+			<fileset dir="${dist.dir}">
+				<exclude name="*.zip, *.jar"/>
+			</fileset>	
+		</copy>		
 	</target>
 
 	<target name="build.test" >
