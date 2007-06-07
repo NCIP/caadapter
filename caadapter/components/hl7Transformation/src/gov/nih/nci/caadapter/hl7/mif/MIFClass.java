@@ -20,10 +20,10 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:05:19 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-06-07 15:02:47 $
  */
 
- public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass> {
+ public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
 		static final long serialVersionUID = 6L;
 	 private HashSet<MIFAttribute> attributes = new HashSet<MIFAttribute>();
 	 private HashSet<MIFAssociation> associations = new HashSet<MIFAssociation>();
@@ -34,7 +34,7 @@ import java.util.Iterator;
 	 private boolean isReference = false;
 	 private boolean isDynamic = false;
 	 private String sortKey;
-	 
+	 private boolean optionChosen = false;
 	 /**
 	  * This method will add an attribute object to a given MIF object.
 	  * 
@@ -50,6 +50,28 @@ import java.util.Iterator;
 	  */
 	 public HashSet<MIFAttribute> getAttributes() {
 	 	return attributes;
+	 }
+	 
+	 public void setAssociation(HashSet<MIFAssociation> newAsscs)
+	 {
+		associations=newAsscs;
+	 }
+	 public void removeAttribute(MIFAttribute attrToRemove)
+	 {
+			Iterator it=getAttributes().iterator();
+			MIFAttribute mifFound=null;
+			while(it.hasNext())
+			{
+				 MIFAttribute nxtAttr=(MIFAttribute)it.next();
+				 if (nxtAttr.getName().equals(attrToRemove.getName())&&nxtAttr.getMultiplicityIndex()==attrToRemove.getMultiplicityIndex())
+				 {
+					 mifFound=nxtAttr;
+					 break;
+				 }
+			}
+			
+			if (mifFound!=null)
+				attributes.remove(mifFound);
 	 }
 	 
 	 public TreeSet<MIFAttribute> getSortedAttributes ()
@@ -70,6 +92,24 @@ import java.util.Iterator;
 
 	 public void addAssociation(MIFAssociation association) {
 		 associations.add(association);
+	 }
+	 
+	 public void removeAssociation(MIFAssociation asscToRemove)
+	 {
+			Iterator it=getAssociations().iterator();
+			MIFAssociation asscFound=null;
+			while(it.hasNext())
+			{
+				MIFAssociation nxtAssc=(MIFAssociation)it.next();
+				 if (nxtAssc.getName().equals(asscToRemove.getName())&&nxtAssc.getMultiplicityIndex()==asscToRemove.getMultiplicityIndex())
+				 {
+					 asscFound=nxtAssc;
+					 break;
+				 }
+			}
+			
+			if (asscFound!=null)
+				associations.remove(asscFound);
 	 }
 	 /**
 	  * @return associations of a MIFClass
@@ -271,5 +311,45 @@ import java.util.Iterator;
 			return (this.getName().compareToIgnoreCase(mifClass.getName()));
 		else
 			return (this.getSortKey().compareToIgnoreCase(mifClass.getSortKey()));
+	}
+	@Override
+	public boolean isOptionChosen() {
+		// TODO Auto-generated method stub
+		return  optionChosen ;
+	}
+	@Override
+	public void setOptionChosen(boolean option) {
+		// TODO Auto-generated method stub
+		optionChosen=option;
+	}
+	public Object clone()
+	{
+		 try {
+			 MIFClass clonnedObj = (MIFClass)super.clone();
+			 HashSet  attrHash=getAttributes();
+			 HashSet <MIFAttribute> attrClonnedHash=new HashSet<MIFAttribute>();
+			 Iterator attrIt=attrHash.iterator();
+			 while (attrIt.hasNext())
+			 {
+				 MIFAttribute oneAttr=(MIFAttribute)attrIt.next();
+				 attrClonnedHash.add((MIFAttribute)oneAttr.clone());
+			 }
+			 clonnedObj.setAttributes(attrClonnedHash);
+			 
+			 HashSet  asscHash=getAssociations();
+			 HashSet <MIFAssociation> asscClonnedHash=new HashSet<MIFAssociation>();
+			 Iterator asscIt=asscHash.iterator();
+			 while (asscIt.hasNext())
+			 {
+				 MIFAssociation oneAssc=(MIFAssociation)asscIt.next();
+				 asscClonnedHash.add((MIFAssociation)oneAssc.clone());
+			 }
+			 clonnedObj.setAssociation(asscClonnedHash);
+             return clonnedObj;
+         }
+         catch (CloneNotSupportedException e) {
+             throw new InternalError(e.toString());
+         }
+
 	}
  }

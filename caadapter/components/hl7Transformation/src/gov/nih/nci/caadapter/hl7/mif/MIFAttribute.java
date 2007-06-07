@@ -8,15 +8,18 @@ package gov.nih.nci.caadapter.hl7.mif;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 
 import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:05:17 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-06-07 15:02:47 $
  */
 
-public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>{
+public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
 	static final long serialVersionUID = 5L;
 	private String sortKey;
 	private String defaultValue;
@@ -29,6 +32,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private String conformance;
 	private int minimumMultiplicity;
 	private int maximumMultiplicity;
+	private int multiplicityIndex=0;
 	private String name;
 	
 	private String domainName;
@@ -36,6 +40,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private String codingStrength;
 	private String type;
 	private boolean strutural;
+	private boolean optionChosen = false;
 
 	/**
 	 * @return the conformance
@@ -103,6 +108,13 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public int getMaximumMultiplicity() {
 		return maximumMultiplicity;
 	}
+	
+	public int getMultiplicityIndex() {
+		return multiplicityIndex;
+	}
+	public void setMultiplicityIndex(int index) {
+		multiplicityIndex = index;
+	}
 	/**
 	 * @param maximumMultiplicity the maximumMultiplicity to set
 	 */
@@ -144,6 +156,21 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * Build nodeXmlName with node name and multiplicityIndex 
+	 * @return
+	 */
+	public String getNodeXmlName()
+	{
+		if (getMultiplicityIndex()==0)
+			return getName();
+		
+		String stB="";
+		if (getMultiplicityIndex()<10)
+			stB="0";
+		stB=stB+getMultiplicityIndex();
+		return getName()+stB;
 	}
 	/**
 	 * @return the sortKey
@@ -243,6 +270,38 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	}
 	public int compareTo(MIFAttribute attr) {
 		// TODO Auto-generated method stub	
-		return (this.getSortKey().compareToIgnoreCase(attr.getSortKey()));	
+		String myCompKey=this.getSortKey()+this.getMultiplicityIndex();
+		String attrCompKey=attr.getSortKey()+attr.getMultiplicityIndex();
+		
+		return (myCompKey.compareToIgnoreCase(attrCompKey));	
+	}
+	@Override
+	public boolean isOptionChosen() {
+		// TODO Auto-generated method stub
+		return  optionChosen ;
+	}
+	@Override
+	public void setOptionChosen(boolean option) {
+		// TODO Auto-generated method stub
+		optionChosen=option;
+	}
+	
+	public Object clone()
+	{
+		 try {
+			 MIFAttribute clonnedObj = (MIFAttribute)super.clone();
+             return clonnedObj;
+         }
+         catch (CloneNotSupportedException e) {
+             throw new InternalError(e.toString());
+         }
+
+	}
+	public String toString()
+	{
+		if (getMultiplicityIndex()==0)
+			return super.toString();
+		
+		return super.toString()+" ["+getMultiplicityIndex() +"]";
 	}
 }

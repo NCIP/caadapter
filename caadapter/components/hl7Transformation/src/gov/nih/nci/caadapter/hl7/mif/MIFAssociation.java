@@ -14,10 +14,10 @@ import java.io.Serializable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:05:19 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-06-07 15:02:47 $
  */
 
-public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation> {
+public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
 	static final long serialVersionUID = 4L;
 	private String sortKey;
 	private String updateModeDefault;//not populate yet
@@ -26,8 +26,11 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private String conformance;
 	private int minimumMultiplicity;
 	private int maximumMultiplicity;
+	private int multiplicityIndex=0;
+	
 	private String name;
 	private MIFClass mifClass;
+	private boolean optionChosen = false;
 
 	/**
 	 * @return the conformance
@@ -65,6 +68,12 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public void setMaximumMultiplicity(int maximumMultiplicity) {
 		this.maximumMultiplicity = maximumMultiplicity;
 	}
+	public int getMultiplicityIndex() {
+		return multiplicityIndex;
+	}
+	public void setMultiplicityIndex(int multiplicityIndex) {
+		this.multiplicityIndex = multiplicityIndex;
+	}
 	/**
 	 * @return the mifClass
 	 */
@@ -100,6 +109,21 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * Build nodeXmlName with node name and multiplicityIndex 
+	 * @return
+	 */
+	public String getNodeXmlName()
+	{
+		if (getMultiplicityIndex()==0)
+			return getName();
+		
+		String stB="";
+		if (getMultiplicityIndex()<10)
+			stB="0";
+		stB=stB+getMultiplicityIndex();
+		return getName()+stB;
 	}
 	/**
 	 * @return the sortKey
@@ -140,6 +164,40 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	}
 	public int compareTo(MIFAssociation mifAssc) {
 		// TODO Auto-generated method stub
-		return (this.getSortKey().compareToIgnoreCase(mifAssc.getSortKey()));//.getSortKey()));
+		String myCompKey=this.getSortKey()+this.getMultiplicityIndex();
+		String asscCompKey=mifAssc.getSortKey()+mifAssc.getMultiplicityIndex();
+		
+		return (myCompKey.compareToIgnoreCase(asscCompKey));	
+	
+	}
+	@Override
+	public boolean isOptionChosen() {
+		// TODO Auto-generated method stub
+		return  optionChosen ;
+	}
+	@Override
+	public void setOptionChosen(boolean option) {
+		// TODO Auto-generated method stub
+		optionChosen=option;
+	}
+	
+	public Object clone()
+	{
+		 try {
+			 MIFAssociation clonnedObj = (MIFAssociation)super.clone();
+			 clonnedObj.setMifClass((MIFClass)getMifClass().clone());
+             return clonnedObj;
+         }
+         catch (CloneNotSupportedException e) {
+             throw new InternalError(e.toString());
+         }
+
+	}
+	public String toString()
+	{
+		if (getMultiplicityIndex()==0)
+			return super.toString();
+		
+		return super.toString()+" ["+getMultiplicityIndex() +"]";
 	}
 }	
