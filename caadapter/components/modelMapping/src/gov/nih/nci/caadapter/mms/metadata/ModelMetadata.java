@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
@@ -63,7 +65,7 @@ public class ModelMetadata {
 	    	handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
 	    	handler.load(xmiFileName);
 	    	model = handler.getModel();
-	    } catch (XmiException e){
+	    } catch (XmiException e) {
 	    	e.printStackTrace();
 	    } catch (IOException e) {
 	    	e.printStackTrace();
@@ -77,41 +79,56 @@ public class ModelMetadata {
 		return handler;
 	}
 	
-	public static ModelMetadata createModel(String xmiFileName) {
-		if (modelMetadata != null) {
-			sortedModel=null;
-			modelHashMap =null;
+	public static ModelMetadata createModel(String xmiFileName) 
+	{
+		 if ( modelMetadata != null )
+		 {
+			sortedModel = null;
+			modelHashMap = null;
 			modelMetadata = null;
 			System.gc();
-		}
+		 }
+
 		 sortedModel = new TreeSet(new XPathComparator());
 		 modelHashMap = new LinkedHashMap();
     	 modelMetadata = new ModelMetadata(xmiFileName);
+
 		 init(xmiFileName);
 		 createModel(model);
 		 Object[] sortedArray  = sortedModel.toArray();
-		 for(int i=0;i<sortedModel.size();i++)
+		 
+		 for( int i=0; i < sortedModel.size(); i++ )
+		 {
 			 modelHashMap.put(((MetaObjectImpl)sortedArray[i]).getXPath(),sortedArray[i]);
-
-		 for(int i=0;i<sortedModel.size();i++) {
-			 if (sortedArray[i] instanceof AssociationMetadata) {
+		 }
+		 
+		 for( int i=0; i < sortedModel.size(); i++ ) 
+		 {
+			 if (sortedArray[i] instanceof AssociationMetadata) 
+			 {
 				 AssociationMetadata assoMeta = (AssociationMetadata)sortedArray[i];
-				 if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == -1) {
+				 if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == -1) 
+				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
 				 }
-				 else if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == 1) {
+				 else if (assoMeta.getMultiplicity() == -1 && assoMeta.getReciprocalMultiplity() == 1) 
+				 {
 					 assoMeta.setNavigability(false);
 					 assoMeta.setManyToOne(true);
 				 }
-				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == -1) {
+				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == -1) 
+				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(true);
 				 }
-				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == 1) {
+				 else if (assoMeta.getMultiplicity() == 1 && assoMeta.getReciprocalMultiplity() == 1) 
+				 {
 					 assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
-				 }else{
+				 }
+				 else
+				 {
 					assoMeta.setNavigability(true);
 					 assoMeta.setManyToOne(false);
 				 }
@@ -120,14 +137,18 @@ public class ModelMetadata {
 		 return modelMetadata; 
 	}
 	
-	private static void createModel(UMLModel model) {
-		for(UMLPackage pkg : model.getPackages()) {
+	private static void createModel(UMLModel model)
+	{
+		for( UMLPackage pkg : model.getPackages() ) 
+		{
 			printPackage(pkg);
 		}
 	}
 	   
-	  private static void printPackage(UMLPackage pkg) {
-	    for(UMLClass clazz : pkg.getClasses()) {    	
+	private static void printPackage(UMLPackage pkg) 
+	{
+	    for(UMLClass clazz : pkg.getClasses()) 
+	    {    	
   	      StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
   	      if (pathKey.toString().contains("Data Model")) {
   	    	  //create a TableMetadata object
@@ -209,12 +230,17 @@ public class ModelMetadata {
 
 	  private static void printAssociation(UMLAssociation assoc, ObjectMetadata object, StringBuffer keyPath, UMLClass clazz) {
 		  	boolean isOneToMany = false;
+		  	boolean isManyToMany = false;
 	    	UMLAssociationEnd assocEndA = (UMLAssociationEnd)assoc.getAssociationEnds().get(0);
 	    	UMLAssociationEnd assocEndB = (UMLAssociationEnd)assoc.getAssociationEnds().get(1);
 	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) || 
 	    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==1)) {
 	    		isOneToMany = true;
 	    	}
+	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==-1) || 
+		    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==-1)) {
+		    		isManyToMany = true;
+		    	}
 		    for(UMLAssociationEnd assocEnd : assoc.getAssociationEnds()) {
 		    	UMLAssociationEnd other = (assocEnd==assocEndA)?assocEndB:assocEndA;
 	    		StringBuffer associationKeyPath = new StringBuffer();
@@ -224,26 +250,24 @@ public class ModelMetadata {
 	    		AssociationMetadata thisEnd = new AssociationMetadata();
 	    		thisEnd.setUMLAssociation(assoc);
 	    		UMLClass clazz1 = (UMLClass)assocEnd.getUMLElement();
-    			if (assocEnd.getRoleName().equals("")) continue;
+  			if (assocEnd.getRoleName().equals("")) continue;
 	    		if (!clazz1.getName().equals(clazz.getName())) {
 //	    			if (!assocEnd.getRoleName().equals("")) {
-	    			if (assocEnd.isNavigable()||isOneToMany) {
+	    			if (assocEnd.isNavigable()||isOneToMany || isManyToMany) {
 	    				thisEnd.setRoleName(assocEnd.getRoleName());
 	    				thisEnd.setMultiplicity(assocEnd.getHighMultiplicity());
 	    				thisEnd.setReciprocalMultiplity(getReciprocalMultiplicity(assocEnd));
 	    				thisEnd.setXPath(associationKeyPath.toString());
 	    				thisEnd.setReturnTypeXPath(clazz1.toString());
 	    				thisEnd.setNavigability(assocEnd.isNavigable());
-    					thisEnd.setBidirectional(other.isNavigable()&&assocEnd.isNavigable());
+  					thisEnd.setBidirectional(other.isNavigable()&&assocEnd.isNavigable());
 	    				sortedModel.add(thisEnd);
 	    			}
 	    			else {//This is uni-direction
 	    			}
 	    		}
 	    	}
-	  }
-	  
-	  
+	  }	  	  
 	  
 	  private static void printAttribute(UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
 		    StringBuffer attributePath = new StringBuffer();
@@ -259,7 +283,8 @@ public class ModelMetadata {
 	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());   
 	  }
 	  
-	  private static void printColumnAttribute(UMLAttribute att, TableMetadata object, StringBuffer pathKey) {
+	  private static void printColumnAttribute(UMLAttribute att, TableMetadata object, StringBuffer pathKey) 
+	  {
 	        ColumnMetadata attMetadata = new ColumnMetadata();
 	        StringBuffer colPathKey = new StringBuffer();
 	        colPathKey.append(pathKey);
@@ -346,6 +371,7 @@ public class ModelMetadata {
 		}
 	}
 }
+
 class XPathComparator implements Comparator {
 	public final int compare ( Object a, Object b) 
 	{ 

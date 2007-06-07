@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.2 2007-06-07 15:15:14 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,10 +55,10 @@ import java.net.URL;
  * This class defines a list of default settings for GUI Settings.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-07 15:15:14 $
  */
 public class DefaultSettings
 {
@@ -365,8 +365,10 @@ public class DefaultSettings
 	public static final Image getImage(String imageFileName)
 	{
 		String imgFilePath="images/";
-		imgFilePath=imgFilePath+imageFileName;
-		URL imgUrl=ClassLoader.getSystemResource(imgFilePath);
+		imgFilePath = imgFilePath + imageFileName;
+		//Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
+
+		URL imgUrl=Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
 		return Toolkit.getDefaultToolkit().createImage(imgUrl);
 	}
 
@@ -497,6 +499,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.40  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

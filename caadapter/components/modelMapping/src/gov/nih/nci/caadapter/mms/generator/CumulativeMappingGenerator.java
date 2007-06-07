@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author connellm
  * The purpose of this class is to create and maintain a CumulativeMapping
@@ -44,25 +46,31 @@ private static LinkedHashMap metaMap = null;
 private static CumulativeMappingGenerator cumulativeMappingGenerator;
 private static String xmiFileName;
 private static String errorMessage;
+
 /**
  * @param xmiFileName
  */
-public CumulativeMappingGenerator(String xmiFileName_local){
+public CumulativeMappingGenerator(String xmiFileName_local)
+{
 	init(xmiFileName_local);
 	xmiFileName = xmiFileName_local;
 }
 
 public CumulativeMappingGenerator(){
 }
+
 /**
  * @param xmiFileName
  */
-public static void init(String xmiFileName_local) {
-	if (cumulativeMappingGenerator != null) {
+public static boolean init(String xmiFileName_local) 
+{
+	if (cumulativeMappingGenerator != null) 
+	{
 		cumulativeMappingGenerator = null;
 		CumulativeMapping.reset();
 		System.gc();
 	}
+	
 	cumulativeMappingGenerator = new CumulativeMappingGenerator();
 	xmiFileName = xmiFileName_local;
 	
@@ -76,18 +84,23 @@ public static void init(String xmiFileName_local) {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
-    }catch (Exception e){
-	  e.printStackTrace();
+    }catch (Exception e){      
+      e.printStackTrace();
+      return false;	  
     }
- }
+    return true;
+}
 
-public static CumulativeMappingGenerator getInstance() {
+public static CumulativeMappingGenerator getInstance() 
+{
 	return cumulativeMappingGenerator;
 }
 
-public static String getXmiFileName() {
+public static String getXmiFileName() 
+{
 	return xmiFileName;
 }
+
 /**
  * This method would be used to remove a previously created source to target mapping.
  * @param source Source element to be unmapped
@@ -115,6 +128,7 @@ public static boolean unmap(String source, String target){
 	}
 	return successfullyUnmapped;
 }
+
 /**
  * @param source Source element to be mapped.
  * @param target Target element to be mapped.

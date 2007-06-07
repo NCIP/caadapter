@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.2 2007-06-07 15:15:24 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,10 +61,10 @@ import java.util.StringTokenizer;
  * This class defines a dialog to view help content.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-07 15:15:24 $
  */
 
 public class HelpContentViewer extends JDialog implements ActionListener, ListSelectionListener
@@ -81,7 +81,7 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
    *
    * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
    */
-  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.2 2007-06-07 15:15:24 schroedn Exp $";
 
 
   JTree treeMain;
@@ -1239,7 +1239,7 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
         try
           {
             //FileReader fr = new FileReader(commonPath + Config.DEFAULT_HELP_DATA_FILENAME);
-            BufferedReader br = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(Config.DEFAULT_HELP_DATA_FILENAME)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(Config.DEFAULT_HELP_DATA_FILENAME)));
             id = "";
             title = "";
             kwds = "";
@@ -2330,6 +2330,9 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.46  2007/01/04 00:28:56  umkis
  * HISTORY      : Trivial error correction.
  * HISTORY      :

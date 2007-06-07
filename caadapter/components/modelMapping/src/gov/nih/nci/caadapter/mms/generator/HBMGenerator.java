@@ -549,7 +549,7 @@ public class HBMGenerator
 					
 					//Add key				
 					Element keyElement = new Element( "key" );		
-					keyElement.setAttribute( "column", "TODO!" );
+					keyElement.setAttribute( "column", "_" );
 					setElement.addContent( keyElement );
 					
 					Element manyToManyElement = new Element( "one-to-many" );
