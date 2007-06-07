@@ -98,13 +98,16 @@ public class MappingTreeScrollPane extends JScrollPane
 			    		for (int i=0; i<nodeCnt;i++)
 			    		{
 			    			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(i);
-			    			MappableNode mappedChild =(MappableNode)childNode;		    				
-		    				if (mappedChild.isMapped())
+			    			if(childNode instanceof MappableNode)
 			    			{
-		    					//as long as one Column is mapped, the Table is mapped
-			    				drawNode=true;
-			    				break;
-			    			}
+				    			MappableNode mappedChild =(MappableNode)childNode;		    				
+			    				if (mappedChild.isMapped())
+					    		{
+				    				//as long as one Column is mapped, the Table is mapped
+					    			drawNode=true;
+					    			break;
+					    		}
+				    		}
 			    		}
 					}
 				}
