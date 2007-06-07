@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.2 2007-04-19 13:56:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.3 2007-06-07 15:32:12 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,9 +47,9 @@ import java.util.Enumeration;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-04-19 13:56:54 $
+ * @author LAST UPDATE: $Author: schroedn $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-06-07 15:32:12 $
  * @since caAdapter v1.2
  */
 
@@ -59,7 +59,7 @@ public class CaadapterUtil {
         Properties properties = new Properties();
         InputStream fi = null;
         try {
-            fi = ClassLoader.getSystemResourceAsStream("message-types.properties");
+            fi = Thread.currentThread().getContextClassLoader().getResourceAsStream("message-types.properties");
             properties.load(fi);
 
             if (properties != null) {
@@ -77,7 +77,7 @@ public class CaadapterUtil {
         //load caadapter component types to run
         properties=new Properties();
         try {
-            fi = ClassLoader.getSystemResourceAsStream("caadapter-components.properties");
+            fi = Thread.currentThread().getContextClassLoader().getResourceAsStream("caadapter-components.properties");
             properties.load(fi);
 
             if (properties != null) {
@@ -176,6 +176,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/04/19 13:56:54  wangeug
+ * HISTORY      : rename TransformationService to TransformationServiceCsvToHL7V3
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :
