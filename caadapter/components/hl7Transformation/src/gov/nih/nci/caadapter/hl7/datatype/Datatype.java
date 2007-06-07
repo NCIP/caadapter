@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-05-30 13:54:02 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-06-07 15:00:41 $
  */
 
 import java.io.Serializable;
@@ -32,6 +32,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private boolean simple = false;
 	private boolean isAbstract =false;
 	private String parents;
+	private boolean optionChosen = false;
 
 	/**
 	 * This method will add an attribute object to a given datatype object.
@@ -159,5 +160,15 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
              throw new InternalError(e.toString());
          }
 
+	}
+	@Override
+	public boolean isOptionChosen() {
+		// TODO Auto-generated method stub
+		return  optionChosen ;
+	}
+	@Override
+	public void setOptionChosen(boolean option) {
+		// TODO Auto-generated method stub
+		optionChosen=option;
 	}
 }

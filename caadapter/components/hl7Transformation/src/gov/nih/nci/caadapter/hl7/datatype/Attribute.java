@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-05-30 13:54:02 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-07 15:00:41 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
@@ -33,7 +33,7 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	private boolean prohibited;
 
 	private boolean attribute;
-
+	private boolean optionChosen = false;
 	
 	/**
 	 * Return ture if the attribute is visible/accessable/allowed, 
@@ -172,5 +172,15 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
              throw new InternalError(e.toString());
          }
 
+	}
+	@Override
+	public boolean isOptionChosen() {
+		// TODO Auto-generated method stub
+		return  optionChosen ;
+	}
+	@Override
+	public void setOptionChosen(boolean option) {
+		// TODO Auto-generated method stub
+		optionChosen=option;
 	}
 }
