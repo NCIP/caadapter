@@ -20,6 +20,7 @@
 	<property name="module.src.name" value="src"/>
 	<property name="module.src.dir" value="${common.module.home}/src"/>
 	<property name="module.gencode.name" value="gencode"/>
+	<property name="basedir.config.files" value="${basedir}/conf"/>
 
 	<!-- Define project properties !-->
 	<property name="caadapter.project.schema.dir" value="${common.module.home}/../../etc"/>
@@ -74,6 +75,7 @@
 		<jar destfile="${module.dist.dir}/${common.module.dist.name}">
 			<fileset dir="${module.build.dir}" excludes="**/Test.class, org/hl7/**" />
 			<fileset dir="${module.conf.dir}"/>
+			<fileset dir="${basedir.config.files}"/>						
 		</jar>
 		<jar destfile="${module.dist.dir}/cts.jar" 
 			basedir="${module.build.dir}/" 
