@@ -33,6 +33,7 @@
     <constant name="SOURCE_TREE_FILE_DEFAULT_EXTENTION" type="String" value=".scs"/>
     <constant name="TARGET_TREE_FILE_DEFAULT_EXTENTION" type="String" value=".h3s"/>
     <constant name="MAP_FILE_DEFAULT_EXTENTION" type="String" value=".map"/>
+    <constant name="TAGGED_MAP_FILE_DEFAULT_EXTENTION" type="String" value=".xmi"/>    
     <constant name="HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION" type="String" value=".h3s"/>
     <constant name="FUNCTION_DEFINITION_FILE_DEFAULT_EXTENSION" type="String" value=".fls"/>
     <constant name="HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION" type="String" value=".xml"/>
@@ -47,7 +48,7 @@
     <constant name="VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR" type="String" value="?@"/>
     <constant name="VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER" type="String" value="#"/>
     <constant name="VOCABULARY_MAP_URL_CONNECTION_TEST_DATA" type="String" value="!TEST"/>
-
+    
     <constant name="OPEN_DIALOG_TITLE_FOR_CSV_METADATA_FILE" type="String" value="Open CSV Specification..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_CSV_FILE" type="String" value="Open CSV File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE" type="String" value="Open Source File..."/>

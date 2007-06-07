@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jnlp spec="1.0+" codebase="http://localhost:8080/hl7sdk" href="hl7sdk.jnlp">
+
+   <information>
+      <title>caAdapter Webstart</title>
+      <vendor>ncicb</vendor>
+      <description>caAdapter Webstart test</description>
+   </information>
+
+   <security>
+       <all-permissions/>
+   </security>
+
+   <resources>
+	<j2se version="1.3+" />		
+	<jar href="caAdapter.jar"/>   
+	<jar href="BrowserLauncher2-all-10rc4.jar"/>
+	<jar href="DataViewer_OpenSource_DnD.jar"/>
+	<jar href="ant.jar"/>   
+	<jar href="castor-0.9.9.jar"/>
+	<jar href="client.jar"/>
+	<jar href="commons-collections-3.2.jar"/>
+	<jar href="commons-logging-1.0.4.jar"/>
+	<jar href="dom4j-1.4.jar"/>
+	<jar href="hibernate3.jar"/>
+	<jar href="javasig.jar"/>
+	<jar href="jaxen-jdom.jar"/>
+	<jar href="jdom.jar"/>
+	<jar href="jgraph.jar"/>
+	<jar href="knuHL7V2tree.jar"/>
+	<jar href="log4j-1.2.8.jar"/>
+	<jar href="ojdbc14.jar"/>
+	<jar href="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+	<jar href="poi-2.5.1-final-20040804.jar"/>
+	<jar href="saxon8.jar"/>
+	<jar href="serialMif.jar"/>
+	<jar href="xbean.jar"/>
+	<jar href="xbean_xpath.jar"/>
+	<jar href="xercesImpl.jar"/>
+	<jar href="xmi.in.out.jar"/>
+	<jar href="xml-apis.jar"/>
+	<jar href="mif.zip"/>            
+	<jar href="xerces262-src.zip"/>
+   </resources>
+   
+   <application-desc main-class="gov.nih.nci.caadapter.ui.main.MainFrame" />
+
+</jnlp>
+
+
