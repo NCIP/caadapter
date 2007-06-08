@@ -102,7 +102,7 @@
 		</war>
 		
 		<echo message="-------- Deploying to Apache --------"/>
-		<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>			
+		<!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>			-->
 
 	</target>
 	
