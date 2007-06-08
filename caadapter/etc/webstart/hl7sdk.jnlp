@@ -17,6 +17,8 @@
 	<jar href="BrowserLauncher2-all-10rc4.jar"/>
 	<jar href="DataViewer_OpenSource_DnD.jar"/>
 	<jar href="ant.jar"/>   
+	<jar href="caadapterHl7.jar"/>
+	<jar href="hl7message.jar"/>
 	<jar href="castor-0.9.9.jar"/>
 	<jar href="client.jar"/>
 	<jar href="commons-collections-3.2.jar"/>
@@ -38,11 +40,11 @@
 	<jar href="xbean_xpath.jar"/>
 	<jar href="xercesImpl.jar"/>
 	<jar href="xmi.in.out.jar"/>
-	<jar href="xml-apis.jar"/>
-	<jar href="mif.zip"/>            
+	<jar href="xml-apis.jar"/>   
+	<jar href="mif.zip"/>   
 	<jar href="xerces262-src.zip"/>
    </resources>
-   
+
    <application-desc main-class="gov.nih.nci.caadapter.ui.main.MainFrame" />
 
 </jnlp>

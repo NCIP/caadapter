@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.3 2007-06-07 15:32:12 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.4 2007-06-08 19:49:26 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,8 +48,8 @@ import java.util.Enumeration;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: schroedn $
- * @version $Revision: 1.3 $
- * @date $$Date: 2007-06-07 15:32:12 $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2007-06-08 19:49:26 $
  * @since caAdapter v1.2
  */
 
@@ -59,7 +59,7 @@ public class CaadapterUtil {
         Properties properties = new Properties();
         InputStream fi = null;
         try {
-            fi = Thread.currentThread().getContextClassLoader().getResourceAsStream("message-types.properties");
+            fi = Thread.currentThread().getContextClassLoader().getSystemResourceAsStream("message-types.properties");
             properties.load(fi);
 
             if (properties != null) {
@@ -76,8 +76,11 @@ public class CaadapterUtil {
         }
         //load caadapter component types to run
         properties=new Properties();
+        
+        ACTIVATED_CAADAPTER_COMPONENTS.add("caadapter.model.mapping.activated");
+        
         try {
-            fi = Thread.currentThread().getContextClassLoader().getResourceAsStream("caadapter-components.properties");
+            fi = Thread.currentThread().getContextClassLoader().getSystemResourceAsStream("caadapter-components.properties");
             properties.load(fi);
 
             if (properties != null) {
@@ -93,6 +96,7 @@ public class CaadapterUtil {
             		}
             	}
              }
+                        
         } catch (Exception ex) {
             Log.logException(CaadapterUtil.class, "caadapter-components.properties is not found", ex);
         } finally {
@@ -176,6 +180,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/06/07 15:32:12  schroedn
+ * HISTORY      : Edits to sync with new codebase and java webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/04/19 13:56:54  wangeug
  * HISTORY      : rename TransformationService to TransformationServiceCsvToHL7V3
  * HISTORY      :

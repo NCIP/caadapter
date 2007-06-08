@@ -70,6 +70,7 @@
 	<target name="webstart">
 		<echo message="------- cleaning webstart deploy directory ------"/>	
 		<delete dir="${webstart.deploy.dir}"/>
+		<delete file="${dist.dir}/${webstart.warfile.name}"/>
 		
 		<echo message="------- copying jar files to webstart deploy directory ------"/>	
 		<copy todir="${webstart.deploy.dir}">
@@ -86,23 +87,27 @@
 		</copy>
 		
 		<echo message="-------- Create a keyStore --------"/>
-<!--		<genkey alias="myKeyStore" storepass="saic123" keystore="myKeyStore" dname="CN=ncicbp, OU=caadapter, O=nih.gov, C=US"/>-->
+		<!-- <genkey alias="myAlias" storepass="saic123" keystore="myKeyStore" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/> -->
 		
 		<echo message="-------- Signing all jar files --------"/>
-		<signjar
-		    alias="myKeyStore" storepass="saic123" keystore="myKeyStore" lazy="true">
+		<echo message="-------- execute sign_jars.bat now, then run ant warfile to create the warfile --------"/>
+	<!--<signjar
+		    alias="myAlias" storepass="mysecret" keypass="saic123" keystore="myKeyStore" verbose="true" lazy="true">
 		    <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip" />
 		</signjar>
-				
+		!-->
+	</target>
+	
+	<target name="warfile">
 		<echo message="-------- creating hl7sdk.war file (copied to deploy/webstart) --------"/>	
 		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="">
-			<fileset dir="${webstart.deploy.dir}">					  
-				<exclude name="myKeyStore"/>
+				<fileset dir="${webstart.deploy.dir}">					  
+				<exclude name="myKeyStore"/>			
 			</fileset>
 		</war>
 		
-		<echo message="-------- Deploying to Apache --------"/>
-		<!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>			-->
+		<echo message="-------- Auto-Deploying to Apache **disabled--------"/>
+		<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>		
 
 	</target>
 	
