@@ -32,6 +32,10 @@
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
+		<fileset dir="${module.lib.dir}/../../dataviewer/lib">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
 	</path>
 
 	<target name="build" depends="jar" description="deliever the module jar">
@@ -46,6 +50,7 @@
 			<!-- fileset dir="${module.conf.dir}"/ -->
 			<fileset dir="${ui.module.home}/resources"/>
 		</jar>
+	
 	</target>
 
 	<target name="compile" depends="init" description="compile the source">
@@ -53,6 +58,7 @@
 				classpathref="module.class.path"
 				fork="yes" debug="on">
 			<src path="${module.src.dir}" />
+			<src path="${module.src.dir}/../../dataviewer/src" />			
 			<exclude name="test/**"/>
 		</javac>
 	</target>
