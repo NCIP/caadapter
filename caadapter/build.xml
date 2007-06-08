@@ -107,7 +107,7 @@
 		</war>
 		
 		<echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-		<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>		
+		<!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>		-->
 
 	</target>
 	
