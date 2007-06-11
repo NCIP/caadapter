@@ -41,7 +41,6 @@
 	<jar href="xercesImpl.jar"/>
 	<jar href="xmi.in.out.jar"/>
 	<jar href="xml-apis.jar"/>   
-	<jar href="mif.zip"/>   
 	<jar href="xerces262-src.zip"/>
    </resources>
 
