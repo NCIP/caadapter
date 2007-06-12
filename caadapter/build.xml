@@ -83,12 +83,14 @@
 		<delete file="NCICBkey"/>
 		<delete file="${lib.dir}/${project.jar.name}"/>
 		
+		<echo message=""/>	
 		<echo message="------- creating new caAdapter.jar with webstart configuation files ------"/>	
 		<jar destfile="${lib.dir}/${project.jar.name}">
 			<fileset dir="${build.dir}"/>
 			<fileset dir="${webstart.config.dir}"/>
 		</jar>
 		
+		<echo message=""/>		
 		<echo message="------- copying jar files to webstart deploy directory ------"/>	
 		<copy todir="${webstart.deploy.dir}">
 			<fileset dir="${lib.dir}">
@@ -109,7 +111,8 @@
 				<include name="xml-apis.jar"/>   
 			</fileset>
 		</copy>
-				
+		
+		<echo message=""/>				
 		<echo message="------ copying webstart files to webstart deploy directory ------"/>
 		<copy todir="${webstart.deploy.dir}">
 			<fileset dir="${webstart.config.files}">
@@ -117,28 +120,31 @@
 			</fileset>	
 		</copy>
 		
+		<echo message=""/>
 		<echo message="-------- Applying Webserver replacement --------"/>
 		<replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}" />				
 		
+		<echo message=""/>
 		<echo message="-------- Create a keyStore *disabled--------"/>
-<!--        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>-->
+		<!--<genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>-->
 		
+		<echo message=""/>
 		<echo message="-------- Signing all jar files --------"/>
-		<echo message="-------- execute sign_jars.bat now, then run ant warfile to create the warfile --------"/>
-	    <signjar
-		    alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
+	    <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
 		    <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip" />
 		</signjar>		
 
+		<echo message=""/>
 		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>	
 		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="">
-				<fileset dir="${webstart.deploy.dir}">					  
+			<fileset dir="${webstart.deploy.dir}">					  
 				<exclude name="myKeyStore"/>			
 			</fileset>
 		</war>
 		
+		<echo message=""/>
 		<echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-<!--		<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+		<!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
 	</target>
 	
 	<target name="demo.dist" depends="copy.modules.lib">
