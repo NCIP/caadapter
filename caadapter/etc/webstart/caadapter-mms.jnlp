@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<jnlp spec="1.0+" codebase="http://6116-wuy-1.nci.nih.gov:8080/hl7sdk" href="hl7sdk.jnlp">
+<jnlp spec="1.0+" codebase="$WEBSERVER" href="caadapter-mms.jnlp">
 
    <information>
       <title>caAdapter Webstart</title>
@@ -26,7 +26,8 @@
 	<jar href="log4j-1.2.8.jar"/>
 	<jar href="xercesImpl.jar"/>
 	<jar href="xmi.in.out.jar"/>
-	<jar href="xml-apis.jar"/>   
+	<jar href="xml-apis.jar"/> 
+	<jar href="castor-0.9.9.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.ui.main.MainFrame" />
