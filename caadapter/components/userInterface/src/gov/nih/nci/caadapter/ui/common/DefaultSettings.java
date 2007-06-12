@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.2 2007-06-07 15:15:14 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.3 2007-06-12 15:47:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,7 +41,10 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SingleFileFilter;
-
+import java.io.InputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage ;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -49,16 +52,16 @@ import java.awt.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
+//import java.net.URL;
 
 /**
  * This class defines a list of default settings for GUI Settings.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-07 15:15:14 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-06-12 15:47:59 $
  */
 public class DefaultSettings
 {
@@ -368,8 +371,21 @@ public class DefaultSettings
 		imgFilePath = imgFilePath + imageFileName;
 		//Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
 
-		URL imgUrl=Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
-		return Toolkit.getDefaultToolkit().createImage(imgUrl);
+//		URL imgUrl=Thread.currentThread().getContextClassLoader().getResource( imgFilePath );
+//		return Toolkit.getDefaultToolkit().createImage(imgUrl);
+		Image rtnImg=null;
+		//URL imgUrl=ClassLoader.getSystemResource(imgFilePath);
+		try {
+			InputStream imgStream=DefaultSettings.class.getClassLoader().getResource(imgFilePath).openStream();
+			BufferedImage bfImage=ImageIO.read(imgStream);
+			rtnImg=(Image)bfImage;
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.logException("Failed to load image:"+imageFileName, e);
+			e.printStackTrace();
+		}
+		return rtnImg;
 	}
 
 	/**
@@ -499,6 +515,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/07 15:15:14  schroedn
+ * HISTORY      : Edits to sync with new codebase and java webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
