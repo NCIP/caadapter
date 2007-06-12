@@ -14,12 +14,18 @@
 	<property name="config.dir"    value="${basedir}/conf"/>
 	<property name="docs.dir"    value="${basedir}/docs"/>
 	<property name="project.jar.name"    value="caAdapter.jar"/>
+		
 	<property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
 	<property name="webstart.config.files" value="${basedir}/etc/webstart"/>	
-	<property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
 	<property name="webstart.warfile.name" value="caadapter-mms.war"/>
 	<property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
 	<property name="webserver" value="http://localhost:8080/caadapter-mms/"/>
+
+	<property name="signjar.alias" value="myAlias"/>
+	<property name="signjar.storepass" value="saic123"/>
+	<property name="signjar.keystore" value="NCICBkey"/>
+	
+	<property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
 	
 	<!-- Define common module properties !-->
 	<property name="common.module.home"    value="${basedir}/components/common"/>
@@ -114,17 +120,17 @@
 		<echo message="-------- Applying Webserver replacement --------"/>
 		<replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}" />				
 		
-		<echo message="-------- Create a keyStore --------"/>
-        <genkey alias="myAlias" storepass="saic123" keystore="NCICBkey" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
+		<echo message="-------- Create a keyStore *disabled--------"/>
+<!--        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>-->
 		
 		<echo message="-------- Signing all jar files --------"/>
 		<echo message="-------- execute sign_jars.bat now, then run ant warfile to create the warfile --------"/>
 	    <signjar
-		    alias="myAlias" storepass="saic123" keypass="saic123" keystore="NCICBkey" lazy="false">
+		    alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
 		    <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip" />
 		</signjar>		
 
-		<echo message="-------- creating hl7sdk.war file (copied to deploy/webstart) --------"/>	
+		<echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>	
 		<war destfile="${dist.dir}/${webstart.warfile.name}" webxml="">
 				<fileset dir="${webstart.deploy.dir}">					  
 				<exclude name="myKeyStore"/>			
@@ -132,7 +138,7 @@
 		</war>
 		
 		<echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-		<!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+<!--		<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
 	</target>
 	
 	<target name="demo.dist" depends="copy.modules.lib">
