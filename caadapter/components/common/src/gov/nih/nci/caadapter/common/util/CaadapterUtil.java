@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.4 2007-06-08 19:49:26 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.5 2007-06-12 14:58:20 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,9 +47,9 @@ import java.util.Enumeration;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: schroedn $
- * @version $Revision: 1.4 $
- * @date $$Date: 2007-06-08 19:49:26 $
+ * @author LAST UPDATE: $Author: wuye $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2007-06-12 14:58:20 $
  * @since caAdapter v1.2
  */
 
@@ -59,7 +59,7 @@ public class CaadapterUtil {
         Properties properties = new Properties();
         InputStream fi = null;
         try {
-            fi = Thread.currentThread().getContextClassLoader().getSystemResourceAsStream("message-types.properties");
+            fi = CaadapterUtil.class.getClassLoader().getResource("message-types.properties").openStream();
             properties.load(fi);
 
             if (properties != null) {
@@ -77,11 +77,9 @@ public class CaadapterUtil {
         //load caadapter component types to run
         properties=new Properties();
         
-        ACTIVATED_CAADAPTER_COMPONENTS.add("caadapter.model.mapping.activated");
-        
         try {
-            fi = Thread.currentThread().getContextClassLoader().getSystemResourceAsStream("caadapter-components.properties");
-            properties.load(fi);
+        	fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream(); 
+        	properties.load(fi);
 
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -180,6 +178,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/06/08 19:49:26  schroedn
+ * HISTORY      : Edits to sync with new codebase and java webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/06/07 15:32:12  schroedn
  * HISTORY      : Edits to sync with new codebase and java webstart
  * HISTORY      :
