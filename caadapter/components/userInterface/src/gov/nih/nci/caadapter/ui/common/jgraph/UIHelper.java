@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.2 2007-04-19 14:05:44 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.3 2007-06-12 20:17:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -68,8 +68,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-04-19 14:05:44 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-06-12 20:17:16 $
  */
 public final class UIHelper
 {
@@ -79,8 +79,8 @@ public final class UIHelper
 	public static final Color DEFAULT_VERTEX_COLOR = Color.BLACK;
 	public static final Color DEFAULT_VERTEX_BORDER_COLOR = Color.BLACK;
 	public static final Color DEFAULT_MAPPING_LINK_COLOR = Color.BLUE.darker().darker();
-	public static final Color MAPPING_LINK_OBJECT_COLOR = Color.YELLOW;
-	public static final Color MAPPING_LINK_ATTRIBUTE_COLOR = Color.GREEN;
+	public static final Color MAPPING_LINK_OBJECT_COLOR = Color.green.darker();
+	public static final Color MAPPING_LINK_ATTRIBUTE_COLOR = Color.blue;
 	public static final Color MAPPING_LINK_ASSOCIATION_COLOR = Color.RED;
 	private static final Dimension invisibleVertexDimension = new Dimension(VERTEX_CELL_WIDTH, VERTEX_CELL_HEIGHT);
 	//location of port in cell
@@ -389,6 +389,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/04/19 14:05:44  wangeug
+ * HISTORY      : set link color based on linkType
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
