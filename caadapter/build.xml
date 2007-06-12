@@ -64,6 +64,7 @@
 		
 		<jar destfile="${lib.dir}/${project.jar.name}">
 			<fileset dir="${build.dir}"/>
+			<fileset dir="${config.dir}"/>
 		</jar>
 	</target>
 	
@@ -75,7 +76,21 @@
 		<echo message="------- copying jar files to webstart deploy directory ------"/>	
 		<copy todir="${webstart.deploy.dir}">
 			<fileset dir="${lib.dir}">
-				<exclude name="*.zip, *.jar"/>
+				<include name="caAdapter.jar"/>   
+				<include name="castor-0.9.9.jar"/>   
+				<include name="BrowserLauncher2-all-10rc4.jar"/>   
+				<include name="caadapterHl7.jar"/>
+				<include name="hl7message.jar"/>
+				<include name="commons-collections-3.2.jar"/>
+				<include name="commons-logging-1.0.4.jar"/>
+				<include name="dom4j-1.4.jar"/>
+				<include name="jaxen-jdom.jar"/>
+				<include name="jdom.jar"/>
+				<include name="jgraph.jar"/>
+				<include name="log4j-1.2.8.jar"/>
+				<include name="xercesImpl.jar"/>
+				<include name="xmi.in.out.jar"/>
+				<include name="xml-apis.jar"/>   
 			</fileset>
 		</copy>
 		
