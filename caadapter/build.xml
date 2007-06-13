@@ -76,7 +76,7 @@
 		</jar>
 	</target>
 	
-	<target name="webstart">
+	<target name="webstart" depends="jar.all">
 		<echo message="------- cleaning webstart deploy directory ------"/>	
 		<delete dir="${webstart.deploy.dir}"/>
 		<delete file="${dist.dir}/${webstart.warfile.name}"/>
