@@ -9,7 +9,9 @@
 	<constant name="CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED" type="String" value="caadapter.model.mapping.activated"/>
 	<constant name="CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED" type="String" value="caadapter.sdtm.transformation.activated"/>
 	<constant name="CAADAPTER_COMPONENT_WEB_SERVICE_ACTIVATED" type="String" value="caadapter.web.service.activated"/>	
-	
+	<constant name="CAADAPTER_HELP_MENU_ACTIVATED" type="String" value="caadapter.help.menu.activated"/>	
+	<constant name="CAADAPTER_QUERYBUILDER_MENU_ACTIVATED" type="String" value="caadapter.querybuilder.menu.activated"/>	
+
 	<constant name="CAADAPTER_VERSION" type="String" value="V3.2"/>
     <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="caAdapter_3_2_Final"/>
     <constant name="JDK_VERSION" type="String" value="1.5.0_06"/>
