@@ -71,9 +71,16 @@ import gov.nih.nci.caadapter.ui.specification.csv.actions.NewCsvSpecificationAct
 import gov.nih.nci.caadapter.ui.specification.csv.actions.OpenCsvSpecificationAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.NewHSMAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.OpenHSMAction;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -85,8 +92,8 @@ import javax.swing.JMenuItem;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.2 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -235,10 +242,24 @@ public class MainMenuBar extends AbstractMenuBar
 		menuItemMap=Collections.synchronizedMap(new HashMap<String, JMenuItem>());;
 		menuMap=Collections.synchronizedMap(new HashMap<String, JMenu>());;
 		add(constructFileMenu());
-		 add(constructOpenQueryBuilderMenu());
+		
+		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
+		{	
+			System.out.println( "query builder activated" );
+			add(constructOpenQueryBuilderMenu());
+		} else {
+			System.out.println( "query builder de-activated" );
+		}			
+		
+		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
+		{
+			add(constructHelpMenu());	
+			System.out.println( "help menu activated" );		
+		} else {
+			System.out.println( "help menu de-activated" );
+		}
 		add(constructReportMenu());
-
-		add(constructHelpMenu());
+		
 //		constructActionMap();
 	}
 
@@ -352,22 +373,26 @@ public class MainMenuBar extends AbstractMenuBar
 
 	private JMenu constructHelpMenu()
 	{
+	
 		AboutAction aboutAction = new AboutAction(mainFrame);
 		HelpTopicAction helpTopicAction = new HelpTopicAction(mainFrame);
 
 		JMenu helpMenu = new JMenu(MenuConstants.HELP_MENU_NAME);
 		helpMenu.setMnemonic('H');
-		JMenuItem helpTopicItem=new JMenuItem(helpTopicAction);
-		helpMenu.add(helpTopicItem); // eric addied
+
 		JMenuItem helpAboutItem=new JMenuItem(aboutAction);
 		helpMenu.add(helpAboutItem);
+	
+		JMenuItem helpTopicItem=new JMenuItem(helpTopicAction);			 
+		helpMenu.add(helpTopicItem); // eric addied
 		actionMap.put(ActionConstants.HELP_TOPIC, helpTopicAction);
-		menuItemMap.put(ActionConstants.HELP_TOPIC, helpTopicItem);
+		menuItemMap.put(ActionConstants.HELP_TOPIC, helpTopicItem);			
+				
 		actionMap.put(ActionConstants.ABOUT, aboutAction);
 		menuItemMap.put(ActionConstants.ABOUT, helpAboutItem);
 
 		menuMap.put(MenuConstants.HELP_MENU_NAME, helpMenu);
-		return helpMenu;
+		return helpMenu;		
 	}
 
 	private JMenu constructNewMenu() {
@@ -412,13 +437,14 @@ public class MainMenuBar extends AbstractMenuBar
 		return newGroup;
 	}
 	private JMenu constructOpenQueryBuilderMenu(){
-	        OpenQueryBuilderAction _qbAction = new   OpenQueryBuilderAction(mainFrame);
-	        JMenu _qb = new JMenu("Querybuilder");
-	        JMenuItem _menuItem = new JMenuItem(_qbAction);
-	        _qb.add(_menuItem);
-	        //_menuItem.setEnabled(fa);
-	        return _qb;
+        OpenQueryBuilderAction _qbAction = new   OpenQueryBuilderAction(mainFrame);
+        JMenu _qb = new JMenu("Querybuilder");
+        JMenuItem _menuItem = new JMenuItem(_qbAction);
+        _qb.add(_menuItem);
+        //_menuItem.setEnabled(fa);
+        return _qb;	
     }
+	
 	private JMenu constructNewCSVTOV3Menu() {
 		JMenu newGroup = new JMenu("CSV To HL7 v3 Mapping and Transformation Service");
 		NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
@@ -690,6 +716,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2007/05/09 20:56:26  jayannah
+ * HISTORY : added the querybuilder menu
+ * HISTORY :
  * HISTORY : Revision 1.1  2007/04/03 16:17:36  wangeug
  * HISTORY : initial loading
  * HISTORY :

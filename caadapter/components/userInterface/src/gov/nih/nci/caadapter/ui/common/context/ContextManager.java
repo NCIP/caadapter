@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.2 2007-06-13 17:12:17 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,8 @@
 package gov.nih.nci.caadapter.ui.common.context;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.ui.common.ToolBarHandler;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -56,10 +58,10 @@ import java.util.Map;
  * Manage the context change effect, including notify menus to update.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-13 17:12:17 $
  */
 public class ContextManager implements ChangeListener//, PropertyChangeListener
 {
@@ -75,7 +77,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.2 2007-06-13 17:12:17 schroedn Exp $";
 
     private AbstractMenuBar menu = null;
     private ToolBarHandler toolBarHandler = null;
@@ -109,8 +111,12 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     	mainFrame = owner;
     	contextFileManager = new ContextFileManager(mainFrame);
 //    	menu = new MainMenuBar(mainFrame); 
-    	clientMenuActions =Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());
-    	toolBarHandler.addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);
+    	clientMenuActions = Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());    	    
+    	
+		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
+		{
+			toolBarHandler.addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);				
+		}     	
     }
    
     public static ContextManager getContextManager()
@@ -453,6 +459,9 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.42  2006/09/26 15:50:05  wuye
  * HISTORY      : Updating the newly added menu items
  * HISTORY      :
