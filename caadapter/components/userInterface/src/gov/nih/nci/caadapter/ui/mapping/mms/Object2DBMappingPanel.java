@@ -36,6 +36,8 @@ import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
+import gov.nih.nci.caadapter.ui.common.functions.FunctionLibraryPane;
+import gov.nih.nci.caadapter.ui.common.properties.DefaultPropertiesPage;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
@@ -70,6 +72,7 @@ import java.util.Set;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -77,6 +80,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
@@ -93,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.2 2007-06-07 16:17:00 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.3 2007-06-13 17:22:08 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -117,7 +121,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	public Object2DBMappingPanel(String name) {
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
-		this.add(getCenterPanel(true), BorderLayout.CENTER);
+		this.add(getCenterPanel(false), BorderLayout.CENTER);
 		fileSynchronizer = new MappingFileSynchronizer(this);
 		System.out.println("open object to db mapping:" + name);
 	}
@@ -1037,7 +1041,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 }
 
 /**
- * HISTORY : $Log: not supported by cvs2svn $ HISTORY : Revision 1.1
+ * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2007/06/07 16:17:00  schroedn
+ * HISTORY : Edits to sync with new codebase and java webstart
+ * HISTORY : HISTORY : Revision 1.1
  * 2007/04/03 16:17:57 wangeug HISTORY : initial loading HISTORY : HISTORY :
  * Revision 1.14 2006/12/20 16:25:39 wuye HISTORY : Update HMB open file option
  * HISTORY : HISTORY : Revision 1.13 2006/12/12 16:53:39 wuye HISTORY : Comment
