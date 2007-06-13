@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.2 2007-06-13 20:24:16 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,10 +62,10 @@ import java.util.Set;
  * This class defines the action to invoke validation of HSM.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:57 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-13 20:24:16 $
  */
 public class ValidateObjectToDbMapAction extends AbstractContextAction
 {
@@ -81,7 +81,7 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.2 2007-06-13 20:24:16 schroedn Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -137,7 +137,10 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 		
-		
+		if( ModelMetadata.getInstance() != null )
+		{
+			System.out.println( "NOT NULL");
+
         ValidatorResults validatorResults = new ValidatorResults();
 
         ModelMetadata myModel = ModelMetadata.getInstance();
@@ -195,6 +198,11 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 		
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
+		
+		} else {
+			System.out.println( "NULL" );
+			return false;
+		}			
 	}
 
 	/**
@@ -209,6 +217,9 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2006/11/15 06:27:21  wuye
  * HISTORY      : Added message for no-mapped inherted attributes
  * HISTORY      :
