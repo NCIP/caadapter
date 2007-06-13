@@ -87,8 +87,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.2 $ date $Date: 2007-04-19 14:07:37 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date: 2007-06-13 19:20:54 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.2 2007-04-19 14:07:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.3 2007-06-13 19:20:54 wuye Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -394,6 +394,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
 				SDKMetaData sourceSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
 				SDKMetaData targetSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
+				sourceSDKMetaData.setMapped(false);
 				CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
 				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
 			}
@@ -1443,6 +1444,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2007/04/19 14:07:37  wangeug
+ * HISTORY : set link color based on linkType
+ * HISTORY :
  * HISTORY : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY : initial loading
  * HISTORY :
