@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.2 2007-06-13 20:24:16 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.3 2007-06-13 20:24:53 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,8 +64,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-13 20:24:16 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-06-13 20:24:53 $
  */
 public class ValidateObjectToDbMapAction extends AbstractContextAction
 {
@@ -81,7 +81,7 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.2 2007-06-13 20:24:16 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.3 2007-06-13 20:24:53 schroedn Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -136,10 +136,8 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-		
 		if( ModelMetadata.getInstance() != null )
 		{
-			System.out.println( "NOT NULL");
 
         ValidatorResults validatorResults = new ValidatorResults();
 
@@ -200,7 +198,6 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 		return isSuccessfullyPerformed();
 		
 		} else {
-			System.out.println( "NULL" );
 			return false;
 		}			
 	}
@@ -217,6 +214,9 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/13 20:24:16  schroedn
+ * HISTORY      : added check for xmi file, null error fix
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
