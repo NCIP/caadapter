@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.2 2007-06-13 17:12:17 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.3 2007-06-13 18:42:07 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -60,8 +60,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-13 17:12:17 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-06-13 18:42:07 $
  */
 public class ContextManager implements ChangeListener//, PropertyChangeListener
 {
@@ -77,7 +77,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.2 2007-06-13 17:12:17 schroedn Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.3 2007-06-13 18:42:07 schroedn Exp $";
 
     private AbstractMenuBar menu = null;
     private ToolBarHandler toolBarHandler = null;
@@ -112,11 +112,11 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     	contextFileManager = new ContextFileManager(mainFrame);
 //    	menu = new MainMenuBar(mainFrame); 
     	clientMenuActions = Collections.synchronizedMap(new HashMap<String, MenuActionMaps>());    	    
-    	
+
 		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
 		{
-			toolBarHandler.addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);				
-		}     	
+			toolBarHandler.addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);							
+		}
     }
    
     public static ContextManager getContextManager()
@@ -272,7 +272,11 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
                 }
 
                 //update the toolbar
-                getToolBarHandler().addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);
+        		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
+        		{
+        			getToolBarHandler().addAction(getDefinedAction(ActionConstants.HELP_TOPIC), true);
+        		}
+        		
                 mainFrame.updateToolBar(toolBarHandler.getToolBar(), closeButton);
 
                 //update the menus
@@ -285,7 +289,12 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
             else
             {//we could possibly be here b/c user closed the last tab, roll back to menu's original state.
                 getToolBarHandler().removeAllActions();
-                getToolBarHandler().addAction(getMenu().getDefinedAction(ActionConstants.HELP_TOPIC), true); //.helpTopicAction
+        		
+                if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
+        		{
+        			getToolBarHandler().addAction(getMenu().getDefinedAction(ActionConstants.HELP_TOPIC), true); //.helpTopicAction
+        		}
+        		
                 mainFrame.updateToolBar(toolBarHandler.getToolBar());
                 menu.resetMenus(false);
             }
@@ -459,6 +468,9 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/13 17:12:17  schroedn
+ * HISTORY      : added option for checking for help
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
