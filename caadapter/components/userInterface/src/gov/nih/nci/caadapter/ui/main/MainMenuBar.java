@@ -92,8 +92,8 @@ import javax.swing.JMenuItem;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.4 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -621,38 +621,56 @@ public class MainMenuBar extends AbstractMenuBar
 	private void resetNewSubMenu(boolean hasActiveDocument)
 	{
 		if (!hasActiveDocument) {
-			menuItemMap.get(ActionConstants.NEW_MAP_FILE).getAction().setEnabled(true);
+//			menuItemMap.get(ActionConstants.NEW_MAP_FILE).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.NEW_MAP_FILE,true);
 //			newMapFileItem.getAction().setEnabled(true);
 //			newCSVSpecificationItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
+//			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.NEW_CSV_SPEC,true);
 //			newHSMFileItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.NEW_HSM_FILE).getAction().setEnabled(true);
+//			menuItemMap.get(ActionConstants.NEW_HSM_FILE).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.NEW_HSM_FILE,true);
 //			newHL7V3MessageItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.NEW_HL7_V3_MESSAGE).getAction().setEnabled(true);
+//			menuItemMap.get(ActionConstants.NEW_HL7_V3_MESSAGE).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.NEW_HL7_V3_MESSAGE,true);
 		}
 	}
-
+	private void resetMenuItem(String itemName, boolean newValue)
+	{
+		JMenuItem menuItem=menuItemMap.get(itemName);
+		if (menuItem!=null)
+		{
+			Action a=menuItem.getAction();
+			if (a!=null)
+			a.setEnabled(newValue);
+		}
+	}
 	private void resetOpenSubMenu(boolean hasActiveDocument)
 	{
 		if (!hasActiveDocument) {
 //			openMapFileItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.OPEN_MAP_FILE).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.OPEN_MAP_FILE,true);
+//			menuItemMap.get(ActionConstants.OPEN_MAP_FILE).getAction().setEnabled(true);
 //			openCSVSpecificationItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.OPEN_CSV_SPEC).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.OPEN_CSV_SPEC,true);
+//			menuItemMap.get(ActionConstants.OPEN_CSV_SPEC).getAction().setEnabled(true);
 //			openHSMFileItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.OPEN_HSM_FILE).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.OPEN_HSM_FILE,true);
+//			menuItemMap.get(ActionConstants.OPEN_HSM_FILE).getAction().setEnabled(true);
 //			openHL7V3MessageItem.getAction().setEnabled(true);
-			menuItemMap.get(ActionConstants.OPEN_HL7_V3_MESSAGE).getAction().setEnabled(true);
+			resetMenuItem(ActionConstants.OPEN_HL7_V3_MESSAGE,true);
+//			menuItemMap.get(ActionConstants.OPEN_HL7_V3_MESSAGE).getAction().setEnabled(true);
 		}
 	}
 
 	private void resetReportMenu(boolean hasActiveDocument)
 	{
 		if (!hasActiveDocument) {
-			Action a = menuItemMap.get(ActionConstants.GENERATE_REPORT).getAction();//. generateReportMenuItem.getAction();
-			if (a != null) {
-				a.setEnabled(false);
-			}
+			resetMenuItem(ActionConstants.GENERATE_REPORT,false);
+//			Action a = menuItemMap.get(ActionConstants.GENERATE_REPORT).getAction();//. generateReportMenuItem.getAction();
+//			if (a != null) {
+//				a.setEnabled(false);
+//			}
 		}
 	}
 
@@ -716,6 +734,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.3  2007/06/13 17:12:41  schroedn
+ * HISTORY : added option for checking for help
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/05/09 20:56:26  jayannah
  * HISTORY : added the querybuilder menu
  * HISTORY :
