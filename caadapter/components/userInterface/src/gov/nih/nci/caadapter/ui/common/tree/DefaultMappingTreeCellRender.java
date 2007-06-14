@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.2 2007-06-14 13:20:54 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,10 +50,10 @@ import java.awt.Component;
  * The class defines the default tree cell renderer for mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-14 13:20:54 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -67,14 +67,15 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 	{
 		if (!selected)
 		{
-			if (row % 2 == 0)
+			setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
+			/*			if (row % 2 == 0)
 			{//even
 				setBackgroundNonSelectionColor(ALTERNATE_COLOR);
 			}
 			else
 			{//odd
 				setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
-			}
+			}*/
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 			if (node.getUserObject() instanceof AssociationMetadata) {
 				AssociationMetadata assoMeta = (AssociationMetadata)node.getUserObject();
