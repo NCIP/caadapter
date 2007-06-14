@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.3 2007-06-12 20:17:16 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.4 2007-06-14 15:44:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -68,8 +68,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-06-12 20:17:16 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-06-14 15:44:58 $
  */
 public final class UIHelper
 {
@@ -230,10 +230,16 @@ public final class UIHelper
 		else if (metaData instanceof AttributeMetadata)
 			linkColor=MAPPING_LINK_ATTRIBUTE_COLOR;
 		else if(metaData instanceof ColumnMetadata)
+		{
 			linkColor=MAPPING_LINK_ATTRIBUTE_COLOR;
+			ColumnMetadata column=(ColumnMetadata)metaData;
+			String columnType=column.getType();
+			if (columnType!=null&&columnType.equals(ColumnMetadata.TYPE_ASSOCIATION))
+				linkColor=MAPPING_LINK_ASSOCIATION_COLOR;
+		}
 		else if (metaData instanceof AssociationMetadata)
 			linkColor=MAPPING_LINK_ASSOCIATION_COLOR;
-	
+		
 		return linkColor;
 	}
 	
@@ -389,6 +395,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/06/12 20:17:16  wangeug
+ * HISTORY      : set colors with links
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/04/19 14:05:44  wangeug
  * HISTORY      : set link color based on linkType
  * HISTORY      :
