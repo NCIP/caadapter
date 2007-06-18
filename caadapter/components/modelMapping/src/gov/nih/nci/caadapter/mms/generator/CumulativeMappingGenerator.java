@@ -466,7 +466,8 @@ public static boolean mapManyToManyAssociation(UMLAssociationEnd source, String 
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	ColumnMetadata col = (ColumnMetadata)modelMeta.get(targetXPath);
-
+	col.setType(col.TYPE_ASSOCIATION);
+	
 	thisEnd.setRoleName(source.getRoleName());
 	thisEnd.setMultiplicity(source.getHighMultiplicity());
 	thisEnd.setNavigability(source.isNavigable());
