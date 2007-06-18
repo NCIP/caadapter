@@ -363,7 +363,8 @@ public static boolean mapAttribute(String sourcePath, String targetPath){
 	ColumnMetadata columnMetadata = (ColumnMetadata)modelMeta.get(targetPath);
 	boolean successfullyMapped = false;
 	AttributeMapping mapping = new AttributeMapping();
-		
+	
+	columnMetadata.setType(columnMetadata.TYPE_ATTRIBUTE);
 	mapping.setAttributeMetadata(attributeMetadata);
 	mapping.setColumnMetadata(columnMetadata);
 	
@@ -412,6 +413,7 @@ public static boolean mapSingleAssociation(String sourceXPath, String targetXPat
 	boolean successfullyMapped = false;
 	SingleAssociationMapping mapping = new SingleAssociationMapping();
 		
+	targetMetadata.setType(targetMetadata.TYPE_ASSOCIATION);	
 	mapping.setAssociationEndMetadata(sourceMetadata);
 	mapping.setColumnMetadata(targetMetadata);
 	

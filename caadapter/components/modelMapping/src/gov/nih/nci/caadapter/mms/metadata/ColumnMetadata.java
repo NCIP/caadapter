@@ -15,6 +15,9 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 	private String name;
 	private String xPath;
 	private TableMetadata table;
+	private String type; 
+    public static String TYPE_ATTRIBUTE = "TYPE_ATTRIBUTE";  
+    public static String TYPE_ASSOCIATION = "TYPE_ASSOCIATION";
 
 	public ColumnMetadata(){
 	}
@@ -124,7 +127,15 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
     public TableMetadata getTableMetadata() {
 		return table;
 	}
-
+    
+    public String getType(){
+        return type;
+    }
+    
+    public void setType(String type){
+        this.type = type;   
+    }
+    
 	/**
 	 *
 	 * @param datatype
