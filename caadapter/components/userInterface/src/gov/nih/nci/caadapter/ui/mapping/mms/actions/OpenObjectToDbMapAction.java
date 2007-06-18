@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.2 2007-06-07 18:31:19 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.3 2007-06-18 15:22:52 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-07 18:31:19 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-06-18 15:22:52 $
  */
 public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 {
@@ -176,10 +176,12 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 					if( file.getAbsolutePath().contains(".map") || file.getAbsolutePath().contains(".MAP"))
 					{
 						validatorResults = mappingPanel.processOpenOldMapFile(file);
+						mappingPanel.setChanged(false);
 					}
 					else
 					{
 						validatorResults = mappingPanel.processOpenMapFile(file);
+						mappingPanel.setChanged(false);
 					}
 					Thread.sleep(1);
 					
@@ -248,6 +250,9 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/07 18:31:19  schroedn
+ * HISTORY      : Edits to sync with new codebase and java webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

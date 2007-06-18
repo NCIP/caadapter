@@ -20,10 +20,10 @@ import java.awt.event.KeyEvent;
  * This class defines the new Map panel action.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:57 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-06-18 15:22:38 $
  */
 public class NewObject2DBMapAction extends AbstractContextAction
 		{
@@ -75,6 +75,7 @@ public class NewObject2DBMapAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 		Object2DBMappingPanel mp = new Object2DBMappingPanel("Test");
+		mp.setChanged(false);
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
@@ -93,6 +94,9 @@ public class NewObject2DBMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2006/11/15 20:12:36  wuye
  * HISTORY      : reorganize menu items
  * HISTORY      :
