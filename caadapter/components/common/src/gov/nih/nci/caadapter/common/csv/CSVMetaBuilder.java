@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.2 2007-06-21 19:10:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -69,8 +69,8 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-06-21 19:10:08 $
  */
 
 public class CSVMetaBuilder extends MetaBuilderBase {
@@ -78,7 +78,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
     private static CSVMetaBuilder metaBuilder = null;
 
     private static final String LOGID = "$RCSfile: CSVMetaBuilder.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.2 2007-06-21 19:10:08 wangeug Exp $";
 
     private CSVMetaBuilder()
     {
@@ -127,7 +127,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
         C_segment castorSegment = new C_segment();
         castorSegment.setName(metaSegment.getName());
         castorSegment.setUuid(metaSegment.getUUID());
-
+        castorSegment.setCardinality(metaSegment.getCardinality());
         List<CSVSegmentMeta> metaChildSegments = metaSegment.getChildSegments();
         for (int i = 0; i < metaChildSegments.size(); i++) {
             CSVSegmentMeta csvSegmentMeta = metaChildSegments.get(i);

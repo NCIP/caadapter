@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.2 2007-06-21 19:10:42 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,18 +47,18 @@ import java.util.ArrayList;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-06-21 19:10:42 $
  */
 
 public class CSVSegmentImpl extends DataObjectImpl implements CSVSegment{
     private static final String LOGID = "$RCSfile: CSVSegmentImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.2 2007-06-21 19:10:42 wangeug Exp $";
 
     public ArrayList<CSVField> fields = new ArrayList<CSVField>();
     public ArrayList<CSVSegment> childSegments = new ArrayList<CSVSegment>();
     public CSVSegment parentSegment = null;
-
+    private String cardinality;
     // constructors
     public CSVSegmentImpl(CSVSegmentMeta metaObject) {
         super(metaObject);
@@ -98,5 +98,13 @@ public class CSVSegmentImpl extends DataObjectImpl implements CSVSegment{
     {
         return getName();
     }
+
+	public String getCardinality() {
+		return cardinality;
+	}
+
+	public void setCardinality(String cardinality) {
+		this.cardinality = cardinality;
+	}
 
 }

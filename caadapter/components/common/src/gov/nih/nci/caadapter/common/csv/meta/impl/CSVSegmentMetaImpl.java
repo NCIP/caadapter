@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.2 2007-06-21 19:11:12 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,17 +48,18 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * 			$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * 			$Date: 2007-06-21 19:11:12 $
  * @since caAdapter v1.2
  */
 
 public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 {
 	private static final String LOGID = "$RCSfile: CSVSegmentMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.2 2007-06-21 19:11:12 wangeug Exp $";
 
 	private String segmentName;
+	private String segmentCardinality;
 	List<CSVFieldMeta> fields = new ArrayList<CSVFieldMeta>();
 	List<CSVSegmentMeta> childSegments = new ArrayList<CSVSegmentMeta>();
 	CSVSegmentMeta parent;
@@ -216,5 +217,15 @@ public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
 		return result;
+	}
+
+	public String getCardinality() {
+		// TODO Auto-generated method stub
+		return segmentCardinality;
+	}
+
+	public void setCardinality(String newValue) {
+		// TODO Auto-generated method stub
+		segmentCardinality=newValue;
 	}
 }

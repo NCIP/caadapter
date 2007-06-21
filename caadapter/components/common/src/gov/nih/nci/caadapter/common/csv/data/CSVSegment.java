@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/CSVSegment.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/CSVSegment.java,v 1.2 2007-06-21 19:10:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,8 +44,8 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-06-21 19:10:23 $
  */
 
 public interface CSVSegment extends DataObject{
@@ -54,4 +54,8 @@ public interface CSVSegment extends DataObject{
     public void addChildSegment(CSVSegment segment);
     public CSVSegment getParentSegment();
     public void setParentSegment(CSVSegment segment);    
+	//segment cardinality
+	public String getCardinality();
+	public void setCardinality(String newValue);
+
 }

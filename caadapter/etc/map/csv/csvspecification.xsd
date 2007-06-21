@@ -17,6 +17,7 @@
       </xs:choice>
       <xs:attribute name="name" use="required" type="xs:NCName"/>
       <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="cardinality" type="xs:string"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="field">
