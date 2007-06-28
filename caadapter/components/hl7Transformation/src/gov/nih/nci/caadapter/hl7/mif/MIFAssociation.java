@@ -7,14 +7,17 @@ package gov.nih.nci.caadapter.hl7.mif;
 
 
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
+import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 
 import java.io.Serializable;
+import java.util.HashSet;
 /**
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-06-07 15:02:47 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-28 13:52:15 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -30,7 +33,17 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	
 	private String name;
 	private MIFClass mifClass;
+	private MIFClass referencedMifClass;
 	private boolean optionChosen = false;
+	private boolean choiceSelected =false;//make it serializable
+	private String parentXmlPath;
+
+	public String getParentXmlPath() {
+		return parentXmlPath;
+	}
+	public void setParentXmlPath(String parentXmlPath) {
+		this.parentXmlPath = parentXmlPath;
+	}
 
 	/**
 	 * @return the conformance
@@ -116,7 +129,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	 */
 	public String getNodeXmlName()
 	{
-		if (getMultiplicityIndex()==0)
+		if (getMaximumMultiplicity()==1)
 			return getName();
 		
 		String stB="";
@@ -135,7 +148,6 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	 * @param sortKey the sortKey to set
 	 */
 	public void setSortKey(String sortKey) {
-		System.out.println("MIFAssociation.setSortKey():"+sortKey);
 		this.sortKey = sortKey;
 	}
 	/**
@@ -181,23 +193,93 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		optionChosen=option;
 	}
 	
+	public boolean isChoiceSelected() {
+		return choiceSelected;
+	}
+
+	public void setChoiceSelected(boolean choiceSelected) {
+		this.choiceSelected = choiceSelected;
+	}
+	public void setChoiceClass(String mifClassName)
+	{
+//		System.out.println("MIFAssociation.setChoiceClass()..xmlPath:"+getXmlPath());
+		if (this.isChoiceSelected())
+		{
+			//unset the previous choice
+			for (MIFClass choiceClass:getMifClass().getChoices())
+			{
+				if (choiceClass.isChoiceSelected())
+				{
+					choiceClass.setChoiceSelected(false);
+					//remove attribute, association from the chosen class 
+					//if they were added from parent class
+					for (MIFAttribute parentAttr:getMifClass().getAttributes())
+						choiceClass.removeAttributeWithName(parentAttr.getName());
+					for (MIFAssociation parentAssc:getMifClass().getAssociations())
+						choiceClass.removeAassociationWithNodeXmlName(parentAssc.getNodeXmlName());
+					break;
+				}
+			}
+		}
+		this.setChoiceSelected(true);
+		for (MIFClass choiceClass:getMifClass().getChoices())
+		{
+			if (choiceClass.getName().equals(mifClassName))
+			{
+				choiceClass.setChoiceSelected(true);
+				//add attribute, associatoin from parent class to the chosen class
+				for (MIFAttribute parentAttr:getMifClass().getAttributes())
+					choiceClass.addAttribute((MIFAttribute)parentAttr.clone());
+				for (MIFAssociation parentAssc:getMifClass().getAssociations())
+					choiceClass.addAssociation((MIFAssociation)parentAssc.clone());	
+				break;
+			}
+		}
+	}
 	public Object clone()
 	{
 		 try {
 			 MIFAssociation clonnedObj = (MIFAssociation)super.clone();
-			 clonnedObj.setMifClass((MIFClass)getMifClass().clone());
-             return clonnedObj;
+			 MIFClass clonnedMIFClass=(MIFClass)getMifClass().clone();
+			 clonnedObj.setMifClass(clonnedMIFClass);
+			 if (this.getReferencedMifClass()!=null)
+				 clonnedObj.setReferencedMifClass((MIFClass)getReferencedMifClass().clone());
+			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
              throw new InternalError(e.toString());
          }
-
 	}
+	
 	public String toString()
 	{
-		if (getMultiplicityIndex()==0)
-			return super.toString();
+		if (this.getMaximumMultiplicity()==1)
+			return getName();
+		else
+			return getName()+ "  [" + (this.getMultiplicityIndex() +1) +"]";
+
+	}
+	public MIFClass getReferencedMifClass() {
+		if (referencedMifClass!=null)
+			return referencedMifClass;
 		
-		return super.toString()+" ["+getMultiplicityIndex() +"]";
+		if (!getMifClass().getReferenceName().equals(""))
+		{
+			//loading the referenced MIF class from CMET
+			CMETRef cmetRef = CMETUtil.getCMET(getMifClass().getReferenceName());
+			if (cmetRef != null) 
+				referencedMifClass = MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif");
+		}
+		return referencedMifClass;
+	}
+	public void setReferencedMifClass(MIFClass referencedMifClass) {
+		this.referencedMifClass = referencedMifClass;
+	}
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public void setEnabled(boolean enable) {
+		
 	}
 }	

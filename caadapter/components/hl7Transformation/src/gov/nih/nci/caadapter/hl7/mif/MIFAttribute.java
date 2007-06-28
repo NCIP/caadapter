@@ -11,12 +11,13 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-06-07 15:02:47 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-28 13:52:35 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -41,6 +42,8 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private String type;
 	private boolean strutural;
 	private boolean optionChosen = false;
+	private String parentXmlPath;
+	private Datatype datatype;
 
 	/**
 	 * @return the conformance
@@ -163,7 +166,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	 */
 	public String getNodeXmlName()
 	{
-		if (getMultiplicityIndex()==0)
+		if (getMaximumMultiplicity()==1)
 			return getName();
 		
 		String stB="";
@@ -290,7 +293,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	{
 		 try {
 			 MIFAttribute clonnedObj = (MIFAttribute)super.clone();
-             return clonnedObj;
+			 if (getDatatype()!=null)
+				 clonnedObj.setDatatype((Datatype)getDatatype().clone());
+			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
              throw new InternalError(e.toString());
@@ -299,9 +304,36 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	}
 	public String toString()
 	{
-		if (getMultiplicityIndex()==0)
-			return super.toString();
-		
-		return super.toString()+" ["+getMultiplicityIndex() +"]";
+		if (this.getMaximumMultiplicity()==1)
+			return getName();
+		else
+			return getName()+ "  [" + (this.getMultiplicityIndex() +1) +"]";
 	}
+	public String getParentXmlPath() {
+		return parentXmlPath;
+	}
+	public void setParentXmlPath(String parentXmlPath) {
+		this.parentXmlPath = parentXmlPath;
+	}
+	/**
+	 * The persistent Datatype associated with this MIFAttribute
+	 * @return
+	 */
+	public Datatype getDatatype() {
+		return datatype;
+	}
+	public void setDatatype(Datatype datatype) {
+		this.datatype = datatype;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public void setEnabled(boolean enable) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

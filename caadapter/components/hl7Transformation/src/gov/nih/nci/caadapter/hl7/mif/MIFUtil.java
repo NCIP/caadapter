@@ -10,6 +10,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MIFUtil {
 	
+	public static boolean isTreatedAsSimpleType(String typeName)
+	{
+		if (typeName.trim().equals("CS"))
+			return true;
+		return false;
+	}
+	
 	public static boolean isChoiceAssociation(MIFAssociation assc)
 	{
 		MIFClass mifClass=assc.getMifClass();

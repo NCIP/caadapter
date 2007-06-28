@@ -3,8 +3,7 @@ package gov.nih.nci.caadapter.hl7.datatype;
 public abstract class DatatypeBaseObject {
 
 	private boolean choiceSelected =false;
-	private boolean enabled = true;
-	private String xmlPath;
+
 	
 	public boolean isChoiceSelected() {
 		return choiceSelected;
@@ -14,25 +13,21 @@ public abstract class DatatypeBaseObject {
 		this.choiceSelected = choiceSelected;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enable) {
-		this.enabled = enable;
-	}
+	public abstract boolean isEnabled();
+	public abstract void setEnabled(boolean enable) ;
 
 	public abstract boolean isOptionChosen();
 	public abstract void setOptionChosen(boolean optionChosen);
 
 	public String getXmlPath() {
-		return xmlPath;
+		if (getParentXmlPath()==null||getParentXmlPath().equals(""))
+			return getNodeXmlName();
+		return getParentXmlPath()+"."+getNodeXmlName();
 	}
 
-	public void setXmlPath(String xmlPath) {
-		this.xmlPath = xmlPath;
-	}
-
+	public abstract String getNodeXmlName();
+	public abstract String getParentXmlPath();
+	public abstract void setParentXmlPath(String newName);
 	public abstract String getName();
 	public abstract void setName(String newName);
 
