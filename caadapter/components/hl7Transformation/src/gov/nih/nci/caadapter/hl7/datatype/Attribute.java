@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-07 15:00:41 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-06-28 13:49:56 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
@@ -34,7 +34,22 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 
 	private boolean attribute;
 	private boolean optionChosen = false;
-	
+	private String parentXmlPath;
+	private boolean enabled = true;
+	private boolean simple=true;
+	private Datatype referenceDatatype;
+	public String getNodeXmlName() {
+		return this.getName();
+	}
+
+	public String getParentXmlPath() {
+		return parentXmlPath;
+	}
+
+	public void setParentXmlPath(String parentXmlPath) {
+		this.parentXmlPath = parentXmlPath;
+	}
+
 	/**
 	 * Return ture if the attribute is visible/accessable/allowed, 
 	 * return false, otherwise.
@@ -165,7 +180,8 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	{
 		 try {
              Attribute clonnedObj = (Attribute)super.clone();
-
+             if (getReferenceDatatype()!=null)
+            	 clonnedObj.setReferenceDatatype((Datatype)getReferenceDatatype().clone());
              return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -183,4 +199,28 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 		// TODO Auto-generated method stub
 		optionChosen=option;
 	}
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enable) {
+		this.enabled = enable;
+	}
+
+	public boolean isSimple() {
+		return simple;
+	}
+
+	public void setSimple(boolean valueSimple) {
+		simple = valueSimple;
+	}
+
+	public Datatype getReferenceDatatype() {
+		return referenceDatatype;
+	}
+
+	public void setReferenceDatatype(Datatype referenceDatatype) {
+		this.referenceDatatype = referenceDatatype;
+	}
+
 }
