@@ -60,7 +60,9 @@
     <constant name="OPEN_DIALOG_TITLE_FOR_HSM_FILE" type="String" value="Open HL7 v3 Specification (H3S) File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE" type="String" value="Open HL7 v3 Message File..."/>
 
-	<!--define the initial field number, for example now it is set to 1-->
+    <constant name="HL7_V3_TO_CSV_MODULE_NAME" type="String" value="V3 to CSV"/>
+
+    <!--define the initial field number, for example now it is set to 1-->
 	<constant name="DEFAULT_FIELD_COLUMN_START_NUMBER" type="int" value="1"/>
 
     <constant name="FRAME_DEFAULT_WIDTH" type="int" value="800"/>
