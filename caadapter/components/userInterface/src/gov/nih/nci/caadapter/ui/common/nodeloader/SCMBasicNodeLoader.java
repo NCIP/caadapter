@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.2 2007-07-03 19:14:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:13 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:14:44 $
  */
 public class SCMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -168,6 +168,7 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
 
 		CSVSegmentMeta oldSegment = (CSVSegmentMeta) userObject;
 		newSegmentMeta = new CSVSegmentMetaImpl(oldSegment.getName(), parent);
+		newSegmentMeta.setCardinality(oldSegment.getCardinality());
 		if (resetUUID)
 		{
 			newSegmentMeta.setUUID(null);
@@ -211,6 +212,9 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
