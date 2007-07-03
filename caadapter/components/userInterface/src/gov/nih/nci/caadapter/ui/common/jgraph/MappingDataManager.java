@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingDataManager.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingDataManager.java,v 1.2 2007-07-03 19:05:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,7 +37,7 @@ package gov.nih.nci.caadapter.ui.common.jgraph;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
-import gov.nih.nci.caadapter.hl7.map.components.BaseComponent;
+import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.properties.PropertiesSwitchController;
 
@@ -56,8 +56,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:05:40 $
  */
 public interface MappingDataManager
 {
@@ -125,6 +125,9 @@ public interface MappingDataManager
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2006/09/26 15:57:11  wuye
  * HISTORY      : add new function to clear all cells
  * HISTORY      :
