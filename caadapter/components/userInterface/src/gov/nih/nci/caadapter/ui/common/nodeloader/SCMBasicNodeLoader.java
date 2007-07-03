@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.2 2007-07-03 19:14:44 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.3 2007-07-03 19:27:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 19:14:44 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-03 19:27:05 $
  */
 public class SCMBasicNodeLoader extends DefaultNodeLoader
 {

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingTargetTree.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingTargetTree.java,v 1.2 2007-07-03 19:26:31 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,24 +46,14 @@ import javax.swing.JPanel;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:26:31 $
  */
 public class MappingTargetTree extends MappingBaseTree
 {
 	public MappingTargetTree(JPanel m, TreeNode root)
 	{
 		super(m, root);
-//		this.addTreeExpansionListener(this);
-//		if (root != null)
-//		{
-//			DefaultTreeModel dtm = new DefaultTreeModel(root);
-//			setModel(dtm);
-//		}
-//		else
-//		{//load default dummy data
-//			loadData();
-//		}
 	}
 
 	protected void loadData()
@@ -164,6 +154,9 @@ public class MappingTargetTree extends MappingBaseTree
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:23  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

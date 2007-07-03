@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/HSMTreeCellRenderer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/HSMTreeCellRenderer.java,v 1.2 2007-07-03 19:27:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,9 +34,9 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneDatatypeFieldMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneDatatypeFieldMeta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import javax.swing.*;
@@ -51,8 +51,8 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:27:19 $
  */
 public class HSMTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -68,7 +68,7 @@ public class HSMTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/HSMTreeCellRenderer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/HSMTreeCellRenderer.java,v 1.2 2007-07-03 19:27:19 wangeug Exp $";
 
 	private static final Color SELECTED_CHOICE_BACK_GROUND_COLOR = new Color(240, 100, 100);
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
@@ -92,18 +92,18 @@ public class HSMTreeCellRenderer extends DefaultTreeCellRenderer
 		{
 			Object userObj = ((DefaultMutableTreeNode)value).getUserObject();
 //			Log.logInfo(this, "user object of type '" + (userObj == null ? "null" : userObj.getClass().getName()) + "'");
-			if(userObj instanceof CloneMeta)
-			{
-				setIcon(CLONE_IMAGE_ICON);
-			}
-			else if(userObj instanceof CloneAttributeMeta)
-			{
-				setIcon(CLONE_ATTRIBUTE_IMAGE_ICON);
-			}
-			else if(userObj instanceof CloneDatatypeFieldMeta)
-			{
-				setIcon(CLONE_DATATYPE_FIELD_IMAGE_ICON);
-			}
+//			if(userObj instanceof CloneMeta)
+//			{
+//				setIcon(CLONE_IMAGE_ICON);
+//			}
+//			else if(userObj instanceof CloneAttributeMeta)
+//			{
+//				setIcon(CLONE_ATTRIBUTE_IMAGE_ICON);
+//			}
+//			else if(userObj instanceof CloneDatatypeFieldMeta)
+//			{
+//				setIcon(CLONE_DATATYPE_FIELD_IMAGE_ICON);
+//			}
 		}
 		return this;
 	}
@@ -111,6 +111,9 @@ public class HSMTreeCellRenderer extends DefaultTreeCellRenderer
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
