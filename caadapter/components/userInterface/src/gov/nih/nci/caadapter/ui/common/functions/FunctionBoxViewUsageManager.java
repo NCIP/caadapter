@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.2 2007-07-03 18:58:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,7 +39,7 @@ import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
-import gov.nih.nci.caadapter.hl7.map.components.FunctionComponent;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import javax.swing.*;
@@ -57,8 +57,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 18:58:11 $
  */
 public class FunctionBoxViewUsageManager
 {
@@ -74,7 +74,7 @@ public class FunctionBoxViewUsageManager
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.2 2007-07-03 18:58:11 wangeug Exp $";
 
     //key: uuid of function instance, function instance.
     private Map functionInstanceMap;
@@ -133,7 +133,7 @@ public class FunctionBoxViewUsageManager
      * @param parentContainer
      * @return a FunctionBoxMutableViewInterface
      */
-    public FunctionBoxMutableViewInterface createOneFunctionalBoxMutableViewInstance(Object function, gov.nih.nci.caadapter.hl7.map.View viewInfo, Container parentContainer)
+    public FunctionBoxMutableViewInterface createOneFunctionalBoxMutableViewInstance(Object function, gov.nih.nci.caadapter.common.map.View viewInfo, Container parentContainer)
     {
         FunctionMeta functionMeta = FunctionBoxViewManager.getInstance().getOneFunctionalBoxSpecification(function);
 
@@ -332,6 +332,9 @@ public class FunctionBoxViewUsageManager
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2006/12/28 20:50:36  umkis
  * HISTORY      : saveValue() and readValue() in FunctionConstant
  * HISTORY      :

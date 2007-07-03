@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewManager.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewManager.java,v 1.2 2007-07-03 18:57:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,7 +37,7 @@ package gov.nih.nci.caadapter.ui.common.functions;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.GroupMeta;
-import gov.nih.nci.caadapter.hl7.map.components.FunctionComponent;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 
 import java.util.*;
 
@@ -47,8 +47,8 @@ import java.util.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 18:57:48 $
  */
 public class FunctionBoxViewManager
 {
@@ -200,6 +200,9 @@ public class FunctionBoxViewManager
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
