@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingBaseTree.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingBaseTree.java,v 1.2 2007-07-03 19:24:46 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,9 +41,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.JPanel;
-import javax.swing.JViewport;
+//import javax.swing.JViewport;
 import java.awt.Graphics;
-import java.awt.Component;
+//import java.awt.Component;
 
 
 /**
@@ -52,8 +52,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:24:46 $
  */
 public abstract class MappingBaseTree extends AutoscrollableTree implements TreeExpansionListener
 {
@@ -139,6 +139,9 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2006/10/23 16:25:25  wuye
  * HISTORY      : Update cell rendering to show a different color for those undragable/unmappable node.
  * HISTORY      :

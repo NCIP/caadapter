@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.2 2007-07-03 19:31:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,7 +37,7 @@ package gov.nih.nci.caadapter.ui.common.tree;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
+//import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -65,8 +65,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:31:34 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -176,7 +176,7 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 				return false;
 			}
 		}
-
+		
 		boolean result = false;
 		if(isDataContainsTargetClassObject(transferableNode, DefaultGraphCell.class))
 		{
@@ -185,14 +185,14 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 		else if(isDataContainsTargetClassObject(transferableNode, DefaultSourceTreeNode.class))
 		{
 			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
-			MapLinkValidator validator = new MapLinkValidator(sourceNode.getUserObject(), targetNode.getUserObject());
-			ValidatorResults validatorResult = validator.validate();
-			Object targetUserObject = targetNode.getUserObject();
-			if(targetUserObject instanceof MetaObject)
-			{//further validate if the target object itself is mappable or not.
-				validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
-			}
-			result = validatorResult.isValid();
+//			MapLinkValidator validator = new MapLinkValidator(sourceNode.getUserObject(), targetNode.getUserObject());
+//			ValidatorResults validatorResult = validator.validate();
+//			Object targetUserObject = targetNode.getUserObject();
+//			if(targetUserObject instanceof MetaObject)
+//			{//further validate if the target object itself is mappable or not.
+//				validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
+//			}
+//			result = validatorResult.isValid();
 		}
 
 //		int size = transferredDataList.size();
@@ -394,6 +394,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.28  2006/08/02 18:44:23  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

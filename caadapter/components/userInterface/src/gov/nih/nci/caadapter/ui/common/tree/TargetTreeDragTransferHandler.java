@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDragTransferHandler.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDragTransferHandler.java,v 1.2 2007-07-03 19:28:46 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,7 +36,7 @@ package gov.nih.nci.caadapter.ui.common.tree;
 
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
+//import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 
 import javax.swing.*;
@@ -51,8 +51,8 @@ import java.awt.dnd.DragGestureEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 19:28:46 $
  */
 public class TargetTreeDragTransferHandler extends TreeDefaultDragTransferHandler
 {
@@ -68,7 +68,7 @@ public class TargetTreeDragTransferHandler extends TreeDefaultDragTransferHandle
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDragTransferHandler.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDragTransferHandler.java,v 1.2 2007-07-03 19:28:46 wangeug Exp $";
 
 	public TargetTreeDragTransferHandler(JTree tree)
 	{
@@ -111,7 +111,7 @@ public class TargetTreeDragTransferHandler extends TreeDefaultDragTransferHandle
 				ValidatorResults validatorResult = new ValidatorResults();
 				if (targetUserObject instanceof MetaObject)
 				{//further validate if the target object itself is mappable or not.
-					validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
+//					validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
 				}
 				result = validatorResult.isValid();
 
@@ -124,6 +124,9 @@ public class TargetTreeDragTransferHandler extends TreeDefaultDragTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2006/08/02 18:44:23  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

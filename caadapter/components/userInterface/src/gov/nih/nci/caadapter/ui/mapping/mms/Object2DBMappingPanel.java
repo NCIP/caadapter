@@ -17,10 +17,10 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaFileParser;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaResult;
-import gov.nih.nci.caadapter.hl7.database.DatabaseMetaParserImpl;
-import gov.nih.nci.caadapter.hl7.database.DatabaseMetaResult;
+//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaFileParser;
+//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaResult;
+//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaParserImpl;
+//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaResult;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
@@ -96,14 +96,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.3 2007-06-13 17:22:08 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.4 2007-07-03 19:33:48 wangeug Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -552,11 +552,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		BaseResult returnResult = null;
 
 		// parse the file into a meta object graph.
-		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension)) {
-			parser = new DatabaseMetaParserImpl();
-		} else {// default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-			parser = HL7V3MetaFileParser.instance();
-		}
+		//comment out :07/03/2007 to remove HL7V3MetaFileParser.java
+//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension)) {
+//			parser = new DatabaseMetaParserImpl();
+//		} 
+//		else {// default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
+//			parser = HL7V3MetaFileParser.instance();
+//		}
 		returnResult = parser.parse(new FileReader(file));
 		ValidatorResults validatorResults = returnResult.getValidatorResults();
 		if (validatorResults != null && validatorResults.hasFatal()) {
@@ -567,11 +569,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			return false;
 		}
 
-		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension)) {
-			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
-		} else {// default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-			metaInfo = ((HL7V3MetaResult) returnResult).getHl7V3Meta();
-		}
+//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension)) {
+//			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
+//		} else {// default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
+//			metaInfo = ((HL7V3MetaResult) returnResult).getHl7V3Meta();
+//		}
 		buildTargetTree(metaInfo, file, isToResetGraph);
 		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo,
 				file);
@@ -1042,6 +1044,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.3  2007/06/13 17:22:08  schroedn
+ * HISTORY : removed functions
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/06/07 16:17:00  schroedn
  * HISTORY : Edits to sync with new codebase and java webstart
  * HISTORY : HISTORY : Revision 1.1
