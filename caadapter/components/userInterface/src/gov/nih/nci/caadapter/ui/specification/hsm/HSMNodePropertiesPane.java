@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.2 2007-07-03 20:21:37 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,25 +35,45 @@
 package gov.nih.nci.caadapter.ui.specification.hsm;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneDatatypeFieldMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
 
-import org.hl7.meta.Cardinality;
-import org.hl7.meta.Datatype;
-import org.hl7.meta.UnknownDatatypeException;
-import org.hl7.meta.impl.DatatypeMetadataFactoryDatatypes;
-import org.hl7.meta.impl.DatatypeMetadataFactoryImpl;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import  gov.nih.nci.caadapter.hl7.datatype.Cardinality;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
+//import gov.nih.nci.caadapter.hl7.mif.CMETRef;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+//import hl7OrgV3.mif.List;
+//import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 
-import javax.swing.*;
+import javax.swing.JTextField;
+import javax.swing.JComponent;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.*;
+import javax.swing.tree.TreePath;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class defines the layout and some of data handling of the properties pane resided in HSMPanel.
@@ -61,8 +81,8 @@ import java.awt.event.ActionListener;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:21:37 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -77,7 +97,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.2 2007-07-03 20:21:37 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -104,7 +124,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	private JTextField userDefaultValueField;
 
 	//could be either HL7V3Meta, CloneMeta, CloneAttributeMeta, CloneDatatypeFieldMeta, etc.
-	private MetaObject hl7V3Meta;
+//	private MetaObject hl7V3Meta;
+	private DatatypeBaseObject seletedBaseObject;
 	private HSMPanel parentPanel;
 
 	/**
@@ -293,36 +314,30 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		else if (RESET_BUTTON_COMMAND_NAME.equals(command))
 		{
 			//Log.logInfo(this, "To Implement Reset Command...");
-			resetToPreviousValue();
+			reloadData();
 		}
 	}
 
-	public MetaObject getHl7V3Meta(boolean fromUI)
+	public DatatypeBaseObject getDatatypeObject(boolean fromUI)
 	{
 		if (fromUI)
 		{//synchronize from UI.
-			return getHl7V3MetaFromUI();
+			if (seletedBaseObject instanceof MIFAttribute)
+			{
+				//set selected concrete class
+				MIFAttribute mifAttr=(MIFAttribute)seletedBaseObject;
+				mifAttr.setConcreteDatatype(DatatypeParserUtil.getDatatype((String)dataTypeField.getSelectedItem()));
+			}
+			else if (seletedBaseObject instanceof Attribute)
+			{
+				//set default value
+				Attribute updtdDatatypeAttr=(Attribute)seletedBaseObject;
+				updtdDatatypeAttr.setDefaultValue(userDefaultValueField.getText());
+			}
 		}
-		return hl7V3Meta;
+		return seletedBaseObject;
 	}
 
-	private MetaObject getHl7V3MetaFromUI()
-	{
-		MetaObject meta = null;
-		if (hl7V3Meta instanceof CloneMeta)
-		{
-			meta = getCloneMetaFromUI();
-		}
-		else if (hl7V3Meta instanceof CloneAttributeMeta)
-		{
-			meta = getCloneAttributeMetaFromUI();
-		}
-		else if (hl7V3Meta instanceof CloneDatatypeFieldMeta)
-		{
-			meta = getCloneDatatypeFieldMetaFromUI();
-		}
-		return meta;
-	}
 
 	/**
 	 * Called by outsiders to trigger change check
@@ -358,40 +373,173 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		{//no need to update
 			return;
 		}
+		
 		Object userObj = treeNode.getUserObject();
-		if (userObj instanceof MetaObject)
+		if (!(userObj instanceof DatatypeBaseObject))
 		{
-			setHl7V3Meta((MetaObject) userObj, refresh);
+			Log.logWarning(this,"Invalid data type being selectd:"+userObj.getClass().getName());
+			return;
 		}
-	}
-
-	private void setHl7V3Meta(MetaObject hl7V3Meta, boolean refresh)
-	{
-		if (refresh || !GeneralUtilities.areEqual(this.hl7V3Meta, hl7V3Meta))
+		
+		DatatypeBaseObject userDatatypeObj=(DatatypeBaseObject)userObj;
+		if (refresh || !GeneralUtilities.areEqual(this.seletedBaseObject, userDatatypeObj))
 		{
-			this.hl7V3Meta = hl7V3Meta;
+			this.seletedBaseObject = userDatatypeObj;
 			clearAndEditableFields(false);
-			if (this.hl7V3Meta instanceof CloneMeta)
-			{
-				CloneMeta cloneMeta = (CloneMeta) this.hl7V3Meta;
-				setCloneMetaToUI(cloneMeta);
-			}
-			else if (this.hl7V3Meta instanceof CloneAttributeMeta)
-			{
-				CloneAttributeMeta cloneAttributeMeta = (CloneAttributeMeta) this.hl7V3Meta;
-				setCloneAttributeMetaToUI(cloneAttributeMeta);
-			}
-			else if (this.hl7V3Meta instanceof CloneDatatypeFieldMeta)
-			{
-				CloneDatatypeFieldMeta cloneDatatypeFieldMeta = (CloneDatatypeFieldMeta) this.hl7V3Meta;
-				setCloneDatatypeFieldMetaToUI(cloneDatatypeFieldMeta);
+			elementNameField.setText(seletedBaseObject.getXmlPath());//.getName());
+			//set parent name form xmlPath
+			String parentXmlPath=userDatatypeObj.getParentXmlPath();//xmlPath.substring(0, xmlPath.lastIndexOf("."));
+			if (parentXmlPath!=null&&parentXmlPath.length()>0)
+			{ 	
+				if (parentXmlPath.lastIndexOf(".")>-1)
+					elementParentField.setText(parentXmlPath.substring(parentXmlPath.lastIndexOf(".")+1));
+				else
+					elementParentField.setText(parentXmlPath);
 			}
 			else
+				elementParentField.setText("null");
+			
+			if (userDatatypeObj instanceof Attribute )
 			{
-				System.err.println("What is this type? '" + (this.hl7V3Meta == null ? "null" : this.hl7V3Meta.getClass().getName()));
+				//userDefaultValue  is editable
+				Attribute dtAttr=(Attribute)userDatatypeObj;
+				elementTypeField.setText("Data Type Field");
+				cardinalityField.setText(new Cardinality(dtAttr.getMin(), dtAttr.getMax()).toString());
+				if (dtAttr.isOptional())
+					mandatoryField.setText("N");
+				else
+					mandatoryField.setText("Y");
+				if (DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
+				{
+					dataTypeField.setEditable(true);
+					abstractField.setText("Y"); 
+				}
+				else 
+					abstractField.setText("N"); 
+				dataTypeField.addItem(dtAttr.getType());
+				setEditableField(userDefaultValueField, true);
+				userDefaultValueField.setText(dtAttr.getDefaultValue());
 			}
+			else if (userDatatypeObj instanceof MIFAttribute )
+			{
+				// dataTypeField is editable if the MIFAttribute is Abstract
+				MIFAttribute mifAttr=(MIFAttribute)userDatatypeObj;
+				elementTypeField.setText("Attribute");
+				cardinalityField.setText(new Cardinality(mifAttr.getMinimumMultiplicity(), mifAttr.getMaximumMultiplicity()).toString());
+				if (mifAttr.isMandatory())
+					mandatoryField.setText("Y");
+				else
+					mandatoryField.setText("N");
+				conformanceField.setText(mifAttr.getConformance());
+				rimSourceField.setText(mifAttr.getDefaultFrom()); //not set
+				Datatype mifAttrDataType=mifAttr.getDatatype();
+				//the pre-defined type is always the first elemnt
+				if (mifAttrDataType!=null&&mifAttrDataType.isAbstract())
+				{
+					Datatype subClass=mifAttr.getConcreteDatatype();
+					dataTypeField.setEditable(true);
+					abstractField.setText("Y"); 
+					List<String> subClassList=DatatypeParserUtil.findSubclassListWithTypeName(mifAttr.getType());
+					if (subClassList!=null)
+					{
+						dataTypeField.addItem(COMBO_BOX_DEFAULT_BLANK_CHOICE);
+						for(String subName:subClassList)
+						{
+							if (!subName.equals(mifAttr.getType()))
+								dataTypeField.addItem(subName);
+							if(subClass!=null&&subName.equals(subClass.getName()))
+								dataTypeField.setSelectedItem(subName);
+						}
+					}
+					else
+						dataTypeField.addItem("No subclass is found");
+				}
+				else
+				{
+					abstractField.setText("N");
+					dataTypeField.addItem(mifAttr.getType());
+				}
+				hl7DefaultValueField.setText(mifAttr.getFixedValue());
+				hl7DomainField.setText(mifAttr.getDomainName());
+				codingStrengthField.setText(mifAttr.getCodingStrength());
+				cmetField.setText("");//not set
+				userDefaultValueField.setText(mifAttr.getDefaultValue());
+			}
+			else if (userDatatypeObj instanceof MIFClass )
+			{
+				MIFClass mifClass=(MIFClass)userDatatypeObj;
+				elementTypeField.setText("Clone");
+				//set 1..1 cardinality to root node
+				if (mifClass.getParentXmlPath()==null)
+				{
+					cardinalityField.setText(new Cardinality(1, 1).toString());
+					mandatoryField.setText("Y");
+				}
+				else
+				{
+					//here is a MIFClass selected for a ChoiceAssociation
+					//find the cardinality from parent association
+					DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)treeNode.getParent();
+					MIFAssociation parentMifAssc=(MIFAssociation)parentNode.getUserObject();
+					cardinalityField.setText(new Cardinality(parentMifAssc.getMaximumMultiplicity(), parentMifAssc.getMaximumMultiplicity()).toString());
+					if (parentMifAssc.isMandatory())
+						mandatoryField.setText("Y");
+					else
+						mandatoryField.setText("N");
+					conformanceField.setText(parentMifAssc.getConformance());
+						
+				}
+				dataTypeField.addItem(mifClass.getName());
+				if (mifClass.getReferenceName()!=null)
+				{
+					cmetField.setText(mifClass.getReferenceName());
+					hl7DomainField.setText(mifClass.getReferenceName());
+				}
+//				conformanceField.setText(mifClass.getConformance());
+//				rimSourceField.setText(mifAttr.getDefaultFrom()); //not set
+//				hl7DefaultValueField.setText(mifAttr.getFixedValue());
+//				codingStrengthField.setText(mifAttr.getCodingStrength());
+//				userDefaultValueField.setText(mifAttr.getDefaultValue());
+			}
+			else if (userDatatypeObj instanceof MIFAssociation  )
+			{
+				MIFAssociation  mifAssc=(MIFAssociation)userDatatypeObj;
+				elementTypeField.setText("Clone");
+				cardinalityField.setText(new Cardinality(mifAssc.getMinimumMultiplicity(), mifAssc.getMaximumMultiplicity()).toString());
+				if (mifAssc.isMandatory())
+					mandatoryField.setText("Y");
+				else
+					mandatoryField.setText("N");
+				conformanceField.setText(mifAssc.getConformance());
+				
+ 
+//				abstractField.setText(mifAssc.getMifClass().isDynamic()); //not set
+				MIFClass asscClass=mifAssc.getMifClass();
+				rimSourceField.setText(asscClass.getReferenceName()); 
+				if(asscClass.getChoices().isEmpty())
+					dataTypeField.addItem(asscClass.getName());
+//				{
+//					Iterator subClassIt=asscClass.getChoices().iterator();
+//					while(subClassIt.hasNext())
+//					{
+//						MIFClass subClass=(MIFClass)subClassIt.next();
+//						dataTypeField.addItem(subClass.getName());
+//					}
+//				}
+				if (asscClass.getReferenceName()!=null)
+				{
+					cmetField.setText(asscClass.getReferenceName());
+					hl7DomainField.setText(asscClass.getReferenceName());
+				}
+				hl7DefaultValueField.setText("");
+				codingStrengthField.setText("");
+				userDefaultValueField.setText("");
+			}
+			else
+				Log.logWarning(this,"Invalid data type being selectd:"+userDatatypeObj.getClass().getName());
 		}
 	}
+	
 
 	private void clearAndEditableFields(boolean editableValue)
 	{
@@ -436,242 +584,48 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		}
 	}
 
-	/**
-	 * Called by getHl7V3MetaFromUI().
-	 *
-	 * @return the CloneMeta
-	 */
-	private CloneMeta getCloneMetaFromUI()
-	{
-		CloneMeta hl7V3MetaLocal = (CloneMeta) hl7V3Meta;
-		//todo: add more if anything becomes editable
-		return hl7V3MetaLocal;
-	}
-
-	/**
-	 * Called by setHl7V3Meta
-	 *
-	 * @param cloneMeta
-	 */
-	private void setCloneMetaToUI(CloneMeta cloneMeta)
-	{
-		elementNameField.setText(cloneMeta.getName());
-		elementTypeField.setText(cloneMeta.getType());
-		CloneMeta parentClone = cloneMeta.getParentMeta();
-		elementParentField.setText((parentClone == null) ? "" : parentClone.getName());
-		hl7DomainField.setText(cloneMeta.getReferenceCloneName());//GeneralUtilities.getClassName(cloneMeta.getClass(), false));
-		cmetField.setText(cloneMeta.getCmetID());
-		Object tempObj = cloneMeta.getCardinality();
-		cardinalityField.setText((tempObj==null? "" : tempObj.toString()));
-		rimSourceField.setText(cloneMeta.getRimSource());
-	}
-
-	/**
-	 * Called by getHl7V3MetaFromUI().
-	 *
-	 * @return the CloneAttributeMeta
-	 */
-	private CloneAttributeMeta getCloneAttributeMetaFromUI()
-	{
-		CloneAttributeMeta hl7V3MetaLocal = (CloneAttributeMeta) hl7V3Meta;
-		//todo: add more if anything becomes editable
-		if(hl7V3MetaLocal.isAbstract())
-		{
-			Object userChoice = dataTypeField.getSelectedItem();
-			if((userChoice instanceof String) && GeneralUtilities.areEqual(userChoice, COMBO_BOX_DEFAULT_BLANK_CHOICE))
-			{//implies user does not select any or just choose back the abstract value.
-				//todo: question: to set to null or empty string
-				hl7V3MetaLocal.setSubClass("");
-			}
-			else if(userChoice instanceof Datatype)
-			{
-				Datatype userChoiceType = (Datatype) userChoice;
-				hl7V3MetaLocal.setSubClass(userChoiceType.getFullName());
-			}
-		}
-		return hl7V3MetaLocal;
-	}
-
-	/**
-	 * Called by setHl7V3MetaToUI()
-	 *
-	 * @param cloneAttributeMeta
-	 */
-	private void setCloneAttributeMetaToUI(CloneAttributeMeta cloneAttributeMeta)
-	{
-		elementNameField.setText(cloneAttributeMeta.getName());
-		elementTypeField.setText(cloneAttributeMeta.getType());
-		MetaObject parentClone = cloneAttributeMeta.getParentMeta();
-		elementParentField.setText((parentClone == null) ? "" : parentClone.getName());
-		Object tempObj = cloneAttributeMeta.getCardinality();
-		cardinalityField.setText(GeneralUtilities.getStringValue(tempObj, false));
-		tempObj = cloneAttributeMeta.getConformance();
-		conformanceField.setText(GeneralUtilities.getStringValue(tempObj, false));
-		rimSourceField.setText(cloneAttributeMeta.getRimSource());
-		tempObj = cloneAttributeMeta.getCodingStrength();
-		codingStrengthField.setText(GeneralUtilities.getStringValue(tempObj, false));
-		hl7DefaultValueField.setText(cloneAttributeMeta.getHL7DefaultValue());
-		hl7DomainField.setText(cloneAttributeMeta.getDomainName());//GeneralUtilities.getClassName(cloneAttributeMeta.getClass(), false));
-
-		abstractField.setText(cloneAttributeMeta.isAbstract() ? "Y" : "N");
-		try
-		{
-			if (cloneAttributeMeta.isAbstract())
-			{
-				String abstractClass = cloneAttributeMeta.getDatatype();
-//				Log.logInfo(this, "Abstract Class is '" + abstractClass + "'");
-				if (abstractClass != null)
-				{
-					setEditableField(dataTypeField, true);
-					Datatype dataType = DatatypeMetadataFactoryImpl.instance().create(abstractClass);
-					Log.logDebug(this, "Abs data type is '" + dataType + "'");
-					if (dataType != null)
-					{
-						java.util.List<org.hl7.meta.Datatype> list = DatatypeMetadataFactoryDatatypes.instance().ABSTRACT_DATATYPES_MAP.get(dataType);
-						Log.logDebug(this, "SUB class data type is '" + list + "'");
-						int size = list == null ? 0 : list.size();
-						dataTypeField.addItem(COMBO_BOX_DEFAULT_BLANK_CHOICE);
-						for (int i = 0; i < size; i++)
-						{
-							dataTypeField.addItem(list.get(i));
-						}
-						String subClass = cloneAttributeMeta.getSubClass();
-						if (subClass == null || subClass.length() == 0)
-						{
-							dataTypeField.setSelectedIndex(0);
-						}
-						else
-						{
-							Datatype subDataType = DatatypeMetadataFactoryImpl.instance().create(subClass);
-							if (subDataType != null)
-							{
-								dataTypeField.setSelectedItem(subDataType);
-							}
-							else
-							{
-								System.err.println("Cannot create a sub-data type for '" + subClass + "'");
-							}
-						}
-					}
-					else
-					{
-						System.err.println("DataType is null for '" + abstractClass + "'");
-					}
-				}
-			}//end of if(isAbstract()
-			else
-			{//concrete sub-class
-//				Log.logInfo(this, "Clone Attribute is a concrete class.");
-				String subClass = cloneAttributeMeta.getDatatype();//getSubClass();
-				if (subClass == null || subClass.length() == 0)
-				{
-//					System.err.println("SubClass is null. What about Abstract Class? '" + cloneAttributeMeta.getDatatype() + "'");
-					dataTypeField.addItem("");
-				}
-				else
-				{
-					Datatype subDataType = DatatypeMetadataFactoryImpl.instance().create(subClass);
-					if (subDataType != null)
-					{
-						dataTypeField.addItem(subDataType);
-						dataTypeField.setSelectedItem(subDataType);
-					}
-					else
-					{
-						System.err.println("DataType is null for '" + subClass + "'");
-					}
-				}
-			}
-		}//end of try
-		catch (UnknownDatatypeException e)
-		{
-			Log.logException(this, e);
-		}
-	}
-
-	/**
-	 * Called by getHl7V3MetaFromUI().
-	 *
-	 * @return the CloneDatatypeFieldMeta
-	 */
-	private CloneDatatypeFieldMeta getCloneDatatypeFieldMetaFromUI()
-	{
-		CloneDatatypeFieldMeta hl7V3MetaLocal = (CloneDatatypeFieldMeta) hl7V3Meta;
-		//todo: add more if anything becomes editable
-		hl7V3MetaLocal.setUserDefaultValue(userDefaultValueField.getText());
-		return hl7V3MetaLocal;
-	}
-
-	/**
-	 * Called by setHl7V3MetaToUI()
-	 *
-	 * @param cloneDatatypeFieldMeta
-	 */
-	private void setCloneDatatypeFieldMetaToUI(CloneDatatypeFieldMeta cloneDatatypeFieldMeta)
-	{
-		elementNameField.setText(cloneDatatypeFieldMeta.getName());
-		elementTypeField.setText(cloneDatatypeFieldMeta.getType());
-		MetaObject parentClone = cloneDatatypeFieldMeta.getParentMeta();
-		elementParentField.setText((parentClone == null) ? "" : parentClone.getName());
-		hl7DefaultValueField.setText(cloneDatatypeFieldMeta.getHL7DefaultValue());
-		setEditableField(userDefaultValueField, true);
-		userDefaultValueField.setText(cloneDatatypeFieldMeta.getUserDefaultValue());
-		Cardinality cardinality = cloneDatatypeFieldMeta.getCardinality();
-		cardinalityField.setText((cardinality == null) ? "" : cardinality.toString());
-	}
 
 	public boolean isDataChanged()
 	{
-		if (this.hl7V3Meta == null)
+		if (this.seletedBaseObject == null)
 		{
 			return false;
 		}
 		boolean result = false;
-		if (hl7V3Meta instanceof CloneMeta)
+			
+		if (seletedBaseObject instanceof MIFClass)
 		{
-			CloneMeta local = (CloneMeta) hl7V3Meta;
-			result = !GeneralUtilities.areEqual(local.getCmetID(), cmetField.getText(), true);
+			result=false;
 		}
-		else if (hl7V3Meta instanceof CloneAttributeMeta)
+		else if (seletedBaseObject instanceof MIFAssociation)
 		{
-			CloneAttributeMeta local = (CloneAttributeMeta) hl7V3Meta;
-			if (local.isAbstract())
+			result=false;
+//			MIFAssociation mifClass=(MIFAssociation)seletedBaseObject;
+			
+		}
+		else if (seletedBaseObject instanceof MIFAttribute)
+		{
+			//check the selected concreted class
+			MIFAttribute mifAttr=(MIFAttribute)seletedBaseObject;
+			Datatype mifAttrDataType=mifAttr.getDatatype();
+			//the pre-defined type is always the first elemnt
+			if (mifAttrDataType!=null&&mifAttrDataType.isAbstract())
 			{
-				String subClass = local.getSubClass();
-				Object selectedItem = dataTypeField.getSelectedItem();
-				String selectedToString = (selectedItem == null) ? "" : selectedItem.toString();
-				if (subClass == null || subClass.length() == 0)
-				{
-					result = !GeneralUtilities.areEqual("", selectedToString);
-				}
-				else
-				{//validate if the sub-data type exists before comparing if it equals to the string from user selection.
-					Datatype subDataType = null;
-					try
-					{
-						subDataType = DatatypeMetadataFactoryImpl.instance().create(subClass);
-					}
-					catch (Exception e)
-					{
-						System.err.println("e:" + e.getMessage());
-					}
-					if (subDataType != null)
-					{
-						result = !GeneralUtilities.areEqual(subClass, selectedToString, true);
-					}
-					else
-					{
-						System.err.println("Cannot create a sub-data type for '" + subClass + "'");
-						result = true;
-					}
-				}// end of else matched to if (subClass == null || subClass.length() == 0)
+				//compare the selected concrete class
+				Datatype subClass=mifAttr.getConcreteDatatype();
+				if (subClass==null)
+					result=!GeneralUtilities.areEqual(subClass, dataTypeField.getSelectedItem(), true);
+				else 
+					result = !GeneralUtilities.areEqual(subClass.getName(), dataTypeField.getSelectedItem(), true);
 			}
 		}
-		else if (hl7V3Meta instanceof CloneDatatypeFieldMeta)
+		else if (seletedBaseObject instanceof Attribute)
 		{
-			CloneDatatypeFieldMeta local = (CloneDatatypeFieldMeta) hl7V3Meta;
-			result = !GeneralUtilities.areEqual(local.getUserDefaultValue(), userDefaultValueField.getText(), true);
+			//check the default value
+			Attribute mifDatatypeAttr=(Attribute)seletedBaseObject;
+			result=!GeneralUtilities.areEqual(mifDatatypeAttr.getDefaultValue(), userDefaultValueField.getText(), true);
 		}
+
 		return result;
 	}
 
@@ -680,141 +634,24 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 */
 	private void applyUserChanges()
 	{
-		MetaObject newMetaObject = getHl7V3Meta(true);
-		parentPanel.getController().updateCurrentNodeWithUserObject(newMetaObject);
+		DatatypeBaseObject userDatatypeObj= this.getDatatypeObject(true);//getHl7V3Meta(true);
+		parentPanel.getController().updateCurrentNodeWithUserObject(userDatatypeObj);
 		//explicitly redisplay the property pane, because user could continue to work on it
-		parentPanel.setPropertiesPaneVisible(true);
+		parentPanel.setPropertiesPaneVisible(true);		 
 	}
 
-	private void resetToPreviousValue()
-	{
-		MetaObject targetNode = getHl7V3Meta(false);
-		setHl7V3Meta(targetNode, true);
-	}
-
+	
 	/**
 	 * Reload the data.
 	 */
 	public void reloadData()
 	{
-		resetToPreviousValue();
+		Object targetNode = getDatatypeObject(false);
+		
+		 TreePath treePath=parentPanel.getTree().getSelectionPath();
+		DefaultMutableTreeNode slctdNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+		this.setDisplayData(slctdNode,true);
+		//.setDatatypeBaseObject((DatatypeBaseObject)targetNode, true);
 	}
 }
 
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.37  2006/08/02 18:44:22  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.36  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.35  2006/01/03 18:56:24  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.34  2005/12/29 23:06:16  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.33  2005/12/29 15:39:06  chene
- * HISTORY      : Optimize imports
- * HISTORY      :
- * HISTORY      : Revision 1.32  2005/12/14 21:37:18  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.31  2005/12/01 18:50:32  jiangsc
- * HISTORY      : Fix to Defect #207.
- * HISTORY      :
- * HISTORY      : Revision 1.30  2005/11/29 16:23:55  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.29  2005/11/21 19:53:12  jiangsc
- * HISTORY      : Minor enhancement
- * HISTORY      :
- * HISTORY      : Revision 1.28  2005/11/07 22:09:09  chene
- * HISTORY      : Add datatype field cardinality support
- * HISTORY      :
- * HISTORY      : Revision 1.27  2005/11/07 20:13:57  chene
- * HISTORY      : Rename sub_datatypes_map to abstract_datatypes_map
- * HISTORY      :
- * HISTORY      : Revision 1.26  2005/10/26 18:12:29  jiangsc
- * HISTORY      : replaced printStackTrace() to Log.logException
- * HISTORY      :
- * HISTORY      : Revision 1.25  2005/10/25 22:00:43  jiangsc
- * HISTORY      : Re-arranged system output strings within UI packages.
- * HISTORY      :
- * HISTORY      : Revision 1.24  2005/10/18 14:51:46  umkis
- * HISTORY      : no message
- * HISTORY      :
- * HISTORY      : Revision 1.23  2005/10/17 22:32:00  umkis
- * HISTORY      : no message
- * HISTORY      :
- * HISTORY      : Revision 1.22  2005/10/13 17:32:56  jiangsc
- * HISTORY      : Updated text for elementType field.
- * HISTORY      :
- * HISTORY      : Revision 1.21  2005/10/07 18:40:16  jiangsc
- * HISTORY      : Enhanced the Look and Feel of Validation and Properties.
- * HISTORY      :
- * HISTORY      : Revision 1.20  2005/10/05 20:15:03  jiangsc
- * HISTORY      : Enhanced data loading.
- * HISTORY      :
- * HISTORY      : Revision 1.19  2005/10/05 20:13:53  jiangsc
- * HISTORY      : Enhanced data loading.
- * HISTORY      :
- * HISTORY      : Revision 1.18  2005/09/30 21:17:33  jiangsc
- * HISTORY      : Minor update - corrected wording
- * HISTORY      :
- * HISTORY      : Revision 1.17  2005/09/29 16:07:04  jiangsc
- * HISTORY      : Added code to populate field values.
- * HISTORY      :
- * HISTORY      : Revision 1.16  2005/09/22 16:30:20  jiangsc
- * HISTORY      : Consolidation of labeling.
- * HISTORY      :
- * HISTORY      : Revision 1.15  2005/08/31 15:03:25  jiangsc
- * HISTORY      : Fixed some UI medium defects. Thanks to Dan's test.
- * HISTORY      :
- * HISTORY      : Revision 1.14  2005/08/30 20:48:16  jiangsc
- * HISTORY      : minor update
- * HISTORY      :
- * HISTORY      : Revision 1.13  2005/08/24 22:28:36  jiangsc
- * HISTORY      : Enhanced JGraph implementation;
- * HISTORY      : Save point of CSV and HSM navigation update;
- * HISTORY      :
- * HISTORY      : Revision 1.12  2005/08/08 17:43:48  jiangsc
- * HISTORY      : Enhanced the support of Abstract Datatype.
- * HISTORY      :
- * HISTORY      : Revision 1.11  2005/08/05 20:35:50  jiangsc
- * HISTORY      : 0)Implemented field sequencing on CSVPanel but needs further rework;
- * HISTORY      : 1)Removed (Yes/No) for questions;
- * HISTORY      : 2)Removed double-checking after Save-As;
- * HISTORY      :
- * HISTORY      : Revision 1.10  2005/08/03 19:11:01  jiangsc
- * HISTORY      : Some cosmetic update and make HSMPanel able to save the same content to different file.
- * HISTORY      :
- * HISTORY      : Revision 1.9  2005/08/03 16:59:06  chene
- * HISTORY      : Add datatype feature at CloneMetaAttribute
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/08/03 16:56:16  jiangsc
- * HISTORY      : Further consolidation of context sensitive management.
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/08/03 14:39:10  jiangsc
- * HISTORY      : Further consolidation of context sensitive management.
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/08/02 22:32:09  jiangsc
- * HISTORY      : Minor update
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/08/02 22:28:54  jiangsc
- * HISTORY      : Newly enhanced context-sensitive menus and toolbar.
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/08/02 15:18:30  chene
- * HISTORY      : Add HL7 default value and user default value
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/07/29 22:00:00  jiangsc
- * HISTORY      : Enhanced HSMPanel
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/07/28 18:18:42  jiangsc
- * HISTORY      : Can Open HSM Panel
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/07/27 13:57:46  jiangsc
- * HISTORY      : Added the first round of HSMPanel.
- * HISTORY      :
- */

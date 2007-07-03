@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,14 +35,21 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMultipleMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaUtil;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+
+import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This class defines the add multiple action.
@@ -50,8 +57,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:25:59 $
  */
 public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
 {
@@ -67,12 +74,11 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Attribute";
     private static final Character COMMAND_MNEMONIC = new Character('M');
 
-    private transient JTree tree;
 
     /**
      * Defines an <code>Action</code> object with a default
@@ -80,17 +86,9 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
      */
     public AddMultipleAttributeAction(HSMPanel parentPanel)
     {
-        this(COMMAND_NAME, parentPanel);
+        this(COMMAND_NAME, null, parentPanel);
     }
 
-    /**
-     * Defines an <code>Action</code> object with the specified
-     * description string and a default icon.
-     */
-    public AddMultipleAttributeAction(String name, HSMPanel parentPanel)
-    {
-        this(name, null, parentPanel);
-    }
 
     /**
      * Defines an <code>Action</code> object with the specified
@@ -103,15 +101,6 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
         setActionCommandType(DOCUMENT_ACTION_TYPE);
     }
 
-    private JTree getTree()
-    {
-        if (this.tree == null)
-        {
-            this.tree = parentPanel.getTree();
-        }
-        return this.tree;
-    }
-
     /**
      * Invoked when an action occurs.
      */
@@ -122,7 +111,8 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
         {
             return false;
         }
-        TreePath treePath = getTree().getSelectionPath();
+        JTree tree=parentPanel.getTree();
+        TreePath treePath = tree.getSelectionPath();
         if (treePath == null)
         {
             JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Tree has no selection",
@@ -132,15 +122,56 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-        if (obj instanceof CloneAttributeMultipleMeta)
+        
+        if (obj instanceof MIFAttribute)
         {
-            CloneAttributeMultipleMeta cloneAttributeMeta = (CloneAttributeMultipleMeta) obj;
+        	MIFAttribute mifAttr = (MIFAttribute) obj;
             try
             {
-                HL7V3MetaUtil.addMultipleAttribute(cloneAttributeMeta);
-                parentPanel.getDefaultHSMNodeLoader().refreshSubTreeByGivenMetaObject(
-                    (DefaultMutableTreeNode)targetNode.getParent(), cloneAttributeMeta.getParentMeta(), parentPanel.getTree());
-                setSuccessfullyPerformed(true);
+            	MIFAttribute mifClonned=(MIFAttribute)mifAttr.clone();
+            	DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)targetNode.getParent();
+            	Object parentObj=parentNode.getUserObject();
+            	
+            	MIFClass parentMif=null;
+            	if (parentObj instanceof MIFClass)
+            		parentMif=(MIFClass)parentObj;
+            	else if (parentObj instanceof MIFAssociation)
+            	{
+            		MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
+            		if (!parentMifAssc.getMifClass().getReferenceName().equals(""))
+            			parentMif=parentMifAssc.getReferencedMifClass();
+            		else if (parentMifAssc.isChoiceSelected())
+            		{
+            			//find choiceSelected MIFClass
+            			HashSet<MIFClass> choiceHash=parentMifAssc.getMifClass().getChoices();
+            			for (MIFClass choiceMif:choiceHash)
+            			{
+            				if (choiceMif.isChoiceSelected())
+            					parentMif=choiceMif;
+            			}
+            		}
+            		else 
+            			parentMif=parentMifAssc.getMifClass();
+            	}
+            	
+            	if (parentMif==null)
+            	{
+            		JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Invalid selection",
+                            "MIFClass is not found", JOptionPane.WARNING_MESSAGE);
+                        setSuccessfullyPerformed(false);
+                        return false;
+            	}
+            	int exitingMIFCount=MIFUtil.getMaximumMIFAttributeMultiplicityIndexWithName(parentMif, mifAttr.getName());
+               	mifClonned.setMultiplicityIndex(exitingMIFCount+1);
+            	parentMif.addAttribute(mifClonned);
+            	
+            	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
+            	DefaultMutableTreeNode clonnedAttrNode =mifTreeLoader.buildObjectNode(mifClonned);
+            	int oldNodeIndex =parentNode.getIndex(targetNode);
+            	parentNode.insert(clonnedAttrNode, oldNodeIndex+exitingMIFCount+1); 
+            	
+            	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
+            	setSuccessfullyPerformed(true);
             }
             catch (Exception e1)
             {
@@ -149,12 +180,32 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
                 setSuccessfullyPerformed(false);
             }
         }
+//        if (obj instanceof CloneAttributeMultipleMeta)
+//        {
+//            CloneAttributeMultipleMeta cloneAttributeMeta = (CloneAttributeMultipleMeta) obj;
+//            try
+//            {
+//                HL7V3MetaUtil.addMultipleAttribute(cloneAttributeMeta);
+//                parentPanel.getDefaultHSMNodeLoader().refreshSubTreeByGivenMetaObject(
+//                    (DefaultMutableTreeNode)targetNode.getParent(), cloneAttributeMeta.getParentMeta(), parentPanel.getTree());
+//                setSuccessfullyPerformed(true);
+//            }
+//            catch (Exception e1)
+//            {
+//                Log.logException(getClass(), e1);
+//                reportThrowableToUI(e1, parentPanel);
+//                setSuccessfullyPerformed(false);
+//            }
+//        }
 		return isSuccessfullyPerformed();
 	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

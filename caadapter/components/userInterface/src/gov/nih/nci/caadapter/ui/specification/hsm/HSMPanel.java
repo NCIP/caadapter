@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.2 2007-07-03 20:21:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,12 +38,10 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.hl7.util.HL7Util;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaFileParser;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaResult;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
@@ -52,18 +50,25 @@ import gov.nih.nci.caadapter.ui.common.context.DefaultContextManagerClientPanel;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
-import gov.nih.nci.caadapter.ui.common.nodeloader.HSMBasicNodeLoader;
-import gov.nih.nci.caadapter.ui.common.nodeloader.HSMTreeNodeLoader;
+//import gov.nih.nci.caadapter.ui.common.nodeloader.HSMBasicNodeLoader;
+import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
+//import gov.nih.nci.caadapter.ui.common.nodeloader.HSMTreeNodeLoader;
 import gov.nih.nci.caadapter.ui.common.tree.AutoscrollableTree;
-import gov.nih.nci.caadapter.ui.common.tree.HSMTreeCellRenderer;
+import gov.nih.nci.caadapter.ui.common.tree.MIFTreeCellRenderer;
 
-import org.hl7.meta.MessageType;
-
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+import javax.swing.JSplitPane;
+import javax.swing.JRootPane;
+import javax.swing.JTree;
+import javax.swing.Action;
+import javax.swing.JToolBar;
+import javax.swing.BorderFactory;
 import javax.swing.tree.TreeNode;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.io.File;
-import java.io.FileReader;
 import java.util.Map;
 
 /**
@@ -73,8 +78,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:21:38 $
  */
 public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel implements ContextManagerClient
 {
@@ -89,7 +94,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.2 2007-07-03 20:21:38 wangeug Exp $";
  
     private JSplitPane rightSplitPane;
     private TreeExpandAllAction treeExpandAllAction;
@@ -103,28 +108,23 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
     private ValidationMessagePane validationMessagePane;
     private boolean messagePaneVisible;
 
-    private HL7V3Meta hl7V3MetaRoot;
-    private MessageType messageType;
-
     private HSMPanelController controller;
-    private HSMBasicNodeLoader hsmNodeLoader = new HSMTreeNodeLoader();;
-
+//    private HSMBasicNodeLoader hsmNodeLoader = new HSMTreeNodeLoader();;
     private JPanel placeHolderForValidationMessageDisplay;
     private JPanel placeHolderForPropertiesDisplay;
 
+    /**
+     * Default constructor to being used as HSMPanel.newInstance()
+     *
+     */
     public HSMPanel()
     {
         initialize();
     }
-
-    /**
-     * Creates a new <code>JPanel</code> with a double buffer
-     * and a flow layout.
-     */
-    public HSMPanel(MessageType messageType)
+    public HSMPanel(String mifFileName)
     {
-        this.messageType = messageType;
         initialize();
+        initializeTreeWithMIF(mifFileName);
     }
 
     private void initialize()
@@ -155,7 +155,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         DefaultSettings.setDefaultFeatureForJSplitPane(rightSplitPane);
         rightSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        rightSplitPane.setDividerLocation(0.5);
+//        rightSplitPane.setDividerLocation(0.5);
 
         //for place holding
         JLabel dummyHolderForPropertiesDisplay = new JLabel("For Properties Display...");
@@ -173,7 +173,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 //		panel.add(textField, BorderLayout.NORTH);
         placeHolderForPropertiesDisplay.add(dummyHolderForPropertiesDisplay, BorderLayout.NORTH);
         dummyHolderForPropertiesDisplay.setEnabled(false);
-        placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT / 3));
+        placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT /2 ));/// 3));
         rightSplitPane.setBottomComponent(placeHolderForPropertiesDisplay);
 
         centerSplitPane.setLeftComponent(treePanel);
@@ -253,35 +253,17 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         return validationMessagePane;
     }
 
-    public HL7V3Meta getHl7V3MetaRoot()
-    {
-        return hl7V3MetaRoot;
-    }
-
-    public void setHl7V3MetaRoot(HL7V3Meta hl7V3MetaRoot)
-    {
-        this.hl7V3MetaRoot = hl7V3MetaRoot;
-        initializeTree(hl7V3MetaRoot);
-    }
-
     private ValidatorResults initializeTree(File saveFile)
     {
+    	long stTime=System.currentTimeMillis();
+    	
         ValidatorResults validatorResults = new ValidatorResults();
-        HL7V3MetaFileParser parser = HL7V3MetaFileParser.instance();
         try
         {
-            HL7V3MetaResult hl7V3MetaResult = parser.parse(new FileReader(saveFile));
-            this.hl7V3MetaRoot = hl7V3MetaResult.getHl7V3Meta();
-            validatorResults.addValidatorResults(hl7V3MetaResult.getValidatorResults());
-            if (validatorResults.hasFatal())
-            {//return immediately
-                return validatorResults;
-            }
-            if (getMessageType() == null)
-            {
-                messageType = HL7Util.getMessageType(hl7V3MetaRoot.getMessageID());
-            }
-            initializeTree(hl7V3MetaRoot);
+        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(true);
+        	TreeNode root = newHsmNodeLoader.loadData(saveFile);
+        	initializeTreeWithMIFTreeNode(root);	
+            System.out.println("HSMPanel.initializeTree()..time spending:"+(System.currentTimeMillis()-stTime));
         }
         catch (Throwable e1)
         {
@@ -292,24 +274,71 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 		}
         return validatorResults;
     }
+    
+//    private ValidatorResults initializeTree_save(File saveFile)
+//    {
+//    	long stTime=System.currentTimeMillis();
+//    	
+//        ValidatorResults validatorResults = new ValidatorResults();
+//        HL7V3MetaFileParser parser = HL7V3MetaFileParser.instance();
+//        try
+//        {
+//            HL7V3MetaResult hl7V3MetaResult = parser.parse(new FileReader(saveFile));
+//            this.hl7V3MetaRoot = hl7V3MetaResult.getHl7V3Meta();
+//            validatorResults.addValidatorResults(hl7V3MetaResult.getValidatorResults());
+//            if (validatorResults.hasFatal())
+//            {//return immediately
+//                return validatorResults;
+//            }
+//            if (getMessageType() == null)
+//            {
+//                messageType = HL7Util.getMessageType(hl7V3MetaRoot.getMessageID());
+//            }
+//            initializeTree(hl7V3MetaRoot);
+//            System.out.println("HSMPanel.initializeTree()..time spending:"+(System.currentTimeMillis()-stTime));
+//        }
+//        catch (Throwable e1)
+//        {
+//			System.out.println("Logging exception within initializeTree(File saveFile).");
+//			DefaultSettings.reportThrowableToLogAndUI(this, e1, null, this, false, true);
+//			Message msg = MessageResources.getMessage("GEN0", new Object[]{e1.getMessage()});
+//			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+//		}
+//        return validatorResults;
+//    }
 
-    private JTree initializeTree(HL7V3Meta hl7V3MetaRoot)
+    private JTree initializeTreeWithMIF(String mifFileName)
     {
-        if(hl7V3MetaRoot==null)
+        if(mifFileName==null)
         {
             return null;
         }
         try
         {
-            TreeNode root = hsmNodeLoader.loadData(this.hl7V3MetaRoot);
+        	MIFClass mifClass=MIFParserUtil.getMIFClass(mifFileName);
+        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(true,true);
+        	TreeNode root = newHsmNodeLoader.loadData(mifClass);
+        	return initializeTreeWithMIFTreeNode(root);	
+        }
+        catch(Throwable e)
+        {
+            Log.logException(this.getClass(), "Cannot initialize the tree anymore!", e);
+            DefaultSettings.reportThrowableToLogAndUI(this, e, "Error occurred during tree initialitation", this, true, true);
+            return null;
+        }
+    }
+    
+    private JTree initializeTreeWithMIFTreeNode(TreeNode root )
+    {
+        try
+        {
             hsmTree = new AutoscrollableTree(root);
-//			((DefaultTreeModel)hsmTree.getModel()).setRoot(root);
             hsmTree.getSelectionModel().addTreeSelectionListener(getController());
             hsmTree.getModel().addTreeModelListener(getController());
             treeScrollPane.getViewport().setView(hsmTree);
             hsmTree.addMouseListener(new HSMTreeMouseAdapter(this));
-            hsmTree.setCellRenderer(new HSMTreeCellRenderer());
-
+//            hsmTree.setCellRenderer(new HSMTreeCellRenderer());
+            hsmTree.setCellRenderer(new MIFTreeCellRenderer());
             treeExpandAllAction.setTree(hsmTree);
             treeCollapseAllAction.setTree(hsmTree);
             hsmTree.getInputMap().put(treeCollapseAllAction.getAcceleratorKey(), treeCollapseAllAction.getName());
@@ -327,17 +356,17 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             return null;
         }
     }
-
+    
     public JTree getTree()
     {
         return hsmTree;
     }
 
-    public HSMBasicNodeLoader getDefaultHSMNodeLoader()
-    {
-        return hsmNodeLoader;
-    }
-
+//    public HSMBasicNodeLoader getDefaultHSMNodeLoader()
+//    {
+//        return hsmNodeLoader;
+//    }
+    
     public ValidatorResults setSaveFile(File saveFile, boolean refreshTree)
     {
         ValidatorResults validatorResults = new ValidatorResults();
@@ -377,15 +406,6 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
     public void setChanged(boolean newValue)
     {
         this.getController().setDataChanged(newValue);
-    }
-
-    /**
-     * HL7 v3 Message Type
-     * @return message type
-     */
-    public MessageType getMessageType()
-    {
-        return messageType;
     }
 
     /**
@@ -465,109 +485,3 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         setSaveFile(getSaveFile(), true);
     }
 }
-
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.34  2006/08/02 18:44:22  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.33  2006/06/13 18:12:12  jiangsc
- * HISTORY      : Upgraded to catch Throwable instead of Exception.
- * HISTORY      :
- * HISTORY      : Revision 1.32  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.31  2006/01/03 18:56:24  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.30  2005/12/29 23:06:16  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.29  2005/12/14 21:37:18  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.28  2005/11/29 16:23:55  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.27  2005/11/18 20:28:14  jiangsc
- * HISTORY      : Enhanced context-sensitive menu navigation and constructions.
- * HISTORY      :
- * HISTORY      : Revision 1.25  2005/11/14 19:55:51  jiangsc
- * HISTORY      : Implementing UI enhancement
- * HISTORY      :
- * HISTORY      : Revision 1.24  2005/10/25 22:00:43  jiangsc
- * HISTORY      : Re-arranged system output strings within UI packages.
- * HISTORY      :
- * HISTORY      : Revision 1.23  2005/10/21 18:26:17  jiangsc
- * HISTORY      : Validation Class name changes.
- * HISTORY      :
- * HISTORY      : Revision 1.22  2005/10/13 18:53:44  jiangsc
- * HISTORY      : Added validation on invalid file type to map and HSM modules.
- * HISTORY      :
- * HISTORY      : Revision 1.21  2005/10/13 17:37:41  jiangsc
- * HISTORY      : Enhanced UI reporting on exceptions.
- * HISTORY      :
- * HISTORY      : Revision 1.20  2005/10/07 18:40:15  jiangsc
- * HISTORY      : Enhanced the Look and Feel of Validation and Properties.
- * HISTORY      :
- * HISTORY      : Revision 1.19  2005/10/04 20:51:33  jiangsc
- * HISTORY      : Validation enhancement.
- * HISTORY      :
- * HISTORY      : Revision 1.18  2005/09/16 16:20:16  giordanm
- * HISTORY      : HL7V3 parser is not returning a result object not a just a meta object.
- * HISTORY      :
- * HISTORY      : Revision 1.17  2005/09/09 22:42:03  chene
- * HISTORY      : Saved Point
- * HISTORY      :
- * HISTORY      : Revision 1.16  2005/09/08 19:37:03  chene
- * HISTORY      : Saved point
- * HISTORY      :
- * HISTORY      : Revision 1.15  2005/08/28 18:12:28  jiangsc
- * HISTORY      : Implemented Validation on HSM panel.
- * HISTORY      :
- * HISTORY      : Revision 1.14  2005/08/24 22:28:37  jiangsc
- * HISTORY      : Enhanced JGraph implementation;
- * HISTORY      : Save point of CSV and HSM navigation update;
- * HISTORY      :
- * HISTORY      : Revision 1.13  2005/08/19 21:09:57  jiangsc
- * HISTORY      : Save Point.
- * HISTORY      :
- * HISTORY      : Revision 1.12  2005/08/18 15:30:17  jiangsc
- * HISTORY      : First implementation on Switch control.
- * HISTORY      :
- * HISTORY      : Revision 1.11  2005/08/17 20:01:38  chene
- * HISTORY      : Refactor HL7V3MetaFileParser to a singleton
- * HISTORY      :
- * HISTORY      : Revision 1.10  2005/08/12 18:38:11  jiangsc
- * HISTORY      : Enable HL7 V3 Message to be saved in multiple XML file.
- * HISTORY      :
- * HISTORY      : Revision 1.9  2005/08/08 17:12:53  jiangsc
- * HISTORY      : Support Abstract Datatype.
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/08/05 20:35:51  jiangsc
- * HISTORY      : 0)Implemented field sequencing on CSVPanel but needs further rework;
- * HISTORY      : 1)Removed (Yes/No) for questions;
- * HISTORY      : 2)Removed double-checking after Save-As;
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/08/04 22:22:28  jiangsc
- * HISTORY      : Updated license and class header information.
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/08/03 16:56:16  jiangsc
- * HISTORY      : Further consolidation of context sensitive management.
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/08/02 22:28:54  jiangsc
- * HISTORY      : Newly enhanced context-sensitive menus and toolbar.
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/07/29 22:00:00  jiangsc
- * HISTORY      : Enhanced HSMPanel
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/07/28 18:18:42  jiangsc
- * HISTORY      : Can Open HSM Panel
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/07/27 22:41:13  jiangsc
- * HISTORY      : Consolidated context sensitive menu implementation.
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/07/27 13:57:46  jiangsc
- * HISTORY      : Added the first round of HSMPanel.
- * HISTORY      :
- */

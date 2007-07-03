@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.2 2007-07-03 20:21:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,20 +35,22 @@
 package gov.nih.nci.caadapter.ui.specification.hsm;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.MetaException;
-import gov.nih.nci.caadapter.hl7.clone.meta.*;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.*;
 
-import org.hl7.meta.Association;
-import org.hl7.meta.CloneClass;
-import org.hl7.meta.MessageType;
-
-import javax.swing.*;
+import javax.swing.JPopupMenu;
+//import javax.swing.JMenuItem;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
 /**
  * This class defines the mouse listener to responds mouse events occurred on the tree view of HSM Panel.
@@ -56,14 +58,14 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:21:38 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
     private HSMPanel parentPanel = null;
-    private JTree tree = null;
     private JPopupMenu popupMenu;
+    private JPopupMenu enablePopupMenu;
 
     private AddCloneAction addCloneAction;
     private RemoveCloneAction removeCloneAction;
@@ -73,12 +75,13 @@ public class HSMTreeMouseAdapter extends MouseAdapter
     private RemoveMultipleAttributeAction removeMultipleAttributeAction;
     private SelectChoiceAction selectChoiceAction;
     private ValidateHSMAction validateHSMAction;
-
+    private SelectAddressPartsAction selectAddressPartsAction;
+    private EnableAttributeDatafieldAction enableDatafield;
+    private EnableAttributeDatafieldAction disableDatafield;
     public HSMTreeMouseAdapter(HSMPanel parentPanel)
     {
         super();
         this.parentPanel = parentPanel;
-        this.tree = parentPanel.getTree();
         addCloneAction = new AddCloneAction(this.parentPanel);
         removeCloneAction = new RemoveCloneAction(this.parentPanel);
         addMultipleCloneAction = new AddMultipleCloneAction(this.parentPanel);
@@ -87,131 +90,10 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         removeMultipleAttributeAction = new RemoveMultipleAttributeAction(this.parentPanel);
         selectChoiceAction = new SelectChoiceAction(this.parentPanel);
         validateHSMAction = new ValidateHSMAction(this.parentPanel);
-    }
-
-    private void setAllEnabled(boolean value)
-    {
-        addCloneAction.setEnabled(value);
-        removeCloneAction.setEnabled(value);
-		addMultipleCloneAction.setEnabled(value);
-        removeMultipleCloneAction.setEnabled(value);
-        addMultipleAttributeAction.setEnabled(value);
-        removeMultipleAttributeAction.setEnabled(value);
-        selectChoiceAction.setEnabled(value);
-        validateHSMAction.setEnabled(value);
-    }
-
-    private void showIfPopupTrigger(MouseEvent mouseEvent)
-    {
-        if (tree.getSelectionCount() <= 0)
-        {//specify at least one selected node.
-            // find the selected node.
-            TreePath t = tree.getClosestPathForLocation(mouseEvent.getX(), mouseEvent.getY());
-            // highlight it.
-            tree.setSelectionPath(t);
-        }
-
-        if (mouseEvent.isPopupTrigger())
-        {
-// setup the right-click popup menu.
-            TreePath treePath = tree.getSelectionPath();
-            if (treePath != null)
-            {
-                retrievePopupMenu();
-                setAllEnabled(false);
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-                Object userObj = node.getUserObject();
-
-                if (userObj == null || userObj instanceof CloneDatatypeFieldMeta)
-                {//return right way if it is not CloneMeta or CloneAttributeMeta
-                    return;
-                }
-
-                if (userObj instanceof CloneMeta)
-                {
-                    validateHSMAction.setEnabled(true);
-
-                    CloneMeta cloneMeta = (CloneMeta) userObj;
-                    MessageType messageType = parentPanel.getMessageType();
-                    try
-                    {
-                        final CloneClass cloneClass = HL7V3MetaUtil.findCloneClass(messageType, cloneMeta);
-                        final List<Association> addableAssociations = HL7V3MetaUtil.getAddableAssociations(cloneClass, cloneMeta);
-                        final List<Association> removableAssociations = HL7V3MetaUtil.getRemovableAssociations(cloneClass, cloneMeta);
-                        if (addableAssociations.size() > 0)
-                        {
-                            addCloneAction.setEnabled(true);
-                        }
-                        else
-                        {
-                            addCloneAction.setEnabled(false);
-                        }
-
-                        if (removableAssociations.size() > 0)
-                        {
-                            removeCloneAction.setEnabled(true);
-                        }
-                        else
-                        {
-                            removeCloneAction.setEnabled(false);
-                        }
-
-                        if (cloneMeta instanceof CloneChoiceMeta )
-                        {
-                            CloneChoiceMeta cloneChoiceMeta = (CloneChoiceMeta) cloneMeta;
-                            selectChoiceAction.setEnabled(true);
-
-                            if (cloneChoiceMeta.isAbstract())
-                            {
-                                addCloneAction.setEnabled(false);
-                                removeCloneAction.setEnabled(false);
-                            }
-                        }
-                    }
-                    catch (MetaException ex)
-                    {
-                        Log.logWarning(this, ex.getMessage());
-                        addCloneAction.setEnabled(false);
-                        removeCloneAction.setEnabled(false);
-                    }
-                }
-
-                if (userObj instanceof CloneMultipleMeta)
-                {
-                    CloneMultipleMeta multipleMeta = (CloneMultipleMeta) userObj;
-                    if (multipleMeta.getMultipleSequenceNumber() == 1)
-                    {
-                        addMultipleCloneAction.setEnabled(true);
-                        if (multipleMeta.getCloneMultipleMetaByName().size() > 1)
-                        {
-                            removeMultipleCloneAction.setEnabled(true);
-                        }
-                    }
-                }
-
-                if (userObj instanceof CloneAttributeMultipleMeta)
-                {
-                    CloneAttributeMultipleMeta multipleMeta = (CloneAttributeMultipleMeta) userObj;
-                    if (multipleMeta.getMultipleSequenceNumber() == 1)
-                    {
-                        addMultipleAttributeAction.setEnabled(true);
-                        if (multipleMeta.getAttributeMultipleMetaByName().size() > 1)
-                        {
-                            removeMultipleAttributeAction.setEnabled(true);
-                        }
-                    }
-                }
-
-                popupMenu.show(mouseEvent.getComponent(),
-                    mouseEvent.getX(), mouseEvent.getY());
-            }
-        }
-//		else if(mouseEvent.getClickCount()>=2)
-//		{//if not popup trigger and clicked more than twice, assume it is an edit command.
-//			ActionEvent ae = new ActionEvent(tree, 0, editAction.getName());
-//			editAction.actionPerformed(ae);
-//		}
-
+        selectAddressPartsAction=new SelectAddressPartsAction(this.parentPanel);
+        enableDatafield=new EnableAttributeDatafieldAction(this.parentPanel,true);
+        disableDatafield=new EnableAttributeDatafieldAction(this.parentPanel,false);
+        
     }
 
     public void mousePressed(MouseEvent mouseEvent)
@@ -224,8 +106,16 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         showIfPopupTrigger(mouseEvent);
     }
 
-    private JPopupMenu retrievePopupMenu()
+    private void retrievePopupMenu()
     {
+    	if (enablePopupMenu == null)
+        {
+        	enablePopupMenu = new JPopupMenu("Datafield Manipulation");
+            //already initiated in constructor.
+        	enablePopupMenu.add(enableDatafield);
+        	enablePopupMenu.add(disableDatafield);
+        }
+    	
         if (popupMenu == null)
         {
             popupMenu = new JPopupMenu("Tree Manipulation");
@@ -233,7 +123,6 @@ public class HSMTreeMouseAdapter extends MouseAdapter
             popupMenu.add(addCloneAction);
             popupMenu.add(removeCloneAction);
             popupMenu.addSeparator();
-//			popupMenu.addSeparator();
             popupMenu.add(addMultipleCloneAction);
 			popupMenu.add(removeMultipleCloneAction);
             popupMenu.add(addMultipleAttributeAction);
@@ -242,76 +131,132 @@ public class HSMTreeMouseAdapter extends MouseAdapter
             popupMenu.add(selectChoiceAction);
             popupMenu.addSeparator();
             popupMenu.add(validateHSMAction);
+            popupMenu.addSeparator();
+            popupMenu.add(selectAddressPartsAction);         
+        }
+    }
+
+	private void setAllEnabled(boolean value)
+	{
+	    addCloneAction.setEnabled(value);
+	    removeCloneAction.setEnabled(value);
+		addMultipleCloneAction.setEnabled(value);
+	    removeMultipleCloneAction.setEnabled(value);
+	    addMultipleAttributeAction.setEnabled(value);
+	    removeMultipleAttributeAction.setEnabled(value);
+	    selectChoiceAction.setEnabled(value);
+	    validateHSMAction.setEnabled(value);
+	    selectAddressPartsAction.setEnabled(value);
+	    enableDatafield.setEnabled(value);
+	    disableDatafield.setEnabled(value);
+	}
+
+	private void showIfPopupTrigger(MouseEvent mouseEvent)
+	{
+		JTree tree=parentPanel.getTree();
+	    if (tree.getSelectionCount() <= 0)
+	    {
+            // find the selected node.
+            TreePath t = tree.getClosestPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+            tree.setSelectionPath(t);
         }
 
-        return popupMenu;
+        if (mouseEvent.isPopupTrigger())
+        {
+        	// setup the right-click popup menu.
+            TreePath treePath = tree.getSelectionPath();
+            if (treePath != null)
+            {
+                retrievePopupMenu();
+                setAllEnabled(false);
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+                Object userObj = node.getUserObject();
+
+                System.out.println("HSMTreeMouseAdapter.showIfPopupTrigger()..userObj:"+userObj.getClass());	
+                if (userObj instanceof MIFClass)
+                {
+                    validateHSMAction.setEnabled(true);
+                    MIFClass mifClass = (MIFClass) userObj;
+                    final List<MIFAssociation> addableAssociations = MIFUtil.findAddableAssociation(mifClass);
+                    final List<MIFAssociation> removableAssociations = MIFUtil.findRemovableAssociation(mifClass);
+                    if (addableAssociations.size() > 0)
+                    	addCloneAction.setEnabled(true);
+                    
+                    if (removableAssociations.size() > 0)
+                    	removeCloneAction.setEnabled(true);
+                }
+
+                if (userObj instanceof MIFAssociation)
+                {
+                	MIFAssociation mifAssc = (MIFAssociation) userObj;               	
+                    if (MIFUtil.isChoiceAssociation(mifAssc))
+                    	selectChoiceAction.setEnabled(true);
+                    else 
+                    {
+                    	if (mifAssc.getMaximumMultiplicity()!= 1)
+                        {
+                            
+                            if (mifAssc.getMultiplicityIndex()>0)
+                            {
+                                removeMultipleCloneAction.setEnabled(true);
+                            }
+                            else
+                            	addMultipleCloneAction.setEnabled(true);
+                        }
+                    }
+                    //check if add/remove clone Item is required
+                    MIFClass asscMifClass=mifAssc.getMifClass();
+                    final List<MIFAssociation> asscToAdd= MIFUtil.findAddableAssociation(asscMifClass);
+                    final List<MIFAssociation> asscToRemove = MIFUtil.findRemovableAssociation(asscMifClass);
+                    if (asscToAdd.size() > 0)
+                        addCloneAction.setEnabled(true);
+
+                    if (asscToRemove.size() > 0)
+                        removeCloneAction.setEnabled(true);
+                }
+
+                if (userObj instanceof MIFAttribute)
+                {
+                	MIFAttribute mifAttr = (MIFAttribute) userObj;
+                	if (mifAttr.getMaximumMultiplicity()!=1)
+                    {
+                        if (mifAttr.getMultiplicityIndex()>0)
+                        {
+                             removeMultipleAttributeAction.setEnabled(true);
+                        }
+                        else
+                        	addMultipleAttributeAction.setEnabled(true);
+                        	
+                    }
+                	if (mifAttr.getType().equals("AD"))
+                		selectAddressPartsAction.setEnabled(true);
+                }
+                
+                if (userObj instanceof Attribute)
+                {
+                	Attribute dtAttr = (Attribute) userObj;
+                	boolean toShowPopup=false;
+                	if (dtAttr.getName().equals("nullFlavor"))
+                			toShowPopup=true;
+                	else if (!dtAttr.isSimple())
+                		toShowPopup=true;
+                	
+                	if (!toShowPopup)
+                		return;
+                	
+                	if (dtAttr.isEnabled())
+                		disableDatafield.setEnabled(true);
+                	else
+                		enableDatafield.setEnabled(true);
+                	enablePopupMenu.show(mouseEvent.getComponent(),
+    	                    mouseEvent.getX(), mouseEvent.getY());
+                	return;
+                }
+
+                popupMenu.show(mouseEvent.getComponent(),
+                    mouseEvent.getX(), mouseEvent.getY());
+        }
+        }	
     }
 }
 
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.21  2006/08/02 18:44:22  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.20  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.19  2006/01/03 18:56:24  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.18  2005/12/29 23:06:16  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.17  2005/12/14 21:37:18  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.16  2005/12/08 22:46:27  chene
- * HISTORY      : Add /Remove Multiple Clone Support
- * HISTORY      :
- * HISTORY      : Revision 1.15  2005/12/07 23:55:01  chene
- * HISTORY      : Saved point for Clone Multiple Implementation
- * HISTORY      :
- * HISTORY      : Revision 1.14  2005/11/29 16:23:55  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.13  2005/10/07 18:39:14  jiangsc
- * HISTORY      : Minor consolidation
- * HISTORY      :
- * HISTORY      : Revision 1.12  2005/10/06 17:27:04  chene
- * HISTORY      : Saving point
- * HISTORY      :
- * HISTORY      : Revision 1.11  2005/10/03 18:55:46  chene
- * HISTORY      : Refactor CloneMeta, add CloneChoiceMeta
- * HISTORY      :
- * HISTORY      : Revision 1.10  2005/09/26 22:16:39  chene
- * HISTORY      : Add CMET 999900 support
- * HISTORY      :
- * HISTORY      : Revision 1.9  2005/09/26 19:29:46  chene
- * HISTORY      : Add Clone Attribute Multiple Class in order to support Multiple Attribute
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/09/22 21:13:05  jiangsc
- * HISTORY      : Removed deprecated classes
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/09/22 17:19:55  jiangsc
- * HISTORY      : Add removeCloneAction into right logic.
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/09/15 16:01:41  chene
- * HISTORY      : SelectChoice GUI/Backend Support
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/09/14 03:04:14  chene
- * HISTORY      : Add/Remove Optional Clone support
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/09/09 22:42:03  chene
- * HISTORY      : Saved Point
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/09/08 19:37:03  chene
- * HISTORY      : Saved point
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/08/28 18:12:27  jiangsc
- * HISTORY      : Implemented Validation on HSM panel.
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/08/24 22:28:37  jiangsc
- * HISTORY      : Enhanced JGraph implementation;
- * HISTORY      : Save point of CSV and HSM navigation update;
- * HISTORY      :
- */

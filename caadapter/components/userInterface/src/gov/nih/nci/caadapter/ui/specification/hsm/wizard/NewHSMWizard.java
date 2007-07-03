@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,9 +36,6 @@ package gov.nih.nci.caadapter.ui.specification.hsm.wizard;
 
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-
-import org.hl7.meta.MessageType;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -50,8 +47,8 @@ import java.awt.event.ActionListener;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.1 $
- * date        $Date: 2007-04-03 16:18:15 $
+ * revision    $Revision: 1.2 $
+ * date        $Date: 2007-07-03 20:19:34 $
  */
 public class NewHSMWizard extends JDialog implements ActionListener
 {
@@ -66,7 +63,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
      * This String is for informational purposes only and MUST not be made final.
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $";
 
     private static final String OK_COMMAND = "OK";
     private static final String CANCEL_COMMAND = "Cancel";
@@ -87,7 +84,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
     //center panel
     private NewHSMFrontPage frontPage;
 
-    private MessageType userSelectedMessageType;
+    private String userSelectedMessageType;
 
     private AbstractMainFrame mainFrame;
 
@@ -115,7 +112,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
         contentPane.add(scrollPane, BorderLayout.CENTER);
 
         southPanel = new JPanel(new BorderLayout());
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));//.TRAILING));//new BorderLayout());
         okButton = new JButton(OK_COMMAND);
         okButton.setMnemonic('O');
         okButton.addActionListener(this);
@@ -126,6 +123,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
         tempPanel.add(okButton);
         tempPanel.add(cancelButton);
         buttonPanel.add(tempPanel);
+        //section start to be replaced by one line 
         JPanel tempPanel2 = new JPanel(new GridLayout(1, 1));
         addMessageTypeButton = new JButton(ADD_MESSAGE_TYPE_COMMAND);
         addMessageTypeButton.setMnemonic('A');
@@ -136,6 +134,8 @@ public class NewHSMWizard extends JDialog implements ActionListener
         southPanel.add(tempPanel3, BorderLayout.WEST);
         southPanel.add(buttonPanel, BorderLayout.EAST);
         contentPane.add(southPanel, BorderLayout.SOUTH);
+        //section end
+//        contentPane.add(buttonPanel, BorderLayout.SOUTH);
         pack();
     }
 
@@ -152,13 +152,6 @@ public class NewHSMWizard extends JDialog implements ActionListener
                 okButtonClicked = false;
                 return;
             }
-//			File tempFile = frontPage.getUserSelectionFile();
-//			if (tempFile != null && !tempFile.isFile())
-//			{
-//				JOptionPane.showMessageDialog(this, "The '" + tempFile.getAbsolutePath() + "' is not a valid file.", "File Not Found Error",
-//						JOptionPane.ERROR_MESSAGE);
-//				return;
-//			}
             okButtonClicked = true;
         }
         else if (CANCEL_COMMAND.equals(command))
@@ -214,11 +207,12 @@ public class NewHSMWizard extends JDialog implements ActionListener
 
     private boolean validateUserMessageType()
     {
-        MessageType messageType = null;
+//        MessageType messageType = null;
+       String messageMIFFileName = null;
         try
         {
-            messageType = frontPage.getUserSelectedMessageType();
-            if(messageType==null)
+        	messageMIFFileName = frontPage.getUserSelectedMIFFileName();
+            if(messageMIFFileName==null)
             {
                 JOptionPane.showMessageDialog(this,
                         "Cannot find user selected message type!",
@@ -226,25 +220,15 @@ public class NewHSMWizard extends JDialog implements ActionListener
                         JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            this.userSelectedMessageType = messageType;
+            this.userSelectedMessageType = messageMIFFileName;
             return true;
         }
         catch (Exception e)
         {
             DefaultSettings.reportThrowableToLogAndUI(this, e, null, this, false, false);
-            //			e.printStackTrace();
-//			JOptionPane.showMessageDialog(this,
-//					e.getMessage(),
-//					"New HL7 v3 Specification Error",
-//					JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
-
-//	public File getUserSelectionFile()
-//	{
-//		return frontPage.getUserSelectionFile();
-//	}
 
     public boolean isOkButtonClicked()
     {
@@ -255,7 +239,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
      * Return the message type user selected. Return null if ok button is not being clicked.
      * @return the message type.
      */
-    public MessageType getUserSelectedMessageType()
+    public String getUserSelectedMessageType()
     {
         if(okButtonClicked)
         {
@@ -275,6 +259,9 @@ public class NewHSMWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,22 +34,20 @@
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
-import gov.nih.nci.caadapter.common.MetaBuilder;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaBuilder;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
-import gov.nih.nci.caadapter.ui.common.nodeloader.HSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.ActionEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 
 /**
  * This class defines a concrete "Save As" action.
@@ -57,8 +55,8 @@ import java.io.FileOutputStream;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:25:59 $
  */
 public class SaveAsHsmAction extends DefaultSaveAsAction
 {
@@ -74,7 +72,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
 
 	protected transient HSMPanel hsmPanel;
 
@@ -130,32 +128,17 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	protected boolean processSaveFile(File file, boolean resetUUID) throws Exception
 	{
 		preActionPerformed(hsmPanel);
-		MetaBuilder builder = HL7V3MetaBuilder.getInstance();
-		FileOutputStream fw = null;
-		BufferedOutputStream bw = null;
 		boolean oldChangeValue = hsmPanel.isChanged();
 		try
 		{
-			HSMBasicNodeLoader nodeLoader = hsmPanel.getDefaultHSMNodeLoader();
-			HL7V3Meta metaData = nodeLoader.unLoadData((DefaultMutableTreeNode) hsmPanel.getTree().getModel().getRoot(), resetUUID);
-			HL7V3Meta existMeta = null;
-			if(!resetUUID)
-			{//if not resetUUID, preserve in the existing one
-				existMeta = hsmPanel.getHl7V3MetaRoot();
-				existMeta.setRootCloneMeta(metaData.getRootCloneMeta());
-			}
-			else
-			{//otherwise, preserve in a new one.
-				existMeta = hsmPanel.getHl7V3MetaRoot();
-				metaData.setMessageID(existMeta.getMessageID());
-				metaData.setVersion(existMeta.getVersion());
-				existMeta = metaData;
-			}
-
-//			fw = new FileOutputStream(file);
-//			bw = new BufferedOutputStream(fw);
-//			builder.build(bw, existMeta);
-            builder.build(file, existMeta);
+			Object treeRoot=hsmPanel.getTree().getModel().getRoot();
+			Object specObject =((DefaultMutableTreeNode)treeRoot).getUserObject();
+			OutputStream os = new FileOutputStream(file);
+			ObjectOutputStream oos = new ObjectOutputStream(os); 
+			oos.writeObject(specObject);
+			oos.close();
+			os.close();
+			
 			if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
 				removeFileUsageListener(defaultFile, hsmPanel);
@@ -175,102 +158,19 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 			hsmPanel.setChanged(oldChangeValue);
 			//rethrow the exception
 			throw e;
-//			return false;
 		}
 		finally
 		{
-			try
-			{
-				//close buffered writer will automatically close enclosed file writer.
-				if (bw != null) bw.close();
-			}
-			catch (Exception e)
-			{//intentionally ignored.
-			}
+//			try
+//			{
+//				//close buffered writer will automatically close enclosed file writer.
+//				if (bw != null) bw.close();
+//			}
+//			catch (Exception e)
+//			{//intentionally ignored.
+//			}
 		}
 	}
 }
-
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.26  2006/08/02 18:44:22  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.25  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.24  2006/01/03 18:56:24  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.23  2005/12/29 23:06:13  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.22  2005/12/29 15:39:06  chene
- * HISTORY      : Optimize imports
- * HISTORY      :
- * HISTORY      : Revision 1.21  2005/12/14 21:37:17  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.20  2005/11/29 16:23:55  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.19  2005/10/26 18:12:29  jiangsc
- * HISTORY      : replaced printStackTrace() to Log.logException
- * HISTORY      :
- * HISTORY      : Revision 1.18  2005/10/26 16:22:10  jiangsc
- * HISTORY      : Face lift to provide better error report.
- * HISTORY      :
- * HISTORY      : Revision 1.17  2005/10/25 22:00:42  jiangsc
- * HISTORY      : Re-arranged system output strings within UI packages.
- * HISTORY      :
- * HISTORY      : Revision 1.16  2005/10/19 18:51:24  jiangsc
- * HISTORY      : Re-engineered Action calling sequence.
- * HISTORY      :
- * HISTORY      : Revision 1.15  2005/10/17 22:32:00  umkis
- * HISTORY      : no message
- * HISTORY      :
- * HISTORY      : Revision 1.14  2005/10/10 20:48:59  jiangsc
- * HISTORY      : Enhanced dialog operation.
- * HISTORY      :
- * HISTORY      : Revision 1.13  2005/09/30 20:44:49  jiangsc
- * HISTORY      : Minor update - corrected wording
- * HISTORY      :
- * HISTORY      : Revision 1.12  2005/08/30 20:48:15  jiangsc
- * HISTORY      : minor update
- * HISTORY      :
- * HISTORY      : Revision 1.11  2005/08/19 20:43:47  jiangsc
- * HISTORY      : Change to use HSMBasicNodeLoader
- * HISTORY      :
- * HISTORY      : Revision 1.10  2005/08/17 21:27:52  chene
- * HISTORY      : Refactor MetaBuilder to be singleton
- * HISTORY      :
- * HISTORY      : Revision 1.9  2005/08/12 18:38:10  jiangsc
- * HISTORY      : Enable HL7 V3 Message to be saved in multiple XML file.
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/08/11 22:10:31  jiangsc
- * HISTORY      : Open/Save File Dialog consolidation.
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/08/05 20:35:50  jiangsc
- * HISTORY      : 0)Implemented field sequencing on CSVPanel but needs further rework;
- * HISTORY      : 1)Removed (Yes/No) for questions;
- * HISTORY      : 2)Removed double-checking after Save-As;
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/08/04 22:34:53  jiangsc
- * HISTORY      : Fixed the save as version and messageID issue.
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/08/04 21:41:15  chene
- * HISTORY      : Support temporaly file saving
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/08/04 20:40:49  jiangsc
- * HISTORY      : Updated to persist uuid information upon save and/or save as.
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/08/03 19:11:01  jiangsc
- * HISTORY      : Some cosmetic update and make HSMPanel able to save the same content to different file.
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/07/28 18:18:42  jiangsc
- * HISTORY      : Can Open HSM Panel
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/07/27 22:41:10  jiangsc
- * HISTORY      : Consolidated context sensitive menu implementation.
- * HISTORY      :
- */
+	
+	

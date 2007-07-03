@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.1 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,42 +35,39 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
-
-import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
-import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
-import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
-import java.util.Enumeration;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Enumeration;
 
 /**
- * This class defines the select choice action.
+ * This class defines the add multiple action.
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.1 $
  *          date        $Date: 2007-07-03 20:25:59 $
  */
-public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
+public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
+{
     /**
      * Logging constant used to identify source of log entry, that could be later used to create
      * logging mechanism to uniquely identify the logged class.
      */
-    private static final String LOGID = "$RCSfile: SelectChoiceAction.java,v $";
+    private static final String LOGID = "$RCSfile: SelectAddressPartsAction.java,v $";
 
     /**
      * String that identifies the class version and solves the serial version UID problem.
@@ -78,100 +75,103 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.1 2007-07-03 20:25:59 wangeug Exp $";
 
-    private static final String COMMAND_NAME = "Select Choice";
+    private static final String COMMAND_NAME = "Select Address Parts";
     private static final Character COMMAND_MNEMONIC = new Character('S');
+
 
     /**
      * Defines an <code>Action</code> object with a default
      * description string and default icon.
      */
-    public SelectChoiceAction(HSMPanel parentPanel) {
+    public SelectAddressPartsAction(HSMPanel parentPanel)
+    {
         this(COMMAND_NAME, null, parentPanel);
     }
+
 
     /**
      * Defines an <code>Action</code> object with the specified
      * description string and a the specified icon.
      */
-    public SelectChoiceAction(String name, Icon icon, HSMPanel parentPanel) {
+    public SelectAddressPartsAction(String name, Icon icon, HSMPanel parentPanel)
+    {
         super(name, icon, parentPanel);
         setMnemonic(COMMAND_MNEMONIC);
         setActionCommandType(DOCUMENT_ACTION_TYPE);
     }
 
-
     /**
      * Invoked when an action occurs.
      */
-    protected boolean doAction(ActionEvent e) {
+    protected boolean doAction(ActionEvent e)
+    {
         super.doAction(e);
-        if (!isSuccessfullyPerformed()) {
+        if (!isSuccessfullyPerformed())
+        {
             return false;
         }
         JTree tree=parentPanel.getTree();
-        TreePath treePath =tree.getSelectionPath();
-        if (treePath == null) {
+        TreePath treePath = tree.getSelectionPath();
+        if (treePath == null)
+        {
             JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Tree has no selection",
-                    "No Selection", JOptionPane.WARNING_MESSAGE);
+                "No Selection", JOptionPane.WARNING_MESSAGE);
             setSuccessfullyPerformed(false);
             return false;
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-       
-        if (obj instanceof MIFAssociation) {
-        	MIFAssociation mifAssc = (MIFAssociation) obj;
-        	MIFClass mifClass=mifAssc.getMifClass();
-        	
-            try {
-                Iterator choiceIt=mifClass.getChoices().iterator();
-                List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
-                while(choiceIt.hasNext())
-                {
-                	MIFClass choiceable=(MIFClass)choiceIt.next();
-                   		baseList.add((DatatypeBaseObject)choiceable);             
-                }
-                AssociationListWizard cloneListWizard =
-                        new AssociationListWizard(baseList, true, (JFrame) tree.getRootPane().getParent(), "Clone List", true);
-                DefaultSettings.centerWindow(cloneListWizard);
-                cloneListWizard.setVisible(true);
-                if (cloneListWizard.isOkButtonClicked()) 
-                {
-                    final List<DatatypeBaseObject> userSelectedMIFClass = cloneListWizard.getUserSelectedAssociation();                
-                    if (userSelectedMIFClass.size()==0)
+        
+        if (obj instanceof MIFAttribute)
+        {
+        	MIFAttribute mifAttr = (MIFAttribute) obj;
+           	if (!mifAttr.getType().equals("AD"))
+           	{
+           		JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Invalid selection",
+                    "The selected type is not \"AD\"", JOptionPane.WARNING_MESSAGE);
+                setSuccessfullyPerformed(false);
+                return false;
+           	}
+           	try
+       		{
+                    final Enumeration attrEnum = mifAttr.getDatatype().getAttributes().elements();
+                    List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
+                    while(attrEnum.hasMoreElements())
+                    	baseList.add((DatatypeBaseObject)attrEnum.nextElement());
+                    AssociationListWizard listWizard =
+                        new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Added", true);
+                    DefaultSettings.centerWindow(listWizard);
+                    listWizard.setVisible(true);
+                    if (listWizard.isOkButtonClicked())
                     {
-                    	 JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "No choice being selected",
-                                 "Invalid Action", JOptionPane.WARNING_MESSAGE);
-                         setSuccessfullyPerformed(false);
-                         return false;
+                        List<DatatypeBaseObject> userSelectedAssociation = listWizard.getUserSelectedAssociation();
+                        if (userSelectedAssociation.size()>0)
+                        {
+                        	//remove existing selection
+                        	Enumeration enuOldFields=mifAttr.getDatatype().getAttributes().elements();
+                        	while(enuOldFields.hasMoreElements())
+                        	{
+                        		DatatypeBaseObject oneAttrField=(DatatypeBaseObject)enuOldFields.nextElement();
+                        		oneAttrField.setOptionChosen(false);
+                        	}
+
+                        	for (DatatypeBaseObject oneAssc:userSelectedAssociation)
+                        		oneAssc.setOptionChosen(true);
+                        }
                     }
-                    else
-                    {
-                    	//remove existing selection
-                    	Iterator choiceAllIt=mifClass.getChoices().iterator();
-                    	while(choiceAllIt.hasNext())
-                    	{
-                    		DatatypeBaseObject oneChoice=(DatatypeBaseObject)choiceAllIt.next();
-                    		oneChoice.setChoiceSelected(false);
-                    	}
-                    	for (DatatypeBaseObject oneChoiceSelected:userSelectedMIFClass)
-                    		oneChoiceSelected.setChoiceSelected(true);
-                    	
-                    	mifAssc.setChoiceSelected(true);
-                    	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);    	
-                    	DefaultMutableTreeNode  newMIFAsscNode =mifTreeLoader.buildObjectNode(mifAssc);
-                    	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
-                    	int oldAssIndx=parentNode.getIndex(targetNode);
-                    	parentNode.remove(targetNode);
-                    	parentNode.insert(newMIFAsscNode,oldAssIndx);
-                    	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
-                    }
-                }
-                
-                setSuccessfullyPerformed(true);
-            } catch (Exception e1) {
+                    NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
+                    DefaultMutableTreeNode  newMIFAsscNode =mifTreeLoader.buildObjectNode(mifAttr);
+                	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
+                	int oldAssIndx=parentNode.getIndex(targetNode);
+                	parentNode.remove(targetNode);
+                	parentNode.insert(newMIFAsscNode,oldAssIndx);
+                	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
+                    setSuccessfullyPerformed(true);
+            }
+            catch (Exception e1)
+            {
                 Log.logException(getClass(), e1);
                 reportThrowableToUI(e1, parentPanel);
                 setSuccessfullyPerformed(false);

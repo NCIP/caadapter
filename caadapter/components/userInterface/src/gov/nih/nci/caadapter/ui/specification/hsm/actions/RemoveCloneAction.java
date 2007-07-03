@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,21 +35,21 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaUtil;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
 
-import org.hl7.meta.Association;
-import org.hl7.meta.CloneClass;
-import org.hl7.meta.MessageType;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * This class defines the remove optional clone action.
@@ -57,8 +57,8 @@ import java.util.List;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:25:59 $
  */
 public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -74,12 +74,10 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
 
-	private static final String COMMAND_NAME = "Remove Clone";
+	private static final String COMMAND_NAME = "Remove Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
-
-	private transient JTree tree;
 
 	/**
 	 * Defines an <code>Action</code> object with a default
@@ -87,17 +85,11 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 	 */
 	public RemoveCloneAction(HSMPanel parentPanel)
 	{
-		this(COMMAND_NAME, parentPanel);
+		this(COMMAND_NAME, null, parentPanel);
 	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public RemoveCloneAction(String name, HSMPanel parentPanel)
-	{
-		this(name, null, parentPanel);
-	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
@@ -110,14 +102,6 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
 	}
 
-	private JTree getTree()
-	{
-		if(this.tree==null)
-		{
-			this.tree = parentPanel.getTree();
-		}
-		return this.tree;
-	}
 
 	/**
 	 * Invoked when an action occurs.
@@ -129,7 +113,8 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 		{
 			return false;
 		}
-		TreePath treePath = getTree().getSelectionPath();
+		JTree tree=parentPanel.getTree();
+		TreePath treePath = tree.getSelectionPath();
 		if(treePath==null)
 		{
 			JOptionPane.showMessageDialog(tree.getRootPane().getParent(),
@@ -142,66 +127,74 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
-		if(obj instanceof CloneMeta)
+		MIFClass mifClass =null;
+		if(obj instanceof MIFClass)
 		{
-			CloneMeta cloneMeta = (CloneMeta) obj;
+			mifClass = (MIFClass) obj;
+		}
+		else if (obj instanceof MIFAssociation )
+		{
+			MIFAssociation mifAssc=(MIFAssociation)obj;
+			
+			if (!mifAssc.isChoiceSelected())
 			{
-				try
-				{
-                    final MessageType messageType = parentPanel.getMessageType();
-                    final CloneClass cloneClass = HL7V3MetaUtil.findCloneClass(messageType, cloneMeta);
-
-                    final List<Association> associations = HL7V3MetaUtil.getRemovableAssociations(cloneClass, cloneMeta);
-                    AssociationListWizard cloneListWizard =
-                        new AssociationListWizard(associations, false, (JFrame)tree.getRootPane().getParent(), "Clone List", true);
-                    DefaultSettings.centerWindow(cloneListWizard);
-		            cloneListWizard.setVisible(true);
-                    if (cloneListWizard.isOkButtonClicked())
-                    {
-                        final List<Association> userSelectedAssociation = cloneListWizard.getUserSelectedAssociation();
-                        HL7V3MetaUtil.removeClone(userSelectedAssociation, cloneMeta);
-                        parentPanel.getDefaultHSMNodeLoader().refreshSubTreeByGivenMetaObject(targetNode, cloneMeta, parentPanel.getTree());
-                    }
-                    setSuccessfullyPerformed(true);
-				}
-				catch (Exception e1)
-				{
-					Log.logException(getClass(), e1);
-					reportThrowableToUI(e1, parentPanel);
-					setSuccessfullyPerformed(false);
-				}
+				if(mifAssc.getReferencedMifClass()!=null)
+					mifClass=mifAssc.getReferencedMifClass();
+				else
+					mifClass=mifAssc.getMifClass();
 			}
+			else
+			{
+				for(MIFClass choiceClass:mifAssc.getMifClass().getChoices())
+					if (choiceClass.isChoiceSelected())
+						mifClass=choiceClass;
+			}
+		}
+		
+		try
+		{
+            final List<MIFAssociation> removeableAsscs = MIFUtil.findRemovableAssociation(mifClass);
+            final List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
+            
+            for(MIFAssociation removeableAssc:removeableAsscs)
+            	baseList.add((DatatypeBaseObject)removeableAssc);
+            
+            AssociationListWizard cloneListWizard =
+                new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Reomved", true);
+            DefaultSettings.centerWindow(cloneListWizard);
+            cloneListWizard.setVisible(true);
+            if (cloneListWizard.isOkButtonClicked())
+            {
+                List<DatatypeBaseObject> userSelectedAssociation = cloneListWizard.getUserSelectedAssociation();
+                for (DatatypeBaseObject oneAssc:userSelectedAssociation)
+                {
+                	oneAssc.setOptionChosen(false);
+                	//remove the node from targetNode
+                	for(int i=0;i<targetNode.getChildCount();i++)
+                	{
+                		DefaultMutableTreeNode oneAsscNode =(DefaultMutableTreeNode)targetNode.getChildAt(i);
+                		Object oneChildObj=oneAsscNode.getUserObject();
+                		if (oneChildObj instanceof MIFAssociation)
+                		{
+                			MIFAssociation oneChildAssc=(MIFAssociation)oneChildObj;
+                			if (oneChildAssc.getName().equals(oneAssc.getName()))
+                    		{
+                    			oneAsscNode.removeFromParent();
+                    			break;
+                    		}
+                		}	
+                	}
+                }
+                ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
+            }
+            setSuccessfullyPerformed(true);
+		}
+		catch (Exception e1)
+		{
+			Log.logException(getClass(), e1);
+			reportThrowableToUI(e1, parentPanel);
+			setSuccessfullyPerformed(false);
 		}
 		return isSuccessfullyPerformed();
 	}
 }
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.9  2006/08/02 18:44:22  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.8  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.7  2006/01/03 18:56:24  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/12/29 23:06:13  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/12/14 21:37:17  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/11/29 16:23:55  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/10/19 18:51:24  jiangsc
- * HISTORY      : Re-engineered Action calling sequence.
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/09/15 16:01:36  chene
- * HISTORY      : SelectChoice GUI/Backend Support
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/09/14 03:04:14  chene
- * HISTORY      : Add/Remove Optional Clone support
- * HISTORY      :
- */

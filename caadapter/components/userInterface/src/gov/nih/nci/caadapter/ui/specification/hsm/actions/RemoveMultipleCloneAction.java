@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleCloneAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,14 +35,21 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneMultipleMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaUtil;
+import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
+
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * This class defines the remove multiple clone action.
@@ -50,8 +57,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:25:59 $
  */
 public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -67,12 +74,11 @@ public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleCloneAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Remove Multiple Clone";
     private static final Character COMMAND_MNEMONIC = new Character('l');
 
-    private transient JTree tree;
 
     /**
      * Defines an <code>Action</code> object with a default
@@ -80,16 +86,7 @@ public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
      */
     public RemoveMultipleCloneAction(HSMPanel parentPanel)
     {
-        this(COMMAND_NAME, parentPanel);
-    }
-
-    /**
-     * Defines an <code>Action</code> object with the specified
-     * description string and a default icon.
-     */
-    public RemoveMultipleCloneAction(String name, HSMPanel parentPanel)
-    {
-        this(name, null, parentPanel);
+        this(COMMAND_NAME, null, parentPanel);
     }
 
     /**
@@ -103,15 +100,6 @@ public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
         setActionCommandType(DOCUMENT_ACTION_TYPE);
     }
 
-    private JTree getTree()
-    {
-        if (this.tree == null)
-        {
-            this.tree = parentPanel.getTree();
-        }
-        return this.tree;
-    }
-
     /**
      * Invoked when an action occurs.
      */
@@ -122,7 +110,8 @@ public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
         {
             return false;
         }
-        TreePath treePath = getTree().getSelectionPath();
+        JTree tree= parentPanel.getTree();
+        TreePath treePath = tree.getSelectionPath();
         if (treePath == null)
         {
             JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Tree has no selection",
@@ -132,15 +121,64 @@ public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
         }
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
-        if (obj instanceof CloneMultipleMeta)
+        if (obj instanceof MIFAssociation)
         {
-            CloneMultipleMeta cloneMeta = (CloneMultipleMeta) obj;
+        	MIFAssociation mifAssc = (MIFAssociation) obj;
             try
             {
-                HL7V3MetaUtil.removeMultipleClone(cloneMeta);
-                parentPanel.getDefaultHSMNodeLoader().refreshSubTreeByGivenMetaObject(
-                    (DefaultMutableTreeNode)targetNode.getParent(), cloneMeta.getParentMeta(), parentPanel.getTree());
-                setSuccessfullyPerformed(true);
+            	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
+            	Object parentObj=parentNode.getUserObject();
+            	
+            	MIFClass parentMif=null;
+            	if (parentObj instanceof MIFClass)
+            		parentMif=(MIFClass)parentObj;
+            	else if (parentObj instanceof MIFAssociation)
+            	{
+            		MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
+            		if (!parentMifAssc.getMifClass().getReferenceName().equals(""))
+            			parentMif=parentMifAssc.getReferencedMifClass();
+            		else if (parentMifAssc.isChoiceSelected())
+            		{
+            			//find choiceSelected MIFClass
+            			HashSet<MIFClass> choiceHash=parentMifAssc.getMifClass().getChoices();
+            			for (MIFClass choiceMif:choiceHash)
+            			{
+            				if (choiceMif.isChoiceSelected())
+            					parentMif=choiceMif;
+            			}
+            		}
+            		else 
+            			parentMif=parentMifAssc.getMifClass();
+            	}
+
+            	if (parentMif==null)
+            	{
+            		JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Invalid selection",
+                            "MIFClass is not found", JOptionPane.WARNING_MESSAGE);
+                        setSuccessfullyPerformed(false);
+                        return false;
+            	}
+            	parentMif.removeAssociation(mifAssc);
+
+            	//this sibling MIFAssociation object has been reset with new multiplicity index,
+            	//reload them
+            	DefaultMutableTreeNode newParentNode=null;
+            	NewHSMBasicNodeLoader treeNodeLoader= new NewHSMBasicNodeLoader(true);
+            	newParentNode=treeNodeLoader.buildObjectNode(parentObj);
+            	
+            	DefaultMutableTreeNode grandParentNode=(DefaultMutableTreeNode)parentNode.getParent();
+            	if (grandParentNode==null)
+            		((DefaultTreeModel)tree.getModel()).setRoot(newParentNode); 
+            	else
+            	{
+            		int parentIndex=grandParentNode.getIndex(parentNode);
+            		grandParentNode.remove(parentNode);
+            		grandParentNode.insert(newParentNode,parentIndex);
+            		((DefaultTreeModel) tree.getModel()).nodeStructureChanged(grandParentNode);
+            	}
+            	
+            	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
+            	setSuccessfullyPerformed(true);
             }
             catch (Exception e1)
             {
@@ -155,6 +193,9 @@ public class RemoveMultipleCloneAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

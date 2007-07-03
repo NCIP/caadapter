@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,8 +39,8 @@ import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaObjectParser;
+//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaObjectParser;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
@@ -61,8 +61,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:25:59 $
  */
 public class NewHSMAction extends AbstractContextAction
 {
@@ -77,7 +77,7 @@ public class NewHSMAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HSM_FILE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -117,7 +117,7 @@ public class NewHSMAction extends AbstractContextAction
 		//do not know how to set the icon location name, or just do not matter.
 	}
 
-	private void launchPanel(final MessageType messageType, final ActionEvent actionEvent)
+	private void launchPanel(final String messageType, final ActionEvent actionEvent)
 	{
 		//have to add the new tab so as the panel may update its panel title in the tabbed pane.
 		SwingWorker worker = new SwingWorker()
@@ -156,10 +156,12 @@ public class NewHSMAction extends AbstractContextAction
 					{//no need to proceed further
 						return;
 					}
-					GeneralUtilities.setCursorWaiting(mainFrame);
-					HL7V3MetaObjectParser v3MetaObjectParser = new HL7V3MetaObjectParser();
-					HL7V3Meta metaObject = (HL7V3Meta) v3MetaObjectParser.parse(messageType);
-					hsmPanel.setHl7V3MetaRoot(metaObject);
+					//to be replaced:Eugene
+//					GeneralUtilities.setCursorWaiting(mainFrame);
+//					HL7V3MetaObjectParser v3MetaObjectParser = new HL7V3MetaObjectParser();
+//					HL7V3Meta metaObject = (HL7V3Meta) v3MetaObjectParser.parse(messageType);
+//					hsmPanel.setHl7V3MetaRoot(metaObject);
+					//do to be replaced: Eugene
 					everythingGood = true;
 				}
 				catch (Throwable e1)
@@ -206,7 +208,7 @@ public class NewHSMAction extends AbstractContextAction
 		wizard.setVisible(true);
 		if (wizard.isOkButtonClicked())
 		{
-			MessageType messageType = wizard.getUserSelectedMessageType();
+			String messageType = wizard.getUserSelectedMessageType();
 			launchPanel(messageType, e);
 		}
 		return isSuccessfullyPerformed();
@@ -225,6 +227,9 @@ public class NewHSMAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2006/11/15 19:57:38  wuye
  * HISTORY      : reorgnize menu items
  * HISTORY      :

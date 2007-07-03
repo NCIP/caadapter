@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListFrontPage.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListFrontPage.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,8 +34,9 @@
 
 package gov.nih.nci.caadapter.ui.specification.hsm.wizard;
 
-import org.hl7.meta.Association;
-
+//import org.hl7.meta.Association;
+//import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -46,8 +47,8 @@ import java.util.ArrayList;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:19:34 $
  */
 public class AssociationListFrontPage extends JPanel
 {
@@ -63,10 +64,10 @@ public class AssociationListFrontPage extends JPanel
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListFrontPage.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListFrontPage.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $";
 
     private java.util.List<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
-    private java.util.List<Association> enableSelectedAssociation;
+    private java.util.List<DatatypeBaseObject> enableSelectedAssociation;
 
     private JList list;
     private DefaultListModel listModel;
@@ -77,12 +78,12 @@ public class AssociationListFrontPage extends JPanel
      * Creates a new <code>JPanel</code> with a double buffer
      * and a flow layout.
      */
-    public AssociationListFrontPage(java.util.List<Association> enableSelectedAssociation, boolean singleSelection)
+    public AssociationListFrontPage(java.util.List<DatatypeBaseObject> enableSelectedAssociation, boolean singleSelection)
     {
         initialize(enableSelectedAssociation, false);
     }
 
-    private void initialize(java.util.List<Association> enableSelectedAssociation, boolean singleSelection)
+    private void initialize(java.util.List<DatatypeBaseObject> enableSelectedAssociation, boolean singleSelection)
     {
         this.enableSelectedAssociation = enableSelectedAssociation;
         this.setLayout(new BorderLayout());
@@ -115,7 +116,7 @@ public class AssociationListFrontPage extends JPanel
             listModel = new DefaultListModel();
             for (int i = 0; i < enableSelectedAssociation.size(); i++)
             {
-                Association association = enableSelectedAssociation.get(i);
+            	DatatypeBaseObject association = enableSelectedAssociation.get(i);
                 listModel.addElement(association.getName());
             }
         }
@@ -155,16 +156,16 @@ public class AssociationListFrontPage extends JPanel
 //    }
 
 // List Solution
-    public java.util.List<Association> getUserSelectedAssociations() throws Exception
+    public java.util.List<DatatypeBaseObject> getUserSelectedAssociations() throws Exception
     {
-        java.util.List<Association> selectedAssociations = new ArrayList<Association>();
+        java.util.List<DatatypeBaseObject> selectedAssociations = new ArrayList<DatatypeBaseObject>();
         final Object[] selectedValues = list.getSelectedValues();
 
         for (int i = 0; i < selectedValues.length; i++)
         {
             for (int j = 0; j < enableSelectedAssociation.size(); j++)
             {
-                Association association = enableSelectedAssociation.get(j);
+            	DatatypeBaseObject association = enableSelectedAssociation.get(j);
                 if (association.getName().equals(selectedValues[i]))
                 {
                     selectedAssociations.add(association);
@@ -179,6 +180,9 @@ public class AssociationListFrontPage extends JPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

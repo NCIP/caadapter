@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,11 +35,11 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
-import gov.nih.nci.caadapter.hl7.validation.CloneMetaValidator;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
+import gov.nih.nci.caadapter.hl7.validation.MIFClassValidator;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
-
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -51,8 +51,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 20:25:59 $
  */
 public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 {
@@ -68,7 +68,7 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -114,14 +114,6 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 		//do not know how to set the icon location name, or just do not matter.
 	}
 
-	private JTree getTree()
-	{
-		if (this.tree == null)
-		{
-			this.tree = parentPanel.getTree();
-		}
-		return this.tree;
-	}
 
 	/**
 	 * Invoked when an action occurs.
@@ -129,16 +121,12 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 	protected boolean doAction(ActionEvent e)
 	{
 		//no need to check the change status as of now 
-//		super.doAction(e);
-//		if (!isSuccessfullyPerformed())
-//		{
-//			return;
-//		}
-		TreePath treePath = getTree().getSelectionPath();
+		JTree mifTree=parentPanel.getTree();
+		TreePath treePath = mifTree.getSelectionPath();
 		if (treePath == null)
 		{
 			//use root as the default selection.
-			Object rootObj = getTree().getModel().getRoot();
+			Object rootObj = mifTree.getModel().getRoot();
 			if(rootObj instanceof DefaultMutableTreeNode)
 			{
 				treePath = new TreePath(((DefaultMutableTreeNode)rootObj).getPath());
@@ -153,15 +141,15 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
-		if (!(obj instanceof CloneMeta))
+		if (!(obj instanceof MIFClass))
 		{
 			JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Select a clone meta object", "Wrong Selection", JOptionPane.WARNING_MESSAGE);
 			setSuccessfullyPerformed(false);
 		}
 		else
 		{
-			CloneMeta cloneMeta = (CloneMeta) obj;
-			CloneMetaValidator cloneMetaValidator = new CloneMetaValidator(cloneMeta);
+			MIFClass cloneMeta = (MIFClass) obj;
+			MIFClassValidator cloneMetaValidator = new MIFClassValidator(cloneMeta,true);
 			ValidatorResults results = cloneMetaValidator.validate();
 			parentPanel.getController().displayValidationMessage(results);
 			setSuccessfullyPerformed(true);
@@ -169,39 +157,3 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 		return isSuccessfullyPerformed();
 	}
 }
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.11  2006/08/02 18:44:22  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.10  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.9  2006/01/03 18:56:24  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/12/29 23:06:13  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/12/14 21:37:17  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/11/29 16:23:55  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/10/19 18:51:24  jiangsc
- * HISTORY      : Re-engineered Action calling sequence.
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/10/18 13:35:26  umkis
- * HISTORY      : no message
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/10/04 20:47:50  jiangsc
- * HISTORY      : Validation enhancement.
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/10/04 20:23:37  jiangsc
- * HISTORY      : Validation enhancement.
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/08/26 21:42:21  jiangsc
- * HISTORY      : Validation action
- * HISTORY      :
- */

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListWizard.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,8 +36,8 @@ package gov.nih.nci.caadapter.ui.specification.hsm.wizard;
 
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
-import org.hl7.meta.Association;
-
+//import org.hl7.meta.Association;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -50,8 +50,8 @@ import java.util.ArrayList;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.1 $
- * date        $Date: 2007-04-03 16:18:15 $
+ * revision    $Revision: 1.2 $
+ * date        $Date: 2007-07-03 20:19:34 $
  */
 public class AssociationListWizard extends JDialog implements ActionListener
 {
@@ -66,7 +66,7 @@ public class AssociationListWizard extends JDialog implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/AssociationListWizard.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $";
 
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
@@ -82,22 +82,24 @@ public class AssociationListWizard extends JDialog implements ActionListener
 	//center panel
 	private AssociationListFrontPage frontPage;
 
-	private java.util.List<Association> enableSelectedAssociation = new ArrayList<Association>();
-	private java.util.List<Association> userSelectedAssociation = new ArrayList<Association>();
+	private java.util.List<DatatypeBaseObject> enableSelectedAssociation = new ArrayList<DatatypeBaseObject>();
+	private java.util.List<DatatypeBaseObject> userSelectedAssociation = new ArrayList<DatatypeBaseObject>();
+//	private java.util.List<Object> enableSelectedAssociation = new ArrayList<Object>();
+//	private java.util.List<Object> userSelectedAssociation = new ArrayList<Object>();
 
-	public AssociationListWizard(java.util.List<Association> enableSelectedAssociation, boolean singleSelection, Frame owner, String title, boolean modal) throws HeadlessException
+	public AssociationListWizard(java.util.List<DatatypeBaseObject> enableSelectedAssociation, boolean singleSelection, Frame owner, String title, boolean modal) throws HeadlessException
 	{
 		super(owner, title, modal);
 		initialize(enableSelectedAssociation, singleSelection);
 	}
 
-	public AssociationListWizard(java.util.List<Association> enableSelectedAssociation, boolean singleSelection, Dialog owner, String title, boolean modal) throws HeadlessException
+	public AssociationListWizard(java.util.List<DatatypeBaseObject> enableSelectedAssociation, boolean singleSelection, Dialog owner, String title, boolean modal) throws HeadlessException
 	{
 		super(owner, title, modal);
 		initialize(enableSelectedAssociation, singleSelection);
 	}
 
-	private void initialize(java.util.List<Association> enableSelectedAssociation, boolean singleSelection)
+	private void initialize(java.util.List<DatatypeBaseObject> enableSelectedAssociation, boolean singleSelection)
 	{
 		this.enableSelectedAssociation = enableSelectedAssociation;
 		userSelectedAssociation = null;
@@ -154,7 +156,7 @@ public class AssociationListWizard extends JDialog implements ActionListener
 
 	private boolean validateAssociationList()
 	{
-		java.util.List<Association> associations = null;
+		java.util.List<DatatypeBaseObject> associations = null;
 		try
 		{
 			associations = frontPage.getUserSelectedAssociations();
@@ -190,7 +192,7 @@ public class AssociationListWizard extends JDialog implements ActionListener
 	 * Return the message type user selected. Return null if ok button is not being clicked.
 	 * @return the message type user selected. Return null if ok button is not being clicked.
 	 */
-	public java.util.List<Association> getUserSelectedAssociation()
+	public java.util.List<DatatypeBaseObject> getUserSelectedAssociation()
 	{
 		if(okButtonClicked)
 		{
@@ -210,6 +212,9 @@ public class AssociationListWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
