@@ -26,13 +26,13 @@ import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
-import gov.nih.nci.caadapter.hl7.map.impl.ViewImpl;
-import gov.nih.nci.caadapter.hl7.map.View;
+import gov.nih.nci.caadapter.common.map.ViewImpl;
+import gov.nih.nci.caadapter.common.map.View;
 
-import gov.nih.nci.caadapter.hl7.map.components.BaseComponent;
-import gov.nih.nci.caadapter.hl7.map.components.BaseComponentFactory;
-import gov.nih.nci.caadapter.hl7.map.components.BaseMapElement;
-import gov.nih.nci.caadapter.hl7.map.components.FunctionComponent;
+import gov.nih.nci.caadapter.common.map.BaseComponent;
+import gov.nih.nci.caadapter.common.map.BaseComponentFactory;
+import gov.nih.nci.caadapter.common.map.BaseMapElement;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.impl.BaseMapElementImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MapImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
@@ -87,8 +87,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date: 2007-06-13 19:20:54 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.4 $ date $Date: 2007-07-03 20:05:08 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.3 2007-06-13 19:20:54 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.4 2007-07-03 20:05:08 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1444,6 +1444,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.3  2007/06/13 19:20:54  wuye
+ * HISTORY : added	sourceSDKMetaData.setMapped(false);
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/04/19 14:07:37  wangeug
  * HISTORY : set link color based on linkType
  * HISTORY :
