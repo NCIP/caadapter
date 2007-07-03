@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxMutableViewInterface.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxMutableViewInterface.java,v 1.2 2007-07-03 18:56:04 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,8 +37,9 @@ package gov.nih.nci.caadapter.ui.common.functions;
 import gov.nih.nci.caadapter.common.BaseObject;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
+import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
-import gov.nih.nci.caadapter.hl7.map.components.FunctionComponent;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 
 import javax.swing.*;
 import java.util.List;
@@ -53,8 +54,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 18:56:04 $
  */
 public interface FunctionBoxMutableViewInterface extends BaseObject
 {
@@ -117,14 +118,14 @@ public interface FunctionBoxMutableViewInterface extends BaseObject
 	 *
 	 * @return a View Object
 	 */
-	gov.nih.nci.caadapter.hl7.map.View getViewMeta();
+	View getViewMeta();
 
 	/**
 	 * Set a new view meta object.
 	 *
 	 * @param newViewMeta
 	 */
-	void setViewMeta(gov.nih.nci.caadapter.hl7.map.View newViewMeta);
+	void setViewMeta(View newViewMeta);
 
 	/**
 	 * Return the associated view object in JGraph.
@@ -181,6 +182,9 @@ public interface FunctionBoxMutableViewInterface extends BaseObject
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/09/06 18:28:38  umkis
  * HISTORY      : The new implement of Vocabulary Mapping function.
  * HISTORY      :

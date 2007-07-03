@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxMutableViewInterfaceImpl.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxMutableViewInterfaceImpl.java,v 1.2 2007-07-03 18:57:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,10 +40,10 @@ import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.impl.FunctionMetaImpl;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
-import gov.nih.nci.caadapter.hl7.map.components.FunctionComponent;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
-
+import gov.nih.nci.caadapter.common.map.View;
 import javax.swing.*;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -55,8 +55,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-03 18:57:11 $
  */
 public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implements FunctionBoxMutableViewInterface, MappableNode, Cloneable
 {
@@ -71,7 +71,7 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 
 	protected FunctionComponent functionComponent;
 	protected FunctionMeta functionMeta;
-	protected gov.nih.nci.caadapter.hl7.map.View viewMeta;
+	protected View viewMeta;
 	protected FunctionBoxCell functionBoxCell;
 	protected FunctionConstant functionConstant;
     protected FunctionVocabularyMapping functionVocabularyMapping;
@@ -82,7 +82,7 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 	 * @param functionMeta
 	 * @param viewMeta
 	 */
-	public FunctionBoxMutableViewInterfaceImpl (FunctionMeta functionMeta, gov.nih.nci.caadapter.hl7.map.View viewMeta)
+	public FunctionBoxMutableViewInterfaceImpl (FunctionMeta functionMeta, View viewMeta)
 	{
 		this.functionComponent = null;
 		this.functionMeta = functionMeta;
@@ -184,12 +184,12 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 		resetMetas();
 	}
 
-	public gov.nih.nci.caadapter.hl7.map.View getViewMeta()
+	public View getViewMeta()
 	{
 		return this.viewMeta;
 	}
 
-	public void setViewMeta(gov.nih.nci.caadapter.hl7.map.View newViewMeta)
+	public void setViewMeta(View newViewMeta)
 	{
 		this.viewMeta = newViewMeta;
 	}
@@ -605,6 +605,9 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2006/10/02 18:05:08  umkis
  * HISTORY      : Vocabulary mapping function upgrade which allow to mapping through a URL and domained .vom file.
  * HISTORY      :
