@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.4 2007-06-14 15:44:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.5 2007-07-03 18:37:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.common.jgraph;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -51,7 +52,7 @@ import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
-
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -60,6 +61,7 @@ import java.awt.Font;
 import java.awt.geom.Point2D;
 import java.util.Map;
 import java.util.Set;
+import java.util.Enumeration;
 
 /**
  * This class defines a list of utilities to help carry out some general functionality used in UI.
@@ -68,8 +70,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-06-14 15:44:58 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-03 18:37:48 $
  */
 public final class UIHelper
 {
@@ -357,7 +359,44 @@ public final class UIHelper
 		}
 		return result;
 	}
+	
+	public static final MappableNode constructMappableNodeObjectXmlPath(Object treeRoot, String dtObjectXmlPath)
+	{
+		MappableNode result = null;
+		if(treeRoot instanceof DefaultMappableTreeNode)
+		{//either source or target
+			DefaultMappableTreeNode root = (DefaultMappableTreeNode) treeRoot;
+			result = (MappableNode)findTreeNodeWithXmlPath(root, (String)dtObjectXmlPath);
+		}
+		if(result == null)
+	    {
+	            Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
+	            Log.logError(internalInstance, (new StringBuilder()).append("treeRoot is of type '").append(treeRoot != null ? treeRoot.getClass().getName() : "null").append("'").toString());
+	    }
+	    return result;
+	}
+	
+    public static DefaultMutableTreeNode findTreeNodeWithXmlPath(DefaultMutableTreeNode treeNode, String nodeXmlPath)
+    {
+        
+        Object userObj = treeNode.getUserObject();
+        if(userObj instanceof DatatypeBaseObject)
+        {
+            DatatypeBaseObject dtUserObj = (DatatypeBaseObject)userObj;
+            if(dtUserObj.getXmlPath().equals(nodeXmlPath))
+                return treeNode;
+        }
 
+        for(Enumeration childEnum = treeNode.children(); childEnum.hasMoreElements();)
+        {
+            DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)childEnum.nextElement();
+            DefaultMutableTreeNode childUserObj = findTreeNodeWithXmlPath(childNode, nodeXmlPath);
+            if(childUserObj != null)
+                return childUserObj;
+        }
+
+        return null;
+    }
 	/**
 	 * Return true if port matches the type of input (isInputPort is true) or output (isInputPort is false);
 	 * @param port
@@ -395,6 +434,10 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/06/14 15:44:58  wangeug
+ * HISTORY      : set link color of target table based on column type:
+ * HISTORY      : TYPE_ATTRIBUTE or TYPE_ASSOCIATION
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/06/12 20:17:16  wangeug
  * HISTORY      : set colors with links
  * HISTORY      :
