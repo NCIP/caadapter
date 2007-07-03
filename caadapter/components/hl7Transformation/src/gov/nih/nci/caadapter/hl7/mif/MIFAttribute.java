@@ -17,7 +17,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-28 13:52:35 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-07-03 18:22:16 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -44,6 +44,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private boolean optionChosen = false;
 	private String parentXmlPath;
 	private Datatype datatype;
+	private Datatype concreteDatatype;
 
 	/**
 	 * @return the conformance
@@ -295,6 +296,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 			 MIFAttribute clonnedObj = (MIFAttribute)super.clone();
 			 if (getDatatype()!=null)
 				 clonnedObj.setDatatype((Datatype)getDatatype().clone());
+			 if (getConcreteDatatype()!=null)
+				 clonnedObj.setConcreteDatatype((Datatype)getConcreteDatatype().clone());
+			 
 			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -334,6 +338,12 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public void setEnabled(boolean enable) {
 		// TODO Auto-generated method stub
 		
+	}
+	public Datatype getConcreteDatatype() {
+		return concreteDatatype;
+	}
+	public void setConcreteDatatype(Datatype concreteDatatype) {
+		this.concreteDatatype = concreteDatatype;
 	}
 
 }

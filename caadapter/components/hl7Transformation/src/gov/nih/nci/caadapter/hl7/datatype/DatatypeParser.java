@@ -9,11 +9,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
@@ -33,10 +35,10 @@ import org.w3c.dom.Node;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-27 22:52:34 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-03 18:25:22 $
  */
 
 public class DatatypeParser {
@@ -44,7 +46,7 @@ public class DatatypeParser {
     private Hashtable datatypes = new Hashtable();
     private final int COMPLETE = 1;
     private final int NONCOMPLETE = 0; 
-    
+    private Hashtable<String, List<String>> datatypeSubclass=new Hashtable<String, List<String>>();
     public Hashtable getDatatypes() {
     	return datatypes;
     }
@@ -189,12 +191,59 @@ public class DatatypeParser {
 			InputStream is = this.getClass().getResourceAsStream("/datatypes");
 			ObjectInputStream ois = new ObjectInputStream(is);
 			datatypes = (Hashtable)ois.readObject();
+			populateSubclasses();
 			ois.close();
 			is.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+	public List<String> findSubclassList(String typeName)
+	{
+		return datatypeSubclass.get(typeName);
+	}
+	private void populateSubclasses()
+	{
+		Enumeration dtKeys=datatypes.keys();
+		while ( dtKeys.hasMoreElements())
+		{
+			String dtOneKey=(String)dtKeys.nextElement();
+			Datatype dtOneElement=(Datatype)datatypes.get(dtOneKey);
+			addDatatypeToSubclassHash(dtOneElement);
+		}
+	}
+	private void addDatatypeToSubclassHash(Datatype dType)
+	{	
+//		System.out.println("DatatypeParser.addDatatypeToSubclassHash()..dataType:"+dType.getName()+"...getParents():"+dType.getParents());
+		String parentName=dType.getParents();
+		if (parentName==null)
+			return;
+		if (dType.isAbstract())
+			return;
+		
+		Datatype parentDatatype=(Datatype)datatypes.get(parentName);
+		while (parentDatatype!=null)
+		{
+			if (parentDatatype.isAbstract())
+			{
+				List <String>list = datatypeSubclass.get(parentDatatype.getName());
+				//add one AbstractSubclassPair
+				if (list==null)
+				{
+					list=new ArrayList <String>();
+					datatypeSubclass.put(parentDatatype.getName(), list);
+				}
+				if (!list.contains(dType.getName()))
+					list.add(dType.getName());
+			}
+			parentName=parentDatatype.getParents();
+			if (parentName==null)
+				break;
+			parentDatatype=(Datatype)datatypes.get(parentName);
+		}
+			 
+	}
+
 	public void handleGTS() {
 		Datatype datatype = new Datatype();
 		datatype.setName("GTS");
