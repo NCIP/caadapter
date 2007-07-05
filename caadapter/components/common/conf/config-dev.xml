@@ -5,6 +5,7 @@
 	
 	<!--Define the name for Caadapter components -->
 	<constant name="CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED" type="String" value="caadapter.hl7.transformation.activated"/>
+	<constant name="CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED" type="String" value="caadapter.hl7.csv.transformation.activated"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED" type="String" value="caadapter.hl7.v2v3.conversion.activated"/>
 	<constant name="CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED" type="String" value="caadapter.model.mapping.activated"/>
 	<constant name="CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED" type="String" value="caadapter.sdtm.transformation.activated"/>
@@ -12,6 +13,10 @@
 	<constant name="CAADAPTER_HELP_MENU_ACTIVATED" type="String" value="caadapter.help.menu.activated"/>	
 	<constant name="CAADAPTER_QUERYBUILDER_MENU_ACTIVATED" type="String" value="caadapter.querybuilder.menu.activated"/>	
 
+	<!-- feature controlling flag -->
+	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED" type="String" value="caadapter.hl7.specification.nullflavor.enabled"/>
+	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED" type="String" value="caadapter.hl7.specification.complextype.enabled"/>
+	
 	<constant name="CAADAPTER_VERSION" type="String" value="V3.2"/>
     <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="caAdapter_3_2_Final"/>
     <constant name="JDK_VERSION" type="String" value="1.5.0_06"/>
@@ -50,7 +55,7 @@
     <constant name="VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR" type="String" value="?@"/>
     <constant name="VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER" type="String" value="#"/>
     <constant name="VOCABULARY_MAP_URL_CONNECTION_TEST_DATA" type="String" value="!TEST"/>
-    
+
     <constant name="OPEN_DIALOG_TITLE_FOR_CSV_METADATA_FILE" type="String" value="Open CSV Specification..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_CSV_FILE" type="String" value="Open CSV File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE" type="String" value="Open Source File..."/>
@@ -97,6 +102,7 @@
 	<constant name="CSV_MODULE_NAME" type="String" value="CSV Specification"/>
 	<constant name="HL7_V3_METADATA_MODULE_NAME" type="String" value="HL7 v3 Specification"/>
 	<constant name="HL7_V3_MESSAGE_MODULE_NAME" type="String" value="HL7 v3 Message"/>
+	<constant name="HL7_V3_TO_CSV_MODULE_NAME" type="String" value="HL7 v3 To CSV"/>
 
     <constant name="FUNCTION_DEFINITION_DEFAULT_KIND" type="String" value="core"/>
     <constant name="CSV_DEFINITION_DEFAULT_KIND" type="String" value="scs"/>

@@ -20,7 +20,6 @@
 	<property name="module.src.name" value="src"/>
 	<property name="module.src.dir" value="${common.module.home}/src"/>
 	<property name="module.gencode.name" value="gencode"/>
-	<property name="basedir.config.files" value="${basedir}/conf"/>
 
 	<!-- Define project properties !-->
 	<property name="caadapter.project.schema.dir" value="${common.module.home}/../../etc"/>
@@ -67,19 +66,13 @@
 		<echo message="-- delivere ${module.name}  --------"/>
 		<copy file="${module.dist.dir}/${common.module.dist.name}" 
 			tofile="${caadapter.project.dist.dir}/${common.module.dist.name}"/>
-		<copy file="${module.dist.dir}/cts.jar" 
-			tofile="${caadapter.project.dist.dir}/cts.jar"/>
 	</target>
 
 	<target name="jar" depends="compile" description="create the distribution jars">
 		<jar destfile="${module.dist.dir}/${common.module.dist.name}">
 			<fileset dir="${module.build.dir}" excludes="**/Test.class, org/hl7/**" />
 			<fileset dir="${module.conf.dir}"/>
-			<fileset dir="${basedir.config.files}"/>						
 		</jar>
-		<jar destfile="${module.dist.dir}/cts.jar" 
-			basedir="${module.build.dir}/" 
-			includes="org/hl7/**"/>
 	</target>
 
 	<target name="compile" depends="gencode" description="compile the source">
