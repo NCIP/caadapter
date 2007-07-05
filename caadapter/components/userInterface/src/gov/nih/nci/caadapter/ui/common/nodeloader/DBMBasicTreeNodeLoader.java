@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DBMBasicTreeNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DBMBasicTreeNodeLoader.java,v 1.2 2007-07-05 14:12:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,10 +34,10 @@
 
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
-import gov.nih.nci.caadapter.hl7.database.meta.ColumnMeta;
-import gov.nih.nci.caadapter.hl7.database.meta.DatabaseMeta;
-import gov.nih.nci.caadapter.hl7.database.meta.ForeignKeyMeta;
-import gov.nih.nci.caadapter.hl7.database.meta.TableMeta;
+//import gov.nih.nci.caadapter.hl7.database.meta.ColumnMeta;
+//import gov.nih.nci.caadapter.hl7.database.meta.DatabaseMeta;
+//import gov.nih.nci.caadapter.hl7.database.meta.ForeignKeyMeta;
+//import gov.nih.nci.caadapter.hl7.database.meta.TableMeta;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -48,34 +48,34 @@ import java.util.List;
  *
  * @author OWNER: Eric Chen  Date: Sep 15, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:17:13 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-05 14:12:23 $
  * @since caAdapter v1.2
  */
 
 
 public class DBMBasicTreeNodeLoader extends DefaultNodeLoader
 {
-    public TreeNode loadData(Object o) throws NodeLoader.MetaDataloadException
-    {
-        try
-		{
-			if (o instanceof DatabaseMeta)
-			{
-				//Create the nodes.
-				return processDatabase((DatabaseMeta)o);
-			}
-			else
-			{
-				throw new RuntimeException("DBMBasicTreeNodeLoader.loadData() input " +
-						"not recognized. " + o);
-			}
-		}
-		catch (Exception e)
-		{
-			throw new NodeLoader.MetaDataloadException(e.getMessage(), e);
-		}
-    }
+//    public TreeNode loadData(Object o) throws NodeLoader.MetaDataloadException
+//    {
+//        try
+//		{
+//			if (o instanceof DatabaseMeta)
+//			{
+//				//Create the nodes.
+//				return processDatabase((DatabaseMeta)o);
+//			}
+//			else
+//			{
+//				throw new RuntimeException("DBMBasicTreeNodeLoader.loadData() input " +
+//						"not recognized. " + o);
+//			}
+//		}
+//		catch (Exception e)
+//		{
+//			throw new NodeLoader.MetaDataloadException(e.getMessage(), e);
+//		}
+//    }
 
     /**
      * Called by loadData()
@@ -83,18 +83,18 @@ public class DBMBasicTreeNodeLoader extends DefaultNodeLoader
      * @param database
      * @return a tree node wrapping the given database meta data
      */
-    private DefaultMutableTreeNode processDatabase(DatabaseMeta database)
-    {
-        DefaultMutableTreeNode node = constructTreeNode(database);
-        List<TableMeta> tables = database.getTables();
-        for (int i = 0; i < tables.size(); i++)
-        {
-            TableMeta table = tables.get(i);
-            DefaultMutableTreeNode subNode = processTable(table);
-            node.add(subNode);
-        }
-        return node;
-    }
+//    private DefaultMutableTreeNode processDatabase(DatabaseMeta database)
+//    {
+//        DefaultMutableTreeNode node = constructTreeNode(database);
+//        List<TableMeta> tables = database.getTables();
+//        for (int i = 0; i < tables.size(); i++)
+//        {
+//            TableMeta table = tables.get(i);
+//            DefaultMutableTreeNode subNode = processTable(table);
+//            node.add(subNode);
+//        }
+//        return node;
+//    }
 
 
     /**
@@ -103,31 +103,34 @@ public class DBMBasicTreeNodeLoader extends DefaultNodeLoader
      * @param table
      * @return a tree node wrapping the given database meta data
      */
-    private DefaultMutableTreeNode processTable(TableMeta table)
-    {
-        DefaultMutableTreeNode node = constructTreeNode(table);
-        List<ColumnMeta> columns = table.getColumns();
-        for (int i = 0; i < columns.size(); i++)
-        {
-            ColumnMeta column = columns.get(i);
-            node.add(constructTreeNode(column, false));
-        }
-
-
-        List<ForeignKeyMeta> foreignKey = table.getForeignKeys();
-        for (int i = 0; i < foreignKey.size(); i++)
-        {
-            ForeignKeyMeta foreignKeyMeta = foreignKey.get(i);
-            node.add(constructTreeNode(foreignKeyMeta, false));
-        }
-        return node;
-    }
+//    private DefaultMutableTreeNode processTable(TableMeta table)
+//    {
+//        DefaultMutableTreeNode node = constructTreeNode(table);
+//        List<ColumnMeta> columns = table.getColumns();
+//        for (int i = 0; i < columns.size(); i++)
+//        {
+//            ColumnMeta column = columns.get(i);
+//            node.add(constructTreeNode(column, false));
+//        }
+//
+//
+//        List<ForeignKeyMeta> foreignKey = table.getForeignKeys();
+//        for (int i = 0; i < foreignKey.size(); i++)
+//        {
+//            ForeignKeyMeta foreignKeyMeta = foreignKey.get(i);
+//            node.add(constructTreeNode(foreignKeyMeta, false));
+//        }
+//        return node;
+//    }
 
 
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

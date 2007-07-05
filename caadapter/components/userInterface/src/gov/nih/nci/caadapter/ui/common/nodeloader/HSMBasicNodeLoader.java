@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMBasicNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMBasicNodeLoader.java,v 1.2 2007-07-05 14:12:22 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,21 +34,21 @@
 
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
-import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.SystemException;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneDatatypeFieldMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
-import gov.nih.nci.caadapter.hl7.clone.meta.impl.CloneAttributeMetaImpl;
-import gov.nih.nci.caadapter.hl7.clone.meta.impl.CloneDatatypeFieldMetaImpl;
-import gov.nih.nci.caadapter.hl7.clone.meta.impl.CloneMetaImpl;
-import gov.nih.nci.caadapter.hl7.clone.meta.impl.HL7V3MetaImpl;
+//import gov.nih.nci.caadapter.common.Log;
+//import gov.nih.nci.caadapter.common.SystemException;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneDatatypeFieldMeta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.impl.CloneAttributeMetaImpl;
+//import gov.nih.nci.caadapter.hl7.clone.meta.impl.CloneDatatypeFieldMetaImpl;
+//import gov.nih.nci.caadapter.hl7.clone.meta.impl.CloneMetaImpl;
+//import gov.nih.nci.caadapter.hl7.clone.meta.impl.HL7V3MetaImpl;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import java.util.Iterator;
-import java.util.List;
+//import javax.swing.tree.DefaultMutableTreeNode;
+//import javax.swing.tree.TreeNode;
+//import java.util.Iterator;
+//import java.util.List;
 
 /**
  * This class defines a basic node loader implementation focusing on how to traverse HSM
@@ -62,8 +62,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:13 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-05 14:12:22 $
  */
 public class HSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -73,45 +73,45 @@ public class HSMBasicNodeLoader extends DefaultNodeLoader
 	 * @return the root node representing the TreeNode structure mapping the given meta-data tree.
 	 * @throws NodeLoader.MetaDataloadException
 	 */
-	public TreeNode loadData(Object o) throws NodeLoader.MetaDataloadException
-	{
-		DefaultMutableTreeNode root = null;
-		if(o instanceof HL7V3Meta)
-		{
-			HL7V3Meta hl7Meta = (HL7V3Meta) o;
-			root = processHL7V3Meta(hl7Meta);
-			if (root != null)
-			{//the root is of HL7V3Meta, so no use to return, should remove it as first child's parent.
-				DefaultMutableTreeNode returnNode = (DefaultMutableTreeNode) root.getChildAt(0);
-				returnNode.setParent(null);
-				return returnNode;
-			}
-			else
-			{//the root is null, so return the problem.
-				return root;
-			}
-		}
-		else if(o instanceof CloneMeta)
-		{
-			return processClone((CloneMeta) o);
-		}
-		else if(o instanceof CloneAttributeMeta)
-		{
-			return processCloneAttribute((CloneAttributeMeta) o);
-		}
-		else
-		{
-			throw new SystemException("HL7MetaNodeLoader.loadData() input " + "not recognized. " + o);
-		}
-	}
+//	public TreeNode loadData(Object o) throws NodeLoader.MetaDataloadException
+//	{
+//		DefaultMutableTreeNode root = null;
+//		if(o instanceof HL7V3Meta)
+//		{
+//			HL7V3Meta hl7Meta = (HL7V3Meta) o;
+//			root = processHL7V3Meta(hl7Meta);
+//			if (root != null)
+//			{//the root is of HL7V3Meta, so no use to return, should remove it as first child's parent.
+//				DefaultMutableTreeNode returnNode = (DefaultMutableTreeNode) root.getChildAt(0);
+//				returnNode.setParent(null);
+//				return returnNode;
+//			}
+//			else
+//			{//the root is null, so return the problem.
+//				return root;
+//			}
+//		}
+//		else if(o instanceof CloneMeta)
+//		{
+//			return processClone((CloneMeta) o);
+//		}
+//		else if(o instanceof CloneAttributeMeta)
+//		{
+//			return processCloneAttribute((CloneAttributeMeta) o);
+//		}
+//		else
+//		{
+//			throw new SystemException("HL7MetaNodeLoader.loadData() input " + "not recognized. " + o);
+//		}
+//	}
 
-	private DefaultMutableTreeNode processHL7V3Meta(HL7V3Meta hl7Meta)
-	{
-		DefaultMutableTreeNode node = constructTreeNode(hl7Meta, true);
-		DefaultMutableTreeNode child = processClone(hl7Meta.getRootCloneMeta());
-		node.add(child);
-		return node;
-	}
+//	private DefaultMutableTreeNode processHL7V3Meta(HL7V3Meta hl7Meta)
+//	{
+//		DefaultMutableTreeNode node = constructTreeNode(hl7Meta, true);
+//		DefaultMutableTreeNode child = processClone(hl7Meta.getRootCloneMeta());
+//		node.add(child);
+//		return node;
+//	}
 
 	/**
 	 * This function will recursively iterate the CloneMeta to construct the underline tree structure.
@@ -120,61 +120,61 @@ public class HSMBasicNodeLoader extends DefaultNodeLoader
 	 * @param cloneMeta
 	 * @return the newly created TreeNode whose userObject is the given CloneMeta and whose substree contains the list of children under the given meta object.
 	 */
-	private DefaultMutableTreeNode processClone(CloneMeta cloneMeta)
-	{
-		List attributeList = cloneMeta.getAttributes();
-		List childCloneList = cloneMeta.getChildClones();
-		boolean allowsChildren = attributeList.size()>0 || childCloneList.size()>0;
-		DefaultMutableTreeNode cloneTreeNode = constructTreeNode(cloneMeta, allowsChildren);
-
-		for(Iterator it = attributeList.iterator(); it.hasNext();)
-		{
-			CloneAttributeMeta attributeMeta = (CloneAttributeMeta) it.next();
-			cloneTreeNode.add(processCloneAttribute(attributeMeta));
-		}
-		for (Iterator it = childCloneList.iterator(); it.hasNext();)
-		{
-			CloneMeta childCloneMeta = (CloneMeta) it.next();
-			cloneTreeNode.add(processClone(childCloneMeta));
-		}
-		return cloneTreeNode;
-	}
+//	private DefaultMutableTreeNode processClone(CloneMeta cloneMeta)
+//	{
+//		List attributeList = cloneMeta.getAttributes();
+//		List childCloneList = cloneMeta.getChildClones();
+//		boolean allowsChildren = attributeList.size()>0 || childCloneList.size()>0;
+//		DefaultMutableTreeNode cloneTreeNode = constructTreeNode(cloneMeta, allowsChildren);
+//
+//		for(Iterator it = attributeList.iterator(); it.hasNext();)
+//		{
+//			CloneAttributeMeta attributeMeta = (CloneAttributeMeta) it.next();
+//			cloneTreeNode.add(processCloneAttribute(attributeMeta));
+//		}
+//		for (Iterator it = childCloneList.iterator(); it.hasNext();)
+//		{
+//			CloneMeta childCloneMeta = (CloneMeta) it.next();
+//			cloneTreeNode.add(processClone(childCloneMeta));
+//		}
+//		return cloneTreeNode;
+//	}
 
 	/**
 	 * Known data struture:
 	 * Attribute contains a list of CloneAttributeMeta (i.e. child attributes) and a list of CloneDatatypeFieldMeta (i.e. dataTypeFields).
 	 * @param attributeMeta
 	 */
-	private DefaultMutableTreeNode processCloneAttribute(CloneAttributeMeta attributeMeta)
-	{
-		List dataTypeFieldList = attributeMeta.getDatatypeFields();
-		List childAttributeList = attributeMeta.getChildAttributes();
-		//if dataTypeFieldList is enabled, add it to the following logic operation.
-		boolean allowsChildren = childAttributeList.size() > 0 || dataTypeFieldList.size()>0;
-		DefaultMutableTreeNode attributeTreeNode = constructTreeNode(attributeMeta, allowsChildren);
-
-		//skip parsing dataTypeFields to display if it only contains one inlineText field, just present attribute and its children.
-		int dataTypeFieldsSize = dataTypeFieldList.size();
-		for (int i=0; i<dataTypeFieldsSize; i++)
-		{
-			CloneDatatypeFieldMeta dataTypeFieldMeta = (CloneDatatypeFieldMeta) dataTypeFieldList.get(i);
-			//will not ignore single inlineText field to make mapping consistent.
-//			if(dataTypeFieldsSize==1 && DatatypePresenterBase.TEXT.equals(dataTypeFieldMeta.getName()))
-//			{//if contains only one inlineText field, ingore.
-//				continue;
-//			}
-			DefaultMutableTreeNode dataTypeFieldTreeNode = constructTreeNode(dataTypeFieldMeta, false);
-			attributeTreeNode.add(dataTypeFieldTreeNode);
-//			processDataTypeFields(attributeTreeNode, dataTypeFieldMeta);
-		}
-
-		for (Iterator it = childAttributeList.iterator(); it.hasNext();)
-		{
-			CloneAttributeMeta childAttributeMeta = (CloneAttributeMeta) it.next();
-			attributeTreeNode.add(processCloneAttribute(childAttributeMeta));
-		}
-		return attributeTreeNode;
-	}
+//	private DefaultMutableTreeNode processCloneAttribute(CloneAttributeMeta attributeMeta)
+//	{
+//		List dataTypeFieldList = attributeMeta.getDatatypeFields();
+//		List childAttributeList = attributeMeta.getChildAttributes();
+//		//if dataTypeFieldList is enabled, add it to the following logic operation.
+//		boolean allowsChildren = childAttributeList.size() > 0 || dataTypeFieldList.size()>0;
+//		DefaultMutableTreeNode attributeTreeNode = constructTreeNode(attributeMeta, allowsChildren);
+//
+//		//skip parsing dataTypeFields to display if it only contains one inlineText field, just present attribute and its children.
+//		int dataTypeFieldsSize = dataTypeFieldList.size();
+//		for (int i=0; i<dataTypeFieldsSize; i++)
+//		{
+//			CloneDatatypeFieldMeta dataTypeFieldMeta = (CloneDatatypeFieldMeta) dataTypeFieldList.get(i);
+//			//will not ignore single inlineText field to make mapping consistent.
+////			if(dataTypeFieldsSize==1 && DatatypePresenterBase.TEXT.equals(dataTypeFieldMeta.getName()))
+////			{//if contains only one inlineText field, ingore.
+////				continue;
+////			}
+//			DefaultMutableTreeNode dataTypeFieldTreeNode = constructTreeNode(dataTypeFieldMeta, false);
+//			attributeTreeNode.add(dataTypeFieldTreeNode);
+////			processDataTypeFields(attributeTreeNode, dataTypeFieldMeta);
+//		}
+//
+//		for (Iterator it = childAttributeList.iterator(); it.hasNext();)
+//		{
+//			CloneAttributeMeta childAttributeMeta = (CloneAttributeMeta) it.next();
+//			attributeTreeNode.add(processCloneAttribute(childAttributeMeta));
+//		}
+//		return attributeTreeNode;
+//	}
 
 //	private void processDataTypeFields(DefaultMutableTreeNode attributeTreeNode, CloneDatatypeFieldMeta dataTypeFieldMeta)
 //	{
@@ -194,128 +194,131 @@ public class HSMBasicNodeLoader extends DefaultNodeLoader
 	 * @return the root of the meta-data user object tree.
 	 * @throws NodeLoader.MetaDataloadException
 	 */
-	public HL7V3Meta unLoadData(DefaultMutableTreeNode treeNode, boolean resetUUID) throws NodeLoader.MetaDataloadException
-	{
-		HL7V3MetaImpl meta = new HL7V3MetaImpl();
-		meta.setRootCloneMeta(unLoadClone(treeNode, resetUUID));
-		//force to generate a new UUID.
-		if (resetUUID)
-		{
-			meta.setUUID(null);
-		}
-		return meta;
-	}
-
-	private CloneMeta unLoadClone(DefaultMutableTreeNode treeNode, boolean resetUUID) throws NodeLoader.MetaDataloadException
-	{
-		Object userObject = treeNode.getUserObject();
-		if(!(userObject instanceof CloneMetaImpl))
-		{
-			throw new NodeLoader.MetaDataloadException("UserObject not understood " + userObject, null);
-		}
-
-		CloneMetaImpl newCloneMeta = null;
-		CloneMetaImpl oldCloneMeta = (CloneMetaImpl) userObject;
-		try
-		{
-			newCloneMeta = (CloneMetaImpl) oldCloneMeta.clone(false, !resetUUID);
-			//break the link to the same parent object due to clone() call,
-			//since code following will reset it to a new one, which do auto remove before the add.
-			newCloneMeta.setParentMeta(null);
-		}
-		catch(Throwable e)
-		{
-			Log.logException(this, e);
-		}
-//		newCloneMeta = new CloneMetaImpl();
-//		newCloneMeta.setName(oldCloneMeta.getName());
-//		newCloneMeta.setCmetID(oldCloneMeta.getCmetID());
-//		newCloneMeta.setReferenceCloneUUID(oldCloneMeta.getReferenceCloneUUID());
-		if(resetUUID)
-		{
-			newCloneMeta.setUUID(null);
-		}
-//		else
+//	public HL7V3Meta unLoadData(DefaultMutableTreeNode treeNode, boolean resetUUID) throws NodeLoader.MetaDataloadException
+//	{
+//		HL7V3MetaImpl meta = new HL7V3MetaImpl();
+//		meta.setRootCloneMeta(unLoadClone(treeNode, resetUUID));
+//		//force to generate a new UUID.
+//		if (resetUUID)
 //		{
-//			newCloneMeta.setUUID(oldCloneMeta.getUUID());
+//			meta.setUUID(null);
 //		}
-		int childCount = treeNode.getChildCount();
-		for(int i=0; i<childCount; i++)
-		{
-			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) treeNode.getChildAt(i);
-			Object childObject = childNode.getUserObject();
-			if(childObject instanceof CloneMeta)
-			{
-				newCloneMeta.addClone(unLoadClone(childNode, resetUUID));
-			}
-			else if(childObject instanceof CloneAttributeMeta)
-			{
-				newCloneMeta.addAttribute(unLoadCloneAttribute(childNode, resetUUID));
-			}
-		}
-		return newCloneMeta;
-	}
+//		return meta;
+//	}
 
-	private CloneAttributeMeta unLoadCloneAttribute(DefaultMutableTreeNode treeNode, boolean resetUUID) throws NodeLoader.MetaDataloadException
-	{
-		Object userObject = treeNode.getUserObject();
-		if (!(userObject instanceof CloneAttributeMetaImpl))
-		{
-			throw new NodeLoader.MetaDataloadException("UserObject not understood " + userObject, null);
-		}
-		CloneAttributeMeta newCloneAttributeMeta = null;
-		CloneAttributeMetaImpl oldCloneAttributeMeta = (CloneAttributeMetaImpl) userObject;
-		try
-		{
-			newCloneAttributeMeta = (CloneAttributeMeta) oldCloneAttributeMeta.clone(false, !resetUUID);
-			//break the link to the same parent object due to clone() call,
-			//since code following will reset it to a new one, which do auto remove before the add.
-			newCloneAttributeMeta.setParentMeta(null);
-		}
-		catch (CloneNotSupportedException e)
-		{
-			Log.logException(this, e);
-		}
+//	private CloneMeta unLoadClone(DefaultMutableTreeNode treeNode, boolean resetUUID) throws NodeLoader.MetaDataloadException
+//	{
+//		Object userObject = treeNode.getUserObject();
+//		if(!(userObject instanceof CloneMetaImpl))
+//		{
+//			throw new NodeLoader.MetaDataloadException("UserObject not understood " + userObject, null);
+//		}
+//
+//		CloneMetaImpl newCloneMeta = null;
+//		CloneMetaImpl oldCloneMeta = (CloneMetaImpl) userObject;
+//		try
+//		{
+//			newCloneMeta = (CloneMetaImpl) oldCloneMeta.clone(false, !resetUUID);
+//			//break the link to the same parent object due to clone() call,
+//			//since code following will reset it to a new one, which do auto remove before the add.
+//			newCloneMeta.setParentMeta(null);
+//		}
+//		catch(Throwable e)
+//		{
+//			Log.logException(this, e);
+//		}
+////		newCloneMeta = new CloneMetaImpl();
+////		newCloneMeta.setName(oldCloneMeta.getName());
+////		newCloneMeta.setCmetID(oldCloneMeta.getCmetID());
+////		newCloneMeta.setReferenceCloneUUID(oldCloneMeta.getReferenceCloneUUID());
 //		if(resetUUID)
 //		{
-//			newCloneAttributeMeta.setUUID(null);
+//			newCloneMeta.setUUID(null);
 //		}
-		int childCount = treeNode.getChildCount();
-		for (int i = 0; i < childCount; i++)
-		{
-			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) treeNode.getChildAt(i);
-			Object childObject = childNode.getUserObject();
-			if (childObject instanceof CloneAttributeMeta)
-			{
-				newCloneAttributeMeta.addAttribute(unLoadCloneAttribute(childNode, resetUUID));
-			}
-			else if (childObject instanceof CloneDatatypeFieldMeta)
-			{
-				CloneDatatypeFieldMetaImpl oldCloneDatatypeFieldMeta = (CloneDatatypeFieldMetaImpl) childObject;
-				try
-				{
-					CloneDatatypeFieldMetaImpl newCloneDatatypeFieldMeta = (CloneDatatypeFieldMetaImpl) oldCloneDatatypeFieldMeta.clone(!resetUUID);
-					//break the link to the same parent object due to clone() call,
-					//since code following will reset it to a new one, which do auto remove before the add.
-					newCloneDatatypeFieldMeta.setParentMeta(null);
-					if(resetUUID)
-					{
-						newCloneDatatypeFieldMeta.setUUID(null);
-					}
-					newCloneAttributeMeta.addDatatyepField(newCloneDatatypeFieldMeta);
-				}
-				catch (CloneNotSupportedException e)
-				{
-					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-				}
-			}
-		}
-		return newCloneAttributeMeta;
-	}
+////		else
+////		{
+////			newCloneMeta.setUUID(oldCloneMeta.getUUID());
+////		}
+//		int childCount = treeNode.getChildCount();
+//		for(int i=0; i<childCount; i++)
+//		{
+//			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) treeNode.getChildAt(i);
+//			Object childObject = childNode.getUserObject();
+//			if(childObject instanceof CloneMeta)
+//			{
+//				newCloneMeta.addClone(unLoadClone(childNode, resetUUID));
+//			}
+//			else if(childObject instanceof CloneAttributeMeta)
+//			{
+//				newCloneMeta.addAttribute(unLoadCloneAttribute(childNode, resetUUID));
+//			}
+//		}
+//		return newCloneMeta;
+//	}
+
+//	private CloneAttributeMeta unLoadCloneAttribute(DefaultMutableTreeNode treeNode, boolean resetUUID) throws NodeLoader.MetaDataloadException
+//	{
+//		Object userObject = treeNode.getUserObject();
+//		if (!(userObject instanceof CloneAttributeMetaImpl))
+//		{
+//			throw new NodeLoader.MetaDataloadException("UserObject not understood " + userObject, null);
+//		}
+//		CloneAttributeMeta newCloneAttributeMeta = null;
+//		CloneAttributeMetaImpl oldCloneAttributeMeta = (CloneAttributeMetaImpl) userObject;
+//		try
+//		{
+//			newCloneAttributeMeta = (CloneAttributeMeta) oldCloneAttributeMeta.clone(false, !resetUUID);
+//			//break the link to the same parent object due to clone() call,
+//			//since code following will reset it to a new one, which do auto remove before the add.
+//			newCloneAttributeMeta.setParentMeta(null);
+//		}
+//		catch (CloneNotSupportedException e)
+//		{
+//			Log.logException(this, e);
+//		}
+////		if(resetUUID)
+////		{
+////			newCloneAttributeMeta.setUUID(null);
+////		}
+//		int childCount = treeNode.getChildCount();
+//		for (int i = 0; i < childCount; i++)
+//		{
+//			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) treeNode.getChildAt(i);
+//			Object childObject = childNode.getUserObject();
+//			if (childObject instanceof CloneAttributeMeta)
+//			{
+//				newCloneAttributeMeta.addAttribute(unLoadCloneAttribute(childNode, resetUUID));
+//			}
+//			else if (childObject instanceof CloneDatatypeFieldMeta)
+//			{
+//				CloneDatatypeFieldMetaImpl oldCloneDatatypeFieldMeta = (CloneDatatypeFieldMetaImpl) childObject;
+//				try
+//				{
+//					CloneDatatypeFieldMetaImpl newCloneDatatypeFieldMeta = (CloneDatatypeFieldMetaImpl) oldCloneDatatypeFieldMeta.clone(!resetUUID);
+//					//break the link to the same parent object due to clone() call,
+//					//since code following will reset it to a new one, which do auto remove before the add.
+//					newCloneDatatypeFieldMeta.setParentMeta(null);
+//					if(resetUUID)
+//					{
+//						newCloneDatatypeFieldMeta.setUUID(null);
+//					}
+//					newCloneAttributeMeta.addDatatyepField(newCloneDatatypeFieldMeta);
+//				}
+//				catch (CloneNotSupportedException e)
+//				{
+//					e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//				}
+//			}
+//		}
+//		return newCloneAttributeMeta;
+//	}
 	/*** End of unLoadData() related functions ***/
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

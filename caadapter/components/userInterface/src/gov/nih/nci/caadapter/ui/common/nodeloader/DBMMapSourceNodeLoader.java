@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DBMMapSourceNodeLoader.java,v 1.1 2007-04-03 16:17:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DBMMapSourceNodeLoader.java,v 1.2 2007-07-05 14:12:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,8 +34,7 @@
 
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
-import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
-import javax.swing.tree.DefaultMutableTreeNode;
+//import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * This class helps convert a CSV meta object graph (SCM) into a graph of TreeNodes.
@@ -43,8 +42,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:13 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-05 14:12:23 $
  */
 public class DBMMapSourceNodeLoader extends DBMBasicTreeNodeLoader
 {
@@ -55,10 +54,10 @@ public class DBMMapSourceNodeLoader extends DBMBasicTreeNodeLoader
 	 * This is an overridable function to allow descendant class to provide
 	 * different tree node implementations.
 	 */
-	protected DefaultMutableTreeNode constructTreeNode(Object userObject)
-	{
-		return constructTreeNode(userObject, true);
-	}
+//	protected DefaultMutableTreeNode constructTreeNode(Object userObject)
+//	{
+//		return constructTreeNode(userObject, true);
+//	}
 
 	/**
 	 * Overloaded version of the function above.
@@ -67,15 +66,18 @@ public class DBMMapSourceNodeLoader extends DBMBasicTreeNodeLoader
 	 * @param allowsChildren
 	 * @return a tree node that wraps the user object.
 	 */
-	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
-	{
-		DefaultSourceTreeNode node = new DefaultSourceTreeNode(userObject, allowsChildren);
-		return node;
-	}
+//	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
+//	{
+//		DefaultSourceTreeNode node = new DefaultSourceTreeNode(userObject, allowsChildren);
+//		return node;
+//	}
 
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

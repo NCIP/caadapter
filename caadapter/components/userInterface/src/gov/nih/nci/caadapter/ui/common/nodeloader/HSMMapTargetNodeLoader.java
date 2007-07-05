@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMMapTargetNodeLoader.java,v 1.2 2007-04-19 14:03:45 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMMapTargetNodeLoader.java,v 1.3 2007-07-05 14:12:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,7 +34,7 @@
 
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
-import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
+//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 
@@ -49,8 +49,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.2 $
- * date        $Date: 2007-04-19 14:03:45 $
+ * revision    $Revision: 1.3 $
+ * date        $Date: 2007-07-05 14:12:23 $
  */
 public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 {
@@ -60,11 +60,11 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 	 * @param allowsChildren
 	 * @return the tree object wrapping the given userObject.
 	 */
-	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
-	{
-		DefaultTargetTreeNode node = new DefaultTargetTreeNode(userObject, allowsChildren);
-		return node;
-	}
+//	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
+//	{
+//		DefaultTargetTreeNode node = new DefaultTargetTreeNode(userObject, allowsChildren);
+//		return node;
+//	}
 
 	/**
 	 * Based on the given object type, this function will convert the meta-data tree to a TreeNode-based tree structure, whose root is the returned TreeNode.
@@ -74,22 +74,21 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 	 * @throws gov.nih.nci.caadapter.ui.common.nodeloader.NodeLoader.MetaDataloadException
 	 *
 	 */
-	public TreeNode loadData(Object o) throws MetaDataloadException
-	{
-		TreeNode resultRoot = null;
-		TreeNode realRoot = super.loadData(o);
-		if (o instanceof HL7V3Meta)
-		{//construct the pseudo root.
-			DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
-			node.add((MutableTreeNode) realRoot);
-			resultRoot = node;
-		}
-		else
-		{
-			resultRoot = realRoot;
-		}
-		return resultRoot;
-	}
+//	public TreeNode loadData(Object o) throws MetaDataloadException
+//	{
+//		TreeNode resultRoot = null;
+//		TreeNode realRoot = super.loadData(o);
+//		if (o instanceof HL7V3Meta)
+//		{//construct the pseudo root.
+//			DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
+//			node.add((MutableTreeNode) realRoot);
+//			resultRoot = node;
+//		}
+//		else
+//		{
+//			resultRoot = realRoot;
+//		}
+//	}
 
 	/**
 	 * Given the node as the root of UI tree structure, this function will traverse the UI tree structure
@@ -103,18 +102,21 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 	 * @throws gov.nih.nci.caadapter.ui.main.nodeloader.NodeLoader.MetaDataloadException
 	 *
 	 */
-	public HL7V3Meta unLoadData(DefaultMutableTreeNode treeNode, boolean resetUUID) throws MetaDataloadException
-	{
-		DefaultMutableTreeNode realRoot = treeNode;
-		if(treeNode instanceof DefaultMappableTreeNode)
-		{
-			realRoot = (DefaultMutableTreeNode) treeNode.getChildAt(0);
-		}
-		return super.unLoadData(realRoot, resetUUID);
-	}
+//	public HL7V3Meta unLoadData(DefaultMutableTreeNode treeNode, boolean resetUUID) throws MetaDataloadException
+//	{
+//		DefaultMutableTreeNode realRoot = treeNode;
+//		if(treeNode instanceof DefaultMappableTreeNode)
+//		{
+//			realRoot = (DefaultMutableTreeNode) treeNode.getChildAt(0);
+//		}
+//		return super.unLoadData(realRoot, resetUUID);
+//	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/04/19 14:03:45  wangeug
+ * HISTORY      : clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
