@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessageGenerationController.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessageGenerationController.java,v 1.2 2007-07-05 15:18:00 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,7 +43,7 @@ import gov.nih.nci.caadapter.common.util.SwingWorker;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
-import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
+//import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
 import gov.nih.nci.caadapter.ui.hl7message.actions.RegenerateHL7V3MessageAction;
 
 import javax.swing.*;
@@ -63,8 +63,8 @@ import java.util.Observer;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:33:17 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-05 15:18:00 $
  */
 public class HL7MessageGenerationController implements Observer
 {
@@ -80,7 +80,7 @@ public class HL7MessageGenerationController implements Observer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessageGenerationController.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessageGenerationController.java,v 1.2 2007-07-05 15:18:00 wangeug Exp $";
 
 	private HL7MessagePanel hl7Panel;
 	private File dataFile;
@@ -186,55 +186,56 @@ public class HL7MessageGenerationController implements Observer
 
 	public ValidatorResults process() throws Exception
 	{
-		final TransformationServiceCsvToHL7V3 driver = new TransformationServiceCsvToHL7V3(mapFile, dataFile);
-//		final TransformationServiceCsvToHL7V3 driver = new DummyTransformationServiceTest(mapFileName, dataFile);
-		final ValidatorResults validatorResults = new ValidatorResults();
-
-		TransformationResult estimateResult = null;
-		messageList = new ArrayList();
-		try
-		{
-			GeneralUtilities.setCursorWaiting(hl7Panel.getRootContainer());
-			estimateResult = driver.getEstimate();
-		}
-		finally
-		{
-			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
-		}
-		
-		if (estimateResult != null)
-		{
-			ValidatorResults localValidatorResults = estimateResult.getValidatorResults();
-			if (!localValidatorResults.isValid())
-			{//no further operation is necessary
-				validatorResults.addValidatorResults(localValidatorResults);
-				this.messageList.add(estimateResult);
-				return validatorResults;
-			}
-			//is valid and proceed
-		}
-		else
-		{
-			Message message = MessageResources.getMessage("GEN0", new Object[]{"TransformationResult from estimate work is null."});
-			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, message));
-			return validatorResults;
-		}
-		
-		final long estimatedLengthOfTask = estimateResult.getLogicalRecordNumber();//Config.DEFAULT_SECOND_PER_RECORD_LENGTH;
-		taskComplete = false;
-
-		if(estimatedLengthOfTask<=Config.DEFAULT_SYNC_VS_ASYNC_THRESHOLD)
-		{
-			validatorResults.addValidatorResults(doSynchronizedProcess(driver));
-			validatorResults.addValidatorResults(assembleValidatorResults());
-		}
-		else
-		{//go with asynchronized option if and only if the time is long
-			doAsynchronizedProcess(driver, estimatedLengthOfTask);
-		}
-
-//		System.out.println("About to report now.");
-		return validatorResults;
+//		final TransformationServiceCsvToHL7V3 driver = new TransformationServiceCsvToHL7V3(mapFile, dataFile);
+////		final TransformationServiceCsvToHL7V3 driver = new DummyTransformationServiceTest(mapFileName, dataFile);
+//		final ValidatorResults validatorResults = new ValidatorResults();
+//
+//		TransformationResult estimateResult = null;
+//		messageList = new ArrayList();
+//		try
+//		{
+//			GeneralUtilities.setCursorWaiting(hl7Panel.getRootContainer());
+//			estimateResult = driver.getEstimate();
+//		}
+//		finally
+//		{
+//			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
+//		}
+//		
+//		if (estimateResult != null)
+//		{
+//			ValidatorResults localValidatorResults = estimateResult.getValidatorResults();
+//			if (!localValidatorResults.isValid())
+//			{//no further operation is necessary
+//				validatorResults.addValidatorResults(localValidatorResults);
+//				this.messageList.add(estimateResult);
+//				return validatorResults;
+//			}
+//			//is valid and proceed
+//		}
+//		else
+//		{
+//			Message message = MessageResources.getMessage("GEN0", new Object[]{"TransformationResult from estimate work is null."});
+//			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, message));
+//			return validatorResults;
+//		}
+//		
+//		final long estimatedLengthOfTask = estimateResult.getLogicalRecordNumber();//Config.DEFAULT_SECOND_PER_RECORD_LENGTH;
+//		taskComplete = false;
+//
+//		if(estimatedLengthOfTask<=Config.DEFAULT_SYNC_VS_ASYNC_THRESHOLD)
+//		{
+//			validatorResults.addValidatorResults(doSynchronizedProcess(driver));
+//			validatorResults.addValidatorResults(assembleValidatorResults());
+//		}
+//		else
+//		{//go with asynchronized option if and only if the time is long
+//			doAsynchronizedProcess(driver, estimatedLengthOfTask);
+//		}
+//
+////		System.out.println("About to report now.");
+//		return validatorResults;
+		return null;
 	}
 
 	public List getMessageList()
@@ -242,94 +243,94 @@ public class HL7MessageGenerationController implements Observer
 		return messageList;
 	}
 
-	private ValidatorResults doSynchronizedProcess(final TransformationServiceCsvToHL7V3 driver)
-	{
-		ValidatorResults validatorResults = new ValidatorResults();
-		try
-		{
-			GeneralUtilities.setCursorWaiting(hl7Panel.getRootContainer());
-			messageList = driver.process(longTask);
-			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
-		}
-		catch(Throwable t)
-		{
-			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
-			Message msg = GeneralUtilities.convertToGeneralMessage(t);
-			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
-		}
-		finally
-		{
-			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
-		}	
-		return validatorResults;
-	}
-
-	private void doAsynchronizedProcess(final TransformationServiceCsvToHL7V3 driver, final long estimateLengthOfTask)
-	{
-		boolean toShowInMinutes = estimateLengthOfTask > Config.DEFAULT_THRESHOLD_FOR_SECOND_VS_MINUTE;
-		String estimatedTimeStr= null;
-		int oneStep = 1;
-		if(toShowInMinutes)
-		{
-			estimatedTimeStr = estimateLengthOfTask / 60 + " minutes";
-			oneStep = (int) estimateLengthOfTask / 100;
-		}
-		else
-		{
-			estimatedTimeStr = estimateLengthOfTask + " seconds";
-			oneStep = 1;
-		}
-
-		boolean toShowUserConfirmation = estimateLengthOfTask > Config.DEFAULT_TRANSFORMATION_SERVICE_THRESHOLD_FOR_USER_CONFIRMATION;
-		int userChoice = JOptionPane.YES_OPTION;
-		if(toShowUserConfirmation)
-		{
-			userChoice = JOptionPane.showConfirmDialog(hl7Panel, "It will take about " + estimatedTimeStr + " for transformation service to generate the HL7 v3 messages.\n\n Start the process now?", "Question", JOptionPane.YES_NO_OPTION);
-		}
-		if (userChoice != JOptionPane.YES_OPTION)
-		{
-			return;
-		}
-		longTask.setLengthOfTask(estimateLengthOfTask);
-//		System.out.println("The estimate length is '" + (int) longTask.getLengthOfTask() + "'.");
-//		progressMonitor = new ProgressMonitor(hl7Panel, "Running a Long Task", "", 0, (int) longTask.getLengthOfTask());
-//		progressMonitor.setProgress(0);
-//		progressMonitor.setMillisToDecideToPopup(ONE_SECOND / 100);
-//		timer.start();
-		int lengthOfTask = (int) longTask.getLengthOfTask();
-		progressMonitor = new ProgressMonitor(hl7Panel, "Running a Long Task", "", 0, lengthOfTask);
-		progressMonitor.setMillisToDecideToPopup(0);
-		progressMonitor.setMillisToPopup(0);
-		progressMonitor.setProgress(oneStep);
-		timer.start();
-		SwingWorker worker = new SwingWorker()
-		{
-			public Object construct()
-			{
-				longTask.addObserver(HL7MessageGenerationController.this);
-				messageList = driver.process(longTask);
-				longTask.deleteObserver(HL7MessageGenerationController.this);
-				return null;
-			}
-
-			/**
-			 * Called on the event dispatching thread (not on the worker thread)
-			 * after the <code>construct</code> method has returned.
-			 */
-//			public void finished()
-//			{
-//				Thread timerThread = new Thread(new Runnable(){
-//					public void run()
-//					{
-//						longTask.addObserver(HL7MessageGenerationController.this);
-//						messageList = driver.process(longTask);
-//						longTask.deleteObserver(HL7MessageGenerationController.this);
-//					}
-//				});
-//			}
-		};
-		longTask.start(worker);
-	}
+//	private ValidatorResults doSynchronizedProcess(final TransformationServiceCsvToHL7V3 driver)
+//	{
+//		ValidatorResults validatorResults = new ValidatorResults();
+//		try
+//		{
+//			GeneralUtilities.setCursorWaiting(hl7Panel.getRootContainer());
+//			messageList = driver.process(longTask);
+//			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
+//		}
+//		catch(Throwable t)
+//		{
+//			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
+//			Message msg = GeneralUtilities.convertToGeneralMessage(t);
+//			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+//		}
+//		finally
+//		{
+//			GeneralUtilities.setCursorDefault(hl7Panel.getRootContainer());
+//		}	
+//		return validatorResults;
+//	}
+//
+////	private void doAsynchronizedProcess(final TransformationServiceCsvToHL7V3 driver, final long estimateLengthOfTask)
+////	{
+////		boolean toShowInMinutes = estimateLengthOfTask > Config.DEFAULT_THRESHOLD_FOR_SECOND_VS_MINUTE;
+////		String estimatedTimeStr= null;
+////		int oneStep = 1;
+////		if(toShowInMinutes)
+////		{
+////			estimatedTimeStr = estimateLengthOfTask / 60 + " minutes";
+////			oneStep = (int) estimateLengthOfTask / 100;
+////		}
+////		else
+////		{
+////			estimatedTimeStr = estimateLengthOfTask + " seconds";
+////			oneStep = 1;
+////		}
+////
+////		boolean toShowUserConfirmation = estimateLengthOfTask > Config.DEFAULT_TRANSFORMATION_SERVICE_THRESHOLD_FOR_USER_CONFIRMATION;
+////		int userChoice = JOptionPane.YES_OPTION;
+////		if(toShowUserConfirmation)
+////		{
+////			userChoice = JOptionPane.showConfirmDialog(hl7Panel, "It will take about " + estimatedTimeStr + " for transformation service to generate the HL7 v3 messages.\n\n Start the process now?", "Question", JOptionPane.YES_NO_OPTION);
+////		}
+////		if (userChoice != JOptionPane.YES_OPTION)
+////		{
+////			return;
+////		}
+////		longTask.setLengthOfTask(estimateLengthOfTask);
+//////		System.out.println("The estimate length is '" + (int) longTask.getLengthOfTask() + "'.");
+//////		progressMonitor = new ProgressMonitor(hl7Panel, "Running a Long Task", "", 0, (int) longTask.getLengthOfTask());
+//////		progressMonitor.setProgress(0);
+//////		progressMonitor.setMillisToDecideToPopup(ONE_SECOND / 100);
+//////		timer.start();
+////		int lengthOfTask = (int) longTask.getLengthOfTask();
+////		progressMonitor = new ProgressMonitor(hl7Panel, "Running a Long Task", "", 0, lengthOfTask);
+////		progressMonitor.setMillisToDecideToPopup(0);
+////		progressMonitor.setMillisToPopup(0);
+////		progressMonitor.setProgress(oneStep);
+////		timer.start();
+////		SwingWorker worker = new SwingWorker()
+////		{
+////			public Object construct()
+////			{
+//////				longTask.addObserver(HL7MessageGenerationController.this);
+//////				messageList = driver.process(longTask);
+//////				longTask.deleteObserver(HL7MessageGenerationController.this);
+//////				return null;
+////			}
+////
+////			/**
+////			 * Called on the event dispatching thread (not on the worker thread)
+////			 * after the <code>construct</code> method has returned.
+////			 */
+//////			public void finished()
+//////			{
+//////				Thread timerThread = new Thread(new Runnable(){
+//////					public void run()
+//////					{
+//////						longTask.addObserver(HL7MessageGenerationController.this);
+//////						messageList = driver.process(longTask);
+//////						longTask.deleteObserver(HL7MessageGenerationController.this);
+//////					}
+//////				});
+//////			}
+////		};
+////		longTask.start(worker);
+////	}
 
 
 	/**
@@ -344,25 +345,28 @@ public class HL7MessageGenerationController implements Observer
 	 */
 	public void update(Observable o, Object arg)
 	{
-		if(taskComplete || longTask.isDone() || longTask.isCanceled())
-		{
-			return;
-		}
-		if(arg instanceof TransformationResult)
-		{
-			messageList.add(arg);
-		}
-		progressMonitor.setProgress((int)longTask.getCurrent());
-		String s = longTask.getStatMessage();
-		if (s != null)
-		{
-			progressMonitor.setNote(s);
-		}
+//		if(taskComplete || longTask.isDone() || longTask.isCanceled())
+//		{
+//			return;
+//		}
+//		if(arg instanceof TransformationResult)
+//		{
+//			messageList.add(arg);
+//		}
+//		progressMonitor.setProgress((int)longTask.getCurrent());
+//		String s = longTask.getStatMessage();
+//		if (s != null)
+//		{
+//			progressMonitor.setNote(s);
+//		}
 	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

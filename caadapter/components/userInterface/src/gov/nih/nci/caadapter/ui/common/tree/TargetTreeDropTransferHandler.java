@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.2 2007-07-03 19:31:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.3 2007-07-05 15:17:33 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,8 +65,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 19:31:34 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-05 15:17:33 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -193,6 +193,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 //				validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
 //			}
 //			result = validatorResult.isValid();
+			//for testing purpose, all non-mapped target node is "true"
+			System.out.println("TargetTreeDropTransferHandler.isDropOk():\nfor testing purpose, all non-mapped target node is \"true\"");
+			result=true;
 		}
 
 //		int size = transferredDataList.size();
@@ -394,6 +397,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 19:31:34  wangeug
+ * HISTORY      : initila loading hl7 code without "clone"
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

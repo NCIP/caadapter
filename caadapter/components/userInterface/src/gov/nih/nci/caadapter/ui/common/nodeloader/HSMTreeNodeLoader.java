@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMTreeNodeLoader.java,v 1.2 2007-07-05 14:12:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMTreeNodeLoader.java,v 1.3 2007-07-05 15:17:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,19 +45,22 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-05 14:12:23 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-05 15:17:16 $
  */
 public class HSMTreeNodeLoader extends HSMBasicNodeLoader
 {
-//	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
-//	{
-//		DefaultHSMTreeMutableTreeNode node = new DefaultHSMTreeMutableTreeNode(userObject, allowsChildren);
-//		return node;
-//	}
+	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
+	{
+		DefaultHSMTreeMutableTreeNode node = new DefaultHSMTreeMutableTreeNode(userObject, allowsChildren);
+		return node;
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/05 14:12:23  wangeug
+ * HISTORY      : initila loading hl7 code without "clone"
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

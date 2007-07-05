@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMMapTargetNodeLoader.java,v 1.3 2007-07-05 14:12:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/HSMMapTargetNodeLoader.java,v 1.4 2007-07-05 15:17:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,8 +49,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.3 $
- * date        $Date: 2007-07-05 14:12:23 $
+ * revision    $Revision: 1.4 $
+ * date        $Date: 2007-07-05 15:17:16 $
  */
 public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 {
@@ -60,11 +60,11 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 	 * @param allowsChildren
 	 * @return the tree object wrapping the given userObject.
 	 */
-//	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
-//	{
-//		DefaultTargetTreeNode node = new DefaultTargetTreeNode(userObject, allowsChildren);
-//		return node;
-//	}
+	public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
+	{
+		DefaultTargetTreeNode node = new DefaultTargetTreeNode(userObject, allowsChildren);
+		return node;
+	}
 
 	/**
 	 * Based on the given object type, this function will convert the meta-data tree to a TreeNode-based tree structure, whose root is the returned TreeNode.
@@ -74,10 +74,10 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 	 * @throws gov.nih.nci.caadapter.ui.common.nodeloader.NodeLoader.MetaDataloadException
 	 *
 	 */
-//	public TreeNode loadData(Object o) throws MetaDataloadException
-//	{
-//		TreeNode resultRoot = null;
-//		TreeNode realRoot = super.loadData(o);
+	public TreeNode loadData(Object o) throws MetaDataloadException
+	{
+		TreeNode resultRoot = null;
+		TreeNode realRoot = super.loadData(o);
 //		if (o instanceof HL7V3Meta)
 //		{//construct the pseudo root.
 //			DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
@@ -88,7 +88,8 @@ public class HSMMapTargetNodeLoader extends HSMBasicNodeLoader
 //		{
 //			resultRoot = realRoot;
 //		}
-//	}
+		return resultRoot;
+	}
 
 	/**
 	 * Given the node as the root of UI tree structure, this function will traverse the UI tree structure
