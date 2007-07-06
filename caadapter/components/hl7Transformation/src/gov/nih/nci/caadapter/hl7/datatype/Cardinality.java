@@ -1,11 +1,13 @@
 package gov.nih.nci.caadapter.hl7.datatype;
 
+import gov.nih.nci.caadapter.common.util.Config;
+
 public class Cardinality {
 
-	public static String  ZERO_TO_ONE="0..1";
-	public static String  ZERO_TO_MANY="0..*";
-	public static String  ONE_TO_ONE="1..1";
-	public static String  ONE_TO_MANY="1..*";
+	public static String  ZERO_TO_ONE = Config.CARDINALITY_ZERO_TO_ONE;
+	public static String  ZERO_TO_MANY = Config.CARDINALITY_ZERO_TO_MANY;
+	public static String  ONE_TO_ONE = Config.CARDINALITY_ONE_TO_ONE;
+	public static String  ONE_TO_MANY = Config.CARDINALITY_ZERO_TO_MANY;
 	
 	private int minimum=0;
 	private int maximum=0;
