@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.3 2007-07-03 19:27:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.4 2007-07-06 20:43:03 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,10 +57,10 @@ import java.util.List;
  * while leaving the algorithm of traversing CSV SCM meta data tree defined here intact.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-03 19:27:05 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-06 20:43:03 $
  */
 public class SCMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -168,8 +168,8 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
 
 		CSVSegmentMeta oldSegment = (CSVSegmentMeta) userObject;
 		newSegmentMeta = new CSVSegmentMetaImpl(oldSegment.getName(), parent);
-		newSegmentMeta.setCardinality(oldSegment.getCardinality());
-		if (resetUUID)
+        newSegmentMeta.setCardinalityType(oldSegment.getCardinalityType());
+        if (resetUUID)
 		{
 			newSegmentMeta.setUUID(null);
 		}
@@ -212,6 +212,9 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/03 19:27:05  wangeug
+ * HISTORY      : clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
