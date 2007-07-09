@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.5 2007-06-12 14:58:20 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.6 2007-07-09 13:59:26 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,19 +42,21 @@ import java.util.Properties;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 
 /**
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: wuye $
- * @version $Revision: 1.5 $
- * @date $$Date: 2007-06-12 14:58:20 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.6 $
+ * @date $$Date: 2007-07-09 13:59:26 $
  * @since caAdapter v1.2
  */
 
 public class CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
+	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
     static {
         Properties properties = new Properties();
         InputStream fi = null;
@@ -94,6 +96,14 @@ public class CaadapterUtil {
             		}
             	}
              }
+            //load datatypes require inlineText
+            String inlineTextTypes=(String)properties.getProperty("caadapter.hl7.attribute.inlinetext.required");
+            if (inlineTextTypes!=null)
+            {
+            	StringTokenizer tk=new StringTokenizer(inlineTextTypes, ",");
+            	while(tk.hasMoreElements())
+            		INLINETEXT_ATTRIBUTES.add((String)tk.nextElement());
+            }
                         
         } catch (Exception ex) {
             Log.logException(CaadapterUtil.class, "caadapter-components.properties is not found", ex);
@@ -112,6 +122,9 @@ public class CaadapterUtil {
     };
 
     // getters.
+    public static final ArrayList getInlineTextAttributes() {
+        return INLINETEXT_ATTRIBUTES;
+    }
     public static final ArrayList getAllActivatedComponents() {
         return ACTIVATED_CAADAPTER_COMPONENTS;
     }
@@ -178,6 +191,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/06/12 14:58:20  wuye
+ * HISTORY      : change the getsystemresouce as getresource.openinputstream
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/06/08 19:49:26  schroedn
  * HISTORY      : Edits to sync with new codebase and java webstart
  * HISTORY      :
