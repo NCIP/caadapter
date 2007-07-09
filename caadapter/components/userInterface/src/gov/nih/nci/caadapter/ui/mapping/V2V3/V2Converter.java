@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.2 2007-07-09 16:21:42 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,11 +62,13 @@ import java.util.ArrayList;
 import java.io.*;
 
 import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.function.FunctionUtil;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
@@ -76,10 +78,10 @@ import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:32:58 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-09 16:21:42 $
  */
 public class V2Converter
 {
@@ -96,7 +98,7 @@ public class V2Converter
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.2 2007-07-09 16:21:42 umkis Exp $";
 
 
     HL7V2MessageTree messageTree = null;
@@ -891,8 +893,16 @@ public class V2Converter
 		if (rootMeta != null)
 		{
 			SegmentedCSVParserImpl segmentedCSVParser = new SegmentedCSVParserImpl();
-			CSVDataResult result = segmentedCSVParser.parse(csvFile, rootMeta);
-			validatorResults2 = result.getValidatorResults();
+            CSVDataResult result = null;
+            try
+            {
+                result = segmentedCSVParser.parse(csvFile, rootMeta);
+            }
+            catch(ApplicationException ae)
+            {
+                return GeneralUtilities.addValidatorMessage(validatorResults2, ae.getMessage());
+            }
+            validatorResults2 = result.getValidatorResults();
 		}
         return validatorResults2;
     }
@@ -1091,6 +1101,9 @@ public class V2Converter
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2006/12/05 20:02:10  umkis
  * HISTORY      : minor modifying
  * HISTORY      :
