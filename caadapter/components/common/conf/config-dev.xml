@@ -65,8 +65,6 @@
     <constant name="OPEN_DIALOG_TITLE_FOR_HSM_FILE" type="String" value="Open HL7 v3 Specification (H3S) File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE" type="String" value="Open HL7 v3 Message File..."/>
 
-    <constant name="HL7_V3_TO_CSV_MODULE_NAME" type="String" value="V3 to CSV"/>
-
     <!--define the initial field number, for example now it is set to 1-->
 	<constant name="DEFAULT_FIELD_COLUMN_START_NUMBER" type="int" value="1"/>
 
@@ -133,5 +131,17 @@
 	<constant name="EVS_QA_URL" type="String" value="http://cbioqa101.nci.nih.gov:49080/cacore31/http/remoteService"/>
 
 	<constant name="EVS_DEFAULT_CONNECTION" type="String" value="http://cabio-stage.nci.nih.gov/cacore31/http/remoteService"/>
+
+    <constant name="SUFFIX_OF_CHOICE_CARDINALITY" type="String" value="&lt;Choice&gt;"/>
+    <constant name="CARDINALITY_ZERO_TO_ONE" type="String" value="0..1"/>
+    <constant name="CARDINALITY_ZERO_TO_MANY" type="String" value="0..*"/>
+    <constant name="CARDINALITY_ONE_TO_ONE" type="String" value="1..1"/>
+    <constant name="CARDINALITY_ONE_TO_MANY" type="String" value="1..*"/>
+    <constant name="CHOICE_CARDINALITY_ZERO_TO_ONE" type="String" value="0..1&lt;Choice&gt;"/>
+    <constant name="CHOICE_CARDINALITY_ZERO_TO_MANY" type="String" value="0..*&lt;Choice&gt;"/>
+    <constant name="CHOICE_CARDINALITY_ONE_TO_ONE" type="String" value="1..1&lt;Choice&gt;"/>
+    <constant name="CHOICE_CARDINALITY_ONE_TO_MANY" type="String" value="1..*&lt;Choice&gt;"/>
+
+    <constant name="DEFAULT_XPATH_LEVEL_DELIMITER" type="String" value="\\"/>
 
 </config>

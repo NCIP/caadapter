@@ -60,6 +60,34 @@
 		<happen>Continue validating, but display message for each occurrence found</happen>
 	</message>
 
+    <message id="EMP_FT" level="FATAL">
+		<template> {0} </template>
+		<parameters>
+			<parameter number="0" value="MSG"/>
+		</parameters>
+	</message>
+
+    <message id="EMP_ER" level="ERROR">
+		<template> {0} </template>
+		<parameters>
+			<parameter number="0" value="MSG"/>
+		</parameters>
+	</message>
+
+    <message id="EMP_WN" level="WARNING">
+		<template> {0} </template>
+		<parameters>
+			<parameter number="0" value="MSG"/>
+		</parameters>
+	</message>
+
+    <message id="EMP_IN" level="INFO">
+		<template> {0} </template>
+		<parameters>
+			<parameter number="0" value="MSG"/>
+		</parameters>
+	</message>
+
 	<!--<message id="SCM4" level="WARNING">-->
         <!--<template>Segment name not in uppercase: {0}</template>-->
         <!--<parameters>-->
