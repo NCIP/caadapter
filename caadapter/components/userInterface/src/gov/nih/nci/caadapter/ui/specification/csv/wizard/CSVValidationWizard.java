@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVValidationWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVValidationWizard.java,v 1.2 2007-07-09 16:19:31 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,6 +38,10 @@ import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
+import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
@@ -52,10 +56,10 @@ import java.io.File;
  * This class defines ...
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-09 16:19:31 $
  */
 public class CSVValidationWizard extends JDialog implements ActionListener
 {
@@ -71,7 +75,7 @@ public class CSVValidationWizard extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVValidationWizard.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVValidationWizard.java,v 1.2 2007-07-09 16:19:31 umkis Exp $";
 
 	private static final String VALIDATE_COMMAND = "Validate";
 	private static final String CLOSE_COMMAND = "Close";
@@ -210,8 +214,20 @@ public class CSVValidationWizard extends JDialog implements ActionListener
 		if (rootMeta != null)
 		{
 			SegmentedCSVParserImpl segmentedCSVParser = new SegmentedCSVParserImpl();
-			CSVDataResult result = segmentedCSVParser.parse(dataFile, rootMeta);
-			setValidatorResults(result.getValidatorResults());
+            CSVDataResult result = null;
+            try
+            {
+                result = segmentedCSVParser.parse(dataFile, rootMeta);
+            }
+            catch(ApplicationException ae)
+            {
+                ValidatorResults validatorResults = new ValidatorResults();
+                Message msg = MessageResources.getMessage("EMP_ER", new Object[]{ae.getMessage()});
+	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+                setValidatorResults(validatorResults);
+                return;
+            }
+            setValidatorResults(result.getValidatorResults());
 		}
 	}
 
@@ -235,6 +251,9 @@ public class CSVValidationWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
