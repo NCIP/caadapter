@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.2 2007-07-09 15:39:58 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.FileHandler;
 import gov.nih.nci.caadapter.common.Log;
 
@@ -46,8 +47,8 @@ import gov.nih.nci.caadapter.common.Log;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.2 $
  */
 
 public class FileUtil
@@ -127,7 +128,7 @@ public class FileUtil
 		 * CONVERTED TO NOT USER Files BUT Resources INSTEAD.
 		 * TestParseAndBuild uses it, but that's O.K. Just those tests will eventually fail.
      *
-     * @param fileDirectory
+     *
      * @param messageType
      * @param fileExtension
      * @return File Name
@@ -238,7 +239,59 @@ public class FileUtil
         for(int i=0;i<list.size();i++) output = output + list.get(i) + "\r\n";
         return output.trim();
     }
-    
+
+    public static String findODIWithDomainName(String str) throws IOException
+    {
+        FileReader fr = null;
+        String fileName = getWorkingDirPath() + File.separator + "data" + File.separator + "HL7_ODI.csv";
+        try { fr = new FileReader(fileName); }
+        catch(FileNotFoundException fe) { throw new IOException("FileNotFoundException in FileUtil.readFileIntoList() : " + fileName); }
+
+        BufferedReader br = new BufferedReader(fr);
+        String readLineOfFile = "";
+        String result = "";
+        try
+        {
+            while((readLineOfFile=br.readLine())!=null)
+            {
+                //System.out.println("CCCYYYY : " + readLineOfFile);
+                if ((readLineOfFile.startsWith("1."))||(readLineOfFile.startsWith("2."))||(readLineOfFile.startsWith("3."))||(readLineOfFile.startsWith("4."))) {}
+                else continue;
+
+                StringTokenizer st = new StringTokenizer(readLineOfFile, ",");
+                int n = 0;
+                String odi = "";
+                String domainName = "";
+                while(st.hasMoreTokens())
+                {
+                    if (n == 0) odi = st.nextToken().trim();
+                    if (n == 1) domainName = st.nextToken().trim();
+                    if (n == 2) break;
+                    n++;
+                }
+                //System.out.println("CCCXX : " + str + ", " + domainName + ", " + odi);
+                if (str.trim().equals(domainName))
+                {
+                    result = odi;
+                    break;
+                }
+            }
+        }
+        catch(IOException ie)
+        {
+            throw new IOException("File reading Error in FileUtil.readFileIntoList() : " + fileName);
+        }
+
+        try
+        {
+            fr.close();
+            br.close();
+        }
+        catch(IOException ie) { throw new IOException("File Closing Error in FileUtil.readFileIntoList() : " + fileName); }
+        return result;
+    }
+
+
     public static boolean changeRegistry(String regiName, String content) throws IOException
     {
         String regiContent = regiName.trim() + Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR + content.trim();
@@ -326,10 +379,10 @@ public class FileUtil
      * @param digit number of generated random number
      * @return generated random number
      */
-    public static int getRandomNumber(int digit)  // inserted by umkis 08/10/2006
+        public static int getRandomNumber(int digit)  // inserted by umkis 08/10/2006
     {
-        if (digit == 0) return 0;
-        Random rnd = new Random();
+        if (digit <= 0) return 0;
+
         int in = 1;
         int la = 0;
         int sa = 0;
@@ -340,12 +393,51 @@ public class FileUtil
         la = in;
         sa = la / 10;
 
-        while(true)
+        return getRandomNumber(sa, la);
+
+    }
+    /**
+     * Create a random integer number between max and min number which was given by the caller.
+     * @param min : number of generated minimum random number
+     * @param max : number of generated maximum random number
+     * @return generated random number
+     */
+    public static int getRandomNumber(int min, int max)  // inserted by umkis 06/13/2007
+    {
+        if (min == max) return max;
+        if (min > max)
         {
-            in = rnd.nextInt();
-            if ((in >= sa)&&(in < la)) break;
+            int t = max;
+            max = min;
+            min = t;
         }
-        return in;
+        Random rnd = new Random();
+        int in = 0;
+        int in1 = 0;
+        if (max <= 0)
+        {
+            int min1 = 0 - max;
+            int max1 = 0 - min;
+            while(true)
+            {
+                in = rnd.nextInt();
+
+                in1 = in % max1;
+                if (in1 >= min1) break;
+            }
+            in1 = 0 - in1;
+        }
+        else
+        {
+            while(true)
+            {
+                in = rnd.nextInt();
+
+                in1 = in % max;
+                if (in1 >= min) break;
+            }
+        }
+        return in1;
     }
    
     /**
@@ -593,6 +685,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.1  2007/04/03 16:02:37  wangeug
+ * initial loading of common module
+ *
  * Revision 1.49  2006/12/28 20:50:36  umkis
  * saveValue() and readValue() in FunctionConstant
  *

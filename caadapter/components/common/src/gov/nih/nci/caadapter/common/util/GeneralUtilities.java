@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.2 2007-07-09 15:39:58 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,8 @@ package gov.nih.nci.caadapter.common.util;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,10 +46,10 @@ import java.awt.*;
  * This class defines a list general utility methods.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:02:37 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-09 15:39:58 $
  */
 public class GeneralUtilities
 {
@@ -237,10 +239,108 @@ public class GeneralUtilities
 		return msg;
 	}
 
-    
+        /**
+	 * Help to insert an Error Message into a ValidatorResults object.
+	 * @param validatorResults which is the ValidatorResults object to be added a message into
+     * @param mesg is the messge string.
+	 * @return the added ValidatorResults.
+	 */
+    public static final ValidatorResults addValidatorMessage(ValidatorResults validatorResults, String mesg)
+    {
+        Message msg = MessageResources.getMessage("EMP_ER", new Object[]{mesg});
+	    validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+        return validatorResults;
+    }
+
+    /**
+	 * Help to insert a Fatal Message into a ValidatorResults object.
+	 * @param validatorResults which is the ValidatorResults object to be added a message into
+     * @param mesg is the messge string.
+	 * @return the added ValidatorResults.
+	 */
+    public static final ValidatorResults addValidatorMessageFatal(ValidatorResults validatorResults, String mesg)
+    {
+        Message msg = MessageResources.getMessage("EMP_FT", new Object[]{mesg});
+	    validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+        return validatorResults;
+    }
+
+    /**
+	 * Help to insert a Warning Message into a ValidatorResults object.
+	 * @param validatorResults which is the ValidatorResults object to be added a message into
+     * @param mesg is the messge string.
+	 * @return the added ValidatorResults.
+	 */
+    public static final ValidatorResults addValidatorMessageWarning(ValidatorResults validatorResults, String mesg)
+    {
+        Message msg = MessageResources.getMessage("EMP_WN", new Object[]{mesg});
+	    validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+        return validatorResults;
+    }
+
+    /**
+	 * Help to insert an Info Message into a ValidatorResults object.
+	 * @param validatorResults which is the ValidatorResults object to be added a message into
+     * @param mesg is the messge string.
+	 * @return the added ValidatorResults.
+	 */
+    public static final ValidatorResults addValidatorMessageInfo(ValidatorResults validatorResults, String mesg)
+    {
+        Message msg = MessageResources.getMessage("EMP_IN", new Object[]{mesg});
+	    validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+        return validatorResults;
+    }
+
+    /**
+	 * Check whether parameter string is consist of alphabetic, nemeric and the unser score character as an element name.
+	 * @param name is the checked string.
+     * @return If any error is found the error message will be return, but null.
+	 */
+    public static final String checkElementName(String name)
+    {
+        return checkElementName(name, false);
+    }
+    /**
+	 * Check whether parameter string is consist of alphabetic, nemeric and the unser score character as an element name.
+	 * @param name is the checked string.
+     * @param capitalOnly is an option for checking non-CAPITAL character.
+	 * @return If any error is found the error message will be return, but null.
+	 */
+    public static final String checkElementName(String name, boolean capitalOnly)
+    {
+        if ((name == null)||(name.trim().equals(""))) return "This String array is null or empty.";
+        name = name.trim();
+        String achar = "";
+        int inFirst = 0;
+        for (int i=0;i<name.length();i++)
+        {
+            achar = name.substring(i, i+1);
+            char[] chars = achar.toCharArray();
+            int in = (int) chars[0];
+            if (i == 0) inFirst = in;
+            boolean tr = false;
+            if ((in >= 65)&&(in <= 90)) tr = true;
+            else if ((in >= 97)&&(in <= 122))
+            {
+                if (capitalOnly) return "This String array includes a non-CAPITAL alphabetic character. : " + name;
+                else tr = true;
+            }
+            else if ((in >= 48)&&(in <= 57)) tr = true;
+            else if (in == 95) tr = true;
+            else if (in == 45) tr = true;
+            else tr = false;
+            if (!tr) return "This String array includes an invalid character. : " + name;
+        }
+        if (inFirst == 95) return "This String array starts with an under score character. : " + name;
+
+        return null;
+    }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
