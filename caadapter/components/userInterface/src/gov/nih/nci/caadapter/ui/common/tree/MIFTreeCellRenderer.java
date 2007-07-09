@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.1 2007-07-03 18:58:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.2 2007-07-09 20:18:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,7 +40,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.Component;
 import java.awt.Color;
-import java.util.HashSet;
 
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
@@ -49,7 +48,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
-import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
+
 /**
  * This class defines a customized implementation of tree cell renderer to provide
  * additional look and feel for tree cells in HSMPanel.
@@ -57,8 +56,8 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 18:58:59 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-09 20:18:14 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -74,9 +73,8 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.1 2007-07-03 18:58:59 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.2 2007-07-09 20:18:14 wangeug Exp $";
 
-	private static final Color SELECTED_CHOICE_BACK_GROUND_COLOR = new Color(240, 100, 100);
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
 	private static final ImageIcon CLONE_IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("CloneNode.gif"));
@@ -100,6 +98,8 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			{
 				DatatypeBaseObject nodeBase=(DatatypeBaseObject)userObj;
 				this.setEnabled(nodeBase.isEnabled());
+				if (!nodeBase.isEnabled())
+					setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
 			}
 
 			if(userObj instanceof MIFClass)
@@ -130,22 +130,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 					else if (parentObj instanceof MIFAssociation )
 					{
 						MIFAssociation mifAssc=(MIFAssociation)parentObj;
-						
-						if (mifAssc.isChoiceSelected())
-						{//find the selected chioce MIFClass
-							HashSet<MIFClass> choiceHash=mifAssc.getMifClass().getChoices();
-							for (MIFClass choiceClass:choiceHash)
-							{
-								if (choiceClass.isChoiceSelected())
-									parentMIFClass=choiceClass;
-							}
-						}
-						else if (!mifAssc.getMifClass().getReferenceName().equals(""))
-						{
-							parentMIFClass=mifAssc.getReferencedMifClass();
-						}
-						else
-							parentMIFClass=mifAssc.getMifClass();
+						parentMIFClass=mifAssc.getMifClass();
 					}
 					int attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 					
@@ -174,10 +159,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 					else if (parentObj instanceof MIFAssociation )
 					{
 						MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
-						if (parentMifAssc.getReferencedMifClass()==null)
-							parentMIFClass=parentMifAssc.getMifClass();
-						else
-							parentMIFClass=parentMifAssc.getReferencedMifClass();
+						parentMIFClass=parentMifAssc.getMifClass();//.getReferencedMifClass();
 					}
 					
 					int asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
@@ -198,9 +180,9 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 						showText=showText+ "  [Choice - Unselected]";
 				}
 				
-				if (!asscMIFClass.getReferenceName().equals(""))
+				if (asscMIFClass.isReference())//.getReferenceName().equals(""))
 				{
-						showText=showText+" [Reference - " +asscMIFClass.getReferenceName()+ "]";
+						showText=showText+" [Reference - " +asscMIFClass.getName()+ "]";
 				}
 				
 				setText(showText);			

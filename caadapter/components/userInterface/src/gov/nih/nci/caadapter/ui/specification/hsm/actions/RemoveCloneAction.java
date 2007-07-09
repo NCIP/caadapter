@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.3 2007-07-09 20:15:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.util.ArrayList;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:25:59 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-09 20:15:34 $
  */
 public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -74,7 +74,7 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.3 2007-07-09 20:15:34 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Remove Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -136,19 +136,19 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 		{
 			MIFAssociation mifAssc=(MIFAssociation)obj;
 			
-			if (!mifAssc.isChoiceSelected())
-			{
-				if(mifAssc.getReferencedMifClass()!=null)
-					mifClass=mifAssc.getReferencedMifClass();
-				else
+//			if (!mifAssc.isChoiceSelected())
+//			{
+//				if(mifAssc.getReferencedMifClass()!=null)
+//					mifClass=mifAssc.getReferencedMifClass();
+//				else
 					mifClass=mifAssc.getMifClass();
-			}
-			else
-			{
-				for(MIFClass choiceClass:mifAssc.getMifClass().getChoices())
-					if (choiceClass.isChoiceSelected())
-						mifClass=choiceClass;
-			}
+//			}
+//			else
+//			{
+//				for(MIFClass choiceClass:mifAssc.getMifClass().getChoices())
+//					if (choiceClass.isChoiceSelected())
+//						mifClass=choiceClass;
+//			}
 		}
 		
 		try

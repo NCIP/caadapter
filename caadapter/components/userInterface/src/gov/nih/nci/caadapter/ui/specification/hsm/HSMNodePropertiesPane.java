@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.2 2007-07-03 20:21:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.3 2007-07-09 20:15:55 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -81,8 +81,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:21:37 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-09 20:15:55 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -97,7 +97,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.2 2007-07-03 20:21:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.3 2007-07-09 20:15:55 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -490,10 +490,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 						
 				}
 				dataTypeField.addItem(mifClass.getName());
-				if (mifClass.getReferenceName()!=null)
+				if (mifClass.isReference())//.getReferenceName()!=null)
 				{
-					cmetField.setText(mifClass.getReferenceName());
-					hl7DomainField.setText(mifClass.getReferenceName());
+					cmetField.setText(mifClass.getName());
+					hl7DomainField.setText(mifClass.getName());
 				}
 //				conformanceField.setText(mifClass.getConformance());
 //				rimSourceField.setText(mifAttr.getDefaultFrom()); //not set
@@ -512,24 +512,16 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					mandatoryField.setText("N");
 				conformanceField.setText(mifAssc.getConformance());
 				
- 
 //				abstractField.setText(mifAssc.getMifClass().isDynamic()); //not set
 				MIFClass asscClass=mifAssc.getMifClass();
 				rimSourceField.setText(asscClass.getReferenceName()); 
 				if(asscClass.getChoices().isEmpty())
 					dataTypeField.addItem(asscClass.getName());
-//				{
-//					Iterator subClassIt=asscClass.getChoices().iterator();
-//					while(subClassIt.hasNext())
-//					{
-//						MIFClass subClass=(MIFClass)subClassIt.next();
-//						dataTypeField.addItem(subClass.getName());
-//					}
-//				}
-				if (asscClass.getReferenceName()!=null)
+
+				if (asscClass.isReference())//.getReferenceName()!=null)
 				{
-					cmetField.setText(asscClass.getReferenceName());
-					hl7DomainField.setText(asscClass.getReferenceName());
+					cmetField.setText(asscClass.getName());//.getReferenceName());
+					hl7DomainField.setText(asscClass.getName());
 				}
 				hl7DefaultValueField.setText("");
 				codingStrengthField.setText("");

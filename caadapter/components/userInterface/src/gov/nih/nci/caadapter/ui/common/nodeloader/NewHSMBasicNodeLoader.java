@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.1 2007-07-03 19:07:03 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.2 2007-07-09 20:13:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -74,8 +74,8 @@ import java.util.Hashtable;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:07:03 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-09 20:13:40 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -178,7 +178,27 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			for (MIFClass choiceClass:mifClass.getSortedChoices())
 			{
 				if (choiceClass.isChoiceSelected())
+				{
+					
+					if (treeEditable&&!choiceClass.getReferenceName().equals(""))
+					{
+//						loading the referenced MIF class from CMET
+						Log.logInfo(this, "load CMET Reference:"+choiceClass.getReferenceName());
+						CMETRef cmetRef = CMETUtil.getCMET(choiceClass.getReferenceName());
+						if (cmetRef != null) 
+						{
+							MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif").clone();
+							referencedMifClass.setReference(true);
+							choiceClass=referencedMifClass;
+						}
+						else
+						{
+							Log.logError(this, "Not Found..:"+choiceClass.getReferenceName());
+//							childNode=new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName());				
+						}
+					}
 					rtnNode.add(buildMIFClassNode(choiceClass));
+				}
 			}
 		}
 				
@@ -206,23 +226,45 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		MIFClass asscMifClass=mifAssc.getMifClass();
 		DefaultMutableTreeNode childNode=null;
-		if (asscMifClass.getReferenceName().equals(""))
+		if (treeEditable)
 		{
-			childNode=buildMIFClassNode(asscMifClass);
-		}
-		else
-		{
-			if (mifAssc.getReferencedMifClass()!= null) 
+			//load reference class
+			if(!asscMifClass.getReferenceName().equals(""))
 			{
-				childNode=buildMIFClassNode(mifAssc.getReferencedMifClass());
-			}
-			else {
-				System.out.println("Not Found..:"+asscMifClass.getReferenceName());
-				childNode=buildMIFClassNode(asscMifClass);
-				childNode.add(new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName()));				
+				//loading the referenced MIF class from CMET
+				Log.logInfo(this, "load CMET Reference:"+asscMifClass.getReferenceName());
+				CMETRef cmetRef = CMETUtil.getCMET(asscMifClass.getReferenceName());
+				if (cmetRef != null) 
+				{
+					MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif").clone();
+					referencedMifClass.setReference(true);
+					mifAssc.setMifClass(referencedMifClass);
+				}
+				else
+				{
+					Log.logError(this, "Not Found..:"+asscMifClass.getReferenceName());
+//					childNode=new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName());				
+				}
 			}
 		}
+		childNode=buildMIFClassNode(mifAssc.getMifClass());
 		childNode.setUserObject(mifAssc);
+//		if (asscMifClass.getReferenceName().equals(""))
+//		{
+//			childNode=buildMIFClassNode(asscMifClass);
+//		}
+//		else
+//		{
+//			if (mifAssc.getReferencedMifClass()!= null) 
+//			{
+//				childNode=buildMIFClassNode(mifAssc.getReferencedMifClass());
+//			}
+//			else {
+//				System.out.println("Not Found..:"+asscMifClass.getReferenceName());
+//				childNode=buildMIFClassNode(asscMifClass);
+//				childNode.add(new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName()));				
+//			}
+//		}
 		return childNode;
 	}
 	

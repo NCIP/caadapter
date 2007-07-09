@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.3 2007-07-09 20:15:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.HashSet;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:25:59 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-09 20:15:34 $
  */
 public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -72,7 +72,7 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.3 2007-07-09 20:15:34 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Clone";
     private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -135,19 +135,19 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
             	else if (parentObj instanceof MIFAssociation)
             	{
             		MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
-            		if (!parentMifAssc.getMifClass().getReferenceName().equals(""))
-            			parentMif=parentMifAssc.getReferencedMifClass();
-            		else if (parentMifAssc.isChoiceSelected())
-            		{
-            			//find choiceSelected MIFClass
-            			HashSet<MIFClass> choiceHash=parentMifAssc.getMifClass().getChoices();
-            			for (MIFClass choiceMif:choiceHash)
-            			{
-            				if (choiceMif.isChoiceSelected())
-            					parentMif=choiceMif;
-            			}
-            		}
-            		else 
+//            		if (!parentMifAssc.getMifClass().getReferenceName().equals(""))
+//            			parentMif=parentMifAssc.getReferencedMifClass();
+//            		else if (parentMifAssc.isChoiceSelected())
+//            		{
+//            			//find choiceSelected MIFClass
+//            			HashSet<MIFClass> choiceHash=parentMifAssc.getMifClass().getChoices();
+//            			for (MIFClass choiceMif:choiceHash)
+//            			{
+//            				if (choiceMif.isChoiceSelected())
+//            					parentMif=choiceMif;
+//            			}
+//            		}
+//            		else 
             			parentMif=parentMifAssc.getMifClass();
             	}
             	
@@ -201,6 +201,9 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 20:25:59  wangeug
+ * HISTORY      : initila loading hl7 code without "clone"
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

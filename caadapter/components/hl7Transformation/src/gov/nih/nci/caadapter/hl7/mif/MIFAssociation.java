@@ -17,7 +17,7 @@ import java.util.HashSet;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-28 13:52:15 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-07-09 20:12:28 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -33,7 +33,6 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	
 	private String name;
 	private MIFClass mifClass;
-	private MIFClass referencedMifClass;
 	private boolean optionChosen = false;
 	private boolean choiceSelected =false;//make it serializable
 	private String parentXmlPath;
@@ -242,8 +241,6 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 			 MIFAssociation clonnedObj = (MIFAssociation)super.clone();
 			 MIFClass clonnedMIFClass=(MIFClass)getMifClass().clone();
 			 clonnedObj.setMifClass(clonnedMIFClass);
-			 if (this.getReferencedMifClass()!=null)
-				 clonnedObj.setReferencedMifClass((MIFClass)getReferencedMifClass().clone());
 			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -259,22 +256,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 			return getName()+ "  [" + (this.getMultiplicityIndex() +1) +"]";
 
 	}
-	public MIFClass getReferencedMifClass() {
-		if (referencedMifClass!=null)
-			return referencedMifClass;
-		
-		if (!getMifClass().getReferenceName().equals(""))
-		{
-			//loading the referenced MIF class from CMET
-			CMETRef cmetRef = CMETUtil.getCMET(getMifClass().getReferenceName());
-			if (cmetRef != null) 
-				referencedMifClass = MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif");
-		}
-		return referencedMifClass;
-	}
-	public void setReferencedMifClass(MIFClass referencedMifClass) {
-		this.referencedMifClass = referencedMifClass;
-	}
+
 	public boolean isEnabled() {
 		return true;
 	}
