@@ -93,6 +93,11 @@ public class XMIGenerator
 						{
 							for( UMLTaggedValue tagValue : att.getTaggedValues() )
 							{								
+								if( tagValue.getName().contains( "inverse-of" ))
+								{
+									//System.out.println( "deleted m-a" );
+									att.removeTaggedValue( "inverse-of" );
+								}
 								if( tagValue.getName().contains( "mapped-attributes" ))
 								{
 									//System.out.println( "deleted m-a" );
