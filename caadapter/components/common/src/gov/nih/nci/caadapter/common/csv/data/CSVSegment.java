@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/CSVSegment.java,v 1.2 2007-06-21 19:10:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/CSVSegment.java,v 1.3 2007-07-09 15:36:40 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.common.csv.data;
 
 import gov.nih.nci.caadapter.common.DataObject;
+import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
 
 import java.util.List;
 
@@ -42,12 +43,27 @@ import java.util.List;
  * Interface for a segment that is contained within segmented csv data file.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-06-21 19:10:23 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2007-07-09 15:36:40 $
  */
 
+public interface CSVSegment extends DataObject{
+    public List<CSVField> getFields();
+    public List<CSVSegment> getChildSegments();
+    public void addChildSegment(CSVSegment segment);
+    public CSVSegment getParentSegment();
+    public void setParentSegment(CSVSegment segment);
+    public CardinalityType getCardinalityType();
+    public void setCardinalityType(CardinalityType type);
+    public String getCardinalityWithString();
+    public boolean isChoiceSegment();
+    public void setCardinalityWithString(String type) throws IllegalArgumentException;
+    public int getMaxCardinality();
+    public int getMinCardinality();
+}
+/*
 public interface CSVSegment extends DataObject{
     public List<CSVField> getFields();
     public List<CSVSegment> getChildSegments();
@@ -59,3 +75,4 @@ public interface CSVSegment extends DataObject{
 	public void setCardinality(String newValue);
 
 }
+*/

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/CSVSegmentMeta.java,v 1.2 2007-06-21 19:10:56 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/CSVSegmentMeta.java,v 1.3 2007-07-09 15:37:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.common.csv.meta;
 
 import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
 
 import java.util.List;
 
@@ -42,10 +43,10 @@ import java.util.List;
  * Interface for segment metadata (contained within a csv file).
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-06-21 19:10:56 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2007-07-09 15:37:49 $
  */
 
 public interface CSVSegmentMeta extends MetaObject{
@@ -64,7 +65,15 @@ public interface CSVSegmentMeta extends MetaObject{
 
 	public boolean removeField(CSVFieldMeta field);
 	public boolean removeSegment(CSVSegmentMeta segment);
-	//segment cardinality
-	public String getCardinality();
-	public void setCardinality(String newValue);
+
+    public String getCardinalityWithString();
+    public void setCardinalityWithString(String type) throws IllegalArgumentException;
+    public CardinalityType getCardinalityType();
+    public void setCardinalityType(CardinalityType type);
+
+    public boolean isChoiceSegment();
+    public boolean isChoiceMemberSegment();
+    public int getMaxCardinality();
+    public int getMinCardinality();
 }
+
