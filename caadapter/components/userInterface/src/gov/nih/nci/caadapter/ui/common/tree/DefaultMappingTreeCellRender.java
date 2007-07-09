@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.2 2007-06-14 13:20:54 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.3 2007-07-09 20:14:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,7 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
@@ -50,16 +51,17 @@ import java.awt.Component;
  * The class defines the default tree cell renderer for mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-14 13:20:54 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-09 20:14:34 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
 	private static final Color ALTERNATE_COLOR = new Color(220, 220, 220);
 	private static final Color NONDRAG_COLOR = new Color(140, 140, 175);
 	private static final Color MANYTOONE_COLOR = Color.pink;
+	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 	//private HL7MappingPanel mappingPanel;
 	private static ImageIcon pseudoRootIcon = new ImageIcon(DefaultSettings.getImage("pseudo_root.gif"));
 
@@ -89,6 +91,15 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 		if (value instanceof PseudoRootTreeNode)
 		{
 			setIcon(pseudoRootIcon);
+		}
+		
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+		if (node.getUserObject() instanceof DatatypeBaseObject)
+		{
+			DatatypeBaseObject nodeBase=(DatatypeBaseObject)node.getUserObject();
+			returnValue.setEnabled(nodeBase.isEnabled());
+			if (!nodeBase.isEnabled())
+				returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
 		}
 		return returnValue;
 	}
