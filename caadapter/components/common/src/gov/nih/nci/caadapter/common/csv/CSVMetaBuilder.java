@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.2 2007-06-21 19:10:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.3 2007-07-09 15:59:42 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -67,10 +67,10 @@ import java.util.List;
  * objects to castor objects and then marshals them.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-06-21 19:10:08 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2007-07-09 15:59:42 $
  */
 
 public class CSVMetaBuilder extends MetaBuilderBase {
@@ -78,13 +78,99 @@ public class CSVMetaBuilder extends MetaBuilderBase {
     private static CSVMetaBuilder metaBuilder = null;
 
     private static final String LOGID = "$RCSfile: CSVMetaBuilder.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.2 2007-06-21 19:10:08 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.3 2007-07-09 15:59:42 umkis Exp $";
 
     private CSVMetaBuilder()
     {
     }
 
+    public void build(OutputStream outputStream, MetaObject meta) throws MetaException {
+        try {
 
+            if (!(meta instanceof CSVMeta)) {
+                throw new MetaException("Meta object should be an instance of CSVMeta", null);
+            } else {
+                CSVMeta csvMeta = (CSVMeta) meta;
+
+                // setup the castor objects.
+                C_csvMetadata c = new C_csvMetadata();
+                c.setC_segment(processSegment(csvMeta.getRootSegment()));
+                c.setVersion(new BigDecimal("1.2"));
+                c.setUuid(meta.getUUID());
+
+                // set up the Source.
+                StringWriter marshalString = new StringWriter();
+                //c.marshal(marshalString);
+                Marshaller marshaller = new Marshaller(marshalString);
+                marshaller.setSuppressXSIType(true);
+                marshaller.marshal(c);
+
+                ByteArrayInputStream is = new ByteArrayInputStream(marshalString.toString().getBytes());
+                // transform it.
+                Transformer t = TransformerFactory.newInstance().newTransformer();
+                t.setOutputProperty(OutputKeys.INDENT, "yes");
+                t.transform(new StreamSource(is), new StreamResult(outputStream));
+            }
+        } catch (IOException e) {
+            throw new MetaException(e.getMessage(), e);
+        }catch (MarshalException e) {
+            throw new MetaException(e.getMessage(), e);
+        } catch (ValidationException e) {
+            throw new MetaException(e.getMessage(), e);
+        } catch (TransformerException e) {
+            throw new MetaException(e.getMessage(), e);
+        }
+    }
+
+    private C_segment processSegment(CSVSegmentMeta metaSegment) {
+        C_segment castorSegment = new C_segment();
+        castorSegment.setName(metaSegment.getName());
+        if (metaSegment.getCardinalityType().getType() != (new C_segment()).getCardinality().getType())
+        {
+            castorSegment.setCardinality(metaSegment.getCardinalityType());
+            //System.out.println("CCCCV : " + metaSegment.getCardinalityType().toString());
+        }
+        castorSegment.setUuid(metaSegment.getUUID());
+        //System.out.println("KKKKV : " + metaSegment.getName() + " :: " + metaSegment.getCardinalityType().toString());
+
+        List<CSVSegmentMeta> metaChildSegments = metaSegment.getChildSegments();
+        for (int i = 0; i < metaChildSegments.size(); i++) {
+            CSVSegmentMeta csvSegmentMeta = metaChildSegments.get(i);
+            C_segmentItem si = new C_segmentItem();
+            si.setC_segment(processSegment(csvSegmentMeta));
+            castorSegment.addC_segmentItem(si);
+        }
+
+        List<CSVFieldMeta> metaFields = metaSegment.getFields();
+        for (int i = 0; i < metaFields.size(); i++) {
+            CSVFieldMeta csvFieldMeta = metaFields.get(i);
+            C_segmentItem si = new C_segmentItem();
+            si.setC_field(processField(csvFieldMeta));
+            castorSegment.addC_segmentItem(si);
+        }
+        return castorSegment;
+    }
+
+    private C_field processField(CSVFieldMeta metaField) {
+        C_field castorField = new C_field();
+        castorField.setColumn(metaField.getColumn());
+        castorField.setName(metaField.getName());
+        castorField.setUuid(metaField.getUUID());
+        return castorField;
+    }
+
+    public static CSVMetaBuilder getInstance()
+    {
+
+        if (metaBuilder == null)
+        {
+            metaBuilder = new CSVMetaBuilder();
+        }
+        return metaBuilder;
+    }
+}
+
+/*
     public void build(OutputStream outputStream, MetaObject meta) throws MetaException {
         try {
 
@@ -164,3 +250,4 @@ public class CSVMetaBuilder extends MetaBuilderBase {
         return metaBuilder;
     }
 }
+*/

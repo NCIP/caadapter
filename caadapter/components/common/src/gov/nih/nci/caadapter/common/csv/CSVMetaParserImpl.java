@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.2 2007-06-21 19:09:47 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.3 2007-07-09 15:59:51 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,16 +53,67 @@ import java.io.FileReader;
  * Builds a csv meta object graph from a csv specification.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-06-21 19:09:47 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-07-09 15:59:51 $
  * @since caAdapter v1.2
  */
 
 public class CSVMetaParserImpl implements MetaParser {
     private static final String LOGID = "$RCSfile: CSVMetaParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.2 2007-06-21 19:09:47 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.3 2007-07-09 15:59:51 umkis Exp $";
 
+
+    public CSVMetaResult parse(FileReader metafile){
+        C_csvMetadata c = null;
+        CSVMetaResult csvMetaResult = new CSVMetaResult();
+        try {
+            c = (C_csvMetadata) C_csvMetadata.unmarshalC_csvMetadata(metafile);
+            csvMetaResult.setCsvMeta(processRoot(c));
+        } catch (Exception e) {
+            Log.logException(this, e);
+            Message msg = MessageResources.getMessage("GEN0", new Object[]{"Could not parse CSV Meta file."});
+            ValidatorResults validatorResults = new ValidatorResults();
+            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+            csvMetaResult.setValidatorResults(validatorResults);
+        }
+        return csvMetaResult;
+    }
+
+    private CSVMetaImpl processRoot(C_csvMetadata cm) {
+        CSVMetaImpl csvFileMetaImpl = new CSVMetaImpl();
+        csvFileMetaImpl.setRootSegment(processSegment(cm.getC_segment(), null));
+        csvFileMetaImpl.setUUID(cm.getUuid());
+        return csvFileMetaImpl;
+    }
+
+    private CSVSegmentMetaImpl processSegment(C_segment s, CSVSegmentMeta parent) {
+        CSVSegmentMetaImpl csvSegmentMetaImpl = new CSVSegmentMetaImpl(s.getName(), parent);
+        if (parent != null) csvSegmentMetaImpl.setCardinalityType(s.getCardinality());
+        csvSegmentMetaImpl.setUUID(s.getUuid());
+
+        C_segmentItem[] si = s.getC_segmentItem();
+        for (int i = 0; i < si.length; i++) {
+            C_segmentItem segmentItem = si[i];
+            if (segmentItem.getC_field() != null) {
+                csvSegmentMetaImpl.addField(processField(segmentItem.getC_field(), csvSegmentMetaImpl));
+            }
+            if (segmentItem.getC_segment() != null) {
+                csvSegmentMetaImpl.addSegment(processSegment(segmentItem.getC_segment(), csvSegmentMetaImpl));
+            }
+
+        }
+        return csvSegmentMetaImpl;
+    }
+
+    private CSVFieldMetaImpl processField(C_field f, CSVSegmentMetaImpl parent) {
+        CSVFieldMetaImpl c = new CSVFieldMetaImpl(f.getColumn(), (String) f.getName(), parent);
+        c.setUUID(f.getUuid());
+        return c;
+    }
+}
+
+/*
     public CSVMetaResult parse(FileReader metafile){
         C_csvMetadata c = null;
         CSVMetaResult csvMetaResult = new CSVMetaResult();
@@ -110,3 +161,4 @@ public class CSVMetaParserImpl implements MetaParser {
         return c;
     }
 }
+*/
