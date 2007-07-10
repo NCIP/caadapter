@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.3 2007-07-10 17:34:37 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -51,8 +51,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:25:59 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-10 17:34:37 $
  */
 public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 {
@@ -68,7 +68,7 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.3 2007-07-10 17:34:37 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -133,17 +133,11 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 			}
 		}
 
-		if(treePath==null)
-		{//still no treepath, has to abort action.
-			JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Tree has no selection", "No Selection", JOptionPane.WARNING_MESSAGE);
-			setSuccessfullyPerformed(false);
-			return false;
-		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
 		if (!(obj instanceof MIFClass))
 		{
-			JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Select a clone meta object", "Wrong Selection", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(parentPanel.getParent(), "Please select a clone meta object", "Wrong Selection", JOptionPane.WARNING_MESSAGE);
 			setSuccessfullyPerformed(false);
 		}
 		else

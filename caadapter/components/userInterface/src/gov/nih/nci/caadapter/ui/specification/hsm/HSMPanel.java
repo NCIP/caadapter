@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.2 2007-07-03 20:21:38 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.3 2007-07-10 17:35:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,9 +50,7 @@ import gov.nih.nci.caadapter.ui.common.context.DefaultContextManagerClientPanel;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
-//import gov.nih.nci.caadapter.ui.common.nodeloader.HSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
-//import gov.nih.nci.caadapter.ui.common.nodeloader.HSMTreeNodeLoader;
 import gov.nih.nci.caadapter.ui.common.tree.AutoscrollableTree;
 import gov.nih.nci.caadapter.ui.common.tree.MIFTreeCellRenderer;
 
@@ -60,6 +58,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JRootPane;
 import javax.swing.JTree;
 import javax.swing.Action;
@@ -78,8 +77,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:21:38 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-10 17:35:49 $
  */
 public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel implements ContextManagerClient
 {
@@ -94,24 +93,23 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.2 2007-07-03 20:21:38 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.3 2007-07-10 17:35:49 wangeug Exp $";
  
-    private JSplitPane rightSplitPane;
+    private JTabbedPane rightTabbedPane;
     private TreeExpandAllAction treeExpandAllAction;
     private TreeCollapseAllAction treeCollapseAllAction;
     private JScrollPane treeScrollPane;
     private AutoscrollableTree hsmTree;
 
     private HSMNodePropertiesPane propertiesPane;
-    private boolean propertiesPaneVisible;
+    private boolean propertiesPaneVisible=true;
 
     private ValidationMessagePane validationMessagePane;
-    private boolean messagePaneVisible;
+    private boolean messagePaneVisible=true;
 
     private HSMPanelController controller;
-//    private HSMBasicNodeLoader hsmNodeLoader = new HSMTreeNodeLoader();;
-    private JPanel placeHolderForValidationMessageDisplay;
-    private JPanel placeHolderForPropertiesDisplay;
+//    private JPanel placeHolderForValidationMessageDisplay;
+//    private JPanel placeHolderForPropertiesDisplay;
 
     /**
      * Default constructor to being used as HSMPanel.newInstance()
@@ -124,7 +122,9 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
     public HSMPanel(String mifFileName)
     {
         initialize();
-        initializeTreeWithMIF(mifFileName);
+        TreeNode root=loadTreeNodeWithMIF(mifFileName);
+        
+    	initializeTreeWithMIFTreeNode(root);
     }
 
     private void initialize()
@@ -152,32 +152,16 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         treePanel.add(treeNorthPanel, BorderLayout.NORTH);
         treePanel.add(treeScrollPane, BorderLayout.CENTER);
 
-        rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        DefaultSettings.setDefaultFeatureForJSplitPane(rightSplitPane);
-        rightSplitPane.setBorder(BorderFactory.createEmptyBorder());
-//        rightSplitPane.setDividerLocation(0.5);
+        rightTabbedPane = new JTabbedPane();//new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+//        DefaultSettings.setDefaultFeatureForJSplitPane(rightTabbedPane);
+        rightTabbedPane.setBorder(BorderFactory.createEmptyBorder());
 
         //for place holding
-        JLabel dummyHolderForPropertiesDisplay = new JLabel("For Properties Display...");
-        JLabel dummyHolderForValidationMessageDisplay = new JLabel("For Validation Message Display...");
-
-        placeHolderForValidationMessageDisplay = new JPanel(new BorderLayout());
-        dummyHolderForValidationMessageDisplay.setEnabled(false);
-        placeHolderForValidationMessageDisplay.add(dummyHolderForValidationMessageDisplay, BorderLayout.NORTH);
-        placeHolderForValidationMessageDisplay.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 4)));
-        rightSplitPane.setTopComponent(placeHolderForValidationMessageDisplay);
-        //place holder
-        placeHolderForPropertiesDisplay = new JPanel(new BorderLayout());
-//		JTextField textField = new JTextField("For Properties Display...");
-//		textField.setEnabled(false);
-//		panel.add(textField, BorderLayout.NORTH);
-        placeHolderForPropertiesDisplay.add(dummyHolderForPropertiesDisplay, BorderLayout.NORTH);
-        dummyHolderForPropertiesDisplay.setEnabled(false);
-        placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT /2 ));/// 3));
-        rightSplitPane.setBottomComponent(placeHolderForPropertiesDisplay);
-
+        setPropertiesPaneVisible(false);
+        setMessagePaneVisible(false);
+        
         centerSplitPane.setLeftComponent(treePanel);
-        centerSplitPane.setRightComponent(rightSplitPane);
+        centerSplitPane.setRightComponent(rightTabbedPane);
         this.add(centerSplitPane, BorderLayout.CENTER);
     }
 
@@ -202,12 +186,17 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             propertiesPaneVisible = newValue;
             if (propertiesPaneVisible)
             {
-//				CSVMetadataTreeNodePropertiesPane propPane = getPropertiesPane();
-                rightSplitPane.setBottomComponent(getPropertiesPane());
+                rightTabbedPane.setComponentAt(0, getPropertiesPane());
             }
             else
             {//set null implies removement
-                rightSplitPane.setBottomComponent(placeHolderForPropertiesDisplay);
+                //place holder
+                JLabel dummyHolderForPropertiesDisplay = new JLabel("For Properties Display...");
+                dummyHolderForPropertiesDisplay.setEnabled(false);
+                JPanel placeHolderForPropertiesDisplay = new JPanel(new BorderLayout());
+                placeHolderForPropertiesDisplay.add(dummyHolderForPropertiesDisplay, BorderLayout.NORTH);
+                placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT /2 ));/// 3));        
+                rightTabbedPane.add("Properties ", placeHolderForPropertiesDisplay);
             }
         }
     }
@@ -224,11 +213,16 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             this.messagePaneVisible = newValue;
             if(this.messagePaneVisible)
             {
-                rightSplitPane.setTopComponent(getMessagePane());
+            	 rightTabbedPane.setComponentAt(1,getMessagePane());
             }
             else
             {
-                rightSplitPane.setTopComponent(placeHolderForValidationMessageDisplay);
+                JLabel dummyHolderForValidationMessageDisplay = new JLabel("For Validation Message Display...");
+                JPanel placeHolderForValidationMessageDisplay = new JPanel(new BorderLayout());
+                dummyHolderForValidationMessageDisplay.setEnabled(false);
+                placeHolderForValidationMessageDisplay.add(dummyHolderForValidationMessageDisplay, BorderLayout.NORTH);
+                placeHolderForValidationMessageDisplay.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 4)));
+                rightTabbedPane.add("Validation Message",placeHolderForValidationMessageDisplay);
             }
         }
     }
@@ -253,21 +247,18 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         return validationMessagePane;
     }
 
-    private ValidatorResults initializeTree(File saveFile)
-    {
-    	long stTime=System.currentTimeMillis();
-    	
+    private ValidatorResults initializeTreeWithFile(File saveFile)
+    { 	
         ValidatorResults validatorResults = new ValidatorResults();
         try
         {
         	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(true);
         	TreeNode root = newHsmNodeLoader.loadData(saveFile);
         	initializeTreeWithMIFTreeNode(root);	
-            System.out.println("HSMPanel.initializeTree()..time spending:"+(System.currentTimeMillis()-stTime));
         }
         catch (Throwable e1)
         {
-			System.out.println("Logging exception within initializeTree(File saveFile).");
+			Log.logException(this, e1);
 			DefaultSettings.reportThrowableToLogAndUI(this, e1, null, this, false, true);
 			Message msg = MessageResources.getMessage("GEN0", new Object[]{e1.getMessage()});
 			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -275,39 +266,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         return validatorResults;
     }
     
-//    private ValidatorResults initializeTree_save(File saveFile)
-//    {
-//    	long stTime=System.currentTimeMillis();
-//    	
-//        ValidatorResults validatorResults = new ValidatorResults();
-//        HL7V3MetaFileParser parser = HL7V3MetaFileParser.instance();
-//        try
-//        {
-//            HL7V3MetaResult hl7V3MetaResult = parser.parse(new FileReader(saveFile));
-//            this.hl7V3MetaRoot = hl7V3MetaResult.getHl7V3Meta();
-//            validatorResults.addValidatorResults(hl7V3MetaResult.getValidatorResults());
-//            if (validatorResults.hasFatal())
-//            {//return immediately
-//                return validatorResults;
-//            }
-//            if (getMessageType() == null)
-//            {
-//                messageType = HL7Util.getMessageType(hl7V3MetaRoot.getMessageID());
-//            }
-//            initializeTree(hl7V3MetaRoot);
-//            System.out.println("HSMPanel.initializeTree()..time spending:"+(System.currentTimeMillis()-stTime));
-//        }
-//        catch (Throwable e1)
-//        {
-//			System.out.println("Logging exception within initializeTree(File saveFile).");
-//			DefaultSettings.reportThrowableToLogAndUI(this, e1, null, this, false, true);
-//			Message msg = MessageResources.getMessage("GEN0", new Object[]{e1.getMessage()});
-//			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
-//		}
-//        return validatorResults;
-//    }
-
-    private JTree initializeTreeWithMIF(String mifFileName)
+    private TreeNode loadTreeNodeWithMIF(String mifFileName)
     {
         if(mifFileName==null)
         {
@@ -317,8 +276,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         {
         	MIFClass mifClass=MIFParserUtil.getMIFClass(mifFileName);
         	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(true,true);
-        	TreeNode root = newHsmNodeLoader.loadData(mifClass);
-        	return initializeTreeWithMIFTreeNode(root);	
+        	return newHsmNodeLoader.loadData(mifClass);
         }
         catch(Throwable e)
         {
@@ -328,7 +286,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         }
     }
     
-    private JTree initializeTreeWithMIFTreeNode(TreeNode root )
+    private void initializeTreeWithMIFTreeNode(TreeNode root )
     {
         try
         {
@@ -337,7 +295,6 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             hsmTree.getModel().addTreeModelListener(getController());
             treeScrollPane.getViewport().setView(hsmTree);
             hsmTree.addMouseListener(new HSMTreeMouseAdapter(this));
-//            hsmTree.setCellRenderer(new HSMTreeCellRenderer());
             hsmTree.setCellRenderer(new MIFTreeCellRenderer());
             treeExpandAllAction.setTree(hsmTree);
             treeCollapseAllAction.setTree(hsmTree);
@@ -345,15 +302,11 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             hsmTree.getActionMap().put(treeCollapseAllAction.getName(), treeCollapseAllAction);
             hsmTree.getInputMap().put(treeExpandAllAction.getAcceleratorKey(), treeExpandAllAction.getName());
             hsmTree.getActionMap().put(treeExpandAllAction.getName(), treeExpandAllAction);
-
-            //			treeScrollPane.setMinimumSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 2), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-            return hsmTree;
         }
         catch(Throwable e)
         {
             Log.logException(this.getClass(), "Cannot initialize the tree anymore!", e);
             DefaultSettings.reportThrowableToLogAndUI(this, e, "Error occurred during tree initialitation", this, true, true);
-            return null;
         }
     }
     
@@ -362,10 +315,6 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         return hsmTree;
     }
 
-//    public HSMBasicNodeLoader getDefaultHSMNodeLoader()
-//    {
-//        return hsmNodeLoader;
-//    }
     
     public ValidatorResults setSaveFile(File saveFile, boolean refreshTree)
     {
@@ -376,7 +325,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             {
                 if (refreshTree)
                 {
-                    validatorResults.addValidatorResults(initializeTree(this.saveFile));
+                    validatorResults.addValidatorResults(initializeTreeWithFile(this.saveFile));
                 }
             }
         }

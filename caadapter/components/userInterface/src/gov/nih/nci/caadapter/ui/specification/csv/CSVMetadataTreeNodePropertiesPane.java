@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.2 2007-07-10 17:33:10 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import java.awt.event.ActionListener;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-10 17:33:10 $
  */
 public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -226,6 +226,12 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 			}
 		}
 		setDisplayData(treeNode, true);
+		Component parentCom=this.getParent();
+		if (parentCom instanceof JTabbedPane)
+		{
+			JTabbedPane parentTab=(JTabbedPane)parentCom;
+			parentTab.setSelectedComponent(this);
+		}
 		return true;
 	}
 
@@ -347,6 +353,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

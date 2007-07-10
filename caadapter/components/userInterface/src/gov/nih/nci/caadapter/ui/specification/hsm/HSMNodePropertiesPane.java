@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.3 2007-07-09 20:15:55 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.4 2007-07-10 17:34:03 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,6 +50,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 //import hl7OrgV3.mif.List;
 //import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 import javax.swing.JComboBox;
@@ -64,6 +65,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
@@ -81,8 +83,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-09 20:15:55 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-10 17:34:03 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -97,7 +99,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.3 2007-07-09 20:15:55 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.4 2007-07-10 17:34:03 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -359,6 +361,12 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			}
 		}
 		setDisplayData(treeNode, true);
+		Component parentCom=this.getParent();
+		if (parentCom instanceof JTabbedPane)
+		{
+			JTabbedPane parentTab=(JTabbedPane)parentCom;
+			parentTab.setSelectedComponent(this);
+		}
 		return true;
 	}
 

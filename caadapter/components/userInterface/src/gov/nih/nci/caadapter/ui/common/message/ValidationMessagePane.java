@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.2 2007-07-10 17:35:04 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,8 +53,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-10 17:35:04 $
  */
 public class ValidationMessagePane extends JPanel implements ActionListener
 {
@@ -70,7 +70,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.2 2007-07-10 17:35:04 wangeug Exp $";
 
 	private JPanel navigationPanel = null;
 	private JPanel levelPanel = null;
@@ -226,7 +226,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 
 
         //        messageDisplayingPanel.setPreferredSize(new Dimension(550, 530));
-		messageDisplayingPanel.setMinimumSize(new Dimension(30, 30));
+		messageDisplayingPanel.setMinimumSize(new Dimension(30, 100));
 
 		//Put the editor pane and the text pane in a split pane.
 		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -339,9 +339,13 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 			}
 			confirmationMessageField.setText(confirmationMessage);
 //		}
-
-//		setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 2)));
-//		repaint();
+			Component parentCom=this.getParent();
+			if (parentCom instanceof JTabbedPane)
+			{
+				JTabbedPane parentTab=(JTabbedPane)parentCom;
+				parentTab.setSelectedComponent(this);
+			}
+			
 	}
 
 	/**
@@ -393,6 +397,9 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.23  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
