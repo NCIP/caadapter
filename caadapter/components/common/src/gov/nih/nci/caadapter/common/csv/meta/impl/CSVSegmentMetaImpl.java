@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.4 2007-07-10 18:14:29 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.5 2007-07-10 20:05:44 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,22 +46,22 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.caadapter.hl7.datatype.Cardinality;
+import gov.nih.nci.caadapter.common.Cardinality;
 
 /**
  * Implementation of a segment metadata (contained within a csv file).
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.4 $
- * 			$Date: 2007-07-10 18:14:29 $
+ * @version $Revision: 1.5 $
+ * 			$Date: 2007-07-10 20:05:44 $
  * @since caAdapter v1.2
  */
 
 public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 {
 	private static final String LOGID = "$RCSfile: CSVSegmentMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.4 2007-07-10 18:14:29 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.5 2007-07-10 20:05:44 umkis Exp $";
     private String segmentName;
     List<CSVFieldMeta> fields = new ArrayList<CSVFieldMeta>();
     List<CSVSegmentMeta> childSegments = new ArrayList<CSVSegmentMeta>();

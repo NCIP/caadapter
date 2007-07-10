@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.5 2007-07-10 19:30:20 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.6 2007-07-10 20:07:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,7 +41,7 @@ import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
-import  gov.nih.nci.caadapter.common.Cardinality;
+import gov.nih.nci.caadapter.common.Cardinality;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
 //import gov.nih.nci.caadapter.hl7.mif.CMETRef;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
@@ -81,10 +81,10 @@ import java.util.List;
  * This class defines the layout and some of data handling of the properties pane resided in HSMPanel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-07-10 19:30:20 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-07-10 20:07:49 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -99,7 +99,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.5 2007-07-10 19:30:20 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.6 2007-07-10 20:07:49 umkis Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";

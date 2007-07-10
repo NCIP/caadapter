@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.4 2007-07-10 18:14:16 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.5 2007-07-10 20:05:53 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,7 +44,7 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.C_segment;
 
 import java.util.ArrayList;
 
-import gov.nih.nci.caadapter.hl7.datatype.Cardinality;
+import gov.nih.nci.caadapter.common.Cardinality;
 
 /**
  * Implementation of a segment that is contained within segmented csv data file.
@@ -52,13 +52,13 @@ import gov.nih.nci.caadapter.hl7.datatype.Cardinality;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.4 $
- * @date        $Date: 2007-07-10 18:14:16 $
+ * @version    $Revision: 1.5 $
+ * @date        $Date: 2007-07-10 20:05:53 $
  */
 
 public class CSVSegmentImpl extends DataObjectImpl implements CSVSegment{
     private static final String LOGID = "$RCSfile: CSVSegmentImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.4 2007-07-10 18:14:16 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.5 2007-07-10 20:05:53 umkis Exp $";
 
     public ArrayList<CSVField> fields = new ArrayList<CSVField>();
     public ArrayList<CSVSegment> childSegments = new ArrayList<CSVSegment>();
