@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVPanel.java,v 1.2 2007-04-19 13:59:51 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVPanel.java,v 1.3 2007-07-10 17:43:17 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,11 +57,20 @@ import gov.nih.nci.caadapter.ui.common.tree.CSVTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.common.tree.DropCompatibleComponent;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDragTransferHandler;
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JRootPane;
+import javax.swing.JTree;
+import javax.swing.Action;
+import javax.swing.JToolBar;
+import javax.swing.BorderFactory;
 import javax.swing.tree.TreeSelectionModel;
-import java.awt.*;
+import javax.swing.tree.TreeNode;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.dnd.DnDConstants;
 import java.io.File;
 import java.io.FileReader;
@@ -73,12 +82,12 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-04-19 13:59:51 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-10 17:43:17 $
  */
 public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implements ContextManagerClient
 {
-    private JSplitPane rightSplitPane;
+    private JTabbedPane rightTabbedPane;
     private TreeExpandAllAction treeExpandAllAction;
     private TreeCollapseAllAction treeCollapseAllAction;
     private JScrollPane treeScrollPane;
@@ -138,11 +147,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
         treeNorthPanel.add(treeToolBar, BorderLayout.WEST);
         treePanel.add(treeNorthPanel, BorderLayout.NORTH);
         treePanel.add(treeScrollPane, BorderLayout.CENTER);
-
-        rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        DefaultSettings.setDefaultFeatureForJSplitPane(rightSplitPane);
-        rightSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        rightSplitPane.setDividerLocation(0.4);
+        rightTabbedPane=new JTabbedPane();
 
         //for place holding
         JLabel dummyHolderForPropertiesDisplay = new JLabel("For Properties Display...");
@@ -152,13 +157,14 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
         dummyHolderForValidationMessageDisplay.setEnabled(false);
         placeHolderForValidationMessageDisplay.add(dummyHolderForValidationMessageDisplay, BorderLayout.NORTH);
         placeHolderForValidationMessageDisplay.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 4)));
-        rightSplitPane.setTopComponent(placeHolderForValidationMessageDisplay);
-
+        
         JPanel placeHolderForPropertiesDisplay = new JPanel(new BorderLayout());
         placeHolderForPropertiesDisplay.add(dummyHolderForPropertiesDisplay, BorderLayout.NORTH);
         dummyHolderForPropertiesDisplay.setEnabled(false);
         placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT / 3));
-        rightSplitPane.setBottomComponent(placeHolderForPropertiesDisplay);
+        
+        rightTabbedPane.add("Properties",placeHolderForPropertiesDisplay);
+        rightTabbedPane.add("Validation Message",placeHolderForValidationMessageDisplay);//.setTopComponent(placeHolderForValidationMessageDisplay);
         //end of temporary place takers.
 
         JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -167,7 +173,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
         centerSplitPane.setDividerLocation(0.4);
 
         centerSplitPane.setLeftComponent(treePanel);
-        centerSplitPane.setRightComponent(rightSplitPane);
+        centerSplitPane.setRightComponent(rightTabbedPane);
         this.add(centerSplitPane, BorderLayout.CENTER);
     }
 
@@ -302,11 +308,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
             propertiesPaneVisible = newValue;
             if (propertiesPaneVisible)
             {
-                rightSplitPane.setBottomComponent(getPropertiesPane());
-            }
-            else
-            {//set null implies removement
-                rightSplitPane.setBottomComponent(null);
+                rightTabbedPane.setComponentAt(0,getPropertiesPane());
             }
         }
     }
@@ -360,11 +362,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
             this.messagePaneVisible = newValue;
             if (this.messagePaneVisible)
             {
-                rightSplitPane.setTopComponent(getMessagePane());
-            }
-            else
-            {
-                rightSplitPane.setTopComponent(null);
+                rightTabbedPane.setComponentAt(1,getMessagePane());
             }
         }
     }
@@ -472,6 +470,9 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/04/19 13:59:51  wangeug
+ * HISTORY      : clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
