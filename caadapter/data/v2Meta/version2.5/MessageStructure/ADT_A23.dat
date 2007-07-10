@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A23
+Trigger Description=ADT/ACK -  Delete a patient record
+Message Structure=ADT_A21
+Return Message=ACK^A23
+Called by=

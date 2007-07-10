@@ -1,0 +1,7 @@
+Message Type=ERP
+Message Type Name=Event replay response
+Trigger Event=R09
+Trigger Description=ERP - Event Replay Response
+Message Structure=MSH [ { SFT } ] MSA [ ERR ] QAK ERQ [ DSC ]
+Return Message=ACK^R09
+Called by=RQQ^Q09/SPQ^Q08

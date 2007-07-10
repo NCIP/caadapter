@@ -1,0 +1,7 @@
+Message Type=PPP
+Message Type Name=Patient pathway message (problem-oriented)
+Trigger Event=PCC
+Trigger Description=PPP - PC/ pathway (problem-oriented) update
+Message Structure=PPP_PCB
+Return Message=ACK^PCC
+Called by=

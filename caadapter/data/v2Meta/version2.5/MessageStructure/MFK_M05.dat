@@ -1,0 +1,7 @@
+Message Type=MFK
+Message Type Name=Master files application acknowledgment
+Trigger Event=M05
+Trigger Description=MFN/MFK - Patient location master file
+Message Structure=MFK_M01
+Return Message=ACK^M05
+Called by=MFN^M05

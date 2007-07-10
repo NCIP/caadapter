@@ -1,0 +1,7 @@
+Message Type=ROR
+Message Type Name=Pharmacy/treatment order response
+Trigger Event=ROR
+Trigger Description=ROR - Pharmacy prescription order query response
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] { !DEFINITION! QRD [ QRF ] [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC RXO { RXR } [ { RXC } ] } } [ DSC ]
+Return Message=ACK^ROR
+Called by=QRY^Q26

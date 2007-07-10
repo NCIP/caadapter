@@ -1,0 +1,7 @@
+Message Type=QSX
+Message Type Name=Cancel subscription/acknowledge message
+Trigger Event=J02
+Trigger Description=QSX/ACK _ Cancel subscription/acknowledge message
+Message Structure=QCN_J01
+Return Message=ACK^J02
+Called by=

@@ -1,0 +1,7 @@
+Message Type=EAR
+Message Type Name=Automated equipment response message
+Trigger Event=U08
+Trigger Description=EAR/ACK _ Automated equipment response
+Message Structure=MSH [ { SFT } ] EQU { !COMMAND_RESPONSE! ECD [ !SPECIMEN_CONTAINER! SAC { [ SPM ] } ] ECR } [ ROL ]
+Return Message=ACK^U08
+Called by=

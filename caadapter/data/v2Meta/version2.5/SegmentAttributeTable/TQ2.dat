@@ -1,0 +1,30 @@
+TQ2	1	-1	-1	4	01648	SI	O		0				Set ID - TQ2	Sequence ID	
+TQ2	2	-1	-1	1	01649	ID	O		0	0503			Sequence/Results Flag	Coded values for HL7 tables	
+TQ2	3	0	-1	22	01650	EI	C	Y	0				Related Placer Number	Entity identifier	
+TQ2	3	1	-1	199		ST			0					String	entity identifier
+TQ2	3	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+TQ2	3	3	-1	199		ST	C		0					String	universal ID
+TQ2	3	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+TQ2	4	0	-1	22	01651	EI	C	Y	0				Related Filler Number	Entity identifier	
+TQ2	4	1	-1	199		ST			0					String	entity identifier
+TQ2	4	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+TQ2	4	3	-1	199		ST	C		0					String	universal ID
+TQ2	4	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+TQ2	5	0	-1	22	01652	EI	C	Y	0				Related Placer Group Number	Entity identifier	
+TQ2	5	1	-1	199		ST			0					String	entity identifier
+TQ2	5	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+TQ2	5	3	-1	199		ST	C		0					String	universal ID
+TQ2	5	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+TQ2	6	-1	-1	2	01653	ID	C		0	0504			Sequence Condition Code	Coded values for HL7 tables	
+TQ2	7	-1	-1	1	01654	ID	C		0	0505			Cyclic Entry/Exit Indicator	Coded values for HL7 tables	
+TQ2	8	0	-1	20	01655	CQ	O		0				Sequence Condition Time Interval	Composite quantity with units	
+TQ2	8	1	-1	16		NM			0					Numeric	quantity
+TQ2	8	2	0	483		CE			0					Coded element	units
+TQ2	8	2	1	20		ST			0					String	identifier
+TQ2	8	2	2	199		ST			0					String	text
+TQ2	8	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TQ2	8	2	4	20		ST			0					String	alternate identifier
+TQ2	8	2	5	199		ST			0					String	alternate text
+TQ2	8	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+TQ2	9	-1	-1	10	01656	NM	O		0				Cyclic Group Maximum Number of Repeats	Numeric	
+TQ2	10	-1	-1	1	01657	ID	C		0	0506			Special Service Request Relationship	Coded values for HL7 tables	

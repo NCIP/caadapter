@@ -1,0 +1,55 @@
+User	Repeat pattern	0335	A	Ante (before)
+User	Repeat pattern	0335	BID	twice a day at institution-specified times (e.g., 9AM-4PM)
+User	Repeat pattern	0335	C	service is provided continuously between start time and stop time
+User	Repeat pattern	0335	D	Cibus Diurnus (lunch)
+User	Repeat pattern	0335	I	Inter (e.g., between this meal and the next, between dinner and sleep
+User	Repeat pattern	0335	M	Cibus Matutinus (breakfast)
+User	Repeat pattern	0335	Meal_Related_Tim	<timing>C ("cum")<meal>
+User	Repeat pattern	0335	Once	one time only.  This is also the default when this component is null.
+User	Repeat pattern	0335	P	Post (after)
+User	Repeat pattern	0335	PRN	given as needed
+User	Repeat pattern	0335	PRNxxx	where xxx is some frequency code (e.g., PRNQ6H); given as needed over the frequency period.
+User	Repeat pattern	0335	Q<integer>D	every <integer> days
+User	Repeat pattern	0335	Q<integer>H	every <integer> hours
+User	Repeat pattern	0335	Q<integer>J<day#	repeats on a particular day of the week, from the French jour (day).  If <integer> is missing, the repeat rate is assumed to be 1.  Day numbers are counted from 1=Monday to 7=Sunday.  So Q2J2 means every second Tuesday; Q1J6 means every Saturday.
+User	Repeat pattern	0335	Q<integer>L	every <integer> months (Lunar cycle)
+User	Repeat pattern	0335	Q<integer>M	every <integer> minutes
+User	Repeat pattern	0335	Q<integer>S	every <integer> seconds
+User	Repeat pattern	0335	Q<integer>W	every <integer> weeks
+User	Repeat pattern	0335	QD	every day
+User	Repeat pattern	0335	QH	every hour
+User	Repeat pattern	0335	QJ1	every Monday
+User	Repeat pattern	0335	QJ2	every Tuesday
+User	Repeat pattern	0335	QJ3	every Wednesday
+User	Repeat pattern	0335	QJ4	every Thursday
+User	Repeat pattern	0335	QJ5	every Friday
+User	Repeat pattern	0335	QJ6	every Saturday
+User	Repeat pattern	0335	QJ7	every Sunday
+User	Repeat pattern	0335	QL	every month 
+User	Repeat pattern	0335	QM	every minute
+User	Repeat pattern	0335	QS	every second
+User	Repeat pattern	0335	QW	every week
+User	Repeat pattern	0335	Q#D	every # day(s)
+User	Repeat pattern	0335	Q#H	every # hour(s)
+User	Repeat pattern	0335	Q#J1	every # Monday
+User	Repeat pattern	0335	Q#J2	every # Tuesday
+User	Repeat pattern	0335	Q#J3	every # Wednesday
+User	Repeat pattern	0335	Q#J4	every # Thursday
+User	Repeat pattern	0335	Q#J5	every # Friday
+User	Repeat pattern	0335	Q#J6	every # Saturday
+User	Repeat pattern	0335	Q#J7	every # Sunday
+User	Repeat pattern	0335	Q#L	every # month(s) 
+User	Repeat pattern	0335	Q#M	every # minute(s)
+User	Repeat pattern	0335	Q#S	every # second(s)
+User	Repeat pattern	0335	Q#W	every # week(s)
+User	Repeat pattern	0335	QAM	in the morning at institution-specified time
+User	Repeat pattern	0335	QHS	every day before the hour of sleep
+User	Repeat pattern	0335	QID	four times a day at institution-specified times (e.g., 9AM-11AM-4PM-9PM)
+User	Repeat pattern	0335	QOD	every other day (same as Q2D)
+User	Repeat pattern	0335	QPM	in the evening at institution-specified time
+User	Repeat pattern	0335	QSHIFT	during each of three eight-hour shifts at institution-specified times
+User	Repeat pattern	0335	TID	three times a day at institution-specified times (e.g., 9AM-4PM-9PM)
+User	Repeat pattern	0335	U<spec>	for future use, where <spec> is an interval specification as defined by the UNIX cron specification.
+User	Repeat pattern	0335	V	Cibus Vespertinus (dinner)
+User	Repeat pattern	0335	xID	"X" times per day at institution-specified times, where X is a numeral 5 or greater.  E.g., 5ID=five times per day; 8ID=8 times per day
+User	Repeat pattern	0335	#ID	# time(s) per day at institution-specified times

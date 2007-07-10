@@ -1,0 +1,7 @@
+Message Type=SIU
+Message Type Name=Schedule information unsolicited
+Trigger Event=S12
+Trigger Description=SIU/ACK - Notification of new appointment booking
+Message Structure=MSH SCH [ { TQ1 } ] [ { NTE } ] [ { !PATIENT! PID [ PD1 ] [ PV1 ] [ PV2 ] [ { OBX } ] [ { DG1 } ] } ] { !RESOURCES! RGS [ { !SERVICE! AIS [ { NTE } ] } ] [ { !GENERAL_RESOURCE! AIG [ { NTE } ] } ] [ { !LOCATION_RESOURCE! AIL [ { NTE } ] } ] [ { !PERSONNEL_RESOURCE! AIP [ { NTE } ] } ] }
+Return Message=ACK^S12
+Called by=

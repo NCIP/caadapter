@@ -1,0 +1,43 @@
+User	OCE edit code	0458	...	
+User	OCE edit code	0458	1	Invalid diagnosis code
+User	OCE edit code	0458	10	Non-covered  service submitted for verification of denial (condition code 21 from header information on claim)
+User	OCE edit code	0458	11	Non-covered service submitted for FI review (condition code 20 from header information on claim)
+User	OCE edit code	0458	12	Questionable covered service
+User	OCE edit code	0458	13	Additional payment for service not provided by Medicare
+User	OCE edit code	0458	14	Code indicates a site of service not included in OPPS
+User	OCE edit code	0458	15	Service unit out of range for procedure
+User	OCE edit code	0458	16	Multiple bilateral procedures without modifier 50 (see Appendix A)
+User	OCE edit code	0458	17	Multiple bilateral procedures with modifier 50 (see Appendix A)
+User	OCE edit code	0458	18	Inpatient procedure
+User	OCE edit code	0458	19	Mutually exclusive procedure that is not allowed even if appropriate modifier present
+User	OCE edit code	0458	2	Diagnosis and age conflict
+User	OCE edit code	0458	20	Component of a comprehensive procedure that is not allowed even if appropriate modifier present
+User	OCE edit code	0458	21	Medical visit on same day as a type "T" or "S" procedure without modifier 25 (see Appendix B)
+User	OCE edit code	0458	22	Invalid modifier
+User	OCE edit code	0458	23	Invalid date
+User	OCE edit code	0458	24	Date out of OCE range
+User	OCE edit code	0458	25	Invalid age
+User	OCE edit code	0458	26	Invalid sex
+User	OCE edit code	0458	27	Only incidental services reported
+User	OCE edit code	0458	28	Code not recognized by Medicare; alternate code for same service available
+User	OCE edit code	0458	29	Partial hospitalization service for non-mental health diagnosis
+User	OCE edit code	0458	3	Diagnosis and sex conflict
+User	OCE edit code	0458	30	Insufficient services on day of partial hospitalization
+User	OCE edit code	0458	31	Partial hospitalization on same day as ECT or type "T" procedure
+User	OCE edit code	0458	32	Partial hospitalization claim spans 3 or less days with in-sufficient services, or ECT or significant procedure on at least one of the days
+User	OCE edit code	0458	33	Partial hospitalization claim spans more than 3 days with insufficient number of days having mental health services
+User	OCE edit code	0458	34	Partial hospitalization claim spans more than 3 days with insufficient number of days meeting partial hospitalization criteria
+User	OCE edit code	0458	35	Only activity therapy and/or occupational therapy services provided
+User	OCE edit code	0458	36	Extensive mental health services provided on day of ECT or significant procedure
+User	OCE edit code	0458	37	Terminated bilateral procedure or terminated procedure with units greater than one
+User	OCE edit code	0458	38	Inconsistency between implanted device and implantation procedure
+User	OCE edit code	0458	39	Mutually exclusive procedure that would be allowed if appropriate modifier were present
+User	OCE edit code	0458	4	Medicare secondary payer alert
+User	OCE edit code	0458	40	Component of a comprehensive procedure that would be allowed if appropriate modifier were present
+User	OCE edit code	0458	41	Invalid revenue code
+User	OCE edit code	0458	42	Multiple medical visits on same day with same revenue code without condition code G0 (see Appendix B)
+User	OCE edit code	0458	5	E-code as reason for visit
+User	OCE edit code	0458	6	Invalid procedure code
+User	OCE edit code	0458	7	Procedure and age conflict
+User	OCE edit code	0458	8	Procedure and sex conflict
+User	OCE edit code	0458	9	Nov-covered service

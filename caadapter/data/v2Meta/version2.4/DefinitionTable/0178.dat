@@ -1,0 +1,2 @@
+HL7	File level event code	0178	REP	Replace current version of this master file with the version contained in this message
+HL7	File level event code	0178	UPD	Change file records as defined in the record-level event codes for each record that follows

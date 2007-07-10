@@ -1,0 +1,7 @@
+Message Type=MFR
+Message Type Name=Master files response
+Trigger Event=M06
+Trigger Description=MFN/MFK - Clinical study with phases and schedules master file
+Message Structure=MFR_M01
+Return Message=ACK^M06
+Called by=MFQ^M06

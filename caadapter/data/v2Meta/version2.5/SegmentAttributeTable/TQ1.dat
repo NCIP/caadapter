@@ -1,0 +1,75 @@
+TQ1	1	-1	-1	4	01627	SI	O		0				Set ID - TQ1	Sequence ID	
+TQ1	2	0	-1	20	01628	CQ	O		0				Quantity	Composite quantity with units	
+TQ1	2	1	-1	16		NM			0					Numeric	quantity
+TQ1	2	2	0	483		CE			0					Coded element	units
+TQ1	2	2	1	20		ST			0					String	identifier
+TQ1	2	2	2	199		ST			0					String	text
+TQ1	2	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TQ1	2	2	4	20		ST			0					String	alternate identifier
+TQ1	2	2	5	199		ST			0					String	alternate text
+TQ1	2	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+TQ1	3	0	-1	540	01629	RPT	O	Y	0	0335			Repeat Pattern	repeat pattern	
+TQ1	3	1	0	705		CWE	R		0	0335				Coded with exceptions	Repeat Pattern Code
+TQ1	3	1	1	20		IS			0	0335				String	identifier
+TQ1	3	1	2	199		ST			0					String	text
+TQ1	3	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+TQ1	3	1	4	20		ST			0					String	alternate identifier
+TQ1	3	1	5	199		ST			0					String	alternate text
+TQ1	3	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+TQ1	3	1	7	10		ST	C		0					String	coding system version ID
+TQ1	3	1	8	10		ST			0					String	alternate coding system version ID
+TQ1	3	1	9	199		ST			0					String	original text
+TQ1	3	2	-1	2		ID			0	0527				Coded values for HL7 tables	Calendar Alignment
+TQ1	3	3	-1	10		NM			0					Numeric	Phase Range Begin Value
+TQ1	3	4	-1	10		NM			0					Numeric	Phase Range End Value
+TQ1	3	5	-1	10		NM			0					Numeric	Period Quantity
+TQ1	3	6	-1	10		IS	C		0	UCUM				Coded value for user-defined tables	Period Units
+TQ1	3	7	-1	1		ID			0	0136				Coded values for HL7 tables	Institution Specified Time
+TQ1	3	8	-1	6		ID			0	0528				Coded values for HL7 tables	Event
+TQ1	3	9	-1	10		NM			0					Numeric	Event Offset Quantity
+TQ1	3	10	-1	10		IS	C		0	UCUM				Coded value for user-defined tables	Event Offset Units
+TQ1	3	11	-1	200		GTS			0					general timing specification	General Timing Specification
+TQ1	4	-1	-1	20	01630	TM	O	Y	0				Explicit Time	Time	
+TQ1	5	0	-1	20	01631	CQ	O	Y	0				Relative Time and Units	Composite quantity with units	
+TQ1	5	1	-1	16		NM			0					Numeric	quantity
+TQ1	5	2	0	483		CE			0					Coded element	units
+TQ1	5	2	1	20		ST			0					String	identifier
+TQ1	5	2	2	199		ST			0					String	text
+TQ1	5	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TQ1	5	2	4	20		ST			0					String	alternate identifier
+TQ1	5	2	5	199		ST			0					String	alternate text
+TQ1	5	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+TQ1	6	0	-1	20	01632	CQ	O		0				Service Duration	Composite quantity with units	
+TQ1	6	1	-1	16		NM			0					Numeric	quantity
+TQ1	6	2	0	483		CE			0					Coded element	units
+TQ1	6	2	1	20		ST			0					String	identifier
+TQ1	6	2	2	199		ST			0					String	text
+TQ1	6	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TQ1	6	2	4	20		ST			0					String	alternate identifier
+TQ1	6	2	5	199		ST			0					String	alternate text
+TQ1	6	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+TQ1	7	-1	-1	26	01633	TS	O		0				Start date/time	Time stamp	
+TQ1	8	-1	-1	26	01634	TS	O		0				End date/time	Time stamp	
+TQ1	9	0	-1	250	01635	CWE	O	Y	0	0485			Priority	Coded with exceptions	
+TQ1	9	1	-1	20		IS			0	0485				String	identifier
+TQ1	9	2	-1	199		ST			0					String	text
+TQ1	9	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+TQ1	9	4	-1	20		ST			0					String	alternate identifier
+TQ1	9	5	-1	199		ST			0					String	alternate text
+TQ1	9	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+TQ1	9	7	-1	10		ST	C		0					String	coding system version ID
+TQ1	9	8	-1	10		ST			0					String	alternate coding system version ID
+TQ1	9	9	-1	199		ST			0					String	original text
+TQ1	10	-1	-1	250	01636	TX	O		0				Condition text	Text data	
+TQ1	11	-1	-1	250	01637	TX	O		0				Text instruction	Text data	
+TQ1	12	-1	-1	10	01638	ID	C		0	0427			Conjunction	Coded values for HL7 tables	
+TQ1	13	0	-1	20	01639	CQ	O		0				Occurrence duration	Composite quantity with units	
+TQ1	13	1	-1	16		NM			0					Numeric	quantity
+TQ1	13	2	0	483		CE			0					Coded element	units
+TQ1	13	2	1	20		ST			0					String	identifier
+TQ1	13	2	2	199		ST			0					String	text
+TQ1	13	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TQ1	13	2	4	20		ST			0					String	alternate identifier
+TQ1	13	2	5	199		ST			0					String	alternate text
+TQ1	13	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+TQ1	14	-1	-1	10	01640	NM	O		0				Total occurrence`s	Numeric	

@@ -1,0 +1,6 @@
+HL7	Which date/time qualifier	0156	ANY	Any date/time within a range
+HL7	Which date/time qualifier	0156	COL	Collection date/time, equivalent to film or sample collection date/time
+HL7	Which date/time qualifier	0156	ORD	Order date/time
+HL7	Which date/time qualifier	0156	RCT	Specimen receipt date/time, receipt of specimen in filling ancillary (Lab)
+HL7	Which date/time qualifier	0156	REP	Report date/time, report date/time at filing ancillary (i.e., Lab)
+HL7	Which date/time qualifier	0156	SCHED	Schedule date/time

@@ -1,0 +1,7 @@
+Message Type=QRY
+Message Type Name=Query/ original mode
+Trigger Event=R02
+Trigger Description=QRY - Query for results of observation
+Message Structure=MSH [ { SFT } ] QRD QRF
+Return Message=ORF^R04
+Called by=

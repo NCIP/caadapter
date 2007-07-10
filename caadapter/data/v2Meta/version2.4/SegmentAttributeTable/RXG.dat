@@ -1,0 +1,128 @@
+RXG	1	-1	-1	4	00342	NM	R		0				Give Sub-ID Counter	Numeric	
+RXG	2	-1	-1	4	00334	NM	O		0				Dispense Sub-ID Counter	Numeric	
+RXG	3	0	-1	200	00221	TQ	R		0				Quantity/Timing	Timing/quantity	
+RXG	3	1	0	0		CQ			0					Numeric	quantity
+RXG	3	1	1	0		NM			0					Numeric	quantity
+RXG	3	1	2	0		CE			0					Coded element	units
+RXG	3	2	0	0		ZCM1			0					Coded value for user-defined tables	interval
+RXG	3	2	1	0		IS			0	0335				Coded value for user-defined tables	repeat pattern
+RXG	3	2	2	0		ST			0					String	explicit time interval
+RXG	3	3	-1	0		ST			0					String	duration
+RXG	3	4	-1	0		TS			0					Time stamp	start date/time
+RXG	3	5	-1	0		TS			0					Time stamp	end date/time
+RXG	3	6	-1	0		ST			0					String	priority
+RXG	3	7	-1	0		ST			0					String	condition
+RXG	3	8	-1	0		TX			0					Text data	text
+RXG	3	9	-1	0		ID			0	0472				Coded values for HL7 tables	conjunction
+RXG	3	10	0	0		ZCM2			0					String	order sequencing
+RXG	3	10	1	0		ST			0					String	sequence/result flag
+RXG	3	10	2	0		ST			0					String	placer order number - entity identifier
+RXG	3	10	3	0		IS			0	0300				Coded value for user-defined tables	placer order number - namespace ID
+RXG	3	10	4	0		ST			0					String	filler order number - entity identifier
+RXG	3	10	5	0		IS			0	0300				Coded value for user-defined tables	filler order number - namespace ID
+RXG	3	10	6	0		ST			0					String	sequence condition value
+RXG	3	10	7	0		NM			0					Numeric	maximum number of repeats
+RXG	3	10	8	0		ST			0					String	placer order number - universal ID
+RXG	3	10	9	0		IS			0	0301				Coded value for user-defined tables	placer order number - universal ID type
+RXG	3	10	10	0		ST			0					String	filler order number - universal ID
+RXG	3	10	11	0		IS			0	0301				Coded value for user-defined tables	filler order number - universal ID type
+RXG	3	11	0	0		CE			0					String	occurrence duration
+RXG	3	11	1	0		ST			0					String	identifier
+RXG	3	11	2	0		ST			0					String	text
+RXG	3	11	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	3	11	4	0		ST			0					String	alternate identifier
+RXG	3	11	5	0		ST			0					String	alternate text
+RXG	3	11	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	3	12	-1	0		NM			0					Numeric	total occurrences
+RXG	4	0	-1	250	00317	CE	R		0	0292			Give Code	Coded element	
+RXG	4	1	-1	0		ST			0					String	identifier
+RXG	4	2	-1	0		ST			0					String	text
+RXG	4	3	-1	0		IS			0	0292				Coded value for user-defined tables	name of coding system
+RXG	4	4	-1	0		ST			0					String	alternate identifier
+RXG	4	5	-1	0		ST			0					String	alternate text
+RXG	4	6	-1	0		IS			0	0292				Coded value for user-defined tables	name of alternate coding system
+RXG	5	-1	-1	20	00318	NM	R		0				Give Amount - Minimum	Numeric	
+RXG	6	-1	-1	20	00319	NM	O		0				Give Amount - Maximum	Numeric	
+RXG	7	0	-1	250	00320	CE	R		0				Give Units	Coded element	
+RXG	7	1	-1	0		ST			0					String	identifier
+RXG	7	2	-1	0		ST			0					String	text
+RXG	7	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	7	4	-1	0		ST			0					String	alternate identifier
+RXG	7	5	-1	0		ST			0					String	alternate text
+RXG	7	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	8	0	-1	250	00321	CE	O		0				Give Dosage Form	Coded element	
+RXG	8	1	-1	0		ST			0					String	identifier
+RXG	8	2	-1	0		ST			0					String	text
+RXG	8	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	8	4	-1	0		ST			0					String	alternate identifier
+RXG	8	5	-1	0		ST			0					String	alternate text
+RXG	8	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	9	0	-1	250	00351	CE	O	Y	0				Administration Notes	Coded element	
+RXG	9	1	-1	0		ST			0					String	identifier
+RXG	9	2	-1	0		ST			0					String	text
+RXG	9	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	9	4	-1	0		ST			0					String	alternate identifier
+RXG	9	5	-1	0		ST			0					String	alternate text
+RXG	9	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	10	-1	-1	1	00322	ID	O		0	0167			Substitution Status	Coded values for HL7 tables	
+RXG	11	0	-1	200	01303	ZC26	O		0				Dispense-To Location	User Define : composit	
+RXG	11	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+RXG	11	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+RXG	11	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+RXG	11	4	0	0		HD			0					Coded value for user-defined tables	facility
+RXG	11	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXG	11	4	2	0		ST			0					String	universal ID
+RXG	11	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXG	11	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+RXG	11	6	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+RXG	11	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+RXG	11	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+RXG	11	9	-1	0		ST			0					String	street address
+RXG	11	10	-1	0		ST			0					String	other designation
+RXG	11	11	-1	0		ST			0					String	city
+RXG	11	12	-1	0		ST			0					String	state or province
+RXG	11	13	-1	0		ST			0					String	zip or postal code
+RXG	11	14	-1	0		ID			0	0399				Coded values for HL7 tables	country
+RXG	11	15	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+RXG	11	16	-1	0		ST			0					String	other geographic designation
+RXG	12	-1	-1	1	00307	ID	O		0	0136			Needs Human Review	Coded values for HL7 tables	
+RXG	13	0	-1	250	00343	CE	O	Y	0				Pharmacy/Treatment Supplier`s Special Administration Instructions	Coded element	
+RXG	13	1	-1	0		ST			0					String	identifier
+RXG	13	2	-1	0		ST			0					String	text
+RXG	13	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	13	4	-1	0		ST			0					String	alternate identifier
+RXG	13	5	-1	0		ST			0					String	alternate text
+RXG	13	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	14	-1	-1	20	00331	ST	C		0				Give Per (Time Unit)	String	
+RXG	15	-1	-1	6	00332	ST	O		0				Give Rate Amount	String	
+RXG	16	0	-1	250	00333	CE	O		0				Give Rate Units	Coded element	
+RXG	16	1	-1	0		ST			0					String	identifier
+RXG	16	2	-1	0		ST			0					String	text
+RXG	16	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	16	4	-1	0		ST			0					String	alternate identifier
+RXG	16	5	-1	0		ST			0					String	alternate text
+RXG	16	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	17	-1	-1	20	01126	NM	O		0				Give Strength	Numeric	
+RXG	18	0	-1	250	01127	CE	O		0				Give Strength Units	Coded element	
+RXG	18	1	-1	0		ST			0					String	identifier
+RXG	18	2	-1	0		ST			0					String	text
+RXG	18	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	18	4	-1	0		ST			0					String	alternate identifier
+RXG	18	5	-1	0		ST			0					String	alternate text
+RXG	18	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXG	19	-1	-1	20	01129	ST	O	Y	0				Substance Lot Number	String	
+RXG	20	-1	-1	26	01130	TS	O	Y	0				Substance Expiration Date	Time stamp	
+RXG	21	0	-1	250	01131	CE	O	Y	0	0227			Substance Manufacturer Name	Coded element	
+RXG	21	1	-1	0		ST			0					String	identifier
+RXG	21	2	-1	0		ST			0					String	text
+RXG	21	3	-1	0		IS			0	0227				Coded value for user-defined tables	name of coding system
+RXG	21	4	-1	0		ST			0					String	alternate identifier
+RXG	21	5	-1	0		ST			0					String	alternate text
+RXG	21	6	-1	0		IS			0	0227				Coded value for user-defined tables	name of alternate coding system
+RXG	22	0	-1	250	01123	CE	O	Y	0				Indication	Coded element	
+RXG	22	1	-1	0		ST			0					String	identifier
+RXG	22	2	-1	0		ST			0					String	text
+RXG	22	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXG	22	4	-1	0		ST			0					String	alternate identifier
+RXG	22	5	-1	0		ST			0					String	alternate text
+RXG	22	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

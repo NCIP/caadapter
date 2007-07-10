@@ -1,0 +1,1 @@
+BAR	P02	BAR	P02	ACK		 MSH  EVN { !PATIENT! PID [  PD1 ] [  PV1 ] [ {  DB1 } ] } 	Purge Billing Account	Add/change billing account	BAR/ACK - Purge patient accounts

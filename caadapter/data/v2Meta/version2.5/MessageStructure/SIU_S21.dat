@@ -1,0 +1,7 @@
+Message Type=SIU
+Message Type Name=Schedule information unsolicited
+Trigger Event=S21
+Trigger Description=SIU/ACK - Notification of discontinuation of service/resource on appointment
+Message Structure=SIU_S12
+Return Message=ACK^S21
+Called by=

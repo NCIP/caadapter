@@ -1,0 +1,7 @@
+Message Type=REF
+Message Type Name=Patient referral
+Trigger Event=I15
+Trigger Description=REF/RRI - Request patient referral status
+Message Structure=REF_I12
+Return Message=RRI^I15
+Called by=

@@ -1,0 +1,10 @@
+HL7	Authorization Mode	0483	EL	Electronic
+HL7	Authorization Mode	0483	EM	E-mail
+HL7	Authorization Mode	0483	FX	Fax
+HL7	Authorization Mode	0483	IP	In Person
+HL7	Authorization Mode	0483	MA	Mail
+HL7	Authorization Mode	0483	PA	Paper
+HL7	Authorization Mode	0483	PH	Phone
+HL7	Authorization Mode	0483	RE	Reflexive (Automated system)
+HL7	Authorization Mode	0483	VC	Video-conference
+HL7	Authorization Mode	0483	VO	Voice

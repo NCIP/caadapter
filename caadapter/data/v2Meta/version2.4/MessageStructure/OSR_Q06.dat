@@ -1,0 +1,1 @@
+OSR	Q06	 				 MSH  MSA [  ERR ] [ {  NTE } ]  QRD [  QRF ] [ !RESPONSE![ !PATIENT! PID [ {  NTE } ] ] { !ORDER! ORC <  OBR  RQD  RQ1  RXO  ODS  ODT > [ {  NTE } ] [ {  CTI } ] } ] [  DSC ] 		Query response for order status	OSQ/OSR - Query for order status

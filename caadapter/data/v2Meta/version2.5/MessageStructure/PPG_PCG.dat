@@ -1,0 +1,7 @@
+Message Type=PPG
+Message Type Name=Patient pathway message (goal-oriented)
+Trigger Event=PCG
+Trigger Description=PPG - PC/ pathway (goal-oriented) add
+Message Structure=MSH [ { SFT } ] PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !PATHWAY! PTH [ { NTE } ] [ { VAR } ] [ { !PATHWAY_ROLE! ROL [ { VAR } ] } ] [ { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] [ { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] } ] }
+Return Message=ACK^PCG
+Called by=

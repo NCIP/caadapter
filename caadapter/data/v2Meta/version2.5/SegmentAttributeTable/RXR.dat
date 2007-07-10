@@ -1,0 +1,51 @@
+RXR	1	0	-1	250	00309	CE	R		0	0162			Route	Coded element	
+RXR	1	1	-1	20		IS			0	0162				String	identifier
+RXR	1	2	-1	199		ST			0					String	text
+RXR	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXR	1	4	-1	20		ST			0					String	alternate identifier
+RXR	1	5	-1	199		ST			0					String	alternate text
+RXR	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXR	2	0	-1	250	00310	CWE	O		0	0163			Administration Site	Coded with exceptions	
+RXR	2	1	-1	20		IS			0	0163				String	identifier
+RXR	2	2	-1	199		ST			0					String	text
+RXR	2	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXR	2	4	-1	20		ST			0					String	alternate identifier
+RXR	2	5	-1	199		ST			0					String	alternate text
+RXR	2	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXR	2	7	-1	10		ST	C		0					String	coding system version ID
+RXR	2	8	-1	10		ST			0					String	alternate coding system version ID
+RXR	2	9	-1	199		ST			0					String	original text
+RXR	3	0	-1	250	00311	CE	O		0	0164			Administration Device	Coded element	
+RXR	3	1	-1	20		IS			0	0164				String	identifier
+RXR	3	2	-1	199		ST			0					String	text
+RXR	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXR	3	4	-1	20		ST			0					String	alternate identifier
+RXR	3	5	-1	199		ST			0					String	alternate text
+RXR	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXR	4	0	-1	250	00312	CWE	O		0	0165			Administration Method	Coded with exceptions	
+RXR	4	1	-1	20		IS			0	0165				String	identifier
+RXR	4	2	-1	199		ST			0					String	text
+RXR	4	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXR	4	4	-1	20		ST			0					String	alternate identifier
+RXR	4	5	-1	199		ST			0					String	alternate text
+RXR	4	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXR	4	7	-1	10		ST	C		0					String	coding system version ID
+RXR	4	8	-1	10		ST			0					String	alternate coding system version ID
+RXR	4	9	-1	199		ST			0					String	original text
+RXR	5	0	-1	250	01315	CE	O		0				Routing Instruction	Coded element	
+RXR	5	1	-1	20		ST			0					String	identifier
+RXR	5	2	-1	199		ST			0					String	text
+RXR	5	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXR	5	4	-1	20		ST			0					String	alternate identifier
+RXR	5	5	-1	199		ST			0					String	alternate text
+RXR	5	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXR	6	0	-1	250	01670	CWE	O		0	0495			Administration Site Modifier	Coded with exceptions	
+RXR	6	1	-1	20		IS			0	0495				String	identifier
+RXR	6	2	-1	199		ST			0					String	text
+RXR	6	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXR	6	4	-1	20		ST			0					String	alternate identifier
+RXR	6	5	-1	199		ST			0					String	alternate text
+RXR	6	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXR	6	7	-1	10		ST	C		0					String	coding system version ID
+RXR	6	8	-1	10		ST			0					String	alternate coding system version ID
+RXR	6	9	-1	199		ST			0					String	original text

@@ -1,0 +1,7 @@
+User	Mode of arrival code	0430	A	Ambulance
+User	Mode of arrival code	0430	C	Car
+User	Mode of arrival code	0430	F	On foot
+User	Mode of arrival code	0430	H	Helicopter
+User	Mode of arrival code	0430	O	Other
+User	Mode of arrival code	0430	P	Public Transport
+User	Mode of arrival code	0430	U	Unknown

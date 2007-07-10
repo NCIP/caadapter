@@ -1,0 +1,7 @@
+Message Type=PEX
+Message Type Name=Product experience message
+Trigger Event=P07
+Trigger Description=PEX - Unsolicited initial individual product experience report
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { NTE } ] [ !VISIT! PV1 [ PV2 ] ] { !EXPERIENCE! PES { !PEX_OBSERVATION! PEO { !PEX_CAUSE! PCR [ !RX_ORDER! RXE { !TIMING_QTY! TQ1 [ { TQ2 } ] } [ { RXR } ] ] [ { !RX_ADMINISTRATION! RXA [ RXR ] } ] [ { PRB } ] [ { OBX } ] [ { NTE } ] [ !ASSOCIATED_PERSON! NK1 [ !ASSOCIATED_RX_ORDER! RXE { !NK1_TIMING_QTY! TQ1 [ { TQ2 } ] } [ { RXR } ] ] [ { !ASSOCIATED_RX_ADMIN! RXA [ RXR ] } ] [ { PRB } ] [ { OBX } ] ] [ { !STUDY! CSR [ { CSP } ] } ] } } }
+Return Message=
+Called by=

@@ -1,0 +1,40 @@
+AUT	1	0	-1	250	01146	CE	O		0	0072			Authorizing Payor/ Plan ID	Coded element	
+AUT	1	1	-1	20		IS			0	0072				String	identifier
+AUT	1	2	-1	199		ST			0					String	text
+AUT	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+AUT	1	4	-1	20		ST			0					String	alternate identifier
+AUT	1	5	-1	199		ST			0					String	alternate text
+AUT	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AUT	2	0	-1	250	01147	CE	R		0	0285			Authorizing Payor/ Company ID	Coded element	
+AUT	2	1	-1	20		IS			0	0285				String	identifier
+AUT	2	2	-1	199		ST			0					String	text
+AUT	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+AUT	2	4	-1	20		ST			0					String	alternate identifier
+AUT	2	5	-1	199		ST			0					String	alternate text
+AUT	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AUT	3	-1	-1	45	01148	ST	O		0				Authorizing Payor/ Company Name	String	
+AUT	4	-1	-1	26	01149	TS	O		0				Authorization Effective Date	Time stamp	
+AUT	5	-1	-1	26	01150	TS	O		0				Authorization Expiration Date	Time stamp	
+AUT	6	0	-1	30	01151	EI	C		0				Authorization Identifier	Entity identifier	
+AUT	6	1	-1	199		ST			0					String	entity identifier
+AUT	6	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+AUT	6	3	-1	199		ST	C		0					String	universal ID
+AUT	6	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+AUT	7	0	-1	25	01152	CP	O		0				Reimbursement Limit	Composite price	
+AUT	7	1	0	20		MO	R		0					Money	price
+AUT	7	1	1	16		NM			0					Numeric	quantity
+AUT	7	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+AUT	7	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+AUT	7	3	-1	16		NM			0					Numeric	from value
+AUT	7	4	-1	16		NM			0					Numeric	to value
+AUT	7	5	0	483		CE			0					Coded element	range units
+AUT	7	5	1	20		ST			0					String	identifier
+AUT	7	5	2	199		ST			0					String	text
+AUT	7	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+AUT	7	5	4	20		ST			0					String	alternate identifier
+AUT	7	5	5	199		ST			0					String	alternate text
+AUT	7	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AUT	7	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+AUT	8	-1	-1	2	01153	NM	O		0				Requested Number of Treatments	Numeric	
+AUT	9	-1	-1	2	01154	NM	O		0				Authorized Number of Treatments	Numeric	
+AUT	10	-1	-1	26	01145	TS	O		0				Process Date	Time stamp	

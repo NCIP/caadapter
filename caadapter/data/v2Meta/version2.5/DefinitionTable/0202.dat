@@ -1,0 +1,9 @@
+HL7	Telecommunication equipment type	0202	BP	Beeper
+HL7	Telecommunication equipment type	0202	CP	Cellular Phone
+HL7	Telecommunication equipment type	0202	FX	Fax
+HL7	Telecommunication equipment type	0202	Internet	Internet Address: Use Only If Telecommunication Use Code Is NET
+HL7	Telecommunication equipment type	0202	MD	Modem
+HL7	Telecommunication equipment type	0202	PH	Telephone
+HL7	Telecommunication equipment type	0202	TDD	Telecommunications Device for the Deaf
+HL7	Telecommunication equipment type	0202	TTY	Teletypewriter
+HL7	Telecommunication equipment type	0202	X.400	X.400 email address: Use Only If Telecommunication Use Code Is NET

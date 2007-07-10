@@ -1,0 +1,3 @@
+MOP	1	ID	0148	2	R	Money or Percentage Indicator	N	^
+MOP	2	NM		16	R	Money or Percentage Quantity	N	^
+MOP	3	ID	ISO4217	3		 Currency Denomination	N	E

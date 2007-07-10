@@ -1,0 +1,140 @@
+User	Segment Code	9901	ABS	Abstract
+User	Segment Code	9901	ACC	Accident
+User	Segment Code	9901	ADD	Addendum
+User	Segment Code	9901	AFF	Professional Affiliation
+User	Segment Code	9901	AIG	Appointment Information - General Resource
+User	Segment Code	9901	AIL	Appointment Information - Location Resource
+User	Segment Code	9901	AIP	Appointment Information - Personnel Resource
+User	Segment Code	9901	AIS	Appointment Information
+User	Segment Code	9901	AL1	Patient allergy information
+User	Segment Code	9901	APR	Appointment Preferences
+User	Segment Code	9901	ARQ	Appointment Request
+User	Segment Code	9901	AUT	Authorization Information
+User	Segment Code	9901	BHS	Batch Header
+User	Segment Code	9901	BLC	Blood Code
+User	Segment Code	9901	BLG	Billing
+User	Segment Code	9901	BTS	Batch Trailer
+User	Segment Code	9901	CDM	Charge Description Master
+User	Segment Code	9901	CM0	Clinical Study Master
+User	Segment Code	9901	CM1	Clinical Study Phase Master
+User	Segment Code	9901	CM2	Clinical Study Schedule Master
+User	Segment Code	9901	CNS	Clear Notification
+User	Segment Code	9901	CSP	Clinical Study Phase
+User	Segment Code	9901	CSR	Clinical Study Registration
+User	Segment Code	9901	CSS	Clinical Study Data Schedule Segment
+User	Segment Code	9901	CTD	Contact Data
+User	Segment Code	9901	CTI	Clinical Trial Identification
+User	Segment Code	9901	DB1	Disability
+User	Segment Code	9901	DG1	Diagnosis
+User	Segment Code	9901	DRG	Diagnosis Related Group
+User	Segment Code	9901	DSC	Continuation Pointer
+User	Segment Code	9901	DSP	Display Data
+User	Segment Code	9901	ECD	Equipment Command
+User	Segment Code	9901	ECR	Equipment Command Response
+User	Segment Code	9901	EDU	Educational Detail
+User	Segment Code	9901	EDZ	Encapsulated Data
+User	Segment Code	9901	EQL	Embedded Query Language
+User	Segment Code	9901	EQP	Equipment/log Service
+User	Segment Code	9901	EQU	Equipment Detail
+User	Segment Code	9901	ERQ	Event Replay Query
+User	Segment Code	9901	ERR	Error
+User	Segment Code	9901	EVN	Event Type
+User	Segment Code	9901	FAC	Facility
+User	Segment Code	9901	FHS	File Header
+User	Segment Code	9901	FT1	Financial Transaction
+User	Segment Code	9901	FTS	File Trailer
+User	Segment Code	9901	GOL	Goal Detail
+User	Segment Code	9901	GP1	Grouping/Reimbursement - Visit
+User	Segment Code	9901	GP2	Grouping/Reimbursement - Procedure Line Item
+User	Segment Code	9901	GT1	Guarantor
+User	Segment Code	9901	IAM	Patient adverse reaction information - unique identifier
+User	Segment Code	9901	IN1	Insurance
+User	Segment Code	9901	IN2	Insurance Additional Information
+User	Segment Code	9901	IN3	Insurance Additional Information, Certification
+User	Segment Code	9901	INV	Inventory Detail
+User	Segment Code	9901	ISD	Interaction Status Detail
+User	Segment Code	9901	LAN	Language Detail
+User	Segment Code	9901	LCC	Location Charge Code
+User	Segment Code	9901	LCH	Location Characteristic
+User	Segment Code	9901	LDP	Location Department
+User	Segment Code	9901	LOC	Location Identification
+User	Segment Code	9901	LRL	Location Relationship
+User	Segment Code	9901	MFA	Master File Acknowledgment
+User	Segment Code	9901	MFE	Master File Entry
+User	Segment Code	9901	MFI	Master File Identification
+User	Segment Code	9901	MRG	Merge patient information
+User	Segment Code	9901	MSA	Message Acknowledgment
+User	Segment Code	9901	MSH	Message Header
+User	Segment Code	9901	NCK	System clock
+User	Segment Code	9901	NDS	Notification Detail
+User	Segment Code	9901	NK1	Next of kin / associated parties
+User	Segment Code	9901	NPU	Bed status update
+User	Segment Code	9901	NSC	Application status change
+User	Segment Code	9901	NST	Application control level statistics
+User	Segment Code	9901	NTE	Notes and Comments
+User	Segment Code	9901	OBR	Observation Request
+User	Segment Code	9901	OBX	Observation Segment
+User	Segment Code	9901	ODS	Dietary Orders, Supplements, and Preferences
+User	Segment Code	9901	ODT	Diet Tray Instructions
+User	Segment Code	9901	OM1	General Segment
+User	Segment Code	9901	OM2	Numeric Observation
+User	Segment Code	9901	OM3	Categorical Service/Test/Observation
+User	Segment Code	9901	OM4	Observations that Require Specimens
+User	Segment Code	9901	OM5	Observation Batteries (Sets)
+User	Segment Code	9901	OM6	Observations that are Calculated from Other Observation
+User	Segment Code	9901	OM7	Additional Basic Attributes
+User	Segment Code	9901	ORC	Common Order
+User	Segment Code	9901	ORG	Practitioner Organization Unit
+User	Segment Code	9901	PCR	Possible Causal Relationship
+User	Segment Code	9901	PD1	patient additional demographic
+User	Segment Code	9901	PDA	Patient death and autopsy
+User	Segment Code	9901	PDC	Product Detail Country
+User	Segment Code	9901	PEO	Product Experience Observation
+User	Segment Code	9901	PES	Product Experience Sender
+User	Segment Code	9901	PID	Patient identification
+User	Segment Code	9901	PR1	Procedures
+User	Segment Code	9901	PRA	Practitioner Detail
+User	Segment Code	9901	PRB	Problem Details
+User	Segment Code	9901	PRC	Pricing
+User	Segment Code	9901	PRD	Provider Data
+User	Segment Code	9901	PSH	Product Summary Header
+User	Segment Code	9901	PTH	Pathway
+User	Segment Code	9901	PV1	Patient visit
+User	Segment Code	9901	PV2	Patient visit - additional information
+User	Segment Code	9901	QAK	Query Acknowledgment
+User	Segment Code	9901	QID	Query Identification
+User	Segment Code	9901	QPD	Query Parameter Definition
+User	Segment Code	9901	QRD	Original-Style Query Definition
+User	Segment Code	9901	QRF	Original Style Query Filter
+User	Segment Code	9901	QRI	Query Response Instance
+User	Segment Code	9901	RCP	Response Control Parameter
+User	Segment Code	9901	RDF	Table Row Definition
+User	Segment Code	9901	RDT	Table Row Data
+User	Segment Code	9901	RF1	Referral Information
+User	Segment Code	9901	RGS	Resource Group
+User	Segment Code	9901	RMI	Risk Management Incident
+User	Segment Code	9901	ROL	Role
+User	Segment Code	9901	RQ1	Requisition Detail-1
+User	Segment Code	9901	RQD	Requisition Detail
+User	Segment Code	9901	RXA	Segment Uses in Vaccine Messages
+User	Segment Code	9901	RXC	Pharmacy/Treatment Component Order
+User	Segment Code	9901	RXD	Pharmacy/Treatment Dispense
+User	Segment Code	9901	RXE	Pharmacy/Treatment Encoded Order
+User	Segment Code	9901	RXG	Pharmacy/Treatment Give
+User	Segment Code	9901	RXO	Pharmacy/Treatment Order
+User	Segment Code	9901	RXR	Pharmacy/Treatment Route
+User	Segment Code	9901	SAC	Specimen and container detail
+User	Segment Code	9901	SCH	Scheduling Activity Information
+User	Segment Code	9901	SID	Substance Identifier
+User	Segment Code	9901	SPR	Stored Procedure Request Definition
+User	Segment Code	9901	STF	Staff Identification
+User	Segment Code	9901	TCC	Test Code Configuration
+User	Segment Code	9901	TCD	Test Code Detail
+User	Segment Code	9901	TXA	Transcription Document Header
+User	Segment Code	9901	UB1	UB82
+User	Segment Code	9901	UB2	UB92 Data
+User	Segment Code	9901	URD	Results/update Definition
+User	Segment Code	9901	URS	Unsolicited Selection
+User	Segment Code	9901	VAR	Variance
+User	Segment Code	9901	VTQ	Virtual Table Query Request
+User	Segment Code	9901	ZL7	diverses

@@ -1,0 +1,42 @@
+VAR	1	0	-1	60	01212	EI	R		0				Variance Instance ID	Entity identifier	
+VAR	1	1	-1	0		ST			0					String	entity identifier
+VAR	1	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+VAR	1	3	-1	0		ST			0					String	universal ID
+VAR	1	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+VAR	2	-1	-1	26	01213	TS	R		0				Documented Date/Time	Time stamp	
+VAR	3	-1	-1	26	01214	TS	O		0				Stated Variance Date/Time	Time stamp	
+VAR	4	0	-1	250	01215	XCN	O	Y	0				Variance Originator	Extended composite ID number and name	
+VAR	4	1	-1	0		ST			0					String	ID number
+VAR	4	2	0	0		FN			0					String	family name
+VAR	4	2	1	0		ST			0					String	surname
+VAR	4	2	2	0		ST			0					String	own surname prefix
+VAR	4	2	3	0		ST			0					String	own surname
+VAR	4	2	4	0		ST			0					String	surname prefix from partner/spouse
+VAR	4	2	5	0		ST			0					String	surname from partner/spouse
+VAR	4	3	-1	0		ST			0					String	given name
+VAR	4	4	-1	0		ST			0					String	second and further given names or initial thereof
+VAR	4	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+VAR	4	6	-1	0		ST			0					String	prefix (e.g., DR)
+VAR	4	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+VAR	4	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+VAR	4	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+VAR	4	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+VAR	4	9	2	0		ST			0					String	universal ID
+VAR	4	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+VAR	4	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+VAR	4	11	-1	0		ST			0					String	identifier check digit
+VAR	4	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+VAR	4	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+VAR	4	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+VAR	4	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+VAR	4	14	2	0		ST			0					String	universal ID
+VAR	4	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+VAR	4	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+VAR	5	0	-1	250	01216	CE	O		0				Variance Classification	Coded element	
+VAR	5	1	-1	0		ST			0					String	identifier
+VAR	5	2	-1	0		ST			0					String	text
+VAR	5	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+VAR	5	4	-1	0		ST			0					String	alternate identifier
+VAR	5	5	-1	0		ST			0					String	alternate text
+VAR	5	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+VAR	6	-1	-1	512	01217	ST	O	Y	0				Variance Description	String	

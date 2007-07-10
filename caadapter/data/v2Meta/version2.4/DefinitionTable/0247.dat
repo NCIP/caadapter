@@ -1,0 +1,12 @@
+HL7	Status of evaluation	0247	A	Evaluation anticipated, but not yet begun
+HL7	Status of evaluation	0247	C	Product received in condition which made analysis impossible
+HL7	Status of evaluation	0247	D	Product discarded -- unable to follow up
+HL7	Status of evaluation	0247	I	Product remains implanted -- unable to follow up
+HL7	Status of evaluation	0247	K	Problem already known, no evaluation necessary
+HL7	Status of evaluation	0247	O	Other
+HL7	Status of evaluation	0247	P	Evaluation in progress
+HL7	Status of evaluation	0247	Q	Product under quarantine -- unable to follow up
+HL7	Status of evaluation	0247	R	Product under recall/corrective action
+HL7	Status of evaluation	0247	U	Product unavailable for follow up investigation
+HL7	Status of evaluation	0247	X	Product not made by company
+HL7	Status of evaluation	0247	Y	Evaluation completed

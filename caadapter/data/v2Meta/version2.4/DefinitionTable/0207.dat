@@ -1,0 +1,6 @@
+HL7	Processing mode	0207	A	Archive
+HL7	Processing mode	0207	I	Initial load
+HL7	Processing mode	0207	Not_present	Not present (the default, meaning current  processing)
+HL7	Processing mode	0207	&null	Not present (the default, meaning current  processing)
+HL7	Processing mode	0207	R	Restore from archive
+HL7	Processing mode	0207	T	Current processing, transmitted at intervals (scheduled or on demand)

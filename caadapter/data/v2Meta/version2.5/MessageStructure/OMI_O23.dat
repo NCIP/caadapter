@@ -1,0 +1,7 @@
+Message Type=OMI
+Message Type Name=Imaging order
+Trigger Event=O23
+Trigger Description=OMI _ Imaging order
+Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] OBR [ { NTE } ] [ CTD ] [ { DG1 } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] { IPC } }
+Return Message=ORI^O24
+Called by=

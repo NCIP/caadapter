@@ -1,0 +1,7 @@
+Message Type=BTS
+Message Type Name=Blood product transfusion/disposition message
+Trigger Event=O31
+Trigger Description=BTS _ Blood product transfusion/disposition
+Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] BPO [ { NTE } ] [ { !PRODUCT_STATUS! BTX [ { NTE } ] } ] }
+Return Message=BRT^O32
+Called by=

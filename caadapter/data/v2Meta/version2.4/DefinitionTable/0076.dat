@@ -1,0 +1,115 @@
+HL7	Message type	0076	ACK	General acknowledgment message
+HL7	Message type	0076	ADR	ADT response
+HL7	Message type	0076	ADT	ADT message
+HL7	Message type	0076	BAR	Add/change billing account
+HL7	Message type	0076	CRM	Clinical study registration message
+HL7	Message type	0076	CSU	Unsolicited study data message
+HL7	Message type	0076	DFT	Detail financial transactions
+HL7	Message type	0076	DOC	Document response
+HL7	Message type	0076	DSR	Display response
+HL7	Message type	0076	EAC	Automated equipment command message
+HL7	Message type	0076	EAN	Automated equipment notification message
+HL7	Message type	0076	EAR	Automated equipment response message
+HL7	Message type	0076	EDR	Enhanced display response
+HL7	Message type	0076	EQQ	Embedded query language query
+HL7	Message type	0076	ERP	Event replay response
+HL7	Message type	0076	ESR	Automated equipment status update acknowledgement message
+HL7	Message type	0076	ESU	Automated equipment status update message
+HL7	Message type	0076	INR	Automated equipment inventory request message
+HL7	Message type	0076	INU	Automated equipment inventory update message
+HL7	Message type	0076	LSR	Automated equipment log/service request message
+HL7	Message type	0076	LSU	Automated equipment log/service update message
+HL7	Message type	0076	MCF	Delayed Acknowledgement (Retained for backward compatibility only)
+HL7	Message type	0076	MDM	Medical document management
+HL7	Message type	0076	MFD	Master files delayed application acknowledgment
+HL7	Message type	0076	MFK	Master files application acknowledgment
+HL7	Message type	0076	MFN	Master files notification
+HL7	Message type	0076	MFQ	Master files query
+HL7	Message type	0076	MFR	Master files response
+HL7	Message type	0076	NMD	Application management data message
+HL7	Message type	0076	NMQ	Application management query message
+HL7	Message type	0076	NMR	Application management response message
+HL7	Message type	0076	OMD	Dietary order
+HL7	Message type	0076	OMG	General clinical order message
+HL7	Message type	0076	OML	Laboratory order message
+HL7	Message type	0076	OMN	Non-stock requisition order message
+HL7	Message type	0076	OMP	Pharmacy/treatment order message
+HL7	Message type	0076	OMS	Stock requisition order message
+HL7	Message type	0076	ORD	Dietary order - General order acknowledgment message
+HL7	Message type	0076	ORF	Query for results of observation
+HL7	Message type	0076	ORG	General clinical order acknowledgement message
+HL7	Message type	0076	ORL	Laboratory acknowledgement message (unsolicited)
+HL7	Message type	0076	ORM	Pharmacy/treatment order message
+HL7	Message type	0076	ORN	Non-stock requisition - General order acknowledgment message
+HL7	Message type	0076	ORP	Pharmacy/treatment order acknowledgement message
+HL7	Message type	0076	ORR	General order response message response to any ORM
+HL7	Message type	0076	ORS	Stock requisition - General order acknowledgment message
+HL7	Message type	0076	ORU	Unsolicited transmission of an observation message
+HL7	Message type	0076	OSQ	Query response for order status
+HL7	Message type	0076	OSR	Query response for order status
+HL7	Message type	0076	OUL	Unsolicited laboratory observation message
+HL7	Message type	0076	PEX	Product experience message
+HL7	Message type	0076	PGL	Patient goal message
+HL7	Message type	0076	PIN	Patient insurance information
+HL7	Message type	0076	PMU	Add personnel record
+HL7	Message type	0076	PPG	Patient pathway message (goal-oriented)
+HL7	Message type	0076	PPP	Patient pathway message (problem-oriented)
+HL7	Message type	0076	PPR	Patient problem message
+HL7	Message type	0076	PPT	Patient pathway goal-oriented response
+HL7	Message type	0076	PPV	Patient goal response
+HL7	Message type	0076	PRR	Patient problem response
+HL7	Message type	0076	PTR	Patient pathway problem-oriented response
+HL7	Message type	0076	QBP	Query by parameter
+HL7	Message type	0076	QCK	Deferred query
+HL7	Message type	0076	QCN	Cancel query
+HL7	Message type	0076	QRY	Query, original mode
+HL7	Message type	0076	QSB	Create subscription
+HL7	Message type	0076	QSX	Cancel subscription/acknowledge message
+HL7	Message type	0076	QVR	Query for previous events
+HL7	Message type	0076	RAR	Pharmacy/treatment administration information
+HL7	Message type	0076	RAS	Pharmacy/treatment administration message
+HL7	Message type	0076	RCI	Return clinical information
+HL7	Message type	0076	RCL	Return clinical list
+HL7	Message type	0076	RDE	Pharmacy/treatment encoded order message
+HL7	Message type	0076	RDR	Pharmacy/treatment dispense information
+HL7	Message type	0076	RDS	Pharmacy/treatment dispense message
+HL7	Message type	0076	RDY	Display based response
+HL7	Message type	0076	REF	Patient referral
+HL7	Message type	0076	RER	Pharmacy/treatment encoded order information
+HL7	Message type	0076	RGR	Pharmacy/treatment dose information
+HL7	Message type	0076	RGV	Pharmacy/treatment give message
+HL7	Message type	0076	ROR	Pharmacy/treatment order response
+HL7	Message type	0076	RPA	Return patient authorization
+HL7	Message type	0076	RPI	Return patient information
+HL7	Message type	0076	RPL	Return patient display list
+HL7	Message type	0076	RPR	Return patient list
+HL7	Message type	0076	RQA	Request patient authorization
+HL7	Message type	0076	RQC	Request clinical information
+HL7	Message type	0076	RQI	Request patient information
+HL7	Message type	0076	RQP	Request patient demographics
+HL7	Message type	0076	RQQ	Event replay query
+HL7	Message type	0076	RRA	Pharmacy/treatment administration acknowledgement message
+HL7	Message type	0076	RRD	Pharmacy/treatment dispense acknowledgment message
+HL7	Message type	0076	RRE	Pharmacy/treatment encoded order acknowledgment message
+HL7	Message type	0076	RRG	Pharmacy/treatment give acknowledgment message
+HL7	Message type	0076	RRI	Return referral information
+HL7	Message type	0076	RSP	Segment pattern response
+HL7	Message type	0076	RTB	Tabular response
+HL7	Message type	0076	SIU	Schedule information unsolicited
+HL7	Message type	0076	SPQ	Stored procedure request
+HL7	Message type	0076	SQM	Schedule query message
+HL7	Message type	0076	SQR	Schedule query response
+HL7	Message type	0076	SRM	Schedule request message
+HL7	Message type	0076	SRR	Scheduled request response
+HL7	Message type	0076	SSR	Specimen status request message
+HL7	Message type	0076	SSU	Specimen status update message
+HL7	Message type	0076	SUR	Summary product experience report
+HL7	Message type	0076	TBR	Tabular data response
+HL7	Message type	0076	TCR	Automated equipment test code settings request message
+HL7	Message type	0076	TCU	Automated equipment test code settings update message
+HL7	Message type	0076	UDM	Unsolicited display update message
+HL7	Message type	0076	VQQ	Virtual table query
+HL7	Message type	0076	VXQ	Query for vaccination record
+HL7	Message type	0076	VXR	Vaccination record response
+HL7	Message type	0076	VXU	Unsolicited vaccination record update
+HL7	Message type	0076	VXX	Response for vaccination query with multiple PID matches

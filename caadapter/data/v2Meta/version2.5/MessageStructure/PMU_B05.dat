@@ -1,0 +1,7 @@
+Message Type=PMU
+Message Type Name=Add personnel record
+Trigger Event=B05
+Trigger Description=PMU/ACK _ Deactivate practicing person
+Message Structure=PMU_B04
+Return Message=ACK^B05
+Called by=

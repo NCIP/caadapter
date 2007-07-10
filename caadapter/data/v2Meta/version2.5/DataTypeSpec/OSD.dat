@@ -1,0 +1,11 @@
+OSD	1	ID	0524	1	R	sequence/result flag	N	^
+OSD	2	ST		15	R	placer order number - entity identifier	N	^
+OSD	3	IS	0363	6		placer order number - namespace ID	N	^
+OSD	4	ST		15	R	filler order number - entity identifier	N	^
+OSD	5	IS	0363	6		filler order number - namespace ID	N	^
+OSD	6	ST		12		sequence condition value	N	^
+OSD	7	NM		3		maximum number of repeats	N	^
+OSD	8	ST		15	R	placer order number - universal ID	N	^
+OSD	9	ID	0301	6		placer order number - universal ID type	N	^
+OSD	10	ST		15	R	filler order number - universal ID	N	^
+OSD	11	ID	0301	6		filler order number - universal ID type	N	E

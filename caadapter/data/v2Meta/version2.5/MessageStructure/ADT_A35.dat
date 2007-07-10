@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A35
+Trigger Description=ADT/ACK -  Merge patient information - account number only (for backward compatibility only)
+Message Structure=ADT_A30
+Return Message=ACK^A35
+Called by=

@@ -1,0 +1,9 @@
+RGS	1	-1	-1	4	01203	SI	R		0				Set ID - RGS	Sequence ID	
+RGS	2	-1	-1	3	00763	ID	C		0	0206			Segment Action Code	Coded values for HL7 tables	
+RGS	3	0	-1	250	01204	CE	O		0				Resource Group ID	Coded element	
+RGS	3	1	-1	0		ST			0					String	identifier
+RGS	3	2	-1	0		ST			0					String	text
+RGS	3	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RGS	3	4	-1	0		ST			0					String	alternate identifier
+RGS	3	5	-1	0		ST			0					String	alternate text
+RGS	3	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,12 @@
+FHS	1	-1	-1	1	00067	ST	R		0				File Field Separator	String	
+FHS	2	-1	-1	4	00068	ST	R		0				File Encoding Characters	String	
+FHS	3	-1	-1	15	00069	ST	O		0				File Sending Application	String	
+FHS	4	-1	-1	20	00070	ST	O		0				File Sending Facility	String	
+FHS	5	-1	-1	15	00071	ST	O		0				File Receiving Application	String	
+FHS	6	-1	-1	20	00072	ST	O		0				File Receiving Facility	String	
+FHS	7	-1	-1	26	00073	TS	O		0				File Creation Date/Time	Time stamp	
+FHS	8	-1	-1	40	00074	ST	O		0				File Security	String	
+FHS	9	-1	-1	20	00075	ST	O		0				File Name/ID	String	
+FHS	10	-1	-1	80	00076	ST	O		0				File Header Comment	String	
+FHS	11	-1	-1	20	00077	ST	O		0				File Control ID	String	
+FHS	12	-1	-1	20	00078	ST	O		0				Reference File Control ID	String	

@@ -1,0 +1,8 @@
+HL7	Charge type	0122	CH	Charge
+HL7	Charge type	0122	CO	Contract
+HL7	Charge type	0122	CR	Credit
+HL7	Charge type	0122	DP	Department
+HL7	Charge type	0122	GR	Grant
+HL7	Charge type	0122	NC	No Charge
+HL7	Charge type	0122	PC	Professional
+HL7	Charge type	0122	RS	Research

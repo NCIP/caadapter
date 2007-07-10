@@ -1,0 +1,9 @@
+HL7	Expanded yes/no indicator	0532	ASKU	asked but unknown
+HL7	Expanded yes/no indicator	0532	N	No
+HL7	Expanded yes/no indicator	0532	NA	not applicable
+HL7	Expanded yes/no indicator	0532	NASK	not asked
+HL7	Expanded yes/no indicator	0532	NAV	temporarily unavailable
+HL7	Expanded yes/no indicator	0532	NI	No Information
+HL7	Expanded yes/no indicator	0532	NP	not present
+HL7	Expanded yes/no indicator	0532	UNK	unknown
+HL7	Expanded yes/no indicator	0532	Y	Yes

@@ -1,0 +1,8 @@
+CX	1	ST				ID	N	^
+CX	2	ST				check digit	N	^
+CX	3	ID	0061			code identifying the check digit scheme employed	N	^
+CX	4	ZHD1				assigning authority	N	^
+CX	5	ID	0203			identifier type code	N	^
+CX	6	HD				assigning facility	N	^
+CX	7	DT				effective date	N	^
+CX	8	DT				expiration date	N	E

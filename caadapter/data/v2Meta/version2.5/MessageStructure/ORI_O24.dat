@@ -1,0 +1,7 @@
+Message Type=ORI
+Message Type Name=Imaging order acknowledgement message
+Trigger Event=O24
+Trigger Description=ORI _ Imaging order response message to any OMI
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] OBR [ { NTE } ] { IPC } } ]
+Return Message=ACK^O24
+Called by=OMI^O23

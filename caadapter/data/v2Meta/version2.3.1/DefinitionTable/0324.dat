@@ -1,0 +1,12 @@
+User	Location characteristic ID	0324	GEN	Gender of patient(s)
+User	Location characteristic ID	0324	IMP	Implant: can be used for radiation implant patients
+User	Location characteristic ID	0324	INF	Infectious disease: this location can be used for isolation
+User	Location characteristic ID	0324	LCR	Level of care
+User	Location characteristic ID	0324	LIC	Licensed
+User	Location characteristic ID	0324	OVR	Overflow
+User	Location characteristic ID	0324	PRL	Privacy level: indicating the level of private versus non-private room
+User	Location characteristic ID	0324	SET	Bed is set up
+User	Location characteristic ID	0324	SHA	Shadow: a temporary holding location that does not physically exist
+User	Location characteristic ID	0324	SMK	Smoking
+User	Location characteristic ID	0324	STF	Bed is staffed
+User	Location characteristic ID	0324	TEA	Teaching location

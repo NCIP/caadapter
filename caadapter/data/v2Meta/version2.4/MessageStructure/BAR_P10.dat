@@ -1,0 +1,1 @@
+BAR	P10	BAR	P10	ACK		 MSH  EVN  PID  PV1 [ {  DG1 } ]  GP1 [ { !PROCEDURE! PR1 [  GP2 ] } ] 	Transmit Ambulatory Payment Classification (APC) groups	Add/change billing account	BAR/ACK -Transmit  Ambulatory Payment  Classification(APC)

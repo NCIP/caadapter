@@ -1,0 +1,67 @@
+OM2	1	-1	-1	4	00586	NM	O		0				Sequence Number - Test/Observation Master File	Numeric	
+OM2	2	0	-1	250	00627	CE	O		0	9999			Units of Measure	Coded element	
+OM2	2	1	-1	20		IS			0	9999				String	identifier
+OM2	2	2	-1	199		ST			0					String	text
+OM2	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM2	2	4	-1	20		ST			0					String	alternate identifier
+OM2	2	5	-1	199		ST			0					String	alternate text
+OM2	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM2	3	-1	-1	10	00628	NM	O	Y	0				Range of Decimal Precision	Numeric	
+OM2	4	0	-1	250	00629	CE	O		0	9999			Corresponding SI Units of Measure	Coded element	
+OM2	4	1	-1	20		IS			0	9999				String	identifier
+OM2	4	2	-1	199		ST			0					String	text
+OM2	4	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM2	4	4	-1	20		ST			0					String	alternate identifier
+OM2	4	5	-1	199		ST			0					String	alternate text
+OM2	4	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM2	5	-1	-1	60	00630	TX	O		0				SI Conversion Factor	Text data	
+OM2	6	0	-1	250	00631	RFR	O	Y	0				Reference (Normal) Range - Ordinal and Continuous Observations	reference range	
+OM2	6	1	0	33		NR	R		0					nemeric range	Numeric Range
+OM2	6	1	1	0		NM			0					Numeric	low value
+OM2	6	1	2	0		NM			0					Numeric	high value
+OM2	6	2	-1	8		IS			0	0001				Coded value for user-defined tables	Administrative Sex
+OM2	6	3	0	33		NR			0					nemeric range	age range
+OM2	6	3	1	0		NM			0					Numeric	low value
+OM2	6	3	2	0		NM			0					Numeric	high value
+OM2	6	4	0	33		NR			0					nemeric range	gestational age range
+OM2	6	4	1	0		NM			0					Numeric	low value
+OM2	6	4	2	0		NM			0					Numeric	high value
+OM2	6	5	-1	20		TX			0					Text data	species
+OM2	6	6	-1	20		ST			0					String	race/subspecies
+OM2	6	7	-1	199		TX		Y	0					Text data	conditions
+OM2	7	0	-1	205	00632	RFR	O	Y	0				Critical Range for Ordinal and Continuous Observations	reference range	
+OM2	7	1	0	33		NR	R		0					nemeric range	Numeric Range
+OM2	7	1	1	0		NM			0					Numeric	low value
+OM2	7	1	2	0		NM			0					Numeric	high value
+OM2	7	2	-1	8		IS			0	0001				Coded value for user-defined tables	Administrative Sex
+OM2	7	3	0	33		NR			0					nemeric range	age range
+OM2	7	3	1	0		NM			0					Numeric	low value
+OM2	7	3	2	0		NM			0					Numeric	high value
+OM2	7	4	0	33		NR			0					nemeric range	gestational age range
+OM2	7	4	1	0		NM			0					Numeric	low value
+OM2	7	4	2	0		NM			0					Numeric	high value
+OM2	7	5	-1	20		TX			0					Text data	species
+OM2	7	6	-1	20		ST			0					String	race/subspecies
+OM2	7	7	-1	199		TX		Y	0					Text data	conditions
+OM2	8	0	-1	250	00633	RFR	O		0				Absolute Range for Ordinal and Continuous Observations	reference range	
+OM2	8	1	0	33		NR	R		0					nemeric range	Numeric Range
+OM2	8	1	1	0		NM			0					Numeric	low value
+OM2	8	1	2	0		NM			0					Numeric	high value
+OM2	8	2	-1	8		IS			0	0001				Coded value for user-defined tables	Administrative Sex
+OM2	8	3	0	33		NR			0					nemeric range	age range
+OM2	8	3	1	0		NM			0					Numeric	low value
+OM2	8	3	2	0		NM			0					Numeric	high value
+OM2	8	4	0	33		NR			0					nemeric range	gestational age range
+OM2	8	4	1	0		NM			0					Numeric	low value
+OM2	8	4	2	0		NM			0					Numeric	high value
+OM2	8	5	-1	20		TX			0					Text data	species
+OM2	8	6	-1	20		ST			0					String	race/subspecies
+OM2	8	7	-1	199		TX		Y	0					Text data	conditions
+OM2	9	0	-1	250	00634	DLT	O	Y	0				Delta Check Criteria	delta	
+OM2	9	1	0	33		NR			0					nemeric range	normal range
+OM2	9	1	1	0		NM			0					Numeric	low value
+OM2	9	1	2	0		NM			0					Numeric	high value
+OM2	9	2	-1	4		NM			0					Numeric	numeric threshhold
+OM2	9	3	-1	1		ID			0	0523				Coded values for HL7 tables	change computation
+OM2	9	4	-1	4		NM			0					Numeric	Days Retained
+OM2	10	-1	-1	20	00635	NM	O		0				Minimum Meaningful Increments	Numeric	

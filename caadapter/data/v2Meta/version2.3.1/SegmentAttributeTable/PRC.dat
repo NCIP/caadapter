@@ -1,0 +1,62 @@
+PRC	1	0	-1	250	00982	CE	R		0	0132			Primary Key Value - PRC	Coded element	
+PRC	1	1	-1	0		ST			0					String	identifier
+PRC	1	2	-1	0		ST			0					String	text
+PRC	1	3	-1	0		IS			0	0132				Coded value for user-defined tables	name of coding system
+PRC	1	4	-1	0		ST			0					String	alternate identifier
+PRC	1	5	-1	0		ST			0					String	alternate text
+PRC	1	6	-1	0		IS			0	0132				Coded value for user-defined tables	name of alternate coding system
+PRC	2	0	-1	250	00995	CE	O	Y	0	0464			Facility ID - PRC	Coded element	
+PRC	2	1	-1	0		ST			0					String	identifier
+PRC	2	2	-1	0		ST			0					String	text
+PRC	2	3	-1	0		IS			0	0464				Coded value for user-defined tables	name of coding system
+PRC	2	4	-1	0		ST			0					String	alternate identifier
+PRC	2	5	-1	0		ST			0					String	alternate text
+PRC	2	6	-1	0		IS			0	0464				Coded value for user-defined tables	name of alternate coding system
+PRC	3	0	-1	250	00676	CE	O	Y	0	0184			Department	Coded element	
+PRC	3	1	-1	0		ST			0					String	identifier
+PRC	3	2	-1	0		ST			0					String	text
+PRC	3	3	-1	0		IS			0	0184				Coded value for user-defined tables	name of coding system
+PRC	3	4	-1	0		ST			0					String	alternate identifier
+PRC	3	5	-1	0		ST			0					String	alternate text
+PRC	3	6	-1	0		IS			0	0184				Coded value for user-defined tables	name of alternate coding system
+PRC	4	-1	-1	1	00967	IS	O	Y	0	0004			Valid Patient Classes	Coded value for user-defined tables	
+PRC	5	0	-1	12	00998	CP	C	Y	0				Price	Composite price	
+PRC	5	1	0	0		MO			0					Numeric	price
+PRC	5	1	1	0		NM			0					Numeric	quantity
+PRC	5	1	2	0		ID			0	ISO4217				Coded values for HL7 tables	denomination
+PRC	5	2	-1	0		ID			0	0205				Coded values for HL7 tables	price type
+PRC	5	3	-1	0		NM			0					Numeric	from value
+PRC	5	4	-1	0		NM			0					Numeric	to value
+PRC	5	5	0	0		CE			0					String	range units
+PRC	5	5	1	0		ST			0					String	identifier
+PRC	5	5	2	0		ST			0					String	text
+PRC	5	5	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRC	5	5	4	0		ST			0					String	alternate identifier
+PRC	5	5	5	0		ST			0					String	alternate text
+PRC	5	5	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRC	5	6	-1	0		ID			0	0298				Coded values for HL7 tables	range type
+PRC	6	-1	-1	200	00999	ST	O	Y	0				Formula	String	
+PRC	7	-1	-1	4	01000	NM	O		0				Minimum Quantity	Numeric	
+PRC	8	-1	-1	4	01001	NM	O		0				Maximum Quantity	Numeric	
+PRC	9	0	-1	12	01002	MO	O		0				Minimum Price	Money	
+PRC	9	1	-1	0		NM			0					Numeric	quantity
+PRC	9	2	-1	0		ID			0	ISO4217				Coded values for HL7 tables	denomination
+PRC	10	0	-1	12	01003	MO	O		0				Maximum Price	Money	
+PRC	10	1	-1	0		NM			0					Numeric	quantity
+PRC	10	2	-1	0		ID			0	ISO4217				Coded values for HL7 tables	denomination
+PRC	11	-1	-1	26	01004	TS	O		0				Effective Start Date	Time stamp	
+PRC	12	-1	-1	26	01005	TS	O		0				Effective End Date	Time stamp	
+PRC	13	-1	-1	1	01006	IS	O		0	0268			Price Override Flag	Coded value for user-defined tables	
+PRC	14	0	-1	250	01007	CE	O	Y	0	0293			Billing Category	Coded element	
+PRC	14	1	-1	0		ST			0					String	identifier
+PRC	14	2	-1	0		ST			0					String	text
+PRC	14	3	-1	0		IS			0	0293				Coded value for user-defined tables	name of coding system
+PRC	14	4	-1	0		ST			0					String	alternate identifier
+PRC	14	5	-1	0		ST			0					String	alternate text
+PRC	14	6	-1	0		IS			0	0293				Coded value for user-defined tables	name of alternate coding system
+PRC	15	-1	-1	1	01008	ID	O		0	0136			Chargeable Flag	Coded values for HL7 tables	
+PRC	16	-1	-1	1	00675	ID	O		0	0183			Active/Inactive Flag	Coded values for HL7 tables	
+PRC	17	0	-1	12	00989	MO	O		0				Cost	Money	
+PRC	17	1	-1	0		NM			0					Numeric	quantity
+PRC	17	2	-1	0		ID			0	ISO4217				Coded values for HL7 tables	denomination
+PRC	18	-1	-1	1	01009	IS	O		0	0269			Charge On Indicator	Coded value for user-defined tables	

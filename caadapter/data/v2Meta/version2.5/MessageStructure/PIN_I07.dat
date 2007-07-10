@@ -1,0 +1,7 @@
+Message Type=PIN
+Message Type Name=Patient insurance information
+Trigger Event=I07
+Trigger Description=PIN/ACK - Unsolicited insurance information
+Message Structure=RQI_I01
+Return Message=ACK^I07
+Called by=

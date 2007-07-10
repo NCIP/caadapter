@@ -1,0 +1,4 @@
+HL7	Sequence Condition Code	0504	EE	End related service request(s)/ end current service request.
+HL7	Sequence Condition Code	0504	ES	End related service request(s)/ start current service request.
+HL7	Sequence Condition Code	0504	SE	Start related service request(s)/ end current service request.
+HL7	Sequence Condition Code	0504	SS	Start related service request(s)/ start current service request.

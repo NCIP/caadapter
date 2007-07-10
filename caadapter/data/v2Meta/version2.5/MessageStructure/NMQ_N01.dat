@@ -1,0 +1,7 @@
+Message Type=NMQ
+Message Type Name=Application management query message
+Trigger Event=N01
+Trigger Description=NMQ/NMR - Application management query message
+Message Structure=MSH [ { SFT } ] [ !QRY_WITH_DETAIL! QRD [ QRF ] ] { !CLOCK_AND_STATISTICS! [ NCK ] [ NST ] [ NSC ] }
+Return Message=NMR^N01
+Called by=

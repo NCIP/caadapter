@@ -1,0 +1,26 @@
+User	Modality	0259	AS	Angioscopy
+User	Modality	0259	BS	Biomagnetic imaging
+User	Modality	0259	CD	Color flow Doppler
+User	Modality	0259	CP	Colposcopy
+User	Modality	0259	CR	Computed radiography
+User	Modality	0259	CS	Cystoscopy
+User	Modality	0259	CT	Computed tomography
+User	Modality	0259	DD	Duplex Doppler
+User	Modality	0259	DG	Diapanography
+User	Modality	0259	DM	Digital microscopy
+User	Modality	0259	EC	Echocardiography
+User	Modality	0259	ES	Endoscopy
+User	Modality	0259	FA	Fluorescein angiography
+User	Modality	0259	FS	Fundoscopy
+User	Modality	0259	LP	Laparoscopy
+User	Modality	0259	LS	Laser surface scan
+User	Modality	0259	MA	Magnetic resonance angiography
+User	Modality	0259	MS	Magnetic resonance spectroscopy
+User	Modality	0259	NM	Nuclear Medicine (radioisotope study)
+User	Modality	0259	OT	Other
+User	Modality	0259	PT	Positron emission tomography (PET)
+User	Modality	0259	RF	Radio fluoroscopy
+User	Modality	0259	ST	Single photon emission computed tomography (SPECT)
+User	Modality	0259	TG	Thermography
+User	Modality	0259	US	Ultrasound
+User	Modality	0259	XA	X-ray Angiography

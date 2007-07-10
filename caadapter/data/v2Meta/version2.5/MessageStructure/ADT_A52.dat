@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A52
+Trigger Description=ADT/ACK _ Cancel leave of absence for a patient
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] PV1 [ PV2 ]
+Return Message=ACK^A52
+Called by=

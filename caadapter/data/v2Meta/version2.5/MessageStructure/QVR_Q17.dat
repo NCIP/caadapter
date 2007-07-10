@@ -1,0 +1,7 @@
+Message Type=QVR
+Message Type Name=Query for previous events
+Trigger Event=Q17
+Trigger Description=QVR _ Query for previous events
+Message Structure=MSH [ { SFT } ] QPD [ !QBP! [ { VRY } ] ] RCP [ DSC ]
+Return Message=ACK^Q17
+Called by=

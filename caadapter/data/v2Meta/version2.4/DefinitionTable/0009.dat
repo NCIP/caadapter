@@ -1,0 +1,16 @@
+User	Ambulatory status	0009	A0	No functional limitations
+User	Ambulatory status	0009	A1	Ambulates with assistive device
+User	Ambulatory status	0009	A2	Wheelchair/stretcher bound
+User	Ambulatory status	0009	A3	Comatose; non-responsive
+User	Ambulatory status	0009	A4	Disoriented
+User	Ambulatory status	0009	A5	Vision impaired
+User	Ambulatory status	0009	A6	Hearing impaired
+User	Ambulatory status	0009	A7	Speech impaired
+User	Ambulatory status	0009	A8	Non-English speaking
+User	Ambulatory status	0009	A9	Functional level unknown
+User	Ambulatory status	0009	B1	Oxygen therapy
+User	Ambulatory status	0009	B2	Special equipment (tubes, IVs, catheters)
+User	Ambulatory status	0009	B3	Amputee
+User	Ambulatory status	0009	B4	Mastectomy
+User	Ambulatory status	0009	B5	Paraplegic
+User	Ambulatory status	0009	B6	Pregnant

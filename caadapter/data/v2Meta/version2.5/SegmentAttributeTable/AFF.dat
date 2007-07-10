@@ -1,0 +1,42 @@
+AFF	1	-1	-1	60	01427	SI	R		0				Set ID _ AFF	Sequence ID	
+AFF	2	0	-1	250	01444	XON	R		0				Professional Organization	Extended composite name and ID number for organizations	
+AFF	2	1	-1	50		ST			0					String	organization name
+AFF	2	2	-1	20		IS			0	0204				Coded value for user-defined tables	organization name type code
+AFF	2	3	-1	4		NM	B		0					Numeric	ID number
+AFF	2	4	-1	1		NM			0					Numeric	check digit
+AFF	2	5	-1	3		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+AFF	2	6	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+AFF	2	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+AFF	2	6	2	0		ST			0					String	universal ID
+AFF	2	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+AFF	2	7	-1	5		IS			0	0203				Coded value for user-defined tables	identifier type code
+AFF	2	8	0	227		HD			0					Hierarchic designator	assigning facility ID
+AFF	2	8	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+AFF	2	8	2	199		ST	C		0					String	universal ID
+AFF	2	8	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+AFF	2	9	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+AFF	2	10	-1	20		ST			0					String	Organization Identifier
+AFF	3	0	-1	250	01445	XAD	O		0				Professional Organization Address	Extended address	
+AFF	3	1	0	184		SAD			0					Street Address	street address
+AFF	3	1	1	120		ST			0					String	street or mailing address
+AFF	3	1	2	50		ST			0					String	street name
+AFF	3	1	3	12		ST			0					String	dwelling number
+AFF	3	2	-1	120		ST			0					String	other designation
+AFF	3	3	-1	50		ST			0					String	city
+AFF	3	4	-1	50		ST			0					String	state or province
+AFF	3	5	-1	12		ST			0					String	zip or postal code
+AFF	3	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+AFF	3	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+AFF	3	8	-1	50		ST			0					String	other geographic designation
+AFF	3	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+AFF	3	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+AFF	3	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+AFF	3	12	0	53		DR	B		0					Date/time range	address validity range
+AFF	3	12	1	26		TS			0					Time stamp	range start date/time
+AFF	3	12	2	26		TS			0					Time stamp	range end date/time
+AFF	3	13	-1	26		TS			0					Time stamp	Effective Date
+AFF	3	14	-1	26		TS			0					Time stamp	Expiration Date
+AFF	4	0	-1	52	01446	DR	O	Y	0				Professional Organization Affiliation Date Range	Date/time range	
+AFF	4	1	-1	26		TS			0					Time stamp	range start date/time
+AFF	4	2	-1	26		TS			0					Time stamp	range end date/time
+AFF	5	-1	-1	60	01447	ST	O		0				Professional Affiliation Additional Information	String	

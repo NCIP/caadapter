@@ -1,0 +1,5 @@
+User	Charge Type Reason	0475	01	Allergy
+User	Charge Type Reason	0475	02	Intolerance
+User	Charge Type Reason	0475	03	Treatment Failure
+User	Charge Type Reason	0475	04	Patient Request
+User	Charge Type Reason	0475	05	No Exception

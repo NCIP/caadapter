@@ -1,0 +1,102 @@
+CTD	1	0	-1	250	00196	CE	R	Y	0	0131			Contact Role	Coded element	
+CTD	1	1	-1	20		IS			0	0131				String	identifier
+CTD	1	2	-1	199		ST			0					String	text
+CTD	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+CTD	1	4	-1	20		ST			0					String	alternate identifier
+CTD	1	5	-1	199		ST			0					String	alternate text
+CTD	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CTD	2	0	-1	250	01165	XPN	O	Y	0				Contact Name	Extended person name	
+CTD	2	1	0	194		FN			0						family name
+CTD	2	1	1	50		ST	R		0					String	surname
+CTD	2	1	2	20		ST			0					String	own surname prefix
+CTD	2	1	3	50		ST			0					String	own surname
+CTD	2	1	4	20		ST			0					String	surname prefix from partner/spouse
+CTD	2	1	5	30		ST			0					String	surname from partner/spouse
+CTD	2	2	-1	30		ST			0					String	given name
+CTD	2	3	-1	30		ST			0					String	second and further given names or initial thereof
+CTD	2	4	-1	20		ST			0					String	suffix (e.g., JR or III)
+CTD	2	5	-1	20		ST			0					String	prefix (e.g., DR)
+CTD	2	6	-1	6		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+CTD	2	7	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+CTD	2	8	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+CTD	2	9	0	483		ZCE6			0	0448				User Define : coded element for name context (PPN data type)	name context
+CTD	2	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+CTD	2	9	2	0		ST			0					String	text
+CTD	2	9	3	0		ST			0					String	name of coding system
+CTD	2	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+CTD	2	9	5	0		ST			0					String	alternate text
+CTD	2	9	6	0		ST			0					String	name of alternate coding system
+CTD	2	10	0	53		DR	B		0					Date/time range	name validity range
+CTD	2	10	1	26		TS			0					Time stamp	range start date/time
+CTD	2	10	2	26		TS			0					Time stamp	range end date/time
+CTD	2	11	-1	1		ID			0	0444				Coded values for HL7 tables	name assembly order
+CTD	2	12	-1	26		TS			0					Time stamp	Effective Date
+CTD	2	13	-1	26		TS			0					Time stamp	Expiration Date
+CTD	2	14	-1	199		ST			0					String	Professional Suffix
+CTD	3	0	-1	250	01166	XAD	O	Y	0				Contact Address	Extended address	
+CTD	3	1	0	184		SAD			0					Street Address	street address
+CTD	3	1	1	120		ST			0					String	street or mailing address
+CTD	3	1	2	50		ST			0					String	street name
+CTD	3	1	3	12		ST			0					String	dwelling number
+CTD	3	2	-1	120		ST			0					String	other designation
+CTD	3	3	-1	50		ST			0					String	city
+CTD	3	4	-1	50		ST			0					String	state or province
+CTD	3	5	-1	12		ST			0					String	zip or postal code
+CTD	3	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+CTD	3	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+CTD	3	8	-1	50		ST			0					String	other geographic designation
+CTD	3	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+CTD	3	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+CTD	3	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+CTD	3	12	0	53		DR	B		0					Date/time range	address validity range
+CTD	3	12	1	26		TS			0					Time stamp	range start date/time
+CTD	3	12	2	26		TS			0					Time stamp	range end date/time
+CTD	3	13	-1	26		TS			0					Time stamp	Effective Date
+CTD	3	14	-1	26		TS			0					Time stamp	Expiration Date
+CTD	4	0	-1	60	01167	PL	O		0				Contact Location	Person location	
+CTD	4	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+CTD	4	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+CTD	4	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+CTD	4	4	0	227		HD			0					Hierarchic designator	facility
+CTD	4	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+CTD	4	4	2	199		ST	C		0					String	universal ID
+CTD	4	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CTD	4	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+CTD	4	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+CTD	4	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+CTD	4	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+CTD	4	9	-1	199		ST			0					String	location description
+CTD	4	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+CTD	4	10	1	199		ST			0					String	entity identifier
+CTD	4	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+CTD	4	10	3	199		ST	C		0					String	universal ID
+CTD	4	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CTD	4	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+CTD	4	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+CTD	4	11	2	199		ST	C		0					String	universal ID
+CTD	4	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CTD	5	0	-1	250	01168	XTN	O	Y	0				Contact Communication Information	Extended telecommunications number	
+CTD	5	1	-1	199		ST	B		0					String	Telephone Number
+CTD	5	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+CTD	5	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+CTD	5	4	-1	199		ST			0					String	email address
+CTD	5	5	-1	3		NM			0					Numeric	country code
+CTD	5	6	-1	5		NM			0					Numeric	area/city code
+CTD	5	7	-1	9		NM			0					Numeric	phone number
+CTD	5	8	-1	5		NM			0					Numeric	extension
+CTD	5	9	-1	199		ST			0					String	any text
+CTD	5	10	-1	4		ST			0					String	Extension Prefix
+CTD	5	11	-1	6		ST			0					String	Speed Dial Code
+CTD	5	12	-1	199		ST	C		0					String	Unformatted Telephone number
+CTD	6	0	-1	250	00684	CE	O		0	0185			Preferred Method of Contact	Coded element	
+CTD	6	1	-1	20		IS			0	0185				String	identifier
+CTD	6	2	-1	199		ST			0					String	text
+CTD	6	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+CTD	6	4	-1	20		ST			0					String	alternate identifier
+CTD	6	5	-1	199		ST			0					String	alternate text
+CTD	6	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CTD	7	0	-1	100	01171	PLN	O	Y	0				Contact Identifiers	practitioner license or other Id number	
+CTD	7	1	-1	20		ST	R		0					String	ID number
+CTD	7	2	-1	8		IS	R		0	0338				Coded value for user-defined tables	type of ID number
+CTD	7	3	-1	62		ST			0					String	state/other qualifying info
+CTD	7	4	-1	8		DT			0					Date	expiration date

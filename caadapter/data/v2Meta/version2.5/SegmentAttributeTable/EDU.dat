@@ -1,0 +1,63 @@
+EDU	1	-1	-1	60	01448	SI	R		0				Set ID _ EDU	Sequence ID	
+EDU	2	-1	-1	10	01449	IS	O		0	0360			Academic Degree	Coded value for user-defined tables	
+EDU	3	0	-1	52	01597	DR	O		0				Academic Degree Program Date Range	Date/time range	
+EDU	3	1	-1	26		TS			0					Time stamp	range start date/time
+EDU	3	2	-1	26		TS			0					Time stamp	range end date/time
+EDU	4	0	-1	52	01450	DR	O		0				Academic Degree Program Participation Date Range	Date/time range	
+EDU	4	1	-1	26		TS			0					Time stamp	range start date/time
+EDU	4	2	-1	26		TS			0					Time stamp	range end date/time
+EDU	5	-1	-1	8	01451	DT	O		0				Academic Degree Granted Date	Date	
+EDU	6	0	-1	250	01452	XON	O		0				School	Extended composite name and ID number for organizations	
+EDU	6	1	-1	50		ST			0					String	organization name
+EDU	6	2	-1	20		IS			0	0204				Coded value for user-defined tables	organization name type code
+EDU	6	3	-1	4		NM	B		0					Numeric	ID number
+EDU	6	4	-1	1		NM			0					Numeric	check digit
+EDU	6	5	-1	3		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+EDU	6	6	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+EDU	6	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+EDU	6	6	2	0		ST			0					String	universal ID
+EDU	6	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+EDU	6	7	-1	5		IS			0	0203				Coded value for user-defined tables	identifier type code
+EDU	6	8	0	227		HD			0					Hierarchic designator	assigning facility ID
+EDU	6	8	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+EDU	6	8	2	199		ST	C		0					String	universal ID
+EDU	6	8	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+EDU	6	9	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+EDU	6	10	-1	20		ST			0					String	Organization Identifier
+EDU	7	0	-1	250	01453	CE	O		0	0402			School Type Code	Coded element	
+EDU	7	1	-1	20		IS			0	0402				String	identifier
+EDU	7	2	-1	199		ST			0					String	text
+EDU	7	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+EDU	7	4	-1	20		ST			0					String	alternate identifier
+EDU	7	5	-1	199		ST			0					String	alternate text
+EDU	7	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+EDU	8	0	-1	250	01454	XAD	O		0				School Address	Extended address	
+EDU	8	1	0	184		SAD			0					Street Address	street address
+EDU	8	1	1	120		ST			0					String	street or mailing address
+EDU	8	1	2	50		ST			0					String	street name
+EDU	8	1	3	12		ST			0					String	dwelling number
+EDU	8	2	-1	120		ST			0					String	other designation
+EDU	8	3	-1	50		ST			0					String	city
+EDU	8	4	-1	50		ST			0					String	state or province
+EDU	8	5	-1	12		ST			0					String	zip or postal code
+EDU	8	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+EDU	8	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+EDU	8	8	-1	50		ST			0					String	other geographic designation
+EDU	8	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+EDU	8	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+EDU	8	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+EDU	8	12	0	53		DR	B		0					Date/time range	address validity range
+EDU	8	12	1	26		TS			0					Time stamp	range start date/time
+EDU	8	12	2	26		TS			0					Time stamp	range end date/time
+EDU	8	13	-1	26		TS			0					Time stamp	Effective Date
+EDU	8	14	-1	26		TS			0					Time stamp	Expiration Date
+EDU	9	0	-1	250	01885	CWE	O	Y	0				Major Field of Study	Coded with exceptions	
+EDU	9	1	-1	20		ST			0					String	identifier
+EDU	9	2	-1	199		ST			0					String	text
+EDU	9	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+EDU	9	4	-1	20		ST			0					String	alternate identifier
+EDU	9	5	-1	199		ST			0					String	alternate text
+EDU	9	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+EDU	9	7	-1	10		ST	C		0					String	coding system version ID
+EDU	9	8	-1	10		ST			0					String	alternate coding system version ID
+EDU	9	9	-1	199		ST			0					String	original text

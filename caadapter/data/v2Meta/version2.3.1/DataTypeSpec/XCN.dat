@@ -1,0 +1,15 @@
+XCN	1	ST				ID number	N	^
+XCN	2	ZFN				family name	N	^
+XCN	3	ST				given name	N	^
+XCN	4	ST				middle initial or name	N	^
+XCN	5	ST				suffix (e.g., JR or III)	N	^
+XCN	6	ST				prefix (e.g., DR)	N	^
+XCN	7	IS	0360			degree (e.g., MD)	N	^
+XCN	8	IS	0297			source table	N	^
+XCN	9	ZHD1				assigning authority	N	^
+XCN	10	ID	0200			name type code	N	^
+XCN	11	ST				identifier check digit	N	^
+XCN	12	ID	0061			code identifying the check digit scheme employed	N	^
+XCN	13	IS	0203			identifier type code	N	^
+XCN	14	HD				assigning facility	N	^
+XCN	15	ID	0465			name representation code	N	E

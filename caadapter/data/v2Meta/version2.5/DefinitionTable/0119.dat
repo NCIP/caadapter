@@ -1,0 +1,50 @@
+HL7	Order control codes	0119	AF	Order/service refill request approval
+HL7	Order control codes	0119	CA	Cancel order/service request
+HL7	Order control codes	0119	CH	Child order/service
+HL7	Order control codes	0119	CN	Combined result
+HL7	Order control codes	0119	CR	Canceled as requested
+HL7	Order control codes	0119	DC	Discontinue order/service request
+HL7	Order control codes	0119	DE	Data errors
+HL7	Order control codes	0119	DF	Order/service refill request denied
+HL7	Order control codes	0119	DR	Discontinued as requested
+HL7	Order control codes	0119	FU	Order/service refilled/ unsolicited
+HL7	Order control codes	0119	HD	Hold order request
+HL7	Order control codes	0119	HR	On hold as requested
+HL7	Order control codes	0119	LI	Link order/service to patient care problem or goal
+HL7	Order control codes	0119	NA	Number assigned
+HL7	Order control codes	0119	NW	New order/service
+HL7	Order control codes	0119	OC	Order/service canceled
+HL7	Order control codes	0119	OD	Order/service discontinued
+HL7	Order control codes	0119	OE	Order/service released
+HL7	Order control codes	0119	OF	Order/service refilled as requested
+HL7	Order control codes	0119	OH	Order/service held
+HL7	Order control codes	0119	OK	Order/service accepted & OK
+HL7	Order control codes	0119	OP	Notification of order for outside dispense
+HL7	Order control codes	0119	OR	Released as requested
+HL7	Order control codes	0119	PA	Parent order/service
+HL7	Order control codes	0119	PR	Previous Results with new order/service
+HL7	Order control codes	0119	PY	Notification of replacement order for outside dispense
+HL7	Order control codes	0119	RE	Observations/Performed Service to follow
+HL7	Order control codes	0119	RF	Refill order/service request
+HL7	Order control codes	0119	RL	Release previous hold
+HL7	Order control codes	0119	RO	Replacement order
+HL7	Order control codes	0119	RP	Order/service replace request
+HL7	Order control codes	0119	RQ	Replaced as requested
+HL7	Order control codes	0119	RR	Request received
+HL7	Order control codes	0119	RU	Replaced unsolicited
+HL7	Order control codes	0119	SC	Status changed
+HL7	Order control codes	0119	SN	Send order/service number
+HL7	Order control codes	0119	SR	Response to send order/service status request
+HL7	Order control codes	0119	SS	Send order/service status request
+HL7	Order control codes	0119	UA	Unable to accept order/service
+HL7	Order control codes	0119	UC	Unable to cancel
+HL7	Order control codes	0119	UD	Unable to discontinue
+HL7	Order control codes	0119	UF	Unable to refill
+HL7	Order control codes	0119	UH	Unable to put on hold
+HL7	Order control codes	0119	UM	Unable to replace
+HL7	Order control codes	0119	UN	Unlink order/service from patient care problem or goal
+HL7	Order control codes	0119	UR	Unable to release
+HL7	Order control codes	0119	UX	Unable to change
+HL7	Order control codes	0119	XO	Change order/service request
+HL7	Order control codes	0119	XR	Changed as requested
+HL7	Order control codes	0119	XX	Order/service changed/ unsol.

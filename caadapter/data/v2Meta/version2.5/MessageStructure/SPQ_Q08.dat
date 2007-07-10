@@ -1,0 +1,7 @@
+Message Type=SPQ
+Message Type Name=Stored procedure request
+Trigger Event=Q08
+Trigger Description=SPQ _ Stored procedure request
+Message Structure=MSH [ { SFT } ] SPR [ RDF ] [ DSC ]
+Return Message=EDR^R07/ERP^R09/TBR^R08
+Called by=

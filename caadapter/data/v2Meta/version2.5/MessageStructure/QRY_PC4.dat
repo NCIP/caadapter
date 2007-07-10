@@ -1,0 +1,7 @@
+Message Type=QRY
+Message Type Name=Query/ original mode
+Trigger Event=PC4
+Trigger Description=QRY - PC/ problem query
+Message Structure=MSH QRD [ QRF ]
+Return Message=PRR^PC5
+Called by=

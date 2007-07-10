@@ -1,0 +1,7 @@
+Message Type=QRY
+Message Type Name=Query/ original mode
+Trigger Event=Q27
+Trigger Description=QRY/RAR - Pharmacy/treatment administration information
+Message Structure=QRY_Q01
+Return Message=RAR^RAR
+Called by=

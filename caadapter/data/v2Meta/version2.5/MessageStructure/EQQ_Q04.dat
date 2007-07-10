@@ -1,0 +1,7 @@
+Message Type=EQQ
+Message Type Name=Embedded query language query
+Trigger Event=Q04
+Trigger Description=EQQ _ Embedded query language query
+Message Structure=MSH [ { SFT } ] EQL [ DSC ]
+Return Message=TBR^R08/EDR^R07
+Called by=

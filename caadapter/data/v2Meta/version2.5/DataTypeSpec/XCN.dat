@@ -1,0 +1,23 @@
+XCN	1	ST		15		ID number	N	^
+XCN	2	FN		194		family name	N	^
+XCN	3	ST		30		given name	N	^
+XCN	4	ST		30		second and further given names or initial thereof	N	^
+XCN	5	ST		20		suffix (e.g., JR or III)	N	^
+XCN	6	ST		20		prefix (e.g., DR)	N	^
+XCN	7	IS	0360	5	B	degree (e.g., MD)	N	^
+XCN	8	IS	0297	4	C	source table	N	^
+XCN	9	ZHD1	0363	227		assigning authority	N	^
+XCN	10	ID	0200	1		name type code	N	^
+XCN	11	ST		1		identifier check digit	N	^
+XCN	12	ID	0061	3	C	check digit scheme	N	^
+XCN	13	ID	0203	5		identifier type code	N	^
+XCN	14	HD		227		assigning facility	N	^
+XCN	15	ID	0465	1		name representation code	N	^
+XCN	16	CE	0448	483		Name Context	N	^
+XCN	17	DR		53	B	Name Validity Range	N	^
+XCN	18	ID	0444	1		Name Assembly Order	N	^
+XCN	19	TS		26		Effective Date	N	^
+XCN	20	TS		26		Expiration Date	N	^
+XCN	21	ST		199		Professional Suffix	N	^
+XCN	22	CWE		705		Assigning Jurisdiction	N	^
+XCN	23	CWE		705		Assigning Agency or Department	N	E

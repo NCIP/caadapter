@@ -1,0 +1,11 @@
+HL7	Result status	0123	A	Some, but not all, results available
+HL7	Result status	0123	C	Correction to results
+HL7	Result status	0123	F	Final results; results stored and verified.  Can only be changed with a corrected result.
+HL7	Result status	0123	I	No results available; specimen received, procedure incomplete
+HL7	Result status	0123	O	Order received; specimen not yet received
+HL7	Result status	0123	P	Preliminary: A verified early result is available, final results not yet obtained
+HL7	Result status	0123	R	Results stored; not yet verified
+HL7	Result status	0123	S	No results available; procedure scheduled, but not done
+HL7	Result status	0123	X	No results available; Order canceled.
+HL7	Result status	0123	Y	No order on record for this test.  (Used only on queries)
+HL7	Result status	0123	Z	No record of this patient. (Used only on queries)

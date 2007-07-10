@@ -1,0 +1,7 @@
+Message Type=ORN
+Message Type Name=Non-stock requisition - General order acknowledgment message
+Trigger Event=O08
+Trigger Description=ORN _ Non-stock requisition acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] RQD [ RQ1 ] [ { NTE } ] } ]
+Return Message=ACK^O08
+Called by=OMN^O07

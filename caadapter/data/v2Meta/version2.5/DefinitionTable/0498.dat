@@ -1,0 +1,6 @@
+HL7	Consent Status	0498	A	Active _ Consent has been granted
+HL7	Consent Status	0498	B	Bypassed (Consent not sought)
+HL7	Consent Status	0498	L	Limited _ Consent has been granted with limitations
+HL7	Consent Status	0498	P	Pending _ Consent has not yet been sought
+HL7	Consent Status	0498	R	Refused _ Consent has been refused
+HL7	Consent Status	0498	X	Rescinded _ Consent was initially granted/ but was subsequently revoked or ended.

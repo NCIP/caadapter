@@ -1,0 +1,7 @@
+Message Type=LSR
+Message Type Name=Automated equipment log/service request message
+Trigger Event=U13
+Trigger Description=LSR/ACK _ Automated equipment log/service request
+Message Structure=LSU_U12
+Return Message=ACK^U13
+Called by=

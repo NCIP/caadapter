@@ -1,0 +1,1 @@
+RRD	O14	RRD	O14			 MSH  MSA [  ERR ] [ {  NTE } ] [ !RESPONSE![ !PATIENT! PID [ {  NTE } ] ] { !ORDER! ORC [ !DISPENSE! RXD {  RXR } [ {  RXC } ] ] } ] 		Pharmacy/treatment dispense acknowledgment message	RRD - Pharmacy/treatment dispense acknowledgement

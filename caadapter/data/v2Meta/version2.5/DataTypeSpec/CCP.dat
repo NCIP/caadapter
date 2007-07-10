@@ -1,0 +1,3 @@
+CCP	1	NM		6		channel calibration sensitivity correction factor	N	^
+CCP	2	NM		6		channel calibration baseline	N	^
+CCP	3	NM		6		channel calibration time skew	N	E

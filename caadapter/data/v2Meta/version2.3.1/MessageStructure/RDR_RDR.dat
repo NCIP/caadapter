@@ -1,0 +1,1 @@
+RDR	RDR	RDR	RDR			 MSA [  ERR ] { !DEFINITION! QRD [  QRF ] [ !PATIENT! PID { [  NTE ] } ] { !ORDER! ORC [ !ENCODING! RXE {  RXR } { [  RXC ] } ] { !DISPENSE! RXD {  RXR } [ {  RXC } ] } } } [  DSC ] 		Pharmacy/treatment dispense information	

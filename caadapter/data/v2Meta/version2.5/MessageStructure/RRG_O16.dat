@@ -1,0 +1,7 @@
+Message Type=RRG
+Message Type Name=Pharmacy/treatment give acknowledgment message
+Trigger Event=O16
+Trigger Description=RRG _ Pharmacy/treatment give acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !GIVE! RXG { !TIMING_GIVE! TQ1 [ { TQ2 } ] } { RXR } [ { RXC } ] ] } ]
+Return Message=ACK^O16
+Called by=RGV^O15

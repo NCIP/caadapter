@@ -1,0 +1,1 @@
+VXU	V04	 				 MSH  PID [  PD1 ] [ {  NK1 } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ] [ {  GT1 } ] [ { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [ { !ORDER![  ORC ]  RXA [  RXR ] { !OBSERVATION![  OBX [ {  NTE } ] ] } } ] 		Unsolicited vaccination record update	VXU - Unsolicited vaccination record update

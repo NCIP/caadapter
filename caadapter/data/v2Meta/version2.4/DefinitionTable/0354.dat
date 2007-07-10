@@ -1,0 +1,171 @@
+HL7	Message structure	0354	ACK	Varies
+HL7	Message structure	0354	ADR_A19	A19
+HL7	Message structure	0354	ADT_A01	A01, A04, A08, A13
+HL7	Message structure	0354	ADT_A02	A02
+HL7	Message structure	0354	ADT_A03	A03
+HL7	Message structure	0354	ADT_A05	A05, A14, A28, A31
+HL7	Message structure	0354	ADT_A06	A06, A07
+HL7	Message structure	0354	ADT_A09	A09, A10, A11, A12
+HL7	Message structure	0354	ADT_A15	A15
+HL7	Message structure	0354	ADT_A16	A16
+HL7	Message structure	0354	ADT_A17	A17
+HL7	Message structure	0354	ADT_A18	A18
+HL7	Message structure	0354	ADT_A20	A20
+HL7	Message structure	0354	ADT_A21	A21
+HL7	Message structure	0354	ADT_A24	A24
+HL7	Message structure	0354	ADT_A30	A30, A34, A35, A36, A46, A47, A48, A49
+HL7	Message structure	0354	ADT_A37	A37
+HL7	Message structure	0354	ADT_A38	A38
+HL7	Message structure	0354	ADT_A39	A39, A40, A41, A42
+HL7	Message structure	0354	ADT_A43	A43, A44
+HL7	Message structure	0354	ADT_A45	A45
+HL7	Message structure	0354	ADT_A50	A50, A51
+HL7	Message structure	0354	ADT_A52	A52, A53, A55
+HL7	Message structure	0354	ADT_A54	A54
+HL7	Message structure	0354	ADT_A60	A60
+HL7	Message structure	0354	ADT_A61	A61, A62
+HL7	Message structure	0354	BAR_P01	P01
+HL7	Message structure	0354	BAR_P02	P02
+HL7	Message structure	0354	BAR_P05	P05
+HL7	Message structure	0354	BAR_P06	P06
+HL7	Message structure	0354	BAR_P10	P10
+HL7	Message structure	0354	CRM_C01	C01, C02, C03, C04, C05, C06, C07, C08
+HL7	Message structure	0354	CSU_C09	C09, C10, C11, C12
+HL7	Message structure	0354	DFT_P03	P03
+HL7	Message structure	0354	DOC_T12	T12
+HL7	Message structure	0354	DSR_P04	P04
+HL7	Message structure	0354	DSR_Q01	Q01
+HL7	Message structure	0354	DSR_Q03	Q03
+HL7	Message structure	0354	EAC_U07	U07
+HL7	Message structure	0354	EAN_U09	U09
+HL7	Message structure	0354	EAR_U08	U08
+HL7	Message structure	0354	EDR_R07	R07
+HL7	Message structure	0354	EQQ_Q04	Q04
+HL7	Message structure	0354	ERP_R09	R09
+HL7	Message structure	0354	ESR_U02	U02
+HL7	Message structure	0354	ESU_U01	U01
+HL7	Message structure	0354	INR_U06	U06
+HL7	Message structure	0354	INU_U05	U05
+HL7	Message structure	0354	LSU_U12	U12, U13
+HL7	Message structure	0354	MDM_T01	T01, T03, T05, T07, T09, T11
+HL7	Message structure	0354	MDM_T02	T02, T04, T06, T08, T10
+HL7	Message structure	0354	MFD_MFA	MFA
+HL7	Message structure	0354	MFK_M01	M01, M02, M03, M04, M05, M06, M07, M08, M09, M10, M11
+HL7	Message structure	0354	MFN_M01	M01
+HL7	Message structure	0354	MFN_M02	M02
+HL7	Message structure	0354	MFN_M03	M03
+HL7	Message structure	0354	MFN_M04	M04
+HL7	Message structure	0354	MFN_M05	M05
+HL7	Message structure	0354	MFN_M06	M06
+HL7	Message structure	0354	MFN_M07	M07
+HL7	Message structure	0354	MFN_M08	M08
+HL7	Message structure	0354	MFN_M09	M09
+HL7	Message structure	0354	MFN_M10	M10
+HL7	Message structure	0354	MFN_M11	M11
+HL7	Message structure	0354	MFN_M12	M12
+HL7	Message structure	0354	MFQ_M01	M01, M02, M03, M04, M05, M06
+HL7	Message structure	0354	MFR_M01	M01, M02, M03, M04, M05, M06
+HL7	Message structure	0354	NMD_N02	N02
+HL7	Message structure	0354	NMQ_N01	N01
+HL7	Message structure	0354	NMR_N01	N01
+HL7	Message structure	0354	OMD_O03	O03
+HL7	Message structure	0354	OMG_O19	O19
+HL7	Message structure	0354	OML_O21	O21
+HL7	Message structure	0354	OMN_O07	O07
+HL7	Message structure	0354	OMP_O09	O09
+HL7	Message structure	0354	OMS_O05	O05
+HL7	Message structure	0354	ORD_O04	O04
+HL7	Message structure	0354	ORF_R04	R04
+HL7	Message structure	0354	ORG_O20	O20
+HL7	Message structure	0354	ORL_O22	O22
+HL7	Message structure	0354	ORM_O01	O01
+HL7	Message structure	0354	ORN_O08	O08
+HL7	Message structure	0354	ORP_O10	O10
+HL7	Message structure	0354	ORR_O02	O02
+HL7	Message structure	0354	ORS_O06	O06
+HL7	Message structure	0354	ORU_R01	R01
+HL7	Message structure	0354	ORU_W01	W01
+HL7	Message structure	0354	OSQ_Q06	Q06
+HL7	Message structure	0354	OSR_Q06	Q06
+HL7	Message structure	0354	OUL_R21	R21
+HL7	Message structure	0354	PEX_P07	P07, P08
+HL7	Message structure	0354	PGL_PC6	PC6, PC7, PC8
+HL7	Message structure	0354	PMU_B01	B01, B02
+HL7	Message structure	0354	PMU_B03	B03
+HL7	Message structure	0354	PMU_B04	B04, B05
+HL7	Message structure	0354	PPG_PCG	PCC, PCG, PCH, PCJ
+HL7	Message structure	0354	PPP_PCB	PCB, PCD
+HL7	Message structure	0354	PPR_PC1	PC1, PC2, PC3
+HL7	Message structure	0354	PPT_PCL	PCL
+HL7	Message structure	0354	PPV_PCA	PCA
+HL7	Message structure	0354	PRR_PC5	PC5
+HL7	Message structure	0354	PTR_PCF	PCF
+HL7	Message structure	0354	QBP_Q11	Q11
+HL7	Message structure	0354	QBP_Q13	Q13
+HL7	Message structure	0354	QBP_Q15	Q15
+HL7	Message structure	0354	QBP_Q21	Q21, Q22, Q23, Q24, Q25
+HL7	Message structure	0354	QCK_Q02	Q02
+HL7	Message structure	0354	QCN_J01	J01, J02
+HL7	Message structure	0354	QRF_W02	W02
+HL7	Message structure	0354	QRY_A19	A19
+HL7	Message structure	0354	QRY_PC4	PC4, PC9, PCE, PCK
+HL7	Message structure	0354	QRY_Q01	Q01
+HL7	Message structure	0354	QRY_Q02	Q02
+HL7	Message structure	0354	QRY_R02	R02
+HL7	Message structure	0354	QRY_T12	T12
+HL7	Message structure	0354	QSB_Q16	Q16
+HL7	Message structure	0354	QVR_Q17	Q17
+HL7	Message structure	0354	RAR_RAR	RAR
+HL7	Message structure	0354	RAS_O17	O17
+HL7	Message structure	0354	RCI_I05	I05
+HL7	Message structure	0354	RCL_I06	I06
+HL7	Message structure	0354	RDE_O11	O11
+HL7	Message structure	0354	RDR_RDR	RDR
+HL7	Message structure	0354	RDS_O13	O13
+HL7	Message structure	0354	RDY_K15	K15
+HL7	Message structure	0354	REF_I12	I12, I13, I14, I15
+HL7	Message structure	0354	RER_RER	RER
+HL7	Message structure	0354	RGR_RGR	RGR
+HL7	Message structure	0354	RGV_O15	O15
+HL7	Message structure	0354	ROR_ROR	ROR
+HL7	Message structure	0354	RPA_I08	I08, I09. I10, I11
+HL7	Message structure	0354	RPI_I01	I01, I04
+HL7	Message structure	0354	RPI_I04	I04
+HL7	Message structure	0354	RPL_I02	I02
+HL7	Message structure	0354	RPR_I03	I03
+HL7	Message structure	0354	RQA_I08	I08, I09, I10, I11
+HL7	Message structure	0354	RQC_I05	I05, I06
+HL7	Message structure	0354	RQI_I01	I01, I02, I03, I07
+HL7	Message structure	0354	RQP_I04	I04
+HL7	Message structure	0354	RQQ_Q09	Q09
+HL7	Message structure	0354	RRA_O02	O02 (backwards compatibility)
+HL7	Message structure	0354	RRA_O18	O18
+HL7	Message structure	0354	RRD_O14	O14
+HL7	Message structure	0354	RRE_O02	O02 (backwards compatibility)
+HL7	Message structure	0354	RRE_O12	O12
+HL7	Message structure	0354	RRG_O16	O16
+HL7	Message structure	0354	RRI_I12	I12, I13, I14, I15
+HL7	Message structure	0354	RSP_K11	K11
+HL7	Message structure	0354	RSP_K21	K21
+HL7	Message structure	0354	RSP_K22	K22
+HL7	Message structure	0354	RSP_K23	K23, K24
+HL7	Message structure	0354	RSP_K24	K24
+HL7	Message structure	0354	RSP_K25	K25
+HL7	Message structure	0354	RTB_K13	K13
+HL7	Message structure	0354	SIU_S12	S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23, S24, S26
+HL7	Message structure	0354	SPQ_Q08	Q08
+HL7	Message structure	0354	SQM_S25	S25
+HL7	Message structure	0354	SQR_S25	S25
+HL7	Message structure	0354	SRM_S01	S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11
+HL7	Message structure	0354	SRR_S01	S01, S02, S03, S04, S05, S06, S07, S08, S09, S10, S11
+HL7	Message structure	0354	SSR_U04	U04
+HL7	Message structure	0354	SSU_U03	U03
+HL7	Message structure	0354	SUR_P09	P09
+HL7	Message structure	0354	TBR_R08	R08
+HL7	Message structure	0354	TCU_U10	U10, U11
+HL7	Message structure	0354	UDM_Q05	Q05
+HL7	Message structure	0354	VQQ_Q07	Q07
+HL7	Message structure	0354	VXQ_V01	V01
+HL7	Message structure	0354	VXR_V03	V03
+HL7	Message structure	0354	VXU_V04	V04
+HL7	Message structure	0354	VXX_V02	V02

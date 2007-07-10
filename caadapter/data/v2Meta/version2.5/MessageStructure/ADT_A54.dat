@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A54
+Trigger Description=ADT/ACK - Change attending doctor
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { ROL } ] PV1 [ PV2 ] [ { ROL } ]
+Return Message=ACK^A54
+Called by=

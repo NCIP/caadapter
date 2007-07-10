@@ -1,0 +1,7 @@
+Message Type=TCU
+Message Type Name=Automated equipment test code settings update message
+Trigger Event=U10
+Trigger Description=TCU/ACK _ Automated equipment test code settings update
+Message Structure=MSH [ { SFT } ] EQU { !TEST_CONFIGURATION! [ SPM ] { TCC } } [ ROL ]
+Return Message=ACK^U10
+Called by=

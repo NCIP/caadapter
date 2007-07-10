@@ -1,0 +1,11 @@
+HL7	Substance status	0383	CE	Calibration Error
+HL7	Substance status	0383	CW	Calibration Warning
+HL7	Substance status	0383	EE	Expired Error
+HL7	Substance status	0383	EW	Expired Warning
+HL7	Substance status	0383	NE	Not Available Error
+HL7	Substance status	0383	NW	Not Available Warning
+HL7	Substance status	0383	OE	Other Error
+HL7	Substance status	0383	OK	OK Status
+HL7	Substance status	0383	OW	Other Warning
+HL7	Substance status	0383	QE	QC Error
+HL7	Substance status	0383	QW	QC Warning

@@ -1,0 +1,340 @@
+HL7	Specimen Source Codes	0070	ABS	Abscess
+HL7	Specimen Source Codes	0070	ACNE	Tissue/ Acne
+HL7	Specimen Source Codes	0070	ACNFLD	Fluid/ Acne
+HL7	Specimen Source Codes	0070	AIRS	Air Sample
+HL7	Specimen Source Codes	0070	ALL	Allograft
+HL7	Specimen Source Codes	0070	AMN	Amniotic fluid
+HL7	Specimen Source Codes	0070	AMP	Amputation
+HL7	Specimen Source Codes	0070	ANGI	Catheter Tip/ Angio
+HL7	Specimen Source Codes	0070	ARTC	Catheter Tip/ Arterial
+HL7	Specimen Source Codes	0070	ASERU	Serum/ Acute
+HL7	Specimen Source Codes	0070	ASP	Aspirate
+HL7	Specimen Source Codes	0070	ATTE	Environmental/ Autoclave Ampule
+HL7	Specimen Source Codes	0070	AUTOC	Environment/ Attest
+HL7	Specimen Source Codes	0070	AUTP	Autopsy
+HL7	Specimen Source Codes	0070	BBL	Blood bag
+HL7	Specimen Source Codes	0070	BCYST	Cyst/ Baker`s
+HL7	Specimen Source Codes	0070	BDY	Whole body
+HL7	Specimen Source Codes	0070	BIFL	Bile fluid
+HL7	Specimen Source Codes	0070	BITE	Bite
+HL7	Specimen Source Codes	0070	BLD	Whole blood
+HL7	Specimen Source Codes	0070	BLDA	Blood  arterial
+HL7	Specimen Source Codes	0070	BLDC	Blood  capillary
+HL7	Specimen Source Codes	0070	BLDCO	Cord blood
+HL7	Specimen Source Codes	0070	BLDV	Blood  venous
+HL7	Specimen Source Codes	0070	BLEB	Bleb
+HL7	Specimen Source Codes	0070	BLIST	Blister
+HL7	Specimen Source Codes	0070	BOIL	Boil
+HL7	Specimen Source Codes	0070	BON	Bone
+HL7	Specimen Source Codes	0070	BOWL	Bowel contents
+HL7	Specimen Source Codes	0070	BPH	Basophils
+HL7	Specimen Source Codes	0070	BPU	Blood product unit
+HL7	Specimen Source Codes	0070	BRN	Burn
+HL7	Specimen Source Codes	0070	BRO	Bronchial
+HL7	Specimen Source Codes	0070	BRSH	Brush
+HL7	Specimen Source Codes	0070	BRTH	Breath (use EXHLD)
+HL7	Specimen Source Codes	0070	BRUS	Brushing
+HL7	Specimen Source Codes	0070	BUB	Bubo
+HL7	Specimen Source Codes	0070	BULLA	Bulla/Bullae
+HL7	Specimen Source Codes	0070	BX	Biopsy
+HL7	Specimen Source Codes	0070	CALC	Calculus (=Stone)
+HL7	Specimen Source Codes	0070	CARBU	Carbuncle
+HL7	Specimen Source Codes	0070	CAT	Catheter
+HL7	Specimen Source Codes	0070	CBITE	Bite/ Cat
+HL7	Specimen Source Codes	0070	CDM	Cardiac muscle
+HL7	Specimen Source Codes	0070	CLIPP	Clippings
+HL7	Specimen Source Codes	0070	CNJT	Conjunctiva
+HL7	Specimen Source Codes	0070	CNL	Cannula
+HL7	Specimen Source Codes	0070	COL	Colostrum
+HL7	Specimen Source Codes	0070	CONE	Biospy/ Cone
+HL7	Specimen Source Codes	0070	CSCR	Scratch/ Cat
+HL7	Specimen Source Codes	0070	CSERU	Serum/ Convalescent
+HL7	Specimen Source Codes	0070	CSF	Cerebral spinal fluid
+HL7	Specimen Source Codes	0070	CSITE	Catheter Insertion Site
+HL7	Specimen Source Codes	0070	CSMY	Fluid/  Cystostomy Tube
+HL7	Specimen Source Codes	0070	CST	Fluid/ Cyst
+HL7	Specimen Source Codes	0070	CSVR	Blood/ Cell Saver
+HL7	Specimen Source Codes	0070	CTP	Catheter tip
+HL7	Specimen Source Codes	0070	CUR	Curettage
+HL7	Specimen Source Codes	0070	CVM	Cervical mucus
+HL7	Specimen Source Codes	0070	CVPS	Site/ CVP
+HL7	Specimen Source Codes	0070	CVPT	Catheter Tip/ CVP
+HL7	Specimen Source Codes	0070	CVX	Cervix
+HL7	Specimen Source Codes	0070	CYN	Nodule/ Cystic
+HL7	Specimen Source Codes	0070	CYST	Cyst
+HL7	Specimen Source Codes	0070	DBITE	Bite/ Dog
+HL7	Specimen Source Codes	0070	DCS	Sputum/ Deep Cough
+HL7	Specimen Source Codes	0070	DEC	Ulcer/ Decubitus
+HL7	Specimen Source Codes	0070	DEION	Environmental/ Water  (Deionized)
+HL7	Specimen Source Codes	0070	DIA	Dialysate
+HL7	Specimen Source Codes	0070	DIAF	Dialysis fluid
+HL7	Specimen Source Codes	0070	DISCHG	Discharge
+HL7	Specimen Source Codes	0070	DIV	Diverticulum
+HL7	Specimen Source Codes	0070	DOSE	Dose med or substance
+HL7	Specimen Source Codes	0070	DRN	Drain
+HL7	Specimen Source Codes	0070	DRNG	Drainage/ Tube
+HL7	Specimen Source Codes	0070	DRNGP	Drainage/ Penrose
+HL7	Specimen Source Codes	0070	DUFL	Duodenal fluid
+HL7	Specimen Source Codes	0070	EAR	Ear
+HL7	Specimen Source Codes	0070	EARW	Ear wax (cerumen)
+HL7	Specimen Source Codes	0070	EBRUSH	Brush/ Esophageal
+HL7	Specimen Source Codes	0070	EEYE	Environmental/ Eye Wash
+HL7	Specimen Source Codes	0070	EFF	Environmental/ Effluent
+HL7	Specimen Source Codes	0070	EFFUS	Effusion
+HL7	Specimen Source Codes	0070	EFOD	Environmental/ Food
+HL7	Specimen Source Codes	0070	EISO	Environmental/ Isolette
+HL7	Specimen Source Codes	0070	ELT	Electrode
+HL7	Specimen Source Codes	0070	ENDC	Endocardium
+HL7	Specimen Source Codes	0070	ENDM	Endometrium
+HL7	Specimen Source Codes	0070	ENVIR	Environmental/ Unidentified Substance
+HL7	Specimen Source Codes	0070	EOS	Eosinophils
+HL7	Specimen Source Codes	0070	EOTH	Environmental/ Other Substance
+HL7	Specimen Source Codes	0070	ESOI	Environmental/ Soil
+HL7	Specimen Source Codes	0070	ESOS	Environmental/ Solution (Sterile)
+HL7	Specimen Source Codes	0070	ETA	Aspirate/  Endotrach
+HL7	Specimen Source Codes	0070	ETTP	Catheter Tip/ Endotracheal
+HL7	Specimen Source Codes	0070	ETTUB	Tube/ Endotracheal
+HL7	Specimen Source Codes	0070	EWHI	Environmental/ Whirlpool
+HL7	Specimen Source Codes	0070	EXG	Exhaled gas (=breath)
+HL7	Specimen Source Codes	0070	EXS	Shunt/ External
+HL7	Specimen Source Codes	0070	EXUDTE	Exudate
+HL7	Specimen Source Codes	0070	EYE	Eye
+HL7	Specimen Source Codes	0070	FAW	Environmental/ Water  (Well)
+HL7	Specimen Source Codes	0070	FBLOOD	Blood/ Fetal
+HL7	Specimen Source Codes	0070	FGA	Fluid/  Abdomen
+HL7	Specimen Source Codes	0070	FIB	Fibroblasts
+HL7	Specimen Source Codes	0070	FIST	Fistula
+HL7	Specimen Source Codes	0070	FLD	Fluid/ Other
+HL7	Specimen Source Codes	0070	FLT	Filter
+HL7	Specimen Source Codes	0070	FLU	Body fluid/ unsp
+HL7	Specimen Source Codes	0070	FLUID	Fluid
+HL7	Specimen Source Codes	0070	FOLEY	Catheter Tip/ Foley
+HL7	Specimen Source Codes	0070	FRS	Fluid/ Respiratory
+HL7	Specimen Source Codes	0070	FSCLP	Scalp/ Fetal
+HL7	Specimen Source Codes	0070	FUR	Furuncle
+HL7	Specimen Source Codes	0070	GAS	Gas
+HL7	Specimen Source Codes	0070	GASA	Aspirate/ Gastric
+HL7	Specimen Source Codes	0070	GASAN	Antrum/ Gastric
+HL7	Specimen Source Codes	0070	GASBR	Brushing/ Gastric
+HL7	Specimen Source Codes	0070	GASD	Drainage/ Gastric
+HL7	Specimen Source Codes	0070	GAST	Gastric fluid/contents
+HL7	Specimen Source Codes	0070	GEN	Genital
+HL7	Specimen Source Codes	0070	GENC	Genital cervix
+HL7	Specimen Source Codes	0070	GENL	Genital lochia
+HL7	Specimen Source Codes	0070	GENV	Genital vaginal
+HL7	Specimen Source Codes	0070	GRAFT	Graft
+HL7	Specimen Source Codes	0070	GRANU	Granuloma
+HL7	Specimen Source Codes	0070	GROSH	Catheter/ Groshong
+HL7	Specimen Source Codes	0070	GSOL	Solution/ Gastrostomy
+HL7	Specimen Source Codes	0070	GSPEC	Biopsy/ Gastric
+HL7	Specimen Source Codes	0070	GT	Tube/ Gastric
+HL7	Specimen Source Codes	0070	GTUBE	Drainage Tube/ Drainage (Gastrostomy)
+HL7	Specimen Source Codes	0070	HAR	Hair
+HL7	Specimen Source Codes	0070	HBITE	Bite/ Human
+HL7	Specimen Source Codes	0070	HBLUD	Blood/ Autopsy
+HL7	Specimen Source Codes	0070	HEMAQ	Catheter Tip/ Hemaquit
+HL7	Specimen Source Codes	0070	HEMO	Catheter Tip/ Hemovac
+HL7	Specimen Source Codes	0070	HERNI	Tissue/ Herniated
+HL7	Specimen Source Codes	0070	HEV	Drain/ Hemovac
+HL7	Specimen Source Codes	0070	HIC	Catheter/ Hickman
+HL7	Specimen Source Codes	0070	HYDC	Fluid/ Hydrocele
+HL7	Specimen Source Codes	0070	IBITE	Bite/ Insect
+HL7	Specimen Source Codes	0070	ICYST	Cyst/ Inclusion
+HL7	Specimen Source Codes	0070	IDC	Catheter Tip/ Indwelling
+HL7	Specimen Source Codes	0070	IHG	Inhaled Gas
+HL7	Specimen Source Codes	0070	ILEO	Drainage/ Ileostomy
+HL7	Specimen Source Codes	0070	ILLEG	Source of Specimen Is Illegible
+HL7	Specimen Source Codes	0070	IMP	Implant
+HL7	Specimen Source Codes	0070	INCI	Site/ Incision/Surgical
+HL7	Specimen Source Codes	0070	INFIL	Infiltrate
+HL7	Specimen Source Codes	0070	INS	Insect
+HL7	Specimen Source Codes	0070	INTRD	Catheter Tip/ Introducer
+HL7	Specimen Source Codes	0070	ISLT	Isolate
+HL7	Specimen Source Codes	0070	IT	Intubation tube
+HL7	Specimen Source Codes	0070	IUD	Intrauterine Device
+HL7	Specimen Source Codes	0070	IVCAT	Catheter Tip/ IV
+HL7	Specimen Source Codes	0070	IVFLD	Fluid/ IV
+HL7	Specimen Source Codes	0070	IVTIP	Tubing Tip/ IV
+HL7	Specimen Source Codes	0070	JEJU	Drainage/ Jejunal
+HL7	Specimen Source Codes	0070	JNTFLD	Fluid/ Joint
+HL7	Specimen Source Codes	0070	JP	Drainage/ Jackson Pratt
+HL7	Specimen Source Codes	0070	KELOI	Lavage
+HL7	Specimen Source Codes	0070	KIDFLD	Fluid/ Kidney
+HL7	Specimen Source Codes	0070	LAM	Lamella
+HL7	Specimen Source Codes	0070	LAVG	Lavage/ Bronhial
+HL7	Specimen Source Codes	0070	LAVGG	Lavage/ Gastric
+HL7	Specimen Source Codes	0070	LAVGP	Lavage/ Peritoneal
+HL7	Specimen Source Codes	0070	LAVPG	Lavage/ Pre-Bronch
+HL7	Specimen Source Codes	0070	LENS1	Contact Lens
+HL7	Specimen Source Codes	0070	LENS2	Contact Lens Case
+HL7	Specimen Source Codes	0070	LESN	Lesion
+HL7	Specimen Source Codes	0070	LIQ	Liquid NOS
+HL7	Specimen Source Codes	0070	LIQO	Liquid/ Other
+HL7	Specimen Source Codes	0070	LN	Line
+HL7	Specimen Source Codes	0070	LNA	Line arterial
+HL7	Specimen Source Codes	0070	LNV	Line venous
+HL7	Specimen Source Codes	0070	LSAC	Fluid/ Lumbar Sac
+HL7	Specimen Source Codes	0070	LYM	Lymphocytes
+HL7	Specimen Source Codes	0070	MAC	Macrophages
+HL7	Specimen Source Codes	0070	MAHUR	Catheter Tip/ Makurkour
+HL7	Specimen Source Codes	0070	MAR	Marrow
+HL7	Specimen Source Codes	0070	MASS	Mass
+HL7	Specimen Source Codes	0070	MBLD	Menstrual blood
+HL7	Specimen Source Codes	0070	MEC	Meconium
+HL7	Specimen Source Codes	0070	MILK	Breast milk
+HL7	Specimen Source Codes	0070	MLK	Milk
+HL7	Specimen Source Codes	0070	MUCOS	Mucosa
+HL7	Specimen Source Codes	0070	MUCUS	Mucus
+HL7	Specimen Source Codes	0070	NAIL	Nail
+HL7	Specimen Source Codes	0070	NASDR	Drainage/ Nasal
+HL7	Specimen Source Codes	0070	NEDL	Needle
+HL7	Specimen Source Codes	0070	NEPH	Site/ Nephrostomy
+HL7	Specimen Source Codes	0070	NGASP	Aspirate/ Nasogastric
+HL7	Specimen Source Codes	0070	NGAST	Drainage/ Nasogastric
+HL7	Specimen Source Codes	0070	NGS	Site/ Naso/Gastric
+HL7	Specimen Source Codes	0070	NODUL	Nodule(s)
+HL7	Specimen Source Codes	0070	NOS	Nose (nasal passage)
+HL7	Specimen Source Codes	0070	NSECR	Secretion/ Nasal
+HL7	Specimen Source Codes	0070	ORH	Other
+HL7	Specimen Source Codes	0070	ORL	Lesion/ Oral
+HL7	Specimen Source Codes	0070	OTH	Source/ Other
+HL7	Specimen Source Codes	0070	PACEM	Pacemaker
+HL7	Specimen Source Codes	0070	PAFL	Pancreatic fluid
+HL7	Specimen Source Codes	0070	PAT	Patient
+HL7	Specimen Source Codes	0070	PCFL	Fluid/ Pericardial
+HL7	Specimen Source Codes	0070	PDSIT	Site/ Peritoneal Dialysis
+HL7	Specimen Source Codes	0070	PDTS	Site/ Peritoneal Dialysis Tunnel
+HL7	Specimen Source Codes	0070	PELVA	Abscess/ Pelvic
+HL7	Specimen Source Codes	0070	PENIL	Lesion/ Penile
+HL7	Specimen Source Codes	0070	PERIA	Abscess/ Perianal
+HL7	Specimen Source Codes	0070	PILOC	Cyst/ Pilonidal
+HL7	Specimen Source Codes	0070	PINS	Site/ Pin
+HL7	Specimen Source Codes	0070	PIS	Site/ Pacemaker Insetion
+HL7	Specimen Source Codes	0070	PLAN	Plant Material
+HL7	Specimen Source Codes	0070	PLAS	Plasma
+HL7	Specimen Source Codes	0070	PLB	Plasma bag
+HL7	Specimen Source Codes	0070	PLC	Placenta
+HL7	Specimen Source Codes	0070	PLEVS	Serum/ Peak Level
+HL7	Specimen Source Codes	0070	PLR	Pleural fluid (thoracentesis fld)
+HL7	Specimen Source Codes	0070	PMN	Polymorphonuclear neutrophils
+HL7	Specimen Source Codes	0070	PND	Drainage/ Penile
+HL7	Specimen Source Codes	0070	POL	Polyps
+HL7	Specimen Source Codes	0070	POPGS	Graft Site/ Popliteal
+HL7	Specimen Source Codes	0070	POPLG	Graft/ Popliteal
+HL7	Specimen Source Codes	0070	POPLV	Site/ Popliteal Vein
+HL7	Specimen Source Codes	0070	PORTA	Catheter/ Porta
+HL7	Specimen Source Codes	0070	PPP	Platelet poor plasma
+HL7	Specimen Source Codes	0070	PROST	Prosthetic Device
+HL7	Specimen Source Codes	0070	PRP	Platelet rich plasma
+HL7	Specimen Source Codes	0070	PRT	Peritoneal fluid /ascites
+HL7	Specimen Source Codes	0070	PSC	Pseudocyst
+HL7	Specimen Source Codes	0070	PUNCT	Wound/ Puncture
+HL7	Specimen Source Codes	0070	PUS	Pus
+HL7	Specimen Source Codes	0070	PUSFR	Pustule
+HL7	Specimen Source Codes	0070	PUST	Pus
+HL7	Specimen Source Codes	0070	QC3	Quality Control
+HL7	Specimen Source Codes	0070	RANDU	Urine/ Random
+HL7	Specimen Source Codes	0070	RBC	Erythrocytes
+HL7	Specimen Source Codes	0070	RBITE	Bite/ Reptile
+HL7	Specimen Source Codes	0070	RECT	Drainage/ Rectal
+HL7	Specimen Source Codes	0070	RECTA	Abscess/ Rectal
+HL7	Specimen Source Codes	0070	RENALC	Cyst/ Renal
+HL7	Specimen Source Codes	0070	RENC	Fluid/ Renal Cyst
+HL7	Specimen Source Codes	0070	RES	Respiratory
+HL7	Specimen Source Codes	0070	RT	Route of medicine
+HL7	Specimen Source Codes	0070	SAL	Saliva
+HL7	Specimen Source Codes	0070	SCAR	Tissue/ Keloid (Scar)
+HL7	Specimen Source Codes	0070	SCLV	Catheter Tip/ Subclavian
+HL7	Specimen Source Codes	0070	SCROA	Abscess/ Scrotal
+HL7	Specimen Source Codes	0070	SECRE	Secretion(s)
+HL7	Specimen Source Codes	0070	SER	Serum
+HL7	Specimen Source Codes	0070	SHU	Site/ Shunt
+HL7	Specimen Source Codes	0070	SHUNF	Fluid/ Shunt
+HL7	Specimen Source Codes	0070	SHUNT	Shunt
+HL7	Specimen Source Codes	0070	SITE	Site
+HL7	Specimen Source Codes	0070	SKBP	Biopsy/ Skin
+HL7	Specimen Source Codes	0070	SKM	Skeletal muscle
+HL7	Specimen Source Codes	0070	SKN	Skin
+HL7	Specimen Source Codes	0070	SMM	Mass/ Sub-Mandibular
+HL7	Specimen Source Codes	0070	SMN	Seminal fluid
+HL7	Specimen Source Codes	0070	SNV	Synovial fluid (Joint fluid)
+HL7	Specimen Source Codes	0070	SPRM	Spermatozoa
+HL7	Specimen Source Codes	0070	SPRP	Catheter Tip/ Suprapubic
+HL7	Specimen Source Codes	0070	SPRPB	Cathether Tip/ Suprapubic
+HL7	Specimen Source Codes	0070	SPS	Environmental/ Spore Strip
+HL7	Specimen Source Codes	0070	SPT	Sputum
+HL7	Specimen Source Codes	0070	SPTC	Sputum - coughed
+HL7	Specimen Source Codes	0070	SPTT	Sputum - tracheal aspirate
+HL7	Specimen Source Codes	0070	SPUT1	Sputum/ Simulated
+HL7	Specimen Source Codes	0070	SPUTIN	Sputum/ Inducted
+HL7	Specimen Source Codes	0070	SPUTSP	Sputum/ Spontaneous
+HL7	Specimen Source Codes	0070	STER	Environmental/ Sterrad
+HL7	Specimen Source Codes	0070	STL	Stool = Fecal
+HL7	Specimen Source Codes	0070	STON	Stone (use CALC)
+HL7	Specimen Source Codes	0070	STONE	Stone/ Kidney
+HL7	Specimen Source Codes	0070	SUBMA	Abscess/ Submandibular
+HL7	Specimen Source Codes	0070	SUBMX	Abscess/ Submaxillary
+HL7	Specimen Source Codes	0070	SUMP	Drainage/ Sump
+HL7	Specimen Source Codes	0070	SUP	Suprapubic Tap
+HL7	Specimen Source Codes	0070	SUTUR	Suture
+HL7	Specimen Source Codes	0070	SWGZ	Catheter Tip/ Swan Gantz
+HL7	Specimen Source Codes	0070	SWT	Sweat
+HL7	Specimen Source Codes	0070	TASP	Aspirate/ Tracheal
+HL7	Specimen Source Codes	0070	TEAR	Tears
+HL7	Specimen Source Codes	0070	THRB	Thrombocyte (platelet)
+HL7	Specimen Source Codes	0070	THRT	Throat
+HL7	Specimen Source Codes	0070	TISG	Tissue gall bladder
+HL7	Specimen Source Codes	0070	TISPL	Tissue placenta
+HL7	Specimen Source Codes	0070	TISS	Tissue
+HL7	Specimen Source Codes	0070	TISU	Tissue ulcer
+HL7	Specimen Source Codes	0070	TLC	Cathether Tip/ Triple Lumen
+HL7	Specimen Source Codes	0070	TLGI	Tissue large intestine
+HL7	Specimen Source Codes	0070	TLNG	Tissue lung
+HL7	Specimen Source Codes	0070	TRAC	Site/ Tracheostomy
+HL7	Specimen Source Codes	0070	TRANS	Transudate
+HL7	Specimen Source Codes	0070	TSERU	Serum/ Trough
+HL7	Specimen Source Codes	0070	TSMI	Tissue small intestine
+HL7	Specimen Source Codes	0070	TSTES	Abscess/ Testicular
+HL7	Specimen Source Codes	0070	TTRA	Aspirate/ Transtracheal
+HL7	Specimen Source Codes	0070	TUB	Tube NOS
+HL7	Specimen Source Codes	0070	TUBES	Tubes
+HL7	Specimen Source Codes	0070	TUMOR	Tumor
+HL7	Specimen Source Codes	0070	TZANC	Smear/ Tzanck
+HL7	Specimen Source Codes	0070	UDENT	Source/ Unidentified
+HL7	Specimen Source Codes	0070	ULC	Ulcer
+HL7	Specimen Source Codes	0070	UMB	Umbilical blood
+HL7	Specimen Source Codes	0070	UMED	Unknown medicine
+HL7	Specimen Source Codes	0070	UR	Urine
+HL7	Specimen Source Codes	0070	URC	Urine clean catch
+HL7	Specimen Source Codes	0070	URINB	Urine/ Bladder Washings
+HL7	Specimen Source Codes	0070	URINC	Urine/ Catheterized
+HL7	Specimen Source Codes	0070	URINM	Urine/ Midstream
+HL7	Specimen Source Codes	0070	URINN	Urine/ Nephrostomy
+HL7	Specimen Source Codes	0070	URINP	Urine/ Pedibag
+HL7	Specimen Source Codes	0070	URNS	Urine sediment
+HL7	Specimen Source Codes	0070	URT	Urine catheter
+HL7	Specimen Source Codes	0070	URTH	Urethra
+HL7	Specimen Source Codes	0070	USCOP	Urine/ Cystoscopy
+HL7	Specimen Source Codes	0070	USPEC	Source/ Unspecified
+HL7	Specimen Source Codes	0070	USUB	Unknown substance
+HL7	Specimen Source Codes	0070	VASTIP	Catheter Tip/ Vas
+HL7	Specimen Source Codes	0070	VENT	Catheter Tip/ Ventricular
+HL7	Specimen Source Codes	0070	VITF	Vitreous Fluid
+HL7	Specimen Source Codes	0070	VOM	Vomitus
+HL7	Specimen Source Codes	0070	WASH	Wash
+HL7	Specimen Source Codes	0070	WASI	Washing/ e.g. bronchial washing
+HL7	Specimen Source Codes	0070	WAT	Water
+HL7	Specimen Source Codes	0070	WB	Blood/ Whole
+HL7	Specimen Source Codes	0070	WBC	Leukocytes
+HL7	Specimen Source Codes	0070	WEN	Wen
+HL7	Specimen Source Codes	0070	WICK	Wick
+HL7	Specimen Source Codes	0070	WND	Wound
+HL7	Specimen Source Codes	0070	WNDA	Wound abscess
+HL7	Specimen Source Codes	0070	WNDD	Wound drainage
+HL7	Specimen Source Codes	0070	WNDE	Wound exudate
+HL7	Specimen Source Codes	0070	WORM	Worm
+HL7	Specimen Source Codes	0070	WRT	Wart
+HL7	Specimen Source Codes	0070	WWA	Environmental/ Water
+HL7	Specimen Source Codes	0070	WWO	Environmental/ Water (Ocean)
+HL7	Specimen Source Codes	0070	WWT	Environmental/ Water  (Tap)
+HL7	Specimen Source Codes	0070	XXX	To be specified in another part of the message

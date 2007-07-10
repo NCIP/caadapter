@@ -1,0 +1,9 @@
+User	Dispense Type	0484	B	Trial Quantity Balance
+User	Dispense Type	0484	C	Compassionate Fill
+User	Dispense Type	0484	N	New/Renew - Full Fill
+User	Dispense Type	0484	P	New/Renew - Part Fill
+User	Dispense Type	0484	Q	Refill - Part Fill
+User	Dispense Type	0484	R	Refill - Full Fill
+User	Dispense Type	0484	S	Manufacturer Sample
+User	Dispense Type	0484	T	Trial Quantity
+User	Dispense Type	0484	Z	Non-Prescription Fill

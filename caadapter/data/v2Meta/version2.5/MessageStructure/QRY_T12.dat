@@ -1,0 +1,7 @@
+Message Type=QRY
+Message Type Name=Query/ original mode
+Trigger Event=T12
+Trigger Description=QRY/DOC - Document query
+Message Structure=MSH QRD [ QRF ]
+Return Message=DOC^T12
+Called by=

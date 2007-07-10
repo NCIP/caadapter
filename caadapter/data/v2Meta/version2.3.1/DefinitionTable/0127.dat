@@ -1,0 +1,8 @@
+User	Allergen type	0127	AA	Animal Allergy
+User	Allergen type	0127	DA	Drug allergy
+User	Allergen type	0127	EA	Environmental Allergy
+User	Allergen type	0127	FA	Food allergy
+User	Allergen type	0127	LA	Pollen Allergy
+User	Allergen type	0127	MA	Miscellaneous allergy
+User	Allergen type	0127	MC	Miscellaneous contraindication
+User	Allergen type	0127	PA	Plant Allergy

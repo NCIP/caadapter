@@ -1,0 +1,349 @@
+IN3	1	-1	-1	4	00502	SI	R		0				Set ID - IN3	Sequence ID	
+IN3	2	0	-1	250	00503	CX	O		0				Certification Number	Extended composite ID with check digit	
+IN3	2	1	-1	15		ST	R		0					String	ID number
+IN3	2	2	-1	1		ST			0					String	check digit
+IN3	2	3	-1	3		ID			0	0061				Coded values for HL7 tables	check digit scheme employed
+IN3	2	4	0	227		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+IN3	2	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+IN3	2	4	2	0		ST			0					String	universal ID
+IN3	2	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+IN3	2	5	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+IN3	2	6	0	227		HD			0					Hierarchic designator	assigning facility
+IN3	2	6	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+IN3	2	6	2	199		ST	C		0					String	universal ID
+IN3	2	6	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+IN3	2	7	-1	8		DT			0					Date	effective date
+IN3	2	8	-1	8		DT			0					Date	expiration date
+IN3	2	9	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+IN3	2	9	1	20		ST			0					String	identifier
+IN3	2	9	2	199		ST			0					String	text
+IN3	2	9	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	2	9	4	20		ST			0					String	alternate identifier
+IN3	2	9	5	199		ST			0					String	alternate text
+IN3	2	9	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	2	9	7	10		ST	C		0					String	coding system version ID
+IN3	2	9	8	10		ST			0					String	alternate coding system version ID
+IN3	2	9	9	199		ST			0					String	original text
+IN3	2	10	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+IN3	2	10	1	20		ST			0					String	identifier
+IN3	2	10	2	199		ST			0					String	text
+IN3	2	10	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	2	10	4	20		ST			0					String	alternate identifier
+IN3	2	10	5	199		ST			0					String	alternate text
+IN3	2	10	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	2	10	7	10		ST	C		0					String	coding system version ID
+IN3	2	10	8	10		ST			0					String	alternate coding system version ID
+IN3	2	10	9	199		ST			0					String	original text
+IN3	3	0	-1	250	00504	XCN	O	Y	0				Certified By	Extended composite ID number and name	
+IN3	3	1	-1	15		ST			0					String	ID number
+IN3	3	2	0	194		FN			0						family name
+IN3	3	2	1	50		ST	R		0					String	surname
+IN3	3	2	2	20		ST			0					String	own surname prefix
+IN3	3	2	3	50		ST			0					String	own surname
+IN3	3	2	4	20		ST			0					String	surname prefix from partner/spouse
+IN3	3	2	5	30		ST			0					String	surname from partner/spouse
+IN3	3	3	-1	30		ST			0					String	given name
+IN3	3	4	-1	30		ST			0					String	second and further given names or initial thereof
+IN3	3	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+IN3	3	6	-1	20		ST			0					String	prefix (e.g., DR)
+IN3	3	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+IN3	3	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+IN3	3	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+IN3	3	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+IN3	3	9	2	0		ST			0					String	universal ID
+IN3	3	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+IN3	3	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+IN3	3	11	-1	1		ST			0					String	identifier check digit
+IN3	3	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+IN3	3	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+IN3	3	14	0	227		HD			0					Hierarchic designator	assigning facility
+IN3	3	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+IN3	3	14	2	199		ST	C		0					String	universal ID
+IN3	3	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+IN3	3	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+IN3	3	16	0	483		CE			0	0448				Coded element	Name Context
+IN3	3	16	1	20		IS			0	0448				String	identifier
+IN3	3	16	2	199		ST			0					String	text
+IN3	3	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	3	16	4	20		ST			0					String	alternate identifier
+IN3	3	16	5	199		ST			0					String	alternate text
+IN3	3	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	3	17	0	53		DR	B		0					Date/time range	Name Validity Range
+IN3	3	17	1	26		TS			0					Time stamp	range start date/time
+IN3	3	17	2	26		TS			0					Time stamp	range end date/time
+IN3	3	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+IN3	3	19	-1	26		TS			0					Time stamp	Effective Date
+IN3	3	20	-1	26		TS			0					Time stamp	Expiration Date
+IN3	3	21	-1	199		ST			0					String	Professional Suffix
+IN3	3	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+IN3	3	22	1	20		ST			0					String	identifier
+IN3	3	22	2	199		ST			0					String	text
+IN3	3	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	3	22	4	20		ST			0					String	alternate identifier
+IN3	3	22	5	199		ST			0					String	alternate text
+IN3	3	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	3	22	7	10		ST	C		0					String	coding system version ID
+IN3	3	22	8	10		ST			0					String	alternate coding system version ID
+IN3	3	22	9	199		ST			0					String	original text
+IN3	3	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+IN3	3	23	1	20		ST			0					String	identifier
+IN3	3	23	2	199		ST			0					String	text
+IN3	3	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	3	23	4	20		ST			0					String	alternate identifier
+IN3	3	23	5	199		ST			0					String	alternate text
+IN3	3	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	3	23	7	10		ST	C		0					String	coding system version ID
+IN3	3	23	8	10		ST			0					String	alternate coding system version ID
+IN3	3	23	9	199		ST			0					String	original text
+IN3	4	-1	-1	1	00505	ID	O		0	0136			Certification Required	Coded values for HL7 tables	
+IN3	5	0	-1	23	00506	MOP	O		0				Penalty	money or percentage	
+IN3	5	1	-1	2		ID	R		0	0148				Coded values for HL7 tables	Money or Percentage Indicator
+IN3	5	2	-1	16		NM	R		0					Numeric	Money or Percentage Quantity
+IN3	5	3	-1	3		ID			0	ISO4217				Coded values for HL7 tables	 Currency Denomination
+IN3	6	-1	-1	26	00507	TS	O		0				Certification Date/Time	Time stamp	
+IN3	7	-1	-1	26	00508	TS	O		0				Certification Modify Date/Time	Time stamp	
+IN3	8	0	-1	250	00509	XCN	O	Y	0				Operator	Extended composite ID number and name	
+IN3	8	1	-1	15		ST			0					String	ID number
+IN3	8	2	0	194		FN			0						family name
+IN3	8	2	1	50		ST	R		0					String	surname
+IN3	8	2	2	20		ST			0					String	own surname prefix
+IN3	8	2	3	50		ST			0					String	own surname
+IN3	8	2	4	20		ST			0					String	surname prefix from partner/spouse
+IN3	8	2	5	30		ST			0					String	surname from partner/spouse
+IN3	8	3	-1	30		ST			0					String	given name
+IN3	8	4	-1	30		ST			0					String	second and further given names or initial thereof
+IN3	8	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+IN3	8	6	-1	20		ST			0					String	prefix (e.g., DR)
+IN3	8	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+IN3	8	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+IN3	8	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+IN3	8	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+IN3	8	9	2	0		ST			0					String	universal ID
+IN3	8	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+IN3	8	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+IN3	8	11	-1	1		ST			0					String	identifier check digit
+IN3	8	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+IN3	8	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+IN3	8	14	0	227		HD			0					Hierarchic designator	assigning facility
+IN3	8	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+IN3	8	14	2	199		ST	C		0					String	universal ID
+IN3	8	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+IN3	8	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+IN3	8	16	0	483		CE			0	0448				Coded element	Name Context
+IN3	8	16	1	20		IS			0	0448				String	identifier
+IN3	8	16	2	199		ST			0					String	text
+IN3	8	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	8	16	4	20		ST			0					String	alternate identifier
+IN3	8	16	5	199		ST			0					String	alternate text
+IN3	8	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	8	17	0	53		DR	B		0					Date/time range	Name Validity Range
+IN3	8	17	1	26		TS			0					Time stamp	range start date/time
+IN3	8	17	2	26		TS			0					Time stamp	range end date/time
+IN3	8	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+IN3	8	19	-1	26		TS			0					Time stamp	Effective Date
+IN3	8	20	-1	26		TS			0					Time stamp	Expiration Date
+IN3	8	21	-1	199		ST			0					String	Professional Suffix
+IN3	8	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+IN3	8	22	1	20		ST			0					String	identifier
+IN3	8	22	2	199		ST			0					String	text
+IN3	8	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	8	22	4	20		ST			0					String	alternate identifier
+IN3	8	22	5	199		ST			0					String	alternate text
+IN3	8	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	8	22	7	10		ST	C		0					String	coding system version ID
+IN3	8	22	8	10		ST			0					String	alternate coding system version ID
+IN3	8	22	9	199		ST			0					String	original text
+IN3	8	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+IN3	8	23	1	20		ST			0					String	identifier
+IN3	8	23	2	199		ST			0					String	text
+IN3	8	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	8	23	4	20		ST			0					String	alternate identifier
+IN3	8	23	5	199		ST			0					String	alternate text
+IN3	8	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	8	23	7	10		ST	C		0					String	coding system version ID
+IN3	8	23	8	10		ST			0					String	alternate coding system version ID
+IN3	8	23	9	199		ST			0					String	original text
+IN3	9	-1	-1	8	00510	DT	O		0				Certification Begin Date	Date	
+IN3	10	-1	-1	8	00511	DT	O		0				Certification End Date	Date	
+IN3	11	0	-1	6	00512	DTN	O		0				Days	day type and number	
+IN3	11	1	-1	2		IS	R		0	0149				Coded value for user-defined tables	day type
+IN3	11	2	-1	3		NM	R		0					Numeric	number of days
+IN3	12	0	-1	250	00513	CE	O		0	0233			Non-Concur Code/Description	Coded element	
+IN3	12	1	-1	20		IS			0	0233				String	identifier
+IN3	12	2	-1	199		ST			0					String	text
+IN3	12	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	12	4	-1	20		ST			0					String	alternate identifier
+IN3	12	5	-1	199		ST			0					String	alternate text
+IN3	12	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	13	-1	-1	26	00514	TS	O		0				Non-Concur Effective Date/Time	Time stamp	
+IN3	14	0	-1	250	00515	XCN	O	Y	0	0010			Physician Reviewer	Extended composite ID number and name	
+IN3	14	1	-1	15		ST			0					String	ID number
+IN3	14	2	0	194		FN			0						family name
+IN3	14	2	1	50		ST	R		0					String	surname
+IN3	14	2	2	20		ST			0					String	own surname prefix
+IN3	14	2	3	50		ST			0					String	own surname
+IN3	14	2	4	20		ST			0					String	surname prefix from partner/spouse
+IN3	14	2	5	30		ST			0					String	surname from partner/spouse
+IN3	14	3	-1	30		ST			0					String	given name
+IN3	14	4	-1	30		ST			0					String	second and further given names or initial thereof
+IN3	14	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+IN3	14	6	-1	20		ST			0					String	prefix (e.g., DR)
+IN3	14	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+IN3	14	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+IN3	14	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+IN3	14	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+IN3	14	9	2	0		ST			0					String	universal ID
+IN3	14	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+IN3	14	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+IN3	14	11	-1	1		ST			0					String	identifier check digit
+IN3	14	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+IN3	14	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+IN3	14	14	0	227		HD			0					Hierarchic designator	assigning facility
+IN3	14	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+IN3	14	14	2	199		ST	C		0					String	universal ID
+IN3	14	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+IN3	14	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+IN3	14	16	0	483		CE			0	0448				Coded element	Name Context
+IN3	14	16	1	20		IS			0	0448				String	identifier
+IN3	14	16	2	199		ST			0					String	text
+IN3	14	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	14	16	4	20		ST			0					String	alternate identifier
+IN3	14	16	5	199		ST			0					String	alternate text
+IN3	14	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	14	17	0	53		DR	B		0					Date/time range	Name Validity Range
+IN3	14	17	1	26		TS			0					Time stamp	range start date/time
+IN3	14	17	2	26		TS			0					Time stamp	range end date/time
+IN3	14	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+IN3	14	19	-1	26		TS			0					Time stamp	Effective Date
+IN3	14	20	-1	26		TS			0					Time stamp	Expiration Date
+IN3	14	21	-1	199		ST			0					String	Professional Suffix
+IN3	14	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+IN3	14	22	1	20		ST			0					String	identifier
+IN3	14	22	2	199		ST			0					String	text
+IN3	14	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	14	22	4	20		ST			0					String	alternate identifier
+IN3	14	22	5	199		ST			0					String	alternate text
+IN3	14	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	14	22	7	10		ST	C		0					String	coding system version ID
+IN3	14	22	8	10		ST			0					String	alternate coding system version ID
+IN3	14	22	9	199		ST			0					String	original text
+IN3	14	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+IN3	14	23	1	20		ST			0					String	identifier
+IN3	14	23	2	199		ST			0					String	text
+IN3	14	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	14	23	4	20		ST			0					String	alternate identifier
+IN3	14	23	5	199		ST			0					String	alternate text
+IN3	14	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	14	23	7	10		ST	C		0					String	coding system version ID
+IN3	14	23	8	10		ST			0					String	alternate coding system version ID
+IN3	14	23	9	199		ST			0					String	original text
+IN3	15	-1	-1	48	00516	ST	O		0				Certification Contact	String	
+IN3	16	0	-1	250	00517	XTN	O	Y	0				Certification Contact Phone Number	Extended telecommunications number	
+IN3	16	1	-1	199		ST	B		0					String	Telephone Number
+IN3	16	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+IN3	16	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+IN3	16	4	-1	199		ST			0					String	email address
+IN3	16	5	-1	3		NM			0					Numeric	country code
+IN3	16	6	-1	5		NM			0					Numeric	area/city code
+IN3	16	7	-1	9		NM			0					Numeric	phone number
+IN3	16	8	-1	5		NM			0					Numeric	extension
+IN3	16	9	-1	199		ST			0					String	any text
+IN3	16	10	-1	4		ST			0					String	Extension Prefix
+IN3	16	11	-1	6		ST			0					String	Speed Dial Code
+IN3	16	12	-1	199		ST	C		0					String	Unformatted Telephone number
+IN3	17	0	-1	250	00518	CE	O		0	0345			Appeal Reason	Coded element	
+IN3	17	1	-1	20		IS			0	0345				String	identifier
+IN3	17	2	-1	199		ST			0					String	text
+IN3	17	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	17	4	-1	20		ST			0					String	alternate identifier
+IN3	17	5	-1	199		ST			0					String	alternate text
+IN3	17	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	18	0	-1	250	00519	CE	O		0	0346			Certification Agency	Coded element	
+IN3	18	1	-1	20		IS			0	0346				String	identifier
+IN3	18	2	-1	199		ST			0					String	text
+IN3	18	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	18	4	-1	20		ST			0					String	alternate identifier
+IN3	18	5	-1	199		ST			0					String	alternate text
+IN3	18	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	19	0	-1	250	00520	XTN	O	Y	0				Certification Agency Phone Number	Extended telecommunications number	
+IN3	19	1	-1	199		ST	B		0					String	Telephone Number
+IN3	19	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+IN3	19	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+IN3	19	4	-1	199		ST			0					String	email address
+IN3	19	5	-1	3		NM			0					Numeric	country code
+IN3	19	6	-1	5		NM			0					Numeric	area/city code
+IN3	19	7	-1	9		NM			0					Numeric	phone number
+IN3	19	8	-1	5		NM			0					Numeric	extension
+IN3	19	9	-1	199		ST			0					String	any text
+IN3	19	10	-1	4		ST			0					String	Extension Prefix
+IN3	19	11	-1	6		ST			0					String	Speed Dial Code
+IN3	19	12	-1	199		ST	C		0					String	Unformatted Telephone number
+IN3	20	0	-1	40	00521	ICD	O	Y	0				Pre-Certification Requirement	insurance certification definition	
+IN3	20	1	-1	11		IS			0	0150				Coded value for user-defined tables	Certification Patient Type
+IN3	20	2	-1	1		ID	R		0	0136				Coded values for HL7 tables	Certification Required
+IN3	20	3	-1	26		TS			0					Time stamp	Date/Time Certification Required
+IN3	21	-1	-1	48	00522	ST	O		0				Case Manager	String	
+IN3	22	-1	-1	8	00523	DT	O		0				Second Opinion Date	Date	
+IN3	23	-1	-1	1	00524	IS	O		0	0151			Second Opinion Status	Coded value for user-defined tables	
+IN3	24	-1	-1	1	00525	IS	O	Y	0	0152			Second Opinion Documentation Received	Coded value for user-defined tables	
+IN3	25	0	-1	250	00526	XCN	O	Y	0	0010			Second Opinion Physician	Extended composite ID number and name	
+IN3	25	1	-1	15		ST			0					String	ID number
+IN3	25	2	0	194		FN			0						family name
+IN3	25	2	1	50		ST	R		0					String	surname
+IN3	25	2	2	20		ST			0					String	own surname prefix
+IN3	25	2	3	50		ST			0					String	own surname
+IN3	25	2	4	20		ST			0					String	surname prefix from partner/spouse
+IN3	25	2	5	30		ST			0					String	surname from partner/spouse
+IN3	25	3	-1	30		ST			0					String	given name
+IN3	25	4	-1	30		ST			0					String	second and further given names or initial thereof
+IN3	25	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+IN3	25	6	-1	20		ST			0					String	prefix (e.g., DR)
+IN3	25	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+IN3	25	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+IN3	25	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+IN3	25	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+IN3	25	9	2	0		ST			0					String	universal ID
+IN3	25	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+IN3	25	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+IN3	25	11	-1	1		ST			0					String	identifier check digit
+IN3	25	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+IN3	25	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+IN3	25	14	0	227		HD			0					Hierarchic designator	assigning facility
+IN3	25	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+IN3	25	14	2	199		ST	C		0					String	universal ID
+IN3	25	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+IN3	25	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+IN3	25	16	0	483		CE			0	0448				Coded element	Name Context
+IN3	25	16	1	20		IS			0	0448				String	identifier
+IN3	25	16	2	199		ST			0					String	text
+IN3	25	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+IN3	25	16	4	20		ST			0					String	alternate identifier
+IN3	25	16	5	199		ST			0					String	alternate text
+IN3	25	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+IN3	25	17	0	53		DR	B		0					Date/time range	Name Validity Range
+IN3	25	17	1	26		TS			0					Time stamp	range start date/time
+IN3	25	17	2	26		TS			0					Time stamp	range end date/time
+IN3	25	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+IN3	25	19	-1	26		TS			0					Time stamp	Effective Date
+IN3	25	20	-1	26		TS			0					Time stamp	Expiration Date
+IN3	25	21	-1	199		ST			0					String	Professional Suffix
+IN3	25	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+IN3	25	22	1	20		ST			0					String	identifier
+IN3	25	22	2	199		ST			0					String	text
+IN3	25	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	25	22	4	20		ST			0					String	alternate identifier
+IN3	25	22	5	199		ST			0					String	alternate text
+IN3	25	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	25	22	7	10		ST	C		0					String	coding system version ID
+IN3	25	22	8	10		ST			0					String	alternate coding system version ID
+IN3	25	22	9	199		ST			0					String	original text
+IN3	25	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+IN3	25	23	1	20		ST			0					String	identifier
+IN3	25	23	2	199		ST			0					String	text
+IN3	25	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+IN3	25	23	4	20		ST			0					String	alternate identifier
+IN3	25	23	5	199		ST			0					String	alternate text
+IN3	25	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+IN3	25	23	7	10		ST	C		0					String	coding system version ID
+IN3	25	23	8	10		ST			0					String	alternate coding system version ID
+IN3	25	23	9	199		ST			0					String	original text

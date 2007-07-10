@@ -1,0 +1,65 @@
+CDM	1	0	-1	250	01306	CE	R		0	0132			Primary Key Value - CDM	Coded element	
+CDM	1	1	-1	0		ST			0					String	identifier
+CDM	1	2	-1	0		ST			0					String	text
+CDM	1	3	-1	0		IS			0	0132				Coded value for user-defined tables	name of coding system
+CDM	1	4	-1	0		ST			0					String	alternate identifier
+CDM	1	5	-1	0		ST			0					String	alternate text
+CDM	1	6	-1	0		IS			0	0132				Coded value for user-defined tables	name of alternate coding system
+CDM	2	0	-1	250	00983	CE	O	Y	0	9999			Charge Code Alias	Coded element	
+CDM	2	1	-1	0		ST			0					String	identifier
+CDM	2	2	-1	0		ST			0					String	text
+CDM	2	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+CDM	2	4	-1	0		ST			0					String	alternate identifier
+CDM	2	5	-1	0		ST			0					String	alternate text
+CDM	2	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+CDM	3	-1	-1	20	00984	ST	R		0				Charge Description Short	String	
+CDM	4	-1	-1	250	00985	ST	O		0				Charge Description Long	String	
+CDM	5	-1	-1	1	00986	IS	O		0	0268			Description Override Indicator	Coded value for user-defined tables	
+CDM	6	0	-1	250	00987	CE	O	Y	0	9999			Exploding Charges	Coded element	
+CDM	6	1	-1	0		ST			0					String	identifier
+CDM	6	2	-1	0		ST			0					String	text
+CDM	6	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+CDM	6	4	-1	0		ST			0					String	alternate identifier
+CDM	6	5	-1	0		ST			0					String	alternate text
+CDM	6	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+CDM	7	0	-1	250	00393	CE	O	Y	0	0088			Procedure Code	Coded element	
+CDM	7	1	-1	0		ST			0					String	identifier
+CDM	7	2	-1	0		ST			0					String	text
+CDM	7	3	-1	0		IS			0	0088				Coded value for user-defined tables	name of coding system
+CDM	7	4	-1	0		ST			0					String	alternate identifier
+CDM	7	5	-1	0		ST			0					String	alternate text
+CDM	7	6	-1	0		IS			0	0088				Coded value for user-defined tables	name of alternate coding system
+CDM	8	-1	-1	1	00675	ID	O		0	0183			Active/Inactive Flag	Coded values for HL7 tables	
+CDM	9	0	-1	250	00990	CE	O	Y	0	0463			Inventory Number	Coded element	
+CDM	9	1	-1	0		ST			0					String	identifier
+CDM	9	2	-1	0		ST			0					String	text
+CDM	9	3	-1	0		IS			0	0463				Coded value for user-defined tables	name of coding system
+CDM	9	4	-1	0		ST			0					String	alternate identifier
+CDM	9	5	-1	0		ST			0					String	alternate text
+CDM	9	6	-1	0		IS			0	0463				Coded value for user-defined tables	name of alternate coding system
+CDM	10	-1	-1	12	00991	NM	O		0				Resource Load	Numeric	
+CDM	11	0	-1	250	00992	CK	O	Y	0				Contract Number	Composite ID with check digit	
+CDM	11	1	-1	0		NM			0					Numeric	ID number
+CDM	11	2	-1	0		NM			0					Numeric	check digit
+CDM	11	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CDM	11	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+CDM	11	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CDM	11	4	2	0		ST			0					String	universal ID
+CDM	11	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CDM	12	0	-1	250	00993	XON	O	Y	0				Contract Organization	Extended composite name and ID number for organizations	
+CDM	12	1	-1	0		ST			0					String	organization name
+CDM	12	2	-1	0		IS			0	0204				Coded value for user-defined tables	organization name type code
+CDM	12	3	-1	0		NM			0					Numeric	ID number
+CDM	12	4	-1	0		NM			0					Numeric	check digit
+CDM	12	5	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CDM	12	6	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+CDM	12	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CDM	12	6	2	0		ST			0					String	universal ID
+CDM	12	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CDM	12	7	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+CDM	12	8	0	0		HD			0					Coded value for user-defined tables	assigning facility ID
+CDM	12	8	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+CDM	12	8	2	0		ST			0					String	universal ID
+CDM	12	8	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CDM	12	9	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+CDM	13	-1	-1	1	00994	ID	O		0	0136			Room Fee Indicator	Coded values for HL7 tables	

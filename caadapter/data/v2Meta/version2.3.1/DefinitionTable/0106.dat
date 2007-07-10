@@ -1,0 +1,3 @@
+HL7	Query/response format code	0106	D	Response is in display format
+HL7	Query/response format code	0106	R	Response is in record-oriented format
+HL7	Query/response format code	0106	T	Response is in tabular format

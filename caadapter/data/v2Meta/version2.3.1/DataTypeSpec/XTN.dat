@@ -1,0 +1,9 @@
+XTN	1	TN						
+XTN	2	ID	0201			telecommunication use code	N	^
+XTN	3	ID	0202			telecommunication equipment type	N	^
+XTN	4	ST				email address	N	^
+XTN	5	NM				country code	N	^
+XTN	6	NM				area/city code	N	^
+XTN	7	NM				phone number	N	^
+XTN	8	NM				extension	N	^
+XTN	9	ST				any text	N	E

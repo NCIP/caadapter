@@ -1,0 +1,10 @@
+HL7	Procedure priority	0418	0	the admitting procedure
+HL7	Procedure priority	0418	1	the primary procedure
+HL7	Procedure priority	0418	2	for ranked secondary procedures
+HL7	Procedure priority	0418	3	for ranked 3rd procedures
+HL7	Procedure priority	0418	4	for ranked 4th procedures
+HL7	Procedure priority	0418	5	for ranked 5th procedures
+HL7	Procedure priority	0418	6	for ranked 6th procedures
+HL7	Procedure priority	0418	7	for ranked 7th procedures
+HL7	Procedure priority	0418	8	for ranked 8th procedures
+HL7	Procedure priority	0418	9	for ranked 9th procedures

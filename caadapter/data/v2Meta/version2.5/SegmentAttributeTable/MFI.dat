@@ -1,0 +1,15 @@
+MFI	1	0	-1	250	00658	CE	R		0	0175			Master File Identifier	Coded element	
+MFI	1	1	-1	20		IS			0	0175				String	identifier
+MFI	1	2	-1	199		ST			0					String	text
+MFI	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+MFI	1	4	-1	20		ST			0					String	alternate identifier
+MFI	1	5	-1	199		ST			0					String	alternate text
+MFI	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+MFI	2	0	-1	180	00659	HD	O		0	0361			Master File Application Identifier	Hierarchic designator	
+MFI	2	1	-1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+MFI	2	2	-1	199		ST	C		0					String	universal ID
+MFI	2	3	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+MFI	3	-1	-1	3	00660	ID	R		0	0178			File-Level Event Code	Coded values for HL7 tables	
+MFI	4	-1	-1	26	00661	TS	O		0				Entered Date/Time	Time stamp	
+MFI	5	-1	-1	26	00662	TS	O		0				Effective Date/Time	Time stamp	
+MFI	6	-1	-1	2	00663	ID	R		0	0179			Response Level Code	Coded values for HL7 tables	

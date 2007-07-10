@@ -1,0 +1,11 @@
+HL7	Risk Codes	0489	AGG	Aggressive
+HL7	Risk Codes	0489	BHZ	Biohazard
+HL7	Risk Codes	0489	BIO	Biological
+HL7	Risk Codes	0489	COR	Corrosive
+HL7	Risk Codes	0489	ESC	Escape Risk
+HL7	Risk Codes	0489	EXP	Explosive
+HL7	Risk Codes	0489	IFL	MaterialDangerInflammable
+HL7	Risk Codes	0489	INF	MaterialDangerInfectious
+HL7	Risk Codes	0489	INJ	Injury Hazard
+HL7	Risk Codes	0489	POI	Poison
+HL7	Risk Codes	0489	RAD	Radioactive

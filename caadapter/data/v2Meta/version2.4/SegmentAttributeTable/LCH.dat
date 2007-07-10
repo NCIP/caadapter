@@ -1,0 +1,33 @@
+LCH	1	0	-1	200	01305	PL	R		0				Primary Key Value - LCH	Person location	
+LCH	1	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+LCH	1	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+LCH	1	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+LCH	1	4	0	0		HD			0					Coded value for user-defined tables	facility
+LCH	1	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+LCH	1	4	2	0		ST			0					String	universal ID
+LCH	1	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+LCH	1	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+LCH	1	6	-1	0		IS			0	0305				Coded value for user-defined tables	person location type
+LCH	1	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+LCH	1	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+LCH	1	9	-1	0		ST			0					String	location description
+LCH	2	-1	-1	3	00763	ID	O		0	0206			Segment Action Code	Coded values for HL7 tables	
+LCH	3	0	-1	80	00764	EI	O		0				Segment Unique Key	Entity identifier	
+LCH	3	1	-1	0		ST			0					String	entity identifier
+LCH	3	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+LCH	3	3	-1	0		ST			0					String	universal ID
+LCH	3	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+LCH	4	0	-1	250	01295	CE	R		0	0324			Location Characteristic ID	Coded element	
+LCH	4	1	-1	0		ST			0					String	identifier
+LCH	4	2	-1	0		ST			0					String	text
+LCH	4	3	-1	0		IS			0	0324				Coded value for user-defined tables	name of coding system
+LCH	4	4	-1	0		ST			0					String	alternate identifier
+LCH	4	5	-1	0		ST			0					String	alternate text
+LCH	4	6	-1	0		IS			0	0324				Coded value for user-defined tables	name of alternate coding system
+LCH	5	0	-1	250	01294	CE	R		0	0136	0262	0263	Location Characteristic Value-LCH	Coded element	
+LCH	5	1	-1	0		ST			0					String	identifier
+LCH	5	2	-1	0		ST			0					String	text
+LCH	5	3	-1	0		IS			0	0136				Coded value for user-defined tables	name of coding system
+LCH	5	4	-1	0		ST			0					String	alternate identifier
+LCH	5	5	-1	0		ST			0					String	alternate text
+LCH	5	6	-1	0		IS			0	0136				Coded value for user-defined tables	name of alternate coding system

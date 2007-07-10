@@ -1,0 +1,51 @@
+DRG	1	0	-1	250	00382	CE	O		0	0055			Diagnostic Related Group	Coded element	
+DRG	1	1	-1	20		IS			0	0055				String	identifier
+DRG	1	2	-1	199		ST			0					String	text
+DRG	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+DRG	1	4	-1	20		ST			0					String	alternate identifier
+DRG	1	5	-1	199		ST			0					String	alternate text
+DRG	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+DRG	2	-1	-1	26	00769	TS	O		0				DRG Assigned Date/Time	Time stamp	
+DRG	3	-1	-1	1	00383	ID	O		0	0136			DRG Approval Indicator	Coded values for HL7 tables	
+DRG	4	-1	-1	2	00384	IS	O		0	0056			DRG Grouper Review Code	Coded value for user-defined tables	
+DRG	5	0	-1	250	00385	CE	O		0	0083			Outlier Type	Coded element	
+DRG	5	1	-1	20		IS			0	0083				String	identifier
+DRG	5	2	-1	199		ST			0					String	text
+DRG	5	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+DRG	5	4	-1	20		ST			0					String	alternate identifier
+DRG	5	5	-1	199		ST			0					String	alternate text
+DRG	5	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+DRG	6	-1	-1	3	00386	NM	O		0				Outlier Days	Numeric	
+DRG	7	0	-1	12	00387	CP	O		0				Outlier Cost	Composite price	
+DRG	7	1	0	20		MO	R		0					Money	price
+DRG	7	1	1	16		NM			0					Numeric	quantity
+DRG	7	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+DRG	7	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+DRG	7	3	-1	16		NM			0					Numeric	from value
+DRG	7	4	-1	16		NM			0					Numeric	to value
+DRG	7	5	0	483		CE			0					Coded element	range units
+DRG	7	5	1	20		ST			0					String	identifier
+DRG	7	5	2	199		ST			0					String	text
+DRG	7	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+DRG	7	5	4	20		ST			0					String	alternate identifier
+DRG	7	5	5	199		ST			0					String	alternate text
+DRG	7	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+DRG	7	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+DRG	8	-1	-1	1	00770	IS	O		0	0229			DRG Payor	Coded value for user-defined tables	
+DRG	9	0	-1	9	00771	CP	O		0				Outlier Reimbursement	Composite price	
+DRG	9	1	0	20		MO	R		0					Money	price
+DRG	9	1	1	16		NM			0					Numeric	quantity
+DRG	9	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+DRG	9	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+DRG	9	3	-1	16		NM			0					Numeric	from value
+DRG	9	4	-1	16		NM			0					Numeric	to value
+DRG	9	5	0	483		CE			0					Coded element	range units
+DRG	9	5	1	20		ST			0					String	identifier
+DRG	9	5	2	199		ST			0					String	text
+DRG	9	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+DRG	9	5	4	20		ST			0					String	alternate identifier
+DRG	9	5	5	199		ST			0					String	alternate text
+DRG	9	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+DRG	9	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+DRG	10	-1	-1	1	00767	ID	O		0	0136			Confidential Indicator	Coded values for HL7 tables	
+DRG	11	-1	-1	21	01500	IS	O		0	0415			DRG Transfer Type	Coded value for user-defined tables	

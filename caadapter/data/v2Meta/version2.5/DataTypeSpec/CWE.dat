@@ -1,0 +1,9 @@
+CWE	1	ST		20		identifier	N	^
+CWE	2	ST		199		text	N	^
+CWE	3	ID	0396	20		name of coding system	N	^
+CWE	4	ST		20		alternate identifier	N	^
+CWE	5	ST		199		alternate text	N	^
+CWE	6	ID	0396	20		name of alternate coding system	N	^
+CWE	7	ST		10	C	coding system version ID	N	^
+CWE	8	ST		10		alternate coding system version ID	N	^
+CWE	9	ST		199		original text	N	E

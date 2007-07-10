@@ -1,0 +1,1 @@
+ORP	O10	ORP	O10			 MSH  MSA [  ERR ] [ {  NTE } ] [ !RESPONSE![ !PATIENT! PID [ {  NTE } ] ] { !ORDER! ORC [ !ORDER_DETAIL! RXO [ {  NTE } ] {  RXR } [ {  RXC } ] [ {  NTE } ] ] } ] 		Pharmacy/treatment order acknowledgement message	ORP - Pharmacy/treatment order acknowledgement

@@ -1,0 +1,3 @@
+DLN	1	ST		20	R	license number	N	^
+DLN	2	IS	0333	20		issuing state, province, country	N	^
+DLN	3	DT		24		expiration date	N	E

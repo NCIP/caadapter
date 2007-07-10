@@ -1,0 +1,19 @@
+CTI	1	0	-1	60	01011	EI	R		0				Sponsor Study ID	Entity identifier	
+CTI	1	1	-1	199		ST			0					String	entity identifier
+CTI	1	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+CTI	1	3	-1	199		ST	C		0					String	universal ID
+CTI	1	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CTI	2	0	-1	250	01022	CE	C		0				Study Phase Identifier	Coded element	
+CTI	2	1	-1	20		ST			0					String	identifier
+CTI	2	2	-1	199		ST			0					String	text
+CTI	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+CTI	2	4	-1	20		ST			0					String	alternate identifier
+CTI	2	5	-1	199		ST			0					String	alternate text
+CTI	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CTI	3	0	-1	250	01055	CE	O		0				Study Scheduled Time Point	Coded element	
+CTI	3	1	-1	20		ST			0					String	identifier
+CTI	3	2	-1	199		ST			0					String	text
+CTI	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+CTI	3	4	-1	20		ST			0					String	alternate identifier
+CTI	3	5	-1	199		ST			0					String	alternate text
+CTI	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

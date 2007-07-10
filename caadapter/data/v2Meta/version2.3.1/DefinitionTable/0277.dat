@@ -1,0 +1,3 @@
+User	Appointment type codes	0277	Complete	A request to add a completed appointment, used to maintain records of completed appointments that did not appear in the schedule (e.g., STAT, walk-in, etc.)
+User	Appointment type codes	0277	Normal	Routine schedule request type - default if not valued
+User	Appointment type codes	0277	Tentative	A request for a tentative (e.g., "penciled in") appointment

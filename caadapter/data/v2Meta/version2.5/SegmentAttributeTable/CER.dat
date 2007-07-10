@@ -1,0 +1,229 @@
+CER	1	-1	-1	4	01856	SI	R		0				Set ID _ CER	Sequence ID	
+CER	2	-1	-1	80	01857	ST	O		0				Serial Number	String	
+CER	3	-1	-1	80	01858	ST	O		0				Version	String	
+CER	4	0	-1	250	01859	XON	O		0				Granting Authority	Extended composite name and ID number for organizations	
+CER	4	1	-1	50		ST			0					String	organization name
+CER	4	2	-1	20		IS			0	0204				Coded value for user-defined tables	organization name type code
+CER	4	3	-1	4		NM	B		0					Numeric	ID number
+CER	4	4	-1	1		NM			0					Numeric	check digit
+CER	4	5	-1	3		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CER	4	6	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+CER	4	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CER	4	6	2	0		ST			0					String	universal ID
+CER	4	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CER	4	7	-1	5		IS			0	0203				Coded value for user-defined tables	identifier type code
+CER	4	8	0	227		HD			0					Hierarchic designator	assigning facility ID
+CER	4	8	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+CER	4	8	2	199		ST	C		0					String	universal ID
+CER	4	8	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CER	4	9	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+CER	4	10	-1	20		ST			0					String	Organization Identifier
+CER	5	0	-1	250	01860	XCN	O		0				Issuing Authority	Extended composite ID number and name	
+CER	5	1	-1	15		ST			0					String	ID number
+CER	5	2	0	194		FN			0						family name
+CER	5	2	1	50		ST	R		0					String	surname
+CER	5	2	2	20		ST			0					String	own surname prefix
+CER	5	2	3	50		ST			0					String	own surname
+CER	5	2	4	20		ST			0					String	surname prefix from partner/spouse
+CER	5	2	5	30		ST			0					String	surname from partner/spouse
+CER	5	3	-1	30		ST			0					String	given name
+CER	5	4	-1	30		ST			0					String	second and further given names or initial thereof
+CER	5	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+CER	5	6	-1	20		ST			0					String	prefix (e.g., DR)
+CER	5	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+CER	5	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+CER	5	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+CER	5	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CER	5	9	2	0		ST			0					String	universal ID
+CER	5	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CER	5	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+CER	5	11	-1	1		ST			0					String	identifier check digit
+CER	5	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+CER	5	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+CER	5	14	0	227		HD			0					Hierarchic designator	assigning facility
+CER	5	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+CER	5	14	2	199		ST	C		0					String	universal ID
+CER	5	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CER	5	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+CER	5	16	0	483		CE			0	0448				Coded element	Name Context
+CER	5	16	1	20		IS			0	0448				String	identifier
+CER	5	16	2	199		ST			0					String	text
+CER	5	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+CER	5	16	4	20		ST			0					String	alternate identifier
+CER	5	16	5	199		ST			0					String	alternate text
+CER	5	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CER	5	17	0	53		DR	B		0					Date/time range	Name Validity Range
+CER	5	17	1	26		TS			0					Time stamp	range start date/time
+CER	5	17	2	26		TS			0					Time stamp	range end date/time
+CER	5	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+CER	5	19	-1	26		TS			0					Time stamp	Effective Date
+CER	5	20	-1	26		TS			0					Time stamp	Expiration Date
+CER	5	21	-1	199		ST			0					String	Professional Suffix
+CER	5	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+CER	5	22	1	20		ST			0					String	identifier
+CER	5	22	2	199		ST			0					String	text
+CER	5	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	5	22	4	20		ST			0					String	alternate identifier
+CER	5	22	5	199		ST			0					String	alternate text
+CER	5	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	5	22	7	10		ST	C		0					String	coding system version ID
+CER	5	22	8	10		ST			0					String	alternate coding system version ID
+CER	5	22	9	199		ST			0					String	original text
+CER	5	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+CER	5	23	1	20		ST			0					String	identifier
+CER	5	23	2	199		ST			0					String	text
+CER	5	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	5	23	4	20		ST			0					String	alternate identifier
+CER	5	23	5	199		ST			0					String	alternate text
+CER	5	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	5	23	7	10		ST	C		0					String	coding system version ID
+CER	5	23	8	10		ST			0					String	alternate coding system version ID
+CER	5	23	9	199		ST			0					String	original text
+CER	6	0	-1	65536	01861	ED	O		0				Signature of Issuing Authority	Encapsulated data	
+CER	6	1	0	227		HD			0					Hierarchic designator	source application
+CER	6	1	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+CER	6	1	2	199		ST	C		0					String	universal ID
+CER	6	1	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CER	6	2	-1	9		ID	R		0	0191				Coded values for HL7 tables	type of data
+CER	6	3	-1	18		ID			0	0291				Coded values for HL7 tables	data subtype
+CER	6	4	-1	6		ID	R		0	0299				Coded values for HL7 tables	encoding
+CER	6	5	-1	65536		TX	R		0					Text data	data
+CER	7	-1	-1	3	01862	ID	O		0	0399			Granting Country	Coded values for HL7 tables	
+CER	8	0	-1	250	01863	CWE	O		0	0347			Granting State/Province	Coded with exceptions	
+CER	8	1	-1	20		IS			0	0347				String	identifier
+CER	8	2	-1	199		ST			0					String	text
+CER	8	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	8	4	-1	20		ST			0					String	alternate identifier
+CER	8	5	-1	199		ST			0					String	alternate text
+CER	8	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	8	7	-1	10		ST	C		0					String	coding system version ID
+CER	8	8	-1	10		ST			0					String	alternate coding system version ID
+CER	8	9	-1	199		ST			0					String	original text
+CER	9	0	-1	250	01864	CWE	O		0	0289			Granting County/Parish	Coded with exceptions	
+CER	9	1	-1	20		IS			0	0289				String	identifier
+CER	9	2	-1	199		ST			0					String	text
+CER	9	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	9	4	-1	20		ST			0					String	alternate identifier
+CER	9	5	-1	199		ST			0					String	alternate text
+CER	9	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	9	7	-1	10		ST	C		0					String	coding system version ID
+CER	9	8	-1	10		ST			0					String	alternate coding system version ID
+CER	9	9	-1	199		ST			0					String	original text
+CER	10	0	-1	250	01865	CWE	O		0				Certificate Type	Coded with exceptions	
+CER	10	1	-1	20		ST			0					String	identifier
+CER	10	2	-1	199		ST			0					String	text
+CER	10	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	10	4	-1	20		ST			0					String	alternate identifier
+CER	10	5	-1	199		ST			0					String	alternate text
+CER	10	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	10	7	-1	10		ST	C		0					String	coding system version ID
+CER	10	8	-1	10		ST			0					String	alternate coding system version ID
+CER	10	9	-1	199		ST			0					String	original text
+CER	11	0	-1	250	01866	CWE	O		0				Certificate Domain	Coded with exceptions	
+CER	11	1	-1	20		ST			0					String	identifier
+CER	11	2	-1	199		ST			0					String	text
+CER	11	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	11	4	-1	20		ST			0					String	alternate identifier
+CER	11	5	-1	199		ST			0					String	alternate text
+CER	11	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	11	7	-1	10		ST	C		0					String	coding system version ID
+CER	11	8	-1	10		ST			0					String	alternate coding system version ID
+CER	11	9	-1	199		ST			0					String	original text
+CER	12	-1	-1	250	01867	ID	C		0				Subject ID	Coded values for HL7 tables	
+CER	13	-1	-1	250	01907	ST	R		0				Subject Name	String	
+CER	14	0	-1	250	01868	CWE	O	Y	0				Subject Directory Attribute Extension (Health Professional Data)	Coded with exceptions	
+CER	14	1	-1	20		ST			0					String	identifier
+CER	14	2	-1	199		ST			0					String	text
+CER	14	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	14	4	-1	20		ST			0					String	alternate identifier
+CER	14	5	-1	199		ST			0					String	alternate text
+CER	14	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	14	7	-1	10		ST	C		0					String	coding system version ID
+CER	14	8	-1	10		ST			0					String	alternate coding system version ID
+CER	14	9	-1	199		ST			0					String	original text
+CER	15	0	-1	250	01869	CWE	O		0				Subject Public Key Info	Coded with exceptions	
+CER	15	1	-1	20		ST			0					String	identifier
+CER	15	2	-1	199		ST			0					String	text
+CER	15	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	15	4	-1	20		ST			0					String	alternate identifier
+CER	15	5	-1	199		ST			0					String	alternate text
+CER	15	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	15	7	-1	10		ST	C		0					String	coding system version ID
+CER	15	8	-1	10		ST			0					String	alternate coding system version ID
+CER	15	9	-1	199		ST			0					String	original text
+CER	16	0	-1	250	01870	CWE	O		0				Authority Key Identifier	Coded with exceptions	
+CER	16	1	-1	20		ST			0					String	identifier
+CER	16	2	-1	199		ST			0					String	text
+CER	16	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	16	4	-1	20		ST			0					String	alternate identifier
+CER	16	5	-1	199		ST			0					String	alternate text
+CER	16	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	16	7	-1	10		ST	C		0					String	coding system version ID
+CER	16	8	-1	10		ST			0					String	alternate coding system version ID
+CER	16	9	-1	199		ST			0					String	original text
+CER	17	-1	-1	250	01871	ID	O		0	0136			Basic Constraint	Coded values for HL7 tables	
+CER	18	0	-1	250	01872	CWE	O	Y	0				CRL Distribution Point	Coded with exceptions	
+CER	18	1	-1	20		ST			0					String	identifier
+CER	18	2	-1	199		ST			0					String	text
+CER	18	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	18	4	-1	20		ST			0					String	alternate identifier
+CER	18	5	-1	199		ST			0					String	alternate text
+CER	18	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	18	7	-1	10		ST	C		0					String	coding system version ID
+CER	18	8	-1	10		ST			0					String	alternate coding system version ID
+CER	18	9	-1	199		ST			0					String	original text
+CER	19	-1	-1	3	01875	ID	O		0	0399			Jurisdiction Country	Coded values for HL7 tables	
+CER	20	0	-1	250	01873	CWE	O		0	0347			Jurisdiction State/Province	Coded with exceptions	
+CER	20	1	-1	20		IS			0	0347				String	identifier
+CER	20	2	-1	199		ST			0					String	text
+CER	20	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	20	4	-1	20		ST			0					String	alternate identifier
+CER	20	5	-1	199		ST			0					String	alternate text
+CER	20	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	20	7	-1	10		ST	C		0					String	coding system version ID
+CER	20	8	-1	10		ST			0					String	alternate coding system version ID
+CER	20	9	-1	199		ST			0					String	original text
+CER	21	0	-1	250	01874	CWE	O		0	0289			Jurisdiction County/Parish	Coded with exceptions	
+CER	21	1	-1	20		IS			0	0289				String	identifier
+CER	21	2	-1	199		ST			0					String	text
+CER	21	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	21	4	-1	20		ST			0					String	alternate identifier
+CER	21	5	-1	199		ST			0					String	alternate text
+CER	21	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	21	7	-1	10		ST	C		0					String	coding system version ID
+CER	21	8	-1	10		ST			0					String	alternate coding system version ID
+CER	21	9	-1	199		ST			0					String	original text
+CER	22	0	-1	250	01895	CWE	O	Y	0	0547			Jurisdiction Breadth	Coded with exceptions	
+CER	22	1	-1	20		IS			0	0547				String	identifier
+CER	22	2	-1	199		ST			0					String	text
+CER	22	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	22	4	-1	20		ST			0					String	alternate identifier
+CER	22	5	-1	199		ST			0					String	alternate text
+CER	22	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	22	7	-1	10		ST	C		0					String	coding system version ID
+CER	22	8	-1	10		ST			0					String	alternate coding system version ID
+CER	22	9	-1	199		ST			0					String	original text
+CER	23	-1	-1	26	01876	TS	O		0				Granting Date	Time stamp	
+CER	24	-1	-1	26	01877	TS	O		0				Issuing Date	Time stamp	
+CER	25	-1	-1	26	01878	TS	O		0				Activation Date	Time stamp	
+CER	26	-1	-1	26	01879	TS	O		0				Inactivation Date	Time stamp	
+CER	27	-1	-1	26	01880	TS	O		0				Expiration Date	Time stamp	
+CER	28	-1	-1	26	01881	TS	O		0				Renewal Date	Time stamp	
+CER	29	-1	-1	26	01882	TS	O		0				Revocation Date	Time stamp	
+CER	30	0	-1	250	01883	CE	O		0				Revocation Reason Code	Coded element	
+CER	30	1	-1	20		ST			0					String	identifier
+CER	30	2	-1	199		ST			0					String	text
+CER	30	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+CER	30	4	-1	20		ST			0					String	alternate identifier
+CER	30	5	-1	199		ST			0					String	alternate text
+CER	30	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CER	31	0	-1	250	01884	CWE	O		0	0536			Certificate Status	Coded with exceptions	
+CER	31	1	-1	20		IS			0	0536				String	identifier
+CER	31	2	-1	199		ST			0					String	text
+CER	31	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CER	31	4	-1	20		ST			0					String	alternate identifier
+CER	31	5	-1	199		ST			0					String	alternate text
+CER	31	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CER	31	7	-1	10		ST	C		0					String	coding system version ID
+CER	31	8	-1	10		ST			0					String	alternate coding system version ID
+CER	31	9	-1	199		ST			0					String	original text

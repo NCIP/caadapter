@@ -1,0 +1,11 @@
+User	Specimen Role	0369	B	Blind Sample
+User	Specimen Role	0369	C	Calibrator
+User	Specimen Role	0369	E	Electronic QC/ used with manufactured reference providing signals that simulate QC results
+User	Specimen Role	0369	F	Specimen used for testing proficiency of the organization performing the testing (Filler)
+User	Specimen Role	0369	G	Group (where a specimen consists of multiple individual elements that are not individually identified)
+User	Specimen Role	0369	L	Pool (aliquots of individual specimens combined to form a single specimen representing all of the components.)
+User	Specimen Role	0369	O	Specimen used for testing Operator Proficiency
+User	Specimen Role	0369	P	Patient (default if blank component value)
+User	Specimen Role	0369	Q	Control specimen
+User	Specimen Role	0369	R	Replicate (of patient sample as a control)
+User	Specimen Role	0369	V	Verifying Calibrator/ used for periodic calibration checks

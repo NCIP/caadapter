@@ -1,0 +1,13 @@
+User	Tissue type code	0417	0	No tissue expected
+User	Tissue type code	0417	1	Insufficient Tissue
+User	Tissue type code	0417	2	Not abnormal
+User	Tissue type code	0417	3	Abnormal-not categorized
+User	Tissue type code	0417	4	Mechanical abnormal
+User	Tissue type code	0417	5	Growth alteration
+User	Tissue type code	0417	6	Degeneration & necrosis
+User	Tissue type code	0417	7	Non-acute inflammation
+User	Tissue type code	0417	8	Non-malignant neoplasm
+User	Tissue type code	0417	9	Malignant neoplasm
+User	Tissue type code	0417	B	Basal cell carcinoma
+User	Tissue type code	0417	C	Carcinoma-unspecified type
+User	Tissue type code	0417	G	Additional tissue required

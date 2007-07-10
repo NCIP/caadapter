@@ -1,0 +1,1 @@
+RCI	I05	RCI	I05			 MSH  MSA  QRD [  QRF ] {  PRD [ {  CTD } ] }  PID [ {  DG1 } ] [ {  DRG } ] [ {  AL1 } ] [ !OBSERVATION_REQUEST!{  OBR [ {  NTE } ] [ { !OBSERVATION! OBX [ {  NTE } ] } ] } ] [ {  NTE } ] 	Return Clinical Information	Return clinical information	RQC/RCI - Request for patient clinical information

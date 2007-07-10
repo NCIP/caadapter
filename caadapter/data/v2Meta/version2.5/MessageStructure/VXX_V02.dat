@@ -1,0 +1,7 @@
+Message Type=VXX
+Message Type Name=Response for vaccination query with multiple PID matches
+Trigger Event=V02
+Trigger Description=VXX - Response to vaccination query returning multiple PID matches
+Message Structure=MSH MSA [ { SFT } ] QRD [ QRF ] { !PATIENT! PID [ { NK1 } ] }
+Return Message=ACK^V02
+Called by=VXQ^V01

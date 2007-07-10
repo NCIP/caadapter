@@ -1,0 +1,7 @@
+Message Type=QRY
+Message Type Name=Query/ original mode
+Trigger Event=Q28
+Trigger Description=QRY/RDR - Pharmacy/treatment dispense information
+Message Structure=QRY_Q01
+Return Message=RDR^RDR
+Called by=

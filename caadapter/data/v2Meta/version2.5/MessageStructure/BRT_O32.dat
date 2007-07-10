@@ -1,0 +1,7 @@
+Message Type=BRT
+Message Type Name=Blood product transfusion/disposition acknowledgement message
+Trigger Event=O32
+Trigger Description=BRT _ Blood product transfusion/disposition acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ PID ] [ { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ BPO ] [ { BTX } ] } ] ]
+Return Message=ACK^O32
+Called by=BTS^O31

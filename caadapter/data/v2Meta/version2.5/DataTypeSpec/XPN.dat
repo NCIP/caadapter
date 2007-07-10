@@ -1,0 +1,14 @@
+XPN	1	FN		194		family name	N	^
+XPN	2	ST		30		given name	N	^
+XPN	3	ST		30		second and further given names or initial thereof	N	^
+XPN	4	ST		20		suffix (e.g., JR or III)	N	^
+XPN	5	ST		20		prefix (e.g., DR)	N	^
+XPN	6	IS	0360	6	B	degree (e.g., MD)	N	^
+XPN	7	ID	0200	1		name type code	N	^
+XPN	8	ID	0465	1		name representation code	N	^
+XPN	9	ZCE6	0448	483		name context	N	^
+XPN	10	DR		53	B	name validity range	N	^
+XPN	11	ID	0444	1		name assembly order	N	^
+XPN	12	TS		26		Effective Date	N	^
+XPN	13	TS		26		Expiration Date	N	^
+XPN	14	ST		199		Professional Suffix	N	E

@@ -1,0 +1,15 @@
+ODT	1	0	-1	250	00273	CE	R		0	0160			Tray Type	Coded element	
+ODT	1	1	-1	0		ST			0					String	identifier
+ODT	1	2	-1	0		ST			0					String	text
+ODT	1	3	-1	0		IS			0	0160				Coded value for user-defined tables	name of coding system
+ODT	1	4	-1	0		ST			0					String	alternate identifier
+ODT	1	5	-1	0		ST			0					String	alternate text
+ODT	1	6	-1	0		IS			0	0160				Coded value for user-defined tables	name of alternate coding system
+ODT	2	0	-1	250	00270	CE	O	Y	10				Service Period	Coded element	
+ODT	2	1	-1	0		ST			0					String	identifier
+ODT	2	2	-1	0		ST			0					String	text
+ODT	2	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+ODT	2	4	-1	0		ST			0					String	alternate identifier
+ODT	2	5	-1	0		ST			0					String	alternate text
+ODT	2	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ODT	3	-1	-1	80	00272	ST	O		0				Text Instruction	String	

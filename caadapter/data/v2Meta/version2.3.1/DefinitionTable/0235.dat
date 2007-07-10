@@ -1,0 +1,10 @@
+HL7	Report source	0235	C	Clinical trial
+HL7	Report source	0235	D	Database/registry/poison control center
+HL7	Report source	0235	E	Distributor
+HL7	Report source	0235	H	Health professional
+HL7	Report source	0235	L	Literature
+HL7	Report source	0235	M	Manufacturer/marketing authority holder
+HL7	Report source	0235	N	Non-healthcare professional
+HL7	Report source	0235	O	Other
+HL7	Report source	0235	P	Patient
+HL7	Report source	0235	R	Regulatory agency

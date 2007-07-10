@@ -1,0 +1,1 @@
+OMD	O03	OMD	O03			 MSH [ {  NTE } ] [ !PATIENT! PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ] [ { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [  GT1 ] [ {  AL1 } ] ] { !ORDER_DIET! ORC [ {  ODS } [ {  NTE } ] [ { !OBSERVATION! OBX [ {  NTE } ] } ] ] } { !ORDER_TRAY![  ORC {  ODT } [ {  NTE } ] ] } 		Dietary order	OMD - Diet order

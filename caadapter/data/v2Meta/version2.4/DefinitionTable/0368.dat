@@ -1,0 +1,19 @@
+HL7	Remote control command	0368	AB	Abort
+HL7	Remote control command	0368	CL	Clear
+HL7	Remote control command	0368	CN	Clear Notification
+HL7	Remote control command	0368	DI	Disable Sending Events
+HL7	Remote control command	0368	EN	Enable Sending Events
+HL7	Remote control command	0368	ES	Emergency -stop
+HL7	Remote control command	0368	EX	Execute (command specified in field Parameters (ST) 01394)
+HL7	Remote control command	0368	IN	Initialize/Initiate
+HL7	Remote control command	0368	LC	Local Control Request
+HL7	Remote control command	0368	LK	Lock
+HL7	Remote control command	0368	LO	Load
+HL7	Remote control command	0368	PA	Pause
+HL7	Remote control command	0368	RC	Remote Control Request
+HL7	Remote control command	0368	RE	Resume
+HL7	Remote control command	0368	SA	Sampling
+HL7	Remote control command	0368	SU	Setup
+HL7	Remote control command	0368	TT	Transport To
+HL7	Remote control command	0368	UC	Unlock
+HL7	Remote control command	0368	UN	Unload

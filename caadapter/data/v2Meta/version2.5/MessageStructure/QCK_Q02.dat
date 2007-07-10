@@ -1,0 +1,7 @@
+Message Type=QCK
+Message Type Name=Deferred query
+Trigger Event=Q02
+Trigger Description=QRY/QCK - Query sent for deferred response
+Message Structure=MSH [ { SFT } ] MSA [ ERR ] [ QAK ]
+Return Message=ACK^Q02
+Called by=QRY^Q02

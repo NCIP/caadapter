@@ -1,0 +1,110 @@
+CON	1	-1	-1	4	01776	SI	R		0				Set ID - CON	Sequence ID	
+CON	2	0	-1	250	01777	CWE	O		0	0496			Consent Type	Coded with exceptions	
+CON	2	1	-1	20		IS			0	0496				String	identifier
+CON	2	2	-1	199		ST			0					String	text
+CON	2	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CON	2	4	-1	20		ST			0					String	alternate identifier
+CON	2	5	-1	199		ST			0					String	alternate text
+CON	2	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CON	2	7	-1	10		ST	C		0					String	coding system version ID
+CON	2	8	-1	10		ST			0					String	alternate coding system version ID
+CON	2	9	-1	199		ST			0					String	original text
+CON	3	-1	-1	40	01778	ST	O		0				Consent Form ID	String	
+CON	4	0	-1	180	01779	EI	O		0				Consent Form Number	Entity identifier	
+CON	4	1	-1	199		ST			0					String	entity identifier
+CON	4	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+CON	4	3	-1	199		ST	C		0					String	universal ID
+CON	4	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+CON	5	-1	-1	65536	01780	FT	O	Y	0				Consent Text	Formatted text	
+CON	6	-1	-1	65536	01781	FT	O	Y	0				Subject-specific Consent Text	Formatted text	
+CON	7	-1	-1	65536	01782	FT	O	Y	0				Consent Background	Formatted text	
+CON	8	-1	-1	65536	01783	FT	O	Y	0				Subject-specific Consent Background	Formatted text	
+CON	9	-1	-1	65536	01784	FT	O	Y	0				Consenter-imposed limitations	Formatted text	
+CON	10	0	-1	2	01785	CNE	O		0	0497			Consent Mode	Coded with no exceptions	
+CON	10	1	-1	20		ID	R		0	0497				String	identifier
+CON	10	2	-1	199		ST			0					String	text
+CON	10	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CON	10	4	-1	20		ST			0					String	alternate identifier
+CON	10	5	-1	199		ST			0					String	alternate text
+CON	10	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CON	10	7	-1	10		ST			0					String	coding system version ID
+CON	10	8	-1	10		ST			0					String	alternate coding system version ID
+CON	10	9	-1	199		ST			0					String	original text
+CON	11	0	-1	2	01786	CNE	R		0	0498			Consent Status	Coded with no exceptions	
+CON	11	1	-1	20		ID	R		0	0498				String	identifier
+CON	11	2	-1	199		ST			0					String	text
+CON	11	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CON	11	4	-1	20		ST			0					String	alternate identifier
+CON	11	5	-1	199		ST			0					String	alternate text
+CON	11	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CON	11	7	-1	10		ST			0					String	coding system version ID
+CON	11	8	-1	10		ST			0					String	alternate coding system version ID
+CON	11	9	-1	199		ST			0					String	original text
+CON	12	-1	-1	26	01787	TS	O		0				Consent Discussion Date/Time	Time stamp	
+CON	13	-1	-1	26	01788	TS	O		0				Consent Decision Date/Time	Time stamp	
+CON	14	-1	-1	26	01789	TS	O		0				Consent Effective Date/Time	Time stamp	
+CON	15	-1	-1	26	01790	TS	O		0				Consent End Date/Time	Time stamp	
+CON	16	-1	-1	1	01791	ID	O		0	0136			Subject Competence Indicator	Coded values for HL7 tables	
+CON	17	-1	-1	1	01792	ID	O		0	0136			Translator Assistance Indicator	Coded values for HL7 tables	
+CON	18	-1	-1	1	01793	ID	O		0	0296			Language Translated To	Coded values for HL7 tables	
+CON	19	-1	-1	1	01794	ID	O		0	0136			Informational Material Supplied Indicator	Coded values for HL7 tables	
+CON	20	0	-1	250	01795	CWE	O		0	0499			Consent Bypass Reason	Coded with exceptions	
+CON	20	1	-1	20		IS			0	0499				String	identifier
+CON	20	2	-1	199		ST			0					String	text
+CON	20	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CON	20	4	-1	20		ST			0					String	alternate identifier
+CON	20	5	-1	199		ST			0					String	alternate text
+CON	20	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CON	20	7	-1	10		ST	C		0					String	coding system version ID
+CON	20	8	-1	10		ST			0					String	alternate coding system version ID
+CON	20	9	-1	199		ST			0					String	original text
+CON	21	-1	-1	1	01796	ID	O		0	0500			Consent Disclosure Level	Coded values for HL7 tables	
+CON	22	0	-1	250	01797	CWE	O		0	0501			Consent Non-disclosure Reason	Coded with exceptions	
+CON	22	1	-1	20		IS			0	0501				String	identifier
+CON	22	2	-1	199		ST			0					String	text
+CON	22	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CON	22	4	-1	20		ST			0					String	alternate identifier
+CON	22	5	-1	199		ST			0					String	alternate text
+CON	22	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CON	22	7	-1	10		ST	C		0					String	coding system version ID
+CON	22	8	-1	10		ST			0					String	alternate coding system version ID
+CON	22	9	-1	199		ST			0					String	original text
+CON	23	0	-1	250	01798	CWE	O		0	0502			Non-subject Consenter Reason	Coded with exceptions	
+CON	23	1	-1	20		IS			0	0502				String	identifier
+CON	23	2	-1	199		ST			0					String	text
+CON	23	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+CON	23	4	-1	20		ST			0					String	alternate identifier
+CON	23	5	-1	199		ST			0					String	alternate text
+CON	23	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+CON	23	7	-1	10		ST	C		0					String	coding system version ID
+CON	23	8	-1	10		ST			0					String	alternate coding system version ID
+CON	23	9	-1	199		ST			0					String	original text
+CON	24	0	-1	250	01909	XPN	R	Y	0				Consenter ID	Extended person name	
+CON	24	1	0	194		FN			0						family name
+CON	24	1	1	50		ST	R		0					String	surname
+CON	24	1	2	20		ST			0					String	own surname prefix
+CON	24	1	3	50		ST			0					String	own surname
+CON	24	1	4	20		ST			0					String	surname prefix from partner/spouse
+CON	24	1	5	30		ST			0					String	surname from partner/spouse
+CON	24	2	-1	30		ST			0					String	given name
+CON	24	3	-1	30		ST			0					String	second and further given names or initial thereof
+CON	24	4	-1	20		ST			0					String	suffix (e.g., JR or III)
+CON	24	5	-1	20		ST			0					String	prefix (e.g., DR)
+CON	24	6	-1	6		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+CON	24	7	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+CON	24	8	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+CON	24	9	0	483		ZCE6			0	0448				User Define : coded element for name context (PPN data type)	name context
+CON	24	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+CON	24	9	2	0		ST			0					String	text
+CON	24	9	3	0		ST			0					String	name of coding system
+CON	24	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+CON	24	9	5	0		ST			0					String	alternate text
+CON	24	9	6	0		ST			0					String	name of alternate coding system
+CON	24	10	0	53		DR	B		0					Date/time range	name validity range
+CON	24	10	1	26		TS			0					Time stamp	range start date/time
+CON	24	10	2	26		TS			0					Time stamp	range end date/time
+CON	24	11	-1	1		ID			0	0444				Coded values for HL7 tables	name assembly order
+CON	24	12	-1	26		TS			0					Time stamp	Effective Date
+CON	24	13	-1	26		TS			0					Time stamp	Expiration Date
+CON	24	14	-1	199		ST			0					String	Professional Suffix
+CON	25	-1	-1	100	01898	IS	R	Y	0	0548			Relationship to Subject Table	Coded value for user-defined tables	

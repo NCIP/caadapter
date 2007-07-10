@@ -1,0 +1,38 @@
+PSH	1	-1	-1	60	01233	ST	R		0				Report Type	String	
+PSH	2	-1	-1	60	01297	ST	O		0				Report Form Identifier	String	
+PSH	3	-1	-1	26	01235	TS	R		0				Report Date	Time stamp	
+PSH	4	-1	-1	26	01236	TS	O		0				Report Interval Start Date	Time stamp	
+PSH	5	-1	-1	26	01237	TS	O		0				Report Interval End Date	Time stamp	
+PSH	6	0	-1	12	01238	CQ	O		0				Quantity Manufactured	Composite quantity with units	
+PSH	6	1	-1	0		NM			0					Numeric	quantity
+PSH	6	2	0	0		CE			0					String	units
+PSH	6	2	1	0		ST			0					String	identifier
+PSH	6	2	2	0		ST			0					String	text
+PSH	6	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+PSH	6	2	4	0		ST			0					String	alternate identifier
+PSH	6	2	5	0		ST			0					String	alternate text
+PSH	6	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PSH	7	0	-1	12	01239	CQ	O		0				Quantity Distributed	Composite quantity with units	
+PSH	7	1	-1	0		NM			0					Numeric	quantity
+PSH	7	2	0	0		CE			0					String	units
+PSH	7	2	1	0		ST			0					String	identifier
+PSH	7	2	2	0		ST			0					String	text
+PSH	7	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+PSH	7	2	4	0		ST			0					String	alternate identifier
+PSH	7	2	5	0		ST			0					String	alternate text
+PSH	7	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PSH	8	-1	-1	1	01240	ID	O		0	0329			Quantity Distributed Method	Coded values for HL7 tables	
+PSH	9	-1	-1	600	01241	FT	O		0				Quantity Distributed Comment	Formatted text	
+PSH	10	0	-1	12	01242	CQ	O		0				Quantity in Use	Composite quantity with units	
+PSH	10	1	-1	0		NM			0					Numeric	quantity
+PSH	10	2	0	0		CE			0					String	units
+PSH	10	2	1	0		ST			0					String	identifier
+PSH	10	2	2	0		ST			0					String	text
+PSH	10	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+PSH	10	2	4	0		ST			0					String	alternate identifier
+PSH	10	2	5	0		ST			0					String	alternate text
+PSH	10	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PSH	11	-1	-1	1	01243	ID	O		0	0329			Quantity in Use Method	Coded values for HL7 tables	
+PSH	12	-1	-1	600	01244	FT	O		0				Quantity in Use Comment	Formatted text	
+PSH	13	-1	-1	2	01245	NM	O	Y	8				Number of Product Experience Reports Filed by Facility	Numeric	
+PSH	14	-1	-1	2	01246	NM	O	Y	8				Number of Product Experience Reports Filed by Distributor	Numeric	

@@ -1,0 +1,7 @@
+Message Type=QBP
+Message Type Name=Query by parameter
+Trigger Event=Q13
+Trigger Description=QBP - Query by parameter requesting an  RTB - tabular response
+Message Structure=MSH [ { SFT } ] QPD [ RDF ] RCP [ DSC ]
+Return Message=RTB^K13
+Called by=

@@ -1,0 +1,6 @@
+PN	1	FN				family name	N	&
+PN	2	ST				given name	N	^
+PN	3	ST				second and further given names or initial thereof	N	^
+PN	4	ST				suffix (e.g., JR or III)	N	^
+PN	5	ST				prefix (e.g., DR)	N	^
+PN	6	IS	0360			degree (e.g., MD)	N	E

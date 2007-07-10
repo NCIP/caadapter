@@ -1,0 +1,5 @@
+User	Specimen role	0369	B	Blind Sample
+User	Specimen role	0369	C	Calibrator
+User	Specimen role	0369	P	Patient (default if blank component value)
+User	Specimen role	0369	Q	Control specimen
+User	Specimen role	0369	R	Replicate (of patient sample as a control)

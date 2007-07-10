@@ -1,0 +1,7 @@
+Message Type=BAR
+Message Type Name=Add/change billing account
+Trigger Event=P12
+Trigger Description=BAR/ACK - Update Diagnosis/Procedure
+Message Structure=MSH [ { SFT } ] EVN PID PV1 [ { DG1 } ] [ DRG ] [ { !PROCEDURE! PR1 [ { ROL } ] } ]
+Return Message=ACK^P12
+Called by=

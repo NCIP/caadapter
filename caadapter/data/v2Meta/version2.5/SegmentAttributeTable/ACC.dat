@@ -1,0 +1,102 @@
+ACC	1	-1	-1	26	00527	TS	O		0				Accident Date/Time	Time stamp	
+ACC	2	0	-1	250	00528	CE	O		0	0050			Accident Code	Coded element	
+ACC	2	1	-1	20		IS			0	0050				String	identifier
+ACC	2	2	-1	199		ST			0					String	text
+ACC	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ACC	2	4	-1	20		ST			0					String	alternate identifier
+ACC	2	5	-1	199		ST			0					String	alternate text
+ACC	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ACC	3	-1	-1	25	00529	ST	O		0				Accident Location	String	
+ACC	4	0	-1	250	00812	CE	B		0	0347			Auto Accident State	Coded element	
+ACC	4	1	-1	20		IS			0	0347				String	identifier
+ACC	4	2	-1	199		ST			0					String	text
+ACC	4	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ACC	4	4	-1	20		ST			0					String	alternate identifier
+ACC	4	5	-1	199		ST			0					String	alternate text
+ACC	4	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ACC	5	-1	-1	1	00813	ID	O		0	0136			Accident Job Related Indicator	Coded values for HL7 tables	
+ACC	6	-1	-1	12	00814	ID	O		0	0136			Accident Death Indicator	Coded values for HL7 tables	
+ACC	7	0	-1	250	00224	XCN	O		0				Entered By	Extended composite ID number and name	
+ACC	7	1	-1	15		ST			0					String	ID number
+ACC	7	2	0	194		FN			0						family name
+ACC	7	2	1	50		ST	R		0					String	surname
+ACC	7	2	2	20		ST			0					String	own surname prefix
+ACC	7	2	3	50		ST			0					String	own surname
+ACC	7	2	4	20		ST			0					String	surname prefix from partner/spouse
+ACC	7	2	5	30		ST			0					String	surname from partner/spouse
+ACC	7	3	-1	30		ST			0					String	given name
+ACC	7	4	-1	30		ST			0					String	second and further given names or initial thereof
+ACC	7	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ACC	7	6	-1	20		ST			0					String	prefix (e.g., DR)
+ACC	7	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ACC	7	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ACC	7	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ACC	7	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ACC	7	9	2	0		ST			0					String	universal ID
+ACC	7	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ACC	7	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ACC	7	11	-1	1		ST			0					String	identifier check digit
+ACC	7	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ACC	7	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ACC	7	14	0	227		HD			0					Hierarchic designator	assigning facility
+ACC	7	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ACC	7	14	2	199		ST	C		0					String	universal ID
+ACC	7	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ACC	7	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ACC	7	16	0	483		CE			0	0448				Coded element	Name Context
+ACC	7	16	1	20		IS			0	0448				String	identifier
+ACC	7	16	2	199		ST			0					String	text
+ACC	7	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ACC	7	16	4	20		ST			0					String	alternate identifier
+ACC	7	16	5	199		ST			0					String	alternate text
+ACC	7	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ACC	7	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ACC	7	17	1	26		TS			0					Time stamp	range start date/time
+ACC	7	17	2	26		TS			0					Time stamp	range end date/time
+ACC	7	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ACC	7	19	-1	26		TS			0					Time stamp	Effective Date
+ACC	7	20	-1	26		TS			0					Time stamp	Expiration Date
+ACC	7	21	-1	199		ST			0					String	Professional Suffix
+ACC	7	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ACC	7	22	1	20		ST			0					String	identifier
+ACC	7	22	2	199		ST			0					String	text
+ACC	7	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ACC	7	22	4	20		ST			0					String	alternate identifier
+ACC	7	22	5	199		ST			0					String	alternate text
+ACC	7	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ACC	7	22	7	10		ST	C		0					String	coding system version ID
+ACC	7	22	8	10		ST			0					String	alternate coding system version ID
+ACC	7	22	9	199		ST			0					String	original text
+ACC	7	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ACC	7	23	1	20		ST			0					String	identifier
+ACC	7	23	2	199		ST			0					String	text
+ACC	7	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ACC	7	23	4	20		ST			0					String	alternate identifier
+ACC	7	23	5	199		ST			0					String	alternate text
+ACC	7	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ACC	7	23	7	10		ST	C		0					String	coding system version ID
+ACC	7	23	8	10		ST			0					String	alternate coding system version ID
+ACC	7	23	9	199		ST			0					String	original text
+ACC	8	-1	-1	25	01503	ST	O		0				Accident Description	String	
+ACC	9	-1	-1	80	01504	ST	O		0				Brought In By	String	
+ACC	10	-1	-1	1	01505	ID	O		0	0136			Police Notified Indicator	Coded values for HL7 tables	
+ACC	11	0	-1	250	01853	XAD	O		0				Accident Address	Extended address	
+ACC	11	1	0	184		SAD			0					Street Address	street address
+ACC	11	1	1	120		ST			0					String	street or mailing address
+ACC	11	1	2	50		ST			0					String	street name
+ACC	11	1	3	12		ST			0					String	dwelling number
+ACC	11	2	-1	120		ST			0					String	other designation
+ACC	11	3	-1	50		ST			0					String	city
+ACC	11	4	-1	50		ST			0					String	state or province
+ACC	11	5	-1	12		ST			0					String	zip or postal code
+ACC	11	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+ACC	11	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+ACC	11	8	-1	50		ST			0					String	other geographic designation
+ACC	11	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+ACC	11	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+ACC	11	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+ACC	11	12	0	53		DR	B		0					Date/time range	address validity range
+ACC	11	12	1	26		TS			0					Time stamp	range start date/time
+ACC	11	12	2	26		TS			0					Time stamp	range end date/time
+ACC	11	13	-1	26		TS			0					Time stamp	Effective Date
+ACC	11	14	-1	26		TS			0					Time stamp	Expiration Date

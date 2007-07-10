@@ -1,0 +1,5 @@
+HL7	Blood Product Transfusion/Disposition Status	0513	RA	Returned unused/no longer needed
+HL7	Blood Product Transfusion/Disposition Status	0513	RL	Returned unused/keep linked to patient for possible use later
+HL7	Blood Product Transfusion/Disposition Status	0513	TR	Transfused with adverse reaction
+HL7	Blood Product Transfusion/Disposition Status	0513	TX	Transfused
+HL7	Blood Product Transfusion/Disposition Status	0513	WA	Wasted (product no longer viable)

@@ -1,0 +1,14 @@
+HL7	Alternate character sets	0211	8859/1	The printable characters from the ISO 8859/1 Character set
+HL7	Alternate character sets	0211	8859/2	The printable characters from the ISO 8859/2 Character set
+HL7	Alternate character sets	0211	8859/3	The printable characters from the ISO 8859/3 Character set
+HL7	Alternate character sets	0211	8859/4	The printable characters from the ISO 8859/4 Character set
+HL7	Alternate character sets	0211	8859/5	The printable characters from the ISO 8859/5 Character set
+HL7	Alternate character sets	0211	8859/6	The printable characters from the ISO 8859/6 Character set
+HL7	Alternate character sets	0211	8859/7	The printable characters from the ISO 8859/7 Character set
+HL7	Alternate character sets	0211	8859/8	The printable characters from the ISO 8859/8 Character set
+HL7	Alternate character sets	0211	8859/9	The printable characters from the ISO 8859/9 Character set
+HL7	Alternate character sets	0211	ASCII	The printable 7-bit ASCII character set. (This is the default if this field is omitted)
+HL7	Alternate character sets	0211	ISO_IR14	Code for Information Exchange (one byte)(JIS X 0201-1976).  Note that the code contains a space, i.e. "ISO IR14".
+HL7	Alternate character sets	0211	ISO_IR159	Code of the supplementary Japanese Graphic Character set for information interchange (JIS X 0212-1990). Note that the code contains a space, i.e. "ISO IR159".
+HL7	Alternate character sets	0211	ISO_IR87	Code for the Japanese Graphic Character set for information interchange (JIS X 0208-1990), Note that the code contains a space, i.e. "ISO IR87".
+HL7	Alternate character sets	0211	UNICODE	The world wide character standard from ISO/IEC 10646-1-19931

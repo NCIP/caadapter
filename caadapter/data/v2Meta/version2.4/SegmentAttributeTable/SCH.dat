@@ -1,0 +1,299 @@
+SCH	1	0	-1	75	00860	EI	C		0				Placer Appointment ID	Entity identifier	
+SCH	1	1	-1	0		ST			0					String	entity identifier
+SCH	1	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	1	3	-1	0		ST			0					String	universal ID
+SCH	1	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	2	0	-1	75	00861	EI	C		0				Filler Appointment ID	Entity identifier	
+SCH	2	1	-1	0		ST			0					String	entity identifier
+SCH	2	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	2	3	-1	0		ST			0					String	universal ID
+SCH	2	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	3	-1	-1	5	00862	NM	C		0				Occurrence Number	Numeric	
+SCH	4	0	-1	22	00218	EI	O		0				Placer Group Number	Entity identifier	
+SCH	4	1	-1	0		ST			0					String	entity identifier
+SCH	4	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	4	3	-1	0		ST			0					String	universal ID
+SCH	4	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	5	0	-1	250	00864	CE	O		0				Schedule ID	Coded element	
+SCH	5	1	-1	0		ST			0					String	identifier
+SCH	5	2	-1	0		ST			0					String	text
+SCH	5	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SCH	5	4	-1	0		ST			0					String	alternate identifier
+SCH	5	5	-1	0		ST			0					String	alternate text
+SCH	5	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SCH	6	0	-1	250	00883	CE	R		0				Event Reason	Coded element	
+SCH	6	1	-1	0		ST			0					String	identifier
+SCH	6	2	-1	0		ST			0					String	text
+SCH	6	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SCH	6	4	-1	0		ST			0					String	alternate identifier
+SCH	6	5	-1	0		ST			0					String	alternate text
+SCH	6	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SCH	7	0	-1	250	00866	CE	O		0	0276			Appointment Reason	Coded element	
+SCH	7	1	-1	0		ST			0					String	identifier
+SCH	7	2	-1	0		ST			0					String	text
+SCH	7	3	-1	0		IS			0	0276				Coded value for user-defined tables	name of coding system
+SCH	7	4	-1	0		ST			0					String	alternate identifier
+SCH	7	5	-1	0		ST			0					String	alternate text
+SCH	7	6	-1	0		IS			0	0276				Coded value for user-defined tables	name of alternate coding system
+SCH	8	0	-1	250	00867	CE	O		0	0277			Appointment Type	Coded element	
+SCH	8	1	-1	0		ST			0					String	identifier
+SCH	8	2	-1	0		ST			0					String	text
+SCH	8	3	-1	0		IS			0	0277				Coded value for user-defined tables	name of coding system
+SCH	8	4	-1	0		ST			0					String	alternate identifier
+SCH	8	5	-1	0		ST			0					String	alternate text
+SCH	8	6	-1	0		IS			0	0277				Coded value for user-defined tables	name of alternate coding system
+SCH	9	-1	-1	20	00868	NM	O		0				Appointment Duration	Numeric	
+SCH	10	0	-1	250	00869	CE	O		0				Appointment Duration Units	Coded element	
+SCH	10	1	-1	0		ST			0					String	identifier
+SCH	10	2	-1	0		ST			0					String	text
+SCH	10	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SCH	10	4	-1	0		ST			0					String	alternate identifier
+SCH	10	5	-1	0		ST			0					String	alternate text
+SCH	10	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SCH	11	0	-1	200	00884	TQ	R	Y	0				Appointment Timing Quantity	Timing/quantity	
+SCH	11	1	0	0		CQ			0					Numeric	quantity
+SCH	11	1	1	0		NM			0					Numeric	quantity
+SCH	11	1	2	0		CE			0					Coded element	units
+SCH	11	2	0	0		ZCM1			0					Coded value for user-defined tables	interval
+SCH	11	2	1	0		IS			0	0335				Coded value for user-defined tables	repeat pattern
+SCH	11	2	2	0		ST			0					String	explicit time interval
+SCH	11	3	-1	0		ST			0					String	duration
+SCH	11	4	-1	0		TS			0					Time stamp	start date/time
+SCH	11	5	-1	0		TS			0					Time stamp	end date/time
+SCH	11	6	-1	0		ST			0					String	priority
+SCH	11	7	-1	0		ST			0					String	condition
+SCH	11	8	-1	0		TX			0					Text data	text
+SCH	11	9	-1	0		ID			0	0472				Coded values for HL7 tables	conjunction
+SCH	11	10	0	0		ZCM2			0					String	order sequencing
+SCH	11	10	1	0		ST			0					String	sequence/result flag
+SCH	11	10	2	0		ST			0					String	placer order number - entity identifier
+SCH	11	10	3	0		IS			0	0300				Coded value for user-defined tables	placer order number - namespace ID
+SCH	11	10	4	0		ST			0					String	filler order number - entity identifier
+SCH	11	10	5	0		IS			0	0300				Coded value for user-defined tables	filler order number - namespace ID
+SCH	11	10	6	0		ST			0					String	sequence condition value
+SCH	11	10	7	0		NM			0					Numeric	maximum number of repeats
+SCH	11	10	8	0		ST			0					String	placer order number - universal ID
+SCH	11	10	9	0		IS			0	0301				Coded value for user-defined tables	placer order number - universal ID type
+SCH	11	10	10	0		ST			0					String	filler order number - universal ID
+SCH	11	10	11	0		IS			0	0301				Coded value for user-defined tables	filler order number - universal ID type
+SCH	11	11	0	0		CE			0					String	occurrence duration
+SCH	11	11	1	0		ST			0					String	identifier
+SCH	11	11	2	0		ST			0					String	text
+SCH	11	11	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SCH	11	11	4	0		ST			0					String	alternate identifier
+SCH	11	11	5	0		ST			0					String	alternate text
+SCH	11	11	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SCH	11	12	-1	0		NM			0					Numeric	total occurrences
+SCH	12	0	-1	250	00874	XCN	O	Y	0				Placer Contact Person	Extended composite ID number and name	
+SCH	12	1	-1	0		ST			0					String	ID number
+SCH	12	2	0	0		FN			0					String	family name
+SCH	12	2	1	0		ST			0					String	surname
+SCH	12	2	2	0		ST			0					String	own surname prefix
+SCH	12	2	3	0		ST			0					String	own surname
+SCH	12	2	4	0		ST			0					String	surname prefix from partner/spouse
+SCH	12	2	5	0		ST			0					String	surname from partner/spouse
+SCH	12	3	-1	0		ST			0					String	given name
+SCH	12	4	-1	0		ST			0					String	second and further given names or initial thereof
+SCH	12	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+SCH	12	6	-1	0		ST			0					String	prefix (e.g., DR)
+SCH	12	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+SCH	12	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+SCH	12	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+SCH	12	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	12	9	2	0		ST			0					String	universal ID
+SCH	12	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	12	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+SCH	12	11	-1	0		ST			0					String	identifier check digit
+SCH	12	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+SCH	12	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+SCH	12	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+SCH	12	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+SCH	12	14	2	0		ST			0					String	universal ID
+SCH	12	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	12	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+SCH	13	0	-1	250	00875	XTN	O		0				Placer Contact Phone Number	Extended telecommunications number	
+SCH	13	1	-1	0		TN			0					Telephone number	
+SCH	13	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+SCH	13	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+SCH	13	4	-1	0		ST			0					String	email address
+SCH	13	5	-1	0		NM			0					Numeric	country code
+SCH	13	6	-1	0		NM			0					Numeric	area/city code
+SCH	13	7	-1	0		NM			0					Numeric	phone number
+SCH	13	8	-1	0		NM			0					Numeric	extension
+SCH	13	9	-1	0		ST			0					String	any text
+SCH	14	0	-1	250	00876	XAD	O	Y	0				Placer Contact Address	Extended address	
+SCH	14	1	0	0		SAD			0					String	street address
+SCH	14	1	1	0		ST			0					String	street or mailing address
+SCH	14	1	2	0		ST			0					String	street name
+SCH	14	1	3	0		ST			0					String	dwelling number
+SCH	14	2	-1	0		ST			0					String	other designation
+SCH	14	3	-1	0		ST			0					String	city
+SCH	14	4	-1	0		ST			0					String	state or province
+SCH	14	5	-1	0		ST			0					String	zip or postal code
+SCH	14	6	-1	0		ID			0	0399				Coded values for HL7 tables	country
+SCH	14	7	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+SCH	14	8	-1	0		ST			0					String	other geographic designation
+SCH	14	9	-1	0		IS			0	0289				Coded value for user-defined tables	county/parish code
+SCH	14	10	-1	0		IS			0	0288				Coded value for user-defined tables	census tract
+SCH	14	11	-1	0		ID			0	0465				Coded values for HL7 tables	address representation code
+SCH	14	12	0	0		DR			0					Time stamp	address validity range
+SCH	14	12	1	0		TS			0					Time stamp	range start date/time
+SCH	14	12	2	0		TS			0					Time stamp	range end date/time
+SCH	15	0	-1	80	00877	PL	O		0				Placer Contact Location	Person location	
+SCH	15	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+SCH	15	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+SCH	15	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+SCH	15	4	0	0		HD			0					Coded value for user-defined tables	facility
+SCH	15	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+SCH	15	4	2	0		ST			0					String	universal ID
+SCH	15	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	15	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+SCH	15	6	-1	0		IS			0	0305				Coded value for user-defined tables	person location type
+SCH	15	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+SCH	15	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+SCH	15	9	-1	0		ST			0					String	location description
+SCH	16	0	-1	250	00885	XCN	R	Y	0				Filler Contact Person	Extended composite ID number and name	
+SCH	16	1	-1	0		ST			0					String	ID number
+SCH	16	2	0	0		FN			0					String	family name
+SCH	16	2	1	0		ST			0					String	surname
+SCH	16	2	2	0		ST			0					String	own surname prefix
+SCH	16	2	3	0		ST			0					String	own surname
+SCH	16	2	4	0		ST			0					String	surname prefix from partner/spouse
+SCH	16	2	5	0		ST			0					String	surname from partner/spouse
+SCH	16	3	-1	0		ST			0					String	given name
+SCH	16	4	-1	0		ST			0					String	second and further given names or initial thereof
+SCH	16	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+SCH	16	6	-1	0		ST			0					String	prefix (e.g., DR)
+SCH	16	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+SCH	16	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+SCH	16	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+SCH	16	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	16	9	2	0		ST			0					String	universal ID
+SCH	16	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	16	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+SCH	16	11	-1	0		ST			0					String	identifier check digit
+SCH	16	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+SCH	16	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+SCH	16	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+SCH	16	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+SCH	16	14	2	0		ST			0					String	universal ID
+SCH	16	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	16	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+SCH	17	0	-1	250	00886	XTN	O		0				Filler Contact Phone Number	Extended telecommunications number	
+SCH	17	1	-1	0		TN			0					Telephone number	
+SCH	17	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+SCH	17	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+SCH	17	4	-1	0		ST			0					String	email address
+SCH	17	5	-1	0		NM			0					Numeric	country code
+SCH	17	6	-1	0		NM			0					Numeric	area/city code
+SCH	17	7	-1	0		NM			0					Numeric	phone number
+SCH	17	8	-1	0		NM			0					Numeric	extension
+SCH	17	9	-1	0		ST			0					String	any text
+SCH	18	0	-1	250	00887	XAD	O	Y	0				Filler Contact Address	Extended address	
+SCH	18	1	0	0		SAD			0					String	street address
+SCH	18	1	1	0		ST			0					String	street or mailing address
+SCH	18	1	2	0		ST			0					String	street name
+SCH	18	1	3	0		ST			0					String	dwelling number
+SCH	18	2	-1	0		ST			0					String	other designation
+SCH	18	3	-1	0		ST			0					String	city
+SCH	18	4	-1	0		ST			0					String	state or province
+SCH	18	5	-1	0		ST			0					String	zip or postal code
+SCH	18	6	-1	0		ID			0	0399				Coded values for HL7 tables	country
+SCH	18	7	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+SCH	18	8	-1	0		ST			0					String	other geographic designation
+SCH	18	9	-1	0		IS			0	0289				Coded value for user-defined tables	county/parish code
+SCH	18	10	-1	0		IS			0	0288				Coded value for user-defined tables	census tract
+SCH	18	11	-1	0		ID			0	0465				Coded values for HL7 tables	address representation code
+SCH	18	12	0	0		DR			0					Time stamp	address validity range
+SCH	18	12	1	0		TS			0					Time stamp	range start date/time
+SCH	18	12	2	0		TS			0					Time stamp	range end date/time
+SCH	19	0	-1	80	00888	PL	O		0				Filler Contact Location	Person location	
+SCH	19	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+SCH	19	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+SCH	19	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+SCH	19	4	0	0		HD			0					Coded value for user-defined tables	facility
+SCH	19	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+SCH	19	4	2	0		ST			0					String	universal ID
+SCH	19	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	19	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+SCH	19	6	-1	0		IS			0	0305				Coded value for user-defined tables	person location type
+SCH	19	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+SCH	19	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+SCH	19	9	-1	0		ST			0					String	location description
+SCH	20	0	-1	250	00878	XCN	R	Y	0				Entered By Person	Extended composite ID number and name	
+SCH	20	1	-1	0		ST			0					String	ID number
+SCH	20	2	0	0		FN			0					String	family name
+SCH	20	2	1	0		ST			0					String	surname
+SCH	20	2	2	0		ST			0					String	own surname prefix
+SCH	20	2	3	0		ST			0					String	own surname
+SCH	20	2	4	0		ST			0					String	surname prefix from partner/spouse
+SCH	20	2	5	0		ST			0					String	surname from partner/spouse
+SCH	20	3	-1	0		ST			0					String	given name
+SCH	20	4	-1	0		ST			0					String	second and further given names or initial thereof
+SCH	20	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+SCH	20	6	-1	0		ST			0					String	prefix (e.g., DR)
+SCH	20	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+SCH	20	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+SCH	20	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+SCH	20	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	20	9	2	0		ST			0					String	universal ID
+SCH	20	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	20	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+SCH	20	11	-1	0		ST			0					String	identifier check digit
+SCH	20	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+SCH	20	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+SCH	20	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+SCH	20	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+SCH	20	14	2	0		ST			0					String	universal ID
+SCH	20	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	20	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+SCH	21	0	-1	250	00879	XTN	O	Y	0				Entered By Phone Number	Extended telecommunications number	
+SCH	21	1	-1	0		TN			0					Telephone number	
+SCH	21	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+SCH	21	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+SCH	21	4	-1	0		ST			0					String	email address
+SCH	21	5	-1	0		NM			0					Numeric	country code
+SCH	21	6	-1	0		NM			0					Numeric	area/city code
+SCH	21	7	-1	0		NM			0					Numeric	phone number
+SCH	21	8	-1	0		NM			0					Numeric	extension
+SCH	21	9	-1	0		ST			0					String	any text
+SCH	22	0	-1	80	00880	PL	O		0				Entered by Location	Person location	
+SCH	22	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+SCH	22	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+SCH	22	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+SCH	22	4	0	0		HD			0					Coded value for user-defined tables	facility
+SCH	22	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+SCH	22	4	2	0		ST			0					String	universal ID
+SCH	22	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	22	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+SCH	22	6	-1	0		IS			0	0305				Coded value for user-defined tables	person location type
+SCH	22	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+SCH	22	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+SCH	22	9	-1	0		ST			0					String	location description
+SCH	23	0	-1	75	00881	EI	O		0				Parent Placer Appointment ID	Entity identifier	
+SCH	23	1	-1	0		ST			0					String	entity identifier
+SCH	23	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	23	3	-1	0		ST			0					String	universal ID
+SCH	23	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	24	0	-1	75	00882	EI	C		0				Parent Filler Appointment ID	Entity identifier	
+SCH	24	1	-1	0		ST			0					String	entity identifier
+SCH	24	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	24	3	-1	0		ST			0					String	universal ID
+SCH	24	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	25	0	-1	250	00889	CE	O		0	0278			Filler Status Code	Coded element	
+SCH	25	1	-1	0		ST			0					String	identifier
+SCH	25	2	-1	0		ST			0					String	text
+SCH	25	3	-1	0		IS			0	0278				Coded value for user-defined tables	name of coding system
+SCH	25	4	-1	0		ST			0					String	alternate identifier
+SCH	25	5	-1	0		ST			0					String	alternate text
+SCH	25	6	-1	0		IS			0	0278				Coded value for user-defined tables	name of alternate coding system
+SCH	26	0	-1	22	00216	EI	C	Y	0				Placer Order Number	Entity identifier	
+SCH	26	1	-1	0		ST			0					String	entity identifier
+SCH	26	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	26	3	-1	0		ST			0					String	universal ID
+SCH	26	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SCH	27	0	-1	22	00217	EI	C	Y	0				Filler Order Number	Entity identifier	
+SCH	27	1	-1	0		ST			0					String	entity identifier
+SCH	27	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SCH	27	3	-1	0		ST			0					String	universal ID
+SCH	27	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type

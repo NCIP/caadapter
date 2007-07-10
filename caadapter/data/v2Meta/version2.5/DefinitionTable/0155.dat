@@ -1,0 +1,4 @@
+HL7	Accept/application acknowledgment conditions	0155	AL	Always
+HL7	Accept/application acknowledgment conditions	0155	ER	Error/reject conditions only
+HL7	Accept/application acknowledgment conditions	0155	NE	Never
+HL7	Accept/application acknowledgment conditions	0155	SU	Successful completion only

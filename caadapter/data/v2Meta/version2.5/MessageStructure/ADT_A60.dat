@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A60
+Trigger Description=ADT/ACK _ Update allergy information
+Message Structure=MSH [ { SFT } ] EVN PID [ PV1 ] [ PV2 ] [ { IAM } ]
+Return Message=ACK^A60
+Called by=

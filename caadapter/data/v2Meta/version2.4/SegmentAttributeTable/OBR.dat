@@ -1,0 +1,407 @@
+OBR	1	-1	-1	4	00237	SI	O		0				Set ID - OBR	Sequence ID	
+OBR	2	0	-1	22	00216	EI	C		0				Placer Order Number	Entity identifier	
+OBR	2	1	-1	0		ST			0					String	entity identifier
+OBR	2	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	2	3	-1	0		ST			0					String	universal ID
+OBR	2	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	3	0	-1	22	00217	EI	C		0				Filler Order Number	Entity identifier	
+OBR	3	1	-1	0		ST			0					String	entity identifier
+OBR	3	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	3	3	-1	0		ST			0					String	universal ID
+OBR	3	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	4	0	-1	250	00238	CE	R		0				Universal Service Identifier	Coded element	
+OBR	4	1	-1	0		ST			0					String	identifier
+OBR	4	2	-1	0		ST			0					String	text
+OBR	4	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	4	4	-1	0		ST			0					String	alternate identifier
+OBR	4	5	-1	0		ST			0					String	alternate text
+OBR	4	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	5	-1	-1	2	00239	ID	B		0				Priority	Coded values for HL7 tables	
+OBR	6	-1	-1	26	00240	TS	B		0				Requested Date/Time	Time stamp	
+OBR	7	-1	-1	26	00241	TS	C		0				Observation Date/Time #	Time stamp	
+OBR	8	-1	-1	26	00242	TS	O		0				Observation End Date/Time #	Time stamp	
+OBR	9	0	-1	20	00243	CQ	O		0				Collection Volume *	Composite quantity with units	
+OBR	9	1	-1	0		NM			0					Numeric	quantity
+OBR	9	2	0	0		CE			0					String	units
+OBR	9	2	1	0		ST			0					String	identifier
+OBR	9	2	2	0		ST			0					String	text
+OBR	9	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	9	2	4	0		ST			0					String	alternate identifier
+OBR	9	2	5	0		ST			0					String	alternate text
+OBR	9	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	10	0	-1	250	00244	XCN	O	Y	0				Collector Identifier *	Extended composite ID number and name	
+OBR	10	1	-1	0		ST			0					String	ID number
+OBR	10	2	0	0		FN			0					String	family name
+OBR	10	2	1	0		ST			0					String	surname
+OBR	10	2	2	0		ST			0					String	own surname prefix
+OBR	10	2	3	0		ST			0					String	own surname
+OBR	10	2	4	0		ST			0					String	surname prefix from partner/spouse
+OBR	10	2	5	0		ST			0					String	surname from partner/spouse
+OBR	10	3	-1	0		ST			0					String	given name
+OBR	10	4	-1	0		ST			0					String	second and further given names or initial thereof
+OBR	10	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+OBR	10	6	-1	0		ST			0					String	prefix (e.g., DR)
+OBR	10	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+OBR	10	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	10	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+OBR	10	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	10	9	2	0		ST			0					String	universal ID
+OBR	10	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	10	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+OBR	10	11	-1	0		ST			0					String	identifier check digit
+OBR	10	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+OBR	10	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+OBR	10	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+OBR	10	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	10	14	2	0		ST			0					String	universal ID
+OBR	10	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	10	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+OBR	11	-1	-1	1	00245	ID	O		0	0065			Specimen Action Code *	Coded values for HL7 tables	
+OBR	12	0	-1	250	00246	CE	O		0				Danger Code	Coded element	
+OBR	12	1	-1	0		ST			0					String	identifier
+OBR	12	2	-1	0		ST			0					String	text
+OBR	12	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	12	4	-1	0		ST			0					String	alternate identifier
+OBR	12	5	-1	0		ST			0					String	alternate text
+OBR	12	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	13	-1	-1	300	00247	ST	O		0				Relevant Clinical Info.	String	
+OBR	14	-1	-1	26	00248	TS	C		0				Specimen Received Date/Time *	Time stamp	
+OBR	15	0	-1	300	00249	ZC12	O		0	0070	0163	0369	Specimen Source	User Define : composit	
+OBR	15	1	0	0		ZCE2			0					Coded values for HL7 tables	specimen source name or code
+OBR	15	1	1	0		ID			0	0070				Coded values for HL7 tables	identifier
+OBR	15	1	2	0		ST			0					String	text
+OBR	15	1	3	0		ST			0					String	name of coding system
+OBR	15	1	4	0		ID			0	0070				Coded values for HL7 tables	alternate identifier
+OBR	15	1	5	0		ST			0					String	alternate text
+OBR	15	1	6	0		ST			0					String	name of alternate coding system
+OBR	15	2	-1	0		TX			0					Text data	additives
+OBR	15	3	-1	0		TX			0					Text data	free text
+OBR	15	4	0	0		ZCE3			0					Coded values for HL7 tables	body site
+OBR	15	4	1	0		ID			0	0163				Coded values for HL7 tables	identifier
+OBR	15	4	2	0		ST			0					String	text
+OBR	15	4	3	0		ST			0					String	name of coding system
+OBR	15	4	4	0		ID			0	0163				Coded values for HL7 tables	alternate identifier
+OBR	15	4	5	0		ST			0					String	alternate text
+OBR	15	4	6	0		ST			0					String	name of alternate coding system
+OBR	15	5	0	0		ZCE3			0					Coded values for HL7 tables	site modifier
+OBR	15	5	1	0		ID			0	0163				Coded values for HL7 tables	identifier
+OBR	15	5	2	0		ST			0					String	text
+OBR	15	5	3	0		ST			0					String	name of coding system
+OBR	15	5	4	0		ID			0	0163				Coded values for HL7 tables	alternate identifier
+OBR	15	5	5	0		ST			0					String	alternate text
+OBR	15	5	6	0		ST			0					String	name of alternate coding system
+OBR	15	6	0	0		CE			0					String	collection method modifier code
+OBR	15	6	1	0		ST			0					String	identifier
+OBR	15	6	2	0		ST			0					String	text
+OBR	15	6	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	15	6	4	0		ST			0					String	alternate identifier
+OBR	15	6	5	0		ST			0					String	alternate text
+OBR	15	6	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	15	7	0	0		ZCE8			0					Coded values for HL7 tables	specimen role
+OBR	15	7	1	0		ID			0	0369				Coded values for HL7 tables	identifier
+OBR	15	7	2	0		ST			0					String	text
+OBR	15	7	3	0		ST			0					String	name of coding system
+OBR	15	7	4	0		ID			0	0369				Coded values for HL7 tables	alternate identifier
+OBR	15	7	5	0		ST			0					String	alternate text
+OBR	15	7	6	0		ST			0					String	name of alternate coding system
+OBR	16	0	-1	250	00226	XCN	O	Y	0				Ordering Provider	Extended composite ID number and name	
+OBR	16	1	-1	0		ST			0					String	ID number
+OBR	16	2	0	0		FN			0					String	family name
+OBR	16	2	1	0		ST			0					String	surname
+OBR	16	2	2	0		ST			0					String	own surname prefix
+OBR	16	2	3	0		ST			0					String	own surname
+OBR	16	2	4	0		ST			0					String	surname prefix from partner/spouse
+OBR	16	2	5	0		ST			0					String	surname from partner/spouse
+OBR	16	3	-1	0		ST			0					String	given name
+OBR	16	4	-1	0		ST			0					String	second and further given names or initial thereof
+OBR	16	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+OBR	16	6	-1	0		ST			0					String	prefix (e.g., DR)
+OBR	16	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+OBR	16	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	16	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+OBR	16	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	16	9	2	0		ST			0					String	universal ID
+OBR	16	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	16	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+OBR	16	11	-1	0		ST			0					String	identifier check digit
+OBR	16	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+OBR	16	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+OBR	16	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+OBR	16	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	16	14	2	0		ST			0					String	universal ID
+OBR	16	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	16	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+OBR	17	0	-1	250	00250	XTN	O	Y	2				Order Callback Phone Number	Extended telecommunications number	
+OBR	17	1	-1	0		TN			0					Telephone number	
+OBR	17	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+OBR	17	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+OBR	17	4	-1	0		ST			0					String	email address
+OBR	17	5	-1	0		NM			0					Numeric	country code
+OBR	17	6	-1	0		NM			0					Numeric	area/city code
+OBR	17	7	-1	0		NM			0					Numeric	phone number
+OBR	17	8	-1	0		NM			0					Numeric	extension
+OBR	17	9	-1	0		ST			0					String	any text
+OBR	18	-1	-1	60	00251	ST	O		0				Placer Field 1	String	
+OBR	19	-1	-1	60	00252	ST	O		0				Placer Field 2	String	
+OBR	20	-1	-1	60	00253	ST	O		0				Filler Field 1 +	String	
+OBR	21	-1	-1	60	00254	ST	O		0				Filler Field 2 +	String	
+OBR	22	-1	-1	26	00255	TS	C		0				Results Rpt/Status Chng - Date/Time +	Time stamp	
+OBR	23	0	-1	40	00256	ZC13	O		0				Charge to Practice +	User Define : composit	
+OBR	23	1	0	0		MO			0					Numeric	dollar amount
+OBR	23	1	1	0		NM			0					Numeric	quantity
+OBR	23	1	2	0		ID			0	ISO4217				Coded values for HL7 tables	denomination
+OBR	23	2	0	0		CE			0					String	charge code
+OBR	23	2	1	0		ST			0					String	identifier
+OBR	23	2	2	0		ST			0					String	text
+OBR	23	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	23	2	4	0		ST			0					String	alternate identifier
+OBR	23	2	5	0		ST			0					String	alternate text
+OBR	23	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	24	-1	-1	10	00257	ID	O		0	0074			Diagnostic Serv Sect ID	Coded values for HL7 tables	
+OBR	25	-1	-1	1	00258	ID	C		0	0123			Result Status +	Coded values for HL7 tables	
+OBR	26	0	-1	400	00259	ZC14	O		0				Parent Result +	User Define : composit	
+OBR	26	1	0	0		CE			0					String	OBX-3-observation identifier of parent result
+OBR	26	1	1	0		ST			0					String	identifier
+OBR	26	1	2	0		ST			0					String	text
+OBR	26	1	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	26	1	4	0		ST			0					String	alternate identifier
+OBR	26	1	5	0		ST			0					String	alternate text
+OBR	26	1	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	26	2	-1	0		ST			0					String	OBX-4-sub-ID of parent result
+OBR	26	3	-1	0		TX			0					Text data	part of OBX-5 observation result from parent
+OBR	27	0	-1	200	00221	TQ	O	Y	0				Quantity/Timing	Timing/quantity	
+OBR	27	1	0	0		CQ			0					Numeric	quantity
+OBR	27	1	1	0		NM			0					Numeric	quantity
+OBR	27	1	2	0		CE			0					Coded element	units
+OBR	27	2	0	0		ZCM1			0					Coded value for user-defined tables	interval
+OBR	27	2	1	0		IS			0	0335				Coded value for user-defined tables	repeat pattern
+OBR	27	2	2	0		ST			0					String	explicit time interval
+OBR	27	3	-1	0		ST			0					String	duration
+OBR	27	4	-1	0		TS			0					Time stamp	start date/time
+OBR	27	5	-1	0		TS			0					Time stamp	end date/time
+OBR	27	6	-1	0		ST			0					String	priority
+OBR	27	7	-1	0		ST			0					String	condition
+OBR	27	8	-1	0		TX			0					Text data	text
+OBR	27	9	-1	0		ID			0	0472				Coded values for HL7 tables	conjunction
+OBR	27	10	0	0		ZCM2			0					String	order sequencing
+OBR	27	10	1	0		ST			0					String	sequence/result flag
+OBR	27	10	2	0		ST			0					String	placer order number - entity identifier
+OBR	27	10	3	0		IS			0	0300				Coded value for user-defined tables	placer order number - namespace ID
+OBR	27	10	4	0		ST			0					String	filler order number - entity identifier
+OBR	27	10	5	0		IS			0	0300				Coded value for user-defined tables	filler order number - namespace ID
+OBR	27	10	6	0		ST			0					String	sequence condition value
+OBR	27	10	7	0		NM			0					Numeric	maximum number of repeats
+OBR	27	10	8	0		ST			0					String	placer order number - universal ID
+OBR	27	10	9	0		IS			0	0301				Coded value for user-defined tables	placer order number - universal ID type
+OBR	27	10	10	0		ST			0					String	filler order number - universal ID
+OBR	27	10	11	0		IS			0	0301				Coded value for user-defined tables	filler order number - universal ID type
+OBR	27	11	0	0		CE			0					String	occurrence duration
+OBR	27	11	1	0		ST			0					String	identifier
+OBR	27	11	2	0		ST			0					String	text
+OBR	27	11	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	27	11	4	0		ST			0					String	alternate identifier
+OBR	27	11	5	0		ST			0					String	alternate text
+OBR	27	11	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	27	12	-1	0		NM			0					Numeric	total occurrences
+OBR	28	0	-1	250	00260	XCN	O	Y	5				Result Copies To	Extended composite ID number and name	
+OBR	28	1	-1	0		ST			0					String	ID number
+OBR	28	2	0	0		FN			0					String	family name
+OBR	28	2	1	0		ST			0					String	surname
+OBR	28	2	2	0		ST			0					String	own surname prefix
+OBR	28	2	3	0		ST			0					String	own surname
+OBR	28	2	4	0		ST			0					String	surname prefix from partner/spouse
+OBR	28	2	5	0		ST			0					String	surname from partner/spouse
+OBR	28	3	-1	0		ST			0					String	given name
+OBR	28	4	-1	0		ST			0					String	second and further given names or initial thereof
+OBR	28	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+OBR	28	6	-1	0		ST			0					String	prefix (e.g., DR)
+OBR	28	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+OBR	28	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	28	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+OBR	28	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	28	9	2	0		ST			0					String	universal ID
+OBR	28	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	28	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+OBR	28	11	-1	0		ST			0					String	identifier check digit
+OBR	28	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+OBR	28	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+OBR	28	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+OBR	28	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	28	14	2	0		ST			0					String	universal ID
+OBR	28	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	28	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+OBR	29	0	-1	200	00222	ZC15	O		0				Parent	User Define : composit	
+OBR	29	1	0	0		EI			0					String	parent`s placer order number
+OBR	29	1	1	0		ST			0					String	entity identifier
+OBR	29	1	2	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	29	1	3	0		ST			0					String	universal ID
+OBR	29	1	4	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	29	2	0	0		EI			0					String	parent`s filler order number
+OBR	29	2	1	0		ST			0					String	entity identifier
+OBR	29	2	2	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OBR	29	2	3	0		ST			0					String	universal ID
+OBR	29	2	4	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	30	-1	-1	20	00262	ID	O		0	0124			Transportation Mode	Coded values for HL7 tables	
+OBR	31	0	-1	250	00263	CE	O	Y	0				Reason for Study	Coded element	
+OBR	31	1	-1	0		ST			0					String	identifier
+OBR	31	2	-1	0		ST			0					String	text
+OBR	31	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	31	4	-1	0		ST			0					String	alternate identifier
+OBR	31	5	-1	0		ST			0					String	alternate text
+OBR	31	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	32	0	-1	200	00264	ZC16	O		0				Principal Result Interpreter +	User Define : composit	
+OBR	32	1	0	0		CN			0					String	name
+OBR	32	1	1	0		ST			0					String	ID number
+OBR	32	1	2	0		FN			0					ERR!2	family name
+OBR	32	1	3	0		ST			0					String	given name
+OBR	32	1	4	0		ST			0					String	second and further given names or initials thereof
+OBR	32	1	5	0		ST			0					String	suffix (e.g., JR or III)
+OBR	32	1	6	0		ST			0					String	prefix (e.g., DR)
+OBR	32	1	7	0		ST			0					String	degree (e.g., MD)
+OBR	32	1	8	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	32	1	9	0		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+OBR	32	2	-1	0		TS			0					Time stamp	start date/time
+OBR	32	3	-1	0		TS			0					Time stamp	end date/time
+OBR	32	4	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+OBR	32	5	-1	0		IS			0	0303				Coded value for user-defined tables	room
+OBR	32	6	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+OBR	32	7	0	0		HD			0					Coded value for user-defined tables	facility
+OBR	32	7	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	32	7	2	0		ST			0					String	universal ID
+OBR	32	7	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	32	8	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+OBR	32	9	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+OBR	32	10	-1	0		IS			0	0307				Coded value for user-defined tables	building
+OBR	32	11	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+OBR	33	0	-1	200	00265	ZC16	O	Y	0				Assistant Result Interpreter +	User Define : composit	
+OBR	33	1	0	0		CN			0					String	name
+OBR	33	1	1	0		ST			0					String	ID number
+OBR	33	1	2	0		FN			0					ERR!2	family name
+OBR	33	1	3	0		ST			0					String	given name
+OBR	33	1	4	0		ST			0					String	second and further given names or initials thereof
+OBR	33	1	5	0		ST			0					String	suffix (e.g., JR or III)
+OBR	33	1	6	0		ST			0					String	prefix (e.g., DR)
+OBR	33	1	7	0		ST			0					String	degree (e.g., MD)
+OBR	33	1	8	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	33	1	9	0		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+OBR	33	2	-1	0		TS			0					Time stamp	start date/time
+OBR	33	3	-1	0		TS			0					Time stamp	end date/time
+OBR	33	4	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+OBR	33	5	-1	0		IS			0	0303				Coded value for user-defined tables	room
+OBR	33	6	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+OBR	33	7	0	0		HD			0					Coded value for user-defined tables	facility
+OBR	33	7	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	33	7	2	0		ST			0					String	universal ID
+OBR	33	7	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	33	8	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+OBR	33	9	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+OBR	33	10	-1	0		IS			0	0307				Coded value for user-defined tables	building
+OBR	33	11	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+OBR	34	0	-1	200	00266	ZC16	O	Y	0				Technician +	User Define : composit	
+OBR	34	1	0	0		CN			0					String	name
+OBR	34	1	1	0		ST			0					String	ID number
+OBR	34	1	2	0		FN			0					ERR!2	family name
+OBR	34	1	3	0		ST			0					String	given name
+OBR	34	1	4	0		ST			0					String	second and further given names or initials thereof
+OBR	34	1	5	0		ST			0					String	suffix (e.g., JR or III)
+OBR	34	1	6	0		ST			0					String	prefix (e.g., DR)
+OBR	34	1	7	0		ST			0					String	degree (e.g., MD)
+OBR	34	1	8	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	34	1	9	0		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+OBR	34	2	-1	0		TS			0					Time stamp	start date/time
+OBR	34	3	-1	0		TS			0					Time stamp	end date/time
+OBR	34	4	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+OBR	34	5	-1	0		IS			0	0303				Coded value for user-defined tables	room
+OBR	34	6	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+OBR	34	7	0	0		HD			0					Coded value for user-defined tables	facility
+OBR	34	7	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	34	7	2	0		ST			0					String	universal ID
+OBR	34	7	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	34	8	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+OBR	34	9	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+OBR	34	10	-1	0		IS			0	0307				Coded value for user-defined tables	building
+OBR	34	11	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+OBR	35	0	-1	200	00267	ZC16	O	Y	0				Transcriptionist +	User Define : composit	
+OBR	35	1	0	0		CN			0					String	name
+OBR	35	1	1	0		ST			0					String	ID number
+OBR	35	1	2	0		FN			0					ERR!2	family name
+OBR	35	1	3	0		ST			0					String	given name
+OBR	35	1	4	0		ST			0					String	second and further given names or initials thereof
+OBR	35	1	5	0		ST			0					String	suffix (e.g., JR or III)
+OBR	35	1	6	0		ST			0					String	prefix (e.g., DR)
+OBR	35	1	7	0		ST			0					String	degree (e.g., MD)
+OBR	35	1	8	0		IS			0	0297				Coded value for user-defined tables	source table
+OBR	35	1	9	0		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+OBR	35	2	-1	0		TS			0					Time stamp	start date/time
+OBR	35	3	-1	0		TS			0					Time stamp	end date/time
+OBR	35	4	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+OBR	35	5	-1	0		IS			0	0303				Coded value for user-defined tables	room
+OBR	35	6	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+OBR	35	7	0	0		HD			0					Coded value for user-defined tables	facility
+OBR	35	7	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+OBR	35	7	2	0		ST			0					String	universal ID
+OBR	35	7	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OBR	35	8	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+OBR	35	9	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+OBR	35	10	-1	0		IS			0	0307				Coded value for user-defined tables	building
+OBR	35	11	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+OBR	36	-1	-1	26	00268	TS	O		0				Scheduled Date/Time +	Time stamp	
+OBR	37	-1	-1	4	01028	NM	O		0				Number of Sample Containers *	Numeric	
+OBR	38	0	-1	250	01029	CE	O	Y	0				Transport Logistics of Collected Sample *	Coded element	
+OBR	38	1	-1	0		ST			0					String	identifier
+OBR	38	2	-1	0		ST			0					String	text
+OBR	38	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	38	4	-1	0		ST			0					String	alternate identifier
+OBR	38	5	-1	0		ST			0					String	alternate text
+OBR	38	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	39	0	-1	250	01030	CE	O	Y	0				Collector`s Comment *	Coded element	
+OBR	39	1	-1	0		ST			0					String	identifier
+OBR	39	2	-1	0		ST			0					String	text
+OBR	39	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	39	4	-1	0		ST			0					String	alternate identifier
+OBR	39	5	-1	0		ST			0					String	alternate text
+OBR	39	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	40	0	-1	250	01031	CE	O		0				Transport Arrangement Responsibility	Coded element	
+OBR	40	1	-1	0		ST			0					String	identifier
+OBR	40	2	-1	0		ST			0					String	text
+OBR	40	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	40	4	-1	0		ST			0					String	alternate identifier
+OBR	40	5	-1	0		ST			0					String	alternate text
+OBR	40	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	41	-1	-1	30	01032	ID	O		0	0224			Transport Arranged	Coded values for HL7 tables	
+OBR	42	-1	-1	1	01033	ID	O		0	0225			Escort Required	Coded values for HL7 tables	
+OBR	43	0	-1	250	01034	CE	O	Y	0				Planned Patient Transport Comment	Coded element	
+OBR	43	1	-1	0		ST			0					String	identifier
+OBR	43	2	-1	0		ST			0					String	text
+OBR	43	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OBR	43	4	-1	0		ST			0					String	alternate identifier
+OBR	43	5	-1	0		ST			0					String	alternate text
+OBR	43	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OBR	44	0	-1	250	00393	CE	O		0	0088			Procedure Code	Coded element	
+OBR	44	1	-1	0		ST			0					String	identifier
+OBR	44	2	-1	0		ST			0					String	text
+OBR	44	3	-1	0		IS			0	0088				Coded value for user-defined tables	name of coding system
+OBR	44	4	-1	0		ST			0					String	alternate identifier
+OBR	44	5	-1	0		ST			0					String	alternate text
+OBR	44	6	-1	0		IS			0	0088				Coded value for user-defined tables	name of alternate coding system
+OBR	45	0	-1	250	01316	CE	O	Y	0	0340			Procedure Code Modifier	Coded element	
+OBR	45	1	-1	0		ST			0					String	identifier
+OBR	45	2	-1	0		ST			0					String	text
+OBR	45	3	-1	0		IS			0	0340				Coded value for user-defined tables	name of coding system
+OBR	45	4	-1	0		ST			0					String	alternate identifier
+OBR	45	5	-1	0		ST			0					String	alternate text
+OBR	45	6	-1	0		IS			0	0340				Coded value for user-defined tables	name of alternate coding system
+OBR	46	0	-1	250	01474	CE	O	Y	0	0411			Placer Supplemental Service Information	Coded element	
+OBR	46	1	-1	0		ST			0					String	identifier
+OBR	46	2	-1	0		ST			0					String	text
+OBR	46	3	-1	0		IS			0	0411				Coded value for user-defined tables	name of coding system
+OBR	46	4	-1	0		ST			0					String	alternate identifier
+OBR	46	5	-1	0		ST			0					String	alternate text
+OBR	46	6	-1	0		IS			0	0411				Coded value for user-defined tables	name of alternate coding system
+OBR	47	0	-1	250	01475	CE	O	Y	0	0411			Filler Supplemental Service Information	Coded element	
+OBR	47	1	-1	0		ST			0					String	identifier
+OBR	47	2	-1	0		ST			0					String	text
+OBR	47	3	-1	0		IS			0	0411				Coded value for user-defined tables	name of coding system
+OBR	47	4	-1	0		ST			0					String	alternate identifier
+OBR	47	5	-1	0		ST			0					String	alternate text
+OBR	47	6	-1	0		IS			0	0411				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,7 @@
+Message Type=PPG
+Message Type Name=Patient pathway message (goal-oriented)
+Trigger Event=PCH
+Trigger Description=PPG - PC/ pathway (goal-oriented) update
+Message Structure=PPG_PCG
+Return Message=ACK^PCH
+Called by=

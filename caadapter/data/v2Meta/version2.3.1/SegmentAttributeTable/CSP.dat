@@ -1,0 +1,16 @@
+CSP	1	0	-1	250	01022	CE	R		0				Study Phase Identifier	Coded element	
+CSP	1	1	-1	0		ST			0					String	identifier
+CSP	1	2	-1	0		ST			0					String	text
+CSP	1	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSP	1	4	-1	0		ST			0					String	alternate identifier
+CSP	1	5	-1	0		ST			0					String	alternate text
+CSP	1	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CSP	2	-1	-1	26	01052	TS	R		0				Date/time Study Phase Began	Time stamp	
+CSP	3	-1	-1	26	01053	TS	O		0				Date/time Study Phase Ended	Time stamp	
+CSP	4	0	-1	250	01054	CE	C		0				Study Phase Evaluability	Coded element	
+CSP	4	1	-1	0		ST			0					String	identifier
+CSP	4	2	-1	0		ST			0					String	text
+CSP	4	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSP	4	4	-1	0		ST			0					String	alternate identifier
+CSP	4	5	-1	0		ST			0					String	alternate text
+CSP	4	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

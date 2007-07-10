@@ -1,0 +1,70 @@
+EVN	1	-1	-1	3	00099	ID	B		0	0003			Event Type Code	Coded values for HL7 tables	
+EVN	2	-1	-1	26	00100	TS	R		0				Recorded Date/Time	Time stamp	
+EVN	3	-1	-1	26	00101	TS	O		0				Date/Time Planned Event	Time stamp	
+EVN	4	-1	-1	3	00102	IS	O		0	0062			Event Reason Code	Coded value for user-defined tables	
+EVN	5	0	-1	250	00103	XCN	O	Y	0	0188			Operator ID	Extended composite ID number and name	
+EVN	5	1	-1	15		ST			0					String	ID number
+EVN	5	2	0	194		FN			0						family name
+EVN	5	2	1	50		ST	R		0					String	surname
+EVN	5	2	2	20		ST			0					String	own surname prefix
+EVN	5	2	3	50		ST			0					String	own surname
+EVN	5	2	4	20		ST			0					String	surname prefix from partner/spouse
+EVN	5	2	5	30		ST			0					String	surname from partner/spouse
+EVN	5	3	-1	30		ST			0					String	given name
+EVN	5	4	-1	30		ST			0					String	second and further given names or initial thereof
+EVN	5	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+EVN	5	6	-1	20		ST			0					String	prefix (e.g., DR)
+EVN	5	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+EVN	5	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+EVN	5	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+EVN	5	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+EVN	5	9	2	0		ST			0					String	universal ID
+EVN	5	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+EVN	5	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+EVN	5	11	-1	1		ST			0					String	identifier check digit
+EVN	5	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+EVN	5	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+EVN	5	14	0	227		HD			0					Hierarchic designator	assigning facility
+EVN	5	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+EVN	5	14	2	199		ST	C		0					String	universal ID
+EVN	5	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+EVN	5	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+EVN	5	16	0	483		CE			0	0448				Coded element	Name Context
+EVN	5	16	1	20		IS			0	0448				String	identifier
+EVN	5	16	2	199		ST			0					String	text
+EVN	5	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+EVN	5	16	4	20		ST			0					String	alternate identifier
+EVN	5	16	5	199		ST			0					String	alternate text
+EVN	5	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+EVN	5	17	0	53		DR	B		0					Date/time range	Name Validity Range
+EVN	5	17	1	26		TS			0					Time stamp	range start date/time
+EVN	5	17	2	26		TS			0					Time stamp	range end date/time
+EVN	5	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+EVN	5	19	-1	26		TS			0					Time stamp	Effective Date
+EVN	5	20	-1	26		TS			0					Time stamp	Expiration Date
+EVN	5	21	-1	199		ST			0					String	Professional Suffix
+EVN	5	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+EVN	5	22	1	20		ST			0					String	identifier
+EVN	5	22	2	199		ST			0					String	text
+EVN	5	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+EVN	5	22	4	20		ST			0					String	alternate identifier
+EVN	5	22	5	199		ST			0					String	alternate text
+EVN	5	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+EVN	5	22	7	10		ST	C		0					String	coding system version ID
+EVN	5	22	8	10		ST			0					String	alternate coding system version ID
+EVN	5	22	9	199		ST			0					String	original text
+EVN	5	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+EVN	5	23	1	20		ST			0					String	identifier
+EVN	5	23	2	199		ST			0					String	text
+EVN	5	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+EVN	5	23	4	20		ST			0					String	alternate identifier
+EVN	5	23	5	199		ST			0					String	alternate text
+EVN	5	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+EVN	5	23	7	10		ST	C		0					String	coding system version ID
+EVN	5	23	8	10		ST			0					String	alternate coding system version ID
+EVN	5	23	9	199		ST			0					String	original text
+EVN	6	-1	-1	26	01278	TS	O		0				Event Occurred	Time stamp	
+EVN	7	0	-1	241	01534	HD	O		0				Event Facility	Hierarchic designator	
+EVN	7	1	-1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+EVN	7	2	-1	199		ST	C		0					String	universal ID
+EVN	7	3	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type

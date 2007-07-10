@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A11
+Trigger Description=ADT/ACK -  Cancel admit/visit notification
+Message Structure=ADT_A09
+Return Message=ACK^A11
+Called by=

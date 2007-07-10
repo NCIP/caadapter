@@ -1,0 +1,4 @@
+RP	1	ST		15		pointer	N	^
+RP	2	HD		227		application ID	N	^
+RP	3	ID	0191	9		type of data	N	^
+RP	4	ID	0291	19		subtype	N	E

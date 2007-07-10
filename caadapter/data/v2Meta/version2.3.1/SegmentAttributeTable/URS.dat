@@ -1,0 +1,42 @@
+URS	1	-1	-1	20	00052	ST	R	Y	0				R/U Where Subject Definition	String	
+URS	2	-1	-1	26	00053	TS	O		0				R/U When Data Start Date/Time	Time stamp	
+URS	3	-1	-1	26	00054	TS	O		0				R/U When Data End Date/Time	Time stamp	
+URS	4	-1	-1	20	00055	ST	O	Y	0				R/U What User Qualifier	String	
+URS	5	-1	-1	20	00056	ST	O	Y	0				R/U Other Results Subject Definition	String	
+URS	6	-1	-1	12	00057	ID	O	Y	0	0156			R/U Which Date/Time Qualifier	Coded values for HL7 tables	
+URS	7	-1	-1	12	00058	ID	O	Y	0	0157			R/U Which Date/Time Status Qualifier	Coded values for HL7 tables	
+URS	8	-1	-1	12	00059	ID	O	Y	0	0158			R/U Date/Time Selection Qualifier	Coded values for HL7 tables	
+URS	9	0	-1	60	00695	TQ	O		0				R/U Quantity/Timing Qualifier	Timing/quantity	
+URS	9	1	0	0		CQ			0					Numeric	quantity
+URS	9	1	1	0		NM			0					Numeric	quantity
+URS	9	1	2	0		CE			0					Coded element	units
+URS	9	2	0	0		ZCM1			0					Coded value for user-defined tables	interval
+URS	9	2	1	0		IS			0	0335				Coded value for user-defined tables	repeat pattern
+URS	9	2	2	0		ST			0					String	explicit time interval
+URS	9	3	-1	0		ST			0					String	duration
+URS	9	4	-1	0		TS			0					Time stamp	start date/time
+URS	9	5	-1	0		TS			0					Time stamp	end date/time
+URS	9	6	-1	0		ST			0					String	priority
+URS	9	7	-1	0		ST			0					String	condition
+URS	9	8	-1	0		TX			0					Text data	text
+URS	9	9	-1	0		ID			0	0472				Coded values for HL7 tables	conjunction
+URS	9	10	0	0		ZCM2			0					String	order sequencing
+URS	9	10	1	0		ST			0					String	sequence/result flag
+URS	9	10	2	0		ST			0					String	placer order number - entity identifier
+URS	9	10	3	0		IS			0	0300				Coded value for user-defined tables	placer order number - namespace ID
+URS	9	10	4	0		ST			0					String	filler order number - entity identifier
+URS	9	10	5	0		IS			0	0300				Coded value for user-defined tables	filler order number - namespace ID
+URS	9	10	6	0		ST			0					String	sequence condition value
+URS	9	10	7	0		NM			0					Numeric	maximum number of repeats
+URS	9	10	8	0		ST			0					String	placer order number - universal ID
+URS	9	10	9	0		IS			0	0301				Coded value for user-defined tables	placer order number - universal ID type
+URS	9	10	10	0		ST			0					String	filler order number - universal ID
+URS	9	10	11	0		IS			0	0301				Coded value for user-defined tables	filler order number - universal ID type
+URS	9	11	0	0		CE			0					String	occurrence duration
+URS	9	11	1	0		ST			0					String	identifier
+URS	9	11	2	0		ST			0					String	text
+URS	9	11	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+URS	9	11	4	0		ST			0					String	alternate identifier
+URS	9	11	5	0		ST			0					String	alternate text
+URS	9	11	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+URS	9	12	-1	0		NM			0					Numeric	total occurrences

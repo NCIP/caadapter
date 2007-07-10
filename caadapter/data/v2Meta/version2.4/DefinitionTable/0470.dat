@@ -1,0 +1,10 @@
+User	Reimbursement type code	0470	Crnl	Corneal Tissue APC
+User	Reimbursement type code	0470	DME	Durable Medical Equipment
+User	Reimbursement type code	0470	EPO	Epotein
+User	Reimbursement type code	0470	Lab	Clinical Laboratory APC
+User	Reimbursement type code	0470	Mamm	Screening Mammography APC
+User	Reimbursement type code	0470	NoPay	This APC is not paid
+User	Reimbursement type code	0470	OPPS	Outpatient Prospective Payment System
+User	Reimbursement type code	0470	PartH	Partial Hospitalization APC
+User	Reimbursement type code	0470	Pckg	Packaged APC
+User	Reimbursement type code	0470	Thrpy	Therapy APC

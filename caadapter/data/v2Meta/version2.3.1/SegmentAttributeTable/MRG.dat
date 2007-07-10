@@ -1,0 +1,115 @@
+MRG	1	0	-1	250	00211	CX	R	Y	0				Prior Patient Identifier List	Extended composite ID with check digit	
+MRG	1	1	-1	0		ST			0					String	ID
+MRG	1	2	-1	0		ST			0					String	check digit
+MRG	1	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+MRG	1	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+MRG	1	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+MRG	1	4	2	0		ST			0					String	universal ID
+MRG	1	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	1	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+MRG	1	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+MRG	1	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+MRG	1	6	2	0		ST			0					String	universal ID
+MRG	1	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	1	7	-1	0		DT			0					Date	effective date
+MRG	1	8	-1	0		DT			0					Date	expiration date
+MRG	2	0	-1	250	00212	CX	B	Y	0				Prior Alternate Patient ID	Extended composite ID with check digit	
+MRG	2	1	-1	0		ST			0					String	ID
+MRG	2	2	-1	0		ST			0					String	check digit
+MRG	2	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+MRG	2	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+MRG	2	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+MRG	2	4	2	0		ST			0					String	universal ID
+MRG	2	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	2	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+MRG	2	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+MRG	2	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+MRG	2	6	2	0		ST			0					String	universal ID
+MRG	2	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	2	7	-1	0		DT			0					Date	effective date
+MRG	2	8	-1	0		DT			0					Date	expiration date
+MRG	3	0	-1	250	00213	CX	O		0				Prior Patient Account Number	Extended composite ID with check digit	
+MRG	3	1	-1	0		ST			0					String	ID
+MRG	3	2	-1	0		ST			0					String	check digit
+MRG	3	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+MRG	3	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+MRG	3	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+MRG	3	4	2	0		ST			0					String	universal ID
+MRG	3	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	3	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+MRG	3	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+MRG	3	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+MRG	3	6	2	0		ST			0					String	universal ID
+MRG	3	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	3	7	-1	0		DT			0					Date	effective date
+MRG	3	8	-1	0		DT			0					Date	expiration date
+MRG	4	0	-1	250	00214	CX	B		0				Prior Patient ID	Extended composite ID with check digit	
+MRG	4	1	-1	0		ST			0					String	ID
+MRG	4	2	-1	0		ST			0					String	check digit
+MRG	4	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+MRG	4	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+MRG	4	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+MRG	4	4	2	0		ST			0					String	universal ID
+MRG	4	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	4	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+MRG	4	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+MRG	4	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+MRG	4	6	2	0		ST			0					String	universal ID
+MRG	4	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	4	7	-1	0		DT			0					Date	effective date
+MRG	4	8	-1	0		DT			0					Date	expiration date
+MRG	5	0	-1	250	01279	CX	O		0				Prior Visit Number	Extended composite ID with check digit	
+MRG	5	1	-1	0		ST			0					String	ID
+MRG	5	2	-1	0		ST			0					String	check digit
+MRG	5	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+MRG	5	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+MRG	5	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+MRG	5	4	2	0		ST			0					String	universal ID
+MRG	5	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	5	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+MRG	5	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+MRG	5	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+MRG	5	6	2	0		ST			0					String	universal ID
+MRG	5	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	5	7	-1	0		DT			0					Date	effective date
+MRG	5	8	-1	0		DT			0					Date	expiration date
+MRG	6	0	-1	250	01280	CX	O		0				Prior Alternate Visit ID	Extended composite ID with check digit	
+MRG	6	1	-1	0		ST			0					String	ID
+MRG	6	2	-1	0		ST			0					String	check digit
+MRG	6	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+MRG	6	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+MRG	6	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+MRG	6	4	2	0		ST			0					String	universal ID
+MRG	6	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	6	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+MRG	6	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+MRG	6	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+MRG	6	6	2	0		ST			0					String	universal ID
+MRG	6	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+MRG	6	7	-1	0		DT			0					Date	effective date
+MRG	6	8	-1	0		DT			0					Date	expiration date
+MRG	7	0	-1	250	01281	XPN	O	Y	0				Prior Patient Name	Extended person name	
+MRG	7	1	0	0		FN			0					String	family name
+MRG	7	1	1	0		ST			0					String	surname
+MRG	7	1	2	0		ST			0					String	own surname prefix
+MRG	7	1	3	0		ST			0					String	own surname
+MRG	7	1	4	0		ST			0					String	surname prefix from partner/spouse
+MRG	7	1	5	0		ST			0					String	surname from partner/spouse
+MRG	7	2	-1	0		ST			0					String	given name
+MRG	7	3	-1	0		ST			0					String	second and further given names or initial thereof
+MRG	7	4	-1	0		ST			0					String	suffix (e.g., JR or III)
+MRG	7	5	-1	0		ST			0					String	prefix (e.g., DR)
+MRG	7	6	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+MRG	7	7	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+MRG	7	8	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+MRG	7	9	0	0		ZCE6			0					Coded values for HL7 tables	name context
+MRG	7	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+MRG	7	9	2	0		ST			0					String	text
+MRG	7	9	3	0		ST			0					String	name of coding system
+MRG	7	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+MRG	7	9	5	0		ST			0					String	alternate text
+MRG	7	9	6	0		ST			0					String	name of alternate coding system
+MRG	7	10	0	0		DR			0					Time stamp	name validity range
+MRG	7	10	1	0		TS			0					Time stamp	range start date/time
+MRG	7	10	2	0		TS			0					Time stamp	range end date/time
+MRG	7	11	-1	0		ID			0	0444				Coded values for HL7 tables	name assembly order

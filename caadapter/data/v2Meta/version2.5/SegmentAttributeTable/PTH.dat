@@ -1,0 +1,22 @@
+PTH	1	-1	-1	2	00816	ID	R		0	0287			Action Code	Coded values for HL7 tables	
+PTH	2	0	-1	250	01207	CE	R		0				Pathway ID	Coded element	
+PTH	2	1	-1	20		ST			0					String	identifier
+PTH	2	2	-1	199		ST			0					String	text
+PTH	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PTH	2	4	-1	20		ST			0					String	alternate identifier
+PTH	2	5	-1	199		ST			0					String	alternate text
+PTH	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PTH	3	0	-1	60	01208	EI	R		0				Pathway Instance ID	Entity identifier	
+PTH	3	1	-1	199		ST			0					String	entity identifier
+PTH	3	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+PTH	3	3	-1	199		ST	C		0					String	universal ID
+PTH	3	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PTH	4	-1	-1	26	01209	TS	R		0				Pathway Established Date/Time	Time stamp	
+PTH	5	0	-1	250	01210	CE	O		0				Pathway Life Cycle Status	Coded element	
+PTH	5	1	-1	20		ST			0					String	identifier
+PTH	5	2	-1	199		ST			0					String	text
+PTH	5	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PTH	5	4	-1	20		ST			0					String	alternate identifier
+PTH	5	5	-1	199		ST			0					String	alternate text
+PTH	5	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PTH	6	-1	-1	26	01211	TS	C		0				Change Pathway Life Cycle Status Date/Time	Time stamp	

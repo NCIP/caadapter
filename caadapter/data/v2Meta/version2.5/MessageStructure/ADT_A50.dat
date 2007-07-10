@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A50
+Trigger Description=ADT/ACK - Change visit number
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] MRG PV1
+Return Message=ACK^A50
+Called by=

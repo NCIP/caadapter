@@ -1,0 +1,14 @@
+NPU	1	0	-1	80	00209	PL	R		0				Bed Location	Person location	
+NPU	1	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+NPU	1	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+NPU	1	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+NPU	1	4	0	0		HD			0					Coded value for user-defined tables	facility
+NPU	1	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+NPU	1	4	2	0		ST			0					String	universal ID
+NPU	1	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+NPU	1	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+NPU	1	6	-1	0		IS			0	0305				Coded value for user-defined tables	person location type
+NPU	1	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+NPU	1	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+NPU	1	9	-1	0		ST			0					String	location description
+NPU	2	-1	-1	1	00170	IS	O		0	0116			Bed Status	Coded value for user-defined tables	

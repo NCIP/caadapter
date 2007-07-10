@@ -1,0 +1,7 @@
+Message Type=VXQ
+Message Type Name=Query for vaccination record
+Trigger Event=V01
+Trigger Description=VXQ - Query for vaccination record
+Message Structure=MSH [ { SFT } ] QRD [ QRF ]
+Return Message=VXX^V02/VXR^V03
+Called by=

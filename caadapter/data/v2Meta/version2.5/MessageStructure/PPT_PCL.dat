@@ -1,0 +1,7 @@
+Message Type=PPT
+Message Type Name=Patient pathway goal-oriented response
+Trigger Event=PCL
+Trigger Description=PPT - PC/ pathway (goal-oriented) query response
+Message Structure=MSH [ { SFT } ] MSA [ { ERR } ] [ QAK ] QRD { !PATIENT! PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !PATHWAY! PTH [ { NTE } ] [ { VAR } ] [ { !PATHWAY_ROLE! ROL [ { VAR } ] } ] [ { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] [ { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] } ] } }
+Return Message=ACK^PCL
+Called by=QRY^PCK

@@ -1,0 +1,6 @@
+ZCE1	1	ID	0357			identifier	N	^
+ZCE1	2	ST				text	N	^
+ZCE1	3	ST				name of coding system	N	^
+ZCE1	4	ID	0357			alternate identifier	N	^
+ZCE1	5	ST				alternate text	N	^
+ZCE1	6	ST				name of alternate coding system	N	E

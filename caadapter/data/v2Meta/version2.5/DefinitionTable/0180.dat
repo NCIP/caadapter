@@ -1,0 +1,5 @@
+HL7	Record-level event code	0180	MAC	Reactivate deactivated record
+HL7	Record-level event code	0180	MAD	Add record to master file
+HL7	Record-level event code	0180	MDC	Deactivate: discontinue using record in master file/ but do not delete from database
+HL7	Record-level event code	0180	MDL	Delete record from master file
+HL7	Record-level event code	0180	MUP	Update record for master file

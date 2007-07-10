@@ -1,0 +1,7 @@
+HL7	Problem/goal action code	0287	AD	ADD
+HL7	Problem/goal action code	0287	CO	CORRECT
+HL7	Problem/goal action code	0287	DE	DELETE
+HL7	Problem/goal action code	0287	LI	LINK
+HL7	Problem/goal action code	0287	UC	UNCHANGED *
+HL7	Problem/goal action code	0287	UN	UNLINK
+HL7	Problem/goal action code	0287	UP	UPDATE

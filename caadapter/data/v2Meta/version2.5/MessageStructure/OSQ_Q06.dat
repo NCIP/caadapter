@@ -1,0 +1,7 @@
+Message Type=OSQ
+Message Type Name=Query response for order status
+Trigger Event=Q06
+Trigger Description=OSQ/OSR - Query for order status
+Message Structure=MSH [ { SFT } ] QRD [ QRF ] [ DSC ]
+Return Message=OSR^Q06
+Called by=

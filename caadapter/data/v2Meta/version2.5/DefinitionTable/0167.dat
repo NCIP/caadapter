@@ -1,0 +1,11 @@
+HL7	Substitution Status	0167	0	No product selection indicated
+HL7	Substitution Status	0167	1	Substitution not allowed by prescriber
+HL7	Substitution Status	0167	2	Substitution allowed - patient requested product dispensed
+HL7	Substitution Status	0167	3	Substitution allowed - pharmacist selected product dispensed
+HL7	Substitution Status	0167	4	Substitution allowed - generic drug not in stock
+HL7	Substitution Status	0167	5	Substitution allowed - brand drug dispensed as a generic
+HL7	Substitution Status	0167	7	Substitution not allowed - brand drug mandated by law
+HL7	Substitution Status	0167	8	Substitution allowed - generic drug not available in marketplace
+HL7	Substitution Status	0167	G	A generic substitution was dispensed.
+HL7	Substitution Status	0167	N	No substitute was dispensed.  This is equivalent to the default (null) value.
+HL7	Substitution Status	0167	T	A therapeutic substitution was dispensed.

@@ -1,0 +1,4 @@
+EI	1	ST		199		entity identifier	N	^
+EI	2	IS	0363	20		namespace ID	N	^
+EI	3	ST		199	C	universal ID	N	^
+EI	4	ID	0301	6	C	universal ID type	N	E

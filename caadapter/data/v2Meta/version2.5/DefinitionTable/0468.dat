@@ -1,0 +1,5 @@
+HL7	Payment Adjustment Code	0468	1	No payment adjustment
+HL7	Payment Adjustment Code	0468	2	Designated current drug or biological payment adjustment applies to APC (status indicator G)
+HL7	Payment Adjustment Code	0468	3	Designated new device payment adjustment applies to APC (status indicator H)
+HL7	Payment Adjustment Code	0468	4	Designated new drug or new biological payment adjustment applies to APC (status indicator J)
+HL7	Payment Adjustment Code	0468	5	Deductible not applicable (specific list of HCPCS codes)

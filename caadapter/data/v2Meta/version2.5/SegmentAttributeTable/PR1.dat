@@ -1,0 +1,234 @@
+PR1	1	-1	-1	4	00391	SI	R		0				Set ID - PR1	Sequence ID	
+PR1	2	-1	-1	3	00392	IS	B		0	0089			Procedure Coding Method	Coded value for user-defined tables	
+PR1	3	0	-1	250	00393	CE	R		0	0088			Procedure Code	Coded element	
+PR1	3	1	-1	20		IS			0	0088				String	identifier
+PR1	3	2	-1	199		ST			0					String	text
+PR1	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	3	4	-1	20		ST			0					String	alternate identifier
+PR1	3	5	-1	199		ST			0					String	alternate text
+PR1	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	4	-1	-1	40	00394	ST	B		0				Procedure Description	String	
+PR1	5	-1	-1	26	00395	TS	R		0				Procedure Date/Time	Time stamp	
+PR1	6	-1	-1	2	00396	IS	O		0	0230			Procedure Functional Type	Coded value for user-defined tables	
+PR1	7	-1	-1	4	00397	NM	O		0				Procedure Minutes	Numeric	
+PR1	8	0	-1	250	00398	XCN	B	Y	0	0010			Anesthesiologist	Extended composite ID number and name	
+PR1	8	1	-1	15		ST			0					String	ID number
+PR1	8	2	0	194		FN			0						family name
+PR1	8	2	1	50		ST	R		0					String	surname
+PR1	8	2	2	20		ST			0					String	own surname prefix
+PR1	8	2	3	50		ST			0					String	own surname
+PR1	8	2	4	20		ST			0					String	surname prefix from partner/spouse
+PR1	8	2	5	30		ST			0					String	surname from partner/spouse
+PR1	8	3	-1	30		ST			0					String	given name
+PR1	8	4	-1	30		ST			0					String	second and further given names or initial thereof
+PR1	8	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+PR1	8	6	-1	20		ST			0					String	prefix (e.g., DR)
+PR1	8	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+PR1	8	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+PR1	8	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+PR1	8	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+PR1	8	9	2	0		ST			0					String	universal ID
+PR1	8	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PR1	8	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+PR1	8	11	-1	1		ST			0					String	identifier check digit
+PR1	8	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+PR1	8	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+PR1	8	14	0	227		HD			0					Hierarchic designator	assigning facility
+PR1	8	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+PR1	8	14	2	199		ST	C		0					String	universal ID
+PR1	8	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PR1	8	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+PR1	8	16	0	483		CE			0	0448				Coded element	Name Context
+PR1	8	16	1	20		IS			0	0448				String	identifier
+PR1	8	16	2	199		ST			0					String	text
+PR1	8	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	8	16	4	20		ST			0					String	alternate identifier
+PR1	8	16	5	199		ST			0					String	alternate text
+PR1	8	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	8	17	0	53		DR	B		0					Date/time range	Name Validity Range
+PR1	8	17	1	26		TS			0					Time stamp	range start date/time
+PR1	8	17	2	26		TS			0					Time stamp	range end date/time
+PR1	8	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+PR1	8	19	-1	26		TS			0					Time stamp	Effective Date
+PR1	8	20	-1	26		TS			0					Time stamp	Expiration Date
+PR1	8	21	-1	199		ST			0					String	Professional Suffix
+PR1	8	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+PR1	8	22	1	20		ST			0					String	identifier
+PR1	8	22	2	199		ST			0					String	text
+PR1	8	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+PR1	8	22	4	20		ST			0					String	alternate identifier
+PR1	8	22	5	199		ST			0					String	alternate text
+PR1	8	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+PR1	8	22	7	10		ST	C		0					String	coding system version ID
+PR1	8	22	8	10		ST			0					String	alternate coding system version ID
+PR1	8	22	9	199		ST			0					String	original text
+PR1	8	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+PR1	8	23	1	20		ST			0					String	identifier
+PR1	8	23	2	199		ST			0					String	text
+PR1	8	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+PR1	8	23	4	20		ST			0					String	alternate identifier
+PR1	8	23	5	199		ST			0					String	alternate text
+PR1	8	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+PR1	8	23	7	10		ST	C		0					String	coding system version ID
+PR1	8	23	8	10		ST			0					String	alternate coding system version ID
+PR1	8	23	9	199		ST			0					String	original text
+PR1	9	-1	-1	2	00399	IS	O		0	0019			Anesthesia Code	Coded value for user-defined tables	
+PR1	10	-1	-1	4	00400	NM	O		0				Anesthesia Minutes	Numeric	
+PR1	11	0	-1	250	00401	XCN	B	Y	0	0010			Surgeon	Extended composite ID number and name	
+PR1	11	1	-1	15		ST			0					String	ID number
+PR1	11	2	0	194		FN			0						family name
+PR1	11	2	1	50		ST	R		0					String	surname
+PR1	11	2	2	20		ST			0					String	own surname prefix
+PR1	11	2	3	50		ST			0					String	own surname
+PR1	11	2	4	20		ST			0					String	surname prefix from partner/spouse
+PR1	11	2	5	30		ST			0					String	surname from partner/spouse
+PR1	11	3	-1	30		ST			0					String	given name
+PR1	11	4	-1	30		ST			0					String	second and further given names or initial thereof
+PR1	11	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+PR1	11	6	-1	20		ST			0					String	prefix (e.g., DR)
+PR1	11	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+PR1	11	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+PR1	11	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+PR1	11	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+PR1	11	9	2	0		ST			0					String	universal ID
+PR1	11	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PR1	11	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+PR1	11	11	-1	1		ST			0					String	identifier check digit
+PR1	11	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+PR1	11	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+PR1	11	14	0	227		HD			0					Hierarchic designator	assigning facility
+PR1	11	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+PR1	11	14	2	199		ST	C		0					String	universal ID
+PR1	11	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PR1	11	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+PR1	11	16	0	483		CE			0	0448				Coded element	Name Context
+PR1	11	16	1	20		IS			0	0448				String	identifier
+PR1	11	16	2	199		ST			0					String	text
+PR1	11	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	11	16	4	20		ST			0					String	alternate identifier
+PR1	11	16	5	199		ST			0					String	alternate text
+PR1	11	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	11	17	0	53		DR	B		0					Date/time range	Name Validity Range
+PR1	11	17	1	26		TS			0					Time stamp	range start date/time
+PR1	11	17	2	26		TS			0					Time stamp	range end date/time
+PR1	11	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+PR1	11	19	-1	26		TS			0					Time stamp	Effective Date
+PR1	11	20	-1	26		TS			0					Time stamp	Expiration Date
+PR1	11	21	-1	199		ST			0					String	Professional Suffix
+PR1	11	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+PR1	11	22	1	20		ST			0					String	identifier
+PR1	11	22	2	199		ST			0					String	text
+PR1	11	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+PR1	11	22	4	20		ST			0					String	alternate identifier
+PR1	11	22	5	199		ST			0					String	alternate text
+PR1	11	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+PR1	11	22	7	10		ST	C		0					String	coding system version ID
+PR1	11	22	8	10		ST			0					String	alternate coding system version ID
+PR1	11	22	9	199		ST			0					String	original text
+PR1	11	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+PR1	11	23	1	20		ST			0					String	identifier
+PR1	11	23	2	199		ST			0					String	text
+PR1	11	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+PR1	11	23	4	20		ST			0					String	alternate identifier
+PR1	11	23	5	199		ST			0					String	alternate text
+PR1	11	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+PR1	11	23	7	10		ST	C		0					String	coding system version ID
+PR1	11	23	8	10		ST			0					String	alternate coding system version ID
+PR1	11	23	9	199		ST			0					String	original text
+PR1	12	0	-1	250	00402	XCN	B	Y	0	0010			Procedure Practitioner	Extended composite ID number and name	
+PR1	12	1	-1	15		ST			0					String	ID number
+PR1	12	2	0	194		FN			0						family name
+PR1	12	2	1	50		ST	R		0					String	surname
+PR1	12	2	2	20		ST			0					String	own surname prefix
+PR1	12	2	3	50		ST			0					String	own surname
+PR1	12	2	4	20		ST			0					String	surname prefix from partner/spouse
+PR1	12	2	5	30		ST			0					String	surname from partner/spouse
+PR1	12	3	-1	30		ST			0					String	given name
+PR1	12	4	-1	30		ST			0					String	second and further given names or initial thereof
+PR1	12	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+PR1	12	6	-1	20		ST			0					String	prefix (e.g., DR)
+PR1	12	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+PR1	12	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+PR1	12	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+PR1	12	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+PR1	12	9	2	0		ST			0					String	universal ID
+PR1	12	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PR1	12	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+PR1	12	11	-1	1		ST			0					String	identifier check digit
+PR1	12	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+PR1	12	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+PR1	12	14	0	227		HD			0					Hierarchic designator	assigning facility
+PR1	12	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+PR1	12	14	2	199		ST	C		0					String	universal ID
+PR1	12	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PR1	12	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+PR1	12	16	0	483		CE			0	0448				Coded element	Name Context
+PR1	12	16	1	20		IS			0	0448				String	identifier
+PR1	12	16	2	199		ST			0					String	text
+PR1	12	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	12	16	4	20		ST			0					String	alternate identifier
+PR1	12	16	5	199		ST			0					String	alternate text
+PR1	12	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	12	17	0	53		DR	B		0					Date/time range	Name Validity Range
+PR1	12	17	1	26		TS			0					Time stamp	range start date/time
+PR1	12	17	2	26		TS			0					Time stamp	range end date/time
+PR1	12	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+PR1	12	19	-1	26		TS			0					Time stamp	Effective Date
+PR1	12	20	-1	26		TS			0					Time stamp	Expiration Date
+PR1	12	21	-1	199		ST			0					String	Professional Suffix
+PR1	12	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+PR1	12	22	1	20		ST			0					String	identifier
+PR1	12	22	2	199		ST			0					String	text
+PR1	12	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+PR1	12	22	4	20		ST			0					String	alternate identifier
+PR1	12	22	5	199		ST			0					String	alternate text
+PR1	12	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+PR1	12	22	7	10		ST	C		0					String	coding system version ID
+PR1	12	22	8	10		ST			0					String	alternate coding system version ID
+PR1	12	22	9	199		ST			0					String	original text
+PR1	12	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+PR1	12	23	1	20		ST			0					String	identifier
+PR1	12	23	2	199		ST			0					String	text
+PR1	12	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+PR1	12	23	4	20		ST			0					String	alternate identifier
+PR1	12	23	5	199		ST			0					String	alternate text
+PR1	12	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+PR1	12	23	7	10		ST	C		0					String	coding system version ID
+PR1	12	23	8	10		ST			0					String	alternate coding system version ID
+PR1	12	23	9	199		ST			0					String	original text
+PR1	13	0	-1	250	00403	CE	O		0	0059			Consent Code	Coded element	
+PR1	13	1	-1	20		IS			0	0059				String	identifier
+PR1	13	2	-1	199		ST			0					String	text
+PR1	13	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	13	4	-1	20		ST			0					String	alternate identifier
+PR1	13	5	-1	199		ST			0					String	alternate text
+PR1	13	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	14	-1	-1	2	00404	ID	O		0	0418			Procedure Priority	Coded values for HL7 tables	
+PR1	15	0	-1	250	00772	CE	O		0	0051			Associated Diagnosis Code	Coded element	
+PR1	15	1	-1	20		IS			0	0051				String	identifier
+PR1	15	2	-1	199		ST			0					String	text
+PR1	15	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	15	4	-1	20		ST			0					String	alternate identifier
+PR1	15	5	-1	199		ST			0					String	alternate text
+PR1	15	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	16	0	-1	250	01316	CE	O	Y	0	0340			Procedure Code Modifier	Coded element	
+PR1	16	1	-1	20		IS			0	0340				String	identifier
+PR1	16	2	-1	199		ST			0					String	text
+PR1	16	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	16	4	-1	20		ST			0					String	alternate identifier
+PR1	16	5	-1	199		ST			0					String	alternate text
+PR1	16	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	17	-1	-1	20	01501	IS	O		0	0416			Procedure DRG Type	Coded value for user-defined tables	
+PR1	18	0	-1	250	01502	CE	O	Y	0	0417			Tissue Type Code	Coded element	
+PR1	18	1	-1	20		IS			0	0417				String	identifier
+PR1	18	2	-1	199		ST			0					String	text
+PR1	18	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PR1	18	4	-1	20		ST			0					String	alternate identifier
+PR1	18	5	-1	199		ST			0					String	alternate text
+PR1	18	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PR1	19	0	-1	427	01848	EI	C		0				Procedure Identifier	Entity identifier	
+PR1	19	1	-1	199		ST			0					String	entity identifier
+PR1	19	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+PR1	19	3	-1	199		ST	C		0					String	universal ID
+PR1	19	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PR1	20	-1	-1	1	01849	ID	C		0	0206			Procedure Action Code	Coded values for HL7 tables	

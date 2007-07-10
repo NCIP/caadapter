@@ -1,0 +1,229 @@
+FAC	1	0	-1	20	01262	EI	R		0				Facility ID-FAC	Entity identifier	
+FAC	1	1	-1	199		ST			0					String	entity identifier
+FAC	1	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+FAC	1	3	-1	199		ST	C		0					String	universal ID
+FAC	1	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FAC	2	-1	-1	1	01263	ID	O		0	0331			Facility Type	Coded values for HL7 tables	
+FAC	3	0	-1	250	01264	XAD	R	Y	0				Facility Address	Extended address	
+FAC	3	1	0	184		SAD			0					Street Address	street address
+FAC	3	1	1	120		ST			0					String	street or mailing address
+FAC	3	1	2	50		ST			0					String	street name
+FAC	3	1	3	12		ST			0					String	dwelling number
+FAC	3	2	-1	120		ST			0					String	other designation
+FAC	3	3	-1	50		ST			0					String	city
+FAC	3	4	-1	50		ST			0					String	state or province
+FAC	3	5	-1	12		ST			0					String	zip or postal code
+FAC	3	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+FAC	3	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+FAC	3	8	-1	50		ST			0					String	other geographic designation
+FAC	3	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+FAC	3	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+FAC	3	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+FAC	3	12	0	53		DR	B		0					Date/time range	address validity range
+FAC	3	12	1	26		TS			0					Time stamp	range start date/time
+FAC	3	12	2	26		TS			0					Time stamp	range end date/time
+FAC	3	13	-1	26		TS			0					Time stamp	Effective Date
+FAC	3	14	-1	26		TS			0					Time stamp	Expiration Date
+FAC	4	0	-1	250	01265	XTN	R		0				Facility Telecommunication	Extended telecommunications number	
+FAC	4	1	-1	199		ST	B		0					String	Telephone Number
+FAC	4	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+FAC	4	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+FAC	4	4	-1	199		ST			0					String	email address
+FAC	4	5	-1	3		NM			0					Numeric	country code
+FAC	4	6	-1	5		NM			0					Numeric	area/city code
+FAC	4	7	-1	9		NM			0					Numeric	phone number
+FAC	4	8	-1	5		NM			0					Numeric	extension
+FAC	4	9	-1	199		ST			0					String	any text
+FAC	4	10	-1	4		ST			0					String	Extension Prefix
+FAC	4	11	-1	6		ST			0					String	Speed Dial Code
+FAC	4	12	-1	199		ST	C		0					String	Unformatted Telephone number
+FAC	5	0	-1	250	01266	XCN	O	Y	0				Contact Person	Extended composite ID number and name	
+FAC	5	1	-1	15		ST			0					String	ID number
+FAC	5	2	0	194		FN			0						family name
+FAC	5	2	1	50		ST	R		0					String	surname
+FAC	5	2	2	20		ST			0					String	own surname prefix
+FAC	5	2	3	50		ST			0					String	own surname
+FAC	5	2	4	20		ST			0					String	surname prefix from partner/spouse
+FAC	5	2	5	30		ST			0					String	surname from partner/spouse
+FAC	5	3	-1	30		ST			0					String	given name
+FAC	5	4	-1	30		ST			0					String	second and further given names or initial thereof
+FAC	5	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+FAC	5	6	-1	20		ST			0					String	prefix (e.g., DR)
+FAC	5	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+FAC	5	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+FAC	5	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+FAC	5	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+FAC	5	9	2	0		ST			0					String	universal ID
+FAC	5	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+FAC	5	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+FAC	5	11	-1	1		ST			0					String	identifier check digit
+FAC	5	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+FAC	5	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+FAC	5	14	0	227		HD			0					Hierarchic designator	assigning facility
+FAC	5	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FAC	5	14	2	199		ST	C		0					String	universal ID
+FAC	5	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FAC	5	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+FAC	5	16	0	483		CE			0	0448				Coded element	Name Context
+FAC	5	16	1	20		IS			0	0448				String	identifier
+FAC	5	16	2	199		ST			0					String	text
+FAC	5	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FAC	5	16	4	20		ST			0					String	alternate identifier
+FAC	5	16	5	199		ST			0					String	alternate text
+FAC	5	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FAC	5	17	0	53		DR	B		0					Date/time range	Name Validity Range
+FAC	5	17	1	26		TS			0					Time stamp	range start date/time
+FAC	5	17	2	26		TS			0					Time stamp	range end date/time
+FAC	5	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+FAC	5	19	-1	26		TS			0					Time stamp	Effective Date
+FAC	5	20	-1	26		TS			0					Time stamp	Expiration Date
+FAC	5	21	-1	199		ST			0					String	Professional Suffix
+FAC	5	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+FAC	5	22	1	20		ST			0					String	identifier
+FAC	5	22	2	199		ST			0					String	text
+FAC	5	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FAC	5	22	4	20		ST			0					String	alternate identifier
+FAC	5	22	5	199		ST			0					String	alternate text
+FAC	5	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FAC	5	22	7	10		ST	C		0					String	coding system version ID
+FAC	5	22	8	10		ST			0					String	alternate coding system version ID
+FAC	5	22	9	199		ST			0					String	original text
+FAC	5	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+FAC	5	23	1	20		ST			0					String	identifier
+FAC	5	23	2	199		ST			0					String	text
+FAC	5	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FAC	5	23	4	20		ST			0					String	alternate identifier
+FAC	5	23	5	199		ST			0					String	alternate text
+FAC	5	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FAC	5	23	7	10		ST	C		0					String	coding system version ID
+FAC	5	23	8	10		ST			0					String	alternate coding system version ID
+FAC	5	23	9	199		ST			0					String	original text
+FAC	6	-1	-1	60	01267	ST	O	Y	0				Contact Title	String	
+FAC	7	0	-1	250	01166	XAD	O	Y	0				Contact Address	Extended address	
+FAC	7	1	0	184		SAD			0					Street Address	street address
+FAC	7	1	1	120		ST			0					String	street or mailing address
+FAC	7	1	2	50		ST			0					String	street name
+FAC	7	1	3	12		ST			0					String	dwelling number
+FAC	7	2	-1	120		ST			0					String	other designation
+FAC	7	3	-1	50		ST			0					String	city
+FAC	7	4	-1	50		ST			0					String	state or province
+FAC	7	5	-1	12		ST			0					String	zip or postal code
+FAC	7	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+FAC	7	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+FAC	7	8	-1	50		ST			0					String	other geographic designation
+FAC	7	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+FAC	7	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+FAC	7	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+FAC	7	12	0	53		DR	B		0					Date/time range	address validity range
+FAC	7	12	1	26		TS			0					Time stamp	range start date/time
+FAC	7	12	2	26		TS			0					Time stamp	range end date/time
+FAC	7	13	-1	26		TS			0					Time stamp	Effective Date
+FAC	7	14	-1	26		TS			0					Time stamp	Expiration Date
+FAC	8	0	-1	250	01269	XTN	O	Y	0				Contact Telecommunication	Extended telecommunications number	
+FAC	8	1	-1	199		ST	B		0					String	Telephone Number
+FAC	8	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+FAC	8	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+FAC	8	4	-1	199		ST			0					String	email address
+FAC	8	5	-1	3		NM			0					Numeric	country code
+FAC	8	6	-1	5		NM			0					Numeric	area/city code
+FAC	8	7	-1	9		NM			0					Numeric	phone number
+FAC	8	8	-1	5		NM			0					Numeric	extension
+FAC	8	9	-1	199		ST			0					String	any text
+FAC	8	10	-1	4		ST			0					String	Extension Prefix
+FAC	8	11	-1	6		ST			0					String	Speed Dial Code
+FAC	8	12	-1	199		ST	C		0					String	Unformatted Telephone number
+FAC	9	0	-1	250	01270	XCN	R	Y	0				Signature Authority	Extended composite ID number and name	
+FAC	9	1	-1	15		ST			0					String	ID number
+FAC	9	2	0	194		FN			0						family name
+FAC	9	2	1	50		ST	R		0					String	surname
+FAC	9	2	2	20		ST			0					String	own surname prefix
+FAC	9	2	3	50		ST			0					String	own surname
+FAC	9	2	4	20		ST			0					String	surname prefix from partner/spouse
+FAC	9	2	5	30		ST			0					String	surname from partner/spouse
+FAC	9	3	-1	30		ST			0					String	given name
+FAC	9	4	-1	30		ST			0					String	second and further given names or initial thereof
+FAC	9	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+FAC	9	6	-1	20		ST			0					String	prefix (e.g., DR)
+FAC	9	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+FAC	9	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+FAC	9	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+FAC	9	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+FAC	9	9	2	0		ST			0					String	universal ID
+FAC	9	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+FAC	9	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+FAC	9	11	-1	1		ST			0					String	identifier check digit
+FAC	9	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+FAC	9	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+FAC	9	14	0	227		HD			0					Hierarchic designator	assigning facility
+FAC	9	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FAC	9	14	2	199		ST	C		0					String	universal ID
+FAC	9	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FAC	9	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+FAC	9	16	0	483		CE			0	0448				Coded element	Name Context
+FAC	9	16	1	20		IS			0	0448				String	identifier
+FAC	9	16	2	199		ST			0					String	text
+FAC	9	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FAC	9	16	4	20		ST			0					String	alternate identifier
+FAC	9	16	5	199		ST			0					String	alternate text
+FAC	9	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FAC	9	17	0	53		DR	B		0					Date/time range	Name Validity Range
+FAC	9	17	1	26		TS			0					Time stamp	range start date/time
+FAC	9	17	2	26		TS			0					Time stamp	range end date/time
+FAC	9	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+FAC	9	19	-1	26		TS			0					Time stamp	Effective Date
+FAC	9	20	-1	26		TS			0					Time stamp	Expiration Date
+FAC	9	21	-1	199		ST			0					String	Professional Suffix
+FAC	9	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+FAC	9	22	1	20		ST			0					String	identifier
+FAC	9	22	2	199		ST			0					String	text
+FAC	9	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FAC	9	22	4	20		ST			0					String	alternate identifier
+FAC	9	22	5	199		ST			0					String	alternate text
+FAC	9	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FAC	9	22	7	10		ST	C		0					String	coding system version ID
+FAC	9	22	8	10		ST			0					String	alternate coding system version ID
+FAC	9	22	9	199		ST			0					String	original text
+FAC	9	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+FAC	9	23	1	20		ST			0					String	identifier
+FAC	9	23	2	199		ST			0					String	text
+FAC	9	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FAC	9	23	4	20		ST			0					String	alternate identifier
+FAC	9	23	5	199		ST			0					String	alternate text
+FAC	9	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FAC	9	23	7	10		ST	C		0					String	coding system version ID
+FAC	9	23	8	10		ST			0					String	alternate coding system version ID
+FAC	9	23	9	199		ST			0					String	original text
+FAC	10	-1	-1	60	01271	ST	O		0				Signature Authority Title	String	
+FAC	11	0	-1	250	01272	XAD	O	Y	0				Signature Authority Address	Extended address	
+FAC	11	1	0	184		SAD			0					Street Address	street address
+FAC	11	1	1	120		ST			0					String	street or mailing address
+FAC	11	1	2	50		ST			0					String	street name
+FAC	11	1	3	12		ST			0					String	dwelling number
+FAC	11	2	-1	120		ST			0					String	other designation
+FAC	11	3	-1	50		ST			0					String	city
+FAC	11	4	-1	50		ST			0					String	state or province
+FAC	11	5	-1	12		ST			0					String	zip or postal code
+FAC	11	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+FAC	11	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+FAC	11	8	-1	50		ST			0					String	other geographic designation
+FAC	11	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+FAC	11	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+FAC	11	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+FAC	11	12	0	53		DR	B		0					Date/time range	address validity range
+FAC	11	12	1	26		TS			0					Time stamp	range start date/time
+FAC	11	12	2	26		TS			0					Time stamp	range end date/time
+FAC	11	13	-1	26		TS			0					Time stamp	Effective Date
+FAC	11	14	-1	26		TS			0					Time stamp	Expiration Date
+FAC	12	0	-1	250	01273	XTN	O		0				Signature Authority Telecommunication	Extended telecommunications number	
+FAC	12	1	-1	199		ST	B		0					String	Telephone Number
+FAC	12	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+FAC	12	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+FAC	12	4	-1	199		ST			0					String	email address
+FAC	12	5	-1	3		NM			0					Numeric	country code
+FAC	12	6	-1	5		NM			0					Numeric	area/city code
+FAC	12	7	-1	9		NM			0					Numeric	phone number
+FAC	12	8	-1	5		NM			0					Numeric	extension
+FAC	12	9	-1	199		ST			0					String	any text
+FAC	12	10	-1	4		ST			0					String	Extension Prefix
+FAC	12	11	-1	6		ST			0					String	Speed Dial Code
+FAC	12	12	-1	199		ST	C		0					String	Unformatted Telephone number

@@ -1,0 +1,32 @@
+User	Relationship	0063	ASC	Associate
+User	Relationship	0063	BRO	Brother
+User	Relationship	0063	CGV	Care giver
+User	Relationship	0063	CHD	Child
+User	Relationship	0063	DEP	Handicapped dependent
+User	Relationship	0063	DOM	Life partner
+User	Relationship	0063	EMC	Emergency contact
+User	Relationship	0063	EME	Employee
+User	Relationship	0063	EMR	Employer
+User	Relationship	0063	EXF	Extended family
+User	Relationship	0063	FCH	Foster child
+User	Relationship	0063	FND	Friend
+User	Relationship	0063	FTH	Father
+User	Relationship	0063	GCH	Grandchild
+User	Relationship	0063	GRD	Guardian
+User	Relationship	0063	GRP	Grandparent
+User	Relationship	0063	MGR	Manager
+User	Relationship	0063	MTH	Mother
+User	Relationship	0063	NCH	Natural child
+User	Relationship	0063	NON	None
+User	Relationship	0063	OAD	Other adult
+User	Relationship	0063	OTH	Other
+User	Relationship	0063	OWN	Owner
+User	Relationship	0063	PAR	Parent
+User	Relationship	0063	SCH	Stepchild
+User	Relationship	0063	SEL	Self
+User	Relationship	0063	SIB	Sibling
+User	Relationship	0063	SIS	Sister
+User	Relationship	0063	SPO	Spouse
+User	Relationship	0063	TRA	Trainer
+User	Relationship	0063	UNK	Unknown
+User	Relationship	0063	WRD	Ward of court

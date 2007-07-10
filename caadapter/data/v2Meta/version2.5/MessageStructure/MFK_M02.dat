@@ -1,0 +1,7 @@
+Message Type=MFK
+Message Type Name=Master files application acknowledgment
+Trigger Event=M02
+Trigger Description=MFN/MFK - Master file _ staff practitioner
+Message Structure=MFK_M01
+Return Message=ACK^M02
+Called by=MFN^M02

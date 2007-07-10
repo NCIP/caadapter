@@ -1,0 +1,7 @@
+Message Type=QBP
+Message Type Name=Query by parameter
+Trigger Event=Q11
+Trigger Description=QBP - Query by parameter requesting an RSP segment pattern response
+Message Structure=MSH [ { SFT } ] QPD RCP [ DSC ]
+Return Message=RSP^K11
+Called by=

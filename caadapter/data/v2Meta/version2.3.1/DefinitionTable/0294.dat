@@ -1,0 +1,9 @@
+User	Time selection criteria parameter class codes	0294	Fri	An indicator that Friday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day; NO = Day is not preferred
+User	Time selection criteria parameter class codes	0294	Mon	An indicator that Monday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day; NO = Day is not preferred
+User	Time selection criteria parameter class codes	0294	Prefend	The preferred end time for the appointment request, service or resource.  Any legal time specification in the format HHMM, using 24-hour clock notation
+User	Time selection criteria parameter class codes	0294	Prefstart	The preferred start time for the appointment request, service or resource.   Any legal time specification in the format HHMM, using 24-hour clock notation
+User	Time selection criteria parameter class codes	0294	Sat	An indicator that Saturday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day; NO = Day is not preferred
+User	Time selection criteria parameter class codes	0294	Sun	An indicator that Sunday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day; NO = Day is not preferred
+User	Time selection criteria parameter class codes	0294	Thu	An indicator that Thursday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day; NO = Day is not preferred
+User	Time selection criteria parameter class codes	0294	Tue	An indicator that Tuesday is or is not preferred for the day on which the appointment will occur.  OK = Preferred appointment day; NO = Day is not preferred
+User	Time selection criteria parameter class codes	0294	Wed	An indicator that Wednesday is or is not preferred for the day on which the appointment will occur. OK = Preferred appointment day; NO = Day is not preferred

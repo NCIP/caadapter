@@ -1,0 +1,56 @@
+User	Condition code	0043	01	Military service related
+User	Condition code	0043	02	Condition is employment related
+User	Condition code	0043	03	Patient covered by insurance not reflected here
+User	Condition code	0043	04	HMO enrollee
+User	Condition code	0043	05	Lien has been filed
+User	Condition code	0043	06	ESRD patient in first 18 months of entitlement covered by employer group health insurance
+User	Condition code	0043	07	Treatment of non-terminal condition for hospice patient
+User	Condition code	0043	08	Beneficiary would not provide information concerning other insurance coverage
+User	Condition code	0043	09	Neither patient nor spouse is employed
+User	Condition code	0043	10	Patient and/or spouse is employed but no EGHP exists
+User	Condition code	0043	11	Disabled beneficiary but no LGHP
+User	Condition code	0043	12	Payer codes.
+User	Condition code	0043	13	Payer codes.
+User	Condition code	0043	14	Payer codes.
+User	Condition code	0043	15	Payer codes.
+User	Condition code	0043	16	Payer codes.
+User	Condition code	0043	18	Maiden name retained
+User	Condition code	0043	19	Child retains mother`s name
+User	Condition code	0043	20	Beneficiary requested billing
+User	Condition code	0043	21	Billing for Denial Notice
+User	Condition code	0043	26	VA eligible patient chooses to receive services in a Medicare certified facility
+User	Condition code	0043	27	Patient referred to a sole community hospital for a diagnostic laboratory test
+User	Condition code	0043	28	Patient and/or spouse`s EGHP is secondary to Medicare
+User	Condition code	0043	29	Disabled beneficiary and/or family member`s LGHP is secondary to Medicare
+User	Condition code	0043	31	Patient is student (full time-day)
+User	Condition code	0043	32	Patient is student (cooperative/work study program)
+User	Condition code	0043	33	Patient is student (full time-night)
+User	Condition code	0043	34	Patient is student (Part time)
+User	Condition code	0043	36	General care patient in a special unit
+User	Condition code	0043	37	Ward accommodation as patient request
+User	Condition code	0043	38	Semi-private room not available
+User	Condition code	0043	39	Private room medically necessary
+User	Condition code	0043	40	Same day transfer
+User	Condition code	0043	41	Partial hospitalization
+User	Condition code	0043	46	Non-availability statement on file
+User	Condition code	0043	48	Psychiatric residential treatment centers for children and adolescents
+User	Condition code	0043	55	SNF bed not available
+User	Condition code	0043	56	Medical appropriateness
+User	Condition code	0043	57	SNF readmission
+User	Condition code	0043	60	Day outlier
+User	Condition code	0043	61	Cost outlier
+User	Condition code	0043	62	Payer code
+User	Condition code	0043	66	Provider does not wish cost outlier payment
+User	Condition code	0043	67	Beneficiary elects not to use life time reserve (LTR) days
+User	Condition code	0043	68	Beneficiary elects to use life time reserve (LTR) days
+User	Condition code	0043	70	Self-administered EPO
+User	Condition code	0043	71	Full care in unit
+User	Condition code	0043	72	Self-care in unit
+User	Condition code	0043	73	Self-care training
+User	Condition code	0043	74	Home
+User	Condition code	0043	75	Home - 100% reimbursement
+User	Condition code	0043	76	Back-up in facility dialysis
+User	Condition code	0043	77	Provider accepts or is obligated/required due to a contractual arrangement or law to accept payment by a primary payer as payment in full
+User	Condition code	0043	78	New coverage not implemented by HMO
+User	Condition code	0043	79	Corf services provided off-site
+User	Condition code	0043	80	Pregnant

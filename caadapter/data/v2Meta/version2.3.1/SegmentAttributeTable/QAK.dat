@@ -1,0 +1,12 @@
+QAK	1	-1	-1	32	00696	ST	C		0				Query Tag	String	
+QAK	2	-1	-1	2	00708	ID	O		0	0208			Query Response Status	Coded values for HL7 tables	
+QAK	3	0	-1	250	01375	CE	O		0				Message Query Name	Coded element	
+QAK	3	1	-1	0		ST			0					String	identifier
+QAK	3	2	-1	0		ST			0					String	text
+QAK	3	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+QAK	3	4	-1	0		ST			0					String	alternate identifier
+QAK	3	5	-1	0		ST			0					String	alternate text
+QAK	3	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+QAK	4	-1	-1	10	01434	NM	O		0				Hit Count	Numeric	
+QAK	5	-1	-1	10	01622	NM	O		0				This payload	Numeric	
+QAK	6	-1	-1	10	01623	NM	O		0				Hits remaining	Numeric	

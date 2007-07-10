@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A38
+Trigger Description=ADT/ACK - Cancel pre-admit
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] PV1 [ PV2 ] [ { DB1 } ] [ { OBX } ] [ { DG1 } ] [ DRG ]
+Return Message=ACK^A38
+Called by=

@@ -1,0 +1,7 @@
+Message Type=ORS
+Message Type Name=Stock requisition - Order acknowledgment message
+Trigger Event=O06
+Trigger Description=ORS _ Stock requisition acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] RQD [ RQ1 ] [ { NTE } ] } ]
+Return Message=ACK^O06
+Called by=OMS^O05

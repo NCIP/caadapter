@@ -1,0 +1,7 @@
+Message Type=RQA
+Message Type Name=Request patient authorization
+Trigger Event=I10
+Trigger Description=RQA/RPA - Request for resubmission of an authorization
+Message Structure=RQA_I08
+Return Message=RPA^I10
+Called by=

@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A22
+Trigger Description=ADT/ACK -  Patient returns from a _leave of absence_
+Message Structure=ADT_A21
+Return Message=ACK^A22
+Called by=

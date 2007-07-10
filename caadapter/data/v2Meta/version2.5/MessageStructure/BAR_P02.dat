@@ -1,0 +1,7 @@
+Message Type=BAR
+Message Type Name=Add/change billing account
+Trigger Event=P02
+Trigger Description=BAR/ACK - Purge patient accounts
+Message Structure=MSH [ { SFT } ] EVN { !PATIENT! PID [ PD1 ] [ PV1 ] [ { DB1 } ] }
+Return Message=ACK^P02
+Called by=

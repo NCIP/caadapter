@@ -1,0 +1,94 @@
+HL7	Data types	0440	AD	Address
+HL7	Data types	0440	AUI	Authorization information
+HL7	Data types	0440	CCD	Charge code and date
+HL7	Data types	0440	CCP	Channel calibration parameters
+HL7	Data types	0440	CD	Channel definition
+HL7	Data types	0440	CE	Coded element
+HL7	Data types	0440	CF	Coded element with formatted values
+HL7	Data types	0440	CK	Composite ID with check digit
+HL7	Data types	0440	CM	Composite
+HL7	Data types	0440	CN	Composite ID number and name
+HL7	Data types	0440	CNE	Coded with no exceptions
+HL7	Data types	0440	CNS	Composite ID number and name simplified
+HL7	Data types	0440	CP	Composite price
+HL7	Data types	0440	CQ	Composite quantity with units
+HL7	Data types	0440	CSU	Channel sensitivity
+HL7	Data types	0440	CWE	Coded with exceptions
+HL7	Data types	0440	CX	Extended composite ID with check digit
+HL7	Data types	0440	DDI	Daily deductible information
+HL7	Data types	0440	DIN	Date and institution name
+HL7	Data types	0440	DLD	Discharge to location and date
+HL7	Data types	0440	DLN	Driver_s license number
+HL7	Data types	0440	DLT	Delta
+HL7	Data types	0440	DR	Date/time range
+HL7	Data types	0440	DT	Date
+HL7	Data types	0440	DTM	Date/time
+HL7	Data types	0440	DTN	Day type and number
+HL7	Data types	0440	ED	Encapsulated data
+HL7	Data types	0440	EI	Entity identifier
+HL7	Data types	0440	EIP	Entity identifier pair
+HL7	Data types	0440	ELD	Error location and description
+HL7	Data types	0440	ERL	Error location
+HL7	Data types	0440	FC	Financial class
+HL7	Data types	0440	FN	Family name
+HL7	Data types	0440	FT	Formatted text
+HL7	Data types	0440	GTS	General timing specification
+HL7	Data types	0440	HD	Hierarchic designator
+HL7	Data types	0440	ICD	Insurance certification definition
+HL7	Data types	0440	ID	Coded values for HL7 tables
+HL7	Data types	0440	IS	Coded value for user-defined tables
+HL7	Data types	0440	JCC	Job code/class
+HL7	Data types	0440	LA1	Location with address variation 1
+HL7	Data types	0440	LA2	Location with address variation 2
+HL7	Data types	0440	MA	Multiplexed array
+HL7	Data types	0440	MO	Money
+HL7	Data types	0440	MOC	Money and charge code
+HL7	Data types	0440	MOP	Money or percentage
+HL7	Data types	0440	MSG	Message type
+HL7	Data types	0440	NA	Numeric array
+HL7	Data types	0440	NDL	Name with location and date
+HL7	Data types	0440	NM	Numeric
+HL7	Data types	0440	NR	Numeric range
+HL7	Data types	0440	OCD	Occurrence code and date
+HL7	Data types	0440	OSD	Order sequence definition
+HL7	Data types	0440	OSP	Occurrence span code and date
+HL7	Data types	0440	PIP	Practitioner institutional privileges
+HL7	Data types	0440	PL	Person location
+HL7	Data types	0440	PLN	Practitioner license or other ID number
+HL7	Data types	0440	PN	Person name
+HL7	Data types	0440	PPN	Performing person time stamp
+HL7	Data types	0440	PRL	Parent result link
+HL7	Data types	0440	PT	Processing type
+HL7	Data types	0440	PTA	Policy type and amount
+HL7	Data types	0440	QIP	Query input parameter list
+HL7	Data types	0440	QSC	Query selection criteria
+HL7	Data types	0440	RCD	Row column definition
+HL7	Data types	0440	RFR	Reference range
+HL7	Data types	0440	RI	Repeat interval
+HL7	Data types	0440	RMC	Room coverage
+HL7	Data types	0440	RP	Reference pointer
+HL7	Data types	0440	RPT	Repeat pattern
+HL7	Data types	0440	SAD	Street Address
+HL7	Data types	0440	SCV	Scheduling class value pair
+HL7	Data types	0440	SI	Sequence ID
+HL7	Data types	0440	SN	Structured numeric
+HL7	Data types	0440	SPD	Specialty description
+HL7	Data types	0440	SPS	Specimen source
+HL7	Data types	0440	SRT	Sort order
+HL7	Data types	0440	ST	String
+HL7	Data types	0440	TM	Time
+HL7	Data types	0440	TN	Telephone number
+HL7	Data types	0440	TQ	Timing/quantity
+HL7	Data types	0440	TS	Time stamp
+HL7	Data types	0440	TX	Text data
+HL7	Data types	0440	UVC	UB value code and amount
+HL7	Data types	0440	VH	Visiting hours
+HL7	Data types	0440	VID	Version identifier
+HL7	Data types	0440	VR	Value range
+HL7	Data types	0440	WVI	Channel Identifier
+HL7	Data types	0440	WVS	Waveform source
+HL7	Data types	0440	XAD	Extended address
+HL7	Data types	0440	XCN	Extended composite ID number and name
+HL7	Data types	0440	XON	Extended composite name and ID number for organizations
+HL7	Data types	0440	XPN	Extended person name
+HL7	Data types	0440	XTN	Extended telecommunications number

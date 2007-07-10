@@ -1,0 +1,7 @@
+Message Type=SIU
+Message Type Name=Schedule information unsolicited
+Trigger Event=S24
+Trigger Description=SIU/ACK - Notification of opened (_unblocked_) schedule time slot(s)
+Message Structure=SIU_S12
+Return Message=ACK^S24
+Called by=

@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A10
+Trigger Description=ADT/ACK -  Patient arriving - tracking
+Message Structure=ADT_A09
+Return Message=ACK^A10
+Called by=

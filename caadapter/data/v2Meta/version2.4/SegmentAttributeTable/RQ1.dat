@@ -1,0 +1,19 @@
+RQ1	1	-1	-1	10	00285	ST	O		0				Anticipated Price	String	
+RQ1	2	0	-1	250	00286	CE	C		0				Manufacturer Identifier	Coded element	
+RQ1	2	1	-1	0		ST			0					String	identifier
+RQ1	2	2	-1	0		ST			0					String	text
+RQ1	2	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQ1	2	4	-1	0		ST			0					String	alternate identifier
+RQ1	2	5	-1	0		ST			0					String	alternate text
+RQ1	2	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQ1	3	-1	-1	16	00287	ST	C		0				Manufacturer`s Catalog	String	
+RQ1	4	0	-1	250	00288	CE	C		0				Vendor ID	Coded element	
+RQ1	4	1	-1	0		ST			0					String	identifier
+RQ1	4	2	-1	0		ST			0					String	text
+RQ1	4	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQ1	4	4	-1	0		ST			0					String	alternate identifier
+RQ1	4	5	-1	0		ST			0					String	alternate text
+RQ1	4	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQ1	5	-1	-1	16	00289	ST	C		0				Vendor Catalog	String	
+RQ1	6	-1	-1	1	00290	ID	O		0	0136			Taxable	Coded values for HL7 tables	
+RQ1	7	-1	-1	1	00291	ID	O		0	0136			Substitute Allowed	Coded values for HL7 tables	

@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A30
+Trigger Description=ADT/ACK -  Merge person information (for backward compatibility only)
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] MRG
+Return Message=ACK^A30
+Called by=

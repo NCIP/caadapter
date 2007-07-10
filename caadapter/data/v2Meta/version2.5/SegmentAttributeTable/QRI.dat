@@ -1,0 +1,9 @@
+QRI	1	-1	-1	10	01436	NM	O		0				Candidate Confidence	Numeric	
+QRI	2	-1	-1	2	01437	IS	O	Y	0	0392			Match Reason Code	Coded value for user-defined tables	
+QRI	3	0	-1	250	01438	CE	O		0	0393			Algorithm Descriptor	Coded element	
+QRI	3	1	-1	20		IS			0	0393				String	identifier
+QRI	3	2	-1	199		ST			0					String	text
+QRI	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+QRI	3	4	-1	20		ST			0					String	alternate identifier
+QRI	3	5	-1	199		ST			0					String	alternate text
+QRI	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,57 @@
+HL7	Additive/Preservative	0371	ACDA	ACD Solution A
+HL7	Additive/Preservative	0371	ACDB	ACD Solution B
+HL7	Additive/Preservative	0371	ACET	Acetic Acid
+HL7	Additive/Preservative	0371	AMIES	Amies transport medium
+HL7	Additive/Preservative	0371	BACTM	Bacterial Transport medium
+HL7	Additive/Preservative	0371	BF10	Buffered 10% formalin
+HL7	Additive/Preservative	0371	BOR	Borate Boric Acid
+HL7	Additive/Preservative	0371	BOUIN	Bouin`s solution
+HL7	Additive/Preservative	0371	BSKM	Buffered skim milk
+HL7	Additive/Preservative	0371	C32	3.2%  Citrate
+HL7	Additive/Preservative	0371	C38	3.8% Citrate
+HL7	Additive/Preservative	0371	CARS	Carson`s Modified 10% formalin
+HL7	Additive/Preservative	0371	CARY	Cary Blair Medium
+HL7	Additive/Preservative	0371	CHLTM	Chlamydia transport medium
+HL7	Additive/Preservative	0371	CTAD	CTAD (this should be spelled out if not universally understood)
+HL7	Additive/Preservative	0371	EDTK	Potassium/K EDTA
+HL7	Additive/Preservative	0371	EDTK15	Potassium/K EDTA 15%
+HL7	Additive/Preservative	0371	EDTK75	Potassium/K EDTA 7.5%
+HL7	Additive/Preservative	0371	EDTN	Sodium/Na EDTA
+HL7	Additive/Preservative	0371	ENT	Enteric bacteria transport medium
+HL7	Additive/Preservative	0371	ENT+	Enteric plus
+HL7	Additive/Preservative	0371	F10	10% Formalin
+HL7	Additive/Preservative	0371	FDP	Thrombin NIH; soybean trypsin inhibitor (Fibrin Degradation Products)
+HL7	Additive/Preservative	0371	FL10	Sodium Fluoride/ 10mg
+HL7	Additive/Preservative	0371	FL100	Sodium Fluoride/ 100mg
+HL7	Additive/Preservative	0371	HCL6	6N HCL
+HL7	Additive/Preservative	0371	HEPA	Ammonium heparin
+HL7	Additive/Preservative	0371	HEPL	Lithium/Li  Heparin
+HL7	Additive/Preservative	0371	HEPN	Sodium/Na  Heparin
+HL7	Additive/Preservative	0371	HNO3	Nitric Acid
+HL7	Additive/Preservative	0371	JKM	Jones Kendrick Medium
+HL7	Additive/Preservative	0371	KARN	Karnovsky`s fixative
+HL7	Additive/Preservative	0371	KOX	Potassium Oxalate
+HL7	Additive/Preservative	0371	LIA	Lithium iodoacetate
+HL7	Additive/Preservative	0371	M4	M4
+HL7	Additive/Preservative	0371	M4RT	M4-RT
+HL7	Additive/Preservative	0371	M5	M5
+HL7	Additive/Preservative	0371	MICHTM	Michel`s transport medium
+HL7	Additive/Preservative	0371	MMDTM	MMD transport medium
+HL7	Additive/Preservative	0371	NAF	Sodium Fluoride
+HL7	Additive/Preservative	0371	NAPS	Sodium polyanethol sulfonate 0.35% in 0.85% sodium chloride
+HL7	Additive/Preservative	0371	NONE	None
+HL7	Additive/Preservative	0371	PAGE	Pages`s Saline
+HL7	Additive/Preservative	0371	PHENOL	Phenol
+HL7	Additive/Preservative	0371	PVA	PVA (polyvinylalcohol)
+HL7	Additive/Preservative	0371	RLM	Reagan Lowe Medium
+HL7	Additive/Preservative	0371	SILICA	Siliceous earth/ 12 mg
+HL7	Additive/Preservative	0371	SPS	SPS(this should be spelled out if not universally understood)
+HL7	Additive/Preservative	0371	SST	Serum Separator Tube (Polymer Gel)
+HL7	Additive/Preservative	0371	STUTM	Stuart transport medium
+HL7	Additive/Preservative	0371	THROM	Thrombin
+HL7	Additive/Preservative	0371	THYMOL	Thymol
+HL7	Additive/Preservative	0371	THYO	Thyoglycollate broth
+HL7	Additive/Preservative	0371	TOLU	Toluene
+HL7	Additive/Preservative	0371	URETM	Ureaplasma transport medium
+HL7	Additive/Preservative	0371	VIRTM	Viral Transport medium
+HL7	Additive/Preservative	0371	WEST	Buffered Citrate (Westergren Sedimentation Rate)

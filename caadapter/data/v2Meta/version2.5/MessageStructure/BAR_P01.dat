@@ -1,0 +1,7 @@
+Message Type=BAR
+Message Type Name=Add/change billing account
+Trigger Event=P01
+Trigger Description=BAR/ACK - Add patient accounts
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { ROL } ] { !VISIT! [ PV1 ] [ PV2 ] [ { ROL } ] [ { DB1 } ] [ { OBX } ] [ { AL1 } ] [ { DG1 } ] [ DRG ] [ { !PROCEDURE! PR1 [ { ROL } ] } ] [ { GT1 } ] [ { NK1 } ] [ { !INSURANCE! IN1 [ IN2 ] [ { IN3 } ] [ { ROL } ] } ] [ ACC ] [ UB1 ] [ UB2 ] }
+Return Message=ACK^P01
+Called by=

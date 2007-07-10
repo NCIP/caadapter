@@ -1,0 +1,7 @@
+SPS	1	CWE		705		specimen source name or code	N	^
+SPS	2	CWE	0371	705		additives	N	^
+SPS	3	TX		200		free text	N	^
+SPS	4	CWE	0163	705		body site	N	^
+SPS	5	CWE	0495	705		site modifier	N	^
+SPS	6	CWE		705		collection method modifier code	N	^
+SPS	7	CWE	0369	705		specimen role	N	E

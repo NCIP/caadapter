@@ -1,0 +1,16 @@
+HL7	Message error condition codes	0357	0	Message accepted
+HL7	Message error condition codes	0357	100	Segment sequence error
+HL7	Message error condition codes	0357	101	Required field missing
+HL7	Message error condition codes	0357	102	Data type error
+HL7	Message error condition codes	0357	103	Table value not found
+HL7	Message error condition codes	0357	200	Unsupported message type
+HL7	Message error condition codes	0357	201	Unsupported event code
+HL7	Message error condition codes	0357	202	Unsupported processing id
+HL7	Message error condition codes	0357	203	Unsupported version id
+HL7	Message error condition codes	0357	204	Unknown key identifier
+HL7	Message error condition codes	0357	205	Duplicate key identifier
+HL7	Message error condition codes	0357	206	Application record locked
+HL7	Message error condition codes	0357	207	Application internal error
+HL7	Message error condition codes	0357	Errors	
+HL7	Message error condition codes	0357	Rejection	
+HL7	Message error condition codes	0357	Success	

@@ -1,0 +1,7 @@
+Message Type=RER
+Message Type Name=Pharmacy/treatment encoded order information
+Trigger Event=RER
+Trigger Description=QRY/RER - Pharmacy/treatment encoded order information
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] { !DEFINITION! QRD [ QRF ] [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC RXE { RXR } [ { RXC } ] } } [ DSC ]
+Return Message=ACK^RER
+Called by=QRY^Q29

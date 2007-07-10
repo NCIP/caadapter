@@ -1,0 +1,9 @@
+CM1	1	-1	-1	4	01021	SI	R		0				Set ID - CM1	Sequence ID	
+CM1	2	0	-1	250	01022	CE	R		0				Study Phase Identifier	Coded element	
+CM1	2	1	-1	0		ST			0					String	identifier
+CM1	2	2	-1	0		ST			0					String	text
+CM1	2	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CM1	2	4	-1	0		ST			0					String	alternate identifier
+CM1	2	5	-1	0		ST			0					String	alternate text
+CM1	2	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CM1	3	-1	-1	300	01023	ST	R		0				Description of Study Phase	String	

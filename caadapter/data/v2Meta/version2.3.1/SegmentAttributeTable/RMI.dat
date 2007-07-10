@@ -1,0 +1,15 @@
+RMI	1	0	-1	250	01530	CE	O		0	0427			Risk Management Incident Code	Coded element	
+RMI	1	1	-1	0		ST			0					String	identifier
+RMI	1	2	-1	0		ST			0					String	text
+RMI	1	3	-1	0		IS			0	0427				Coded value for user-defined tables	name of coding system
+RMI	1	4	-1	0		ST			0					String	alternate identifier
+RMI	1	5	-1	0		ST			0					String	alternate text
+RMI	1	6	-1	0		IS			0	0427				Coded value for user-defined tables	name of alternate coding system
+RMI	2	-1	-1	26	01531	TS	O		0				Date/Time Incident	Time stamp	
+RMI	3	0	-1	250	01533	CE	O		0	0428			Incident Type Code	Coded element	
+RMI	3	1	-1	0		ST			0					String	identifier
+RMI	3	2	-1	0		ST			0					String	text
+RMI	3	3	-1	0		IS			0	0428				Coded value for user-defined tables	name of coding system
+RMI	3	4	-1	0		ST			0					String	alternate identifier
+RMI	3	5	-1	0		ST			0					String	alternate text
+RMI	3	6	-1	0		IS			0	0428				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,40 @@
+RQD	1	-1	-1	4	00275	SI	O		0				Requisition Line Number	Sequence ID	
+RQD	2	0	-1	250	00276	CE	C		0				Item Code - Internal	Coded element	
+RQD	2	1	-1	0		ST			0					String	identifier
+RQD	2	2	-1	0		ST			0					String	text
+RQD	2	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQD	2	4	-1	0		ST			0					String	alternate identifier
+RQD	2	5	-1	0		ST			0					String	alternate text
+RQD	2	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQD	3	0	-1	250	00277	CE	C		0				Item Code - External	Coded element	
+RQD	3	1	-1	0		ST			0					String	identifier
+RQD	3	2	-1	0		ST			0					String	text
+RQD	3	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQD	3	4	-1	0		ST			0					String	alternate identifier
+RQD	3	5	-1	0		ST			0					String	alternate text
+RQD	3	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQD	4	0	-1	250	00278	CE	C		0				Hospital Item Code	Coded element	
+RQD	4	1	-1	0		ST			0					String	identifier
+RQD	4	2	-1	0		ST			0					String	text
+RQD	4	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQD	4	4	-1	0		ST			0					String	alternate identifier
+RQD	4	5	-1	0		ST			0					String	alternate text
+RQD	4	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQD	5	-1	-1	6	00279	NM	O		0				Requisition Quantity	Numeric	
+RQD	6	0	-1	250	00280	CE	O		0				Requisition Unit of Measure	Coded element	
+RQD	6	1	-1	0		ST			0					String	identifier
+RQD	6	2	-1	0		ST			0					String	text
+RQD	6	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQD	6	4	-1	0		ST			0					String	alternate identifier
+RQD	6	5	-1	0		ST			0					String	alternate text
+RQD	6	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQD	7	-1	-1	30	00281	IS	O		0	0319			Dept. Cost Center	Coded value for user-defined tables	
+RQD	8	-1	-1	30	00282	IS	O		0	0320			Item Natural Account Code	Coded value for user-defined tables	
+RQD	9	0	-1	250	00283	CE	O		0				Deliver To ID	Coded element	
+RQD	9	1	-1	0		ST			0					String	identifier
+RQD	9	2	-1	0		ST			0					String	text
+RQD	9	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RQD	9	4	-1	0		ST			0					String	alternate identifier
+RQD	9	5	-1	0		ST			0					String	alternate text
+RQD	9	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RQD	10	-1	-1	8	00284	DT	O		0				Date Needed	Date	

@@ -1,0 +1,7 @@
+RFR	1	NR		33	R	Numeric Range	N	^
+RFR	2	IS	0001	8		Administrative Sex	N	^
+RFR	3	NR		33		age range	N	^
+RFR	4	NR		33		gestational age range	N	^
+RFR	5	TX		20		species	N	^
+RFR	6	ST		20		race/subspecies	N	^
+RFR	7	TX		199		conditions	Y	~

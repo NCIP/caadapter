@@ -1,0 +1,6 @@
+User	Bed status	0116	C	Closed
+User	Bed status	0116	H	Housekeeping
+User	Bed status	0116	I	Isolated
+User	Bed status	0116	K	Contaminated
+User	Bed status	0116	O	Occupied
+User	Bed status	0116	U	Unoccupied

@@ -1,0 +1,7 @@
+Message Type=QRY
+Message Type Name=Query/ original mode
+Trigger Event=PC9
+Trigger Description=QRY - PC/ goal query
+Message Structure=QRY_PC4
+Return Message=PPV^PCA
+Called by=

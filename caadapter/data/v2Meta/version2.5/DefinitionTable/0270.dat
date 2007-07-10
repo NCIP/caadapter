@@ -1,0 +1,14 @@
+User	Document Type	0270	AR	Autopsy report
+User	Document Type	0270	CD	Cardiodiagnostics
+User	Document Type	0270	CN	Consultation
+User	Document Type	0270	DI	Diagnostic imaging
+User	Document Type	0270	DS	Discharge summary
+User	Document Type	0270	ED	Emergency department report
+User	Document Type	0270	HP	History and physical examination
+User	Document Type	0270	OP	Operative report
+User	Document Type	0270	PC	Psychiatric consultation
+User	Document Type	0270	PH	Psychiatric history and physical examination
+User	Document Type	0270	PN	Procedure note
+User	Document Type	0270	PR	Progress note
+User	Document Type	0270	SP	Surgical pathology
+User	Document Type	0270	TS	Transfer summary

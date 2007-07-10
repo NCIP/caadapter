@@ -1,0 +1,7 @@
+Message Type=CRM
+Message Type Name=Clinical study registration message
+Trigger Event=C05
+Trigger Description=CRM - Patient enters phase of clinical trial
+Message Structure=CRM_C01
+Return Message=
+Called by=

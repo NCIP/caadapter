@@ -1,0 +1,5 @@
+HL7	Response flag	0121	D	Same as R/ also other associated segments
+HL7	Response flag	0121	E	Report exceptions only
+HL7	Response flag	0121	F	Same as D/ plus confirmations explicitly
+HL7	Response flag	0121	N	Only the MSA segment is returned
+HL7	Response flag	0121	R	Same as E/ also Replacement and Parent-Child

@@ -1,0 +1,4 @@
+HL7	Product source	0248	A	Actual product involved in incident was evaluated
+HL7	Product source	0248	L	A product from the same lot as the actual product involved was evaluated
+HL7	Product source	0248	N	A product from a controlled/non-related inventory was evaluated
+HL7	Product source	0248	R	A product from a reserve sample was evaluated

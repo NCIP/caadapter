@@ -1,0 +1,68 @@
+AIP	1	-1	-1	4	00906	SI	R		0				Set ID - AIP	Sequence ID	
+AIP	2	-1	-1	3	00763	ID	C		0	0206			Segment Action Code	Coded values for HL7 tables	
+AIP	3	0	-1	250	00913	XCN	C	Y	0				Personnel Resource ID	Extended composite ID number and name	
+AIP	3	1	-1	0		ST			0					String	ID number
+AIP	3	2	0	0		FN			0					String	family name
+AIP	3	2	1	0		ST			0					String	surname
+AIP	3	2	2	0		ST			0					String	own surname prefix
+AIP	3	2	3	0		ST			0					String	own surname
+AIP	3	2	4	0		ST			0					String	surname prefix from partner/spouse
+AIP	3	2	5	0		ST			0					String	surname from partner/spouse
+AIP	3	3	-1	0		ST			0					String	given name
+AIP	3	4	-1	0		ST			0					String	second and further given names or initial thereof
+AIP	3	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+AIP	3	6	-1	0		ST			0					String	prefix (e.g., DR)
+AIP	3	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+AIP	3	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+AIP	3	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+AIP	3	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+AIP	3	9	2	0		ST			0					String	universal ID
+AIP	3	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+AIP	3	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+AIP	3	11	-1	0		ST			0					String	identifier check digit
+AIP	3	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+AIP	3	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+AIP	3	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+AIP	3	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+AIP	3	14	2	0		ST			0					String	universal ID
+AIP	3	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+AIP	3	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+AIP	4	0	-1	250	00907	CE	R		0				Resource Role	Coded element	
+AIP	4	1	-1	0		ST			0					String	identifier
+AIP	4	2	-1	0		ST			0					String	text
+AIP	4	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+AIP	4	4	-1	0		ST			0					String	alternate identifier
+AIP	4	5	-1	0		ST			0					String	alternate text
+AIP	4	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AIP	5	0	-1	250	00899	CE	O		0				Resource Group	Coded element	
+AIP	5	1	-1	0		ST			0					String	identifier
+AIP	5	2	-1	0		ST			0					String	text
+AIP	5	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+AIP	5	4	-1	0		ST			0					String	alternate identifier
+AIP	5	5	-1	0		ST			0					String	alternate text
+AIP	5	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AIP	6	-1	-1	26	01202	TS	C		0				Start Date/Time	Time stamp	
+AIP	7	-1	-1	20	00891	NM	C		0				Start Date/Time Offset	Numeric	
+AIP	8	0	-1	250	00892	CE	C		0				Start Date/Time Offset Units	Coded element	
+AIP	8	1	-1	0		ST			0					String	identifier
+AIP	8	2	-1	0		ST			0					String	text
+AIP	8	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+AIP	8	4	-1	0		ST			0					String	alternate identifier
+AIP	8	5	-1	0		ST			0					String	alternate text
+AIP	8	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AIP	9	-1	-1	20	00893	NM	O		0				Duration	Numeric	
+AIP	10	0	-1	250	00894	CE	O		0				Duration Units	Coded element	
+AIP	10	1	-1	0		ST			0					String	identifier
+AIP	10	2	-1	0		ST			0					String	text
+AIP	10	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+AIP	10	4	-1	0		ST			0					String	alternate identifier
+AIP	10	5	-1	0		ST			0					String	alternate text
+AIP	10	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+AIP	11	-1	-1	10	00895	IS	C		0	0279			Allow Substitution Code	Coded value for user-defined tables	
+AIP	12	0	-1	250	00889	CE	C		0	0278			Filler Status Code	Coded element	
+AIP	12	1	-1	0		ST			0					String	identifier
+AIP	12	2	-1	0		ST			0					String	text
+AIP	12	3	-1	0		IS			0	0278				Coded value for user-defined tables	name of coding system
+AIP	12	4	-1	0		ST			0					String	alternate identifier
+AIP	12	5	-1	0		ST			0					String	alternate text
+AIP	12	6	-1	0		IS			0	0278				Coded value for user-defined tables	name of alternate coding system

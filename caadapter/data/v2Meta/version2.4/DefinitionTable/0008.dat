@@ -1,0 +1,6 @@
+HL7	Acknowledgment code	0008	AA	Original mode: Application Accept - Enhanced mode: Application acknowledgment: Accept
+HL7	Acknowledgment code	0008	AE	Original mode: Application Error - Enhanced mode: Application acknowledgment: Error
+HL7	Acknowledgment code	0008	AR	Original mode: Application Reject - Enhanced mode: Application acknowledgment: Reject
+HL7	Acknowledgment code	0008	CA	Enhanced mode: Accept acknowledgment: Commit Accept
+HL7	Acknowledgment code	0008	CE	Enhanced mode: Accept acknowledgment: Commit Error
+HL7	Acknowledgment code	0008	CR	Enhanced mode: Accept acknowledgment: Commit Reject

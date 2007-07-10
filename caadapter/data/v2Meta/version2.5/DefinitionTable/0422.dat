@@ -1,0 +1,6 @@
+User	Triage Code	0422	1	Non-acute
+User	Triage Code	0422	2	Acute
+User	Triage Code	0422	3	Urgent
+User	Triage Code	0422	4	Severe
+User	Triage Code	0422	5	Dead on Arrival (DOA)
+User	Triage Code	0422	99	Other

@@ -1,0 +1,7 @@
+Message Type=RRI
+Message Type Name=Return referral information
+Trigger Event=I13
+Trigger Description=REF/RRI - Modify patient referral
+Message Structure=RRI_I12
+Return Message=ACK^I13
+Called by=REF^I13

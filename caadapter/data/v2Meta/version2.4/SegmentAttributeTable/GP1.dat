@@ -1,0 +1,19 @@
+GP1	1	-1	-1	3	01599	IS	R		0	0455			Type of Bill Code	Coded value for user-defined tables	
+GP1	2	-1	-1	3	01600	IS	O	Y	0	0456			Revenue Code	Coded value for user-defined tables	
+GP1	3	-1	-1	1	01601	IS	O		0	0457			Overall Claim Disposition Code	Coded value for user-defined tables	
+GP1	4	-1	-1	2	01602	IS	O	Y	0	0458			OCE Edits per Visit Code	Coded value for user-defined tables	
+GP1	5	0	-1	12	00387	CP	O		0				Outlier Cost	Composite price	
+GP1	5	1	0	0		MO			0					Numeric	price
+GP1	5	1	1	0		NM			0					Numeric	quantity
+GP1	5	1	2	0		ID			0	ISO4217				Coded values for HL7 tables	denomination
+GP1	5	2	-1	0		ID			0	0205				Coded values for HL7 tables	price type
+GP1	5	3	-1	0		NM			0					Numeric	from value
+GP1	5	4	-1	0		NM			0					Numeric	to value
+GP1	5	5	0	0		CE			0					String	range units
+GP1	5	5	1	0		ST			0					String	identifier
+GP1	5	5	2	0		ST			0					String	text
+GP1	5	5	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+GP1	5	5	4	0		ST			0					String	alternate identifier
+GP1	5	5	5	0		ST			0					String	alternate text
+GP1	5	5	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+GP1	5	6	-1	0		ID			0	0298				Coded values for HL7 tables	range type

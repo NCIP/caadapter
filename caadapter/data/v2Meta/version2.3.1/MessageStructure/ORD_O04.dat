@@ -1,0 +1,1 @@
+ORD	O04	ORD	O04			 MSH  MSA [  ERR ] [ {  NTE } ] [ !RESPONSE![ !PATIENT! PID [ {  NTE } ] ] { !ORDER_DIET! ORC [ {  ODS } ] [ {  NTE } ] } [ { !ORDER_TRAY! ORC [ {  ODT } ] [ {  NTE } ] } ] ] 		Dietary order - General order acknowledgment message	ORD - Diet order acknowledgement

@@ -1,0 +1,55 @@
+RF1	1	0	-1	250	01137	CE	O		0	0283			Referral Status	Coded element	
+RF1	1	1	-1	0		ST			0					String	identifier
+RF1	1	2	-1	0		ST			0					String	text
+RF1	1	3	-1	0		IS			0	0283				Coded value for user-defined tables	name of coding system
+RF1	1	4	-1	0		ST			0					String	alternate identifier
+RF1	1	5	-1	0		ST			0					String	alternate text
+RF1	1	6	-1	0		IS			0	0283				Coded value for user-defined tables	name of alternate coding system
+RF1	2	0	-1	250	01138	CE	O		0	0280			Referral Priority	Coded element	
+RF1	2	1	-1	0		ST			0					String	identifier
+RF1	2	2	-1	0		ST			0					String	text
+RF1	2	3	-1	0		IS			0	0280				Coded value for user-defined tables	name of coding system
+RF1	2	4	-1	0		ST			0					String	alternate identifier
+RF1	2	5	-1	0		ST			0					String	alternate text
+RF1	2	6	-1	0		IS			0	0280				Coded value for user-defined tables	name of alternate coding system
+RF1	3	0	-1	250	01139	CE	O		0	0281			Referral Type	Coded element	
+RF1	3	1	-1	0		ST			0					String	identifier
+RF1	3	2	-1	0		ST			0					String	text
+RF1	3	3	-1	0		IS			0	0281				Coded value for user-defined tables	name of coding system
+RF1	3	4	-1	0		ST			0					String	alternate identifier
+RF1	3	5	-1	0		ST			0					String	alternate text
+RF1	3	6	-1	0		IS			0	0281				Coded value for user-defined tables	name of alternate coding system
+RF1	4	0	-1	250	01140	CE	O	Y	0	0282			Referral Disposition	Coded element	
+RF1	4	1	-1	0		ST			0					String	identifier
+RF1	4	2	-1	0		ST			0					String	text
+RF1	4	3	-1	0		IS			0	0282				Coded value for user-defined tables	name of coding system
+RF1	4	4	-1	0		ST			0					String	alternate identifier
+RF1	4	5	-1	0		ST			0					String	alternate text
+RF1	4	6	-1	0		IS			0	0282				Coded value for user-defined tables	name of alternate coding system
+RF1	5	0	-1	250	01141	CE	O		0	0284			Referral Category	Coded element	
+RF1	5	1	-1	0		ST			0					String	identifier
+RF1	5	2	-1	0		ST			0					String	text
+RF1	5	3	-1	0		IS			0	0284				Coded value for user-defined tables	name of coding system
+RF1	5	4	-1	0		ST			0					String	alternate identifier
+RF1	5	5	-1	0		ST			0					String	alternate text
+RF1	5	6	-1	0		IS			0	0284				Coded value for user-defined tables	name of alternate coding system
+RF1	6	0	-1	30	01142	EI	R		0				Originating Referral Identifier	Entity identifier	
+RF1	6	1	-1	0		ST			0					String	entity identifier
+RF1	6	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+RF1	6	3	-1	0		ST			0					String	universal ID
+RF1	6	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RF1	7	-1	-1	26	01143	TS	O		0				Effective Date	Time stamp	
+RF1	8	-1	-1	26	01144	TS	O		0				Expiration Date	Time stamp	
+RF1	9	-1	-1	26	01145	TS	O		0				Process Date	Time stamp	
+RF1	10	0	-1	250	01228	CE	O	Y	0	0336			Referral Reason	Coded element	
+RF1	10	1	-1	0		ST			0					String	identifier
+RF1	10	2	-1	0		ST			0					String	text
+RF1	10	3	-1	0		IS			0	0336				Coded value for user-defined tables	name of coding system
+RF1	10	4	-1	0		ST			0					String	alternate identifier
+RF1	10	5	-1	0		ST			0					String	alternate text
+RF1	10	6	-1	0		IS			0	0336				Coded value for user-defined tables	name of alternate coding system
+RF1	11	0	-1	30	01300	EI	O	Y	0				External Referral Identifier	Entity identifier	
+RF1	11	1	-1	0		ST			0					String	entity identifier
+RF1	11	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+RF1	11	3	-1	0		ST			0					String	universal ID
+RF1	11	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type

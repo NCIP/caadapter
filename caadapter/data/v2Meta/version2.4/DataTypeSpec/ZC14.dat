@@ -1,0 +1,3 @@
+ZC14	1	CE				OBX-3-observation identifier of parent result	N	^
+ZC14	2	ST				OBX-4-sub-ID of parent result	N	^
+ZC14	3	TX				part of OBX-5 observation result from parent	N	E

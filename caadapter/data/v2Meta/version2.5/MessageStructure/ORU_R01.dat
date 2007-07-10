@@ -1,0 +1,7 @@
+Message Type=ORU
+Message Type Name=Unsolicited transmission of an observation message
+Trigger Event=R01
+Trigger Description=ORU/ACK - Unsolicited transmission of an observation message
+Message Structure=MSH [ { SFT } ] { !PATIENT_RESULT! [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ { NK1 } ] [ !VISIT! PV1 [ PV2 ] ] ] { !ORDER_OBSERVATION! [ ORC ] OBR { [ NTE ] } [ { !TIMING_QTY! TQ1 [ { TQ2 } ] } ] [ CTD ] [ { !OBSERVATION! OBX { [ NTE ] } } ] [ { FT1 } ] { [ CTI ] } [ { !SPECIMEN! SPM [ { OBX } ] } ] } } [ DSC ]
+Return Message=ACK^R01
+Called by=

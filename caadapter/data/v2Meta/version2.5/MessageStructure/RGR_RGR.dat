@@ -1,0 +1,7 @@
+Message Type=RGR
+Message Type Name=Pharmacy/treatment dose information
+Trigger Event=RGR
+Trigger Description=QRY/RGR - Pharmacy/treatment dose information
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] { !DEFINITION! QRD [ QRF ] [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ !ENCODING! RXE { RXR } [ { RXC } ] ] { RXG } { RXR } [ { RXC } ] } } [ DSC ]
+Return Message=ACK^RGR
+Called by=QRY^Q30

@@ -1,0 +1,1 @@
+ROR	ROR	ROR	ROR			 MSH  MSA [  ERR ] { !DEFINITION! QRD [  QRF ] [ !PATIENT! PID { [  NTE ] } ] { !ORDER! ORC  RXO {  RXR } { [  RXC ] } } } [  DSC ] 		Pharmacy/treatment order response	ROR - Pharmacy prescription order query response

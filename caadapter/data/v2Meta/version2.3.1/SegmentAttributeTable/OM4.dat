@@ -1,0 +1,56 @@
+OM4	1	-1	-1	4	00586	NM	O		0				Sequence Number	Numeric	
+OM4	2	-1	-1	1	00642	ID	O		0	0170			Derived Specimen	Coded values for HL7 tables	
+OM4	3	-1	-1	60	00643	TX	O		0				Container Description	Text data	
+OM4	4	-1	-1	20	00644	NM	O		0				Container Volume	Numeric	
+OM4	5	0	-1	250	00645	CE	O		0	9999			Container Units	Coded element	
+OM4	5	1	-1	0		ST			0					String	identifier
+OM4	5	2	-1	0		ST			0					String	text
+OM4	5	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM4	5	4	-1	0		ST			0					String	alternate identifier
+OM4	5	5	-1	0		ST			0					String	alternate text
+OM4	5	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM4	6	0	-1	250	00646	CE	O		0	9999			Specimen	Coded element	
+OM4	6	1	-1	0		ST			0					String	identifier
+OM4	6	2	-1	0		ST			0					String	text
+OM4	6	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM4	6	4	-1	0		ST			0					String	alternate identifier
+OM4	6	5	-1	0		ST			0					String	alternate text
+OM4	6	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM4	7	0	-1	250	00647	CE	O		0	0371			Additive	Coded element	
+OM4	7	1	-1	0		ST			0					String	identifier
+OM4	7	2	-1	0		ST			0					String	text
+OM4	7	3	-1	0		IS			0	0371				Coded value for user-defined tables	name of coding system
+OM4	7	4	-1	0		ST			0					String	alternate identifier
+OM4	7	5	-1	0		ST			0					String	alternate text
+OM4	7	6	-1	0		IS			0	0371				Coded value for user-defined tables	name of alternate coding system
+OM4	8	-1	-1	10240	00648	TX	O		0				Preparation	Text data	
+OM4	9	-1	-1	10240	00649	TX	O		0				Special Handling Requirements	Text data	
+OM4	10	0	-1	20	00650	CQ	O		0				Normal Collection Volume	Composite quantity with units	
+OM4	10	1	-1	0		NM			0					Numeric	quantity
+OM4	10	2	0	0		CE			0					String	units
+OM4	10	2	1	0		ST			0					String	identifier
+OM4	10	2	2	0		ST			0					String	text
+OM4	10	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM4	10	2	4	0		ST			0					String	alternate identifier
+OM4	10	2	5	0		ST			0					String	alternate text
+OM4	10	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM4	11	0	-1	20	00651	CQ	O		0				Minimum Collection Volume	Composite quantity with units	
+OM4	11	1	-1	0		NM			0					Numeric	quantity
+OM4	11	2	0	0		CE			0					String	units
+OM4	11	2	1	0		ST			0					String	identifier
+OM4	11	2	2	0		ST			0					String	text
+OM4	11	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM4	11	2	4	0		ST			0					String	alternate identifier
+OM4	11	2	5	0		ST			0					String	alternate text
+OM4	11	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM4	12	-1	-1	10240	00652	TX	O		0				Specimen Requirements	Text data	
+OM4	13	-1	-1	1	00653	ID	O	Y	0	0027			Specimen Priorities	Coded values for HL7 tables	
+OM4	14	0	-1	20	00654	CQ	O		0				Specimen Retention Time	Composite quantity with units	
+OM4	14	1	-1	0		NM			0					Numeric	quantity
+OM4	14	2	0	0		CE			0					String	units
+OM4	14	2	1	0		ST			0					String	identifier
+OM4	14	2	2	0		ST			0					String	text
+OM4	14	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM4	14	2	4	0		ST			0					String	alternate identifier
+OM4	14	2	5	0		ST			0					String	alternate text
+OM4	14	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,7 @@
+Message Type=DFT
+Message Type Name=Detail financial transactions
+Trigger Event=P03
+Trigger Description=DFT/ACK - Post detail financial transaction
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { ROL } ] [ PV1 ] [ PV2 ] [ { ROL } ] [ { DB1 } ] [ { !COMMON_ORDER! [ ORC ] [ { !TIMING_QUANTITY! TQ1 [ { TQ2 } ] } ] [ !ORDER! OBR [ { NTE } ] ] [ { !OBSERVATION! OBX [ { NTE } ] } ] } ] { !FINANCIAL! FT1 [ NTE ] [ { !FINANCIAL_PROCEDURE! PR1 [ { ROL } ] } ] [ { !FINANCIAL_COMMON ORDER! [ ORC ] [ { !FINANCIAL_TIMING QUANTITY! TQ1 [ { TQ2 } ] } ] [ !FINANCIAL_ORDER! OBR [ { NTE } ] ] [ { !FINANCIAL_OBSERVATION! OBX [ { NTE } ] } ] } ] } [ { DG1 } ] [ DRG ] [ { GT1 } ] [ { !INSURANCE! IN1 [ IN2 ] [ { IN3 } ] [ { ROL } ] } ] [ ACC ]
+Return Message=ACK^P03
+Called by=

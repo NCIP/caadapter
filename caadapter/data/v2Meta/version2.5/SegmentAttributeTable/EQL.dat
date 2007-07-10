@@ -1,0 +1,10 @@
+EQL	1	-1	-1	32	00696	ST	O		0				Query Tag	String	
+EQL	2	-1	-1	1	00697	ID	R		0	0106			Query/Response Format Code	Coded values for HL7 tables	
+EQL	3	0	-1	250	00709	CE	R		0				EQL Query Name	Coded element	
+EQL	3	1	-1	20		ST			0					String	identifier
+EQL	3	2	-1	199		ST			0					String	text
+EQL	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+EQL	3	4	-1	20		ST			0					String	alternate identifier
+EQL	3	5	-1	199		ST			0					String	alternate text
+EQL	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+EQL	4	-1	-1	4096	00710	ST	R		0				EQL Query Statement	String	

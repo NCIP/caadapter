@@ -1,0 +1,7 @@
+Message Type=MFQ
+Message Type Name=Master files query
+Trigger Event=M04
+Trigger Description=MFN/MFK - Master files charge description
+Message Structure=MFQ_M01
+Return Message=MFR^M04
+Called by=

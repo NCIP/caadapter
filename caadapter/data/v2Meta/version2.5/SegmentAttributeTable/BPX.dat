@@ -1,0 +1,269 @@
+BPX	1	-1	-1	4	01714	SI	R		0				Set ID _ BPX	Sequence ID	
+BPX	2	0	-1	250	01715	CWE	R		0	0510			BP Dispense Status	Coded with exceptions	
+BPX	2	1	-1	20		IS			0	0510				String	identifier
+BPX	2	2	-1	199		ST			0					String	text
+BPX	2	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	2	4	-1	20		ST			0					String	alternate identifier
+BPX	2	5	-1	199		ST			0					String	alternate text
+BPX	2	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	2	7	-1	10		ST	C		0					String	coding system version ID
+BPX	2	8	-1	10		ST			0					String	alternate coding system version ID
+BPX	2	9	-1	199		ST			0					String	original text
+BPX	3	-1	-1	1	01716	ID	R		0	0511			BP Status	Coded values for HL7 tables	
+BPX	4	-1	-1	26	01717	TS	R		0				BP Date/Time of Status	Time stamp	
+BPX	5	0	-1	22	01718	EI	C		0				BC Donation ID	Entity identifier	
+BPX	5	1	-1	199		ST			0					String	entity identifier
+BPX	5	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	5	3	-1	199		ST	C		0					String	universal ID
+BPX	5	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	6	0	-1	250	01719	CNE	C		0				BC Component	Coded with no exceptions	
+BPX	6	1	-1	20		ST	R		0					String	identifier
+BPX	6	2	-1	199		ST			0					String	text
+BPX	6	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	6	4	-1	20		ST			0					String	alternate identifier
+BPX	6	5	-1	199		ST			0					String	alternate text
+BPX	6	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	6	7	-1	10		ST			0					String	coding system version ID
+BPX	6	8	-1	10		ST			0					String	alternate coding system version ID
+BPX	6	9	-1	199		ST			0					String	original text
+BPX	7	0	-1	250	01720	CNE	O		0				BC Donation Type / Intended Use	Coded with no exceptions	
+BPX	7	1	-1	20		ST	R		0					String	identifier
+BPX	7	2	-1	199		ST			0					String	text
+BPX	7	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	7	4	-1	20		ST			0					String	alternate identifier
+BPX	7	5	-1	199		ST			0					String	alternate text
+BPX	7	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	7	7	-1	10		ST			0					String	coding system version ID
+BPX	7	8	-1	10		ST			0					String	alternate coding system version ID
+BPX	7	9	-1	199		ST			0					String	original text
+BPX	8	0	-1	250	01721	CWE	C		0	0512			CP Commercial Product	Coded with exceptions	
+BPX	8	1	-1	20		IS			0	0512				String	identifier
+BPX	8	2	-1	199		ST			0					String	text
+BPX	8	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	8	4	-1	20		ST			0					String	alternate identifier
+BPX	8	5	-1	199		ST			0					String	alternate text
+BPX	8	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	8	7	-1	10		ST	C		0					String	coding system version ID
+BPX	8	8	-1	10		ST			0					String	alternate coding system version ID
+BPX	8	9	-1	199		ST			0					String	original text
+BPX	9	0	-1	250	01722	XON	C		0				CP Manufacturer	Extended composite name and ID number for organizations	
+BPX	9	1	-1	50		ST			0					String	organization name
+BPX	9	2	-1	20		IS			0	0204				Coded value for user-defined tables	organization name type code
+BPX	9	3	-1	4		NM	B		0					Numeric	ID number
+BPX	9	4	-1	1		NM			0					Numeric	check digit
+BPX	9	5	-1	3		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+BPX	9	6	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+BPX	9	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	9	6	2	0		ST			0					String	universal ID
+BPX	9	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+BPX	9	7	-1	5		IS			0	0203				Coded value for user-defined tables	identifier type code
+BPX	9	8	0	227		HD			0					Hierarchic designator	assigning facility ID
+BPX	9	8	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPX	9	8	2	199		ST	C		0					String	universal ID
+BPX	9	8	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	9	9	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+BPX	9	10	-1	20		ST			0					String	Organization Identifier
+BPX	10	0	-1	22	01723	EI	C		0				CP Lot Number	Entity identifier	
+BPX	10	1	-1	199		ST			0					String	entity identifier
+BPX	10	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	10	3	-1	199		ST	C		0					String	universal ID
+BPX	10	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	11	0	-1	250	01724	CNE	O		0				BP Blood Group	Coded with no exceptions	
+BPX	11	1	-1	20		ST	R		0					String	identifier
+BPX	11	2	-1	199		ST			0					String	text
+BPX	11	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	11	4	-1	20		ST			0					String	alternate identifier
+BPX	11	5	-1	199		ST			0					String	alternate text
+BPX	11	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	11	7	-1	10		ST			0					String	coding system version ID
+BPX	11	8	-1	10		ST			0					String	alternate coding system version ID
+BPX	11	9	-1	199		ST			0					String	original text
+BPX	12	0	-1	250	01725	CNE	O	Y	0				BC Special Testing	Coded with no exceptions	
+BPX	12	1	-1	20		ST	R		0					String	identifier
+BPX	12	2	-1	199		ST			0					String	text
+BPX	12	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	12	4	-1	20		ST			0					String	alternate identifier
+BPX	12	5	-1	199		ST			0					String	alternate text
+BPX	12	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	12	7	-1	10		ST			0					String	coding system version ID
+BPX	12	8	-1	10		ST			0					String	alternate coding system version ID
+BPX	12	9	-1	199		ST			0					String	original text
+BPX	13	-1	-1	26	01726	TS	O		0				BP Expiration Date/Time	Time stamp	
+BPX	14	-1	-1	5	01727	NM	R		0				BP Quantity	Numeric	
+BPX	15	-1	-1	5	01728	NM	O		0				BP Amount	Numeric	
+BPX	16	0	-1	250	01729	CE	O		0				BP Units	Coded element	
+BPX	16	1	-1	20		ST			0					String	identifier
+BPX	16	2	-1	199		ST			0					String	text
+BPX	16	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BPX	16	4	-1	20		ST			0					String	alternate identifier
+BPX	16	5	-1	199		ST			0					String	alternate text
+BPX	16	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BPX	17	0	-1	22	01730	EI	O		0				BP Unique ID	Entity identifier	
+BPX	17	1	-1	199		ST			0					String	entity identifier
+BPX	17	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	17	3	-1	199		ST	C		0					String	universal ID
+BPX	17	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	18	0	-1	80	01731	PL	O		0				BP Actual Dispensed To Location	Person location	
+BPX	18	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+BPX	18	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+BPX	18	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+BPX	18	4	0	227		HD			0					Hierarchic designator	facility
+BPX	18	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPX	18	4	2	199		ST	C		0					String	universal ID
+BPX	18	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	18	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+BPX	18	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+BPX	18	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+BPX	18	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+BPX	18	9	-1	199		ST			0					String	location description
+BPX	18	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+BPX	18	10	1	199		ST			0					String	entity identifier
+BPX	18	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	18	10	3	199		ST	C		0					String	universal ID
+BPX	18	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	18	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+BPX	18	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPX	18	11	2	199		ST	C		0					String	universal ID
+BPX	18	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	19	0	-1	250	01732	XAD	O		0				BP Actual Dispensed To Address	Extended address	
+BPX	19	1	0	184		SAD			0					Street Address	street address
+BPX	19	1	1	120		ST			0					String	street or mailing address
+BPX	19	1	2	50		ST			0					String	street name
+BPX	19	1	3	12		ST			0					String	dwelling number
+BPX	19	2	-1	120		ST			0					String	other designation
+BPX	19	3	-1	50		ST			0					String	city
+BPX	19	4	-1	50		ST			0					String	state or province
+BPX	19	5	-1	12		ST			0					String	zip or postal code
+BPX	19	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+BPX	19	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+BPX	19	8	-1	50		ST			0					String	other geographic designation
+BPX	19	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+BPX	19	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+BPX	19	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+BPX	19	12	0	53		DR	B		0					Date/time range	address validity range
+BPX	19	12	1	26		TS			0					Time stamp	range start date/time
+BPX	19	12	2	26		TS			0					Time stamp	range end date/time
+BPX	19	13	-1	26		TS			0					Time stamp	Effective Date
+BPX	19	14	-1	26		TS			0					Time stamp	Expiration Date
+BPX	20	0	-1	250	01733	XCN	O		0				BP Dispensed to Receiver	Extended composite ID number and name	
+BPX	20	1	-1	15		ST			0					String	ID number
+BPX	20	2	0	194		FN			0						family name
+BPX	20	2	1	50		ST	R		0					String	surname
+BPX	20	2	2	20		ST			0					String	own surname prefix
+BPX	20	2	3	50		ST			0					String	own surname
+BPX	20	2	4	20		ST			0					String	surname prefix from partner/spouse
+BPX	20	2	5	30		ST			0					String	surname from partner/spouse
+BPX	20	3	-1	30		ST			0					String	given name
+BPX	20	4	-1	30		ST			0					String	second and further given names or initial thereof
+BPX	20	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+BPX	20	6	-1	20		ST			0					String	prefix (e.g., DR)
+BPX	20	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+BPX	20	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+BPX	20	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+BPX	20	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	20	9	2	0		ST			0					String	universal ID
+BPX	20	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+BPX	20	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+BPX	20	11	-1	1		ST			0					String	identifier check digit
+BPX	20	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+BPX	20	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+BPX	20	14	0	227		HD			0					Hierarchic designator	assigning facility
+BPX	20	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPX	20	14	2	199		ST	C		0					String	universal ID
+BPX	20	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	20	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+BPX	20	16	0	483		CE			0	0448				Coded element	Name Context
+BPX	20	16	1	20		IS			0	0448				String	identifier
+BPX	20	16	2	199		ST			0					String	text
+BPX	20	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BPX	20	16	4	20		ST			0					String	alternate identifier
+BPX	20	16	5	199		ST			0					String	alternate text
+BPX	20	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BPX	20	17	0	53		DR	B		0					Date/time range	Name Validity Range
+BPX	20	17	1	26		TS			0					Time stamp	range start date/time
+BPX	20	17	2	26		TS			0					Time stamp	range end date/time
+BPX	20	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+BPX	20	19	-1	26		TS			0					Time stamp	Effective Date
+BPX	20	20	-1	26		TS			0					Time stamp	Expiration Date
+BPX	20	21	-1	199		ST			0					String	Professional Suffix
+BPX	20	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+BPX	20	22	1	20		ST			0					String	identifier
+BPX	20	22	2	199		ST			0					String	text
+BPX	20	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	20	22	4	20		ST			0					String	alternate identifier
+BPX	20	22	5	199		ST			0					String	alternate text
+BPX	20	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	20	22	7	10		ST	C		0					String	coding system version ID
+BPX	20	22	8	10		ST			0					String	alternate coding system version ID
+BPX	20	22	9	199		ST			0					String	original text
+BPX	20	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+BPX	20	23	1	20		ST			0					String	identifier
+BPX	20	23	2	199		ST			0					String	text
+BPX	20	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	20	23	4	20		ST			0					String	alternate identifier
+BPX	20	23	5	199		ST			0					String	alternate text
+BPX	20	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	20	23	7	10		ST	C		0					String	coding system version ID
+BPX	20	23	8	10		ST			0					String	alternate coding system version ID
+BPX	20	23	9	199		ST			0					String	original text
+BPX	21	0	-1	250	01734	XCN	O		0				BP Dispensing Individual	Extended composite ID number and name	
+BPX	21	1	-1	15		ST			0					String	ID number
+BPX	21	2	0	194		FN			0						family name
+BPX	21	2	1	50		ST	R		0					String	surname
+BPX	21	2	2	20		ST			0					String	own surname prefix
+BPX	21	2	3	50		ST			0					String	own surname
+BPX	21	2	4	20		ST			0					String	surname prefix from partner/spouse
+BPX	21	2	5	30		ST			0					String	surname from partner/spouse
+BPX	21	3	-1	30		ST			0					String	given name
+BPX	21	4	-1	30		ST			0					String	second and further given names or initial thereof
+BPX	21	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+BPX	21	6	-1	20		ST			0					String	prefix (e.g., DR)
+BPX	21	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+BPX	21	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+BPX	21	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+BPX	21	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPX	21	9	2	0		ST			0					String	universal ID
+BPX	21	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+BPX	21	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+BPX	21	11	-1	1		ST			0					String	identifier check digit
+BPX	21	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+BPX	21	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+BPX	21	14	0	227		HD			0					Hierarchic designator	assigning facility
+BPX	21	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPX	21	14	2	199		ST	C		0					String	universal ID
+BPX	21	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPX	21	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+BPX	21	16	0	483		CE			0	0448				Coded element	Name Context
+BPX	21	16	1	20		IS			0	0448				String	identifier
+BPX	21	16	2	199		ST			0					String	text
+BPX	21	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BPX	21	16	4	20		ST			0					String	alternate identifier
+BPX	21	16	5	199		ST			0					String	alternate text
+BPX	21	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BPX	21	17	0	53		DR	B		0					Date/time range	Name Validity Range
+BPX	21	17	1	26		TS			0					Time stamp	range start date/time
+BPX	21	17	2	26		TS			0					Time stamp	range end date/time
+BPX	21	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+BPX	21	19	-1	26		TS			0					Time stamp	Effective Date
+BPX	21	20	-1	26		TS			0					Time stamp	Expiration Date
+BPX	21	21	-1	199		ST			0					String	Professional Suffix
+BPX	21	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+BPX	21	22	1	20		ST			0					String	identifier
+BPX	21	22	2	199		ST			0					String	text
+BPX	21	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	21	22	4	20		ST			0					String	alternate identifier
+BPX	21	22	5	199		ST			0					String	alternate text
+BPX	21	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	21	22	7	10		ST	C		0					String	coding system version ID
+BPX	21	22	8	10		ST			0					String	alternate coding system version ID
+BPX	21	22	9	199		ST			0					String	original text
+BPX	21	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+BPX	21	23	1	20		ST			0					String	identifier
+BPX	21	23	2	199		ST			0					String	text
+BPX	21	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPX	21	23	4	20		ST			0					String	alternate identifier
+BPX	21	23	5	199		ST			0					String	alternate text
+BPX	21	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPX	21	23	7	10		ST	C		0					String	coding system version ID
+BPX	21	23	8	10		ST			0					String	alternate coding system version ID
+BPX	21	23	9	199		ST			0					String	original text

@@ -1,0 +1,12 @@
+XAD	1	ST				street address	N	^
+XAD	2	ST				other designation	N	^
+XAD	3	ST				city	N	^
+XAD	4	ST				state or province	N	^
+XAD	5	ST				zip or postal code	N	^
+XAD	6	ID	0399			country	N	^
+XAD	7	ID	0190			address type	N	^
+XAD	8	ST				other geographic designation	N	^
+XAD	9	IS	0289			county/parish code	N	^
+XAD	10	IS	0288			census tract	N	^
+XAD	11	ID	0465			address representation code	N	E
+

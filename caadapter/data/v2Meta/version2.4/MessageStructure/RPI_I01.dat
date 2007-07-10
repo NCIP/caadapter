@@ -1,0 +1,1 @@
+RPI	I01	RPI	I01			 MSH  MSA {  PRD [ {  CTD } ] }  PID [ {  NK1 } ] [ [ {  GT1 } ] { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [ {  NTE } ] 	Return Patient Information - for insurance information	Return patient information	RQI/RPI - Request for insurance information

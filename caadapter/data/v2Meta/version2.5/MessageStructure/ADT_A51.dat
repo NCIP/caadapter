@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A51
+Trigger Description=ADT/ACK - Change alternate visit ID
+Message Structure=ADT_A50
+Return Message=ACK^A51
+Called by=

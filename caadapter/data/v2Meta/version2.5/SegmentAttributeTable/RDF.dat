@@ -1,0 +1,5 @@
+RDF	1	-1	-1	3	00701	NM	R		0				Number of Columns per Row	Numeric	
+RDF	2	0	-1	40	00702	RCD	R	Y	0	0440			Column Description	Row column definition	
+RDF	2	1	-1	12		ST			0					String	segment field name
+RDF	2	2	-1	3		ID			0	0440				Coded values for HL7 tables	HL7 data type
+RDF	2	3	-1	2		NM			0					Numeric	maximum column width

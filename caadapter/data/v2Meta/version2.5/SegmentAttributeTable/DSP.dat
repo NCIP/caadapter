@@ -1,0 +1,5 @@
+DSP	1	-1	-1	4	00061	SI	O		0				Set ID - DSP	Sequence ID	
+DSP	2	-1	-1	4	00062	SI	O		0				Display Level	Sequence ID	
+DSP	3	-1	-1	300	00063	TX	R		0				Data Line	Text data	
+DSP	4	-1	-1	2	00064	ST	O		0				Logical Break Point	String	
+DSP	5	-1	-1	20	00065	TX	O		0				Result ID	Text data	

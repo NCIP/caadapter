@@ -1,0 +1,7 @@
+Message Type=TCR
+Message Type Name=Automated equipment test code settings request message
+Trigger Event=U11
+Trigger Description=TCR/ACK _ Automated equipment test code settings request
+Message Structure=TCU_U10
+Return Message=ACK^U11
+Called by=

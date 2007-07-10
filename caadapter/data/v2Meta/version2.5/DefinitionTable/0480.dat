@@ -1,0 +1,3 @@
+HL7	Pharmacy Order Types	0480	M	Medication
+HL7	Pharmacy Order Types	0480	O	Other solution as medication orders
+HL7	Pharmacy Order Types	0480	S	IV Large Volume Solutions

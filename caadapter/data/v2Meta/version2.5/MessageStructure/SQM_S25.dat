@@ -1,0 +1,7 @@
+Message Type=SQM
+Message Type Name=Schedule query message
+Trigger Event=S25
+Trigger Description=SQM/SQR - Schedule query message and response
+Message Structure=MSH QRD [ QRF ] [ !REQUEST! ARQ [ APR ] [ PID ] { !RESOURCES! RGS [ { !SERVICE! AIS [ APR ] } ] [ { !GENERAL_RESOURCE! AIG [ APR ] } ] [ { !PERSONNEL_RESOURCE! AIP [ APR ] } ] [ { !LOCATION_RESOURCE! AIL [ APR ] } ] } ] [ DSC ]
+Return Message=SQR^S25
+Called by=

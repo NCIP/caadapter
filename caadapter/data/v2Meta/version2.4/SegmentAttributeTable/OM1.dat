@@ -1,0 +1,190 @@
+OM1	1	-1	-1	4	00586	NM	R		0				Sequence Number	Numeric	
+OM1	2	0	-1	250	00587	CE	R		0	9999			Producer`s Service/Test/Observation ID	Coded element	
+OM1	2	1	-1	0		ST			0					String	identifier
+OM1	2	2	-1	0		ST			0					String	text
+OM1	2	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	2	4	-1	0		ST			0					String	alternate identifier
+OM1	2	5	-1	0		ST			0					String	alternate text
+OM1	2	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	3	-1	-1	12	00588	ID	O	Y	0	0125			Permitted Data Types	Coded values for HL7 tables	
+OM1	4	-1	-1	1	00589	ID	R		0	0136			Specimen Required	Coded values for HL7 tables	
+OM1	5	0	-1	250	00590	CE	R		0	9999			Producer ID	Coded element	
+OM1	5	1	-1	0		ST			0					String	identifier
+OM1	5	2	-1	0		ST			0					String	text
+OM1	5	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	5	4	-1	0		ST			0					String	alternate identifier
+OM1	5	5	-1	0		ST			0					String	alternate text
+OM1	5	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	6	-1	-1	200	00591	TX	O		0				Observation Description	Text data	
+OM1	7	0	-1	250	00592	CE	O		0	9999			Other Service/Test/Observation IDs for the Observation	Coded element	
+OM1	7	1	-1	0		ST			0					String	identifier
+OM1	7	2	-1	0		ST			0					String	text
+OM1	7	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	7	4	-1	0		ST			0					String	alternate identifier
+OM1	7	5	-1	0		ST			0					String	alternate text
+OM1	7	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	8	-1	-1	200	00593	ST	R	Y	0				Other Names	String	
+OM1	9	-1	-1	30	00594	ST	O		0				Preferred Report Name for the Observation	String	
+OM1	10	-1	-1	8	00595	ST	O		0				Preferred Short Name or Mnemonic for Observation	String	
+OM1	11	-1	-1	200	00596	ST	O		0				Preferred Long Name for the Observation	String	
+OM1	12	-1	-1	1	00597	ID	O		0	0136			Orderability	Coded values for HL7 tables	
+OM1	13	0	-1	250	00598	CE	O	Y	0	9999			Identity of Instrument Used to Perform this Study	Coded element	
+OM1	13	1	-1	0		ST			0					String	identifier
+OM1	13	2	-1	0		ST			0					String	text
+OM1	13	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	13	4	-1	0		ST			0					String	alternate identifier
+OM1	13	5	-1	0		ST			0					String	alternate text
+OM1	13	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	14	0	-1	250	00599	CE	O	Y	0	9999			Coded Representation of Method	Coded element	
+OM1	14	1	-1	0		ST			0					String	identifier
+OM1	14	2	-1	0		ST			0					String	text
+OM1	14	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	14	4	-1	0		ST			0					String	alternate identifier
+OM1	14	5	-1	0		ST			0					String	alternate text
+OM1	14	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	15	-1	-1	1	00600	ID	O		0	0136			Portable Device Indicator	Coded values for HL7 tables	
+OM1	16	0	-1	250	00601	CE	O	Y	0	9999			Observation Producing Department/Section	Coded element	
+OM1	16	1	-1	0		ST			0					String	identifier
+OM1	16	2	-1	0		ST			0					String	text
+OM1	16	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	16	4	-1	0		ST			0					String	alternate identifier
+OM1	16	5	-1	0		ST			0					String	alternate text
+OM1	16	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	17	0	-1	250	00602	XTN	O		0				Telephone Number of Section	Extended telecommunications number	
+OM1	17	1	-1	0		TN			0					Telephone number	
+OM1	17	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+OM1	17	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+OM1	17	4	-1	0		ST			0					String	email address
+OM1	17	5	-1	0		NM			0					Numeric	country code
+OM1	17	6	-1	0		NM			0					Numeric	area/city code
+OM1	17	7	-1	0		NM			0					Numeric	phone number
+OM1	17	8	-1	0		NM			0					Numeric	extension
+OM1	17	9	-1	0		ST			0					String	any text
+OM1	18	-1	-1	1	00603	IS	R		0	0174			Nature of Service/Test/Observation	Coded value for user-defined tables	
+OM1	19	0	-1	250	00604	CE	O		0	9999			Report Subheader	Coded element	
+OM1	19	1	-1	0		ST			0					String	identifier
+OM1	19	2	-1	0		ST			0					String	text
+OM1	19	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	19	4	-1	0		ST			0					String	alternate identifier
+OM1	19	5	-1	0		ST			0					String	alternate text
+OM1	19	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	20	-1	-1	20	00605	ST	O		0				Report Display Order	String	
+OM1	21	-1	-1	26	00606	TS	O		0				Date/Time Stamp for any change in Definition for the Observation	Time stamp	
+OM1	22	-1	-1	26	00607	TS	O		0				Effective Date/Time of Change	Time stamp	
+OM1	23	-1	-1	20	00608	NM	O		0				Typical Turn-Around Time	Numeric	
+OM1	24	-1	-1	20	00609	NM	O		0				Processing Time	Numeric	
+OM1	25	-1	-1	40	00610	ID	O	Y	0	0168			Processing Priority	Coded values for HL7 tables	
+OM1	26	-1	-1	5	00611	ID	O		0	0169			Reporting Priority	Coded values for HL7 tables	
+OM1	27	0	-1	250	00612	CE	O	Y	0	9999			Outside Site(s) Where Observation may be Performed	Coded element	
+OM1	27	1	-1	0		ST			0					String	identifier
+OM1	27	2	-1	0		ST			0					String	text
+OM1	27	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	27	4	-1	0		ST			0					String	alternate identifier
+OM1	27	5	-1	0		ST			0					String	alternate text
+OM1	27	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	28	0	-1	250	00613	XAD	O	Y	0				Address of Outside Site(s)	Extended address	
+OM1	28	1	0	0		SAD			0					String	street address
+OM1	28	1	1	0		ST			0					String	street or mailing address
+OM1	28	1	2	0		ST			0					String	street name
+OM1	28	1	3	0		ST			0					String	dwelling number
+OM1	28	2	-1	0		ST			0					String	other designation
+OM1	28	3	-1	0		ST			0					String	city
+OM1	28	4	-1	0		ST			0					String	state or province
+OM1	28	5	-1	0		ST			0					String	zip or postal code
+OM1	28	6	-1	0		ID			0	0399				Coded values for HL7 tables	country
+OM1	28	7	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+OM1	28	8	-1	0		ST			0					String	other geographic designation
+OM1	28	9	-1	0		IS			0	0289				Coded value for user-defined tables	county/parish code
+OM1	28	10	-1	0		IS			0	0288				Coded value for user-defined tables	census tract
+OM1	28	11	-1	0		ID			0	0465				Coded values for HL7 tables	address representation code
+OM1	28	12	0	0		DR			0					Time stamp	address validity range
+OM1	28	12	1	0		TS			0					Time stamp	range start date/time
+OM1	28	12	2	0		TS			0					Time stamp	range end date/time
+OM1	29	0	-1	250	00614	XTN	O		0				Phone Number of Outside Site	Extended telecommunications number	
+OM1	29	1	-1	0		TN			0					Telephone number	
+OM1	29	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+OM1	29	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+OM1	29	4	-1	0		ST			0					String	email address
+OM1	29	5	-1	0		NM			0					Numeric	country code
+OM1	29	6	-1	0		NM			0					Numeric	area/city code
+OM1	29	7	-1	0		NM			0					Numeric	phone number
+OM1	29	8	-1	0		NM			0					Numeric	extension
+OM1	29	9	-1	0		ST			0					String	any text
+OM1	30	-1	-1	1	00615	IS	O		0	0177			Confidentiality Code	Coded value for user-defined tables	
+OM1	31	0	-1	250	00616	CE	O		0	9999			Observations Required to Interpret the Observation	Coded element	
+OM1	31	1	-1	0		ST			0					String	identifier
+OM1	31	2	-1	0		ST			0					String	text
+OM1	31	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	31	4	-1	0		ST			0					String	alternate identifier
+OM1	31	5	-1	0		ST			0					String	alternate text
+OM1	31	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	32	-1	-1	65536	00617	TX	O		0				Interpretation of Observations	Text data	
+OM1	33	0	-1	250	00618	CE	O		0	9999			Contraindications to Observations	Coded element	
+OM1	33	1	-1	0		ST			0					String	identifier
+OM1	33	2	-1	0		ST			0					String	text
+OM1	33	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	33	4	-1	0		ST			0					String	alternate identifier
+OM1	33	5	-1	0		ST			0					String	alternate text
+OM1	33	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	34	0	-1	250	00619	CE	O	Y	0	9999			Reflex Tests/Observations	Coded element	
+OM1	34	1	-1	0		ST			0					String	identifier
+OM1	34	2	-1	0		ST			0					String	text
+OM1	34	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	34	4	-1	0		ST			0					String	alternate identifier
+OM1	34	5	-1	0		ST			0					String	alternate text
+OM1	34	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	35	-1	-1	80	00620	TX	O		0				Rules that Trigger Reflex Testing	Text data	
+OM1	36	0	-1	250	00621	CE	O		0	9999			Fixed Canned Message	Coded element	
+OM1	36	1	-1	0		ST			0					String	identifier
+OM1	36	2	-1	0		ST			0					String	text
+OM1	36	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	36	4	-1	0		ST			0					String	alternate identifier
+OM1	36	5	-1	0		ST			0					String	alternate text
+OM1	36	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	37	-1	-1	200	00622	TX	O		0				Patient Preparation	Text data	
+OM1	38	0	-1	250	00623	CE	O		0	9999			Procedure Medication	Coded element	
+OM1	38	1	-1	0		ST			0					String	identifier
+OM1	38	2	-1	0		ST			0					String	text
+OM1	38	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	38	4	-1	0		ST			0					String	alternate identifier
+OM1	38	5	-1	0		ST			0					String	alternate text
+OM1	38	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	39	-1	-1	200	00624	TX	O		0				Factors that may Affect Affect the Observation	Text data	
+OM1	40	-1	-1	60	00625	ST	O	Y	0				Service/Test/Observation Performance Schedule	String	
+OM1	41	-1	-1	65536	00626	TX	O		0				Description of Test Methods	Text data	
+OM1	42	0	-1	250	00937	CE	O		0	0254			Kind of Quantity Observed	Coded element	
+OM1	42	1	-1	0		ST			0					String	identifier
+OM1	42	2	-1	0		ST			0					String	text
+OM1	42	3	-1	0		IS			0	0254				Coded value for user-defined tables	name of coding system
+OM1	42	4	-1	0		ST			0					String	alternate identifier
+OM1	42	5	-1	0		ST			0					String	alternate text
+OM1	42	6	-1	0		IS			0	0254				Coded value for user-defined tables	name of alternate coding system
+OM1	43	0	-1	250	00938	CE	O		0	0255			Point Versus Interval	Coded element	
+OM1	43	1	-1	0		ST			0					String	identifier
+OM1	43	2	-1	0		ST			0					String	text
+OM1	43	3	-1	0		IS			0	0255				Coded value for user-defined tables	name of coding system
+OM1	43	4	-1	0		ST			0					String	alternate identifier
+OM1	43	5	-1	0		ST			0					String	alternate text
+OM1	43	6	-1	0		IS			0	0255				Coded value for user-defined tables	name of alternate coding system
+OM1	44	-1	-1	200	00939	TX	O		0	0256	0257		Challenge Information	Text data	
+OM1	45	0	-1	250	00940	CE	O		0	0258			Relationship Modifier	Coded element	
+OM1	45	1	-1	0		ST			0					String	identifier
+OM1	45	2	-1	0		ST			0					String	text
+OM1	45	3	-1	0		IS			0	0258				Coded value for user-defined tables	name of coding system
+OM1	45	4	-1	0		ST			0					String	alternate identifier
+OM1	45	5	-1	0		ST			0					String	alternate text
+OM1	45	6	-1	0		IS			0	0258				Coded value for user-defined tables	name of alternate coding system
+OM1	46	0	-1	250	00941	CE	O		0	9999			Target Anatomic Site Of Test	Coded element	
+OM1	46	1	-1	0		ST			0					String	identifier
+OM1	46	2	-1	0		ST			0					String	text
+OM1	46	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+OM1	46	4	-1	0		ST			0					String	alternate identifier
+OM1	46	5	-1	0		ST			0					String	alternate text
+OM1	46	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+OM1	47	0	-1	250	00942	CE	O		0	0259			Modality Of Imaging Measurement	Coded element	
+OM1	47	1	-1	0		ST			0					String	identifier
+OM1	47	2	-1	0		ST			0					String	text
+OM1	47	3	-1	0		IS			0	0259				Coded value for user-defined tables	name of coding system
+OM1	47	4	-1	0		ST			0					String	alternate identifier
+OM1	47	5	-1	0		ST			0					String	alternate text
+OM1	47	6	-1	0		IS			0	0259				Coded value for user-defined tables	name of alternate coding system

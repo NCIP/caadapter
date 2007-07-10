@@ -1,0 +1,7 @@
+Message Type=NMD
+Message Type Name=Application management data message
+Trigger Event=N02
+Trigger Description=NMD/ACK - Application management data message (unsolicited)
+Message Structure=MSH [ { SFT } ] { !CLOCK_AND_STATS_WITH_NOTES! [ !CLOCK! NCK [ { NTE } ] ] [ !APP_STATS! NST [ { NTE } ] ] [ !APP_STATUS! NSC [ { NTE } ] ] }
+Return Message=ACK^N02
+Called by=

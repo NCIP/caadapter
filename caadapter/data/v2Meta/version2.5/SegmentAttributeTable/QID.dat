@@ -1,0 +1,8 @@
+QID	1	-1	-1	32	00696	ST	R		0				Query Tag	String	
+QID	2	0	-1	250	01375	CE	R		0	0471			Message Query Name	Coded element	
+QID	2	1	-1	20		IS			0	0471				String	identifier
+QID	2	2	-1	199		ST			0					String	text
+QID	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+QID	2	4	-1	20		ST			0					String	alternate identifier
+QID	2	5	-1	199		ST			0					String	alternate text
+QID	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,8 @@
+User	Patient location type	0260	B	Bed
+User	Patient location type	0260	C	Clinic
+User	Patient location type	0260	D	Department
+User	Patient location type	0260	E	Exam Room
+User	Patient location type	0260	L	Other Location
+User	Patient location type	0260	N	Nursing Unit
+User	Patient location type	0260	O	Operating Room
+User	Patient location type	0260	R	Room

@@ -1,0 +1,105 @@
+PRB	1	-1	-1	2	00816	ID	R		0	0287			Action Code	Coded values for HL7 tables	
+PRB	2	-1	-1	26	00817	TS	R		0				Action Date/Time	Time stamp	
+PRB	3	0	-1	250	00838	CE	R		0				Problem ID	Coded element	
+PRB	3	1	-1	20		ST			0					String	identifier
+PRB	3	2	-1	199		ST			0					String	text
+PRB	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	3	4	-1	20		ST			0					String	alternate identifier
+PRB	3	5	-1	199		ST			0					String	alternate text
+PRB	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	4	0	-1	60	00839	EI	R		0				Problem Instance ID	Entity identifier	
+PRB	4	1	-1	199		ST			0					String	entity identifier
+PRB	4	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+PRB	4	3	-1	199		ST	C		0					String	universal ID
+PRB	4	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PRB	5	0	-1	60	00820	EI	O		0				Episode of Care ID	Entity identifier	
+PRB	5	1	-1	199		ST			0					String	entity identifier
+PRB	5	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+PRB	5	3	-1	199		ST	C		0					String	universal ID
+PRB	5	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+PRB	6	-1	-1	60	00841	NM	O		0				Problem List Priority	Numeric	
+PRB	7	-1	-1	26	00842	TS	O		0				Problem Established Date/Time	Time stamp	
+PRB	8	-1	-1	26	00843	TS	O		0				Anticipated Problem Resolution Date/Time	Time stamp	
+PRB	9	-1	-1	26	00844	TS	O		0				Actual Problem Resolution Date/Time	Time stamp	
+PRB	10	0	-1	250	00845	CE	O		0				Problem Classification	Coded element	
+PRB	10	1	-1	20		ST			0					String	identifier
+PRB	10	2	-1	199		ST			0					String	text
+PRB	10	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	10	4	-1	20		ST			0					String	alternate identifier
+PRB	10	5	-1	199		ST			0					String	alternate text
+PRB	10	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	11	0	-1	250	00846	CE	O	Y	0				Problem Management Discipline	Coded element	
+PRB	11	1	-1	20		ST			0					String	identifier
+PRB	11	2	-1	199		ST			0					String	text
+PRB	11	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	11	4	-1	20		ST			0					String	alternate identifier
+PRB	11	5	-1	199		ST			0					String	alternate text
+PRB	11	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	12	0	-1	250	00847	CE	O		0				Problem Persistence	Coded element	
+PRB	12	1	-1	20		ST			0					String	identifier
+PRB	12	2	-1	199		ST			0					String	text
+PRB	12	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	12	4	-1	20		ST			0					String	alternate identifier
+PRB	12	5	-1	199		ST			0					String	alternate text
+PRB	12	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	13	0	-1	250	00848	CE	O		0				Problem Confirmation Status	Coded element	
+PRB	13	1	-1	20		ST			0					String	identifier
+PRB	13	2	-1	199		ST			0					String	text
+PRB	13	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	13	4	-1	20		ST			0					String	alternate identifier
+PRB	13	5	-1	199		ST			0					String	alternate text
+PRB	13	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	14	0	-1	250	00849	CE	O		0				Problem Life Cycle Status	Coded element	
+PRB	14	1	-1	20		ST			0					String	identifier
+PRB	14	2	-1	199		ST			0					String	text
+PRB	14	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	14	4	-1	20		ST			0					String	alternate identifier
+PRB	14	5	-1	199		ST			0					String	alternate text
+PRB	14	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	15	-1	-1	26	00850	TS	O		0				Problem Life Cycle Status Date/Time	Time stamp	
+PRB	16	-1	-1	26	00851	TS	O		0				Problem Date of Onset	Time stamp	
+PRB	17	-1	-1	80	00852	ST	O		0				Problem Onset Text	String	
+PRB	18	0	-1	250	00853	CE	O		0				Problem Ranking	Coded element	
+PRB	18	1	-1	20		ST			0					String	identifier
+PRB	18	2	-1	199		ST			0					String	text
+PRB	18	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	18	4	-1	20		ST			0					String	alternate identifier
+PRB	18	5	-1	199		ST			0					String	alternate text
+PRB	18	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	19	0	-1	250	00854	CE	O		0				Certainty of Problem	Coded element	
+PRB	19	1	-1	20		ST			0					String	identifier
+PRB	19	2	-1	199		ST			0					String	text
+PRB	19	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	19	4	-1	20		ST			0					String	alternate identifier
+PRB	19	5	-1	199		ST			0					String	alternate text
+PRB	19	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	20	-1	-1	5	00855	NM	O		0				Probability of Problem (0-1)	Numeric	
+PRB	21	0	-1	250	00856	CE	O		0				Individual Awareness of Problem	Coded element	
+PRB	21	1	-1	20		ST			0					String	identifier
+PRB	21	2	-1	199		ST			0					String	text
+PRB	21	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	21	4	-1	20		ST			0					String	alternate identifier
+PRB	21	5	-1	199		ST			0					String	alternate text
+PRB	21	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	22	0	-1	250	00857	CE	O		0				Problem Prognosis	Coded element	
+PRB	22	1	-1	20		ST			0					String	identifier
+PRB	22	2	-1	199		ST			0					String	text
+PRB	22	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	22	4	-1	20		ST			0					String	alternate identifier
+PRB	22	5	-1	199		ST			0					String	alternate text
+PRB	22	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	23	0	-1	250	00858	CE	O		0				Individual Awareness of Prognosis	Coded element	
+PRB	23	1	-1	20		ST			0					String	identifier
+PRB	23	2	-1	199		ST			0					String	text
+PRB	23	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	23	4	-1	20		ST			0					String	alternate identifier
+PRB	23	5	-1	199		ST			0					String	alternate text
+PRB	23	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PRB	24	-1	-1	200	00859	ST	O		0				Family/Significant Other Awareness of Problem/Prognosis	String	
+PRB	25	0	-1	250	00823	CE	O		0				Security/Sensitivity	Coded element	
+PRB	25	1	-1	20		ST			0					String	identifier
+PRB	25	2	-1	199		ST			0					String	text
+PRB	25	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PRB	25	4	-1	20		ST			0					String	alternate identifier
+PRB	25	5	-1	199		ST			0					String	alternate text
+PRB	25	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

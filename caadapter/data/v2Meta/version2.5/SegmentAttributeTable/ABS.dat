@@ -1,0 +1,230 @@
+ABS	1	0	-1	250	01514	XCN	O		0	0010			Discharge Care Provider	Extended composite ID number and name	
+ABS	1	1	-1	15		ST			0					String	ID number
+ABS	1	2	0	194		FN			0						family name
+ABS	1	2	1	50		ST	R		0					String	surname
+ABS	1	2	2	20		ST			0					String	own surname prefix
+ABS	1	2	3	50		ST			0					String	own surname
+ABS	1	2	4	20		ST			0					String	surname prefix from partner/spouse
+ABS	1	2	5	30		ST			0					String	surname from partner/spouse
+ABS	1	3	-1	30		ST			0					String	given name
+ABS	1	4	-1	30		ST			0					String	second and further given names or initial thereof
+ABS	1	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ABS	1	6	-1	20		ST			0					String	prefix (e.g., DR)
+ABS	1	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ABS	1	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ABS	1	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ABS	1	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ABS	1	9	2	0		ST			0					String	universal ID
+ABS	1	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ABS	1	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ABS	1	11	-1	1		ST			0					String	identifier check digit
+ABS	1	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ABS	1	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ABS	1	14	0	227		HD			0					Hierarchic designator	assigning facility
+ABS	1	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ABS	1	14	2	199		ST	C		0					String	universal ID
+ABS	1	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ABS	1	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ABS	1	16	0	483		CE			0	0448				Coded element	Name Context
+ABS	1	16	1	20		IS			0	0448				String	identifier
+ABS	1	16	2	199		ST			0					String	text
+ABS	1	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	1	16	4	20		ST			0					String	alternate identifier
+ABS	1	16	5	199		ST			0					String	alternate text
+ABS	1	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	1	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ABS	1	17	1	26		TS			0					Time stamp	range start date/time
+ABS	1	17	2	26		TS			0					Time stamp	range end date/time
+ABS	1	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ABS	1	19	-1	26		TS			0					Time stamp	Effective Date
+ABS	1	20	-1	26		TS			0					Time stamp	Expiration Date
+ABS	1	21	-1	199		ST			0					String	Professional Suffix
+ABS	1	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ABS	1	22	1	20		ST			0					String	identifier
+ABS	1	22	2	199		ST			0					String	text
+ABS	1	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ABS	1	22	4	20		ST			0					String	alternate identifier
+ABS	1	22	5	199		ST			0					String	alternate text
+ABS	1	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ABS	1	22	7	10		ST	C		0					String	coding system version ID
+ABS	1	22	8	10		ST			0					String	alternate coding system version ID
+ABS	1	22	9	199		ST			0					String	original text
+ABS	1	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ABS	1	23	1	20		ST			0					String	identifier
+ABS	1	23	2	199		ST			0					String	text
+ABS	1	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ABS	1	23	4	20		ST			0					String	alternate identifier
+ABS	1	23	5	199		ST			0					String	alternate text
+ABS	1	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ABS	1	23	7	10		ST	C		0					String	coding system version ID
+ABS	1	23	8	10		ST			0					String	alternate coding system version ID
+ABS	1	23	9	199		ST			0					String	original text
+ABS	2	0	-1	250	01515	CE	O		0	0069			Transfer Medical Service Code	Coded element	
+ABS	2	1	-1	20		IS			0	0069				String	identifier
+ABS	2	2	-1	199		ST			0					String	text
+ABS	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	2	4	-1	20		ST			0					String	alternate identifier
+ABS	2	5	-1	199		ST			0					String	alternate text
+ABS	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	3	0	-1	250	01516	CE	O		0	0421			Severity of Illness Code	Coded element	
+ABS	3	1	-1	20		IS			0	0421				String	identifier
+ABS	3	2	-1	199		ST			0					String	text
+ABS	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	3	4	-1	20		ST			0					String	alternate identifier
+ABS	3	5	-1	199		ST			0					String	alternate text
+ABS	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	4	-1	-1	26	01517	TS	O		0				Date/Time of Attestation	Time stamp	
+ABS	5	0	-1	250	01518	XCN	O		0				Attested By	Extended composite ID number and name	
+ABS	5	1	-1	15		ST			0					String	ID number
+ABS	5	2	0	194		FN			0						family name
+ABS	5	2	1	50		ST	R		0					String	surname
+ABS	5	2	2	20		ST			0					String	own surname prefix
+ABS	5	2	3	50		ST			0					String	own surname
+ABS	5	2	4	20		ST			0					String	surname prefix from partner/spouse
+ABS	5	2	5	30		ST			0					String	surname from partner/spouse
+ABS	5	3	-1	30		ST			0					String	given name
+ABS	5	4	-1	30		ST			0					String	second and further given names or initial thereof
+ABS	5	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ABS	5	6	-1	20		ST			0					String	prefix (e.g., DR)
+ABS	5	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ABS	5	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ABS	5	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ABS	5	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ABS	5	9	2	0		ST			0					String	universal ID
+ABS	5	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ABS	5	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ABS	5	11	-1	1		ST			0					String	identifier check digit
+ABS	5	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ABS	5	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ABS	5	14	0	227		HD			0					Hierarchic designator	assigning facility
+ABS	5	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ABS	5	14	2	199		ST	C		0					String	universal ID
+ABS	5	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ABS	5	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ABS	5	16	0	483		CE			0	0448				Coded element	Name Context
+ABS	5	16	1	20		IS			0	0448				String	identifier
+ABS	5	16	2	199		ST			0					String	text
+ABS	5	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	5	16	4	20		ST			0					String	alternate identifier
+ABS	5	16	5	199		ST			0					String	alternate text
+ABS	5	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	5	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ABS	5	17	1	26		TS			0					Time stamp	range start date/time
+ABS	5	17	2	26		TS			0					Time stamp	range end date/time
+ABS	5	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ABS	5	19	-1	26		TS			0					Time stamp	Effective Date
+ABS	5	20	-1	26		TS			0					Time stamp	Expiration Date
+ABS	5	21	-1	199		ST			0					String	Professional Suffix
+ABS	5	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ABS	5	22	1	20		ST			0					String	identifier
+ABS	5	22	2	199		ST			0					String	text
+ABS	5	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ABS	5	22	4	20		ST			0					String	alternate identifier
+ABS	5	22	5	199		ST			0					String	alternate text
+ABS	5	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ABS	5	22	7	10		ST	C		0					String	coding system version ID
+ABS	5	22	8	10		ST			0					String	alternate coding system version ID
+ABS	5	22	9	199		ST			0					String	original text
+ABS	5	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ABS	5	23	1	20		ST			0					String	identifier
+ABS	5	23	2	199		ST			0					String	text
+ABS	5	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ABS	5	23	4	20		ST			0					String	alternate identifier
+ABS	5	23	5	199		ST			0					String	alternate text
+ABS	5	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ABS	5	23	7	10		ST	C		0					String	coding system version ID
+ABS	5	23	8	10		ST			0					String	alternate coding system version ID
+ABS	5	23	9	199		ST			0					String	original text
+ABS	6	0	-1	250	01519	CE	O		0	0422			Triage Code	Coded element	
+ABS	6	1	-1	20		IS			0	0422				String	identifier
+ABS	6	2	-1	199		ST			0					String	text
+ABS	6	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	6	4	-1	20		ST			0					String	alternate identifier
+ABS	6	5	-1	199		ST			0					String	alternate text
+ABS	6	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	7	-1	-1	26	01520	TS	O		0				Abstract Completion Date/Time	Time stamp	
+ABS	8	0	-1	250	01521	XCN	O		0				Abstracted By	Extended composite ID number and name	
+ABS	8	1	-1	15		ST			0					String	ID number
+ABS	8	2	0	194		FN			0						family name
+ABS	8	2	1	50		ST	R		0					String	surname
+ABS	8	2	2	20		ST			0					String	own surname prefix
+ABS	8	2	3	50		ST			0					String	own surname
+ABS	8	2	4	20		ST			0					String	surname prefix from partner/spouse
+ABS	8	2	5	30		ST			0					String	surname from partner/spouse
+ABS	8	3	-1	30		ST			0					String	given name
+ABS	8	4	-1	30		ST			0					String	second and further given names or initial thereof
+ABS	8	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ABS	8	6	-1	20		ST			0					String	prefix (e.g., DR)
+ABS	8	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ABS	8	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ABS	8	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ABS	8	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ABS	8	9	2	0		ST			0					String	universal ID
+ABS	8	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ABS	8	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ABS	8	11	-1	1		ST			0					String	identifier check digit
+ABS	8	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ABS	8	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ABS	8	14	0	227		HD			0					Hierarchic designator	assigning facility
+ABS	8	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ABS	8	14	2	199		ST	C		0					String	universal ID
+ABS	8	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ABS	8	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ABS	8	16	0	483		CE			0	0448				Coded element	Name Context
+ABS	8	16	1	20		IS			0	0448				String	identifier
+ABS	8	16	2	199		ST			0					String	text
+ABS	8	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	8	16	4	20		ST			0					String	alternate identifier
+ABS	8	16	5	199		ST			0					String	alternate text
+ABS	8	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	8	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ABS	8	17	1	26		TS			0					Time stamp	range start date/time
+ABS	8	17	2	26		TS			0					Time stamp	range end date/time
+ABS	8	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ABS	8	19	-1	26		TS			0					Time stamp	Effective Date
+ABS	8	20	-1	26		TS			0					Time stamp	Expiration Date
+ABS	8	21	-1	199		ST			0					String	Professional Suffix
+ABS	8	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ABS	8	22	1	20		ST			0					String	identifier
+ABS	8	22	2	199		ST			0					String	text
+ABS	8	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ABS	8	22	4	20		ST			0					String	alternate identifier
+ABS	8	22	5	199		ST			0					String	alternate text
+ABS	8	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ABS	8	22	7	10		ST	C		0					String	coding system version ID
+ABS	8	22	8	10		ST			0					String	alternate coding system version ID
+ABS	8	22	9	199		ST			0					String	original text
+ABS	8	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ABS	8	23	1	20		ST			0					String	identifier
+ABS	8	23	2	199		ST			0					String	text
+ABS	8	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ABS	8	23	4	20		ST			0					String	alternate identifier
+ABS	8	23	5	199		ST			0					String	alternate text
+ABS	8	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ABS	8	23	7	10		ST	C		0					String	coding system version ID
+ABS	8	23	8	10		ST			0					String	alternate coding system version ID
+ABS	8	23	9	199		ST			0					String	original text
+ABS	9	0	-1	250	01522	CE	O		0	0423			Case Category Code	Coded element	
+ABS	9	1	-1	20		IS			0	0423				String	identifier
+ABS	9	2	-1	199		ST			0					String	text
+ABS	9	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	9	4	-1	20		ST			0					String	alternate identifier
+ABS	9	5	-1	199		ST			0					String	alternate text
+ABS	9	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	10	-1	-1	1	01523	ID	O		0	0136			Caesarian Section Indicator	Coded values for HL7 tables	
+ABS	11	0	-1	250	01524	CE	O		0	0424			Gestation Category Code	Coded element	
+ABS	11	1	-1	20		IS			0	0424				String	identifier
+ABS	11	2	-1	199		ST			0					String	text
+ABS	11	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	11	4	-1	20		ST			0					String	alternate identifier
+ABS	11	5	-1	199		ST			0					String	alternate text
+ABS	11	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	12	-1	-1	3	01525	NM	O		0				Gestation Period - Weeks	Numeric	
+ABS	13	0	-1	250	01526	CE	O		0	0425			Newborn Code	Coded element	
+ABS	13	1	-1	20		IS			0	0425				String	identifier
+ABS	13	2	-1	199		ST			0					String	text
+ABS	13	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ABS	13	4	-1	20		ST			0					String	alternate identifier
+ABS	13	5	-1	199		ST			0					String	alternate text
+ABS	13	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ABS	14	-1	-1	1	01527	ID	O		0	0136			Stillborn Indicator	Coded values for HL7 tables	

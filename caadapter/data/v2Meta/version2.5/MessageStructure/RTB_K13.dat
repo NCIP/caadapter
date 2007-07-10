@@ -1,0 +1,7 @@
+Message Type=RTB
+Message Type Name=Tabular response
+Trigger Event=K13
+Trigger Description=RTB - Tabular response in response to QBP^Q13
+Message Structure=MSH [ { SFT } ] MSA [ ERR ] QAK QPD [ !ROW_DEFINITION! RDF [ { RDT } ] ] [ DSC ]
+Return Message=ACK^K13
+Called by=QBP^Q13

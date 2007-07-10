@@ -1,0 +1,7 @@
+Message Type=OMG
+Message Type Name=General clinical order message
+Trigger Event=O19
+Trigger Description=OMG _ General clinical order
+Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ { NK1 } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] OBR [ { NTE } ] [ CTD ] [ { DG1 } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] [ { !SPECIMEN! SPM [ { OBX } ] [ { !CONTAINER! SAC [ { OBX } ] } ] } ] [ { !PRIOR_RESULT! [ !PATIENT_PRIOR! PID [ PD1 ] ] [ !PATIENT_VISIT_PRIOR! PV1 [ PV2 ] ] [ { AL1 } ] { !ORDER_PRIOR! [ ORC ] OBR [ { !TIMING_PRIOR! TQ1 [ { TQ2 } ] } ] [ { NTE } ] [ CTD ] { !OBSERVATION_PRIOR! OBX [ { NTE } ] } } } ] [ { FT1 } ] [ { CTI } ] [ BLG ] }
+Return Message=ORG^O20
+Called by=

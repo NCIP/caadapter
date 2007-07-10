@@ -1,0 +1,11 @@
+XPN	1	FN				family name	N	&
+XPN	2	ST				given name	N	^
+XPN	3	ST				second and further given names or initial thereof	N	^
+XPN	4	ST				suffix (e.g., JR or III)	N	^
+XPN	5	ST				prefix (e.g., DR)	N	^
+XPN	6	IS	0360			degree (e.g., MD)	N	^
+XPN	7	ID	0200			name type code	N	^
+XPN	8	ID	0465			name representation code	N	^
+XPN	9	ZCE6				name context	N	^
+XPN	10	DR				name validity range	N	^
+XPN	11	ID	0444			name assembly order	N	E

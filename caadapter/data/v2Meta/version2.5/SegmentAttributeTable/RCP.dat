@@ -1,0 +1,23 @@
+RCP	1	-1	-1	1	00027	ID	O		0	0091			Query Priority	Coded values for HL7 tables	
+RCP	2	0	-1	10	00031	CQ	O		0	0126			Quantity Limited Request	Composite quantity with units	
+RCP	2	1	-1	16		NM			0					Numeric	quantity
+RCP	2	2	0	483		CE			0					Coded element	units
+RCP	2	2	1	20		ST			0					String	identifier
+RCP	2	2	2	199		ST			0					String	text
+RCP	2	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RCP	2	2	4	20		ST			0					String	alternate identifier
+RCP	2	2	5	199		ST			0					String	alternate text
+RCP	2	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RCP	3	0	-1	250	01440	CE	O		0	0394			Response Modality	Coded element	
+RCP	3	1	-1	20		IS			0	0394				String	identifier
+RCP	3	2	-1	199		ST			0					String	text
+RCP	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RCP	3	4	-1	20		ST			0					String	alternate identifier
+RCP	3	5	-1	199		ST			0					String	alternate text
+RCP	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RCP	4	-1	-1	26	01441	TS	C		0				Execution and Delivery Time	Time stamp	
+RCP	5	-1	-1	1	01443	ID	O		0	0395			Modify Indicator	Coded values for HL7 tables	
+RCP	6	0	-1	512	01624	SRT	O	Y	0				Sort-by Field	Sort order	
+RCP	6	1	-1	12		ST	R		0					String	sort-by field
+RCP	6	2	-1	2		ID			0	0397				Coded values for HL7 tables	sequencing
+RCP	7	-1	-1	256	01594	ID	O	Y	0				Segment group inclusion	Coded values for HL7 tables	

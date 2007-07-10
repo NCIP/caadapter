@@ -1,0 +1,5 @@
+User	Transaction Type	0017	AJ	Adjustment
+User	Transaction Type	0017	CD	Credit
+User	Transaction Type	0017	CG	Charge
+User	Transaction Type	0017	CO	Co-payment
+User	Transaction Type	0017	PY	Payment

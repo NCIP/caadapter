@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A15
+Trigger Description=ADT/ACK -  Pending transfer
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { ROL } ] PV1 [ PV2 ] [ { ROL } ] [ { DB1 } ] [ { OBX } ] [ { DG1 } ]
+Return Message=ACK^A15
+Called by=

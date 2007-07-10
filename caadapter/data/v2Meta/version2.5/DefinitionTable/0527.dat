@@ -1,0 +1,8 @@
+HL7	Calendar alignment	0527	DM	day of the month
+HL7	Calendar alignment	0527	DW	day of the week (begins with Monday)
+HL7	Calendar alignment	0527	DY	day of the year
+HL7	Calendar alignment	0527	HD	hour of the day
+HL7	Calendar alignment	0527	MY	month of the year
+HL7	Calendar alignment	0527	NH	minute of the hour
+HL7	Calendar alignment	0527	SN	second of the minute
+HL7	Calendar alignment	0527	WY	week of the year

@@ -1,0 +1,4 @@
+User	Inform person code	0517	HD	Inform help desk
+User	Inform person code	0517	NPAT	Do NOT inform patient
+User	Inform person code	0517	PAT	Inform patient
+User	Inform person code	0517	USR	Inform User

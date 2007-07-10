@@ -1,0 +1,7 @@
+Message Type=TBR
+Message Type Name=Tabular data response
+Trigger Event=R08
+Trigger Description=TBR - Tabular Data Response
+Message Structure=MSH [ { SFT } ] MSA [ ERR ] QAK RDF { RDT } [ DSC ]
+Return Message=ACK^R08
+Called by=EQQ^Q04/SPQ^Q08/VQQ^Q07

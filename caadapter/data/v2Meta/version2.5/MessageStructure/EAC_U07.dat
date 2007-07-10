@@ -1,0 +1,7 @@
+Message Type=EAC
+Message Type Name=Automated equipment command message
+Trigger Event=U07
+Trigger Description=EAC/ACK _ Automated equipment command
+Message Structure=MSH [ { SFT } ] EQU { !COMMAND! ECD [ TQ1 ] [ !SPECIMEN_CONTAINER! SAC { [ SPM ] } ] [ CNS ] } [ ROL ]
+Return Message=ACK^U07
+Called by=

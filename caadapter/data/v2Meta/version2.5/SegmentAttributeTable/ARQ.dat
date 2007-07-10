@@ -1,0 +1,292 @@
+ARQ	1	0	-1	75	00860	EI	R		0				Placer Appointment ID	Entity identifier	
+ARQ	1	1	-1	199		ST			0					String	entity identifier
+ARQ	1	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	1	3	-1	199		ST	C		0					String	universal ID
+ARQ	1	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	2	0	-1	75	00861	EI	C		0				Filler Appointment ID	Entity identifier	
+ARQ	2	1	-1	199		ST			0					String	entity identifier
+ARQ	2	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	2	3	-1	199		ST	C		0					String	universal ID
+ARQ	2	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	3	-1	-1	5	00862	NM	C		0				Occurrence Number	Numeric	
+ARQ	4	0	-1	22	00218	EI	O		0				Placer Group Number	Entity identifier	
+ARQ	4	1	-1	199		ST			0					String	entity identifier
+ARQ	4	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	4	3	-1	199		ST	C		0					String	universal ID
+ARQ	4	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	5	0	-1	250	00864	CE	O		0				Schedule ID	Coded element	
+ARQ	5	1	-1	20		ST			0					String	identifier
+ARQ	5	2	-1	199		ST			0					String	text
+ARQ	5	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	5	4	-1	20		ST			0					String	alternate identifier
+ARQ	5	5	-1	199		ST			0					String	alternate text
+ARQ	5	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	6	0	-1	250	00865	CE	O		0				Request Event Reason	Coded element	
+ARQ	6	1	-1	20		ST			0					String	identifier
+ARQ	6	2	-1	199		ST			0					String	text
+ARQ	6	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	6	4	-1	20		ST			0					String	alternate identifier
+ARQ	6	5	-1	199		ST			0					String	alternate text
+ARQ	6	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	7	0	-1	250	00866	CE	O		0	0276			Appointment Reason	Coded element	
+ARQ	7	1	-1	20		IS			0	0276				String	identifier
+ARQ	7	2	-1	199		ST			0					String	text
+ARQ	7	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	7	4	-1	20		ST			0					String	alternate identifier
+ARQ	7	5	-1	199		ST			0					String	alternate text
+ARQ	7	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	8	0	-1	250	00867	CE	O		0	0277			Appointment Type	Coded element	
+ARQ	8	1	-1	20		IS			0	0277				String	identifier
+ARQ	8	2	-1	199		ST			0					String	text
+ARQ	8	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	8	4	-1	20		ST			0					String	alternate identifier
+ARQ	8	5	-1	199		ST			0					String	alternate text
+ARQ	8	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	9	-1	-1	20	00868	NM	O		0				Appointment Duration	Numeric	
+ARQ	10	0	-1	250	00869	CE	O		0				Appointment Duration Units	Coded element	
+ARQ	10	1	-1	20		ST			0					String	identifier
+ARQ	10	2	-1	199		ST			0					String	text
+ARQ	10	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	10	4	-1	20		ST			0					String	alternate identifier
+ARQ	10	5	-1	199		ST			0					String	alternate text
+ARQ	10	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	11	0	-1	53	00870	DR	O	Y	0				Requested Start Date/Time Range	Date/time range	
+ARQ	11	1	-1	26		TS			0					Time stamp	range start date/time
+ARQ	11	2	-1	26		TS			0					Time stamp	range end date/time
+ARQ	12	-1	-1	5	00871	ST	O		0				Priority-ARQ	String	
+ARQ	13	0	-1	100	00872	RI	O		0				Repeating Interval	Repeat interval	
+ARQ	13	1	-1	6		IS			0	0335				Coded value for user-defined tables	repeat pattern
+ARQ	13	2	-1	199		ST			0					String	explicit time interval
+ARQ	14	-1	-1	5	00873	ST	O		0				Repeating Interval Duration	String	
+ARQ	15	0	-1	250	00874	XCN	R	Y	0				Placer Contact Person	Extended composite ID number and name	
+ARQ	15	1	-1	15		ST			0					String	ID number
+ARQ	15	2	0	194		FN			0						family name
+ARQ	15	2	1	50		ST	R		0					String	surname
+ARQ	15	2	2	20		ST			0					String	own surname prefix
+ARQ	15	2	3	50		ST			0					String	own surname
+ARQ	15	2	4	20		ST			0					String	surname prefix from partner/spouse
+ARQ	15	2	5	30		ST			0					String	surname from partner/spouse
+ARQ	15	3	-1	30		ST			0					String	given name
+ARQ	15	4	-1	30		ST			0					String	second and further given names or initial thereof
+ARQ	15	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ARQ	15	6	-1	20		ST			0					String	prefix (e.g., DR)
+ARQ	15	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ARQ	15	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ARQ	15	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ARQ	15	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	15	9	2	0		ST			0					String	universal ID
+ARQ	15	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ARQ	15	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ARQ	15	11	-1	1		ST			0					String	identifier check digit
+ARQ	15	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ARQ	15	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ARQ	15	14	0	227		HD			0					Hierarchic designator	assigning facility
+ARQ	15	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ARQ	15	14	2	199		ST	C		0					String	universal ID
+ARQ	15	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	15	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ARQ	15	16	0	483		CE			0	0448				Coded element	Name Context
+ARQ	15	16	1	20		IS			0	0448				String	identifier
+ARQ	15	16	2	199		ST			0					String	text
+ARQ	15	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	15	16	4	20		ST			0					String	alternate identifier
+ARQ	15	16	5	199		ST			0					String	alternate text
+ARQ	15	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	15	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ARQ	15	17	1	26		TS			0					Time stamp	range start date/time
+ARQ	15	17	2	26		TS			0					Time stamp	range end date/time
+ARQ	15	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ARQ	15	19	-1	26		TS			0					Time stamp	Effective Date
+ARQ	15	20	-1	26		TS			0					Time stamp	Expiration Date
+ARQ	15	21	-1	199		ST			0					String	Professional Suffix
+ARQ	15	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ARQ	15	22	1	20		ST			0					String	identifier
+ARQ	15	22	2	199		ST			0					String	text
+ARQ	15	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ARQ	15	22	4	20		ST			0					String	alternate identifier
+ARQ	15	22	5	199		ST			0					String	alternate text
+ARQ	15	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ARQ	15	22	7	10		ST	C		0					String	coding system version ID
+ARQ	15	22	8	10		ST			0					String	alternate coding system version ID
+ARQ	15	22	9	199		ST			0					String	original text
+ARQ	15	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ARQ	15	23	1	20		ST			0					String	identifier
+ARQ	15	23	2	199		ST			0					String	text
+ARQ	15	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ARQ	15	23	4	20		ST			0					String	alternate identifier
+ARQ	15	23	5	199		ST			0					String	alternate text
+ARQ	15	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ARQ	15	23	7	10		ST	C		0					String	coding system version ID
+ARQ	15	23	8	10		ST			0					String	alternate coding system version ID
+ARQ	15	23	9	199		ST			0					String	original text
+ARQ	16	0	-1	250	00875	XTN	O	Y	0				Placer Contact Phone Number	Extended telecommunications number	
+ARQ	16	1	-1	199		ST	B		0					String	Telephone Number
+ARQ	16	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+ARQ	16	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+ARQ	16	4	-1	199		ST			0					String	email address
+ARQ	16	5	-1	3		NM			0					Numeric	country code
+ARQ	16	6	-1	5		NM			0					Numeric	area/city code
+ARQ	16	7	-1	9		NM			0					Numeric	phone number
+ARQ	16	8	-1	5		NM			0					Numeric	extension
+ARQ	16	9	-1	199		ST			0					String	any text
+ARQ	16	10	-1	4		ST			0					String	Extension Prefix
+ARQ	16	11	-1	6		ST			0					String	Speed Dial Code
+ARQ	16	12	-1	199		ST	C		0					String	Unformatted Telephone number
+ARQ	17	0	-1	250	00876	XAD	O	Y	0				Placer Contact Address	Extended address	
+ARQ	17	1	0	184		SAD			0					Street Address	street address
+ARQ	17	1	1	120		ST			0					String	street or mailing address
+ARQ	17	1	2	50		ST			0					String	street name
+ARQ	17	1	3	12		ST			0					String	dwelling number
+ARQ	17	2	-1	120		ST			0					String	other designation
+ARQ	17	3	-1	50		ST			0					String	city
+ARQ	17	4	-1	50		ST			0					String	state or province
+ARQ	17	5	-1	12		ST			0					String	zip or postal code
+ARQ	17	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+ARQ	17	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+ARQ	17	8	-1	50		ST			0					String	other geographic designation
+ARQ	17	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+ARQ	17	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+ARQ	17	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+ARQ	17	12	0	53		DR	B		0					Date/time range	address validity range
+ARQ	17	12	1	26		TS			0					Time stamp	range start date/time
+ARQ	17	12	2	26		TS			0					Time stamp	range end date/time
+ARQ	17	13	-1	26		TS			0					Time stamp	Effective Date
+ARQ	17	14	-1	26		TS			0					Time stamp	Expiration Date
+ARQ	18	0	-1	80	00877	PL	O		0				Placer Contact Location	Person location	
+ARQ	18	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+ARQ	18	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+ARQ	18	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+ARQ	18	4	0	227		HD			0					Hierarchic designator	facility
+ARQ	18	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ARQ	18	4	2	199		ST	C		0					String	universal ID
+ARQ	18	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	18	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+ARQ	18	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+ARQ	18	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+ARQ	18	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+ARQ	18	9	-1	199		ST			0					String	location description
+ARQ	18	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+ARQ	18	10	1	199		ST			0					String	entity identifier
+ARQ	18	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	18	10	3	199		ST	C		0					String	universal ID
+ARQ	18	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	18	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+ARQ	18	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ARQ	18	11	2	199		ST	C		0					String	universal ID
+ARQ	18	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	19	0	-1	250	00878	XCN	R	Y	0				Entered By Person	Extended composite ID number and name	
+ARQ	19	1	-1	15		ST			0					String	ID number
+ARQ	19	2	0	194		FN			0						family name
+ARQ	19	2	1	50		ST	R		0					String	surname
+ARQ	19	2	2	20		ST			0					String	own surname prefix
+ARQ	19	2	3	50		ST			0					String	own surname
+ARQ	19	2	4	20		ST			0					String	surname prefix from partner/spouse
+ARQ	19	2	5	30		ST			0					String	surname from partner/spouse
+ARQ	19	3	-1	30		ST			0					String	given name
+ARQ	19	4	-1	30		ST			0					String	second and further given names or initial thereof
+ARQ	19	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ARQ	19	6	-1	20		ST			0					String	prefix (e.g., DR)
+ARQ	19	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ARQ	19	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ARQ	19	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ARQ	19	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	19	9	2	0		ST			0					String	universal ID
+ARQ	19	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ARQ	19	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ARQ	19	11	-1	1		ST			0					String	identifier check digit
+ARQ	19	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ARQ	19	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ARQ	19	14	0	227		HD			0					Hierarchic designator	assigning facility
+ARQ	19	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ARQ	19	14	2	199		ST	C		0					String	universal ID
+ARQ	19	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	19	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ARQ	19	16	0	483		CE			0	0448				Coded element	Name Context
+ARQ	19	16	1	20		IS			0	0448				String	identifier
+ARQ	19	16	2	199		ST			0					String	text
+ARQ	19	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ARQ	19	16	4	20		ST			0					String	alternate identifier
+ARQ	19	16	5	199		ST			0					String	alternate text
+ARQ	19	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ARQ	19	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ARQ	19	17	1	26		TS			0					Time stamp	range start date/time
+ARQ	19	17	2	26		TS			0					Time stamp	range end date/time
+ARQ	19	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ARQ	19	19	-1	26		TS			0					Time stamp	Effective Date
+ARQ	19	20	-1	26		TS			0					Time stamp	Expiration Date
+ARQ	19	21	-1	199		ST			0					String	Professional Suffix
+ARQ	19	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ARQ	19	22	1	20		ST			0					String	identifier
+ARQ	19	22	2	199		ST			0					String	text
+ARQ	19	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ARQ	19	22	4	20		ST			0					String	alternate identifier
+ARQ	19	22	5	199		ST			0					String	alternate text
+ARQ	19	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ARQ	19	22	7	10		ST	C		0					String	coding system version ID
+ARQ	19	22	8	10		ST			0					String	alternate coding system version ID
+ARQ	19	22	9	199		ST			0					String	original text
+ARQ	19	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ARQ	19	23	1	20		ST			0					String	identifier
+ARQ	19	23	2	199		ST			0					String	text
+ARQ	19	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ARQ	19	23	4	20		ST			0					String	alternate identifier
+ARQ	19	23	5	199		ST			0					String	alternate text
+ARQ	19	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ARQ	19	23	7	10		ST	C		0					String	coding system version ID
+ARQ	19	23	8	10		ST			0					String	alternate coding system version ID
+ARQ	19	23	9	199		ST			0					String	original text
+ARQ	20	0	-1	250	00879	XTN	O	Y	0				Entered By Phone Number	Extended telecommunications number	
+ARQ	20	1	-1	199		ST	B		0					String	Telephone Number
+ARQ	20	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+ARQ	20	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+ARQ	20	4	-1	199		ST			0					String	email address
+ARQ	20	5	-1	3		NM			0					Numeric	country code
+ARQ	20	6	-1	5		NM			0					Numeric	area/city code
+ARQ	20	7	-1	9		NM			0					Numeric	phone number
+ARQ	20	8	-1	5		NM			0					Numeric	extension
+ARQ	20	9	-1	199		ST			0					String	any text
+ARQ	20	10	-1	4		ST			0					String	Extension Prefix
+ARQ	20	11	-1	6		ST			0					String	Speed Dial Code
+ARQ	20	12	-1	199		ST	C		0					String	Unformatted Telephone number
+ARQ	21	0	-1	80	00880	PL	O		0				Entered By Location	Person location	
+ARQ	21	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+ARQ	21	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+ARQ	21	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+ARQ	21	4	0	227		HD			0					Hierarchic designator	facility
+ARQ	21	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ARQ	21	4	2	199		ST	C		0					String	universal ID
+ARQ	21	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	21	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+ARQ	21	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+ARQ	21	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+ARQ	21	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+ARQ	21	9	-1	199		ST			0					String	location description
+ARQ	21	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+ARQ	21	10	1	199		ST			0					String	entity identifier
+ARQ	21	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	21	10	3	199		ST	C		0					String	universal ID
+ARQ	21	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	21	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+ARQ	21	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ARQ	21	11	2	199		ST	C		0					String	universal ID
+ARQ	21	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	22	0	-1	75	00881	EI	O		0				Parent Placer Appointment ID	Entity identifier	
+ARQ	22	1	-1	199		ST			0					String	entity identifier
+ARQ	22	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	22	3	-1	199		ST	C		0					String	universal ID
+ARQ	22	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	23	0	-1	75	00882	EI	O		0				Parent Filler Appointment ID	Entity identifier	
+ARQ	23	1	-1	199		ST			0					String	entity identifier
+ARQ	23	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	23	3	-1	199		ST	C		0					String	universal ID
+ARQ	23	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	24	0	-1	22	00216	EI	C	Y	0				Placer Order Number	Entity identifier	
+ARQ	24	1	-1	199		ST			0					String	entity identifier
+ARQ	24	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	24	3	-1	199		ST	C		0					String	universal ID
+ARQ	24	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ARQ	25	0	-1	22	00217	EI	C	Y	0				Filler Order Number	Entity identifier	
+ARQ	25	1	-1	199		ST			0					String	entity identifier
+ARQ	25	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ARQ	25	3	-1	199		ST	C		0					String	universal ID
+ARQ	25	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type

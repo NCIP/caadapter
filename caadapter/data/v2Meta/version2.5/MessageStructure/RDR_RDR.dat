@@ -1,0 +1,7 @@
+Message Type=RDR
+Message Type Name=Pharmacy/treatment dispense information
+Trigger Event=RDR
+Trigger Description=QRY/RDR - Pharmacy/treatment dispense information
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] { !DEFINITION! QRD [ QRF ] [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ !ENCODING! RXE { RXR } [ { RXC } ] ] { !DISPENSE! RXD { RXR } [ { RXC } ] } } } [ DSC ]
+Return Message=ACK^RDR
+Called by=QRY^Q28

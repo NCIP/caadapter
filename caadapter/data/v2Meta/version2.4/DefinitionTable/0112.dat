@@ -1,0 +1,42 @@
+User	Discharge disposition	0112	01	Discharged to home or self care (routine discharge)
+User	Discharge disposition	0112	02	Discharged/transferred to another short term general hospital for inpatient care
+User	Discharge disposition	0112	03	Discharged/transferred to skilled nursing facility (SNF)
+User	Discharge disposition	0112	04	Discharged/transferred to an intermediate care facility (ICF)
+User	Discharge disposition	0112	05	Discharged/transferred to another type of institution for inpatient care or referred for outpatient services to another institution
+User	Discharge disposition	0112	06	Discharged/transferred to home under care of organized home health service organization
+User	Discharge disposition	0112	07	Left against medical advice or discontinued care
+User	Discharge disposition	0112	08	Discharged/transferred to home under care of Home IV provider
+User	Discharge disposition	0112	09	Admitted as an inpatient to this hospital
+User	Discharge disposition	0112	10	Absence with leave
+User	Discharge disposition	0112	11	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	12	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	13	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	14	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	15	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	16	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	17	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	18	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	19	Discharge to be defined at state level, if necessary
+User	Discharge disposition	0112	20	Expired (i.e. dead)
+User	Discharge disposition	0112	21	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	22	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	23	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	24	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	25	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	26	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	27	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	28	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	29	Expired to be defined at state level, if necessary
+User	Discharge disposition	0112	30	Still patient or expected to return for outpatient services (i.e. still a patient)
+User	Discharge disposition	0112	31	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	32	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	33	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	34	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	35	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	36	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	37	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	38	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	39	Still patient to be defined at state level, if necessary  (i.e. still a patient)
+User	Discharge disposition	0112	40	Expired (i.e. died) at home
+User	Discharge disposition	0112	41	Expired (i.e. died) in a medical facility; e.g., hospital, SNF, ICF, or free standing hospice
+User	Discharge disposition	0112	42	Expired (i.e. died)  - place unknown

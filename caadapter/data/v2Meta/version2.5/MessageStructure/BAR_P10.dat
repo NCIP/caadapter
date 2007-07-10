@@ -1,0 +1,7 @@
+Message Type=BAR
+Message Type Name=Add/change billing account
+Trigger Event=P10
+Trigger Description=BAR/ACK _Transmit Ambulatory Payment  Classification(APC)
+Message Structure=MSH [ { SFT } ] EVN PID PV1 [ { DG1 } ] GP1 [ { !PROCEDURE! PR1 [ GP2 ] } ]
+Return Message=ACK^P10
+Called by=

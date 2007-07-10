@@ -1,0 +1,251 @@
+RXO	1	0	-1	250	00292	CE	C		0				Requested Give Code	Coded element	
+RXO	1	1	-1	20		ST			0					String	identifier
+RXO	1	2	-1	199		ST			0					String	text
+RXO	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	1	4	-1	20		ST			0					String	alternate identifier
+RXO	1	5	-1	199		ST			0					String	alternate text
+RXO	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	2	-1	-1	20	00293	NM	C		0				Requested Give Amount - Minimum	Numeric	
+RXO	3	-1	-1	20	00294	NM	O		0				Requested Give Amount - Maximum	Numeric	
+RXO	4	0	-1	250	00295	CE	C		0				Requested Give Units	Coded element	
+RXO	4	1	-1	20		ST			0					String	identifier
+RXO	4	2	-1	199		ST			0					String	text
+RXO	4	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	4	4	-1	20		ST			0					String	alternate identifier
+RXO	4	5	-1	199		ST			0					String	alternate text
+RXO	4	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	5	0	-1	250	00296	CE	C		0				Requested Dosage Form	Coded element	
+RXO	5	1	-1	20		ST			0					String	identifier
+RXO	5	2	-1	199		ST			0					String	text
+RXO	5	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	5	4	-1	20		ST			0					String	alternate identifier
+RXO	5	5	-1	199		ST			0					String	alternate text
+RXO	5	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	6	0	-1	250	00297	CE	O	Y	0				Provider`s Pharmacy/Treatment Instructions	Coded element	
+RXO	6	1	-1	20		ST			0					String	identifier
+RXO	6	2	-1	199		ST			0					String	text
+RXO	6	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	6	4	-1	20		ST			0					String	alternate identifier
+RXO	6	5	-1	199		ST			0					String	alternate text
+RXO	6	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	7	0	-1	250	00298	CE	O	Y	0				Provider`s Administration Instructions	Coded element	
+RXO	7	1	-1	20		ST			0					String	identifier
+RXO	7	2	-1	199		ST			0					String	text
+RXO	7	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	7	4	-1	20		ST			0					String	alternate identifier
+RXO	7	5	-1	199		ST			0					String	alternate text
+RXO	7	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	8	0	-1	200	00299	LA1	O		0				Deliver-To Location	location with address variation 1	
+RXO	8	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+RXO	8	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+RXO	8	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+RXO	8	4	0	227		HD			0					Hierarchic designator	facility
+RXO	8	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXO	8	4	2	199		ST	C		0					String	universal ID
+RXO	8	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+RXO	8	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+RXO	8	6	-1	20		IS			0	0305				Coded value for user-defined tables	patient location type
+RXO	8	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+RXO	8	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+RXO	8	9	0	415		AD			0					Address	address
+RXO	8	9	1	120		ST			0					String	street address
+RXO	8	9	2	120		ST			0					String	other designation
+RXO	8	9	3	50		ST			0					String	city
+RXO	8	9	4	50		ST			0					String	state or province
+RXO	8	9	5	12		ST			0					String	zip or postal code
+RXO	8	9	6	3		ID			0	0399				Coded values for HL7 tables	country
+RXO	8	9	7	3		ID			0	0190				Coded values for HL7 tables	address type
+RXO	8	9	8	50		ST			0					String	other geographic designation
+RXO	9	-1	-1	1	00300	ID	O		0	0161			Allow Substitutions	Coded values for HL7 tables	
+RXO	10	0	-1	250	00301	CE	O		0				Requested Dispense Code	Coded element	
+RXO	10	1	-1	20		ST			0					String	identifier
+RXO	10	2	-1	199		ST			0					String	text
+RXO	10	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	10	4	-1	20		ST			0					String	alternate identifier
+RXO	10	5	-1	199		ST			0					String	alternate text
+RXO	10	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	11	-1	-1	20	00302	NM	O		0				Requested Dispense Amount	Numeric	
+RXO	12	0	-1	250	00303	CE	O		0				Requested Dispense Units	Coded element	
+RXO	12	1	-1	20		ST			0					String	identifier
+RXO	12	2	-1	199		ST			0					String	text
+RXO	12	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	12	4	-1	20		ST			0					String	alternate identifier
+RXO	12	5	-1	199		ST			0					String	alternate text
+RXO	12	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	13	-1	-1	3	00304	NM	O		0				Number Of Refills	Numeric	
+RXO	14	0	-1	250	00305	XCN	C	Y	0				Ordering Provider`s DEA Number	Extended composite ID number and name	
+RXO	14	1	-1	15		ST			0					String	ID number
+RXO	14	2	0	194		FN			0						family name
+RXO	14	2	1	50		ST	R		0					String	surname
+RXO	14	2	2	20		ST			0					String	own surname prefix
+RXO	14	2	3	50		ST			0					String	own surname
+RXO	14	2	4	20		ST			0					String	surname prefix from partner/spouse
+RXO	14	2	5	30		ST			0					String	surname from partner/spouse
+RXO	14	3	-1	30		ST			0					String	given name
+RXO	14	4	-1	30		ST			0					String	second and further given names or initial thereof
+RXO	14	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+RXO	14	6	-1	20		ST			0					String	prefix (e.g., DR)
+RXO	14	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+RXO	14	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+RXO	14	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+RXO	14	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+RXO	14	9	2	0		ST			0					String	universal ID
+RXO	14	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXO	14	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+RXO	14	11	-1	1		ST			0					String	identifier check digit
+RXO	14	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+RXO	14	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+RXO	14	14	0	227		HD			0					Hierarchic designator	assigning facility
+RXO	14	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXO	14	14	2	199		ST	C		0					String	universal ID
+RXO	14	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+RXO	14	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+RXO	14	16	0	483		CE			0	0448				Coded element	Name Context
+RXO	14	16	1	20		IS			0	0448				String	identifier
+RXO	14	16	2	199		ST			0					String	text
+RXO	14	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	14	16	4	20		ST			0					String	alternate identifier
+RXO	14	16	5	199		ST			0					String	alternate text
+RXO	14	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	14	17	0	53		DR	B		0					Date/time range	Name Validity Range
+RXO	14	17	1	26		TS			0					Time stamp	range start date/time
+RXO	14	17	2	26		TS			0					Time stamp	range end date/time
+RXO	14	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+RXO	14	19	-1	26		TS			0					Time stamp	Effective Date
+RXO	14	20	-1	26		TS			0					Time stamp	Expiration Date
+RXO	14	21	-1	199		ST			0					String	Professional Suffix
+RXO	14	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+RXO	14	22	1	20		ST			0					String	identifier
+RXO	14	22	2	199		ST			0					String	text
+RXO	14	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXO	14	22	4	20		ST			0					String	alternate identifier
+RXO	14	22	5	199		ST			0					String	alternate text
+RXO	14	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXO	14	22	7	10		ST	C		0					String	coding system version ID
+RXO	14	22	8	10		ST			0					String	alternate coding system version ID
+RXO	14	22	9	199		ST			0					String	original text
+RXO	14	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+RXO	14	23	1	20		ST			0					String	identifier
+RXO	14	23	2	199		ST			0					String	text
+RXO	14	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXO	14	23	4	20		ST			0					String	alternate identifier
+RXO	14	23	5	199		ST			0					String	alternate text
+RXO	14	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXO	14	23	7	10		ST	C		0					String	coding system version ID
+RXO	14	23	8	10		ST			0					String	alternate coding system version ID
+RXO	14	23	9	199		ST			0					String	original text
+RXO	15	0	-1	250	00306	XCN	C	Y	0				Pharmacist/Treatment Supplier`s Verifier ID	Extended composite ID number and name	
+RXO	15	1	-1	15		ST			0					String	ID number
+RXO	15	2	0	194		FN			0						family name
+RXO	15	2	1	50		ST	R		0					String	surname
+RXO	15	2	2	20		ST			0					String	own surname prefix
+RXO	15	2	3	50		ST			0					String	own surname
+RXO	15	2	4	20		ST			0					String	surname prefix from partner/spouse
+RXO	15	2	5	30		ST			0					String	surname from partner/spouse
+RXO	15	3	-1	30		ST			0					String	given name
+RXO	15	4	-1	30		ST			0					String	second and further given names or initial thereof
+RXO	15	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+RXO	15	6	-1	20		ST			0					String	prefix (e.g., DR)
+RXO	15	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+RXO	15	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+RXO	15	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+RXO	15	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+RXO	15	9	2	0		ST			0					String	universal ID
+RXO	15	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXO	15	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+RXO	15	11	-1	1		ST			0					String	identifier check digit
+RXO	15	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+RXO	15	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+RXO	15	14	0	227		HD			0					Hierarchic designator	assigning facility
+RXO	15	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXO	15	14	2	199		ST	C		0					String	universal ID
+RXO	15	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+RXO	15	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+RXO	15	16	0	483		CE			0	0448				Coded element	Name Context
+RXO	15	16	1	20		IS			0	0448				String	identifier
+RXO	15	16	2	199		ST			0					String	text
+RXO	15	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	15	16	4	20		ST			0					String	alternate identifier
+RXO	15	16	5	199		ST			0					String	alternate text
+RXO	15	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	15	17	0	53		DR	B		0					Date/time range	Name Validity Range
+RXO	15	17	1	26		TS			0					Time stamp	range start date/time
+RXO	15	17	2	26		TS			0					Time stamp	range end date/time
+RXO	15	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+RXO	15	19	-1	26		TS			0					Time stamp	Effective Date
+RXO	15	20	-1	26		TS			0					Time stamp	Expiration Date
+RXO	15	21	-1	199		ST			0					String	Professional Suffix
+RXO	15	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+RXO	15	22	1	20		ST			0					String	identifier
+RXO	15	22	2	199		ST			0					String	text
+RXO	15	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXO	15	22	4	20		ST			0					String	alternate identifier
+RXO	15	22	5	199		ST			0					String	alternate text
+RXO	15	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXO	15	22	7	10		ST	C		0					String	coding system version ID
+RXO	15	22	8	10		ST			0					String	alternate coding system version ID
+RXO	15	22	9	199		ST			0					String	original text
+RXO	15	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+RXO	15	23	1	20		ST			0					String	identifier
+RXO	15	23	2	199		ST			0					String	text
+RXO	15	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXO	15	23	4	20		ST			0					String	alternate identifier
+RXO	15	23	5	199		ST			0					String	alternate text
+RXO	15	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXO	15	23	7	10		ST	C		0					String	coding system version ID
+RXO	15	23	8	10		ST			0					String	alternate coding system version ID
+RXO	15	23	9	199		ST			0					String	original text
+RXO	16	-1	-1	1	00307	ID	O		0	0136			Needs Human Review	Coded values for HL7 tables	
+RXO	17	-1	-1	20	00308	ST	C		0				Requested Give Per (Time Unit)	String	
+RXO	18	-1	-1	20	01121	NM	O		0				Requested Give Strength	Numeric	
+RXO	19	0	-1	250	01122	CE	O		0				Requested Give Strength Units	Coded element	
+RXO	19	1	-1	20		ST			0					String	identifier
+RXO	19	2	-1	199		ST			0					String	text
+RXO	19	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	19	4	-1	20		ST			0					String	alternate identifier
+RXO	19	5	-1	199		ST			0					String	alternate text
+RXO	19	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	20	0	-1	250	01123	CE	O	Y	0				Indication	Coded element	
+RXO	20	1	-1	20		ST			0					String	identifier
+RXO	20	2	-1	199		ST			0					String	text
+RXO	20	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	20	4	-1	20		ST			0					String	alternate identifier
+RXO	20	5	-1	199		ST			0					String	alternate text
+RXO	20	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	21	-1	-1	6	01218	ST	O		0				Requested Give Rate Amount	String	
+RXO	22	0	-1	250	01219	CE	O		0				Requested Give Rate Units	Coded element	
+RXO	22	1	-1	20		ST			0					String	identifier
+RXO	22	2	-1	199		ST			0					String	text
+RXO	22	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	22	4	-1	20		ST			0					String	alternate identifier
+RXO	22	5	-1	199		ST			0					String	alternate text
+RXO	22	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	23	0	-1	10	00329	CQ	O		0				Total Daily Dose	Composite quantity with units	
+RXO	23	1	-1	16		NM			0					Numeric	quantity
+RXO	23	2	0	483		CE			0					Coded element	units
+RXO	23	2	1	20		ST			0					String	identifier
+RXO	23	2	2	199		ST			0					String	text
+RXO	23	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	23	2	4	20		ST			0					String	alternate identifier
+RXO	23	2	5	199		ST			0					String	alternate text
+RXO	23	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	24	0	-1	250	01476	CE	O	Y	0				Supplementary Code	Coded element	
+RXO	24	1	-1	20		ST			0					String	identifier
+RXO	24	2	-1	199		ST			0					String	text
+RXO	24	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXO	24	4	-1	20		ST			0					String	alternate identifier
+RXO	24	5	-1	199		ST			0					String	alternate text
+RXO	24	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXO	25	-1	-1	5	01666	NM	O		0				Requested Drug Strength Volume	Numeric	
+RXO	26	0	-1	250	01667	CWE	O		0				Requested Drug Strength Volume Units	Coded with exceptions	
+RXO	26	1	-1	20		ST			0					String	identifier
+RXO	26	2	-1	199		ST			0					String	text
+RXO	26	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+RXO	26	4	-1	20		ST			0					String	alternate identifier
+RXO	26	5	-1	199		ST			0					String	alternate text
+RXO	26	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+RXO	26	7	-1	10		ST	C		0					String	coding system version ID
+RXO	26	8	-1	10		ST			0					String	alternate coding system version ID
+RXO	26	9	-1	199		ST			0					String	original text
+RXO	27	-1	-1	1	01668	ID	O		0	0480			Pharmacy Order Type	Coded values for HL7 tables	
+RXO	28	-1	-1	20	01669	NM	O		0				Dispensing Interval	Numeric	

@@ -1,0 +1,7 @@
+Message Type=DSR
+Message Type Name=Display response
+Trigger Event=Q01
+Trigger Description=QRY/DSR - Query sent for immediate response
+Message Structure=MSH [ { SFT } ] MSA [ ERR ] [ QAK ] QRD [ QRF ] { DSP } [ DSC ]
+Return Message=ACK^Q01
+Called by=QRY^Q01

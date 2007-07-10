@@ -1,0 +1,7 @@
+User	Organization unit type	0406	1	Hospital
+User	Organization unit type	0406	2	Physician Clinic
+User	Organization unit type	0406	3	Long Term Care
+User	Organization unit type	0406	4	Acute Care
+User	Organization unit type	0406	5	Other
+User	Organization unit type	0406	H	Home
+User	Organization unit type	0406	O	Office

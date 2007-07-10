@@ -1,0 +1,11 @@
+ZC16	1	CN				name	N	^
+ZC16	2	TS				start date/time	N	^
+ZC16	3	TS				end date/time	N	^
+ZC16	4	IS	0302			point of care	N	^
+ZC16	5	IS	0303			room	N	^
+ZC16	6	IS	0304			bed	N	^
+ZC16	7	HD				facility	N	^
+ZC16	8	IS	0306			location status	N	^
+ZC16	9	IS	0305			patient location type	N	^
+ZC16	10	IS	0307			building	N	^
+ZC16	11	IS	0308			floor	N	E

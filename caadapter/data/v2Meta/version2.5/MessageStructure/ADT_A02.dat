@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A02
+Trigger Description=ADT/ACK - Transfer a patient
+Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { ROL } ] PV1 [ PV2 ] [ { ROL } ] [ { DB1 } ] [ { OBX } ] [ PDA ]
+Return Message=ACK^A02
+Called by=

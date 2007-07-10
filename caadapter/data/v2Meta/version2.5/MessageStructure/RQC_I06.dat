@@ -1,0 +1,7 @@
+Message Type=RQC
+Message Type Name=Request clinical information
+Trigger Event=I06
+Trigger Description=RQC/RCL - Request/receipt of clinical data listing
+Message Structure=RQC_I05
+Return Message=RCL^I06
+Called by=

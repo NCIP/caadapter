@@ -1,0 +1,18 @@
+MFA	1	-1	-1	3	00664	ID	R		0	0180			Record-Level Event Code	Coded values for HL7 tables	
+MFA	2	-1	-1	20	00665	ST	C		0				MFN Control ID	String	
+MFA	3	-1	-1	26	00668	TS	O		0				Event Completion Date/Time	Time stamp	
+MFA	4	0	-1	250	00669	CE	R		0	0181			MFN Record Level Error Return	Coded element	
+MFA	4	1	-1	0		ST			0					String	identifier
+MFA	4	2	-1	0		ST			0					String	text
+MFA	4	3	-1	0		IS			0	0181				Coded value for user-defined tables	name of coding system
+MFA	4	4	-1	0		ST			0					String	alternate identifier
+MFA	4	5	-1	0		ST			0					String	alternate text
+MFA	4	6	-1	0		IS			0	0181				Coded value for user-defined tables	name of alternate coding system
+MFA	5	0	-1	250	01308	CE	R	Y	0	9999			Primary Key Value - MFA	Coded element	
+MFA	5	1	-1	0		ST			0					String	identifier
+MFA	5	2	-1	0		ST			0					String	text
+MFA	5	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+MFA	5	4	-1	0		ST			0					String	alternate identifier
+MFA	5	5	-1	0		ST			0					String	alternate text
+MFA	5	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+MFA	6	-1	-1	3	01320	ID	R	Y	0	0355			Primary Key Value Type - MFA	Coded values for HL7 tables	

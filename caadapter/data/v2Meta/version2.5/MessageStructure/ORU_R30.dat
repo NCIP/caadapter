@@ -1,0 +1,7 @@
+Message Type=ORU
+Message Type Name=Unsolicited transmission of an observation message
+Trigger Event=R30
+Trigger Description=ORU _ Unsolicited Point-Of-Care Observation Message Without Existing Order _ Place An Order
+Message Structure=MSH [ { SFT } ] PID [ PD1 ] [ !VISIT! PV1 [ PV2 ] ] ORC OBR { [ NTE ] } [ { !TIMING_QTY! TQ1 [ { TQ2 } ] } ] { !OBSERVATION! OBX { [ NTE ] } }
+Return Message=ACK^R30
+Called by=

@@ -1,0 +1,7 @@
+Message Type=DSR
+Message Type Name=Display response
+Trigger Event=Q03
+Trigger Description=DSR/ACK - Deferred response to a query
+Message Structure=MSH [ { SFT } ] [ MSA ] [ ERR ] [ QAK ] QRD [ QRF ] { DSP } [ DSC ]
+Return Message=ACK^Q03
+Called by=

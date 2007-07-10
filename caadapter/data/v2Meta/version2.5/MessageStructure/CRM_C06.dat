@@ -1,0 +1,7 @@
+Message Type=CRM
+Message Type Name=Clinical study registration message
+Trigger Event=C06
+Trigger Description=CRM - Cancel patient entering a phase (clerical mistake)
+Message Structure=CRM_C01
+Return Message=
+Called by=

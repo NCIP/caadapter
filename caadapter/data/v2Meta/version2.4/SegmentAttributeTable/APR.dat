@@ -1,0 +1,13 @@
+APR	1	0	-1	80	00908	SCV	O	Y	0	0294			Time Selection Criteria	Scheduling class value pair	
+APR	1	1	-1	0		IS			0	0294				Coded value for user-defined tables	parameter class
+APR	1	2	-1	0		ST			0					String	parameter value (HHMM or OK or NO)
+APR	2	0	-1	80	00909	SCV	O	Y	0	0294			Resource Selection Criteria	Scheduling class value pair	
+APR	2	1	-1	0		IS			0	0294				Coded value for user-defined tables	parameter class
+APR	2	2	-1	0		ST			0					String	parameter value (HHMM or OK or NO)
+APR	3	0	-1	80	00910	SCV	O	Y	0	0294			Location Selection Criteria	Scheduling class value pair	
+APR	3	1	-1	0		IS			0	0294				Coded value for user-defined tables	parameter class
+APR	3	2	-1	0		ST			0					String	parameter value (HHMM or OK or NO)
+APR	4	-1	-1	5	00911	NM	O		0				Slot Spacing Criteria	Numeric	
+APR	5	0	-1	80	00912	SCV	O	Y	0				Filler Override Criteria	Scheduling class value pair	
+APR	5	1	-1	0		IS			0	0294				Coded value for user-defined tables	parameter class
+APR	5	2	-1	0		ST			0					String	parameter value (HHMM or OK or NO)

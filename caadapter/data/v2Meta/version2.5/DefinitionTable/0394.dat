@@ -1,0 +1,3 @@
+HL7	Response modality	0394	B	Batch
+HL7	Response modality	0394	R	Real Time
+HL7	Response modality	0394	T	Bolus (a series of responses sent at the same time without use of batch formatting)

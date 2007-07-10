@@ -1,0 +1,4 @@
+HL7	Relationship modifier	0258	BPU	Blood product unit
+HL7	Relationship modifier	0258	CONTROL	Control
+HL7	Relationship modifier	0258	DONOR	Donor
+HL7	Relationship modifier	0258	PATIENT	Patient

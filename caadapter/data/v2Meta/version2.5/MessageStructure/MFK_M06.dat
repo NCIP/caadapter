@@ -1,0 +1,7 @@
+Message Type=MFK
+Message Type Name=Master files application acknowledgment
+Trigger Event=M06
+Trigger Description=MFN/MFK - Clinical study with phases and schedules master file
+Message Structure=MFK_M01
+Return Message=ACK^M06
+Called by=MFN^M06

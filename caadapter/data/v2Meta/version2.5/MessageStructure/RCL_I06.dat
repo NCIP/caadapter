@@ -1,0 +1,7 @@
+Message Type=RCL
+Message Type Name=Return clinical list
+Trigger Event=I06
+Trigger Description=RQC/RCL - Request/receipt of clinical data listing
+Message Structure=MSH [ { SFT } ] MSA QRD [ QRF ] { !PROVIDER! PRD [ { CTD } ] } PID [ { DG1 } ] [ { DRG } ] [ { AL1 } ] [ { NTE } ] [ { DSP } ] [ DSC ]
+Return Message=ACK^I06
+Called by=RQC^I06

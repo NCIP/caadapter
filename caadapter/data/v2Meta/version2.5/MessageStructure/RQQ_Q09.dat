@@ -1,0 +1,7 @@
+Message Type=RQQ
+Message Type Name=Event replay query
+Trigger Event=Q09
+Trigger Description=RQQ _ event replay query
+Message Structure=MSH [ { SFT } ] ERQ [ DSC ]
+Return Message=ERP^R09
+Called by=

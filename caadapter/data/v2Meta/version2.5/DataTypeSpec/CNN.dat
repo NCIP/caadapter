@@ -1,0 +1,11 @@
+CNN	1	ST		15		ID number	N	^
+CNN	2	ST		50		family name	N	^
+CNN	3	ST		30		given name	N	^
+CNN	4	ST		30		second and further given names or initials thereof	N	^
+CNN	5	ST		20		suffix (e.g., JR or III)	N	^
+CNN	6	ST		20		prefix (e.g., DR)	N	^
+CNN	7	IS	0360	5		degree (e.g., MD)	N	^
+CNN	8	IS	0297	4		source table	N	^
+CNN	9	IS	0363	20	C	assigning authority - namespace ID	N	^
+CNN	10	ST		199	C	assigning authority - universal ID	N	^
+CNN	11	ID	0301	6	C	assigning authority - universal ID type	N	E

@@ -1,0 +1,64 @@
+ORG	1	-1	-1	60	01459	SI	R		0				Set ID - ORG	Sequence ID	
+ORG	2	0	-1	250	01460	CE	O		0	0405			Organization Unit Code	Coded element	
+ORG	2	1	-1	0		ST			0					String	identifier
+ORG	2	2	-1	0		ST			0					String	text
+ORG	2	3	-1	0		IS			0	0405				Coded value for user-defined tables	name of coding system
+ORG	2	4	-1	0		ST			0					String	alternate identifier
+ORG	2	5	-1	0		ST			0					String	alternate text
+ORG	2	6	-1	0		IS			0	0405				Coded value for user-defined tables	name of alternate coding system
+ORG	3	0	-1	250	01461	CE	O		0	0474			Organization Unit Type Code - ORG	Coded element	
+ORG	3	1	-1	0		ST			0					String	identifier
+ORG	3	2	-1	0		ST			0					String	text
+ORG	3	3	-1	0		IS			0	0474				Coded value for user-defined tables	name of coding system
+ORG	3	4	-1	0		ST			0					String	alternate identifier
+ORG	3	5	-1	0		ST			0					String	alternate text
+ORG	3	6	-1	0		IS			0	0474				Coded value for user-defined tables	name of alternate coding system
+ORG	4	-1	-1	1	01462	ID	O		0	0136			Primary Org Unit Indicator	Coded values for HL7 tables	
+ORG	5	0	-1	60	01463	CX	O		0				Practitioner Org Unit Identifier	Extended composite ID with check digit	
+ORG	5	1	-1	0		ST			0					String	ID
+ORG	5	2	-1	0		ST			0					String	check digit
+ORG	5	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+ORG	5	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+ORG	5	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ORG	5	4	2	0		ST			0					String	universal ID
+ORG	5	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ORG	5	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+ORG	5	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+ORG	5	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+ORG	5	6	2	0		ST			0					String	universal ID
+ORG	5	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ORG	5	7	-1	0		DT			0					Date	effective date
+ORG	5	8	-1	0		DT			0					Date	expiration date
+ORG	6	0	-1	250	01464	CE	O		0	0452			Health Care Provider Type Code	Coded element	
+ORG	6	1	-1	0		ST			0					String	identifier
+ORG	6	2	-1	0		ST			0					String	text
+ORG	6	3	-1	0		IS			0	0452				Coded value for user-defined tables	name of coding system
+ORG	6	4	-1	0		ST			0					String	alternate identifier
+ORG	6	5	-1	0		ST			0					String	alternate text
+ORG	6	6	-1	0		IS			0	0452				Coded value for user-defined tables	name of alternate coding system
+ORG	7	0	-1	250	01614	CE	O		0	0453			Health Care Provider Classification Code	Coded element	
+ORG	7	1	-1	0		ST			0					String	identifier
+ORG	7	2	-1	0		ST			0					String	text
+ORG	7	3	-1	0		IS			0	0453				Coded value for user-defined tables	name of coding system
+ORG	7	4	-1	0		ST			0					String	alternate identifier
+ORG	7	5	-1	0		ST			0					String	alternate text
+ORG	7	6	-1	0		IS			0	0453				Coded value for user-defined tables	name of alternate coding system
+ORG	8	0	-1	250	01615	CE	O		0	0454			Health Care Provider Area of Specialization Code	Coded element	
+ORG	8	1	-1	0		ST			0					String	identifier
+ORG	8	2	-1	0		ST			0					String	text
+ORG	8	3	-1	0		IS			0	0454				Coded value for user-defined tables	name of coding system
+ORG	8	4	-1	0		ST			0					String	alternate identifier
+ORG	8	5	-1	0		ST			0					String	alternate text
+ORG	8	6	-1	0		IS			0	0454				Coded value for user-defined tables	name of alternate coding system
+ORG	9	0	-1	52	01465	DR	O		0				Effective Date Range	Date/time range	
+ORG	9	1	-1	0		TS			0					Time stamp	range start date/time
+ORG	9	2	-1	0		TS			0					Time stamp	range end date/time
+ORG	10	0	-1	2	01276	CE	O		0	0066			Employment Status Code	Coded element	
+ORG	10	1	-1	0		ST			0					String	identifier
+ORG	10	2	-1	0		ST			0					String	text
+ORG	10	3	-1	0		IS			0	0066				Coded value for user-defined tables	name of coding system
+ORG	10	4	-1	0		ST			0					String	alternate identifier
+ORG	10	5	-1	0		ST			0					String	alternate text
+ORG	10	6	-1	0		IS			0	0066				Coded value for user-defined tables	name of alternate coding system
+ORG	11	-1	-1	1	01467	ID	O		0	0136			Board Approval Indicator	Coded values for HL7 tables	
+ORG	12	-1	-1	1	01468	ID	O		0	0136			Primary Care Physician Indicator	Coded values for HL7 tables	

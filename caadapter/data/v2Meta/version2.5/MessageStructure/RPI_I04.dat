@@ -1,0 +1,7 @@
+Message Type=RPI
+Message Type Name=Return patient information
+Trigger Event=I04
+Trigger Description=RQP/RPI - Request for patient demographic data
+Message Structure=RPI_I01
+Return Message=ACK^I04
+Called by=RQP^I04

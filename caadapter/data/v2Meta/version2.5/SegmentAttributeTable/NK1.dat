@@ -1,0 +1,347 @@
+NK1	1	-1	-1	4	00190	SI	R		0				Set ID - NK1	Sequence ID	
+NK1	2	0	-1	250	00191	XPN	O	Y	0				Name	Extended person name	
+NK1	2	1	0	194		FN			0						family name
+NK1	2	1	1	50		ST	R		0					String	surname
+NK1	2	1	2	20		ST			0					String	own surname prefix
+NK1	2	1	3	50		ST			0					String	own surname
+NK1	2	1	4	20		ST			0					String	surname prefix from partner/spouse
+NK1	2	1	5	30		ST			0					String	surname from partner/spouse
+NK1	2	2	-1	30		ST			0					String	given name
+NK1	2	3	-1	30		ST			0					String	second and further given names or initial thereof
+NK1	2	4	-1	20		ST			0					String	suffix (e.g., JR or III)
+NK1	2	5	-1	20		ST			0					String	prefix (e.g., DR)
+NK1	2	6	-1	6		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+NK1	2	7	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+NK1	2	8	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+NK1	2	9	0	483		ZCE6			0	0448				User Define : coded element for name context (PPN data type)	name context
+NK1	2	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+NK1	2	9	2	0		ST			0					String	text
+NK1	2	9	3	0		ST			0					String	name of coding system
+NK1	2	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+NK1	2	9	5	0		ST			0					String	alternate text
+NK1	2	9	6	0		ST			0					String	name of alternate coding system
+NK1	2	10	0	53		DR	B		0					Date/time range	name validity range
+NK1	2	10	1	26		TS			0					Time stamp	range start date/time
+NK1	2	10	2	26		TS			0					Time stamp	range end date/time
+NK1	2	11	-1	1		ID			0	0444				Coded values for HL7 tables	name assembly order
+NK1	2	12	-1	26		TS			0					Time stamp	Effective Date
+NK1	2	13	-1	26		TS			0					Time stamp	Expiration Date
+NK1	2	14	-1	199		ST			0					String	Professional Suffix
+NK1	3	0	-1	250	00192	CE	O		0	0063			Relationship	Coded element	
+NK1	3	1	-1	20		IS			0	0063				String	identifier
+NK1	3	2	-1	199		ST			0					String	text
+NK1	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	3	4	-1	20		ST			0					String	alternate identifier
+NK1	3	5	-1	199		ST			0					String	alternate text
+NK1	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	4	0	-1	250	00193	XAD	O	Y	0				Address	Extended address	
+NK1	4	1	0	184		SAD			0					Street Address	street address
+NK1	4	1	1	120		ST			0					String	street or mailing address
+NK1	4	1	2	50		ST			0					String	street name
+NK1	4	1	3	12		ST			0					String	dwelling number
+NK1	4	2	-1	120		ST			0					String	other designation
+NK1	4	3	-1	50		ST			0					String	city
+NK1	4	4	-1	50		ST			0					String	state or province
+NK1	4	5	-1	12		ST			0					String	zip or postal code
+NK1	4	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+NK1	4	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+NK1	4	8	-1	50		ST			0					String	other geographic designation
+NK1	4	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+NK1	4	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+NK1	4	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+NK1	4	12	0	53		DR	B		0					Date/time range	address validity range
+NK1	4	12	1	26		TS			0					Time stamp	range start date/time
+NK1	4	12	2	26		TS			0					Time stamp	range end date/time
+NK1	4	13	-1	26		TS			0					Time stamp	Effective Date
+NK1	4	14	-1	26		TS			0					Time stamp	Expiration Date
+NK1	5	0	-1	250	00194	XTN	O	Y	0				Phone Number	Extended telecommunications number	
+NK1	5	1	-1	199		ST	B		0					String	Telephone Number
+NK1	5	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+NK1	5	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+NK1	5	4	-1	199		ST			0					String	email address
+NK1	5	5	-1	3		NM			0					Numeric	country code
+NK1	5	6	-1	5		NM			0					Numeric	area/city code
+NK1	5	7	-1	9		NM			0					Numeric	phone number
+NK1	5	8	-1	5		NM			0					Numeric	extension
+NK1	5	9	-1	199		ST			0					String	any text
+NK1	5	10	-1	4		ST			0					String	Extension Prefix
+NK1	5	11	-1	6		ST			0					String	Speed Dial Code
+NK1	5	12	-1	199		ST	C		0					String	Unformatted Telephone number
+NK1	6	0	-1	250	00195	XTN	O	Y	0				Business Phone Number	Extended telecommunications number	
+NK1	6	1	-1	199		ST	B		0					String	Telephone Number
+NK1	6	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+NK1	6	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+NK1	6	4	-1	199		ST			0					String	email address
+NK1	6	5	-1	3		NM			0					Numeric	country code
+NK1	6	6	-1	5		NM			0					Numeric	area/city code
+NK1	6	7	-1	9		NM			0					Numeric	phone number
+NK1	6	8	-1	5		NM			0					Numeric	extension
+NK1	6	9	-1	199		ST			0					String	any text
+NK1	6	10	-1	4		ST			0					String	Extension Prefix
+NK1	6	11	-1	6		ST			0					String	Speed Dial Code
+NK1	6	12	-1	199		ST	C		0					String	Unformatted Telephone number
+NK1	7	0	-1	250	00196	CE	O		0	0131			Contact Role	Coded element	
+NK1	7	1	-1	20		IS			0	0131				String	identifier
+NK1	7	2	-1	199		ST			0					String	text
+NK1	7	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	7	4	-1	20		ST			0					String	alternate identifier
+NK1	7	5	-1	199		ST			0					String	alternate text
+NK1	7	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	8	-1	-1	8	00197	DT	O		0				Start Date	Date	
+NK1	9	-1	-1	8	00198	DT	O		0				End Date	Date	
+NK1	10	-1	-1	60	00199	ST	O		0				Next of Kin / Associated Parties Job Title	String	
+NK1	11	0	-1	20	00200	JCC	O		0				Next of Kin / Associated Parties Job Code/Class	Job code/class	
+NK1	11	1	-1	20		IS			0	0327				Coded value for user-defined tables	job code
+NK1	11	2	-1	20		IS			0	0328				Coded value for user-defined tables	job class
+NK1	11	3	-1	250		TX			0					Text data	Job Description Text
+NK1	12	0	-1	250	00201	CX	O		0				Next of Kin / Associated Parties Employee Number	Extended composite ID with check digit	
+NK1	12	1	-1	15		ST	R		0					String	ID number
+NK1	12	2	-1	1		ST			0					String	check digit
+NK1	12	3	-1	3		ID			0	0061				Coded values for HL7 tables	check digit scheme employed
+NK1	12	4	0	227		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+NK1	12	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+NK1	12	4	2	0		ST			0					String	universal ID
+NK1	12	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+NK1	12	5	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+NK1	12	6	0	227		HD			0					Hierarchic designator	assigning facility
+NK1	12	6	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+NK1	12	6	2	199		ST	C		0					String	universal ID
+NK1	12	6	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+NK1	12	7	-1	8		DT			0					Date	effective date
+NK1	12	8	-1	8		DT			0					Date	expiration date
+NK1	12	9	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+NK1	12	9	1	20		ST			0					String	identifier
+NK1	12	9	2	199		ST			0					String	text
+NK1	12	9	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+NK1	12	9	4	20		ST			0					String	alternate identifier
+NK1	12	9	5	199		ST			0					String	alternate text
+NK1	12	9	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+NK1	12	9	7	10		ST	C		0					String	coding system version ID
+NK1	12	9	8	10		ST			0					String	alternate coding system version ID
+NK1	12	9	9	199		ST			0					String	original text
+NK1	12	10	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+NK1	12	10	1	20		ST			0					String	identifier
+NK1	12	10	2	199		ST			0					String	text
+NK1	12	10	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+NK1	12	10	4	20		ST			0					String	alternate identifier
+NK1	12	10	5	199		ST			0					String	alternate text
+NK1	12	10	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+NK1	12	10	7	10		ST	C		0					String	coding system version ID
+NK1	12	10	8	10		ST			0					String	alternate coding system version ID
+NK1	12	10	9	199		ST			0					String	original text
+NK1	13	0	-1	250	00202	XON	O	Y	0				Organization Name - NK1	Extended composite name and ID number for organizations	
+NK1	13	1	-1	50		ST			0					String	organization name
+NK1	13	2	-1	20		IS			0	0204				Coded value for user-defined tables	organization name type code
+NK1	13	3	-1	4		NM	B		0					Numeric	ID number
+NK1	13	4	-1	1		NM			0					Numeric	check digit
+NK1	13	5	-1	3		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+NK1	13	6	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+NK1	13	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+NK1	13	6	2	0		ST			0					String	universal ID
+NK1	13	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+NK1	13	7	-1	5		IS			0	0203				Coded value for user-defined tables	identifier type code
+NK1	13	8	0	227		HD			0					Hierarchic designator	assigning facility ID
+NK1	13	8	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+NK1	13	8	2	199		ST	C		0					String	universal ID
+NK1	13	8	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+NK1	13	9	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+NK1	13	10	-1	20		ST			0					String	Organization Identifier
+NK1	14	0	-1	250	00119	CE	O		0	0002			Marital Status	Coded element	
+NK1	14	1	-1	20		IS			0	0002				String	identifier
+NK1	14	2	-1	199		ST			0					String	text
+NK1	14	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	14	4	-1	20		ST			0					String	alternate identifier
+NK1	14	5	-1	199		ST			0					String	alternate text
+NK1	14	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	15	-1	-1	1	00111	IS	O		0	0001			Administrative Sex	Coded value for user-defined tables	
+NK1	16	-1	-1	26	00110	TS	O		0				Date/Time of Birth	Time stamp	
+NK1	17	-1	-1	2	00755	IS	O	Y	0	0223			Living Dependency	Coded value for user-defined tables	
+NK1	18	-1	-1	2	00145	IS	O	Y	0	0009			Ambulatory Status	Coded value for user-defined tables	
+NK1	19	0	-1	250	00129	CE	O	Y	0	0171			Citizenship	Coded element	
+NK1	19	1	-1	20		IS			0	0171				String	identifier
+NK1	19	2	-1	199		ST			0					String	text
+NK1	19	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	19	4	-1	20		ST			0					String	alternate identifier
+NK1	19	5	-1	199		ST			0					String	alternate text
+NK1	19	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	20	0	-1	250	00118	CE	O		0	0296			Primary Language	Coded element	
+NK1	20	1	-1	20		IS			0	0296				String	identifier
+NK1	20	2	-1	199		ST			0					String	text
+NK1	20	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	20	4	-1	20		ST			0					String	alternate identifier
+NK1	20	5	-1	199		ST			0					String	alternate text
+NK1	20	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	21	-1	-1	2	00742	IS	O		0	0220			Living Arrangement	Coded value for user-defined tables	
+NK1	22	0	-1	250	00743	CE	O		0	0215			Publicity Code	Coded element	
+NK1	22	1	-1	20		IS			0	0215				String	identifier
+NK1	22	2	-1	199		ST			0					String	text
+NK1	22	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	22	4	-1	20		ST			0					String	alternate identifier
+NK1	22	5	-1	199		ST			0					String	alternate text
+NK1	22	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	23	-1	-1	1	00744	ID	O		0	0136			Protection Indicator	Coded values for HL7 tables	
+NK1	24	-1	-1	2	00745	IS	O		0	0231			Student Indicator	Coded value for user-defined tables	
+NK1	25	0	-1	250	00120	CE	O		0	0006			Religion	Coded element	
+NK1	25	1	-1	20		IS			0	0006				String	identifier
+NK1	25	2	-1	199		ST			0					String	text
+NK1	25	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	25	4	-1	20		ST			0					String	alternate identifier
+NK1	25	5	-1	199		ST			0					String	alternate text
+NK1	25	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	26	0	-1	250	00109	XPN	O	Y	0				Mother_s Maiden Name	Extended person name	
+NK1	26	1	0	194		FN			0						family name
+NK1	26	1	1	50		ST	R		0					String	surname
+NK1	26	1	2	20		ST			0					String	own surname prefix
+NK1	26	1	3	50		ST			0					String	own surname
+NK1	26	1	4	20		ST			0					String	surname prefix from partner/spouse
+NK1	26	1	5	30		ST			0					String	surname from partner/spouse
+NK1	26	2	-1	30		ST			0					String	given name
+NK1	26	3	-1	30		ST			0					String	second and further given names or initial thereof
+NK1	26	4	-1	20		ST			0					String	suffix (e.g., JR or III)
+NK1	26	5	-1	20		ST			0					String	prefix (e.g., DR)
+NK1	26	6	-1	6		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+NK1	26	7	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+NK1	26	8	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+NK1	26	9	0	483		ZCE6			0	0448				User Define : coded element for name context (PPN data type)	name context
+NK1	26	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+NK1	26	9	2	0		ST			0					String	text
+NK1	26	9	3	0		ST			0					String	name of coding system
+NK1	26	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+NK1	26	9	5	0		ST			0					String	alternate text
+NK1	26	9	6	0		ST			0					String	name of alternate coding system
+NK1	26	10	0	53		DR	B		0					Date/time range	name validity range
+NK1	26	10	1	26		TS			0					Time stamp	range start date/time
+NK1	26	10	2	26		TS			0					Time stamp	range end date/time
+NK1	26	11	-1	1		ID			0	0444				Coded values for HL7 tables	name assembly order
+NK1	26	12	-1	26		TS			0					Time stamp	Effective Date
+NK1	26	13	-1	26		TS			0					Time stamp	Expiration Date
+NK1	26	14	-1	199		ST			0					String	Professional Suffix
+NK1	27	0	-1	250	00739	CE	O		0	0212			Nationality	Coded element	
+NK1	27	1	-1	20		IS			0	0212				String	identifier
+NK1	27	2	-1	199		ST			0					String	text
+NK1	27	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	27	4	-1	20		ST			0					String	alternate identifier
+NK1	27	5	-1	199		ST			0					String	alternate text
+NK1	27	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	28	0	-1	250	00125	CE	O	Y	0	0189			Ethnic Group	Coded element	
+NK1	28	1	-1	20		IS			0	0189				String	identifier
+NK1	28	2	-1	199		ST			0					String	text
+NK1	28	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	28	4	-1	20		ST			0					String	alternate identifier
+NK1	28	5	-1	199		ST			0					String	alternate text
+NK1	28	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	29	0	-1	250	00747	CE	O	Y	0	0222			Contact Reason	Coded element	
+NK1	29	1	-1	20		IS			0	0222				String	identifier
+NK1	29	2	-1	199		ST			0					String	text
+NK1	29	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	29	4	-1	20		ST			0					String	alternate identifier
+NK1	29	5	-1	199		ST			0					String	alternate text
+NK1	29	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	30	0	-1	250	00748	XPN	O	Y	0				Contact Person_s Name	Extended person name	
+NK1	30	1	0	194		FN			0						family name
+NK1	30	1	1	50		ST	R		0					String	surname
+NK1	30	1	2	20		ST			0					String	own surname prefix
+NK1	30	1	3	50		ST			0					String	own surname
+NK1	30	1	4	20		ST			0					String	surname prefix from partner/spouse
+NK1	30	1	5	30		ST			0					String	surname from partner/spouse
+NK1	30	2	-1	30		ST			0					String	given name
+NK1	30	3	-1	30		ST			0					String	second and further given names or initial thereof
+NK1	30	4	-1	20		ST			0					String	suffix (e.g., JR or III)
+NK1	30	5	-1	20		ST			0					String	prefix (e.g., DR)
+NK1	30	6	-1	6		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+NK1	30	7	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+NK1	30	8	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+NK1	30	9	0	483		ZCE6			0	0448				User Define : coded element for name context (PPN data type)	name context
+NK1	30	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+NK1	30	9	2	0		ST			0					String	text
+NK1	30	9	3	0		ST			0					String	name of coding system
+NK1	30	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+NK1	30	9	5	0		ST			0					String	alternate text
+NK1	30	9	6	0		ST			0					String	name of alternate coding system
+NK1	30	10	0	53		DR	B		0					Date/time range	name validity range
+NK1	30	10	1	26		TS			0					Time stamp	range start date/time
+NK1	30	10	2	26		TS			0					Time stamp	range end date/time
+NK1	30	11	-1	1		ID			0	0444				Coded values for HL7 tables	name assembly order
+NK1	30	12	-1	26		TS			0					Time stamp	Effective Date
+NK1	30	13	-1	26		TS			0					Time stamp	Expiration Date
+NK1	30	14	-1	199		ST			0					String	Professional Suffix
+NK1	31	0	-1	250	00749	XTN	O	Y	0				Contact Person_s Telephone Number	Extended telecommunications number	
+NK1	31	1	-1	199		ST	B		0					String	Telephone Number
+NK1	31	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+NK1	31	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+NK1	31	4	-1	199		ST			0					String	email address
+NK1	31	5	-1	3		NM			0					Numeric	country code
+NK1	31	6	-1	5		NM			0					Numeric	area/city code
+NK1	31	7	-1	9		NM			0					Numeric	phone number
+NK1	31	8	-1	5		NM			0					Numeric	extension
+NK1	31	9	-1	199		ST			0					String	any text
+NK1	31	10	-1	4		ST			0					String	Extension Prefix
+NK1	31	11	-1	6		ST			0					String	Speed Dial Code
+NK1	31	12	-1	199		ST	C		0					String	Unformatted Telephone number
+NK1	32	0	-1	250	00750	XAD	O	Y	0				Contact Person_s Address	Extended address	
+NK1	32	1	0	184		SAD			0					Street Address	street address
+NK1	32	1	1	120		ST			0					String	street or mailing address
+NK1	32	1	2	50		ST			0					String	street name
+NK1	32	1	3	12		ST			0					String	dwelling number
+NK1	32	2	-1	120		ST			0					String	other designation
+NK1	32	3	-1	50		ST			0					String	city
+NK1	32	4	-1	50		ST			0					String	state or province
+NK1	32	5	-1	12		ST			0					String	zip or postal code
+NK1	32	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+NK1	32	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+NK1	32	8	-1	50		ST			0					String	other geographic designation
+NK1	32	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+NK1	32	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+NK1	32	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+NK1	32	12	0	53		DR	B		0					Date/time range	address validity range
+NK1	32	12	1	26		TS			0					Time stamp	range start date/time
+NK1	32	12	2	26		TS			0					Time stamp	range end date/time
+NK1	32	13	-1	26		TS			0					Time stamp	Effective Date
+NK1	32	14	-1	26		TS			0					Time stamp	Expiration Date
+NK1	33	0	-1	250	00751	CX	O	Y	0				Next of Kin/Associated Party_s Identifiers	Extended composite ID with check digit	
+NK1	33	1	-1	15		ST	R		0					String	ID number
+NK1	33	2	-1	1		ST			0					String	check digit
+NK1	33	3	-1	3		ID			0	0061				Coded values for HL7 tables	check digit scheme employed
+NK1	33	4	0	227		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+NK1	33	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+NK1	33	4	2	0		ST			0					String	universal ID
+NK1	33	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+NK1	33	5	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+NK1	33	6	0	227		HD			0					Hierarchic designator	assigning facility
+NK1	33	6	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+NK1	33	6	2	199		ST	C		0					String	universal ID
+NK1	33	6	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+NK1	33	7	-1	8		DT			0					Date	effective date
+NK1	33	8	-1	8		DT			0					Date	expiration date
+NK1	33	9	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+NK1	33	9	1	20		ST			0					String	identifier
+NK1	33	9	2	199		ST			0					String	text
+NK1	33	9	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+NK1	33	9	4	20		ST			0					String	alternate identifier
+NK1	33	9	5	199		ST			0					String	alternate text
+NK1	33	9	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+NK1	33	9	7	10		ST	C		0					String	coding system version ID
+NK1	33	9	8	10		ST			0					String	alternate coding system version ID
+NK1	33	9	9	199		ST			0					String	original text
+NK1	33	10	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+NK1	33	10	1	20		ST			0					String	identifier
+NK1	33	10	2	199		ST			0					String	text
+NK1	33	10	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+NK1	33	10	4	20		ST			0					String	alternate identifier
+NK1	33	10	5	199		ST			0					String	alternate text
+NK1	33	10	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+NK1	33	10	7	10		ST	C		0					String	coding system version ID
+NK1	33	10	8	10		ST			0					String	alternate coding system version ID
+NK1	33	10	9	199		ST			0					String	original text
+NK1	34	-1	-1	2	00752	IS	O		0	0311			Job Status	Coded value for user-defined tables	
+NK1	35	0	-1	250	00113	CE	O	Y	0	0005			Race	Coded element	
+NK1	35	1	-1	20		IS			0	0005				String	identifier
+NK1	35	2	-1	199		ST			0					String	text
+NK1	35	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+NK1	35	4	-1	20		ST			0					String	alternate identifier
+NK1	35	5	-1	199		ST			0					String	alternate text
+NK1	35	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+NK1	36	-1	-1	2	00753	IS	O		0	0295			Handicap	Coded value for user-defined tables	
+NK1	37	-1	-1	16	00754	ST	O		0				Contact Person Social Security Number	String	
+NK1	38	-1	-1	250	01905	ST	O		0				Next of Kin Birth Place	String	
+NK1	39	-1	-1	2	00146	IS	O		0	0099			VIP Indicator	Coded value for user-defined tables	

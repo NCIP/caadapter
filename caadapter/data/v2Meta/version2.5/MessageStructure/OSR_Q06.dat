@@ -1,0 +1,7 @@
+Message Type=OSR
+Message Type Name=Query response for order status
+Trigger Event=Q06
+Trigger Description=OSQ/OSR - Query for order status
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] QRD [ QRF ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { CTI } ] } ] [ DSC ]
+Return Message=ACK^Q06
+Called by=OSQ^Q06

@@ -1,0 +1,7 @@
+Message Type=RDE
+Message Type Name=Pharmacy/treatment encoded order message
+Trigger Event=O25
+Trigger Description=RDE - Pharmacy/treatment refill authorization request
+Message Structure=RDE_O11
+Return Message=RRE^O26
+Called by=

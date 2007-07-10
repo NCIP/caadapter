@@ -1,0 +1,15 @@
+ISD	1	-1	-1	20	01326	NM	R		0				Reference Interaction Number (unique identifier)	Numeric	
+ISD	2	0	-1	250	01327	CE	O		0	0368			Interaction Type Identifier	Coded element	
+ISD	2	1	-1	0		ST			0					String	identifier
+ISD	2	2	-1	0		ST			0					String	text
+ISD	2	3	-1	0		IS			0	0368				Coded value for user-defined tables	name of coding system
+ISD	2	4	-1	0		ST			0					String	alternate identifier
+ISD	2	5	-1	0		ST			0					String	alternate text
+ISD	2	6	-1	0		IS			0	0368				Coded value for user-defined tables	name of alternate coding system
+ISD	3	0	-1	250	01328	CE	R		0	0387			Interaction Active State	Coded element	
+ISD	3	1	-1	0		ST			0					String	identifier
+ISD	3	2	-1	0		ST			0					String	text
+ISD	3	3	-1	0		IS			0	0387				Coded value for user-defined tables	name of coding system
+ISD	3	4	-1	0		ST			0					String	alternate identifier
+ISD	3	5	-1	0		ST			0					String	alternate text
+ISD	3	6	-1	0		IS			0	0387				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,7 @@
+Message Type=REF
+Message Type Name=Patient referral
+Trigger Event=I14
+Trigger Description=REF/RRI - Cancel patient referral
+Message Structure=REF_I12
+Return Message=RRI^I14
+Called by=

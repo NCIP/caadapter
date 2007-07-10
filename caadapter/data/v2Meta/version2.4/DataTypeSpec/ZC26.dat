@@ -1,0 +1,16 @@
+ZC26	1	IS	0302			point of care	N	^
+ZC26	2	IS	0303			room	N	^
+ZC26	3	IS	0304			bed	N	^
+ZC26	4	HD				facility	N	^
+ZC26	5	IS	0306			location status	N	^
+ZC26	6	IS	0305			patient location type	N	^
+ZC26	7	IS	0307			building	N	^
+ZC26	8	IS	0308			floor	N	^
+ZC26	9	ST				street address	N	^
+ZC26	10	ST				other designation	N	^
+ZC26	11	ST				city	N	^
+ZC26	12	ST				state or province	N	^
+ZC26	13	ST				zip or postal code	N	^
+ZC26	14	ID	0399			country	N	^
+ZC26	15	ID	0190			address type	N	^
+ZC26	16	ST				other geographic designation	N	E

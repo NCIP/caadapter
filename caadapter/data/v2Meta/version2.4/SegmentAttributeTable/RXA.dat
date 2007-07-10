@@ -1,0 +1,115 @@
+RXA	1	-1	-1	4	00342	NM	R		0				Give Sub-ID Counter	Numeric	
+RXA	2	-1	-1	4	00344	NM	R		0				Administration Sub-ID Counter	Numeric	
+RXA	3	-1	-1	26	00345	TS	R		0				Date/Time Start of Administration	Time stamp	
+RXA	4	-1	-1	26	00346	TS	R		0				Date/Time End of Administration	Time stamp	
+RXA	5	0	-1	250	00347	CE	R		0	0292			Administered Code	Coded element	
+RXA	5	1	-1	0		ST			0					String	identifier
+RXA	5	2	-1	0		ST			0					String	text
+RXA	5	3	-1	0		IS			0	0292				Coded value for user-defined tables	name of coding system
+RXA	5	4	-1	0		ST			0					String	alternate identifier
+RXA	5	5	-1	0		ST			0					String	alternate text
+RXA	5	6	-1	0		IS			0	0292				Coded value for user-defined tables	name of alternate coding system
+RXA	6	-1	-1	20	00348	NM	R		0				Administered Amount	Numeric	
+RXA	7	0	-1	250	00349	CE	C		0				Administered Units	Coded element	
+RXA	7	1	-1	0		ST			0					String	identifier
+RXA	7	2	-1	0		ST			0					String	text
+RXA	7	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXA	7	4	-1	0		ST			0					String	alternate identifier
+RXA	7	5	-1	0		ST			0					String	alternate text
+RXA	7	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXA	8	0	-1	250	00350	CE	O		0				Administered Dosage Form	Coded element	
+RXA	8	1	-1	0		ST			0					String	identifier
+RXA	8	2	-1	0		ST			0					String	text
+RXA	8	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXA	8	4	-1	0		ST			0					String	alternate identifier
+RXA	8	5	-1	0		ST			0					String	alternate text
+RXA	8	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXA	9	0	-1	250	00351	CE	O	Y	0				Administration Notes	Coded element	
+RXA	9	1	-1	0		ST			0					String	identifier
+RXA	9	2	-1	0		ST			0					String	text
+RXA	9	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXA	9	4	-1	0		ST			0					String	alternate identifier
+RXA	9	5	-1	0		ST			0					String	alternate text
+RXA	9	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXA	10	0	-1	250	00352	XCN	O	Y	0				Administering Provider	Extended composite ID number and name	
+RXA	10	1	-1	0		ST			0					String	ID number
+RXA	10	2	0	0		FN			0					String	family name
+RXA	10	2	1	0		ST			0					String	surname
+RXA	10	2	2	0		ST			0					String	own surname prefix
+RXA	10	2	3	0		ST			0					String	own surname
+RXA	10	2	4	0		ST			0					String	surname prefix from partner/spouse
+RXA	10	2	5	0		ST			0					String	surname from partner/spouse
+RXA	10	3	-1	0		ST			0					String	given name
+RXA	10	4	-1	0		ST			0					String	second and further given names or initial thereof
+RXA	10	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+RXA	10	6	-1	0		ST			0					String	prefix (e.g., DR)
+RXA	10	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+RXA	10	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+RXA	10	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+RXA	10	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+RXA	10	9	2	0		ST			0					String	universal ID
+RXA	10	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXA	10	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+RXA	10	11	-1	0		ST			0					String	identifier check digit
+RXA	10	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+RXA	10	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+RXA	10	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+RXA	10	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXA	10	14	2	0		ST			0					String	universal ID
+RXA	10	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXA	10	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+RXA	11	0	-1	200	00353	ZC26	C		0				Administered-at Location	User Define : composit	
+RXA	11	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+RXA	11	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+RXA	11	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+RXA	11	4	0	0		HD			0					Coded value for user-defined tables	facility
+RXA	11	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXA	11	4	2	0		ST			0					String	universal ID
+RXA	11	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXA	11	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+RXA	11	6	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+RXA	11	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+RXA	11	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+RXA	11	9	-1	0		ST			0					String	street address
+RXA	11	10	-1	0		ST			0					String	other designation
+RXA	11	11	-1	0		ST			0					String	city
+RXA	11	12	-1	0		ST			0					String	state or province
+RXA	11	13	-1	0		ST			0					String	zip or postal code
+RXA	11	14	-1	0		ID			0	0399				Coded values for HL7 tables	country
+RXA	11	15	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+RXA	11	16	-1	0		ST			0					String	other geographic designation
+RXA	12	-1	-1	20	00354	ST	C		0				Administered Per (Time Unit)	String	
+RXA	13	-1	-1	20	01134	NM	O		0				Administered Strength	Numeric	
+RXA	14	0	-1	250	01135	CE	O		0				Administered Strength Units	Coded element	
+RXA	14	1	-1	0		ST			0					String	identifier
+RXA	14	2	-1	0		ST			0					String	text
+RXA	14	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXA	14	4	-1	0		ST			0					String	alternate identifier
+RXA	14	5	-1	0		ST			0					String	alternate text
+RXA	14	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXA	15	-1	-1	20	01129	ST	O	Y	0				Substance Lot Number	String	
+RXA	16	-1	-1	26	01130	TS	O	Y	0				Substance Expiration Date	Time stamp	
+RXA	17	0	-1	250	01131	CE	O	Y	0	0227			Substance Manufacturer Name	Coded element	
+RXA	17	1	-1	0		ST			0					String	identifier
+RXA	17	2	-1	0		ST			0					String	text
+RXA	17	3	-1	0		IS			0	0227				Coded value for user-defined tables	name of coding system
+RXA	17	4	-1	0		ST			0					String	alternate identifier
+RXA	17	5	-1	0		ST			0					String	alternate text
+RXA	17	6	-1	0		IS			0	0227				Coded value for user-defined tables	name of alternate coding system
+RXA	18	0	-1	250	01136	CE	O	Y	0				Substance/Treatment Refusal Reason	Coded element	
+RXA	18	1	-1	0		ST			0					String	identifier
+RXA	18	2	-1	0		ST			0					String	text
+RXA	18	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXA	18	4	-1	0		ST			0					String	alternate identifier
+RXA	18	5	-1	0		ST			0					String	alternate text
+RXA	18	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXA	19	0	-1	250	01123	CE	O	Y	0				Indication	Coded element	
+RXA	19	1	-1	0		ST			0					String	identifier
+RXA	19	2	-1	0		ST			0					String	text
+RXA	19	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXA	19	4	-1	0		ST			0					String	alternate identifier
+RXA	19	5	-1	0		ST			0					String	alternate text
+RXA	19	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXA	20	-1	-1	2	01223	ID	O		0	0322			Completion Status	Coded values for HL7 tables	
+RXA	21	-1	-1	2	01224	ID	O		0	0323			Action Code-RXA	Coded values for HL7 tables	
+RXA	22	-1	-1	26	01225	TS	O		0				System Entry Date/Time	Time stamp	

@@ -1,0 +1,223 @@
+BTX	1	-1	-1	4	01735	SI	R		0				Set ID _ BTX	Sequence ID	
+BTX	2	0	-1	22	01736	EI	C		0				BC Donation ID	Entity identifier	
+BTX	2	1	-1	199		ST			0					String	entity identifier
+BTX	2	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BTX	2	3	-1	199		ST	C		0					String	universal ID
+BTX	2	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BTX	3	0	-1	250	01737	CNE	C		0				BC Component	Coded with no exceptions	
+BTX	3	1	-1	20		ST	R		0					String	identifier
+BTX	3	2	-1	199		ST			0					String	text
+BTX	3	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	3	4	-1	20		ST			0					String	alternate identifier
+BTX	3	5	-1	199		ST			0					String	alternate text
+BTX	3	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	3	7	-1	10		ST			0					String	coding system version ID
+BTX	3	8	-1	10		ST			0					String	alternate coding system version ID
+BTX	3	9	-1	199		ST			0					String	original text
+BTX	4	0	-1	250	01738	CNE	C		0				BC Blood Group	Coded with no exceptions	
+BTX	4	1	-1	20		ST	R		0					String	identifier
+BTX	4	2	-1	199		ST			0					String	text
+BTX	4	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	4	4	-1	20		ST			0					String	alternate identifier
+BTX	4	5	-1	199		ST			0					String	alternate text
+BTX	4	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	4	7	-1	10		ST			0					String	coding system version ID
+BTX	4	8	-1	10		ST			0					String	alternate coding system version ID
+BTX	4	9	-1	199		ST			0					String	original text
+BTX	5	0	-1	250	01739	CWE	C		0	0512			CP Commercial Product	Coded with exceptions	
+BTX	5	1	-1	20		IS			0	0512				String	identifier
+BTX	5	2	-1	199		ST			0					String	text
+BTX	5	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	5	4	-1	20		ST			0					String	alternate identifier
+BTX	5	5	-1	199		ST			0					String	alternate text
+BTX	5	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	5	7	-1	10		ST	C		0					String	coding system version ID
+BTX	5	8	-1	10		ST			0					String	alternate coding system version ID
+BTX	5	9	-1	199		ST			0					String	original text
+BTX	6	0	-1	250	01740	XON	C		0				CP Manufacturer	Extended composite name and ID number for organizations	
+BTX	6	1	-1	50		ST			0					String	organization name
+BTX	6	2	-1	20		IS			0	0204				Coded value for user-defined tables	organization name type code
+BTX	6	3	-1	4		NM	B		0					Numeric	ID number
+BTX	6	4	-1	1		NM			0					Numeric	check digit
+BTX	6	5	-1	3		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+BTX	6	6	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+BTX	6	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+BTX	6	6	2	0		ST			0					String	universal ID
+BTX	6	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+BTX	6	7	-1	5		IS			0	0203				Coded value for user-defined tables	identifier type code
+BTX	6	8	0	227		HD			0					Hierarchic designator	assigning facility ID
+BTX	6	8	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BTX	6	8	2	199		ST	C		0					String	universal ID
+BTX	6	8	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BTX	6	9	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+BTX	6	10	-1	20		ST			0					String	Organization Identifier
+BTX	7	0	-1	22	01741	EI	C		0				CP Lot Number	Entity identifier	
+BTX	7	1	-1	199		ST			0					String	entity identifier
+BTX	7	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BTX	7	3	-1	199		ST	C		0					String	universal ID
+BTX	7	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BTX	8	-1	-1	5	01742	NM	R		0				BP Quantity	Numeric	
+BTX	9	-1	-1	5	01743	NM	O		0				BP Amount	Numeric	
+BTX	10	0	-1	250	01744	CE	O		0				BP Units	Coded element	
+BTX	10	1	-1	20		ST			0					String	identifier
+BTX	10	2	-1	199		ST			0					String	text
+BTX	10	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BTX	10	4	-1	20		ST			0					String	alternate identifier
+BTX	10	5	-1	199		ST			0					String	alternate text
+BTX	10	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BTX	11	0	-1	250	01745	CWE	R		0	0513			BP Transfusion/Disposition Status	Coded with exceptions	
+BTX	11	1	-1	20		IS			0	0513				String	identifier
+BTX	11	2	-1	199		ST			0					String	text
+BTX	11	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	11	4	-1	20		ST			0					String	alternate identifier
+BTX	11	5	-1	199		ST			0					String	alternate text
+BTX	11	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	11	7	-1	10		ST	C		0					String	coding system version ID
+BTX	11	8	-1	10		ST			0					String	alternate coding system version ID
+BTX	11	9	-1	199		ST			0					String	original text
+BTX	12	-1	-1	1	01746	ID	R		0	0511			BP Message Status	Coded values for HL7 tables	
+BTX	13	-1	-1	26	01747	TS	R		0				BP Date/Time of Status	Time stamp	
+BTX	14	0	-1	250	01748	XCN	O		0				BP Administrator	Extended composite ID number and name	
+BTX	14	1	-1	15		ST			0					String	ID number
+BTX	14	2	0	194		FN			0						family name
+BTX	14	2	1	50		ST	R		0					String	surname
+BTX	14	2	2	20		ST			0					String	own surname prefix
+BTX	14	2	3	50		ST			0					String	own surname
+BTX	14	2	4	20		ST			0					String	surname prefix from partner/spouse
+BTX	14	2	5	30		ST			0					String	surname from partner/spouse
+BTX	14	3	-1	30		ST			0					String	given name
+BTX	14	4	-1	30		ST			0					String	second and further given names or initial thereof
+BTX	14	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+BTX	14	6	-1	20		ST			0					String	prefix (e.g., DR)
+BTX	14	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+BTX	14	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+BTX	14	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+BTX	14	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+BTX	14	9	2	0		ST			0					String	universal ID
+BTX	14	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+BTX	14	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+BTX	14	11	-1	1		ST			0					String	identifier check digit
+BTX	14	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+BTX	14	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+BTX	14	14	0	227		HD			0					Hierarchic designator	assigning facility
+BTX	14	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BTX	14	14	2	199		ST	C		0					String	universal ID
+BTX	14	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BTX	14	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+BTX	14	16	0	483		CE			0	0448				Coded element	Name Context
+BTX	14	16	1	20		IS			0	0448				String	identifier
+BTX	14	16	2	199		ST			0					String	text
+BTX	14	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BTX	14	16	4	20		ST			0					String	alternate identifier
+BTX	14	16	5	199		ST			0					String	alternate text
+BTX	14	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BTX	14	17	0	53		DR	B		0					Date/time range	Name Validity Range
+BTX	14	17	1	26		TS			0					Time stamp	range start date/time
+BTX	14	17	2	26		TS			0					Time stamp	range end date/time
+BTX	14	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+BTX	14	19	-1	26		TS			0					Time stamp	Effective Date
+BTX	14	20	-1	26		TS			0					Time stamp	Expiration Date
+BTX	14	21	-1	199		ST			0					String	Professional Suffix
+BTX	14	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+BTX	14	22	1	20		ST			0					String	identifier
+BTX	14	22	2	199		ST			0					String	text
+BTX	14	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	14	22	4	20		ST			0					String	alternate identifier
+BTX	14	22	5	199		ST			0					String	alternate text
+BTX	14	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	14	22	7	10		ST	C		0					String	coding system version ID
+BTX	14	22	8	10		ST			0					String	alternate coding system version ID
+BTX	14	22	9	199		ST			0					String	original text
+BTX	14	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+BTX	14	23	1	20		ST			0					String	identifier
+BTX	14	23	2	199		ST			0					String	text
+BTX	14	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	14	23	4	20		ST			0					String	alternate identifier
+BTX	14	23	5	199		ST			0					String	alternate text
+BTX	14	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	14	23	7	10		ST	C		0					String	coding system version ID
+BTX	14	23	8	10		ST			0					String	alternate coding system version ID
+BTX	14	23	9	199		ST			0					String	original text
+BTX	15	0	-1	250	01749	XCN	O		0				BP Verifier	Extended composite ID number and name	
+BTX	15	1	-1	15		ST			0					String	ID number
+BTX	15	2	0	194		FN			0						family name
+BTX	15	2	1	50		ST	R		0					String	surname
+BTX	15	2	2	20		ST			0					String	own surname prefix
+BTX	15	2	3	50		ST			0					String	own surname
+BTX	15	2	4	20		ST			0					String	surname prefix from partner/spouse
+BTX	15	2	5	30		ST			0					String	surname from partner/spouse
+BTX	15	3	-1	30		ST			0					String	given name
+BTX	15	4	-1	30		ST			0					String	second and further given names or initial thereof
+BTX	15	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+BTX	15	6	-1	20		ST			0					String	prefix (e.g., DR)
+BTX	15	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+BTX	15	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+BTX	15	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+BTX	15	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+BTX	15	9	2	0		ST			0					String	universal ID
+BTX	15	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+BTX	15	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+BTX	15	11	-1	1		ST			0					String	identifier check digit
+BTX	15	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+BTX	15	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+BTX	15	14	0	227		HD			0					Hierarchic designator	assigning facility
+BTX	15	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BTX	15	14	2	199		ST	C		0					String	universal ID
+BTX	15	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BTX	15	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+BTX	15	16	0	483		CE			0	0448				Coded element	Name Context
+BTX	15	16	1	20		IS			0	0448				String	identifier
+BTX	15	16	2	199		ST			0					String	text
+BTX	15	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BTX	15	16	4	20		ST			0					String	alternate identifier
+BTX	15	16	5	199		ST			0					String	alternate text
+BTX	15	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BTX	15	17	0	53		DR	B		0					Date/time range	Name Validity Range
+BTX	15	17	1	26		TS			0					Time stamp	range start date/time
+BTX	15	17	2	26		TS			0					Time stamp	range end date/time
+BTX	15	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+BTX	15	19	-1	26		TS			0					Time stamp	Effective Date
+BTX	15	20	-1	26		TS			0					Time stamp	Expiration Date
+BTX	15	21	-1	199		ST			0					String	Professional Suffix
+BTX	15	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+BTX	15	22	1	20		ST			0					String	identifier
+BTX	15	22	2	199		ST			0					String	text
+BTX	15	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	15	22	4	20		ST			0					String	alternate identifier
+BTX	15	22	5	199		ST			0					String	alternate text
+BTX	15	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	15	22	7	10		ST	C		0					String	coding system version ID
+BTX	15	22	8	10		ST			0					String	alternate coding system version ID
+BTX	15	22	9	199		ST			0					String	original text
+BTX	15	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+BTX	15	23	1	20		ST			0					String	identifier
+BTX	15	23	2	199		ST			0					String	text
+BTX	15	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	15	23	4	20		ST			0					String	alternate identifier
+BTX	15	23	5	199		ST			0					String	alternate text
+BTX	15	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	15	23	7	10		ST	C		0					String	coding system version ID
+BTX	15	23	8	10		ST			0					String	alternate coding system version ID
+BTX	15	23	9	199		ST			0					String	original text
+BTX	16	-1	-1	26	01750	TS	O		0				BP Transfusion Start Date/Time of Status	Time stamp	
+BTX	17	-1	-1	26	01751	TS	O		0				BP Transfusion End Date/Time of Status	Time stamp	
+BTX	18	0	-1	250	01752	CWE	O	Y	0	0514			BP Adverse Reaction Type	Coded with exceptions	
+BTX	18	1	-1	20		IS			0	0514				String	identifier
+BTX	18	2	-1	199		ST			0					String	text
+BTX	18	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	18	4	-1	20		ST			0					String	alternate identifier
+BTX	18	5	-1	199		ST			0					String	alternate text
+BTX	18	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	18	7	-1	10		ST	C		0					String	coding system version ID
+BTX	18	8	-1	10		ST			0					String	alternate coding system version ID
+BTX	18	9	-1	199		ST			0					String	original text
+BTX	19	0	-1	250	01753	CWE	O		0	0515			BP Transfusion Interrupted Reason	Coded with exceptions	
+BTX	19	1	-1	20		IS			0	0515				String	identifier
+BTX	19	2	-1	199		ST			0					String	text
+BTX	19	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BTX	19	4	-1	20		ST			0					String	alternate identifier
+BTX	19	5	-1	199		ST			0					String	alternate text
+BTX	19	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BTX	19	7	-1	10		ST	C		0					String	coding system version ID
+BTX	19	8	-1	10		ST			0					String	alternate coding system version ID
+BTX	19	9	-1	199		ST			0					String	original text

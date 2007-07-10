@@ -1,0 +1,7 @@
+Message Type=OMD
+Message Type Name=Dietary order
+Trigger Event=O03
+Trigger Description=OMD _ Diet order
+Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER_DIET! ORC [ { !TIMING_DIET! TQ1 [ { TQ2 } ] } ] [ !DIET! { ODS } [ { NTE } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] ] } [ { !ORDER_TRAY! ORC [ { !TIMING_TRAY! TQ1 [ { TQ2 } ] } ] { ODT } [ { NTE } ] } ]
+Return Message=ORD^O04
+Called by=

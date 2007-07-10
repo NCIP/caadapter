@@ -1,0 +1,2 @@
+HL7	Cyclic Entry/Exit Indicator	0505	#	The last service request in a cyclic group.
+HL7	Cyclic Entry/Exit Indicator	0505	*	The first service request in a cyclic group

@@ -1,0 +1,37 @@
+HL7	What subject filter	0048	ADV	Advice/diagnosis
+HL7	What subject filter	0048	ANU	Nursing unit lookup (returns patients in beds/ excluding empty beds)
+HL7	What subject filter	0048	APA	Account number query/ return matching visit
+HL7	What subject filter	0048	APM	Medical record number query/ returns visits for a medical record number
+HL7	What subject filter	0048	APN	Patient name lookup
+HL7	What subject filter	0048	APP	Physician lookup
+HL7	What subject filter	0048	ARN	Nursing unit lookup (returns patients in beds/ including empty beds)
+HL7	What subject filter	0048	CAN	Cancel.  Used to cancel a query
+HL7	What subject filter	0048	DEM	Demographics
+HL7	What subject filter	0048	FIN	Financial
+HL7	What subject filter	0048	GID	Generate new identifier
+HL7	What subject filter	0048	GOL	Goals
+HL7	What subject filter	0048	MRI	Most recent inpatient
+HL7	What subject filter	0048	MRO	Most recent outpatient
+HL7	What subject filter	0048	NCK	Network clock
+HL7	What subject filter	0048	NSC	Network status change
+HL7	What subject filter	0048	NST	Network statistic
+HL7	What subject filter	0048	ORD	Order
+HL7	What subject filter	0048	OTH	Other
+HL7	What subject filter	0048	PRB	Problems
+HL7	What subject filter	0048	PRO	Procedure
+HL7	What subject filter	0048	RAR	Pharmacy administration information
+HL7	What subject filter	0048	RDR	Pharmacy dispense information
+HL7	What subject filter	0048	RER	Pharmacy encoded order information
+HL7	What subject filter	0048	RES	Result
+HL7	What subject filter	0048	RGR	Pharmacy give information
+HL7	What subject filter	0048	ROR	Pharmacy prescription information
+HL7	What subject filter	0048	SAL	All schedule related information/ including open slots/ booked slots/ blocked slots
+HL7	What subject filter	0048	SBK	Booked slots on the identified schedule
+HL7	What subject filter	0048	SBL	Blocked slots on the identified schedule
+HL7	What subject filter	0048	SOF	First open slot on the identified schedule after the start date/tiem
+HL7	What subject filter	0048	SOP	Open slots on the identified schedule between the begin and end of the start date/time range
+HL7	What subject filter	0048	SSA	Time slots available for a single appointment
+HL7	What subject filter	0048	SSR	Time slots available for a recurring appointment
+HL7	What subject filter	0048	STA	Status
+HL7	What subject filter	0048	VXI	Vaccine Information
+HL7	What subject filter	0048	XID	Get cross-referenced identifiers

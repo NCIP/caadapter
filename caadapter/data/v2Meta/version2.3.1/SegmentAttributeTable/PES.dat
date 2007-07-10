@@ -1,0 +1,84 @@
+PES	1	0	-1	250	01059	XON	O	Y	0				Sender Organization Name	Extended composite name and ID number for organizations	
+PES	1	1	-1	0		ST			0					String	organization name
+PES	1	2	-1	0		IS			0	0204				Coded value for user-defined tables	organization name type code
+PES	1	3	-1	0		NM			0					Numeric	ID number
+PES	1	4	-1	0		NM			0					Numeric	check digit
+PES	1	5	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+PES	1	6	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+PES	1	6	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+PES	1	6	2	0		ST			0					String	universal ID
+PES	1	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PES	1	7	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+PES	1	8	0	0		HD			0					Coded value for user-defined tables	assigning facility ID
+PES	1	8	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+PES	1	8	2	0		ST			0					String	universal ID
+PES	1	8	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PES	1	9	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+PES	2	0	-1	250	01060	XCN	O	Y	0				Sender Individual Name	Extended composite ID number and name	
+PES	2	1	-1	0		ST			0					String	ID number
+PES	2	2	0	0		FN			0					String	family name
+PES	2	2	1	0		ST			0					String	surname
+PES	2	2	2	0		ST			0					String	own surname prefix
+PES	2	2	3	0		ST			0					String	own surname
+PES	2	2	4	0		ST			0					String	surname prefix from partner/spouse
+PES	2	2	5	0		ST			0					String	surname from partner/spouse
+PES	2	3	-1	0		ST			0					String	given name
+PES	2	4	-1	0		ST			0					String	second and further given names or initial thereof
+PES	2	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+PES	2	6	-1	0		ST			0					String	prefix (e.g., DR)
+PES	2	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+PES	2	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+PES	2	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+PES	2	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+PES	2	9	2	0		ST			0					String	universal ID
+PES	2	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PES	2	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+PES	2	11	-1	0		ST			0					String	identifier check digit
+PES	2	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+PES	2	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+PES	2	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+PES	2	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+PES	2	14	2	0		ST			0					String	universal ID
+PES	2	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PES	2	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+PES	3	0	-1	250	01062	XAD	O	Y	0				Sender Address	Extended address	
+PES	3	1	0	0		SAD			0					String	street address
+PES	3	1	1	0		ST			0					String	street or mailing address
+PES	3	1	2	0		ST			0					String	street name
+PES	3	1	3	0		ST			0					String	dwelling number
+PES	3	2	-1	0		ST			0					String	other designation
+PES	3	3	-1	0		ST			0					String	city
+PES	3	4	-1	0		ST			0					String	state or province
+PES	3	5	-1	0		ST			0					String	zip or postal code
+PES	3	6	-1	0		ID			0	0399				Coded values for HL7 tables	country
+PES	3	7	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+PES	3	8	-1	0		ST			0					String	other geographic designation
+PES	3	9	-1	0		IS			0	0289				Coded value for user-defined tables	county/parish code
+PES	3	10	-1	0		IS			0	0288				Coded value for user-defined tables	census tract
+PES	3	11	-1	0		ID			0	0465				Coded values for HL7 tables	address representation code
+PES	3	12	0	0		DR			0					Time stamp	address validity range
+PES	3	12	1	0		TS			0					Time stamp	range start date/time
+PES	3	12	2	0		TS			0					Time stamp	range end date/time
+PES	4	0	-1	250	01063	XTN	O	Y	0				Sender Telephone	Extended telecommunications number	
+PES	4	1	-1	0		TN			0					Telephone number	
+PES	4	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+PES	4	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+PES	4	4	-1	0		ST			0					String	email address
+PES	4	5	-1	0		NM			0					Numeric	country code
+PES	4	6	-1	0		NM			0					Numeric	area/city code
+PES	4	7	-1	0		NM			0					Numeric	phone number
+PES	4	8	-1	0		NM			0					Numeric	extension
+PES	4	9	-1	0		ST			0					String	any text
+PES	5	0	-1	75	01064	EI	O		0				Sender Event Identifier	Entity identifier	
+PES	5	1	-1	0		ST			0					String	entity identifier
+PES	5	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+PES	5	3	-1	0		ST			0					String	universal ID
+PES	5	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+PES	6	-1	-1	2	01065	NM	O		0				Sender Sequence Number	Numeric	
+PES	7	-1	-1	600	01066	FT	O	Y	0				Sender Event Description	Formatted text	
+PES	8	-1	-1	600	01067	FT	O		0				Sender Comment	Formatted text	
+PES	9	-1	-1	26	01068	TS	O		0				Sender Aware Date/Time	Time stamp	
+PES	10	-1	-1	26	01069	TS	R		0				Event Report Date	Time stamp	
+PES	11	-1	-1	3	01070	ID	O	Y	2	0234			Event Report Timing/Type	Coded values for HL7 tables	
+PES	12	-1	-1	1	01071	ID	O		0	0235			Event Report Source	Coded values for HL7 tables	
+PES	13	-1	-1	1	01072	ID	O	Y	0	0236			Event Reported To	Coded values for HL7 tables	

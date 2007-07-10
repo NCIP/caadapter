@@ -1,0 +1,11 @@
+HL7	Blood Product Dispense Status	0510	CR	Released into inventory for general availability
+HL7	Blood Product Dispense Status	0510	DS	Dispensed to patient location
+HL7	Blood Product Dispense Status	0510	PT	Presumed transfused (dispensed and not returned)
+HL7	Blood Product Dispense Status	0510	RA	Returned unused/no longer needed
+HL7	Blood Product Dispense Status	0510	RD	Reserved and ready to dispense
+HL7	Blood Product Dispense Status	0510	RE	Released (no longer allocated for the patient)
+HL7	Blood Product Dispense Status	0510	RI	Received into inventory (for specified patient)
+HL7	Blood Product Dispense Status	0510	RL	Returned unused/keep linked to patient for possible use later
+HL7	Blood Product Dispense Status	0510	RQ	Request to dispense blood product
+HL7	Blood Product Dispense Status	0510	RS	Reserved (ordered and product allocated for the patient)
+HL7	Blood Product Dispense Status	0510	WA	Wasted (product no longer viable)

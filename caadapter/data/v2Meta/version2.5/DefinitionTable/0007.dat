@@ -1,0 +1,7 @@
+User	Admission Type	0007	A	Accident
+User	Admission Type	0007	C	Elective
+User	Admission Type	0007	E	Emergency
+User	Admission Type	0007	L	Labor and Delivery
+User	Admission Type	0007	N	Newborn (Birth in healthcare facility)
+User	Admission Type	0007	R	Routine
+User	Admission Type	0007	U	Urgent

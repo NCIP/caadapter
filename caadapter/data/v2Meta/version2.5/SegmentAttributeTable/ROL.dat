@@ -1,0 +1,137 @@
+ROL	1	0	-1	60	01206	EI	C		0				Role Instance ID	Entity identifier	
+ROL	1	1	-1	199		ST			0					String	entity identifier
+ROL	1	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+ROL	1	3	-1	199		ST	C		0					String	universal ID
+ROL	1	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ROL	2	-1	-1	2	00816	ID	R		0	0287			Action Code	Coded values for HL7 tables	
+ROL	3	0	-1	250	01197	CE	R		0	0443			Role-ROL	Coded element	
+ROL	3	1	-1	20		IS			0	0443				String	identifier
+ROL	3	2	-1	199		ST			0					String	text
+ROL	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ROL	3	4	-1	20		ST			0					String	alternate identifier
+ROL	3	5	-1	199		ST			0					String	alternate text
+ROL	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ROL	4	0	-1	250	01198	XCN	R	Y	0				Role Person	Extended composite ID number and name	
+ROL	4	1	-1	15		ST			0					String	ID number
+ROL	4	2	0	194		FN			0						family name
+ROL	4	2	1	50		ST	R		0					String	surname
+ROL	4	2	2	20		ST			0					String	own surname prefix
+ROL	4	2	3	50		ST			0					String	own surname
+ROL	4	2	4	20		ST			0					String	surname prefix from partner/spouse
+ROL	4	2	5	30		ST			0					String	surname from partner/spouse
+ROL	4	3	-1	30		ST			0					String	given name
+ROL	4	4	-1	30		ST			0					String	second and further given names or initial thereof
+ROL	4	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+ROL	4	6	-1	20		ST			0					String	prefix (e.g., DR)
+ROL	4	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+ROL	4	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+ROL	4	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+ROL	4	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+ROL	4	9	2	0		ST			0					String	universal ID
+ROL	4	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+ROL	4	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+ROL	4	11	-1	1		ST			0					String	identifier check digit
+ROL	4	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+ROL	4	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+ROL	4	14	0	227		HD			0					Hierarchic designator	assigning facility
+ROL	4	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+ROL	4	14	2	199		ST	C		0					String	universal ID
+ROL	4	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+ROL	4	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+ROL	4	16	0	483		CE			0	0448				Coded element	Name Context
+ROL	4	16	1	20		IS			0	0448				String	identifier
+ROL	4	16	2	199		ST			0					String	text
+ROL	4	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ROL	4	16	4	20		ST			0					String	alternate identifier
+ROL	4	16	5	199		ST			0					String	alternate text
+ROL	4	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ROL	4	17	0	53		DR	B		0					Date/time range	Name Validity Range
+ROL	4	17	1	26		TS			0					Time stamp	range start date/time
+ROL	4	17	2	26		TS			0					Time stamp	range end date/time
+ROL	4	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+ROL	4	19	-1	26		TS			0					Time stamp	Effective Date
+ROL	4	20	-1	26		TS			0					Time stamp	Expiration Date
+ROL	4	21	-1	199		ST			0					String	Professional Suffix
+ROL	4	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+ROL	4	22	1	20		ST			0					String	identifier
+ROL	4	22	2	199		ST			0					String	text
+ROL	4	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ROL	4	22	4	20		ST			0					String	alternate identifier
+ROL	4	22	5	199		ST			0					String	alternate text
+ROL	4	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ROL	4	22	7	10		ST	C		0					String	coding system version ID
+ROL	4	22	8	10		ST			0					String	alternate coding system version ID
+ROL	4	22	9	199		ST			0					String	original text
+ROL	4	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+ROL	4	23	1	20		ST			0					String	identifier
+ROL	4	23	2	199		ST			0					String	text
+ROL	4	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+ROL	4	23	4	20		ST			0					String	alternate identifier
+ROL	4	23	5	199		ST			0					String	alternate text
+ROL	4	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+ROL	4	23	7	10		ST	C		0					String	coding system version ID
+ROL	4	23	8	10		ST			0					String	alternate coding system version ID
+ROL	4	23	9	199		ST			0					String	original text
+ROL	5	-1	-1	26	01199	TS	O		0				Role Begin Date/Time	Time stamp	
+ROL	6	-1	-1	26	01200	TS	O		0				Role End Date/Time	Time stamp	
+ROL	7	0	-1	250	01201	CE	O		0				Role Duration	Coded element	
+ROL	7	1	-1	20		ST			0					String	identifier
+ROL	7	2	-1	199		ST			0					String	text
+ROL	7	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ROL	7	4	-1	20		ST			0					String	alternate identifier
+ROL	7	5	-1	199		ST			0					String	alternate text
+ROL	7	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ROL	8	0	-1	250	01205	CE	O		0				Role Action Reason	Coded element	
+ROL	8	1	-1	20		ST			0					String	identifier
+ROL	8	2	-1	199		ST			0					String	text
+ROL	8	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ROL	8	4	-1	20		ST			0					String	alternate identifier
+ROL	8	5	-1	199		ST			0					String	alternate text
+ROL	8	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ROL	9	0	-1	250	01510	CE	O	Y	0				Provider Type	Coded element	
+ROL	9	1	-1	20		ST			0					String	identifier
+ROL	9	2	-1	199		ST			0					String	text
+ROL	9	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ROL	9	4	-1	20		ST			0					String	alternate identifier
+ROL	9	5	-1	199		ST			0					String	alternate text
+ROL	9	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ROL	10	0	-1	250	01461	CE	O		0	0406			Organization Unit Type	Coded element	
+ROL	10	1	-1	20		IS			0	0406				String	identifier
+ROL	10	2	-1	199		ST			0					String	text
+ROL	10	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+ROL	10	4	-1	20		ST			0					String	alternate identifier
+ROL	10	5	-1	199		ST			0					String	alternate text
+ROL	10	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ROL	11	0	-1	250	00679	XAD	O	Y	0				Office/Home Address/Birthplace	Extended address	
+ROL	11	1	0	184		SAD			0					Street Address	street address
+ROL	11	1	1	120		ST			0					String	street or mailing address
+ROL	11	1	2	50		ST			0					String	street name
+ROL	11	1	3	12		ST			0					String	dwelling number
+ROL	11	2	-1	120		ST			0					String	other designation
+ROL	11	3	-1	50		ST			0					String	city
+ROL	11	4	-1	50		ST			0					String	state or province
+ROL	11	5	-1	12		ST			0					String	zip or postal code
+ROL	11	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+ROL	11	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+ROL	11	8	-1	50		ST			0					String	other geographic designation
+ROL	11	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+ROL	11	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+ROL	11	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+ROL	11	12	0	53		DR	B		0					Date/time range	address validity range
+ROL	11	12	1	26		TS			0					Time stamp	range start date/time
+ROL	11	12	2	26		TS			0					Time stamp	range end date/time
+ROL	11	13	-1	26		TS			0					Time stamp	Effective Date
+ROL	11	14	-1	26		TS			0					Time stamp	Expiration Date
+ROL	12	0	-1	250	00678	XTN	O	Y	0				Phone	Extended telecommunications number	
+ROL	12	1	-1	199		ST	B		0					String	Telephone Number
+ROL	12	2	-1	3		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+ROL	12	3	-1	8		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+ROL	12	4	-1	199		ST			0					String	email address
+ROL	12	5	-1	3		NM			0					Numeric	country code
+ROL	12	6	-1	5		NM			0					Numeric	area/city code
+ROL	12	7	-1	9		NM			0					Numeric	phone number
+ROL	12	8	-1	5		NM			0					Numeric	extension
+ROL	12	9	-1	199		ST			0					String	any text
+ROL	12	10	-1	4		ST			0					String	Extension Prefix
+ROL	12	11	-1	6		ST			0					String	Speed Dial Code
+ROL	12	12	-1	199		ST	C		0					String	Unformatted Telephone number

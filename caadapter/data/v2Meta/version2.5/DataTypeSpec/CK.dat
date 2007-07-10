@@ -1,0 +1,4 @@
+CK	1	NM		0		ID number	N	^
+CK	2	NM		0		check digit	N	^
+CK	3	ID	0061	0		code identifying the check digit scheme employed	N	^
+CK	4	ZHD1		0		assigning authority	N	E

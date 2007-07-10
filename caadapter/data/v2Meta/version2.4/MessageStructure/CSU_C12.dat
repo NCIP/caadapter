@@ -1,0 +1,1 @@
+CSU	C12	CSU	C09			 MSH {  PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ]  CSR { [  CSP ] { [  CSS ] { !ORDER![  ORC ]  OBR {  OBX } } { !ORDER![  ORC ] { !ADMINISTRATION! RXA  RXR } } } } } 	Unsolicited Study Data Message - Update/correction of patient order/result information	Unsolicited study data message	CSU - Update/correction of patient order/result information

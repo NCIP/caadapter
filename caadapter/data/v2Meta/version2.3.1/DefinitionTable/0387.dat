@@ -1,0 +1,5 @@
+HL7	Command response	0387	ER	Command cannot be completed because of error condition (see response parameters)
+HL7	Command response	0387	OK	Command completed successfully
+HL7	Command response	0387	ST	Command cannot be completed because of the status of the requested equipment
+HL7	Command response	0387	TI	Command cannot be completed within requested completion time
+HL7	Command response	0387	UN	Command cannot be completed for unknown reasons

@@ -1,0 +1,4 @@
+EI	1	ST				entity identifier	N	^
+EI	2	IS	0363			namespace ID	N	^
+EI	3	ST				universal ID	N	^
+EI	4	ID	0301			universal ID type	N	E

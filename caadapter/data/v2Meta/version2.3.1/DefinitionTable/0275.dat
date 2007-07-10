@@ -1,0 +1,4 @@
+HL7	Document storage status	0275	AA	Active and archived
+HL7	Document storage status	0275	AC	Active
+HL7	Document storage status	0275	AR	Archived (not active)
+HL7	Document storage status	0275	PU	Purged

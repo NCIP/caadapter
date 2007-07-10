@@ -1,0 +1,7 @@
+Message Type=MFQ
+Message Type Name=Master files query
+Trigger Event=M02
+Trigger Description=MFN/MFK - Master file _ staff practitioner
+Message Structure=MFQ_M01
+Return Message=MFR^M02
+Called by=

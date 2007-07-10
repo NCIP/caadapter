@@ -1,0 +1,4 @@
+HL7	Query results level	0108	O	Order plus order status
+HL7	Query results level	0108	R	Results without bulk text
+HL7	Query results level	0108	S	Status only
+HL7	Query results level	0108	T	Full results

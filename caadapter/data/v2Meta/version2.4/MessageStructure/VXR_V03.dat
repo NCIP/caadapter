@@ -1,0 +1,1 @@
+VXR	V03	 				 MSH  MSA  QRD [  QRF ]  PID [  PD1 ] [ {  NK1 } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ] [ {  GT1 } ] [ { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [ { !ORDER![  ORC ]  RXA [  RXR ] [ { !OBSERVATION! OBX [ {  NTE } ] } ] } ] 		Vaccination record response	VXR - Vaccination record response

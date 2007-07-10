@@ -1,0 +1,3 @@
+HL7	Diagnosis Priority	0359	0	Not included in diagnosis ranking
+HL7	Diagnosis Priority	0359	1	The primary diagnosis
+HL7	Diagnosis Priority	0359	2 _	For ranked secondary diagnoses

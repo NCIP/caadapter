@@ -1,0 +1,6 @@
+ERL	1	ST		3	R	segment ID	N	^
+ERL	2	NM		2	R	segment sequence	N	^
+ERL	3	NM		2		field position	N	^
+ERL	4	NM		2		field repetition	N	^
+ERL	5	NM		2		Component Number	N	^
+ERL	6	NM		2		Sub-Component Number	N	E

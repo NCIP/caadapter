@@ -1,0 +1,4 @@
+SPD	1	ST		50	R	specialty name	N	^
+SPD	2	ST		50		governing board	N	^
+SPD	3	ID	0337	1		eligible or certified	N	^
+SPD	4	DT		8		date of certification	N	E

@@ -1,0 +1,11 @@
+HL7	Causality Observations	0252	AW	Abatement of event after product withdrawn
+HL7	Causality Observations	0252	BE	Event recurred after product reintroduced
+HL7	Causality Observations	0252	DR	Dose response observed
+HL7	Causality Observations	0252	EX	Alternative explanations for the event available
+HL7	Causality Observations	0252	IN	Event occurred after product introduced
+HL7	Causality Observations	0252	LI	Literature reports association of product with event
+HL7	Causality Observations	0252	OE	Occurrence of event was confirmed by objective evidence
+HL7	Causality Observations	0252	OT	Other
+HL7	Causality Observations	0252	PL	Effect observed when patient receives placebo
+HL7	Causality Observations	0252	SE	Similar events in past for this patient
+HL7	Causality Observations	0252	TC	Toxic levels of product documented in blood or body fluids

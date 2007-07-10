@@ -1,0 +1,3 @@
+DDI	1	NM		3		delay days	N	^
+DDI	2	MO		16	R	monetary amount	N	^
+DDI	3	NM		4		number of days	N	E

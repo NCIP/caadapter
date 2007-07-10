@@ -1,0 +1,7 @@
+Message Type=INR
+Message Type Name=Automated equipment inventory request message
+Trigger Event=U06
+Trigger Description=INR/ACK _ Automated equipment inventory request
+Message Structure=MSH [ { SFT } ] EQU { INV } [ ROL ]
+Return Message=ACK^U06
+Called by=

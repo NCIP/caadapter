@@ -1,0 +1,7 @@
+Message Type=ORL
+Message Type Name=Laboratory acknowledgment message (unsolicited)
+Trigger Event=O36
+Trigger Description=ORL - Laboratory order response message to a single container of a specimen OML
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID { !SPECIMEN! SPM [ { OBX } ] { !SPECIMEN_CONTAINER! SAC [ { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !OBSERVATION_REQUEST! OBR ] } ] } } ] ]
+Return Message=ACK^O36
+Called by=OML^O35

@@ -1,0 +1,2 @@
+HL7	CP range type	0298	F	Flat-rate. Apply the entire price to this interval/ do not pro-rate the price if the full interval has not occurred/been consumed
+HL7	CP range type	0298	P	Pro-rate. Apply this price to this interval/ pro-rated by whatever portion of the interval has occurred/been consumed

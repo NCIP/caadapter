@@ -1,0 +1,13 @@
+HL7	Name type	0200	A	Alias Name
+HL7	Name type	0200	B	Name at Birth
+HL7	Name type	0200	C	Adopted Name
+HL7	Name type	0200	D	Display Name
+HL7	Name type	0200	I	Licensing Name
+HL7	Name type	0200	L	Legal Name
+HL7	Name type	0200	M	Maiden Name
+HL7	Name type	0200	N	Nickname /_Call me_ Name/Street Name
+HL7	Name type	0200	P	Name of Partner/Spouse (retained for backward compatibility only)
+HL7	Name type	0200	R	Registered Name (animals only)
+HL7	Name type	0200	S	Coded Pseudo-Name to ensure anonymity
+HL7	Name type	0200	T	Indigenous/Tribal/Community Name
+HL7	Name type	0200	U	Unspecified

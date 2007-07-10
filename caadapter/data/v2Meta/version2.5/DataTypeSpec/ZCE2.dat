@@ -1,0 +1,6 @@
+ZCE2	1	ID	0070	0		identifier	N	^
+ZCE2	2	ST		0		text	N	^
+ZCE2	3	ST		0		name of coding system	N	^
+ZCE2	4	ID	0070	0		alternate identifier	N	^
+ZCE2	5	ST		0		alternate text	N	^
+ZCE2	6	ST		0		name of alternate coding system	N	E

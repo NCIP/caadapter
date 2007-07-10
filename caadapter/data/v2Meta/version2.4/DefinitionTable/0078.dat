@@ -1,0 +1,19 @@
+User	Abnormal flags	0078	<	Below absolute low-off instrument scale
+User	Abnormal flags	0078	>	Above absolute high-off instrument scale
+User	Abnormal flags	0078	A	Abnormal (applies to non-numeric results)
+User	Abnormal flags	0078	AA	Very abnormal (applies to non-numeric units, analogous to panic limits for numeric units)
+User	Abnormal flags	0078	B	Better--use when direction not relevant
+User	Abnormal flags	0078	D	Significant change down
+User	Abnormal flags	0078	H	Above high normal
+User	Abnormal flags	0078	HH	Above upper panic limits
+User	Abnormal flags	0078	I	Intermediate*
+User	Abnormal flags	0078	L	Below low normal
+User	Abnormal flags	0078	LL	Below lower panic limits
+User	Abnormal flags	0078	MS	Moderately susceptible*
+User	Abnormal flags	0078	N	Normal (applies to non-numeric results)
+User	Abnormal flags	0078	Null	No range defined, or normal ranges don`t apply
+User	Abnormal flags	0078	R	Resistant*
+User	Abnormal flags	0078	S	Susceptible*
+User	Abnormal flags	0078	U	Significant change up
+User	Abnormal flags	0078	VS	Very susceptible*
+User	Abnormal flags	0078	W	Worse--use when direction not relevant

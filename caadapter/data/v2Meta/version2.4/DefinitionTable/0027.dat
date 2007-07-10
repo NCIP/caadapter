@@ -1,0 +1,5 @@
+HL7	Priority	0027	A	As soon as possible (a priority lower than stat)
+HL7	Priority	0027	P	Preoperative (to be done prior to surgery)
+HL7	Priority	0027	R	Routine
+HL7	Priority	0027	S	Stat (do immediately)
+HL7	Priority	0027	T	Timing critical (do as near as possible to requested time)

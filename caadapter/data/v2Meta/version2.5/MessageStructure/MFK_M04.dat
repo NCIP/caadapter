@@ -1,0 +1,7 @@
+Message Type=MFK
+Message Type Name=Master files application acknowledgment
+Trigger Event=M04
+Trigger Description=MFN/MFK - Master files charge description
+Message Structure=MFK_M01
+Return Message=ACK^M04
+Called by=MFN^M04

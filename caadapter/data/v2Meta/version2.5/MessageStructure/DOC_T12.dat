@@ -1,0 +1,7 @@
+Message Type=DOC
+Message Type Name=Document response
+Trigger Event=T12
+Trigger Description=QRY/DOC - Document query
+Message Structure=MSH MSA [ ERR ] [ QAK ] QRD { [ EVN ] PID PV1 TXA [ { OBX } ] } [ DSC ]
+Return Message=ACK^T12
+Called by=QRY^T12

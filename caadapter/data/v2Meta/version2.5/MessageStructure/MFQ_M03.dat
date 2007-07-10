@@ -1,0 +1,7 @@
+Message Type=MFQ
+Message Type Name=Master files query
+Trigger Event=M03
+Trigger Description=MFN/MFK - Master file - test/observation (for backward compatibility only)
+Message Structure=MFQ_M01
+Return Message=MFR^M03
+Called by=

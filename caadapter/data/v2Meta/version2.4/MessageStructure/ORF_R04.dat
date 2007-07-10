@@ -1,0 +1,1 @@
+ORF	R04	ORF	R04			 MSH  MSA  QRD [  QRF ] { [ !PATIENT! PID [ {  NTE } ] ] { !ORDER![  ORC ]  OBR { [  NTE ] } [  CTD ] { !OBSERVATION![  OBX ] { [  NTE ] } } { [  CTI ] } } } [  ERR ] [  QAK ] [  DSC ] 	Observational Report	Query for results of observation	ORF - Response to query; transmission of requested observation

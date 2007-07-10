@@ -1,0 +1,9 @@
+User	Admit source	0023	1	Physician referral
+User	Admit source	0023	2	Clinic referral
+User	Admit source	0023	3	HMO referral
+User	Admit source	0023	4	Transfer from a hospital
+User	Admit source	0023	5	Transfer from a skilled nursing facility
+User	Admit source	0023	6	Transfer from another health care facility
+User	Admit source	0023	7	Emergency room
+User	Admit source	0023	8	Court/law enforcement
+User	Admit source	0023	9	Information not available

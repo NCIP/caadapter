@@ -1,0 +1,12 @@
+MSA	1	-1	-1	2	00018	ID	R		0	0008			Acknowledgment Code	Coded values for HL7 tables	
+MSA	2	-1	-1	20	00010	ST	R		0				Message Control ID	String	
+MSA	3	-1	-1	80	00020	ST	B		0				Text Message	String	
+MSA	4	-1	-1	15	00021	NM	O		0				Expected Sequence Number	Numeric	
+MSA	5	-1	-1	0	00022	ID	W		0				Delayed Acknowledgment Type	Coded values for HL7 tables	
+MSA	6	0	-1	250	00023	CE	B		0	0357			Error Condition	Coded element	
+MSA	6	1	-1	20		IS			0	0357				String	identifier
+MSA	6	2	-1	199		ST			0					String	text
+MSA	6	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+MSA	6	4	-1	20		ST			0					String	alternate identifier
+MSA	6	5	-1	199		ST			0					String	alternate text
+MSA	6	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

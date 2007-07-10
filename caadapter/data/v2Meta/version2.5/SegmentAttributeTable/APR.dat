@@ -1,0 +1,49 @@
+APR	1	0	-1	80	00908	SCV	O	Y	0	0294			Time Selection Criteria	Scheduling class value pair	
+APR	1	1	0	20		CWE			0	0294				Coded with exceptions	parameter class
+APR	1	1	1	20		IS			0	0294				String	identifier
+APR	1	1	2	199		ST			0					String	text
+APR	1	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+APR	1	1	4	20		ST			0					String	alternate identifier
+APR	1	1	5	199		ST			0					String	alternate text
+APR	1	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+APR	1	1	7	10		ST	C		0					String	coding system version ID
+APR	1	1	8	10		ST			0					String	alternate coding system version ID
+APR	1	1	9	199		ST			0					String	original text
+APR	1	2	-1	20		ST			0					String	parameter value
+APR	2	0	-1	80	00909	SCV	O	Y	0	0294			Resource Selection Criteria	Scheduling class value pair	
+APR	2	1	0	20		CWE			0	0294				Coded with exceptions	parameter class
+APR	2	1	1	20		IS			0	0294				String	identifier
+APR	2	1	2	199		ST			0					String	text
+APR	2	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+APR	2	1	4	20		ST			0					String	alternate identifier
+APR	2	1	5	199		ST			0					String	alternate text
+APR	2	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+APR	2	1	7	10		ST	C		0					String	coding system version ID
+APR	2	1	8	10		ST			0					String	alternate coding system version ID
+APR	2	1	9	199		ST			0					String	original text
+APR	2	2	-1	20		ST			0					String	parameter value
+APR	3	0	-1	80	00910	SCV	O	Y	0	0294			Location Selection Criteria	Scheduling class value pair	
+APR	3	1	0	20		CWE			0	0294				Coded with exceptions	parameter class
+APR	3	1	1	20		IS			0	0294				String	identifier
+APR	3	1	2	199		ST			0					String	text
+APR	3	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+APR	3	1	4	20		ST			0					String	alternate identifier
+APR	3	1	5	199		ST			0					String	alternate text
+APR	3	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+APR	3	1	7	10		ST	C		0					String	coding system version ID
+APR	3	1	8	10		ST			0					String	alternate coding system version ID
+APR	3	1	9	199		ST			0					String	original text
+APR	3	2	-1	20		ST			0					String	parameter value
+APR	4	-1	-1	5	00911	NM	O		0				Slot Spacing Criteria	Numeric	
+APR	5	0	-1	80	00912	SCV	O	Y	0				Filler Override Criteria	Scheduling class value pair	
+APR	5	1	0	20		CWE			0	0294				Coded with exceptions	parameter class
+APR	5	1	1	20		IS			0	0294				String	identifier
+APR	5	1	2	199		ST			0					String	text
+APR	5	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+APR	5	1	4	20		ST			0					String	alternate identifier
+APR	5	1	5	199		ST			0					String	alternate text
+APR	5	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+APR	5	1	7	10		ST	C		0					String	coding system version ID
+APR	5	1	8	10		ST			0					String	alternate coding system version ID
+APR	5	1	9	199		ST			0					String	original text
+APR	5	2	-1	20		ST			0					String	parameter value

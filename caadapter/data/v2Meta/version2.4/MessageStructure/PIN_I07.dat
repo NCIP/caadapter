@@ -1,0 +1,1 @@
+PIN	I07	RQI	I01	ACK		 MSH {  PRD [ {  CTD } ] }  PID [ {  NK1 } ] [ [ {  GT1 } ] { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [ {  NTE } ] 	Patient Insurance Information - unsolicited insurance information	Patient insurance information	PIN/ACK - Unsolicited insurance information

@@ -1,0 +1,31 @@
+RXC	1	-1	-1	1	00313	ID	R		0	0166			RX Component Type	Coded values for HL7 tables	
+RXC	2	0	-1	250	00314	CE	R		0				Component Code	Coded element	
+RXC	2	1	-1	0		ST			0					String	identifier
+RXC	2	2	-1	0		ST			0					String	text
+RXC	2	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXC	2	4	-1	0		ST			0					String	alternate identifier
+RXC	2	5	-1	0		ST			0					String	alternate text
+RXC	2	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXC	3	-1	-1	20	00315	NM	R		0				Component Amount	Numeric	
+RXC	4	0	-1	250	00316	CE	R		0				Component Units	Coded element	
+RXC	4	1	-1	0		ST			0					String	identifier
+RXC	4	2	-1	0		ST			0					String	text
+RXC	4	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXC	4	4	-1	0		ST			0					String	alternate identifier
+RXC	4	5	-1	0		ST			0					String	alternate text
+RXC	4	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXC	5	-1	-1	20	01124	NM	O		0				Component Strength	Numeric	
+RXC	6	0	-1	250	01125	CE	O		0				Component Strength Units	Coded element	
+RXC	6	1	-1	0		ST			0					String	identifier
+RXC	6	2	-1	0		ST			0					String	text
+RXC	6	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXC	6	4	-1	0		ST			0					String	alternate identifier
+RXC	6	5	-1	0		ST			0					String	alternate text
+RXC	6	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXC	7	0	-1	250	01476	CE	O	Y	0				Supplementary Code	Coded element	
+RXC	7	1	-1	0		ST			0					String	identifier
+RXC	7	2	-1	0		ST			0					String	text
+RXC	7	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXC	7	4	-1	0		ST			0					String	alternate identifier
+RXC	7	5	-1	0		ST			0					String	alternate text
+RXC	7	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

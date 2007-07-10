@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A26
+Trigger Description=ADT/ACK -  Cancel pending transfer
+Message Structure=ADT_A21
+Return Message=ACK^A26
+Called by=

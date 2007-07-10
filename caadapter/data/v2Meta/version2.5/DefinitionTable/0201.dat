@@ -1,0 +1,8 @@
+HL7	Telecommunication use code	0201	ASN	Answering Service Number
+HL7	Telecommunication use code	0201	BPN	Beeper Number
+HL7	Telecommunication use code	0201	EMR	Emergency Number
+HL7	Telecommunication use code	0201	NET	Network (email) Address
+HL7	Telecommunication use code	0201	ORN	Other Residence Number
+HL7	Telecommunication use code	0201	PRN	Primary Residence Number
+HL7	Telecommunication use code	0201	VHN	Vacation Home Number
+HL7	Telecommunication use code	0201	WPN	Work Number

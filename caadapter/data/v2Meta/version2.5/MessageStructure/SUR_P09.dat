@@ -1,0 +1,7 @@
+Message Type=SUR
+Message Type Name=Summary product experience report
+Trigger Event=P09
+Trigger Description=SUR - Summary product experience report
+Message Structure=MSH { FAC { PSH PDC } PSH { FAC PDC NTE } }
+Return Message=
+Called by=

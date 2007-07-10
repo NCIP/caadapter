@@ -1,0 +1,36 @@
+TCD	1	0	-1	250	00238	CE	R		0				Universal Service Identifier	Coded element	
+TCD	1	1	-1	20		ST			0					String	identifier
+TCD	1	2	-1	199		ST			0					String	text
+TCD	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TCD	1	4	-1	20		ST			0					String	alternate identifier
+TCD	1	5	-1	199		ST			0					String	alternate text
+TCD	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+TCD	2	0	-1	20	01420	SN	O		0				Auto-Dilution Factor	Structured numeric	
+TCD	2	1	-1	2		ST			0					String	comparator
+TCD	2	2	-1	15		NM			0					Numeric	num1
+TCD	2	3	-1	1		ST			0					String	separator/suffix
+TCD	2	4	-1	15		NM			0					Numeric	num2
+TCD	3	0	-1	20	01421	SN	O		0				Rerun Dilution Factor	Structured numeric	
+TCD	3	1	-1	2		ST			0					String	comparator
+TCD	3	2	-1	15		NM			0					Numeric	num1
+TCD	3	3	-1	1		ST			0					String	separator/suffix
+TCD	3	4	-1	15		NM			0					Numeric	num2
+TCD	4	0	-1	20	01422	SN	O		0				Pre-Dilution Factor	Structured numeric	
+TCD	4	1	-1	2		ST			0					String	comparator
+TCD	4	2	-1	15		NM			0					Numeric	num1
+TCD	4	3	-1	1		ST			0					String	separator/suffix
+TCD	4	4	-1	15		NM			0					Numeric	num2
+TCD	5	0	-1	20	01413	SN	O		0				Endogenous Content of Pre-Dilution Diluent	Structured numeric	
+TCD	5	1	-1	2		ST			0					String	comparator
+TCD	5	2	-1	15		NM			0					Numeric	num1
+TCD	5	3	-1	1		ST			0					String	separator/suffix
+TCD	5	4	-1	15		NM			0					Numeric	num2
+TCD	6	-1	-1	1	01416	ID	O		0	0136			Automatic Repeat Allowed	Coded values for HL7 tables	
+TCD	7	-1	-1	1	01424	ID	O		0	0136			Reflex Allowed	Coded values for HL7 tables	
+TCD	8	0	-1	250	01425	CE	O		0	0389			Analyte Repeat Status	Coded element	
+TCD	8	1	-1	20		IS			0	0389				String	identifier
+TCD	8	2	-1	199		ST			0					String	text
+TCD	8	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+TCD	8	4	-1	20		ST			0					String	alternate identifier
+TCD	8	5	-1	199		ST			0					String	alternate text
+TCD	8	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

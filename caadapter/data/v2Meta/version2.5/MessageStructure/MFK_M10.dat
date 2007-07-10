@@ -1,0 +1,7 @@
+Message Type=MFK
+Message Type Name=Master files application acknowledgment
+Trigger Event=M10
+Trigger Description=MFN/MFK - Test /observation batteries master file
+Message Structure=MFK_M01
+Return Message=ACK^M10
+Called by=MFN^M10

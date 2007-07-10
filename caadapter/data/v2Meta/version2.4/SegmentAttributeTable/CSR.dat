@@ -1,0 +1,140 @@
+CSR	1	0	-1	60	01011	EI	R		0				Sponsor Study ID	Entity identifier	
+CSR	1	1	-1	0		ST			0					String	entity identifier
+CSR	1	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CSR	1	3	-1	0		ST			0					String	universal ID
+CSR	1	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	2	0	-1	60	01036	EI	O		0				Alternate Study ID	Entity identifier	
+CSR	2	1	-1	0		ST			0					String	entity identifier
+CSR	2	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CSR	2	3	-1	0		ST			0					String	universal ID
+CSR	2	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	3	0	-1	250	01037	CE	O		0				Institution Registering the Patient	Coded element	
+CSR	3	1	-1	0		ST			0					String	identifier
+CSR	3	2	-1	0		ST			0					String	text
+CSR	3	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSR	3	4	-1	0		ST			0					String	alternate identifier
+CSR	3	5	-1	0		ST			0					String	alternate text
+CSR	3	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CSR	4	0	-1	30	01038	CX	R		0				Sponsor Patient ID	Extended composite ID with check digit	
+CSR	4	1	-1	0		ST			0					String	ID
+CSR	4	2	-1	0		ST			0					String	check digit
+CSR	4	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CSR	4	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+CSR	4	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CSR	4	4	2	0		ST			0					String	universal ID
+CSR	4	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	4	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+CSR	4	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+CSR	4	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+CSR	4	6	2	0		ST			0					String	universal ID
+CSR	4	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	4	7	-1	0		DT			0					Date	effective date
+CSR	4	8	-1	0		DT			0					Date	expiration date
+CSR	5	0	-1	30	01039	CX	O		0				Alternate Patient ID - CSR	Extended composite ID with check digit	
+CSR	5	1	-1	0		ST			0					String	ID
+CSR	5	2	-1	0		ST			0					String	check digit
+CSR	5	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CSR	5	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+CSR	5	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CSR	5	4	2	0		ST			0					String	universal ID
+CSR	5	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	5	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+CSR	5	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+CSR	5	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+CSR	5	6	2	0		ST			0					String	universal ID
+CSR	5	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	5	7	-1	0		DT			0					Date	effective date
+CSR	5	8	-1	0		DT			0					Date	expiration date
+CSR	6	-1	-1	26	01040	TS	R		0				Date/Time Of Patient Study Registration	Time stamp	
+CSR	7	0	-1	250	01041	XCN	O	Y	0				Person Performing Study Registration	Extended composite ID number and name	
+CSR	7	1	-1	0		ST			0					String	ID number
+CSR	7	2	0	0		FN			0					String	family name
+CSR	7	2	1	0		ST			0					String	surname
+CSR	7	2	2	0		ST			0					String	own surname prefix
+CSR	7	2	3	0		ST			0					String	own surname
+CSR	7	2	4	0		ST			0					String	surname prefix from partner/spouse
+CSR	7	2	5	0		ST			0					String	surname from partner/spouse
+CSR	7	3	-1	0		ST			0					String	given name
+CSR	7	4	-1	0		ST			0					String	second and further given names or initial thereof
+CSR	7	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+CSR	7	6	-1	0		ST			0					String	prefix (e.g., DR)
+CSR	7	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+CSR	7	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+CSR	7	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+CSR	7	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CSR	7	9	2	0		ST			0					String	universal ID
+CSR	7	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	7	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+CSR	7	11	-1	0		ST			0					String	identifier check digit
+CSR	7	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CSR	7	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+CSR	7	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+CSR	7	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+CSR	7	14	2	0		ST			0					String	universal ID
+CSR	7	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	7	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+CSR	8	0	-1	250	01042	XCN	R	Y	0				Study Authorizing Provider	Extended composite ID number and name	
+CSR	8	1	-1	0		ST			0					String	ID number
+CSR	8	2	0	0		FN			0					String	family name
+CSR	8	2	1	0		ST			0					String	surname
+CSR	8	2	2	0		ST			0					String	own surname prefix
+CSR	8	2	3	0		ST			0					String	own surname
+CSR	8	2	4	0		ST			0					String	surname prefix from partner/spouse
+CSR	8	2	5	0		ST			0					String	surname from partner/spouse
+CSR	8	3	-1	0		ST			0					String	given name
+CSR	8	4	-1	0		ST			0					String	second and further given names or initial thereof
+CSR	8	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+CSR	8	6	-1	0		ST			0					String	prefix (e.g., DR)
+CSR	8	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+CSR	8	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+CSR	8	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+CSR	8	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+CSR	8	9	2	0		ST			0					String	universal ID
+CSR	8	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	8	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+CSR	8	11	-1	0		ST			0					String	identifier check digit
+CSR	8	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+CSR	8	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+CSR	8	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+CSR	8	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+CSR	8	14	2	0		ST			0					String	universal ID
+CSR	8	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+CSR	8	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+CSR	9	-1	-1	26	01043	TS	C		0				Date/time Patient Study Consent Signed	Time stamp	
+CSR	10	0	-1	250	01044	CE	C		0				Patient Study Eligibility Status	Coded element	
+CSR	10	1	-1	0		ST			0					String	identifier
+CSR	10	2	-1	0		ST			0					String	text
+CSR	10	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSR	10	4	-1	0		ST			0					String	alternate identifier
+CSR	10	5	-1	0		ST			0					String	alternate text
+CSR	10	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CSR	11	-1	-1	26	01045	TS	O	Y	3				Study Randomization Date/time	Time stamp	
+CSR	12	0	-1	250	01046	CE	O	Y	3				Randomized Study Arm	Coded element	
+CSR	12	1	-1	0		ST			0					String	identifier
+CSR	12	2	-1	0		ST			0					String	text
+CSR	12	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSR	12	4	-1	0		ST			0					String	alternate identifier
+CSR	12	5	-1	0		ST			0					String	alternate text
+CSR	12	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CSR	13	0	-1	250	01047	CE	O	Y	3				Stratum for Study Randomization	Coded element	
+CSR	13	1	-1	0		ST			0					String	identifier
+CSR	13	2	-1	0		ST			0					String	text
+CSR	13	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSR	13	4	-1	0		ST			0					String	alternate identifier
+CSR	13	5	-1	0		ST			0					String	alternate text
+CSR	13	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CSR	14	0	-1	250	01048	CE	C		0				Patient Evaluability Status	Coded element	
+CSR	14	1	-1	0		ST			0					String	identifier
+CSR	14	2	-1	0		ST			0					String	text
+CSR	14	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSR	14	4	-1	0		ST			0					String	alternate identifier
+CSR	14	5	-1	0		ST			0					String	alternate text
+CSR	14	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CSR	15	-1	-1	26	01049	TS	C		0				Date/time Ended Study	Time stamp	
+CSR	16	0	-1	250	01050	CE	C		0				Reason Ended Study	Coded element	
+CSR	16	1	-1	0		ST			0					String	identifier
+CSR	16	2	-1	0		ST			0					String	text
+CSR	16	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CSR	16	4	-1	0		ST			0					String	alternate identifier
+CSR	16	5	-1	0		ST			0					String	alternate text
+CSR	16	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

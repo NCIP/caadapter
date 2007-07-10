@@ -1,0 +1,7 @@
+Message Type=VXU
+Message Type Name=Unsolicited vaccination record update
+Trigger Event=V04
+Trigger Description=VXU - Unsolicited vaccination record update
+Message Structure=MSH [ { SFT } ] PID [ PD1 ] [ { NK1 } ] [ !PATIENT! PV1 [ PV2 ] ] [ { GT1 } ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] RXA [ RXR ] [ { !OBSERVATION! OBX [ { NTE } ] } ] } ]
+Return Message=
+Called by=

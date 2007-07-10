@@ -1,0 +1,6 @@
+CD	1	WVI		22		channel identifier	N	^
+CD	2	WVS		17		waveform source	N	&
+CD	3	CSU		478		channel sensitivity/units	N	^
+CD	4	CCP		20		channel calibration parameters	N	^
+CD	5	NM		6		channel sampling frequency	N	^
+CD	6	NR		33		minimum/maximum data values	N	E

@@ -1,0 +1,47 @@
+HL7	Route of administration	0162	AP	Apply Externally
+HL7	Route of administration	0162	B	Buccal
+HL7	Route of administration	0162	DT	Dental
+HL7	Route of administration	0162	EP	Epidural
+HL7	Route of administration	0162	ET	Endotrachial Tube*
+HL7	Route of administration	0162	GTT	Gastrostomy Tube
+HL7	Route of administration	0162	GU	GU Irrigant
+HL7	Route of administration	0162	IA	Intra-arterial
+HL7	Route of administration	0162	IB	Intrabursal
+HL7	Route of administration	0162	IC	Intracardiac
+HL7	Route of administration	0162	ICV	Intracervical (uterus)
+HL7	Route of administration	0162	ID	Intradermal
+HL7	Route of administration	0162	IH	Inhalation
+HL7	Route of administration	0162	IHA	Intrahepatic Artery
+HL7	Route of administration	0162	IM	Intramuscular
+HL7	Route of administration	0162	IMR	Immerse (Soak) Body Part
+HL7	Route of administration	0162	IN	Intranasal
+HL7	Route of administration	0162	IO	Intraocular
+HL7	Route of administration	0162	IP	Intraperitoneal
+HL7	Route of administration	0162	IS	Intrasynovial
+HL7	Route of administration	0162	IT	Intrathecal
+HL7	Route of administration	0162	IU	Intrauterine
+HL7	Route of administration	0162	IV	Intravenous
+HL7	Route of administration	0162	MM	Mucous Membrane
+HL7	Route of administration	0162	MTH	Mouth/Throat
+HL7	Route of administration	0162	NG	Nasogastric
+HL7	Route of administration	0162	NP	Nasal Prongs*
+HL7	Route of administration	0162	NS	Nasal
+HL7	Route of administration	0162	NT	Nasotrachial Tube
+HL7	Route of administration	0162	OP	Ophthalmic
+HL7	Route of administration	0162	OT	Otic
+HL7	Route of administration	0162	OTH	Other/Miscellaneous
+HL7	Route of administration	0162	PF	Perfusion
+HL7	Route of administration	0162	PO	Oral
+HL7	Route of administration	0162	PR	Rectal
+HL7	Route of administration	0162	RM	Rebreather Mask*
+HL7	Route of administration	0162	SC	Subcutaneous
+HL7	Route of administration	0162	SD	Soaked Dressing
+HL7	Route of administration	0162	SL	Sublingual
+HL7	Route of administration	0162	TD	Transdermal
+HL7	Route of administration	0162	TL	Translingual
+HL7	Route of administration	0162	TP	Topical
+HL7	Route of administration	0162	TRA	Tracheostomy*
+HL7	Route of administration	0162	UR	Urethral
+HL7	Route of administration	0162	VG	Vaginal
+HL7	Route of administration	0162	VM	Ventimask
+HL7	Route of administration	0162	WND	Wound

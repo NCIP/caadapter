@@ -1,0 +1,4 @@
+User	Match reason	0392	DB	Match on Date of Birth
+User	Match reason	0392	NA	Match on Name (Alpha Match)
+User	Match reason	0392	NP	Match on Name (Phonetic Match)
+User	Match reason	0392	SS	Match on Social Security Number

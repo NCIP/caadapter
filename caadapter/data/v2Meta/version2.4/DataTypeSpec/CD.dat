@@ -1,0 +1,6 @@
+CD	1	ZC33				channel identifier	N	^
+CD	2	ZC34				waveform source	N	&
+CD	3	ZC35				channel sensitivity/units	N	^
+CD	4	ZC36				channel calibration parameters	N	^
+CD	5	NM				sampling frequency	N	^
+CD	6	ZC37				minimum/maximum data values	N	E

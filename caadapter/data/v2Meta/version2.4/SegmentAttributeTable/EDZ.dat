@@ -1,0 +1,9 @@
+EDZ	1	0	-1	250	09001	ED	R	Y	0				Encapsulated Data	Encapsulated data	
+EDZ	1	1	0	0		HD			0					Coded value for user-defined tables	source application
+EDZ	1	1	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+EDZ	1	1	2	0		ST			0					String	universal ID
+EDZ	1	1	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+EDZ	1	2	-1	0		ID			0	0191				Coded values for HL7 tables	type of data
+EDZ	1	3	-1	0		ID			0	0291				Coded values for HL7 tables	data subtype
+EDZ	1	4	-1	0		ID			0	0299	0290			Coded values for HL7 tables	encoding
+EDZ	1	5	-1	0		ST			0					String	data

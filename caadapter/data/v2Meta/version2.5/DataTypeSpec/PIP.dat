@@ -1,0 +1,5 @@
+PIP	1	CE	0525	483	R	privilege	N	^
+PIP	2	CE	0526	483		privilege class	N	^
+PIP	3	DT		8		expiration date	N	^
+PIP	4	DT		8		activation date	N	^
+PIP	5	EI		427		facility	N	E

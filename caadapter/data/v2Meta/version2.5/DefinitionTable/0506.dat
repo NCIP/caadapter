@@ -1,0 +1,5 @@
+HL7	Service Request Relationship	0506	C	Compound
+HL7	Service Request Relationship	0506	E	Exclusive
+HL7	Service Request Relationship	0506	N	Nurse prerogative
+HL7	Service Request Relationship	0506	S	Simultaneous
+HL7	Service Request Relationship	0506	T	Tapering

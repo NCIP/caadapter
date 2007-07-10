@@ -1,0 +1,9 @@
+User	Precaution Code	0433	A	Aggressive
+User	Precaution Code	0433	B	Blind
+User	Precaution Code	0433	C	Confused
+User	Precaution Code	0433	D	Deaf
+User	Precaution Code	0433	I	On IV
+User	Precaution Code	0433	N	_No-code_ (i.e. Do not resuscitate)
+User	Precaution Code	0433	O	Other
+User	Precaution Code	0433	P	Paraplegic
+User	Precaution Code	0433	U	Unknown

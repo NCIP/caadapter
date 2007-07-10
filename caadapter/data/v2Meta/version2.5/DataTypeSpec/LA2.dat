@@ -1,0 +1,16 @@
+LA2	1	IS	0302	20		point of care	N	^
+LA2	2	IS	0303	20		room	N	^
+LA2	3	IS	0304	20		bed	N	^
+LA2	4	HD		227		facility	N	^
+LA2	5	IS	0306	20		location status	N	^
+LA2	6	IS	0305	20		patient location type	N	^
+LA2	7	IS	0307	20		building	N	^
+LA2	8	IS	0308	20		floor	N	^
+LA2	9	ST		120		street address	N	^
+LA2	10	ST		120		other designation	N	^
+LA2	11	ST		50		city	N	^
+LA2	12	ST		50		state or province	N	^
+LA2	13	ST		12		zip or postal code	N	^
+LA2	14	ID	0399	3		country	N	^
+LA2	15	ID	0190	3		address type	N	^
+LA2	16	ST		50		other geographic designation	N	E

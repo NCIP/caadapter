@@ -1,0 +1,18 @@
+CNS	1	-1	-1	20	01402	NM	O		0				Starting Notification Reference Number	Numeric	
+CNS	2	-1	-1	20	01403	NM	O		0				Ending Notification Reference Number	Numeric	
+CNS	3	-1	-1	26	01404	TS	O		0				Starting Notification Date/Time	Time stamp	
+CNS	4	-1	-1	26	01405	TS	O		0				Ending Notification Date/Time	Time stamp	
+CNS	5	0	-1	250	01406	CE	O		0				Starting Notification Code	Coded element	
+CNS	5	1	-1	0		ST			0					String	identifier
+CNS	5	2	-1	0		ST			0					String	text
+CNS	5	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CNS	5	4	-1	0		ST			0					String	alternate identifier
+CNS	5	5	-1	0		ST			0					String	alternate text
+CNS	5	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+CNS	6	0	-1	250	01407	CE	O		0				Ending Notification Code	Coded element	
+CNS	6	1	-1	0		ST			0					String	identifier
+CNS	6	2	-1	0		ST			0					String	text
+CNS	6	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+CNS	6	4	-1	0		ST			0					String	alternate identifier
+CNS	6	5	-1	0		ST			0					String	alternate text
+CNS	6	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

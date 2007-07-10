@@ -1,0 +1,80 @@
+User	Coding System	0396	99zzz	or L Local general code (where z is an alphanumeric character)
+User	Coding System	0396	ACR	American College of Radiology finding codes
+User	Coding System	0396	ART	WHO Adverse Reaction Terms
+User	Coding System	0396	AS4	ASTM E1238/ E1467 Universal
+User	Coding System	0396	AS4E	AS4 Neurophysiology Codes
+User	Coding System	0396	ATC	American Type Culture Collection
+User	Coding System	0396	C4	CPT-4
+User	Coding System	0396	C5	CPT-5
+User	Coding System	0396	CAS	Chemical abstract codes
+User	Coding System	0396	CD2	CDT-2 Codes
+User	Coding System	0396	CDCA	CDC Analyte Codes
+User	Coding System	0396	CDCM	CDC Methods/Instruments Codes
+User	Coding System	0396	CDS	CDC Surveillance
+User	Coding System	0396	CE	CEN ECG diagnostic codes
+User	Coding System	0396	CLP	CLIP
+User	Coding System	0396	CPTM	CPT Modifier Code
+User	Coding System	0396	CST	COSTART
+User	Coding System	0396	CVX	CDC Vaccine Codes
+User	Coding System	0396	DCL	DICOM Class Label
+User	Coding System	0396	DCM	DICOM modality codes
+User	Coding System	0396	DQL	DICOM Query Label
+User	Coding System	0396	E	EUCLIDES
+User	Coding System	0396	E5	Euclides  quantity codes
+User	Coding System	0396	E6	Euclides Lab method codes
+User	Coding System	0396	E7	Euclides Lab equipment codes
+User	Coding System	0396	ENZC	Enzyme Codes
+User	Coding System	0396	FDDC	First DataBank Drug Codes
+User	Coding System	0396	FDDX	First DataBank Diagnostic Codes
+User	Coding System	0396	FDK	FDA K10
+User	Coding System	0396	HB	HIBCC
+User	Coding System	0396	HCPCS	HCFA Common Procedure Coding System
+User	Coding System	0396	HHC	Home Health Care
+User	Coding System	0396	HI	Health Outcomes
+User	Coding System	0396	HL7nnnn	HL7 Defined Codes where nnnn is the HL7 table number
+User	Coding System	0396	HL7#	HL7 Defined table #
+User	Coding System	0396	HPC	HCFA Procedure Codes (HCPCS)
+User	Coding System	0396	I10	ICD-10
+User	Coding System	0396	I10P	ICD-10  Procedure Codes
+User	Coding System	0396	I9	ICD9
+User	Coding System	0396	I9C	ICD-9CM
+User	Coding System	0396	IBT	ISBT
+User	Coding System	0396	IC2	ICHPPC-2
+User	Coding System	0396	ICDO	International Classification of Diseases for Oncology
+User	Coding System	0396	ICS	ICCS
+User	Coding System	0396	ICSD	International Classification of Sleep Disorders
+User	Coding System	0396	ISOnnnn	ISO Defined Codes where nnnn is the ISO table number
+User	Coding System	0396	ISO#	ISO Defined table number #
+User	Coding System	0396	IUPC	IUPAC/IFCC Component Codes
+User	Coding System	0396	IUPP	IUPAC/IFCC Property Codes
+User	Coding System	0396	JC8	Japanese Chemistry
+User	Coding System	0396	LB	Local billing code
+User	Coding System	0396	LN	Logical Observation Identifier Names and Codes (LOINC(r))
+User	Coding System	0396	MCD	Medicaid
+User	Coding System	0396	MCR	Medicare
+User	Coding System	0396	MDDX	Medispan Diagnostic Codes
+User	Coding System	0396	MEDC	Medical Economics Drug Codes
+User	Coding System	0396	MEDR	Medical Dictionary for Drug Regulatory Affairs (MEDDRA)
+User	Coding System	0396	MEDX	Medical Economics Diagnostic Codes
+User	Coding System	0396	MGPI	Medispan GPI
+User	Coding System	0396	MVX	CDC Vaccine Manufacturer Codes
+User	Coding System	0396	NDA	NANDA
+User	Coding System	0396	NDC	National drug codes
+User	Coding System	0396	NIC	Nursing Interventions Classification
+User	Coding System	0396	NPI	National Provider Identifier
+User	Coding System	0396	OHA	Omaha System
+User	Coding System	0396	POS	POS Codes
+User	Coding System	0396	RC	Read Classification
+User	Coding System	0396	SDM	SNOMED- DICOM Microglossary
+User	Coding System	0396	SNM	Systemized Nomenclature of Medicine (SNOMED)
+User	Coding System	0396	SNM3	SNOMED International
+User	Coding System	0396	SNT	SNOMED topology codes (anatomic sites)
+User	Coding System	0396	UC	UCDS
+User	Coding System	0396	UMD	MDNS
+User	Coding System	0396	UML	Unified Medical Language
+User	Coding System	0396	UPC	Universal Product Code
+User	Coding System	0396	UPIN	UPIN
+User	Coding System	0396	W1	WHO record # drug codes (6 digit)
+User	Coding System	0396	W2	WHO record # drug codes (8 digit)
+User	Coding System	0396	W4	WHO record # code with ASTM extension
+User	Coding System	0396	WC	WHO ATC

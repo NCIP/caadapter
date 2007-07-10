@@ -1,0 +1,12 @@
+HL7	Substance type	0384	CO	Control
+HL7	Substance type	0384	DI	Diluent
+HL7	Substance type	0384	LI	Measurable Liquid Item
+HL7	Substance type	0384	LW	Liquid Waste
+HL7	Substance type	0384	MR	Multiple Test Reagent (consumption cannot be tied to orders for single test)
+HL7	Substance type	0384	OT	Other
+HL7	Substance type	0384	PT	Pretreatment
+HL7	Substance type	0384	PW	Purified Water
+HL7	Substance type	0384	RC	Reagent Calibrator
+HL7	Substance type	0384	SC	Countable Solid Item (e.g., Tip, etc.)
+HL7	Substance type	0384	SR	Single Test Reagent
+HL7	Substance type	0384	SW	Solid Waste

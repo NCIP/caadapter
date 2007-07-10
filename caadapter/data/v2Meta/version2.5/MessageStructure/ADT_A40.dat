@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A40
+Trigger Description=ADT/ACK - Merge patient _ patient identifier list
+Message Structure=ADT_A39
+Return Message=ACK^A40
+Called by=

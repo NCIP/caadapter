@@ -1,0 +1,4 @@
+User	Procedure functional type	0230	A	Anesthesia
+User	Procedure functional type	0230	D	Diagnostic procedure
+User	Procedure functional type	0230	I	Invasive procedure not classified elsewhere (e.g., IV, catheter, etc.)
+User	Procedure functional type	0230	P	Procedure for treatment (therapeutic, including operations)

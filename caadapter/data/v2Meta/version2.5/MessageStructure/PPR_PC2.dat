@@ -1,0 +1,7 @@
+Message Type=PPR
+Message Type Name=Patient problem message
+Trigger Event=PC2
+Trigger Description=PPR - PC/ problem update
+Message Structure=PPR_PC1
+Return Message=ACK^PC2
+Called by=

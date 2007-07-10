@@ -1,0 +1,239 @@
+SAC	1	0	-1	80	01329	EI	O		0				External Accession Identifier	Entity identifier	
+SAC	1	1	-1	0		ST			0					String	entity identifier
+SAC	1	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	1	3	-1	0		ST			0					String	universal ID
+SAC	1	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	2	0	-1	80	01330	EI	O		0				Accession Identifier	Entity identifier	
+SAC	2	1	-1	0		ST			0					String	entity identifier
+SAC	2	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	2	3	-1	0		ST			0					String	universal ID
+SAC	2	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	3	0	-1	80	01331	EI	C		0				Container Identifier	Entity identifier	
+SAC	3	1	-1	0		ST			0					String	entity identifier
+SAC	3	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	3	3	-1	0		ST			0					String	universal ID
+SAC	3	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	4	0	-1	80	01332	EI	C		0				Primary (parent) Container Identifier	Entity identifier	
+SAC	4	1	-1	0		ST			0					String	entity identifier
+SAC	4	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	4	3	-1	0		ST			0					String	universal ID
+SAC	4	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	5	0	-1	80	01333	EI	O		0				Equipment Container Identifier	Entity identifier	
+SAC	5	1	-1	0		ST			0					String	entity identifier
+SAC	5	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	5	3	-1	0		ST			0					String	universal ID
+SAC	5	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	6	0	-1	300	00249	ZC12	O		0	0070	0163	0369	Specimen Source	User Define : composit	
+SAC	6	1	0	0		ZCE2			0					Coded values for HL7 tables	specimen source name or code
+SAC	6	1	1	0		ID			0	0070				Coded values for HL7 tables	identifier
+SAC	6	1	2	0		ST			0					String	text
+SAC	6	1	3	0		ST			0					String	name of coding system
+SAC	6	1	4	0		ID			0	0070				Coded values for HL7 tables	alternate identifier
+SAC	6	1	5	0		ST			0					String	alternate text
+SAC	6	1	6	0		ST			0					String	name of alternate coding system
+SAC	6	2	-1	0		TX			0					Text data	additives
+SAC	6	3	-1	0		TX			0					Text data	free text
+SAC	6	4	0	0		ZCE3			0					Coded values for HL7 tables	body site
+SAC	6	4	1	0		ID			0	0163				Coded values for HL7 tables	identifier
+SAC	6	4	2	0		ST			0					String	text
+SAC	6	4	3	0		ST			0					String	name of coding system
+SAC	6	4	4	0		ID			0	0163				Coded values for HL7 tables	alternate identifier
+SAC	6	4	5	0		ST			0					String	alternate text
+SAC	6	4	6	0		ST			0					String	name of alternate coding system
+SAC	6	5	0	0		ZCE3			0					Coded values for HL7 tables	site modifier
+SAC	6	5	1	0		ID			0	0163				Coded values for HL7 tables	identifier
+SAC	6	5	2	0		ST			0					String	text
+SAC	6	5	3	0		ST			0					String	name of coding system
+SAC	6	5	4	0		ID			0	0163				Coded values for HL7 tables	alternate identifier
+SAC	6	5	5	0		ST			0					String	alternate text
+SAC	6	5	6	0		ST			0					String	name of alternate coding system
+SAC	6	6	0	0		CE			0					String	collection method modifier code
+SAC	6	6	1	0		ST			0					String	identifier
+SAC	6	6	2	0		ST			0					String	text
+SAC	6	6	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	6	6	4	0		ST			0					String	alternate identifier
+SAC	6	6	5	0		ST			0					String	alternate text
+SAC	6	6	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	6	7	0	0		ZCE8			0					Coded values for HL7 tables	specimen role
+SAC	6	7	1	0		ID			0	0369				Coded values for HL7 tables	identifier
+SAC	6	7	2	0		ST			0					String	text
+SAC	6	7	3	0		ST			0					String	name of coding system
+SAC	6	7	4	0		ID			0	0369				Coded values for HL7 tables	alternate identifier
+SAC	6	7	5	0		ST			0					String	alternate text
+SAC	6	7	6	0		ST			0					String	name of alternate coding system
+SAC	7	-1	-1	26	01334	TS	O		0				Registration Date/Time	Time stamp	
+SAC	8	0	-1	250	01335	CE	O		0	0370			Container Status	Coded element	
+SAC	8	1	-1	0		ST			0					String	identifier
+SAC	8	2	-1	0		ST			0					String	text
+SAC	8	3	-1	0		IS			0	0370				Coded value for user-defined tables	name of coding system
+SAC	8	4	-1	0		ST			0					String	alternate identifier
+SAC	8	5	-1	0		ST			0					String	alternate text
+SAC	8	6	-1	0		IS			0	0370				Coded value for user-defined tables	name of alternate coding system
+SAC	9	0	-1	250	01336	CE	O		0	0378			Carrier Type	Coded element	
+SAC	9	1	-1	0		ST			0					String	identifier
+SAC	9	2	-1	0		ST			0					String	text
+SAC	9	3	-1	0		IS			0	0378				Coded value for user-defined tables	name of coding system
+SAC	9	4	-1	0		ST			0					String	alternate identifier
+SAC	9	5	-1	0		ST			0					String	alternate text
+SAC	9	6	-1	0		IS			0	0378				Coded value for user-defined tables	name of alternate coding system
+SAC	10	0	-1	80	01337	EI	O		0				Carrier Identifier	Entity identifier	
+SAC	10	1	-1	0		ST			0					String	entity identifier
+SAC	10	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	10	3	-1	0		ST			0					String	universal ID
+SAC	10	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	11	0	-1	80	01338	NA	O		0				Position in Carrier	Numeric array	
+SAC	11	1	-1	0		NM			0					Numeric	value1
+SAC	12	0	-1	250	01339	CE	O		0	0379			Tray Type	Coded element	
+SAC	12	1	-1	0		ST			0					String	identifier
+SAC	12	2	-1	0		ST			0					String	text
+SAC	12	3	-1	0		IS			0	0379				Coded value for user-defined tables	name of coding system
+SAC	12	4	-1	0		ST			0					String	alternate identifier
+SAC	12	5	-1	0		ST			0					String	alternate text
+SAC	12	6	-1	0		IS			0	0379				Coded value for user-defined tables	name of alternate coding system
+SAC	13	0	-1	80	01340	EI	O		0				Tray Identifier	Entity identifier	
+SAC	13	1	-1	0		ST			0					String	entity identifier
+SAC	13	2	-1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+SAC	13	3	-1	0		ST			0					String	universal ID
+SAC	13	4	-1	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+SAC	14	0	-1	80	01341	NA	O		0				Position in Tray	Numeric array	
+SAC	14	1	-1	0		NM			0					Numeric	value1
+SAC	15	0	-1	250	01342	CE	O	Y	0				Location	Coded element	
+SAC	15	1	-1	0		ST			0					String	identifier
+SAC	15	2	-1	0		ST			0					String	text
+SAC	15	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	15	4	-1	0		ST			0					String	alternate identifier
+SAC	15	5	-1	0		ST			0					String	alternate text
+SAC	15	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	16	-1	-1	20	01343	NM	O		0				Container Height	Numeric	
+SAC	17	-1	-1	20	01344	NM	O		0				Container Diameter	Numeric	
+SAC	18	-1	-1	20	01345	NM	O		0				Barrier Delta	Numeric	
+SAC	19	-1	-1	20	01346	NM	O		0				Bottom Delta	Numeric	
+SAC	20	0	-1	250	01347	CE	O		0				Container Height/Diameter/Delta Units	Coded element	
+SAC	20	1	-1	0		ST			0					String	identifier
+SAC	20	2	-1	0		ST			0					String	text
+SAC	20	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	20	4	-1	0		ST			0					String	alternate identifier
+SAC	20	5	-1	0		ST			0					String	alternate text
+SAC	20	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	21	-1	-1	20	00644	NM	O		0				Container Volume	Numeric	
+SAC	22	-1	-1	20	01349	NM	O		0				Available Volume	Numeric	
+SAC	23	-1	-1	20	01350	NM	O		0				Initial Specimen Volume	Numeric	
+SAC	24	0	-1	250	01351	CE	O		0				Volume Units	Coded element	
+SAC	24	1	-1	0		ST			0					String	identifier
+SAC	24	2	-1	0		ST			0					String	text
+SAC	24	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	24	4	-1	0		ST			0					String	alternate identifier
+SAC	24	5	-1	0		ST			0					String	alternate text
+SAC	24	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	25	0	-1	250	01352	CE	O		0	0380			Separator Type	Coded element	
+SAC	25	1	-1	0		ST			0					String	identifier
+SAC	25	2	-1	0		ST			0					String	text
+SAC	25	3	-1	0		IS			0	0380				Coded value for user-defined tables	name of coding system
+SAC	25	4	-1	0		ST			0					String	alternate identifier
+SAC	25	5	-1	0		ST			0					String	alternate text
+SAC	25	6	-1	0		IS			0	0380				Coded value for user-defined tables	name of alternate coding system
+SAC	26	0	-1	250	01353	CE	O		0	0381			Cap Type	Coded element	
+SAC	26	1	-1	0		ST			0					String	identifier
+SAC	26	2	-1	0		ST			0					String	text
+SAC	26	3	-1	0		IS			0	0381				Coded value for user-defined tables	name of coding system
+SAC	26	4	-1	0		ST			0					String	alternate identifier
+SAC	26	5	-1	0		ST			0					String	alternate text
+SAC	26	6	-1	0		IS			0	0381				Coded value for user-defined tables	name of alternate coding system
+SAC	27	0	-1	250	00647	CE	O	Y	0	0371			Additive	Coded element	
+SAC	27	1	-1	0		ST			0					String	identifier
+SAC	27	2	-1	0		ST			0					String	text
+SAC	27	3	-1	0		IS			0	0371				Coded value for user-defined tables	name of coding system
+SAC	27	4	-1	0		ST			0					String	alternate identifier
+SAC	27	5	-1	0		ST			0					String	alternate text
+SAC	27	6	-1	0		IS			0	0371				Coded value for user-defined tables	name of alternate coding system
+SAC	28	0	-1	250	01355	CE	O		0				Specimen Component	Coded element	
+SAC	28	1	-1	0		ST			0					String	identifier
+SAC	28	2	-1	0		ST			0					String	text
+SAC	28	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	28	4	-1	0		ST			0					String	alternate identifier
+SAC	28	5	-1	0		ST			0					String	alternate text
+SAC	28	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	29	0	-1	20	01356	SN	O		0				Dilution Factor	Structured numeric	
+SAC	29	1	-1	0		ST			0					String	comparator
+SAC	29	2	-1	0		NM			0					Numeric	num1
+SAC	29	3	-1	0		ST			0					String	separator/suffix
+SAC	29	4	-1	0		NM			0					Numeric	num2
+SAC	30	0	-1	250	01357	CE	O		0	0373			Treatment	Coded element	
+SAC	30	1	-1	0		ST			0					String	identifier
+SAC	30	2	-1	0		ST			0					String	text
+SAC	30	3	-1	0		IS			0	0373				Coded value for user-defined tables	name of coding system
+SAC	30	4	-1	0		ST			0					String	alternate identifier
+SAC	30	5	-1	0		ST			0					String	alternate text
+SAC	30	6	-1	0		IS			0	0373				Coded value for user-defined tables	name of alternate coding system
+SAC	31	0	-1	20	01358	SN	O		0				Temperature	Structured numeric	
+SAC	31	1	-1	0		ST			0					String	comparator
+SAC	31	2	-1	0		NM			0					Numeric	num1
+SAC	31	3	-1	0		ST			0					String	separator/suffix
+SAC	31	4	-1	0		NM			0					Numeric	num2
+SAC	32	-1	-1	20	01359	NM	O		0				Hemolysis Index	Numeric	
+SAC	33	0	-1	250	01360	CE	O		0				Hemolysis Index Units	Coded element	
+SAC	33	1	-1	0		ST			0					String	identifier
+SAC	33	2	-1	0		ST			0					String	text
+SAC	33	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	33	4	-1	0		ST			0					String	alternate identifier
+SAC	33	5	-1	0		ST			0					String	alternate text
+SAC	33	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	34	-1	-1	20	01361	NM	O		0				Lipemia Index	Numeric	
+SAC	35	0	-1	250	01362	CE	O		0				Lipemia Index Units	Coded element	
+SAC	35	1	-1	0		ST			0					String	identifier
+SAC	35	2	-1	0		ST			0					String	text
+SAC	35	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	35	4	-1	0		ST			0					String	alternate identifier
+SAC	35	5	-1	0		ST			0					String	alternate text
+SAC	35	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	36	-1	-1	20	01363	NM	O		0				Icterus Index	Numeric	
+SAC	37	0	-1	250	01364	CE	O		0				Icterus Index Units	Coded element	
+SAC	37	1	-1	0		ST			0					String	identifier
+SAC	37	2	-1	0		ST			0					String	text
+SAC	37	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	37	4	-1	0		ST			0					String	alternate identifier
+SAC	37	5	-1	0		ST			0					String	alternate text
+SAC	37	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	38	-1	-1	20	01365	NM	O		0				Fibrin Index	Numeric	
+SAC	39	0	-1	250	01366	CE	O		0				Fibrin Index Units	Coded element	
+SAC	39	1	-1	0		ST			0					String	identifier
+SAC	39	2	-1	0		ST			0					String	text
+SAC	39	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SAC	39	4	-1	0		ST			0					String	alternate identifier
+SAC	39	5	-1	0		ST			0					String	alternate text
+SAC	39	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SAC	40	0	-1	250	01367	CE	O	Y	0	0374			System Induced Contaminants	Coded element	
+SAC	40	1	-1	0		ST			0					String	identifier
+SAC	40	2	-1	0		ST			0					String	text
+SAC	40	3	-1	0		IS			0	0374				Coded value for user-defined tables	name of coding system
+SAC	40	4	-1	0		ST			0					String	alternate identifier
+SAC	40	5	-1	0		ST			0					String	alternate text
+SAC	40	6	-1	0		IS			0	0374				Coded value for user-defined tables	name of alternate coding system
+SAC	41	0	-1	250	01368	CE	O	Y	0	0382			Drug Interference	Coded element	
+SAC	41	1	-1	0		ST			0					String	identifier
+SAC	41	2	-1	0		ST			0					String	text
+SAC	41	3	-1	0		IS			0	0382				Coded value for user-defined tables	name of coding system
+SAC	41	4	-1	0		ST			0					String	alternate identifier
+SAC	41	5	-1	0		ST			0					String	alternate text
+SAC	41	6	-1	0		IS			0	0382				Coded value for user-defined tables	name of alternate coding system
+SAC	42	0	-1	250	01369	CE	O		0	0375			Artificial Blood	Coded element	
+SAC	42	1	-1	0		ST			0					String	identifier
+SAC	42	2	-1	0		ST			0					String	text
+SAC	42	3	-1	0		IS			0	0375				Coded value for user-defined tables	name of coding system
+SAC	42	4	-1	0		ST			0					String	alternate identifier
+SAC	42	5	-1	0		ST			0					String	alternate text
+SAC	42	6	-1	0		IS			0	0375				Coded value for user-defined tables	name of alternate coding system
+SAC	43	0	-1	250	01370	CE	O	Y	0	0376			Special Handling Considerations	Coded element	
+SAC	43	1	-1	0		ST			0					String	identifier
+SAC	43	2	-1	0		ST			0					String	text
+SAC	43	3	-1	0		IS			0	0376				Coded value for user-defined tables	name of coding system
+SAC	43	4	-1	0		ST			0					String	alternate identifier
+SAC	43	5	-1	0		ST			0					String	alternate text
+SAC	43	6	-1	0		IS			0	0376				Coded value for user-defined tables	name of alternate coding system
+SAC	44	0	-1	250	01371	CE	O	Y	0	0377			Other Environmental Factors	Coded element	
+SAC	44	1	-1	0		ST			0					String	identifier
+SAC	44	2	-1	0		ST			0					String	text
+SAC	44	3	-1	0		IS			0	0377				Coded value for user-defined tables	name of coding system
+SAC	44	4	-1	0		ST			0					String	alternate identifier
+SAC	44	5	-1	0		ST			0					String	alternate text
+SAC	44	6	-1	0		IS			0	0377				Coded value for user-defined tables	name of alternate coding system

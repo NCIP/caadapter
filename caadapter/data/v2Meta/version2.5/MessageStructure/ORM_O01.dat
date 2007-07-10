@@ -1,0 +1,7 @@
+Message Type=ORM
+Message Type Name=Pharmacy/treatment order message
+Trigger Event=O01
+Trigger Description=ORM - Order message (also RDE/ RDS/ RGV/ RAS)
+Message Structure=MSH [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ CTD ] [ { DG1 } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] ] [ { FT1 } ] [ { CTI } ] [ BLG ] }
+Return Message=ORR^O02
+Called by=

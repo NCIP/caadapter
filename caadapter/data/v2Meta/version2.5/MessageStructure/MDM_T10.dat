@@ -1,0 +1,7 @@
+Message Type=MDM
+Message Type Name=Medical document management
+Trigger Event=T10
+Trigger Description=MDM/ACK - Document replacement notification and content
+Message Structure=MDM_T02
+Return Message=ACK^T10
+Called by=

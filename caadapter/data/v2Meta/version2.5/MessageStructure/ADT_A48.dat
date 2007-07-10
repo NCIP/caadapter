@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A48
+Trigger Description=ADT/ACK - Change alternate patient ID (for backward compatibility only)
+Message Structure=ADT_A30
+Return Message=ACK^A48
+Called by=

@@ -1,0 +1,7 @@
+Message Type=RAS
+Message Type Name=Pharmacy/treatment administration message
+Trigger Event=O17
+Trigger Description=RAS _ Pharmacy/treatment administration
+Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ { AL1 } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !ORDER_DETAIL! RXO [ !ORDER_DETAIL_SUPPLEMENT! { NTE } { RXR } [ { !COMPONENTS! RXC [ { NTE } ] } ] ] ] [ !ENCODING! RXE { !TIMING_ENCODED! TQ1 [ { TQ2 } ] } { RXR } [ { RXC } ] ] { !ADMINISTRATION! { RXA } RXR [ { !OBSERVATION! OBX [ { NTE } ] } ] } [ { CTI } ] }
+Return Message=RRA^O18
+Called by=

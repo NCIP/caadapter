@@ -1,0 +1,10 @@
+User	Filler status codes	0278	Blocked	The indicated time slot(s) is(are) blocked
+User	Filler status codes	0278	Booked	The indicated appointment is booked
+User	Filler status codes	0278	Cancelled	The indicated appointment was stopped from occurring (canceled prior to starting)
+User	Filler status codes	0278	Complete	The indicated appointment has completed normally (was not discontinued, canceled, or deleted)
+User	Filler status codes	0278	Dc	The indicated appointment was discontinued (DC`ed while in progress, discontinued parent appointment, or discontinued child appointment)
+User	Filler status codes	0278	Deleted	The indicated appointment was deleted from the filler application
+User	Filler status codes	0278	Overbook	The appointment has been confirmed; however it is confirmed in an overbooked state
+User	Filler status codes	0278	Pending	Appointment has not yet been confirmed
+User	Filler status codes	0278	Started	The indicated appointment has begun and is currently in progress
+User	Filler status codes	0278	Waitlist	Appointment has been placed on a waiting list for a particular slot, or set of slots

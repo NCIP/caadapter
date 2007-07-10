@@ -1,0 +1,147 @@
+OM7	1	-1	-1	4	00586	NM	R		0				Sequence Number - Test/Observation Master File	Numeric	
+OM7	2	0	-1	250	00238	CE	R		0				Universal Service Identifier	Coded element	
+OM7	2	1	-1	20		ST			0					String	identifier
+OM7	2	2	-1	199		ST			0					String	text
+OM7	2	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	2	4	-1	20		ST			0					String	alternate identifier
+OM7	2	5	-1	199		ST			0					String	alternate text
+OM7	2	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	3	0	-1	250	01481	CE	O	Y	0	0412			Category Identifier	Coded element	
+OM7	3	1	-1	20		IS			0	0412				String	identifier
+OM7	3	2	-1	199		ST			0					String	text
+OM7	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	3	4	-1	20		ST			0					String	alternate identifier
+OM7	3	5	-1	199		ST			0					String	alternate text
+OM7	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	4	-1	-1	200	01482	TX	O		0				Category Description	Text data	
+OM7	5	-1	-1	200	01483	ST	O	Y	0				Category Synonym	String	
+OM7	6	-1	-1	26	01484	TS	O		0				Effective Test/Service Start Date/Time	Time stamp	
+OM7	7	-1	-1	26	01485	TS	O		0				Effective Test/Service End Date/Time	Time stamp	
+OM7	8	-1	-1	5	01486	NM	O		0				Test/Service Default Duration Quantity	Numeric	
+OM7	9	0	-1	250	01487	CE	O		0	9999			Test/Service Default Duration Units	Coded element	
+OM7	9	1	-1	20		IS			0	9999				String	identifier
+OM7	9	2	-1	199		ST			0					String	text
+OM7	9	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	9	4	-1	20		ST			0					String	alternate identifier
+OM7	9	5	-1	199		ST			0					String	alternate text
+OM7	9	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	10	-1	-1	60	01488	IS	O		0	0335			Test/Service Default Frequency	Coded value for user-defined tables	
+OM7	11	-1	-1	1	01489	ID	O		0	0136			Consent Indicator	Coded values for HL7 tables	
+OM7	12	0	-1	250	01490	CE	O		0	0413			Consent Identifier	Coded element	
+OM7	12	1	-1	20		IS			0	0413				String	identifier
+OM7	12	2	-1	199		ST			0					String	text
+OM7	12	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	12	4	-1	20		ST			0					String	alternate identifier
+OM7	12	5	-1	199		ST			0					String	alternate text
+OM7	12	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	13	-1	-1	26	01491	TS	O		0				Consent Effective Start Date/Time	Time stamp	
+OM7	14	-1	-1	26	01492	TS	O		0				Consent Effective End Date/Time	Time stamp	
+OM7	15	-1	-1	5	01493	NM	O		0				Consent Interval Quantity	Numeric	
+OM7	16	0	-1	250	01494	CE	C		0	0414			Consent Interval Units	Coded element	
+OM7	16	1	-1	20		IS			0	0414				String	identifier
+OM7	16	2	-1	199		ST			0					String	text
+OM7	16	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	16	4	-1	20		ST			0					String	alternate identifier
+OM7	16	5	-1	199		ST			0					String	alternate text
+OM7	16	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	17	-1	-1	5	01495	NM	O		0				Consent Waiting Period Quantity	Numeric	
+OM7	18	0	-1	250	01496	CE	C		0	0414			Consent Waiting Period Units	Coded element	
+OM7	18	1	-1	20		IS			0	0414				String	identifier
+OM7	18	2	-1	199		ST			0					String	text
+OM7	18	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	18	4	-1	20		ST			0					String	alternate identifier
+OM7	18	5	-1	199		ST			0					String	alternate text
+OM7	18	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	19	-1	-1	26	00607	TS	O		0				Effective Date/Time of Change	Time stamp	
+OM7	20	0	-1	250	00224	XCN	O		0				Entered By	Extended composite ID number and name	
+OM7	20	1	-1	15		ST			0					String	ID number
+OM7	20	2	0	194		FN			0						family name
+OM7	20	2	1	50		ST	R		0					String	surname
+OM7	20	2	2	20		ST			0					String	own surname prefix
+OM7	20	2	3	50		ST			0					String	own surname
+OM7	20	2	4	20		ST			0					String	surname prefix from partner/spouse
+OM7	20	2	5	30		ST			0					String	surname from partner/spouse
+OM7	20	3	-1	30		ST			0					String	given name
+OM7	20	4	-1	30		ST			0					String	second and further given names or initial thereof
+OM7	20	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+OM7	20	6	-1	20		ST			0					String	prefix (e.g., DR)
+OM7	20	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+OM7	20	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+OM7	20	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+OM7	20	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+OM7	20	9	2	0		ST			0					String	universal ID
+OM7	20	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+OM7	20	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+OM7	20	11	-1	1		ST			0					String	identifier check digit
+OM7	20	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+OM7	20	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+OM7	20	14	0	227		HD			0					Hierarchic designator	assigning facility
+OM7	20	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+OM7	20	14	2	199		ST	C		0					String	universal ID
+OM7	20	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+OM7	20	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+OM7	20	16	0	483		CE			0	0448				Coded element	Name Context
+OM7	20	16	1	20		IS			0	0448				String	identifier
+OM7	20	16	2	199		ST			0					String	text
+OM7	20	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	20	16	4	20		ST			0					String	alternate identifier
+OM7	20	16	5	199		ST			0					String	alternate text
+OM7	20	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+OM7	20	17	0	53		DR	B		0					Date/time range	Name Validity Range
+OM7	20	17	1	26		TS			0					Time stamp	range start date/time
+OM7	20	17	2	26		TS			0					Time stamp	range end date/time
+OM7	20	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+OM7	20	19	-1	26		TS			0					Time stamp	Effective Date
+OM7	20	20	-1	26		TS			0					Time stamp	Expiration Date
+OM7	20	21	-1	199		ST			0					String	Professional Suffix
+OM7	20	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+OM7	20	22	1	20		ST			0					String	identifier
+OM7	20	22	2	199		ST			0					String	text
+OM7	20	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+OM7	20	22	4	20		ST			0					String	alternate identifier
+OM7	20	22	5	199		ST			0					String	alternate text
+OM7	20	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+OM7	20	22	7	10		ST	C		0					String	coding system version ID
+OM7	20	22	8	10		ST			0					String	alternate coding system version ID
+OM7	20	22	9	199		ST			0					String	original text
+OM7	20	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+OM7	20	23	1	20		ST			0					String	identifier
+OM7	20	23	2	199		ST			0					String	text
+OM7	20	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+OM7	20	23	4	20		ST			0					String	alternate identifier
+OM7	20	23	5	199		ST			0					String	alternate text
+OM7	20	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+OM7	20	23	7	10		ST	C		0					String	coding system version ID
+OM7	20	23	8	10		ST			0					String	alternate coding system version ID
+OM7	20	23	9	199		ST			0					String	original text
+OM7	21	0	-1	200	01497	PL	O	Y	0				Orderable-at Location	Person location	
+OM7	21	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+OM7	21	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+OM7	21	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+OM7	21	4	0	227		HD			0					Hierarchic designator	facility
+OM7	21	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+OM7	21	4	2	199		ST	C		0					String	universal ID
+OM7	21	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+OM7	21	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+OM7	21	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+OM7	21	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+OM7	21	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+OM7	21	9	-1	199		ST			0					String	location description
+OM7	21	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+OM7	21	10	1	199		ST			0					String	entity identifier
+OM7	21	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+OM7	21	10	3	199		ST	C		0					String	universal ID
+OM7	21	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+OM7	21	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+OM7	21	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+OM7	21	11	2	199		ST	C		0					String	universal ID
+OM7	21	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+OM7	22	-1	-1	1	01498	IS	O		0	0473			Formulary Status	Coded value for user-defined tables	
+OM7	23	-1	-1	1	01499	ID	O		0	0136			Special Order Indicator	Coded values for HL7 tables	
+OM7	24	0	-1	250	01306	CE	O	Y	0	0132			Primary Key Value - CDM	Coded element	
+OM7	24	1	-1	20		IS			0	0132				String	identifier
+OM7	24	2	-1	199		ST			0					String	text
+OM7	24	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+OM7	24	4	-1	20		ST			0					String	alternate identifier
+OM7	24	5	-1	199		ST			0					String	alternate text
+OM7	24	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

@@ -1,0 +1,1 @@
+OMS	O05	OMS	O05			 MSH [ {  NTE } ] [ !PATIENT! PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ] [ { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [  GT1 ] [ {  AL1 } ] ] { !ORDER! ORC  RQD [  RQ1 ] [ {  NTE } ] [ { !OBSERVATION! OBX [ {  NTE } ] } ] [  BLG ] } 		Stock requisition order message	OMS - Stock requisition order

@@ -1,0 +1,67 @@
+PCR	1	0	-1	250	01098	CE	R		0				Implicated Product	Coded element	
+PCR	1	1	-1	20		ST			0					String	identifier
+PCR	1	2	-1	199		ST			0					String	text
+PCR	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	1	4	-1	20		ST			0					String	alternate identifier
+PCR	1	5	-1	199		ST			0					String	alternate text
+PCR	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	2	-1	-1	1	01099	IS	O		0	0249			Generic Product	Coded value for user-defined tables	
+PCR	3	0	-1	250	01100	CE	O		0				Product Class	Coded element	
+PCR	3	1	-1	20		ST			0					String	identifier
+PCR	3	2	-1	199		ST			0					String	text
+PCR	3	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	3	4	-1	20		ST			0					String	alternate identifier
+PCR	3	5	-1	199		ST			0					String	alternate text
+PCR	3	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	4	0	-1	8	01101	CQ	O		0				Total Duration Of Therapy	Composite quantity with units	
+PCR	4	1	-1	16		NM			0					Numeric	quantity
+PCR	4	2	0	483		CE			0					Coded element	units
+PCR	4	2	1	20		ST			0					String	identifier
+PCR	4	2	2	199		ST			0					String	text
+PCR	4	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	4	2	4	20		ST			0					String	alternate identifier
+PCR	4	2	5	199		ST			0					String	alternate text
+PCR	4	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	5	-1	-1	26	01102	TS	O		0				Product Manufacture Date	Time stamp	
+PCR	6	-1	-1	26	01103	TS	O		0				Product Expiration Date	Time stamp	
+PCR	7	-1	-1	26	01104	TS	O		0				Product Implantation Date	Time stamp	
+PCR	8	-1	-1	26	01105	TS	O		0				Product Explantation Date	Time stamp	
+PCR	9	-1	-1	8	01106	IS	O		0	0244			Single Use Device	Coded value for user-defined tables	
+PCR	10	0	-1	250	01107	CE	O		0				Indication For Product Use	Coded element	
+PCR	10	1	-1	20		ST			0					String	identifier
+PCR	10	2	-1	199		ST			0					String	text
+PCR	10	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	10	4	-1	20		ST			0					String	alternate identifier
+PCR	10	5	-1	199		ST			0					String	alternate text
+PCR	10	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	11	-1	-1	8	01108	IS	O		0	0245			Product Problem	Coded value for user-defined tables	
+PCR	12	-1	-1	30	01109	ST	O	Y	3				Product Serial/Lot Number	String	
+PCR	13	-1	-1	1	01110	IS	O		0	0246			Product Available For Inspection	Coded value for user-defined tables	
+PCR	14	0	-1	250	01111	CE	O		0				Product Evaluation Performed	Coded element	
+PCR	14	1	-1	20		ST			0					String	identifier
+PCR	14	2	-1	199		ST			0					String	text
+PCR	14	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	14	4	-1	20		ST			0					String	alternate identifier
+PCR	14	5	-1	199		ST			0					String	alternate text
+PCR	14	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	15	0	-1	250	01112	CE	O		0	0247			Product Evaluation Status	Coded element	
+PCR	15	1	-1	20		IS			0	0247				String	identifier
+PCR	15	2	-1	199		ST			0					String	text
+PCR	15	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	15	4	-1	20		ST			0					String	alternate identifier
+PCR	15	5	-1	199		ST			0					String	alternate text
+PCR	15	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	16	0	-1	250	01113	CE	O		0				Product Evaluation Results	Coded element	
+PCR	16	1	-1	20		ST			0					String	identifier
+PCR	16	2	-1	199		ST			0					String	text
+PCR	16	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+PCR	16	4	-1	20		ST			0					String	alternate identifier
+PCR	16	5	-1	199		ST			0					String	alternate text
+PCR	16	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+PCR	17	-1	-1	8	01114	ID	O		0	0248			Evaluated Product Source	Coded values for HL7 tables	
+PCR	18	-1	-1	26	01115	TS	O		0				Date Product Returned To Manufacturer	Time stamp	
+PCR	19	-1	-1	1	01116	ID	O		0	0242			Device Operator Qualifications	Coded values for HL7 tables	
+PCR	20	-1	-1	1	01117	ID	O		0	0250			Relatedness Assessment	Coded values for HL7 tables	
+PCR	21	-1	-1	2	01118	ID	O	Y	6	0251			Action Taken In Response To The Event	Coded values for HL7 tables	
+PCR	22	-1	-1	2	01119	ID	O	Y	6	0252			Event Causality Observations	Coded values for HL7 tables	
+PCR	23	-1	-1	1	01120	ID	O	Y	3	0253			Indirect Exposure Mechanism	Coded values for HL7 tables	

@@ -1,0 +1,10 @@
+User	Confidentiality code	0177	AID	AIDS patient
+User	Confidentiality code	0177	EMP	Employee
+User	Confidentiality code	0177	ETH	Alcohol/drug treatment patient
+User	Confidentiality code	0177	HIV	HIV(+) patient
+User	Confidentiality code	0177	PSY	Psychiatric patient
+User	Confidentiality code	0177	R	Restricted
+User	Confidentiality code	0177	U	Usual control
+User	Confidentiality code	0177	UWM	Unwed mother
+User	Confidentiality code	0177	V	Very restricted
+User	Confidentiality code	0177	VIP	Very important person or celebrity

@@ -1,0 +1,16 @@
+SID	1	0	-1	250	01426	CE	C		0				Application / Method Identifier	Coded element	
+SID	1	1	-1	0		ST			0					String	identifier
+SID	1	2	-1	0		ST			0					String	text
+SID	1	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+SID	1	4	-1	0		ST			0					String	alternate identifier
+SID	1	5	-1	0		ST			0					String	alternate text
+SID	1	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+SID	2	-1	-1	20	01129	ST	C		0				Substance Lot Number	String	
+SID	3	-1	-1	200	01428	ST	C		0				Substance Container Identifier	String	
+SID	4	0	-1	250	01429	CE	C		0	0385			Substance Manufacturer Identifier	Coded element	
+SID	4	1	-1	0		ST			0					String	identifier
+SID	4	2	-1	0		ST			0					String	text
+SID	4	3	-1	0		IS			0	0385				Coded value for user-defined tables	name of coding system
+SID	4	4	-1	0		ST			0					String	alternate identifier
+SID	4	5	-1	0		ST			0					String	alternate text
+SID	4	6	-1	0		IS			0	0385				Coded value for user-defined tables	name of alternate coding system

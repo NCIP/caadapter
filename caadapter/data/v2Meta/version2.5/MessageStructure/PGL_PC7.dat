@@ -1,0 +1,7 @@
+Message Type=PGL
+Message Type Name=Patient goal message
+Trigger Event=PC7
+Trigger Description=PGL - PC/ goal update
+Message Structure=PGL_PC6
+Return Message=ACK^PC7
+Called by=

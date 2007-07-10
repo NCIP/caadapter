@@ -1,0 +1,168 @@
+STF	1	0	-1	250	00671	CE	C		0	9999			Primary Key Value - STF	Coded element	
+STF	1	1	-1	0		ST			0					String	identifier
+STF	1	2	-1	0		ST			0					String	text
+STF	1	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
+STF	1	4	-1	0		ST			0					String	alternate identifier
+STF	1	5	-1	0		ST			0					String	alternate text
+STF	1	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
+STF	2	0	-1	60	00672	CX	O	Y	0				Staff ID Code	Extended composite ID with check digit	
+STF	2	1	-1	0		ST			0					String	ID
+STF	2	2	-1	0		ST			0					String	check digit
+STF	2	3	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+STF	2	4	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+STF	2	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+STF	2	4	2	0		ST			0					String	universal ID
+STF	2	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+STF	2	5	-1	0		ID			0	0203				Coded values for HL7 tables	identifier type code
+STF	2	6	0	0		HD			0					Coded value for user-defined tables	assigning facility
+STF	2	6	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+STF	2	6	2	0		ST			0					String	universal ID
+STF	2	6	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+STF	2	7	-1	0		DT			0					Date	effective date
+STF	2	8	-1	0		DT			0					Date	expiration date
+STF	3	0	-1	250	00673	XPN	O	Y	0				Staff Name	Extended person name	
+STF	3	1	0	0		FN			0					String	family name
+STF	3	1	1	0		ST			0					String	surname
+STF	3	1	2	0		ST			0					String	own surname prefix
+STF	3	1	3	0		ST			0					String	own surname
+STF	3	1	4	0		ST			0					String	surname prefix from partner/spouse
+STF	3	1	5	0		ST			0					String	surname from partner/spouse
+STF	3	2	-1	0		ST			0					String	given name
+STF	3	3	-1	0		ST			0					String	second and further given names or initial thereof
+STF	3	4	-1	0		ST			0					String	suffix (e.g., JR or III)
+STF	3	5	-1	0		ST			0					String	prefix (e.g., DR)
+STF	3	6	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+STF	3	7	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+STF	3	8	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+STF	3	9	0	0		ZCE6			0					Coded values for HL7 tables	name context
+STF	3	9	1	0		ID			0	0448				Coded values for HL7 tables	identifier
+STF	3	9	2	0		ST			0					String	text
+STF	3	9	3	0		ST			0					String	name of coding system
+STF	3	9	4	0		ID			0	0448				Coded values for HL7 tables	alternate identifier
+STF	3	9	5	0		ST			0					String	alternate text
+STF	3	9	6	0		ST			0					String	name of alternate coding system
+STF	3	10	0	0		DR			0					Time stamp	name validity range
+STF	3	10	1	0		TS			0					Time stamp	range start date/time
+STF	3	10	2	0		TS			0					Time stamp	range end date/time
+STF	3	11	-1	0		ID			0	0444				Coded values for HL7 tables	name assembly order
+STF	4	-1	-1	2	00674	IS	O	Y	0	0182			Staff Type	Coded value for user-defined tables	
+STF	5	-1	-1	1	00111	IS	O		0	0001			Administrative Sex	Coded value for user-defined tables	
+STF	6	-1	-1	26	00110	TS	O		0				Date/Time Of Birth	Time stamp	
+STF	7	-1	-1	1	00675	ID	O		0	0183			Active/Inactive Flag	Coded values for HL7 tables	
+STF	8	0	-1	250	00676	CE	O	Y	0	0184			Department	Coded element	
+STF	8	1	-1	0		ST			0					String	identifier
+STF	8	2	-1	0		ST			0					String	text
+STF	8	3	-1	0		IS			0	0184				Coded value for user-defined tables	name of coding system
+STF	8	4	-1	0		ST			0					String	alternate identifier
+STF	8	5	-1	0		ST			0					String	alternate text
+STF	8	6	-1	0		IS			0	0184				Coded value for user-defined tables	name of alternate coding system
+STF	9	0	-1	250	00677	CE	O	Y	0	0069			Hospital Service	Coded element	
+STF	9	1	-1	0		ST			0					String	identifier
+STF	9	2	-1	0		ST			0					String	text
+STF	9	3	-1	0		IS			0	0069				Coded value for user-defined tables	name of coding system
+STF	9	4	-1	0		ST			0					String	alternate identifier
+STF	9	5	-1	0		ST			0					String	alternate text
+STF	9	6	-1	0		IS			0	0069				Coded value for user-defined tables	name of alternate coding system
+STF	10	0	-1	250	00678	XTN	O	Y	0				Phone	Extended telecommunications number	
+STF	10	1	-1	0		TN			0					Telephone number	
+STF	10	2	-1	0		ID			0	0201				Coded values for HL7 tables	telecommunication use code
+STF	10	3	-1	0		ID			0	0202				Coded values for HL7 tables	telecommunication equipment type
+STF	10	4	-1	0		ST			0					String	email address
+STF	10	5	-1	0		NM			0					Numeric	country code
+STF	10	6	-1	0		NM			0					Numeric	area/city code
+STF	10	7	-1	0		NM			0					Numeric	phone number
+STF	10	8	-1	0		NM			0					Numeric	extension
+STF	10	9	-1	0		ST			0					String	any text
+STF	11	0	-1	250	00679	XAD	O	Y	0				Office/Home Address	Extended address	
+STF	11	1	0	0		SAD			0					String	street address
+STF	11	1	1	0		ST			0					String	street or mailing address
+STF	11	1	2	0		ST			0					String	street name
+STF	11	1	3	0		ST			0					String	dwelling number
+STF	11	2	-1	0		ST			0					String	other designation
+STF	11	3	-1	0		ST			0					String	city
+STF	11	4	-1	0		ST			0					String	state or province
+STF	11	5	-1	0		ST			0					String	zip or postal code
+STF	11	6	-1	0		ID			0	0399				Coded values for HL7 tables	country
+STF	11	7	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+STF	11	8	-1	0		ST			0					String	other geographic designation
+STF	11	9	-1	0		IS			0	0289				Coded value for user-defined tables	county/parish code
+STF	11	10	-1	0		IS			0	0288				Coded value for user-defined tables	census tract
+STF	11	11	-1	0		ID			0	0465				Coded values for HL7 tables	address representation code
+STF	11	12	0	0		DR			0					Time stamp	address validity range
+STF	11	12	1	0		TS			0					Time stamp	range start date/time
+STF	11	12	2	0		TS			0					Time stamp	range end date/time
+STF	12	0	-1	26	00680	ZC28	O	Y	0				Institution Activation Date	User Define : composit	
+STF	12	1	-1	0		TS			0					Time stamp	date
+STF	12	2	0	0		CE			0					String	institution name
+STF	12	2	1	0		ST			0					String	identifier
+STF	12	2	2	0		ST			0					String	text
+STF	12	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+STF	12	2	4	0		ST			0					String	alternate identifier
+STF	12	2	5	0		ST			0					String	alternate text
+STF	12	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+STF	13	0	-1	26	00681	ZC28	O	Y	0				Institution Inactivation Date	User Define : composit	
+STF	13	1	-1	0		TS			0					Time stamp	date
+STF	13	2	0	0		CE			0					String	institution name
+STF	13	2	1	0		ST			0					String	identifier
+STF	13	2	2	0		ST			0					String	text
+STF	13	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+STF	13	2	4	0		ST			0					String	alternate identifier
+STF	13	2	5	0		ST			0					String	alternate text
+STF	13	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+STF	14	0	-1	250	00682	CE	O	Y	0				Backup Person ID	Coded element	
+STF	14	1	-1	0		ST			0					String	identifier
+STF	14	2	-1	0		ST			0					String	text
+STF	14	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+STF	14	4	-1	0		ST			0					String	alternate identifier
+STF	14	5	-1	0		ST			0					String	alternate text
+STF	14	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+STF	15	-1	-1	40	00683	ST	O	Y	0				E-Mail Address	String	
+STF	16	0	-1	250	00684	CE	O		0	0185			Preferred Method of Contact	Coded element	
+STF	16	1	-1	0		ST			0					String	identifier
+STF	16	2	-1	0		ST			0					String	text
+STF	16	3	-1	0		IS			0	0185				Coded value for user-defined tables	name of coding system
+STF	16	4	-1	0		ST			0					String	alternate identifier
+STF	16	5	-1	0		ST			0					String	alternate text
+STF	16	6	-1	0		IS			0	0185				Coded value for user-defined tables	name of alternate coding system
+STF	17	0	-1	250	00119	CE	O		0	0002			Marital Status	Coded element	
+STF	17	1	-1	0		ST			0					String	identifier
+STF	17	2	-1	0		ST			0					String	text
+STF	17	3	-1	0		IS			0	0002				Coded value for user-defined tables	name of coding system
+STF	17	4	-1	0		ST			0					String	alternate identifier
+STF	17	5	-1	0		ST			0					String	alternate text
+STF	17	6	-1	0		IS			0	0002				Coded value for user-defined tables	name of alternate coding system
+STF	18	-1	-1	20	00785	ST	O		0				Job Title	String	
+STF	19	0	-1	20	00786	JCC	O		0	0327	0328		Job Code/Class	Job code/class	
+STF	19	1	-1	0		IS			0	0327				Coded value for user-defined tables	job code
+STF	19	2	-1	0		IS			0	0328				Coded value for user-defined tables	job class
+STF	20	0	-1	2	01276	CE	O		0	0066			Employment Status Code	Coded element	
+STF	20	1	-1	0		ST			0					String	identifier
+STF	20	2	-1	0		ST			0					String	text
+STF	20	3	-1	0		IS			0	0066				Coded value for user-defined tables	name of coding system
+STF	20	4	-1	0		ST			0					String	alternate identifier
+STF	20	5	-1	0		ST			0					String	alternate text
+STF	20	6	-1	0		IS			0	0066				Coded value for user-defined tables	name of alternate coding system
+STF	21	-1	-1	1	01275	ID	O		0	0136			Additional Insured on Auto	Coded values for HL7 tables	
+STF	22	0	-1	25	01302	DLN	O		0				Driver`s License Number - Staff	Driver`s license number	
+STF	22	1	-1	0		ST			0					String	license number
+STF	22	2	-1	0		IS			0	0333				Coded value for user-defined tables	issuing state, province, country
+STF	22	3	-1	0		DT			0					Date	expiration date
+STF	23	-1	-1	1	01229	ID	O		0	0136			Copy Auto Ins	Coded values for HL7 tables	
+STF	24	-1	-1	8	01232	DT	O		0				Auto Ins. Expires	Date	
+STF	25	-1	-1	8	01298	DT	O		0				Date Last DMV Review	Date	
+STF	26	-1	-1	8	01234	DT	O		0				Date Next DMV Review	Date	
+STF	27	0	-1	250	00113	CE	O		0	0005			Race	Coded element	
+STF	27	1	-1	0		ST			0					String	identifier
+STF	27	2	-1	0		ST			0					String	text
+STF	27	3	-1	0		IS			0	0005				Coded value for user-defined tables	name of coding system
+STF	27	4	-1	0		ST			0					String	alternate identifier
+STF	27	5	-1	0		ST			0					String	alternate text
+STF	27	6	-1	0		IS			0	0005				Coded value for user-defined tables	name of alternate coding system
+STF	28	0	-1	250	00125	CE	O		0	0189			Ethnic Group	Coded element	
+STF	28	1	-1	0		ST			0					String	identifier
+STF	28	2	-1	0		ST			0					String	text
+STF	28	3	-1	0		IS			0	0189				Coded value for user-defined tables	name of coding system
+STF	28	4	-1	0		ST			0					String	alternate identifier
+STF	28	5	-1	0		ST			0					String	alternate text
+STF	28	6	-1	0		IS			0	0189				Coded value for user-defined tables	name of alternate coding system
+STF	29	-1	-1	1	01596	ID	O		0	0136			Re-activation Approval Indicator	Coded values for HL7 tables	

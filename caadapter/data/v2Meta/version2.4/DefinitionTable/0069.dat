@@ -1,0 +1,9 @@
+User	Hospital service	0069	CAR	Cardiac Service
+User	Hospital service	0069	EXM	Health Examine Service
+User	Hospital service	0069	LAB	Laboratory Service
+User	Hospital service	0069	MEC	Medication Service
+User	Hospital service	0069	MED	Medical Service
+User	Hospital service	0069	OTH	Others
+User	Hospital service	0069	PUL	Pulmonary Service
+User	Hospital service	0069	SUR	Surgical Service
+User	Hospital service	0069	URO	Urology Service

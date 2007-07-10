@@ -1,0 +1,127 @@
+BPO	1	-1	-1	4	01700	SI	R		0				Set ID _ BPO	Sequence ID	
+BPO	2	0	-1	250	01701	CWE	R		0				BP Universal Service ID	Coded with exceptions	
+BPO	2	1	-1	20		ST			0					String	identifier
+BPO	2	2	-1	199		ST			0					String	text
+BPO	2	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPO	2	4	-1	20		ST			0					String	alternate identifier
+BPO	2	5	-1	199		ST			0					String	alternate text
+BPO	2	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPO	2	7	-1	10		ST	C		0					String	coding system version ID
+BPO	2	8	-1	10		ST			0					String	alternate coding system version ID
+BPO	2	9	-1	199		ST			0					String	original text
+BPO	3	0	-1	250	01702	CWE	O	Y	0	0508			BP  Processing Requirements	Coded with exceptions	
+BPO	3	1	-1	20		IS			0	0508				String	identifier
+BPO	3	2	-1	199		ST			0					String	text
+BPO	3	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPO	3	4	-1	20		ST			0					String	alternate identifier
+BPO	3	5	-1	199		ST			0					String	alternate text
+BPO	3	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPO	3	7	-1	10		ST	C		0					String	coding system version ID
+BPO	3	8	-1	10		ST			0					String	alternate coding system version ID
+BPO	3	9	-1	199		ST			0					String	original text
+BPO	4	-1	-1	5	01703	NM	R		0				BP Quantity	Numeric	
+BPO	5	-1	-1	5	01704	NM	O		0				BP Amount	Numeric	
+BPO	6	0	-1	250	01705	CE	O		0				BP Units	Coded element	
+BPO	6	1	-1	20		ST			0					String	identifier
+BPO	6	2	-1	199		ST			0					String	text
+BPO	6	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BPO	6	4	-1	20		ST			0					String	alternate identifier
+BPO	6	5	-1	199		ST			0					String	alternate text
+BPO	6	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BPO	7	-1	-1	26	01706	TS	O		0				BP Intended Use Date/Time	Time stamp	
+BPO	8	0	-1	80	01707	PL	O		0				BP Intended Dispense From Location	Person location	
+BPO	8	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+BPO	8	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+BPO	8	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+BPO	8	4	0	227		HD			0					Hierarchic designator	facility
+BPO	8	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPO	8	4	2	199		ST	C		0					String	universal ID
+BPO	8	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPO	8	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+BPO	8	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+BPO	8	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+BPO	8	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+BPO	8	9	-1	199		ST			0					String	location description
+BPO	8	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+BPO	8	10	1	199		ST			0					String	entity identifier
+BPO	8	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPO	8	10	3	199		ST	C		0					String	universal ID
+BPO	8	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPO	8	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+BPO	8	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPO	8	11	2	199		ST	C		0					String	universal ID
+BPO	8	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPO	9	0	-1	250	01708	XAD	O		0				BP Intended Dispense From Address	Extended address	
+BPO	9	1	0	184		SAD			0					Street Address	street address
+BPO	9	1	1	120		ST			0					String	street or mailing address
+BPO	9	1	2	50		ST			0					String	street name
+BPO	9	1	3	12		ST			0					String	dwelling number
+BPO	9	2	-1	120		ST			0					String	other designation
+BPO	9	3	-1	50		ST			0					String	city
+BPO	9	4	-1	50		ST			0					String	state or province
+BPO	9	5	-1	12		ST			0					String	zip or postal code
+BPO	9	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+BPO	9	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+BPO	9	8	-1	50		ST			0					String	other geographic designation
+BPO	9	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+BPO	9	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+BPO	9	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+BPO	9	12	0	53		DR	B		0					Date/time range	address validity range
+BPO	9	12	1	26		TS			0					Time stamp	range start date/time
+BPO	9	12	2	26		TS			0					Time stamp	range end date/time
+BPO	9	13	-1	26		TS			0					Time stamp	Effective Date
+BPO	9	14	-1	26		TS			0					Time stamp	Expiration Date
+BPO	10	-1	-1	26	01709	TS	O		0				BP Requested Dispense Date/Time	Time stamp	
+BPO	11	0	-1	80	01710	PL	O		0				BP Requested Dispense To Location	Person location	
+BPO	11	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+BPO	11	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+BPO	11	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+BPO	11	4	0	227		HD			0					Hierarchic designator	facility
+BPO	11	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPO	11	4	2	199		ST	C		0					String	universal ID
+BPO	11	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPO	11	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+BPO	11	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+BPO	11	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+BPO	11	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+BPO	11	9	-1	199		ST			0					String	location description
+BPO	11	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+BPO	11	10	1	199		ST			0					String	entity identifier
+BPO	11	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+BPO	11	10	3	199		ST	C		0					String	universal ID
+BPO	11	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPO	11	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+BPO	11	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+BPO	11	11	2	199		ST	C		0					String	universal ID
+BPO	11	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+BPO	12	0	-1	250	01711	XAD	O		0				BP Requested Dispense To Address	Extended address	
+BPO	12	1	0	184		SAD			0					Street Address	street address
+BPO	12	1	1	120		ST			0					String	street or mailing address
+BPO	12	1	2	50		ST			0					String	street name
+BPO	12	1	3	12		ST			0					String	dwelling number
+BPO	12	2	-1	120		ST			0					String	other designation
+BPO	12	3	-1	50		ST			0					String	city
+BPO	12	4	-1	50		ST			0					String	state or province
+BPO	12	5	-1	12		ST			0					String	zip or postal code
+BPO	12	6	-1	3		ID			0	0399				Coded values for HL7 tables	country
+BPO	12	7	-1	3		ID			0	0190				Coded values for HL7 tables	address type
+BPO	12	8	-1	50		ST			0					String	other geographic designation
+BPO	12	9	-1	20		IS			0	0289				Coded value for user-defined tables	county/parish code
+BPO	12	10	-1	20		IS			0	0288				Coded value for user-defined tables	census tract
+BPO	12	11	-1	1		ID			0	0465				Coded values for HL7 tables	address representation code
+BPO	12	12	0	53		DR	B		0					Date/time range	address validity range
+BPO	12	12	1	26		TS			0					Time stamp	range start date/time
+BPO	12	12	2	26		TS			0					Time stamp	range end date/time
+BPO	12	13	-1	26		TS			0					Time stamp	Effective Date
+BPO	12	14	-1	26		TS			0					Time stamp	Expiration Date
+BPO	13	0	-1	250	01712	CWE	O	Y	0	0509			BP Indication for Use	Coded with exceptions	
+BPO	13	1	-1	20		IS			0	0509				String	identifier
+BPO	13	2	-1	199		ST			0					String	text
+BPO	13	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+BPO	13	4	-1	20		ST			0					String	alternate identifier
+BPO	13	5	-1	199		ST			0					String	alternate text
+BPO	13	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+BPO	13	7	-1	10		ST	C		0					String	coding system version ID
+BPO	13	8	-1	10		ST			0					String	alternate coding system version ID
+BPO	13	9	-1	199		ST			0					String	original text
+BPO	14	-1	-1	1	01713	ID	O		0	0136			BP Informed Consent Indicator	Coded values for HL7 tables	

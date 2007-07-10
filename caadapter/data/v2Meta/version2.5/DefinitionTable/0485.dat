@@ -1,0 +1,25 @@
+User	Extended Priority Codes	0485	A	ASAP
+User	Extended Priority Codes	0485	C	Callback
+User	Extended Priority Codes	0485	P	Preop
+User	Extended Priority Codes	0485	PRN	As needed
+User	Extended Priority Codes	0485	R	Routine
+User	Extended Priority Codes	0485	S	Stat
+User	Extended Priority Codes	0485	T	Timing critical
+User	Extended Priority Codes	0485	TD<integer>	Timing critical in <integer> days
+User	Extended Priority Codes	0485	TH<integer>	Timing critical in <integer> hours
+User	Extended Priority Codes	0485	TL<integer>	Timing critical in <integer> months
+User	Extended Priority Codes	0485	TM<integer>	Timing critical in <integer> minutes
+User	Extended Priority Codes	0485	TS<integer>	Timing critical in <integer> seconds
+User	Extended Priority Codes	0485	TW<integer>	Timing critical in <integer> weeks
+User	Extended Priority Codes	0485	TD#	Timing critical in # days
+User	Extended Priority Codes	0485	TH#	Timing critical in # hours
+User	Extended Priority Codes	0485	TL#	Timing critical in # months
+User	Extended Priority Codes	0485	TM#	Timing critical in # minutes
+User	Extended Priority Codes	0485	TS#	Timing critical in # seconds
+User	Extended Priority Codes	0485	TW#	Timing critical in # weeks
+User	Extended Priority Codes	0485	TD	Timing critical in 1 day
+User	Extended Priority Codes	0485	TH	Timing critical in 1 hour
+User	Extended Priority Codes	0485	TL	Timing critical in 1 month
+User	Extended Priority Codes	0485	TM	Timing critical in 1 minute
+User	Extended Priority Codes	0485	TS	Timing critical in 1 second
+User	Extended Priority Codes	0485	TW	Timing critical in 1 week

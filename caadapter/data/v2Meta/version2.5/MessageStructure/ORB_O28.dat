@@ -1,0 +1,7 @@
+Message Type=ORB
+Message Type Name=Blood product order acknowledgement message
+Trigger Event=O28
+Trigger Description=ORB _ Blood product order acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ BPO ] } ] ] ]
+Return Message=ACK^O28
+Called by=OMB^O27

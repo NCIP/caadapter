@@ -1,0 +1,388 @@
+FT1	1	-1	-1	4	00355	SI	O		0				Set ID - FT1	Sequence ID	
+FT1	2	-1	-1	12	00356	ST	O		0				Transaction ID	String	
+FT1	3	-1	-1	10	00357	ST	O		0				Transaction Batch ID	String	
+FT1	4	0	-1	53	00358	DR	R		0				Transaction Date	Date/time range	
+FT1	4	1	-1	26		TS			0					Time stamp	range start date/time
+FT1	4	2	-1	26		TS			0					Time stamp	range end date/time
+FT1	5	-1	-1	26	00359	TS	O		0				Transaction Posting Date	Time stamp	
+FT1	6	-1	-1	8	00360	IS	R		0	0017			Transaction Type	Coded value for user-defined tables	
+FT1	7	0	-1	250	00361	CE	R		0	0132			Transaction Code	Coded element	
+FT1	7	1	-1	20		IS			0	0132				String	identifier
+FT1	7	2	-1	199		ST			0					String	text
+FT1	7	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	7	4	-1	20		ST			0					String	alternate identifier
+FT1	7	5	-1	199		ST			0					String	alternate text
+FT1	7	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	8	-1	-1	40	00362	ST	B		0				Transaction Description	String	
+FT1	9	-1	-1	40	00363	ST	B		0				Transaction Description - Alt	String	
+FT1	10	-1	-1	6	00364	NM	O		0				Transaction Quantity	Numeric	
+FT1	11	0	-1	12	00365	CP	O		0				Transaction Amount - Extended	Composite price	
+FT1	11	1	0	20		MO	R		0					Money	price
+FT1	11	1	1	16		NM			0					Numeric	quantity
+FT1	11	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+FT1	11	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+FT1	11	3	-1	16		NM			0					Numeric	from value
+FT1	11	4	-1	16		NM			0					Numeric	to value
+FT1	11	5	0	483		CE			0					Coded element	range units
+FT1	11	5	1	20		ST			0					String	identifier
+FT1	11	5	2	199		ST			0					String	text
+FT1	11	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	11	5	4	20		ST			0					String	alternate identifier
+FT1	11	5	5	199		ST			0					String	alternate text
+FT1	11	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	11	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+FT1	12	0	-1	12	00366	CP	O		0				Transaction Amount - Unit	Composite price	
+FT1	12	1	0	20		MO	R		0					Money	price
+FT1	12	1	1	16		NM			0					Numeric	quantity
+FT1	12	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+FT1	12	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+FT1	12	3	-1	16		NM			0					Numeric	from value
+FT1	12	4	-1	16		NM			0					Numeric	to value
+FT1	12	5	0	483		CE			0					Coded element	range units
+FT1	12	5	1	20		ST			0					String	identifier
+FT1	12	5	2	199		ST			0					String	text
+FT1	12	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	12	5	4	20		ST			0					String	alternate identifier
+FT1	12	5	5	199		ST			0					String	alternate text
+FT1	12	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	12	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+FT1	13	0	-1	250	00367	CE	O		0	0049			Department Code	Coded element	
+FT1	13	1	-1	20		IS			0	0049				String	identifier
+FT1	13	2	-1	199		ST			0					String	text
+FT1	13	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	13	4	-1	20		ST			0					String	alternate identifier
+FT1	13	5	-1	199		ST			0					String	alternate text
+FT1	13	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	14	0	-1	250	00368	CE	O		0	0072			Insurance Plan ID	Coded element	
+FT1	14	1	-1	20		IS			0	0072				String	identifier
+FT1	14	2	-1	199		ST			0					String	text
+FT1	14	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	14	4	-1	20		ST			0					String	alternate identifier
+FT1	14	5	-1	199		ST			0					String	alternate text
+FT1	14	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	15	0	-1	12	00369	CP	O		0				Insurance Amount	Composite price	
+FT1	15	1	0	20		MO	R		0					Money	price
+FT1	15	1	1	16		NM			0					Numeric	quantity
+FT1	15	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+FT1	15	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+FT1	15	3	-1	16		NM			0					Numeric	from value
+FT1	15	4	-1	16		NM			0					Numeric	to value
+FT1	15	5	0	483		CE			0					Coded element	range units
+FT1	15	5	1	20		ST			0					String	identifier
+FT1	15	5	2	199		ST			0					String	text
+FT1	15	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	15	5	4	20		ST			0					String	alternate identifier
+FT1	15	5	5	199		ST			0					String	alternate text
+FT1	15	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	15	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+FT1	16	0	-1	80	00133	PL	O		0				Assigned Patient Location	Person location	
+FT1	16	1	-1	20		IS			0	0302				Coded value for user-defined tables	point of care
+FT1	16	2	-1	20		IS			0	0303				Coded value for user-defined tables	room
+FT1	16	3	-1	20		IS			0	0304				Coded value for user-defined tables	bed
+FT1	16	4	0	227		HD			0					Hierarchic designator	facility
+FT1	16	4	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FT1	16	4	2	199		ST	C		0					String	universal ID
+FT1	16	4	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	16	5	-1	20		IS			0	0306				Coded value for user-defined tables	location status
+FT1	16	6	-1	20		IS	C		0	0305				Coded value for user-defined tables	person location type
+FT1	16	7	-1	20		IS			0	0307				Coded value for user-defined tables	building
+FT1	16	8	-1	20		IS			0	0308				Coded value for user-defined tables	floor
+FT1	16	9	-1	199		ST			0					String	location description
+FT1	16	10	0	427		EI			0					Entity identifier	Comprehensive Location Identifier
+FT1	16	10	1	199		ST			0					String	entity identifier
+FT1	16	10	2	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+FT1	16	10	3	199		ST	C		0					String	universal ID
+FT1	16	10	4	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	16	11	0	227		HD			0					Hierarchic designator	Assigning Authority for Location
+FT1	16	11	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FT1	16	11	2	199		ST	C		0					String	universal ID
+FT1	16	11	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	17	-1	-1	1	00370	IS	O		0	0024			Fee Schedule	Coded value for user-defined tables	
+FT1	18	-1	-1	2	00148	IS	O		0	0018			Patient Type	Coded value for user-defined tables	
+FT1	19	0	-1	250	00371	CE	O	Y	0	0051			Diagnosis Code - FT1	Coded element	
+FT1	19	1	-1	20		IS			0	0051				String	identifier
+FT1	19	2	-1	199		ST			0					String	text
+FT1	19	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	19	4	-1	20		ST			0					String	alternate identifier
+FT1	19	5	-1	199		ST			0					String	alternate text
+FT1	19	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	20	0	-1	250	00372	XCN	O	Y	0	0084			Performed By Code	Extended composite ID number and name	
+FT1	20	1	-1	15		ST			0					String	ID number
+FT1	20	2	0	194		FN			0						family name
+FT1	20	2	1	50		ST	R		0					String	surname
+FT1	20	2	2	20		ST			0					String	own surname prefix
+FT1	20	2	3	50		ST			0					String	own surname
+FT1	20	2	4	20		ST			0					String	surname prefix from partner/spouse
+FT1	20	2	5	30		ST			0					String	surname from partner/spouse
+FT1	20	3	-1	30		ST			0					String	given name
+FT1	20	4	-1	30		ST			0					String	second and further given names or initial thereof
+FT1	20	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+FT1	20	6	-1	20		ST			0					String	prefix (e.g., DR)
+FT1	20	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+FT1	20	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+FT1	20	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+FT1	20	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+FT1	20	9	2	0		ST			0					String	universal ID
+FT1	20	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+FT1	20	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+FT1	20	11	-1	1		ST			0					String	identifier check digit
+FT1	20	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+FT1	20	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+FT1	20	14	0	227		HD			0					Hierarchic designator	assigning facility
+FT1	20	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FT1	20	14	2	199		ST	C		0					String	universal ID
+FT1	20	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	20	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+FT1	20	16	0	483		CE			0	0448				Coded element	Name Context
+FT1	20	16	1	20		IS			0	0448				String	identifier
+FT1	20	16	2	199		ST			0					String	text
+FT1	20	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	20	16	4	20		ST			0					String	alternate identifier
+FT1	20	16	5	199		ST			0					String	alternate text
+FT1	20	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	20	17	0	53		DR	B		0					Date/time range	Name Validity Range
+FT1	20	17	1	26		TS			0					Time stamp	range start date/time
+FT1	20	17	2	26		TS			0					Time stamp	range end date/time
+FT1	20	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+FT1	20	19	-1	26		TS			0					Time stamp	Effective Date
+FT1	20	20	-1	26		TS			0					Time stamp	Expiration Date
+FT1	20	21	-1	199		ST			0					String	Professional Suffix
+FT1	20	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+FT1	20	22	1	20		ST			0					String	identifier
+FT1	20	22	2	199		ST			0					String	text
+FT1	20	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	20	22	4	20		ST			0					String	alternate identifier
+FT1	20	22	5	199		ST			0					String	alternate text
+FT1	20	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	20	22	7	10		ST	C		0					String	coding system version ID
+FT1	20	22	8	10		ST			0					String	alternate coding system version ID
+FT1	20	22	9	199		ST			0					String	original text
+FT1	20	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+FT1	20	23	1	20		ST			0					String	identifier
+FT1	20	23	2	199		ST			0					String	text
+FT1	20	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	20	23	4	20		ST			0					String	alternate identifier
+FT1	20	23	5	199		ST			0					String	alternate text
+FT1	20	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	20	23	7	10		ST	C		0					String	coding system version ID
+FT1	20	23	8	10		ST			0					String	alternate coding system version ID
+FT1	20	23	9	199		ST			0					String	original text
+FT1	21	0	-1	250	00373	XCN	O	Y	0				Ordered By Code	Extended composite ID number and name	
+FT1	21	1	-1	15		ST			0					String	ID number
+FT1	21	2	0	194		FN			0						family name
+FT1	21	2	1	50		ST	R		0					String	surname
+FT1	21	2	2	20		ST			0					String	own surname prefix
+FT1	21	2	3	50		ST			0					String	own surname
+FT1	21	2	4	20		ST			0					String	surname prefix from partner/spouse
+FT1	21	2	5	30		ST			0					String	surname from partner/spouse
+FT1	21	3	-1	30		ST			0					String	given name
+FT1	21	4	-1	30		ST			0					String	second and further given names or initial thereof
+FT1	21	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+FT1	21	6	-1	20		ST			0					String	prefix (e.g., DR)
+FT1	21	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+FT1	21	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+FT1	21	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+FT1	21	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+FT1	21	9	2	0		ST			0					String	universal ID
+FT1	21	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+FT1	21	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+FT1	21	11	-1	1		ST			0					String	identifier check digit
+FT1	21	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+FT1	21	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+FT1	21	14	0	227		HD			0					Hierarchic designator	assigning facility
+FT1	21	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FT1	21	14	2	199		ST	C		0					String	universal ID
+FT1	21	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	21	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+FT1	21	16	0	483		CE			0	0448				Coded element	Name Context
+FT1	21	16	1	20		IS			0	0448				String	identifier
+FT1	21	16	2	199		ST			0					String	text
+FT1	21	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	21	16	4	20		ST			0					String	alternate identifier
+FT1	21	16	5	199		ST			0					String	alternate text
+FT1	21	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	21	17	0	53		DR	B		0					Date/time range	Name Validity Range
+FT1	21	17	1	26		TS			0					Time stamp	range start date/time
+FT1	21	17	2	26		TS			0					Time stamp	range end date/time
+FT1	21	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+FT1	21	19	-1	26		TS			0					Time stamp	Effective Date
+FT1	21	20	-1	26		TS			0					Time stamp	Expiration Date
+FT1	21	21	-1	199		ST			0					String	Professional Suffix
+FT1	21	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+FT1	21	22	1	20		ST			0					String	identifier
+FT1	21	22	2	199		ST			0					String	text
+FT1	21	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	21	22	4	20		ST			0					String	alternate identifier
+FT1	21	22	5	199		ST			0					String	alternate text
+FT1	21	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	21	22	7	10		ST	C		0					String	coding system version ID
+FT1	21	22	8	10		ST			0					String	alternate coding system version ID
+FT1	21	22	9	199		ST			0					String	original text
+FT1	21	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+FT1	21	23	1	20		ST			0					String	identifier
+FT1	21	23	2	199		ST			0					String	text
+FT1	21	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	21	23	4	20		ST			0					String	alternate identifier
+FT1	21	23	5	199		ST			0					String	alternate text
+FT1	21	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	21	23	7	10		ST	C		0					String	coding system version ID
+FT1	21	23	8	10		ST			0					String	alternate coding system version ID
+FT1	21	23	9	199		ST			0					String	original text
+FT1	22	0	-1	12	00374	CP	O		0				Unit Cost	Composite price	
+FT1	22	1	0	20		MO	R		0					Money	price
+FT1	22	1	1	16		NM			0					Numeric	quantity
+FT1	22	1	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+FT1	22	2	-1	2		ID			0	0205				Coded values for HL7 tables	price type
+FT1	22	3	-1	16		NM			0					Numeric	from value
+FT1	22	4	-1	16		NM			0					Numeric	to value
+FT1	22	5	0	483		CE			0					Coded element	range units
+FT1	22	5	1	20		ST			0					String	identifier
+FT1	22	5	2	199		ST			0					String	text
+FT1	22	5	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	22	5	4	20		ST			0					String	alternate identifier
+FT1	22	5	5	199		ST			0					String	alternate text
+FT1	22	5	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	22	6	-1	1		ID			0	0298				Coded values for HL7 tables	range type
+FT1	23	0	-1	22	00217	EI	O		0				Filler Order Number	Entity identifier	
+FT1	23	1	-1	199		ST			0					String	entity identifier
+FT1	23	2	-1	20		IS			0	0363				Coded value for user-defined tables	namespace ID
+FT1	23	3	-1	199		ST	C		0					String	universal ID
+FT1	23	4	-1	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	24	0	-1	250	00765	XCN	O	Y	0				Entered By Code	Extended composite ID number and name	
+FT1	24	1	-1	15		ST			0					String	ID number
+FT1	24	2	0	194		FN			0						family name
+FT1	24	2	1	50		ST	R		0					String	surname
+FT1	24	2	2	20		ST			0					String	own surname prefix
+FT1	24	2	3	50		ST			0					String	own surname
+FT1	24	2	4	20		ST			0					String	surname prefix from partner/spouse
+FT1	24	2	5	30		ST			0					String	surname from partner/spouse
+FT1	24	3	-1	30		ST			0					String	given name
+FT1	24	4	-1	30		ST			0					String	second and further given names or initial thereof
+FT1	24	5	-1	20		ST			0					String	suffix (e.g., JR or III)
+FT1	24	6	-1	20		ST			0					String	prefix (e.g., DR)
+FT1	24	7	-1	5		IS	B		0	0360				Coded value for user-defined tables	degree (e.g., MD)
+FT1	24	8	-1	4		IS	C		0	0297				Coded value for user-defined tables	source table
+FT1	24	9	0	227		ZHD1			0	0363				User Define : Hierarchic designator (for CK datatype)	assigning authority
+FT1	24	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+FT1	24	9	2	0		ST			0					String	universal ID
+FT1	24	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+FT1	24	10	-1	1		ID			0	0200				Coded values for HL7 tables	name type code
+FT1	24	11	-1	1		ST			0					String	identifier check digit
+FT1	24	12	-1	3		ID	C		0	0061				Coded values for HL7 tables	check digit scheme
+FT1	24	13	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+FT1	24	14	0	227		HD			0					Hierarchic designator	assigning facility
+FT1	24	14	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FT1	24	14	2	199		ST	C		0					String	universal ID
+FT1	24	14	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	24	15	-1	1		ID			0	0465				Coded values for HL7 tables	name representation code
+FT1	24	16	0	483		CE			0	0448				Coded element	Name Context
+FT1	24	16	1	20		IS			0	0448				String	identifier
+FT1	24	16	2	199		ST			0					String	text
+FT1	24	16	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	24	16	4	20		ST			0					String	alternate identifier
+FT1	24	16	5	199		ST			0					String	alternate text
+FT1	24	16	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	24	17	0	53		DR	B		0					Date/time range	Name Validity Range
+FT1	24	17	1	26		TS			0					Time stamp	range start date/time
+FT1	24	17	2	26		TS			0					Time stamp	range end date/time
+FT1	24	18	-1	1		ID			0	0444				Coded values for HL7 tables	Name Assembly Order
+FT1	24	19	-1	26		TS			0					Time stamp	Effective Date
+FT1	24	20	-1	26		TS			0					Time stamp	Expiration Date
+FT1	24	21	-1	199		ST			0					String	Professional Suffix
+FT1	24	22	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+FT1	24	22	1	20		ST			0					String	identifier
+FT1	24	22	2	199		ST			0					String	text
+FT1	24	22	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	24	22	4	20		ST			0					String	alternate identifier
+FT1	24	22	5	199		ST			0					String	alternate text
+FT1	24	22	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	24	22	7	10		ST	C		0					String	coding system version ID
+FT1	24	22	8	10		ST			0					String	alternate coding system version ID
+FT1	24	22	9	199		ST			0					String	original text
+FT1	24	23	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+FT1	24	23	1	20		ST			0					String	identifier
+FT1	24	23	2	199		ST			0					String	text
+FT1	24	23	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	24	23	4	20		ST			0					String	alternate identifier
+FT1	24	23	5	199		ST			0					String	alternate text
+FT1	24	23	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	24	23	7	10		ST	C		0					String	coding system version ID
+FT1	24	23	8	10		ST			0					String	alternate coding system version ID
+FT1	24	23	9	199		ST			0					String	original text
+FT1	25	0	-1	250	00393	CE	O		0	0088			Procedure Code	Coded element	
+FT1	25	1	-1	20		IS			0	0088				String	identifier
+FT1	25	2	-1	199		ST			0					String	text
+FT1	25	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	25	4	-1	20		ST			0					String	alternate identifier
+FT1	25	5	-1	199		ST			0					String	alternate text
+FT1	25	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	26	0	-1	250	01316	CE	O	Y	0	0340			Procedure Code Modifier	Coded element	
+FT1	26	1	-1	20		IS			0	0340				String	identifier
+FT1	26	2	-1	199		ST			0					String	text
+FT1	26	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	26	4	-1	20		ST			0					String	alternate identifier
+FT1	26	5	-1	199		ST			0					String	alternate text
+FT1	26	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	27	0	-1	250	01310	CE	O		0	0339			Advanced Beneficiary Notice Code	Coded element	
+FT1	27	1	-1	20		IS			0	0339				String	identifier
+FT1	27	2	-1	199		ST			0					String	text
+FT1	27	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+FT1	27	4	-1	20		ST			0					String	alternate identifier
+FT1	27	5	-1	199		ST			0					String	alternate text
+FT1	27	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+FT1	28	0	-1	250	01646	CWE	O		0	0476			Medically Necessary Duplicate Procedure Reason.	Coded with exceptions	
+FT1	28	1	-1	20		IS			0	0476				String	identifier
+FT1	28	2	-1	199		ST			0					String	text
+FT1	28	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	28	4	-1	20		ST			0					String	alternate identifier
+FT1	28	5	-1	199		ST			0					String	alternate text
+FT1	28	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	28	7	-1	10		ST	C		0					String	coding system version ID
+FT1	28	8	-1	10		ST			0					String	alternate coding system version ID
+FT1	28	9	-1	199		ST			0					String	original text
+FT1	29	0	-1	250	01845	CNE	O		0	0549			NDC Code	Coded with no exceptions	
+FT1	29	1	-1	20		ID	R		0	0549				String	identifier
+FT1	29	2	-1	199		ST			0					String	text
+FT1	29	3	-1	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	29	4	-1	20		ST			0					String	alternate identifier
+FT1	29	5	-1	199		ST			0					String	alternate text
+FT1	29	6	-1	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	29	7	-1	10		ST			0					String	coding system version ID
+FT1	29	8	-1	10		ST			0					String	alternate coding system version ID
+FT1	29	9	-1	199		ST			0					String	original text
+FT1	30	0	-1	250	01846	CX	O		0				Payment Reference ID	Extended composite ID with check digit	
+FT1	30	1	-1	15		ST	R		0					String	ID number
+FT1	30	2	-1	1		ST			0					String	check digit
+FT1	30	3	-1	3		ID			0	0061				Coded values for HL7 tables	check digit scheme employed
+FT1	30	4	0	227		ZHD1			0					User Define : Hierarchic designator (for CK datatype)	assigning authority
+FT1	30	4	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+FT1	30	4	2	0		ST			0					String	universal ID
+FT1	30	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+FT1	30	5	-1	5		ID			0	0203				Coded values for HL7 tables	identifier type code
+FT1	30	6	0	227		HD			0					Hierarchic designator	assigning facility
+FT1	30	6	1	20		IS			0	0300				Coded value for user-defined tables	namespace ID
+FT1	30	6	2	199		ST	C		0					String	universal ID
+FT1	30	6	3	6		ID	C		0	0301				Coded values for HL7 tables	universal ID type
+FT1	30	7	-1	8		DT			0					Date	effective date
+FT1	30	8	-1	8		DT			0					Date	expiration date
+FT1	30	9	0	705		CWE			0					Coded with exceptions	Assigning Jurisdiction
+FT1	30	9	1	20		ST			0					String	identifier
+FT1	30	9	2	199		ST			0					String	text
+FT1	30	9	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	30	9	4	20		ST			0					String	alternate identifier
+FT1	30	9	5	199		ST			0					String	alternate text
+FT1	30	9	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	30	9	7	10		ST	C		0					String	coding system version ID
+FT1	30	9	8	10		ST			0					String	alternate coding system version ID
+FT1	30	9	9	199		ST			0					String	original text
+FT1	30	10	0	705		CWE			0					Coded with exceptions	Assigning Agency or Department
+FT1	30	10	1	20		ST			0					String	identifier
+FT1	30	10	2	199		ST			0					String	text
+FT1	30	10	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+FT1	30	10	4	20		ST			0					String	alternate identifier
+FT1	30	10	5	199		ST			0					String	alternate text
+FT1	30	10	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+FT1	30	10	7	10		ST	C		0					String	coding system version ID
+FT1	30	10	8	10		ST			0					String	alternate coding system version ID
+FT1	30	10	9	199		ST			0					String	original text
+FT1	31	-1	-1	4	01847	SI	O	Y	0				Transaction Reference Key	Sequence ID	

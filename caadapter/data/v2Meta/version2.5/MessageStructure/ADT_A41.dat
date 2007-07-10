@@ -1,0 +1,7 @@
+Message Type=ADT
+Message Type Name=ADT message
+Trigger Event=A41
+Trigger Description=ADT/ACK - Merge account - patient account number
+Message Structure=ADT_A39
+Return Message=ACK^A41
+Called by=

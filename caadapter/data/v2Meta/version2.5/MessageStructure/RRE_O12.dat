@@ -1,0 +1,7 @@
+Message Type=RRE
+Message Type Name=Pharmacy/treatment encoded order acknowledgment message
+Trigger Event=O12
+Trigger Description=RRE _ Pharmacy/treatment encoded order acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !ENCODING! RXE [ { NTE } ] { !TIMING_ENCODED! TQ1 [ { TQ2 } ] } { RXR } [ { RXC } ] ] } ]
+Return Message=ACK^O12
+Called by=RDE^O11

@@ -1,0 +1,12 @@
+XTN	1	ST		199	B	Telephone Number		
+XTN	2	ID	0201	3		telecommunication use code	N	^
+XTN	3	ID	0202	8		telecommunication equipment type	N	^
+XTN	4	ST		199		email address	N	^
+XTN	5	NM		3		country code	N	^
+XTN	6	NM		5		area/city code	N	^
+XTN	7	NM		9		phone number	N	^
+XTN	8	NM		5		extension	N	^
+XTN	9	ST		199		any text	N	^
+XTN	10	ST		4		Extension Prefix	N	^
+XTN	11	ST		6		Speed Dial Code	N	^
+XTN	12	ST		199	C	Unformatted Telephone number	N	E

@@ -1,0 +1,7 @@
+User	Eligibility source	0144	1	Insurance company
+User	Eligibility source	0144	2	Employer
+User	Eligibility source	0144	3	Insured presented policy
+User	Eligibility source	0144	4	Insured presented card
+User	Eligibility source	0144	5	Signed statement on file
+User	Eligibility source	0144	6	Verbal information
+User	Eligibility source	0144	7	None

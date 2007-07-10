@@ -1,0 +1,7 @@
+HL7	Processing priority	0168	A	As soon as possible (a priority lower than stat)
+HL7	Processing priority	0168	B	Do at bedside or portable (may be used with other codes)
+HL7	Processing priority	0168	C	Measure continuously (e.g./ arterial line blood pressure)
+HL7	Processing priority	0168	P	Preoperative (to be done prior to surgery)
+HL7	Processing priority	0168	R	Routine
+HL7	Processing priority	0168	S	Stat (do immediately)
+HL7	Processing priority	0168	T	Timing critical (do as near as possible to requested time)

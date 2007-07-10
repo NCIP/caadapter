@@ -1,0 +1,106 @@
+AD	Demographics	Address	2.8.1	Y	Y	
+CD	Specialty/Chapter Specific : Waveform	Channel definition	2.8.2	Y	Y	For waveform data only, see Chapter 7, Section 7.15.3.
+CE	Code Values	Coded element	2.8.3	Y	Y	
+CF	Code Values	Coded element with formatted values	2.8.4	Y	Y	
+CK	Code Values	Composite ID with check digit	2.8.5	Y	Y	
+CM	Generic	Composit	2.8.6	C		No new CM`s are allowed after HL7 Version 2.2. Hence there are no new CM`s in 2.
+CN	Code Values	Composite ID number and name	2.8.7	Y	Y	
+CNE	Code Values	Coded with no exceptions	2.8.8	Y	Y	
+CP	Specialty/Chapter Specific : Price Data	Composite price	2.8.9	Y	Y	In Version 2.3, replaces the MO data type.
+CQ	Numerical	Composite quantity with units	2.8.10	Y	Y	
+CWE	Code Values	Coded with exceptions	2.8.11	Y	Y	
+CX	Code Values	Extended composite ID with check digit	2.8.12	Y	Y	
+DLN	Master file	Driver`s license number	2.8.13	Y	Y	
+DR	Time Series:	Date/time range	2.8.14	Y	Y	Scheduling Chapter Only:
+DT	Date/Time	Date	2.8.15	N	N	YYYY[MM[DD]]
+ED	Specialty/Chapter Specific : Waveform	Encapsulated data	2.8.16	Y	Y	Supports ASCII MIME-encoding of binary data.
+EI	Identifier	Entity identifier	2.8.17	Y	Y	
+FC	Specialty/Chapter Specific : Patient Administration /Financial Information	Financial class	2.8.18	Y	Y	
+FT	Alphanumeric	Formatted text	2.8.19	N	N	
+HD	Identifier	Hierarchic designator	2.8.20	Y	Y	
+ID	Identifier	Coded values for HL7 tables	2.8.21	N	N	
+IS	Identifier	Coded value for user-defined tables	2.8.22	N	N	
+JCC	Master Files	Job code/class	2.8.23	Y	Y	
+MA	Specialty/Chapter Specific : Waveform	Multiplexed array	2.8.24	Y	Y	For waveform data only, see Chapter 7, Section 7.15.2.
+MO	Numerical	Money	2.8.25	Y	Y	
+NA	Specialty/Chapter Specific : Waveform	Numeric array	2.8.26	Y	Y	For waveform data only, see Chapter 7, Section 7.15.1.
+NM	Numerical	Numeric	2.8.27	N	N	
+PL	Identifier	Person location	2.8.28	Y	Y	
+PN	Demographics	Person name	2.8.29	Y	Y	
+PPN	Medical Records/Information Management	Performing person time stamp	2.8.29	Y	Y	
+PT	Identifier	Processing type	2.8.31	Y	Y	
+QIP	Extended Queries	Query input parameter list	2.8.32	Y	Y	
+QSC	Extended Queries	Query selection criteria	2.8.33	Y	Y	
+RCD	Extended Queries	Row column definition	2.8.34	Y	Y	
+RI	Time Series:	Repeat interval	2.8.35	Y	Y	Scheduling Chapter Only:
+RP	Identifier	Reference pointer	2.8.36	Y	Y	
+SAD	Demographics	Street Address		Y		
+SCV	Time Series:	Scheduling class value pair	2.8.37	Y	Y	Scheduling Chapter Only:
+SI	Numerical	Sequence ID	2.8.38	N	N	
+SN	Numerical	Structured numeric	2.8.39	Y	Y	
+SRT	Alphanumeric	Sort order		Y		
+ST	Alphanumeric	String	2.8.40	N	N	
+TM	Date/Time	Time	2.8.41	N	N	HH[MM[SS[.S[S[S[S]]]]]][+/-ZZZZ]
+TN	Demographics	Telephone number	2.8.42	N	N	[NN] [(999)]999-9999[X99999][B99999][C any text]
+TQ	Time Series:	Timing/quantity	2.8.43	Y	Y	For timing/quantity specifications for orders, see Chapter 4, Section 4.4.
+TS	Date/Time	Time stamp	2.8.44	N	N	YYYY[MM[DD[HHMM[SS[.S[S[S[S]]]]]]]][+/-ZZZZ] ^
+TX	Alphanumeric	Text data	2.8.45	N	N	
+VH	Master Files	Visiting hours	2.8.46	Y	Y	
+VID	Identifier	Version identifier	2.8.47	Y	Y	
+VRY	User Defined Data Type	Varis		N	N	Various Data Type
+XAD	Demographics	Extended address	2.8.48	Y	Y	In Version 2.3, replaces the AD data type.
+XCN	Code Values	Extended composite ID number and name	2.8.49	Y	Y	In Version 2.3, use instead of the CN data type.
+XON	Demographics	Extended composite name and ID number for organizations	2.8.50	Y	Y	
+XPN	Demographics	Extended person name	2.8.51	Y	Y	In Version 2.3, replaces the PN data type.
+XTN	Demographics	Extended telecommunications number	2.8.52	Y	Y	In Version 2.3, replaces the TN data type.  [NNN] [(999)]999-9999 [X99999] [B999
+ZC01	User Defined Data Type	User Define : composit		Y		
+ZC02	User Defined Data Type	User Define : composit		Y		
+ZC03	User Defined Data Type	User Define : composit		Y		
+ZC04	User Defined Data Type	User Define : composit		Y		
+ZC05	User Defined Data Type	User Define : composit		Y		
+ZC06	User Defined Data Type	User Define : composit		Y		
+ZC07	User Defined Data Type	User Define : composit		Y		
+ZC08	User Defined Data Type	User Define : composit		Y		
+ZC09	User Defined Data Type	User Define : composit		Y		
+ZC10	User Defined Data Type	User Define : composit		Y		
+ZC11	User Defined Data Type	User Define : composit		Y		
+ZC12	User Defined Data Type	User Define : composit		Y		
+ZC13	User Defined Data Type	User Define : composit		Y		
+ZC14	User Defined Data Type	User Define : composit		Y		
+ZC15	User Defined Data Type	User Define : composit		Y		
+ZC16	User Defined Data Type	User Define : composit		Y		
+ZC17	User Defined Data Type	User Define : composit		Y		
+ZC18	User Defined Data Type	User Define : composit		Y		
+ZC19	User Defined Data Type	User Define : composit		Y		
+ZC20	User Defined Data Type	User Define : composit		Y		
+ZC21	User Defined Data Type	User Define : composit		Y		
+ZC22	User Defined Data Type	User Define : composit		Y		
+ZC23	User Defined Data Type	User Define : composit		Y		
+ZC24	User Defined Data Type	User Define : composit		Y		
+ZC25	User Defined Data Type	User Define : composit		Y		
+ZC26	User Defined Data Type	User Define : composit		Y		
+ZC27	User Defined Data Type	User Define : composit		Y		
+ZC28	User Defined Data Type	User Define : composit		Y		
+ZC29	User Defined Data Type	User Define : composit		Y		
+ZC30	User Defined Data Type	User Define : composit		Y		
+ZC31	User Defined Data Type	User Define : composit		Y		
+ZC32	User Defined Data Type	User Define : composit		Y		
+ZC33	User Defined Data Type	User Define : channel identifier (CD datatype)		Y		
+ZC34	User Defined Data Type	User Define : waveform source (CD datatype)		Y		
+ZC35	User Defined Data Type	User Define : channel sensitivity/units (CD datatype)		Y		
+ZC36	User Defined Data Type	User Define : channel calibration parameters (CD datatype)		Y		
+ZC37	User Defined Data Type	User Define : minimum/maximum data value (CD datatype)		Y		
+ZCE1	User Defined Data Type	User Define : Error code		Y		
+ZCE2	User Defined Data Type	User Define : Administrative site code(OBR-15-1st)		Y		
+ZCE3	User Defined Data Type	User Define : Specimen Source code(OBR-15-2nd)		Y		
+ZCE4	User Defined Data Type	User Define : Occurrence code(UB2-7)		Y		
+ZCE5	User Defined Data Type	User Define : Occorrence span code(UB2-8)		Y		
+ZCE6	User Defined Data Type	User Define : coded element for name context (PPN data type)		Y		
+ZCE7	User Defined Data Type	User Define : coded element for country code (VID data type)		Y		
+ZCE8	User Defined Data Type	User Define : coded element for specimen role (00249)		Y		
+ZCM1	User Defined Data Type	User Define : Interval component		Y	Y	User defined data type to 2nd component (CM data type) of TQ data type
+ZCM2	User Defined Data Type	User Define : Order sequencing component		Y	Y	User defined data type to 10th component (CM data type) of TQ data type
+ZCM3	User Defined Data Type	User Define : Range		Y	Y	Low and High value
+ZEI1	User Defined Data Type	User Define : Entity Identifier and Namespaces ID		Y	Y	User defined to 2nd and 3rd subcomponent(first 2 of EI type)  of ZCM2 data type
+ZEI2	User Defined Data Type	Universal ID and Unversal ID type		Y	Y	User defined to 8th and 9th subcomponent(last 2 of EI type)  of ZCM2 data type
+ZHD1	User Defined Data Type	User Define : Hierarchic designator (for CK datatype)		Y		

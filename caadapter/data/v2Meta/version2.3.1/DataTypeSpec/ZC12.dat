@@ -1,0 +1,7 @@
+ZC12	1	ZCE2				specimen source name or code	N	^
+ZC12	2	TX				additives	N	^
+ZC12	3	TX				free text	N	^
+ZC12	4	ZCE3				body site	N	^
+ZC12	5	ZCE3				site modifier	N	^
+ZC12	6	CE				collection method modifier code	N	^
+ZC12	7	ZCE8				specimen role	N	E

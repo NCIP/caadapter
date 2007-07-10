@@ -1,0 +1,5 @@
+HL7	When to charge	0100	D	On discharge
+HL7	When to charge	0100	O	On receipt of order
+HL7	When to charge	0100	R	At time service is completed
+HL7	When to charge	0100	S	At time service is started
+HL7	When to charge	0100	T	At a designated date/time

@@ -1,0 +1,65 @@
+UB1	1	-1	-1	4	00530	SI	O		0				Set ID - UB1	Sequence ID	
+UB1	2	-1	-1	1	00531	NM	B		0				Blood Deductible  (43)	Numeric	
+UB1	3	-1	-1	2	00532	NM	O		0				Blood Furnished-Pints Of (40)	Numeric	
+UB1	4	-1	-1	2	00533	NM	O		0				Blood Replaced-Pints (41)	Numeric	
+UB1	5	-1	-1	2	00534	NM	O		0				Blood Not Replaced-Pints(42)	Numeric	
+UB1	6	-1	-1	2	00535	NM	O		0				Co-Insurance Days (25)	Numeric	
+UB1	7	-1	-1	14	00536	IS	O	Y	0	0043			Condition Code (35-39)	Coded value for user-defined tables	
+UB1	8	-1	-1	3	00537	NM	O		0				Covered Days - (23)	Numeric	
+UB1	9	-1	-1	3	00538	NM	O		0				Non Covered Days - (24)	Numeric	
+UB1	10	0	-1	41	00539	UVC	O	Y	0				Value Amount & Code (46-49)	UB value code and amount	
+UB1	10	1	0	20		CNE	R		0	0153				Coded with no exceptions	value code
+UB1	10	1	1	20		ID	R		0	0153				String	identifier
+UB1	10	1	2	199		ST			0					String	text
+UB1	10	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+UB1	10	1	4	20		ST			0					String	alternate identifier
+UB1	10	1	5	199		ST			0					String	alternate text
+UB1	10	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+UB1	10	1	7	10		ST			0					String	coding system version ID
+UB1	10	1	8	10		ST			0					String	alternate coding system version ID
+UB1	10	1	9	199		ST			0					String	original text
+UB1	10	2	0	20		MO			0					Money	value amount
+UB1	10	2	1	16		NM			0					Numeric	quantity
+UB1	10	2	2	3		ID			0	ISO4217				Coded values for HL7 tables	denomination
+UB1	11	-1	-1	2	00540	NM	O		0				Number Of Grace Days (90)	Numeric	
+UB1	12	0	-1	250	00541	CE	O		0	0348			Special Program Indicator (44)	Coded element	
+UB1	12	1	-1	20		IS			0	0348				String	identifier
+UB1	12	2	-1	199		ST			0					String	text
+UB1	12	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+UB1	12	4	-1	20		ST			0					String	alternate identifier
+UB1	12	5	-1	199		ST			0					String	alternate text
+UB1	12	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+UB1	13	0	-1	250	00542	CE	O		0	0349			PSRO/UR Approval Indicator (87)	Coded element	
+UB1	13	1	-1	20		IS			0	0349				String	identifier
+UB1	13	2	-1	199		ST			0					String	text
+UB1	13	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+UB1	13	4	-1	20		ST			0					String	alternate identifier
+UB1	13	5	-1	199		ST			0					String	alternate text
+UB1	13	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+UB1	14	-1	-1	8	00543	DT	O		0				PSRO/UR Approved Stay-Fm (88)	Date	
+UB1	15	-1	-1	8	00544	DT	O		0				PSRO/UR Approved Stay-To (89)	Date	
+UB1	16	0	-1	259	00545	OCD	O	Y	0				Occurrence (28-32)	occurrence code and date	
+UB1	16	1	0	705		CNE	R		0	0350				Coded with no exceptions	occurrence code
+UB1	16	1	1	20		ID	R		0	0350				String	identifier
+UB1	16	1	2	199		ST			0					String	text
+UB1	16	1	3	20		ID			0	0396				Coded values for HL7 tables	name of coding system
+UB1	16	1	4	20		ST			0					String	alternate identifier
+UB1	16	1	5	199		ST			0					String	alternate text
+UB1	16	1	6	20		ID			0	0396				Coded values for HL7 tables	name of alternate coding system
+UB1	16	1	7	10		ST			0					String	coding system version ID
+UB1	16	1	8	10		ST			0					String	alternate coding system version ID
+UB1	16	1	9	199		ST			0					String	original text
+UB1	16	2	-1	8		DT	R		0					Date	occurrence date
+UB1	17	0	-1	250	00546	CE	O		0	0351			Occurrence Span (33)	Coded element	
+UB1	17	1	-1	20		IS			0	0351				String	identifier
+UB1	17	2	-1	199		ST			0					String	text
+UB1	17	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+UB1	17	4	-1	20		ST			0					String	alternate identifier
+UB1	17	5	-1	199		ST			0					String	alternate text
+UB1	17	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+UB1	18	-1	-1	8	00547	DT	O		0				Occur Span Start Date(33)	Date	
+UB1	19	-1	-1	8	00548	DT	O		0				Occur Span End Date (33)	Date	
+UB1	20	-1	-1	30	00549	ST	B		0				UB-82 Locator 2	String	
+UB1	21	-1	-1	7	00550	ST	B		0				UB-82 Locator 9	String	
+UB1	22	-1	-1	8	00551	ST	B		0				UB-82 Locator 27	String	
+UB1	23	-1	-1	17	00552	ST	B		0				UB-82 Locator 45	String	

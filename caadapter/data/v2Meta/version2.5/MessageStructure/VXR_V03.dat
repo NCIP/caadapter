@@ -1,0 +1,7 @@
+Message Type=VXR
+Message Type Name=Vaccination record response
+Trigger Event=V03
+Trigger Description=VXR - Vaccination record response
+Message Structure=MSH MSA [ { SFT } ] QRD [ QRF ] PID [ PD1 ] [ { NK1 } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { GT1 } ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] RXA [ RXR ] [ { !OBSERVATION! OBX [ { NTE } ] } ] } ]
+Return Message=ACK^V03
+Called by=VXQ^V01

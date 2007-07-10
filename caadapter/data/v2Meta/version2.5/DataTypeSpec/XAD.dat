@@ -1,0 +1,14 @@
+XAD	1	SAD		184		street address	N	^
+XAD	2	ST		120		other designation	N	^
+XAD	3	ST		50		city	N	^
+XAD	4	ST		50		state or province	N	^
+XAD	5	ST		12		zip or postal code	N	^
+XAD	6	ID	0399	3		country	N	^
+XAD	7	ID	0190	3		address type	N	^
+XAD	8	ST		50		other geographic designation	N	^
+XAD	9	IS	0289	20		county/parish code	N	^
+XAD	10	IS	0288	20		census tract	N	^
+XAD	11	ID	0465	1		address representation code	N	^
+XAD	12	DR		53	B	address validity range	N	^
+XAD	13	TS		26		Effective Date	N	^
+XAD	14	TS		26		Expiration Date	N	E

@@ -1,0 +1,16 @@
+BLC	1	0	-1	250	01528	CE	O		0	0426			Blood Product Code	Coded element	
+BLC	1	1	-1	20		IS			0	0426				String	identifier
+BLC	1	2	-1	199		ST			0					String	text
+BLC	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BLC	1	4	-1	20		ST			0					String	alternate identifier
+BLC	1	5	-1	199		ST			0					String	alternate text
+BLC	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+BLC	2	0	-1	267	01529	CQ	O		0				Blood Amount	Composite quantity with units	
+BLC	2	1	-1	16		NM			0					Numeric	quantity
+BLC	2	2	0	483		CE			0					Coded element	units
+BLC	2	2	1	20		ST			0					String	identifier
+BLC	2	2	2	199		ST			0					String	text
+BLC	2	2	3	20		IS			0	0396				Coded value for user-defined tables	name of coding system
+BLC	2	2	4	20		ST			0					String	alternate identifier
+BLC	2	2	5	199		ST			0					String	alternate text
+BLC	2	2	6	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

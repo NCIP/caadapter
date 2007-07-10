@@ -1,0 +1,5 @@
+FN	1	ST				surname	N	^
+FN	2	ST				own surname prefix	N	^
+FN	3	ST				own surname	N	^
+FN	4	ST				surname prefix from partner/spouse	N	^
+FN	5	ST				surname from partner/spouse	N	E

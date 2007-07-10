@@ -1,0 +1,7 @@
+Message Type=MFQ
+Message Type Name=Master files query
+Trigger Event=M06
+Trigger Description=MFN/MFK - Clinical study with phases and schedules master file
+Message Structure=MFQ_M01
+Return Message=MFR^M06
+Called by=

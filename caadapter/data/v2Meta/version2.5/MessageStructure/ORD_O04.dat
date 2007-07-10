@@ -1,0 +1,7 @@
+Message Type=ORD
+Message Type Name=Dietary order acknowledgment message
+Trigger Event=O04
+Trigger Description=ORD _ Diet order acknowledgment
+Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER_DIET! ORC [ { !TIMING_DIET! TQ1 [ { TQ2 } ] } ] [ { ODS } ] [ { NTE } ] } [ { !ORDER_TRAY! ORC [ { !TIMING_TRAY! TQ1 [ { TQ2 } ] } ] [ { ODT } ] [ { NTE } ] } ] ]
+Return Message=ACK^O04
+Called by=OMD^O03

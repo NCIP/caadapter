@@ -1,0 +1,146 @@
+RXD	1	-1	-1	4	00334	NM	R		0				Dispense Sub-ID Counter	Numeric	
+RXD	2	0	-1	250	00335	CE	R		0	0292			Dispense/Give Code	Coded element	
+RXD	2	1	-1	0		ST			0					String	identifier
+RXD	2	2	-1	0		ST			0					String	text
+RXD	2	3	-1	0		IS			0	0292				Coded value for user-defined tables	name of coding system
+RXD	2	4	-1	0		ST			0					String	alternate identifier
+RXD	2	5	-1	0		ST			0					String	alternate text
+RXD	2	6	-1	0		IS			0	0292				Coded value for user-defined tables	name of alternate coding system
+RXD	3	-1	-1	26	00336	TS	R		0				Date/Time Dispensed	Time stamp	
+RXD	4	-1	-1	20	00337	NM	R		0				Actual Dispense Amount	Numeric	
+RXD	5	0	-1	250	00338	CE	C		0				Actual Dispense Units	Coded element	
+RXD	5	1	-1	0		ST			0					String	identifier
+RXD	5	2	-1	0		ST			0					String	text
+RXD	5	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	5	4	-1	0		ST			0					String	alternate identifier
+RXD	5	5	-1	0		ST			0					String	alternate text
+RXD	5	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	6	0	-1	250	00339	CE	O		0				Actual Dosage Form	Coded element	
+RXD	6	1	-1	0		ST			0					String	identifier
+RXD	6	2	-1	0		ST			0					String	text
+RXD	6	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	6	4	-1	0		ST			0					String	alternate identifier
+RXD	6	5	-1	0		ST			0					String	alternate text
+RXD	6	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	7	-1	-1	20	00325	ST	R		0				Prescription Number	String	
+RXD	8	-1	-1	20	00326	NM	C		0				Number of Refills Remaining	Numeric	
+RXD	9	-1	-1	200	00340	ST	O	Y	0				Dispense Notes	String	
+RXD	10	0	-1	200	00341	XCN	O	Y	0				Dispensing Provider	Extended composite ID number and name	
+RXD	10	1	-1	0		ST			0					String	ID number
+RXD	10	2	0	0		FN			0					String	family name
+RXD	10	2	1	0		ST			0					String	surname
+RXD	10	2	2	0		ST			0					String	own surname prefix
+RXD	10	2	3	0		ST			0					String	own surname
+RXD	10	2	4	0		ST			0					String	surname prefix from partner/spouse
+RXD	10	2	5	0		ST			0					String	surname from partner/spouse
+RXD	10	3	-1	0		ST			0					String	given name
+RXD	10	4	-1	0		ST			0					String	second and further given names or initial thereof
+RXD	10	5	-1	0		ST			0					String	suffix (e.g., JR or III)
+RXD	10	6	-1	0		ST			0					String	prefix (e.g., DR)
+RXD	10	7	-1	0		IS			0	0360				Coded value for user-defined tables	degree (e.g., MD)
+RXD	10	8	-1	0		IS			0	0297				Coded value for user-defined tables	source table
+RXD	10	9	0	0		ZHD1			0					Coded value for user-defined tables	assigning authority
+RXD	10	9	1	0		IS			0	0363				Coded value for user-defined tables	namespace ID
+RXD	10	9	2	0		ST			0					String	universal ID
+RXD	10	9	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXD	10	10	-1	0		ID			0	0200				Coded values for HL7 tables	name type code
+RXD	10	11	-1	0		ST			0					String	identifier check digit
+RXD	10	12	-1	0		ID			0	0061				Coded values for HL7 tables	code identifying the check digit scheme employed
+RXD	10	13	-1	0		IS			0	0203				Coded value for user-defined tables	identifier type code
+RXD	10	14	0	0		HD			0					Coded value for user-defined tables	assigning facility
+RXD	10	14	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXD	10	14	2	0		ST			0					String	universal ID
+RXD	10	14	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXD	10	15	-1	0		ID			0	0465				Coded values for HL7 tables	name representation code
+RXD	11	-1	-1	1	00322	ID	O		0	0167			Substitution Status	Coded values for HL7 tables	
+RXD	12	0	-1	10	00329	CQ	O		0				Total Daily Dose	Composite quantity with units	
+RXD	12	1	-1	0		NM			0					Numeric	quantity
+RXD	12	2	0	0		CE			0					String	units
+RXD	12	2	1	0		ST			0					String	identifier
+RXD	12	2	2	0		ST			0					String	text
+RXD	12	2	3	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	12	2	4	0		ST			0					String	alternate identifier
+RXD	12	2	5	0		ST			0					String	alternate text
+RXD	12	2	6	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	13	0	-1	200	01303	ZC26	C		0				Dispense-To Location	User Define : composit	
+RXD	13	1	-1	0		IS			0	0302				Coded value for user-defined tables	point of care
+RXD	13	2	-1	0		IS			0	0303				Coded value for user-defined tables	room
+RXD	13	3	-1	0		IS			0	0304				Coded value for user-defined tables	bed
+RXD	13	4	0	0		HD			0					Coded value for user-defined tables	facility
+RXD	13	4	1	0		IS			0	0300				Coded value for user-defined tables	namespace ID
+RXD	13	4	2	0		ST			0					String	universal ID
+RXD	13	4	3	0		ID			0	0301				Coded values for HL7 tables	universal ID type
+RXD	13	5	-1	0		IS			0	0306				Coded value for user-defined tables	location status
+RXD	13	6	-1	0		IS			0	0305				Coded value for user-defined tables	patient location type
+RXD	13	7	-1	0		IS			0	0307				Coded value for user-defined tables	building
+RXD	13	8	-1	0		IS			0	0308				Coded value for user-defined tables	floor
+RXD	13	9	-1	0		ST			0					String	street address
+RXD	13	10	-1	0		ST			0					String	other designation
+RXD	13	11	-1	0		ST			0					String	city
+RXD	13	12	-1	0		ST			0					String	state or province
+RXD	13	13	-1	0		ST			0					String	zip or postal code
+RXD	13	14	-1	0		ID			0	0399				Coded values for HL7 tables	country
+RXD	13	15	-1	0		ID			0	0190				Coded values for HL7 tables	address type
+RXD	13	16	-1	0		ST			0					String	other geographic designation
+RXD	14	-1	-1	1	00307	ID	O		0	0136			Needs Human Review	Coded values for HL7 tables	
+RXD	15	0	-1	250	00330	CE	O	Y	0				Pharmacy/Treatment Supplier`s Special Dispensing Instructions	Coded element	
+RXD	15	1	-1	0		ST			0					String	identifier
+RXD	15	2	-1	0		ST			0					String	text
+RXD	15	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	15	4	-1	0		ST			0					String	alternate identifier
+RXD	15	5	-1	0		ST			0					String	alternate text
+RXD	15	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	16	-1	-1	20	01132	NM	O		0				Actual Strength	Numeric	
+RXD	17	0	-1	250	01133	CE	O		0				Actual Strength Unit	Coded element	
+RXD	17	1	-1	0		ST			0					String	identifier
+RXD	17	2	-1	0		ST			0					String	text
+RXD	17	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	17	4	-1	0		ST			0					String	alternate identifier
+RXD	17	5	-1	0		ST			0					String	alternate text
+RXD	17	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	18	-1	-1	20	01129	ST	O	Y	0				Substance Lot Number	String	
+RXD	19	-1	-1	26	01130	TS	O	Y	0				Substance Expiration Date	Time stamp	
+RXD	20	0	-1	250	01131	CE	O	Y	0	0227			Substance Manufacturer Name	Coded element	
+RXD	20	1	-1	0		ST			0					String	identifier
+RXD	20	2	-1	0		ST			0					String	text
+RXD	20	3	-1	0		IS			0	0227				Coded value for user-defined tables	name of coding system
+RXD	20	4	-1	0		ST			0					String	alternate identifier
+RXD	20	5	-1	0		ST			0					String	alternate text
+RXD	20	6	-1	0		IS			0	0227				Coded value for user-defined tables	name of alternate coding system
+RXD	21	0	-1	250	01123	CE	O	Y	0				Indication	Coded element	
+RXD	21	1	-1	0		ST			0					String	identifier
+RXD	21	2	-1	0		ST			0					String	text
+RXD	21	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	21	4	-1	0		ST			0					String	alternate identifier
+RXD	21	5	-1	0		ST			0					String	alternate text
+RXD	21	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	22	-1	-1	20	01220	NM	O		0				Dispense Package Size	Numeric	
+RXD	23	0	-1	250	01221	CE	O		0				Dispense Package Size Unit	Coded element	
+RXD	23	1	-1	0		ST			0					String	identifier
+RXD	23	2	-1	0		ST			0					String	text
+RXD	23	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	23	4	-1	0		ST			0					String	alternate identifier
+RXD	23	5	-1	0		ST			0					String	alternate text
+RXD	23	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	24	-1	-1	2	01222	ID	O		0	0321			Dispense Package Method	Coded values for HL7 tables	
+RXD	25	0	-1	250	01476	CE	O	Y	0				Supplementary Code	Coded element	
+RXD	25	1	-1	0		ST			0					String	identifier
+RXD	25	2	-1	0		ST			0					String	text
+RXD	25	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	25	4	-1	0		ST			0					String	alternate identifier
+RXD	25	5	-1	0		ST			0					String	alternate text
+RXD	25	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	26	0	-1	250	01477	CE	O		0				Initiating Location	Coded element	
+RXD	26	1	-1	0		ST			0					String	identifier
+RXD	26	2	-1	0		ST			0					String	text
+RXD	26	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	26	4	-1	0		ST			0					String	alternate identifier
+RXD	26	5	-1	0		ST			0					String	alternate text
+RXD	26	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+RXD	27	0	-1	250	01478	CE	O		0				Packaging/Assembly Location	Coded element	
+RXD	27	1	-1	0		ST			0					String	identifier
+RXD	27	2	-1	0		ST			0					String	text
+RXD	27	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+RXD	27	4	-1	0		ST			0					String	alternate identifier
+RXD	27	5	-1	0		ST			0					String	alternate text
+RXD	27	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system

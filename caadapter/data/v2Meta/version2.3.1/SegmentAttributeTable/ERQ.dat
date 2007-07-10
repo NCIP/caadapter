@@ -1,0 +1,11 @@
+ERQ	1	-1	-1	32	00696	ST	O		0				Query Tag	String	
+ERQ	2	0	-1	250	00706	CE	R		0				Event Identifier	Coded element	
+ERQ	2	1	-1	0		ST			0					String	identifier
+ERQ	2	2	-1	0		ST			0					String	text
+ERQ	2	3	-1	0		IS			0	0396				Coded value for user-defined tables	name of coding system
+ERQ	2	4	-1	0		ST			0					String	alternate identifier
+ERQ	2	5	-1	0		ST			0					String	alternate text
+ERQ	2	6	-1	0		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
+ERQ	3	0	-1	256	00705	QIP	O	Y	0				Input Parameter List	Query input parameter list	
+ERQ	3	1	-1	0		ST			0					String	segment field name
+ERQ	3	2	-1	0		ST			0					String	values

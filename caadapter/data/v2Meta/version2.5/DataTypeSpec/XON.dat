@@ -1,0 +1,10 @@
+XON	1	ST		50		organization name	N	^
+XON	2	IS	0204	20		organization name type code	N	^
+XON	3	NM		4	B	ID number	N	^
+XON	4	NM		1		check digit	N	^
+XON	5	ID	0061	3		code identifying the check digit scheme employed	N	^
+XON	6	ZHD1	0363	227		assigning authority	N	^
+XON	7	IS	0203	5		identifier type code	N	^
+XON	8	HD		227		assigning facility ID	N	^
+XON	9	ID	0465	1		name representation code	N	^
+XON	10	ST		20		Organization Identifier	N	E
