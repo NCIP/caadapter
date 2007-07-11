@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAssociationValidator.java,v 1.1 2007-07-03 18:23:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAssociationValidator.java,v 1.2 2007-07-11 17:55:06 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,8 +52,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-07-03 18:23:11 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-11 17:55:06 $
  * @since caAdapter v1.2
  */
 
@@ -86,6 +86,14 @@ public class MIFAssociationValidator extends Validator
         		results.addValidatorResults(validateChoiceAssociation(mifAssc));
         	else
         		results.addValidatorResults(new MIFClassValidator(asscMifClass).validate());
+        	
+        	if (mifAssc.getMultiplicityIndex()>0)
+            {
+            	Message message = MessageResources.getMessage("HSM4INFO",
+                        new Object[]{mifAssc.getXmlPath(),
+            			mifAssc.getMultiplicityIndex()});
+            	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, message));
+            }
         }
 
         return results;

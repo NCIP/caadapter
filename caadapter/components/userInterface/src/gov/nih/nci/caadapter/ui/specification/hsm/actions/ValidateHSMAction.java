@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.3 2007-07-10 17:34:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.4 2007-07-11 17:56:51 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,23 +36,27 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 //import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
+import gov.nih.nci.caadapter.hl7.validation.MIFAssociationValidator;
+import gov.nih.nci.caadapter.hl7.validation.MIFAttributeValidator;
 import gov.nih.nci.caadapter.hl7.validation.MIFClassValidator;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
-
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 /**
  * This class defines the action to invoke validation of HSM.
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-10 17:34:37 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-11 17:56:51 $
  */
 public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 {
@@ -68,7 +72,7 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.3 2007-07-10 17:34:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.4 2007-07-11 17:56:51 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -135,19 +139,34 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
-		if (!(obj instanceof MIFClass))
+		ValidatorResults results =null;
+		if (obj instanceof MIFClass)
 		{
-			JOptionPane.showMessageDialog(parentPanel.getParent(), "Please select a clone meta object", "Wrong Selection", JOptionPane.WARNING_MESSAGE);
+			MIFClassValidator cloneValidator = new MIFClassValidator((MIFClass)obj,true);
+			results = cloneValidator.validate();
+		}
+		else if (obj instanceof MIFAssociation)
+		{
+			MIFAssociationValidator asscValidator = new MIFAssociationValidator((MIFAssociation)obj);
+			results = asscValidator.validate();
+		}
+		else if (obj instanceof MIFAttribute)
+		{
+			MIFAttributeValidator attrValidator = new MIFAttributeValidator((MIFAttribute)obj);
+			results = attrValidator.validate();
+		}
+		else //if (!(obj instanceof MIFClass))
+		{
+			JOptionPane.showMessageDialog(parentPanel.getParent(), "Please select an object (Clone|MIFAssocation|MIFAttribute) for validation", "Wrong Selection", JOptionPane.WARNING_MESSAGE);
 			setSuccessfullyPerformed(false);
 		}
-		else
-		{
-			MIFClass cloneMeta = (MIFClass) obj;
-			MIFClassValidator cloneMetaValidator = new MIFClassValidator(cloneMeta,true);
-			ValidatorResults results = cloneMetaValidator.validate();
+		 if (results!=null)
+		 {
 			parentPanel.getController().displayValidationMessage(results);
+		System.out.println("ValidateHSMAction.doAction()..validate object:"+((DatatypeBaseObject)obj).getXmlPath());
+			parentPanel.getMessagePane().setValidatedElement(((DatatypeBaseObject)obj).getNodeXmlName());
 			setSuccessfullyPerformed(true);
-		}
+		 }
 		return isSuccessfullyPerformed();
 	}
 }

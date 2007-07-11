@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFClassValidator.java,v 1.1 2007-07-03 18:23:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFClassValidator.java,v 1.2 2007-07-11 17:55:46 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,11 +41,12 @@ import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 
 import java.util.HashSet;
-//import java.util.List;
+
 
 /**
  * Validation for H3S Component. By given any CloneMeta as a root CloneMeta,
@@ -54,8 +55,8 @@ import java.util.HashSet;
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-07-03 18:23:11 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-11 17:55:46 $
  * @since caAdapter v1.2
  */
 
@@ -64,9 +65,9 @@ public class MIFClassValidator extends Validator
 {
 	private boolean initialMessageRequired=false;
 	
-    public MIFClassValidator(MIFClass cloneMeta)
+    public MIFClassValidator(MIFClass mifClass)
     {
-        this(cloneMeta,false);
+        this(mifClass,false);
     }
     
     public MIFClassValidator(MIFClass cloneMeta, boolean initMsg)
@@ -109,8 +110,10 @@ public class MIFClassValidator extends Validator
     {
         ValidatorResults validatorResults = new ValidatorResults();
         //validate all its attributes
-        validatorResults.addValidatorResults(new MIFAttributeValidator(mifClass).validate());
-        
+        final HashSet<MIFAttribute> attributes = mifClass.getAttributes();
+        for (MIFAttribute mifAttr :attributes)
+        	validatorResults.addValidatorResults(new MIFAttributeValidator(mifAttr).validate());
+
         //validate all choice association
         HashSet<MIFAssociation> assHash=mifClass.getAssociations();
         for (MIFAssociation assc:assHash)

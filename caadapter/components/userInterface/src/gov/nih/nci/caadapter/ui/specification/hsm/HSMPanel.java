@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.3 2007-07-10 17:35:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.4 2007-07-11 17:57:18 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,8 +77,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-10 17:35:49 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-11 17:57:18 $
  */
 public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel implements ContextManagerClient
 {
@@ -93,7 +93,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.3 2007-07-10 17:35:49 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.4 2007-07-11 17:57:18 wangeug Exp $";
  
     private JTabbedPane rightTabbedPane;
     private TreeExpandAllAction treeExpandAllAction;
@@ -138,7 +138,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 
         hsmTree = new AutoscrollableTree();
         treeScrollPane = new JScrollPane(hsmTree);
-        treeScrollPane.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 2), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
+        treeScrollPane.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 2)));
 
         JPanel treePanel = new JPanel(new BorderLayout());
         JPanel treeNorthPanel = new JPanel(new BorderLayout());
@@ -241,7 +241,8 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
     {
         if (validationMessagePane == null)
         {
-            validationMessagePane = new ValidationMessagePane();
+        	//display message with elemnt validated
+            validationMessagePane = new ValidationMessagePane(true);
         }
         validationMessagePane.setMinimumSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 4)));
         return validationMessagePane;

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAttributeValidator.java,v 1.1 2007-07-03 18:23:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAttributeValidator.java,v 1.2 2007-07-11 17:55:31 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,29 +40,32 @@ import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
+import java.util.Enumeration;
 import java.util.HashSet;
 //import java.util.List;
+import java.util.Hashtable;
 
 /**
  * Validate if the abstract data type has been specialized. 
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-07-03 18:23:11 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-11 17:55:31 $
  * @since caAdapter v1.2
  */
 
 
 public class MIFAttributeValidator extends Validator
 {
-    public MIFAttributeValidator(MIFClass mifClass)
+    public MIFAttributeValidator(MIFAttribute mifAttribute)
     {
-        super(mifClass);
+        super(mifAttribute);
     }
 
     /**
@@ -79,17 +82,13 @@ public class MIFAttributeValidator extends Validator
         }
         else
         {
-            MIFClass cloneMeta = (MIFClass)toBeValidatedObject;
-            final HashSet<MIFAttribute> attributes = cloneMeta.getAttributes();
-            for (MIFAttribute mifAttr :attributes)
-            {
-            	Datatype mifDatatype=mifAttr.getDatatype();
-				if (mifDatatype!=null&&mifDatatype.isAbstract())
-				{
-					results.addValidatorResults(validateAbstractTypeAttribute(mifAttr));
-				}
-				results.addValidatorResults(validateDatatypeType(mifDatatype));
-            }
+        	MIFAttribute attrToValidate=(MIFAttribute)toBeValidatedObject;
+        	Datatype mifDatatype=attrToValidate.getDatatype();
+			if (mifDatatype!=null&&mifDatatype.isAbstract())
+			{
+				results.addValidatorResults(validateAbstractTypeAttribute(attrToValidate));
+			}
+			results.addValidatorResults(validateDatatypeType(mifDatatype));
         }
         return results;
     }
@@ -97,7 +96,22 @@ public class MIFAttributeValidator extends Validator
     private ValidatorResults validateDatatypeType(Datatype datatype)
     {
     	ValidatorResults results = new ValidatorResults();
+    	if (datatype==null)
+    		return results;
     	
+    	final Hashtable <String, Attribute>attrHash=datatype.getAttributes();
+    	Enumeration<Attribute> attrElements=attrHash.elements();
+    	while (attrElements.hasMoreElements())
+    	{
+    		Attribute oneAttr=(Attribute)attrElements.nextElement();
+    		if (oneAttr.getDefaultValue()!=null)
+    		{
+            	Message message = MessageResources.getMessage("HSM6INFO",
+                        new Object[]{oneAttr.getXmlPath(),
+            			oneAttr.getDefaultValue()});
+            	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, message));
+       		}
+    	}
     	return results;
     }
     
@@ -108,17 +122,24 @@ public class MIFAttributeValidator extends Validator
         {
             Message message = MessageResources.getMessage("HSM1",
                 new Object[]{cloneAttributeMeta.getXmlPath(),cloneAttributeMeta.getType()});
-            ValidatorResult one = new ValidatorResult(ValidatorResult.Level.ERROR, message);
-            results.addValidatorResult(one);
+            results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, message));
+        }
+        else
+        {
+        	Message message = MessageResources.getMessage("HSM1INFO",
+                    new Object[]{cloneAttributeMeta.getXmlPath(),
+        			cloneAttributeMeta.getDatatype(),
+        			cloneAttributeMeta.getConcreteDatatype()});
+        		results.addValidatorResult( new ValidatorResult(ValidatorResult.Level.INFO, message));       	
         }
 
-//        List<CloneAttributeMeta> childAttributes = cloneAttributeMeta.getChildAttributes();
-//        for (int j = 0; j < childAttributes.size(); j++)
-//        {
-//            CloneAttributeMeta attributeMeta =  childAttributes.get(j);
-//            results.addValidatorResults(validateAttribute(attributeMeta));
-//        }
-
+        if (cloneAttributeMeta.getMultiplicityIndex()>0)
+        {
+        	Message message = MessageResources.getMessage("HSM4INFO",
+                    new Object[]{cloneAttributeMeta.getXmlPath(),
+        			cloneAttributeMeta.getMultiplicityIndex()});
+        	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, message));
+        }
         return results;
     }
 }

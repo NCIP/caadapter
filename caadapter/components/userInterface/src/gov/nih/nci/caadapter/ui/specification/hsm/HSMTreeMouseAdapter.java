@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.2 2007-07-03 20:21:38 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.3 2007-07-11 17:57:52 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,8 +58,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:21:38 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-11 17:57:52 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -170,9 +170,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 retrievePopupMenu();
                 setAllEnabled(false);
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
-                Object userObj = node.getUserObject();
-
-                System.out.println("HSMTreeMouseAdapter.showIfPopupTrigger()..userObj:"+userObj.getClass());	
+                Object userObj = node.getUserObject();	
                 if (userObj instanceof MIFClass)
                 {
                     validateHSMAction.setEnabled(true);
@@ -188,6 +186,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 
                 if (userObj instanceof MIFAssociation)
                 {
+                	validateHSMAction.setEnabled(true);
                 	MIFAssociation mifAssc = (MIFAssociation) userObj;               	
                     if (MIFUtil.isChoiceAssociation(mifAssc))
                     	selectChoiceAction.setEnabled(true);
@@ -217,6 +216,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 
                 if (userObj instanceof MIFAttribute)
                 {
+                	validateHSMAction.setEnabled(true);
                 	MIFAttribute mifAttr = (MIFAttribute) userObj;
                 	if (mifAttr.getMaximumMultiplicity()!=1)
                     {

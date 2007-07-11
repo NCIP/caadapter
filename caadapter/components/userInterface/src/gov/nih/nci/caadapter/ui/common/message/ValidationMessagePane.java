@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.2 2007-07-10 17:35:04 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.3 2007-07-11 17:56:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,8 +53,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-10 17:35:04 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-11 17:56:11 $
  */
 public class ValidationMessagePane extends JPanel implements ActionListener
 {
@@ -70,19 +70,16 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.2 2007-07-10 17:35:04 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.3 2007-07-11 17:56:11 wangeug Exp $";
 
 	private JPanel navigationPanel = null;
 	private JPanel levelPanel = null;
     private JPanel messagePanel = null;
-    private JPanel messageDisplayingPanel = null;
+//    private JPanel messageDisplayingPanel = null;
     private JComboBox levelComboBox = null;
-    //private JButton saveButton = null;
-    //private JButton printButton = null;
 
-    private JTable messageTable;
+//    private JTable messageTable;
     private JTextArea messageDisplaying;
-    //private JScrollPane scrollPane = null;
     private JSplitPane splitPane;
     private DefaultMessageTableModel tableModel;
 
@@ -93,14 +90,15 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	private String confirmationMessage = "";
 
 	private JPanel confirmationMessagePanel;
-	private JLabel confirmationMessageLabel;
+//	private JLabel confirmationMessageLabel;
 	private JLabel confirmationMessageField;
 
-    private SaveAsValidateMessageAction saveAction = null;
-    private PrintingValidateMessageAction printAction = null;
-    private int selectedRow = -1;
-     
+//    private SaveAsValidateMessageAction saveAction = null;
+//    private PrintingValidateMessageAction printAction = null;
+    private int selectedRow = -1;    
     private boolean startedTag = false;
+    private boolean displayValidatedElement=false;
+    private JTextField elementField;
 
     /**
 	 * Creates a new <code>JPanel</code> with a double buffer
@@ -108,9 +106,15 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 */
 	public ValidationMessagePane()
 	{
-		initialize();
+		this(false);
 	}
 
+	public ValidationMessagePane(boolean displayObject)
+	{
+		displayValidatedElement=displayObject;
+		initialize();
+		
+	}
 	private void initialize()
 	{
 		setLayout(new BorderLayout());
@@ -122,18 +126,25 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 		levelComboBox = new JComboBox();
 		levelComboBox.addActionListener(this);
 
-        saveAction = new SaveAsValidateMessageAction(this);
+		SaveAsValidateMessageAction saveAction = new SaveAsValidateMessageAction(this);
         JButton saveButton = new JButton(saveAction);
-        printAction = new PrintingValidateMessageAction(this);
+        PrintingValidateMessageAction printAction = new PrintingValidateMessageAction(this);
         JButton printButton = new JButton(printAction);
 
         levelPanel.add(levelComboBox);
         levelPanel.add(saveButton);
         levelPanel.add(printButton);
+        if (displayValidatedElement)
+        {
+        	JLabel labelElement = new JLabel("Validated Element:");
+    		levelPanel.add(labelElement);
+    		elementField = new JTextField();
+    		levelPanel.add(elementField);
+        }
 
         navigationPanel.add(levelPanel, BorderLayout.NORTH);
 
-		confirmationMessageLabel = new JLabel("Confirmation Message: ");
+		JLabel confirmationMessageLabel = new JLabel("Confirmation Message: ");
 		confirmationMessageField = new JLabel();
 //		confirmationMessageField.setEnabled(false);
 		confirmationMessagePanel = new JPanel(new BorderLayout());
@@ -146,7 +157,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 		messagePanel.add(navigationPanel, BorderLayout.NORTH);
 		navigationPanel.setVisible(false);
 		tableModel = new DefaultMessageTableModel();
-		messageTable = new JTable(tableModel);
+		JTable messageTable = new JTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(messageTable);
 		messagePanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -208,7 +219,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
     private void constructSplitPane()
     {
         remove(messagePanel);
-        messageDisplayingPanel = new JPanel(new BorderLayout());
+        JPanel messageDisplayingPanel = new JPanel(new BorderLayout());
         messageDisplaying = new JTextArea();
 		messageDisplaying.setLineWrap(true);
 		messageDisplaying.setWrapStyleWord(true);
@@ -269,6 +280,16 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 		return this.results;
 	}
 
+	/**
+	 * If validatation being applied with different elements of the same
+	 * scope, set the elment being validated
+	 * @param validateObject
+	 */
+	public void setValidatedElement(Object validateObject)
+	{
+		if (validateObject!=null)
+			elementField.setText(validateObject.toString());
+	}
 	/**
 	 * Call this function to present a traversable view to display all messages in the results based on level.
 	 * @param results
@@ -397,6 +418,9 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/10 17:35:04  wangeug
+ * HISTORY      : update code:reset propertyPane/validationPane with JTabbedPane
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
