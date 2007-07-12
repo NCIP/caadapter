@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.2 2007-07-12 16:44:39 umkis Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -46,8 +46,8 @@ import javax.swing.JOptionPane;
  * the user
  * 
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $ date $Date:
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
  *          2006/11/27 22:00:07 $
  */
 public class MappingMain extends JFrame {
@@ -80,7 +80,7 @@ public class MappingMain extends JFrame {
     //For compatibility with the outputs of the advanced V2-V3 mapping function, this method is replaced by umkis.
     //This Changing will be restored after the test.
     //The original method with this name was changed to beginTransformationOriginal(....).
-    public boolean beginTransformationUmKIS(String dir, String filename, String csvLocation, String scsLocation) throws Exception
+    public boolean beginTransformation(String dir, String filename, String csvLocation, String scsLocation) throws Exception
     {
         boolean resBoolean = true;
         File dirFile = new File(dir);
@@ -100,7 +100,7 @@ public class MappingMain extends JFrame {
          * @return booleanVal
          * @throws Exception
          */
-    public boolean beginTransformation(String dir, String filename, String csvLocation, String scsLocation) throws Exception {
+    public boolean beginTransformationOriginal(String dir, String filename, String csvLocation, String scsLocation) throws Exception {
 	System.out.println("The file name which is passed is " + filename);
 	ArrayList<String> _segNames = new ArrayList<String>();
 	java.util.Set<String> sNames = new java.util.HashSet<String>();
@@ -551,6 +551,9 @@ public class MappingMain extends JFrame {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2007/07/03 19:32:58  wangeug
+ * HISTORY : initila loading
+ * HISTORY :
  * HISTORY : Revision 1.7  2006/12/21 18:06:11  jayannah
  * HISTORY : Changed back to the original version
  * HISTORY :
