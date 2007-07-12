@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.2 2007-07-09 20:18:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.3 2007-07-12 16:08:15 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-09 20:18:14 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-12 16:08:15 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -73,7 +73,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.2 2007-07-09 20:18:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.3 2007-07-12 16:08:15 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -184,7 +184,8 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				{
 						showText=showText+" [Reference - " +asscMIFClass.getName()+ "]";
 				}
-				
+				if (mifAssc.isOptionForced())
+					showText=showText+" [Force XML]";
 				setText(showText);			
 				setIcon(CLONE_IMAGE_ICON);	
 			}

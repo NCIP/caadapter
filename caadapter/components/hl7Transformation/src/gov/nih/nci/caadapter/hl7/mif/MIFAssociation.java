@@ -3,21 +3,15 @@
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.hl7.mif;
-
-
-
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
-import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
-import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
-
 import java.io.Serializable;
-import java.util.HashSet;
+
 /**
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-07-09 20:12:28 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-12 16:07:35 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -36,7 +30,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private boolean optionChosen = false;
 	private boolean choiceSelected =false;//make it serializable
 	private String parentXmlPath;
-
+	private boolean optionForced=false;
 	public String getParentXmlPath() {
 		return parentXmlPath;
 	}
@@ -260,8 +254,17 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public boolean isEnabled() {
 		return true;
 	}
-
+	@Override
 	public void setEnabled(boolean enable) {
+		// TODO Auto-generated method stub
 		
 	}
+	public boolean isOptionForced() {
+		return optionForced;
+	}
+	public void setOptionForced(boolean optionForced) {
+		this.optionForced = optionForced;
+	}
+
+
 }	

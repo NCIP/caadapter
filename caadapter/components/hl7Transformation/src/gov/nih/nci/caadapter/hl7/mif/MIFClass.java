@@ -12,16 +12,14 @@ import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.TreeSet;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.ArrayList;
 
 /**
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-06-28 13:53:20 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-07-12 16:07:27 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 	 private HashSet<MIFClass> choices = new HashSet<MIFClass>();
 	 private String referenceName ="";
 	 private String name;
-	 private boolean abstractClass;
 	 private boolean isReference = false;
 	 private boolean isDynamic = false;
 	 private String sortKey;

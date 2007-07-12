@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.3 2007-07-11 17:57:52 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.4 2007-07-12 16:08:39 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,8 +58,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-11 17:57:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-12 16:08:39 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -69,6 +69,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 
     private AddCloneAction addCloneAction;
     private RemoveCloneAction removeCloneAction;
+    private ForceOptionCloneAction forceOptionCloneAction;
     private AddMultipleCloneAction addMultipleCloneAction;
     private RemoveMultipleCloneAction removeMultipleCloneAction;
     private AddMultipleAttributeAction addMultipleAttributeAction;
@@ -82,6 +83,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
     {
         super();
         this.parentPanel = parentPanel;
+        forceOptionCloneAction=new ForceOptionCloneAction(this.parentPanel);
         addCloneAction = new AddCloneAction(this.parentPanel);
         removeCloneAction = new RemoveCloneAction(this.parentPanel);
         addMultipleCloneAction = new AddMultipleCloneAction(this.parentPanel);
@@ -131,6 +133,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
             popupMenu.add(selectChoiceAction);
             popupMenu.addSeparator();
             popupMenu.add(validateHSMAction);
+            popupMenu.add(forceOptionCloneAction);
             popupMenu.addSeparator();
             popupMenu.add(selectAddressPartsAction);         
         }
@@ -138,6 +141,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 
 	private void setAllEnabled(boolean value)
 	{
+		forceOptionCloneAction.setEnabled(value);
 	    addCloneAction.setEnabled(value);
 	    removeCloneAction.setEnabled(value);
 		addMultipleCloneAction.setEnabled(value);
@@ -212,6 +216,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 
                     if (asscToRemove.size() > 0)
                         removeCloneAction.setEnabled(true);
+                    if (mifAssc.isOptionChosen()&&!mifAssc.isOptionForced())
+                    	forceOptionCloneAction.setEnabled(true);
                 }
 
                 if (userObj instanceof MIFAttribute)
