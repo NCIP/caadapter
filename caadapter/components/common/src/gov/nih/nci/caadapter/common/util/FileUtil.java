@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.2 2007-07-09 15:39:58 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.3 2007-07-12 17:30:06 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,7 +48,7 @@ import gov.nih.nci.caadapter.common.Log;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class FileUtil
@@ -86,6 +86,47 @@ public class FileUtil
         File f = new File("");
         return f.getAbsolutePath();
     }
+
+    public static String getComponentsDirPath()
+    {
+        return getWorkingDirPath() + File.separator + "components";
+    }
+
+    public static String getCommonDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "common"; 
+    }
+
+    public static String getDataViewerDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "dataviewer";
+    }
+
+    public static String getHL7TransformationDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "hl7Transformation";
+    }
+
+    public static String getModelMappingDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "modelMapping";
+    }
+
+    public static String getSDTMTransformationDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "sdtmTransformation";
+    }
+
+    public static String getUserInterfaceDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "userInterface";
+    }
+
+    public static String getWebServicesDirPath()
+    {
+        return getComponentsDirPath() + File.separator + "webservices";
+    }
+
     public static String getETCDirPath()  // inserted bt umkis 08/09/2006
     {
         File f = new File("./etc");
@@ -685,6 +726,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2007/07/09 15:39:58  umkis
+ * Update for csv cardinality and test instance generating.
+ *
  * Revision 1.1  2007/04/03 16:02:37  wangeug
  * initial loading of common module
  *
