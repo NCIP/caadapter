@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.4 2007-07-11 17:57:18 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.5 2007-07-12 19:16:03 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,8 +77,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-11 17:57:18 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-12 19:16:03 $
  */
 public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel implements ContextManagerClient
 {
@@ -93,7 +93,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.4 2007-07-11 17:57:18 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.5 2007-07-12 19:16:03 wangeug Exp $";
  
     private JTabbedPane rightTabbedPane;
     private TreeExpandAllAction treeExpandAllAction;
@@ -191,6 +191,8 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
             else
             {//set null implies removement
                 //place holder
+            	if (rightTabbedPane.getTabCount()>1)
+            		return;
                 JLabel dummyHolderForPropertiesDisplay = new JLabel("For Properties Display...");
                 dummyHolderForPropertiesDisplay.setEnabled(false);
                 JPanel placeHolderForPropertiesDisplay = new JPanel(new BorderLayout());
@@ -400,6 +402,10 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
 				contextManager.addClientMenuAction(MenuConstants.HSM_FILE, MenuConstants.FILE_MENU_NAME,ActionConstants.VALIDATE, action);
 				contextManager.addClientMenuAction(MenuConstants.HSM_FILE, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.VALIDATE, action);
 				action.setEnabled(true);
+
+				//enable "ADD ALL OPTION" action
+				action =new gov.nih.nci.caadapter.ui.specification.hsm.actions.EnableAllOptionCloneAction(this);
+				contextManager.addClientMenuAction(MenuConstants.HSM_FILE, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.REFRESH, action);
 
 				action = new gov.nih.nci.caadapter.ui.specification.hsm.actions.CloseHSMAction(this);
 				contextManager.addClientMenuAction(MenuConstants.HSM_FILE, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);

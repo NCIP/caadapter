@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.4 2007-07-12 19:16:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAllOptionCloneAction.java,v 1.1 2007-07-12 19:16:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,43 +34,45 @@
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
-import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+//import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
+import gov.nih.nci.caadapter.hl7.validation.MIFAssociationValidator;
+import gov.nih.nci.caadapter.hl7.validation.MIFAttributeValidator;
+import gov.nih.nci.caadapter.hl7.validation.MIFClassValidator;
+import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
-import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
-
-
-import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
-import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
-
-
+import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
 
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 /**
- * This class defines the add optional clone action.
+ * This class defines the action to invoke validation of HSM.
  *
- * @author OWNER: Eric Chen
+ * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-12 19:16:29 $
+ *          revision    $Revision: 1.1 $
+ *          date        $Date: 2007-07-12 19:16:40 $
  */
-public class AddCloneAction extends AbstractHSMContextCRUDAction
+public class EnableAllOptionCloneAction extends AbstractHSMContextCRUDAction
 {
 	/**
 	 * Logging constant used to identify source of log entry, that could be later used to create
 	 * logging mechanism to uniquely identify the logged class.
 	 */
-	private static final String LOGID = "$RCSfile: AddCloneAction.java,v $";
+	private static final String LOGID = "$RCSfile: EnableAllOptionCloneAction.java,v $";
 
 	/**
 	 * String that identifies the class version and solves the serial version UID problem.
@@ -78,32 +80,41 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.4 2007-07-12 19:16:29 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAllOptionCloneAction.java,v 1.1 2007-07-12 19:16:40 wangeug Exp $";
 
-	private static final String COMMAND_NAME = "Add Optional Clone";
-	private static final Character COMMAND_MNEMONIC = new Character('C');
-
-//	private transient JTree tree;
+	private static final String COMMAND_NAME = "Select All Options";
+	private static final Character COMMAND_MNEMONIC = new Character('S');
+	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("enableOptionAll.gif"));
+	private static final String TOOL_TIP_DESCRIPTION = "Select All Option Clones";
 
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public AddCloneAction(HSMPanel parentPanel)
+	public EnableAllOptionCloneAction(HSMPanel parentPanel)
 	{
-		this(COMMAND_NAME, null, parentPanel);
+		this(COMMAND_NAME, parentPanel);
 	}
 
+	/**
+	 * Defines an <code>Action</code> object with the specified
+	 * description string and a default icon.
+	 */
+	public EnableAllOptionCloneAction(String name, HSMPanel parentPanel)
+	{
+		this(name, IMAGE_ICON, parentPanel);
+	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public AddCloneAction(String name, Icon icon, HSMPanel parentPanel)
+	public EnableAllOptionCloneAction(String name, Icon icon, HSMPanel parentPanel)
 	{
 		super(name, icon, parentPanel);
 		setMnemonic(COMMAND_MNEMONIC);
-		setActionCommandType(DOCUMENT_ACTION_TYPE);
+		//		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+		setShortDescription(TOOL_TIP_DESCRIPTION);
 	}
 
 
@@ -112,63 +123,50 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
-		super.doAction(e);
-		if(!isSuccessfullyPerformed())
+		boolean superGood=super.doAction(e);
+		if (!superGood)
+			return superGood;
+		
+		//no need to check the change status as of now 
+		JTree mifTree=parentPanel.getTree();
+		TreePath treePath = null;
+		//use root as the default selection.
+		Object rootObj = mifTree.getModel().getRoot();
+		if(rootObj instanceof DefaultMutableTreeNode)
 		{
-			return false;
+				treePath = new TreePath(((DefaultMutableTreeNode)rootObj).getPath());
 		}
-		JTree tree= parentPanel.getTree();
-		TreePath treePath = tree.getSelectionPath();
-		if(treePath==null)
-		{
-			JOptionPane.showMessageDialog(tree.getRootPane().getParent(),
-                "Tree has no selection",
-				"No Selection",
-                JOptionPane.WARNING_MESSAGE);
-			setSuccessfullyPerformed(false);
-			return false;
-		}
-
-        DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
+		
+		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
-		MIFClass mifClass =null;
-		if(obj instanceof MIFClass)
-			mifClass=(MIFClass) obj;
-		else if (obj instanceof MIFAssociation )
+		if (obj instanceof MIFClass)
 		{
-			MIFAssociation mifAssc=(MIFAssociation)obj;		
-			mifClass=mifAssc.getMifClass();
+			MIFClass rootMif=(MIFClass)obj;
+			enableAllOptionalClones(rootMif);
+			NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
+            DefaultMutableTreeNode  newTreeMifNode =mifTreeLoader.buildObjectNode(rootMif);
+
+            ((DefaultTreeModel) mifTree.getModel()).setRoot(newTreeMifNode);//.nodeStructureChanged(parentNode);
+            ((DefaultTreeModel) mifTree.getModel()).reload();
 		}
-		try
+		else //if (!(obj instanceof MIFClass))
 		{
-            final List<MIFAssociation> addableAsscs = MIFUtil.findAddableAssociation(mifClass);
-            List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
-            for(MIFAssociation addableAssc:addableAsscs)
-            	baseList.add((DatatypeBaseObject)addableAssc);
-            AssociationListWizard cloneListWizard =
-                new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Added", true);
-            DefaultSettings.centerWindow(cloneListWizard);
-            cloneListWizard.setVisible(true);
-            if (cloneListWizard.isOkButtonClicked())
-            {
-                List<DatatypeBaseObject> userSelectedAssociation = cloneListWizard.getUserSelectedAssociation();
-                NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
-                for (DatatypeBaseObject oneAssc:userSelectedAssociation)
-                {
-                	oneAssc.setOptionChosen(true);
-                	DefaultMutableTreeNode oneAsscNode =mifTreeLoader.buildObjectNode((MIFAssociation)oneAssc);
-                	targetNode.add(oneAsscNode);
-                }
-                ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
-            }
-            setSuccessfullyPerformed(true);
-		}
-		catch (Exception e1)
-		{
-			Log.logException(getClass(), e1);
-			reportThrowableToUI(e1, parentPanel);
+			JOptionPane.showMessageDialog(parentPanel.getParent(), "Error to enable optional clones", "Wrong Selection", JOptionPane.WARNING_MESSAGE);
 			setSuccessfullyPerformed(false);
 		}
 		return isSuccessfullyPerformed();
+	}
+	private void enableAllOptionalClones(MIFClass mifClass)
+	{
+		HashSet <MIFAssociation>asscHash=mifClass.getAssociations();
+		for (MIFAssociation assc:asscHash)
+		{
+			if (!assc.isMandatory())
+				assc.setOptionChosen(true);
+			MIFClass asscMif=assc.getMifClass();
+			enableAllOptionalClones(asscMif);
+		}
+		
+		 
 	}
 }
