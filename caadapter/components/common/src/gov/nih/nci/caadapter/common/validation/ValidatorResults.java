@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.2 2007-07-12 14:37:39 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,8 +47,8 @@ import java.util.List;
  *
  * @author OWNER: Eric Chen  Date: Aug 22, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-12 14:37:39 $
  * @since caAdapter v1.2
  */
 
@@ -149,6 +149,15 @@ public class ValidatorResults
         {
             return infoResults;
         }
+        else if (level == ValidatorResult.Level.ALL)
+        {
+        	ArrayList<Message> rtnList =new ArrayList<Message>();
+        	rtnList.addAll(fatalResults);
+        	rtnList.addAll(errorResults);
+        	rtnList.addAll(warningResults);
+        	rtnList.addAll(infoResults);
+            return rtnList;
+        }
         else
         {
             Log.logWarning(this, "Unknown Validation Level" + level);
@@ -181,6 +190,9 @@ public class ValidatorResults
         if (!errorResults.isEmpty()) levels.add(ValidatorResult.Level.ERROR);
         if (!warningResults.isEmpty()) levels.add(ValidatorResult.Level.WARNING);
         if (!infoResults.isEmpty()) levels.add(ValidatorResult.Level.INFO);
+        //enable use to see all types of messages 
+        if (levels.size()>0)
+        	levels.add(0,ValidatorResult.Level.ALL);
         return levels;
     }
 
@@ -237,6 +249,9 @@ public class ValidatorResults
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

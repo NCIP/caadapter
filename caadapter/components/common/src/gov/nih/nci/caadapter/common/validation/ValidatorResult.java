@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResult.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResult.java,v 1.2 2007-07-12 14:37:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,8 +53,8 @@ import gov.nih.nci.caadapter.common.Message;
  *
  * @author OWNER: Eric Chen  Date: Aug 18, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-12 14:37:49 $
  * @since caAdapter v1.2
  */
 
@@ -96,7 +96,8 @@ public class ValidatorResult
         FATAL,
         ERROR,
         WARNING,
-        INFO
+        INFO,
+        ALL
     }
 
     public Level getLevel()
@@ -112,6 +113,9 @@ public class ValidatorResult
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

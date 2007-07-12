@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.3 2007-07-11 17:56:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.4 2007-07-12 14:38:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,8 +53,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-11 17:56:11 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-12 14:38:21 $
  */
 public class ValidationMessagePane extends JPanel implements ActionListener
 {
@@ -70,15 +70,13 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.3 2007-07-11 17:56:11 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.4 2007-07-12 14:38:21 wangeug Exp $";
 
 	private JPanel navigationPanel = null;
 	private JPanel levelPanel = null;
     private JPanel messagePanel = null;
-//    private JPanel messageDisplayingPanel = null;
     private JComboBox levelComboBox = null;
 
-//    private JTable messageTable;
     private JTextArea messageDisplaying;
     private JSplitPane splitPane;
     private DefaultMessageTableModel tableModel;
@@ -90,11 +88,8 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	private String confirmationMessage = "";
 
 	private JPanel confirmationMessagePanel;
-//	private JLabel confirmationMessageLabel;
 	private JLabel confirmationMessageField;
 
-//    private SaveAsValidateMessageAction saveAction = null;
-//    private PrintingValidateMessageAction printAction = null;
     private int selectedRow = -1;    
     private boolean startedTag = false;
     private boolean displayValidatedElement=false;
@@ -298,16 +293,14 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	{
 		//clear message display
 		tableModel.setMessageList(new ArrayList());
-
-//		System.out.println("navigationPanel is visible? '" + navigationPanel.isVisible() + "'");
-		this.levelPanel.setVisible(true);
+		levelPanel.setVisible(true);
 		this.results = results;
 		//clear confirmationMessage value.
-		this.confirmationMessage = "";
+		confirmationMessage = "";
 		confirmationMessageField.setText("");
 		confirmationMessagePanel.setVisible(false);
-//		confirmationMessageLabel.setVisible();
-		this.comboBoxLoading = true;
+
+		comboBoxLoading = true;
 		levelComboBox.setEnabled(true);
 		levelComboBox.removeAllItems();
 		navigationPanel.setVisible(false);
@@ -326,7 +319,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 		{
 			this.levelComboBox.addItem(levelList.get(i));
 		}
-//		levelComboBox.addItem();
+
 		this.comboBoxLoading = false;
 		if(size>0)
 		{//default to select the first
@@ -334,7 +327,6 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 			String statMsg = ValidationMessageUtils.generateStatMessage(results);
 			StringBuffer buf = new StringBuffer("Validation process completed, but received ");
 			buf.append(statMsg + ".");
-//			buf.append(".\nPlease refer to the message area for received validation messages.");
 			this.confirmationMessage = buf.toString();
 		}
 		else
@@ -418,6 +410,9 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/11 17:56:11  wangeug
+ * HISTORY      : enable HSM validation at any level of tree hierarchy
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/10 17:35:04  wangeug
  * HISTORY      : update code:reset propertyPane/validationPane with JTabbedPane
  * HISTORY      :
