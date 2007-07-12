@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeMouseAdapter.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeMouseAdapter.java,v 1.2 2007-07-12 15:48:37 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,10 +36,7 @@ package gov.nih.nci.caadapter.ui.specification.csv;
 
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
-import gov.nih.nci.caadapter.ui.specification.csv.actions.AddFieldAction;
-import gov.nih.nci.caadapter.ui.specification.csv.actions.AddSegmentAction;
-import gov.nih.nci.caadapter.ui.specification.csv.actions.DeleteTreeNodeAction;
-import gov.nih.nci.caadapter.ui.specification.csv.actions.EditTreeNodeAction;
+import gov.nih.nci.caadapter.ui.specification.csv.actions.*;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,37 +47,45 @@ import java.awt.event.MouseEvent;
 /**
  * This class defines the mouse listener to responds mouse events occurred on the tree view of CSV Panel.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-12 15:48:37 $
  */
 public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 {
     public static String CHANGE_DISPLAYNAME = "Change Displayname";
-	//private CSVPanel parentPanel = null;
+	private CSVPanel parentPanel = null;
 	private JTree tree = null;
     private JPopupMenu popupMenu;
+//    ActionListener actionListener;
 
-    private EditTreeNodeAction editAction;
+	private EditTreeNodeAction editAction;
 	private DeleteTreeNodeAction deleteAction;
 	private AddSegmentAction addSegmentAction;
 	private AddFieldAction addFieldAction;
+    private AddChoiceSegmentAction addChoiceSegmentAction;
 
-	public CSVMetadataTreeMouseAdapter(CSVPanel parentPanel)
+    public CSVMetadataTreeMouseAdapter(CSVPanel parentPanel)
 	{
         super();
+		this.parentPanel = parentPanel;
 		this.tree = parentPanel.getTree();
 		editAction = new EditTreeNodeAction(parentPanel);
 		deleteAction = new DeleteTreeNodeAction(parentPanel, true);
-		addSegmentAction = new AddSegmentAction(parentPanel);
-		addFieldAction = new AddFieldAction(parentPanel);
+		addSegmentAction = new AddSegmentAction(this.parentPanel);
+		addFieldAction = new AddFieldAction(this.parentPanel);
+        addChoiceSegmentAction = new AddChoiceSegmentAction(this.parentPanel);
 
-		tree.getInputMap().put(editAction.getAcceleratorKey(), editAction.getName());
+        tree.getInputMap().put(editAction.getAcceleratorKey(), editAction.getName());
 		tree.getActionMap().put(editAction.getName(), editAction);
 
+//		tree.registerKeyboardAction(editAction, editAction.getName(),
+//				editAction.getAcceleratorKey(), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		tree.getInputMap().put(deleteAction.getAcceleratorKey(), deleteAction.getName());
 		tree.getActionMap().put(deleteAction.getName(), deleteAction);
+//		tree.registerKeyboardAction(deleteAction, deleteAction.getName(),
+//				deleteAction.getAcceleratorKey(), JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     private void showIfPopupTrigger(MouseEvent mouseEvent)
@@ -99,10 +104,11 @@ public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 			TreePath treePath = tree.getSelectionPath();
 			if(treePath!=null)
 			{
-				retrievePopupMenu();
+                retrievePopupMenu();
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 				Object userObj = node.getUserObject();
-				if(node.getParent()==null)
+
+                if(node.getParent()==null)
 				{//cannot delete root
 					deleteAction.setEnabled(false);
 				}
@@ -114,18 +120,29 @@ public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 				if(userObj instanceof CSVFieldMeta)
 				{
 					addSegmentAction.setEnabled(false);
-					addFieldAction.setEnabled(false);
+                    addChoiceSegmentAction.setEnabled(false);
+                    addFieldAction.setEnabled(false);
 				}
 				else if(userObj instanceof CSVSegmentMeta)
 				{
 					addSegmentAction.setEnabled(true);
-					addFieldAction.setEnabled(true);
-				}
+
+                    CSVSegmentMeta seg = (CSVSegmentMeta) userObj;
+                    addFieldAction.setEnabled(!seg.isChoiceSegment());
+                    addChoiceSegmentAction.setEnabled(!seg.isChoiceSegment());
+                    
+                }
 
 				popupMenu.show(mouseEvent.getComponent(),
 						mouseEvent.getX(), mouseEvent.getY());
 			}
         }
+//		else if(mouseEvent.getClickCount()>=2)
+//		{//if not popup trigger and clicked more than twice, assume it is an edit command.
+//			ActionEvent ae = new ActionEvent(tree, 0, editAction.getName());
+//			editAction.actionPerformed(ae);
+//		}
+
     }
 
     public void mousePressed(MouseEvent mouseEvent)
@@ -140,14 +157,17 @@ public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 
 	private JPopupMenu retrievePopupMenu()
 	{
-		if(popupMenu==null)
+
+        if(popupMenu==null)
 		{
 			popupMenu = new JPopupMenu("Tree Manipulation");
 			//already initiated in constructor.
 			popupMenu.add(addSegmentAction);
 			popupMenu.add(addFieldAction);
 			popupMenu.addSeparator();
-			popupMenu.add(editAction);
+            popupMenu.add(addChoiceSegmentAction);
+            popupMenu.addSeparator();
+            popupMenu.add(editAction);
 			popupMenu.add(deleteAction);
 		}
 
@@ -156,6 +176,9 @@ public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

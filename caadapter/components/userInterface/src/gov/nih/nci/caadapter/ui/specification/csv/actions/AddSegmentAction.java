@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddSegmentAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddSegmentAction.java,v 1.2 2007-07-12 15:48:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,9 +39,12 @@ import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
+import gov.nih.nci.caadapter.ui.specification.csv.CSVSegmentDefinitionDialog;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -49,15 +52,16 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
+import java.awt.*;
 
 /**
  * This class defines the add segment action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-12 15:48:49 $
  */
 public class AddSegmentAction extends AbstractCsvContextCRUDAction
 {
@@ -73,10 +77,14 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddSegmentAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AddSegmentAction.java,v 1.2 2007-07-12 15:48:49 umkis Exp $";
 
-	private static final String COMMAND_NAME = "Add Segment...";
-	private static final Character COMMAND_MNEMONIC = new Character('S');
+    public static final String COMMAND_NAME_GENERAL = "Add Segment...";
+    public static final String COMMAND_NAME_CHOICE = "Add Choice Segment...";
+    private static String COMMAND_NAME = COMMAND_NAME_GENERAL;
+	private static Character COMMAND_MNEMONIC = new Character('S');
+
+    private String jobTitle = "";
 //	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
 
 	private transient JTree tree;
@@ -88,7 +96,7 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 	 */
 	public AddSegmentAction(CSVPanel parentPanel)
 	{
-		this(COMMAND_NAME, parentPanel);
+		this(COMMAND_NAME_GENERAL, parentPanel);
 	}
 
 	/**
@@ -107,11 +115,28 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 	public AddSegmentAction(String name, Icon icon, CSVPanel parentPanel)
 	{
 		super(name, icon, parentPanel);
-		setMnemonic(COMMAND_MNEMONIC);
+        jobTitle = name;
+        setMnemonic(COMMAND_MNEMONIC);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
 	}
 
-	private JTree getTree()
+    /**
+	 * Defines an <code>Action</code> object with the specified
+	 * description string and a the specified icon, the rest parameters are received from subtype class.
+     * This constructor is called by subclasses.
+	 */
+    public AddSegmentAction(String name, Icon icon, CSVPanel parentPanel, Character Mnemonic, int ActionType)
+	{
+
+        super(name, icon, parentPanel);
+        jobTitle = name;
+        COMMAND_NAME = name;
+	    COMMAND_MNEMONIC = Mnemonic;
+        setMnemonic(Mnemonic);
+		setActionCommandType(ActionType);
+	}
+
+    private JTree getTree()
 	{
 		if(this.tree==null)
 		{
@@ -143,14 +168,34 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 		if(obj instanceof CSVSegmentMeta)
 		{
 			CSVSegmentMeta parentSegmentMeta = (CSVSegmentMeta) obj;
-			String inputValue = getValidatedUserInput(parentSegmentMeta);//(String) JOptionPane.showInputDialog(tree.getRootPane().getParent(), "Enter CSV Segment Name (All Capital Letters)", "Add Segment", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+
+//            String[] inputValue = new String[2];
+//            if (parentSegmentMeta.isChoiceSegment())
+//            {
+//                if (!jobTitle.equals(COMMAND_NAME_GENERAL))
+//                {
+//                    JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Any Choice Segment cannot have its own Choice Segment.",
+//					    "Choice Segment!!", JOptionPane.WARNING_MESSAGE);
+//			        setSuccessfullyPerformed(false);
+//                    return isSuccessfullyPerformed();
+//                }
+//                inputValue[0] = getValidatedUserInputName(parentSegmentMeta);
+//                inputValue[1] = parentSegmentMeta.getCardinalityWithString();
+//            }
+//            else inputValue = getValidatedUserInput(parentSegmentMeta);
+
+            String[] inputValue = getValidatedUserInput(parentSegmentMeta);//(String) JOptionPane.showInputDialog(tree.getRootPane().getParent(), "Enter CSV Segment Name (All Capital Letters)", "Add Segment", JOptionPane.INFORMATION_MESSAGE, null, null, "");
 			// inputValue is null if the user hits cancel.
-			if (!GeneralUtilities.isBlank(inputValue))
-			{
-				inputValue = inputValue.trim();
+			//if (!GeneralUtilities.isBlank(inputValue[0]))
+            if (inputValue != null)
+            {
+				//inputValue = inputValue.trim();
 				//don't have to add to parent, since the following tree node action will take care of the addition action.
-				CSVSegmentMetaImpl segmentMeta = constructCSVSegmentMeta(inputValue, parentSegmentMeta, false);
-				//add to the sub-tree
+
+                CSVSegmentMetaImpl segmentMeta = constructCSVSegmentMeta(inputValue[0], parentSegmentMeta, false);
+				segmentMeta.setCardinalityWithString(inputValue[1]);
+
+                //add to the sub-tree
 				DefaultMutableTreeNode newNode =this.constructDefaultTreeNode(segmentMeta, true);// parentPanel.getDefaultTreeNode(segmentMeta, true);
 				targetNode.add(newNode);
 				TreeModel treeModel = tree.getModel();
@@ -170,20 +215,63 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 		return isSuccessfullyPerformed();
 	}
 
-	private String getValidatedUserInput(CSVSegmentMeta parentSegmentMeta)
+	private String[] getValidatedUserInput(CSVSegmentMeta parentSegmentMeta)
 	{
-		String inputValue = null;
+		String[] inputValue = null;
 		CSVMeta rootMeta = parentPanel.getCSVMeta(false);
-		do
+        Frame tempParent = null;
+        Container tempContainer = parentPanel;
+        while(true)
+        {
+            tempContainer = tempContainer.getParent();
+            if (tempContainer == null)
+            {
+                JOptionPane.showMessageDialog(getAssociatedUIComponent(), "Can not open new segment setup dialog", "Invalid Frame type", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            if (tempContainer instanceof Frame)
+            {
+                tempParent = (Frame) tempContainer;
+                break;
+            }
+        }
+        do
 		{
-			inputValue = (String) JOptionPane.showInputDialog(tree.getRootPane().getParent(), "Enter CSV Segment Name", "Add Segment", JOptionPane.INFORMATION_MESSAGE, null, null, "");
-			if(GeneralUtilities.isBlank(inputValue))
-			{
-//				Log.logInfo(this, "user may cancelled the input");
-				break;
-			}
-			else
-			{
+			//inputValue = (String) JOptionPane.showInputDialog(tree.getRootPane().getParent(), "Enter CSV Segment Name", "Add Segment", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+            inputValue = null;
+
+            if (parentSegmentMeta.isChoiceSegment())
+            {
+                if (!jobTitle.equals(COMMAND_NAME_GENERAL))
+                {
+                    JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Any Choice Segment cannot have its own Choice Segment.",
+					    "Choice Segment!!", JOptionPane.WARNING_MESSAGE);
+			        return null;
+                }
+                String tempCardinality = parentSegmentMeta.getCardinalityType().toString().substring(0, Config.CARDINALITY_ONE_TO_ONE.length());
+                String str = (String) JOptionPane.showInputDialog(tree.getRootPane().getParent(), "Enter Name of CSV Choice menber Segment\n(The Cardinality is inherited from parent. '" + tempCardinality + "')", "Add Segment of Choice", JOptionPane.INFORMATION_MESSAGE, null, null, "");
+                if(GeneralUtilities.isBlank(str))
+			    {
+				    break;
+			    }
+                inputValue = new String[2];
+                inputValue[0] = str;
+                inputValue[1] = tempCardinality;
+            }
+            else
+            {
+                CSVSegmentDefinitionDialog dialog = new CSVSegmentDefinitionDialog(tempParent, jobTitle, true);
+                dialog.setDefaultCardinality();
+                DefaultSettings.centerWindow(dialog);
+                dialog.setVisible(true);
+                if (!dialog.isOkButtonClicked()) break;
+
+                inputValue = new String[2];
+                inputValue[0] = dialog.getSegmentName();
+                inputValue[1] = dialog.getCardinality();
+            }
+
+            {
 				if(rootMeta==null)
 				{//hope this section of code never is called.
 					System.err.println("WARNING: CSV Root Meta is null!");
@@ -191,8 +279,9 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 					rootMeta.setRootSegment(parentSegmentMeta);
 					parentPanel.setCsvMeta(rootMeta);
 				}
-				CSVSegmentMeta segmentMeta = constructCSVSegmentMeta(inputValue, parentSegmentMeta, false);
-				//add only for validation purpose
+				CSVSegmentMeta segmentMeta = constructCSVSegmentMeta(inputValue[0], parentSegmentMeta, false);
+                segmentMeta.setCardinalityWithString(inputValue[1]);
+                //add only for validation purpose
 				parentSegmentMeta.addSegment(segmentMeta);
 
 				CSVMetaValidator validator = new CSVMetaValidator(rootMeta);
@@ -209,16 +298,20 @@ public class AddSegmentAction extends AbstractCsvContextCRUDAction
 				{
 					break;
 				}
-				displayValidationResults(validatorResults);
+                displayValidationResults(validatorResults);
 			}
 		}
 		while(true);
 		return inputValue;
 	}
 
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

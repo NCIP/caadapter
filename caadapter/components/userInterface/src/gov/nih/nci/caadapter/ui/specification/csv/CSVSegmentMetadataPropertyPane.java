@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.2 2007-07-12 15:48:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,24 +54,26 @@ import java.util.Enumeration;
 /**
  * This class defines the layout of segment metadata property pane.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-12 15:48:46 $
  */
 public class CSVSegmentMetadataPropertyPane extends JPanel
 {
 	public static final String SEGMENT_NAME_LABEL = "Segment Name:";
 	public static final String PARENT_SEGMENT_NAME_LABEL = "Parent Segment Name:";
-	private JLabel segmentNameLabel;
+    public static final String CARDINALITY_LABEL = "Cardinality:";
+    private JLabel segmentNameLabel;
 	private JTextField segmentNameTextField;
 	private JLabel parentSegmentNameLabel;
 	private JTextField parentSegmentNameTextField;
+    private JLabel cardinalityLabel;
+	private JTextField cardinalityField;
 
-	private CSVFieldOrderReshufflePane fieldOrderPane;
+    private CSVFieldOrderReshufflePane fieldOrderPane;
 
-	//private CSVPanel parentController;
-	private JPanel parentController;
+	private CSVPanel parentController;
 	/**
 	 * we trust tree node but not the user object since tree node will hold
 	 * the substree structure while individual user object will not always
@@ -83,7 +85,7 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 	 * Creates a new <code>JPanel</code> with a double buffer
 	 * and a flow layout.
 	 */
-	public CSVSegmentMetadataPropertyPane(JPanel parentController)
+	public CSVSegmentMetadataPropertyPane(CSVPanel parentController)
 	{
 		this.parentController = parentController;
 		initialize();
@@ -133,9 +135,13 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 		segmentNameTextField = new JTextField();
 		parentSegmentNameLabel = new JLabel(PARENT_SEGMENT_NAME_LABEL);
 		parentSegmentNameTextField = new JTextField();
+        cardinalityLabel = new JLabel(CARDINALITY_LABEL);
+		cardinalityField = new JTextField();
+        cardinalityField.setEditable(false);
 
-		Dimension segmentSize = segmentNameLabel.getPreferredSize();
+        Dimension segmentSize = segmentNameLabel.getPreferredSize();
 		Dimension parentSegmentSize = parentSegmentNameLabel.getPreferredSize();
+        Dimension cardinalitySize = cardinalityLabel.getPreferredSize();
 //		Log.logInfo(this, "segmentSize: " + segmentSize);
 //		Log.logInfo(this, "parentSegmentSize: " + parentSegmentSize);
 //		Log.logInfo(this, "segmentSize: " + segmentNameLabel.getPreferredSize());
@@ -145,11 +151,12 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 //		Log.logInfo(this, "segmentSize: " + segmentNameLabel.getMinimumSize());
 //		Log.logInfo(this, "parentSegmentSize: " + parentSegmentNameLabel.getMinimumSize());
 
-		int textFieldWidth = Math.max(segmentSize.width, parentSegmentSize.width) + 6;
-		int textFieldHeight = Math.max(segmentSize.height, parentSegmentSize.height) + 6;
+		int textFieldWidth = Math.max(segmentSize.width, Math.max(cardinalitySize.width, parentSegmentSize.width)) + 6;
+		int textFieldHeight = Math.max(segmentSize.height, Math.max(cardinalitySize.height, parentSegmentSize.height)) + 6;
 
 		segmentNameTextField.setPreferredSize(new Dimension(textFieldWidth, textFieldHeight));
 		parentSegmentNameTextField.setPreferredSize(new Dimension(textFieldWidth, textFieldHeight));//segmentNameTextField.getPreferredSize());
+        cardinalityField.setPreferredSize(new Dimension(textFieldWidth, textFieldHeight));//segmentNameTextField.getPreferredSize());
 
 		Insets insets = new Insets(5, 5, 5, 5);
 
@@ -161,8 +168,12 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		northPanel.add(parentSegmentNameTextField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        northPanel.add(cardinalityLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+		northPanel.add(cardinalityField, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
-		this.add(northPanel, BorderLayout.NORTH);
+        this.add(northPanel, BorderLayout.NORTH);
 
 		fieldOrderPane = new CSVFieldOrderReshufflePane();
 		this.add(fieldOrderPane, BorderLayout.CENTER);
@@ -199,7 +210,17 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 		parentSegmentNameTextField.setText(newValue);
 	}
 
-	public void setDisplayData(DefaultMutableTreeNode treeNode, boolean refresh)
+    protected String getCardinality()
+	{
+		return cardinalityField.getText();
+	}
+
+	protected void setCardinality(String newValue)
+	{
+		cardinalityField.setText(newValue);
+	}
+
+    public void setDisplayData(DefaultMutableTreeNode treeNode, boolean refresh)
 	{
 		if(refresh || !GeneralUtilities.areEqual(this.treeNode, treeNode))
 		{
@@ -211,9 +232,14 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 
 			CSVSegmentMeta data = (CSVSegmentMeta) treeNode.getUserObject();
 			setSegmentName(data.getName());
-			CSVSegmentMeta parent = data.getParent();
+            if (data.isChoiceMemberSegment())
+            {
+                setCardinality(data.getParent().getCardinalityWithString());
+            }
+            else setCardinality(data.getCardinalityType().toString());
+            CSVSegmentMeta parent = data.getParent();
 			setParentSegmentName(parent==null? "" : parent.getName());
-			/**
+            /**
 			 * NOTE: instead of obtaining field list directly from metadata,
 			 * parse the whole children list of the given treeNode, so as to find out the most up-to-date field list.
 			 * This is because every tree CRUD (Add/delete, etc) will only happen on treeNode level and is not propogated
@@ -292,7 +318,7 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 	 * Answers if field meta's order has been changed.
 	 * @return if field meta's order has been changed.
 	 */
-	public boolean isFieldOrderChanged()
+	boolean isFieldOrderChanged()
 	{
 		if(fieldOrderPane!=null && fieldOrderPane.isDataChanged())
 		{
@@ -350,8 +376,7 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 			}
 			else
 			{
-//				ValidationMessageDialog.displayValidationResults(parentController.getRootContainer(), validatorResults);
-				ValidationMessageDialog.displayValidationResults(parentController.getRootPane(), validatorResults);
+				ValidationMessageDialog.displayValidationResults(parentController.getRootContainer(), validatorResults);
 				String cosmeticName = (DefaultSettings.getClassNameWithoutPackage(data.getClass()).toLowerCase().indexOf("segment") != -1) ? "Segment" : "Field";
 				resultValue = (String) JOptionPane.showInputDialog(parentController, "Edit a " + cosmeticName + " name", "Edit",
 						JOptionPane.INFORMATION_MESSAGE, null, null, resultValue);
@@ -371,6 +396,9 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/EditTreeNodeAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/EditTreeNodeAction.java,v 1.2 2007-07-12 15:48:50 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,10 +40,12 @@ import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
+import gov.nih.nci.caadapter.ui.specification.csv.CSVSegmentDefinitionDialog;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -52,18 +54,22 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.*;
 
+//
 /**
  * This class defines the edit tree node action.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-12 15:48:50 $
  */
 public class EditTreeNodeAction extends AbstractCsvContextCRUDAction
 {
-	private static final String COMMAND_NAME = "Edit";
+    public static final String COMMAND_NAME_GENERAL = "Edit...";
+    public static final String COMMAND_NAME_CHOICE = "Edit Choice Segment...";
+    private static final String COMMAND_NAME = COMMAND_NAME_GENERAL;
 	private static final Character COMMAND_MNEMONIC = new Character('E');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0, false);
 
@@ -131,17 +137,36 @@ public class EditTreeNodeAction extends AbstractCsvContextCRUDAction
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		MetaObject userObject = (MetaObject) targetNode.getUserObject();
 		String currentValue = userObject.getName();
-		String inputValue = getValidatedUserInput(userObject);
+
+        String[] inputValue = getValidatedUserInput(userObject);
 		// inputValue is null if the user hits cancel.
-		if (inputValue != null && !GeneralUtilities.areEqual(inputValue, currentValue))
+		if (inputValue != null)
 		{
-			userObject.setName(inputValue);
-			TreeModel treeModel = tree.getModel();
-			if(treeModel instanceof DefaultTreeModel)
-			{
-				((DefaultTreeModel)treeModel).nodeChanged(targetNode);
-			}
-		}
+            boolean isChanged = false;
+            if (!GeneralUtilities.areEqual(inputValue[0], currentValue))
+            {
+                userObject.setName(inputValue[0]);
+                isChanged = true;
+            }
+
+            if (userObject instanceof CSVSegmentMeta)
+            {
+                String cardinal = ((CSVSegmentMeta) userObject).getCardinalityType().toString();
+                if (!GeneralUtilities.areEqual(inputValue[1], cardinal))
+                {
+                    ((CSVSegmentMeta)userObject).setCardinalityWithString(inputValue[1]);
+                    isChanged = true;
+                }
+            }
+            if (isChanged)
+            {
+                TreeModel treeModel = tree.getModel();
+			    if(treeModel instanceof DefaultTreeModel)
+			    {
+				    ((DefaultTreeModel)treeModel).nodeChanged(targetNode);
+			    }
+            }
+        }
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
 	}
@@ -151,20 +176,96 @@ public class EditTreeNodeAction extends AbstractCsvContextCRUDAction
 	 * @param segmentOrFieldMeta
 	 * @return a valid user input after validated, or null or empty string if user cancelled the action.
 	 */
-	private String getValidatedUserInput(MetaObject segmentOrFieldMeta)
+	private String[] getValidatedUserInput(MetaObject segmentOrFieldMeta)
 	{
-		String newInputValue = null;
+		String[] newInputValue = null;
 		CSVMeta rootMeta = parentPanel.getCSVMeta(false);
-		String currentValue = segmentOrFieldMeta.getName();
+        String[] currentValue = new String[2];
+        currentValue[0] = segmentOrFieldMeta.getName();
 		String cosmeticName = (DefaultSettings.getClassNameWithoutPackage(segmentOrFieldMeta.getClass()).toLowerCase().indexOf("segment") != -1) ? "Segment" : "Field";
-		do
+
+        Frame tempParent = null;
+        Container tempContainer = parentPanel;
+        while(true)
+        {
+            tempContainer = tempContainer.getParent();
+            if (tempContainer == null)
+            {
+                JOptionPane.showMessageDialog(getAssociatedUIComponent(), "Can not open DB Connection setup dialog", "Invalid Frame type", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            if (tempContainer instanceof Frame)
+            {
+                tempParent = (Frame) tempContainer;
+                break;
+            }
+        }
+
+        do
 		{
-			newInputValue = (String) JOptionPane.showInputDialog(parentPanel,
-					"Edit a " + cosmeticName + " name", COMMAND_NAME, JOptionPane.INFORMATION_MESSAGE, null, null, currentValue);
-			if (GeneralUtilities.isBlank(newInputValue))
+            if (segmentOrFieldMeta instanceof CSVFieldMeta)
+            {
+                newInputValue = new String[2];
+                newInputValue[0] = (String) JOptionPane.showInputDialog(parentPanel,
+				    	"Edit a " + cosmeticName + " name", COMMAND_NAME, JOptionPane.INFORMATION_MESSAGE, null, null, currentValue[0]);
+                newInputValue[1] = null;
+            }
+            else if (segmentOrFieldMeta instanceof CSVSegmentMeta)
+            {
+                //boolean cardinalityEditable = (parentPanel.getCSVMeta(true).getRootSegment() != (CSVSegmentMeta)segmentOrFieldMeta);
+                CSVSegmentMeta segmentMeta = (CSVSegmentMeta) segmentOrFieldMeta;
+
+                newInputValue = null;
+
+                String titleOfScreen = "";
+                if (segmentMeta.isChoiceMemberSegment())
+                {
+                    currentValue[1] = segmentMeta.getCardinalityWithString();
+                    String tempCardinality = segmentMeta.getParent().getCardinalityWithString();
+                    String str = (String) JOptionPane.showInputDialog(tempParent, "Change Name of CSV Choice menber Segment\n(The Cardinality is inherited from parent. '" + tempCardinality + "')", "Add Segment of Choice", JOptionPane.INFORMATION_MESSAGE, null, null, currentValue[0]);
+                    if((GeneralUtilities.isBlank(str))||(GeneralUtilities.isBlank(tempCardinality)))
+			        {
+				        break;
+			        }
+
+                    newInputValue = new String[2];
+                    newInputValue[0] = str;
+                    newInputValue[1] = tempCardinality;
+                }
+                else
+                {
+                    if (segmentMeta.isChoiceSegment())
+                    {
+                        titleOfScreen = COMMAND_NAME_CHOICE;
+                        currentValue[1] = segmentMeta.getCardinalityWithString() + " " + Config.SUFFIX_OF_CHOICE_CARDINALITY;
+                    }
+                    else
+                    {
+                        titleOfScreen = COMMAND_NAME_GENERAL;
+                        currentValue[1] = segmentMeta.getCardinalityWithString();
+                    }
+                    CSVSegmentDefinitionDialog dialog = new CSVSegmentDefinitionDialog(tempParent, titleOfScreen, (((CSVSegmentMeta)segmentOrFieldMeta).getParent() != null));
+
+//                    if (segmentMeta.getParent().isChoiceSegment()) dialog.setSingleCardinality(currentValue[1]);
+//                    else dialog.setCardinality(currentValue[1]);
+                    dialog.setCardinality(currentValue[1]);
+
+                    dialog.setSegmentName(currentValue[0]);
+                    DefaultSettings.centerWindow(dialog);
+                    dialog.setVisible(true);
+
+                    if (!dialog.isOkButtonClicked()) break;
+
+                    newInputValue = new String[2];
+                    newInputValue[0] = dialog.getSegmentName();
+                    newInputValue[1] = dialog.getCardinality();
+                }
+            }
+            if ((newInputValue == null)||(GeneralUtilities.isBlank(newInputValue[0])))
 			{
 //				Log.logInfo(this, "user may cancelled the input");
-				break;
+                newInputValue = null;
+                break;
 			}
 			else
 			{
@@ -176,35 +277,39 @@ public class EditTreeNodeAction extends AbstractCsvContextCRUDAction
 					parentPanel.setCsvMeta(rootMeta);
 				}
 				//change only for validation purpose
-				segmentOrFieldMeta.setName(newInputValue);
+				segmentOrFieldMeta.setName(newInputValue[0]);
 
 //				CSVMetaValidator validator = new CSVMetaValidator(rootMeta);
 				ValidatorResults validatorResults = new ValidatorResults();
 				if(segmentOrFieldMeta instanceof CSVSegmentMeta)
 				{
 					//per meeting discussion on defect #164, will only validate the name not the whole CSV tree.
-					validatorResults.addValidatorResults(CSVMetaValidator.validateSegmentMetaName((CSVSegmentMeta) segmentOrFieldMeta));
+                    ((CSVSegmentMeta)segmentOrFieldMeta).setCardinalityWithString(newInputValue[1]);
+                    validatorResults.addValidatorResults(CSVMetaValidator.validateSegmentMetaName((CSVSegmentMeta) segmentOrFieldMeta));
+                    ((CSVSegmentMeta)segmentOrFieldMeta).setCardinalityWithString(currentValue[1]);
 
-//					//Check if 2 or more segments with same name in SCM.
-//					validatorResults.addValidatorResults(validator.ScmRule1());
-//					//Check if it is ALLCAPS.
-//					validatorResults.addValidatorResults(validator.ScmRule4());
+                    CSVMetaValidator validator = new CSVMetaValidator(rootMeta);
+                    //Check if 2 or more segments with same name in SCM.
+                    validatorResults.addValidatorResults(validator.ScmRule1());
+					//Check if it is ALLCAPS.
+					validatorResults.addValidatorResults(validator.ScmRule4());
 				}
 				else if(segmentOrFieldMeta instanceof CSVFieldMeta)
 				{
 					//per meeting discussion on defect #164, will only validate the name not the whole CSV tree.
 					validatorResults.addValidatorResults(CSVMetaValidator.validateFieldMetaName((CSVFieldMeta)segmentOrFieldMeta));
 
-//					//Check if 2 or more fields with same name in same segment in SCM (case-insensitive).
-//					validatorResults.addValidatorResults(validator.ScmRule2());
-//					//Check if field with default field name in SCM.
-//					validatorResults.addValidatorResults(validator.ScmRule7());
-//					//Field name valiation
-//					validatorResults.addValidatorResults(validator.ScmRule8());
+                    CSVMetaValidator validator = new CSVMetaValidator(rootMeta);
+                    //Check if 2 or more fields with same name in same segment in SCM (case-insensitive).
+					validatorResults.addValidatorResults(validator.ScmRule2());
+					//Check if field with default field name in SCM.
+					validatorResults.addValidatorResults(validator.ScmRule7());
+					//Field name valiation
+					validatorResults.addValidatorResults(validator.ScmRule8());
 				}
 
 				//clean up after validation purpose
-				segmentOrFieldMeta.setName(currentValue);
+				segmentOrFieldMeta.setName(currentValue[0]);
 
 				if (validatorResults.getAllMessages().size() == 0)
 				{
@@ -220,6 +325,9 @@ public class EditTreeNodeAction extends AbstractCsvContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

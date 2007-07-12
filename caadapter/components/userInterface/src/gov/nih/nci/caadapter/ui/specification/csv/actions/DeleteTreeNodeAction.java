@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/DeleteTreeNodeAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/DeleteTreeNodeAction.java,v 1.2 2007-07-12 15:48:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,10 +46,10 @@ import java.awt.event.KeyEvent;
 /**
  * This class defines the delete tree node action.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-12 15:48:49 $
  */
 public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 {
@@ -68,7 +68,7 @@ public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 	 */
 	public DeleteTreeNodeAction(CSVPanel parentPanel, boolean toShowDeleteWarning)
 	{
-		this(COMMAND_NAME,null, parentPanel, toShowDeleteWarning);
+		this(COMMAND_NAME, null, parentPanel, toShowDeleteWarning);
 	}
 
 //	/**
@@ -185,6 +185,9 @@ public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
