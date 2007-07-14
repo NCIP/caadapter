@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.common.function;
 
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.RegistryUtil;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -182,14 +183,14 @@ public class FunctionUtil {
     public static boolean inputRegistry(String regiName, String content) throws IOException
     {
         String regiContent = regiName.trim() + Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR + content.trim();
-        String registryFileName=FileUtil.getRegistryFileName();
+        String registryFileName= RegistryUtil.getRegistryFileName();
         if (registryFileName == null)
         {
             System.out.println("inputRegistry : " + regiContent);
             registryFileName = saveStringIntoTemporaryFile("Default_Line"+ Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR+"default\r\n"+regiContent);
             return true;
         }
-        List<String> list =FileUtil.readFileIntoList(FileUtil.getRegistryFileName());
+        List<String> list =FileUtil.readFileIntoList(RegistryUtil.getRegistryFileName());
         String output = "";
         for(int i=0;i<list.size();i++)
         {
@@ -205,7 +206,7 @@ public class FunctionUtil {
         }
         output = output + regiContent;
         System.out.println("inputRegistry : " + regiContent);
-        FileUtil.saveStringIntoTemporaryFile(FileUtil.getRegistryFileName(), output);
+        FileUtil.saveStringIntoTemporaryFile(RegistryUtil.getRegistryFileName(), output);
         return true;
     }
 }

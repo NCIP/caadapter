@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionConstant.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionConstant.java,v 1.2 2007-07-14 20:21:26 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.common.function;
 
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.RegistryUtil;
 
 import java.util.List;
 import java.io.*;
@@ -44,14 +45,14 @@ import java.io.*;
  * Description of the class
  *
  * @author OWNER: doswellj
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-04-03 16:02:37 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-07-14 20:21:26 $
  * @since caAdapter v1.2
  */
 public class FunctionConstant {
     private static final String LOGID = "$RCSfile: FunctionConstant.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionConstant.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionConstant.java,v 1.2 2007-07-14 20:21:26 umkis Exp $";
 
     private String type;
     private String value;
@@ -132,8 +133,8 @@ public class FunctionConstant {
         try
         {
             if (valueStr.equals("")) { System.out.println("### input registry with null value."); return; }
-            if (FunctionUtil.inputRegistry(registryPrefix+value, "3:"+valueStr)) throw new FunctionException("inputRegistry failure - already exists ("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value +"=3:"+valueStr);
-            registryFileName = FileUtil.getRegistryFileName();
+            if (FunctionUtil.inputRegistry(registryPrefix+value, "3:"+valueStr)) throw new FunctionException("inputRegistry failure - already exists ("+RegistryUtil.getRegistryFileName()+") : " + registryPrefix+value +"=3:"+valueStr);
+            registryFileName = RegistryUtil.getRegistryFileName();
             /*
             if (FileUtil.getRegistryFileName() == null)
             {
@@ -147,7 +148,7 @@ public class FunctionConstant {
         }
         catch(IOException ie)
         {
-            throw new FunctionException(ie.getMessage()+".. ("+FileUtil.getRegistryFileName()+")");
+            throw new FunctionException(ie.getMessage()+".. ("+RegistryUtil.getRegistryFileName()+")");
         }
 
         /*
@@ -171,18 +172,18 @@ public class FunctionConstant {
         try
         {
             //if (FileUtil.getRegistryFileName() == null) FileUtil.saveStringIntoTemporaryFile(registryFileName);
-            String readS = FileUtil.readRegistry(registryPrefix+value);
+            String readS = RegistryUtil.readRegistry(registryPrefix+value);
             if (readS.startsWith("3:"))
             {
                 output = readS.substring(2);
-                if (!FileUtil.deleteRegistry(registryPrefix+value)) throw new FunctionException("delete Registry failure("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value +"=4:"+output);
+                if (!RegistryUtil.deleteRegistry(registryPrefix+value)) throw new FunctionException("delete Registry failure("+RegistryUtil.getRegistryFileName()+") : " + registryPrefix+value +"=4:"+output);
                 //if (!FileUtil.changeRegistry(registryPrefix+value, "4:"+output)) throw new FunctionException("Change Registry failure("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value +"=4:"+output);
             }
-            else throw new FunctionException("Invalid sequence("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value + "=" + readS);
+            else throw new FunctionException("Invalid sequence("+RegistryUtil.getRegistryFileName()+") : " + registryPrefix+value + "=" + readS);
         }
         catch(IOException ie)
         {
-            throw new FunctionException(ie.getMessage()+".. k("+FileUtil.getRegistryFileName()+")");
+            throw new FunctionException(ie.getMessage()+".. k("+RegistryUtil.getRegistryFileName()+")");
         }
         return output;
         /*
@@ -252,13 +253,13 @@ public class FunctionConstant {
                 {
                     if (!FunctionUtil.inputRegistry(registryPrefix+value, "1"))
                     {
-                        throw new FunctionException("Already used Key Code : " + FileUtil.readRegistry(registryPrefix+value));
+                        throw new FunctionException("Already used Key Code : " + RegistryUtil.readRegistry(registryPrefix+value));
                     }
-                    registryFileName = FileUtil.getRegistryFileName();
+                    registryFileName = RegistryUtil.getRegistryFileName();
                 }
                 catch(IOException ie)
                 {
-                    throw new FunctionException(ie.getMessage()+".. x("+FileUtil.getRegistryFileName()+")");
+                    throw new FunctionException(ie.getMessage()+".. x("+RegistryUtil.getRegistryFileName()+")");
                 }
             }
             /*
@@ -291,18 +292,18 @@ public class FunctionConstant {
         {
             try
             {
-                String readS = FileUtil.readRegistry(registryPrefix+value);
+                String readS = RegistryUtil.readRegistry(registryPrefix+value);
                 if (readS.equals("1"))
                 {
-                    if (!FileUtil.deleteRegistry(registryPrefix+value)) throw new FunctionException("Change Registry failure("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value);
+                    if (!RegistryUtil.deleteRegistry(registryPrefix+value)) throw new FunctionException("Change Registry failure("+RegistryUtil.getRegistryFileName()+") : " + registryPrefix+value);
                     //if (!FileUtil.changeRegistry(registryPrefix+value, "2")) throw new FunctionException("Change Registry failure("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value);
                 }
                 //else if (readS.equals("2")) {}
-                else throw new FunctionException("Unidentified value ("+FileUtil.getRegistryFileName()+") : " + registryPrefix+value + "=" + readS);
+                else throw new FunctionException("Unidentified value ("+RegistryUtil.getRegistryFileName()+") : " + registryPrefix+value + "=" + readS);
             }
             catch(IOException ie)
             {
-                throw new FunctionException(ie.getMessage()+".. y("+FileUtil.getRegistryFileName()+")");
+                throw new FunctionException(ie.getMessage()+".. y("+RegistryUtil.getRegistryFileName()+")");
             }
             this.value = value;
         }
