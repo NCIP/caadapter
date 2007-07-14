@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.3 2007-06-12 15:47:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.4 2007-07-14 20:26:18 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,10 +58,10 @@ import java.io.StringWriter;
  * This class defines a list of default settings for GUI Settings.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-06-12 15:47:59 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-14 20:26:18 $
  */
 public class DefaultSettings
 {
@@ -362,7 +362,7 @@ public class DefaultSettings
 	}
 
 	/**
-	 * @param name the name of the file, does not need path information
+	 * @param imageFileName the name of the file, does not need path information
 	 * @return the image retrieved from the system.
 	 */
 	public static final Image getImage(String imageFileName)
@@ -515,6 +515,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/06/12 15:47:59  wangeug
+ * HISTORY      : load image with "getResource()" as an input stream and read the image with bufferedImage
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/06/07 15:15:14  schroedn
  * HISTORY      : Edits to sync with new codebase and java webstart
  * HISTORY      :
