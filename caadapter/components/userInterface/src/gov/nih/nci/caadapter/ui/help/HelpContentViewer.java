@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.2 2007-06-07 15:15:24 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.3 2007-07-14 20:35:16 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,10 +61,10 @@ import java.util.StringTokenizer;
  * This class defines a dialog to view help content.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-07 15:15:24 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-14 20:35:16 $
  */
 
 public class HelpContentViewer extends JDialog implements ActionListener, ListSelectionListener
@@ -81,7 +81,7 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
    *
    * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
    */
-  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.2 2007-06-07 15:15:24 schroedn Exp $";
+  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HelpContentViewer.java,v 1.3 2007-07-14 20:35:16 umkis Exp $";
 
 
   JTree treeMain;
@@ -193,8 +193,8 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
           else commonURIPath = commonURIPath + achar;
         }
 
-      imagePath = FileUtil.getWorkingDirPath() + dirSeparater+"images"+dirSeparater;
-
+      imagePath = FileUtil.getUserInterfaceDirPath() + dirSeparater + "resources" + dirSeparater+"images"+dirSeparater +"help_images" +dirSeparater;
+      //System.out.println("imagePath : " + imagePath);
       imageURIPath = "file:///";
       for(int i=0;i<imagePath.length();i++)
         {
@@ -202,7 +202,7 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
           if (achar.equals(dirSeparater)) imageURIPath = imageURIPath + "/";
           else imageURIPath = imageURIPath + achar;
         }
-
+      //System.out.println("imageURIPath : " + imageURIPath);
       treeInitialConstruction();
 
       treeMain = new JTree(headOfMain);
@@ -2197,7 +2197,9 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
       if (idx < 0) filename = Config.HELP_TEMPORARY_FILENAME_FIRST;
       else filename = Config.HELP_TEMPORARY_FILENAME_SECOND;
 
-
+      srcP = srcP.replaceAll("<img src='../", "<img src='../components/userInterface/resources/");
+      //srcP = srcP.replaceAll("<img src='../", "<img src='jar:file:/C:/projects/caadapter/lib/caAdapter.jar!");
+      //todo change this code to read image file from caadapter.jar file using class loader. 
       //Log.logInfo(this, "G point : "+src+", " + link);
 
       int t = 0;
@@ -2330,6 +2332,9 @@ public class HelpContentViewer extends JDialog implements ActionListener, ListSe
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/07 15:15:24  schroedn
+ * HISTORY      : Edits to sync with new codebase and java webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
