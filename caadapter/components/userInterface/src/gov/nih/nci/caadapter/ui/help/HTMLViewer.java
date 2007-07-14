@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HTMLViewer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HTMLViewer.java,v 1.2 2007-07-14 20:26:58 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,10 +52,10 @@ import java.net.URL;
  * This class defines frame to view HTML content.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-14 20:26:58 $
  */
 
 public class HTMLViewer extends JDialog
@@ -72,7 +72,7 @@ public class HTMLViewer extends JDialog
    *
    * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
    */
-  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HTMLViewer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HTMLViewer.java,v 1.2 2007-07-14 20:26:58 umkis Exp $";
 
 
   JEditorPane mainView;
@@ -134,8 +134,8 @@ public class HTMLViewer extends JDialog
       screenHeight = height;
       htmlAddress = addr;
       titleName = title;
-      if (title.equals("caAdapter License Information")) mainDisplaying(false);
-      else mainDisplaying(true);
+      mainDisplaying(title.trim().equalsIgnoreCase("caAdapter License Information"));
+
     }
   public HTMLViewer(String mode, String text, int width, int height)
     {
@@ -161,7 +161,7 @@ public class HTMLViewer extends JDialog
     }
   public void mainDisplaying()
     {
-        mainDisplaying(true);
+        mainDisplaying(false);
     }
   public void mainDisplaying(boolean htmlAddressDisplay)
     {
@@ -210,7 +210,7 @@ public class HTMLViewer extends JDialog
       releaseButton.setEnabled(false);
       southPanel.add(buttonPanel, BorderLayout.EAST);
       getContentPane().add(southPanel, BorderLayout.SOUTH);
-      if ((jtfHtmlAddress!=null)&&(!htmlAddressDisplay))
+      if ((jtfHtmlAddress!=null)&&(htmlAddressDisplay))
       {
           jtfHtmlAddress.setVisible(false);
           lb.setVisible(false);
@@ -311,16 +311,18 @@ public class HTMLViewer extends JDialog
                             {
                               //thisWindow.dispose();
                               protectDisposeTag = true;
-                              if (titleName.equals("caAdapter License Information"))
+                              if (titleName.trim().equalsIgnoreCase("caAdapter License Information"))
                               {
                                   String cURL = (e.getURL()).toString();
                                   //System.out.println("CCC : " + cURL);
                                     try
                                     {
-                                        mainView.setPage(new URL(cURL));
+                                        //mainView.setPage(new URL(cURL));
+                                        mainView.setPage(e.getURL());
                                     }
                                     catch(Throwable ie)
                                     {
+                                        //System.out.println("CCC_ERR : " + cURL);
                                         displayInformationWhenClickOnHyperlink();
                                     }
                               }
@@ -428,6 +430,9 @@ public class HTMLViewer extends JDialog
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2007/01/08 20:50:47  umkis
  * HISTORY      : Modify for hidng the url address when license note showing
  * HISTORY      :
