@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.3 2007-07-12 17:30:06 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.4 2007-07-14 20:16:02 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,26 +36,31 @@ package gov.nih.nci.caadapter.common.util;
 
 import java.io.*;
 import java.net.URL;
+import java.net.MalformedURLException;
+import java.net.URLConnection;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.FileHandler;
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.common.function.DateFunction;
 
 /**
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class FileUtil
 {
     private static final String OUTPUT_DIR_NAME = "out";
     private static File OUTPUT_DIR = null;
-    private static String registryFileName = null;
+
     //private static String dateFormat = "yyyyMMddHHmmssSSS";
 
     /**
@@ -177,16 +182,24 @@ public class FileUtil
   public static String searchMessageTypeFileName(String messageType, String fileExtension)
         throws FileNotFoundException
   {
+        String schemaFileName = "";
+        URL fileURL = null;
+        File file = null;
+//      String schemaFileName=Config.SCHEMA_LOCATION+messageType+ "." + fileExtension;
+//      URL fileURL= ClassLoader.getSystemResource(schemaFileName);
+//      if (fileURL!=null)
+//    	  return fileURL.getFile();
 
-      String schemaFileName=Config.SCHEMA_LOCATION+messageType+ "." + fileExtension;
-      URL fileURL= ClassLoader.getSystemResource(schemaFileName);
-      if (fileURL!=null)
-    	  return fileURL.getFile();
-
-	  for (int i = 1; i < 100; i++)
+	  for (int i = -1; i < 100; i++)
       {
-          String pad = i < 10 ? "UV0" + i : "UV" + String.valueOf(i);
-          schemaFileName=Config.SCHEMA_LOCATION+messageType+pad + "." + fileExtension;
+          String pad = "";
+          if (i < 0) pad = "";
+          else pad = i < 10 ? "UV0" + i : "UV" + String.valueOf(i);
+          schemaFileName = Config.SCHEMA_LOCATION+messageType+pad + "." + fileExtension;
+          String schemaFileNamePath=FileUtil.getETCDirPath() + File.separator + schemaFileName;
+          file = new File(schemaFileNamePath);
+          if ((file.exists())&&(file.isFile())) return file.getAbsolutePath();
+
           fileURL= ClassLoader.getSystemResource(schemaFileName);
           if (fileURL!=null)
         	  return fileURL.getFile();
@@ -195,6 +208,7 @@ public class FileUtil
       throw new FileNotFoundException("File Directory:" + Config.SCHEMA_LOCATION + " Message Type:" + messageType
                 + " File Extenstion:" + fileExtension);
   }
+
     /**
      * Return a convenient UI Working Directory, which may or may not be the same as the value from getWorkingDirPath().
      * @return a convenient UI Working Directory, which may or may not be the same as the value from getWorkingDirPath().
@@ -202,9 +216,42 @@ public class FileUtil
     public static String getUIWorkingDirectoryPath()
     {
         File f = new File("./workingspace");
+        if ((!f.exists())||(!f.isDirectory()))
+        {
+            f.mkdirs();
+        }
         return f.getAbsolutePath();
     }
-    
+
+    /**
+     * Generat a Temporary File Name at workingspace directory.
+     * @return a Temporary File Name.
+     */
+    public static String getTemporaryFileName() // inserted by umkis 08/09/2006
+    {
+        return getTemporaryFileName(Config.TEMPORARY_FILE_EXTENSION);
+    }
+
+    /**
+     * Generat a Temporary File Name at workingspace directory.
+     * @param extension the extention of generated temp file
+     * @return a Temporary File Name.
+     */
+    public static String getTemporaryFileName(String extension) // inserted by umkis 08/09/2006
+    {
+        DateFunction dateFunction = new DateFunction();
+        String dateFormat = dateFunction.getDefaultDateFormatString();
+        if (!dateFormat.endsWith("SSS")) dateFormat = dateFormat + "SSS";
+        try
+        {
+            return getUIWorkingDirectoryPath() + File.separator + Config.TEMPORARY_FILE_PREFIX + (new DateFunction()).getCurrentTime(dateFormat) + "_" + getRandomNumber(4) + extension;
+        }
+        catch(FunctionException fe)
+        {
+            return getUIWorkingDirectoryPath() + File.separator + Config.TEMPORARY_FILE_PREFIX + (new DateFunction()).getCurrentTime() + "_" + getRandomNumber(4) + extension;
+        }
+    }
+
     /**
      * Check the parameter whether a temporary file name or not.
      *
@@ -215,7 +262,7 @@ public class FileUtil
     {
         if (fileName.length() > 1024) return false;
         if (
-               (fileName.endsWith(Config.TEMPORARY_FILE_EXTENSION)) &&
+               //(fileName.endsWith(Config.TEMPORARY_FILE_EXTENSION)) &&
                (fileName.indexOf(Config.TEMPORARY_FILE_PREFIX) >= 0)
            )
             return true;
@@ -333,87 +380,7 @@ public class FileUtil
     }
 
 
-    public static boolean changeRegistry(String regiName, String content) throws IOException
-    {
-        String regiContent = regiName.trim() + Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR + content.trim();
-        if (registryFileName == null) return false;
 
-        List<String> list = readFileIntoList(registryFileName);
-        String output = "";
-        String value = "";
-        boolean findTag = false;
-        for(int i=0;i<list.size();i++)
-        {
-            String line = list.get(i);
-            String regiHead = line.substring(0, line.indexOf(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR));
-            if (regiHead.equals(regiName.trim()))
-            {
-                findTag = true;
-                value = line.substring(line.indexOf(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR) + Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR.length());
-                output = output + regiContent + "\r\n";
-            }
-            else output = output + line + "\r\n";
-        }
-
-        System.out.println("changeRegistry : " + regiName + ", content=" + content + ", before=" + value + ", find=" + findTag);
-        if (!findTag) return false;
-        saveStringIntoTemporaryFile(registryFileName, output.trim());
-        return true;
-    }
-    public static boolean deleteRegistry(String regiName) throws IOException
-    {
-        if (registryFileName == null) return false;
-
-        List<String> list = readFileIntoList(registryFileName);
-        String output = "";
-        boolean findTag = false;
-        for(int i=0;i<list.size();i++)
-        {
-            String line = list.get(i);
-            String regiHead = line.substring(0, line.indexOf(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR));
-            if (regiHead.equals(regiName.trim())) findTag = true;
-            else output = output + line + "\r\n";
-        }
-        System.out.println("deleteRegistry : " + regiName + ", find=" + findTag);
-        if (!findTag) return false;
-        saveStringIntoTemporaryFile(registryFileName, output.trim());
-        return true;
-    }
-    public static String readRegistry(String regiName) throws IOException
-    {
-        if (registryFileName == null) //return "ERR01: Registry File is not created yet." + regiName;
-            throw new IOException("ERR01: Registry File is not created yet." + regiName);
-
-        List<String> list = readFileIntoList(registryFileName);
-        String output = "";
-        boolean findTag = false;
-        for(int i=0;i<list.size();i++)
-        {
-            String line = list.get(i);
-            String regiHead = line.substring(0, line.indexOf(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR));
-            if (regiHead.equals(regiName.trim()))
-            {
-                findTag = true;
-                output = line.substring(line.indexOf(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR) + Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR.length());
-            }
-        }
-        System.out.println("readRegistry : " + regiName + ", out=" + output + ", find=" + findTag);
-        if (!findTag) //return "ERR02: Not found this variable : " + regiName;
-             throw new IOException("ERR02: Not found this variable : " + regiName);
-        return output;
-    }
-    public static String getRegistryFileName()
-    {
-        return registryFileName;
-    }
-    public static void setRegistryFileName(String filename) throws IOException
-    {
-        File file = new File(filename);
-
-        if (!file.exists()) throw new IOException("This file is not exists. : " + filename);
-        if (!file.isFile()) throw new IOException("This is not a file. : " +  filename);
-        registryFileName = filename;
-    }
     /**
      * Create a random integer number with digit number which was given by the caller.
      *   For example, when digit number is 5, return value can be 34562 or 98123.
@@ -722,10 +689,153 @@ public class FileUtil
         }
     }
 
+     /**
+     * Create a temporary file which includes the received string parameter.
+     *
+     * @param string parameter which would like to be saved into this temporary file.
+     * @return the temporary file name. this file will be automatically deleted when system exit in according to File.deleteOnExit().
+     * @throws IOException when saving is failed.
+     */
+    public static String saveStringIntoTemporaryFile(String string) throws IOException // inserted by umkis 08/10/2006
+    {
+        String tempFileName = getTemporaryFileName();
+        saveStringIntoTemporaryFile(tempFileName, string);
+        return tempFileName;
+    }
+
+    /**
+     * This function will dawnload data from a InputStream and save them into a file.
+     * @param addr url address
+     * @return the File object contains the right file name with the given extension.
+     * @throws IOException Any Exception will be passed into IOException
+     */
+    public static String downloadFromURLtoTempFile(String addr) throws IOException
+    {
+        if ((addr == null)||(addr.trim().equals(""))) throw new IOException("Null address.");
+        URL ur = null;
+        InputStream is = null;
+		FileOutputStream fos = null;
+
+        addr = addr.trim();
+        String tempFile = "";
+        if ((addr.length() >= 5)&&(addr.substring(addr.length()-4, addr.length()-3).equals(".")))
+             tempFile = getTemporaryFileName(addr.substring(addr.length()-4));
+        else tempFile = getTemporaryFileName();
+
+        try
+        {
+            ur = new URL(addr);
+        }
+        catch(MalformedURLException ue)
+        {
+            throw new IOException("Invalid URL : " + ue.getMessage());
+        }
+        URLConnection uc = ur.openConnection();
+        try
+        {
+            uc.connect();
+        }
+        catch(SocketTimeoutException se)
+        {
+            throw new IOException("SocketTimeoutException : " + se.getMessage());
+        }
+
+        return downloadFromInputStreamToFile(uc.getInputStream(), tempFile);
+    }
+
+    /**
+     * This function will dawnload data from a InputStream and save them into a file.
+     * @param is InputStream
+     * @param fileName file name - this file will be deleted when system exit.
+     * @return the File object contains the right file name with the given extension.
+     * @throws IOException Any Exception will be passed into IOException
+     */
+    public static String downloadFromInputStreamToFile(InputStream is, String fileName) throws IOException
+    {
+        return downloadFromInputStreamToFile(is, fileName, true);
+    }
+
+    /**
+     * This function will dawnload data from a InputStream and save them into a file.
+     * @param is InputStream
+     * @param fileName file name
+     * @param deleteOnExit if true this file will be deleted when system exit.
+     * @return the File object contains the right file name with the given extension.
+     * @throws IOException Any Exception will be passed into IOException
+     */
+    public static String downloadFromInputStreamToFile(InputStream is, String fileName, boolean deleteOnExit) throws IOException
+    {
+        if (is == null) throw new IOException("Null InputStream ");
+        if ((fileName == null)||(fileName.trim().equals(""))) throw new IOException("Null File Name.");
+
+        DataInputStream dis = new DataInputStream(is);
+        FileOutputStream fos = null;
+        DataOutputStream dos = null;
+        byte bt = 0;
+
+        boolean started = false;
+        
+
+        while(true)
+        {
+            try { bt = dis.readByte(); }
+            catch(IOException ie) { break; }
+            catch(NullPointerException ie) { break; }
+
+            if (!started)
+            {
+                try
+                {
+                    fos = new FileOutputStream(fileName);
+                }
+                catch(FileNotFoundException fe)
+                {
+                    throw new IOException("FileNotFoundException : " + fe.getMessage());
+                }
+                catch(SecurityException se)
+                {
+                    throw new IOException("SecurityException : " + se.getMessage());
+                }
+                dos = new DataOutputStream(fos);
+                started = true;
+            }
+            dos.writeByte(bt);
+
+        }
+
+        if (fos == null) throw new IOException("This InputStream object is empty.");
+
+        dis.close();
+        dos.close();
+        is.close();
+        fos.close();
+
+        if (deleteOnExit) setFileDeleteOnExit(fileName);
+
+        return fileName;
+    }
+
+    /**
+     * This makes parametered file delete when system exit.
+     * @param fileName file name
+     * @return true or false
+     */
+    public static boolean setFileDeleteOnExit(String fileName)
+    {
+        if ((fileName == null)||(fileName.trim().equals(""))) return false;
+        File file = new File(fileName);
+        if (!file.exists()) return false;
+        file.deleteOnExit();
+        return true;
+    }
+
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2007/07/12 17:30:06  umkis
+ * add 'getComponentsDirPath()' and directory paths of the componts.
+ *
  * Revision 1.2  2007/07/09 15:39:58  umkis
  * Update for csv cardinality and test instance generating.
  *
