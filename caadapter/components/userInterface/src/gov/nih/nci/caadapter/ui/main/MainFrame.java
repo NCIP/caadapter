@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.3 2007-05-10 15:23:04 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.4 2007-07-14 20:28:27 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -60,10 +60,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-05-10 15:23:04 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-14 20:28:27 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -120,7 +120,7 @@ public class MainFrame extends AbstractMainFrame
 	    DefaultSettings.centerWindow(this);
 	    this.setFocusable(true);
 		this.setFocusableWindowState(true);
-//		helpContentViewer = new HelpContentViewer(this);
+		helpContentViewer = new HelpContentViewer(this);
 		
 	
 		InitialSplashWindow isw = new InitialSplashWindow();
@@ -486,6 +486,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/05/10 15:23:04  jayannah
+ * HISTORY      : commented out the preferences
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/05/09 21:06:31  jayannah
  * HISTORY      : *** empty log message ***
  * HISTORY      :
