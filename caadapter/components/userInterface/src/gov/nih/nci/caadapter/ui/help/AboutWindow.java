@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.2 2007-07-15 05:25:23 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.help;
 
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -48,6 +49,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URL;
+import java.net.MalformedURLException;
+import java.util.List;
 
 import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
 import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
@@ -57,10 +60,10 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * This class defines the help window.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-15 05:25:23 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -77,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.2 2007-07-15 05:25:23 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -203,7 +206,7 @@ public class AboutWindow extends JWindow //implements ActionListener
                             {
                                 String licenseHTML_URL = generateLicenseInformationHTML(LICENSE_DIRECTORY_PATH);
                                 if (licenseHTML_URL.startsWith(ERROR_TAG)) new HTMLViewer(commonURIPath + LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE + ".html", 700, 500, "caadapter License Information");
-                                else new HTMLViewer(licenseHTML_URL, 700, 500, "caadapter License Information");
+                                else new HTMLViewer(licenseHTML_URL, 700, 500, "caAdapter License Information");
                             }
                             else
                               {
@@ -299,48 +302,58 @@ public class AboutWindow extends JWindow //implements ActionListener
     }
     private String generateLicenseInformationHTML(String licensePath)
     {
-    	URL licenseURL= ClassLoader.getSystemResource(licensePath+"/caAdapter_license.txt");
-    	String filePath=licenseURL.getFile();
-        File licenseFile = new File(filePath);
-        File licensePathFile= licenseFile.getParentFile();
-        if (!licensePathFile.isDirectory()) return ERROR_TAG + " : Not Directory";
+        ClassLoaderUtil loader = null;
+        try
+        {
+            loader = new ClassLoaderUtil(licensePath);
+        }
+        catch(IOException ie)
+        {
+            return ERROR_TAG + " : Class Loading failure with this path => " + licensePath;
+        }
+//        File licensePathFile = new File(FileUtil.getETCDirPath() + File.separator + licensePath);
+//        if (!licensePathFile.exists()) return ERROR_TAG + " : Not Exist";
+//        if (!licensePathFile.isDirectory()) return ERROR_TAG + " : Not Directory";
         String displayFileName = commonPath + Config.HELP_TEMPORARY_FILENAME_SECOND;
         String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> This " +
                 "license information is automatically merged and generated from the following license files in " +
                 licensePath + " directory.<br><br>%%XX<br><br><hr width=\"80%\"><br>";
-        File[] licensePathFileArray = licensePathFile.listFiles();
+        List<String> licenseFileNames = loader.getFileNames();
         String fileList = "";
         FileReader fr = null;
         BufferedReader br = null;
         int count = 0;
-        if (licensePathFileArray.length == 0) return ERROR_TAG + " : No File";
-        for (int i=0;i<licensePathFileArray.length;i++)
+        if (licenseFileNames.size() == 0) return ERROR_TAG + " : No File";
+        for (int i=0;i<licenseFileNames.size();i++)
         {
-            File aFile = licensePathFileArray[i];
-            if (aFile.isDirectory()) continue;
 
-            count++;
-
-            try { fr = new FileReader(aFile); }
-            catch(FileNotFoundException fe) { 
-            	fe.printStackTrace();
-            	return ERROR_MESSAGE_FILE_NOT_FOUND+":"+aFile; 
+            try { fr = new FileReader(loader.getFileName(i)); }
+            catch(FileNotFoundException fe)
+            {
+        	    continue;
             }
 
             br = new BufferedReader(fr);
-            String readLineOfFile = "";
 
+            count++;
+
+            String readLineOfFile = "";
+            String buffer = "";
             try
             {
-                mainContent = mainContent + "<a name='a"+i+"'><b>Source File</b></a> : " + licensePath + File.separator + aFile.getName() + "<br><br>";
-                while((readLineOfFile=br.readLine())!=null)
+                mainContent = mainContent + "<a name='a" + i + "'><b>Source File</b></a> : " + licensePath + File.separator + loader.getName(i) + "<br><br>";
+                while(true)
                 {
+                    readLineOfFile=br.readLine();
+                    if (readLineOfFile==null) break;
+
+
                     String c = readLineOfFile.trim();
                     if (c.equals("")) mainContent = mainContent + "<br><br>";
                     else mainContent = mainContent + " " + c;
                 }
                 mainContent = mainContent + "<br><br><a href='#top'>go to top</a><br><hr width=\"80%\"><br><br>";
-                fileList = fileList + "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#a"+i+"'>" + licensePath + File.separator + aFile.getName() + "</a><br>";
+                fileList = fileList + "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#a"+i+"'>" + licensePath + File.separator + loader.getName(i) + "</a><br>";
             }
             catch(IOException ie)
             {
@@ -408,6 +421,9 @@ public class AboutWindow extends JWindow //implements ActionListener
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.34  2007/01/08 20:49:03  umkis
  * HISTORY      : calling OS's web browser using Stanford Univ's product
  * HISTORY      :
