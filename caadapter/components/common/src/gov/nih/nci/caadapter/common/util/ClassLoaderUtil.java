@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.1 2007-07-14 20:17:17 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.2 2007-07-15 05:27:25 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -93,9 +93,11 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.1 2007-07-14 20:17:17 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.2 2007-07-15 05:27:25 umkis Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
+    private List<String> names = new ArrayList<String>();
+    private List<String> fileNames = new ArrayList<String>();
 
     public ClassLoaderUtil(String name) throws IOException
     {
@@ -156,6 +158,8 @@ public class ClassLoaderUtil
                             {
                                 stream = jarFile.getInputStream(jarEntry);
                                 streams.add(stream);
+                                names.add(getFileName(nameE));
+                                //System.out.println("WWWZZ : " + getFileName(nameE));
                             }
                             catch(IOException ie)
                             {
@@ -171,6 +175,8 @@ public class ClassLoaderUtil
                     {
                         stream = (fileURL.openConnection()).getInputStream();
                         streams.add(stream);
+                        names.add(getFileName(fileURL.toString()));
+                        //System.out.println("WXXZZ : " + getFileName(fileURL.toString()));
                     }
                     catch(IOException ie)
                     {
@@ -182,10 +188,18 @@ public class ClassLoaderUtil
             }
 
         List<InputStream> Tstreams = new ArrayList<InputStream>();
+        List<String> Tnames = new ArrayList<String>();
         for (int i=0;i<streams.size();i++)
         {
             InputStream stream = streams.get(i);
+            String nameS = names.get(i);
             String fileName = FileUtil.getTemporaryFileName();
+
+            if ((nameS.length() > 5)&&(nameS.substring(nameS.length()-4, nameS.length()-3).equals(".")))
+            {
+                fileName = fileName.substring(0, fileName.length()-4) + "." + nameS.substring(nameS.length()-3); 
+            }
+
             try
             {
                 fileName = FileUtil.downloadFromInputStreamToFile(stream, fileName);
@@ -195,11 +209,17 @@ public class ClassLoaderUtil
                 continue;
             }
             Tstreams.add(stream);
-            File file = new File(fileName);
-            file.delete();
+            Tnames.add(nameS);
+            fileNames.add(fileName);
+//            File file = new File(fileName);
+//            file.delete();
         }
 
-        if (streams.size() != Tstreams.size()) streams = Tstreams;
+        if (streams.size() != Tstreams.size())
+        {
+            streams = Tstreams;
+            names = Tnames;
+        }
 
         if (streams.size() == 0)
         {
@@ -208,23 +228,49 @@ public class ClassLoaderUtil
         }
     }
 
-    public List<InputStream> getInputStreams()
+    public List<String> getFileNames()
     {
-        return streams;
+        return fileNames;
     }
 
-    public InputStream getInputStream(int index)
+    public String getFileName(int index)
     {
-        if (streams.size() <= index) return null;
-        return streams.get(index);
+        if (fileNames.size() <= index) return null;
+        return fileNames.get(index);
     }
 
     public int getSizeOfInputStreams()
     {
-        return streams.size();
+        return fileNames.size();
+    }
+
+    private String getFileName(String addr)
+    {
+        addr = addr.trim();
+        String name = "";
+        for (int i=addr.length();i>=0;i--)
+        {
+
+            String achar = addr.substring(i-1, i);
+            //System.out.println("  TTT : " + achar);
+            if (achar.equals("/")) break;
+            if (achar.equals("\\")) break;
+            name = achar + name;
+        }
+        //System.out.println("TTTZZ : " + name);
+        return name;
+    }
+
+    public String getName(int index)
+    {
+        if (names.size() <= index) return null;
+        return names.get(index);
     }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/14 20:17:17  umkis
+ * HISTORY      : new utils
+ * HISTORY      :
  */
