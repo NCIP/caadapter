@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.4 2007-07-06 20:43:03 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/SCMBasicNodeLoader.java,v 1.5 2007-07-16 19:38:18 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,10 +57,10 @@ import java.util.List;
  * while leaving the algorithm of traversing CSV SCM meta data tree defined here intact.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-06 20:43:03 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-16 19:38:18 $
  */
 public class SCMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -141,7 +141,7 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
 		meta.setRootSegment(unLoadSegment(treeNode, null, resetUUID));
 		if(resetUUID)
 		{//force to generate a new UUID.
-			meta.setUUID(null);
+			meta.setXmlPath(null);
 		}
 		return meta;
 	}
@@ -171,11 +171,11 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
         newSegmentMeta.setCardinalityType(oldSegment.getCardinalityType());
         if (resetUUID)
 		{
-			newSegmentMeta.setUUID(null);
+			newSegmentMeta.setXmlPath(null);
 		}
 		else
 		{
-			newSegmentMeta.setUUID(oldSegment.getUUID());
+			newSegmentMeta.setXmlPath(oldSegment.getXmlPath());
 		}
 
 		int childCount = treeNode.getChildCount();
@@ -193,11 +193,11 @@ public class SCMBasicNodeLoader extends DefaultNodeLoader
 				CSVFieldMetaImpl newFieldMeta = new CSVFieldMetaImpl(oldFieldMeta.getColumn(), oldFieldMeta.getName(), newSegmentMeta);
 				if (resetUUID)
 				{
-					newFieldMeta.setUUID(null);
+					newFieldMeta.setXmlPath(null);
 				}
 				else
 				{
-					newFieldMeta.setUUID(oldFieldMeta.getUUID());
+					newFieldMeta.setXmlPath(oldFieldMeta.getXmlPath());
 				}
 				newSegmentMeta.addField(newFieldMeta);
 			}
