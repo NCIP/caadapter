@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.2 2007-07-16 19:21:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,13 +62,13 @@ import java.util.Stack;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-07-03 18:26:25 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-07-16 19:21:05 $
  * @since caAdapter v1.2
  */
 public class MapProcessorHelper {
     private static final String LOGID = "$RCSfile: MapProcessorHelper.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.2 2007-07-16 19:21:05 wangeug Exp $";
     private Mapping mapping;
     private HashMap targetPathHash;
 
@@ -113,7 +113,7 @@ public class MapProcessorHelper {
 	   //it creates multiple instances of the same functionComponent
 	   for (FunctionComponent fComp:mapping.getFunctionComponent())
 	   {
-		   if (fComp.getUUID().equals(functionID))
+		   if (fComp.getXmlPath().equals(functionID))
 		   {
 			   funtionBoxFound=true;
 			   break;
@@ -289,7 +289,7 @@ public class MapProcessorHelper {
                 List<Map> functionMaps = new ArrayList<Map>();
                 for (int j = 0; j < parameterMeta.size(); j++) {
                     ParameterMeta meta = parameterMeta.get(j);
-                    functionMaps.addAll(this.findMapsAssociatedWithMetaObject(sourceComponentUuid, meta.getUUID(), Config.MAP_COMPONENT_TARGET_TYPE));
+                    functionMaps.addAll(this.findMapsAssociatedWithMetaObject(sourceComponentUuid, meta.getXmlPath(), Config.MAP_COMPONENT_TARGET_TYPE));
                 }
                 List<CSVSegmentMeta> csvSegmentMetas = this.findUniqueMappedSegments(functionMaps);
                 for (int j = 0; j < csvSegmentMetas.size(); j++) {
@@ -342,7 +342,7 @@ public class MapProcessorHelper {
         // iterate up the potential child and see if you find the potentialParentSegment
         CSVSegmentMeta seg = potentialChildSegment.getParent();
         while (seg != null) {
-            if (seg.getUUID().equalsIgnoreCase(potentialParentSegment.getUUID())) {
+            if (seg.getXmlPath().equalsIgnoreCase(potentialParentSegment.getXmlPath())) {
                 isparent = true;
             }
             seg = seg.getParent();
@@ -400,7 +400,7 @@ public class MapProcessorHelper {
                 if (tempCSVSegmentMeta == null) {
                     tempCSVSegmentMeta = thisCSVSegmentMeta;
                 } else {
-                    if (tempCSVSegmentMeta.getUUID().equalsIgnoreCase(thisCSVSegmentMeta.getUUID())) {
+                    if (tempCSVSegmentMeta.getXmlPath().equalsIgnoreCase(thisCSVSegmentMeta.getXmlPath())) {
                         // UUIDS match up.. move on to the next one.
                     } else {
                         // UUIDS don't match up.. "tempCSVSegmentMeta" contains the common parent.
@@ -455,7 +455,7 @@ public class MapProcessorHelper {
      * @return true if it is based on the metadata, false if not.
      */
     public boolean isDataSegmentOfMeta(CSVSegmentMeta csvSegmentMeta, CSVSegment csvSegment) {
-        if (csvSegment.getUUID().equalsIgnoreCase(csvSegmentMeta.getUUID())) {
+        if (csvSegment.getXmlPath().equalsIgnoreCase(csvSegmentMeta.getXmlPath())) {
             return true;
         } else {
             return false;
@@ -539,7 +539,7 @@ public class MapProcessorHelper {
             List<CSVField> dataFields = theSegment.get(0).getFields();
             for (int i = 0; i < dataFields.size(); i++) {
                 CSVField csvField = dataFields.get(i);
-                if (csvField.getUUID().equalsIgnoreCase(csvFieldMeta.getUUID())) {
+                if (csvField.getXmlPath().equalsIgnoreCase(csvFieldMeta.getXmlPath())) {
                     // we found a match! get the data!
                     value = csvField.getValue();
                 }
@@ -564,7 +564,7 @@ public class MapProcessorHelper {
             ParameterMeta parameterMeta = inputParameterMetas.get(i);
             String inputvalue = null;
             // find maps to these inputs.
-            List<Map> maps = findMapsAssociatedWithMetaObject(functionComponent.getUUID(), parameterMeta.getUUID(), Config.MAP_COMPONENT_TARGET_TYPE);
+            List<Map> maps = findMapsAssociatedWithMetaObject(functionComponent.getXmlPath(), parameterMeta.getXmlPath(), Config.MAP_COMPONENT_TARGET_TYPE);
             // throw excpetions if needed.
             if (maps.size() > 1) throw new MappingException("Function must have ONLY one map. " + maps.size() + " found. : " + parameterMeta, null);
             if (maps.size() < 1) throw new MappingException("Function must have one map. Zero found. : " + parameterMeta, null);
@@ -587,10 +587,10 @@ public class MapProcessorHelper {
 
         // first, is the function a constant?
         if (functionMeta.isConstantFunction()) {
-            FunctionComponent constFunctComp = this.mapping.getFunctionComponent(functionComponent.getUUID());
+            FunctionComponent constFunctComp = this.mapping.getFunctionComponent(functionComponent.getXmlPath());
             FunctionConstant fc = constFunctComp.getFunctionConstant();
             if (fc == null)
-                throw new MappingException("count not find function constant for function: " + functionComponent.getUUID(), null);
+                throw new MappingException("count not find function constant for function: " + functionComponent.getXmlPath(), null);
             String output = "";
             if (fc.getConstantFunctionName().equals(fc.getFunctionNameArray()[0])) output = fc.getValue();
             else if (fc.getConstantFunctionName().equals(fc.getFunctionNameArray()[1]))
@@ -615,12 +615,12 @@ public class MapProcessorHelper {
         // , is the FunctionVocabularyMapping?
         if (functionMeta.isFunctionVocabularyMapping())
         {
-            FunctionComponent constFunctComp = this.mapping.getFunctionComponent(functionComponent.getUUID());
+            FunctionComponent constFunctComp = this.mapping.getFunctionComponent(functionComponent.getXmlPath());
             FunctionVocabularyMapping vm = constFunctComp.getFunctionVocabularyMapping();
             if (vm == null)
-                throw new MappingException("Not found 'Vocabulary' function: " + functionComponent.getUUID(), null);
+                throw new MappingException("Not found 'Vocabulary' function: " + functionComponent.getXmlPath(), null);
             if (inputValues.size() != 1)
-                throw new MappingException("Parameter count of 'Vocabulary' fuction must be 1 but now is "+inputValues.size()+". : " + functionComponent.getUUID(), null);
+                throw new MappingException("Parameter count of 'Vocabulary' fuction must be 1 but now is "+inputValues.size()+". : " + functionComponent.getXmlPath(), null);
 
             String res = "";
             try
@@ -629,7 +629,7 @@ public class MapProcessorHelper {
                     res = vm.translateValue(inputValues.get(0));
                 else if (functionMeta.getFunctionName().equalsIgnoreCase(vm.getMethodNamePossibleList()[1]))
                     res = vm.translateInverseValue(inputValues.get(0));
-                else throw new MappingException("'"+ functionMeta.getFunctionName() +"' function could not be found in 'Vocabulary' function group : " + functionComponent.getUUID(), null);
+                else throw new MappingException("'"+ functionMeta.getFunctionName() +"' function could not be found in 'Vocabulary' function group : " + functionComponent.getXmlPath(), null);
             }
             catch(FunctionException fe)
             {
@@ -676,7 +676,7 @@ public class MapProcessorHelper {
         List<ParameterMeta> parameterMetas = functionMeta.getInputDefinitionList();
         for (int i = 0; i < parameterMetas.size(); i++) {
             ParameterMeta parameterMeta = parameterMetas.get(i);
-            List<Map> maps = findMapsAssociatedWithMetaObject(functionComponentUuid, parameterMeta.getUUID(), Config.MAP_COMPONENT_TARGET_TYPE);
+            List<Map> maps = findMapsAssociatedWithMetaObject(functionComponentUuid, parameterMeta.getXmlPath(), Config.MAP_COMPONENT_TARGET_TYPE);
             if (maps.size() > 1) {
                 throw new MappingException("There can only be one map to for a single ParameterMeta " + parameterMeta, null);
             } else if (maps.size() == 1) {

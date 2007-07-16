@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.1 2007-07-03 18:26:44 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.2 2007-07-16 19:25:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,15 +47,15 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-07-03 18:26:44 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-07-16 19:25:05 $
  * @since caAdapter v1.2
  */
 
 public class MappingImpl implements Mapping
 {
 	private static final String LOGID = "$RCSfile: MappingImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.1 2007-07-03 18:26:44 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.2 2007-07-16 19:25:05 wangeug Exp $";
 
 	private List<Map> maps = new ArrayList<Map>();
 	private List<FunctionComponent> functionComponents = new ArrayList<FunctionComponent>();
@@ -171,7 +171,7 @@ public class MappingImpl implements Mapping
         List<FunctionComponent> fc = getFunctionComponent();
         for (int i = 0; i < fc.size(); i++) {
             FunctionComponent functionComponent =  fc.get(i);
-            if(functionComponent.getUUID().equalsIgnoreCase(uuid)){
+            if(functionComponent.getXmlPath().equalsIgnoreCase(uuid)){
                 return functionComponent;
             }
         }

@@ -88,7 +88,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.5 $ date $Date: 2007-07-05 15:18:28 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.6 $ date $Date: 2007-07-16 19:29:48 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.5 2007-07-05 15:18:28 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.6 2007-07-16 19:29:48 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1180,7 +1180,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			}
 			functionComponent.setView(viewImpl);
 			cellComponentMap.put(functionCell, functionComponent);
-			uuidComponentMap.put(functionComponent.getUUID(), functionComponent);
+			uuidComponentMap.put(functionComponent.getXmlPath(), functionComponent);
 		}
 		consolidateFunctionComponentList(mappingData, uuidComponentMap);
 		for (Iterator it = mappingViewList.iterator(); it.hasNext();) {
@@ -1272,7 +1272,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		Iterator it = oldFunctionCompList.iterator();
 		while (it.hasNext()) {// remove those not exist anymore in new mapping
 			FunctionComponent functionComp = (FunctionComponent) it.next();
-			FunctionComponent newFunctionComp = uuidComponentMap.get(functionComp.getUUID());
+			FunctionComponent newFunctionComp = uuidComponentMap.get(functionComp.getXmlPath());
 			if ( newFunctionComp == null ) {// could not find the old functionComp in new graph, that implies it is deleted already
 				it.remove();
 			} else {
@@ -1280,7 +1280,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				functionComp.setMeta(newFunctionComp.getMeta());
 				functionComp.setView(newFunctionComp.getView());
 				// then remove the new one from the map, so after this filtering, the given map will just contain those need to be added.
-				uuidComponentMap.remove(functionComp.getUUID());
+				uuidComponentMap.remove(functionComp.getXmlPath());
 			}
 		}
 		// now add new function components into mappingData
@@ -1451,6 +1451,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.5  2007/07/05 15:18:28  wangeug
+ * HISTORY : initila loading hl7 code without "clone"
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/04/19 14:07:37  wangeug
  * HISTORY : set link color based on linkType
  * HISTORY :

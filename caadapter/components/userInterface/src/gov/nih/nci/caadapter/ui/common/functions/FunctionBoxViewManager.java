@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewManager.java,v 1.2 2007-07-03 18:57:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewManager.java,v 1.3 2007-07-16 19:27:12 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,8 +47,8 @@ import java.util.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 18:57:48 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-16 19:27:12 $
  */
 public class FunctionBoxViewManager
 {
@@ -94,7 +94,7 @@ public class FunctionBoxViewManager
 				FunctionMeta functionMeta = functionDefinitionList.get(i);
 	//			StringBuffer keyBuf = new StringBuffer(functionMeta.getGroupName());
 	//			keyBuf.append(":").append(functionMeta.getFunctionUUID());
-				functionDefinitionsMap.put(functionMeta.getUUID(), functionMeta);
+				functionDefinitionsMap.put(functionMeta.getXmlPath(), functionMeta);
 	//			FunctionBoxMutableViewInterfaceImplunctionMetaView = new FunctionBoxMutableViewInterfaceImplull, functionMeta.getName(), functionMeta.getSizeOfDefinedInput(), functionMeta.getSizeOfDefinedOutput());
 	//			functionMetaView.setFunctionMeta(functionMeta);
 	//			functionDefinitionsMap.put(functionMetaView.getName(), functionMetaView);
@@ -170,16 +170,16 @@ public class FunctionBoxViewManager
 		}
 		else if (function instanceof FunctionBoxMutableViewInterface)
 		{
-			functionUUID = ((FunctionMeta)((FunctionBoxMutableViewInterface) function).getFunctionMeta()).getUUID();
+			functionUUID = ((FunctionMeta)((FunctionBoxMutableViewInterface) function).getFunctionMeta()).getXmlPath();
 		}
 		else if (function instanceof FunctionComponent)
 		{
 			FunctionMeta meta = ((FunctionComponent) function).getMeta();
-			functionUUID = meta.getUUID();
+			functionUUID = meta.getXmlPath();
 		}
 		else if (function instanceof FunctionMeta)
 		{
-			functionUUID = ((FunctionMeta) function).getUUID();
+			functionUUID = ((FunctionMeta) function).getXmlPath();
 		}
 		else
 		{
@@ -200,6 +200,9 @@ public class FunctionBoxViewManager
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 18:57:48  wangeug
+ * HISTORY      : relocate "FunctionComponent" object from  other package
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

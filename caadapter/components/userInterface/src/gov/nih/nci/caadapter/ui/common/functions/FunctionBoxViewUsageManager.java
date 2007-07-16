@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.2 2007-07-03 18:58:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.3 2007-07-16 19:27:36 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 18:58:11 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-16 19:27:36 $
  */
 public class FunctionBoxViewUsageManager
 {
@@ -74,7 +74,7 @@ public class FunctionBoxViewUsageManager
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.2 2007-07-03 18:58:11 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.3 2007-07-16 19:27:36 wangeug Exp $";
 
     //key: uuid of function instance, function instance.
     private Map functionInstanceMap;
@@ -120,7 +120,7 @@ public class FunctionBoxViewUsageManager
                 newFunctionBox.setFunctionVocabularyMapping(functionComponent.getFunctionVocabularyMapping());
             }
             //register the newly created item in the map.
-            functionInstanceMap.put(newFunctionBox.getUUID(), newFunctionBox);
+            functionInstanceMap.put(newFunctionBox.getXmlPath(), newFunctionBox);
         }
         return newFunctionBox;
     }
@@ -242,7 +242,7 @@ public class FunctionBoxViewUsageManager
                 newFunctionBoxInstance.setFunctionVocabularyMapping(vocabularyMapping);
             }
             //register the newly created item in the map.
-            functionInstanceMap.put(newFunctionBoxInstance.getUUID(), newFunctionBoxInstance);
+            functionInstanceMap.put(newFunctionBoxInstance.getXmlPath(), newFunctionBoxInstance);
         }
         return newFunctionBoxInstance;
     }
@@ -275,7 +275,7 @@ public class FunctionBoxViewUsageManager
             Object key = it.next();
             FunctionBoxMutableViewInterface value = (FunctionBoxMutableViewInterface) functionInstanceMap.get(key);
             FunctionComponent localComp = value.getFunctionComponent(false);
-            if(localComp!=null && GeneralUtilities.areEqual(localComp.getUUID(), functionComponent.getUUID()))
+            if(localComp!=null && GeneralUtilities.areEqual(localComp.getXmlPath(), functionComponent.getXmlPath()))
             {
                 result = value;
                 break;
@@ -321,7 +321,7 @@ public class FunctionBoxViewUsageManager
     {
         if(functionUsage!=null)
         {
-            return functionInstanceMap.remove(functionUsage.getUUID());
+            return functionInstanceMap.remove(functionUsage.getXmlPath());
         }
         else
         {
@@ -332,6 +332,9 @@ public class FunctionBoxViewUsageManager
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 18:58:11  wangeug
+ * HISTORY      : relocate "FunctionComponent" object from  other package
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
