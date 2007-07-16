@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/CSVSegmentMeta.java,v 1.4 2007-07-16 19:44:55 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/CSVSegmentMeta.java,v 1.5 2007-07-16 19:46:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,8 +45,8 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.4 $
- * @date        $Date: 2007-07-16 19:44:55 $
+ * @version    $Revision: 1.5 $
+ * @date        $Date: 2007-07-16 19:46:19 $
  */
 
 public interface CSVSegmentMeta extends MetaObject{
@@ -76,3 +76,4 @@ public interface CSVSegmentMeta extends MetaObject{
     public int getMaxCardinality();
     public int getMinCardinality();
 }
+
