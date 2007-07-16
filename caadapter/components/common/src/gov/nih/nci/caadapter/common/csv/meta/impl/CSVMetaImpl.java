@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.2 2007-07-16 19:05:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,13 +44,13 @@ import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-07-16 19:05:13 $
  */
 
 public class CSVMetaImpl extends MetaObjectImpl implements CSVMeta {
     private static final String LOGID = "$RCSfile: CSVMetaImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.2 2007-07-16 19:05:13 wangeug Exp $";
 
     // a reference to the child.
     private CSVSegmentMeta rootSegment;
@@ -71,5 +71,4 @@ public class CSVMetaImpl extends MetaObjectImpl implements CSVMeta {
     public void setRootSegment(CSVSegmentMeta rootSegment) {
         this.rootSegment = rootSegment;
     }
-
 }

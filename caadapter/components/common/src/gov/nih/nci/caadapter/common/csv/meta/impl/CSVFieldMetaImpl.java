@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.2 2007-05-24 15:03:10 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.3 2007-07-16 19:04:47 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,13 +49,13 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-05-24 15:03:10 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2007-07-16 19:04:47 $
  */
 
 public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 	private static final String LOGID = "$RCSfile: CSVFieldMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.2 2007-05-24 15:03:10 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.3 2007-07-16 19:04:47 wangeug Exp $";
 
 	int column;
 //	String name; 
@@ -64,7 +64,6 @@ public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 	public CSVFieldMetaImpl(int column, String name, CSVSegmentMeta segment) {
 		super(name);
         this.column = column;
-//		this.name = name;
 		this.segment = segment;
 	}
 
@@ -149,6 +148,9 @@ public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 	}
 	public String getXmlPath()
 	{
+		if (super.getXmlPath()!=null)
+			return super.getXmlPath();
+		System.out.println("CSVSegmentMetaImpl.getXmlPath()..build dyanmic xmlPath");
 		CSVSegmentMeta parentMeta=this.getSegment();
 //		build xmpPath to root
         StringBuffer sbXmlPath=new StringBuffer();
@@ -159,9 +161,4 @@ public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
         }
         return sbXmlPath.toString()+getName();
 	}
-    public String getUUID()
-    {
-    	return getXmlPath();
-    }
-
 }

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionParser.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionParser.java,v 1.2 2007-07-16 19:06:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -104,7 +104,7 @@ public class FunctionParser
             //Instantiate new GroupMeta object and define its attributes from corresponding Castor objects
             groupmeta = new GroupMetaImpl();
             groupmeta.setGroupName(c_groupobject.getName());
-            groupmeta.setUUID(c_groupobject.getUuid());
+            groupmeta.setXmlPath(c_groupobject.getXmlPath());
 
             //Build function list within the Group
             alstFunctions = new ArrayList();
@@ -132,7 +132,7 @@ public class FunctionParser
         {
             functionMeta = new FunctionMetaImpl();      //Stores a FunctionMetaImpl object
             C_function c_function = c_functionlist[i];  //Get function definition object from castor.
-            functionMeta.setUUID(c_function.getUuid());
+            functionMeta.setXmlPath(c_function.getXmlPath());
             functionMeta.setGroupName(c_group.getName());
             functionMeta.setKind(kind);
             functionMeta.setFunctionName(c_function.getName());  //Set the function name.
@@ -166,7 +166,7 @@ public class FunctionParser
             parameterMeta.setParameterType(c_datapoint.getDatatype());  //Set input parameter datatype.
             parameterMeta.setParameterName(c_datapoint.getName());      //Set input parameter name.
             parameterMeta.setParameterPosition(c_datapoint.getPos());   //Set input parameter position.
-            parameterMeta.setUUID(c_datapoint.getUuid());      //Set input parameter UUID.
+            parameterMeta.setXmlPath(c_datapoint.getXmlPath());      //Set input parameter UUID.
             parameterMeta.setIsInput(true);
             alstParameterMeta.add(parameterMeta);
         }
@@ -188,7 +188,7 @@ public class FunctionParser
             parameterMeta.setParameterType(c_datapoint.getDatatype());
             parameterMeta.setParameterName(c_datapoint.getName());
             parameterMeta.setParameterPosition(c_datapoint.getPos());
-            parameterMeta.setUUID(c_datapoint.getUuid());
+            parameterMeta.setXmlPath(c_datapoint.getXmlPath());
             parameterMeta.setIsInput(false);                        
             lstParameterMeta.add(parameterMeta);
         }
