@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaLookup.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaLookup.java,v 1.2 2007-07-16 18:04:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,13 +52,13 @@ import java.util.Set;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-07-16 18:04:44 $
  */
 
 public class CSVMetaLookup implements MetaLookup{
 	private static final String LOGID = "$RCSfile: CSVMetaLookup.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaLookup.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaLookup.java,v 1.2 2007-07-16 18:04:44 wangeug Exp $";
 
 	private CSVMeta meta;
 	private Hashtable<String, MetaObject> table = new Hashtable<String, MetaObject>();
@@ -73,7 +73,7 @@ public class CSVMetaLookup implements MetaLookup{
 	}
 
 	private void initSegment(CSVSegmentMeta segmentMeta){
-		table.put(segmentMeta.getUUID(),segmentMeta);
+		table.put(segmentMeta.getXmlPath(),segmentMeta);
 		// put the segments in the hash.
 		List<CSVSegmentMeta>childSegments = segmentMeta.getChildSegments();
 		for (int i = 0; i < childSegments.size(); i++) {
@@ -83,7 +83,7 @@ public class CSVMetaLookup implements MetaLookup{
 		List<CSVFieldMeta> fields = segmentMeta.getFields();
 		for (int i = 0; i < fields.size(); i++) {
 			CSVFieldMeta csvFieldMeta =  fields.get(i);
-			table.put(csvFieldMeta.getUUID(),csvFieldMeta);
+			table.put(csvFieldMeta.getXmlPath(),csvFieldMeta);
 		}
 	}
 

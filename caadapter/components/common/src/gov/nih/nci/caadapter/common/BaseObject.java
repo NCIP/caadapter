@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObject.java,v 1.2 2007-05-24 15:00:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObject.java,v 1.3 2007-07-16 18:02:42 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,8 +39,8 @@ package gov.nih.nci.caadapter.common;
  *
  * @author OWNER: Eric Chen  Date: Jun 1, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-05-24 15:00:14 $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-07-16 18:02:42 $
  * @since caAdapter v1.2
  */
 
@@ -48,19 +48,17 @@ public interface BaseObject extends Cloneable
 {
 
 	/**
-	 * @return String
+	 * @return String of the object xmlPath
 	 */
-	public String getUUID();
-
-	public void setUUID(String UUID);
-	
 	public String getXmlPath();
-
 	public void setXmlPath(String xmlPath);
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/05/24 15:00:14  wangeug
+ * HISTORY      : add xmlPath attribute
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :

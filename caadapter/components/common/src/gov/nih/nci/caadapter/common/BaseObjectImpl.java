@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.2 2007-05-24 15:00:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.3 2007-07-16 18:03:46 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,26 +41,14 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
  *
  * @author OWNER: Eric Chen  Date: Jun 3, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-05-24 15:00:13 $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-07-16 18:03:46 $
  * @since caAdapter v1.2
  */
 
 public class BaseObjectImpl implements BaseObject
 {
-	protected String UUID;
 	protected String xmlPath;
-	public String getUUID()
-	{
-		if (UUID == null)
-			UUID = UUIDGenerator.getUniqueString();
-		return UUID;
-	}
-
-	public void setUUID(String UUID)
-	{
-		this.UUID = UUID;
-	}
 
 	/**
 	 * Provides basic implementation of equals().
@@ -84,7 +72,7 @@ public class BaseObjectImpl implements BaseObject
 		String thatClass = o.getClass().getName();
 
 		if (!thisClass.equals(thatClass)) return false;
-		if (getUUID() != null ? !getUUID().equals(baseObject.getUUID()) : baseObject.getUUID() != null) return false;
+		if (getXmlPath() != null ? !getXmlPath().equals(baseObject.getXmlPath()) : baseObject.getXmlPath() != null) return false;
 
 		return true;
 	}
@@ -103,13 +91,13 @@ public class BaseObjectImpl implements BaseObject
 		 * 2) get UUID's hashCode;
 		 */
 		int result = getClass().getName().hashCode();
-		result = result * 31 + getUUID().hashCode();
+		result = result * 31 + getXmlPath().hashCode();
 		return result;
 	}
 
 	public String toString()
 	{
-		return getUUID();
+		return this.getXmlPath();//getUUID();
 	}
 
 	/**
@@ -132,7 +120,7 @@ public class BaseObjectImpl implements BaseObject
 		BaseObjectImpl metaObj = (BaseObjectImpl) super.clone();
 		if(!copyUUID)
 		{
-			metaObj.setUUID(null);
+			metaObj.setXmlPath(null);
 		}
 		return metaObj;
 	}
@@ -149,6 +137,11 @@ public class BaseObjectImpl implements BaseObject
 
 	public String getXmlPath() {
 		// TODO Auto-generated method stub
+		if (xmlPath == null)
+		{
+			System.out.println("BaseObjectImpl.getXmlPath()..."+xmlPath);
+			xmlPath = UUIDGenerator.getUniqueString();
+		}
 		return xmlPath;
 	}
 
@@ -159,6 +152,9 @@ public class BaseObjectImpl implements BaseObject
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/05/24 15:00:13  wangeug
+ * HISTORY      : add xmlPath attribute
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :
