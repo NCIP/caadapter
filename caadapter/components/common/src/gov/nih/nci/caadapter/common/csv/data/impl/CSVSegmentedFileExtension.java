@@ -136,8 +136,8 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	 */
 	private CSVSegment initializeEmptyCsvSegment(CSVSegmentMeta meta) {
         CSVSegmentImpl segment = new CSVSegmentExtension(meta);
-        segment.setUUID(meta.getUUID());
-		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{"initialize new segment "+meta.getUUID()});
+        segment.setXmlPath(meta.getXmlPath());
+		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{"initialize new segment "+meta.getXmlPath()});
 		transformationResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
 		Log.logInfo(this, msg);
         //setup the fields.
@@ -147,7 +147,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
             CSVFieldMeta csvFieldMeta = fieldMeta.get(i);
             CSVFieldImpl field = new CSVFieldExtension(csvFieldMeta);
             field.setColumn(csvFieldMeta.getColumn());
-            field.setUUID(csvFieldMeta.getUUID());
+            field.setXmlPath(csvFieldMeta.getXmlPath());
             field.setValue("");
             fields.add(field);
         }

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/meta/GroupMeta.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/meta/GroupMeta.java,v 1.2 2007-07-16 18:56:25 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,10 +44,6 @@ public interface GroupMeta extends MetaObject
 
     public String getGroupName();
     public void setGroupName(String strNewGroupName);
-
-    public String getUUID();
-    public void setUUID(String strNewUUID);
-
     public List<FunctionMeta> getFunctionList();
     public void setFunctionList(List<FunctionMeta> lstNewFunctionList);
 

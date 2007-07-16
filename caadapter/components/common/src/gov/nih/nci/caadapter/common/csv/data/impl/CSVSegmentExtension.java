@@ -63,7 +63,7 @@ public class CSVSegmentExtension extends CSVSegmentImpl {
 	public String toString()
 	{
 		StringBuffer sb=new StringBuffer();
-		sb.append(this.getName()+"__"+this.getUUID()+":");
+		sb.append(this.getName()+"__"+this.getXmlPath()+":");
 		for (CSVField field:this.getFields())
 		{
 			sb.append(","+field.getName()+":"+field.getValue());
