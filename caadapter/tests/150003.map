@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping version="1.2">
+   <components>
+      <component type="scs" location="150003.scs" kind="source"/>
+      <component type="h3s" location="150003-1.h3s" kind="target"/>
+      <component group="string" kind="core" name="Concatenate" type="function" id="1"/>
+      <component group="constant" kind="core" name="constant" type="function" id="2">
+         <data type="String" value="1"/>
+      </component>
+      <component group="constant" kind="core" name="constant" type="function" id="3">
+         <data type="String" value="1"/>
+      </component>
+   </components>
+   <links>
+      <link>
+         <source kind="scs" xpath="ORGS.ORG_CODE"/>
+         <target kind="h3s" xpath="Organization.code.code"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.ORGID.Root"/>
+         <target kind="h3s" xpath="Organization.id.root"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.ORGID.Extension"/>
+         <target kind="h3s" xpath="Organization.id.extension"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.ORGNM.Name"/>
+         <target kind="h3s" xpath="Organization.name.inlineText"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSID.Root"/>
+         <target kind="h3s" xpath="Organization.contactParty.id.root"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSID.Extension"/>
+         <target kind="h3s" xpath="Organization.contactParty.id.extension"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSAD.Street_1"/>
+         <target kind="function" xpath="function.1.input0"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSAD.Street_2"/>
+         <target kind="function" xpath="function.1.input1"/>
+      </link>
+      <link>
+         <source kind="funcation" xpath="function.1.output0"/>
+         <target kind="h3s" xpath="Organization.contactParty.addr.streetAddressLine.inlineText"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSAD.Zip_Code"/>
+         <target kind="h3s" xpath="Organization.contactParty.addr.postalCode.inlineText"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSAD.State"/>
+         <target kind="h3s" xpath="Organization.contactParty.addr.state.inlineText"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSAD.City"/>
+         <target kind="h3s" xpath="Organization.contactParty.addr.city.inlineText"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSNM.Last_Name"/>
+         <target kind="h3s" xpath="Organization.contactParty.contactPerson.name.family.inlineText"/>
+      </link>
+      <link>
+         <source kind="scs" xpath="ORGS.PERSNM.First_Name"/>
+         <target kind="h3s" xpath="Organization.contactParty.contactPerson.name.given.inlineText"/>
+      </link>
+      <link>
+         <source kind="function" xpath="function.3.output0"/>
+         <target kind="h3s" xpath="Organization.contactParty.addr.use"/>
+      </link>
+   </links>
+   <views>
+      <view component-id="1" height="0" width="0" x="0" y="0"/>
+      <view component-id="2" height="0" width="0" x="0" y="0"/>
+      <view component-id="3" height="67" width="91" x="96" y="342"/>
+   </views>
+</mapping>
