@@ -8,19 +8,21 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-06-28 13:50:25 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-07-17 20:05:33 $
  */
 
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 import java.util.Enumeration;
@@ -37,7 +39,11 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private boolean optionChosen = false;
 	private String parentXmlPath;
 	private boolean enabled = true;
- 
+
+	private List<String> csvSegments;
+	private String csvSegment;
+
+	
 	public String getNodeXmlName() {
 		return this.getName();
 	}
@@ -212,5 +218,33 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public void setEnabled(boolean enable) {
 		// TODO Auto-generated method stub
 		enabled=enable;
+	}
+
+	/**
+	 * @return the csvSegment
+	 */
+	public String getCsvSegment() {
+		return csvSegment;
+	}
+
+	/**
+	 * @param csvSegment the csvSegment to set
+	 */
+	public void setCsvSegment(String csvSegment) {
+		this.csvSegment = csvSegment;
+	}
+
+	/**
+	 * @return the csvSegments
+	 */
+	public List<String> getCsvSegments() {
+		return csvSegments;
+	}
+
+	/**
+	 * @param csvSegments the csvSegments to set
+	 */
+	public void setCsvSegments(List<String> csvSegments) {
+		this.csvSegments = csvSegments;
 	}
 }

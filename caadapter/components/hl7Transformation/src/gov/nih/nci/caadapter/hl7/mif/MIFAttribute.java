@@ -11,13 +11,15 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
+
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-07-03 18:22:16 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-17 19:55:53 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -45,6 +47,21 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private String parentXmlPath;
 	private Datatype datatype;
 	private Datatype concreteDatatype;
+	private boolean mapped;
+	private List<String> csvSegments;
+	private String csvSegment;
+	/**
+	 * @return the mapped
+	 */
+	public boolean isMapped() {
+		return mapped;
+	}
+	/**
+	 * @param mapped the mapped to set
+	 */
+	public void setMapped(boolean mapped) {
+		this.mapped = mapped;
+	}
 
 	/**
 	 * @return the conformance
@@ -346,4 +363,28 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		this.concreteDatatype = concreteDatatype;
 	}
 
+	/**
+	 * @return the csvSegments
+	 */
+	public List<String> getCsvSegments() {
+		return csvSegments;
+	}
+	/**
+	 * @param csvSegments the csvSegments to set
+	 */
+	public void setCsvSegments(List<String> csvSegments) {
+		this.csvSegments = csvSegments;
+	}
+	/**
+	 * @return the csvSegment
+	 */
+	public String getCsvSegment() {
+		return csvSegment;
+	}
+	/**
+	 * @param csvSegment the csvSegment to set
+	 */
+	public void setCsvSegment(String csvSegment) {
+		this.csvSegment = csvSegment;
+	}
 }

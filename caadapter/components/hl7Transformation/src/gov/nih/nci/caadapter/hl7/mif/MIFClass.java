@@ -11,6 +11,7 @@ import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.Iterator;
 
@@ -18,8 +19,8 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-07-12 16:07:27 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-17 20:04:58 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -35,7 +36,9 @@ import java.util.Iterator;
 	 private boolean optionChosen = false;
 	 private boolean choiceSelected =false;//make this variable serializable
 	 private String parentXmlPath;
-
+	 private boolean mapped;
+ 	 private List<String> csvSegments;
+ 	 private String csvSegment;
 	 /**
 	  * This method will add an attribute object to a given MIF object.
 	  * 
@@ -448,5 +451,41 @@ import java.util.Iterator;
 	public void setEnabled(boolean enable) {
 		// TODO Auto-generated method stub
 		
+	}
+	/**
+	 * @return the csvSegment
+	 */
+	public String getCsvSegment() {
+		return csvSegment;
+	}
+	/**
+	 * @param csvSegment the csvSegment to set
+	 */
+	public void setCsvSegment(String csvSegment) {
+		this.csvSegment = csvSegment;
+	}
+	/**
+	 * @return the csvSegments
+	 */
+	public List<String> getCsvSegments() {
+		return csvSegments;
+	}
+	/**
+	 * @param csvSegments the csvSegments to set
+	 */
+	public void setCsvSegments(List<String> csvSegments) {
+		this.csvSegments = csvSegments;
+	}
+	/**
+	 * @return the mapped
+	 */
+	public boolean isMapped() {
+		return mapped;
+	}
+	/**
+	 * @param mapped the mapped to set
+	 */
+	public void setMapped(boolean mapped) {
+		this.mapped = mapped;
 	}
  }

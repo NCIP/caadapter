@@ -5,13 +5,14 @@
 package gov.nih.nci.caadapter.hl7.mif;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-12 16:07:35 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2007-07-17 20:00:35 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -31,6 +32,33 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private boolean choiceSelected =false;//make it serializable
 	private String parentXmlPath;
 	private boolean optionForced=false;
+	private List<String> csvSegments;
+	private String csvSegment;
+	
+	/**
+	 * @return the csvSegment
+	 */
+	public String getCsvSegment() {
+		return csvSegment;
+	}
+	/**
+	 * @param csvSegment the csvSegment to set
+	 */
+	public void setCsvSegment(String csvSegment) {
+		this.csvSegment = csvSegment;
+	}
+	/**
+	 * @return the csvSegments
+	 */
+	public List<String> getCsvSegments() {
+		return csvSegments;
+	}
+	/**
+	 * @param csvSegments the csvSegments to set
+	 */
+	public void setCsvSegments(List<String> csvSegments) {
+		this.csvSegments = csvSegments;
+	}
 	public String getParentXmlPath() {
 		return parentXmlPath;
 	}
