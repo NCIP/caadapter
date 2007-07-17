@@ -85,7 +85,6 @@ public class TestGenerator {
 		
 		for(MIFAssociation mifAsso:mifClass.getAssociations()) {
 			if (mifAsso.getMifClass()!= null) setup(mifAsso.getMifClass(),parentXmlPath+"."+mifAsso.getName());
-			if (mifAsso.getReferencedMifClass()!= null) setup(mifAsso.getReferencedMifClass(),"."+mifAsso.getName());
 		}
 	}
 

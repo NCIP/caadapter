@@ -30,8 +30,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-07-17 19:54:09 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-07-17 20:07:23 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -235,11 +235,6 @@ public class MapProcessorHelper {
     		mifAssociation.setCsvSegments(preprocess_mifclass(mifAssociation.getMifClass(),false));
     		if (mifAssociation.getCsvSegments().size() >0) mifAssociation.setMapped(true); else mifAssociation.setMapped(false);
     		mifAssociation.setCsvSegment(findCommonParent(mifAssociation.getCsvSegments()));
-    		return mifAssociation.getCsvSegments();
-    	}
-    	if (mifAssociation.getReferencedMifClass()!= null) {
-    		mifAssociation.setCsvSegments(preprocess_mifclass(mifAssociation.getReferencedMifClass(),false));
-    		if (mifAssociation.getCsvSegments().size() >0) mifAssociation.setMapped(true); else mifAssociation.setMapped(false);
     		return mifAssociation.getCsvSegments();
     	}
     	return new ArrayList<String>();
