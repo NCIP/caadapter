@@ -1,5 +1,5 @@
 /**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.1 2007-04-03 16:19:04 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.2 2007-07-17 16:29:39 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,6 +54,9 @@
  */
 package gov.nih.nci.caadapter.hl7.demo;
 
+import java.io.IOException;
+import java.util.Enumeration;
+
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -64,22 +67,32 @@ import gov.nih.nci.caadapter.ui.main.MainFrame;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @since caAdapter v1.2
  */
 public class LaunchUI {
     private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.1 2007-04-03 16:19:04 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.2 2007-07-17 16:29:39 wangeug Exp $";
 
     public static void main(String[] args)
     {
-//    	java.util.Enumeration prpKeys=System.getProperties().keys();
-//    	while (prpKeys.hasMoreElements())
-//    	{
-//    		String prpKey=(String)prpKeys.nextElement();
-//    		System.out.println(prpKey+"="+System.getProperty(prpKey));
-//    	}
-        try
+
+//    	System.out.println("java.class.path:"+System.getProperty("java.class.path"));
+//  		java.net.URL url= Thread.currentThread().getClass().getResource("/mif/COCT_MT150003UV03.mif");
+//  		String urlSt=url.getFile();
+//  		urlSt=urlSt.substring(6,urlSt.indexOf(".zip")+4);
+//  		System.out.println("MyTest.main()..URL:"+urlSt);
+//  		try {
+//			java.util.zip.ZipFile zipFile=new java.util.zip.ZipFile(urlSt);
+//			Enumeration em = zipFile.entries();
+//			for (Enumeration em1 = zipFile.entries(); em1.hasMoreElements();){
+//				System.out.println(em1.nextElement());
+//			}
+//  		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+    	try
         {
             DefaultSettings.installAll();
             new MainFrame().launch();

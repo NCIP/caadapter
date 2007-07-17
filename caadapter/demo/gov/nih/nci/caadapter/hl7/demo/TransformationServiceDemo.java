@@ -1,5 +1,5 @@
 /**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.2 2007-04-19 14:08:26 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.3 2007-07-17 16:29:39 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,7 +57,7 @@ package gov.nih.nci.caadapter.hl7.demo;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
-import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
+//import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
 
 import java.util.List;
 
@@ -66,25 +66,25 @@ import java.util.List;
  *
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @since caAdapter v1.2
  */
 public class TransformationServiceDemo {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.2 2007-04-19 14:08:26 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/TransformationServiceDemo.java,v 1.3 2007-07-17 16:29:39 wangeug Exp $";
 
     public static void main(String[] args) {
         String mapFile040001 =  FileUtil.getExamplesDirPath() + "/040001/040001.map";
         String csvSource040001 = FileUtil.getExamplesDirPath() + "/040001/040001.csv";
-        TransformationServiceCsvToHL7V3 transformationService = new TransformationServiceCsvToHL7V3(mapFile040001, csvSource040001);
-        List<TransformationResult> mapGenerateResults = transformationService.process(null);
-        for (int i = 0; i < mapGenerateResults.size(); i++)
-        {
-            TransformationResult transformationResult = mapGenerateResults.get(i);
-            String hl7V3Message = transformationResult.getHl7V3MessageText();
-            System.out.println("Generated HL7 Message:\n" + hl7V3Message);
-            ValidatorResults validatorResults = transformationResult.getValidatorResults();
-            System.out.println("Validation Results:\n" + validatorResults);
-        }
+//        TransformationServiceCsvToHL7V3 transformationService = new TransformationServiceCsvToHL7V3(mapFile040001, csvSource040001);
+//        List<TransformationResult> mapGenerateResults = transformationService.process(null);
+//        for (int i = 0; i < mapGenerateResults.size(); i++)
+//        {
+//            TransformationResult transformationResult = mapGenerateResults.get(i);
+//            String hl7V3Message = transformationResult.getHl7V3MessageText();
+//            System.out.println("Generated HL7 Message:\n" + hl7V3Message);
+//            ValidatorResults validatorResults = transformationResult.getValidatorResults();
+//            System.out.println("Validation Results:\n" + validatorResults);
+//        }
 
 
     }
