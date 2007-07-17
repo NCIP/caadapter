@@ -37,8 +37,8 @@ import java.util.Set;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-17 19:54:09 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-17 20:01:43 $
  */
 
 public class MapProcessor {
@@ -136,9 +136,6 @@ public class MapProcessor {
     	MIFClass mifClass =null;
     	if (mifAssociation.getMifClass()!= null) {
     		mifClass =  mifAssociation.getMifClass();
-    	}
-    	else {
-    		mifClass =  mifAssociation.getReferencedMifClass();
     	}
     	
     	if (mifClass.getChoices().size() > 0) { //Handle choice
