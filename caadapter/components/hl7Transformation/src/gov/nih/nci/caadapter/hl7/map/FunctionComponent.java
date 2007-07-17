@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.2 2007-07-17 20:47:19 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,19 +42,35 @@ import gov.nih.nci.caadapter.common.map.BaseComponent;
  * A component that contains function information.
  *
  * @author OWNER: Eric Chen  Date: Jun 8, 2005
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-07-03 18:26:25 $
+ * @author LAST UPDATE: $Author: wuye $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-07-17 20:47:19 $
  * @since caAdapter v1.2
  */
 
 public class FunctionComponent extends BaseComponent {
     private static final String LOGID = "$RCSfile: FunctionComponent.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.2 2007-07-17 20:47:19 wuye Exp $";
 
     private FunctionConstant functionConstant = null;
     private FunctionVocabularyMapping functionVocabularyMapping = null;
-    // constuctors.
+    private String id="";
+    
+    /**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	// constuctors.
     public FunctionComponent() {
     }
 
@@ -103,6 +119,9 @@ public class FunctionComponent extends BaseComponent {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 18:26:25  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/09/06 18:22:24  umkis
  * HISTORY      : The new implement of Vocabulary Mapping function.
  * HISTORY      :
