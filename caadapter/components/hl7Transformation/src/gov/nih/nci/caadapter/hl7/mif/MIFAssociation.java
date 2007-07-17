@@ -12,7 +12,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2007-07-17 20:00:35 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-07-17 20:06:51 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -34,7 +34,21 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private boolean optionForced=false;
 	private List<String> csvSegments;
 	private String csvSegment;
+	private boolean mapped;
+
 	
+	/**
+	 * @return the mapped
+	 */
+	public boolean isMapped() {
+		return mapped;
+	}
+	/**
+	 * @param mapped the mapped to set
+	 */
+	public void setMapped(boolean mapped) {
+		this.mapped = mapped;
+	}
 	/**
 	 * @return the csvSegment
 	 */
