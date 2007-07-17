@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SBuildEventHandler.java,v 1.1 2007-07-09 15:37:07 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SBuildEventHandler.java,v 1.2 2007-07-17 16:13:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -72,9 +72,9 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       2:29:15 PM $
  */
@@ -93,7 +93,7 @@ public class H3SBuildEventHandler extends DefaultHandler
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SBuildEventHandler.java,v 1.1 2007-07-09 15:37:07 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SBuildEventHandler.java,v 1.2 2007-07-17 16:13:11 wangeug Exp $";
 
     String currentElement = "";
     String currentLevel = "";
@@ -216,7 +216,7 @@ public class H3SBuildEventHandler extends DefaultHandler
                 if (val.equals("")) System.out.println("Error 2 : Null uuid");
                 else
                 {
-                    cNode.setUUID(val);
+                    cNode.setXmlPath(val);
                 }
             }
             else if (name.equals("cardinality"))
@@ -343,4 +343,7 @@ public class H3SBuildEventHandler extends DefaultHandler
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:37:07  umkis
+ * HISTORY      : test instance generating.
+ * HISTORY      :
  */

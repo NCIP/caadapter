@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonTreeMetaImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonTreeMetaImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -67,9 +67,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:11:35 PM $
  */
@@ -88,7 +88,7 @@ public class CommonTreeMetaImpl implements CommonTreeMeta
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonTreeMetaImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonTreeMetaImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $";
 
     private CommonSegment head;
     private NodeIdentifierType indentifierType = NodeIdentifierType.UUID;
@@ -221,12 +221,12 @@ public class CommonTreeMetaImpl implements CommonTreeMeta
 
         while(temp!=null)
         {
-            if (temp.getUUID().equals(uuid)) return temp;
+            if (temp.getXmlPath().equals(uuid)) return temp;
             List<CommonAttributeItem> list = temp.getAttributes().getAttributeItems();
             for(int i=0;i<list.size();i++)
             {
                 CommonAttributeItem item = list.get(i);
-                if (item.getUUID().equals(uuid)) return item;
+                if (item.getXmlPath().equals(uuid)) return item;
             }
             try
             {
@@ -508,4 +508,7 @@ public class CommonTreeMetaImpl implements CommonTreeMeta
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

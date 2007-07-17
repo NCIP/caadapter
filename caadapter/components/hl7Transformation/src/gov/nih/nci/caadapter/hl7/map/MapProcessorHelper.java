@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.2 2007-07-16 19:21:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.3 2007-07-17 16:17:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,13 +62,13 @@ import java.util.Stack;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-07-16 19:21:05 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-07-17 16:17:14 $
  * @since caAdapter v1.2
  */
 public class MapProcessorHelper {
     private static final String LOGID = "$RCSfile: MapProcessorHelper.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.2 2007-07-16 19:21:05 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.3 2007-07-17 16:17:14 wangeug Exp $";
     private Mapping mapping;
     private HashMap targetPathHash;
 
@@ -81,7 +81,7 @@ public class MapProcessorHelper {
        for (Map oneMap:mapping.getMaps())
         {
         	 BaseMapElement targetElement=oneMap.getTargetMapElement();
-        	 targetPathHash.put(targetElement.getDatauuid(),oneMap);
+        	 targetPathHash.put(targetElement.getDataXmlPath(),oneMap);
        }        
     }
      
@@ -92,7 +92,7 @@ public class MapProcessorHelper {
 	   {
 		  BaseMapElement srcComp=targetMap.getSourceMapElement();
 		  if (srcComp.isComponentOfSourceType())
-			  return srcComp.getDatauuid();
+			  return srcComp.getDataXmlPath();
 		  else if (srcComp.isComponentOfFunctionType())
 		  {
 			  String functionCompID=srcComp.getComponentuuid();
@@ -130,7 +130,7 @@ public class MapProcessorHelper {
     	   String linkTargetID=oneMap.getTargetMapElement().getComponentuuid();
     	   if (linkTargetID.equals(functionID))
     	   {
-    		   srcObjectId=oneMap.getSourceMapElement().getDatauuid(); 
+    		   srcObjectId=oneMap.getSourceMapElement().getDataXmlPath(); 
     		   break;
     	   }
        }  
@@ -254,7 +254,7 @@ public class MapProcessorHelper {
                 }
                 //if (aMetaObject == metaObject) foundMaps.add(map);
                 if (baseMapElement.getComponentuuid().equalsIgnoreCase(cmpUuid) &&
-                        baseMapElement.getDatauuid().equalsIgnoreCase(metaUuid)) {
+                        baseMapElement.getDataXmlPath().equalsIgnoreCase(metaUuid)) {
                     foundMaps.add(map);
                 }
             }

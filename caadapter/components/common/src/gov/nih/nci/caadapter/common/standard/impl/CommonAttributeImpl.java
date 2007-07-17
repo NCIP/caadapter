@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonAttributeImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonAttributeImpl.java,v 1.2 2007-07-17 16:10:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -68,9 +68,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       7:58:00 PM $
  */
@@ -89,7 +89,7 @@ public class CommonAttributeImpl implements CommonAttribute
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonAttributeImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonAttributeImpl.java,v 1.2 2007-07-17 16:10:05 wangeug Exp $";
 
     private List<CommonAttributeItem> items = new ArrayList<CommonAttributeItem>();
     private CommonNode parent;
@@ -576,7 +576,7 @@ public class CommonAttributeImpl implements CommonAttribute
             CommonAttributeItem item = items.get(i);
             CommonAttributeItem itemS = new CommonAttributeItemImpl(cloned);
 
-            itemS.cloneNode(itemS, item, item.getUUID(), item.getXPath(), cloned.getParent());
+            itemS.cloneNode(itemS, item, item.getXmlPath(), item.getXPath(), cloned.getParent());
 
             cloned.addNewAttributeItem(itemS);
         }
@@ -587,4 +587,7 @@ public class CommonAttributeImpl implements CommonAttribute
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

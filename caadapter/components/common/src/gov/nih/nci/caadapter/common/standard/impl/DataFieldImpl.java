@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataFieldImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataFieldImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -63,9 +63,9 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:14:40 PM $
  */
@@ -84,7 +84,7 @@ public class DataFieldImpl extends CommonFieldImpl implements DataField
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataFieldImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataFieldImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $";
 
     private MetaField sourceMetaField = null;
     private String attributeNameForData = null;
@@ -110,7 +110,7 @@ public class DataFieldImpl extends CommonFieldImpl implements DataField
     {
         super(meta.getName());
         this.setModeType(CommonNodeModeType.DATA);
-        this.cloneNode(this, meta, meta.getUUID(), meta.getXPath(), par);
+        this.cloneNode(this, meta, meta.getXmlPath(), meta.getXPath(), par);
         setSourceMetaField(meta);
         par.addChildNode(this);
     }
@@ -169,4 +169,7 @@ public class DataFieldImpl extends CommonFieldImpl implements DataField
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

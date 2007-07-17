@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.3 2007-07-09 15:59:42 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.4 2007-07-17 16:14:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -67,10 +67,10 @@ import java.util.List;
  * objects to castor objects and then marshals them.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.3 $
- * @date        $Date: 2007-07-09 15:59:42 $
+ * @version    $Revision: 1.4 $
+ * @date        $Date: 2007-07-17 16:14:43 $
  */
 
 public class CSVMetaBuilder extends MetaBuilderBase {
@@ -78,7 +78,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
     private static CSVMetaBuilder metaBuilder = null;
 
     private static final String LOGID = "$RCSfile: CSVMetaBuilder.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.3 2007-07-09 15:59:42 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.4 2007-07-17 16:14:43 wangeug Exp $";
 
     private CSVMetaBuilder()
     {
@@ -96,7 +96,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
                 C_csvMetadata c = new C_csvMetadata();
                 c.setC_segment(processSegment(csvMeta.getRootSegment()));
                 c.setVersion(new BigDecimal("1.2"));
-                c.setUuid(meta.getUUID());
+                c.setXmlPath(meta.getXmlPath());
 
                 // set up the Source.
                 StringWriter marshalString = new StringWriter();
@@ -130,8 +130,8 @@ public class CSVMetaBuilder extends MetaBuilderBase {
             castorSegment.setCardinality(metaSegment.getCardinalityType());
             //System.out.println("CCCCV : " + metaSegment.getCardinalityType().toString());
         }
-        castorSegment.setUuid(metaSegment.getUUID());
-        //System.out.println("KKKKV : " + metaSegment.getName() + " :: " + metaSegment.getCardinalityType().toString());
+        castorSegment.setXmlPath(metaSegment.getXmlPath());
+//        System.out.println("metaSegment.getXmlPath() : " +metaSegment.getXmlPath()+"::"+ metaSegment.getName() + " :: " + metaSegment.getCardinalityType().toString());
 
         List<CSVSegmentMeta> metaChildSegments = metaSegment.getChildSegments();
         for (int i = 0; i < metaChildSegments.size(); i++) {
@@ -155,7 +155,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
         C_field castorField = new C_field();
         castorField.setColumn(metaField.getColumn());
         castorField.setName(metaField.getName());
-        castorField.setUuid(metaField.getUUID());
+        castorField.setXmlPath(metaField.getXmlPath());
         return castorField;
     }
 

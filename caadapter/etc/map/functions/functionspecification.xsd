@@ -13,7 +13,7 @@
         <xs:element maxOccurs="unbounded" ref="function"/>
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:NCName"/>
-      <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="xmlPath" use="required" type="xs:NMTOKEN"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="function">
@@ -24,7 +24,7 @@
         <xs:element minOccurs="0" ref="implementation"/>
       </xs:sequence>
       <xs:attribute name="name" use="required" type="xs:NCName"/>
-      <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="xmlPath" use="required" type="xs:NMTOKEN"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="inputs">
@@ -52,7 +52,7 @@
       <xs:attribute name="datatype" use="required" type="xs:NCName"/>
       <xs:attribute name="name" use="required" type="xs:NCName"/>
       <xs:attribute name="pos" use="required" type="xs:integer"/>
-      <xs:attribute name="uuid" use="required" type="xs:NMTOKEN"/>
+      <xs:attribute name="xmlPath" use="required" type="xs:NMTOKEN"/>
     </xs:complexType>
   </xs:element>
 </xs:schema>

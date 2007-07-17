@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataSegmentImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataSegmentImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -66,9 +66,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:16:03 PM $
  */
@@ -87,7 +87,7 @@ public class DataSegmentImpl extends CommonSegmentImpl implements DataSegment
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataSegmentImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataSegmentImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $";
 
     private MetaSegment sourceSegment;
 
@@ -120,7 +120,7 @@ public class DataSegmentImpl extends CommonSegmentImpl implements DataSegment
     {
         super(meta.getName());
         this.setModeType(CommonNodeModeType.DATA);
-        this.cloneNode(this, meta, meta.getUUID(), meta.getXPath(), seg);
+        this.cloneNode(this, meta, meta.getXmlPath(), meta.getXPath(), seg);
         setSourceMetaSegment(meta);
         seg.addChildNode(this);
     }
@@ -155,4 +155,7 @@ public class DataSegmentImpl extends CommonSegmentImpl implements DataSegment
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

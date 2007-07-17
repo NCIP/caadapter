@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/CommonNode.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/CommonNode.java,v 1.2 2007-07-17 16:09:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -63,9 +63,9 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       7:42:39 PM $
  */
@@ -75,10 +75,10 @@ public interface CommonNode
     public CommonNodeType getNodeType();
     //public void setModeType(CommonNodeModeType type) throws ApplicationException;
     public CommonNodeModeType getModeType();
-    public void setUUID(String uuid);
-    public void setUUID();
+    public void setXmlPath(String uuid);
+    public void setXmlPath();
     public void setName(String name)throws ApplicationException;
-    public String getUUID();
+    public String getXmlPath();
     public void setParent(CommonNode seg)throws ApplicationException;
     public CommonNode getParent();
     public String getName();
@@ -132,5 +132,8 @@ public interface CommonNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */
 

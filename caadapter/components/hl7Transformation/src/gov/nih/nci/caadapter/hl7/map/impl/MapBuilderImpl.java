@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.2 2007-07-16 19:22:22 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.3 2007-07-17 16:18:45 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -82,12 +82,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
+ * @version    $Revision: 1.3 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.2 2007-07-16 19:22:22 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.3 2007-07-17 16:18:45 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -237,14 +237,14 @@ public class MapBuilderImpl {
             BaseMapElement sourcemap = map.getSourceMapElement();
             C_linkpointer sourcePointer = new C_linkpointer();
             sourcePointer.setComponentXmlPath(sourcemap.getComponentuuid());
-            System.out.println("MapBuilderImpl.processMaps()...sourcemap.getDatauuid():"+sourcemap.getDatauuid());
-            sourcePointer.setDataXmlPath(sourcemap.getDatauuid());
+//            System.out.println("MapBuilderImpl.processMaps()...sourcemap.getDatauuid():"+sourcemap.getDataXmlPath());
+            sourcePointer.setDataXmlPath(sourcemap.getDataXmlPath());
             //setup the target LinkPointer
             BaseMapElement targetmap = map.getTargetMapElement();
             C_linkpointer targetPointer = new C_linkpointer();
             targetPointer.setComponentXmlPath(targetmap.getComponentuuid());
-            System.out.println("MapBuilderImpl.processMaps()...targetmap.getDatauuid():"+targetmap.getDatauuid());
-            targetPointer.setDataXmlPath(targetmap.getDatauuid());
+            System.out.println("MapBuilderImpl.processMaps()...targetmap.getDatauuid():"+targetmap.getDataXmlPath());
+            targetPointer.setDataXmlPath(targetmap.getDataXmlPath());
             //create the Link
             cLink.addC_linkpointer(sourcePointer);
             cLink.addC_linkpointer(targetPointer);

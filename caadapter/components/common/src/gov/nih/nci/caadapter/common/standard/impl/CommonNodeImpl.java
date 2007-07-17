@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.3 2007-07-10 20:05:34 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.4 2007-07-17 16:10:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -75,9 +75,9 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.C_field;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jul 2, 2007
  *          Time:       8:04:33 PM $
  */
@@ -96,7 +96,7 @@ public class CommonNodeImpl implements CommonNode
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.3 2007-07-10 20:05:34 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.4 2007-07-17 16:10:44 wangeug Exp $";
 
     private CommonNodeType nodeType = CommonNodeType.COMMON;
     private CommonNodeModeType modeType = CommonNodeModeType.COMMON;
@@ -241,13 +241,13 @@ public class CommonNodeImpl implements CommonNode
         return parent;
     }
 
-    public void setUUID(String uuid)
+    public void setXmlPath(String uuid)
     {
-        if ((uuid == null)||(uuid.trim().equals(""))) setUUID();
+        if ((uuid == null)||(uuid.trim().equals(""))) setXmlPath();
         else this.uuid = uuid.trim();
     }
 
-    public void setUUID()
+    public void setXmlPath()
     {
         this.uuid = UUIDGenerator.getUniqueString();
     }
@@ -283,7 +283,7 @@ public class CommonNodeImpl implements CommonNode
         }
         this.name = name;
     }
-    public String getUUID()
+    public String getXmlPath()
     {
         return this.uuid;
     }
@@ -700,6 +700,9 @@ public class CommonNodeImpl implements CommonNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/10 20:05:34  umkis
+ * HISTORY      : replace 'gov.nih.nci.caadapter.hl7.datatype.Cardinality' into 'gov.nih.nci.caadapter.common.Cardinality'
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/10 18:14:38  umkis
  * HISTORY      : substitute 'import org.hl7.meta.Cardinality' into 'gov.nih.nci.caadapter.hl7.datatype.Cardinality'
  * HISTORY      :

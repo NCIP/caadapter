@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.1 2007-07-09 15:37:07 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.2 2007-07-17 16:12:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -75,9 +75,9 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -96,7 +96,7 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.1 2007-07-09 15:37:07 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.2 2007-07-17 16:12:59 wangeug Exp $";
 
 
     private boolean success = false;
@@ -220,17 +220,17 @@ public class GenerateMapFileFromDataFile
                 }
                 if (defaultTag)
                 {
-                    modifyH3SFile(h3sNode.getUUID(), dat);
+                    modifyH3SFile(h3sNode.getXmlPath(), dat);
                     continue;
                 }
                 if (functionTag)
                 {
                     FunctionMeta fm = fmgr.getFunctionMeta("core", "constant", "constant");
-                    //String functionConstantUUID = fm.getUUID();
+                    //String functionConstantUUID = fm.getXmlPath();
                     String functionConstantUUID = UUIDGenerator.getUniqueString();
                     List<ParameterMeta> liP = fm.getOuputDefinitionList();
 
-                    String constantOutputUUID = liP.get(0).getUUID();
+                    String constantOutputUUID = liP.get(0).getXmlPath();
 
                     if (dat.startsWith("\"")) dat = dat.substring(1);
                     if (dat.endsWith("\"")) dat = dat.substring(0, dat.length()-1);
@@ -241,7 +241,7 @@ public class GenerateMapFileFromDataFile
                     function2 = function2 +
                             "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
                             "         <linkpointer component-uuid=\"" + functionConstantUUID + "\" data-uuid=\"" + constantOutputUUID + "\"/>\n" +
-                            "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getUUID() + "\"/>\n" +
+                            "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
                             "      </link>\n";
                     if ((functionSeq % 2) == 0)
                     {
@@ -275,17 +275,17 @@ public class GenerateMapFileFromDataFile
                         List<ParameterMeta> liI = fm.getInputDefinitionList();
                         List<ParameterMeta> liO = fm.getOuputDefinitionList();
 
-                        //String functionConcatUUID = fm.getUUID();
+                        //String functionConcatUUID = fm.getXmlPath();
                         String functionConcatUUID = UUIDGenerator.getUniqueString();
-                        String inputParam1UUID = liI.get(0).getUUID();
-                        String inputParam2UUID = liI.get(1).getUUID();
-                        String outputParamUUID = liO.get(0).getUUID();
+                        String inputParam1UUID = liI.get(0).getXmlPath();
+                        String inputParam2UUID = liI.get(1).getXmlPath();
+                        String outputParamUUID = liO.get(0).getXmlPath();
 
                         fm = fmgr.getFunctionMeta("core", "constant", "constant");
-                        //String functionStrCosntantUUID = fm.getUUID();
+                        //String functionStrCosntantUUID = fm.getXmlPath();
                         String functionStrCosntantUUID = UUIDGenerator.getUniqueString();
                         List<ParameterMeta> liP = fm.getOuputDefinitionList();
-                        String constantOutputUUID = liP.get(0).getUUID();
+                        String constantOutputUUID = liP.get(0).getXmlPath();
 
                         function1 = function1 +
                                 "      <component group=\"string\" kind=\"core\" name=\"Concatenate\" type=\"function\" uuid=\"" + functionConcatUUID + "\"/>\n" +
@@ -299,12 +299,12 @@ public class GenerateMapFileFromDataFile
                                 "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + inputParam1UUID + "\"/>\n" +
                                 "      </link>\n" +
                                 "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                                "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getUUID() + "\"/>\n" +
+                                "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getXmlPath() + "\"/>\n" +
                                 "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + inputParam2UUID + "\"/>\n" +
                                 "      </link>\n" +
                                 "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
                                 "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + outputParamUUID + "\"/>\n" +
-                                "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getUUID() + "\"/>\n" +
+                                "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
                                 "      </link>\n";
 
                         xPosition = 20;
@@ -325,10 +325,10 @@ public class GenerateMapFileFromDataFile
                     }
                 }
 
-                if (scsNode.getLinkedUUID().equals("NONE")) scsNode.setLinkedUUID(h3sNode.getUUID());
+                if (scsNode.getLinkedUUID().equals("NONE")) scsNode.setLinkedUUID(h3sNode.getXmlPath());
                 else System.out.println("*** Warning : scs dual linked : " + line);
 
-                if (h3sNode.getLinkedUUID().equals("NONE")) h3sNode.setLinkedUUID(scsNode.getUUID());
+                if (h3sNode.getLinkedUUID().equals("NONE")) h3sNode.setLinkedUUID(scsNode.getXmlPath());
                 else System.out.println("*** Warning : h3s dual linked : " + line);
                 if (!h3sNode.isLeafNode())
                 {
@@ -361,8 +361,8 @@ public class GenerateMapFileFromDataFile
                 try
                 {
                     fw.write("      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                             "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getUUID() + "\"/>\n" +
-                             "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getUUID() + "\"/>\n" +
+                             "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getXmlPath() + "\"/>\n" +
+                             "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
                              "      </link>\n");
                     System.out.println("MAP Writing : " + scsNode.getName() + " TO " + h3sNode.getName());
                 }
@@ -987,7 +987,7 @@ class NodeElement
     public String getMode() { return mode; }
     public String getLevel() { return level; }
     public String getName() { return name; }
-    public String getUUID() { return uuid; }
+    public String getXmlPath() { return uuid; }
     public String getLinkedUUID() { return uuidLinked; }
     public NodeElement getUpper() { return upper; }
     public NodeElement getRight() { return right; }
@@ -1209,8 +1209,8 @@ class DataTree
             if (tmp.getUpper() == null) break;
             tmp = tmp.getUpper();
         }
-        if (node.getUUID().equals("")) return path.substring(1);
-        else return path.substring(1) + " => " + node.getUUID();
+        if (node.getXmlPath().equals("")) return path.substring(1);
+        else return path.substring(1) + " => " + node.getXmlPath();
     }
 
     public int getDepth(NodeElement curr)
@@ -2218,4 +2218,7 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:37:07  umkis
+ * HISTORY      : test instance generating.
+ * HISTORY      :
  */

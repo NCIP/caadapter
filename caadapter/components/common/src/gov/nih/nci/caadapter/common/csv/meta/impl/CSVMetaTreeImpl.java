@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.1 2007-07-09 15:37:33 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.2 2007-07-17 16:16:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -76,9 +76,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 3, 2007
  *          Time:       11:21:13 AM $
  */
@@ -97,7 +97,7 @@ public class CSVMetaTreeImpl extends MetaTreeMetaImpl implements CSVMetaTree
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.1 2007-07-09 15:37:33 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.2 2007-07-17 16:16:34 wangeug Exp $";
 
     private final String csvMetaExtention = "scs";
     private final String csvDataExtention = "csv";
@@ -133,7 +133,7 @@ public class CSVMetaTreeImpl extends MetaTreeMetaImpl implements CSVMetaTree
     private void buildMetaSegmentFromCSVSegment(CSVSegmentMeta csvSeg, MetaSegment metaSeg) throws ApplicationException
     {
         metaSeg.setName(csvSeg.getName());
-        metaSeg.setUUID(csvSeg.getUUID());
+        metaSeg.setXmlPath(csvSeg.getXmlPath());
         metaSeg.setCardinalityType(csvSeg.getCardinalityType());
 
         for (int i=0;i<csvSeg.getFields().size();i++)
@@ -141,7 +141,7 @@ public class CSVMetaTreeImpl extends MetaTreeMetaImpl implements CSVMetaTree
             CSVFieldMeta field = csvSeg.getFields().get(i);
             MetaField newField = metaSeg.createNewFieldInstance();
             newField.setName(field.getName());
-            newField.setUUID(field.getUUID());
+            newField.setXmlPath(field.getXmlPath());
 
             //if (csvSeg.isChoiceMemberSegment()) newField.setDataType(BasicDataType.NUMBER.toString());
             metaSeg.addChildNode(newField);
@@ -214,4 +214,7 @@ public class CSVMetaTreeImpl extends MetaTreeMetaImpl implements CSVMetaTree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:37:33  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  */

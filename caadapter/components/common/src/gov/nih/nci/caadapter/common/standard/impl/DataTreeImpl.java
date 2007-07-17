@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataTreeImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataTreeImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -68,9 +68,9 @@ import java.io.File;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:17:50 PM $
  */
@@ -90,7 +90,7 @@ public class DataTreeImpl extends CommonTreeMetaImpl implements DataTree
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataTreeImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/DataTreeImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $";
 
     private MetaTreeMeta metaTree = null;
 
@@ -318,7 +318,7 @@ public class DataTreeImpl extends CommonTreeMetaImpl implements DataTree
     }
     private DataSegment cloneBranchRecurrsive(DataSegment segment, DataSegment clonnedSeg) throws ApplicationException
     {
-        clonnedSeg.cloneNode(clonnedSeg, segment, segment.getUUID(), segment.getXPath(), segment.getParent());
+        clonnedSeg.cloneNode(clonnedSeg, segment, segment.getXmlPath(), segment.getXPath(), segment.getParent());
 
         MetaSegment metaSegment = segment.getMetaSegment();
         List<CommonNode> metaNodes = new ArrayList<CommonNode>();
@@ -344,7 +344,7 @@ public class DataTreeImpl extends CommonTreeMetaImpl implements DataTree
                     if (cTag) continue;
 
                     DataField field = sourceField.createNewInstance();
-                    field.cloneNode(field, sourceField, sourceField.getUUID(), sourceField.getXPath(), clonnedSeg);
+                    field.cloneNode(field, sourceField, sourceField.getXmlPath(), sourceField.getXPath(), clonnedSeg);
                     sourceField.getSourceMetaField().addLinkedDataSegment(field);
                     field.setSourceMetaField(metaField);
                     //field.deleteValue();
@@ -428,23 +428,23 @@ public class DataTreeImpl extends CommonTreeMetaImpl implements DataTree
         {
 
 
-            if ((dataNode.getUUID() == null)||(dataNode.getUUID().trim().equals("")))
+            if ((dataNode.getXmlPath() == null)||(dataNode.getXmlPath().trim().equals("")))
             {
                 String metaUUID = "";
                 if (dataNode instanceof MetaSegment)
                 {
-                    metaUUID = ((DataSegment)dataNode).getMetaSegment().getUUID();
+                    metaUUID = ((DataSegment)dataNode).getMetaSegment().getXmlPath();
                 }
                 else if (dataNode instanceof MetaField)
                 {
-                    metaUUID = ((DataField)dataNode).getSourceMetaField().getUUID();
+                    metaUUID = ((DataField)dataNode).getSourceMetaField().getXmlPath();
                 }
-                validatorResults = GeneralUtilities.addValidatorMessage(validatorResults, "Null UUID found (Data tree). : " + dataNode.getName() + " : " + dataNode.getUUID() + " : " + metaUUID);
+                validatorResults = GeneralUtilities.addValidatorMessage(validatorResults, "Null UUID found (Data tree). : " + dataNode.getName() + " : " + dataNode.getXmlPath() + " : " + metaUUID);
             }
 
 
 
-            //if ((dataNode.getUUID() == null)||(dataNode.getUUID().trim().equals("")))
+            //if ((dataNode.getXmlPath() == null)||(dataNode.getXmlPath().trim().equals("")))
             //    validatorResults = GeneralUtilities.addValidatorMessage(validatorResults, "Null UUID found. : " + dataNode.getName());
         }
 
@@ -467,7 +467,7 @@ public class DataTreeImpl extends CommonTreeMetaImpl implements DataTree
 
             if (this.getNodeIdentifierType().getType() == NodeIdentifierType.UUID.getType())
             {
-                if ((item.getUUID() == null)||(item.getUUID().trim().equals("")))
+                if ((item.getXmlPath() == null)||(item.getXmlPath().trim().equals("")))
                     validatorResults = GeneralUtilities.addValidatorMessage(validatorResults, "Null UUID found (AttributeItem). : " + item.getName());
             }
 
@@ -703,4 +703,7 @@ public class DataTreeImpl extends CommonTreeMetaImpl implements DataTree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

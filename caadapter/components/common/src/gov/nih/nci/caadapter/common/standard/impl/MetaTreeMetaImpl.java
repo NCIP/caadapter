@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaTreeMetaImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaTreeMetaImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -70,9 +70,9 @@ import java.io.OutputStream;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:23:38 PM $
  */
@@ -91,7 +91,7 @@ public class MetaTreeMetaImpl extends CommonTreeMetaImpl implements MetaTreeMeta
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaTreeMetaImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaTreeMetaImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $";
 
     private List<String> extensions = new ArrayList<String>();
     private String metaFileName = "";
@@ -163,7 +163,7 @@ public class MetaTreeMetaImpl extends CommonTreeMetaImpl implements MetaTreeMeta
 
     private DataSegment cloneSegmentNode(DataSegment dataSeg, MetaSegment metaSeg, DataSegment parent) throws ApplicationException
     {
-        dataSeg.cloneNode(dataSeg, metaSeg, metaSeg.getUUID(), metaSeg.getXPath(), parent);
+        dataSeg.cloneNode(dataSeg, metaSeg, metaSeg.getXmlPath(), metaSeg.getXPath(), parent);
 
         if (metaSeg.getChildNodes().size() > 0)
         {
@@ -173,7 +173,7 @@ public class MetaTreeMetaImpl extends CommonTreeMetaImpl implements MetaTreeMeta
                 {
                     MetaField sourceField = (MetaField) metaSeg.getChildNodes().get(i);
                     DataField field = sourceField.createNewDataInstance();
-                    field.cloneNode(field, sourceField, sourceField.getUUID(), sourceField.getXPath(), dataSeg);
+                    field.cloneNode(field, sourceField, sourceField.getXmlPath(), sourceField.getXPath(), dataSeg);
 
                     sourceField.addLinkedDataSegment(field);
                     field.setSourceMetaField(sourceField);
@@ -183,7 +183,7 @@ public class MetaTreeMetaImpl extends CommonTreeMetaImpl implements MetaTreeMeta
                 {
                     MetaSegment sourceSegment = (MetaSegment) metaSeg.getChildNodes().get(i);
                     DataSegment segment = sourceSegment.createNewDataInstance();
-                    //segment.cloneNode(segment, sourceSegment, sourceSegment.getUUID(), sourceSegment.getXPath(), dataSeg);
+                    //segment.cloneNode(segment, sourceSegment, sourceSegment.getXmlPath(), sourceSegment.getXPath(), dataSeg);
                     segment = cloneSegmentNode(segment, sourceSegment, dataSeg);
                     sourceSegment.addLinkedDataSegment(segment);
                     segment.setSourceMetaSegment(sourceSegment);
@@ -219,15 +219,15 @@ public class MetaTreeMetaImpl extends CommonTreeMetaImpl implements MetaTreeMeta
 
         if (this.getNodeIdentifierType().getType() == NodeIdentifierType.UUID.getType())
         {
-            if ((node.getUUID() == null)||(node.getUUID().trim().equals("")))
+            if ((node.getXmlPath() == null)||(node.getXmlPath().trim().equals("")))
             {
                 if ((!AttributeUuidCheck)&&(node instanceof CommonAttributeItem)) {}
-                else results = GeneralUtilities.addValidatorMessage(results, "Null UUID found. : " + node.getName() + " : " + node.getUUID());
+                else results = GeneralUtilities.addValidatorMessage(results, "Null UUID found. : " + node.getName() + " : " + node.getXmlPath());
             }
 
-            if (!((node.getUUID() == null)||(node.getUUID().trim().equals(""))))
+            if (!((node.getXmlPath() == null)||(node.getXmlPath().trim().equals(""))))
             {
-                String uuid = node.getUUID().trim();
+                String uuid = node.getXmlPath().trim();
                 boolean cTag = false;
                 for (int i=0;i<uuidList.size();i++)
                 {
@@ -407,4 +407,7 @@ public class MetaTreeMetaImpl extends CommonTreeMetaImpl implements MetaTreeMeta
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

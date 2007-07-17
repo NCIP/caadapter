@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.2 2007-07-17 16:11:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -70,9 +70,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:08:54 PM $
  */
@@ -91,7 +91,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.2 2007-07-17 16:11:23 wangeug Exp $";
 
     private List<CommonNode> children = new ArrayList<CommonNode>();
 
@@ -485,7 +485,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
 
                     try
                     {
-                        c.cloneNode(c, field, field.getUUID(), field.getXPath(), field.getParent());
+                        c.cloneNode(c, field, field.getXmlPath(), field.getXPath(), field.getParent());
                     }
                     catch(ApplicationException ae)
                     {
@@ -533,7 +533,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
                     //CommonSegment segment = (CommonSegment) children.get(i);
                     try
                     {
-                        c.cloneNode(c, segment, segment.getUUID(), segment.getXPath(), segment.getParent());
+                        c.cloneNode(c, segment, segment.getXmlPath(), segment.getXPath(), segment.getParent());
                     }
                     catch(ApplicationException ae)
                     {
@@ -681,4 +681,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

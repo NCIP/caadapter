@@ -88,7 +88,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.6 $ date $Date: 2007-07-16 19:29:48 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.7 $ date $Date: 2007-07-17 16:19:13 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.6 2007-07-16 19:29:48 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.7 2007-07-17 16:19:13 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1403,7 +1403,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				if (sourceMapComp.getMetaObject()!=null)
 					targetNode = UIHelper.constructMappableNode(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getMetaObject());
 				else
-					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getMappedObjectXmlPath());
+					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getXmlPath());
 			} else {
 				if ( sourceMapComp.getComponent() != null ) {
 					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
@@ -1423,7 +1423,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				if (targetMapComp.getMetaObject()!=null)
 					targetNode = UIHelper.constructMappableNode(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getMetaObject());
 				else
-					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getMappedObjectXmlPath());
+					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
 			} else {
 				if ( sourceMapComp.getComponent() != null ) {
 					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
@@ -1451,6 +1451,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.6  2007/07/16 19:29:48  wangeug
+ * HISTORY : change UIUID to xmlPath
+ * HISTORY :
  * HISTORY : Revision 1.5  2007/07/05 15:18:28  wangeug
  * HISTORY : initila loading hl7 code without "clone"
  * HISTORY :

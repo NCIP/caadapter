@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.2 2007-07-16 19:21:28 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.3 2007-07-17 16:17:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,11 +49,11 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
+ * @version    $Revision: 1.3 $
  */
 public class BaseMapElementImpl implements BaseMapElement{
     private static final String LOGID = "$RCSfile: BaseMapElementImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.2 2007-07-16 19:21:28 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.3 2007-07-17 16:17:43 wangeug Exp $";
 
     private BaseComponent component;
     private MetaObject metaObject;
@@ -95,20 +95,20 @@ public class BaseMapElementImpl implements BaseMapElement{
     }
 
     // BaseMapElement methods.
-    public String getDatauuid() {
+    public String getDataXmlPath() {
     	if(metaObject!=null)
     	{
    			return metaObject.getXmlPath();
     	}
     	else
-    		return getMappedObjectXmlPath();
+    		return getXmlPath();
     }
 
-    public String getMappedObjectXmlPath() {
+    public String getXmlPath() {
 		return mappedObjectXmlPath;
 	}
 
-	public void setMappedObjectXmlPath(String datatypeBaseObjectXmlPath) {
+	public void setXmlPath(String datatypeBaseObjectXmlPath) {
 		mappedObjectXmlPath = datatypeBaseObjectXmlPath;
 	}
 

@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaSegmentImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaSegmentImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -66,9 +66,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       8:22:14 PM $
  */
@@ -87,7 +87,7 @@ public class MetaSegmentImpl extends CommonSegmentImpl implements MetaSegment
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaSegmentImpl.java,v 1.1 2007-07-09 15:39:24 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/MetaSegmentImpl.java,v 1.2 2007-07-17 16:11:38 wangeug Exp $";
 
     private List<DataSegment> LinkedDataSegment = new ArrayList<DataSegment>();
 
@@ -131,7 +131,7 @@ public class MetaSegmentImpl extends CommonSegmentImpl implements MetaSegment
         if (target == null) throw new ApplicationException("Target Data Segment node is null.");
 
         target.setName(this.getName());
-        target.cloneNode(target, this, this.getUUID(), this.getXPath(), par);
+        target.cloneNode(target, this, this.getXmlPath(), this.getXPath(), par);
         par.addChildNode(target);
         target.setSourceMetaSegment(this);
         addLinkedDataSegment(target);
@@ -165,4 +165,7 @@ public class MetaSegmentImpl extends CommonSegmentImpl implements MetaSegment
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */

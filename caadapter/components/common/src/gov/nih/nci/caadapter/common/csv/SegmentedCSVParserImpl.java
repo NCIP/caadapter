@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.3 2007-07-09 15:59:42 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.4 2007-07-17 16:15:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,15 +65,15 @@ import java.util.Stack;
  * Parses csv datafiles that are based on a certain csv meta specification.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-07-09 15:59:42 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2007-07-17 16:15:44 $
  * @since caAdapter v1.2
  */
 
 public class SegmentedCSVParserImpl {
     private static final String LOGID = "$RCSfile: SegmentedCSVParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.3 2007-07-09 15:59:42 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.4 2007-07-17 16:15:44 wangeug Exp $";
 
 
     public CSVDataResult parse(File dataFile, File metaFile) throws ApplicationException
@@ -317,7 +317,7 @@ public class SegmentedCSVParserImpl {
 
     private CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults) {
         CSVSegmentImpl segment = new CSVSegmentImpl(meta);
-        segment.setUUID(meta.getUUID());
+        segment.setXmlPath(meta.getXmlPath());
         segment.setCardinalityType(meta.getCardinalityType());
         // check for validation rule #3
         int metaFields = meta.getFields().size();
@@ -333,7 +333,7 @@ public class SegmentedCSVParserImpl {
             CSVFieldMeta csvFieldMeta = fieldMeta.get(i);
             CSVFieldImpl field = new CSVFieldImpl(csvFieldMeta);
             field.setColumn(csvFieldMeta.getColumn());
-            field.setUUID(csvFieldMeta.getUUID());
+            field.setXmlPath(csvFieldMeta.getXmlPath());
             try {
                 field.setValue(data[csvFieldMeta.getColumn()]);
             } catch (Exception e) {

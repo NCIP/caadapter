@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.5 2007-07-10 20:05:44 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.6 2007-07-17 16:16:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,16 +52,16 @@ import gov.nih.nci.caadapter.common.Cardinality;
  * Implementation of a segment metadata (contained within a csv file).
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.5 $
- * 			$Date: 2007-07-10 20:05:44 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.6 $
+ * 			$Date: 2007-07-17 16:16:34 $
  * @since caAdapter v1.2
  */
 
 public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 {
 	private static final String LOGID = "$RCSfile: CSVSegmentMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.5 2007-07-10 20:05:44 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.6 2007-07-17 16:16:34 wangeug Exp $";
     private String segmentName;
     List<CSVFieldMeta> fields = new ArrayList<CSVFieldMeta>();
     List<CSVSegmentMeta> childSegments = new ArrayList<CSVSegmentMeta>();
@@ -302,4 +302,13 @@ public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
         catch(IllegalArgumentException ie) {}
         return _cardinality.getMinimum();
     }
+	public String getXmlPath()
+	{
+//		System.out.println("CSVSegmentMetaImpl.getXmlPath()..build dyanmic xmlPath");
+		CSVSegmentMeta parentMeta=this.getParent();
+        StringBuffer sbXmlPath=new StringBuffer();
+        if (parentMeta!=null)
+           	sbXmlPath.append(parentMeta.getXmlPath()+".");
+        return sbXmlPath.toString()+getName();
+	}
 }
