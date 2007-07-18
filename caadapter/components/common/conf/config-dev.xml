@@ -104,7 +104,7 @@
 
     <constant name="FUNCTION_DEFINITION_DEFAULT_KIND" type="String" value="core"/>
     <constant name="CSV_DEFINITION_DEFAULT_KIND" type="String" value="scs"/>
-    <constant name="HL7_V3_DEFINITION_DEFAULT_KIND" type="String" value="HL7v3"/>
+    <constant name="HL7_V3_DEFINITION_DEFAULT_KIND" type="String" value="h3s"/>
     <constant name="DATABASE_DEFINITION_DEFAULT_KIND" type="String" value="dbs"/>
 
     <!--

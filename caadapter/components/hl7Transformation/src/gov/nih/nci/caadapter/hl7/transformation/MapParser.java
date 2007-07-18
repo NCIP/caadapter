@@ -36,9 +36,9 @@ import org.jdom.output.XMLOutputter;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-07-17 19:54:09 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-07-18 20:39:14 $
  * @since caAdapter v4.0
  */
 
@@ -177,9 +177,11 @@ public class MapParser {
      * A method to assist with processComponents()
      */
     private void generateFunctionComponent(String kind, String group, String name, String datatype, String datavalue, String id) throws MappingException {
-        FunctionComponent functionComponent = new FunctionComponent();
-        functionComponent.setId(id);
+        FunctionComponent functionComponent =FunctionComponent.getFunctionComponent();// new FunctionComponent();
+        if (!id.equals(""))
+        	functionComponent.setId(id);
         functionComponent.setType("function");
+        System.out.println("MapParser.generateFunctionComponent()...functionID:"+functionComponent.getId());
 		functionComponent.setKind(kind);
 		try {
             FunctionManager f = FunctionManager.getInstance();

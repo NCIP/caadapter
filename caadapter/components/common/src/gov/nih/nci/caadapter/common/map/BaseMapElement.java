@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/BaseMapElement.java,v 1.2 2007-07-17 16:12:10 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/BaseMapElement.java,v 1.3 2007-07-18 20:36:17 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,14 +41,14 @@ import gov.nih.nci.caadapter.common.MetaObject;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-07-17 16:12:10 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2007-07-18 20:36:17 $
  */
 public interface BaseMapElement
 {
 	public String getDataXmlPath();
 	public BaseComponent getComponent();
-	public String getComponentuuid();
+//	public String getComponentuuid();
 	public MetaObject getMetaObject();
 	public String getXmlPath();
 

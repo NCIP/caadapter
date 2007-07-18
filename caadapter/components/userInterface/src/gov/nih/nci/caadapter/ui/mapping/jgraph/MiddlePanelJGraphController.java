@@ -88,7 +88,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.7 $ date $Date: 2007-07-17 16:19:13 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.8 $ date $Date: 2007-07-18 20:42:42 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +103,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.7 2007-07-17 16:19:13 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.8 2007-07-18 20:42:42 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -537,7 +537,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		if ( startPoint == null ) {// set to default value.
 			startPoint = new Point(25, 25);
 		}
-		ViewImpl viewInfo = new ViewImpl(true, (int) startPoint.getX(), (int) startPoint.getY(), 200, 200, null);
+		ViewImpl viewInfo =ViewImpl.getViewImpl(true, (int) startPoint.getX(), (int) startPoint.getY(), 200, 200, null);
 		return addFunction(function, viewInfo);
 	}
 
@@ -1169,7 +1169,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			Color backgroundColor = GraphConstants.getBackground(attrMap);
 			ViewImpl viewImpl = (ViewImpl) functionView.getViewMeta();
 			if ( viewImpl == null ) {
-				viewImpl = new ViewImpl(true, (int) bound.getX(), (int) bound.getY(), (int) bound.getHeight(), (int) bound.getWidth(), null);
+				viewImpl = ViewImpl.getViewImpl(true, (int) bound.getX(), (int) bound.getY(), (int) bound.getHeight(), (int) bound.getWidth(), null);
 			} else {// re-use the view object.
 				viewImpl.setX((int) bound.getX());
 				viewImpl.setY((int) bound.getY());
@@ -1451,6 +1451,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.7  2007/07/17 16:19:13  wangeug
+ * HISTORY : change UIUID to xmlPath
+ * HISTORY :
  * HISTORY : Revision 1.6  2007/07/16 19:29:48  wangeug
  * HISTORY : change UIUID to xmlPath
  * HISTORY :

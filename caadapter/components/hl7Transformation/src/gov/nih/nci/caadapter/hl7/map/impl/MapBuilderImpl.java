@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.3 2007-07-17 16:18:45 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.4 2007-07-18 20:41:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,8 @@ import gov.nih.nci.caadapter.castor.map.impl.C_link;
 import gov.nih.nci.caadapter.castor.map.impl.C_linkpointer;
 import gov.nih.nci.caadapter.castor.map.impl.C_links;
 import gov.nih.nci.caadapter.castor.map.impl.C_mapping;
+import gov.nih.nci.caadapter.castor.map.impl.C_source;
+import gov.nih.nci.caadapter.castor.map.impl.C_target;
 import gov.nih.nci.caadapter.castor.map.impl.C_view;
 import gov.nih.nci.caadapter.castor.map.impl.C_views;
 import gov.nih.nci.caadapter.common.MetaObject;
@@ -82,12 +84,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.3 $
+ * @version    $Revision: 1.4 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.3 2007-07-17 16:18:45 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.4 2007-07-18 20:41:44 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -153,7 +155,6 @@ public class MapBuilderImpl {
     private void processComponentAndView(BaseComponent baseComponent, int componentType) throws MappingException {
         // set up the component first.
         C_component cComponent = new C_component();
-        cComponent.setXmlPath(baseComponent.getXmlPath());
         MetaObject metaObject = baseComponent.getMeta();
 
         if (componentType == TARGET || componentType == SOURCE) {
@@ -162,25 +163,22 @@ public class MapBuilderImpl {
             }else if(componentType == SOURCE){
                 cComponent.setType(Config.MAP_COMPONENT_SOURCE_TYPE);
             }
-//            cComponent.setLocation(baseComponent.getFileName());
             String filePath = baseComponent.getFileAbsolutePath();
             if (filePath.startsWith(FileUtil.getWorkingDirPath())) filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
-            cComponent.setLocation(filePath);
-//            if (baseComponent instanceof CsvComponent) {
+            	cComponent.setLocation(filePath);
+
             if (metaObject ==null)
-            	cComponent.setKind("HL7v3MIF");
+            	cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
             else if (metaObject instanceof CSVMeta) {
                 cComponent.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
-//            }else if (metaObject instanceof HL7V3Meta) {
-//                cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
-//            }else if (metaObject instanceof DatabaseMeta) {
-//                cComponent.setKind(Config.DATABASE_DEFINITION_DEFAULT_KIND);
             }
         } else if (componentType == FUNCTION) {
             FunctionMeta functionMeta = ((FunctionComponent)baseComponent).getMeta();
             cComponent.setKind(functionMeta.getKind());
             cComponent.setGroup(functionMeta.getGroupName());
             cComponent.setName(functionMeta.getFunctionName());
+            String stringId=((FunctionComponent)baseComponent).getId();
+            cComponent.setId(Integer.valueOf(stringId));
             
             //if("constant".equalsIgnoreCase(functionMeta.getFunctionName())){
             if(functionMeta.isConstantFunction())
@@ -216,7 +214,7 @@ public class MapBuilderImpl {
         if (view != null) {
             C_view cView = new C_view();
             if (view.getColor() != null) cView.setColor(view.getColor().toString());
-            cView.setComponentXmlPath(baseComponent.getXmlPath());
+            cView.setComponentId(view.getComponentId());//.setComponentXmlPath(baseComponent.getXmlPath());
             cView.setHeight(view.getHeight());
             cView.setWidth(view.getWidth());
             cView.setX(view.getX());
@@ -232,25 +230,70 @@ public class MapBuilderImpl {
         for (int i = 0; i < maps.size(); i++) {
             C_link cLink = new C_link();
             Map map = maps.get(i);
-            cLink.setXmlPath(map.getXmlPath());
             //setup the source LinkPointer
             BaseMapElement sourcemap = map.getSourceMapElement();
             C_linkpointer sourcePointer = new C_linkpointer();
-            sourcePointer.setComponentXmlPath(sourcemap.getComponentuuid());
-//            System.out.println("MapBuilderImpl.processMaps()...sourcemap.getDatauuid():"+sourcemap.getDataXmlPath());
-            sourcePointer.setDataXmlPath(sourcemap.getDataXmlPath());
+            sourcePointer.setXmlPath(sourcemap.getDataXmlPath());
+            if (sourcemap.isComponentOfSourceType())
+            	sourcePointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
+            else if (sourcemap.isComponentOfTargetType())
+            	sourcePointer.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+            else if (sourcemap.isComponentOfFunctionType())
+            	sourcePointer.setKind(Config.MAP_COMPONENT_FUNCTION_TYPE);
+            else
+            {
+            	BaseComponent srcBase=sourcemap.getComponent();
+            	if (srcBase instanceof FunctionComponent)
+            	{
+            		sourcePointer.setXmlPath(buildFunctionPortXmlPath((FunctionComponent)srcBase, sourcemap));
+            		sourcePointer.setKind("function");
+            	}
+            	else
+            		sourcePointer.setKind("default");
+            }
+             
             //setup the target LinkPointer
             BaseMapElement targetmap = map.getTargetMapElement();
             C_linkpointer targetPointer = new C_linkpointer();
-            targetPointer.setComponentXmlPath(targetmap.getComponentuuid());
-            System.out.println("MapBuilderImpl.processMaps()...targetmap.getDatauuid():"+targetmap.getDataXmlPath());
-            targetPointer.setDataXmlPath(targetmap.getDataXmlPath());
+            targetPointer.setXmlPath(targetmap.getDataXmlPath());
+            if (targetmap.isComponentOfSourceType())
+            	targetPointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
+            else if (targetmap.isComponentOfTargetType())
+            	targetPointer.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+            else if (targetmap.isComponentOfFunctionType())
+            	targetPointer.setKind(Config.MAP_COMPONENT_FUNCTION_TYPE);
+            else
+            {
+            	BaseComponent trgtBase=targetmap.getComponent();
+            	if (trgtBase instanceof FunctionComponent)
+            	{
+            		targetPointer.setXmlPath(buildFunctionPortXmlPath((FunctionComponent)trgtBase, targetmap));
+            		targetPointer.setKind("function");
+            	}
+            	else
+            		targetPointer.setKind("default");
+            }
             //create the Link
-            cLink.addC_linkpointer(sourcePointer);
-            cLink.addC_linkpointer(targetPointer);
+            C_source linkSource=new C_source();
+            linkSource.setC_linkpointer(sourcePointer);
+            cLink.setC_source(linkSource);
+            C_target linkTarget=new C_target();
+            linkTarget.setC_linkpointer(targetPointer);
+            cLink.setC_target(linkTarget);
             // assign it to the Links
             cLinks.addC_link(cLink);
         }
     }
 
+
+    private String buildFunctionPortXmlPath(FunctionComponent fc, BaseMapElement bm )
+    {
+    	String dataXmlPath=bm.getDataXmlPath();
+    	String portName="";
+    	if (dataXmlPath.indexOf("inputs")>-1)
+    		portName=dataXmlPath.substring(dataXmlPath.indexOf("inputs"));
+    	else if (dataXmlPath.indexOf("outputs")>-1)
+    		portName=dataXmlPath.substring(dataXmlPath.indexOf("outputs"));
+    	return fc.getXmlPath()+"."+portName;
+    }
 }

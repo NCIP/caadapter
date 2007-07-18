@@ -9,8 +9,8 @@ import java.awt.*;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-05-24 15:03:30 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-07-18 20:36:17 $
  */
 
 public interface View {
@@ -20,4 +20,6 @@ public interface View {
     public int getHeight();
     public int getWidth();
     public Color getColor();
+	public String getComponentId() ;
+	public void setComponentId(String componentId);
 }

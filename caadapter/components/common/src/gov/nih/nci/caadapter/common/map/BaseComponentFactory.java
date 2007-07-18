@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/BaseComponentFactory.java,v 1.1 2007-05-24 15:03:30 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/BaseComponentFactory.java,v 1.2 2007-07-18 20:36:17 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,14 +50,14 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-05-24 15:03:30 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-18 20:36:17 $
  */
 
 public class BaseComponentFactory
 {
 	private static final String LOGID = "$RCSfile: BaseComponentFactory.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/BaseComponentFactory.java,v 1.1 2007-05-24 15:03:30 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/BaseComponentFactory.java,v 1.2 2007-07-18 20:36:17 wangeug Exp $";
 
 //	private BaseComponentFactory()
 //	{
@@ -76,7 +76,7 @@ public class BaseComponentFactory
 		BaseComponent sourceComponent = new BaseComponent();
 		if (viewObject == null)
 		{
-			viewObject = new ViewImpl();
+			viewObject = ViewImpl.getViewImpl();//new ViewImpl();
 		}
 		sourceComponent.setView(viewObject);
 		sourceComponent.setMeta(metaObject);
@@ -98,7 +98,7 @@ public class BaseComponentFactory
 		BaseComponent targetComponent = new BaseComponent();
 		if (viewObject == null)
 		{
-			viewObject = new ViewImpl();
+			viewObject = ViewImpl.getViewImpl();//new ViewImpl();
 		}
 		targetComponent.setView(viewObject);
 		targetComponent.setMeta(metaObject);
@@ -132,6 +132,9 @@ public class BaseComponentFactory
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/05/24 15:03:30  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:20  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

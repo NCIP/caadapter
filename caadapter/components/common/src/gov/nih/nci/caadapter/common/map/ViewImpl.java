@@ -11,12 +11,12 @@ import java.awt.*;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-05-24 15:03:30 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-07-18 20:36:17 $
  */
 public class ViewImpl implements View{
     private static final String LOGID = "$RCSfile: ViewImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/ViewImpl.java,v 1.1 2007-05-24 15:03:30 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/map/ViewImpl.java,v 1.2 2007-07-18 20:36:17 wangeug Exp $";
 
 	private boolean visible;
 	private int x;
@@ -24,17 +24,28 @@ public class ViewImpl implements View{
 	private int height;
 	private int width;
 	private Color color;
-
-	public ViewImpl(){
+	private String componentId;
+	private static int idCount=0;
+	private ViewImpl()
+	{
+		super();
+		this.setComponentId(idCount+"");
+		idCount++;
+		
+	}
+	public static ViewImpl getViewImpl(){
+		return new  ViewImpl();
 	}
 
-    public ViewImpl(boolean visible, int x, int y, int height, int width, Color color) {
-        this.visible = visible;
-        this.x = x;
-        this.y = y;
-        this.height = height;
-        this.width = width;
-        this.color = color;
+    public static ViewImpl getViewImpl(boolean visible, int x, int y, int height, int width, Color color) {
+    	ViewImpl rtnView=new ViewImpl();
+    	rtnView.setVisible(visible);
+    	rtnView.setX(x);
+    	rtnView.setY(y);
+    	rtnView.setHeight(height);
+    	rtnView.setWidth(width);
+    	rtnView.setColor(color);
+    	return rtnView;
     }
 
     public boolean isVisible() {
@@ -84,4 +95,10 @@ public class ViewImpl implements View{
     public void setColor(Color color) {
         this.color = color;
     }
+	public String getComponentId() {
+		return componentId;
+	}
+	public void setComponentId(String componentId) {
+		this.componentId = componentId;
+	}
 }

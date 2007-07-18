@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.3 2007-07-17 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.4 2007-07-18 20:37:50 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,13 +62,13 @@ import java.util.Stack;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-07-17 16:17:14 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2007-07-18 20:37:50 $
  * @since caAdapter v1.2
  */
 public class MapProcessorHelper {
     private static final String LOGID = "$RCSfile: MapProcessorHelper.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.3 2007-07-17 16:17:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/MapProcessorHelper.java,v 1.4 2007-07-18 20:37:50 wangeug Exp $";
     private Mapping mapping;
     private HashMap targetPathHash;
 
@@ -95,7 +95,7 @@ public class MapProcessorHelper {
 			  return srcComp.getDataXmlPath();
 		  else if (srcComp.isComponentOfFunctionType())
 		  {
-			  String functionCompID=srcComp.getComponentuuid();
+			  String functionCompID=srcComp.getDataXmlPath();//.getComponentuuid();
 			  //the serDataUUID is the target path of mapping from
 			  //csv Field source to Function
 			  return findSourceDataReferenceFromFunctionRef(functionCompID);	
@@ -127,7 +127,7 @@ public class MapProcessorHelper {
 	   String srcObjectId=null;
        for (Map oneMap:mapping.getMaps())
        {
-    	   String linkTargetID=oneMap.getTargetMapElement().getComponentuuid();
+    	   String linkTargetID=oneMap.getTargetMapElement().getDataXmlPath();//.getComponentuuid();
     	   if (linkTargetID.equals(functionID))
     	   {
     		   srcObjectId=oneMap.getSourceMapElement().getDataXmlPath(); 
@@ -253,7 +253,7 @@ public class MapProcessorHelper {
                     baseMapElement = map.getTargetMapElement();
                 }
                 //if (aMetaObject == metaObject) foundMaps.add(map);
-                if (baseMapElement.getComponentuuid().equalsIgnoreCase(cmpUuid) &&
+                if (baseMapElement.getDataXmlPath().equalsIgnoreCase(cmpUuid) &&
                         baseMapElement.getDataXmlPath().equalsIgnoreCase(metaUuid)) {
                     foundMaps.add(map);
                 }
@@ -277,7 +277,7 @@ public class MapProcessorHelper {
             Map map = theMaps.get(i);
             BaseMapElement sourceMapElement = map.getSourceMapElement();
             MetaObject sourceMetaObject = sourceMapElement.getMetaObject();
-            String sourceComponentUuid = sourceMapElement.getComponentuuid();
+            String sourceComponentUuid = sourceMapElement.getDataXmlPath();//.getComponentuuid();
 
             if (sourceMetaObject instanceof CSVFieldMeta) {
                 // if it's a CSV object, find the segment + add it to the HashMap
@@ -654,7 +654,7 @@ public class MapProcessorHelper {
             Map map = maps.get(i);
             BaseMapElement sourceMapElement = map.getSourceMapElement();
             MetaObject metaObject = sourceMapElement.getMetaObject();
-            String sourceComponenetUuid = sourceMapElement.getComponentuuid();
+            String sourceComponenetUuid = sourceMapElement.getDataXmlPath();//.getComponentuuid();
             if (metaObject instanceof CSVSegmentMeta) {
                 mappedSegments.add((CSVSegmentMeta) metaObject);
             } else if (metaObject instanceof CSVFieldMeta) {

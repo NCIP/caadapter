@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.2 2007-07-17 20:47:19 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.3 2007-07-18 20:37:50 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,26 +36,42 @@ package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
+import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 
 /**
  * A component that contains function information.
  *
  * @author OWNER: Eric Chen  Date: Jun 8, 2005
- * @author LAST UPDATE: $Author: wuye $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-07-17 20:47:19 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-07-18 20:37:50 $
  * @since caAdapter v1.2
  */
 
 public class FunctionComponent extends BaseComponent {
     private static final String LOGID = "$RCSfile: FunctionComponent.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.2 2007-07-17 20:47:19 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.3 2007-07-18 20:37:50 wangeug Exp $";
 
     private FunctionConstant functionConstant = null;
     private FunctionVocabularyMapping functionVocabularyMapping = null;
     private String id="";
+    private static int idCount=0;
     
+
+	// constuctors. singleton
+    private FunctionComponent() {
+    	super();
+    	setId( idCount+"");
+    	idCount++;
+    }
+    public static FunctionComponent getFunctionComponent() {
+        return new FunctionComponent();
+    }
+//    public FunctionComponent(FunctionMeta meta) {
+//        super(meta);
+//    }
+
     /**
 	 * @return the id
 	 */
@@ -69,14 +85,8 @@ public class FunctionComponent extends BaseComponent {
 	public void setId(String id) {
 		this.id = id;
 	}
+    
 
-	// constuctors.
-    public FunctionComponent() {
-    }
-
-    public FunctionComponent(FunctionMeta meta) {
-        super(meta);
-    }
 
     // setters and getters.
     public FunctionConstant getFunctionConstant() {
@@ -116,9 +126,18 @@ public class FunctionComponent extends BaseComponent {
         return null;
     }
 
+    public String getXmlPath()
+    {
+    	StringBuffer rtnSb=new StringBuffer("function");
+    	rtnSb.append("."+getId());
+    	return rtnSb.toString();
+    }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/17 20:47:19  wuye
+ * HISTORY      : added id field
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 18:26:25  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

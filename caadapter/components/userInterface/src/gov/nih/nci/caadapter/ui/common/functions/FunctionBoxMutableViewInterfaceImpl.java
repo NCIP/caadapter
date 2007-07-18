@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxMutableViewInterfaceImpl.java,v 1.2 2007-07-03 18:57:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxMutableViewInterfaceImpl.java,v 1.3 2007-07-18 20:42:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 18:57:11 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-18 20:42:13 $
  */
 public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implements FunctionBoxMutableViewInterface, MappableNode, Cloneable
 {
@@ -203,7 +203,9 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 	{
 		if(create && functionComponent==null)
 		{
-			functionComponent = new FunctionComponent(functionMeta);
+			functionComponent = FunctionComponent.getFunctionComponent();
+			functionComponent.setMeta(functionMeta);
+			//new FunctionComponent(functionMeta);
 			functionComponent.setView(viewMeta);
 			functionComponent.setFunctionConstant(getFunctionConstant());
             functionComponent.setFunctionVocabularyMapping(getFunctionVocabularyMapping());
@@ -605,6 +607,9 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 18:57:11  wangeug
+ * HISTORY      : relocate "View" object from  other package
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
