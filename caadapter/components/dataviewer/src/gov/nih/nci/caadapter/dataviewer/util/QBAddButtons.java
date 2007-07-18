@@ -1,9 +1,7 @@
 package gov.nih.nci.caadapter.dataviewer.util;
 
-
-import gov.nih.nci.caadapter.dataviewer.util.QBConstants;
-import gov.nih.nci.caadapter.dataviewer.helper.ToolBarAction;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
+import gov.nih.nci.caadapter.dataviewer.helper.ToolBarAction;
 
 import javax.swing.*;
 import java.net.URL;
@@ -37,7 +35,29 @@ public class QBAddButtons
         button = makeNavigationButton("reset", QBConstants.Reset, "reset", "Reset Diagram");
         //toolBar.add(button);
         button = makeNavigationButton("Add_tables", QBConstants.ADD, "Add Tables", "Add Tables");
-       // toolBar.add(button);
+        // toolBar.add(button);
+        button = makeNavigationButton("Print", QBConstants.PRINT, "Print", "Print");
+        toolBar.add(button);
+        button = makeNavigationButton("Help", QBConstants.HELP, "Help", "Help");
+        toolBar.add(button);
+    }
+
+    public void addButtons(JToolBar toolBar, boolean fromMenu)
+    {
+        JButton button = null;
+        button = makeNavigationButton("load", QBConstants.Load, "load", "Load SQL");
+        if (fromMenu)
+            toolBar.add(button).setEnabled(true);
+        else
+            toolBar.add(button).setEnabled(false);
+        button = makeNavigationButton("save", QBConstants.Save, "save", "Save SQL");
+        toolBar.add(button);
+        button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
+        toolBar.add(button);
+        button = makeNavigationButton("reset", QBConstants.Reset, "reset", "Reset Diagram");
+        //toolBar.add(button);
+        button = makeNavigationButton("Add_tables", QBConstants.ADD, "Add Tables", "Add Tables");
+        // toolBar.add(button);
         button = makeNavigationButton("Print", QBConstants.PRINT, "Print", "Print");
         toolBar.add(button);
         button = makeNavigationButton("Help", QBConstants.HELP, "Help", "Help");

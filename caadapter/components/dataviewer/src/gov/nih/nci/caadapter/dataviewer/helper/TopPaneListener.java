@@ -34,15 +34,17 @@ public class TopPaneListener implements ChangeListener
         if (!mD.get_alreadyFilled().contains(new Integer(sel)))
         {
             //this has to be a loop begin
-            ArrayList tableList=null;
-            try{
-            tableList = (ArrayList) mD.getTabsForDomains().get(pane.getTitleAt(sel).substring(0,2));
-            } catch (Exception e){
-                 JOptionPane.showMessageDialog(mD.get_jf(), e.getMessage().toString()+"\n Please restart the Application", "General Exception", JOptionPane.ERROR_MESSAGE);
+            ArrayList tableList = null;
+            try
+            {
+                tableList = (ArrayList) mD.getTabsForDomains().get(pane.getTitleAt(sel).substring(0, 2));
+            } catch (Exception e)
+            {
+                JOptionPane.showMessageDialog(mD.get_jf(), e.getMessage().toString() + "\n Please restart the Application", "General Exception", JOptionPane.ERROR_MESSAGE);
             }
             for (int i = 0; i < tableList.size(); i++)
             {
-                StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(),".");
+                StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
                 String schema = temp.nextElement().toString();
                 String table = temp.nextElement().toString();
                 ((Querypanel) mD.get_aryList().get(mD.get_tPane().getSelectedIndex())).loadTables(schema, table);

@@ -1,8 +1,9 @@
 package gov.nih.nci.caadapter.dataviewer.helper;
 
-import gov.nih.nci.caadapter.dataviewer.util.SQLFileFilter;
-import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
+import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
+import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
+import gov.nih.nci.caadapter.dataviewer.util.SQLFileFilter;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
@@ -10,6 +11,7 @@ import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,6 +25,8 @@ public class DialogClosingListener implements WindowListener
 
     private MainDataViewerFrame mainDataViewerFrame = null;
 
+    private ArrayList returnSQLForDomain;
+
     public DialogClosingListener(MainDataViewerFrame mainDataViewerFrame)
     {
         this.mainDataViewerFrame = mainDataViewerFrame;
@@ -34,31 +38,58 @@ public class DialogClosingListener implements WindowListener
         int n = JOptionPane.showOptionDialog(mainDataViewerFrame.get_jf(), " Do you want to save the SQL statements?", "Save all queries confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
         if (n == 0)
         {
+            returnSQLForDomain = new ArrayList();
             int _numberOfTabs = mainDataViewerFrame.get_tPane().getTabCount();
             for (int i = 0; i < _numberOfTabs; i++)
             {
                 mainDataViewerFrame.get_tPane().setSelectedIndex(i);
                 String domainName = mainDataViewerFrame.get_tPane().getTitleAt(i);
-                saveSQLPanel(domainName);
+                //saveSQLPanel(domainName);
+                String _sqlSTR = (((Querypanel) mainDataViewerFrame.get_aryList().get(mainDataViewerFrame.get_tPane().getSelectedIndex())).get_queryBuilder()).getModel().toString(false).toUpperCase();
+                returnSQLForDomain.add(domainName + "~" + _sqlSTR);
+            }
+            //int _numberOfTabs = mainDataViewerFrame.get_tPane().getTabCount();
+            for (int i = 0; i < _numberOfTabs; i++)
+            {
+                mainDataViewerFrame.get_tPane().setSelectedIndex(i);
+                ((Querypanel) mainDataViewerFrame.get_aryList().get(mainDataViewerFrame.get_tPane().getSelectedIndex())).get_queryBuilder();
+            }
+            mainDataViewerFrame.setSQLForDomains(returnSQLForDomain);
+            mainDataViewerFrame.getDialog().removeAll();
+            BufferedWriter out = null;
+            try
+            {
+                if (mainDataViewerFrame.getSaveFile().exists())
+                    mainDataViewerFrame.getSaveFile().delete();
+                out = new BufferedWriter(new FileWriter(mainDataViewerFrame.getSaveFile()));
+                out.write(mainDataViewerFrame.getXmlString());
+                EmptyStringTokenizer str = null;
+                for (int i = 0; i < returnSQLForDomain.size(); i++)
+                {
+                    str = new EmptyStringTokenizer(returnSQLForDomain.get(i).toString(), "~");
+                    out.write("\n<sql name=\"" + str.getTokenAt(0).substring(0, 2) + "\">");
+                    out.write("" + str.getTokenAt(1));
+                    out.write("</sql>");
+                }
+                out.append("\n</mapping>");
+                JOptionPane.showMessageDialog(mainDataViewerFrame.get_jf(), "The file \"" + mainDataViewerFrame.getSaveFile().getName() + "\" is saved successfully with the mapping and generated SQL information", "Mapping file is saved", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(mainDataViewerFrame.get_jf(), "The file \"" + mainDataViewerFrame.getSaveFile().getName() + "\" was not saved dure to " + e.getLocalizedMessage(), "Mapping file is not saved", JOptionPane.ERROR_MESSAGE);
+            } finally
+            {
+                try
+                {
+                    if (out != null)
+                        out.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+                }
             }
         }
-        int _numberOfTabs = mainDataViewerFrame.get_tPane().getTabCount();
-        for (int i = 0; i < _numberOfTabs; i++)
-        {
-            mainDataViewerFrame.get_tPane().setSelectedIndex(i);
-            ((Querypanel) mainDataViewerFrame.get_aryList().get(mainDataViewerFrame.get_tPane().getSelectedIndex())).get_queryBuilder();
-        }
-        //        try
-        //        {
-        //                if(mainDataViewerFrame.get_con()!=null)
-        //                    mainDataViewerFrame.get_con().close();
-        //        } catch (SQLException e)
-        //        {
-        //            e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        //        }
-        mainDataViewerFrame.getDialog().removeAll();
         mainDataViewerFrame.getDialog().dispose();
-
     }
 
     public void windowActivated(WindowEvent e)

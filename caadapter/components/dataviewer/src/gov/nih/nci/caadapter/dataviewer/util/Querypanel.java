@@ -56,7 +56,8 @@ public class Querypanel extends JPanel
         this.setLayout(new BorderLayout());
         this._tf = tf;
         this.schema = _schema; 
-        _queryBuilder = new QueryBuilder(con, schema);
+        _queryBuilder = new QueryBuilder(con, schema, tf);
+        
         this.add(_queryBuilder, BorderLayout.CENTER);
     }
 

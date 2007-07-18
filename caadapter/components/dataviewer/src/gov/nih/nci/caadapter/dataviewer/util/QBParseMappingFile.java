@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.dataviewer.util;
 
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -31,12 +32,23 @@ public class QBParseMappingFile
 
     private Hashtable<String, ArrayList> hashTable = null;
 
+    public Hashtable<String, ArrayList> getHashTableTransform()
+    {
+        return hashTableTransform;
+    }
+
+    private Hashtable<String, ArrayList> hashTableTransform = null;
+
     private HashSet<String> hashTblColumnsSet = null;
+
+    private Hashtable<String, String> hashSQLfromMappings = null;
 
     public QBParseMappingFile(File file)
     {
         hashTable = new Hashtable<String, ArrayList>();
+        hashTableTransform = new Hashtable<String, ArrayList>();
         hashTblColumnsSet = new HashSet<String>();
+        hashSQLfromMappings = new Hashtable<String, String>();
         this.mappingFile = file;
         Document doc = parseFile();
         root = doc.getDocumentElement();
@@ -84,18 +96,32 @@ public class QBParseMappingFile
                     tempStr = children.item(i).getTextContent();
                     if (tempStr.startsWith("\\#document"))
                     {
-                        tempDomain = formatDomain(tempStr);
-                    } else if (tempStr.startsWith("\\Object Model"))
+                        //tempDomain = formatDomain(tempStr);
+                        tempDomain = tempStr;
+                    } else if (tempStr.startsWith("\\Data Model"))
                     {
-                        tempTable = formatTable(tempStr);
+                        //tempTable = formatTable(tempStr);
+                        tempTable = tempStr;
                         tempSt4Columns = tempStr;
                     }
                     if (tempDomain.length() > 0 && tempTable.length() > 0)
                     {
-                        processXMLContents(tempDomain, tempTable);
+                        EmptyStringTokenizer _empt = new EmptyStringTokenizer(tempDomain, "\\");
+                        processXMLContents(formatDomain(tempDomain), formatTable(tempTable));
+                        processXMLContents(formatDomain(tempDomain), tempTable, _empt.getTokenAt(_empt.countTokens() - 1));
                         formatColumn(tempDomain, tempSt4Columns);
                     }
                 }
+            }
+        }
+        if (node.getNodeName().equalsIgnoreCase("sql"))
+        {
+            NodeList children = node.getChildNodes();
+            NamedNodeMap nNamedMap = node.getAttributes();
+            Node attribute = nNamedMap.item(0);
+            for (int i = 0; i < children.getLength(); i++)
+            {
+                hashSQLfromMappings.put(attribute.getNodeValue().toString(), children.item(i).getTextContent());
             }
         }
         NodeList children = node.getChildNodes();
@@ -130,6 +156,11 @@ public class QBParseMappingFile
         //        }
     }
 
+    public Hashtable<String, String> getHashSQLfromMappings()
+    {
+        return hashSQLfromMappings;
+    }
+
     public HashSet<String> getHashTblColumns()
     {
         return hashTblColumnsSet;
@@ -142,6 +173,8 @@ public class QBParseMappingFile
 
     private void processXMLContents(String domainString, String tableString)
     {
+        //EmptyStringTokenizer _empStr = new EmptyStringTokenizer(domainString, "\\");
+        //hdomainString = _empStr.getTokenAt(6).substring(0, 2);
         if (!hashTable.containsKey(domainString))
         {
             ArrayList _tmpAry = new ArrayList();
@@ -155,6 +188,27 @@ public class QBParseMappingFile
                 _tmpAry.add(tableString);
                 hashTable.remove(domainString);
                 hashTable.put(domainString, _tmpAry);
+            }
+        }
+    }
+
+    private void processXMLContents(String domainString, String tableString, String domainvalue)
+    {
+        EmptyStringTokenizer _empStr = new EmptyStringTokenizer(tableString, "\\");
+        tableString = _empStr.getTokenAt(2) + "." + _empStr.getTokenAt(3) + "." + _empStr.getTokenAt(4);
+        if (!hashTableTransform.containsKey(domainString))
+        {
+            ArrayList _tmpAry = new ArrayList();
+            _tmpAry.add(tableString + "~" + domainvalue);
+            hashTableTransform.put(domainString, _tmpAry);
+        } else
+        {
+            ArrayList _tmpAry = hashTableTransform.get(domainString);
+            if (_tmpAry != null && _tmpAry.size() > 0)
+            {
+                _tmpAry.add(tableString + "~" + domainvalue);
+                hashTableTransform.remove(domainString);
+                hashTableTransform.put(domainString, _tmpAry);
             }
         }
     }
@@ -174,12 +228,14 @@ public class QBParseMappingFile
     private void formatColumn(String domain, String str)
     {
         EmptyStringTokenizer _empStr = new EmptyStringTokenizer(str, "\\");
-        hashTblColumnsSet.add(domain + "~" + _empStr.getTokenAt(2) + "." + _empStr.getTokenAt(3) + "~" + _empStr.getTokenAt(4));
+        hashTblColumnsSet.add(formatDomain(domain) + "~" + _empStr.getTokenAt(2) + "." + _empStr.getTokenAt(3) + "~" + _empStr.getTokenAt(4));
     }
 
     public static void main(String args[])
     {
-        QBParseMappingFile _qb = new QBParseMappingFile(new File("c:\\w.map"));
+        QBParseMappingFile _qb = new QBParseMappingFile(new File("c:\\d2.map"));
         System.out.println("value " + _qb.hashTblColumnsSet);
+        System.out.println("transform helper " + _qb.hashTableTransform);
+        System.out.println("SQLs are " + _qb.hashSQLfromMappings);
     }
 }
