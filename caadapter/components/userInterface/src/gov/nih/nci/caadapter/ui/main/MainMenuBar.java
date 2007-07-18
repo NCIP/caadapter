@@ -92,8 +92,8 @@ import javax.swing.JMenuItem;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.4 $ date $Date:
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v1.2 revision $Revision: 1.5 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -242,24 +242,25 @@ public class MainMenuBar extends AbstractMenuBar
 		menuItemMap=Collections.synchronizedMap(new HashMap<String, JMenuItem>());;
 		menuMap=Collections.synchronizedMap(new HashMap<String, JMenu>());;
 		add(constructFileMenu());
-		
+
 		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
-		{	
+		{
 			System.out.println( "query builder activated" );
-			add(constructOpenQueryBuilderMenu());
+			//add(constructOpenQueryBuilderMenu());
+			add(constructPreferenceMenu());
 		} else {
 			System.out.println( "query builder de-activated" );
-		}			
-		
+		}
+
 		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_HELP_MENU_ACTIVATED))
 		{
-			add(constructHelpMenu());	
-			System.out.println( "help menu activated" );		
+			add(constructHelpMenu());
+			System.out.println( "help menu activated" );
 		} else {
 			System.out.println( "help menu de-activated" );
 		}
 		add(constructReportMenu());
-		
+
 //		constructActionMap();
 	}
 
@@ -373,7 +374,7 @@ public class MainMenuBar extends AbstractMenuBar
 
 	private JMenu constructHelpMenu()
 	{
-	
+
 		AboutAction aboutAction = new AboutAction(mainFrame);
 		HelpTopicAction helpTopicAction = new HelpTopicAction(mainFrame);
 
@@ -382,17 +383,17 @@ public class MainMenuBar extends AbstractMenuBar
 
 		JMenuItem helpAboutItem=new JMenuItem(aboutAction);
 		helpMenu.add(helpAboutItem);
-	
-		JMenuItem helpTopicItem=new JMenuItem(helpTopicAction);			 
+
+		JMenuItem helpTopicItem=new JMenuItem(helpTopicAction);
 		helpMenu.add(helpTopicItem); // eric addied
 		actionMap.put(ActionConstants.HELP_TOPIC, helpTopicAction);
-		menuItemMap.put(ActionConstants.HELP_TOPIC, helpTopicItem);			
-				
+		menuItemMap.put(ActionConstants.HELP_TOPIC, helpTopicItem);
+
 		actionMap.put(ActionConstants.ABOUT, aboutAction);
 		menuItemMap.put(ActionConstants.ABOUT, helpAboutItem);
 
 		menuMap.put(MenuConstants.HELP_MENU_NAME, helpMenu);
-		return helpMenu;		
+		return helpMenu;
 	}
 
 	private JMenu constructNewMenu() {
@@ -436,15 +437,15 @@ public class MainMenuBar extends AbstractMenuBar
 
 		return newGroup;
 	}
-	private JMenu constructOpenQueryBuilderMenu(){
-        OpenQueryBuilderAction _qbAction = new   OpenQueryBuilderAction(mainFrame);
-        JMenu _qb = new JMenu("Querybuilder");
-        JMenuItem _menuItem = new JMenuItem(_qbAction);
+  private JMenu constructPreferenceMenu()
+    {
+        OpenPreferenceAction _preference = new OpenPreferenceAction(mainFrame, prefs);
+        JMenu _qb = new JMenu("Tools");
+        JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
-        //_menuItem.setEnabled(fa);
-        return _qb;	
+        return _qb;
     }
-	
+
 	private JMenu constructNewCSVTOV3Menu() {
 		JMenu newGroup = new JMenu("CSV To HL7 v3 Mapping and Transformation Service");
 		NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
@@ -734,6 +735,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.4  2007/06/14 15:43:08  wangeug
+ * HISTORY : fix bug: null point exception to reset menuItem if only not all modules being activated
+ * HISTORY :
  * HISTORY : Revision 1.3  2007/06/13 17:12:41  schroedn
  * HISTORY : added option for checking for help
  * HISTORY :
