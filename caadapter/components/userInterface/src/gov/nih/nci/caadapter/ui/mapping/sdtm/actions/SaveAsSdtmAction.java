@@ -1,8 +1,8 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
-import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
@@ -37,7 +37,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.2 2007-05-10 15:40:52 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.3 2007-07-18 18:12:32 jayannah Exp $";
 
     protected AbstractMappingPanel mappingPanel;
 
@@ -110,27 +110,42 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
         boolean oldChangeValue = mappingPanel.isChanged();
         try
         {
-            BufferedWriter out = new BufferedWriter(new FileWriter(file));
-            out.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-            out.write("<mapping>\n");
-            out.write("  <components>\n");
-            out.write("  \t<component kind=\"SCS\" location=\"" + sdtmMappingGenerator.getScsSDTMFile() + "\"/>\n");
-            out.write("  \t<component kind=\"XML\" location=\"" + sdtmMappingGenerator.getScsDefineXMLFIle() + "\"/>\n");
-            out.write("  </components>\n");
+            StringBuffer out = new StringBuffer();
+            out.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+            out.append("<mapping>\n");
+            out.append("  <components>\n");
+            if (((Database2SDTMMappingPanel) mappingPanel).isConnectDB())
+            {
+                Hashtable params = ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters();
+                //jdbc:oracle:thin:@localhost:1521:XE~oracle.jdbc.OracleDriver~hr~hr
+                String one1 = params.get("URL").toString();
+                String one2 = params.get("Driver").toString();
+                String one3 = params.get("UserID").toString();
+                String one4 = params.get("SCHEMA").toString();
+                String paramString = params.get("URL").toString() + "~" + params.get("Driver").toString() + "~" + params.get("UserID").toString() + "~" + params.get("SCHEMA").toString();
+                out.append("  \t<component kind=\"Database\" param=\"" + paramString + "\"/>\n");
+            } else
+            {
+                out.append("  \t<component kind=\"SCS\" location=\"" + sdtmMappingGenerator.getScsSDTMFile() + "\"/>\n");
+            }
+            out.append("  \t<component kind=\"XML\" location=\"" + sdtmMappingGenerator.getScsDefineXMLFIle() + "\"/>\n");
+            out.append("  </components>\n");
             for (int i = 0; i < sdtmMappingGenerator.results.size(); i++)
             {
-                out.write("  <link>\n");
+                out.append("  <link>\n");
                 StringTokenizer strTk = new StringTokenizer(sdtmMappingGenerator.results.get(i), "~");
-                out.write("  \t<source>");
-                out.write(strTk.nextToken());
-                out.write("</source>\n");
-                out.write("  \t<target>");
-                out.write(strTk.nextToken());
-                out.write("</target>\n");
-                out.write("</link>\n");
+                out.append("  \t<source>");
+                out.append(strTk.nextToken());
+                out.append("</source>\n");
+                out.append("  \t<target>");
+                out.append(strTk.nextToken());
+                out.append("</target>\n");
+                out.append("  </link>\n");
             }
-            out.write("</mapping>");
-            out.close();
+            BufferedWriter out1 = new BufferedWriter(new FileWriter(file));
+            out1.write(out.toString());
+            out1.write("</mapping>");
+            out1.close();
             // clear the change flag.
             mappingPanel.setChanged(false);
             // try to notify affected panels
@@ -140,17 +155,18 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
             if (!alreadySaved)
             {
                 Object[] options = {"Yes", "No"};
-                int n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getAbsolutePath() + " is saved successfully \n Do you want to open the SQL Query builder using the \" " + file.getName() + " \" file", "Open query builder", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-                if (n == 0)
+                int n;
+                if (((Database2SDTMMappingPanel) mappingPanel).isConnectDB())
                 {
-                    //parse the mapping file
-                    OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1));
+                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getAbsolutePath() + " is saved successfully \n Do you want to open the SQL Query builder using the \" " + file.getName() + " \" file", "Open query builder", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+                    if (n == 0)
+                    {
+                        //parse the mapping file
+                        OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), file, out.toString());
+                        ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut().setEnabled(true);
+                    }
+                    alreadySaved = true;
                 }
-                alreadySaved = true;
-            }  else {
-                JOptionPane.showMessageDialog(mappingPanel.getParent(), "To reopen the Query Builder, Please reload the panel after exiting the application");
-
-                //Dialog(mappingPanel.getParent(), " " ,"", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             }
             return true;
         } catch (Throwable e)
@@ -170,10 +186,6 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
                 if (bw != null)
                 {
                     bw.close();
-                    // the output stream will flush and assign the timestamp
-                    // upon closure.
-                    // moved the setSaveFile() call here so as to record the
-                    // right timestamp of last modified.
                 }
                 mappingPanel.setSaveFile(file);
             } catch (Throwable e)
@@ -192,22 +204,17 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
         return retAry;
     }
 
-    public void OpenQueryBuilder(final Hashtable list, final HashSet cols)
+    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out)
     {
-        //        if (_qbFrame != null)
-        //        {
-        //            _qbFrame._jf.setVisible(true);
-        //            //_qbFrame._jf.setAlwaysOnTop(true);
-        //            return;
-        //        }
         final Dialog d = new Dialog(mainFrame, "SQL Query", true);
+        final ArrayList tempArray;
         (new Thread()
         {
             public void run()
             {
                 try
                 {
-                    new MainDataViewerFrame(mainFrame, false, d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters());
+                    new MainDataViewerFrame(mainFrame, false, d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out);
                 } catch (SQLException e)
                 {
                     JOptionPane.showMessageDialog(mainFrame, e.getMessage().toString(), "Could not open the Querybuilder", JOptionPane.ERROR_MESSAGE);

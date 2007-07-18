@@ -20,334 +20,341 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm;
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. <!--
  * LICENSE_TEXT_END -->
  */
+
+import gov.nih.nci.caadapter.sdtm.RDSTransformer;
+import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.EtchedBorder;
-
-import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $
  */
 @SuppressWarnings("serial")
-public class NewSDTMWizard extends JDialog implements ActionListener {
-	String curDir;
+public class NewSDTMWizard extends JDialog implements ActionListener
+{
 
-	String sourceName1 = "";
+    String curDir;
 
-	String reportName1 = "";
+    String sourceName1 = "";
 
-	// main is split into north/center regions
-	JPanel north = new JPanel(new FlowLayout());
+    String reportName1 = "";
 
-	JPanel center = new JPanel(new BorderLayout());
+    // main is split into north/center regions
+    JPanel north = new JPanel(new FlowLayout());
 
-	// BorderLayout panel to hold all JPanels using the Center region
-	JPanel main = new JPanel(new BorderLayout());
+    JPanel center = new JPanel(new BorderLayout());
 
-	JTextArea log = new JTextArea();
+    // BorderLayout panel to hold all JPanels using the Center region
+    JPanel main = new JPanel(new BorderLayout());
 
-	File sourceFile;
+    JTextArea log = new JTextArea();
 
-	File reportFile = new File(reportName1);
+    File sourceFile;
 
-	// declare file area components
-	JLabel sourceLabel1 = new JLabel("Source: ");
+    File reportFile = new File(reportName1);
 
-	JTextField sourceField1 = new JTextField(12);
+    // declare file area components
+    JLabel sourceLabel1 = new JLabel("Source: ");
 
-	JButton sourceBrow1 = new JButton("Browse...");
+    JTextField sourceField1 = new JTextField(12);
 
-	JPanel dirBrowsePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JButton sourceBrow1 = new JButton("Browse...");
 
-	JLabel reportLabel1 = new JLabel("Report: ");
+    JPanel dirBrowsePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-	// JLabel reportLabel1 = new JLabel("Report: ");
-	JTextField reportField1 = new JTextField(12);
+    JLabel reportLabel1 = new JLabel("Report: ");
 
-	JButton reportBrow1 = new JButton("Browse...");
+    // JLabel reportLabel1 = new JLabel("Report: ");
+    JTextField reportField1 = new JTextField(12);
 
-	JPanel hl7MessagePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JButton reportBrow1 = new JButton("Browse...");
 
-	JPanel defineXMLPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel hl7MessagePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-	JPanel fileZone1 = new JPanel(new GridLayout(7, 1, 2, 2));
+    JPanel defineXMLPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-    JPanel fileZone2 = new JPanel(new GridLayout(4,3));
+    JPanel fileZone1 = new JPanel(new GridLayout(7, 1, 2, 2));
+
+    JPanel fileZone2 = new JPanel(new GridLayout(3, 3));
 
     JPanel csvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-	// New fields begin here
-	JButton directoryLocation, hl7MessageFilelocation, hl7csvlocation, defineXMLLocation;
+    // New fields begin here
+    JButton directoryLocation, hl7MessageFilelocation, hl7csvlocation, defineXMLLocation;
 
-	JTextField dirLocTextField, hl7MesLocTextField, hl7csvTextField, defineXMLTextField;
+    JTextField dirLocTextField, hl7MesLocTextField, hl7csvTextField, defineXMLTextField;
 
-	JFileChooser directoryLoc, HL7V24Message, saveCSVLocation, choosedefineXMLLocation;
+    JFileChooser directoryLoc, HL7V24Message, saveCSVLocation, choosedefineXMLLocation;
 
-	JButton process = new JButton("  Transform  ");
+    JButton process = new JButton("  Transform  ");
 
-	JButton cancel = new JButton("   Cancel    ");
+    JButton cancel = new JButton("   Cancel    ");
 
-	// JButton next = new JButton("Next");
-	// JPanel navZone1 = new JPanel(new GridLayout(3, 1, 2, 2));
-	JPanel _bPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    // JButton next = new JButton("Next");
+    // JPanel navZone1 = new JPanel(new GridLayout(3, 1, 2, 2));
+    JPanel _bPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-	JPanel emptyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel emptyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-	File directory, hl7MessageFile, csvSaveFile, defineXMLFile;
+    File directory, hl7MessageFile, csvSaveFile, defineXMLFile;
 
-	String _saveCSV = "";
+    String _saveCSV = "";
 
-	String _defineXML = "";
+    String _defineXML = "";
 
-	/*
-	 * The SCS file that is generated
-	 */
-	String _genSCSFileName = "";
+    java.util.prefs.Preferences prefs;
 
-	AbstractMainFrame callingFrame;
+    /*
+      * The SCS file that is generated
+      */ String _genSCSFileName = "";
 
-	public NewSDTMWizard(AbstractMainFrame _callingFrame) {
-		// super("Create SDTM Structure");
+    AbstractMainFrame callingFrame;
 
+    public NewSDTMWizard(AbstractMainFrame _callingFrame, java.util.prefs.Preferences _prefs)
+    {
+        // super("Create SDTM Structure");
+        this.prefs = _prefs;
         callingFrame = _callingFrame;
-
         Color logColor = new Color(220, 220, 220);
-		setBounds(355, 355, 670, 180);
-		setResizable(false);
-		sourceField1.setEnabled(false);
-		reportField1.setEnabled(false);
-		// sourceField1.setText(sourceName1);
-		reportField1.setText(reportName1);
-		dirBrowsePanel.setBackground(logColor);
-		hl7MessagePanel.setBackground(logColor);
-		csvPanel.setBackground(logColor);
-		/**
-		 * new code begin
-		 */
-		@SuppressWarnings("unused")
-		String _defaultLoc = System.getProperty("user.dir") + "\\workingspace\\examples";
-		directoryLoc = new JFileChooser(_defaultLoc);
-		// directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		HL7V24Message = new JFileChooser(_defaultLoc);
-		directoryLocation = new JButton("Browse..");
-		directoryLocation.addActionListener(this);
-        
+        //setBounds(355, 355, 670, 180);
+        setLocation(255, 355);
+        setResizable(false);
+        sourceField1.setEnabled(false);
+        reportField1.setEnabled(false);
+        // sourceField1.setText(sourceName1);
+        reportField1.setText(reportName1);
+        dirBrowsePanel.setBackground(logColor);
+        hl7MessagePanel.setBackground(logColor);
+        csvPanel.setBackground(logColor);
+        /**
+         * new code begin
+         */
+        @SuppressWarnings("unused") String _defaultLoc = System.getProperty("user.dir") + "\\workingspace\\examples";
+        directoryLoc = new JFileChooser(_defaultLoc);
+        // directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        HL7V24Message = new JFileChooser(_defaultLoc);
+        directoryLocation = new JButton("Browse..");
+        directoryLocation.addActionListener(this);
         dirLocTextField = new JTextField("");
-		dirLocTextField.setColumns(30);
-		JLabel dirLabel = new JLabel("Data File (csv)");
-		JLabel hl7fileLabel = new JLabel("Choose the Map File");
-		JLabel defineXMLfileLabel = new JLabel("Choose the SCS File");
-		JLabel hl7csvfileLabel = new JLabel("Path to save the SDTM TXT file");
-
+        dirLocTextField.setColumns(30);
+        JLabel dirLabel = new JLabel("Data File (csv)");
+        JLabel hl7fileLabel = new JLabel("Choose the Map File");
+        //JLabel defineXMLfileLabel = new JLabel("Choose the SCS File");
+        JLabel hl7csvfileLabel = new JLabel("Path to save the SDTM TXT file");
         fileZone2.add(dirLabel);
-		fileZone2.add(dirLocTextField);
+        fileZone2.add(dirLocTextField);
         directoryLocation.setSize(2, 10);
         fileZone2.add(directoryLocation);
-
-
         hl7MessageFilelocation = new JButton("Browse..");
-		hl7MessageFilelocation.addActionListener(this);
-		hl7MesLocTextField = new JTextField("");
-		defineXMLLocation = new JButton("Browse..");
-		defineXMLLocation.addActionListener(this);
-		defineXMLTextField = new JTextField("");
-		defineXMLTextField.setColumns(30);
-		defineXMLPanel.setBackground(logColor);
-
-        fileZone2.add(defineXMLfileLabel);
-		fileZone2.add(defineXMLTextField);
-		fileZone2.add(defineXMLLocation);
-		hl7csvlocation = new JButton("Browse..");
-		hl7csvlocation.addActionListener(this);
-		hl7csvTextField = new JTextField("");
-		hl7MesLocTextField.setColumns(30);
-		fileZone2.add(hl7fileLabel);
-		fileZone2.add(hl7MesLocTextField);
-		fileZone2.add(hl7MessageFilelocation);
-		saveCSVLocation = new JFileChooser(_defaultLoc);
-		choosedefineXMLLocation = new JFileChooser(_defaultLoc);
-		hl7csvTextField.setColumns(30);
-		fileZone2.add(hl7csvfileLabel);
-		fileZone2.add(hl7csvTextField);
-		fileZone2.add(hl7csvlocation);
-		emptyPanel.setBackground(logColor);
-		//_bPanel.setBackground(logColor);
+        hl7MessageFilelocation.addActionListener(this);
+        hl7MesLocTextField = new JTextField("");
+        defineXMLLocation = new JButton("Browse..");
+        defineXMLLocation.addActionListener(this);
+        defineXMLTextField = new JTextField("");
+        defineXMLTextField.setColumns(30);
+        defineXMLPanel.setBackground(logColor);
+        //fileZone2.add(defineXMLfileLabel);
+        //fileZone2.add(defineXMLTextField);
+        //fileZone2.add(defineXMLLocation);
+        hl7csvlocation = new JButton("Browse..");
+        hl7csvlocation.addActionListener(this);
+        hl7csvTextField = new JTextField("");
+        hl7MesLocTextField.setColumns(30);
+        fileZone2.add(hl7fileLabel);
+        fileZone2.add(hl7MesLocTextField);
+        fileZone2.add(hl7MessageFilelocation);
+        saveCSVLocation = new JFileChooser(_defaultLoc);
+        choosedefineXMLLocation = new JFileChooser(_defaultLoc);
+        hl7csvTextField.setColumns(30);
+        fileZone2.add(hl7csvfileLabel);
+        fileZone2.add(hl7csvTextField);
+        fileZone2.add(hl7csvlocation);
+        emptyPanel.setBackground(logColor);
+        //_bPanel.setBackground(logColor);
         EtchedBorder lineBorder = (EtchedBorder) BorderFactory.createEtchedBorder();
-                //createLineBorder(Color.black);
+        //createLineBorder(Color.black);
         _bPanel.setBorder(lineBorder);
         emptyPanel.add(new JLabel("                                                     "));
-		_bPanel.add(process);
-		process.addActionListener(this);
-		_bPanel.add(new JLabel("    "));
-		setModal(true);
-		setTitle("SDTM Text File");
-		_bPanel.add(cancel);
-		cancel.addActionListener(this);
-		/**
-		 * new code end
-         *
-		 */
-		fileZone1.add(dirBrowsePanel);
-		fileZone1.add(hl7MessagePanel);
-		fileZone1.add(defineXMLPanel);
-		fileZone1.add(csvPanel);
-		fileZone1.add(emptyPanel);
-		fileZone1.add(emptyPanel);
-		fileZone1.add(_bPanel);
-		fileZone1.setBackground(logColor);
+        _bPanel.add(process);
+        process.addActionListener(this);
+        _bPanel.add(new JLabel("    "));
+        setModal(true);
+        setTitle("SDTM Text File");
+        _bPanel.add(cancel);
+        cancel.addActionListener(this);
+        /**
+         * new code end        
+         */
+        fileZone1.add(dirBrowsePanel);
+        fileZone1.add(hl7MessagePanel);
+        fileZone1.add(defineXMLPanel);
+        fileZone1.add(csvPanel);
+        fileZone1.add(emptyPanel);
+        fileZone1.add(emptyPanel);
+        fileZone1.add(_bPanel);
+        fileZone1.setBackground(logColor);
         //fileZone2.add(new JLabel(""));fileZone2.add(process);fileZone2.add(cancel);
         fileZone2.setBorder(new TitledBorder("File Settings"));
-		// fileZone1.setBorder(new TitledBorder("Command"));
-		curDir = System.getProperty("user.dir") + File.separator;
-		javax.swing.JScrollPane s = new javax.swing.JScrollPane();// javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
-		// javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		s.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		s.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		log.add(s);
-		log.setEnabled(false);
-		log.setBorder(new TitledBorder("Log Information"));
-		log.setBackground(logColor);
-		//center.add("Center", _bPanel);
-		main.add("North", fileZone2);
-        main.add("South",_bPanel);
-
+        // fileZone1.setBorder(new TitledBorder("Command"));
+        curDir = System.getProperty("user.dir") + File.separator;
+        javax.swing.JScrollPane s = new javax.swing.JScrollPane();// javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED,
+        // javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        s.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        s.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        log.add(s);
+        log.setEnabled(false);
+        log.setBorder(new TitledBorder("Log Information"));
+        log.setBackground(logColor);
+        main.add("North", fileZone2);
+        main.add("South", _bPanel);
         this.getContentPane().add("Center", main);
-		setVisible(true);
-	}
+        pack();
+        setVisible(true);
+    }
 
-	protected ImageIcon createImageIcon(String icon) {
-		java.net.URL imgURL = getClass().getClassLoader().getResource(icon);
-		if (imgURL != null) {
-			return new ImageIcon(imgURL);
-		} else {
-			System.err.println("Couldn't find file: ");
-			return null;
-		}
-	}
+    protected ImageIcon createImageIcon(String icon)
+    {
+        java.net.URL imgURL = getClass().getClassLoader().getResource(icon);
+        if (imgURL != null)
+        {
+            return new ImageIcon(imgURL);
+        } else
+        {
+            System.err.println("Couldn't find file: ");
+            return null;
+        }
+    }
 
-	public void actionPerformed(ActionEvent e) {
-		String newline = "\n";
-		if (e.getSource() == directoryLocation) {
-			CaadapterFileFilter filter = new CaadapterFileFilter();
-			filter.addExtension("csv");
-			// filter.setDescription("csv");
-			directoryLoc.setFileFilter(filter);
-			int returnVal = directoryLoc.showOpenDialog(NewSDTMWizard.this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				directory = directoryLoc.getSelectedFile();
-				// This is where a real application would open the file.
-				dirLocTextField.setText(directory.getAbsolutePath().toString());
-				dirLocTextField.setEnabled(false);
-			} else {
-				log.append("command cancelled by user." + newline);
-			}
-			log.setCaretPosition(log.getDocument().getLength());
-		} else if (e.getSource() == hl7MessageFilelocation) {
-			CaadapterFileFilter filter = new CaadapterFileFilter();
-			filter.addExtension("map");
-			// filter.setDescription("map");
-			HL7V24Message.setFileFilter(filter);
-			int returnVal = HL7V24Message.showOpenDialog(NewSDTMWizard.this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				hl7MessageFile = HL7V24Message.getSelectedFile();
-				hl7MesLocTextField.setText(hl7MessageFile.getAbsolutePath().toString());
-				hl7MesLocTextField.setEnabled(false);
-			} else {
-				log.append("command cancelled by user." + newline);
-			}
-		} else if (e.getSource() == hl7csvlocation) {
-			String CSVSaveFileName = "";
-			CaadapterFileFilter filter = new CaadapterFileFilter();
-			filter.addExtension("txt");
-			// filter.setDescription("txt");
-			saveCSVLocation.setFileFilter(filter);
-			int returnVal = saveCSVLocation.showSaveDialog(NewSDTMWizard.this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				csvSaveFile = saveCSVLocation.getSelectedFile();
-				// This is where a real application would open the file.
-				if (csvSaveFile != null) {
-					if (csvSaveFile.getAbsolutePath().endsWith("txt")) {
-						CSVSaveFileName = csvSaveFile.getAbsolutePath();
-					} else {
-						CSVSaveFileName = csvSaveFile.getAbsolutePath() + ".txt";
-					}
-				} else {
-					CSVSaveFileName = hl7csvTextField.getText();
-				}
-				_saveCSV = csvSaveFile.getAbsolutePath();
-				hl7csvTextField.setText(CSVSaveFileName);
-				hl7csvTextField.setEnabled(false);
-			} else {
-				log.append("command cancelled by user." + newline);
-			}
-		}
-		if (e.getSource() == defineXMLLocation) {
-			CaadapterFileFilter filter = new CaadapterFileFilter();
-			filter.addExtension("scs");
-			// filter.setDescription("txt");
-			choosedefineXMLLocation.setFileFilter(filter);
-			int returnVal = choosedefineXMLLocation.showOpenDialog(NewSDTMWizard.this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				defineXMLFile = choosedefineXMLLocation.getSelectedFile();
-				_defineXML = defineXMLFile.getAbsolutePath();
-				defineXMLTextField.setText(_defineXML);
-				defineXMLTextField.setEnabled(false);
-			} else {
-				log.append("command cancelled by user." + newline);
-			}
-		} else if (e.getSource() == process) {
-			try {
-				String CSVSaveFileName = "";
-				if (csvSaveFile != null) {
-					if (csvSaveFile.getAbsolutePath().endsWith("txt")) {
-						CSVSaveFileName = csvSaveFile.getAbsolutePath();
-					} else {
-						CSVSaveFileName = csvSaveFile.getAbsolutePath() + ".txt";
-					}
-				} else {
-					CSVSaveFileName = hl7csvTextField.getText();
-				}
-				try {
-					// new SDTMMapFileTransformer(hl7MessageFile.getAbsolutePath().toString(),
-					// directory.getAbsolutePath().toString(), callingFrame, CSVSaveFileName);
-					this.dispose();
-					new SDTMNewTransformer(hl7MessageFile.getAbsolutePath().toString(), directory.getAbsolutePath().toString(), _defineXML, callingFrame, CSVSaveFileName);
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				log.append("Created the \"" + _genSCSFileName + "\" successfully" + newline);
-				log.append("Created the \"" + CSVSaveFileName + "\" successfully" + newline);
-				// scsFilewithPath = "D:\\dev\\caAdapter\\" + _tmp;
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				log.append(e1.getMessage());
-			}
-		} else if (e.getSource() == cancel) {
-			this.dispose();
-		} else if (e.getSource() == directoryLocation) {
-		}
-	}
+    public void actionPerformed(ActionEvent e)
+    {
+        String newline = "\n";
+        if (e.getSource() == directoryLocation)
+        {
+            CaadapterFileFilter filter = new CaadapterFileFilter();
+            filter.addExtension("csv");
+            // filter.setDescription("csv");
+            directoryLoc.setFileFilter(filter);
+            int returnVal = directoryLoc.showOpenDialog(NewSDTMWizard.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                directory = directoryLoc.getSelectedFile();
+                // This is where a real application would open the file.
+                dirLocTextField.setText(directory.getAbsolutePath().toString());
+                dirLocTextField.setEnabled(false);
+            } else
+            {
+                log.append("command cancelled by user." + newline);
+            }
+            log.setCaretPosition(log.getDocument().getLength());
+        } else if (e.getSource() == hl7MessageFilelocation)
+        {
+            CaadapterFileFilter filter = new CaadapterFileFilter();
+            filter.addExtension("map");
+            // filter.setDescription("map");
+            HL7V24Message.setFileFilter(filter);
+            int returnVal = HL7V24Message.showOpenDialog(NewSDTMWizard.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                hl7MessageFile = HL7V24Message.getSelectedFile();
+                hl7MesLocTextField.setText(hl7MessageFile.getAbsolutePath().toString());
+                hl7MesLocTextField.setEnabled(false);
+            } else
+            {
+                log.append("command cancelled by user." + newline);
+            }
+        } else if (e.getSource() == hl7csvlocation)
+        {
+            String CSVSaveFileName = "";
+            CaadapterFileFilter filter = new CaadapterFileFilter();
+            //filter.addExtension("txt");
+            saveCSVLocation.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            // filter.setDescription("txt");
+            //saveCSVLocation.setFileFilter(filter);
+            int returnVal = saveCSVLocation.showOpenDialog(NewSDTMWizard.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                csvSaveFile = saveCSVLocation.getSelectedFile();
+                _saveCSV = csvSaveFile.getAbsolutePath();
+                hl7csvTextField.setText(_saveCSV);
+                hl7csvTextField.setEnabled(false);
+            } else
+            {
+                log.append("command cancelled by user." + newline);
+            }
+        }
+        if (e.getSource() == defineXMLLocation)
+        {
+            CaadapterFileFilter filter = new CaadapterFileFilter();
+            filter.addExtension("scs");
+            // filter.setDescription("txt");
+            choosedefineXMLLocation.setFileFilter(filter);
+            int returnVal = choosedefineXMLLocation.showOpenDialog(NewSDTMWizard.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                defineXMLFile = choosedefineXMLLocation.getSelectedFile();
+                _defineXML = defineXMLFile.getAbsolutePath();
+                defineXMLTextField.setText(_defineXML);
+                defineXMLTextField.setEnabled(false);
+            } else
+            {
+                log.append("command cancelled by user." + newline);
+            }
+        } else if (e.getSource() == process)
+        {
+            try
+            {
+                String CSVSaveFileName = "";
+                if (csvSaveFile != null)
+                {
+                    CSVSaveFileName = hl7csvTextField.getText();
+                }
+                try
+                {
+                    // new SDTMMapFileTransformer(hl7MessageFile.getAbsolutePath().toString(),
+                    // directory.getAbsolutePath().toString(), callingFrame, CSVSaveFileName);
+                    this.dispose();
+                    //new SDTMNewTransformer(hl7MessageFile.getAbsolutePath().toString(), directory.getAbsolutePath().toString(), _defineXML, callingFrame, CSVSaveFileName);
+                    //new SDTMDomainsCSVTransformer(new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _defineXML, _saveCSV);
+                    new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV, prefs);
+                } catch (RuntimeException e1)
+                {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                log.append("Created the \"" + _genSCSFileName + "\" successfully" + newline);
+                log.append("Created the \"" + CSVSaveFileName + "\" successfully" + newline);
+                // scsFilewithPath = "D:\\dev\\caAdapter\\" + _tmp;
+            } catch (Exception e1)
+            {
+                // TODO Auto-generated catch block
+                log.append(e1.getMessage());
+            }
+        } else if (e.getSource() == cancel)
+        {
+            this.dispose();
+        } else if (e.getSource() == directoryLocation)
+        {
+        }
+    }
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			new NewSDTMWizard(null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public static void main(String[] args)
+    {
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            new NewSDTMWizard(null, null);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

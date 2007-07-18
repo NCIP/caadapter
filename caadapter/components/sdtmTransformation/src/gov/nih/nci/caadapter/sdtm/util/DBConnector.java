@@ -1,10 +1,17 @@
 package gov.nih.nci.caadapter.sdtm.util;
 
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+import gov.nih.nci.caadapter.dataviewer.util.GetConnectionSingleton;
+import gov.nih.nci.caadapter.sdtm.meta.QueryBuilderMeta;
+import gov.nih.nci.caadapter.sdtm.meta.QBTableMetaData;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -35,17 +42,15 @@ public class DBConnector
 
     public static ArrayList getSchemaCollection(Hashtable conParam) throws Exception
     {
-        ArrayList<String> _retAry = new ArrayList<String>();
+        ArrayList _retAry = new ArrayList();
         try
         {
-            //URL, Driver, UserID, pwd
             DatabaseMetaData dbmd = getDBConnection(conParam.get("URL").toString(), conParam.get("Driver").toString(), conParam.get("UserID").toString(), conParam.get("PWD").toString()).getMetaData();
             ResultSet rsSchemas = dbmd.getSchemas();
             Object schema;
             while (rsSchemas.next())
             {//big loop begin
                 String _tmp = rsSchemas.getString(1).trim();
-                //if (_ignoreSchemaList.contains(conParam.get("SCHEMA").toString()))
                 if (!(conParam.get("SCHEMA").toString().equalsIgnoreCase(_tmp)))
                     continue;
                 _retAry.add("key" + _tmp);
@@ -57,8 +62,8 @@ public class DBConnector
                     while (rsTables.next())
                     {
                         Entity entity = new Entity((schema == null ? null : schema.toString()), rsTables.getString(3).trim());
-                        //System.out.println("\t\t\ttest002 " + entity.toString());
-                        _retAry.add("tab" + entity.toString());
+                        _retAry.add(new QBTableMetaData(rsTables.getString("TABLE_TYPE"),entity.toString()));
+
                         try
                         {
                             if (schema != null)
@@ -66,11 +71,20 @@ public class DBConnector
                                 ResultSet rsColumns = dbmd.getColumns(null, schema.toString(), entity.toString(), "%");
                                 while (rsColumns.next())
                                 {
-                                    String columnName = rsColumns.getString(4).trim();
-                                    //String typeName = rsColumns.getString(6);
-                                    //int size = rsColumns.getInt(7);
-                                    //System.out.println("col" + columnName);
-                                    _retAry.add("col" + columnName);
+                                    String columnName = rsColumns.getString("COLUMN_NAME");
+                                    String columnType = rsColumns.getString("TYPE_NAME");
+                                    int size = rsColumns.getInt("COLUMN_SIZE");
+                                    int nullable = rsColumns.getInt("NULLABLE");
+                                    boolean state;
+                                    if (nullable == DatabaseMetaData.columnNullable)
+                                    {
+                                        state = true;
+                                    } else
+                                    {
+                                        state = false;
+                                    }
+                                    int position = rsColumns.getInt("ORDINAL_POSITION");
+                                    _retAry.add(new QueryBuilderMeta(columnName, columnType, new Integer(size).toString(), state, new Integer(position).toString()));
                                 }
                                 rsColumns.close();
                             }
@@ -92,15 +106,7 @@ public class DBConnector
 
     public static Connection getDBConnection(String url, String drv, String uid, String pwd) throws Exception
     {
-        try
-        {
-            Class.forName(drv);
-            connection = DriverManager.getConnection(url, uid, pwd);
-            return connection;
-        } catch (Exception e)
-        {
-            throw e;
-        }
+        return GetConnectionSingleton.getConnectionSingletonObject(drv, url, uid, pwd);
     }
 
     public static Connection getConnection() throws SQLException

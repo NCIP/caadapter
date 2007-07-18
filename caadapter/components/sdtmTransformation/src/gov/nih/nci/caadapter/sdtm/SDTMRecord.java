@@ -7,8 +7,8 @@ import java.util.Collections;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $
  */
 public class SDTMRecord
 {
@@ -97,23 +97,6 @@ public class SDTMRecord
 		_tofindMax.add(SUBJID.size());
 		System.out.println("the max is " + Collections.max(_tofindMax));
 		Integer max = Collections.max(_tofindMax);
-		// System.out.println(USUBJID.size());
-		// System.out.println(DM_AGE.size());
-		// System.out.println(DM_AGEU.size());
-		// System.out.println(DM_ARM.size());
-		// System.out.println(DM_ARMCD.size());
-		// System.out.println(DM_BRTHDTC.size());
-		// System.out.println(DM_COUNTRY.size());
-		// System.out.println(DM_DM_TC.size());
-		// System.out.println(DM_INVID.size());
-		// System.out.println(DM_RACE.size());
-		// System.out.println(DM_SEX.size());
-		// System.out.println(DM_RFENDTC.size());
-		// System.out.println(DM_RFSTDTC.size());
-		// System.out.println(DM_SITEID.size());
-		// System.out.println(DOMAIN.size());
-		// System.out.println(STUDYID.size());
-		// System.out.println(SUBJID.size());
 		for (int ii = 0; ii < max.intValue(); ii++) {
 			String a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r;
 			try {

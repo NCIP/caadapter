@@ -2,7 +2,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.2 2007-05-10 15:40:52 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.3 2007-07-18 18:12:32 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,11 +41,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.prefs.Preferences;
 
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $
  */
 public class NewSDTMStructureAction extends AbstractContextAction
 {
@@ -63,13 +64,15 @@ public class NewSDTMStructureAction extends AbstractContextAction
 
     private AbstractMainFrame mainFrame;
 
+    Preferences prefs;
+
     /**
      * Defines an <code>Action</code> object with a default description
      * string and default icon.
      */
-    public NewSDTMStructureAction(AbstractMainFrame mainFrame)
+    public NewSDTMStructureAction(AbstractMainFrame mainFrame, Preferences pref)
     {
-        this(COMMAND_NAME, mainFrame);
+        this(COMMAND_NAME, mainFrame,pref);
         // mainContextManager = cm;
     }
 
@@ -77,19 +80,20 @@ public class NewSDTMStructureAction extends AbstractContextAction
      * Defines an <code>Action</code> object with the specified
      * description string and a default icon.
      */
-    public NewSDTMStructureAction(String name, AbstractMainFrame mainFrame)
+    public NewSDTMStructureAction(String name, AbstractMainFrame mainFrame,Preferences pref)
     {
-        this(name, null, mainFrame);
+        this(name, null, mainFrame,pref);
     }
 
     /**
      * Defines an <code>Action</code> object with the specified
      * description string and a the specified icon.
      */
-    public NewSDTMStructureAction(String name, Icon icon, AbstractMainFrame mainFrame)
+    public NewSDTMStructureAction(String name, Icon icon, AbstractMainFrame mainFrame,Preferences pref)
     {
         super(name, icon);
         this.mainFrame = mainFrame;
+        this.prefs = pref;
         setMnemonic(COMMAND_MNEMONIC);
         setAcceleratorKey(ACCELERATOR_KEY_STROKE);
         setActionCommandType(DESKTOP_ACTION_TYPE);
@@ -107,7 +111,7 @@ public class NewSDTMStructureAction extends AbstractContextAction
      */
     protected boolean doAction(ActionEvent e) throws Exception
     {
-        new NewSDTMWizard(mainFrame);
+        new NewSDTMWizard(mainFrame, prefs);
         setSuccessfullyPerformed(true);
         return isSuccessfullyPerformed();
     }

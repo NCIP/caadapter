@@ -26,7 +26,7 @@ import java.io.File;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.3 $ date $Date: 2007-05-10 15:40:52 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.4 $ date $Date: 2007-07-18 18:12:32 $
  */
 public class OpenSDTMMapAction extends DefaultContextOpenAction
 {
@@ -98,7 +98,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 	 */
 	protected void launchPanel(final ContextManagerClient panel, final File file) 
 	{
-		final Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame, "Test");			
+		final Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame, "Test", true);			
 		// have to add the new tab so as the panel may update its panel title in the tabbed pane.
 		SwingWorker worker = new SwingWorker() {
 			public Object construct()
