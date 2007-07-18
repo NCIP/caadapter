@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.2 2007-06-12 15:57:07 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,8 +42,8 @@ import gov.nih.nci.caadapter.common.util.Config;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-12 15:57:07 $
+ *          revision    $Revision: 1.1 $
+ *          date        $Date: 2007-04-03 16:17:14 $
  */
 public interface ActionConstants
 {
@@ -56,7 +56,6 @@ public interface ActionConstants
 	String NEW_CSV_SPEC_TXT = Config.CSV_MODULE_NAME;
 	String NEW_CSV_SPEC = "New " + NEW_CSV_SPEC_TXT;
 	String NEW_HL7_V3_MESSAGE_TXT = Config.HL7_V3_MESSAGE_MODULE_NAME;
-	String NEW_HL7_V3_TO_CSV= "New "+Config.HL7_V3_TO_CSV_MODULE_NAME;
 	String NEW_HL7_V3_MESSAGE = "New " + NEW_HL7_V3_MESSAGE_TXT;
 	String NEW_HSM_FILE_TXT = Config.HL7_V3_METADATA_MODULE_NAME;
 	String NEW_HSM_FILE = "New " + NEW_HSM_FILE_TXT;
@@ -95,9 +94,6 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
- * HISTORY      : initial loading
- * HISTORY      :
  * HISTORY      : Revision 1.28  2006/12/06 17:54:08  wuye
  * HISTORY      : Updated menu for object model to data model mapping menu
  * HISTORY      :
