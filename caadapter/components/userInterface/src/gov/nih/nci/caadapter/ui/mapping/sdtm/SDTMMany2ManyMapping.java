@@ -249,7 +249,7 @@ public class SDTMMany2ManyMapping
     private CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults)
     {
         CSVSegmentImpl segment = new CSVSegmentImpl(meta);
-        segment.setUUID(meta.getUUID());
+        //segment.setUUID(meta.getUUID());
         // check for validation rule #3
         int metaFields = meta.getFields().size();
         int dataFields = data.length - 1;
@@ -266,7 +266,7 @@ public class SDTMMany2ManyMapping
             CSVFieldMeta csvFieldMeta = fieldMeta.get(i);
             CSVFieldImpl field = new CSVFieldImpl(csvFieldMeta);
             field.setColumn(csvFieldMeta.getColumn());
-            field.setUUID(csvFieldMeta.getUUID());
+           // field.setUUID(csvFieldMeta.getUUID());
             try
             {
                 field.setValue(data[csvFieldMeta.getColumn()]);

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.4 2007-07-18 18:12:32 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.5 2007-07-19 18:51:37 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -51,7 +51,7 @@ import javax.swing.KeyStroke;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
  *          2006/10/03 13:50:47 $
  */
 public class Database2SDTMAction extends AbstractContextAction {

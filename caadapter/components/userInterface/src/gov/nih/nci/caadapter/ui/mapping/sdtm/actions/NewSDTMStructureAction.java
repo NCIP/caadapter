@@ -2,7 +2,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.3 2007-07-18 18:12:32 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.4 2007-07-19 18:51:37 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,7 +46,7 @@ import java.util.prefs.Preferences;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
  */
 public class NewSDTMStructureAction extends AbstractContextAction
 {

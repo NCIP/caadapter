@@ -21,7 +21,6 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm;
  * LICENSE_TEXT_END -->
  */
 
-import gov.nih.nci.caadapter.sdtm.RDSTransformer;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 
@@ -36,7 +35,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener

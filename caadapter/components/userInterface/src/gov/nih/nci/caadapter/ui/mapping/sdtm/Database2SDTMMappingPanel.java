@@ -14,7 +14,7 @@ import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.sdtm.meta.QBTableMetaData;
 import gov.nih.nci.caadapter.sdtm.meta.QueryBuilderMeta;
-import gov.nih.nci.caadapter.sdtm.util.DBConnector;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.DBConnector;
 import gov.nih.nci.caadapter.dataviewer.util.OpenDatabaseConnectionHelper;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -46,6 +46,7 @@ import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ import java.util.prefs.Preferences;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
  */
 
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
@@ -69,7 +70,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.3 2007-07-18 18:12:32 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.4 2007-07-19 18:51:37 jayannah Exp $";
 
     private static final String SELECT_SCS = "Open SCS file...";
 
@@ -328,7 +329,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
                         {
                             connectDB = true;
                             openSCSButton.setEnabled(false);
-                            gov.nih.nci.caadapter.dataviewer.util.OpenDatabaseConnectionHelper _openDatabaseConnectionHelper = new OpenDatabaseConnectionHelper(_mainFrame);
+                            OpenDatabaseConnectionHelper _openDatabaseConnectionHelper = new OpenDatabaseConnectionHelper(_mainFrame);
                             //System.out.println("The connection values are " + _openDatabaseConnectionHelper.getDatabaseConnectionInfo());
                             connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
                             processOpenSourceTree(null, true, true);
@@ -451,7 +452,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         ArrayList ary = null;
         try
         {
-            ary = gov.nih.nci.caadapter.sdtm.util.DBConnector.getSchemaCollection(connectionParameters);
+            ary = DBConnector.getSchemaCollection(connectionParameters);
         } catch (Exception e)
         {
             JOptionPane.showMessageDialog(_mainFrame, "         " + e.getMessage().toString() + "                 ", "Could not connect to Database : " + connectionParameters.get("URL").toString(), JOptionPane.ERROR_MESSAGE);
@@ -782,13 +783,15 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
      */
     protected static ImageIcon createImageIcon(String path)
     {
-        java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
+        //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
+        java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/"+path);
         if (imgURL != null)
         {
+            System.out.println("class.getResource is "+imgURL.toString());
             return new ImageIcon(imgURL);
         } else
         {
-            System.err.println("Couldn't find file: " + path);
+            System.err.println("Couldn't find file: " + imgURL.toString()+" & "+path);
             return null;
         }
     }

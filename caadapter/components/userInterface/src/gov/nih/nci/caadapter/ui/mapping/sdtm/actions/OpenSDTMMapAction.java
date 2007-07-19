@@ -26,7 +26,7 @@ import java.io.File;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.4 $ date $Date: 2007-07-18 18:12:32 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.5 $ date $Date: 2007-07-19 18:51:37 $
  */
 public class OpenSDTMMapAction extends DefaultContextOpenAction
 {

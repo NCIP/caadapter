@@ -6,7 +6,7 @@ import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
 import gov.nih.nci.caadapter.sdtm.ParseSDTMXMLFile;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
-import gov.nih.nci.caadapter.sdtm.util.RDSFixedLenghtInput;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSFixedLenghtInput;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
