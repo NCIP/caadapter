@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date: 2007-05-09 19:44:17 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date: 2007-07-19 18:33:32 $
  */
 public class EmptyStringTokenizer
 {
@@ -88,6 +88,13 @@ public class EmptyStringTokenizer
     public void deleteTokenAt(int _tokenIndex)
     {
         tokens_.remove(_tokenIndex);
+    }
+
+     public String deleteTokenAt(int _tokenIndex, boolean returnVal)
+    {
+        String ret = tokens_.get(_tokenIndex);
+        tokens_.remove(_tokenIndex);
+        return ret;
     }
 
     public String toStringAndRemoveLastSlash()
@@ -179,6 +186,9 @@ public class EmptyStringTokenizer
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2007/05/09 19:44:17  jayannah
+ * HISTORY : added update method
+ * HISTORY :
  * HISTORY : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY : initial loading of common module
  * HISTORY :
