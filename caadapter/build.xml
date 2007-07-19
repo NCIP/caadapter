@@ -27,6 +27,10 @@
 	
 	<property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
 	
+	<!-- Define dataview module properties !-->
+	<property name="dataview.module.home"    value="${basedir}/components/dataviewer"/>
+	<property name="dataview.module.build"    value="${dataview.module.home}/build.xml"/>	
+	
 	<!-- Define common module properties !-->
 	<property name="common.module.home"    value="${basedir}/components/common"/>
 	<property name="common.module.build"   value="${common.module.home}/build.xml"/>
@@ -57,6 +61,7 @@
 				<fileset dir="${common.module.home}/build"/>
 				<fileset dir="${hl7.module.home}/build"/> 
 				<fileset dir="${mms.module.home}/build"/>
+				<fileset dir="${dataview.module.home}/build"/>
 				<fileset dir="${sdtm.module.home}/build"/>
 				<fileset dir="${ui.module.home}/build"/>
 		</copy>
@@ -187,6 +192,7 @@
 			<fileset dir="${common.module.home}/lib"/>
 			<fileset dir="${hl7.module.home}/lib"/> 
 			<fileset dir="${mms.module.home}/lib"/>
+			<fileset dir="${dataview.module.home}/lib"/>
 			<fileset dir="${sdtm.module.home}/lib"/>
 			<fileset dir="${ui.module.home}/lib"/>
 			<fileset dir="${ui.module.home}/../dataviewer/lib"/>
@@ -200,6 +206,7 @@
 		<ant antfile="${common.module.build}" />
 		<ant antfile="${hl7.module.build}" />
 		<ant antfile="${mms.module.build}" />
+		<ant antfile="${dataview.module.build}" />
 		<ant antfile="${sdtm.module.build}" />
 		<ant antfile="${ui.module.build}" />
 		<!-- ant antfile="${ws.module.build}"/ -->
@@ -234,6 +241,7 @@
 		<ant antfile="${common.module.build}" target="init"/>
 		<!--		<ant antfile="${hl7.module.build}" target="init"/> -->
 		<ant antfile="${mms.module.build}" target="init"/>
+		<ant antfile="${dataview.module.build}" target="init"/>
 		<ant antfile="${sdtm.module.build}" target="init"/>
 		<ant antfile="${ui.module.build}" target="init"/>
 		<ant antfile="${ws.module.build}" target="init"/>
@@ -247,6 +255,7 @@
 		<ant antfile="${common.module.build}" target="clean"/>
 		<ant antfile="${hl7.module.build}" target="clean"/> 
 		<ant antfile="${mms.module.build}" target="clean"/>
+		<ant antfile="${dataview.module.build}" target="clean"/>
 		<ant antfile="${sdtm.module.build}" target="clean"/>
 		<ant antfile="${ui.module.build}" target="clean"/>
 		<ant antfile="${ws.module.build}" target="clean"/>
