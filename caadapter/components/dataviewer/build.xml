@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<project name="caadapter.modelMapping" default="build" basedir=".">
+<project name="caadapter.dataviewer" default="build" basedir=".">
 	<description>
 					caAdapter component: Data Viewer	
 		************************************************************************** 
-				 caAdapter ModelMapping module                          
+				 caAdapter Data Viewer module                          
 		************************************************************************** 
 	</description>	
 
