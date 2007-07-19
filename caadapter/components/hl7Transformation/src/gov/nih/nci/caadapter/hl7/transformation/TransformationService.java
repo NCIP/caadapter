@@ -28,14 +28,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-07-17 19:54:09 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-07-19 15:11:15 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.1 2007-07-17 19:54:09 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.2 2007-07-19 15:11:15 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -227,14 +227,17 @@ public class TransformationService
     public static void main(String[] argv) throws Exception {
         long begintime2 = System.currentTimeMillis();
 
-    	TransformationService ts = new TransformationService("D:/Projects/caadapter-gforge-2007-May/tests/150003.map",
-    			"D:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
-    	ts.process();
-    	System.out.println(System.currentTimeMillis()-begintime2);
+       	TransformationService ts = new TransformationService("C:/Projects/caadapter-gforge-2007-May/tests/150003.map",
+		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
+       	ts.process();
+       	System.out.println(System.currentTimeMillis()-begintime2);
     }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/17 19:54:09  wuye
+ * HISTORY      : cvs to HL7 v3 transformation
+ * HISTORY      :
  * HISTORY      :
  */

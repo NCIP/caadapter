@@ -37,8 +37,8 @@ import java.util.Set;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-17 20:01:43 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-19 15:11:16 $
  */
 
 public class MapProcessor {
@@ -181,7 +181,8 @@ public class MapProcessor {
     	}
     	
     	List<XMLElement> xmlElements = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getName(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getName());
-    	xmlElements.get(0).addAttribute("xsi:type", mifAttribute.getDatatype().getName());
+    	if (xmlElements.size() >0)
+    		xmlElements.get(0).addAttribute("xsi:type", mifAttribute.getDatatype().getName());
     	return xmlElements;
     }
 
@@ -215,7 +216,10 @@ public class MapProcessor {
     		Hashtable<String, Attribute> attrs = datatype.getAttributes();
     		for(String attributeName:(Set<String>)(attrs.keySet())) {
         		Attribute attr = attrs.get(attributeName);
-    			
+
+//        		String test = parentXPath+"."+attr.getName();
+//        		System.out.println(test);
+        		
         		boolean isSimple = false;
         		
         		if (attr.getReferenceDatatype() == null) {
@@ -330,7 +334,7 @@ public class MapProcessor {
     	outputpos = Integer.valueOf(scsXmlPath.substring(pos+7, scsXmlPath.length()));
     	String fXmlPath = scsXmlPath.substring(0,pos);
         List<String> inputValues = new ArrayList<String>();
-//        System.out.println(fXmlPath + " -- " +  outputpos);
+        System.out.println(fXmlPath + " -- " +  outputpos);
         FunctionComponent functionComponent = functions.get(fXmlPath);
     	if (functionComponent == null)
     		throw new MappingException("count not find function: " + scsXmlPath, null);

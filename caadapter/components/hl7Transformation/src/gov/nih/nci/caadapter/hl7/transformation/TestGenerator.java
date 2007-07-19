@@ -108,7 +108,7 @@ public class TestGenerator {
 		tg.loadMIF("COCT_MT150003UV03.mif");
 		tg.loadDatatypes();
 		tg.setup(tg.mifClass,tg.mifClass.getName());
-		tg.saveMIFs("D:/projects/caadapter-gforge-2007-May/tests/150003-1.h3s");
+		tg.saveMIFs("C:/projects/caadapter-gforge-2007-May/tests/150003-1.h3s");
 	}
 
 }

@@ -30,8 +30,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-07-17 20:07:23 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-07-19 15:11:16 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -106,34 +106,32 @@ public class MapProcessorHelper {
     }
     protected List<String> preprocess_function(String scsXmlPath) {
     	List<String> strings = new ArrayList<String>();
-    	if (mappings.get(scsXmlPath)!= null) {
-        	int pos = scsXmlPath.lastIndexOf(".output");
-        	String fXmlPath = scsXmlPath.substring(0,pos);
-            FunctionComponent functionComponent = functions.get(fXmlPath);
-        	if (functionComponent == null) return strings;
+    	int pos = scsXmlPath.lastIndexOf(".output");
+    	String fXmlPath = scsXmlPath.substring(0,pos);
+    	FunctionComponent functionComponent = functions.get(fXmlPath);
+    	if (functionComponent == null) return strings;
 
-        	FunctionMeta functionMeta = functionComponent.getMeta();
-        	
-        	// first, is the function a constant?
-        	if (functionMeta.isConstantFunction()) {
-        		return strings;
-        	}
+    	FunctionMeta functionMeta = functionComponent.getMeta();
 
-        	List<ParameterMeta> inputParameterMetas = functionMeta.getInputDefinitionList();
+    	// first, is the function a constant?
+    	if (functionMeta.isConstantFunction()) {
+    		return strings;
+    	}
 
-        	// for each input find it's input value.
-        	for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
-        		ParameterMeta parameterMeta = inputParameterMetas.get(i);
-        		String inputvalue = null;
+    	List<ParameterMeta> inputParameterMetas = functionMeta.getInputDefinitionList();
 
-        		String inputData = mappings.get("function."+functionComponent.getId()+"."+"input"+i);
-        		if (inputData.startsWith("function.")) { //function mapping to target
-        			strings.addAll(preprocess_function(inputData));
-        		}
-        		else { //direct mapping from source to target
-        			strings.add(inputData);
-        		}
-        	}
+    	// for each input find it's input value.
+    	for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
+    		ParameterMeta parameterMeta = inputParameterMetas.get(i);
+    		String inputvalue = null;
+
+    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"input"+i);
+    		if (inputData.startsWith("function.")) { //function mapping to target
+    			strings.addAll(preprocess_function(inputData));
+    		}
+    		else { //direct mapping from source to target
+    			strings.add(inputData);
+    		}
     	}
     	return strings;
     }
@@ -148,8 +146,12 @@ public class MapProcessorHelper {
     	for(String attributeName:(Set<String>)(datatype.getAttributes().keySet())) {
     		
     		Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
-//    		System.out.println("proattr:"+attr.getName());
+    		System.out.println("proattr:"+attr.getName());
     		boolean isSimple = false;
+    		
+    		String test = parentXPath+"."+attr.getName();
+    		System.out.println(test);
+
     		
     		if (attr.getReferenceDatatype() == null) {
     			isSimple = true;
@@ -164,7 +166,8 @@ public class MapProcessorHelper {
     				List<String> strings = new ArrayList<String>();
     				boolean isFuncation = true;
     				if (newcsvField.startsWith("function.")) {
-    					strings.addAll(preprocess_function(newcsvField));
+    					strings.add(findCommonParent(preprocess_function(newcsvField)));
+    					
     				}
     				else {
     					strings.add(newcsvField.substring(0, newcsvField.lastIndexOf('.')));
