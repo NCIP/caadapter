@@ -73,6 +73,7 @@ public class QBAddButtons
             imageURL = MainDataViewerFrame.class.getResource(imgLocation);
         } catch (Exception e)
         {
+            System.out.println("Unable to find image "+imageName);
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
         }
         //Create and initialize the button.

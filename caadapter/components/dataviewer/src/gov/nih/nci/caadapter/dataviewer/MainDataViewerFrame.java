@@ -5,7 +5,7 @@ import gov.nih.nci.caadapter.dataviewer.util.QBAddButtons;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
 import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.dataviewer.util.SDTMDomainLookUp;
-import gov.nih.nci.caadapter.sdtm.util.OpenDatabaseConnectionHelper;
+import gov.nih.nci.caadapter.dataviewer.util.OpenDatabaseConnectionHelper;
 import nickyb.sqleonardo.environment.Preferences;
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
