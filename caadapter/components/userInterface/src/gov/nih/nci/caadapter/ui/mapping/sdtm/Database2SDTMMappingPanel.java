@@ -62,7 +62,7 @@ import java.util.prefs.Preferences;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $
  */
 
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
@@ -70,7 +70,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.4 2007-07-19 18:51:37 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.5 2007-07-20 15:06:42 jayannah Exp $";
 
     private static final String SELECT_SCS = "Open SCS file...";
 
@@ -787,7 +787,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/"+path);
         if (imgURL != null)
         {
-            System.out.println("class.getResource is "+imgURL.toString());
+            //System.out.println("class.getResource is "+imgURL.toString());
             return new ImageIcon(imgURL);
         } else
         {
