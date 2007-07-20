@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.2 2007-07-20 17:05:02 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,6 +39,8 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
+import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.context.DefaultContextManagerClientPanel;
@@ -47,7 +49,7 @@ import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
 import gov.nih.nci.caadapter.ui.common.nodeloader.HL7V3MessageLoader;
 import gov.nih.nci.caadapter.ui.hl7message.actions.RegenerateHL7V3MessageAction;
-
+import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import javax.swing.*;
 
 import java.awt.*;
@@ -66,8 +68,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:33:17 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-20 17:05:02 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -363,6 +365,16 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private ValidatorResults processFiles(File dataFile, File mapFile) throws Exception
 	{
     	ValidatorResults validatorResults = null;
+		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
+		svc.process(null);
+		this.setMessageText(svc.getMsgGenerated());
+		TransformationService ts=new TransformationService(mapFile, dataFile);
+		List<XMLElement> xmlElements =ts.process();
+		if (xmlElements.size()>0)
+		{
+			XMLElement xmlElement=(XMLElement)xmlElements.get(0);
+			this.setMessageText(""+xmlElement.toXML());
+		}
 //		HL7MessageGenerationController controler = new HL7MessageGenerationController(this, dataFile,  mapFile);
 //		validatorResults=controler.process();
 //		if( !validatorResults.hasFatal() )
@@ -541,6 +553,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.29  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

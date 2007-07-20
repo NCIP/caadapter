@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.4 2007-07-18 20:41:44 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.5 2007-07-20 17:03:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,34 +52,35 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.CSVMetaLookup;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
+import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
-import gov.nih.nci.caadapter.common.function.*;
+import gov.nih.nci.caadapter.common.function.FunctionConstant;
+import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
+import gov.nih.nci.caadapter.common.function.FunctionMetaLookup;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-//import gov.nih.nci.caadapter.hl7.clone.meta.CloneMetaLookup;
-//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
-//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaFileParser;
-//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaLookup;
-//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaParserImpl;
-//import gov.nih.nci.caadapter.hl7.database.meta.DatabaseMeta;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
 import gov.nih.nci.caadapter.hl7.map.MappingResult;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
 //import gov.nih.nci.caadapter.hl7.validation.MapValidator;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Hashtable;
 
 /**
@@ -87,21 +88,20 @@ import java.util.Hashtable;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-07-18 20:41:44 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2007-07-20 17:03:58 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.4 2007-07-18 20:41:44 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.5 2007-07-20 17:03:58 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
     private String mapfiledir;
 
     public MappingResult parse(String mapfiledirectory, FileReader metafile)
-//        throws MappingException {
     {
         this.mapping = new MappingImpl();
         this.mapfiledir = mapfiledirectory;
@@ -149,15 +149,34 @@ public class MapParserImpl {
                     component.setFile(scmFile);
 
                 } else if (Config.HL7_V3_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
-                	System.out.println("MapParserImpl.processComponents()...HL7v3MIF file loacation:"+cComponent.getLocation());
+//                	System.out.println("MapParserImpl.processComponents()...HL7v3MIF file loacation:"+cComponent.getLocation());
                     File hsmFile = FileUtil.fileLocate(mapfiledir, (String) cComponent.getLocation());
                     component = new BaseComponent();
                     component.setType(cComponent.getType());
-                    component.setXmlPath(getCastorComponentXmlPath(cComponent));//cComponent.getXmlPath());
+                    component.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));//cComponent.getXmlPath());
                     component.setKind(kind);
                     component.setFile(hsmFile);
-                    System.out.println("MapParserImpl.processComponents()...componentLookupTable put:"+component.getXmlPath());
-                    componentLookupTable.put(component.getXmlPath(), component);
+                    MIFClass srcMif;
+                    //read mifclass
+                    FileInputStream fis;
+        			try {
+        				fis = new FileInputStream ((File)hsmFile);
+        				ObjectInputStream ois = new ObjectInputStream(fis);
+        				srcMif = (MIFClass)ois.readObject();
+        	    		ois.close();
+        	    		fis.close();
+        	    		component.setMeta(srcMif);
+        	    		metaLookupTable.put(component.getKind(), new MifMetaLookup(srcMif));
+        			} catch (FileNotFoundException e) {
+        				// TODO Auto-generated catch block
+        				Log.logException(this, e);
+        			} catch (IOException e) {
+        				// TODO Auto-generated catch block
+        				Log.logException(this, e);
+        			} catch (ClassNotFoundException e) {
+        				// TODO Auto-generated catch block
+        				Log.logException(this, e);
+        			}
                 } 
                 else if (Config.FUNCTION_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
                     component = generateFunctionComponent(cComponent, kind);
@@ -167,13 +186,13 @@ public class MapParserImpl {
                 // set the component in the Mapping Object.
                 // type = "source" OR "target"
                 String type = cComponent.getType();
-                if ("source".equalsIgnoreCase(type)) {
+                if (Config.MAP_COMPONENT_SOURCE_TYPE.equalsIgnoreCase(type)) {
                     if (mapping.getSourceComponent() != null) {
                         throw new MappingException("Two Source Components Found!", null);
                     } else {
                         mapping.setSourceComponent(component);
                     }
-                } else if ("target".equalsIgnoreCase(type)) {
+                } else if (Config.MAP_COMPONENT_TARGET_TYPE.equalsIgnoreCase(type)) {
                     if (mapping.getTargetComponent() != null) {
                         throw new MappingException("Two Target Components Found!", null);
                     } else {
@@ -184,37 +203,22 @@ public class MapParserImpl {
                 } else {
                     throw new MappingException("Component type not understood : " + type, null);
                 }
+                componentLookupTable.put(BaseMapElementImpl.getCastorComponentID(cComponent), component);
             }
         } catch (FileNotFoundException e) {
             throw new MappingException("Error in MapParser, File not found", e);
-        }
-
+        }      
     }
 
-    private String getCastorComponentXmlPath(C_component cc)
-    {
-    	StringBuffer rtnSb=new StringBuffer(cc.getType());
-    	rtnSb.append("."+cc.getKind());
-    	
-    	if (cc.getName()!=null&&!cc.getName().equals(""))
-    		rtnSb.append("."+cc.getName());
-    	if (cc.getGroup()!=null&&!cc.getGroup().equals(""))
-    		rtnSb.append("."+cc.getGroup());
-    	if (cc.getId()!=0)
-    		rtnSb.append("."+cc.getId());
-    	
-    	if (cc.getLocation()!=null&&!cc.getLocation().equals(""))
-    		rtnSb.append("."+cc.getLocation());  	
-    	
-    	return rtnSb.toString();
-    }
+   
+     
     /**
      * A method to assist with processComponents()
      */
     private BaseComponent generateCsvComponent(C_component cComponent, String kind) throws MappingException {
         BaseComponent csvComponent = new BaseComponent();
         csvComponent.setType(cComponent.getType());
-        csvComponent.setXmlPath(getCastorComponentXmlPath(cComponent));
+        csvComponent.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));
 		csvComponent.setKind(kind);
 		try {
             // setup the component.
@@ -225,7 +229,7 @@ public class MapParserImpl {
             CSVMeta meta = csvMetaResult.getCsvMeta();
             csvComponent.setMeta(meta);
             // set it in the lookup table.
-            metaLookupTable.put(csvComponent.getXmlPath(), new CSVMetaLookup(meta));
+            metaLookupTable.put(csvComponent.getKind(), new CSVMetaLookup(meta));
             componentLookupTable.put(csvComponent.getXmlPath(), csvComponent);
         } catch (MetaException e) {
             throw new MappingException(e.getMessage(), e);
@@ -241,9 +245,10 @@ public class MapParserImpl {
      */
     private BaseComponent generateFunctionComponent(C_component cComponent, String kind) throws MappingException {
         FunctionComponent functionComponent = FunctionComponent.getFunctionComponent();//new FunctionComponent();
-        functionComponent.setXmlPath(getCastorComponentXmlPath(cComponent));//cComponent.getXmlPath());
+        functionComponent.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));//cComponent.getXmlPath());
         functionComponent.setType(cComponent.getType());
 		functionComponent.setKind(kind);
+//		functionComponent.setId(cComponent.getId()+"");
 		try {
             FunctionManager f = FunctionManager.getInstance();
             FunctionMeta functionMeta = f.getFunctionMeta(cComponent.getKind(), cComponent.getGroup(), cComponent.getName());
@@ -269,9 +274,11 @@ public class MapParserImpl {
             }
 
             // set it in the lookup table.
-            metaLookupTable.put(functionComponent.getXmlPath(), new FunctionMetaLookup(functionMeta));
-            componentLookupTable.put(functionComponent.getXmlPath(), functionComponent);
-
+            //the function ID is create from Singleton of current application
+            //but the old ID is required to parse "view" and "link" 
+            String lookupKey="function."+cComponent.getId();
+            metaLookupTable.put(lookupKey, new FunctionMetaLookup(functionMeta));
+            componentLookupTable.put(lookupKey, functionComponent);
         } catch (Exception e) {
             throw new MappingException(e.getMessage(), e);
         }
@@ -316,17 +323,34 @@ public class MapParserImpl {
                 Log.logWarning(this, message);
             }else{
             // set the source/target respectively.
-                if (mapElement1.isSource()) {
+            	if (mapElement1.getMetaObject() instanceof CSVFieldMeta)
+            	{
+            		//csv component is always source
                     map.setSourceMapElement(mapElement1);
-                } else {
-                    map.setTargetMapElement(mapElement1);
-                }
-
-                if (mapElement2.isSource()) {
-                    map.setSourceMapElement(mapElement2);
-                } else {
                     map.setTargetMapElement(mapElement2);
                 }
+            	else if (mapElement1.getMetaObject() instanceof FunctionMeta )
+            	{
+            		//function component always is target
+            			map.setSourceMapElement(mapElement2);
+                        map.setTargetMapElement(mapElement1);	
+            	}
+            	else
+            	{
+            		//element1 is MIF element
+	                if (mapElement2.getMetaObject() instanceof FunctionMeta)
+	                {
+	                	//from MIF to function
+	                    map.setSourceMapElement(mapElement1);
+	                    map.setTargetMapElement(mapElement2);
+	                }
+	                else
+	                {
+	                	//from CSV to MIF
+	                	map.setSourceMapElement(mapElement2);
+	                    map.setTargetMapElement(mapElement1);
+	                }
+            	}
                 // log a warning OR add it to the list.
                 if (map.getSourceMapElement() == null || map.getTargetMapElement() == null) {
                     Log.logWarning(this, "Link ignored.  An error occured creating --source: " + cLink.getC_source().getC_linkpointer().getXmlPath()
@@ -342,28 +366,47 @@ public class MapParserImpl {
      */
     private BaseMapElement createBaseMapElement(C_linkpointer cLinkPointer) throws MappingException {
         BaseMapElementImpl baseMapElement = new BaseMapElementImpl();
-        // find the component.
-        BaseComponent baseComponent = componentLookupTable.get(cLinkPointer.getXmlPath());//.getComponentXmlPath());
-        if (baseComponent == null)
-        	throw new MappingException("Error processing link -- component is not found -- (linkKind/dataXmlPath): " + cLinkPointer.getKind() + "/" + cLinkPointer.getXmlPath(), null);
-        // find the metadata object.
+        // find the function component.
+        BaseComponent baseComponent=null;
+        String functionID="";
+        String functionPortID="";
+        if (cLinkPointer.getKind().equalsIgnoreCase(Config.MAP_COMPONENT_FUNCTION_TYPE))
+        {
+        	//build function ID:function.index.portname.index
+        	String fullXmlPath=cLinkPointer.getXmlPath();
+        	//remove port index
+        	functionID=fullXmlPath.substring(0,fullXmlPath.lastIndexOf("."));
+        	//remove port name
+        	functionID=functionID.substring(0,functionID.lastIndexOf("."));
+        	baseComponent=componentLookupTable.get(functionID);
+        	//revmove "fuction.index."
+        	functionPortID=fullXmlPath.substring(functionID.length()+1);
+        }
         MetaLookup metaLookup = metaLookupTable.get(cLinkPointer.getKind());//.getComponentXmlPath());
+        if (metaLookup==null)
+        	metaLookup=metaLookupTable.get(functionID);
         if (metaLookup!=null)
         {
         	MetaObject metaObject = metaLookup.lookup(cLinkPointer.getXmlPath());//.getDataXmlPath());
-	        if (metaObject == null)
+	        if (metaObject==null)
+	        {
+	        	//look up function port
+	        	for(Object metaKey:metaLookup.getAllKeys())
+	        	{
+	        		if (((String)metaKey).indexOf(functionPortID)>-1)
+	        		{
+	        			metaObject=metaLookup.lookup((String)metaKey);
+	        			break;
+	        		}
+	        	}
+	        }
+	        	
+        	if (metaObject == null)
 	            throw new MappingException("Error processing link --meta object is not found --(linkKind/dataXmlPath): " + cLinkPointer.getKind() + "/" + cLinkPointer.getXmlPath(), null);
 	        baseMapElement.setMetaObject(metaObject);
-        }
-        else 
-        {
-        	//find the target treeNode from targetTree
-        	String mappedObjectXmlPath= cLinkPointer.getXmlPath();//.getDataXmlPath();
-        	//mifRootNode
-        	baseMapElement.setXmlPath(mappedObjectXmlPath);
-        }
-        	
-        baseMapElement.setComponent(baseComponent);
+        }        	
+        baseMapElement.setComponent(baseComponent);  
+        baseMapElement.setXmlPath(cLinkPointer.getXmlPath());
         return baseMapElement;
     }
   
@@ -374,9 +417,7 @@ public class MapParserImpl {
             // create it.
             View view = generateView(cView);
             // find the component that it's associated with.
-            BaseComponent baseComponent = componentLookupTable.get("view:"+cView.getComponentId());;//.getComponentXmlPath());
-            if (baseComponent==null)
-            	continue;
+            BaseComponent baseComponent = componentLookupTable.get(cView.getComponentId());;//.getComponentXmlPath());
             // set it.
             if (baseComponent.getView() == null) {
                 baseComponent.setView(view);

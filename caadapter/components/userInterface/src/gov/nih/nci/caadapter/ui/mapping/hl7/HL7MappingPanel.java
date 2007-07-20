@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.1 2007-07-03 19:37:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.2 2007-07-20 17:05:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,6 +53,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.MappingResult;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
@@ -99,13 +100,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:37:25 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-20 17:05:29 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.1 2007-07-03 19:37:25 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.2 2007-07-20 17:05:29 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -305,7 +306,10 @@ public class HL7MappingPanel extends AbstractMappingPanel
 //	        	HSMMapTargetNodeLoader hl7MapTargetNodeLoader = new HSMMapTargetNodeLoader();
 //				nodes = hl7MapTargetNodeLoader.loadData(metaInfo);
 	        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(false);
-	        	nodes = newHsmNodeLoader.loadMappingTargetData(absoluteFile);
+	        	if(metaInfo!=null&&metaInfo instanceof MIFClass)
+	        		nodes=newHsmNodeLoader.loadMappingTargetData(metaInfo);
+	        	else
+	        		nodes = newHsmNodeLoader.loadMappingTargetData(absoluteFile);
 	        }
 	        catch(Throwable e)
 	        {
@@ -314,12 +318,6 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	            return null;
 	        }
 		}
-//		else if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			// generate GUI nodes from object graph.
-//			DBMMapTargetNodeLoader dbmMapTargetNodeLoader = new DBMMapTargetNodeLoader();
-//			nodes = dbmMapTargetNodeLoader.loadData(metaInfo);
-//		}
 		else
 		{
 			throw new ApplicationException("Unknow Source File Extension:" + absoluteFile,
@@ -443,6 +441,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	 */
 	public ValidatorResults processOpenMapFile(File file) throws Exception
 	{
+		System.out.println("HL7MappingPanel.processOpenMapFile()...:"+file.getAbsolutePath());
 		long stTime=System.currentTimeMillis();
 		// parse the file.
 		MapParserImpl parser = new MapParserImpl();
@@ -628,6 +627,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:37:25  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.86  2006/12/19 22:48:40  umkis
  * HISTORY      : Null pointer error protetion
  * HISTORY      :

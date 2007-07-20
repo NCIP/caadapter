@@ -1,6 +1,8 @@
 package gov.nih.nci.caadapter.hl7.datatype;
 
-public abstract class DatatypeBaseObject {
+import gov.nih.nci.caadapter.common.MetaObject;
+
+public abstract class DatatypeBaseObject implements MetaObject{
 
 	private boolean choiceSelected =false;
 
@@ -25,6 +27,11 @@ public abstract class DatatypeBaseObject {
 		return getParentXmlPath()+"."+getNodeXmlName();
 	}
 
+	public void setXmlPath(String xmlPath)
+	{
+		//do nothing, the xmlPath will be dynamically generated
+		//with current node name and its parent xmlPath
+	}
 	public abstract String getNodeXmlName();
 	public abstract String getParentXmlPath();
 	public abstract void setParentXmlPath(String newName);

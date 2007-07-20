@@ -23,11 +23,13 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.SDKMetaData;
+import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseComponentFactory;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
@@ -88,7 +90,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.8 $ date $Date: 2007-07-18 20:42:42 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.9 $ date $Date: 2007-07-20 17:06:42 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -103,7 +105,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.8 2007-07-18 20:42:42 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.9 2007-07-20 17:06:42 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1390,7 +1392,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			BaseMapElement targetMapComp = map.getTargetMapElement();
 			MappableNode sourceNode = null;
 			MappableNode targetNode = null;
-			if ( sourceMapComp.isComponentOfSourceType() ) {
+			if ( sourceMapComp.isComponentOfSourceType() ||sourceMapComp.getMetaObject() instanceof CSVFieldMeta) {
 				sourceNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getMetaObject());
 			} else if ( sourceMapComp.isComponentOfFunctionType() ) {
 				FunctionComponent functionComp = (FunctionComponent) sourceMapComp.getComponent();
@@ -1399,19 +1401,20 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				ParameterMeta paramMeta = (ParameterMeta) sourceMapComp.getMetaObject();
 				sourceNode = functionBoxCell.findPortByParameterMeta(paramMeta);
 				// Log.logInfo(this, "paramMeta is '" + paramMeta.toString() + "',field type:'" + paramMeta.getParameterType() + "'.");
-			} else if ( sourceMapComp.isComponentOfTargetType() ) {// flip back the real source and target
-				if (sourceMapComp.getMetaObject()!=null)
-					targetNode = UIHelper.constructMappableNode(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getMetaObject());
-				else
-					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getXmlPath());
-			} else {
+			} else if ( sourceMapComp.isComponentOfTargetType() 
+					||sourceMapComp.getMetaObject() instanceof DatatypeBaseObject) {// flip back the real source and target
+				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getXmlPath());
+			} 
+			else {
 				if ( sourceMapComp.getComponent() != null ) {
 					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
 				} else {
 					throw new NullPointerException("map's sourceMapComponent has a null component!");
 				}
 			}
-			if ( targetMapComp.isComponentOfSourceType() ) {
+			
+			if ( targetMapComp.isComponentOfSourceType() 
+					||targetMapComp.getMetaObject() instanceof CSVFieldMeta) {
 				sourceNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), targetMapComp.getMetaObject());
 			} else if ( targetMapComp.isComponentOfFunctionType() ) {
 				FunctionComponent functionComp = (FunctionComponent) targetMapComp.getComponent();
@@ -1419,10 +1422,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				FunctionBoxCell functionBoxCell = functionView.getFunctionBoxCell();
 				ParameterMeta paramMeta = (ParameterMeta) targetMapComp.getMetaObject();
 				targetNode = functionBoxCell.findPortByParameterMeta(paramMeta);
-			} else if ( targetMapComp.isComponentOfTargetType() ) {// flip back the real source and target
-				if (targetMapComp.getMetaObject()!=null)
-					targetNode = UIHelper.constructMappableNode(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getMetaObject());
-				else
+			} else if ( targetMapComp.isComponentOfTargetType() 
+					||targetMapComp.getMetaObject() instanceof DatatypeBaseObject)
+			{
 					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
 			} else {
 				if ( sourceMapComp.getComponent() != null ) {
@@ -1451,6 +1453,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.8  2007/07/18 20:42:42  wangeug
+ * HISTORY : create CSV-H7L mapping with mapppingV4.0.xsd
+ * HISTORY :
  * HISTORY : Revision 1.7  2007/07/17 16:19:13  wangeug
  * HISTORY : change UIUID to xmlPath
  * HISTORY :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.4 2007-07-18 20:41:32 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.5 2007-07-20 17:01:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,7 @@
 
 package gov.nih.nci.caadapter.hl7.map.impl;
 
+import gov.nih.nci.caadapter.castor.map.impl.C_component;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
@@ -49,11 +50,11 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.4 $
+ * @version    $Revision: 1.5 $
  */
 public class BaseMapElementImpl implements BaseMapElement{
     private static final String LOGID = "$RCSfile: BaseMapElementImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.4 2007-07-18 20:41:32 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.5 2007-07-20 17:01:19 wangeug Exp $";
 
     private BaseComponent component;
     private MetaObject metaObject;
@@ -191,5 +192,19 @@ public class BaseMapElementImpl implements BaseMapElement{
             return "unknown";
         }
     }
-
+    public static String getCastorComponentID(C_component cc)
+    {
+    	StringBuffer rtnSb=new StringBuffer(cc.getType());
+    	if(!cc.getType().equalsIgnoreCase("function"))
+    	{
+    		rtnSb.append("."+cc.getKind());
+    	
+    		if (cc.getName()!=null&&!cc.getName().equals(""))
+    			rtnSb.append("."+cc.getName());
+    		if (cc.getGroup()!=null&&!cc.getGroup().equals(""))
+    			rtnSb.append("."+cc.getGroup());
+    	}
+   		rtnSb.append("."+cc.getId());	
+    	return rtnSb.toString();
+    }
 }

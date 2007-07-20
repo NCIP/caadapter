@@ -27,15 +27,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-07-19 15:11:15 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-07-20 17:00:20 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.2 2007-07-19 15:11:15 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.3 2007-07-20 17:00:20 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -101,7 +101,7 @@ public class TransformationService
      */
 
     
-    public void process() throws Exception
+    public List process() throws Exception
     {
     	
     	Hashtable mappings = new Hashtable();
@@ -118,7 +118,7 @@ public class TransformationService
         if (!mapParser.getValidatorResults().isValid())
         {	
         	System.out.println("Invalid .map file");
-        	return;
+        	return null;
         }
         
         CSVDataResult csvDataResult = null;
@@ -140,7 +140,7 @@ public class TransformationService
          */
         if (!csvDataValidatorResults.isValid())
         {
-            return;
+            return null;
         }
 
         csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
@@ -159,6 +159,7 @@ public class TransformationService
         	System.out.println("Message:"+xmlElement.toXML());
         }
         System.out.println("total message" + xmlElements.size());
+        return xmlElements;
    }
 
 
@@ -236,6 +237,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/19 15:11:15  wuye
+ * HISTORY      : Fixed the attribute sort problem
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/17 19:54:09  wuye
  * HISTORY      : cvs to HL7 v3 transformation
  * HISTORY      :

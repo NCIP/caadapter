@@ -29,7 +29,7 @@
 			<outputs>
 				<datapoint pos="0" name="dateOut" datatype="string" xmlPath="date.changeFormat.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.DateFunction" method="changeFormat"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.DateFunction" method="changeFormat"/>
 		</function>
         <function name="countDays" xmlPath="date.countDays">
 			<inputs>
@@ -39,7 +39,7 @@
 			<outputs>
 				<datapoint pos="0" name="dayNumber" datatype="int" xmlPath="date.countDays.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.DateFunction" method="countDays"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.DateFunction" method="countDays"/>
 		</function>
     </group>
 	<group name="math" xmlPath="math">
@@ -51,7 +51,7 @@
 			<outputs>
 				<datapoint pos="0" name="Sum" datatype="double" xmlPath="math.Addition.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.MathFunction" method="add"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="add"/>
 		</function>
 		<function name="Subtract" xmlPath="math.Subtract">
 			<inputs>
@@ -61,7 +61,7 @@
 			<outputs>
 				<datapoint pos="0" name="Difference" datatype="double" xmlPath="math.Subtract.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.MathFunction" method="subtract"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="subtract"/>
 		</function>
 		<function name="Multiply" xmlPath="math.Multiply">
 			<inputs>
@@ -71,7 +71,7 @@
 			<outputs>
 				<datapoint pos="0" name="Product" datatype="double" xmlPath="math.Multiply.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.MathFunction" method="multiply"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="multiply"/>
 		</function>
 		<function name="Divide" xmlPath="math.Divide">
 			<inputs>
@@ -81,7 +81,7 @@
 			<outputs>
 				<datapoint pos="0" name="Quotient" datatype="double" xmlPath="math.Divide.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.MathFunction" method="divide"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="divide"/>
 		</function>
 		<function name="Round" xmlPath="math.Round">
 			<inputs>
@@ -91,7 +91,7 @@
 			<outputs>
 				<datapoint pos="0" name="Output" datatype="double" xmlPath="math.Round.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.MathFunction" method="round"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.MathFunction" method="round"/>
 		</function>
 	</group>
 	<group name="string" xmlPath="string">
@@ -103,7 +103,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Concatenate.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="concat"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="concat"/>
 		</function>
 		<function name="Split" xmlPath="string.Split">
 			<inputs>
@@ -114,7 +114,7 @@
 				<datapoint pos="0" name="Result1" datatype="string" xmlPath="string.Split.outputs.0"/>
 				<datapoint pos="1" name="Result2" datatype="string" xmlPath="string.Split.outputs.1"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="split"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="split"/>
 		</function>
 		<function name="Length" xmlPath="string.Length">
 			<inputs>
@@ -123,7 +123,7 @@
 			<outputs>
 				<datapoint pos="0" name="Length" datatype="int" xmlPath="string.Length.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="length"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="length"/>
 		</function>
 		<function name="Substring" xmlPath="string.Substring">
 			<inputs>
@@ -134,7 +134,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Substring.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="substring"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="substring"/>
 		</function>
 		<function name="Trim" xmlPath="string.Trim">
 			<inputs>
@@ -143,7 +143,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Trim.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="trim"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="trim"/>
 		</function>
 		<function name="Replace" xmlPath="string.Replace">
 			<inputs>
@@ -154,7 +154,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Replace.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="replace"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="replace"/>
 		</function>
 		<function name="Instring" xmlPath="string.Instring">
 			<inputs>
@@ -164,7 +164,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="int" xmlPath="string.Instring.outputs.1"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="instring"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="instring"/>
 		</function>
 		<function name="Upper" xmlPath="string.Upper">
 			<inputs>
@@ -173,7 +173,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Upper.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="upper"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="upper"/>
 		</function>
 		<function name="Lower" xmlPath="string.Lower">
 			<inputs>
@@ -182,7 +182,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Lower.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="lower"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="lower"/>
 		</function>
 		<function name="Initcap" xmlPath="string.Initcap">
 			<inputs>
@@ -191,7 +191,7 @@
 			<outputs>
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Initcap.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.StringFunction" method="initcap"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="initcap"/>
 		</function>
 	</group>
     <group name="vocabulary" xmlPath="vocabulary">
@@ -202,7 +202,7 @@
 			<outputs>
 				<datapoint pos="0" name="dataOut" datatype="string" xmlPath="vocabulary.translateValue.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.FunctionVocabularyMapping" method="translateValue"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping" method="translateValue"/>
 		</function>
         <function name="translateInverseValue" xmlPath="vocabulary.translateInverseValue">
 			<inputs>
@@ -211,7 +211,7 @@
 			<outputs>
 				<datapoint pos="0" name="dataOut" datatype="string" xmlPath="vocabulary.translateInverseValue.outputs.0"/>
 			</outputs>
-			<implementation classname="gov.nih.nci.hl7.function.FunctionVocabularyMapping" method="inverseTranslateValue"/>
+			<implementation classname="gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping" method="inverseTranslateValue"/>
 		</function>
     </group>
 </functions>
