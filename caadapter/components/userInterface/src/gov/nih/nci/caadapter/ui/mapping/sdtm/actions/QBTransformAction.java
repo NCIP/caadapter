@@ -6,11 +6,11 @@ import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
 import gov.nih.nci.caadapter.sdtm.ParseSDTMXMLFile;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
-import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSFixedLenghtInput;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSFixedLenghtInput;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -196,7 +196,15 @@ public class QBTransformAction
                             int position = (new Integer(((ArrayList) tempTable.get(domainName)).indexOf(empt1)));
                             if (fixedLengthRecords.containsKey(empt1))
                             {
-                                _tempArray = implementFixedRec(position, _dataStr, _tempArray, new Integer(fixedLengthRecords.get(empt1).toString()).intValue());
+                                try
+                                {
+                                    _tempArray = implementFixedRec(position, _dataStr, _tempArray, new Integer(fixedLengthRecords.get(empt1).toString()).intValue());
+                                } catch (Exception e)
+                                {
+                                    String runTimePrp = System.getProperty("debug", "false");
+                                    if (new Boolean(runTimePrp))
+                                        System.out.println("Problem for target field \"" + empt1 + "\" at position \"" + position + "\" and date was \"" + _dataStr + "\"");
+                                }
                             } else
                             {
                                 _tempArray.remove(position);
@@ -225,7 +233,7 @@ public class QBTransformAction
         }
     }
 
-    private ArrayList implementFixedRec(int position, String srcData, ArrayList _tempArray, int fixedsize)
+    private ArrayList implementFixedRec(int position, String srcData, ArrayList _tempArray, int fixedsize) throws Exception
     {
         StringBuffer _setSize;
         int finalSize = fixedsize - srcData.length();
@@ -235,11 +243,7 @@ public class QBTransformAction
         {
             _setSize.append(" ");
         }
-        try{
-            _tempArray.add(position - 1, _setSize.toString());
-        } catch (Exception e){
-
-        }
+        _tempArray.add(position - 1, _setSize.toString());
         return _tempArray;
     }
 }
