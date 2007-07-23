@@ -30,8 +30,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-07-19 15:11:16 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2007-07-23 21:48:27 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -125,7 +125,7 @@ public class MapProcessorHelper {
     		ParameterMeta parameterMeta = inputParameterMetas.get(i);
     		String inputvalue = null;
 
-    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"input"+i);
+    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"input"+"."+i);
     		if (inputData.startsWith("function.")) { //function mapping to target
     			strings.addAll(preprocess_function(inputData));
     		}
@@ -146,11 +146,11 @@ public class MapProcessorHelper {
     	for(String attributeName:(Set<String>)(datatype.getAttributes().keySet())) {
     		
     		Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
-    		System.out.println("proattr:"+attr.getName());
+//    		System.out.println("proattr:"+attr.getName());
     		boolean isSimple = false;
     		
     		String test = parentXPath+"."+attr.getName();
-    		System.out.println(test);
+//    		System.out.println(test);
 
     		
     		if (attr.getReferenceDatatype() == null) {
