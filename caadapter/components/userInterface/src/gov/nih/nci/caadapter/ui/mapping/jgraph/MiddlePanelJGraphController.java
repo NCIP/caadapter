@@ -90,7 +90,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.9 $ date $Date: 2007-07-20 17:06:42 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.10 $ date $Date: 2007-07-23 16:14:53 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -105,7 +105,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.9 2007-07-20 17:06:42 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.10 2007-07-23 16:14:53 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -253,6 +253,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	public void setGraphChanged(boolean newValue)
 	{
 		isGraphChanged = newValue;
+		if (isGraphChanged)
+		{
+			//update source and target tree
+			mappingPanel.getTargetScrollPane().repaint();
+			mappingPanel.getSourceScrollPane().repaint();
+		}
 	}
 
 	public boolean isGraphChanged()
@@ -970,7 +976,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			}
 			MappingViewCommonComponent viewComp = new MappingViewCommonComponent(sourceNode, targetNode, sourceCell, targetCell, edge);
 			edge.setUserObject(viewComp);
-			// Log.logInfo(this, "mapped: "+viewComp);
+//			Log.logInfo(this, "mapped: "+viewComp);
 			mappingViewList.add(viewComp);
 			setGraphChanged(true);
 		}
@@ -1453,6 +1459,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.9  2007/07/20 17:06:42  wangeug
+ * HISTORY : integrate Hl7 transformation service
+ * HISTORY :
  * HISTORY : Revision 1.8  2007/07/18 20:42:42  wangeug
  * HISTORY : create CSV-H7L mapping with mapppingV4.0.xsd
  * HISTORY :
