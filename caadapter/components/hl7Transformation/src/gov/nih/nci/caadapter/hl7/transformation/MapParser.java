@@ -36,9 +36,9 @@ import org.jdom.output.XMLOutputter;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-07-18 20:39:14 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-07-23 21:49:06 $
  * @since caAdapter v4.0
  */
 
@@ -128,7 +128,13 @@ public class MapParser {
 	    	String sourceXPath="";
 	    	String targetXPath="";
 	        Element link = (Element) linkElements.get(i);
-	        Element sourceElement = link.getChild("source");
+	        Element sourceElementP = link.getChild("source");
+	        if (sourceElementP == null) {
+	            Message msg = MessageResources.getMessage("MAP18", new Object[]{});
+	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+	            continue;
+	        }
+	        Element sourceElement = sourceElementP.getChild("linkpointer");
 	        if (sourceElement == null) {
 	            Message msg = MessageResources.getMessage("MAP18", new Object[]{});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
@@ -142,7 +148,13 @@ public class MapParser {
 	        	continue;
 	        }
 	        sourceXPath = sourceElement.getAttribute("xpath").getValue();
-	        Element targetElement = link.getChild("target");
+	        Element targetElementP = link.getChild("target");
+	        if (targetElementP == null) {
+	            Message msg = MessageResources.getMessage("MAP19", new Object[]{});
+	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+	            continue;
+	        }
+	        Element targetElement = targetElementP.getChild("linkpointer");	        
 	        if (targetElement == null) {
 	            Message msg = MessageResources.getMessage("MAP19", new Object[]{});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
