@@ -77,8 +77,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.6 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.7 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -351,6 +351,10 @@ public class MainMenuBar extends AbstractMenuBar
             {
                 newGroup.add(constructNewCSVTOV3Menu());
             }
+            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
+			{
+				newGroup.add(constructNewV3TOCSVMenu());
+			} 
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
                 newGroup.add(constructNewV2TOV3Menu());
@@ -430,7 +434,17 @@ public class MainMenuBar extends AbstractMenuBar
         newGroup.add(newHL7V3MessageItem_1);
         return newGroup;
     }
+    private JMenu constructNewV3TOCSVMenu() {
+		JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
+		
+		NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
+		JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
+		actionMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3MessageAction);
+		menuItemMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3ToCSVItem);
 
+		newGroup.add(newHL7V3ToCSVItem);
+		return newGroup;
+	}
     private JMenu constructNewDatabaseTOSDTMMenu()
     {
         NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = new NewCsvSpecificationAction(mainFrame);
@@ -670,6 +684,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.6  2007/07/19 19:36:58  jayannah
+ * HISTORY : Changes for 4.0 release
+ * HISTORY :
  * HISTORY : Revision 1.5  2007/07/18 18:22:09  jayannah
  * HISTORY : changes for preference menu
  * HISTORY :
