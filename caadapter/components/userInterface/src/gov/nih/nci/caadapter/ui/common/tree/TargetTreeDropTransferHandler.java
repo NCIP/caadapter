@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.3 2007-07-05 15:17:33 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.4 2007-07-23 18:47:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,7 +37,7 @@ package gov.nih.nci.caadapter.ui.common.tree;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-//import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
+import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -65,8 +65,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-05 15:17:33 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-23 18:47:54 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -154,69 +154,37 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 	public boolean isDropOk(DropTargetDragEvent e)
 	{
 		Point p = e.getLocation();
-//		System.out.println("e.getTransferable() is of type " + e.getTransferable().getClass().getName());
 		TransferableNode transferableNode = obtainTransferableNode(e);
 		if(transferableNode==null)
-		{
 			return false;
-		}
-//		java.util.List transferredDataList = transferableNode.getSelectionList();
+
 		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path == null)
-		{
 			return false;
-		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
 		if(targetNode instanceof MappableNode)
 		{//only allows node that is not being mapped, that is, target node could only be mapped once.
 			MappableNode mappableNode = (MappableNode) targetNode;
 			if(mappableNode.isMapped())
-			{
 				return false;
-			}
 		}
 		
 		boolean result = false;
 		if(isDataContainsTargetClassObject(transferableNode, DefaultGraphCell.class))
-		{
 			result = true;
-		}
 		else if(isDataContainsTargetClassObject(transferableNode, DefaultSourceTreeNode.class))
 		{
 			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
-//			MapLinkValidator validator = new MapLinkValidator(sourceNode.getUserObject(), targetNode.getUserObject());
-//			ValidatorResults validatorResult = validator.validate();
-//			Object targetUserObject = targetNode.getUserObject();
-//			if(targetUserObject instanceof MetaObject)
-//			{//further validate if the target object itself is mappable or not.
-//				validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
-//			}
-//			result = validatorResult.isValid();
-			//for testing purpose, all non-mapped target node is "true"
-			System.out.println("TargetTreeDropTransferHandler.isDropOk():\nfor testing purpose, all non-mapped target node is \"true\"");
-			result=true;
+			MapLinkValidator validator = new MapLinkValidator(sourceNode.getUserObject(), targetNode.getUserObject());
+			ValidatorResults validatorResult = validator.validate();
+			Object targetUserObject = targetNode.getUserObject();
+			if(targetUserObject instanceof MetaObject)
+			{//further validate if the target object itself is mappable or not.
+				validatorResult.addValidatorResults(MapLinkValidator.isMetaObjectMappable((MetaObject) targetUserObject));
+			}
+			result = validatorResult.isValid();
 		}
-
-//		int size = transferredDataList.size();
-//		for(int i=0; i<size; i++)
-//		{
-//			Object transferData = transferredDataList.get(i);
-//			/**
-//			 * if node is not null and the transfer data is of type DefaultSourceTreeNode
-//			 */
-//			if (node != null && (transferData instanceof DefaultSourceTreeNode))
-//			{
-//	//            Debug.println("Will Return true!");
-//				result = true;
-//			}
-//			else
-//			{
-//	//            Debug.println("Will Return false!");
-//				result = false;
-//				break;
-//			}
-//		}
 		return result;
 	}
 
@@ -247,13 +215,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path == null)
 		{
-//			System.out.println(this.getClass() + " path is null. cannot find the exact path. Going to find closest path.");
 			path = this.getTree().getClosestPathForLocation(p.x, p.y);
 			if (path == null)
-			{
-//				System.out.println(this.getClass() + " path is null. Even cannot find the closest path. setDropData() will reject drop.");
 				return false;
-			}
 		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 		try
@@ -397,6 +361,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/05 15:17:33  wangeug
+ * HISTORY      : initila loading hl7 code without "clone"
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/03 19:31:34  wangeug
  * HISTORY      : initila loading hl7 code without "clone"
  * HISTORY      :

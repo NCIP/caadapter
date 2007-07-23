@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.3 2007-07-09 20:14:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.4 2007-07-23 18:48:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,7 +34,11 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
@@ -53,8 +57,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-09 20:14:34 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-23 18:48:11 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -100,6 +104,60 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 			returnValue.setEnabled(nodeBase.isEnabled());
 			if (!nodeBase.isEnabled())
 				returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
+			String treeCellText=nodeBase.getName();	
+			
+			if(nodeBase instanceof MIFAttribute)
+			{
+				MIFAttribute mifAttr=(MIFAttribute)nodeBase;
+				if(mifAttr.getMultiplicityIndex()>0)
+					treeCellText=treeCellText+"  ["+(mifAttr.getMultiplicityIndex()+1) +"]";
+				else
+				{
+					if (mifAttr.getMaximumMultiplicity()!=1)
+					{
+						Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
+						MIFClass parentMIFClass=null;
+						if (parentObj instanceof MIFClass)
+							parentMIFClass=(MIFClass)parentObj;
+						else if (parentObj instanceof MIFAssociation )
+						{
+							MIFAssociation mifAssc=(MIFAssociation)parentObj;
+							parentMIFClass=mifAssc.getMifClass();
+						}
+						int attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+						
+						if (attrMultiplicity!=1)
+							treeCellText=treeCellText +"  [1]";
+					}
+ 
+				}			
+			}
+			else if(nodeBase instanceof MIFAssociation)
+			{
+				MIFAssociation mifAssc=(MIFAssociation)nodeBase;
+				if (mifAssc.getMultiplicityIndex()>0)
+					treeCellText=treeCellText+ "  ["+(mifAssc.getMultiplicityIndex()+1) +"]";
+				else
+				{
+					if (mifAssc.getMaximumMultiplicity()!=1)
+					{
+						Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
+						MIFClass parentMIFClass=null;
+						if (parentObj instanceof MIFClass)
+							parentMIFClass=(MIFClass)parentObj;
+						else if (parentObj instanceof MIFAssociation )
+						{
+							MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
+							parentMIFClass=parentMifAssc.getMifClass();//.getReferencedMifClass();
+						}
+						
+						int asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+						if (asscMultiplicity!=1)
+							treeCellText=treeCellText+"  [1]";
+					}					
+				}
+			}
+			setText(treeCellText);	
 		}
 		return returnValue;
 	}
