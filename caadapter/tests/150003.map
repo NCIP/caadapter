@@ -13,64 +13,124 @@
    </components>
    <links>
       <link>
-         <source kind="scs" xpath="ORGS.ORG_CODE"/>
-         <target kind="h3s" xpath="Organization.code.code"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.ORG_CODE"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.code.code"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.ORGID.Root"/>
-         <target kind="h3s" xpath="Organization.id.root"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.ORGID.Root"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.id.root"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.ORGID.Extension"/>
-         <target kind="h3s" xpath="Organization.id.extension"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.ORGID.Extension"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.id.extension"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.ORGNM.Name"/>
-         <target kind="h3s" xpath="Organization.name.inlineText"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.ORGNM.Name"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.name.inlineText"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSID.Root"/>
-         <target kind="h3s" xpath="Organization.contactParty.id.root"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSID.Root"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.id.root"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSID.Extension"/>
-         <target kind="h3s" xpath="Organization.contactParty.id.extension"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSID.Extension"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.id.extension"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSAD.Street_1"/>
-         <target kind="function" xpath="function.1.input0"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSAD.Street_1"/>
+         </source>
+         <target>
+         	<linkpointer kind="function" xpath="function.1.input.0"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSAD.Street_2"/>
-         <target kind="function" xpath="function.1.input1"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSAD.Street_2"/>
+         </source>
+         <target>
+         	<linkpointer kind="function" xpath="function.1.input.1"/>
+         </target>
       </link>
       <link>
-         <source kind="funcation" xpath="function.1.output0"/>
-         <target kind="h3s" xpath="Organization.contactParty.addr.streetAddressLine.inlineText"/>
+         <source>
+         	<linkpointer kind="funcation" xpath="function.1.output.0"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.addr.streetAddressLine.inlineText"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSAD.Zip_Code"/>
-         <target kind="h3s" xpath="Organization.contactParty.addr.postalCode.inlineText"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSAD.Zip_Code"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.addr.postalCode.inlineText"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSAD.State"/>
-         <target kind="h3s" xpath="Organization.contactParty.addr.state.inlineText"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSAD.State"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.addr.state.inlineText"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSAD.City"/>
-         <target kind="h3s" xpath="Organization.contactParty.addr.city.inlineText"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSAD.City"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.addr.city.inlineText"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSNM.Last_Name"/>
-         <target kind="h3s" xpath="Organization.contactParty.contactPerson.name.family.inlineText"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSNM.Last_Name"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.contactPerson.name.family.inlineText"/>
+         </target>
       </link>
       <link>
-         <source kind="scs" xpath="ORGS.PERSNM.First_Name"/>
-         <target kind="h3s" xpath="Organization.contactParty.contactPerson.name.given.inlineText"/>
+         <source>
+         	<linkpointer kind="scs" xpath="ORGS.PERSNM.First_Name"/>
+         </source>
+         <target>
+	         <linkpointer kind="h3s" xpath="Organization.contactParty.contactPerson.name.given.inlineText"/>
+	     </target>
       </link>
       <link>
-         <source kind="function" xpath="function.3.output0"/>
-         <target kind="h3s" xpath="Organization.contactParty.addr.use"/>
+         <source>
+         	<linkpointer kind="function" xpath="function.3.output.0"/>
+         </source>
+         <target>
+         	<linkpointer kind="h3s" xpath="Organization.contactParty.addr.use"/>
+         </target>
       </link>
    </links>
    <views>
