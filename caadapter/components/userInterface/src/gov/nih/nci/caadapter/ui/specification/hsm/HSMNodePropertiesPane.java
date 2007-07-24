@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.6 2007-07-10 20:07:49 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.7 2007-07-24 17:43:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,15 +41,12 @@ import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
-import gov.nih.nci.caadapter.common.Cardinality;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
 //import gov.nih.nci.caadapter.hl7.mif.CMETRef;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-//import hl7OrgV3.mif.List;
-//import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
-
+import gov.nih.nci.caadapter.hl7.mif.MIFCardinality;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
@@ -81,10 +78,10 @@ import java.util.List;
  * This class defines the layout and some of data handling of the properties pane resided in HSMPanel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-07-10 20:07:49 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-07-24 17:43:48 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -99,7 +96,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.6 2007-07-10 20:07:49 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.7 2007-07-24 17:43:48 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -412,12 +409,12 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				//userDefaultValue  is editable
 				Attribute dtAttr=(Attribute)userDatatypeObj;
 				elementTypeField.setText("Data Type Field");
-				cardinalityField.setText(new Cardinality(dtAttr.getMin(), dtAttr.getMax()).toString());
+				cardinalityField.setText(new MIFCardinality(dtAttr.getMin(), dtAttr.getMax()).toString());
 				if (dtAttr.isOptional())
 					mandatoryField.setText("N");
 				else
 					mandatoryField.setText("Y");
-				if (DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
+				if (dtAttr.getType()!=null&&DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
 				{
 					dataTypeField.setEditable(true);
 					abstractField.setText("Y"); 
@@ -433,7 +430,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				// dataTypeField is editable if the MIFAttribute is Abstract
 				MIFAttribute mifAttr=(MIFAttribute)userDatatypeObj;
 				elementTypeField.setText("Attribute");
-				cardinalityField.setText(new Cardinality(mifAttr.getMinimumMultiplicity(), mifAttr.getMaximumMultiplicity()).toString());
+				cardinalityField.setText(new MIFCardinality(mifAttr.getMinimumMultiplicity(), mifAttr.getMaximumMultiplicity()).toString());
 				if (mifAttr.isMandatory())
 					mandatoryField.setText("Y");
 				else
@@ -480,7 +477,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				//set 1..1 cardinality to root node
 				if (mifClass.getParentXmlPath()==null)
 				{
-					cardinalityField.setText(new Cardinality(1, 1).toString());
+					cardinalityField.setText(new MIFCardinality(1, 1).toString());
 					mandatoryField.setText("Y");
 				}
 				else
@@ -489,7 +486,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					//find the cardinality from parent association
 					DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)treeNode.getParent();
 					MIFAssociation parentMifAssc=(MIFAssociation)parentNode.getUserObject();
-					cardinalityField.setText(new Cardinality(parentMifAssc.getMaximumMultiplicity(), parentMifAssc.getMaximumMultiplicity()).toString());
+					cardinalityField.setText(new MIFCardinality(parentMifAssc.getMaximumMultiplicity(), parentMifAssc.getMaximumMultiplicity()).toString());
 					if (parentMifAssc.isMandatory())
 						mandatoryField.setText("Y");
 					else
@@ -513,7 +510,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			{
 				MIFAssociation  mifAssc=(MIFAssociation)userDatatypeObj;
 				elementTypeField.setText("Clone");
-				cardinalityField.setText(new Cardinality(mifAssc.getMinimumMultiplicity(), mifAssc.getMaximumMultiplicity()).toString());
+				cardinalityField.setText(new MIFCardinality(mifAssc.getMinimumMultiplicity(), mifAssc.getMaximumMultiplicity()).toString());
 				if (mifAssc.isMandatory())
 					mandatoryField.setText("Y");
 				else
