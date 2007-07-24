@@ -30,8 +30,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-07-23 21:48:27 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2007-07-24 14:38:05 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -82,7 +82,7 @@ public class MapProcessorHelper {
         	
         	List<String> csvSegments = new ArrayList<String>();
         	for(MIFAttribute mifAttribute:attributes) {
-//        		System.out.println("preprocess Attribute:"+mifAttribute.getName());
+        		System.out.println("preprocess Attribute:"+mifAttribute.getName());
         		combine(csvSegments,preprocess_attribute(mifAttribute));
         	}
         	mifClass.setCsvSegments(csvSegments);
@@ -106,7 +106,7 @@ public class MapProcessorHelper {
     }
     protected List<String> preprocess_function(String scsXmlPath) {
     	List<String> strings = new ArrayList<String>();
-    	int pos = scsXmlPath.lastIndexOf(".output");
+    	int pos = scsXmlPath.lastIndexOf(".output.");
     	String fXmlPath = scsXmlPath.substring(0,pos);
     	FunctionComponent functionComponent = functions.get(fXmlPath);
     	if (functionComponent == null) return strings;
@@ -130,7 +130,7 @@ public class MapProcessorHelper {
     			strings.addAll(preprocess_function(inputData));
     		}
     		else { //direct mapping from source to target
-    			strings.add(inputData);
+    			strings.add(inputData.substring(0, inputData.lastIndexOf('.')));
     		}
     	}
     	return strings;
@@ -146,11 +146,11 @@ public class MapProcessorHelper {
     	for(String attributeName:(Set<String>)(datatype.getAttributes().keySet())) {
     		
     		Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
-//    		System.out.println("proattr:"+attr.getName());
+    		System.out.println("proattr:"+attr.getName());
     		boolean isSimple = false;
     		
     		String test = parentXPath+"."+attr.getName();
-//    		System.out.println(test);
+    		System.out.println(test);
 
     		
     		if (attr.getReferenceDatatype() == null) {
@@ -166,7 +166,8 @@ public class MapProcessorHelper {
     				List<String> strings = new ArrayList<String>();
     				boolean isFuncation = true;
     				if (newcsvField.startsWith("function.")) {
-    					strings.add(findCommonParent(preprocess_function(newcsvField)));
+//    					strings.add(findCommonParent(preprocess_function(newcsvField)));
+    					strings.addAll(preprocess_function(newcsvField));
     					
     				}
     				else {

@@ -37,8 +37,8 @@ import java.util.Set;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-23 21:48:47 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-24 14:38:05 $
  */
 
 public class MapProcessor {
@@ -102,7 +102,7 @@ public class MapProcessor {
     		HashSet<MIFAttribute> attributes = mifClass.getAttributes();
 
     		for(MIFAttribute mifAttribute:attributes) {
-//    			System.out.println("attribute.name="+mifAttribute.getName());
+    			System.out.println("attribute.name="+mifAttribute.getName());
     			if (!mifAttribute.isStrutural()) {
     				List<XMLElement> attrXmlElements = processAttribute(mifAttribute ,csvSegment);
     				if (attrXmlElements.size() != 0)
@@ -226,19 +226,22 @@ public class MapProcessor {
     		List<XMLElement> sibXMLElements = new ArrayList<XMLElement>();
     		while (hasMore) {
     			sibXMLElements.add(process_datatype_w_sibling(datatype, csvSegmentList, attrName, parentXPath));
+    			hasMore = false;
     			for (int i=size-1;i>=0;i--) {
     				if (csvSegmentIndex.get(i) < csvSegmentSum.get(i)-1) {
     					hasMore = true;
-    					for (int j = i; j<size; j++) {
-    						int currentIndex = csvSegmentIndex.get(j);
-    						csvSegmentIndex.set(j, currentIndex+1);
-    						csvSegmentList.set(j, allListsCSVSegments.get(j).get(currentIndex+1));
+    					int current = csvSegmentIndex.get(i);
+    					csvSegmentIndex.set(i, current+1);
+						csvSegmentList.set(i, allListsCSVSegments.get(i).get(current+1));
+    					for (int j = i+1; j<size; j++) {
+    						csvSegmentIndex.set(j, 0);
+    						csvSegmentList.set(j, allListsCSVSegments.get(j).get(0));
     					}
     					break;
     				}
     			}
     		}
-    		return NullXMLElement.NULL;
+    		return sibXMLElements;
     	}
     	return process_datatype_wo_sibling(datatype, pCsvSegment, attrName, parentXPath);
     }    	
