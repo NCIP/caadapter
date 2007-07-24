@@ -27,15 +27,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-07-20 17:00:20 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2007-07-24 17:25:48 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.3 2007-07-20 17:00:20 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.4 2007-07-24 17:25:48 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -109,9 +109,11 @@ public class TransformationService
     	/*
     	 * TODO Exception handling here
     	 */
+        long mapbegintime = System.currentTimeMillis();
         MapParser mapParser = new MapParser();
         mappings = mapParser.processOpenMapFile(mapfile);
         funcations = mapParser.getFunctions();
+    	System.out.println("Map Parsing time" + (System.currentTimeMillis()-mapbegintime));
 
         
         
@@ -120,7 +122,7 @@ public class TransformationService
         	System.out.println("Invalid .map file");
         	return null;
         }
-        
+        long csvbegintime = System.currentTimeMillis();
         CSVDataResult csvDataResult = null;
         if (isInputStream) {
         	csvDataResult=parseCsvInputStream(mapParser.getSCSFilename());
@@ -131,7 +133,8 @@ public class TransformationService
         else {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
-
+    	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
+    	
         // parse the datafile, if there are errors.. return.
         final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
 //        prepareValidatorResults.addValidatorResults(csvDataValidatorResults);
@@ -149,10 +152,13 @@ public class TransformationService
         String fullh3sfilepath = FileUtil.filenameLocate(mapfile.getParent(), h3sFilename);
 
         
+        long loadmifbegintime = System.currentTimeMillis();
         
         MIFClass mifClass = loadMIF(fullh3sfilepath);
         
-        MapProcessor mapProcess = new MapProcessor();
+    	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
+
+    	MapProcessor mapProcess = new MapProcessor();
         
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass);
         for(XMLElement xmlElement:xmlElements) {
@@ -228,8 +234,10 @@ public class TransformationService
     public static void main(String[] argv) throws Exception {
         long begintime2 = System.currentTimeMillis();
 
-       	TransformationService ts = new TransformationService("C:/Projects/caadapter-gforge-2007-May/tests/150003.map",
-		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
+//       	TransformationService ts = new TransformationService("C:/Projects/caadapter-gforge-2007-May/tests/150003.map",
+//		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
+       	TransformationService ts = new TransformationService("C:/xmlpathSpec/xmlpath150003.map",
+		"C:/xmlpathSpec/COCT_MT150003.csv");
        	ts.process();
        	System.out.println(System.currentTimeMillis()-begintime2);
     }
@@ -237,6 +245,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/20 17:00:20  wangeug
+ * HISTORY      : integrate Hl7 transformation service
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/19 15:11:15  wuye
  * HISTORY      : Fixed the attribute sort problem
  * HISTORY      :

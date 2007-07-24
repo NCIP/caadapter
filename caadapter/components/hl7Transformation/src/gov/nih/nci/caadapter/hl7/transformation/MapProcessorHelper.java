@@ -6,6 +6,7 @@
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
+import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
@@ -30,8 +31,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.5 $
- * @date $Date: 2007-07-24 14:38:05 $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2007-07-24 17:24:35 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -54,8 +55,9 @@ public class MapProcessorHelper {
     	
     }
     protected List<String> preprocess_mifclass(MIFClass mifClass, boolean isChoice) {
+		String commonP = "";
 
-//    	System.out.println("Pre process mifClass:"+mifClass.getName());
+		Log.logInfo(this, "Pre process mifClass:"+mifClass.getName());
     	if (isChoice && !mifClass.isChoiceSelected()) return new ArrayList<String>();
 
     	if (mifClass.getChoices().size()>0) { //it's a choice class,
@@ -71,18 +73,32 @@ public class MapProcessorHelper {
         	}
     		if (csvSegments.size() > 0) mifClass.setMapped(true); else  mifClass.setMapped(false);
     		//Something is wrong here, because no choice is selected
-    		mifClass.setCsvSegment(findCommonParent(mifClass.getCsvSegments()));
+    		commonP = findCommonParent(mifClass.getCsvSegments());
+    		
+    		String conceptualMapping = mappings.get(mifClass.getXmlPath());
+    		
+    		if (conceptualMapping == null) {    		
+    			mifClass.setCsvSegment(commonP);
+    		}
+    		else {
+    			if (commonP.contains(conceptualMapping)) mifClass.setCsvSegment(conceptualMapping);
+    			else {
+        			mifClass.setCsvSegment(commonP);
+        			/*
+        			 * Add a warning message
+        			 */
+    			}
+    		}
     		return csvSegments;
     	}
     	else {
-    		String commonP = "";
         	HashSet<MIFAttribute> attributes = mifClass.getAttributes();
         	
         	boolean isMapped = false;
         	
         	List<String> csvSegments = new ArrayList<String>();
         	for(MIFAttribute mifAttribute:attributes) {
-        		System.out.println("preprocess Attribute:"+mifAttribute.getName());
+        		Log.logInfo(this,"preprocess Attribute:"+mifAttribute.getName());
         		combine(csvSegments,preprocess_attribute(mifAttribute));
         	}
         	mifClass.setCsvSegments(csvSegments);
@@ -95,18 +111,32 @@ public class MapProcessorHelper {
         	for(MIFAssociation mifAssociation : associations) {
         		List<String> csvAssocSegments = preprocess_association(mifAssociation);
         		isMapped = isMapped || (csvAssocSegments.size()>0);
-//            	System.out.println("commonP" + commonP);
         		commonP = findCommonParent(commonP, csvAssocSegments);
         	}
         	mifClass.setMapped(isMapped);
-        	mifClass.setCsvSegment(commonP);
-//        	System.out.println("commonP" + commonP);
-        	return mifClass.getCsvSegments();
+        	String conceptualMapping = mappings.get(mifClass.getXmlPath());
+    		
+    		if (conceptualMapping == null) {    		
+    			mifClass.setCsvSegment(commonP);
+    		}
+    		else {
+    			if (commonP.contains(conceptualMapping)) mifClass.setCsvSegment(conceptualMapping);
+    			else {
+        			mifClass.setCsvSegment(commonP);
+        			/*
+        			 * Add a warning message
+        			 */
+    			}
+    		}
+
+    		
+    		return mifClass.getCsvSegments();
     	}
     }
     protected List<String> preprocess_function(String scsXmlPath) {
     	List<String> strings = new ArrayList<String>();
-    	int pos = scsXmlPath.lastIndexOf(".output.");
+    	int pos = scsXmlPath.lastIndexOf(".outputs.");
+//    	System.out.println("--"+scsXmlPath);
     	String fXmlPath = scsXmlPath.substring(0,pos);
     	FunctionComponent functionComponent = functions.get(fXmlPath);
     	if (functionComponent == null) return strings;
@@ -125,7 +155,7 @@ public class MapProcessorHelper {
     		ParameterMeta parameterMeta = inputParameterMetas.get(i);
     		String inputvalue = null;
 
-    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"input"+"."+i);
+    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
     		if (inputData.startsWith("function.")) { //function mapping to target
     			strings.addAll(preprocess_function(inputData));
     		}
@@ -146,13 +176,11 @@ public class MapProcessorHelper {
     	for(String attributeName:(Set<String>)(datatype.getAttributes().keySet())) {
     		
     		Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
-    		System.out.println("proattr:"+attr.getName());
     		boolean isSimple = false;
     		
-    		String test = parentXPath+"."+attr.getName();
-    		System.out.println(test);
-
-    		
+    		String datatypeattribute = parentXPath+"."+attr.getNodeXmlName();
+    		Log.logWarning(this, "Current datatype string: " + datatypeattribute);
+//    		System.out.println("Current datatype string: " + datatypeattribute);
     		if (attr.getReferenceDatatype() == null) {
     			isSimple = true;
     		}
@@ -162,11 +190,10 @@ public class MapProcessorHelper {
     		if (isSimple) {
     			String newcsvField = mappings.get(parentXPath+"."+attributeName);
     			if (newcsvField!=null) {
-//  				System.out.println("Pre process Attribute:"+parentXPath+"."+attributeName + "-->" + newcsvField);
+    				Log.logDebug(this, "Pre process Datatyep Attribute:"+parentXPath+"."+attributeName + "--> target csv element: " + newcsvField);
     				List<String> strings = new ArrayList<String>();
     				boolean isFuncation = true;
     				if (newcsvField.startsWith("function.")) {
-//    					strings.add(findCommonParent(preprocess_function(newcsvField)));
     					strings.addAll(preprocess_function(newcsvField));
     					
     				}
@@ -227,9 +254,28 @@ public class MapProcessorHelper {
     }
     protected List<String> preprocess_attribute(MIFAttribute mifAttribute) {
     	if (mifAttribute.getDatatype() == null) return new ArrayList<String>(); //Abstract attrbiute
-    	mifAttribute.setCsvSegments(preprocess_datatype(mifAttribute.getDatatype(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getName()));
-//    	System.out.println("Attribute name" + mifAttribute.getName() + "size" + mifAttribute.getCsvSegments().size());
+//    	System.out.println("------------------Attribute name" + mifAttribute.getNodeXmlName());
+    	mifAttribute.setCsvSegments(preprocess_datatype(mifAttribute.getDatatype(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName()));
+//    	System.out.println("Attribute name" + mifAttribute.getNodeXmlName() + "size" + mifAttribute.getCsvSegments().size());
     	if (mifAttribute.getCsvSegments().size() > 0) mifAttribute.setMapped(true); else mifAttribute.setMapped(false);
+
+		String commonP = findCommonParent(mifAttribute.getCsvSegments());
+    	String conceptualMapping = mappings.get(mifAttribute.getXmlPath());
+		
+		if (conceptualMapping == null) {    		
+			mifAttribute.setCsvSegment(commonP);
+		}
+		else {
+			if (commonP.contains(conceptualMapping)) mifAttribute.setCsvSegment(conceptualMapping);
+			else {
+				mifAttribute.setCsvSegment(commonP);
+    			/*
+    			 * Add a warning message
+    			 */
+			}
+		}
+
+    	
     	mifAttribute.setCsvSegment(findCommonParent(mifAttribute.getCsvSegments()));
     	return mifAttribute.getCsvSegments();
     }
@@ -238,7 +284,24 @@ public class MapProcessorHelper {
     	if (mifAssociation.getMifClass()!= null) {
     		mifAssociation.setCsvSegments(preprocess_mifclass(mifAssociation.getMifClass(),false));
     		if (mifAssociation.getCsvSegments().size() >0) mifAssociation.setMapped(true); else mifAssociation.setMapped(false);
-    		mifAssociation.setCsvSegment(findCommonParent(mifAssociation.getCsvSegments()));
+
+  		
+    		String commonP = findCommonParent(mifAssociation.getCsvSegments());
+        	String conceptualMapping = mappings.get(mifAssociation.getXmlPath());
+    		
+    		if (conceptualMapping == null) {    		
+    			mifAssociation.setCsvSegment(commonP);
+    		}
+    		else {
+    			if (commonP.contains(conceptualMapping)) mifAssociation.setCsvSegment(conceptualMapping);
+    			else {
+    				mifAssociation.setCsvSegment(commonP);
+        			/*
+        			 * Add a warning message
+        			 */
+    			}
+    		}
+    		
     		return mifAssociation.getCsvSegments();
     	}
     	return new ArrayList<String>();

@@ -37,8 +37,8 @@ import java.util.Set;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-07-24 14:38:05 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-07-24 17:24:16 $
  */
 
 public class MapProcessor {
@@ -102,7 +102,7 @@ public class MapProcessor {
     		HashSet<MIFAttribute> attributes = mifClass.getAttributes();
 
     		for(MIFAttribute mifAttribute:attributes) {
-    			System.out.println("attribute.name="+mifAttribute.getName());
+//    			System.out.println("attribute.name="+mifAttribute.getName());
     			if (!mifAttribute.isStrutural()) {
     				List<XMLElement> attrXmlElements = processAttribute(mifAttribute ,csvSegment);
     				if (attrXmlElements.size() != 0)
@@ -180,13 +180,13 @@ public class MapProcessor {
     		}
     	}
     	
-    	List<XMLElement> xmlElements = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getName(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getName());
+    	List<XMLElement> xmlElements = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getNodeXmlName(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
     	if (xmlElements.size() >0)
     		xmlElements.get(0).addAttribute("xsi:type", mifAttribute.getDatatype().getName());
     	return xmlElements;
     }
 
-    private List<XMLElement> process_datatype(Datatype datatype, CSVSegment pCsvSegment, String attrName, String parentXPath) throws MappingException ,FunctionException{
+    private List<XMLElement> process_datatype(Datatype datatype, CSVSegment pCsvSegment, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException{
 //    	System.out.println("Process Datatype:"+datatype.getName()+" attribute name"+attrName);
     	
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
@@ -225,7 +225,7 @@ public class MapProcessor {
     		boolean hasMore = true;
     		List<XMLElement> sibXMLElements = new ArrayList<XMLElement>();
     		while (hasMore) {
-    			sibXMLElements.add(process_datatype_w_sibling(datatype, csvSegmentList, attrName, parentXPath));
+    			sibXMLElements.add(process_datatype_w_sibling(datatype, csvSegmentList, attrName, parentXPath, xmlName));
     			hasMore = false;
     			for (int i=size-1;i>=0;i--) {
     				if (csvSegmentIndex.get(i) < csvSegmentSum.get(i)-1) {
@@ -243,11 +243,11 @@ public class MapProcessor {
     		}
     		return sibXMLElements;
     	}
-    	return process_datatype_wo_sibling(datatype, pCsvSegment, attrName, parentXPath);
+    	return process_datatype_wo_sibling(datatype, pCsvSegment, attrName, parentXPath, xmlName);
     }    	
     
 
-    private List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String attrName, String parentXPath) throws MappingException ,FunctionException {
+    private List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException {
 //    	System.out.println("Process Datatype:"+datatype.getName()+" attribute name"+attrName);
     	
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
@@ -260,13 +260,13 @@ public class MapProcessor {
 
     	List<XMLElement> returnValue = new ArrayList<XMLElement>();
     	
-    	returnValue.add(process_datatype_w_sibling(datatype, csvSegments, attrName, parentXPath));
+    	returnValue.add(process_datatype_w_sibling(datatype, csvSegments, attrName, parentXPath, xmlName));
    		return  returnValue;
     }
     	
     
     
-    private List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String attrName, String parentXPath) throws MappingException ,FunctionException{
+    private List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException{
     	
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
 
@@ -275,7 +275,7 @@ public class MapProcessor {
 
     	for(CSVSegment csvSegment:csvSegments) {
 			XMLElement xmlElement = new XMLElement();
-			xmlElement.setName(attrName);
+			xmlElement.setName(xmlName);
     		List<CSVField> csvFields = csvSegment.getFields();
     		Hashtable <String, String> data = new Hashtable<String,String>();
     		for (CSVField csvField:csvFields) {
@@ -298,8 +298,8 @@ public class MapProcessor {
         		}
         		if (isSimple) {
     				
-//    				System.out.println("---------try"+parentXPath+"."+attributeName);
     				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
+//    				System.out.println("---------try"+parentXPath+"."+attributeName + " actualdata:"+scsXmlPath);
     				if (scsXmlPath==null) continue;
     				if (scsXmlPath.startsWith("function.")) { //function mapping to target
     					String datavalue = getFunctionValue(csvSegment,scsXmlPath,data);
@@ -317,7 +317,7 @@ public class MapProcessor {
     				}
     			}
     			else { //complexdatatype
-    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment,attr.getName(),parentXPath+"."+attr.getName());
+    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment,attr.getName(),parentXPath+"."+attr.getName(), xmlName);
     				xmlElement.addChildren(attrsXMLElement);
     			}
     		}
@@ -329,10 +329,10 @@ public class MapProcessor {
     
     
     
-    private XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String attrName, String parentXPath) throws MappingException ,FunctionException{
+    private XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException{
     	
 		XMLElement xmlElement = new XMLElement();
-		xmlElement.setName(attrName);
+		xmlElement.setName(xmlName);
 
 		Hashtable <String, String> data = new Hashtable<String,String>();
     	for(CSVSegment csvSegment:csvSegments) {
@@ -378,7 +378,7 @@ public class MapProcessor {
 				}
 			}
 			else { //complexdatatype
-				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments,attr.getName(),parentXPath+"."+attr.getName());
+				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments,attr.getName(),parentXPath+"."+attr.getName(), xmlName);
 				xmlElement.addChildren(attrsXMLElement);
 			}
 		}
@@ -489,11 +489,11 @@ public class MapProcessor {
     public String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data) throws MappingException ,FunctionException{
     	int outputpos = 0;
     	
-    	int pos = scsXmlPath.lastIndexOf(".output");
-    	outputpos = Integer.valueOf(scsXmlPath.substring(pos+8, scsXmlPath.length()));
+    	int pos = scsXmlPath.lastIndexOf(".outputs.");
+    	outputpos = Integer.valueOf(scsXmlPath.substring(pos+9, scsXmlPath.length()));
     	String fXmlPath = scsXmlPath.substring(0,pos);
         List<String> inputValues = new ArrayList<String>();
-        System.out.println(fXmlPath + " -- " +  outputpos);
+//        System.out.println(fXmlPath + " -- " +  outputpos);
         FunctionComponent functionComponent = functions.get(fXmlPath);
     	if (functionComponent == null)
     		throw new MappingException("count not find function: " + scsXmlPath, null);
@@ -520,7 +520,7 @@ public class MapProcessor {
 //    		if (maps.size() > 1) throw new MappingException("Function must have ONLY one map. " + maps.size() + " found. : " + parameterMeta, null);
 //    		if (maps.size() < 1) throw new MappingException("Function must have one map. Zero found. : " + parameterMeta, null);
 
-    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"input"+"."+i);
+    		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
     		if (inputData.startsWith("function.")) { //function mapping to target
     			inputvalue = getFunctionValue(csvSegments,inputData, data);
     		}

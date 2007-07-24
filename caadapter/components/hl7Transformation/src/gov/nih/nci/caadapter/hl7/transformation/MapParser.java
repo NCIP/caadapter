@@ -37,8 +37,8 @@ import org.jdom.output.XMLOutputter;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-07-23 21:49:06 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2007-07-24 17:23:48 $
  * @since caAdapter v4.0
  */
 
@@ -79,10 +79,10 @@ public class MapParser {
 		    }
 		    for(int i = 0; i< componentList.size();i++)  {
 		    	Element component = componentList.get(i);
-		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("scs")) {
+		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("source")) {
 		    		scsFilename = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
 		    	}
-		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("h3s")) {
+		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("target")) {
 		    		h3sFilename = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
 		    	}
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("function")) {
@@ -144,10 +144,10 @@ public class MapParser {
 	        	continue;
 	        }
 	        
-	        if (sourceElement.getAttribute("xpath") == null) {
+	        if (sourceElement.getAttribute("xmlPath") == null) {
 	        	continue;
 	        }
-	        sourceXPath = sourceElement.getAttribute("xpath").getValue();
+	        sourceXPath = sourceElement.getAttribute("xmlPath").getValue();
 	        Element targetElementP = link.getChild("target");
 	        if (targetElementP == null) {
 	            Message msg = MessageResources.getMessage("MAP19", new Object[]{});
@@ -160,11 +160,11 @@ public class MapParser {
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
 	            continue;
 	        }
-	        if (targetElement.getAttribute("xpath") == null) {
+	        if (targetElement.getAttribute("xmlPath") == null) {
 	        	continue;
 	        }
 	        
-	        targetXPath = targetElement.getAttribute("xpath").getValue();
+	        targetXPath = targetElement.getAttribute("xmlPath").getValue();
 	        if (targetElement.getAttribute("kind") == null) {
 	        	continue;
 	        }
