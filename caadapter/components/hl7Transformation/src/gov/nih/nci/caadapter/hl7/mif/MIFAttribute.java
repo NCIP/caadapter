@@ -18,8 +18,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-17 19:55:53 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2007-07-24 18:19:11 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -45,6 +45,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private boolean strutural;
 	private boolean optionChosen = false;
 	private String parentXmlPath;
+	private boolean enabled = false;
 	private Datatype datatype;
 	private Datatype concreteDatatype;
 	private boolean mapped;
@@ -349,12 +350,14 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return true;
+		return enabled;
 	}
 	@Override
-	public void setEnabled(boolean enable) {
+	public void setEnabled(boolean value) {
 		// TODO Auto-generated method stub
-		
+		enabled=value;
+		if (getDatatype()!=null)
+			getDatatype().setEnabled(value);
 	}
 	public Datatype getConcreteDatatype() {
 		return concreteDatatype;

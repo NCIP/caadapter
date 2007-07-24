@@ -8,10 +8,10 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-07-17 20:05:33 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-07-24 18:19:22 $
  */
 
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -38,7 +38,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private String parents;
 	private boolean optionChosen = false;
 	private String parentXmlPath;
-	private boolean enabled = true;
+	private boolean enabled = false;
 
 	private List<String> csvSegments;
 	private String csvSegment;
