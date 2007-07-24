@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.2 2007-07-20 17:05:02 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.3 2007-07-24 18:20:20 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -68,8 +68,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-20 17:05:02 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-24 18:20:20 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -365,9 +365,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private ValidatorResults processFiles(File dataFile, File mapFile) throws Exception
 	{
     	ValidatorResults validatorResults = null;
-		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
-		svc.process(null);
-		this.setMessageText(svc.getMsgGenerated());
+//		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
+//		svc.process(null);
+//		this.setMessageText(svc.getMsgGenerated());
 		TransformationService ts=new TransformationService(mapFile, dataFile);
 		List<XMLElement> xmlElements =ts.process();
 		if (xmlElements.size()>0)
@@ -553,6 +553,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/20 17:05:02  wangeug
+ * HISTORY      : integrate Hl7 transformation service
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
  * HISTORY      : initila loading
  * HISTORY      :
