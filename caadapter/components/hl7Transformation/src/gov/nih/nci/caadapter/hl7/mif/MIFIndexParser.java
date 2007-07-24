@@ -88,9 +88,10 @@ public class MIFIndexParser {
 		os.close();
 	}
 
-	public  static MIFIndex loadMIFInofs() throws Exception {
+	public  static MIFIndex loadMIFInfos() throws Exception {
 		InputStream is = Thread.currentThread().getClass().getResourceAsStream("/mifIndexInfos");
-		ObjectInputStream ois = new ObjectInputStream(is);
+        if (is == null) throw new Exception("Loading MIF information failure : ");
+        ObjectInputStream ois = new ObjectInputStream(is);
 		MIFIndex mifIndex = (MIFIndex)ois.readObject();
 		ois.close();
 		is.close();
@@ -103,7 +104,7 @@ public class MIFIndexParser {
 //		MIFIndex mifIndexInfos=mifInfoParser.readMIFIndexInfo();
 //		mifInfoParser.saveMIFIndex("c:/temp/mifIndexInfos",mifIndexInfos);
 
-		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInofs();
+		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfos();
 		
 		mifInfoParser.printMIFIndex(mifIndexInfos);
 	}

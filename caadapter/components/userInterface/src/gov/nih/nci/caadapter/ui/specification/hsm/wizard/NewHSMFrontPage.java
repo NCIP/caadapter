@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.3 2007-07-24 16:40:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,10 +50,10 @@ import java.util.Set;
 /**
  * Define the first page in the open wizard.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.2 $
- * date        $Date: 2007-07-03 20:19:34 $
+ * revision    $Revision: 1.3 $
+ * date        $Date: 2007-07-24 16:40:30 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -68,7 +68,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.2 2007-07-03 20:19:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.3 2007-07-24 16:40:30 umkis Exp $";
 
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
@@ -101,7 +101,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 
 		//		hl7MessageTypeComboBox = new JComboBox(CaadapterUtil.getAllSupportedMessageTypes());
 		try {
-			mifIndex =MIFIndexParser.loadMIFInofs();
+			mifIndex =MIFIndexParser.loadMIFInfos();
 			hl7MessageTypeComboBox=new JComboBox();
 			hl7MessageTypeComboBox.setEnabled(false);
 			hl7MessageCategoryComboBox = new JComboBox(mifIndex.getMessageCategory().toArray());
