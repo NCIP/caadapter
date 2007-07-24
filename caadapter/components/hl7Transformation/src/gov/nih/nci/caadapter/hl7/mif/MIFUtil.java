@@ -108,30 +108,4 @@ public class MIFUtil {
 		return rtnNum;
 	}
 	
-	public static void reloadTreeNode(DefaultMutableTreeNode oldNode,DefaultMutableTreeNode newNode, JTree tree )
-	{
-		oldNode.removeAllChildren();
-		for (int i=0;i<newNode.getChildCount();i++)
-			oldNode.add((DefaultMutableTreeNode)newNode.getChildAt(i));
-		((DefaultTreeModel) tree.getModel()).nodeStructureChanged(oldNode);
-	}
-
-//	public static void setAssociationOptionStatus(List<MIFAssociation> asscList, MIFClass targetClass, boolean newStatus)
-//	{
-//		List<MIFAssociation> targetAsscList=null;
-//		if (newStatus)
-//			targetAsscList=findAddableAssociation(targetClass);
-//		else
-//			targetAsscList=findRemovableAssociation(targetClass);
-//		for(MIFAssociation assc:asscList)
-//		{
-//			for (MIFAssociation targetAssc:targetAsscList)
-//			{
-//				if(targetAssc.getName().equals(assc.getName()))
-//					System.out.println("MIFUtil.setAssociationOptionStatus()..targetAssc:"+targetAssc +"..newStatus:"+newStatus+"...targetClass:"+targetClass);
-//					targetAssc.setOptionChosen(newStatus);
-//			}
-//		}
-//	}
-
 }
