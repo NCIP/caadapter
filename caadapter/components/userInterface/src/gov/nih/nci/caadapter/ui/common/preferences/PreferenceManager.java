@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
+import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 import nickyb.sqleonardo.environment.Preferences;
 
 import javax.swing.*;
@@ -9,9 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-
-import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,17 +30,17 @@ public class PreferenceManager extends JDialog implements ActionListener
     public PreferenceManager(JFrame callingFrame)
     {
         super(callingFrame, "Preference Menu", true);
-        
         //get the value stored in the registry
         try
-        {               
+        {
             regValue = (String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR");
-            if(regValue == null){
+            if (regValue == null)
+            {
                 regValue = "none";
             }
         } catch (Exception e)
         {
-            regValue="none";
+            regValue = "none";
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
         }
         //
@@ -194,7 +192,13 @@ public class PreferenceManager extends JDialog implements ActionListener
         //handle 'ok' and 'cancel'
         if (e.getActionCommand().equalsIgnoreCase("ok"))
         {
-            savePrefParams("FIXED_LENGTH_VAR", prefListener.getValue());
+            if (prefListener.getValue() != null)
+            {
+                savePrefParams("FIXED_LENGTH_VAR", prefListener.getValue());
+            } else
+            {
+                savePrefParams("FIXED_LENGTH_VAR", regValue);
+            }
             this.dispose();
         } else
         {
@@ -216,7 +220,7 @@ public class PreferenceManager extends JDialog implements ActionListener
     class PrefListener implements ActionListener
     {
 
-        private String value;
+        private String value = null;
 
         public void actionPerformed(ActionEvent e)
         {
