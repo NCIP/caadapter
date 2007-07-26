@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.3 2007-07-24 18:19:52 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.4 2007-07-26 13:37:24 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -74,8 +74,8 @@ import java.util.Hashtable;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-24 18:19:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-26 13:37:24 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -280,7 +280,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				String mifAttrType=mifAttribute.getType();
 				if (mifAttrType.equals("GTS"))
 				{
-					String msg="load type:GTS from type:IVL_TS";
+					String msg=mifAttribute.getNodeXmlName()+" -- load type:GTS from type:IVL_TS";
 					Log.logWarning(this, msg);
 					mifAttrType="IVL_TS";
 				
