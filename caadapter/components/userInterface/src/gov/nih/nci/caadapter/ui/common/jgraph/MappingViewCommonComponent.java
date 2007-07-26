@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingViewCommonComponent.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingViewCommonComponent.java,v 1.2 2007-07-26 16:16:45 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,9 +34,13 @@
 
 package gov.nih.nci.caadapter.ui.common.jgraph;
 
+import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
+import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.PropertiesProvider;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxDefaultPort;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -50,6 +54,9 @@ import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 /**
  * A data container contains mapping information, which is the mapping either from-tree-to-functional-box,
@@ -65,8 +72,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.1 $
- * date        $Date: 2007-04-03 16:17:14 $
+ * revision    $Revision: 1.2 $
+ * date        $Date: 2007-07-26 16:16:45 $
  */
 public class MappingViewCommonComponent implements Comparable, java.io.Serializable, PropertiesProvider
 {
@@ -82,7 +89,7 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingViewCommonComponent.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingViewCommonComponent.java,v 1.2 2007-07-26 16:16:45 wangeug Exp $";
 
 	public static final String SEARCH_BY_SOURCE_NODE = "sourceNode";
 	public static final String SEARCH_BY_TARGET_NODE = "targetNode";
@@ -214,8 +221,59 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 		return sourceNode;
 	}
 
+	public Object getSourceNodeParent()
+	{
+		if (sourceNode instanceof DefaultMutableTreeNode)
+		{
+			Object nodeObj=((DefaultMutableTreeNode)sourceNode).getUserObject();
+			if (nodeObj instanceof DatatypeBaseObject)
+			{
+				DatatypeBaseObject dtObj=(DatatypeBaseObject)nodeObj;
+				return dtObj.getParentXmlPath();
+			}
+			else if (nodeObj instanceof ParameterMeta)
+			{
+				ParameterMeta metaObj=(ParameterMeta)nodeObj;
+				return metaObj.getFunctionMeta().getFunctionName();
+			}
+			else if (nodeObj instanceof CSVFieldMeta)
+			{
+				CSVFieldMeta metaObj=(CSVFieldMeta)nodeObj;
+				return metaObj.getSegment().getXmlPath();
+			}
+			else
+				return ((DefaultMutableTreeNode)sourceNode).getParent();
+		}
+		return sourceNode;
+	}
 	public MappableNode getTargetNode()
 	{
+		return targetNode;
+	}
+
+	public Object getTargetNodeParent()
+	{
+		if (targetNode instanceof DefaultMutableTreeNode)
+		{
+			Object nodeObj=((DefaultMutableTreeNode)targetNode).getUserObject();
+			if (nodeObj instanceof DatatypeBaseObject)
+			{
+				DatatypeBaseObject dtObj=(DatatypeBaseObject)nodeObj;
+				return dtObj.getParentXmlPath();
+			}
+			else if (nodeObj instanceof ParameterMeta)
+			{
+				ParameterMeta metaObj=(ParameterMeta)nodeObj;
+				return metaObj.getFunctionMeta().getFunctionName();
+			}
+			else if (nodeObj instanceof CSVFieldMeta)
+			{
+				CSVFieldMeta metaObj=(CSVFieldMeta)nodeObj;
+				return metaObj.getSegment().getXmlPath();
+			}
+			else
+				return ((DefaultMutableTreeNode)targetNode).getParent();
+		}
 		return targetNode;
 	}
 
@@ -223,7 +281,6 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 	{
 		return sourceCell;
 	}
-
 	public DefaultGraphCell getTargetCell()
 	{
 		return targetCell;
@@ -430,10 +487,14 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 	{
 		Class beanClass = this.getClass();
 		PropertyDescriptor sourceProp = new PropertyDescriptor("Source", beanClass, "getSourceNode", null);
+		PropertyDescriptor sourceParent = new PropertyDescriptor("SourceParent", beanClass, "getSourceNodeParent", null);
 		PropertyDescriptor targetProp = new PropertyDescriptor("Target", beanClass, "getTargetNode", null);
+		PropertyDescriptor targetParent = new PropertyDescriptor("TargetParent", beanClass, "getTargetNodeParent", null);
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 		propList.add(sourceProp);
+		propList.add(sourceParent);
 		propList.add(targetProp);
+		propList.add(targetParent);
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
 		return result;
@@ -441,6 +502,9 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

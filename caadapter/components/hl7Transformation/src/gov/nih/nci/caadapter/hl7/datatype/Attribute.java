@@ -4,7 +4,12 @@
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
+import gov.nih.nci.caadapter.common.util.PropertiesResult;
+
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -12,7 +17,7 @@ import java.io.Serializable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-06-28 13:49:56 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-26 16:15:58 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
@@ -223,4 +228,24 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 		this.referenceDatatype = referenceDatatype;
 	}
 
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		// TODO Auto-generated method stub
+		Class beanClass = this.getClass();
+
+		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
+		PropertyDescriptor _parentPath = new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null);
+		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "getClassName", null);
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add(_name);
+		propList.add(_parentPath);
+		propList.add(_class);
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "MIF Data Field Properties";
+	}
 }

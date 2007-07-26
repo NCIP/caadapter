@@ -1,8 +1,20 @@
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.util.PropertiesProvider;
+import gov.nih.nci.caadapter.common.util.PropertiesResult;
 
-public abstract class DatatypeBaseObject implements MetaObject{
+public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObject{
+
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	private boolean choiceSelected =false;
 

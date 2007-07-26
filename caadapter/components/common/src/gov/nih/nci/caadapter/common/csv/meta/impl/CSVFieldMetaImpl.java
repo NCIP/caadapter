@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.4 2007-07-17 16:16:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.5 2007-07-26 16:15:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,13 +49,13 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.4 $
- * @date        $Date: 2007-07-17 16:16:34 $
+ * @version    $Revision: 1.5 $
+ * @date        $Date: 2007-07-26 16:15:40 $
  */
 
 public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 	private static final String LOGID = "$RCSfile: CSVFieldMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.4 2007-07-17 16:16:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.5 2007-07-26 16:15:40 wangeug Exp $";
 
 	int column;
 //	String name; 
@@ -135,12 +135,14 @@ public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 
 		PropertyDescriptor _parentSegmentName = new PropertyDescriptor("SegmentName", beanClass, "getSegmentName", null);
 		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
+		PropertyDescriptor _xmlPath = new PropertyDescriptor("XmlPath", beanClass, "getXmlPath", null);
 		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "getClassName", null);
 //		PropertyDescriptor[] propertiesArray = new PropertyDescriptor[]
 // 		{ _parentSegmentName, _name, _class };
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 		propList.add(_parentSegmentName);
 		propList.add(_name);
+		propList.add(_xmlPath);
 		propList.add(_class);
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);

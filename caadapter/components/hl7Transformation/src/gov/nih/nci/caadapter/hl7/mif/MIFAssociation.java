@@ -3,16 +3,20 @@
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.hl7.mif;
+import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-07-17 20:06:51 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2007-07-26 16:16:20 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -308,5 +312,24 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		this.optionForced = optionForced;
 	}
 
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		// TODO Auto-generated method stub
+		Class beanClass = this.getClass();
 
+		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
+		PropertyDescriptor _parentPath = new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null);
+		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "getMifClass", null);
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add(_name);
+		propList.add(_parentPath);
+		propList.add(_class);
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "MIF Association Properties";
+	}
 }	
