@@ -2,7 +2,6 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
-import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSHelper;
 
 import java.util.*;
 
@@ -34,9 +33,9 @@ public class RDSMapResult
 
     HashMap fixedLength;
 
-    java.util.prefs.Preferences prefs;
+    HashMap prefs;
 
-    public RDSMapResult(String _domainName, Hashtable _globaldomainList, String _targetFieldName, String _sourceFieldName, String _sourceDataValue, CSVSegment _currentCSVSegment, Hashtable _hashTableTransform, ArrayList _rowData, HashMap fixedLengthRecs, java.util.prefs.Preferences _prefs)
+    public RDSMapResult(String _domainName, Hashtable _globaldomainList, String _targetFieldName, String _sourceFieldName, String _sourceDataValue, CSVSegment _currentCSVSegment, Hashtable _hashTableTransform, ArrayList _rowData, HashMap fixedLengthRecs)
     {
         this.targetFieldName = _targetFieldName;
         this.sourceFieldName = _sourceFieldName;
@@ -47,7 +46,6 @@ public class RDSMapResult
         this.domainName = _domainName;
         this.rowData = _rowData;
         this.fixedLength = fixedLengthRecs;
-        this.prefs = _prefs;
         createResultDataArray();
     }
 

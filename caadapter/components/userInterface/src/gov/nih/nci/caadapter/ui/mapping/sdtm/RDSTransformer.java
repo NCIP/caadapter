@@ -13,6 +13,7 @@ import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSMapResult;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.SDTMMany2ManyMapping;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
+import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -47,17 +48,17 @@ public class RDSTransformer
 
     HashMap fixedLengthRecords;
 
-    Preferences prefs;
+    //HashMap prefs;
 
     boolean fixedLengthIndicator = false;
 
-    public RDSTransformer(AbstractMainFrame callingFrame, File mapFile, String _csvFileName, String _directoryLocation, Preferences _prefs) throws Exception
+    public RDSTransformer(AbstractMainFrame callingFrame, File mapFile, String _csvFileName, String _directoryLocation) throws Exception
     {
         directoryLocation = _directoryLocation;
-        this.prefs = _prefs;
+       
         CSVMapFileReader csvMapFileReader = new CSVMapFileReader(mapFile);
         //check for fixed lenght
-        if (prefs.get("FIXED_LENGTH_VAR", "NULL").equalsIgnoreCase("Fixed"))
+        if (((String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed"))
         {
             fixedLengthIndicator = true;
             //Prepare the list here and keep it ready so that number of blanks corresponding to the
@@ -291,7 +292,7 @@ public class RDSTransformer
                         {
                             fixedLengthRecords = null;
                         }
-                        new RDSMapResult(domainName, globaldomainList, mappedValue, xpathPrefix + "\\" + fieldObject.getMetaObject().toString(), fieldObject.getValue(), csvSegment, hashTableTransform, rowData, fixedLengthRecords, prefs).getArrayList();
+                        new RDSMapResult(domainName, globaldomainList, mappedValue, xpathPrefix + "\\" + fieldObject.getMetaObject().toString(), fieldObject.getValue(), csvSegment, hashTableTransform, rowData, fixedLengthRecords).getArrayList();
                         retVal = true;
                     }
                 }

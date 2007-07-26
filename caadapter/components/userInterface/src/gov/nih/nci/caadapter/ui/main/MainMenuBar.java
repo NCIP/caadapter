@@ -47,7 +47,6 @@ import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
-import gov.nih.nci.caadapter.ui.common.preferences.CaWindowClosingListener;
 import gov.nih.nci.caadapter.ui.common.preferences.OpenPreferenceAction;
 import gov.nih.nci.caadapter.ui.help.actions.AboutAction;
 import gov.nih.nci.caadapter.ui.help.actions.HelpTopicAction;
@@ -68,11 +67,11 @@ import gov.nih.nci.caadapter.ui.specification.hsm.actions.NewHSMAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.OpenHSMAction;
 
 import javax.swing.*;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 /**
  * This class manages the definitions and instantiations of menu items. It will
@@ -81,7 +80,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.8 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.9 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -181,18 +180,12 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, JMenu> menuMap;
 
     //java.util.prefs.Preferences prefs;
-    private static HashMap prefs;
+     private static HashMap prefs;
 
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
         this.mainFrame = mf;//contextManager.getMainFrame();
-        mf.addWindowListener(new CaWindowClosingListener());
         initialize();
-    }
-
-    public static HashMap getCaAdapterPreferences()
-    {
-        return prefs;
     }
 
     private void initialize()
@@ -201,6 +194,7 @@ public class MainMenuBar extends AbstractMenuBar
         menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
         menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
         readPreferencesMap();
+       // prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
         add(constructFileMenu());
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
         {
@@ -237,8 +231,8 @@ public class MainMenuBar extends AbstractMenuBar
     }
 
     /* (non-Javadoc)
-    * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#enableAction(java.lang.String, boolean)
-    */
+      * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#enableAction(java.lang.String, boolean)
+      */
     public void enableAction(String actionConstant, boolean value)
     {
         Action action = getDefinedAction(actionConstant);// (Action)actionMap.get(actionConstant);
@@ -375,9 +369,9 @@ public class MainMenuBar extends AbstractMenuBar
                 newGroup.add(constructNewCSVTOV3Menu());
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
-            {
-                newGroup.add(constructNewV3TOCSVMenu());
-            }
+			{
+				newGroup.add(constructNewV3TOCSVMenu());
+			}
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
                 newGroup.add(constructNewV2TOV3Menu());
@@ -407,7 +401,7 @@ public class MainMenuBar extends AbstractMenuBar
 
     private JMenu constructPreferenceMenu()
     {
-        OpenPreferenceAction _preference = new OpenPreferenceAction(mainFrame);
+        OpenPreferenceAction _preference = new OpenPreferenceAction(mainFrame, prefs);
         JMenu _qb = new JMenu("Tools");
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
@@ -457,18 +451,17 @@ public class MainMenuBar extends AbstractMenuBar
         newGroup.add(newHL7V3MessageItem_1);
         return newGroup;
     }
+    private JMenu constructNewV3TOCSVMenu() {
+		JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
 
-    private JMenu constructNewV3TOCSVMenu()
-    {
-        JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
-        NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
-        JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
-        actionMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3MessageAction);
-        menuItemMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3ToCSVItem);
-        newGroup.add(newHL7V3ToCSVItem);
-        return newGroup;
-    }
+		NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
+		JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
+		actionMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3MessageAction);
+		menuItemMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3ToCSVItem);
 
+		newGroup.add(newHL7V3ToCSVItem);
+		return newGroup;
+	}
     private JMenu constructNewDatabaseTOSDTMMenu()
     {
         NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = new NewCsvSpecificationAction(mainFrame);

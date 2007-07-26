@@ -31,11 +31,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener
@@ -110,7 +111,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener
 
     String _defineXML = "";
 
-    java.util.prefs.Preferences prefs;
+   //HashMap prefs;
 
     /*
       * The SCS file that is generated
@@ -118,10 +119,10 @@ public class NewSDTMWizard extends JDialog implements ActionListener
 
     AbstractMainFrame callingFrame;
 
-    public NewSDTMWizard(AbstractMainFrame _callingFrame, java.util.prefs.Preferences _prefs)
+    public NewSDTMWizard(AbstractMainFrame _callingFrame)
     {
         // super("Create SDTM Structure");
-        this.prefs = _prefs;
+
         callingFrame = _callingFrame;
         Color logColor = new Color(220, 220, 220);
         //setBounds(355, 355, 670, 180);
@@ -323,7 +324,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener
                     this.dispose();
                     //new SDTMNewTransformer(hl7MessageFile.getAbsolutePath().toString(), directory.getAbsolutePath().toString(), _defineXML, callingFrame, CSVSaveFileName);
                     //new SDTMDomainsCSVTransformer(new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _defineXML, _saveCSV);
-                    new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV, prefs);
+                    new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV);
                 } catch (RuntimeException e1)
                 {
                     // TODO Auto-generated catch block
@@ -350,7 +351,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            new NewSDTMWizard(null, null);
+          //  new NewSDTMWizard(null, null);
         } catch (Exception e)
         {
             e.printStackTrace();

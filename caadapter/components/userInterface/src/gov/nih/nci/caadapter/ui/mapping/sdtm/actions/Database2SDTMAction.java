@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.5 2007-07-19 18:51:37 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.6 2007-07-26 19:57:50 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,7 @@ import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.prefs.Preferences;
+import java.util.HashMap;
 
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
@@ -51,7 +52,7 @@ import javax.swing.KeyStroke;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
  *          2006/10/03 13:50:47 $
  */
 public class Database2SDTMAction extends AbstractContextAction {
@@ -69,14 +70,14 @@ public class Database2SDTMAction extends AbstractContextAction {
 
 	private AbstractMainFrame mainFrame;
 
-    private Preferences pref;
+
 
     /**
 	 * Defines an <code>Action</code> object with a default description string
 	 * and default icon.
 	 */
-	public Database2SDTMAction(AbstractMainFrame mainFrame, Preferences prefs) {
-		this(COMMAND_NAME, mainFrame, prefs);
+	public Database2SDTMAction(AbstractMainFrame mainFrame) {
+		this(COMMAND_NAME, mainFrame);
 		// mainContextManager = cm;
 	}
 
@@ -84,18 +85,18 @@ public class Database2SDTMAction extends AbstractContextAction {
 	 * Defines an <code>Action</code> object with the specified description
 	 * string and a default icon.
 	 */
-	public Database2SDTMAction(String name, AbstractMainFrame mainFrame, Preferences prefs) {
-		this(name, null, mainFrame, prefs);
+	public Database2SDTMAction(String name, AbstractMainFrame mainFrame) {
+		this(name, null, mainFrame);
 	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified description
 	 * string and a the specified icon.
 	 */
-	public Database2SDTMAction(String name, Icon icon, AbstractMainFrame mainFrame, Preferences prefs) {
+	public Database2SDTMAction(String name, Icon icon, AbstractMainFrame mainFrame) {
 		super(name, icon);
 		this.mainFrame = mainFrame;
-        this.pref = prefs;
+
         setMnemonic(COMMAND_MNEMONIC);
 		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DESKTOP_ACTION_TYPE);
@@ -112,7 +113,7 @@ public class Database2SDTMAction extends AbstractContextAction {
 	 *         false.
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception {
-		Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame,"Test", pref);
+		Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame,"Test");
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
@@ -129,6 +130,9 @@ public class Database2SDTMAction extends AbstractContextAction {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.5  2007/07/19 18:51:37  jayannah
+ * HISTORY : Changes for 4.0 release
+ * HISTORY :
  * HISTORY : Revision 1.3  2007/05/10 15:40:39  jayannah
  * HISTORY : *** empty log message ***
  * HISTORY :

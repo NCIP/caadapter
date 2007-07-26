@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+
+import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,18 +23,28 @@ import java.awt.event.KeyEvent;
 public class PreferenceManager extends JDialog implements ActionListener
 {
 
-    java.util.prefs.Preferences prefs;
+    //HashMap prefs;
 
     PrefListener prefListener;
 
     String regValue;
 
-    public PreferenceManager(JFrame callingFrame, java.util.prefs.Preferences _prefs)
+    public PreferenceManager(JFrame callingFrame)
     {
         super(callingFrame, "Preference Menu", true);
-        this.prefs = _prefs;
+        
         //get the value stored in the registry
-        regValue = prefs.get("FIXED_LENGTH_VAR", "NULL");
+        try
+        {               
+            regValue = (String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR");
+            if(regValue == null){
+                regValue = "none";
+            }
+        } catch (Exception e)
+        {
+            regValue="none";
+            e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+        }
         //
         JTabbedPane tabbedPane = new JTabbedPane();
         //
@@ -193,10 +206,10 @@ public class PreferenceManager extends JDialog implements ActionListener
     {
         try
         {
-            prefs.put(key, value);
+            MainMenuBar.getCaAdapterPreferences().put(key, value);
         } catch (Exception e)
         {
-            //e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

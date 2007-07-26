@@ -68,7 +68,7 @@ public class CaAdapterPref
 
     public static void main(String args[])
     {
-        setCaAdapterPreferences(new HashMap());
+        //setCaAdapterPreferences(new HashMap());
         System.out.println(getCaAdapterPreferences());
     }
 }

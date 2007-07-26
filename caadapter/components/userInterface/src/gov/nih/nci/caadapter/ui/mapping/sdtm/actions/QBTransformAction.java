@@ -8,9 +8,11 @@ import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
+import gov.nih.nci.caadapter.ui.common.preferences.CaAdapterPref;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSFixedLenghtInput;
+import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -43,21 +45,20 @@ public class QBTransformAction
 
     private Connection con;
 
-    Preferences prefs;
+   // Preferences prefs;
 
     HashMap fixedLengthRecords;
 
     boolean fixedLengthIndicator = false;
 
-    public QBTransformAction(AbstractMainFrame _mainFrame, Database2SDTMMappingPanel mappingPanel, Connection _con, Preferences _prefs) throws Exception
+    public QBTransformAction(AbstractMainFrame _mainFrame, Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception
     {
         //this(_mainFrame, mappingPanel, "");
         this.con = _con;
         directoryLoc = new JFileChooser(System.getProperty("user.dir"));
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = directoryLoc.showOpenDialog(_mainFrame);
-        this.prefs = _prefs;
-        if (prefs.get("FIXED_LENGTH_VAR", "NULL").equalsIgnoreCase("Fixed"))
+        if (((String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed"))
         {
             fixedLengthIndicator = true;
             CSVMapFileReader csvMapFileReader = new CSVMapFileReader(new File(mappingPanel.getSaveFile().getAbsolutePath()));

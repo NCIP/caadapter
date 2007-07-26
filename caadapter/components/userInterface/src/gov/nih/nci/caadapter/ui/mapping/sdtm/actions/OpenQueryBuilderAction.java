@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $
  */
 public class OpenQueryBuilderAction extends AbstractContextAction
 {
@@ -113,7 +113,7 @@ public class OpenQueryBuilderAction extends AbstractContextAction
            old end
          */
 
-        new MainDataViewerFrame(mainFrame, false, null);
+       // new MainDataViewerFrame(mainFrame, false, null);
         return true;
     }
 

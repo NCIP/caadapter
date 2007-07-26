@@ -8,11 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $
  */
 public class OpenPreferenceAction extends AbstractContextAction
 {
@@ -30,7 +31,7 @@ public class OpenPreferenceAction extends AbstractContextAction
 
     private AbstractMainFrame mainFrame;
 
-    java.util.prefs.Preferences prefs;
+    HashMap prefs;
 
 
 
@@ -40,7 +41,7 @@ public class OpenPreferenceAction extends AbstractContextAction
      */
     public OpenPreferenceAction(AbstractMainFrame mainFrame)
     {
-        this(COMMAND_NAME, mainFrame, null);
+        this(COMMAND_NAME, mainFrame);
         // mainContextManager = cm;
     }
 
@@ -48,20 +49,20 @@ public class OpenPreferenceAction extends AbstractContextAction
      * Defines an <code>Action</code> object with the specified
      * description string and a default icon.
      */
-    public OpenPreferenceAction(String name, AbstractMainFrame mainFrame,java.util.prefs.Preferences prefs)
+    public OpenPreferenceAction(String name, AbstractMainFrame mainFrame)
     {
-        this(name, null, mainFrame, prefs);
+        this(name, null, mainFrame);
     }
 
     /**
      * Defines an <code>Action</code> object with the specified
      * description string and a the specified icon.
      */
-    public OpenPreferenceAction(String name, Icon icon, AbstractMainFrame mainFrame, java.util.prefs.Preferences _prefs)
+    public OpenPreferenceAction(String name, Icon icon, AbstractMainFrame mainFrame)
     {
         super(name, icon);
         this.mainFrame = mainFrame;
-         this.prefs = _prefs;
+
         setMnemonic(COMMAND_MNEMONIC);
         setAcceleratorKey(ACCELERATOR_KEY_STROKE);
         setActionCommandType(DESKTOP_ACTION_TYPE);
@@ -69,9 +70,9 @@ public class OpenPreferenceAction extends AbstractContextAction
         // matter.
     }
 
-    public OpenPreferenceAction(AbstractMainFrame mainFrame, java.util.prefs.Preferences prefs)
+    public OpenPreferenceAction(AbstractMainFrame mainFrame, HashMap prefs)
     {
-        this(COMMAND_NAME, mainFrame, prefs);
+        this(COMMAND_NAME, mainFrame);
 
         // mainContextManager = cm;
     }
@@ -125,7 +126,7 @@ public class OpenPreferenceAction extends AbstractContextAction
 
         //new MainDataViewerFrame(mainFrame, false, null, null,null, null,"");
         //new MainDataViewerFrame(mainFrame, false, null);
-        new PreferenceManager(mainFrame, prefs);
+        new PreferenceManager(mainFrame);
         //(JFrame owner, boolean modal, Dialog _ref)
         return true;
     }
