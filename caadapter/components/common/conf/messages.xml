@@ -175,7 +175,17 @@
         <comment>
         </comment>
     </message>
-    
+    <message id="HSM1INFO" level="INFO">
+	        <template>ABSTRACT specialized for: {0}; Data Type:{1}; Speciliazed Type:{2}</template>
+	        <parameters>
+	            <parameter number="0" value="Clone.Path"/>
+	            <parameter number="1" value="AbstractType"/>
+	            <parameter number="1" value="ConcreteType"/>
+	        </parameters>
+	        <summary>Data type has been specialized for an Abstract data type</summary>
+	        <happen>Continue valdiating, but display message for each occurrence found</happen>
+	        <comment/>
+    </message>
     <message id="HSM2" level="ERROR">
         <template>Choice has not been selected:  {0} </template>
         <parameters>
@@ -187,7 +197,7 @@
     </message>
 
     <message id="HSM3" level="INFO">
-        <template>Choice selected is:  {0} </template>
+        <template>CHOICE selected:  {0} </template>
         <parameters>
             <parameter number="0" value="SelectedChoiceClone.path"/>
         </parameters>
@@ -204,7 +214,16 @@
         <happen>After validating, display this message once</happen>
         <comment></comment>
     </message>
-
+	<message id="HSM4INFO" level="INFO">
+        <template>MULTIPLES added for: {0}; Occurence(index): {1} to accommodate mappings from source data</template>
+        <parameters>
+        	<parameter number="0" value="Name"/>
+	            <parameter number="1" value="Occurence"/>
+        </parameters>
+        <summary>reminder adding of multiples where founded</summary>
+        <happen>Continue valdiating, but display message for each occurrence found</happen>
+        <comment/>
+    </message>
     <message id="HSM5" level="INFO">
         <template>Have you built out enough CLONE levels to accommodate mappings from source data?</template>
         <parameters>
@@ -222,7 +241,16 @@
         <happen>After validating, display this message once</happen>
         <comment></comment>
     </message>
-
+	<message id="HSM6INFO" level="INFO">
+        <template>DEFAULT VALUES defined for element \"{0}\" with value \"{1}\" </template>
+        <parameters>
+			    <parameter number="0" value="attributeName"/>
+			    <parameter number="1" value="defaultValue"/>
+	        </parameters>
+        <summary>reminder defining default values</summary>
+        <happen>Continue valdiating, but display message for each occurrence found</happen>
+        <comment/>
+    </message>
     <!--Validate in Creating MAP -->
     <message id="MAP1" level="ERROR">
         <template>\"{0}\" is not a valid \"{1}\" type of Object for mapping.</template>
