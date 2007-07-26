@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.4 2007-07-14 20:28:27 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.5 2007-07-26 20:46:27 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,6 +47,7 @@ import gov.nih.nci.caadapter.ui.mapping.hl7.HL7MappingPanel;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
+import gov.nih.nci.caadapter.ui.common.preferences.CaWindowClosingListener;
 
 import javax.swing.*;
 
@@ -60,10 +61,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-14 20:28:27 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-26 20:46:27 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -115,8 +116,9 @@ public class MainFrame extends AbstractMainFrame
 		tabbedPane.addChangeListener(contextManager);
 		tabbedPane.setOpaque(false);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+        this.addWindowListener(new CaWindowClosingListener());
 
-		this.setVisible(true);
+        this.setVisible(true);
 	    DefaultSettings.centerWindow(this);
 	    this.setFocusable(true);
 		this.setFocusableWindowState(true);
@@ -486,6 +488,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/14 20:28:27  umkis
+ * HISTORY      : reactivate HelpContentViewer for avoid from NullPointerException
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/05/10 15:23:04  jayannah
  * HISTORY      : commented out the preferences
  * HISTORY      :
