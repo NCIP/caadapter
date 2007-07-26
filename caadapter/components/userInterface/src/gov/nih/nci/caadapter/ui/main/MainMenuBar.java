@@ -67,11 +67,11 @@ import gov.nih.nci.caadapter.ui.specification.hsm.actions.NewHSMAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.OpenHSMAction;
 
 import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 
 /**
  * This class manages the definitions and instantiations of menu items. It will
@@ -80,7 +80,7 @@ import java.io.ObjectInputStream;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.9 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.10 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -180,12 +180,17 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, JMenu> menuMap;
 
     //java.util.prefs.Preferences prefs;
-     private static HashMap prefs;
+    private static HashMap prefs;
 
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
         this.mainFrame = mf;//contextManager.getMainFrame();
         initialize();
+    }
+
+    public static HashMap getCaAdapterPreferences()
+    {
+        return prefs;
     }
 
     private void initialize()
@@ -194,7 +199,7 @@ public class MainMenuBar extends AbstractMenuBar
         menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
         menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
         readPreferencesMap();
-       // prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
+        // prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
         add(constructFileMenu());
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
         {
@@ -369,9 +374,9 @@ public class MainMenuBar extends AbstractMenuBar
                 newGroup.add(constructNewCSVTOV3Menu());
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
-			{
-				newGroup.add(constructNewV3TOCSVMenu());
-			}
+            {
+                newGroup.add(constructNewV3TOCSVMenu());
+            }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
                 newGroup.add(constructNewV2TOV3Menu());
@@ -451,17 +456,18 @@ public class MainMenuBar extends AbstractMenuBar
         newGroup.add(newHL7V3MessageItem_1);
         return newGroup;
     }
-    private JMenu constructNewV3TOCSVMenu() {
-		JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
 
-		NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
-		JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
-		actionMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3MessageAction);
-		menuItemMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3ToCSVItem);
+    private JMenu constructNewV3TOCSVMenu()
+    {
+        JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
+        NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
+        JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
+        actionMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3MessageAction);
+        menuItemMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3ToCSVItem);
+        newGroup.add(newHL7V3ToCSVItem);
+        return newGroup;
+    }
 
-		newGroup.add(newHL7V3ToCSVItem);
-		return newGroup;
-	}
     private JMenu constructNewDatabaseTOSDTMMenu()
     {
         NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = new NewCsvSpecificationAction(mainFrame);
@@ -701,6 +707,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.9  2007/07/26 20:02:38  jayannah
+ * HISTORY : Changes for preferences menu
+ * HISTORY :
  * HISTORY : Revision 1.7  2007/07/23 14:03:25  wangeug
  * HISTORY : include "HL7 V3 To CSV transformation service"
  * HISTORY :
