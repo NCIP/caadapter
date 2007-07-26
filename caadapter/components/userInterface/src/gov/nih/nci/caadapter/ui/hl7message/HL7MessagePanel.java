@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.3 2007-07-24 18:20:20 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.4 2007-07-26 13:38:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -68,8 +68,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-24 18:20:20 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-07-26 13:38:29 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -84,7 +84,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
 
-    private java.util.List mV3MessageList;
+    private java.util.List <XMLElement> mV3MessageList;
     private JTextArea outputMessageArea = null;
     private JScrollPane scrollPane = null;
     private JSplitPane splitPane = null;
@@ -100,7 +100,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	{
 		if(mV3MessageList==null)
 		{
-			mV3MessageList = new ArrayList();
+			mV3MessageList = new ArrayList<XMLElement>();
 		}
 		else
 		{
@@ -220,28 +220,29 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		changeDisplay();
 	}
 
-    public java.util.List getV3MessageList()
+    public java.util.List <XMLElement> getV3MessageList()
     {
         return mV3MessageList;
     }
 
-    void setV3MessageResultList(java.util.List mV3MessageList)
+    private void setV3MessageResultList(java.util.List<XMLElement> newV3MessageList)
     {
-        this.mV3MessageList = mV3MessageList;
+        this.mV3MessageList = newV3MessageList;
         if (mV3MessageList == null || mV3MessageList.size() == 0)
         {
 			initializeMessageList();
 			return;
         }
-		TransformationResult result = (TransformationResult) mV3MessageList.get(0);
-        setMessageText(result.getHl7V3MessageText());
-        validationMessagePane.setValidatorResults(result.getValidatorResults());
+//		TransformationResult result = (TransformationResult) mV3MessageList.get(0);
+//        setMessageText(result.getHl7V3MessageText());
+//        validationMessagePane.setValidatorResults(result.getValidatorResults());
 		currentCount = 1;
 		changeDisplay();
 	}
 
     public boolean setSaveFile(File saveFile, boolean refresh) throws Exception
     {
+    	System.out.println("HL7MessagePanel.setSaveFile()..refresh:"+refresh);
         if (super.setSaveFile(saveFile))//!GeneralUtilities.areEqual(this.saveFile, saveFile))
         {
             if (refresh)
@@ -260,7 +261,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
                         TransformationResult result = new TransformationResult(loaderResultList.get(i), new ValidatorResults());
                         messageList.add(result);
                     }
-                    setV3MessageResultList(messageList);
+//                    setV3MessageResultList(messageList);
                 }
                 finally
                 {
@@ -342,9 +343,11 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
         scrollPane.getViewport().remove(outputMessageArea);
 		if(totalNumberOfMessages > 0)
 		{
-			TransformationResult result = (TransformationResult) mV3MessageList.get(currentCount - 1);
-			setMessageText(result.getHl7V3MessageText());
-			validationMessagePane.setValidatorResults(result.getValidatorResults());
+//			TransformationResult result = (TransformationResult) mV3MessageList.get(currentCount - 1);
+//			setMessageText(result.getHl7V3MessageText());
+			XMLElement result = mV3MessageList.get(currentCount - 1);
+			setMessageText(result.toXML().toString());
+			validationMessagePane.setValidatorResults(null);//result.getValidatorResults());
 		}
 		else
 		{//just clean up
@@ -368,13 +371,16 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 //		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
 //		svc.process(null);
 //		this.setMessageText(svc.getMsgGenerated());
-		TransformationService ts=new TransformationService(mapFile, dataFile);
+    	dataFileNameField.setText(dataFile.getAbsolutePath());
+    	mapFileNameField.setText(mapFile.getAbsolutePath());
+    	TransformationService ts=new TransformationService(mapFile, dataFile);
 		List<XMLElement> xmlElements =ts.process();
-		if (xmlElements.size()>0)
-		{
-			XMLElement xmlElement=(XMLElement)xmlElements.get(0);
-			this.setMessageText(""+xmlElement.toXML());
-		}
+//		if (xmlElements.size()>0)
+//		{
+//			XMLElement xmlElement=(XMLElement)xmlElements.get(0);
+//			this.setMessageText(""+xmlElement.toXML());
+//		}
+		this.setV3MessageResultList(xmlElements);
 //		HL7MessageGenerationController controler = new HL7MessageGenerationController(this, dataFile,  mapFile);
 //		validatorResults=controler.process();
 //		if( !validatorResults.hasFatal() )
@@ -553,6 +559,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/24 18:20:20  wangeug
+ * HISTORY      : include "HL7 V3 To CSV transformation service"
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/20 17:05:02  wangeug
  * HISTORY      : integrate Hl7 transformation service
  * HISTORY      :

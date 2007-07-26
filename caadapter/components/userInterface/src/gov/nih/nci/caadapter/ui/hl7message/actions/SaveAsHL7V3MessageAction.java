@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.2 2007-07-26 13:38:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,6 +40,7 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
+import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.hl7message.HL7MessagePanel;
@@ -57,8 +58,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:33:17 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-26 13:38:49 $
  */
 public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 {
@@ -74,7 +75,7 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.2 2007-07-26 13:38:49 wangeug Exp $";
 
 	protected transient HL7MessagePanel hl7Panel;
 
@@ -139,14 +140,15 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 		boolean oldChangeValue = hl7Panel.isChanged();
 		try
 		{
-			List messageList = hl7Panel.getV3MessageList();
+			List<XMLElement> messageList = hl7Panel.getV3MessageList();
 			int size = messageList==null ? 0 : messageList.size();
 			java.util.List<java.io.File> fileList = FileUtil.constructHL7V3MessageFileNames(file, size,
 					Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, true);
 			for(int i=0; i<size; i++)
 			{
-				TransformationResult transformationResult = (TransformationResult) messageList.get(i);
-				String message = transformationResult.getHl7V3MessageText();
+//				TransformationResult transformationResult = (TransformationResult) messageList.get(i);
+				XMLElement transformationResult =  messageList.get(i);
+				String message = transformationResult.toXML().toString();//.getHl7V3MessageText();
 				File messageFile = fileList.get(i);
 				fw = new FileWriter(messageFile);
 				bw = new BufferedWriter(fw);
@@ -191,27 +193,13 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 			}
 		}
 	}
-
-	private boolean proceedIfNoValidationResults(java.util.List messageList)
-	{//Question: Do we allow to proceed saving even though validation has some messages?
-		boolean result = true;
-		int size = messageList == null ? 0 : messageList.size();
-		ValidatorResults validatorResults = new ValidatorResults();
-		for(int i=0; i<size; i++)
-		{
-			TransformationResult transformationResult = (TransformationResult) messageList.get(i);
-			validatorResults.addValidatorResults(transformationResult.getValidatorResults());
-		}
-		result = validatorResults.getAllMessages().size()==0;
-		if(!result)
-		{
-		}
-		return result;
-	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.22  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
