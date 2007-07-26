@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/StringFunction.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/StringFunction.java,v 1.2 2007-07-26 19:23:47 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,8 +43,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:02:37 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-26 19:23:47 $
  */
 
 public class StringFunction {
@@ -122,10 +122,10 @@ public class StringFunction {
      * @see String
      */
 
-    public String trim(String strParam) {
-        if (strParam == null) return null;
-        return strParam.trim();
-    }
+//    public String trim(String strParam) {
+//        if (strParam == null) return null;
+//        return strParam.trim();
+//    }
 
 
     /**

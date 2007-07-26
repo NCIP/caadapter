@@ -136,7 +136,7 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="substring"/>
 		</function>
-		<function name="Trim" xmlPath="string.Trim">
+		<!-- function name="Trim" xmlPath="string.Trim">
 			<inputs>
 				<datapoint pos="0" name="String" datatype="string" xmlPath="string.Trim.inputs.0"/>
 			</inputs>
@@ -144,7 +144,7 @@
 				<datapoint pos="0" name="Result" datatype="string" xmlPath="string.Trim.outputs.0"/>
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="trim"/>
-		</function>
+		</function -->
 		<function name="Replace" xmlPath="string.Replace">
 			<inputs>
 				<datapoint pos="0" name="String" datatype="string" xmlPath="string.Replace.inputs.0"/>
