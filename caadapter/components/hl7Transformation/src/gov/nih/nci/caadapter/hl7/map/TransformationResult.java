@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/TransformationResult.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/TransformationResult.java,v 1.2 2007-07-27 20:35:47 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,21 +44,21 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- * @date $Date: 2007-07-03 18:26:25 $
- * @since $Revision: 1.1 $
+ * @date $Date: 2007-07-27 20:35:47 $
+ * @since $Revision: 1.2 $
  */
 
 public class TransformationResult extends BaseResult
 {
 	private static final String LOGID = "$RCSfile: TransformationResult.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/TransformationResult.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/TransformationResult.java,v 1.2 2007-07-27 20:35:47 wangeug Exp $";
 
-	private String hl7V3MessageText;
+	private String messageText;
     private long logicalRecordNumber = 0;
-
+    
 	public TransformationResult(String hl7V3MessageText, ValidatorResults validatorResults)
 	{
-		this.hl7V3MessageText = hl7V3MessageText;
+		this.messageText = hl7V3MessageText;
 		setValidatorResults(validatorResults);
 	}
 
@@ -68,9 +68,9 @@ public class TransformationResult extends BaseResult
         setValidatorResults(validatorResults);
     }
 
-	public String getHl7V3MessageText()
+	public String getMessageText()
 	{
-		return hl7V3MessageText;
+		return messageText;
 	}
 
     public long getLogicalRecordNumber()
@@ -91,7 +91,7 @@ public class TransformationResult extends BaseResult
 
 		final TransformationResult that = (TransformationResult) o;
 
-		if (hl7V3MessageText != null ? !hl7V3MessageText.equals(that.hl7V3MessageText) : that.hl7V3MessageText != null)
+		if (messageText != null ? !messageText.equals(that.messageText) : that.messageText != null)
 		{
 			return false;
 		}
@@ -112,13 +112,16 @@ public class TransformationResult extends BaseResult
 	public int hashCode()
 	{
 		int result;
-		result = (hl7V3MessageText != null ? hl7V3MessageText.hashCode() : 0);
+		result = (messageText != null ? messageText.hashCode() : 0);
 		result = (int) (29 * result + 17 * logicalRecordNumber + (getValidatorResults() != null ? getValidatorResults().hashCode() : 0));
 		return result;
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 18:26:25  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2006/08/02 18:44:20  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

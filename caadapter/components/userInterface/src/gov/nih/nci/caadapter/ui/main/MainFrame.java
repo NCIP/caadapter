@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.6 2007-07-27 19:44:46 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.7 2007-07-27 20:42:22 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,10 +62,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-07-27 19:44:46 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-07-27 20:42:22 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -205,9 +205,9 @@ public class MainFrame extends AbstractMainFrame
 	}
 	//-----------------------------------------------------------------------------------------
 	String title = null;
-	if (isContainedInTabPane(panel)) {//do nothing if tabbed pane already contains the given panel.
-	    return;
-	}
+//	if (isContainedInTabPane(panel)) {//do nothing if tabbed pane already contains the given panel.
+//	    return;
+//	}
 	if (panel instanceof CSVPanel) {
 	    title = "Untitled_" + (++tabcount) + Config.CSV_METADATA_FILE_DEFAULT_EXTENTION;
 	} else if (panel instanceof HL7MappingPanel) {
@@ -216,9 +216,9 @@ public class MainFrame extends AbstractMainFrame
 	    title = "Untitled_" + (++tabcount) + Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
 	} else if (panel instanceof HL7MessagePanel) {
 	    title = "HL7 v3 Message";
-	} else if (panel instanceof Database2SDTMMappingPanel) {
-        title = "Untitled_" + (++tabcount) + Config.MAP_FILE_DEFAULT_EXTENTION;
-    }
+	} else if (panel instanceof HL7MessagePanel) {
+	    title = panel.getName();//"HL7 v3 Message";
+	}
 	tabbedPane.addTab(title, panel);
 	tabbedPane.setSelectedComponent(panel);
 	//		Log.logInfo(this, "Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
@@ -490,6 +490,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/07/27 19:44:46  jayannah
+ * HISTORY      : changes to display tab title when creating new sdtm map
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/14 20:28:27  umkis
  * HISTORY      : reactivate HelpContentViewer for avoid from NullPointerException
  * HISTORY      :
