@@ -5,6 +5,7 @@ import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.util.GeneralTask;
 import gov.nih.nci.caadapter.common.util.Stats;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,9 +21,18 @@ import javax.xml.parsers.SAXParser;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class TransformationServiceHL7V3ToCsv extends TransformationServiceBasic {
+public class TransformationServiceHL7V3ToCsv  {
 
 	private String msgGenerated;
+	private Stats statistics = null;
+	
+	private File mapFile = null;
+	private File sourceFile = null;
+	private File specFile = null;
+	private Mapping mapping = null;
+	private ValidatorResults prepareValidatorResults = new ValidatorResults();
+	private boolean preparedFlag = false;
+	  
 	public TransformationServiceHL7V3ToCsv(String sourceFileName, String mapFileName)
 	{
 		this(new File( sourceFileName ),new File(mapFileName));		
@@ -33,7 +43,7 @@ public class TransformationServiceHL7V3ToCsv extends TransformationServiceBasic 
 		sourceFile=source;
 		mapFile=map;
 	}
-	@Override
+ 
 	public List<TransformationResult> process(GeneralTask task) 
 	{
 		List<TransformationResult> transformationResults = new ArrayList<TransformationResult>();
@@ -79,12 +89,15 @@ public class TransformationServiceHL7V3ToCsv extends TransformationServiceBasic 
 		return transformationResults;
 	}
 
-	@Override
-	public TransformationResult getEstimate() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	 private MappingResult parseMapfile() throws Exception
+	 {
+	        MapParserImpl parser = new MapParserImpl();
+	        long begintime = System.currentTimeMillis();
+	        MappingResult mappingResult = parser.parse(mapFile.getParent(), new FileReader(mapFile));
+	        statistics.mapParseTime += System.currentTimeMillis() - begintime;
+	        return mappingResult;
+	 }
+	 
 	private void verifyMappingAndCsvSpecfication() throws Exception
     {
         // statistics.
