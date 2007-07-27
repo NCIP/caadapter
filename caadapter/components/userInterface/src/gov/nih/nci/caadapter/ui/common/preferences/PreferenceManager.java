@@ -49,8 +49,8 @@ public class PreferenceManager extends JDialog implements ActionListener
         //
         tabbedPane.addTab("RDS Module", null, makeRDSPanel(), "");
         //
-        JComponent panel2 = makeTextPanel("Panel #2");
-        tabbedPane.addTab("V3 Module", null, panel2, "");
+        JComponent panel2 = new Hl7V3SpecificationPreferencePane(this);
+        tabbedPane.addTab("HL7 V3 Transformation", null, panel2, "");
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -65,8 +65,8 @@ public class PreferenceManager extends JDialog implements ActionListener
         //
         tabbedPane.addTab("RDS Module", null, makeRDSPanel(), "");
         //
-        JComponent panel2 = makeTextPanel("Panel #2");
-        tabbedPane.addTab("V3 Module", null, panel2, "");
+        JComponent panel2 = new Hl7V3SpecificationPreferencePane(this);
+        tabbedPane.addTab("Hl7 V3 Transformation", null, panel2, "");
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -84,7 +84,7 @@ public class PreferenceManager extends JDialog implements ActionListener
         panel.add(filler);
         return panel;
     }
-
+   
     protected JComponent makeRDSPanel()
     {
         JPanel mainPan = new JPanel(false);
@@ -206,8 +206,19 @@ public class PreferenceManager extends JDialog implements ActionListener
             this.dispose();
         }
     }
-
-    private void savePrefParams(String key, String value)
+/**
+ * Read a preference value given its key as a string
+ * @param key -- The key value of a preference
+ * @return A preference value as a string
+ */
+    public static String readPrefParams(String key)
+    {
+    	HashMap prefs=MainMenuBar.getCaAdapterPreferences();
+    	if (prefs==null)
+    		return null;
+    	return (String)prefs.get(key);
+    }
+    public static void savePrefParams(String key, String value)
     {
         try
         {

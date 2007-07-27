@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.4 2007-07-26 13:37:24 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.5 2007-07-27 16:10:28 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,6 +48,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
+import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -74,8 +75,8 @@ import java.util.Hashtable;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-26 13:37:24 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-27 16:10:28 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -100,9 +101,13 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		treeEditable=editableFlag;
 		newSpecificationFlag=preferenceFlag;
-		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED))
+//		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED))
+		String nullFlavorSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED);
+		if (nullFlavorSetting!=null&&nullFlavorSetting.equalsIgnoreCase("true"))
 			nullFlavorEnabled=true;
-		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED))
+//		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED))
+		String complexTypeSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED);
+		if (complexTypeSetting!=null&&complexTypeSetting.equalsIgnoreCase("true"))
 			complexTypeEnabled=true;
 	}
 	public TreeNode loadMappingTargetData(Object o)
