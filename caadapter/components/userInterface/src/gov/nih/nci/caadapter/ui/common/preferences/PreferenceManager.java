@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -210,7 +211,13 @@ public class PreferenceManager extends JDialog implements ActionListener
     {
         try
         {
-            MainMenuBar.getCaAdapterPreferences().put(key, value);
+            if(MainMenuBar.getCaAdapterPreferences() != null){
+                MainMenuBar.getCaAdapterPreferences().put(key, value);
+            } else {
+                HashMap tempMap = new HashMap();
+                tempMap.put(key, value);
+                MainMenuBar.setCaAdapterPreferences(tempMap);
+            }
         } catch (Exception e)
         {
             e.printStackTrace();

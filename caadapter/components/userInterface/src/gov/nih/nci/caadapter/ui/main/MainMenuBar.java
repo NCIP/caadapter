@@ -80,7 +80,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.10 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.11 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -193,6 +193,10 @@ public class MainMenuBar extends AbstractMenuBar
         return prefs;
     }
 
+    public static void setCaAdapterPreferences(HashMap _prefs){
+        prefs = _prefs;
+    }
+
     private void initialize()
     {
         actionMap = Collections.synchronizedMap(new HashMap<String, AbstractContextAction>());
@@ -223,12 +227,13 @@ public class MainMenuBar extends AbstractMenuBar
     }
 
     private void readPreferencesMap()
-    {
+    {   prefs=new HashMap();
         try
         {
             FileInputStream f_out = new FileInputStream(System.getProperty("user.home") + "\\.caadapter");
             ObjectInputStream obj_out = new ObjectInputStream(f_out);
             prefs = (HashMap) obj_out.readObject();
+            //System.out.println(prefs);
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -707,6 +712,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.10  2007/07/26 20:47:36  jayannah
+ * HISTORY : provided a get method for preferences
+ * HISTORY :
  * HISTORY : Revision 1.9  2007/07/26 20:02:38  jayannah
  * HISTORY : Changes for preferences menu
  * HISTORY :
