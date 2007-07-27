@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.2 2007-07-12 14:37:39 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.3 2007-07-27 15:26:33 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,9 +46,9 @@ import java.util.List;
  * An aggregation of validator result
  *
  * @author OWNER: Eric Chen  Date: Aug 22, 2005
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-07-12 14:37:39 $
+ * @author LAST UPDATE: $Author: wuye $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-07-27 15:26:33 $
  * @since caAdapter v1.2
  */
 
@@ -195,7 +195,15 @@ public class ValidatorResults
         	levels.add(0,ValidatorResult.Level.ALL);
         return levels;
     }
-
+    /*
+     * Clears all messages in the validatorResult set.
+     */
+    public void removeAll() {
+    	fatalResults.clear();
+    	errorResults.clear();
+    	warningResults.clear();
+    	infoResults.clear();
+    }
     /**
      * A list of message ordered by the validation level:  FATAL, ERROR, WARNING, INFO
      * @return String
@@ -249,6 +257,9 @@ public class ValidatorResults
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/12 14:37:39  wangeug
+ * HISTORY      : Add "ALL" as option in the validation message type dropdown so you can see all types of validation messages
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :
