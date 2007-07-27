@@ -38,7 +38,6 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 {
 	protected FunctionLibraryPane functionPane;
 	protected DefaultPropertiesPage propertiesPane;
-//	protected JScrollPane sourceScrollPane = null;
 	protected MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
 	protected MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 	
@@ -79,7 +78,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		
 //		TargetTreeDragTransferHandler targetTreeDragTransferHandler = null;
 //		drag source for DnD to middle panel.
-		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
+//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
 
 		//register collapse all and expand all actions.
 		targetTreeCollapseAllAction.setTree(tTree);
