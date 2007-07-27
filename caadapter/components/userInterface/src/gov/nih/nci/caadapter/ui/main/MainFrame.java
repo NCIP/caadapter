@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.3 2007-05-10 15:23:04 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.6 2007-07-27 19:44:46 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,9 +44,11 @@ import gov.nih.nci.caadapter.ui.help.HelpContentViewer;
 import gov.nih.nci.caadapter.ui.help.InitialSplashWindow;
 import gov.nih.nci.caadapter.ui.hl7message.HL7MessagePanel;
 import gov.nih.nci.caadapter.ui.mapping.hl7.HL7MappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
+import gov.nih.nci.caadapter.ui.common.preferences.CaWindowClosingListener;
 
 import javax.swing.*;
 
@@ -62,8 +64,8 @@ import java.util.HashMap;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-05-10 15:23:04 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-07-27 19:44:46 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -115,12 +117,12 @@ public class MainFrame extends AbstractMainFrame
 		tabbedPane.addChangeListener(contextManager);
 		tabbedPane.setOpaque(false);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);
-
+        this.addWindowListener(new CaWindowClosingListener());
 		this.setVisible(true);
 	    DefaultSettings.centerWindow(this);
 	    this.setFocusable(true);
 		this.setFocusableWindowState(true);
-//		helpContentViewer = new HelpContentViewer(this);
+		//helpContentViewer = new HelpContentViewer(this);
 		
 	
 		InitialSplashWindow isw = new InitialSplashWindow();
@@ -214,7 +216,9 @@ public class MainFrame extends AbstractMainFrame
 	    title = "Untitled_" + (++tabcount) + Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
 	} else if (panel instanceof HL7MessagePanel) {
 	    title = "HL7 v3 Message";
-	}
+	} else if (panel instanceof Database2SDTMMappingPanel) {
+        title = "Untitled_" + (++tabcount) + Config.MAP_FILE_DEFAULT_EXTENTION;
+    }
 	tabbedPane.addTab(title, panel);
 	tabbedPane.setSelectedComponent(panel);
 	//		Log.logInfo(this, "Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
@@ -486,6 +490,12 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/14 20:28:27  umkis
+ * HISTORY      : reactivate HelpContentViewer for avoid from NullPointerException
+ * HISTORY      :
+ * HISTORY      : Revision 1.3  2007/05/10 15:23:04  jayannah
+ * HISTORY      : commented out the preferences
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/05/09 21:06:31  jayannah
  * HISTORY      : *** empty log message ***
  * HISTORY      :
