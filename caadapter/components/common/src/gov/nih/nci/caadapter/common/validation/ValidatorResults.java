@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.4 2007-07-31 17:42:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.5 2007-07-31 18:41:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,18 +47,18 @@ import java.util.List;
  *
  * @author OWNER: Eric Chen  Date: Aug 22, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.4 $
- * @date $$Date: 2007-07-31 17:42:25 $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2007-07-31 18:41:05 $
  * @since caAdapter v1.2
  */
 
 
 public class ValidatorResults
 {
-    private List<Message> fatalResults = new ArrayList<Message>();
-    private List<Message> errorResults = new ArrayList<Message>();
-    private List<Message> warningResults = new ArrayList<Message>();
-    private List<Message> infoResults = new ArrayList<Message>();
+    private List<ValidatorResult> fatalResults = new ArrayList<ValidatorResult>();
+    private List<ValidatorResult> errorResults = new ArrayList<ValidatorResult>();
+    private List<ValidatorResult> warningResults = new ArrayList<ValidatorResult>();
+    private List<ValidatorResult> infoResults = new ArrayList<ValidatorResult>();
 
     public ValidatorResults()
     {
@@ -72,19 +72,19 @@ public class ValidatorResults
     {
         if (validatorResult.getLevel() == ValidatorResult.Level.FATAL)
         {
-            fatalResults.add(validatorResult.getMessage());
+            fatalResults.add(validatorResult);
         }
         else if (validatorResult.getLevel() == ValidatorResult.Level.ERROR)
         {
-            errorResults.add(validatorResult.getMessage());
+            errorResults.add(validatorResult);
         }
         else if (validatorResult.getLevel() == ValidatorResult.Level.WARNING)
         {
-            warningResults.add(validatorResult.getMessage());
+            warningResults.add(validatorResult);
         }
         else if (validatorResult.getLevel() == ValidatorResult.Level.INFO)
         {
-            infoResults.add(validatorResult.getMessage());
+            infoResults.add(validatorResult);
         }
         else
         {
@@ -100,10 +100,10 @@ public class ValidatorResults
     {
 		if(validatorResults!=null)
 		{
-			fatalResults.addAll(validatorResults.getMessages(ValidatorResult.Level.FATAL));
-			errorResults.addAll(validatorResults.getMessages(ValidatorResult.Level.ERROR));
-			warningResults.addAll(validatorResults.getMessages(ValidatorResult.Level.WARNING));
-			infoResults.addAll(validatorResults.getMessages(ValidatorResult.Level.INFO));
+			fatalResults.addAll(validatorResults.getValidationResult(ValidatorResult.Level.FATAL));
+			errorResults.addAll(validatorResults.getValidationResult(ValidatorResult.Level.ERROR));
+			warningResults.addAll(validatorResults.getValidationResult(ValidatorResult.Level.WARNING));
+			infoResults.addAll(validatorResults.getValidationResult(ValidatorResult.Level.INFO));
 		}
 	}
 
@@ -133,6 +133,16 @@ public class ValidatorResults
      */
     public List<Message> getMessages (ValidatorResult.Level level)
     {
+        List<ValidatorResult> results= getValidationResult(level);
+        ArrayList<Message> rtnList=new ArrayList<Message>();
+        for(ValidatorResult rslt:results)
+        {
+        	rtnList.add(rslt.getMessage());
+        }
+        return rtnList;
+    }
+    public List <ValidatorResult>  getValidationResult(ValidatorResult.Level level)
+    { 	
         if (level == ValidatorResult.Level.FATAL)
         {
             return fatalResults;
@@ -151,32 +161,28 @@ public class ValidatorResults
         }
         else if (level == ValidatorResult.Level.ALL)
         {
-        	ArrayList<Message> rtnList =new ArrayList<Message>();
+        	ArrayList<ValidatorResult> rtnList =new ArrayList<ValidatorResult>();
         	rtnList.addAll(fatalResults);
         	rtnList.addAll(errorResults);
         	rtnList.addAll(warningResults);
         	rtnList.addAll(infoResults);
-            return rtnList;
+        	return rtnList;
         }
         else
         {
             Log.logWarning(this, "Unknown Validation Level" + level);
-            return new ArrayList<Message>();
+            return new ArrayList<ValidatorResult>();
         }
+  	
     }
-
     /**
      * Get all messages ordered by validation level.
      * @return all messages ordered by validation level.
      */
     public List<Message> getAllMessages()
     {
-        List<Message> messages = new ArrayList<Message>();
-        messages.addAll(fatalResults);
-        messages.addAll(errorResults);
-        messages.addAll(warningResults);
-        messages.addAll(infoResults);
-        return messages;
+        
+        return this.getMessages(ValidatorResult.Level.ALL);
     }
 
     /**
@@ -295,6 +301,9 @@ public class ValidatorResults
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/31 17:42:25  wangeug
+ * HISTORY      : resolve issues with preliminary test of release 4.0
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/27 15:26:33  wuye
  * HISTORY      : Added removeAll method to reset the validatorResult
  * HISTORY      :
