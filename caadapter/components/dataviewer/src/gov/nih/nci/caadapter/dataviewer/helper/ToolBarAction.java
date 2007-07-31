@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.sql.ResultSet;
 
 import gov.nih.nci.caadapter.dataviewer.util.PrintableComponent;
 import gov.nih.nci.caadapter.dataviewer.util.*;
@@ -246,6 +247,112 @@ public class ToolBarAction implements ActionListener
             //remove all tables
             ((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).fillPanel();//add all tables
             _mD.get_alreadyFilled().add(new Integer(_mD.get_tPane().getSelectedIndex()));
+        } else if("validate".equalsIgnoreCase(cmd)){
+            {// third button clicked
+            final Dialog _queryWaitDialog = new Dialog(_mD.get_jf());
+            new Thread(new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        String _sqlSTR = (((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).get_queryBuilder()).getModel().toString(true).toUpperCase();
+                        ResultSet rs = _mD.get_con().createStatement().executeQuery(_sqlSTR);
+//                        DatabaseTest _dbtest = new DatabaseTest(_mD.get_con(), _sqlSTR);
+//                        TableSorter sorter = new TableSorter(_dbtest.getQTM());
+//                        JTable table = new JTable();//NEW
+//                        sorter.setTableHeader(table.getTableHeader());//ADDED THIS
+//                        JScrollPane _jp4RunSQL = new JScrollPane(table);
+                        final JDialog _tmpDialog = new JDialog(_mD.get_jf(), true);
+                        _tmpDialog.setTitle("Validate Query Result");
+                        _tmpDialog.setSize(400, 200);
+                        _tmpDialog.setLocation(300, 300);
+                        _tmpDialog.setLayout(new BorderLayout());
+                        TitledBorder titleTop = BorderFactory.createTitledBorder("Query Result");
+                        JPanel labelPan = new JPanel();
+                        labelPan.setLayout(new BorderLayout());
+                        labelPan.add(new JLabel("The query executed successfully"), BorderLayout.CENTER);
+                        labelPan.setBorder(titleTop);
+//                        _jp4RunSQL.setBorder(titleTop);
+//                        _tmpDialog.getContentPane().add(_jp4RunSQL, BorderLayout.CENTER);
+                        JPanel labelButton = new JPanel();
+                        labelButton.setLayout(new BorderLayout());
+//                        JLabel label = new JLabel("The query results are adjusted to 10 rows");
+//                        label.setFont(new Font("Serif", Font.BOLD, 10));
+//                        label.setForeground(Color.BLUE);
+//                        labelButton.add(label, BorderLayout.CENTER);
+                        JPanel _okButPane = new JPanel();
+                        JButton _okBtn = new JButton("   OK   ");
+                        _okBtn.addActionListener(new ActionListener()
+                        {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                _tmpDialog.dispose();
+                            }
+                        });
+                        _okButPane.add(_okBtn);
+                        LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                        _okButPane.setBorder(lineBorder);
+                        try
+                        {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e1)
+                        {
+                            e1.printStackTrace();
+                        }
+                        _queryWaitDialog.dispose();
+
+                         _tmpDialog.getContentPane().add(labelPan, BorderLayout.CENTER);
+                        labelButton.add(_okButPane, BorderLayout.SOUTH);
+                        _tmpDialog.getContentPane().add(labelButton, BorderLayout.SOUTH);
+                        _tmpDialog.setVisible(true);
+                       //  getContentPane().add(, BorderLayout.CENTER);
+                    } catch (Exception e1)
+                    {
+                        final JDialog _tmpDialog = new JDialog(_mD.get_jf(), true);
+
+                        _tmpDialog.setLocation(400, 300);
+                        _tmpDialog.setTitle("Bad Query");
+                        _tmpDialog.setLayout(new BorderLayout());
+                        LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                        JPanel _borderPane = new JPanel();
+                        _borderPane.add(new JLabel("       Query did not execute due to:\n " + e1.getMessage()));
+                        _borderPane.setBorder(lineBorder);
+                        _tmpDialog.getContentPane().add(_borderPane, BorderLayout.CENTER);
+                        JPanel _okButPane = new JPanel();
+                        JButton _okBtn = new JButton("   OK   ");
+                        _okBtn.addActionListener(new ActionListener()
+                        {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                _tmpDialog.dispose();
+                            }
+                        });
+                        _okButPane.add(_okBtn);
+                        // LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                        _okButPane.setBorder(lineBorder);
+                        _queryWaitDialog.dispose();
+                        _tmpDialog.getContentPane().add(_okButPane, BorderLayout.SOUTH);
+                        int length = e1.getMessage().length() + 50+425;
+                        System.out.println("length-----------> "+length);
+                         _tmpDialog.setSize(length, 100);
+                        _tmpDialog.setVisible(true);
+                    }
+                }
+            }).start();
+            _queryWaitDialog.setTitle("Query in Progress");
+            _queryWaitDialog.setSize(350, 100);
+            _queryWaitDialog.setLocation(450, 300);
+            _queryWaitDialog.setLayout(new BorderLayout());
+            LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+            JPanel _waitLabel = new JPanel();
+            _waitLabel.setBorder(lineBorder);
+            _waitLabel.add(new JLabel("      Query in Progress, Please wait ..."));
+            _queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
+            _queryWaitDialog.add(_waitLabel, BorderLayout.CENTER);
+            _queryWaitDialog.setVisible(true);
+        }
+            
         }
     }
 }

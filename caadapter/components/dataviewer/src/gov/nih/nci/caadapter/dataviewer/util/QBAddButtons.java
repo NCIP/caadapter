@@ -32,6 +32,8 @@ public class QBAddButtons
         toolBar.add(button);
         button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
         toolBar.add(button);
+        button = makeNavigationButton("Check", "Validate", "Validate", "Validate");
+        toolBar.add(button);
         button = makeNavigationButton("reset", QBConstants.Reset, "reset", "Reset Diagram");
         //toolBar.add(button);
         button = makeNavigationButton("Add_tables", QBConstants.ADD, "Add Tables", "Add Tables");
@@ -51,6 +53,8 @@ public class QBAddButtons
         else
             toolBar.add(button).setEnabled(false);
         button = makeNavigationButton("save", QBConstants.Save, "save", "Save SQL");
+        toolBar.add(button);
+         button = makeNavigationButton("Check", "Validate", "Validate", "Validate");
         toolBar.add(button);
         button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
         toolBar.add(button);
