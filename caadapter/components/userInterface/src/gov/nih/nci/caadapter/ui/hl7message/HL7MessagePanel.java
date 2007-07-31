@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.6 2007-07-31 14:27:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.7 2007-07-31 20:53:10 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -69,8 +69,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-07-31 14:27:13 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-07-31 20:53:10 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -394,7 +394,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			{
 				XMLElement result =(XMLElement)generalMssg;
 				setMessageText(result.toXML().toString());
-				validationMessagePane.setValidatorResults(null);//result.getValidatorResults());
+				validationMessagePane.setValidatorResults(result.getValidatorResults());
 			}
 			else if (generalMssg instanceof TransformationResult)
 			{
@@ -609,6 +609,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/07/31 14:27:13  wangeug
+ * HISTORY      : enable HL7 V3 to CSV transformation service
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/07/27 20:37:07  wangeug
  * HISTORY      : clean codes
  * HISTORY      :
