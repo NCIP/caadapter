@@ -5,6 +5,8 @@
 
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
+import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -17,15 +19,16 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-17 20:42:23 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-31 14:05:59 $
  */
 public class XMLElement implements Cloneable{
 	
 	private String name;
-	private Hashtable<String, String> attributes = new Hashtable<String, String>();
+	private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 	private Vector<XMLElement> children = new Vector<XMLElement>();
 	private ArrayList<String> segments = new ArrayList<String>();
+	private ValidatorResults validatorResults = null;
 
 	/**
 	 * @return the name
@@ -59,13 +62,16 @@ public class XMLElement implements Cloneable{
 	 * @param value the value of the attribute
 	 */
 	public void addAttribute(String name, String value) {
-		attributes.put(name, value);
+		Attribute attribute = new Attribute();
+		attribute.setName(name);
+		attribute.setValue(value);
+		attributes.add(attribute);
 	}
 
 	/**
 	 * @return the attributes
 	 */
-	public Hashtable<String, String> getAttributes() {
+	public ArrayList<Attribute> getAttributes() {
 		return attributes;
 	}
 
@@ -95,8 +101,8 @@ public class XMLElement implements Cloneable{
 	public StringBuffer toXML() {
 		StringBuffer output = new StringBuffer();
 		output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		addAttribute("xmlns","urn:hl7-org:v3");
-		addAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+//		addAttribute("xmlns","urn:hl7-org:v3");
+//		addAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
 		output.append(toXMLBody(0));
 		return output;
 	}
@@ -106,13 +112,24 @@ public class XMLElement implements Cloneable{
 		StringBuffer output = new StringBuffer();
 		for(int i = 0; i<level;i++) output.append("   ");
 		output.append("<" + getName());
-		for(String key:attributes.keySet()) {
+		
+		if (level == 0) {
+			output.append(" xmlns=\"urn:hl7-org:v3\"");
+			output.append(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");			
+		}
+		for(Attribute attribute:attributes) {
+			String key = attribute.getName();
+			String value = attribute.getValue();
+//			if (key.equals("extension")) {
+//				output.append(" extension="+"\"abac\"");
+//				continue;
+//			}
 			if (key.equalsIgnoreCase("inlineText")) {
 				addBody = true;
-				bodyValue = attributes.get(key);
+				bodyValue = value;
 			}
 			else {
-				output.append(" "+key+"="+"\""+attributes.get(key)+"\"");
+				output.append(" "+key+"="+"\""+value+"\"");
 			}
 		}
 		
@@ -136,5 +153,17 @@ public class XMLElement implements Cloneable{
 			}
 		}
 		return output;
+	}
+	/**
+	 * @return the validatorResults
+	 */
+	public ValidatorResults getValidatorResults() {
+		return validatorResults;
+	}
+	/**
+	 * @param validatorResults the validatorResults to set
+	 */
+	public void setValidatorResults(ValidatorResults validatorResults) {
+		this.validatorResults = validatorResults;
 	}
 }
