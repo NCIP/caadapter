@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.2 2007-07-20 17:05:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.3 2007-07-31 20:54:03 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,10 +48,8 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaParserImpl;
-//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaResult;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
-import gov.nih.nci.caadapter.hl7.map.MappingResult;
+//import gov.nih.nci.caadapter.hl7.map.MappingResult;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -100,13 +98,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-20 17:05:29 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-31 20:54:03 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.2 2007-07-20 17:05:29 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.3 2007-07-31 20:54:03 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -445,27 +443,23 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		long stTime=System.currentTimeMillis();
 		// parse the file.
 		MapParserImpl parser = new MapParserImpl();
-		MappingResult returnResult = parser.parse(file.getParent(), new FileReader(file));
-		ValidatorResults validatorResults = returnResult.getValidatorResults();
+		ValidatorResults validatorResults = parser.parse(file.getParent(), new FileReader(file));
 		if (validatorResults != null && validatorResults.hasFatal())
 		{//immediately return if it has fatal errors.
 			return validatorResults;
 		}
-		Mapping mapping = returnResult.getMapping();
+		Mapping mapping = parser.getMapping();//returnResult.getMapping();
 
 		//build source tree
 		BaseComponent sourceComp = mapping.getSourceComponent();
 		Object sourceMetaInfo = sourceComp.getMeta();
 		File sourceFile = sourceComp.getFile();
 		buildSourceTree(sourceMetaInfo, sourceFile, false);
-//        middlePanel.getMappingDataManager().registerSourceComponent(sourceComp);
-
 		//build target tree
 		BaseComponent targetComp = mapping.getTargetComponent();
 		Object targetMetaInfo = targetComp.getMeta();
 		File targetFile = targetComp.getFile();
 		buildTargetTree(targetMetaInfo, targetFile, false);
-//		middlePanel.getMappingDataManager().registerTargetComponent(targetComp);
 
 		middlePanel.getMappingDataManager().setMappingData(mapping);
 
@@ -474,8 +468,6 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		{
 			openSourceButton.setEnabled(false);
 			openTargetButton.setEnabled(false);
-//			sourceLocationPanel.setEnabled(false);
-//			targetLocationPanel.setEnabled(false);
 		}
 		setSaveFile(file);
 		System.out.println("HL7MappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
@@ -627,6 +619,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/20 17:05:29  wangeug
+ * HISTORY      : integrate Hl7 transformation service
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:37:25  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

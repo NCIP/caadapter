@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.5 2007-07-20 17:03:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.6 2007-07-31 20:52:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -68,7 +68,7 @@ import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
-import gov.nih.nci.caadapter.hl7.map.MappingResult;
+//import gov.nih.nci.caadapter.hl7.map.MappingResult;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
@@ -88,28 +88,28 @@ import java.util.Hashtable;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.5 $
- * @date $Date: 2007-07-20 17:03:58 $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2007-07-31 20:52:40 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.5 2007-07-20 17:03:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.6 2007-07-31 20:52:40 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
     private String mapfiledir;
 
-    public MappingResult parse(String mapfiledirectory, FileReader metafile)
+    public ValidatorResults parse(String mapfiledirectory, FileReader metafile)
     {
         this.mapping = new MappingImpl();
         this.mapfiledir = mapfiledirectory;
 
-        MappingResult mappingResult = new MappingResult();
+//        MappingResult mappingResult = new MappingResult();
         ValidatorResults validatorResults = new ValidatorResults();
-        mappingResult.setMapping(mapping);
-        mappingResult.setValidatorResults(validatorResults);
+//        mappingResult.setMapping(mapping);
+//        mappingResult.setValidatorResults(validatorResults);
 
         try {
             C_mapping cMapping = (C_mapping) C_mapping.unmarshalC_mapping(metafile);
@@ -131,7 +131,7 @@ public class MapParserImpl {
 //        MapValidator mapValidator = new MapValidator(mapping);
 //        validatorResults.addValidatorResults(mapValidator.validate());
 
-        return mappingResult;
+        return validatorResults;
     }
 
     private void processComponents(C_components cComponents) throws MappingException {
@@ -440,4 +440,8 @@ public class MapParserImpl {
         view.setY(cView.getY());
         return view;
     }
+
+	public Mapping getMapping() {
+		return mapping;
+	}
 }
