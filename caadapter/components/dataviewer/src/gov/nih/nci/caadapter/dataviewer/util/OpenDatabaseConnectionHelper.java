@@ -1,7 +1,8 @@
 package gov.nih.nci.caadapter.dataviewer.util;
 
+import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
-import gov.nih.nci.caadapter.dataviewer.util.GetConnectionSingleton;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -19,6 +20,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * Created by IntelliJ IDEA.
@@ -615,7 +617,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         if (title.equalsIgnoreCase("New Profile"))
         {
             conInfo.add(driver);
-            driver.setSelectedIndex(0);
+            //driver.setSelectedIndex(0);
         } else
         {
             conInfo.add(driver);
@@ -736,7 +738,22 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         new OpenDatabaseConnectionHelper(null);
     }
 
-    private void readDriverProperties()
+    private void populateDriverDropDown()
+    {
+        driverDropDown = new ArrayList();
+        try
+        {
+            driver.addItem("--Select--");
+            //add oracle
+            driver.addItem("Oracle");
+            driverDropDown.add("Oracle");
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void readDriverProperties(String old)
     {
         driverDropDown = new ArrayList();
         try
@@ -752,6 +769,46 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
             in.close();
         } catch (IOException e)
         {
+            e.printStackTrace();
         }
+    }
+
+    private void readDriverProperties()
+    {
+        /**
+         * hard coding it for now;
+         */
+        populateDriverDropDown();
+//        driverDropDown = new ArrayList();
+//        Properties properties = new Properties();
+//        InputStream fi = null;
+//        try
+//        {
+//            fi = CaadapterUtil.class.getClassLoader().getResource("driver.properties").openStream();
+//            properties.load(fi);
+//            if (properties != null)
+//            {
+//                String databases = properties.getProperty("databases");
+//                EmptyStringTokenizer empt = new EmptyStringTokenizer(databases, ",");
+//                while (empt.hasMoreTokens())
+//                {
+//                    String temp = empt.nextToken();
+//                    driver.addItem(temp);
+//                    driverDropDown.add(temp);
+//                }
+//            }
+//        } catch (Exception ex)
+//        {
+//            Log.logException(CaadapterUtil.class, "message-types.properties is not found", ex);
+//        } finally
+//        {
+//            if (fi != null)
+//                try
+//                {
+//                    fi.close();
+//                } catch (IOException ignore)
+//                {
+//                }
+//        }
     }
 }

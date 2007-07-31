@@ -64,9 +64,7 @@ public class GetConnectionSingleton
     {
         if (singletonObject == null)
         {
-
-                singletonObject = new GetConnectionSingleton(drv, _url, uid, pwd);
-
+            singletonObject = new GetConnectionSingleton(drv, _url, uid, pwd);
             password = new JPasswordField(pwd);
         }
         return connection;

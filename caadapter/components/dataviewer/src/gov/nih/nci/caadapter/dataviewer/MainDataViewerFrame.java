@@ -140,7 +140,7 @@ public class MainDataViewerFrame
         return xmlString;
     }
 
-    public MainDataViewerFrame(JFrame owner, boolean modal, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out)
+    public MainDataViewerFrame(Frame owner, boolean modal, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out)
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++++ debugging");
         System.out.println(System.getProperty("java.library.path"));
@@ -335,7 +335,8 @@ public class MainDataViewerFrame
             Connection con = null;
             Class.forName("oracle.jdbc.OracleDriver");
             //con = DriverManager.getConnection(url, "hr", "hr");
-            ref = new MainDataViewerFrame(null, false, null, null, null, null, "");
+            new MainDataViewerFrame(null, false, null );
+
         } catch (Exception e)
         {
             e.printStackTrace();
