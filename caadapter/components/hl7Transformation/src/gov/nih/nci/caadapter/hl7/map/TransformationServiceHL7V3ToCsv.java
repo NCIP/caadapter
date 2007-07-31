@@ -1,20 +1,22 @@
 package gov.nih.nci.caadapter.hl7.map;
 
-import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
+import gov.nih.nci.caadapter.hl7.transformation.MapParser;
+import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
+import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -38,26 +40,49 @@ public class TransformationServiceHL7V3ToCsv  {
 	{
 		List<TransformationResult> transformationResults = new ArrayList<TransformationResult>();
 		try {
-		    MapParserImpl parser = new MapParserImpl();
-		    MappingResult mappingResult = parser.parse(mapFile.getParent(), new FileReader(mapFile));
-			ValidatorResults prepareValidatorResults =mappingResult.getValidatorResults();
-			if (!mappingResult.getValidatorResults().isValid())
-			{
-	            transformationResults.add(new TransformationResult(MessageResources.getMessage("TRF2", new Object[]{}).toString(),
-	                prepareValidatorResults));
-	            return transformationResults;
-	        }
-					
+//		    			
 			SAXParser saxParser=SAXParserFactory.newInstance().newSAXParser();
-			InputSource is=new InputSource(new FileReader(sourceFile));
 			HL7V3SaxContentHandler saxContentHandler= new HL7V3SaxContentHandler();
-			
-			Mapping csvH3sMap=mappingResult.getMapping();
-			saxContentHandler.setMapping(csvH3sMap);
-			saxParser.parse(is, saxContentHandler);
-			System.out.println("TransformationServiceHL7V3ToCsv.process() \n"+saxContentHandler.getCsvDataWrapper());
+	    	    	
+	        MapParser mapParser = new MapParser();
+	        Hashtable mappings = mapParser.processOpenMapFile(mapFile);
+	        saxContentHandler.setLinkMapping(mappings);
+	        saxContentHandler.setFunctions(mapParser.getFunctions());
+	        ValidatorResults mappingValidatorResults=mapParser.getValidatorResults();
+	        if (!mappingValidatorResults.isValid())
+	        {
+	        	String msg="Mapping validation failed !!";
+	        	transformationResults.add(new TransformationResult(msg,mappingValidatorResults ));
+	        	return transformationResults;
+	        }
+	        
+	        String fullCsvfilepath = FileUtil.filenameLocate(mapFile.getParent(), mapParser.getSCSFilename());
+	        FileReader fileReader = new FileReader(new File(fullCsvfilepath));
+            CSVMetaParserImpl csvParser = new CSVMetaParserImpl();
+            CSVMetaResult csvMetaResult = csvParser.parse(fileReader);
+            if (csvMetaResult!=null
+            		&&csvMetaResult.getValidatorResults()!=null
+            		&&!csvMetaResult.getValidatorResults().isValid())
+            {
+            	String msg="CSV specification validation failed !!";
+	        	transformationResults.add(new TransformationResult(msg,csvMetaResult.getValidatorResults() ));
+	        	return transformationResults;
+            }
+            saxContentHandler.setCsvMeta(csvMetaResult.getCsvMeta());
+            
+			saxParser.parse(new InputSource(new FileReader(sourceFile)), saxContentHandler);
 			String msgGenerated=saxContentHandler.getCsvDataWrapper().toString();
-			TransformationResult transferResult=new TransformationResult(msgGenerated , null);
+			if (!saxContentHandler.getParseDocumentResults().isValid())
+	        {
+	        	String msg="Document parsing validation failed !!";
+	        	transformationResults.add(new TransformationResult(msg,saxContentHandler.getParseDocumentResults()));
+	        	return transformationResults;
+	        }
+			
+			ValidatorResults prcValidatorResults=saxContentHandler.getParseDocumentResults();
+			prcValidatorResults.addValidatorResults(csvMetaResult.getValidatorResults());
+			prcValidatorResults.addValidatorResults(mappingValidatorResults);
+			TransformationResult transferResult=new TransformationResult(msgGenerated , saxContentHandler.getParseDocumentResults());
 			transformationResults.add(transferResult);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block

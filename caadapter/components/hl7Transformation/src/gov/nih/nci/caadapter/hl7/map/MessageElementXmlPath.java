@@ -3,7 +3,7 @@ package gov.nih.nci.caadapter.hl7.map;
 import java.util.ArrayList;
 
 public class MessageElementXmlPath extends ArrayList<String> {
-	
+	private String rootName;
 
 	public void removeLeaf(Object leaf)
 	{
@@ -25,5 +25,15 @@ public class MessageElementXmlPath extends ArrayList<String> {
 	public String toString()
 	{
 		return getPathValue();
+	}
+
+	public String getRootName() {
+		if (super.size()>0)
+			rootName=(String)super.get(0);
+		return rootName;
+	}
+
+	public void setRootName(String rootName) {
+		this.rootName = rootName;
 	}
 }

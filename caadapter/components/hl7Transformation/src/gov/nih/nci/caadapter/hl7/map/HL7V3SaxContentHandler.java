@@ -1,5 +1,9 @@
 package gov.nih.nci.caadapter.hl7.map;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -15,25 +19,24 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 public class HL7V3SaxContentHandler extends DefaultHandler {
 
 	private MessageElementXmlPath pathToRoot;
-	private Mapping mapping;
-	private MapProcessorHelper mapHelper;
+	private Hashtable<String,String> linkMapping;
+	private Hashtable <String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
 	private CSVSegmentedFileExtension csvDataWrapper;
 	private ValidatorResults parseDocumentResults;
-	
+	private CSVMeta csvMeta;
+
 	public void startDocument() throws SAXException
 	{
 		super.startDocument();
 		pathToRoot=new MessageElementXmlPath();
 		//retrive csv MetaData
-		CSVMeta csvMeta=(CSVMeta)getMapping().getSourceComponent().getMeta();
-		csvDataWrapper = new CSVSegmentedFileExtension();
-		
+		csvDataWrapper = new CSVSegmentedFileExtension();		
 		parseDocumentResults=new ValidatorResults();
 		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{"Start"});
 		parseDocumentResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
 		csvDataWrapper.setBuildCSVResult(parseDocumentResults);
-		Log.logInfo(this, msg);
 		csvDataWrapper.setCsvMeta(csvMeta);
+		Log.logInfo(this, msg);
 	}
 	
 	public void  endElement(String uri, String localName, String qName) throws SAXException 
@@ -50,6 +53,9 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 			pathToRoot.add(qName.substring(qName.indexOf(".")+1));
 		else
 			pathToRoot.add(qName);
+		if (pathToRoot.size()==1) //reformat xmlpath 
+			reformatLinkMapping();
+		
 		int attrLength=attributes.getLength();
 		for (int i=0;i<attrLength;i++)
 		{
@@ -57,12 +63,12 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 			String attrValue=attributes.getValue(i);
 			if (attrValue.length()==0)
 				continue;
-        	String srcFieldRef=mapHelper.findSourceDataReferenceFromTargetPath(pathToRoot.getPathValue()+"."+attrQName);
+        	String srcFieldRef=findCsvReferenceFieldPath(pathToRoot.getPathValue()+"."+attrQName);
         	if (srcFieldRef!=null)
         		csvDataWrapper.insertCsvField(srcFieldRef, attrValue);	
         	else
         	{
-        		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{pathToRoot+ " attribute is not mapped ... "+attrQName +" = "+attrValue});
+        		Message msg = MessageResources.getMessage("HL7TOCSV1", new Object[]{pathToRoot+ "."+attrQName, attrValue});
         		parseDocumentResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));;
         		Log.logWarning(this, msg);
         	}
@@ -74,25 +80,18 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
         String str = new String( charSeq, start, len );
         str = str.trim();
         if (str.length() > 0) {
-        	String srcFieldRef=mapHelper.findSourceDataReferenceFromTargetPath(pathToRoot.getPathValue());//+".inlineText");
+        	String srcFieldRef=findCsvReferenceFieldPath(pathToRoot.getPathValue()+".inlineText");
         	if (srcFieldRef!=null)
         		csvDataWrapper.insertCsvField(srcFieldRef, str);
         	else
         	{
-        		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{pathToRoot+ " is not mapped ... value: "+str});
+        		Message msg = MessageResources.getMessage("HL7TOCSV1", new Object[]{pathToRoot+ " .inlineText",str});
         		parseDocumentResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));;
         		Log.logWarning(this, msg);
         	}
        }
     }
     
-	public Mapping getMapping() {
-		return mapping;
-	}
-	public void setMapping(Mapping userMapping) {
-		this.mapping = userMapping;
-		mapHelper=new MapProcessorHelper(mapping);
-	}
 
 	public CSVSegmentedFileExtension getCsvDataWrapper() {
 		return csvDataWrapper;
@@ -101,5 +100,88 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 	public ValidatorResults getParseDocumentResults() {
 		return parseDocumentResults;
 	}
+
+	public Hashtable<String, FunctionComponent> getFunctions() {
+		return functions;
+	}
+
+	public void setFunctions(Hashtable<String, FunctionComponent> functions) {
+		this.functions = functions;
+	}
+
+	public Hashtable<String, String> getLinkMapping() {
+		return linkMapping;
+	}
+	public void setLinkMapping(Hashtable<String, String> linkxmlMapp) {
+		linkMapping=linkxmlMapp;
+	}
+	public void reformatLinkMapping() 
+	{
+		Enumeration keys=linkMapping.keys();
+		while(keys.hasMoreElements())
+		{
+			String targetXmlPath=(String)keys.nextElement();
+			String srcXmlPath =linkMapping.get(targetXmlPath);
+
+//			reset the target element xmlPath removing index
+			linkMapping.put(resetTargetElementXmlPath(targetXmlPath), srcXmlPath);
+		}
+		
+	}
+
+	public CSVMeta getCsvMeta() {
+		return csvMeta;
+	}
+
+	public void setCsvMeta(CSVMeta csvMetaNew) {
+		csvMeta = csvMetaNew;
+	}
 	
+	private String resetTargetElementXmlPath(String oldxmlPath)
+	{
+		if (!oldxmlPath.startsWith(pathToRoot.getRootName()))
+				return oldxmlPath; //do not reformat for CSV element xmlPath
+		StringBuffer sb=new StringBuffer();
+		StringTokenizer  tk=new StringTokenizer(oldxmlPath,".");
+		while (tk.hasMoreTokens())
+		{
+			String nxtTk=tk.nextToken();
+			String lstTwoLetters=nxtTk.substring(nxtTk.length()-2);
+			try
+			{
+				Integer.parseInt(lstTwoLetters);
+				//remove the last two letter
+				sb.append("."+nxtTk.substring(0, nxtTk.length()-2));
+			}
+			catch(NumberFormatException ne)
+			{
+				sb.append("."+nxtTk);
+			}
+			
+		}
+		return sb.toString().substring(1);//remove the first "."
+	}
+
+	private String findCsvReferenceFieldPath(String hl7Path)
+	{
+		if (hl7Path==null)
+			return null;
+		String srcRef=linkMapping.get(hl7Path);
+		if (srcRef==null)
+			return srcRef;
+		else if (srcRef.startsWith("function"))
+		{
+			String fcOutput=srcRef;
+			String fcName=fcOutput.substring(0, srcRef.indexOf("outputs"));
+			String fcInput=fcName+"inputs.0";
+			srcRef=linkMapping.get(fcInput);
+			String msgPara="Construct function HL7 target:"	+hl7Path
+			+" ... function output:"+fcOutput
+			+ " ... function input:"+fcInput
+			+"... CSV Field:"+srcRef;
+    		Message msg = MessageResources.getMessage("HL7TOCSV0", new Object[]{msgPara});
+    		parseDocumentResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));;
+		}
+		return srcRef;
+	}
 }

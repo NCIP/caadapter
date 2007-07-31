@@ -515,7 +515,7 @@
     
     <!-- validate transformation service: from HL7V3 to CSV -->
     <message id="HL7TOCSV0" level="INFO">
-		<template>HL7V3ToCSV Transformation service ... {0}.</template>
+		<template>Transformation service ... {0}.</template>
 		<parameters>
 			<parameter number="0" value="message"/>
 		</parameters>

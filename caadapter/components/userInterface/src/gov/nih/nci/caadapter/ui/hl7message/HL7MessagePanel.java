@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.5 2007-07-27 20:37:07 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.6 2007-07-31 14:27:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -69,8 +69,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-07-27 20:37:07 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-07-31 14:27:13 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -362,7 +362,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
 				List<TransformationResult> transResults=svc.process();
 				setMessageText(transResults.get(0).getMessageText());
-//				validatorResults.addValidatorResult(transResults.get(0).getValidatorResults());
+				validationMessagePane.setValidatorResults(transResults.get(0).getValidatorResults());
+				//				validatorResults.addValidatorResult(transResults.get(0).getValidatorResults());
 			}
 		}
 		catch (Exception e)
@@ -608,6 +609,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/07/27 20:37:07  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/26 13:38:29  wangeug
  * HISTORY      : display a list of HL7 message with the HL7 message panel
  * HISTORY      :

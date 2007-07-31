@@ -23,7 +23,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 		if (parentSegs.size()==0)
 		{
 			Message msg = MessageResources.getMessage("HL7TOCSV1", new Object[]{csvFieldKey,csvValue});
-			transformationResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+//			transformationResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 			Log.logError(this, msg);
 			return;
 		}
