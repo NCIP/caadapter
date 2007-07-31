@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/DefaultMessageTableModel.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/DefaultMessageTableModel.java,v 1.2 2007-07-31 18:42:06 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,8 @@
 
 package gov.nih.nci.caadapter.ui.common.message;
 
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +46,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-31 18:42:06 $
  */
 public class DefaultMessageTableModel extends AbstractTableModel
 {
@@ -61,14 +63,15 @@ public class DefaultMessageTableModel extends AbstractTableModel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/DefaultMessageTableModel.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/DefaultMessageTableModel.java,v 1.2 2007-07-31 18:42:06 wangeug Exp $";
 
-	private static final String[] COLUMN_NAMES_ARRAY = new String[]{"Message"};
+	private static final String[] COLUMN_NAMES_ARRAY = new String[]{"Level","Message"};
 
 	private java.util.List messageList;
 
 	public DefaultMessageTableModel()
 	{//do nothing
+		super();
 	}
 
 	public List getMessageList()
@@ -143,6 +146,20 @@ public class DefaultMessageTableModel extends AbstractTableModel
 		try
         {
             Object obj = messageList.get(rowIndex);
+            if (obj instanceof ValidatorResult)
+            {
+            	ValidatorResult rslt=(ValidatorResult)obj;
+            	if (columnIndex==0)
+            		return rslt.getLevel();
+            	else
+            		return rslt.getMessage();
+            	
+            }
+            else
+            {
+            	if (columnIndex==0)
+            		return "";
+            }
 		    return obj;
         }
         catch(IndexOutOfBoundsException ie)
@@ -156,6 +173,9 @@ public class DefaultMessageTableModel extends AbstractTableModel
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

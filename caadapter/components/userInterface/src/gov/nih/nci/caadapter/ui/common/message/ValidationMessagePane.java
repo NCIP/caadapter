@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.5 2007-07-31 17:44:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.6 2007-07-31 18:42:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,6 +55,8 @@ import javax.swing.JSplitPane;
  
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -71,8 +73,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-07-31 17:44:25 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-07-31 18:42:05 $
  */
 public class ValidationMessagePane extends JPanel implements ActionListener
 {
@@ -88,7 +90,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.5 2007-07-31 17:44:25 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.6 2007-07-31 18:42:05 wangeug Exp $";
 
 	private JPanel navigationPanel = null;
 	private JPanel levelPanel = null;
@@ -173,12 +175,8 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 		JTable messageTable = new JTable(tableModel);
 		JScrollPane scrollPane = new JScrollPane(messageTable);
 		messagePanel.add(scrollPane, BorderLayout.CENTER);
-
 		messagePanel.setBorder(BorderFactory.createTitledBorder("Validation Messages"));
-
         add(messagePanel, BorderLayout.CENTER);
-
-
 
         // Following part was inserted by umkis for fixing defect# 223 on 12/05/2005
         // When clicking a message of messageTable, a screen will show up for displaying the whole body of the message.
@@ -219,7 +217,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	{
         //JOptionPane.showMessageDialog(this, tableModel.getValueAt(selectedRow, 0).toString(), "Validation Message", JOptionPane.INFORMATION_MESSAGE);
         //new HTMLViewer("text", tableModel.getValueAt(sRow, 0).toString(), -100, 200);
-        String st = tableModel.getValueAt(sRow, 0).toString();
+        String st = tableModel.getValueAt(sRow, 1).toString();
         if (st.startsWith("##IndexOutOfBoundsException"))
         {
             remove(splitPane);
@@ -407,8 +405,9 @@ public class ValidationMessagePane extends JPanel implements ActionListener
             if (!comboBoxLoading)
             {
                 Object selected = levelComboBox.getSelectedItem();
-			    java.util.List messageList = results.getMessages((ValidatorResult.Level) selected);
-			    tableModel.setMessageList(messageList);
+//			    java.util.List messageList = results.getMessages((ValidatorResult.Level) selected);
+//			    tableModel.setMessageList(messageList);
+			    tableModel.setMessageList(results.getValidationResult((ValidatorResult.Level) selected));
             }
             if (startedTag)
             {
@@ -432,6 +431,9 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/07/31 17:44:25  wangeug
+ * HISTORY      : resolve issues with preliminary test of release 4.0
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/12 14:38:21  wangeug
  * HISTORY      : Add "ALL" as option in the validation message type dropdown so you can see all types of validation messages
  * HISTORY      :
