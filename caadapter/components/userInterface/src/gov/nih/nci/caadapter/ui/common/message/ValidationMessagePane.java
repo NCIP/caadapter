@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.4 2007-07-12 14:38:21 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.5 2007-07-31 17:44:25 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,13 +39,31 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.ValidationMessageUtils;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JSplitPane;
+ 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class defines a message panel to display validation and/or other messages.
@@ -53,8 +71,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-12 14:38:21 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-07-31 17:44:25 $
  */
 public class ValidationMessagePane extends JPanel implements ActionListener
 {
@@ -70,7 +88,7 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.4 2007-07-12 14:38:21 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/ValidationMessagePane.java,v 1.5 2007-07-31 17:44:25 wangeug Exp $";
 
 	private JPanel navigationPanel = null;
 	private JPanel levelPanel = null;
@@ -275,6 +293,10 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 		return this.results;
 	}
 
+	public ValidatorResult.Level getSelectedMessageLevel()
+	{
+		return ( ValidatorResult.Level )levelComboBox.getSelectedItem();
+	}
 	/**
 	 * If validatation being applied with different elements of the same
 	 * scope, set the elment being validated
@@ -410,6 +432,9 @@ public class ValidationMessagePane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/12 14:38:21  wangeug
+ * HISTORY      : Add "ALL" as option in the validation message type dropdown so you can see all types of validation messages
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/11 17:56:11  wangeug
  * HISTORY      : enable HSM validation at any level of tree hierarchy
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.3 2007-07-27 15:26:33 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.4 2007-07-31 17:42:25 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,9 +46,9 @@ import java.util.List;
  * An aggregation of validator result
  *
  * @author OWNER: Eric Chen  Date: Aug 22, 2005
- * @author LAST UPDATE: $Author: wuye $
- * @version $Revision: 1.3 $
- * @date $$Date: 2007-07-27 15:26:33 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2007-07-31 17:42:25 $
  * @since caAdapter v1.2
  */
 
@@ -210,41 +210,79 @@ public class ValidatorResults
      */
     public String toString()
     {
-        return toString("\n");
+        return getSelectedMessage(ValidatorResult.Level.ALL, "\n");
     }
 
-    public String toString(String carriageReturn)
+//    private String toString(String carriageReturn)
+//    {
+//        StringBuffer sb = new StringBuffer();
+//        for (int i = 0; i < fatalResults.size(); i++)
+//        {
+//            sb.append("FATAL: ").append(fatalResults.get(i)).append(carriageReturn);
+//        }
+//        for (int i = 0; i < errorResults.size(); i++)
+//        {
+//            sb.append("ERROR: ").append(errorResults.get(i)).append(carriageReturn);
+//
+//        }
+//        for (int i = 0; i < warningResults.size(); i++)
+//        {
+//            sb.append("WARNING: ").append(warningResults.get(i)).append(carriageReturn);
+//
+//        }
+//        for (int i = 0; i < infoResults.size(); i++)
+//        {
+//            sb.append("INFO: ").append(infoResults.get(i)).append(carriageReturn);
+//
+//        }
+//        return sb.toString();
+//    }
+
+    private String getSelectedMessage(ValidatorResult.Level level,String carriageReturn )
     {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < fatalResults.size(); i++)
-        {
-            sb.append("FATAL: ").append(fatalResults.get(i)).append(carriageReturn);
-        }
+    	StringBuffer sb = new StringBuffer();
+    	if (level.equals(ValidatorResult.Level.FATAL)
+    			||level.equals(ValidatorResult.Level.ALL))
+	        for (int i = 0; i < fatalResults.size(); i++)
+	        {
+	            sb.append("FATAL: ").append(fatalResults.get(i)).append(carriageReturn);
+	        }
+    	if (level.equals(ValidatorResult.Level.ERROR)
+    			||level.equals(ValidatorResult.Level.ALL))
         for (int i = 0; i < errorResults.size(); i++)
         {
             sb.append("ERROR: ").append(errorResults.get(i)).append(carriageReturn);
 
         }
-        for (int i = 0; i < warningResults.size(); i++)
+    	if (level.equals(ValidatorResult.Level.WARNING)
+    			||level.equals(ValidatorResult.Level.ALL))
+
+    	for (int i = 0; i < warningResults.size(); i++)
         {
             sb.append("WARNING: ").append(warningResults.get(i)).append(carriageReturn);
 
         }
+    	
+    	if (level.equals(ValidatorResult.Level.INFO)
+    			||level.equals(ValidatorResult.Level.ALL))
         for (int i = 0; i < infoResults.size(); i++)
         {
             sb.append("INFO: ").append(infoResults.get(i)).append(carriageReturn);
 
         }
-        return sb.toString();
+    	return sb.toString();
     }
-
-    public boolean savePrintableFile(String filePath)
+    
+    public boolean savePrintableFile(String filePath,  ValidatorResult.Level slctdLevel)
     {
        FileWriter fw = null;
        try
         {
           fw = new FileWriter(filePath);
-          fw.write(toString("\r\n"));
+          if (slctdLevel==null)
+        	  fw.write(getSelectedMessage(ValidatorResult.Level.ALL, "\r\n"));
+          else
+        	  fw.write(getSelectedMessage(slctdLevel, "\r\n"));
           fw.close();
         }
       catch(IOException ie)
@@ -257,6 +295,9 @@ public class ValidatorResults
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/27 15:26:33  wuye
+ * HISTORY      : Added removeAll method to reset the validatorResult
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/12 14:37:39  wangeug
  * HISTORY      : Add "ALL" as option in the validation message type dropdown so you can see all types of validation messages
  * HISTORY      :

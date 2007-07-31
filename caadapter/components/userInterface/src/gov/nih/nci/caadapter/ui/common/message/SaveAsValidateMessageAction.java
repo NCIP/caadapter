@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/SaveAsValidateMessageAction.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/SaveAsValidateMessageAction.java,v 1.2 2007-07-31 17:43:28 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,8 +52,8 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-31 17:43:28 $
  */
 public class SaveAsValidateMessageAction extends AbstractContextInsensitiveAction // DefaultSaveAsAction
 {
@@ -70,7 +70,7 @@ public class SaveAsValidateMessageAction extends AbstractContextInsensitiveActio
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/SaveAsValidateMessageAction.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/message/SaveAsValidateMessageAction.java,v 1.2 2007-07-31 17:43:28 wangeug Exp $";
 
 
 
@@ -133,7 +133,7 @@ public class SaveAsValidateMessageAction extends AbstractContextInsensitiveActio
             String fileName = file.getPath();
             if (!fileName.endsWith(fileFilterExtension)) fileName = fileName + fileFilterExtension;
 
-            if (!results.savePrintableFile(fileName))
+            if (!results.savePrintableFile(fileName,validationMessagePane.getSelectedMessageLevel()))
               {
                 JOptionPane.showMessageDialog(validationMessagePane,"Validation Results message saving Failure!!","Saving Error!",JOptionPane.ERROR_MESSAGE);
                 return false;
@@ -158,6 +158,9 @@ public class SaveAsValidateMessageAction extends AbstractContextInsensitiveActio
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

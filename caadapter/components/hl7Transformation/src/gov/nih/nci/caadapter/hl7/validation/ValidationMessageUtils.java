@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/ValidationMessageUtils.java,v 1.2 2007-07-12 16:07:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/ValidationMessageUtils.java,v 1.3 2007-07-31 17:43:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,8 +43,8 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-12 16:07:54 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-07-31 17:43:05 $
  */
 public class ValidationMessageUtils
 {
@@ -60,7 +60,7 @@ public class ValidationMessageUtils
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/ValidationMessageUtils.java,v 1.2 2007-07-12 16:07:54 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/ValidationMessageUtils.java,v 1.3 2007-07-31 17:43:05 wangeug Exp $";
 
 	/**
 	 * Never can be instantiated
@@ -79,38 +79,38 @@ public class ValidationMessageUtils
 	{
 		if (results == null || results.getLevels().size() == 0)
 		{
-			return "No stat message";
+			return "no validation message";
 		}
-		StringBuffer buf = new StringBuffer();
+		
 		//since the getLevels() methods only return levels with more than 0 messages, following code will assume this logic.
 		java.util.List levelList = results.getLevels();
+		StringBuffer buf = new StringBuffer();
 		int size = levelList.size();
 		for (int i = 0; i < size; i++)
 		{
 			ValidatorResult.Level level = (ValidatorResult.Level) levelList.get(i);
 			java.util.List msgList = results.getMessages(level);
 			int len = msgList == null ? 0 : msgList.size();
-			if (i==1)
-//				start with "ALL" level messages
-				buf.append(" with ");
-			else if ((i!=0)&&(i!=(size-1)))
+			
+			buf.append(len + " " );
+			if (level.equals(ValidatorResult.Level.ALL))
+			{
+				if (len>1)
+					buf.append("messages: ");
+				else
+					buf.append("message: ");
+			}
+			else
+			{
+				buf.append(level);
+				if (len>1)
+					buf.append("s");
+			}
+			
+			if ((i!=0)&&(i!=(size-1)))
 			{
 				buf.append(", ");
 			}
-//			else if (i == (size - 1))
-//			{//the last one
-//				if (size == 2)
-//				{//format "a and b"
-//					//start with "ALL" level messages
-//					buf.append(" with ");
-//				}
-//				else if (size > 2)
-//				{//format "a, b, c, ..., and m"
-//					buf.append(", and ");
-//				}
-//
-//			}
-			buf.append(len + " " + level + "s");
 		}
 
 		return buf.toString();
@@ -119,6 +119,9 @@ public class ValidationMessageUtils
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/12 16:07:54  wangeug
+ * HISTORY      : Add "ALL" as option in the validation message type dropdown so you can see all types of validation messages
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 18:23:11  wangeug
  * HISTORY      : initila loading
  * HISTORY      :
