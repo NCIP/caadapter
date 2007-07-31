@@ -62,7 +62,10 @@ public class DialogClosingListener implements WindowListener
                 if (mainDataViewerFrame.getSaveFile().exists())
                     mainDataViewerFrame.getSaveFile().delete();
                 out = new BufferedWriter(new FileWriter(mainDataViewerFrame.getSaveFile()));
-                out.write(mainDataViewerFrame.getXmlString());
+                //remove the all sql elements
+                String tempStr = removeSQLElements(mainDataViewerFrame.getXmlString());
+                //remove all sql elements
+                out.write(tempStr);
                 EmptyStringTokenizer str = null;
                 for (int i = 0; i < returnSQLForDomain.size(); i++)
                 {
@@ -114,6 +117,19 @@ public class DialogClosingListener implements WindowListener
 
     public void windowOpened(WindowEvent e)
     {
+    }
+
+    private String removeSQLElements(String xmlStr)
+    {
+        if (xmlStr.indexOf("<sql") > 0)
+        {
+            int beginSQL = xmlStr.indexOf("<sql");
+            xmlStr = xmlStr.substring(0, beginSQL);
+            return xmlStr;
+        } else
+        {
+            return xmlStr;
+        }
     }
 
     private boolean saveSQLPanel(String domain)
