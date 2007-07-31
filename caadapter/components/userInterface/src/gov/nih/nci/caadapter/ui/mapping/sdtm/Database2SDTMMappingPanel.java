@@ -10,7 +10,6 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import gov.nih.nci.caadapter.dataviewer.util.OpenDatabaseConnectionHelper;
-import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
 import gov.nih.nci.caadapter.sdtm.ParseSDTMXMLFile;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
@@ -30,13 +29,13 @@ import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.OpenDataViewerHelper;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.QBGetPasswordWindow;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.QBTransformAction;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.SdtmDropTransferHandler;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -49,8 +48,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.prefs.Preferences;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * The class is the main panel to construct the UI and initialize the utilities
@@ -59,7 +60,7 @@ import java.util.prefs.Preferences;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $
  */
 
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
@@ -67,7 +68,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.6 2007-07-26 19:57:43 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.7 2007-07-31 20:45:41 jayannah Exp $";
 
     private static final String SELECT_SCS = "Open SCS file...";
 
@@ -135,7 +136,6 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this._mainFrame = mf;
-
         this.add(getCenterPanel(false), BorderLayout.CENTER);
         fileSynchronizer = new MappingFileSynchronizer(this);
     }
@@ -359,9 +359,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
                 new MainDataViewerFrame(_mainFrame, true, null, connectionParameters, sqlQueries, getSaveFile(), connectionParameters.get("SCHEMA").toString());
             } else if (command.equalsIgnoreCase("dataview"))
             {
-                File file = new File("c:\\");
-                OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), file, null);
-                //((Database2SDTMMappingPanel) mappingPanel).getTransFormBut().setEnabled(true);
+                new OpenDataViewerHelper(_mainFrame, this, getSaveFile());
             } else if (!everythingGood)
             {
                 Message msg = MessageResources.getMessage("GEN3", new Object[0]);
@@ -371,46 +369,6 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         {
             DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this, false, false);
         }
-    }
-
-    public ArrayList getMappingsFromMapFile(File mapFile)
-    {
-        ArrayList retAry = new ArrayList();
-        QBParseMappingFile _qbparse = new QBParseMappingFile(mapFile);
-        _qbparse.parseFile();
-        retAry.add(_qbparse.getHashTable());
-        retAry.add(_qbparse.getHashTblColumns());
-        return retAry;
-    }
-
-    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out)
-    {
-        final Dialog d = new Dialog(_mainFrame, "SQL Query", true);
-        (new Thread()
-        {
-            public void run()
-            {
-                try
-                {
-                    new MainDataViewerFrame(_mainFrame, false, d, list, cols, getConnectionParameters(), file, out);
-                } catch (SQLException e)
-                {
-                    JOptionPane.showMessageDialog(_mainFrame, e.getMessage().toString(), "Could not open the Querybuilder", JOptionPane.ERROR_MESSAGE);
-                }
-                d.dispose();
-            }
-        }).start();
-        //d = new Dialog(mainFrame, "SQL Query", true);
-        JPanel pane = new JPanel();
-        TitledBorder _title = BorderFactory.createTitledBorder("Visual SQL Builder");
-        pane.setBorder(_title);
-        pane.setLayout(new GridLayout(0, 1));
-        JLabel _jl = new JLabel("SQL Query Builder Loading , please wait.....");
-        pane.add(_jl);
-        d.add(pane, BorderLayout.CENTER);
-        d.setLocation(400, 400);
-        d.setSize(500, 130);
-        d.setVisible(true);
     }
 
     public void openDataBaseMapFile(String params)

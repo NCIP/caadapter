@@ -29,7 +29,7 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener
 
     private JDialog dialog;
 
-    public QBGetPasswordWindow(JFrame owner, String params, String title)
+    public QBGetPasswordWindow(Frame owner, String params, String title)
     {
         dialog = new JDialog(owner);
         dialog.setTitle("Get password to open map file " + title);

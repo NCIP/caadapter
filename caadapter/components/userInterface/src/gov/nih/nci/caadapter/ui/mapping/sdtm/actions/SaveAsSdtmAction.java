@@ -37,7 +37,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.4 2007-07-19 18:51:37 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.5 2007-07-31 20:46:00 jayannah Exp $";
 
     protected AbstractMappingPanel mappingPanel;
 
@@ -117,7 +117,6 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction
             if (((Database2SDTMMappingPanel) mappingPanel).isConnectDB())
             {
                 Hashtable params = ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters();
-                //jdbc:oracle:thin:@localhost:1521:XE~oracle.jdbc.OracleDriver~hr~hr
                 String one1 = params.get("URL").toString();
                 String one2 = params.get("Driver").toString();
                 String one3 = params.get("UserID").toString();
