@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.5 2007-07-31 18:41:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/ValidatorResults.java,v 1.6 2007-07-31 20:05:41 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,8 +47,8 @@ import java.util.List;
  *
  * @author OWNER: Eric Chen  Date: Aug 22, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.5 $
- * @date $$Date: 2007-07-31 18:41:05 $
+ * @version $Revision: 1.6 $
+ * @date $$Date: 2007-07-31 20:05:41 $
  * @since caAdapter v1.2
  */
 
@@ -251,13 +251,13 @@ public class ValidatorResults
     			||level.equals(ValidatorResult.Level.ALL))
 	        for (int i = 0; i < fatalResults.size(); i++)
 	        {
-	            sb.append("FATAL: ").append(fatalResults.get(i)).append(carriageReturn);
+	            sb.append("FATAL: ").append(fatalResults.get(i).getMessage()).append(carriageReturn);    
 	        }
     	if (level.equals(ValidatorResult.Level.ERROR)
     			||level.equals(ValidatorResult.Level.ALL))
         for (int i = 0; i < errorResults.size(); i++)
         {
-            sb.append("ERROR: ").append(errorResults.get(i)).append(carriageReturn);
+            sb.append("ERROR: ").append(errorResults.get(i).getMessage()).append(carriageReturn);
 
         }
     	if (level.equals(ValidatorResult.Level.WARNING)
@@ -265,7 +265,7 @@ public class ValidatorResults
 
     	for (int i = 0; i < warningResults.size(); i++)
         {
-            sb.append("WARNING: ").append(warningResults.get(i)).append(carriageReturn);
+            sb.append("WARNING: ").append(warningResults.get(i).getMessage()).append(carriageReturn);
 
         }
     	
@@ -273,7 +273,7 @@ public class ValidatorResults
     			||level.equals(ValidatorResult.Level.ALL))
         for (int i = 0; i < infoResults.size(); i++)
         {
-            sb.append("INFO: ").append(infoResults.get(i)).append(carriageReturn);
+            sb.append("INFO: ").append(infoResults.get(i).getMessage()).append(carriageReturn);
 
         }
     	return sb.toString();
@@ -301,6 +301,9 @@ public class ValidatorResults
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/07/31 18:41:05  wangeug
+ * HISTORY      : list validation result with level and message text
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/31 17:42:25  wangeug
  * HISTORY      : resolve issues with preliminary test of release 4.0
  * HISTORY      :
