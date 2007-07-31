@@ -16,6 +16,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
+import gov.nih.nci.caadapter.hl7.validation.HL7V3MessageValidator;
 
 
 import java.io.*;
@@ -28,14 +29,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-07-24 17:25:48 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2007-07-31 14:04:30 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.4 2007-07-24 17:25:48 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.5 2007-07-31 14:04:30 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -45,6 +46,14 @@ public class TransformationService
     private File scsfile = null;
     private InputStream csvStream = null;
     private CSVSegmentedFile csvSegmentedFile = null;
+
+	/**
+	 * This method will create a transformer that loads csv data from a file 
+	 * and transforms into HL7 v3 messages
+	 * 
+	 * @param mapfilename the name of the mapping file
+	 * @param csvfilename the name of the csv file
+	 */
 
     public TransformationService(String mapfilename, String csvfilename)
     {
@@ -56,6 +65,15 @@ public class TransformationService
         this.mapfile = new File(mapfilename);
         this.csvfile = new File(csvfilename);
     }
+
+	/**
+	 * This method will create a transformer that loads csv data from a String 
+	 * and transforms into HL7 v3 messages
+	 * 
+	 * @param mapfilename the name of the mapping file
+	 * @param csvString the string that contains csv data
+	 */
+
     public TransformationService(String mapfilename, String csvString, boolean flag)
     {
         if (mapfilename == null)
@@ -68,6 +86,13 @@ public class TransformationService
         this.isCsvString = flag;
     }
 
+	/**
+	 * This method will create a transformer that loads csv data from an inputstream  
+	 * and transforms into HL7 v3 messages
+	 * 
+	 * @param mapfilename the name of the mapping file
+	 * @param csvStream the inputstream that contains csv data
+	 */
     public TransformationService(String mapfilename, InputStream csvStream)
     {
         if (mapfilename == null)
@@ -80,6 +105,13 @@ public class TransformationService
         this.isInputStream = true;
     }
 
+	/**
+	 * This method will create a transformer that loads csv data from an Java File object  
+	 * and transforms into HL7 v3 messages
+	 * 
+	 * @param mapfilename the Java mapping file object
+	 * @param csvStream the csv file object
+	 */
     public TransformationService(File mapfile, File csvfile)
     {
         if (mapfile == null || csvfile == null)
@@ -94,14 +126,13 @@ public class TransformationService
     {
     }
 
-
-
     /**
-     * @return list of MapGenerateRusult.
+     * @return list of HL7 v3 message object.
+     * To get HL7 v3 message of each object, call .toXML() method of each object
      */
 
     
-    public List process() throws Exception
+    public List<XMLElement> process() throws Exception
     {
     	
     	Hashtable mappings = new Hashtable();
@@ -124,13 +155,16 @@ public class TransformationService
         }
         long csvbegintime = System.currentTimeMillis();
         CSVDataResult csvDataResult = null;
-        if (isInputStream) {
+        if (isInputStream) 
+        {
         	csvDataResult=parseCsvInputStream(mapParser.getSCSFilename());
         }
-        else if (isCsvString) {
+        else if (isCsvString) 
+        {
         	csvDataResult= parseCsvString(mapParser.getSCSFilename());
         }
-        else {
+        else 
+        {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
@@ -161,8 +195,12 @@ public class TransformationService
     	MapProcessor mapProcess = new MapProcessor();
         
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass);
-        for(XMLElement xmlElement:xmlElements) {
+    	HL7V3MessageValidator validator = new HL7V3MessageValidator();
+        for(XMLElement xmlElement:xmlElements) 
+        {
         	System.out.println("Message:"+xmlElement.toXML());
+        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages().size());
+        	validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
         }
         System.out.println("total message" + xmlElements.size());
         return xmlElements;
@@ -176,6 +214,7 @@ public class TransformationService
         CSVDataResult csvDataResult = parser.parse(csvfile, new File(fullscmfilepath));
         return csvDataResult;
     }
+
     private CSVDataResult parseCsvString(String scsFilename) throws Exception
     {
         SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
@@ -183,6 +222,7 @@ public class TransformationService
         CSVDataResult csvDataResult = parser.parse(csvString, new File(fullscmfilepath));
         return csvDataResult;
     }
+
     private CSVDataResult parseCsvInputStream(String scsFilename) throws Exception
     {
         SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
@@ -211,20 +251,20 @@ public class TransformationService
 	}
 
 */
-	public MIFClass loadMIF(String mifFileName) {
+	private MIFClass loadMIF(String mifFileName) {
 		MIFClass mifClass = null;
-		InputStream is;
+		InputStream mifFileInputStream;
 		try {
-			is = new FileInputStream(mifFileName);
+			mifFileInputStream = new FileInputStream(mifFileName);
 		}catch(Exception e) {
 			//Cannot file the file
 			return null;
 		}
 		try{
-			ObjectInputStream ois = new ObjectInputStream(is);
-			mifClass = (MIFClass)ois.readObject();
-			ois.close();
-			is.close();
+			ObjectInputStream mifFileObjectInputStream = new ObjectInputStream(mifFileInputStream);
+			mifClass = (MIFClass)mifFileObjectInputStream.readObject();
+			mifFileObjectInputStream.close();
+			mifFileInputStream.close();
 			return mifClass;
 		}catch (Exception e) {
 			return null;
@@ -245,6 +285,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/24 17:25:48  wuye
+ * HISTORY      : Synch with the new .map format
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/20 17:00:20  wangeug
  * HISTORY      : integrate Hl7 transformation service
  * HISTORY      :

@@ -6,6 +6,9 @@
 package gov.nih.nci.caadapter.hl7.transformation;
 
 
+import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
@@ -13,6 +16,7 @@ import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -30,15 +34,16 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
- * Processor of map files.
+ * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-07-24 17:24:16 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-07-31 14:04:31 $
  */
 
 public class MapProcessor {
@@ -54,9 +59,15 @@ public class MapProcessor {
 
     // Class variables used during processing.
     List<XMLElement> resultsArray = null;
-    ValidatorResults theValidatorResults = null;
+    ValidatorResults theValidatorResults = new ValidatorResults();
     int indent = -1;
 
+	/**
+	 * This method will process the mapping file and generate a list of HL7 v3 message objects 
+	 * 
+	 * @param mapfilename the name of the mapping file
+	 * @param csvfilename the name of the csv file
+	 */
     public List<XMLElement> process(Hashtable<String,String> mappings, Hashtable<String,FunctionComponent> functions, CSVSegmentedFile csvSegmentedFile, MIFClass mifClass) throws MappingException,FunctionException{
         // init class variables
         this.mappings = mappings;
@@ -67,15 +78,13 @@ public class MapProcessor {
 
         mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false);
         
-//        this.mapHelper = new MapProcessorHelper(mapping);
-        
         this.resultsArray = new ArrayList<XMLElement>();
 
         // process one CSV source logical record at a time.
         List<CSVSegment> logicalRecords = csvSegmentedFile.getLogicalRecords();
         for (int i = 0; i < logicalRecords.size(); i++) {
         	csvSegmentHash = mapProcessorHelper.preprocessCSVSegments(logicalRecords.get(i));
-        	List<XMLElement> xmlElements = processMIFclass(mifClass, logicalRecords.get(i));
+        	List<XMLElement> xmlElements = processRootMIFclass(mifClass, logicalRecords.get(i));
         	for(XMLElement xmlElement:xmlElements) {
         		resultsArray.add(xmlElement);
         	}
@@ -84,7 +93,43 @@ public class MapProcessor {
         return resultsArray;
     }
 
+	/**
+	 * This method will process the root MIFClass object and generate a list of HL7 v3 message objects and
+	 * populate valiation messages 
+	 * 
+	 * @param mifClass the MIFClass that will be processed
+	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
+	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
+	 */
+    
+    private List<XMLElement> processRootMIFclass(MIFClass mifClass, CSVSegment pCsvSegment) throws MappingException,FunctionException {
 
+    	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
+
+    	if (!mifClass.isMapped()) return NullXMLElement.NULL;
+
+    	//Step1: find all the csvSegments for attributes
+    	List<CSVSegment> csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    	for(CSVSegment csvSegment:csvSegments) {
+    		List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment);
+    		//It should only return one element
+    		if (xmlElementTemp.size()> 0) {
+    			xmlElementTemp.get(0).setValidatorResults(theValidatorResults);
+    			theValidatorResults.removeAll();
+    		}
+    		xmlElements.addAll(xmlElementTemp);
+    	}
+    	return xmlElements;
+    }
+
+    
+	/**
+	 * This method will process a MIFClass object and generate a list of HL7 v3 message objects 
+	 * 
+	 * @param mifClass the MIFClass that will be processed
+	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
+	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
+	 */
     
     private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment) throws MappingException,FunctionException {
 
@@ -92,6 +137,7 @@ public class MapProcessor {
 
     	if (!mifClass.isMapped()) return NullXMLElement.NULL;
 
+    	//Step1: find all the csvSegments for attributes
     	List<CSVSegment> csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
 
     	for(CSVSegment csvSegment:csvSegments) {
@@ -99,25 +145,46 @@ public class MapProcessor {
     		XMLElement xmlElement = new XMLElement();
     		xmlElement.setName(mifClass.getName());
 
-    		HashSet<MIFAttribute> attributes = mifClass.getAttributes();
+    		TreeSet<MIFAttribute> attributes = mifClass.getSortedAttributes();
 
+    		//Step2: Process non-structural attributes 
+    		//Non-structural attributes are child xmlelements vs structural attributes are attributes to xml elements
+    		
     		for(MIFAttribute mifAttribute:attributes) {
-//    			System.out.println("attribute.name="+mifAttribute.getName());
+    			Log.logInfo(this,"Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
+//    			System.out.println("Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
     			if (!mifAttribute.isStrutural()) {
     				List<XMLElement> attrXmlElements = processAttribute(mifAttribute ,csvSegment);
     				if (attrXmlElements.size() != 0)
     					xmlElement.addChildren(attrXmlElements);
+    				if (mifAttribute.getMaximumMultiplicity() == 1) {
+    					if (attrXmlElements.size()>1) {
+    			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
+    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+    					}
+    				}
     			}
     		}
 
-    		HashSet<MIFAssociation> associations = mifClass.getAssociations();
+    		TreeSet<MIFAssociation> associations = mifClass.getSortedAssociations();
 
+    		//Step 3: Process associations
     		for(MIFAssociation mifAssociation : associations) {
     			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment);
     			if (assoXmlElements.size() != 0)
     				xmlElement.addChildren(assoXmlElements);
+				if (mifAssociation.getMaximumMultiplicity() == 1) {
+					if (assoXmlElements.size()>1) {
+			            Message msg = MessageResources.getMessage("RIM5", new Object[]{mifAssociation.getXmlPath(),mifAssociation.getMinimumMultiplicity() + "..1", mifAssociation.getName(),assoXmlElements.size()});
+			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+					}
+				}
     		}
 
+    		//Step 4: Process structural attributes
+    		/*
+    		 * TODO: needs to conform with Wendy that structural attributes can not has mappings
+    		 */
     		for(MIFAttribute mifAttribute:attributes) {
     			if (mifAttribute.isStrutural()) {
     				if (mifAttribute.getDefaultValue()!=null)
@@ -131,13 +198,21 @@ public class MapProcessor {
     	return xmlElements;
     }
 
+	/**
+	 * This method will process a MIFAssociation object and generate a list of HL7 v3 message objects 
+	 * 
+	 * @param mifAssociation the MIFAssociation object that will be processed
+	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
+	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
+	 */
+
     private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment) throws MappingException,FunctionException {
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
     	MIFClass mifClass =null;
     	if (mifAssociation.getMifClass()!= null) {
     		mifClass =  mifAssociation.getMifClass();
     	}
-    	
+    	//Scenario 1: process choices, and for each assoication, there can be multiple choices
     	if (mifClass.getChoices().size() > 0) { //Handle choice
     		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
     	    	if (mifClass.isChoiceSelected()) {
@@ -149,10 +224,12 @@ public class MapProcessor {
     		}
     		
     	}
+    	//Scenario 2: process mifclass that associated with MIFAssociation
     	else {
-    		if (mifClass ==null) {
-    			System.out.println("mif is nul");
-    			return xmlElements;
+    		// Pre-requsite one assoication must have a MIFClass object
+    		// mifClass can not be null
+    		if (mifClass == null) {
+    			throw new MappingException("There is an error in your .h3s file, " + mifAssociation.getXmlPath() + " does not have specification", null);
     		}
     		List<XMLElement> xmlEments = processMIFclass(mifClass,csvSegment);
     		for(XMLElement xmlElement:xmlEments) {
@@ -163,9 +240,15 @@ public class MapProcessor {
     	return xmlElements;
     }
 
+	/**
+	 * This method will process a MIFAttribute object and generate a list of HL7 v3 message objects 
+	 * 
+	 * @param mifAttribute the MIFAttribute object that will be processed
+	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
+	 * 		  and data for all Datatypes of the MIFAttribute 
+	 */
     
     private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment) throws MappingException,FunctionException{
-//    	System.out.println(" attribute name"+mifAttribute.getName()+"isMapped"+mifAttribute.isMapped());
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
 
     	if (!mifAttribute.isMapped()) {
@@ -180,14 +263,22 @@ public class MapProcessor {
     		}
     	}
     	
-    	List<XMLElement> xmlElements = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getNodeXmlName(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
-    	if (xmlElements.size() >0)
-    		xmlElements.get(0).addAttribute("xsi:type", mifAttribute.getDatatype().getName());
+    	List<XMLElement> xmlElements = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
+    	for(XMLElement xmlElement:xmlElements)
+    		xmlElement.addAttribute("xsi:type", mifAttribute.getDatatype().getName());
     	return xmlElements;
     }
 
-    private List<XMLElement> process_datatype(Datatype datatype, CSVSegment pCsvSegment, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException{
-//    	System.out.println("Process Datatype:"+datatype.getName()+" attribute name"+attrName);
+	/**
+	 * This method will process a datatype object and generate a list of HL7 v3 message objects 
+	 * 
+	 * @param datatype the Datatype that will be processed
+	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
+	 * 		  and data for all child Datatypes
+	 * @parentXPath parent xmlpath to the current datatype, will be used to determine the xmlpath for attributes of the datatype
+	 * @xmlName the name that will used to determine the name of XMLElement 
+	 */
+    private List<XMLElement> process_datatype(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName) throws MappingException ,FunctionException{
     	
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
     	
@@ -198,14 +289,12 @@ public class MapProcessor {
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
 
 
-    	//If the input are from different siblings
+    	//Scenario 1: Inputs are from different siblings
     	if (datatype.getCsvSegments().size() > 1) {
-//    		List<String> allListNames = new ArrayList<String>();
     		List<List<CSVSegment>> allListsCSVSegments = new ArrayList<List<CSVSegment>>();
     		
     		
     		for (String csvS:datatype.getCsvSegments()) {
-//    			allListNames.add(csvS);
     			allListsCSVSegments.add(findCSVSegment(pCsvSegment, csvS));
     		}
     		
@@ -220,12 +309,10 @@ public class MapProcessor {
     			csvSegmentIndex.add(0);
     		}
     		
-    		//--------------
-    		//--------------
     		boolean hasMore = true;
     		List<XMLElement> sibXMLElements = new ArrayList<XMLElement>();
     		while (hasMore) {
-    			sibXMLElements.add(process_datatype_w_sibling(datatype, csvSegmentList, attrName, parentXPath, xmlName));
+    			sibXMLElements.add(process_datatype_w_sibling(datatype, csvSegmentList, parentXPath, xmlName));
     			hasMore = false;
     			for (int i=size-1;i>=0;i--) {
     				if (csvSegmentIndex.get(i) < csvSegmentSum.get(i)-1) {
@@ -243,11 +330,23 @@ public class MapProcessor {
     		}
     		return sibXMLElements;
     	}
-    	return process_datatype_wo_sibling(datatype, pCsvSegment, attrName, parentXPath, xmlName);
+    	//Scenario 2: Inputs are from different the same branch
+    	else {
+        	return process_datatype_wo_sibling(datatype, pCsvSegment, parentXPath, xmlName);
+    	}
     }    	
     
 
-    private List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException {
+	/**
+	 * This method will process a datatype object and generate a list of HL7 v3 message objects 
+	 * 
+	 * @param datatype the Datatype that will be processed
+	 * @param csvSegments CSV segments that determines the root segments that dominate the cardinality
+	 * 		  and data for all child Datatypes
+	 * @parentXPath parent xmlpath to the current datatype, will be used to determine the xmlpath for attributes of the datatype
+	 * @xmlName the name that will used to determine the name of XMLElement 
+	 */
+    private List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName) throws MappingException ,FunctionException {
 //    	System.out.println("Process Datatype:"+datatype.getName()+" attribute name"+attrName);
     	
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
@@ -260,13 +359,13 @@ public class MapProcessor {
 
     	List<XMLElement> returnValue = new ArrayList<XMLElement>();
     	
-    	returnValue.add(process_datatype_w_sibling(datatype, csvSegments, attrName, parentXPath, xmlName));
+    	returnValue.add(process_datatype_w_sibling(datatype, csvSegments, parentXPath, xmlName));
    		return  returnValue;
     }
     	
     
     
-    private List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException{
+    private List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName) throws MappingException ,FunctionException{
     	
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
 
@@ -317,7 +416,7 @@ public class MapProcessor {
     				}
     			}
     			else { //complexdatatype
-    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment,attr.getName(),parentXPath+"."+attr.getName(), xmlName);
+    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment, parentXPath+"."+attr.getName(), xmlName);
     				xmlElement.addChildren(attrsXMLElement);
     			}
     		}
@@ -329,7 +428,7 @@ public class MapProcessor {
     
     
     
-    private XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String attrName, String parentXPath, String xmlName) throws MappingException ,FunctionException{
+    private XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName) throws MappingException ,FunctionException{
     	
 		XMLElement xmlElement = new XMLElement();
 		xmlElement.setName(xmlName);
@@ -378,7 +477,7 @@ public class MapProcessor {
 				}
 			}
 			else { //complexdatatype
-				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments,attr.getName(),parentXPath+"."+attr.getName(), xmlName);
+				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments, parentXPath+"."+attr.getName(), xmlName);
 				xmlElement.addChildren(attrsXMLElement);
 			}
 		}
@@ -569,11 +668,7 @@ public class MapProcessor {
 
     	return theValue;
     }
-
-
 }
-
-/*
-*TODO
-*BIG to do is to determine the cardinalities, right now, we will generate everything, we could be smart if there is a vilation, we generate the first one only
-*/
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ */
