@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-07-31 15:15:25 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-07-31 20:03:19 $
  */
 
 public class MapProcessor {
@@ -111,15 +111,17 @@ public class MapProcessor {
     	//Step1: find all the csvSegments for attributes
     	List<CSVSegment> csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
     	for(CSVSegment csvSegment:csvSegments) {
-    		List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment);
+    		theValidatorResults.removeAll();
+    	    ValidatorResults localValidatorResults = new ValidatorResults();
+			List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment);
     		if (theValidatorResults.getAllMessages().size() == 0) {
 	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"HL7 v3 message is successfully generated!"});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
     		}
+    	    localValidatorResults.addValidatorResults(theValidatorResults);
     		//It should only return one element
     		if (xmlElementTemp.size()> 0) {
-    			xmlElementTemp.get(0).setValidatorResults(theValidatorResults);
-    			theValidatorResults.removeAll();
+    			xmlElementTemp.get(0).setValidatorResults(localValidatorResults);
     		}
     		xmlElements.addAll(xmlElementTemp);
     	}
@@ -675,6 +677,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/07/31 15:15:25  wuye
+ * HISTORY      : Added INFO message
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/07/31 14:04:31  wuye
  * HISTORY      : Add Comments
  * HISTORY      :
