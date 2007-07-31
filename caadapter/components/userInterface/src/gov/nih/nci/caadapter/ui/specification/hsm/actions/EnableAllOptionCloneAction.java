@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAllOptionCloneAction.java,v 1.1 2007-07-12 19:16:40 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAllOptionCloneAction.java,v 1.2 2007-07-31 16:08:35 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,37 +34,29 @@
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
-import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-//import gov.nih.nci.caadapter.hl7.clone.meta.CloneMeta;
-import gov.nih.nci.caadapter.hl7.validation.MIFAssociationValidator;
-import gov.nih.nci.caadapter.hl7.validation.MIFAttributeValidator;
-import gov.nih.nci.caadapter.hl7.validation.MIFClassValidator;
-import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
-import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
-import javax.swing.*;
+import javax.swing.JTree;
+import javax.swing.JOptionPane;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.util.HashSet;
-import java.util.Iterator;
 
-import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 /**
  * This class defines the action to invoke validation of HSM.
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-12 19:16:40 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-07-31 16:08:35 $
  */
 public class EnableAllOptionCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -80,12 +72,12 @@ public class EnableAllOptionCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAllOptionCloneAction.java,v 1.1 2007-07-12 19:16:40 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAllOptionCloneAction.java,v 1.2 2007-07-31 16:08:35 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Select All Options";
 	private static final Character COMMAND_MNEMONIC = new Character('S');
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("enableOptionAll.gif"));
-	private static final String TOOL_TIP_DESCRIPTION = "Select All Option Clones";
+	private static final String TOOL_TIP_DESCRIPTION = "Select All Optional Clones";
 
 	/**
 	 * Defines an <code>Action</code> object with a default
