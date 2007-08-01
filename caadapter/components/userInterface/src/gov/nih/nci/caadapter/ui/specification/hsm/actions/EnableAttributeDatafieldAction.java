@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.1 2007-07-03 20:19:51 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.2 2007-08-01 13:27:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -66,7 +66,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.1 2007-07-03 20:19:51 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.2 2007-08-01 13:27:43 wangeug Exp $";
 
     private static final String COMMAND_ENABLE_DATA = "Enable Attribute Field";
     private static final String COMMAND_DISABLE_DATA = "Disable Attribute Field";
@@ -140,16 +140,10 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
         		{
         			NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
         			DefaultMutableTreeNode newTtargetNode = mifTreeLoader.buildObjectNode(mifDt);
-        			DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) targetNode.getParent();
-
-                	int oldAssIndx=parentNode.getIndex(targetNode);
-                	parentNode.remove(targetNode);
-                	parentNode.insert(newTtargetNode,oldAssIndx);    
-                	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
-        		}       		
+        			NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newTtargetNode, tree);        		}       		
+        		}
+  				((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
         	}
-  			((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
-        }
-		return isSuccessfullyPerformed();
-	}
+			return isSuccessfullyPerformed();
+		}
 }

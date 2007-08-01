@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.5 2007-07-27 16:10:28 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.6 2007-08-01 13:27:01 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,11 +48,16 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
+import gov.nih.nci.caadapter.ui.common.nodeloader.NodeLoader.MetaDataloadException;
 import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
+
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 import java.io.FileInputStream;
@@ -75,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-07-27 16:10:28 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-01 13:27:01 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -175,6 +180,36 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		return rtnNode;
 	}
 
+	/**
+	 * Refresh subtree whose root is the given treeNode reflecting the given object.
+	 * After the refreshing, the given tree will be notified for the update information.
+	 * @param targetNode
+	 * @param object
+	 * @param tree if null, no corresponding tree update information will be broadcast.
+	 */
+	public static void refreshSubTreeByGivenMifObject(DefaultMutableTreeNode targetNode, DefaultMutableTreeNode newNode, JTree tree) 
+	{
+		if(newNode!=null)
+		{//clear out all children and add in new ones, if any
+			targetNode.removeAllChildren();
+			int childCount = newNode.getChildCount();
+			targetNode.setAllowsChildren(true);
+			for(int i=0; i<childCount; i++)
+			{
+				targetNode.add((MutableTreeNode) newNode.getChildAt(0));
+			}
+		}
+		targetNode.setUserObject(newNode.getUserObject());
+		if(tree!=null)
+		{
+			TreeModel treeModel = tree.getModel();
+			if (treeModel instanceof DefaultTreeModel)
+			{//notify change.
+				((DefaultTreeModel) treeModel).nodeStructureChanged(targetNode);
+			}
+		}
+	}
+	
 	private DefaultMutableTreeNode buildMIFClassNode(MIFClass mifClass)
 	{
 		DefaultMutableTreeNode rtnNode =new DefaultMutableTreeNode(mifClass);	
@@ -379,8 +414,6 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		}
 		if (CaadapterUtil.getInlineTextAttributes().contains(dtType.getName()))
 		{
-//			System.out
-//					.println("NewHSMBasicNodeLoader.enableDatatypeAttributesComplextype()..add inlineText:"+dtType);
 			Attribute inlineText=new Attribute();
 			inlineText.setName("inlineText");
 			inlineText.setMax(1);
@@ -454,4 +487,5 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		if (newSpecificationFlag)
 			dtAttr.setEnabled(nullFlavorEnabled);	
 	}
+	
 }
