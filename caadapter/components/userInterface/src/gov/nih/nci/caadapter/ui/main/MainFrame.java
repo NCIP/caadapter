@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.7 2007-07-27 20:42:22 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.8 2007-08-01 17:20:05 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,10 +62,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-07-27 20:42:22 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-01 17:20:05 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -90,11 +90,11 @@ public class MainFrame extends AbstractMainFrame
     /* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#launch()
 	 */
-    public void launch() 
+    public void launch()
     {
 		tabMap = new HashMap<Class, JComponent>();
 		ContextManager contextManager = ContextManager.getContextManager();
-		
+
 		MainMenuBar frameMenu=new MainMenuBar(this);
 		contextManager.setMenu(frameMenu);
 		contextManager.setToolBarHandler(new MainToolBarHandler());
@@ -123,20 +123,20 @@ public class MainFrame extends AbstractMainFrame
 	    this.setFocusable(true);
 		this.setFocusableWindowState(true);
 		//helpContentViewer = new HelpContentViewer(this);
-		
-	
+
+
 		InitialSplashWindow isw = new InitialSplashWindow();
 		//isw.setAlwaysOnTop(true);
 		DefaultSettings.centerWindow(isw);
 		isw.setVisible(true);
-	    
+
 	    try {
 		    Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	
-		isw.dispose();				
+
+		isw.dispose();
     }
 
     private JPanel constructNorthPanel() {
@@ -160,7 +160,7 @@ public class MainFrame extends AbstractMainFrame
         mainP.add(new JPanel(), BorderLayout.EAST);
         return mainP;
     }
-    
+
     //This method was inserted by Kisung 09/20/05 For initial displaying of the default screen object before the JTabbedPane object is activated.
     private JPanel constructCenterPanel() {
 	ImageIcon ii1 = new ImageIcon(DefaultSettings.getImage(Config.DEFAULT_SCREEN_IMAGE_FILENAME));
@@ -181,7 +181,7 @@ public class MainFrame extends AbstractMainFrame
 	//remove first in case it already contains
 		JToolBar rightSideToolbar = new JToolBar();
 		JPanel rightSidePanel = new JPanel(new BorderLayout());
-		if (rightSideButton != null) 
+		if (rightSideButton != null)
 		{
 			rightSideToolbar.add(rightSideButton);
 		    rightSidePanel.add(rightSideToolbar, BorderLayout.CENTER);
@@ -218,7 +218,9 @@ public class MainFrame extends AbstractMainFrame
 	    title = "HL7 v3 Message";
 	} else if (panel instanceof HL7MessagePanel) {
 	    title = panel.getName();//"HL7 v3 Message";
-	}
+	} else if (panel instanceof Database2SDTMMappingPanel) {
+        title = "Untitled_" + (++tabcount) + Config.MAP_FILE_DEFAULT_EXTENTION;
+    }
 	tabbedPane.addTab(title, panel);
 	tabbedPane.setSelectedComponent(panel);
 	//		Log.logInfo(this, "Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
@@ -490,6 +492,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/07/27 20:42:22  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/07/27 19:44:46  jayannah
  * HISTORY      : changes to display tab title when creating new sdtm map
  * HISTORY      :
