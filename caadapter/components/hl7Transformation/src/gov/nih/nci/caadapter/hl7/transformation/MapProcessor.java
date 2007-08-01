@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-07-31 20:03:19 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-08-01 14:14:46 $
  */
 
 public class MapProcessor {
@@ -414,10 +414,22 @@ public class MapProcessor {
 //  					System.out.println(scsXmlPath);
     					if (data.get(scsXmlPath) == null) { //inverse relationship
     						CSVField csvField = findCSVField(pCsvSegment, scsXmlPath);
-    						xmlElement.addAttribute(attributeName, csvField.getValue());
+    						if (csvField.getValue().equals("")) {
+    							if (attr.getDefaultValue()!=null)
+    								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+    						}
+    						else {
+    							xmlElement.addAttribute(attributeName, csvField.getValue());
+    						}
     					}
     					else {
-    						xmlElement.addAttribute(attributeName, data.get(scsXmlPath));
+    						if (data.get(scsXmlPath).equals("")) {
+    							if (attr.getDefaultValue()!=null)
+    								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+    						}
+    						else {
+    							xmlElement.addAttribute(attributeName, data.get(scsXmlPath));
+    						}
     					}
     				}
     			}
@@ -475,10 +487,22 @@ public class MapProcessor {
 //					System.out.println(scsXmlPath);
 					if (data.get(scsXmlPath) == null) { //inverse relationship
 						CSVField csvField = findCSVField(csvSegments, scsXmlPath);
-						xmlElement.addAttribute(attributeName, csvField.getValue());
+						if (csvField.getValue().equals("")) {
+							if (attr.getDefaultValue()!=null)
+								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+						}
+						else {
+							xmlElement.addAttribute(attributeName, csvField.getValue());
+						}
 					}
 					else {
-						xmlElement.addAttribute(attributeName, data.get(scsXmlPath));
+						if (data.get(scsXmlPath).equals("")) {
+							if (attr.getDefaultValue()!=null)
+								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+						}
+						else {
+							xmlElement.addAttribute(attributeName, data.get(scsXmlPath));
+						}
 					}
 				}
 			}
@@ -677,6 +701,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2007/07/31 20:03:19  wuye
+ * HISTORY      : Fixed validationResult error
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/07/31 15:15:25  wuye
  * HISTORY      : Added INFO message
  * HISTORY      :
