@@ -37,8 +37,12 @@ public class Hl7V3ToCsvTransformationTest extends TestCase {
 	 */
 	@Test
 	public void testTransformationServiceHL7V3ToCsvFileFile() {
-		File mapFile=new File("C:\\CVS\\caadapter\\workingspace\\examples\\xmlpathSpec\\xmlpath150003.map");
-		File srcFile=new File("C:\\CVS\\caadapter\\workingspace\\examples\\xmlpathSpec\\COCT_MT150003_1.xml");
+		String mapFileName="C:\\CVS\\caadapter\\components\\hl7Transformation\\test\\data\\COCT_MT150003.map";
+		String srcFileName="C:\\CVS\\caadapter\\components\\hl7Transformation\\test\\data\\COCT_MT150003_1.xml";
+		
+		File mapFile=new File(mapFileName);
+		File srcFile=new File(srcFileName);
+		
 		String csvOut=srcFile.getParent()+File.separator+"transferOut.csv";
 		TransformationServiceHL7V3ToCsv ts=new TransformationServiceHL7V3ToCsv(srcFile,mapFile);
 		List csvList=ts.process();

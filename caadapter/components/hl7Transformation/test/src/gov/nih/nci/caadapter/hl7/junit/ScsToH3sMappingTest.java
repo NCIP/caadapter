@@ -33,7 +33,8 @@ public class ScsToH3sMappingTest extends TestCase {
 	 */
 	@Test
 	public void testProcessMappingFile() {
-		File mapFile=new File("C:\\CVS\\caadapter\\workingspace\\examples\\xmlpathSpec\\xmlpath150003.map");
+		String mapFileName="C:\\CVS\\caadapter\\components\\hl7Transformation\\test\\data\\COCT_MT150003.map";
+		File mapFile=new File(mapFileName);
 
         MapParser mapParser = new MapParser();
         try {
