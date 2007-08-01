@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.2 2007-08-01 15:25:16 jayannah Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.3 2007-08-01 16:02:25 jayannah Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -38,7 +38,7 @@ import java.io.File;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date: 2007-08-01 15:25:16 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date: 2007-08-01 16:02:25 $
  */
 @SuppressWarnings("serial")
 public class MapV2V3 extends JDialog implements ActionListener
@@ -126,6 +126,7 @@ public class MapV2V3 extends JDialog implements ActionListener
         this.setModal(true);
         this.setTitle("Map HL7 v2 to HL7 v3 messages");
         //Color logColor = new Color(220, 220, 220);
+        //setSize(300,275);                                             
          setLocation(300, 300);
         //setBounds(325, 325, 710, 275);
 
@@ -149,11 +150,11 @@ public class MapV2V3 extends JDialog implements ActionListener
         directoryLocation = new JButton("Browse..");
         directoryLocation.addActionListener(this);
         dirLocTextField = new JTextField("");
-        dirLocTextField.setColumns(30);
-        JLabel dirLabel = new JLabel("Select HL7 v2.x Resources Directory          ");
-        JLabel hl7fileLabel = new JLabel("Select HL7 v2.x Message file                        ");
-        JLabel hl7csvfileLabel = new JLabel("Save CSV file                                                    ");
-        JLabel hl7scsfileLabel = new JLabel("Save SCS file                                                    ");
+        dirLocTextField.setColumns(20);
+        JLabel dirLabel = new JLabel("Select HL7 v2.x Resources Directory");
+        JLabel hl7fileLabel = new JLabel("Select HL7 v2.x Message file");
+        JLabel hl7csvfileLabel = new JLabel("Save CSV file");
+        JLabel hl7scsfileLabel = new JLabel("Save SCS file");
         dirBrowsePanel.add(dirLabel);
         dirBrowsePanel.add(dirLocTextField);
         dirBrowsePanel.add(directoryLocation);
@@ -163,7 +164,7 @@ public class MapV2V3 extends JDialog implements ActionListener
         hl7csvlocation = new JButton("Browse..");
         hl7csvlocation.addActionListener(this);
         hl7csvTextField = new JTextField("");
-        hl7MesLocTextField.setColumns(30);
+        hl7MesLocTextField.setColumns(20);
         hl7MessagePanel.add(hl7fileLabel);
         hl7MessagePanel.add(hl7MesLocTextField);
         hl7MessagePanel.add(hl7MessageFilelocation);
@@ -173,7 +174,7 @@ public class MapV2V3 extends JDialog implements ActionListener
         hl7csvTextField = new JTextField("");
         saveCSVLocation = new JFileChooser(_defaultLoc);
         scsSaveFileLocation = new JFileChooser(_defaultLoc);
-        hl7csvTextField.setColumns(30);
+        hl7csvTextField.setColumns(20);
         csvPanel.add(hl7csvfileLabel);
         csvPanel.add(hl7csvTextField);
         csvPanel.add(hl7csvlocation);
@@ -183,7 +184,7 @@ public class MapV2V3 extends JDialog implements ActionListener
         scsPanel.add(scsLocation);
         //emptyPanel.setBackground(logColor);
        // _bPanel.setBackground(logColor);
-        emptyPanel.add(new JLabel("                                                     "));
+        emptyPanel.add(new JLabel(""));
         _bPanel.add(advanced);
         advanced.addActionListener(this);
         _bPanel.add(new JLabel("    "));
@@ -228,8 +229,7 @@ public class MapV2V3 extends JDialog implements ActionListener
         fileZone1.add(new JLabel());
         //
         //fileZone1.add(_bPanel);
-        //advanced.setPreferredSize(new Dimension(5,2));
-        advanced.setIconTextGap(8);
+        //advanced.setPreferredSize(new Dimension(5,2));        
         fileZone1.add(advanced);
         fileZone1.add(process);
         fileZone1.add(cancel);
@@ -473,6 +473,9 @@ public class MapV2V3 extends JDialog implements ActionListener
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2007/08/01 15:25:16  jayannah
+ * HISTORY : changed the look and feel of the v2-v3 GUI
+ * HISTORY :
  * HISTORY : Revision 1.1  2007/07/03 19:32:58  wangeug
  * HISTORY : initila loading
  * HISTORY :
