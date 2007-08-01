@@ -195,7 +195,7 @@ public class QBTransformAction
                             String _dataStr = rs.getString(getColumn.getTokenAt(1) + "_" + getColumn.getTokenAt(2));
                             String empt1 = emt.nextToken().toString();
                             int position = (new Integer(((ArrayList) tempTable.get(domainName)).indexOf(empt1)));
-                            if (fixedLengthRecords.containsKey(empt1))
+                            if (fixedLengthRecords!=null && fixedLengthRecords.containsKey(empt1))
                             {
                                 try
                                 {
