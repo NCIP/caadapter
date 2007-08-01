@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.4 2007-07-11 17:56:51 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.5 2007-08-01 13:28:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-11 17:56:51 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-01 13:28:21 $
  */
 public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 {
@@ -72,7 +72,7 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.4 2007-07-11 17:56:51 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ValidateHSMAction.java,v 1.5 2007-08-01 13:28:21 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -164,7 +164,7 @@ public class ValidateHSMAction extends AbstractHSMContextCRUDAction
 		 {
 			parentPanel.getController().displayValidationMessage(results);
 		System.out.println("ValidateHSMAction.doAction()..validate object:"+((DatatypeBaseObject)obj).getXmlPath());
-			parentPanel.getMessagePane().setValidatedElement(((DatatypeBaseObject)obj).getNodeXmlName());
+			parentPanel.getMessagePane().setValidatedElement(((DatatypeBaseObject)obj).getXmlPath());
 			setSuccessfullyPerformed(true);
 		 }
 		return isSuccessfullyPerformed();
