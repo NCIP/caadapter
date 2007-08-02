@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.1 2007-08-02 16:29:40 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.2 2007-08-02 16:30:28 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -67,9 +67,6 @@ import gov.nih.nci.caadapter.common.standard.impl.MetaFieldImpl;
 import gov.nih.nci.caadapter.common.standard.impl.CommonAttributeItemImpl;
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
-import gov.nih.nci.caadapter.hl7.instanceGen.H3SInstanceMetaSegment;
-import gov.nih.nci.caadapter.hl7.instanceGen.H3SInstanceMetaTree;
-import gov.nih.nci.caadapter.hl7.instanceGen.H3SInstanceSegmentType;
 
 /**
  * This class defines ...
@@ -77,7 +74,7 @@ import gov.nih.nci.caadapter.hl7.instanceGen.H3SInstanceSegmentType;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       2:29:15 PM $
  */
@@ -96,7 +93,7 @@ public class H3SBuildEventHandler extends DefaultHandler
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.1 2007-08-02 16:29:40 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.2 2007-08-02 16:30:28 umkis Exp $";
 
     String currentElement = "";
     String currentLevel = "";
@@ -346,6 +343,9 @@ public class H3SBuildEventHandler extends DefaultHandler
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
+ * HISTORY      : This package was moved from the common component
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 15:43:55  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :
