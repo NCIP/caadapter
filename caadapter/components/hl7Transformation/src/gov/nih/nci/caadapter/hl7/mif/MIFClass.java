@@ -19,8 +19,8 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2007-07-17 20:04:58 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2007-08-02 14:23:36 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -42,7 +42,7 @@ import java.util.Iterator;
 	 /**
 	  * This method will add an attribute object to a given MIF object.
 	  * 
-	  * @param attributeName is the name of attribute
+	  *
 	  * @param attr is the MIFAttribute object associates with the name of that attribute
 	  */
 
@@ -56,7 +56,7 @@ import java.util.Iterator;
 	 	return attributes;
 	 }
 	/**
-	 * @param attributes the attributes to set
+	 * @param newAttributes the attributes to set
 	 */
 	public void setAttributes(HashSet<MIFAttribute> newAttributes) {
 //		attributes = new HashSet<MIFAttribute>();
@@ -126,7 +126,7 @@ import java.util.Iterator;
 	 /**
 	  * This method will add an association object to a given MIF object.
 	  * 
-	  * @param associationName is the name of association
+	  *
 	  * @param association is the MIFClass object associates with the name of that association
 	  */
 
@@ -189,7 +189,7 @@ import java.util.Iterator;
 	 /**
 	  * This method will add an choice object to a given MIF object.
 	  * 
-	  * @param choiceName is the name of choice
+	  * 
 	  * @param choice is the MIFClass object associates with the name of that choiceName
 	  */
 
