@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.6 2007-08-01 13:27:01 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.7 2007-08-02 17:33:28 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -78,10 +78,10 @@ import java.util.Hashtable;
  * while leaving the algorithm of traversing HSM meta data tree defined here intact.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-01 13:27:01 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-02 17:33:28 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -184,7 +184,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	 * Refresh subtree whose root is the given treeNode reflecting the given object.
 	 * After the refreshing, the given tree will be notified for the update information.
 	 * @param targetNode
-	 * @param object
+	 * @param newNode
 	 * @param tree if null, no corresponding tree update information will be broadcast.
 	 */
 	public static void refreshSubTreeByGivenMifObject(DefaultMutableTreeNode targetNode, DefaultMutableTreeNode newNode, JTree tree) 
