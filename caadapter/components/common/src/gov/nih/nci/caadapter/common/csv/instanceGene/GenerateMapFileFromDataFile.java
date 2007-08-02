@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.2 2007-07-17 16:12:59 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.3 2007-08-02 14:24:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -70,14 +70,16 @@ import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
+import gov.nih.nci.caadapter.common.standard.CommonNode;
+import gov.nih.nci.caadapter.common.standard.MetaField;
 
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -96,15 +98,18 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.2 2007-07-17 16:12:59 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/GenerateMapFileFromDataFile.java,v 1.3 2007-08-02 14:24:46 umkis Exp $";
 
 
     private boolean success = false;
     private DataTree dt;
+    private boolean isNewMethod = false;
     private List<String> scsList = new ArrayList<String>();
     private List<String> h3sList = new ArrayList<String>();
     private List<String> csvList = new ArrayList<String>();
     private List<String> mapList = new ArrayList<String>();
+
+    private int functionID = -1;
 
     public GenerateMapFileFromDataFile(String dataFilePath, String header, String generatedFilePath, String h3sFileName)
     {
@@ -117,10 +122,28 @@ public class GenerateMapFileFromDataFile
         }
 
         dt = new DataTree(generatedFilePath+".scs", h3sFileName, header);
+        h3sList = fileIntoList(h3sFileName);
+        generateMapFile(dataFilePath, header, generatedFilePath, h3sFileName);
+    }
+    public GenerateMapFileFromDataFile(String dataFilePath, String header, String generatedFilePath, String h3sFileName, CommonNode head)
+    {
+        success = false;
+        isNewMethod = true;
+        TestFileGenerateSCS tfg = new TestFileGenerateSCS(dataFilePath, header, generatedFilePath, isNewMethod);
+        if (!tfg.checkSuccess())
+        {
+            System.out.println("SCS and CSV file couldn't be generated...");
+            return;
+        }
 
+        dt = new DataTree(generatedFilePath+".scs", head, header);
+        generateMapFile(dataFilePath, header, generatedFilePath, h3sFileName);
+    }
+    public void generateMapFile(String dataFilePath, String header, String generatedFilePath, String h3sFileName)
+    {
         scsList = fileIntoList(generatedFilePath+".scs");
         csvList = fileIntoList(generatedFilePath+".csv");
-        h3sList = fileIntoList(h3sFileName);
+        //h3sList = fileIntoList(h3sFileName);
 
         if (!dt.checkSuccess())
         {
@@ -159,12 +182,24 @@ public class GenerateMapFileFromDataFile
                 //         "      <component kind=\"scs\" location=\"" + cutFileName(generatedFilePath + ".scs") + "\" type=\"source\" uuid=\"" + scsUUID + "\"/>\n" +
                 //         "      <component kind=\"HL7v3\" location=\"" + cutFileName(h3sFileName) + "\" type=\"target\" uuid=\"" + h3sUUID + "\"/>\n" +
                 //         "<!--%%1-->\n   </components>\n   <links>\n");
-                fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                         "<mapping version=\"1.2\">\n" +
-                         "   <components>\n" +
-                         "      <component kind=\"scs\" location=\"" + cutFileName(generatedFilePath + "_1.scs") + "\" type=\"source\" uuid=\"" + scsUUID + "\"/>\n" +
-                         "      <component kind=\"HL7v3\" location=\"" + (cutFileName(h3sFileName)).replace(".h3s", "_1.h3s") + "\" type=\"target\" uuid=\"" + h3sUUID + "\"/>\n" +
-                         "<!--%%1-->\n   </components>\n   <links>\n");
+                if (isNewMethod)
+                {
+                    fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                             "<mapping version=\"1.2\">\n" +
+                             "   <components>\n" +
+                             "      <component kind=\"scs\" location=\"" + cutFileName(generatedFilePath + "_1.scs") + "\" type=\"source\"/>\n" +
+                             "      <component kind=\"h3s\" location=\"" + cutFileName(h3sFileName) + "\" type=\"target\"/>\n" +
+                             "<!--%%1-->\n   </components>\n   <links>\n");
+                }
+                else
+                {
+                    fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                             "<mapping version=\"1.2\">\n" +
+                             "   <components>\n" +
+                             "      <component kind=\"scs\" location=\"" + cutFileName(generatedFilePath + "_1.scs") + "\" type=\"source\" uuid=\"" + scsUUID + "\"/>\n" +
+                             "      <component kind=\"HL7v3\" location=\"" + (cutFileName(h3sFileName)).replace(".h3s", "_1.h3s") + "\" type=\"target\" uuid=\"" + h3sUUID + "\"/>\n" +
+                             "<!--%%1-->\n   </components>\n   <links>\n");
+                }
                 //fw.close();
             }
             catch(IOException ie)
@@ -220,7 +255,7 @@ public class GenerateMapFileFromDataFile
                 }
                 if (defaultTag)
                 {
-                    modifyH3SFile(h3sNode.getXmlPath(), dat);
+                    if (!isNewMethod) modifyH3SFile(h3sNode.getXmlPath(), dat);
                     continue;
                 }
                 if (functionTag)
@@ -234,15 +269,35 @@ public class GenerateMapFileFromDataFile
 
                     if (dat.startsWith("\"")) dat = dat.substring(1);
                     if (dat.endsWith("\"")) dat = dat.substring(0, dat.length()-1);
-                    function1 = function1 +
-                            "      <component group=\"constant\" kind=\"core\" name=\"constant\" type=\"function\" uuid=\"" + functionConstantUUID + "\">\n" +
-                            "         <data type=\"String\" value=\"" + dat + "\"/>\n" +
-                            "      </component>\n";
-                    function2 = function2 +
-                            "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                            "         <linkpointer component-uuid=\"" + functionConstantUUID + "\" data-uuid=\"" + constantOutputUUID + "\"/>\n" +
-                            "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
-                            "      </link>\n";
+                    if (isNewMethod)
+                    {
+                        functionID++;
+                        function1 = function1 +
+                                "      <component group=\"constant\" kind=\"core\" name=\"constant\" type=\"function\" id=\"" + functionID + "\">\n" +
+                                "         <data type=\"String\" value=\"" + dat + "\"/>\n" +
+                                "      </component>\n";
+                        function2 = function2 +
+                                "      <link>\n" +
+                                "         <source>\n" +
+                                "            <linkpointer kind=\"function\" xmlPath=\"function." + functionID + ".outputs.0\"/>\n" +
+                                "         </source>\n" +
+                                "         <target>\n" +
+                                "            <linkpointer kind=\"h3s\" xmlPath=\"" + h3sNode.getXmlPath() + "\"/>\n" +
+                                "         </target>\n" +
+                                "      </link>\n";
+                    }
+                    else
+                    {
+                        function1 = function1 +
+                                "      <component group=\"constant\" kind=\"core\" name=\"constant\" type=\"function\" uuid=\"" + functionConstantUUID + "\">\n" +
+                                "         <data type=\"String\" value=\"" + dat + "\"/>\n" +
+                                "      </component>\n";
+                        function2 = function2 +
+                                "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
+                                "         <linkpointer component-uuid=\"" + functionConstantUUID + "\" data-uuid=\"" + constantOutputUUID + "\"/>\n" +
+                                "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
+                                "      </link>\n";
+                    }
                     if ((functionSeq % 2) == 0)
                     {
                         xPosition = 20;
@@ -255,7 +310,9 @@ public class GenerateMapFileFromDataFile
 
                     if (functionSeq == 0) yPosition = 20;
 
-                    function3 = function3 + "      <view component-uuid=\"" + functionConstantUUID + "\" height=\"43\" width=\"109\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
+                    if (isNewMethod)            
+                        function3 = function3 + "      <view component-id=\"function." + functionID + "\" height=\"43\" width=\"109\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
+                    else function3 = function3 + "      <view component-uuid=\"" + functionConstantUUID + "\" height=\"43\" width=\"109\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
                     functionSeq++;
                     continue;
                 }
@@ -287,40 +344,95 @@ public class GenerateMapFileFromDataFile
                         List<ParameterMeta> liP = fm.getOuputDefinitionList();
                         String constantOutputUUID = liP.get(0).getXmlPath();
 
-                        function1 = function1 +
-                                "      <component group=\"string\" kind=\"core\" name=\"Concatenate\" type=\"function\" uuid=\"" + functionConcatUUID + "\"/>\n" +
-                                "      <component group=\"constant\" kind=\"core\" name=\"constant\" type=\"function\" uuid=\"" + functionStrCosntantUUID + "\">\n" +
-                                "         <data type=\"String\" value=\"tel:\"/>\n" +
-                                "      </component>\n"
-                                ;
-                        function2 = function2 +
-                                "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                                "         <linkpointer component-uuid=\"" + functionStrCosntantUUID + "\" data-uuid=\"" + constantOutputUUID + "\"/>\n" +
-                                "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + inputParam1UUID + "\"/>\n" +
-                                "      </link>\n" +
-                                "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                                "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getXmlPath() + "\"/>\n" +
-                                "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + inputParam2UUID + "\"/>\n" +
-                                "      </link>\n" +
-                                "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                                "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + outputParamUUID + "\"/>\n" +
-                                "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
-                                "      </link>\n";
+                        if (isNewMethod)
+                        {
+                            functionID++;
+                            int concatID = functionID;
+                            functionID++;
+                            int constantID = functionID;
+                            function1 = function1 +
+                                    "      <component group=\"string\" kind=\"core\" name=\"Concatenate\" type=\"function\" id=\"" + concatID + "\"/>\n" +
+                                    "      <component group=\"constant\" kind=\"core\" name=\"constant\" type=\"function\" id=\"" + constantID + "\">\n" +
+                                    "         <data type=\"String\" value=\"tel:\"/>\n" +
+                                    "      </component>\n";
+                            function2 = function2 +
+                                    "      <link>\n" +
+                                    "         <source>\n" +
+                                    "            <linkpointer kind=\"function\" xmlPath=\"function." + constantID + ".outputs.0\"/>\n" +
+                                    "         </source>\n" +
+                                    "         <target>\n" +
+                                    "            <linkpointer kind=\"function\" xmlPath=\"function." + concatID + ".inputs.0\"/>\n" +
+                                    "         </target>\n" +
+                                    "      </link>\n" +
+                                    "      <link>\n" +
+                                    "         <source>\n" +
+                                    "            <linkpointer kind=\"scs\" xmlPath=\"" + scsNode.getXmlPath() + "\"/>\n" +
+                                    "         </source>\n" +
+                                    "         <target>\n" +
+                                    "            <linkpointer kind=\"function\" xmlPath=\"function." + concatID + ".inputs.1\"/>\n" +
+                                    "         </target>\n" +
+                                    "      </link>\n" +
+                                    "      <link>\n" +
+                                    "         <source>\n" +
+                                    "            <linkpointer kind=\"function\" xmlPath=\"function." + concatID + ".outputs.0\"/>\n" +
+                                    "         </source>\n" +
+                                    "         <target>\n" +
+                                    "            <linkpointer kind=\"h3s\" xmlPath=\""+ h3sNode.getXmlPath() +"\"/>\n" +
+                                    "         </target>\n" +
+                                    "      </link>\n";
 
-                        xPosition = 20;
-                        yPosition = yPosition + 45;
+                            xPosition = 20;
+                            yPosition = yPosition + 45;
 
-                        function3 = function3 + "      <view component-uuid=\"" + functionStrCosntantUUID + "\" height=\"43\" width=\"109\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
-                        functionSeq++;
+                            function3 = function3 + "      <view component-id=\"function." + constantID + "\" height=\"43\" width=\"109\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
+                            functionSeq++;
 
-                        xPosition = 130;
+                            xPosition = 130;
 
-                        //yPosition = ((functionSeq / 2) * 45) + 10;
+                            //yPosition = ((functionSeq / 2) * 45) + 10;
 
-                        function3 = function3 + "      <view component-uuid=\"" + functionConcatUUID + "\" height=\"67\" width=\"91\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
-                        functionSeq++;
-                        if ((functionSeq % 2) == 1) functionSeq++;
-                        yPosition = yPosition + 25;
+                            function3 = function3 + "      <view component-id=\"function." + concatID + "\" height=\"67\" width=\"91\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
+                            functionSeq++;
+                            if ((functionSeq % 2) == 1) functionSeq++;
+                            yPosition = yPosition + 25;
+                        }
+                        else
+                        {
+                            function1 = function1 +
+                                    "      <component group=\"string\" kind=\"core\" name=\"Concatenate\" type=\"function\" uuid=\"" + functionConcatUUID + "\"/>\n" +
+                                    "      <component group=\"constant\" kind=\"core\" name=\"constant\" type=\"function\" uuid=\"" + functionStrCosntantUUID + "\">\n" +
+                                    "         <data type=\"String\" value=\"tel:\"/>\n" +
+                                    "      </component>\n"
+                                    ;
+                            function2 = function2 +
+                                    "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
+                                    "         <linkpointer component-uuid=\"" + functionStrCosntantUUID + "\" data-uuid=\"" + constantOutputUUID + "\"/>\n" +
+                                    "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + inputParam1UUID + "\"/>\n" +
+                                    "      </link>\n" +
+                                    "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
+                                    "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getXmlPath() + "\"/>\n" +
+                                    "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + inputParam2UUID + "\"/>\n" +
+                                    "      </link>\n" +
+                                    "      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
+                                    "         <linkpointer component-uuid=\"" + functionConcatUUID + "\" data-uuid=\"" + outputParamUUID + "\"/>\n" +
+                                    "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
+                                    "      </link>\n";
+
+                            xPosition = 20;
+                            yPosition = yPosition + 45;
+
+                            function3 = function3 + "      <view component-uuid=\"" + functionStrCosntantUUID + "\" height=\"43\" width=\"109\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
+                            functionSeq++;
+
+                            xPosition = 130;
+
+                            //yPosition = ((functionSeq / 2) * 45) + 10;
+
+                            function3 = function3 + "      <view component-uuid=\"" + functionConcatUUID + "\" height=\"67\" width=\"91\" x=\"" + xPosition + "\" y=\"" + yPosition + "\"/>\n";
+                            functionSeq++;
+                            if ((functionSeq % 2) == 1) functionSeq++;
+                            yPosition = yPosition + 25;
+                        }
                         continue;
                     }
                 }
@@ -360,10 +472,24 @@ public class GenerateMapFileFromDataFile
                 //else System.out.println("*** warning : h3s node is not a leaf node. (children) : " + h3sNode.getName() + " : " + h3sNode.getLower().getName());
                 try
                 {
-                    fw.write("      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
-                             "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getXmlPath() + "\"/>\n" +
-                             "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
-                             "      </link>\n");
+                    if (isNewMethod)
+                    {
+                        fw.write("      <link>\n" +
+                                 "         <source>\n" +
+                                 "            <linkpointer kind=\"scs\" xmlPath=\"" + scsNode.getXmlPath() + "\"/>\n" +
+                                 "         </source>\n" +
+                                 "         <target>\n" +
+                                 "            <linkpointer kind=\"h3s\" xmlPath=\"" + h3sNode.getXmlPath() + "\"/>\n" +
+                                 "         </target>\n" +
+                                 "      </link>\n");
+                    }
+                    else
+                    {
+                        fw.write("      <link uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n" +
+                                 "         <linkpointer component-uuid=\"" + scsUUID + "\" data-uuid=\"" + scsNode.getXmlPath() + "\"/>\n" +
+                                 "         <linkpointer component-uuid=\"" + h3sUUID + "\" data-uuid=\"" + h3sNode.getXmlPath() + "\"/>\n" +
+                                 "      </link>\n");
+                    }
                     System.out.println("MAP Writing : " + scsNode.getName() + " TO " + h3sNode.getName());
                 }
                 catch(IOException ie)
@@ -374,12 +500,24 @@ public class GenerateMapFileFromDataFile
             }
             try
             {
-                fw.write("<!--%%2-->\n   </links>\n" +
-                        "   <views>\n" +
-                        "      <view component-uuid=\"" + scsUUID + "\" height=\"0\" width=\"0\" x=\"0\" y=\"0\"/>\n" +
-                        "      <view component-uuid=\"" + h3sUUID + "\" height=\"0\" width=\"0\" x=\"0\" y=\"0\"/>\n" +
-                        "<!--%%3-->\n   </views>\n" +
-                        "</mapping>\n");
+                if (isNewMethod)
+                {
+                    fw.write("<!--%%2-->\n   </links>\n" +
+                            "   <views>\n" +
+                            "      <view component-id=\"source.scs.0\" height=\"0\" width=\"0\" x=\"0\" y=\"0\"/>\n" +
+                            "      <view component-id=\"target.h3s.0\" height=\"0\" width=\"0\" x=\"0\" y=\"0\"/>\n" +
+                            "<!--%%3-->\n   </views>\n" +
+                            "</mapping>\n");
+                }
+                else
+                {
+                    fw.write("<!--%%2-->\n   </links>\n" +
+                            "   <views>\n" +
+                            "      <view component-uuid=\"" + scsUUID + "\" height=\"0\" width=\"0\" x=\"0\" y=\"0\"/>\n" +
+                            "      <view component-uuid=\"" + h3sUUID + "\" height=\"0\" width=\"0\" x=\"0\" y=\"0\"/>\n" +
+                            "<!--%%3-->\n   </views>\n" +
+                            "</mapping>\n");
+                }
                 fw.close();
             }
             catch(IOException ie)
@@ -1002,6 +1140,44 @@ class NodeElement
     public void setRight(NodeElement dt) { right = dt; }
     public void setLower(NodeElement dt) { lower = dt; }
 
+    public String getXPath()
+    {
+        String xpath = "";
+        NodeElement temp = this;
+        while(temp != null)
+        {
+            String nodeName = temp.getName();
+            int serial = -1;
+            int count = 0;
+            if (temp.getUpper() != null)
+            {
+                NodeElement temp2 = temp.getUpper().getLower();
+
+                boolean cTag = false;
+                while(temp2 != null)
+                {
+                    String node2Name = temp2.getName();
+                    if (node2Name.equals(nodeName))
+                    {
+                        count++;
+                        if (!cTag) serial++;
+                    }
+                    if (temp == temp2) cTag = true;
+                    temp2 = temp2.getRight();
+                }
+            }
+            String tag = "";
+            if (count > 1)
+            {
+                if (serial < 10) tag = "0" + serial;
+                else tag = "" + serial;
+            }
+            xpath = nodeName + tag + "." + xpath;
+            temp = temp.getUpper();
+        }
+        return xpath.substring(0, xpath.length()-1);
+    }
+
     public boolean isHead()
     {
         if (upper == null) return true;
@@ -1022,10 +1198,12 @@ class NodeElement
 class DataTree
 {
     private boolean success = false;
+    private String message = "";
     private String header;
     private NodeElement scsHead;
     private NodeElement h3sHead;
     private NodeElement hl7Head;
+    private boolean isNewMethod = false;
     //private NodeElement scsCurr;
     //private NodeElement h3sCurr;
 
@@ -1036,8 +1214,22 @@ class DataTree
         if (!buildH3STree(h3sPath)) return;
         success =  true;
     }
+    DataTree(String scsPath)
+    {
+        if (!buildSCSTree(scsPath)) return;
+        success =  true;
+    }
+    DataTree(String scsPath, CommonNode headNode, String head)
+    {
+        header = head;
+        isNewMethod = true;
+        if (!buildSCSTree(scsPath)) return;
+        if (!buildH3STree(headNode)) return;
+        success =  true;
+    }
 
     public boolean checkSuccess(){ return success; }
+    public boolean isNewMethod(){ return isNewMethod; }
 
     private boolean buildSCSTree(String scsFileName)
     {
@@ -1048,7 +1240,7 @@ class DataTree
 			SAXParser parser = factory.newSAXParser();
 
 			XMLReader producer = parser.getXMLReader();
-			ContentHandler handler = new SCSEventHandler(this);
+			ContentHandler handler = new SCSEventHandler(this, isNewMethod);
 
 			producer.setContentHandler(handler);
 
@@ -1056,14 +1248,24 @@ class DataTree
             producer.parse(new InputSource("file:///" + scsFileName));
             res = true;
         }
-		catch(IOException e)
+        catch(org.xml.sax.SAXParseException e)
+		{
+            System.out.println("SCStree SAXParseException : " + scsFileName);
+            message = "SCStree SAXParseException : " + e.getMessage();
+            return false;
+        }
+        catch(IOException e)
 		{
 			System.out.println("SCStree IOException");
-		}
+            message = "SCStree IOException : " + e.getMessage();
+            return false;
+        }
 		catch(Exception e)
 		{
 			e.printStackTrace(System.err);
-		}
+            message = "SCStree Exception : " + e.getMessage();
+            return false;
+        }
         NodeElement tmp = scsHead;
         while(true)
         {
@@ -1072,6 +1274,62 @@ class DataTree
             tmp = this.getNextNode(tmp);
         }
         return res;
+    }
+
+    private boolean buildH3STree(CommonNode head)
+    {
+        boolean res = true;
+        String mode = "h3s";
+        setH3SHead(new NodeElement(mode, "hl7v3meta", "head", "no_uuid", null));
+
+        if (!buildH3STreeRecurrsive(getH3SHead(), head))
+        {
+            message = "Failure to construct h3s tree with a CommonNode";
+            res = false;
+        }
+        return res;
+    }
+
+    private boolean buildH3STreeRecurrsive(NodeElement parent, CommonNode node)
+    {
+        NodeElement temp = null;
+        H3SInstanceMetaSegment segment = null;
+        if (node instanceof H3SInstanceMetaSegment)
+        {
+            segment = (H3SInstanceMetaSegment) node;
+            if (segment.getH3SSegmentType().getType() == H3SInstanceSegmentType.CLONE_TYPE)
+            {
+                temp = new NodeElement("h3s", H3SInstanceSegmentType.CLONE.toString(), segment.getName(), segment.getXPath(), parent);
+            }
+            else if (segment.getH3SSegmentType().getType() == H3SInstanceSegmentType.ATTRIBUTE_TYPE)
+            {
+                temp = new NodeElement("h3s", H3SInstanceSegmentType.ATTRIBUTE.toString(), segment.getName(), segment.getXPath(), parent);
+            }
+        }
+        else if (node instanceof MetaField)
+        {
+            MetaField field = (MetaField) node;
+            temp = new NodeElement("h3s", "datatypeField", field.getName(), field.getXPath(), parent);
+        }
+
+        if (parent.getLower() == null) parent.setLower(temp);
+        else
+        {
+            NodeElement temp2 = parent.getLower();
+            while(temp2.getRight() != null) temp2 = temp2.getRight();
+            temp2.setRight(temp);
+        }
+
+        if (segment != null)
+        {
+            List<CommonNode> children = segment.getChildNodes();
+            for (int i=0;i<children.size();i++)
+            {
+                buildH3STreeRecurrsive(temp, children.get(i));
+            }
+        }
+        return true;
+
     }
 
     private boolean buildH3STree(String h3sFileName)
@@ -1094,18 +1352,22 @@ class DataTree
 		catch(IOException e)
 		{
 			System.out.println("H3Stree IOException");
+            message = "H3Stree IOException : " + e.getMessage();
+
         }
 		catch(Exception e)
 		{
 			e.printStackTrace(System.err);
+            message = "H3Stree Exception : " + e.getMessage();
+
         }
-        NodeElement tmp = h3sHead;
-        while(true)
-        {
-            if (tmp == null) break;
-            System.out.println(this.getH3SNodePath(tmp));
-            tmp = this.getNextNode(tmp);
-        }
+//        NodeElement tmp = h3sHead;
+//        while(true)
+//        {
+//            if (tmp == null) break;
+//            System.out.println(this.getH3SNodePath(tmp));
+//            tmp = this.getNextNode(tmp);
+//        }
 
         return res;
     }
@@ -1132,20 +1394,22 @@ class DataTree
 		catch(IOException e)
 		{
 			System.out.println("HL7tree IOException");
-            return res;
+            message = "HL7tree IOException : " + e.getMessage();
+
         }
 		catch(Exception e)
 		{
 			e.printStackTrace(System.err);
-            return res;
+            message = "HL7tree Exception : " + e.getMessage();
+
         }
-        NodeElement tmp = hl7Head;
-        while(true)
-        {
-            if (tmp == null) break;
-            System.out.println(this.getHL7NodePath(tmp));
-            tmp = this.getNextNode(tmp);
-        }
+//        NodeElement tmp = hl7Head;
+//        while(true)
+//        {
+//            if (tmp == null) break;
+//            System.out.println(this.getHL7NodePath(tmp));
+//            tmp = this.getNextNode(tmp);
+//        }
 
         return res;
     }
@@ -1372,7 +1636,8 @@ class DataTree
                 while(true)
                 {
                     temp = temp.getUpper();
-                    if (temp.isHead()) return null;
+                    //if (temp.isHead()) return null;
+                    if (temp == null) return null;
                     if (!temp.isEndRight()) return temp.getRight();
                 }
             }
@@ -1582,6 +1847,7 @@ class DataTree
         //String segmentName = "";
         //String fieldName = "";
         NodeElement curr = headNode;
+        if (isNewMethod) curr = headNode.getLower();
         NodeElement temp = null;
         String search = "";
 
@@ -1689,7 +1955,7 @@ class DataTree
             if (temp != null) curr = temp;
             else
             {
-                System.out.println("Not found search : " + search + " ; " + curr.getLevel() + ", " + curr.getName() + "\n  **str : " + str  + "\n  **pth : " + this.getH3SNodePath(curr));
+                System.out.println("Not found search : " + ser + " ; " + curr.getLevel() + ", " + curr.getName() + ", " + curr.getLower().getName() + ", " + curr.getLower().getLower().getName() +"\n  **str : " + str  + "\n  **pth : " + this.getH3SNodePath(curr));
                 return null;
             }
         }
@@ -1702,6 +1968,7 @@ class DataTree
     public void setSCSHead(NodeElement nd) { scsHead = nd; }
     public void setH3SHead(NodeElement nd) { h3sHead = nd; }
     public void setHL7Head(NodeElement nd) { hl7Head = nd; }
+    public String getErrorMessage() { return message; }
 }
 
 
@@ -1714,13 +1981,15 @@ class SCSEventHandler extends DefaultHandler
     NodeElement temp;
     String mode = "scs";
     boolean success = false;
+    boolean isNewMethod = false;
     int errCount = 0;
     DataTree tree;
 
-    SCSEventHandler(DataTree dTree)
+    SCSEventHandler(DataTree dTree, boolean isNewMethod)
     {
         super();
         tree = dTree;
+        this.isNewMethod = isNewMethod;
     }
 
     public void startDocument()
@@ -1737,16 +2006,18 @@ class SCSEventHandler extends DefaultHandler
         //}
         //currentPath = currentPath + "." + qName;
         //currentElement = qName;
+        String id = "uuid";
+        if (isNewMethod) id = "xmlPath";
         if (qName.equals("csvMetadata"))
         {
-            head = new NodeElement(mode, qName, "head", atts.getValue("uuid"), null);
+            head = new NodeElement(mode, qName, "head", atts.getValue(id), null);
             tree.setSCSHead(head);
             curr = head;
         }
         else if (qName.equals("segment"))
         {
 
-            temp = new NodeElement(mode, qName, atts.getValue("name"), atts.getValue("uuid"), curr);
+            temp = new NodeElement(mode, qName, atts.getValue("name"), atts.getValue(id), curr);
             if (curr.isLeafNode()) curr.setLower(temp);
             else (tree.getLastChild(curr)).setRight(temp);
             curr = temp;
@@ -1754,7 +2025,7 @@ class SCSEventHandler extends DefaultHandler
         }
         else if (qName.equals("field"))
         {
-            temp = new NodeElement(mode, qName, atts.getValue("name"), atts.getValue("uuid"), curr);
+            temp = new NodeElement(mode, qName, atts.getValue("name"), atts.getValue(id), curr);
             if (curr.isLeafNode()) curr.setLower(temp);
             else (tree.getLastChild(curr)).setRight(temp);
         }
@@ -2218,6 +2489,9 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/17 16:12:59  wangeug
+ * HISTORY      : change UIUID to xmlPath
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/09 15:37:07  umkis
  * HISTORY      : test instance generating.
  * HISTORY      :

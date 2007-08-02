@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.4 2007-07-17 16:10:44 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.5 2007-08-02 14:24:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -75,9 +75,9 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.C_field;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jul 2, 2007
  *          Time:       8:04:33 PM $
  */
@@ -96,7 +96,7 @@ public class CommonNodeImpl implements CommonNode
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.4 2007-07-17 16:10:44 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonNodeImpl.java,v 1.5 2007-08-02 14:24:46 umkis Exp $";
 
     private CommonNodeType nodeType = CommonNodeType.COMMON;
     private CommonNodeModeType modeType = CommonNodeModeType.COMMON;
@@ -219,22 +219,33 @@ public class CommonNodeImpl implements CommonNode
 
     public void setParent(CommonNode seg) throws ApplicationException
     {
+
         if (seg == null) throw new ApplicationException("This node is null. (CommonNode.setParent())");
+
         if (seg.getModeType().getType() != modeType.getType())
             throw new ApplicationException("Mode type is not mis-matched.");
+
+
         if (seg.getModeType().getType() == CommonNodeModeType.COMMON.getType())
             throw new ApplicationException("Any Common mode node is not allowed to be set as a parent.");
+
         if (seg.getNodeType().getType() == CommonNodeType.ATTRIBUTE.getType())
             throw new ApplicationException("Any Attribute Node is not allowed to be set as a parent.");
+
         if (seg.getNodeType().getType() == CommonNodeType.COMMON.getType())
             throw new ApplicationException("Any Common Node is not allowed to be set as a parent.");
+
         if (getNodeType().getType() == CommonNodeType.COMMON.getType())
             throw new ApplicationException("Any Common Node is not allowed to connect to any parent.");
+
         if (((getNodeType().getType() == CommonNodeType.SEGMENT.getType())||(this.getNodeType().getType() == CommonNodeType.FIELD.getType()))&&
             (seg.getNodeType().getType() != CommonNodeType.SEGMENT.getType()))
             throw new ApplicationException("A parent of a segment or field node must be a segment node.");
 
+        String tempName = this.getName();
         this.parent = seg;
+        name = tempName;
+        
     }
     public CommonNode getParent()
     {
@@ -438,6 +449,7 @@ public class CommonNodeImpl implements CommonNode
             xpath = levelDelimiter + atMark + node.getName() + seq + xpath;
             node = node.getParent();
         }
+        if (xpath.startsWith(levelDelimiter)) xpath = xpath.substring(levelDelimiter.length());
         return xpath;
     }
 
@@ -700,6 +712,9 @@ public class CommonNodeImpl implements CommonNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/17 16:10:44  wangeug
+ * HISTORY      : change UIUID to xmlPath
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/10 20:05:34  umkis
  * HISTORY      : replace 'gov.nih.nci.caadapter.hl7.datatype.Cardinality' into 'gov.nih.nci.caadapter.common.Cardinality'
  * HISTORY      :

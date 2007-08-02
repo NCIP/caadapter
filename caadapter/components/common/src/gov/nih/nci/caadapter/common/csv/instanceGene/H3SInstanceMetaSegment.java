@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaSegment.java,v 1.1 2007-07-09 15:37:07 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaSegment.java,v 1.2 2007-08-02 14:24:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -55,6 +55,7 @@ package gov.nih.nci.caadapter.common.csv.instanceGene;
 
 import gov.nih.nci.caadapter.common.standard.impl.MetaSegmentImpl;
 import gov.nih.nci.caadapter.common.standard.CommonSegment;
+import gov.nih.nci.caadapter.common.ApplicationException;
 
 import java.util.List;
 
@@ -64,7 +65,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       2:56:18 PM $
  */
@@ -83,7 +84,7 @@ public class H3SInstanceMetaSegment extends MetaSegmentImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaSegment.java,v 1.1 2007-07-09 15:37:07 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaSegment.java,v 1.2 2007-08-02 14:24:46 umkis Exp $";
 
     private H3SInstanceSegmentType segmentType;
     private String CLONE_NAME_SEQUANCE_SEPARATOR = "XX";
@@ -93,7 +94,13 @@ public class H3SInstanceMetaSegment extends MetaSegmentImpl
         super();
         segmentType = type;
     }
+    public H3SInstanceMetaSegment(H3SInstanceSegmentType type, String name) throws ApplicationException
+    {
+        super();
+        this.setName(name);
 
+        segmentType = type;
+    }
     public H3SInstanceSegmentType getH3SSegmentType()
     {
         return segmentType;
@@ -126,6 +133,7 @@ public class H3SInstanceMetaSegment extends MetaSegmentImpl
     public String getName()
     {
         String originalName = getOriginalName();
+        //System.out.println("CVVV 7-1 : " + originalName );
         int count = 0;
         try
         {
@@ -133,10 +141,20 @@ public class H3SInstanceMetaSegment extends MetaSegmentImpl
         }
         catch(Exception ee)
         {
+            //System.out.println("CVVV 7-2 : " + originalName );
             return originalName;
         }
-        if (count == 1) return originalName;
-        else if (count == 0) return null;
+        if (count == 1)
+        {
+            //System.out.println("CVVV 7-3 : " + originalName );
+            return originalName;
+        }
+        else if (count == 0)
+        {
+            //System.out.println("CVVV 7-4 : " + originalName + " **********");
+            return originalName;
+        }
+        //System.out.println("CVVV 7-5 : " + originalName + getSequenceSeparator() + getNameSequence() );
         return originalName + getSequenceSeparator() + getNameSequence();
     }
     public String getOriginalName()
@@ -147,11 +165,12 @@ public class H3SInstanceMetaSegment extends MetaSegmentImpl
     {
         H3SInstanceMetaSegment parent = (H3SInstanceMetaSegment) getParent();
         List<CommonSegment> siblings = parent.getChildSegments();
-
+        //System.out.println("CVVV 8-0 : " + siblings.size());
         int count = 0;
         for(int i=0;i<siblings.size();i++)
         {
             H3SInstanceMetaSegment seg = (H3SInstanceMetaSegment)siblings.get(i);
+            //System.out.println("CVVV 8-1 : " + name + " : " + seg.getOriginalName() + " : " + getH3SSegmentType().toString() + " : " + seg.getH3SSegmentType().toString());
             if (getH3SSegmentType().getType() == seg.getH3SSegmentType().getType())
             {
                 if (name.trim().equals(seg.getOriginalName().trim())) count++;
@@ -229,4 +248,7 @@ public class H3SInstanceMetaSegment extends MetaSegmentImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:37:07  umkis
+ * HISTORY      : test instance generating.
+ * HISTORY      :
  */

@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaTree.java,v 1.1 2007-07-09 15:37:07 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaTree.java,v 1.2 2007-08-02 14:24:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -58,20 +58,33 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
 import java.text.SimpleDateFormat;
 
 import gov.nih.nci.caadapter.common.standard.*;
+import gov.nih.nci.caadapter.common.standard.type.NodeIdentifierType;
 import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
+import gov.nih.nci.caadapter.common.standard.impl.MetaFieldImpl;
+import gov.nih.nci.caadapter.common.standard.impl.CommonAttributeItemImpl;
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
+import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 
 /**
  * This class defines ...
@@ -79,7 +92,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -99,7 +112,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaTree.java,v 1.1 2007-07-09 15:37:07 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/H3SInstanceMetaTree.java,v 1.2 2007-08-02 14:24:46 umkis Exp $";
 
     boolean isCode = false;
     String[] codeItems = null;
@@ -107,9 +120,15 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     String displayName = "";
 
     String header = "";
+    String headerName = null;
     String dataFileName;
     String dataPath;
     boolean success = false;
+
+    private static int INPUT_DATA_TYPE_XML = 0;
+    private static int INPUT_DATA_TYPE_BINARY = 1;
+
+    int inputDataType = -1;
 
     public H3SInstanceMetaTree(String h3sFileName)
     {
@@ -200,14 +219,17 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 MetaField field = (MetaField) temp;
                 String line = field.generateXPath(".");
 
+                if (!line.startsWith(".")) line = "." + line;
 
                 H3SInstanceMetaSegment segment = (H3SInstanceMetaSegment) field.getParent();
                 int numClone = 0;
                 while(true)
                 {
                     if (segment.getH3SSegmentType().getType() == H3SInstanceSegmentType.CLONE.getType()) numClone++;
+                    //System.out.println("CVVV : numClone = ? : " +  segment.getName() + " : " + segment.getH3SSegmentType().toString());
                     segment = (H3SInstanceMetaSegment) segment.getParent();
                     if (segment == this.getHeadSegment()) break;
+                    //todo
                 }
 
                 if (numClone == 1) numClone = 2;
@@ -298,8 +320,10 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             System.out.println("data file closing error : " + ie.getMessage());
             return;
         }
-
-        GenerateMapFileFromDataFile generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName);
+        GenerateMapFileFromDataFile generate = null;
+        if (inputDataType == INPUT_DATA_TYPE_XML)
+           generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName);
+        else generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName, this.getHeadSegment());
 
         if (!generate.getSuccess())
         {
@@ -875,6 +899,285 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
     public void build(File h3sFile) throws ApplicationException
     {
+        if (h3sFile == null) throw new ApplicationException("H3S File is null.");
+
+        String filePath = h3sFile.getAbsolutePath();
+        List<String> fileLines = null;
+        try
+        {
+            fileLines = FileUtil.readFileIntoList(filePath);
+        }
+        catch(IOException ie)
+        {
+            throw new ApplicationException("H3S File IOException : " + ie.getMessage());
+        }
+
+        if (fileLines.size() == 0) throw new ApplicationException("No String Line in H3S File : " + filePath);
+
+        String line = "";
+        int n = 0;
+
+        while(line.equals(""))
+        {
+            line = fileLines.get(n).trim();
+            n++;
+            if (n >= fileLines.size()) break;
+        }
+
+        if (line.equals("")) throw new ApplicationException("No Content in H3S File : " + filePath);
+
+        if (line.startsWith("<"))
+        {
+            buildWithXMLFormat(h3sFile);
+            inputDataType = INPUT_DATA_TYPE_XML;
+        }
+        else
+        {
+            transformH3SFromBinaryToXML(h3sFile);
+            this.setNodeIdentifierType(NodeIdentifierType.XPATH);
+            inputDataType = INPUT_DATA_TYPE_BINARY;
+        }
+    }
+
+    private void transformH3SFromBinaryToXML(File h3sFile) throws ApplicationException
+    {
+        ValidatorResults validatorResults = new ValidatorResults();
+        DefaultMutableTreeNode root = null;
+        try
+        {
+        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(true);
+        	root = (DefaultMutableTreeNode) newHsmNodeLoader.loadData(h3sFile);
+        	//initializeTreeWithMIFTreeNode(root);
+        }
+        catch (Throwable e1)
+        {
+			throw new ApplicationException("Tree build Failure with Binary file : " + e1.getMessage());
+		}
+
+        //MIFClass mif = (MIFClass) root.getUserObject();
+        //this.setHeadSegment((H3SInstanceMetaSegment)convertTree(tempHead, mif, 0));
+
+        //String h3sFileName = h3sFile.getAbsolutePath();
+        //String newH3SFileName = h3sFileName.substring(0, (h3sFileName.length()-4)) + "_XML_Transformed" + h3sFileName.substring(h3sFileName.length()-4);
+
+
+        H3SInstanceMetaSegment secondHead = convertTree(null, root, 0);
+        H3SInstanceMetaSegment firstHead = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE, "head");
+        secondHead.setParent(firstHead);
+
+        try
+        {
+            //CommonNode node = (CommonNode) secondHead;
+            firstHead.addChildNode(secondHead);
+        }
+        catch(ApplicationException ae)
+        {
+            ae.printStackTrace();
+            throw ae;
+        }
+        this.setHeadSegment(firstHead);//, fw));
+
+        return;
+    }
+
+    private H3SInstanceMetaSegment convertTree(H3SInstanceMetaSegment parent, DefaultMutableTreeNode node, int depth/*, FileWriter fw */) throws ApplicationException
+    {
+
+        String spaces = "";
+        for (int i=0;i<depth;i++) spaces = spaces + "    ";
+        MIFClass mif = null;
+        MIFAttribute att = null;
+        MIFAssociation asso = null;
+        Attribute attT = null;
+        String nodeName = "";
+        String tag = "";
+
+        H3SInstanceMetaSegment tempPar = null;
+        try
+        {
+            mif = (MIFClass) node.getUserObject();
+            tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
+            tempPar.setName(mif.getName());
+
+            addAttributeItem(tempPar, "reference-name", mif.getReferenceName());
+            addAttributeItem(tempPar, "sortKey", mif.getSortKey());
+            nodeName = mif.getName();
+            tag = "C:";
+//            writeFileWriter(fw, "<clone clonename=\""+mif.getReferenceName()+"\" sortKey=\""+mif.getSortKey()+"\" cardinality=\"1..1\" uuid=\"66bbf3b3-5ddf-4e50-92b7-af9122b58899\">");
+        }
+        catch(ClassCastException ce)
+        {
+            try
+            {
+                att = (MIFAttribute) node.getUserObject();
+
+                nodeName = att.getName();
+                tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
+                tempPar.setName(att.getName());
+
+                addAttributeItem(tempPar, "codingStrength", att.getCodingStrength());
+                addAttributeItem(tempPar, "domainName", att.getDomainName());
+                if (att.getDatatype() != null)
+                {
+                    addAttributeItem(tempPar, "datatype", att.getDatatype().getName());
+                    System.out.println("CVVV DataType : " + att.getDatatype().getName());
+                }
+                addAttributeItem(tempPar, "conformance", att.getConformance());
+                addAttributeItem(tempPar, "user-default", att.getDefaultValue());
+                addAttributeItem(tempPar, "hl7-default", att.getFixedValue());
+                addAttributeItem(tempPar, "sortKey", att.getSortKey());
+                addAttributeItemCardinality(tempPar, att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
+
+                tag = " A:";
+            }
+            catch(ClassCastException cee)
+            {
+                try
+                {
+                    attT = (Attribute) node.getUserObject();
+                    MetaField field = new MetaFieldImpl();
+                    field.setName(attT.getName());
+
+                    addAttributeItem(field, "user-default", attT.getDefaultValue());
+                    addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
+
+
+                    field.setParent(parent);
+                    parent.addChildNode(field);
+                    field.setXPath(getSimpleXPath(field.generateXPath(".")));
+                    nodeName = attT.getName();
+                    tag = "  d:";
+                }
+                catch(ClassCastException ceee)
+                {
+                    asso = (MIFAssociation) node.getUserObject();
+
+                    nodeName = asso.getName();
+                    tag = "B:";
+                    tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
+                    tempPar.setName(asso.getName());
+
+                    addAttributeItem(tempPar, "conformance", asso.getConformance());
+                    addAttributeItem(tempPar, "sortKey", asso.getSortKey());
+                    addAttributeItemCardinality(tempPar, asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
+
+                }
+            }
+        }
+        if (headerName == null) headerName = nodeName;
+        System.out.println("MIF ==> " + spaces + tag + nodeName);
+        if (tempPar == null) return null;
+        if (parent != null)
+        {
+            tempPar.setParent(parent);
+            parent.addChildNode(tempPar);
+            tempPar.setXPath(getSimpleXPath(tempPar.generateXPath(".")));
+
+        }
+        for (int i=0;i<node.getChildCount();i++)
+        {
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode)node.getChildAt(i);
+            convertTree(tempPar, child, (depth+1));
+        }
+
+
+        return tempPar;
+    }
+    private String getSimpleXPath(String xpath)
+    {
+        xpath = xpath.trim();
+        int idx = xpath.indexOf(headerName);
+        if (idx < 0)
+        {
+            System.err.println("CVVV : invalid xpath" + xpath);
+            return xpath;
+        }
+        xpath = xpath.substring(idx);
+        if (xpath.endsWith(".")) xpath = xpath.substring(0, xpath.length()-1);
+        return xpath;
+    }
+    //private H3SInstanceMetaSegment addAttributeItemCardinality(H3SInstanceMetaSegment tempPar, int min, int max)
+    private CommonNode addAttributeItemCardinality(CommonNode tempPar, int min, int max)
+        {
+        String sMin = "";
+        String sMax = "";
+        if (min < 0) return null;
+        if (max < 1) return null;
+        if (min > 1) return null;
+        if (min > max) return null;
+        if ((min == 0)&&(max == 0)) return null;
+        sMin = "" + min;
+        if (max > 1) sMax = "*";
+        else sMax = "" + max;
+
+        try
+        {
+            CommonAttributeItem item = new CommonAttributeItemImpl(tempPar.getAttributes());
+            item.setName("cardinality");
+            item.setItemValue(sMin + ".." + sMax);
+            tempPar.addAttributeItem(item);
+        }
+        catch(ApplicationException ae)
+        {
+            return null;
+        }
+        return tempPar;
+    }
+    //private H3SInstanceMetaSegment addAttributeItem(H3SInstanceMetaSegment tempPar, String attName, String attValue)
+    private CommonNode addAttributeItem(CommonNode tempPar, String attName, String attValue)
+        {
+        if ((attValue == null)||(attValue.trim().equals(""))) return null;
+
+        try
+        {
+            CommonAttributeItem item = new CommonAttributeItemImpl(tempPar.getAttributes());
+            item.setName(attName);
+            item.setItemValue(attValue);
+            tempPar.addAttributeItem(item);
+        }
+        catch(ApplicationException ae)
+        {
+            return null;
+        }
+        return tempPar;
+    }
+
+//    private CommonNode convertTree(H3SInstanceMetaSegment meta, MIFClass mif, int depth) throws ApplicationException
+//    {
+//        //MIFClass mif = (MIFClass) node.getUserObject();
+//        String spaces = "";
+//        for (int i=0;i<depth;i++) spaces = spaces + "    ";
+//        System.out.println("MIF ==> " + spaces + "C:" + mif.getName());
+//        String nodeName = mif.getName();
+//        meta.setName(nodeName);
+//        HashSet<MIFAttribute> atts = mif.getAttributes();
+//        if (!atts.isEmpty())
+//        {
+//            Iterator<MIFAttribute> iterA = atts.iterator();
+//            while(iterA.hasNext())
+//            {
+//                MIFAttribute att = iterA.next();
+//
+//                System.out.println("MIF ==> " + spaces + "  A:" + att.getName());
+//            }
+//        }
+//
+//        HashSet<MIFAssociation> assos = mif.getAssociations();
+//        if (!assos.isEmpty())
+//        {
+//            Iterator<MIFAssociation> iter = assos.iterator();
+//            while(iter.hasNext())
+//            {
+//                MIFAssociation asso = iter.next();
+//                MIFClass mifClass = asso.getMifClass();
+//                H3SInstanceMetaSegment temp = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
+//                convertTree(temp, mifClass, depth++);
+//            }
+//        }
+//        return meta;
+//    }
+    private void buildWithXMLFormat(File h3sFile) throws ApplicationException
+    {
         String h3sFileName = h3sFile.getAbsolutePath();
         boolean res = false;
         H3SBuildEventHandler handler = null;
@@ -910,7 +1213,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     {
         //String fileName = "C:\\projects\\NewInstance\\040011_big\\040011.h3s";
         //String fileName = "C:\\projects\\NewInstance\\150000\\150000.h3s";
-        String fileName = "C:\\projects\\NewInstance\\150000\\gen\\040011.h3s";
+        //String fileName = "C:\\projects\\NewInstance\\150000\\gen\\040011.h3s";
+        //String fileName = "T:\\YeWu\\xmlpathSpec\\newCOCT_MT150003.h3s";
+        String fileName = "C:\\projects\\caadapter\\workingspace\\NewEncounter\\NewEncounter.h3s";
         new H3SInstanceMetaTree(fileName);
     }
 }
@@ -918,4 +1223,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:37:07  umkis
+ * HISTORY      : test instance generating.
+ * HISTORY      :
  */

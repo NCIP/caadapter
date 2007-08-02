@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/TestFileGenerateSCS.java,v 1.1 2007-07-09 15:37:07 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/TestFileGenerateSCS.java,v 1.2 2007-08-02 14:24:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -69,7 +69,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       4:02:14 PM $
  */
@@ -88,7 +88,7 @@ public class TestFileGenerateSCS
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/TestFileGenerateSCS.java,v 1.1 2007-07-09 15:37:07 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/instanceGene/TestFileGenerateSCS.java,v 1.2 2007-08-02 14:24:46 umkis Exp $";
 
     //private List<String> list = new ArrayList<String>();
     DataNode head;
@@ -96,14 +96,31 @@ public class TestFileGenerateSCS
     String cont = "";
     String dataL = "";
     boolean success = false;
+    boolean isNewMethod = false;
 
 
     TestFileGenerateSCS(String file, String title, String filePath)//, String listPath)
     {
+        execute(file, title, filePath);
+    }
+    TestFileGenerateSCS(String file, String title, String filePath, boolean isNewMethod)//, String listPath)
+    {
+        this.isNewMethod = isNewMethod;
+        execute(file, title, filePath);
+    }
+    private void execute(String file, String title, String filePath)
+    {
         //makeList(listPath);
-        cont = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<csvMetadata uuid=\"" + UUIDGenerator.getUniqueString() + "\" version=\"1.2\">\n"; // +
-               // "   <segment name=\"" + title + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\">";
+        if (isNewMethod)
+        {
+            cont = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+                    "<csvMetadata uuid=\"" + UUIDGenerator.getUniqueString() + "\" version=\"1.2\">\r\n";
+        }
+        else
+        {
+            cont = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+                    "<csvMetadata xmlPath=\"csvMetaData\" version=\"1.2\">\r\n";
+        }
         DataNode temp = null;
         //String current = title;
         head = new DataNode(title);
@@ -164,10 +181,10 @@ public class TestFileGenerateSCS
                 }
 
                 //curr = "";
-
+                
                 if (list.size() < 3)
                 {
-                    System.out.println("Header item is less than 3 : " + lin);
+                    System.err.println("Header item is less than 3 : " + lin);
                     return;
                 }
                 if ((list.get(0).equals(title))&&(list.size() != 3))
@@ -242,7 +259,7 @@ public class TestFileGenerateSCS
             if (currNode == null) break;
             space = "    ";
             for (int i=0;i<(this.getDepth(currNode));i++) space = space + "    ";
-            if (currNode.getFieldSize() == 0) dataL = dataL + this.getSegmentName2(currNode) + ",ZZ\n";
+            if (currNode.getFieldSize() == 0) dataL = dataL + this.getSegmentName2(currNode) + ",ZZ\r\n";
             else
             {
                 dataL = dataL + this.getSegmentName2(currNode) + ",";
@@ -256,12 +273,16 @@ public class TestFileGenerateSCS
                     }
                     dataL = dataL + data + ",";
                 }
-                dataL = dataL.substring(0, dataL.length()-1) + "\n";
+                dataL = dataL.substring(0, dataL.length()-1) + "\r\n";
             }
 
             if (currNode == head)
             {
-                cont = cont + space + "<segment name=\"" + this.getSegmentName2(currNode) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n";
+                if (isNewMethod)
+                {
+                    cont = cont + space + "<segment name=\"" + this.getSegmentName2(currNode) + "\" xmlPath=\"" + currNode.getXPath() + "\" cardinality=\"0..*\">\r\n";
+                }
+                else cont = cont + space + "<segment name=\"" + this.getSegmentName2(currNode) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\">\r\n";
                 //********************************
                 if (!currNode.isLeafNode())
                 {
@@ -276,16 +297,28 @@ public class TestFileGenerateSCS
                 temp = currNode;
                 if (temp.getFieldSize() == 0)
                 {
-                    cont = cont + space + "    <field column=\"1\" name=\"dummy\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\n";
-                    cont = cont + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\n";
+                    if (isNewMethod)
+                    {
+                        cont = cont + space + "    <field column=\"1\" name=\"dummy\" xmlPath=\"" + temp.getXPath() + ".dummy\"/>\r\n";
+                        cont = cont + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\r\n";
+                    }
+                    else
+                    {
+                        cont = cont + space + "    <field column=\"1\" name=\"dummy\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\r\n";
+                        cont = cont + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\r\n";
+                    }
                 }
                 else
                 {
                     for (int i=0;i<(temp.getFieldSize());i++)
                     {
-                        cont = cont + space + "    <field column=\"" + (i+1) + "\" name=\"" + temp.getFieldName(i) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\n";
+                        if (isNewMethod)
+                        {
+                            cont = cont + space + "    <field column=\"" + (i+1) + "\" name=\"" + temp.getFieldName(i) + "\" xmlPath=\"" + temp.getXPath() + "\"/>\r\n";
+                        }
+                        else cont = cont + space + "    <field column=\"" + (i+1) + "\" name=\"" + temp.getFieldName(i) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\r\n";
                     }
-                    cont = cont + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\n";
+                    cont = cont + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\r\n";
                 }
                 cont = cont + "</csvMetadata>\n";
                 //System.out.println("&&&&&&&&&&&&&&& Cont ....\n" + cont);
@@ -295,7 +328,11 @@ public class TestFileGenerateSCS
             else
             {
                 String cont2 = "";
-                cont2 = cont2 + space + "<segment name=\"" + this.getSegmentName2(currNode) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\">\n";
+                if (isNewMethod)
+                {
+                    cont2 = cont2 + space + "<segment name=\"" + this.getSegmentName2(currNode) + "\" xmlPath=\"" + currNode.getXPath() + "\" cardinality=\"0..*\">\r\n";
+                }
+                else cont2 = cont2 + space + "<segment name=\"" + this.getSegmentName2(currNode) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\">\r\n";
 
                 if (!currNode.isLeafNode())
                 {
@@ -310,16 +347,24 @@ public class TestFileGenerateSCS
                 temp = currNode;
                 if (temp.getFieldSize() == 0)
                 {
-                    cont2 = cont2 + space + "    <field column=\"1\" name=\"dummy\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\n";
-                    cont2 = cont2 + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\n";
+                    if (isNewMethod)
+                    {
+                        cont2 = cont2 + space + "    <field column=\"1\" name=\"dummy\" xmlPath=\"" + temp.getXPath() + ".dummy\"/>\r\n";
+                    }
+                    else cont2 = cont2 + space + "    <field column=\"1\" name=\"dummy\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\r\n";
+                    cont2 = cont2 + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\r\n";
                 }
                 else
                 {
                     for (int i=0;i<(temp.getFieldSize());i++)
                     {
-                        cont2 = cont2 + space + "    <field column=\"" + (i+1) + "\" name=\"" + temp.getFieldName(i) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\n";
+                        if (isNewMethod)
+                        {
+                            cont2 = cont2 + space + "    <field column=\"" + (i+1) + "\" name=\"" + temp.getFieldName(i) + "\" xmlPath=\"" + temp.getXPath() + "\"/>\r\n";
+                        }
+                        else cont2 = cont2 + space + "    <field column=\"" + (i+1) + "\" name=\"" + temp.getFieldName(i) + "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\r\n";
                     }
-                    cont2 = cont2 + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\n";
+                    cont2 = cont2 + space + "</segment> " + "<!--"+this.getSegmentName2(temp)+"-->\r\n";
                     //if (cont2.indexOf("SUBJECT") > 0) System.out.println("****** Subject ....\n" + cont2);
                     //System.out.println("****** Subject ...."+ this. +"\n" + cont2);
 
@@ -341,21 +386,33 @@ public class TestFileGenerateSCS
         try
         {
             fw = new FileWriter(filePath + ".scs");
-            fw.write(cont.replaceAll("\n", "\r\n"));
+            //fw.write(cont.replaceAll("\n", "\r\n"));
+            fw.write(cont);
             fw.close();
             success = true;
         }
         catch(IOException ie)
         {
-            System.out.println("SCS file Writing error : " + ie.getMessage());
+            System.err.println("SCS file Writing error : " + ie.getMessage());
             success = false;
         }
+        System.out.println("CVVV : SCS file Writing : " + filePath + ".scs");
+        if (isNewMethod)
+        {
+            SCSIDChangerToXMLPath changer = new SCSIDChangerToXMLPath(filePath + ".scs");//, filePath + "_X.scs");
+            if (!changer.wasSuccessful())
+            {
+                System.err.println("SCS file changer Writing error : " + changer.getChangedFileName() + " : " + changer.getErrorMessage());
+                success = false;
+            }
+        }
+
         System.out.println("**** CSV Data ..........\n");
         System.out.println(dataL);
         try
         {
             fw = new FileWriter(filePath + ".csv");
-            fw.write(dataL.replaceAll("\n", "\r\n"));
+            fw.write(dataL);
             fw.close();
         }
         catch(IOException ie)
@@ -693,6 +750,19 @@ class DataNode
     {
         doTail = true;
     }
+
+    public String getXPath()
+    {
+        DataNode node = this;
+        String xpath = "";
+        while(node != null)
+        {
+            xpath = node.getNodeName() + "." + xpath;
+            node = node.getUpper();
+        }
+        return xpath.substring(0, xpath.length()-1);
+    }
+
     public String getUUID()
     {
         return uuid;
@@ -709,4 +779,7 @@ class DataNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:37:07  umkis
+ * HISTORY      : test instance generating.
+ * HISTORY      :
  */

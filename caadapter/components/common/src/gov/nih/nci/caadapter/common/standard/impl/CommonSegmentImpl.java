@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.2 2007-07-17 16:11:23 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.3 2007-08-02 14:24:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -70,9 +70,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 2, 2007
  *          Time:       8:08:54 PM $
  */
@@ -91,7 +91,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.2 2007-07-17 16:11:23 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.3 2007-08-02 14:24:46 umkis Exp $";
 
     private List<CommonNode> children = new ArrayList<CommonNode>();
 
@@ -137,10 +137,6 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
         setName(name);
     }
 
-    public final void setParent(CommonSegment seg) throws ApplicationException
-    {
-        super.setParent(seg);
-    }
 //    public void addChildNode(CommonNode a) throws ApplicationException
 //    {
 //        if (a instanceof CommonSegment) addChildSegment((CommonSegment)a);
@@ -219,7 +215,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
         if (node == null) throw new ApplicationException("This node is Null.");
         if (children == null) throw new ApplicationException("This node list is Null.");
         String name1 = node.getName();
-        if ((name1 == null)||(name1.trim().equals(""))) throw new ApplicationException("The name of this node is null.");
+        if ((name1 == null)||(name1.trim().equals(""))) throw new ApplicationException("The name of this node is null. (for '"+this.getName()+"' segment)");
         if (getNodeType().getType() == CommonNodeType.COMMON.getType()) throw new ApplicationException("Common node is not allow to addition or insertion.");
         if (getModeType().getType() == CommonNodeModeType.COMMON.getType()) throw new ApplicationException("Common mode is not allow to addition or insertion.");
 
@@ -631,8 +627,10 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
     }
     public final void setParent(CommonNode seg) throws ApplicationException
     {
+        //System.out.println("CVVV 4-1 : " + this.getName());
         if (seg instanceof CommonSegment) super.setParent((CommonSegment)seg);
         else throw new ApplicationException("This node is not a segment for a parent.");
+        //System.out.println("CVVV 4-2 : " + this.getName());
     }
 
     public CommonSegment getParent()
@@ -681,6 +679,9 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/17 16:11:23  wangeug
+ * HISTORY      : change UIUID to xmlPath
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
  * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
  * HISTORY      :
