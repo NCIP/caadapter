@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.3 2007-08-01 13:27:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.4 2007-08-03 15:04:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
@@ -49,8 +50,11 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * This class defines the add multiple action.
@@ -58,8 +62,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-01 13:27:43 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-03 15:04:38 $
  */
 public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 {
@@ -75,7 +79,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.3 2007-08-01 13:27:43 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.4 2007-08-03 15:04:38 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Address Parts";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -152,6 +156,15 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
                         {
                         	mifAttr.setEnabled(true);
                         	mifAttr.getDatatype().setEnabled(true);
+                        	Vector dtAttrVec=new Vector(mifAttr.getDatatype().getAttributes().keySet());
+                        	Collections.sort(dtAttrVec);
+                        	Iterator attriIt = dtAttrVec.iterator();
+                    		while (attriIt.hasNext()) 
+                    		{
+                    			String attributeName = (String)attriIt.next();
+                 			   	Attribute attr = (Attribute)mifAttr.getDatatype().getAttributes().get(attributeName);
+                 			   	attr.setEnabled(true);
+                    		}
                         	//remove existing selection
                         	Enumeration enuOldFields=mifAttr.getDatatype().getAttributes().elements();
                         	while(enuOldFields.hasMoreElements())
