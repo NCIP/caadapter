@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2007-08-03 13:25:32 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2007-08-03 23:02:48 $
  */
 
 public class MapProcessor {
@@ -240,7 +240,7 @@ public class MapProcessor {
     	//Scenario 1: process choices, and for each assoication, there can be multiple choices
     	if (mifClass.getChoices().size() > 0) { //Handle choice
     		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
-    	    	if (mifClass.isChoiceSelected()) {
+    	    	if (choiceMIFClass.isChoiceSelected()) {
     	    		for(XMLElement xmlElement:processMIFclass(choiceMIFClass,csvSegment)) {
     	    			xmlElement.setName(mifAssociation.getName());
     	    			xmlElements.add(xmlElement);
@@ -720,6 +720,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2007/08/03 13:25:32  wuye
+ * HISTORY      : Fixed the mapping scenario #1 bug according to the design document
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2007/08/01 14:14:46  wuye
  * HISTORY      : Added missing value handling
  * HISTORY      :

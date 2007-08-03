@@ -31,8 +31,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.7 $
- * @date $Date: 2007-08-03 13:25:32 $
+ * @version $Revision: 1.8 $
+ * @date $Date: 2007-08-03 23:02:48 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -74,6 +74,7 @@ public class MapProcessorHelper {
     		//This does not matter
     		mifClass.setMapped(false);
     		//Something is wrong here, because no choice is selected
+    		mifClass.setCsvSegments(csvSegments);
     		commonP = findCommonParent(mifClass.getCsvSegments());
     		
     		String conceptualMapping = mappings.get(xmlPath);
@@ -141,7 +142,7 @@ public class MapProcessorHelper {
 				}        	
         	}
         	String conceptualMapping = mappings.get(xmlPath);
-        	System.out.println(mifClass.getParentXmlPath());
+//        	System.out.println(mifClass.getParentXmlPath());
     		if (conceptualMapping == null) {    		
     			mifClass.setCsvSegment(commonP);
     		}
@@ -323,6 +324,7 @@ public class MapProcessorHelper {
     
     protected List<String> preprocess_association(MIFAssociation mifAssociation) {
     	if (mifAssociation.getMifClass()!= null) {
+    		System.out.println("mifassociation"+mifAssociation.getName());
     		mifAssociation.setCsvSegments(preprocess_mifclass(mifAssociation.getMifClass(),false, mifAssociation.getXmlPath()));
     		if (mifAssociation.getCsvSegments().size() >0) mifAssociation.setMapped(true); else mifAssociation.setMapped(false);
 
