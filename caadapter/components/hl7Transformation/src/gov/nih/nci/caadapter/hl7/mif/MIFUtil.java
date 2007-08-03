@@ -1,5 +1,7 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -107,5 +109,23 @@ public class MIFUtil {
 		}
 		return rtnNum;
 	}
-	
+	/**
+	 * Check if "inlineText" attribute is required
+	 */
+	public static boolean isInlineTextRequired(String datatypeName)
+	{
+		boolean rtnValue=false;
+		if (CaadapterUtil.getInlineTextAttributes().contains(datatypeName))
+			rtnValue=true;
+		else if (datatypeName.indexOf(".")>-1)
+		{
+//			System.out.println("MIFUtil.isInlineTextRequired()..verify datatype:"+datatypeName);
+			String dtNamePrefix=datatypeName.substring(0,datatypeName.indexOf("."));
+			String dtSuperName=dtNamePrefix+".*";
+//			System.out.println("MIFUtil.isInlineTextRequired()..verify datatype superName:"+dtSuperName);
+			if (CaadapterUtil.getInlineTextAttributes().contains(dtSuperName))
+				rtnValue=true;
+		}
+		return rtnValue;
+	}
 }

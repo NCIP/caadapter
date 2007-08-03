@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.4 2007-07-12 19:16:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.5 2007-08-03 15:03:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.util.List;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-12 19:16:29 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-03 15:03:59 $
  */
 public class AddCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -78,7 +78,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.4 2007-07-12 19:16:29 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.5 2007-08-03 15:03:59 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Add Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -156,6 +156,12 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
                 for (DatatypeBaseObject oneAssc:userSelectedAssociation)
                 {
                 	oneAssc.setOptionChosen(true);
+                	if (obj instanceof DatatypeBaseObject)
+                	{
+                		DatatypeBaseObject targetDt=(DatatypeBaseObject)obj;
+                		oneAssc.setParentXmlPath(targetDt.getXmlPath());
+                	}
+                	
                 	DefaultMutableTreeNode oneAsscNode =mifTreeLoader.buildObjectNode((MIFAssociation)oneAssc);
                 	targetNode.add(oneAsscNode);
                 }
