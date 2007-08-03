@@ -39,8 +39,7 @@ public class TransformationServiceHL7V3ToCsv  {
 	public List<TransformationResult> process() 
 	{
 		List<TransformationResult> transformationResults = new ArrayList<TransformationResult>();
-		try {
-//		    			
+		try {	    			
 			SAXParser saxParser=SAXParserFactory.newInstance().newSAXParser();
 			HL7V3SaxContentHandler saxContentHandler= new HL7V3SaxContentHandler();
 	    	    	
