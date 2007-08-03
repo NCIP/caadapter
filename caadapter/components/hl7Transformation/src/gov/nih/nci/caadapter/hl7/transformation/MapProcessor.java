@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-08-01 14:14:46 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-08-03 13:25:32 $
  */
 
 public class MapProcessor {
@@ -106,10 +106,20 @@ public class MapProcessor {
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
 
-    	if (!mifClass.isMapped()) return NullXMLElement.NULL;
+    	if (mifClass.getCsvSegments().size() == 0) return NullXMLElement.NULL;
+
+    	List<CSVSegment> csvSegments = null;
 
     	//Step1: find all the csvSegments for attributes
-    	List<CSVSegment> csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    	if (mifClass.isMapped()) 
+    	{
+    		csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    	}
+    	else {
+    		csvSegments = new ArrayList<CSVSegment>();
+    		csvSegments.add(pCsvSegment);
+    	}
+
     	for(CSVSegment csvSegment:csvSegments) {
     		theValidatorResults.removeAll();
     	    ValidatorResults localValidatorResults = new ValidatorResults();
@@ -141,10 +151,19 @@ public class MapProcessor {
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
 
-    	if (!mifClass.isMapped()) return NullXMLElement.NULL;
+    	if (mifClass.getCsvSegments().size() == 0) return NullXMLElement.NULL;
+
+    	List<CSVSegment> csvSegments = null;
 
     	//Step1: find all the csvSegments for attributes
-    	List<CSVSegment> csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    	if (mifClass.isMapped()) 
+    	{
+    		csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    	}
+    	else {
+    		csvSegments = new ArrayList<CSVSegment>();
+    		csvSegments.add(pCsvSegment);
+    	}
 
     	for(CSVSegment csvSegment:csvSegments) {
 
@@ -157,7 +176,7 @@ public class MapProcessor {
     		//Non-structural attributes are child xmlelements vs structural attributes are attributes to xml elements
     		
     		for(MIFAttribute mifAttribute:attributes) {
-    			Log.logInfo(this,"Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
+//    			Log.logInfo(this,"Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
 //    			System.out.println("Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
     			if (!mifAttribute.isStrutural()) {
     				List<XMLElement> attrXmlElements = processAttribute(mifAttribute ,csvSegment);
@@ -257,7 +276,7 @@ public class MapProcessor {
     private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment) throws MappingException,FunctionException{
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
 
-    	if (!mifAttribute.isMapped()) {
+    	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
     		  /*
     		   * TODO
@@ -434,7 +453,7 @@ public class MapProcessor {
     				}
     			}
     			else { //complexdatatype
-    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment, parentXPath+"."+attr.getName(), xmlName);
+    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment, parentXPath+"."+attr.getName(), attr.getName());
     				xmlElement.addChildren(attrsXMLElement);
     			}
     		}
@@ -507,7 +526,7 @@ public class MapProcessor {
 				}
 			}
 			else { //complexdatatype
-				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments, parentXPath+"."+attr.getName(), xmlName);
+				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments, parentXPath+"."+attr.getName(), attr.getName());
 				xmlElement.addChildren(attrsXMLElement);
 			}
 		}
@@ -701,6 +720,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/08/01 14:14:46  wuye
+ * HISTORY      : Added missing value handling
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/07/31 20:03:19  wuye
  * HISTORY      : Fixed validationResult error
  * HISTORY      :

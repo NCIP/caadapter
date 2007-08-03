@@ -29,14 +29,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.5 $
- * @date $Date: 2007-07-31 14:04:30 $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2007-08-03 13:25:32 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.5 2007-07-31 14:04:30 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.6 2007-08-03 13:25:32 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -276,15 +276,25 @@ public class TransformationService
 
 //       	TransformationService ts = new TransformationService("C:/Projects/caadapter-gforge-2007-May/tests/150003.map",
 //		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
-       	TransformationService ts = new TransformationService("C:/xmlpathSpec/xmlpath150003.map",
-		"C:/xmlpathSpec/COCT_MT150003.csv");
-       	ts.process();
+//       	TransformationService ts = new TransformationService("C:/xmlpathSpec/xmlpath150003.map",
+//		"C:/xmlpathSpec/COCT_MT150003.csv");
+
+//        TransformationService ts = new TransformationService("D:/projects/caadapter-HEAD/components/hl7Transformation/test/data/COCT_MT150003_MAP1.map",
+//		"D:/projects/caadapter-HEAD/components/hl7Transformation/test/data/COCT_MT150003_MAP_Scenario_Test.csv");
+
+   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
+		"C:/xmlpathSpec/NewEncounter_comp2.csv");
+        
+        ts.process();
        	System.out.println(System.currentTimeMillis()-begintime2);
     }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/07/31 14:04:30  wuye
+ * HISTORY      : Add Comments
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/24 17:25:48  wuye
  * HISTORY      : Synch with the new .map format
  * HISTORY      :
