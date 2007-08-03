@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.2 2007-08-02 16:30:28 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.3 2007-08-03 05:01:32 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -68,13 +68,14 @@ import gov.nih.nci.caadapter.common.standard.impl.CommonAttributeItemImpl;
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
 
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentType;
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 6, 2007
  *          Time:       2:29:15 PM $
  */
@@ -93,7 +94,7 @@ public class H3SBuildEventHandler extends DefaultHandler
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.2 2007-08-02 16:30:28 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SBuildEventHandler.java,v 1.3 2007-08-03 05:01:32 umkis Exp $";
 
     String currentElement = "";
     String currentLevel = "";
@@ -208,7 +209,7 @@ public class H3SBuildEventHandler extends DefaultHandler
                 }
                 catch(ApplicationException ae)
                 {
-                    System.out.println("Error 2 : " + ae.getMessage());
+                    System.err.println("Error 2 : " + ae.getMessage());
                 }
             }
             else if (name.equals("uuid"))
@@ -343,6 +344,9 @@ public class H3SBuildEventHandler extends DefaultHandler
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/02 16:30:28  umkis
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :

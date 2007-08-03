@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.1 2007-08-02 16:29:40 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.2 2007-08-03 05:01:32 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -73,13 +73,14 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
 import gov.nih.nci.caadapter.common.standard.CommonNode;
 import gov.nih.nci.caadapter.common.standard.MetaField;
 
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentType;
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -98,7 +99,7 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.1 2007-08-02 16:29:40 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.2 2007-08-03 05:01:32 umkis Exp $";
 
 
     private boolean success = false;
@@ -187,7 +188,7 @@ public class GenerateMapFileFromDataFile
                     fw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                              "<mapping version=\"1.2\">\n" +
                              "   <components>\n" +
-                             "      <component kind=\"scs\" location=\"" + cutFileName(generatedFilePath + "_1.scs") + "\" type=\"source\"/>\n" +
+                             "      <component kind=\"scs\" location=\"" + cutFileName(generatedFilePath + ".scs") + "\" type=\"source\"/>\n" +
                              "      <component kind=\"h3s\" location=\"" + cutFileName(h3sFileName) + "\" type=\"target\"/>\n" +
                              "<!--%%1-->\n   </components>\n   <links>\n");
                 }
@@ -531,27 +532,29 @@ public class GenerateMapFileFromDataFile
             System.out.println("Main raw Data File Not Found : " + dataFilePath);
             return;
         }
-        mapList = fileIntoList(generatedFilePath+".map");
+        if (!isNewMethod)
+        {
+            mapList = fileIntoList(generatedFilePath+".map");
 
-        success = true;
-        if (!writeMAPList(generatedFilePath, functionSeq, function1, function2, function3))
-        {
-            //System.err.println("Not found scs node for this line : " + line);
-            success = false;
+            success = true;
+            if (!writeMAPList(generatedFilePath, functionSeq, function1, function2, function3))
+            {
+                //System.err.println("Not found scs node for this line : " + line);
+                success = false;
+            }
+            if (!writeSCSList(generatedFilePath))
+            {
+                success = false;
+            }
+            if (!writeH3SList(generatedFilePath))
+            {
+                success = false;
+            }
+            if (!writeCSVList(generatedFilePath))
+            {
+                success = false;
+            }
         }
-        if (!writeSCSList(generatedFilePath))
-        {
-            success = false;
-        }
-        if (!writeH3SList(generatedFilePath))
-        {
-            success = false;
-        }
-        if (!writeCSVList(generatedFilePath))
-        {
-            success = false;
-        }
-
 
 
 
@@ -2489,6 +2492,9 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
+ * HISTORY      : This package was moved from the common component
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 15:43:55  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :

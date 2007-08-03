@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.1 2007-08-02 16:29:40 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.2 2007-08-03 05:01:31 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -77,14 +77,18 @@ import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.MIFObjectClassType;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentType;
 
 /**
  * This class defines ...
@@ -92,7 +96,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Attribute;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -112,10 +116,16 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.1 2007-08-02 16:29:40 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.2 2007-08-03 05:01:31 umkis Exp $";
 
     boolean isCode = false;
-    String[] codeItems = null;
+
+    String codeValue = null;
+    String codeSystem = null;
+    String codeSystemName =  null;
+    String codeDisplayName = null;
+    String codeFieldName = null;
+    int codeItems = 0;
     MetaTreeMeta h3sVocTree = null;
     String displayName = "";
 
@@ -382,13 +392,32 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             System.err.println("CCCXX9 : Unmatched code : " + line);
         if ((isCodeDataType(datatype))||(isCodeDataType(codingStrength)))
         {
-            if (line.endsWith("code"))
+            if (codeFieldName != null)
             {
-                if (codeItems != null)
+                if ((codeItems != 0)&&(!codeFieldName.equals(parent.getName())))
                 {
-                    System.err.println("Code items array is not delete before : ");
-                    codeItems = null;
+                    if (codeItems > 0) System.err.println("CCCXX9 : Not four code item : " + codeFieldName);
+                    codeItems = 0;
+                    codeValue = null;
+                    codeSystem = null;
+                    codeSystemName = null;
+                    codeDisplayName = null;
+                    isCode = false;
                 }
+
+
+            }
+            if ((!isCode)&&(codeItems == 0)) //(line.endsWith("code"))
+            {
+                if ((codeValue != null)||(codeSystem != null)||(codeSystemName != null)||(codeDisplayName != null))
+                {
+                    System.err.println("Code items array is not delete before : " + codeFieldName + " (" + codeValue + " : " + codeSystem + " : " + codeSystemName + " : " + codeDisplayName +  ") ");
+                    codeValue = null;
+                    codeSystem = null;
+                    codeSystemName = null;
+                    codeDisplayName = null;
+                }
+                codeFieldName = parent.getName();
                 String domainName = "";
                 try
                 {
@@ -405,7 +434,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 }
                 catch(IOException ie)
                 {
-                    System.out.println("IOException : FileUtil.findODIWithDomainName() : " + ie.getMessage());
+                    System.err.println("IOException : FileUtil.findODIWithDomainName() : " + ie.getMessage());
                 }
                 if ((odi == null)||(odi.trim().equals(""))) odi = "2.16.840.1.113883.19.99999";
                 String[] res = null;
@@ -418,34 +447,65 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                 if (res != null)
                 {
-                    codeItems = new String[] {domainName, odi, res[1], res[0]};
+                    codeSystemName = domainName;
+                    codeSystem = odi;
+                    codeValue = res[0];
+
                     isCode = true;
-                    displayName = res[1];
+                    codeDisplayName = res[1];
+                    displayName = codeDisplayName;
                     //return line + " => " + res[0];
                 }
                 else
                 {
                     if ((domainName == null)||(domainName.trim().equals("")))
                     {
-                        if (line.endsWith("value.code"))
+                        if ((line.toLowerCase().endsWith("value.code"))||
+                            (line.toLowerCase().endsWith("value.codesystem"))||
+                            (line.toLowerCase().endsWith("value.codesystemname"))||
+                            (line.toLowerCase().endsWith("value.displayname")))
                         {
-                            codeItems = new String[] {"ICD10", "2.16.840.1.113883.6.3", "Chronic gastric ulcer without hemorrhage or perforation", "K25.7"};
+                            codeSystemName = "ICD10";
+                            codeSystem = "2.16.840.1.113883.6.3";
+                            codeValue = "K25.7";
+                            codeDisplayName = "Chronic gastric ulcer without hemorrhage or perforation";
+                            displayName = codeDisplayName;
                             isCode = true;
                         }
                         else
                         {
                             System.err.println("domain name finding failure. 1 : " +domainName);
-                            codeItems = null;
+                            codeSystemName = null;
+                            codeSystem = null;
+                            codeValue = null;
+                            codeDisplayName = null;
+                            displayName = null;
+
                             isCode = false;
+                            codeItems = -1;
                         }
                     }
                     else
                     {
+                        codeSystemName = domainName;
+                        codeSystem = odi;
+                        codeValue = "NotFound";
+                        codeDisplayName = "Domain Not Found";
+                        displayName = codeDisplayName;
+
                         isCode = true;
-                        codeItems = new String[] {domainName, odi, "Domain Not Found", "NotFound"};
+                        //codeItems = new String[] {domainName, odi, "Domain Not Found", "NotFound"};
                         //return line + " => " + "%%Not Found";
                     }
                 }
+            }
+        }
+        else
+        {
+            if (isCode)
+            {
+                System.err.println("Un-natural Code setting : " + codeFieldName);
+                isCode = false;
             }
         }
         if(true)
@@ -502,7 +562,19 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     {
 
         int idx = lin.indexOf("%");
-        if (idx < 0) return line + " => " + lin;
+        if (idx < 0)
+        {
+            if (isCode)
+            {
+                codeItems = 0;
+                codeValue = null;
+                codeSystem = null;
+                codeSystemName = null;
+                codeDisplayName = null;
+                isCode = false;
+            }
+            return line + " => " + lin;
+        }
 
         boolean cTag = false;
         String block = "";
@@ -674,59 +746,59 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             //todo
             return "MD";
         }
-            else if (isCode)
+        else if (isCode)
+        {
+            String ret = "";
+            if (block.equals("CODE"))//(line.endsWith("codeSystemName"))
             {
-                String ret = "";
-                if (block.equals("CODE"))//(line.endsWith("codeSystemName"))
+                codeItems++;
+                if (codeValue != null)
                 {
-                    if (codeItems != null)
-                    {
-                        ret = codeItems[3];
-                        codeItems[3] = null;
-                    }
-                    else ret = "ERROR1";
+                    ret = codeValue;
+                    codeValue = null;
                 }
-                else if (block.equals("CODE.SYSTEMNAME"))//(line.endsWith("codeSystemName"))
-                {
-                    if (codeItems != null)
-                    {
-                        ret = codeItems[0];
-                        codeItems[0] = null;
-                    }
-                    else ret = "ERROR2";
-                }
-                else if (block.equals("CODE.SYSTEM"))//(line.endsWith("codeSystem"))
-                {
-                    if (codeItems != null)
-                    {
-                        ret = codeItems[1];
-                        codeItems[1] = null;
-                    }
-                    else ret = "ERROR3";
-                }
-                else if (block.equals("CODE.DISPLAYNAME"))//(line.endsWith("displayName"))
-                {
-                    if (codeItems != null)
-                    {
-                        ret = codeItems[2];
-                        codeItems[2] = null;
-                    }
-                    else ret = "ERROR4";
-                }
-                boolean cTag = false;
-                if (codeItems == null) System.err.println("Null Code Items array: " + block);
-                else
-                {
-                    for (int i=0;i<codeItems.length;i++) if (codeItems[i] != null) cTag = true;
-                    if (!cTag)
-                    {
-                        isCode = false;
-                        codeItems = null;
-                    }
-                }
-                //if (ret.indexOf(",") >= 0) ret = "\"" + ret + "\"";
-                return ret;
+                else ret = "ERROR1";
             }
+            else if (block.equals("CODE.SYSTEMNAME"))//(line.endsWith("codeSystemName"))
+            {
+                codeItems++;
+                if (codeSystemName != null)
+                {
+                    ret = codeSystemName;
+                    codeSystemName = null;
+                }
+                else ret = "ERROR2";
+            }
+            else if (block.equals("CODE.SYSTEM"))//(line.endsWith("codeSystem"))
+            {
+                codeItems++;
+                if (codeSystem != null)
+                {
+                    ret = codeSystem;
+                    codeSystem = null;
+                }
+                else ret = "ERROR3";
+            }
+            else if (block.equals("CODE.DISPLAYNAME"))//(line.endsWith("displayName"))
+            {
+                codeItems++;
+                if (codeDisplayName != null)
+                {
+                    ret = codeDisplayName;
+                    codeDisplayName = null;
+                }
+                else ret = "ERROR4";
+            }
+
+            if (codeItems == 4)
+            {
+                isCode = false;
+                codeItems = 0;
+            }
+
+            //if (ret.indexOf(",") >= 0) ret = "\"" + ret + "\"";
+            return ret;
+        }
         else
         {
             System.err.println("Invalid block : " + block);
@@ -997,10 +1069,13 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         {
             mif = (MIFClass) node.getUserObject();
             tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
-            tempPar.setName(mif.getName());
+            //tempPar.setName(mif.getName());
+            setNameAndCardinality(parent, tempPar, mif.getName(), MIFObjectClassType.CLONE.toString(), 1, 1);
 
+            //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.CLONE.toString());
             addAttributeItem(tempPar, "reference-name", mif.getReferenceName());
             addAttributeItem(tempPar, "sortKey", mif.getSortKey());
+
             nodeName = mif.getName();
             tag = "C:";
 //            writeFileWriter(fw, "<clone clonename=\""+mif.getReferenceName()+"\" sortKey=\""+mif.getSortKey()+"\" cardinality=\"1..1\" uuid=\"66bbf3b3-5ddf-4e50-92b7-af9122b58899\">");
@@ -1013,20 +1088,24 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                 nodeName = att.getName();
                 tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
-                tempPar.setName(att.getName());
 
+                setNameAndCardinality(parent, tempPar, att.getName(), MIFObjectClassType.ATTRIBUTE.toString(), att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
+
+                //tempPar.setName(att.getName());
+
+                //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.ATTRIBUTE.toString());
                 addAttributeItem(tempPar, "codingStrength", att.getCodingStrength());
                 addAttributeItem(tempPar, "domainName", att.getDomainName());
                 if (att.getDatatype() != null)
                 {
                     addAttributeItem(tempPar, "datatype", att.getDatatype().getName());
-                    System.out.println("CVVV DataType : " + att.getDatatype().getName());
+                    //System.out.println("CVVV DataType : " + att.getDatatype().getName());
                 }
                 addAttributeItem(tempPar, "conformance", att.getConformance());
                 addAttributeItem(tempPar, "user-default", att.getDefaultValue());
                 addAttributeItem(tempPar, "hl7-default", att.getFixedValue());
                 addAttributeItem(tempPar, "sortKey", att.getSortKey());
-                addAttributeItemCardinality(tempPar, att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
+                //addAttributeItemCardinality(tempPar, att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
 
                 tag = " A:";
             }
@@ -1036,10 +1115,13 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     attT = (Attribute) node.getUserObject();
                     MetaField field = new MetaFieldImpl();
-                    field.setName(attT.getName());
+                    //field.setName(attT.getName());
 
+                    setNameAndCardinality(parent, field, attT.getName(), MIFObjectClassType.DATAFIELD.toString(), attT.getMin(), attT.getMax());
+
+                    //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.DATAFIELD.toString());
                     addAttributeItem(field, "user-default", attT.getDefaultValue());
-                    addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
+                    //addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
 
 
                     field.setParent(parent);
@@ -1055,12 +1137,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     nodeName = asso.getName();
                     tag = "B:";
                     tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
-                    tempPar.setName(asso.getName());
 
+                    setNameAndCardinality(parent, tempPar, asso.getName(), MIFObjectClassType.ASSOCIATION.toString(), asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
+
+                    //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.ASSOCIATION.toString());
                     addAttributeItem(tempPar, "conformance", asso.getConformance());
                     addAttributeItem(tempPar, "sortKey", asso.getSortKey());
-                    addAttributeItemCardinality(tempPar, asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
-
                 }
             }
         }
@@ -1072,17 +1154,31 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             tempPar.setParent(parent);
             parent.addChildNode(tempPar);
             tempPar.setXPath(getSimpleXPath(tempPar.generateXPath(".")));
-
         }
         for (int i=0;i<node.getChildCount();i++)
         {
             DefaultMutableTreeNode child = (DefaultMutableTreeNode)node.getChildAt(i);
-            convertTree(tempPar, child, (depth+1));
+            try
+            {
+                convertTree(tempPar, child, (depth+1));
+            }
+            catch(ApplicationException ae)
+            {
+                ae.printStackTrace();
+                throw ae;
+            }
         }
 
 
         return tempPar;
     }
+//    private void setSegmentName(H3SInstanceMetaSegment parent, H3SInstanceMetaSegment node, String name) throws ApplicationException
+//    {
+//        if (node == null) throw new ApplicationException("Node for setNane is null.");
+//        if (parent == null) node.setName(name);
+//        List<CommonNode> list = parent.getChildNodes();
+//        for
+//    }
     private String getSimpleXPath(String xpath)
     {
         xpath = xpath.trim();
@@ -1097,30 +1193,63 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         return xpath;
     }
     //private H3SInstanceMetaSegment addAttributeItemCardinality(H3SInstanceMetaSegment tempPar, int min, int max)
-    private CommonNode addAttributeItemCardinality(CommonNode tempPar, int min, int max)
-        {
-        String sMin = "";
-        String sMax = "";
-        if (min < 0) return null;
-        if (max < 1) return null;
-        if (min > 1) return null;
-        if (min > max) return null;
-        if ((min == 0)&&(max == 0)) return null;
-        sMin = "" + min;
-        if (max > 1) sMax = "*";
-        else sMax = "" + max;
+    private CommonNode setNameAndCardinality(H3SInstanceMetaSegment parent, CommonNode tempPar, String name, String mifType, int min, int max) throws ApplicationException
+    {
 
-        try
+        if (tempPar == null) throw new ApplicationException("Node for setNane is null.");
+        if (parent == null) tempPar.setName(name);
+
+        String cardinality = "";
+        if ((min == 0)&&(max == -1)) cardinality = Config.CARDINALITY_ZERO_TO_MANY;
+        if ((min == 0)&&(max == 1)) cardinality = Config.CARDINALITY_ZERO_TO_ONE;
+        if ((min == 1)&&(max == -1)) cardinality = Config.CARDINALITY_ONE_TO_MANY;
+        if ((min == 1)&&(max == 1)) cardinality = Config.CARDINALITY_ONE_TO_ONE;
+
+        if ((cardinality.equals(Config.CARDINALITY_ONE_TO_MANY))||(cardinality.equals(Config.CARDINALITY_ZERO_TO_MANY)))
         {
-            CommonAttributeItem item = new CommonAttributeItemImpl(tempPar.getAttributes());
-            item.setName("cardinality");
-            item.setItemValue(sMin + ".." + sMax);
-            tempPar.addAttributeItem(item);
+            String segmentNum = "";
+            int seq = 0;
+            if (tempPar instanceof H3SInstanceMetaSegment)
+            {
+                //H3SInstanceMetaSegment segment = (H3SInstanceMetaSegment) tempPar;
+                List<CommonNode> list = parent.getChildNodes();
+                for(int i=0;i<list.size();i++)
+                {
+                    CommonNode node = list.get(i);
+                    if (!(node instanceof H3SInstanceMetaSegment)) continue;
+                    H3SInstanceMetaSegment segmentNode = (H3SInstanceMetaSegment) node;
+                    String nodeNm = segmentNode.getName();
+                    String nameBody = nodeNm.substring(0, nodeNm.length()-2);
+                    String seqTail = nodeNm.substring(nodeNm.length()-2);
+
+                    int n = -1;
+                    try
+                    {
+                        n = Integer.parseInt(seqTail);
+                    }
+                    catch(NumberFormatException ne)
+                    {
+                        continue;
+                    }
+                    if ((nameBody.equals(name))&&(n >= 0)) seq++;
+                }
+                if (seq < 10) segmentNum = "0" + seq;
+                else segmentNum = "" + seq;
+                tempPar.setName(name+segmentNum);
+                //System.out.println("CVVV : Set Name : " + tempPar.getName());
+            }
+            else tempPar.setName(name);
         }
-        catch(ApplicationException ae)
+        else tempPar.setName(name);
+
+        addAttributeItem(tempPar, "mif-type", mifType);
+
+        if (!cardinality.equals(""))
         {
-            return null;
+            addAttributeItem(tempPar, "cardinality", cardinality);
         }
+        System.out.println("CVVV : cardinality : " + tempPar.getName() + " : " + cardinality);
+
         return tempPar;
     }
     //private H3SInstanceMetaSegment addAttributeItem(H3SInstanceMetaSegment tempPar, String attName, String attValue)
@@ -1223,6 +1352,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
+ * HISTORY      : This package was moved from the common component
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 15:43:55  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :

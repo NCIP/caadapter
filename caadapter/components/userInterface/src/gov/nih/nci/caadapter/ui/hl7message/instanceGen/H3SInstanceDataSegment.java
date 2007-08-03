@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceDataSegment.java,v 1.1 2007-08-02 16:29:40 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceDataSegment.java,v 1.2 2007-08-03 05:01:32 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -55,13 +55,15 @@ package gov.nih.nci.caadapter.ui.hl7message.instanceGen;
 
 import gov.nih.nci.caadapter.common.standard.impl.DataSegmentImpl;
 
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentType;
+
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       2:50:26 PM $
  */
@@ -81,7 +83,8 @@ public class H3SInstanceDataSegment extends DataSegmentImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceDataSegment.java,v 1.1 2007-08-02 16:29:40 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceDataSegment.java,v 1.2 2007-08-03 05:01:32 umkis Exp $";
+
     H3SInstanceSegmentType segmentType;
 
     public H3SInstanceDataSegment(H3SInstanceSegmentType type)
@@ -112,6 +115,9 @@ public class H3SInstanceDataSegment extends DataSegmentImpl
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
+ * HISTORY      : This package was moved from the common component
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 15:43:55  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :
