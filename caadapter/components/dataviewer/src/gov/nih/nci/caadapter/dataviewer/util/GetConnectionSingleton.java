@@ -27,7 +27,7 @@ public class GetConnectionSingleton
 
     public static synchronized Connection getConnection() throws Exception
     {
-        if (!connection.isClosed())
+        if (connection !=null && !connection.isClosed())
             return connection;
         else
             return null;
