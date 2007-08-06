@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.5 2007-08-02 15:12:22 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.6 2007-08-06 20:02:22 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.common.tree;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
@@ -66,8 +67,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-02 15:12:22 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-06 20:02:22 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -221,23 +222,19 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 				return false;
 		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-		// do not map to MIFAttribute if "isConformanced" 
-		if (targetNode.getUserObject() instanceof MIFAttribute)
-		{
-			MIFAttribute targetMifAttr=(MIFAttribute)targetNode.getUserObject();
-			if(targetMifAttr.getConformance()!=null
-					&&!targetMifAttr.getConformance().equals(""))
-//					&&targetMifAttr.getDefaultValue()!=null
-//					&&!targetMifAttr.getDefaultValue().equals(""))
-				return false;
-		}
+		 
+//		if (targetNode.getUserObject() instanceof MIFAttribute)
+//		{
+//			MIFAttribute targetMifAttr=(MIFAttribute)targetNode.getUserObject();
+//			if(targetMifAttr.isStrutural())
+//				return false;
+//		}
 		try
 		{
 			TransferableNode dragSourceObjectSelection = (TransferableNode) transferredData;
 			java.util.List dragSourceObjectList = dragSourceObjectSelection.getSelectionList();
 			if (dragSourceObjectList == null || dragSourceObjectList.size() < 1)
-			{
-//				DesktopController.showMessage("No Selected Object is found in this Drop action.");
+			{		
 				return false;
 			}
 
@@ -250,13 +247,6 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 			for (int i = 0; i < size; i++)
 			{
 				DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) dragSourceObjectList.get(i);
-//				if (targetNode.getChildCount() > 0)
-//				{// the user tries to drop on a parent.
-//					JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
-//							"You can only drop on leaf nodes.",
-//							"Mapping Error",
-//							JOptionPane.ERROR_MESSAGE);
-//				}
 				if (targetNode instanceof MappableNode && ((MappableNode) targetNode).isMapped())
 				{//the target has a map already.
 					JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
@@ -264,13 +254,6 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 							"Mapping Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-//				else if (sourceNode instanceof MappableNode && ((MappableNode) sourceNode).isMapped())
-//				{//the target has a map already.
-//					JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
-//							"The source you selected already has a map.",
-//							"Mapping Error",
-//							JOptionPane.ERROR_MESSAGE);
-//				}
 				else
 				{// we have a valid map, so go to map it!
 					if(sourceNode instanceof MappableNode && targetNode instanceof MappableNode)
@@ -288,18 +271,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 
 			}//end of for
 		}
-//		catch (ValidationException ve)
-//		{
-//			System.out.println(this.getClass(), ve.getMessage());
-//			System.out.println(ve.getClass().getName());
-//			ErrorPane.showDialog(ve);
-//			isSuccess = false;
-//		}
+
 		catch (Exception exp)
 		{
-//			System.out.println(this.getClass() + " " + exp.getMessage());
-//			System.out.println(exp.getClass().getName());
-//			ErrorPane.showDialog(exp);
 			Log.logException(this, exp);
 			isSuccess = false;
 		}
@@ -367,6 +341,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/08/02 15:12:22  wangeug
+ * HISTORY      : not allowed to map a conformed attribute
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/23 18:47:54  wangeug
  * HISTORY      : enable mapping validator for CSV to MIF mapping
  * HISTORY      :
