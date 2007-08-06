@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.1 2007-08-02 16:29:40 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.2 2007-08-06 14:27:43 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -69,7 +69,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 6, 2007
  *          Time:       4:02:14 PM $
  */
@@ -88,7 +88,7 @@ public class TestFileGenerateSCS
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.1 2007-08-02 16:29:40 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.2 2007-08-06 14:27:43 umkis Exp $";
 
     //private List<String> list = new ArrayList<String>();
     DataNode head;
@@ -192,7 +192,8 @@ public class TestFileGenerateSCS
                     System.out.println("Invalid Header list : " + lin);
                     return;
                 }
-                field = list.get(list.size()-2) + "_" + list.get(list.size()-1);
+                if (list.get(list.size()-1).equals("noneX")) field = list.get(list.size()-2);
+                else field = list.get(list.size()-2) + "_" + list.get(list.size()-1);
                 if (list.get(0).equals(title))
                 {
                     currNode.inputField(field, dat);
@@ -779,6 +780,9 @@ class DataNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
+ * HISTORY      : This package was moved from the common component
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 15:43:52  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :

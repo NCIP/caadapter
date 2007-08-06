@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.2 2007-08-03 05:01:32 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.3 2007-08-06 14:27:43 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -80,7 +80,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -99,7 +99,7 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.2 2007-08-03 05:01:32 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.3 2007-08-06 14:27:43 umkis Exp $";
 
 
     private boolean success = false;
@@ -248,7 +248,13 @@ public class GenerateMapFileFromDataFile
 
                 }
                 System.out.println("**** This Line : " + line);
-                h3sNode = dt.searchH3SPath(line);
+
+                if (line.endsWith(".noneX")) h3sNode = dt.searchH3SPath(line.substring(0, (line.length()-(".noneX").length() )));
+                else h3sNode = dt.searchH3SPath(line);
+
+//                if (line.endsWith(".noneX")) line = line.substring(0, (line.length()-(".noneX").length() ));
+//                h3sNode = dt.searchH3SPath(line);
+
                 if (h3sNode == null)
                 {
                     System.err.println("Not found h3s node for this line : " + line);
@@ -318,7 +324,13 @@ public class GenerateMapFileFromDataFile
                     continue;
                 }
 
-                scsNode = dt.searchSCSPath(line);
+               scsNode = dt.searchSCSPath(line);
+//                if ((line.endsWith(".noneX"))||(line.endsWith("_noneX"))) scsNode = dt.searchSCSPath(line.substring(0, (line.length()-(".noneX").length())));
+//                else scsNode = dt.searchSCSPath(line);
+
+//                if (line.endsWith(".noneX")) line = line.substring(0, (line.length()-(".noneX").length()));
+//                scsNode = dt.searchSCSPath(line);
+
                 if (scsNode == null)
                 {
                     System.err.println("Not found scs node for this line : " + line);
@@ -1649,9 +1661,6 @@ class DataTree
 
     public NodeElement searchSCSPath(String str)
     {
-        //System.out.println("**** search scs 1 : " + header+ " : " + str);
-
-
 
         if (str.equals(header)) return scsHead;
         if (!str.startsWith(header)) str = header + "." + str;
@@ -1671,7 +1680,8 @@ class DataTree
             }
             else
             {
-                fieldName = fieldName + "_" + li.get(i);
+                if (li.get(i).equals("noneX")) {}
+                else fieldName = fieldName + "_" + li.get(i);
             }
         }
 
@@ -2492,6 +2502,9 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/03 05:01:32  umkis
+ * HISTORY      : add items which have to be input data
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :
