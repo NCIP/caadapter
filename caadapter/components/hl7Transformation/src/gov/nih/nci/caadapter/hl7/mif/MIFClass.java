@@ -24,7 +24,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2007-08-06 19:31:35 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-08-06 19:45:11 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -528,10 +528,10 @@ import java.util.Iterator;
 		// TODO Auto-generated method stub
 		return "Clone";
 	}
-	public String getMsgType() {
-		return messageType;
+	public String getMessageType() {
+ 		return messageType;
 	}
-	public void setMsgType(String msgType) {
+	public void setMessageType(String msgType) {
 		this.messageType = msgType;
 	}
  }
