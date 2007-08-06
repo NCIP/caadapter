@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.8 2007-08-03 15:08:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.9 2007-08-06 18:32:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,7 +35,7 @@
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+//import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -77,11 +77,11 @@ import java.util.Hashtable;
  * class, with main purpose of providing customized DefaultMutableTreeNode descendant implementation,
  * while leaving the algorithm of traversing HSM meta data tree defined here intact.
  *
- * @author OWNER: Scott Jiang
+ * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-03 15:08:08 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-06 18:32:23 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -295,8 +295,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	private DefaultMutableTreeNode buildMIFAttributeNode(MIFAttribute mifAttribute)
 	{
 		DefaultMutableTreeNode rtnNode=constructTreeNodeBasedOnTreeType(mifAttribute,true);
-		if (!MIFUtil.isTreatedAsSimpleType(mifAttribute.getType()))
-		{
+		mifAttribute.setEnabled(true);
+//		if (!MIFUtil.isTreatedAsSimpleType(mifAttribute.getType()))
+//		{
 			if (mifAttribute.getDatatype()==null)
 			{
 				//load from DataType spec for the new HL7 specification
@@ -308,9 +309,13 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					mifAttrType="IVL_TS";
 				
 				}
-				Datatype dType=(Datatype)DatatypeParserUtil.getDatatype(mifAttrType).clone();
+				Datatype dType=mifAttribute.getDatatype();
+				if (dType==null)
+				{
+					dType=(Datatype)DatatypeParserUtil.getDatatype(mifAttrType).clone();
+					mifAttribute.setEnabled(true);
+				}
 				mifAttribute.setDatatype(dType);
-				mifAttribute.setEnabled(true);
 				enableDatatypeAttributesComplextype(dType, newSpecificationFlag);
 				if (mifAttrType.equals("GTS"))
 					mifAttribute.getDatatype().setSimple(false);
@@ -333,9 +338,14 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					}
 				}
 			}
+//		}
+//		else
+//			mifAttribute.setEnabled(true);
+		if (MIFUtil.isTreatedAsSimpleType(mifAttribute.getType())
+				&&mifAttribute.isStrutural())
+		{
+			rtnNode.removeAllChildren();
 		}
-		else
-			mifAttribute.setEnabled(true);
 		return rtnNode;
 	}
  
