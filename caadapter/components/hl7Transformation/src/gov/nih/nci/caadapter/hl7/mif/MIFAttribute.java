@@ -5,9 +5,11 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
 
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 
+import java.beans.Expression;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-07-26 16:16:20 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2007-08-06 18:29:01 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -295,10 +297,23 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	}
 	public int compareTo(MIFAttribute attr) {
 		// TODO Auto-generated method stub	
-		String myCompKey=this.getSortKey()+this.getMultiplicityIndex();
-		String attrCompKey=attr.getSortKey()+attr.getMultiplicityIndex();
-		
-		return (myCompKey.compareToIgnoreCase(attrCompKey));	
+		int mySortKey=Integer.valueOf( getSortKey());
+		int myIndex= getMultiplicityIndex();
+		int attrSortKey=Integer.valueOf(attr.getSortKey());
+		int attrIndex=attr.getMultiplicityIndex();
+		int rtnValue=0;
+		if (mySortKey==attrSortKey)
+		{//compare index if sortKey is equal
+			if (myIndex>attrIndex)
+				rtnValue=1;
+			else if (myIndex<attrIndex)
+				rtnValue=-1;
+		}
+		else if (mySortKey>attrSortKey)
+			rtnValue= 1;
+		else
+			rtnValue= -1;	
+		return rtnValue;
 	}
 	@Override
 	public boolean isOptionChosen() {
@@ -397,21 +412,54 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		// TODO Auto-generated method stub
 		Class beanClass = this.getClass();
- 
-		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getNodeXmlName", null);
-		PropertyDescriptor _parentPath = new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null);
-		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "getClassName", null);
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-		propList.add(_name);
-		propList.add(_parentPath);
-		propList.add(_class);
+		propList.add(new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null));
+		propList.add(new PropertyDescriptor("Name", beanClass, "getNodeXmlName", null));
+		propList.add(new PropertyDescriptor("Type", beanClass, "findTypeProperty", null));
+		
+		propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
+		propList.add(new PropertyDescriptor("isMultiple", beanClass, "findIsMultiple", null));
+		propList.add(new PropertyDescriptor("Mandatory", beanClass, "isMandatory", null));
+		propList.add(new PropertyDescriptor("Conformance", beanClass, "getConformance", null));
+
+		propList.add(new PropertyDescriptor("isAbstract", beanClass, "findIsAbstract", null));
+		propList.add(new PropertyDescriptor("Data Type", beanClass, "getType", null));
+		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getDefaultValue", null));
+		propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "getDomainName", null));
+		propList.add(new PropertyDescriptor("Coding Strength", beanClass, "getCodingStrength", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
+		
 		return result;
 	}
 
 	public String getTitle() {
 		// TODO Auto-generated method stub
 		return "MIF Attribute Properties";
+	}
+	public String findCardinality() {
+
+		int multMin=Integer.valueOf(this.getMinimumMultiplicity());
+		int multMax=Integer.valueOf(this.getMaximumMultiplicity());
+		return (new MIFCardinality(multMin,multMax)).toString();
+
+	}
+	public String findIsMultiple() {
+		if (this.getMaximumMultiplicity()==1)
+			return "false";
+		
+		return "true";
+	}
+
+	public String findIsAbstract() {
+		if (getDatatype()!=null
+				&&getDatatype().isAbstract())
+			return "true";
+		
+		return "false";
+	}
+	public String findTypeProperty() {
+		// TODO Auto-generated method stub
+		return "Attribute";
 	}
 }

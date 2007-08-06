@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.7 2007-07-24 17:43:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.8 2007-08-06 18:29:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-07-24 17:43:48 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-06 18:29:49 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -96,7 +96,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.7 2007-07-24 17:43:48 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.8 2007-08-06 18:29:49 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -113,7 +113,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	private JTextField cardinalityField;
 	private JTextField mandatoryField;
 	private JTextField conformanceField;
-	private JTextField rimSourceField;
+//	private JTextField rimSourceField; not required
 	private JTextField abstractField;
 	private JComboBox dataTypeField;
 	private JTextField hl7DefaultValueField;
@@ -210,14 +210,14 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		centerPanel.add(conformanceField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		posY++;
-		JLabel rimSourceLabel = new JLabel("RIM Source:");
-		centerPanel.add(rimSourceLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0,
-				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		rimSourceField = new JTextField();
-		rimSourceField.setEditable(false);
-		rimSourceField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
-		centerPanel.add(rimSourceField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0,
-				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+//		JLabel rimSourceLabel = new JLabel("RIM Source:");
+//		centerPanel.add(rimSourceLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0,
+//				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+//		rimSourceField = new JTextField();
+//		rimSourceField.setEditable(false);
+//		rimSourceField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
+//		centerPanel.add(rimSourceField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0,
+//				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		posY++;
 		JLabel abstractLabel = new JLabel("Abstract:");
 		centerPanel.add(abstractLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0,
@@ -391,18 +391,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		{
 			this.seletedBaseObject = userDatatypeObj;
 			clearAndEditableFields(false);
-			elementNameField.setText(seletedBaseObject.getXmlPath());//.getName());
+			elementNameField.setText(seletedBaseObject.getName());
 			//set parent name form xmlPath
 			String parentXmlPath=userDatatypeObj.getParentXmlPath();//xmlPath.substring(0, xmlPath.lastIndexOf("."));
-			if (parentXmlPath!=null&&parentXmlPath.length()>0)
-			{ 	
-				if (parentXmlPath.lastIndexOf(".")>-1)
-					elementParentField.setText(parentXmlPath.substring(parentXmlPath.lastIndexOf(".")+1));
-				else
-					elementParentField.setText(parentXmlPath);
-			}
-			else
-				elementParentField.setText("null");
+			elementParentField.setText(parentXmlPath);
 			
 			if (userDatatypeObj instanceof Attribute )
 			{
@@ -414,6 +406,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					mandatoryField.setText("N");
 				else
 					mandatoryField.setText("Y");
+				//conformance is not present
+				
 				if (dtAttr.getType()!=null&&DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
 				{
 					dataTypeField.setEditable(true);
@@ -423,6 +417,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					abstractField.setText("N"); 
 				dataTypeField.addItem(dtAttr.getType());
 				setEditableField(userDefaultValueField, true);
+				//HL7 default is not present
+				//HL7 Domain is not present
+				//code strength is not present
+				//cmet is not present
 				userDefaultValueField.setText(dtAttr.getDefaultValue());
 			}
 			else if (userDatatypeObj instanceof MIFAttribute )
@@ -436,7 +434,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				else
 					mandatoryField.setText("N");
 				conformanceField.setText(mifAttr.getConformance());
-				rimSourceField.setText(mifAttr.getDefaultFrom()); //not set
+
 				Datatype mifAttrDataType=mifAttr.getDatatype();
 				//the pre-defined type is always the first elemnt
 				if (mifAttrDataType!=null&&mifAttrDataType.isAbstract())
@@ -464,11 +462,11 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					abstractField.setText("N");
 					dataTypeField.addItem(mifAttr.getType());
 				}
-				hl7DefaultValueField.setText(mifAttr.getFixedValue());
+				hl7DefaultValueField.setText(mifAttr.getDefaultValue());
 				hl7DomainField.setText(mifAttr.getDomainName());
 				codingStrengthField.setText(mifAttr.getCodingStrength());
-				cmetField.setText("");//not set
-				userDefaultValueField.setText(mifAttr.getDefaultValue());
+				//cmetField.setText("");//not set
+				// userDefault is not present
 			}
 			else if (userDatatypeObj instanceof MIFClass )
 			{
@@ -494,14 +492,13 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					conformanceField.setText(parentMifAssc.getConformance());
 						
 				}
+				//Abstract is not present
 				dataTypeField.addItem(mifClass.getName());
 				if (mifClass.isReference())//.getReferenceName()!=null)
 				{
 					cmetField.setText(mifClass.getName());
-					hl7DomainField.setText(mifClass.getName());
+//					hl7DomainField.setText(mifClass.getName());
 				}
-//				conformanceField.setText(mifClass.getConformance());
-//				rimSourceField.setText(mifAttr.getDefaultFrom()); //not set
 //				hl7DefaultValueField.setText(mifAttr.getFixedValue());
 //				codingStrengthField.setText(mifAttr.getCodingStrength());
 //				userDefaultValueField.setText(mifAttr.getDefaultValue());
@@ -517,20 +514,19 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					mandatoryField.setText("N");
 				conformanceField.setText(mifAssc.getConformance());
 				
-//				abstractField.setText(mifAssc.getMifClass().isDynamic()); //not set
+//				abstractField.setText(mifAssc.getMifClass().isDynamic()); //Abstract is not presentt
 				MIFClass asscClass=mifAssc.getMifClass();
-				rimSourceField.setText(asscClass.getReferenceName()); 
 				if(asscClass.getChoices().isEmpty())
 					dataTypeField.addItem(asscClass.getName());
 
 				if (asscClass.isReference())//.getReferenceName()!=null)
 				{
 					cmetField.setText(asscClass.getName());//.getReferenceName());
-					hl7DomainField.setText(asscClass.getName());
+//					hl7DomainField.setText(asscClass.getName());
 				}
-				hl7DefaultValueField.setText("");
-				codingStrengthField.setText("");
-				userDefaultValueField.setText("");
+//				hl7DefaultValueField.setText("");
+//				codingStrengthField.setText("");
+//				userDefaultValueField.setText("");
 			}
 			else
 				Log.logWarning(this,"Invalid data type being selectd:"+userDatatypeObj.getClass().getName());
@@ -547,7 +543,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		cardinalityField.setText("");
 		mandatoryField.setText("");
 		conformanceField.setText("");
-		rimSourceField.setText("");
+//		rimSourceField.setText("");
 		abstractField.setText("");
 		dataTypeField.removeAllItems();
 		hl7DefaultValueField.setText("");

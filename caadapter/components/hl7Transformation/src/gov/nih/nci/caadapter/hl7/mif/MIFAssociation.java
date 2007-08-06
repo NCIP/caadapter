@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2007-07-26 16:16:20 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-08-06 18:29:01 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -215,11 +215,27 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	}
 	public int compareTo(MIFAssociation mifAssc) {
 		// TODO Auto-generated method stub
-		String myCompKey=this.getSortKey()+this.getMultiplicityIndex();
-		String asscCompKey=mifAssc.getSortKey()+mifAssc.getMultiplicityIndex();
-		
-		return (myCompKey.compareToIgnoreCase(asscCompKey));	
-	
+//		String myCompKey=this.getSortKey()+this.getMultiplicityIndex();
+//		String asscCompKey=mifAssc.getSortKey()+mifAssc.getMultiplicityIndex();
+//		
+//		return (myCompKey.compareToIgnoreCase(asscCompKey));	
+		int mySortKey=Integer.valueOf( getSortKey());
+		int myIndex= getMultiplicityIndex();
+		int asscSortKey=Integer.valueOf(mifAssc.getSortKey());
+		int asscIndex=mifAssc.getMultiplicityIndex();
+		int rtnValue=0;
+		if (mySortKey==asscSortKey)
+		{//compare index if sortKey is equal
+			if (myIndex>asscIndex)
+				rtnValue=1;
+			else if (myIndex<asscIndex)
+				rtnValue=-1;
+		}
+		else if (mySortKey>asscSortKey)
+			rtnValue= 1;
+		else
+			rtnValue= -1;	
+		return rtnValue;
 	}
 	@Override
 	public boolean isOptionChosen() {
@@ -318,11 +334,13 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 
 		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
 		PropertyDescriptor _parentPath = new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null);
-		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "getMifClass", null);
+		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "findTypeProperty", null);
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 		propList.add(_name);
 		propList.add(_parentPath);
 		propList.add(_class);
+		propList.add(new PropertyDescriptor("isReference", beanClass, "findIsRerence", null));
+		propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
 		return result;
@@ -331,5 +349,24 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public String getTitle() {
 		// TODO Auto-generated method stub
 		return "MIF Association Properties";
+	}
+	
+	public String findCardinality() {
+
+		int multMin=Integer.valueOf(this.getMinimumMultiplicity());
+		int multMax=Integer.valueOf(this.getMaximumMultiplicity());
+		return (new MIFCardinality(multMin,multMax)).toString();
+
+	}
+
+	public String findIsRerence() {
+		
+		if (this.getMifClass()!=null)
+			return String.valueOf(getMifClass().isReference());
+		return "false";
+	}
+	public String findTypeProperty() {
+		// TODO Auto-generated method stub
+		return "Association Clone";
 	}
 }	

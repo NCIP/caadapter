@@ -4,12 +4,16 @@
  */
 package gov.nih.nci.caadapter.hl7.mif;
 
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
@@ -19,8 +23,8 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2007-08-02 14:23:36 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-08-06 18:29:01 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -487,5 +491,40 @@ import java.util.Iterator;
 	 */
 	public void setMapped(boolean mapped) {
 		this.mapped = mapped;
+	}
+	
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		// TODO Auto-generated method stub
+		Class beanClass = this.getClass();
+
+		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
+		PropertyDescriptor _parentPath = new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null);
+		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "findTypeProperty", null);
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add(_name);
+		propList.add(_parentPath);
+		propList.add(_class);
+		propList.add(new PropertyDescriptor("isReference", beanClass, "isReference", null));
+		propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+	
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "MIF Clone Properties";
+	}
+	
+	
+	public String findCardinality() {
+
+		return Config.CARDINALITY_ONE_TO_ONE;
+	}
+
+
+	public String findTypeProperty() {
+		// TODO Auto-generated method stub
+		return "Clone";
 	}
  }
