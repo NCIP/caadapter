@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.4 2007-07-23 18:47:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.5 2007-08-02 15:12:22 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.common.tree;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
@@ -65,8 +66,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-23 18:47:54 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-02 15:12:22 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -220,6 +221,16 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 				return false;
 		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+		// do not map to MIFAttribute if "isConformanced" 
+		if (targetNode.getUserObject() instanceof MIFAttribute)
+		{
+			MIFAttribute targetMifAttr=(MIFAttribute)targetNode.getUserObject();
+			if(targetMifAttr.getConformance()!=null
+					&&!targetMifAttr.getConformance().equals(""))
+//					&&targetMifAttr.getDefaultValue()!=null
+//					&&!targetMifAttr.getDefaultValue().equals(""))
+				return false;
+		}
 		try
 		{
 			TransferableNode dragSourceObjectSelection = (TransferableNode) transferredData;
@@ -275,11 +286,6 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 					}
 				}
 
-				if (isSuccess)
-				{
-//					System.out.println("Dropped " + sourceNode.getUserObject().toString() +
-//							" on " + targetNode.getUserObject().toString());
-				}
 			}//end of for
 		}
 //		catch (ValidationException ve)
@@ -361,6 +367,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/23 18:47:54  wangeug
+ * HISTORY      : enable mapping validator for CSV to MIF mapping
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/05 15:17:33  wangeug
  * HISTORY      : initila loading hl7 code without "clone"
  * HISTORY      :

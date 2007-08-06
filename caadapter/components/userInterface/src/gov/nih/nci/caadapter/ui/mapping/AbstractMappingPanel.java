@@ -78,7 +78,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 		
 //		TargetTreeDragTransferHandler targetTreeDragTransferHandler = null;
 //		drag source for DnD to middle panel.
-//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
+		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
 
 		//register collapse all and expand all actions.
 		targetTreeCollapseAllAction.setTree(tTree);
