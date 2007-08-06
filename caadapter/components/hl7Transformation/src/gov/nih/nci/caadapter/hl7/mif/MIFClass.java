@@ -24,7 +24,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-08-06 18:29:01 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2007-08-06 19:31:35 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -43,6 +43,7 @@ import java.util.Iterator;
 	 private boolean mapped;
  	 private List<String> csvSegments;
  	 private String csvSegment;
+ 	 private String messageType;
 	 /**
 	  * This method will add an attribute object to a given MIF object.
 	  * 
@@ -526,5 +527,11 @@ import java.util.Iterator;
 	public String findTypeProperty() {
 		// TODO Auto-generated method stub
 		return "Clone";
+	}
+	public String getMsgType() {
+		return messageType;
+	}
+	public void setMsgType(String msgType) {
+		this.messageType = msgType;
 	}
  }
