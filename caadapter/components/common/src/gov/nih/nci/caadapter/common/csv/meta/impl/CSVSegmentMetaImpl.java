@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.6 2007-07-17 16:16:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.7 2007-08-07 15:01:24 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,15 +53,15 @@ import gov.nih.nci.caadapter.common.Cardinality;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.6 $
- * 			$Date: 2007-07-17 16:16:34 $
+ * @version $Revision: 1.7 $
+ * 			$Date: 2007-08-07 15:01:24 $
  * @since caAdapter v1.2
  */
 
 public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 {
 	private static final String LOGID = "$RCSfile: CSVSegmentMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.6 2007-07-17 16:16:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.7 2007-08-07 15:01:24 wangeug Exp $";
     private String segmentName;
     List<CSVFieldMeta> fields = new ArrayList<CSVFieldMeta>();
     List<CSVSegmentMeta> childSegments = new ArrayList<CSVSegmentMeta>();
@@ -238,7 +238,7 @@ public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 
         PropertyDescriptor _parentSegmentName = new PropertyDescriptor("Parent Segment", beanClass, "getParent", null);
         PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
-        PropertyDescriptor _cardinality = new PropertyDescriptor("Cardinality", beanClass, "getCardinality", null);
+        PropertyDescriptor _cardinality = new PropertyDescriptor("Cardinality", beanClass, "getCardinalityWithString", null);
         PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "getClassName", null);
 //		PropertyDescriptor[] propertiesArray = new PropertyDescriptor[]
 //		{_parentSegmentName, _name, _class};
