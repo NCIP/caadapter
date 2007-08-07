@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2007-08-07 03:45:59 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2007-08-07 05:38:34 $
  */
 
 public class MapProcessor {
@@ -255,7 +255,7 @@ public class MapProcessor {
     							}
     							System.out.println(scsPath);
     	    					if (data.get(scsPath) == null) { //inverse relationship
-    	    						CSVField csvField = findCSVField(pCsvSegment, scsPath);
+    	    						CSVField csvField = findCSVField(csvSegment, scsPath);
     	    						if (csvField.getValue().equals("")) {
     	    							break;
     	    						}
@@ -493,7 +493,7 @@ public class MapProcessor {
     				else { //direct mapping from source to target
 //  					System.out.println(scsXmlPath);
     					if (data.get(scsXmlPath) == null) { //inverse relationship
-    						CSVField csvField = findCSVField(pCsvSegment, scsXmlPath);
+    						CSVField csvField = findCSVField(csvSegment, scsXmlPath);
     						if (csvField.getValue().equals("")) {
     							if (attr.getDefaultValue()!=null)
     								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
@@ -781,6 +781,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2007/08/07 03:45:59  wuye
+ * HISTORY      : Fixed the structural attribute issue
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2007/08/07 03:19:21  wuye
  * HISTORY      : Fix the a bug where if there is only constant mapping
  * HISTORY      :
