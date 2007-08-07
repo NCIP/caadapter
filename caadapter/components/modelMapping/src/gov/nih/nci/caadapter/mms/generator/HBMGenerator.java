@@ -78,6 +78,7 @@ public class HBMGenerator
 			model = metaModel.getModel();
 			cumulativeMapping = CumulativeMapping.getInstance();				
 
+			//System.out.println( "Testing Eclipse...");
 			//System.out.println( "Loading LinkedHashMap" );
 			//System.out.println( "|--------------------------------------|" );
 			ModelMetadata myModel = ModelMetadata.getInstance();

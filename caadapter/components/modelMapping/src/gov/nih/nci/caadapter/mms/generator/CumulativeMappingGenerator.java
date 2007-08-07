@@ -147,7 +147,7 @@ public static boolean map(String source, String target){
 		UMLClass sourceClass = getClass(source);
 		UMLClass targetClass = getClass(target);
 		successfullyMapped = mapDependency(sourceClass, source, targetClass, target);
-	} else if (sourceMappingType .equals("attribute") && targetMappingType.equals("attribute")) {
+	} else if (sourceMappingType.equals("attribute") && targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
 		successfullyMapped = mapAttribute(source, target);
 	} else if (sourceMappingType.equals("singleassociation")&& targetMappingType.equals("attribute")) {
@@ -161,6 +161,13 @@ public static boolean map(String source, String target){
 		setErrorMessage(source.substring(source.lastIndexOf(".")+1) + "  to " + target.substring(target.lastIndexOf(".")+1) + " is invalid/not_supported");
 	}
 	return successfullyMapped;
+}
+
+public static boolean setPrimaryKey( String source )
+{
+	System.out.println( "<CumulativeMappingGenerator> Setting Primary Key -> " + source );
+	
+	return true;
 }
 
 /**
