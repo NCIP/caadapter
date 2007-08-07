@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2007-08-07 05:38:34 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2007-08-07 22:28:39 $
  */
 
 public class MapProcessor {
@@ -161,6 +161,7 @@ public class MapProcessor {
     private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment) throws MappingException,FunctionException {
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
+    	List<XMLElement> choiceXMLElements = new ArrayList<XMLElement>(); 
 
     	if (mifClass.getCsvSegments().size() == 0) return NullXMLElement.NULL;
 
@@ -181,7 +182,28 @@ public class MapProcessor {
     		XMLElement xmlElement = new XMLElement();
     		xmlElement.setName(mifClass.getName());
 
-    		TreeSet<MIFAttribute> attributes = mifClass.getSortedAttributes();
+    		//Step 1.1 process Choice 
+        	if (mifClass.getChoices().size() > 0) { //Handle choice
+        		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
+        	    	if (choiceMIFClass.isChoiceSelected()) {
+        	    		choiceXMLElements = processMIFclass(choiceMIFClass,csvSegment);
+        	    		if (choiceXMLElements.size()>1) {
+        	    			/**
+        	    			 * Warning message
+        	    			 */
+        	    		}
+        	    		if (choiceXMLElements.size() == 1)
+        	    		{
+        	    			XMLElement xmlElementsChoice = choiceXMLElements.get(0);
+        	    			xmlElement.setAttributes(xmlElementsChoice.getAttributes());
+        	    			xmlElement.addChildren(xmlElementsChoice.getChildren());
+        	    		}
+        	    	}
+        	    
+        		}
+        	}
+
+        	TreeSet<MIFAttribute> attributes = mifClass.getSortedAttributes();
 
     		//Step2: Process non-structural attributes 
     		//Non-structural attributes are child xmlelements vs structural attributes are attributes to xml elements
@@ -302,11 +324,12 @@ public class MapProcessor {
     	if (mifClass.getChoices().size() > 0) { //Handle choice
     		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
     	    	if (choiceMIFClass.isChoiceSelected()) {
-    	    		for(XMLElement xmlElement:processMIFclass(choiceMIFClass,csvSegment)) {
-    	    			xmlElement.setName(mifAssociation.getName());
+    	    		for(XMLElement xmlElement:processMIFclass(mifClass,csvSegment)) {
+    	    			xmlElement.setName(choiceMIFClass.getName());
     	    			xmlElements.add(xmlElement);
     	    		}
     	    	}
+    	    
     		}
     		
     	}
@@ -781,6 +804,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2007/08/07 05:38:34  wuye
+ * HISTORY      : Fixed issues with FindCSVField (null pointer exception)
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2007/08/07 03:45:59  wuye
  * HISTORY      : Fixed the structural attribute issue
  * HISTORY      :
