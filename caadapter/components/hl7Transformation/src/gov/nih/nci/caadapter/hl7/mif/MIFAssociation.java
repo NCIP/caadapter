@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-08-06 18:29:01 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-08-07 18:00:17 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -168,14 +168,24 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	 */
 	public String getNodeXmlName()
 	{
+		String viewName=getName();
+		if (isChoiceSelected()&&getMifClass().getChoices().size()>0)
+		{
+			for (MIFClass choiceClass:getMifClass().getSortedChoices())
+			{
+				if (choiceClass.isChoiceSelected())
+					viewName=choiceClass.getNodeXmlName();
+			}
+		}
+			
 		if (getMaximumMultiplicity()==1)
-			return getName();
+			return viewName;
 		
 		String stB="";
 		if (getMultiplicityIndex()<10)
 			stB="0";
 		stB=stB+getMultiplicityIndex();
-		return getName()+stB;
+		return viewName+stB;
 	}
 	/**
 	 * @return the sortKey
