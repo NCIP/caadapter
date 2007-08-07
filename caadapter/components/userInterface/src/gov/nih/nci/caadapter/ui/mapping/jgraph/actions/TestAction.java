@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.1 2007-08-07 15:46:47 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.2 2007-08-07 16:17:30 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -32,7 +32,7 @@
  */
 
 
-package nih.nci.caadapter.ui.mapping.jgraph.actions;
+package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
@@ -49,8 +49,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-08-07 15:46:47 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-07 16:17:30 $
  */
 public class TestAction extends DefaultAbstractJgraphAction
 {
