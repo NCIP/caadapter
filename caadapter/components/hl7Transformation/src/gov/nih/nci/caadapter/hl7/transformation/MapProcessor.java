@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2007-08-07 03:19:21 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2007-08-07 03:45:59 $
  */
 
 public class MapProcessor {
@@ -199,6 +199,12 @@ public class MapProcessor {
     			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
     					}
     				}
+    				if (mifAttribute.getMinimumMultiplicity() == 1) {
+    					if (attrXmlElements.size()== 0) {
+    			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
+    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+    					}
+    				}
     			}
     		}
 
@@ -215,6 +221,12 @@ public class MapProcessor {
 			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
 					}
 				}
+				if (mifAssociation.getMinimumMultiplicity() == 1) {
+					if (assoXmlElements.size()== 0) {
+			            Message msg = MessageResources.getMessage("RIM5", new Object[]{mifAssociation.getXmlPath(),mifAssociation.getMinimumMultiplicity() + "..1", mifAssociation.getName(),assoXmlElements.size()});
+			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+					}
+				}
     		}
 
     		//Step 4: Process structural attributes
@@ -224,9 +236,47 @@ public class MapProcessor {
     		for(MIFAttribute mifAttribute:attributes) {
     			if (mifAttribute.isStrutural()) {
     				if (mifAttribute.getDefaultValue()!=null)
+    				{
     					xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue());
-    				if (mifAttribute.getFixedValue()!=null)
-    					xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue());
+    				}
+    				else 
+    				{
+    					if (mifAttribute.getFixedValue()!=null)
+    					{
+    						xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue());
+    					}
+    					else {
+    			    		String scsPath = mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName();
+    						if (mappings.get(scsPath)!= null) {
+    							List<CSVField> csvFields = csvSegment.getFields();
+    							Hashtable <String, String> data = new Hashtable<String,String>();
+    							for (CSVField csvField:csvFields) {
+    								data.put(csvField.getXmlPath(),csvField.getValue());
+    							}
+    							System.out.println(scsPath);
+    	    					if (data.get(scsPath) == null) { //inverse relationship
+    	    						CSVField csvField = findCSVField(pCsvSegment, scsPath);
+    	    						if (csvField.getValue().equals("")) {
+    	    							break;
+    	    						}
+    	    						else {
+    	    							xmlElement.addAttribute(mifAttribute.getName(), csvField.getValue());
+    	    						}
+    	    					}
+    	    					else {
+    	    						if (data.get(scsPath).equals("")) {
+    	    							break;
+    	    						}
+    	    						else {
+    	    							xmlElement.addAttribute(mifAttribute.getName(), data.get(scsPath));
+    	    						}
+    	    					}
+
+    							
+    							
+    						}    						
+    					}
+    				}
     			}
     		}
     		xmlElements.add(xmlElement);
@@ -286,7 +336,7 @@ public class MapProcessor {
     
     private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment) throws MappingException,FunctionException{
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
-//    	System.out.println(mifAttribute.getXmlPath());
+
     	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
     		  /*
@@ -731,6 +781,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2007/08/07 03:19:21  wuye
+ * HISTORY      : Fix the a bug where if there is only constant mapping
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2007/08/03 23:02:48  wuye
  * HISTORY      : Fixed the choice problem.
  * HISTORY      :
