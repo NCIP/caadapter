@@ -5,6 +5,8 @@
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import java.util.Hashtable;
+
 import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
@@ -14,17 +16,17 @@ import org.w3c.dom.Node;
  * The class will parse a specializedClass section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-08-07 18:02:26 $
  */
 public class SpecializedClassParser {
-	public MIFClass parseSpecializedClass(Node node,String prefix) {
+	public MIFClass parseSpecializedClass(Node node,String prefix, Hashtable<String,String> participantTraversalNames) {
 		
         Node child = node.getFirstChild();
         while (child != null) {
         	if (child.getNodeName().equals(prefix+"class")) {
         		ClassParser classParser = new ClassParser();
-        		return classParser.parseClass(child, prefix);
+        		return classParser.parseClass(child, prefix,participantTraversalNames);
         	}
         	if (child.getNodeName().equals(prefix+"commonModelElementRef")) {
         		CMETRefParser cmetRefParser = new CMETRefParser();

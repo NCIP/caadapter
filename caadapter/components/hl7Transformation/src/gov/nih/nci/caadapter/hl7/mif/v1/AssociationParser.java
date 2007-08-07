@@ -5,18 +5,22 @@
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import java.util.Hashtable;
+import java.util.List;
+
 import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * The class will parse an MIF association section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:08:28 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-08-07 18:01:26 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
@@ -52,12 +56,28 @@ public class AssociationParser {
         			mifAssociation.setMaximumMultiplicity(-2);							
         		}
 //        		mifAssociation.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
+        		//define a hashtable to keep the ClassName and ReversalName pair for future processing
         		
+        		Hashtable <String, String>participantClassTraversalName=new Hashtable<String, String>();
+        		NodeList children=child.getChildNodes();
+        		for (int childrenIndex=0;childrenIndex<children.getLength();childrenIndex++)
+        		{
+        			Node itemNode=children.item(childrenIndex);
+        			if (itemNode.getNodeName().equals(prefix+"participantClassSpecialization"))
+        			{
+        				String participantClassName=XSDParserUtil.getAttribute(itemNode,"className");
+        				String participantTraversalName=XSDParserUtil.getAttribute(itemNode,"traversalName");
+        				if (participantClassName!=null
+        						&&participantTraversalName!=null)
+        					participantClassTraversalName.put(participantClassName, participantTraversalName);
+        			}
+        				
+        		}
         		Node targetConnectionChild = child.getFirstChild();
         		while (targetConnectionChild != null) {
                 	if (targetConnectionChild.getNodeName().equals(prefix+"participantClass")) {
                 		SpecializedClassParser specializedClassParser = new SpecializedClassParser();
-                		MIFClass participantClass = specializedClassParser.parseSpecializedClass(targetConnectionChild, prefix);
+                		MIFClass participantClass = specializedClassParser.parseSpecializedClass(targetConnectionChild, prefix,participantClassTraversalName);
                 		mifAssociation.setMifClass(participantClass);
                 	}
         			targetConnectionChild = targetConnectionChild.getNextSibling();

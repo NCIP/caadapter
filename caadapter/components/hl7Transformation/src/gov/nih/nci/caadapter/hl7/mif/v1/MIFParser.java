@@ -28,8 +28,8 @@ import org.w3c.dom.Node;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-05-25 15:08:17 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-07 18:07:26 $
  */
 
 public class MIFParser {
@@ -51,7 +51,7 @@ public class MIFParser {
         		while (ownedEntryPointChild != null) {
         			if (ownedEntryPointChild.getNodeName().equals(prefix+"specializedClass")) {
         				SpecializedClassParser specializedClass = new SpecializedClassParser();
-        				mifClass = specializedClass.parseSpecializedClass(ownedEntryPointChild, prefix);
+        				mifClass = specializedClass.parseSpecializedClass(ownedEntryPointChild, prefix,null);
         			}
         			ownedEntryPointChild = ownedEntryPointChild.getNextSibling();
         		}
@@ -65,9 +65,11 @@ public class MIFParser {
 		return this.mifClass;
 	}
 	
-	public void saveMIFs(String fileName) throws Exception {
+	public void saveMIFs(String fileName, String msgType) throws Exception {
 		OutputStream os = new FileOutputStream(fileName);
 		ObjectOutputStream oos = new ObjectOutputStream(os); 
+
+		mifClass.setMessageType(msgType);
 		oos.writeObject(mifClass);
 		oos.close();
 		os.close();
@@ -117,7 +119,13 @@ public class MIFParser {
             	  Document mifDoc = db.parse("T:/YeWu/Edition2006/mif/" + filename);
             	  MIFParser mifParser = new MIFParser();
             	  mifParser.parse(mifDoc);
-            	  mifParser.saveMIFs("C:/temp/serializedMIF/resource/mif/" + filename);
+          		String msgType=filename;
+        		if (msgType.indexOf("UV")>-1)
+        			msgType=msgType.substring(0, msgType.indexOf("UV"));
+        		else if (msgType.indexOf(".mif")>-1)
+        			msgType=msgType.substring(0, msgType.indexOf(".mif"));
+        			
+            	  mifParser.saveMIFs("C:/temp/serializedMIF/resource/mif/" + filename,msgType);
 //            	  mifParser.getMIFClass().printMIFClass(0, new HashSet());
               }
   			}

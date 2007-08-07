@@ -5,6 +5,8 @@
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import java.util.Hashtable;
+
 import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -17,10 +19,10 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-05-25 15:08:48 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-08-07 18:01:58 $
  */
 public class ClassParser {
-	public MIFClass parseClass(Node node, String prefix) {
+	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
 		MIFClass mifClass = new MIFClass();
 		mifClass.setName(XSDParserUtil.getAttribute(node, "name"));
 		if (XSDParserUtil.getAttribute(node, "sortKey") == null) {
@@ -42,7 +44,10 @@ public class ClassParser {
         		while (specializedChild != null) {
         			if (specializedChild.getNodeName().equals(prefix+"specializedClass")) {
         				SpecializedClassParser specializedClass = new SpecializedClassParser();
-        				MIFClass specializedMIFClass = specializedClass.parseSpecializedClass(specializedChild, prefix);
+        				MIFClass specializedMIFClass = specializedClass.parseSpecializedClass(specializedChild, prefix,null);
+        				if (participantTraversalName!=null)
+        					specializedMIFClass.setTraversalName(participantTraversalName.get(specializedMIFClass.getName()));
+        				
         				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
         				mifClass.addChoice(specializedMIFClass);
         			}
