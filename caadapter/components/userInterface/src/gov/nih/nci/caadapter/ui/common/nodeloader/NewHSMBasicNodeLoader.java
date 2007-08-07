@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.10 2007-08-07 15:03:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.11 2007-08-07 18:11:56 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-08-07 15:03:54 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-08-07 18:11:56 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -236,7 +236,13 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 //							childNode=new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName());				
 						}
 					}
-					rtnNode.add(buildMIFClassNode(choiceClass));
+					//choiceClassNode
+					DefaultMutableTreeNode choicClassNode=buildMIFClassNode(choiceClass);
+					for (int childCnt=0;childCnt<choicClassNode.getChildCount();childCnt++)
+					{
+						rtnNode.add((DefaultMutableTreeNode)choicClassNode.getChildAt(childCnt));
+					}
+//					rtnNode.add(buildMIFClassNode(choiceClass));
 				}
 			}
 		}
