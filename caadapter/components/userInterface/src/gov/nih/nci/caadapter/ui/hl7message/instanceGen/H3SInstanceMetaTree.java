@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.3 2007-08-06 14:27:43 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.4 2007-08-07 04:10:03 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -96,7 +96,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -116,7 +116,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.3 2007-08-06 14:27:43 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.4 2007-08-07 04:10:03 umkis Exp $";
 
     boolean isCode = false;
 
@@ -128,6 +128,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     int codeItems = 0;
     MetaTreeMeta h3sVocTree = null;
     String displayName = "";
+    H3SInstanceMetaSegment currentCodeFieldParent = null;
 
     String header = "";
     String headerName = null;
@@ -404,7 +405,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         else return res.trim();
     }
     private String changeLine(String line, List<String> changeList, MetaField field)
-    {
+    {    
         H3SInstanceMetaSegment parent = (H3SInstanceMetaSegment) field.getParent();
         String datatype = getAttributeItemValue(parent.getAttributes(), "datatype");
         String codingStrength = getAttributeItemValue(parent.getAttributes(), "codingStrength");
@@ -414,20 +415,31 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
         //boolean existsDefaultValue = false;
         if (((hl7Default != null)&&(!hl7Default.trim().equals("")))||
-            ((userDefault != null)&&(!userDefault.trim().equals("")))) return "";//existsDefaultValue = true;
-        if (line.endsWith("statusCode"))
-        {
-            return line + ".noneX => OP";
+            ((userDefault != null)&&(!userDefault.trim().equals("")))) {}//return "";//existsDefaultValue = true;
+        else
+        {               
+            if (line.endsWith("statusCode"))
+            {
+                return line + ".noneX => normal";
+            }
+            if (line.endsWith("determinerCode"))
+            {
+                return line + ".noneX => INSTANCE";
+            }
+            if ((line.endsWith("addr"))||(line.endsWith("addr00"))||(line.endsWith("addr01")))
+            {
+                return line + ".noneX => 1634 Helperton St., Uniline, MD 20919";
+            }
         }
-
 
         if ((line.endsWith("code"))&&(!((isCodeDataType(datatype))||(isCodeDataType(codingStrength)))))
             System.err.println("CCCXX9 : Unmatched code : " + line);
-        if ((isCodeDataType(datatype))||(isCodeDataType(codingStrength)))
+        if ((isCodeDataType(datatype))||(isCodeDataType(codingStrength)))//&&(currentCodeFieldParent != parent))
         {
+            currentCodeFieldParent = parent;
             if (codeFieldName != null)
             {
-                if ((codeItems != 0)&&(!codeFieldName.equals(parent.getName())))
+                if (!codeFieldName.equals(parent.getName()))
                 {
                     if (codeItems > 0) System.err.println("CCCXX9 : Not four code item : " + codeFieldName);
                     codeItems = 0;
@@ -435,11 +447,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     codeSystem = null;
                     codeSystemName = null;
                     codeDisplayName = null;
+                    codeFieldName = parent.getName();
                     isCode = false;
                 }
-
-
             }
+            else codeFieldName = parent.getName();
+
             if ((!isCode)&&(codeItems == 0)) //(line.endsWith("code"))
             {
                 if ((codeValue != null)||(codeSystem != null)||(codeSystemName != null)||(codeDisplayName != null))
@@ -449,6 +462,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     codeSystem = null;
                     codeSystemName = null;
                     codeDisplayName = null;
+                    isCode = false;
                 }
                 codeFieldName = parent.getName();
                 String domainName = "";
@@ -460,6 +474,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     System.out.println("NullPointerException : GFG");
                 }
+                //if (domainName.equals("")) domainName = "No_domain_Name";
                 String odi = "";
                 try
                 {
@@ -485,6 +500,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     codeValue = res[0];
 
                     isCode = true;
+                    //System.out.println("CVVV7 : is code true : " + codeItems + " : " + parent.getName() + " : " + field.getName());
                     codeDisplayName = res[1];
                     displayName = codeDisplayName;
                     //return line + " => " + res[0];
@@ -504,6 +520,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                             codeDisplayName = "Chronic gastric ulcer without hemorrhage or perforation";
                             displayName = codeDisplayName;
                             isCode = true;
+                            //System.out.println("CVVV8 : is code true : " + codeItems + " : " + parent.getName() + " : " + field.getName());
+
                         }
                         else
                         {
@@ -515,7 +533,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                             displayName = null;
 
                             isCode = false;
-                            codeItems = -1;
+                            codeItems = 0;
                         }
                     }
                     else
@@ -527,6 +545,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                         displayName = codeDisplayName;
 
                         isCode = true;
+                        //System.out.println("CVVV7 : is code true : " + codeItems + " : " + parent.getName() + " : " + field.getName());
+                                           
                         //codeItems = new String[] {domainName, odi, "Domain Not Found", "NotFound"};
                         //return line + " => " + "%%Not Found";
                     }
@@ -537,11 +557,18 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         {
             if (isCode)
             {
-                System.err.println("Un-natural Code setting : " + codeFieldName);
+                System.err.println("Un-natural Code setting : " + codeFieldName + " : " + field.getName() + " : " + parent.getName() + " : " + datatype);  
                 isCode = false;
+                codeItems = 0;
             }
         }
-                    
+
+        if (((hl7Default != null)&&(!hl7Default.trim().equals("")))||
+            ((userDefault != null)&&(!userDefault.trim().equals(""))))
+        {
+            if (!isCode) return "";
+        }
+
         String dtTag = "&DataType:";
         for (int i=0;i<changeList.size();i++)
         {
@@ -573,12 +600,22 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     else
                     {
                         if (line.endsWith(lin1)) return changeLineExe(line, lin2, dt);
+                        else if (checkMatchString(line, lin1))
+                        {
+                            System.out.println("CVVV : Is this matched?(1) : " + line + " : " + lin1 + " : " + lin2);
+                            return changeLineExe(line, lin2, dt);
+                        }
                     }
                 }
             }
             else
             {
                 if (line.endsWith(lin1)) return changeLineExe(line, lin2);
+                else if (checkMatchString(line, lin1))
+                {
+                    System.out.println("CVVV : Is this matched?(2) : " + line + " : " + lin1 + " : " + lin2);
+                    return changeLineExe(line, lin2);
+                }
             }
         }
 
@@ -659,6 +696,14 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 return null;
             }
         }
+        if (datatype.equals("EN"))
+        {
+            if (block.startsWith("NULL"))
+            {
+                return null;
+            }
+        }
+
         if (datatype.equals("PQ"))
         {
             if (block.startsWith("NULL"))
@@ -787,6 +832,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     ret = codeValue;
                     codeValue = null;
+                   // System.out.println("CVVV1 : Look code value ("+codeItems+") : " + ret + " : " + codeValue);
                 }
                 else ret = "ERROR1";
             }
@@ -797,6 +843,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     ret = codeSystemName;
                     codeSystemName = null;
+                    //System.out.println("CVVV2 : Look codeSystemName ("+codeItems+") : " + ret + " : " + codeSystemName);
+
                 }
                 else ret = "ERROR2";
             }
@@ -807,6 +855,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     ret = codeSystem;
                     codeSystem = null;
+                    //System.out.println("CVVV3 : Look codeSystem ("+codeItems+") : " + ret + " : " + codeSystem);
+
                 }
                 else ret = "ERROR3";
             }
@@ -817,6 +867,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     ret = codeDisplayName;
                     codeDisplayName = null;
+                    //System.out.println("CVVV4 : Look codeDisplayName ("+codeItems+") : " + ret + " : " + codeSystemName);
+
                 }
                 else ret = "ERROR4";
             }
@@ -824,8 +876,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             if (codeItems == 4)
             {
                 isCode = false;
-                codeItems = 0;
+                codeItems = -1;
             }
+            //System.out.println("CVVV0 : Look codeItems ("+codeItems+") : " + ret + " : " + codeSystemName + " : " + isCode);
 
             //if (ret.indexOf(",") >= 0) ret = "\"" + ret + "\"";
             return ret;
@@ -836,8 +889,53 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             return "ERROR";
         }
     }
+    private String[] stringTokenizerToArray(String line, String firstDelimiter, String secondDelimiter)
+    {
+        String[] res = new String[3];
+        int idx1 = line.indexOf(firstDelimiter);
+        if (idx1 < 0) return null;
+        res[0] = line.substring(0, idx1);
+        line = line.substring(idx1+1);
+        int idx2 = line.indexOf(secondDelimiter);
+        if (idx2 < 0) return null;
+        res[1] = line.substring(0, idx2);
+        res[2] = line.substring(idx2+1, line.length());
+        if (res[2].trim().length() == 0) return null;
+        return res;
+    }
+    private String[] checkStringAndNumberSuffix(String line)
+    {
+        if ((line == null)||(line.trim().equals(""))) return null;
+        line = line.trim();
+        if (line.length() < 3) return null;
+        String[] res = new String[2];
+        res[0] = line.substring(0, line.length()-2);
+        res[1] = line.substring(line.length()-2);
+        try
+        {
+            Integer.parseInt(res[0]);
+            return null;
+        }
+        catch(NumberFormatException ne)
+        { }
+        int num = 0;
+        try
+        {
+            num = Integer.parseInt(res[1]);
+        }
+        catch(NumberFormatException ne)
+        {
+            return null;
+        }
+        if (num < 0) return null;
+        return res;
+    }
     private String replaceLine(String line, List<String> replaceList)
     {
+        String[] body = new String[] {"@@", "$$", "!!"};
+        String[] source = null;
+        String[] target = null;
+        String[] divided = null;
         for (int i=0;i<replaceList.size();i++)
         {
             String lin = replaceList.get(i);
@@ -846,8 +944,175 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             String lin1 = lin.substring(0,idx).trim();
             String lin2 = lin.substring(idx + 2).trim();
             if (line.endsWith(lin1)) return line.replace(lin1, lin2);
+
+            StringTokenizer st = new StringTokenizer(line, ".");
+
+            while(st.hasMoreTokens())
+            {
+                String token = st.nextToken().trim();
+                if (!token.equals(""))
+                {
+                    body[0] = body[1];
+                    body[1] = body[2];
+                    body[2] = token;
+                }
+            }
+
+            source = stringTokenizerToArray(lin1, ".", ".");
+            target = stringTokenizerToArray(lin2, ".", "_");
+            if ((source == null)||(target == null)) continue;
+            String res = "";
+            int matchCount = -1;
+            int index = 0;
+
+
+            divided = checkStringAndNumberSuffix(body[index]);
+            if (divided == null)
+            {
+                if ((body[index].equals(source[index]))||(body[index].endsWith(source[index])))
+                {
+                    res = res + target[index] + ".";
+                    matchCount++;
+                }
+            }
+            else
+            {
+                if ((divided[0].equals(source[index]))||(divided[0].endsWith(source[index])))
+                {
+                    res = res + target[index] + divided[1] + ".";
+                    matchCount++;
+                }
+            }
+
+            index++;
+            divided = checkStringAndNumberSuffix(body[index]);
+            if (divided == null)
+            {
+                if (body[index].equals(source[index]))
+                {
+                    res = res + target[index] + "_";
+                    matchCount++;
+                }
+            }
+            else
+            {
+                if (divided[0].equals(source[index]))
+                {
+                    res = res + target[index] + divided[1] + "_";
+                    matchCount++;
+                }
+            }
+
+            index++;
+            boolean cTag = false;
+            if (body[index].equals(source[index])) cTag = true;
+            if ((body[index].equalsIgnoreCase("inlineText"))&&(target[index].equalsIgnoreCase("in"))) cTag = true;
+            if ((body[index].startsWith(source[index]))&&(target[index].length() > 2)) cTag = true;
+
+            if(cTag)
+            {
+                res = res + target[index];
+                matchCount++;
+            }
+            //System.out.println("CVVV PPP("+index+") : "+ line + " : " + lin1 + " : " + lin2 + " : " + res);
+            if (matchCount == index)
+            {
+                String lineR = line.replace(body[0]+"."+body[1]+"."+body[2], res);
+                //System.out.println("CVVV QQQ : " +line + " : " + lineR + " : " + res);
+                return lineR;
+            }
         }
+
         return line;
+    }
+    private String[] getTailStringArray(String str)
+    {
+        int idx = str.indexOf(".");
+        if (idx < 0) return null;
+        str = str.trim();
+        if (str.startsWith(".")) str = "*" + str;
+        StringTokenizer st = new StringTokenizer(str, ".");
+        String first = "";
+        String second = "";
+        while(st.hasMoreTokens())
+        {
+            String token = st.nextToken();
+            if (!token.trim().equals(""))
+            {
+                second = first;
+                first = token;
+            }
+        }
+        idx = first.indexOf("_");
+        if (idx > 0)
+        {
+            return new String[] {second, first.substring(0, idx), first.substring(idx+1)};
+        }
+        else
+        {
+            return new String[] {second, first};
+        }
+    }
+    private boolean checkMatchString(String line, String tail)
+    {
+        if (line.endsWith(tail)) return true;
+        if (line.length() <= tail.length()) return false;
+
+        String[] lineArr = getTailStringArray(line);
+        String[] tailArr = getTailStringArray(tail);
+        String[] divided = null;
+
+
+        if ((lineArr == null)||(tailArr == null)) return false;
+        if (lineArr.length != tailArr.length) return false;
+        int index = 0;
+        int matchCount = -1;
+        if (tailArr[index].equals("*")) matchCount++;
+        else
+        {
+            divided = checkStringAndNumberSuffix(lineArr[index]);
+            if (divided == null)
+            {
+                if (lineArr[index].equals(tailArr[index])) matchCount++;
+                else if (lineArr[index].toLowerCase().endsWith(tailArr[index].toLowerCase())) matchCount++;
+            }
+            else
+            {
+                if (divided[0].equals(tailArr[index])) matchCount++;
+                else if (divided[0].toLowerCase().endsWith(tailArr[index].toLowerCase())) matchCount++;
+            }
+        }
+
+        for (int i=0;i<(lineArr.length-1);i++)
+        {
+            index++;
+            divided = checkStringAndNumberSuffix(lineArr[index]);
+            if (divided == null)
+            {
+                if (lineArr[index].equals(tailArr[index])) matchCount++;
+            }
+            else
+            {
+                if (divided[0].equals(tailArr[index])) matchCount++;
+            }
+        }
+        if ((index == matchCount)&&(index == (tailArr.length-1)))
+        {
+            //System.out.print("CVVV  QQQ : LineArr : ");
+//            for (int i=0;i<(lineArr.length);i++)
+//            {
+//                System.out.print(", " + lineArr[i]);
+//            }
+//            System.out.println("");
+//            System.out.print("CVVV : TailArr : ");
+//            for (int i=0;i<(tailArr.length);i++)
+//            {
+//                System.out.print(", " + tailArr[i]);
+//            }
+//            System.out.println(" : " + divided);
+            return true;
+        }
+        else return false;
     }
     private String[] getVocabularyDomainCode(String domainName)
     {
@@ -1102,12 +1367,13 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             mif = (MIFClass) node.getUserObject();
             tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
             //tempPar.setName(mif.getName());
-            setNameAndCardinality(parent, tempPar, mif.getName(), MIFObjectClassType.CLONE.toString(), 1, 1);
+            xmlPath = mif.getXmlPath();
+            setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.CLONE.toString(), 1, 1);
 
             //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.CLONE.toString());
             addAttributeItem(tempPar, "reference-name", mif.getReferenceName());
             addAttributeItem(tempPar, "sortKey", mif.getSortKey());
-            xmlPath = mif.getXmlPath();
+
             nodeName = mif.getName();
             tag = "C:";
 //            writeFileWriter(fw, "<clone clonename=\""+mif.getReferenceName()+"\" sortKey=\""+mif.getSortKey()+"\" cardinality=\"1..1\" uuid=\"66bbf3b3-5ddf-4e50-92b7-af9122b58899\">");
@@ -1120,8 +1386,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                 nodeName = att.getName();
                 tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
-
-                setNameAndCardinality(parent, tempPar, att.getName(), MIFObjectClassType.ATTRIBUTE.toString(), att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
+                xmlPath = att.getXmlPath();
+                setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.ATTRIBUTE.toString(), att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
 
                 //tempPar.setName(att.getName());
 
@@ -1138,7 +1404,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 addAttributeItem(tempPar, "hl7-default", att.getFixedValue());
                 addAttributeItem(tempPar, "sortKey", att.getSortKey());
                 //addAttributeItemCardinality(tempPar, att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
-                xmlPath = att.getXmlPath();
+
                 tag = " A:";
             }
             catch(ClassCastException cee)
@@ -1146,21 +1412,33 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 try
                 {
                     attT = (Attribute) node.getUserObject();
-                    MetaField field = new MetaFieldImpl();
-                    //field.setName(attT.getName());
-
-                    setNameAndCardinality(parent, field, attT.getName(), MIFObjectClassType.DATAFIELD.toString(), attT.getMin(), attT.getMax());
-
-                    //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.DATAFIELD.toString());
-                    addAttributeItem(field, "user-default", attT.getDefaultValue());
-                    //addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
                     xmlPath = attT.getXmlPath();
-
-                    field.setParent(parent);
-                    parent.addChildNode(field);
-                    //field.setXPath(getSimpleXPath(field.generateXPath(".")));
-                    field.setXPath(xmlPath);
                     nodeName = attT.getName();
+                    if (node.getChildCount() == 0)
+                    {
+
+                        MetaField field = new MetaFieldImpl();
+                        //field.setName(attT.getName());
+
+                        setNameAndCardinality(parent, field, xmlPath, MIFObjectClassType.DATAFIELD.toString(), attT.getMin(), attT.getMax());
+
+                        //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.DATAFIELD.toString());
+                        addAttributeItem(field, "user-default", attT.getDefaultValue());
+                        //addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
+
+
+                        field.setParent(parent);
+                        parent.addChildNode(field);
+                        //field.setXPath(getSimpleXPath(field.generateXPath(".")));
+                        field.setXPath(xmlPath);
+                        nodeName = attT.getName();
+                    }
+                    else
+                    {
+                        tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
+                        setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.DATA_ATTRIBUTE.toString(), attT.getMin(), attT.getMax());
+                        addAttributeItem(tempPar, "user-default", attT.getDefaultValue());
+                    }
 
                     tag = "  d:";
                 }
@@ -1171,13 +1449,13 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     nodeName = asso.getName();
                     tag = "B:";
                     tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
-
-                    setNameAndCardinality(parent, tempPar, asso.getName(), MIFObjectClassType.ASSOCIATION.toString(), asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
+                    xmlPath = asso.getXmlPath();
+                    setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.ASSOCIATION.toString(), asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
 
                     //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.ASSOCIATION.toString());
                     addAttributeItem(tempPar, "conformance", asso.getConformance());
                     addAttributeItem(tempPar, "sortKey", asso.getSortKey());
-                    xmlPath = asso.getXmlPath();
+
                 }
             }
         }
@@ -1215,25 +1493,25 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 //        List<CommonNode> list = parent.getChildNodes();
 //        for
 //    }
-    private String getSimpleXPath(String xpath)
-    {
-        xpath = xpath.trim();
-        int idx = xpath.indexOf(headerName);
-        if (idx < 0)
-        {
-            System.err.println("CVVV : invalid xpath" + xpath);
-            return xpath;
-        }
-        xpath = xpath.substring(idx);
-        if (xpath.endsWith(".")) xpath = xpath.substring(0, xpath.length()-1);
-        return xpath;
-    }
+//    private String getSimpleXPath(String xpath)
+//    {
+//        xpath = xpath.trim();
+//        int idx = xpath.indexOf(headerName);
+//        if (idx < 0)
+//        {
+//            System.err.println("CVVV : invalid xpath" + xpath);
+//            return xpath;
+//        }
+//        xpath = xpath.substring(idx);
+//        if (xpath.endsWith(".")) xpath = xpath.substring(0, xpath.length()-1);
+//        return xpath;
+//    }
     //private H3SInstanceMetaSegment addAttributeItemCardinality(H3SInstanceMetaSegment tempPar, int min, int max)
-    private CommonNode setNameAndCardinality(H3SInstanceMetaSegment parent, CommonNode tempPar, String name, String mifType, int min, int max) throws ApplicationException
+    private CommonNode setNameAndCardinality(H3SInstanceMetaSegment parent, CommonNode tempPar, String xmlPath, String mifType, int min, int max) throws ApplicationException
     {
 
         if (tempPar == null) throw new ApplicationException("Node for setNane is null.");
-        if (parent == null) tempPar.setName(name);
+        if (parent == null) tempPar.setName(xmlPath);
 
         String cardinality = "";
         if ((min == 0)&&(max == -1)) cardinality = Config.CARDINALITY_ZERO_TO_MANY;
@@ -1241,42 +1519,52 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if ((min == 1)&&(max == -1)) cardinality = Config.CARDINALITY_ONE_TO_MANY;
         if ((min == 1)&&(max == 1)) cardinality = Config.CARDINALITY_ONE_TO_ONE;
 
-        if ((cardinality.equals(Config.CARDINALITY_ONE_TO_MANY))||(cardinality.equals(Config.CARDINALITY_ZERO_TO_MANY)))
-        {
-            String segmentNum = "";
-            int seq = 0;
-            if (tempPar instanceof H3SInstanceMetaSegment)
-            {
-                //H3SInstanceMetaSegment segment = (H3SInstanceMetaSegment) tempPar;
-                List<CommonNode> list = parent.getChildNodes();
-                for(int i=0;i<list.size();i++)
-                {
-                    CommonNode node = list.get(i);
-                    if (!(node instanceof H3SInstanceMetaSegment)) continue;
-                    H3SInstanceMetaSegment segmentNode = (H3SInstanceMetaSegment) node;
-                    String nodeNm = segmentNode.getName();
-                    String nameBody = nodeNm.substring(0, nodeNm.length()-2);
-                    String seqTail = nodeNm.substring(nodeNm.length()-2);
+//        if ((cardinality.equals(Config.CARDINALITY_ONE_TO_MANY))||(cardinality.equals(Config.CARDINALITY_ZERO_TO_MANY)))
+//        {
+//            String segmentNum = "";
+//            int seq = 0;
+//            if (tempPar instanceof H3SInstanceMetaSegment)
+//            {
+//                //H3SInstanceMetaSegment segment = (H3SInstanceMetaSegment) tempPar;
+//                List<CommonNode> list = parent.getChildNodes();
+//                for(int i=0;i<list.size();i++)
+//                {
+//                    CommonNode node = list.get(i);
+//                    if (!(node instanceof H3SInstanceMetaSegment)) continue;
+//                    H3SInstanceMetaSegment segmentNode = (H3SInstanceMetaSegment) node;
+//                    String nodeNm = segmentNode.getName();
+//                    String nameBody = nodeNm.substring(0, nodeNm.length()-2);
+//                    String seqTail = nodeNm.substring(nodeNm.length()-2);
+//
+//                    int n = -1;
+//                    try
+//                    {
+//                        n = Integer.parseInt(seqTail);
+//                    }
+//                    catch(NumberFormatException ne)
+//                    {
+//                        continue;
+//                    }
+//                    if ((nameBody.equals(name))&&(n >= 0)) seq++;
+//                }
+//                if (seq < 10) segmentNum = "0" + seq;
+//                else segmentNum = "" + seq;
+//                tempPar.setName(name+segmentNum);
+//                //System.out.println("CVVV : Set Name : " + tempPar.getName());
+//            }
+//            else tempPar.setName(name);
+//        }
+//        else tempPar.setName(name);
 
-                    int n = -1;
-                    try
-                    {
-                        n = Integer.parseInt(seqTail);
-                    }
-                    catch(NumberFormatException ne)
-                    {
-                        continue;
-                    }
-                    if ((nameBody.equals(name))&&(n >= 0)) seq++;
-                }
-                if (seq < 10) segmentNum = "0" + seq;
-                else segmentNum = "" + seq;
-                tempPar.setName(name+segmentNum);
-                //System.out.println("CVVV : Set Name : " + tempPar.getName());
-            }
-            else tempPar.setName(name);
+        String lastToken = "";
+        StringTokenizer st = new StringTokenizer(xmlPath.trim(), ".");
+
+        while(st.hasMoreTokens())
+        {
+            String tempS = st.nextToken();
+            if (!tempS.trim().equals("")) lastToken = tempS.trim();
         }
-        else tempPar.setName(name);
+        tempPar.setName(lastToken);
 
         addAttributeItem(tempPar, "mif-type", mifType);
 
@@ -1381,7 +1669,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         //String fileName = "C:\\projects\\NewInstance\\150000\\gen\\040011.h3s";
         //String fileName = "T:\\YeWu\\xmlpathSpec\\newCOCT_MT150003.h3s";
         //String fileName = "C:\\projects\\caadapter\\workingspace\\NewEncounter\\NewEncounter.h3s";
-        String fileName = "C:\\projects\\caadapter\\workingspace\\010000\\010000-NonPerson.h3s";
+        String fileName = "C:\\projects\\caadapter\\workingspace\\010000\\010000-Person.h3s";
 
         new H3SInstanceMetaTree(fileName);
     }
@@ -1390,6 +1678,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/06 14:27:43  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/03 05:01:31  umkis
  * HISTORY      : add items which have to be input data
  * HISTORY      :

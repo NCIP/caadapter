@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/type/MIFObjectClassType.java,v 1.1 2007-08-03 05:01:32 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/type/MIFObjectClassType.java,v 1.2 2007-08-07 04:10:12 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -61,7 +61,7 @@ import java.util.Hashtable;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Aug 2, 2007
  *          Time:       6:17:54 PM $
  */
@@ -80,7 +80,7 @@ public class MIFObjectClassType
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/type/MIFObjectClassType.java,v 1.1 2007-08-03 05:01:32 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/type/MIFObjectClassType.java,v 1.2 2007-08-07 04:10:12 umkis Exp $";
 
     public MIFObjectClassType()
     {
@@ -113,7 +113,7 @@ public class MIFObjectClassType
     /**
      * The Common mode
      */
-    public static final int ASSOCIATION_TYPE = 0;
+    public static final int ASSOCIATION_TYPE = 2;
 
     /**
      * The instance of the Common mode
@@ -123,7 +123,17 @@ public class MIFObjectClassType
     /**
      * The Meta mode
      */
-    public static final int DATAFIELD_TYPE = 1;
+    public static final int DATA_ATTRIBUTE_TYPE = 3;
+
+    /**
+     * The instance of the Meta mode
+     */
+    public static final MIFObjectClassType DATA_ATTRIBUTE = new MIFObjectClassType(DATA_ATTRIBUTE_TYPE, "data_attribute");
+
+    /**
+     * The Meta mode
+     */
+    public static final int DATAFIELD_TYPE = 4;
 
     /**
      * The instance of the Meta mode
@@ -206,12 +216,13 @@ public class MIFObjectClassType
      *
      * @return Hashtable
      */
-    private static java.util.Hashtable init()
+    private static java.util.Hashtable init()   
     {
         Hashtable members = new Hashtable();
         members.put(CLONE.toString(), CLONE);
         members.put(ATTRIBUTE.toString(), ATTRIBUTE);
         members.put(ASSOCIATION.toString(), ASSOCIATION);
+        members.put(DATA_ATTRIBUTE.toString(), DATA_ATTRIBUTE);
         members.put(DATAFIELD.toString(), DATAFIELD);
         //members.put(DATA.toString(), DATA);
 
@@ -267,4 +278,7 @@ public class MIFObjectClassType
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/03 05:01:32  umkis
+ * HISTORY      : add items which have to be input data
+ * HISTORY      :
  */
