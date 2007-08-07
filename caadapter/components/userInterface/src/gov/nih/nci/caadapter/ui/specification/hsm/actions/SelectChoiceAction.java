@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.3 2007-08-07 18:09:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:25:59 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-07 18:09:54 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -78,7 +78,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.3 2007-08-07 18:09:54 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -131,6 +131,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                 while(choiceIt.hasNext())
                 {
                 	MIFClass choiceable=(MIFClass)choiceIt.next();
+                	if(!choiceable.isChoiceSelected())
                    		baseList.add((DatatypeBaseObject)choiceable);             
                 }
                 AssociationListWizard cloneListWizard =
@@ -146,6 +147,13 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                                  "Invalid Action", JOptionPane.WARNING_MESSAGE);
                          setSuccessfullyPerformed(false);
                          return false;
+                    }
+                    else  if (userSelectedMIFClass.size()>1)
+                    {
+                    	JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Only one choice should be selected",
+                                "Invalid Action", JOptionPane.WARNING_MESSAGE);
+                        setSuccessfullyPerformed(false);
+                        return false;
                     }
                     else
                     {
