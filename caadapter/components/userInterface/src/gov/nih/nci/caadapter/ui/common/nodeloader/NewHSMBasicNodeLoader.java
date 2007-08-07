@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.9 2007-08-06 18:32:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.10 2007-08-07 15:03:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-08-06 18:32:23 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-08-07 15:03:54 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -296,8 +296,12 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		DefaultMutableTreeNode rtnNode=constructTreeNodeBasedOnTreeType(mifAttribute,true);
 		mifAttribute.setEnabled(true);
-//		if (!MIFUtil.isTreatedAsSimpleType(mifAttribute.getType()))
-//		{
+		if (MIFUtil.isTreatedAsSimpleType(mifAttribute.getType())
+				&&mifAttribute.isStrutural())
+		{
+			rtnNode.setAllowsChildren(false);
+			return rtnNode;
+		}
 			if (mifAttribute.getDatatype()==null)
 			{
 				//load from DataType spec for the new HL7 specification
@@ -341,11 +345,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 //		}
 //		else
 //			mifAttribute.setEnabled(true);
-		if (MIFUtil.isTreatedAsSimpleType(mifAttribute.getType())
-				&&mifAttribute.isStrutural())
-		{
-			rtnNode.removeAllChildren();
-		}
+
 		return rtnNode;
 	}
  
