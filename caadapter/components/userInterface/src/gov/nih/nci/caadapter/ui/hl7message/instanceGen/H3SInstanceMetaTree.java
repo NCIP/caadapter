@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.4 2007-08-07 04:10:03 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.5 2007-08-07 15:43:26 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -96,7 +96,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -116,7 +116,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.4 2007-08-07 04:10:03 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.5 2007-08-07 15:43:26 umkis Exp $";
 
     boolean isCode = false;
 
@@ -602,7 +602,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                         if (line.endsWith(lin1)) return changeLineExe(line, lin2, dt);
                         else if (checkMatchString(line, lin1))
                         {
-                            System.out.println("CVVV : Is this matched?(1) : " + line + " : " + lin1 + " : " + lin2);
+                            //System.out.println("CVVV : Is this matched?(1) : " + line + " : " + lin1 + " : " + lin2);
                             return changeLineExe(line, lin2, dt);
                         }
                     }
@@ -613,7 +613,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 if (line.endsWith(lin1)) return changeLineExe(line, lin2);
                 else if (checkMatchString(line, lin1))
                 {
-                    System.out.println("CVVV : Is this matched?(2) : " + line + " : " + lin1 + " : " + lin2);
+                    //System.out.println("CVVV : Is this matched?(2) : " + line + " : " + lin1 + " : " + lin2);
                     return changeLineExe(line, lin2);
                 }
             }
@@ -1678,6 +1678,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/08/07 04:10:03  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/08/06 14:27:43  umkis
  * HISTORY      : upgrade test instance generator
  * HISTORY      :
