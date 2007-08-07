@@ -31,8 +31,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.8 $
- * @date $Date: 2007-08-03 23:02:48 $
+ * @version $Revision: 1.9 $
+ * @date $Date: 2007-08-07 03:16:41 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -40,7 +40,9 @@ public class MapProcessorHelper {
      * Used for preprocess the MIFClass
      *
      */
-	Hashtable<String,String> mappings;
+	private String rootCSVName="";
+	
+	private Hashtable<String,String> mappings;
 
     private Hashtable<String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
 	
@@ -48,9 +50,10 @@ public class MapProcessorHelper {
 
 	private Hashtable <String, List<CSVSegment>> csvSegmentHash= new Hashtable <String, List<CSVSegment>>();
 	
-    protected void preprocessMIF(Hashtable<String,String> mappings, Hashtable<String, FunctionComponent> functions, MIFClass mifClass, boolean isChoice) {
+    protected void preprocessMIF(Hashtable<String,String> mappings, Hashtable<String, FunctionComponent> functions, MIFClass mifClass, boolean isChoice, String rootCSVName) {
     	this.mappings = mappings;
     	this.functions = functions;
+    	this.rootCSVName = rootCSVName;
     	preprocess_mifclass(mifClass, isChoice, mifClass.getName());
     	
     }
@@ -187,6 +190,7 @@ public class MapProcessorHelper {
 
     	// first, is the function a constant?
     	if (functionMeta.isConstantFunction()) {
+    		strings.add(rootCSVName);
     		return strings;
     	}
 
@@ -324,7 +328,7 @@ public class MapProcessorHelper {
     
     protected List<String> preprocess_association(MIFAssociation mifAssociation) {
     	if (mifAssociation.getMifClass()!= null) {
-    		System.out.println("mifassociation"+mifAssociation.getName());
+//    		System.out.println("mifassociation"+mifAssociation.getName());
     		mifAssociation.setCsvSegments(preprocess_mifclass(mifAssociation.getMifClass(),false, mifAssociation.getXmlPath()));
     		if (mifAssociation.getCsvSegments().size() >0) mifAssociation.setMapped(true); else mifAssociation.setMapped(false);
 

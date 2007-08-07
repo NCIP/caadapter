@@ -42,8 +42,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-08-03 23:02:48 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-08-07 03:19:21 $
  */
 
 public class MapProcessor {
@@ -76,12 +76,23 @@ public class MapProcessor {
         this.functions = functions;
         MapProcessorHelper mapProcessorHelper = new MapProcessorHelper();
 
-        mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false);
-        
         this.resultsArray = new ArrayList<XMLElement>();
 
-        // process one CSV source logical record at a time.
         List<CSVSegment> logicalRecords = csvSegmentedFile.getLogicalRecords();
+
+        if (logicalRecords.size()==0) 
+        {
+        	/**
+        	 * TODO
+        	 * Add a warning message
+        	 */
+        	return resultsArray;
+        }
+        
+        mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false, logicalRecords.get(0).getName());
+        
+
+        // process one CSV source logical record at a time.
         for (int i = 0; i < logicalRecords.size(); i++) {
         	csvSegmentHash = mapProcessorHelper.preprocessCSVSegments(logicalRecords.get(i));
         	List<XMLElement> xmlElements = processRootMIFclass(mifClass, logicalRecords.get(i));
@@ -275,7 +286,7 @@ public class MapProcessor {
     
     private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment) throws MappingException,FunctionException{
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
-
+//    	System.out.println(mifAttribute.getXmlPath());
     	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
     		  /*
@@ -315,7 +326,7 @@ public class MapProcessor {
 
 
     	//Scenario 1: Inputs are from different siblings
-    	if (datatype.getCsvSegments().size() > 1) {
+    	if (datatype.getCsvSegments().size() > 1) {    		
     		List<List<CSVSegment>> allListsCSVSegments = new ArrayList<List<CSVSegment>>();
     		
     		
@@ -720,6 +731,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2007/08/03 23:02:48  wuye
+ * HISTORY      : Fixed the choice problem.
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2007/08/03 13:25:32  wuye
  * HISTORY      : Fixed the mapping scenario #1 bug according to the design document
  * HISTORY      :
