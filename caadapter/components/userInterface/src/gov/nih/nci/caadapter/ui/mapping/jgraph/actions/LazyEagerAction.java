@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.2 2007-08-07 16:17:16 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,12 +49,12 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-07 16:17:16 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-07 20:50:27 $
  */
 public class LazyEagerAction extends DefaultAbstractJgraphAction
 {
-	private static final String COMMAND_NAME = "Make Lazy/Eager";
+	private static final String COMMAND_NAME = "Make Lazy";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
 	/**

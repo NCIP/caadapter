@@ -54,6 +54,7 @@ public class ModelMetadata {
 	private static TreeSet sortedModel = new TreeSet(new XPathComparator());
 	private static String xmiFileName;
 	private static List<String> primaryKeys = new ArrayList<String>();
+	private static List<String> lazyKeys = new ArrayList<String>();
 	
 	public ModelMetadata(){}
 	
@@ -328,9 +329,19 @@ public class ModelMetadata {
 		
 		public void setPrimaryKeys( List keyList )		
 		{
-			primaryKeys = keyList;
+			primaryKeys = keyList;	
 		}
-				
+		
+		public List getLazyKeys()
+		{
+			return lazyKeys;
+		}
+		
+		public void setLazyKeys( List lazyKeyList )		
+		{
+			lazyKeys = lazyKeyList;
+		}
+		
 		/**
 		 * @return Returns the model.
 		 */

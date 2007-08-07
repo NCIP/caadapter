@@ -98,13 +98,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.5 2007-08-07 15:54:47 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.6 2007-08-07 20:50:47 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -116,6 +116,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String GENERATE_HBM = "Generate HBM Files";
 	
 	private static List<String> primaryKeys = new ArrayList<String>();
+	private static List<String> lazyKeys = new ArrayList<String>();
 
 	public Object2DBMappingPanel() {
 		this("defaultObjectToDatabaseMapping");
@@ -126,7 +127,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		this.setLayout(new BorderLayout());
 		this.add(getCenterPanel(false), BorderLayout.CENTER);
 		fileSynchronizer = new MappingFileSynchronizer(this);
-		System.out.println("open object to db mapping:" + name);
+		//System.out.println("open object to db mapping:" + name);
 	}
 
 	protected JPanel getTopLevelLeftPanel() {
@@ -743,14 +744,19 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			}
 			
 			primaryKeys = new ArrayList<String>();
+			lazyKeys = new ArrayList<String>();
 			
-			//Retrieve all the primaryKeys saved as TaggedValues
+			//Retrieve all the primaryKeys & lazyKeys saved as TaggedValues
 			for( UMLPackage pkg : myUMLModel.getPackages() ) 
 			{
 				getPackages( pkg );
 			}				
 			
+			System.out.println( "PrimaryKeys = " + primaryKeys );
+			System.out.println( "LazyKeys = " + lazyKeys );
+			
 			myModel.setPrimaryKeys(primaryKeys);
+			myModel.setLazyKeys(lazyKeys);
 			
 		} else {
 			JOptionPane
@@ -770,10 +776,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			{	
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
 				{
-					if( tagValue.getName().contains( "primarykey" ))
+					if( tagValue.getName().contains( "id-attribute" ))
 					{											
-						System.out.println( "Loading, found a primaryKey " + att.getName() + " value=" + tagValue.getValue() );											
+						//System.out.println( "Loading, found a primaryKey " + att.getName() + " value=" + tagValue.getValue() );											
 						primaryKeys.add( tagValue.getValue() );
+					}
+					if( tagValue.getName().contains( "lazy-load" ))
+					{																												
+						lazyKeys.add( tagValue.getValue() );
 					}
 				}
 			}				
@@ -793,7 +803,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 *             changed from protected to pulic by sean
 	 */
 	public ValidatorResults processOpenOldMapFile(File file) throws Exception {
-		System.out.println("Opening .map file");
+		//System.out.println("Opening .map file");
 
 		String xmiFileName = "";
 		SAXBuilder builder = new SAXBuilder(false);
@@ -1126,6 +1136,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.5  2007/08/07 15:54:47  schroedn
+ * HISTORY : New Feature, Primary Key and Lazy/Eager functions added to MMS
+ * HISTORY :
  * HISTORY : Revision 1.4  2007/07/03 19:33:48  wangeug
  * HISTORY : initila loading hl7 code without "clone"
  * HISTORY :

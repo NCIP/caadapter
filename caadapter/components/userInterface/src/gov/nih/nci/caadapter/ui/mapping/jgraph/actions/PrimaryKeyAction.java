@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.2 2007-08-07 16:17:23 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,12 +57,13 @@ public class PrimaryKeyAction extends AbstractContextAction
 	private static final String COMMAND_NAME = "Make Primary Key";
 	
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.2 2007-08-07 16:17:23 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
 	private AbstractMappingPanel absMappingPanel;
 	private MappingMiddlePanel middlePanel;
+	
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
@@ -112,28 +113,24 @@ public class PrimaryKeyAction extends AbstractContextAction
 		    	ModelMetadata modelMetadata = ModelMetadata.getInstance();				    	
 		    	List<String> primaryKeys = modelMetadata.getPrimaryKeys();
 		    	
-				System.out.println( "targetTree: " + targetTree.getSelectionPath() );
-				System.out.println( "sourceTree: " + sourceTree.getSelectionPath() );
+				//System.out.println( "targetTree: " + targetTree.getSelectionPath() );
+				//System.out.println( "sourceTree: " + sourceTree.getSelectionPath() );
 				
 				if ( sourceTree.getSelectionRows() != null )
 				{						
-						TreePath leadingPath = sourceTree.getLeadSelectionPath();
-						
-						String node = leadingPath.toString();
-						
+						TreePath leadingPath = sourceTree.getLeadSelectionPath();						
+						String node = leadingPath.toString();						
 						node = parseNode( node );
 				        
-						System.out.println( "IN PrimaryKeyAction > " + node );
-												
-						//check if parent/root
-						
+						//System.out.println( "IN PrimaryKeyAction > " + node );												
+						//check if parent/root						
 						//check for multiple primary keys among children, if found then remove and add new
 
 						TreePath paths[] = sourceTree.getSelectionPaths();
 						DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
 						
-						System.out.println( "Sibling count:" + mutNode.getSiblingCount() );
-						System.out.println( "Child count: " + mutNode.getChildCount() );
+						//System.out.println( "Sibling count:" + mutNode.getSiblingCount() );
+						//System.out.println( "Child count: " + mutNode.getChildCount() );
 						
 						DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
 						
@@ -144,12 +141,12 @@ public class PrimaryKeyAction extends AbstractContextAction
 						    {
 						    	DefaultMutableTreeNode n = (DefaultMutableTreeNode)enu.nextElement();
 						    	TreePath treePath = new TreePath(n.getPath());
-						        System.out.println( "sibling : " + treePath.toString() );
+						        //System.out.println( "sibling : " + treePath.toString() );
 						        
 						        // remove any PK among siblings
 						        if ( primaryKeys.contains( parseNode( treePath.toString() ) ) )
 						        {
-						        	System.out.println( "FOUND IN PK LIST, removing..." );
+						        	//System.out.println( "FOUND IN PK LIST, removing..." );
 						        	primaryKeys.remove( parseNode( treePath.toString() ) );        	
 						        }
 						    }
@@ -161,7 +158,7 @@ public class PrimaryKeyAction extends AbstractContextAction
 				}												
 		    	
 		    	if(primaryKeys != null ) {
-		    		System.out.println( "Current primary Keys = " + primaryKeys );
+		    		System.out.println( "Current primary Keys = \n" + primaryKeys );
 		    	} else {
 		    		System.out.println( "No primary Keys" );
 		    	}

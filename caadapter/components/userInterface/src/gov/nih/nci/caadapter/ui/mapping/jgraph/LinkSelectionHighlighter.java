@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.2 2007-08-07 15:51:25 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.3 2007-08-07 20:50:39 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,6 +44,7 @@ import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.LazyEagerAction;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.PrimaryKeyAction;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.TestAction;
+import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
@@ -75,8 +76,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-07 15:51:25 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-07 20:50:39 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -92,7 +93,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.2 2007-08-07 15:51:25 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.3 2007-08-07 20:50:39 schroedn Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -290,7 +291,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
 			TreePath treePath = new TreePath(treeNode.getPath());
 			
-			System.out.println( "HighlightTreeNodeInTree: " + treePath.toString() );
+			//System.out.println( "HighlightTreeNodeInTree: " + treePath.toString() );
 			
 //			tree.scrollPathToVisible(treePath);
 			tree.setSelectionPath(treePath);
@@ -491,7 +492,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	protected JPopupMenu createSourcePopupMenu()
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
-		
+		       
         //Primary Key Function
 		primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel );
 		JMenuItem menuItem = new JMenuItem(primaryKeyAction);
@@ -499,6 +500,8 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		
 		JTree sourceTree = mappingPanel.getSourceTree();			
 		//JTree targetTree = mappingPanel.getTargetTree();
+		
+		//System.out.println( "Primary Keys: " + primaryKeys );
 		
 		// Disable PK function if selected node has children
 		primaryKeyAction.setEnabled( false );
@@ -524,19 +527,37 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
 		
+		String superText = "Set as Lazy";
+		
+		//Could change this depending on whether lazy/eager
+    	ModelMetadata modelMetadata = ModelMetadata.getInstance();    	
+    	List<String> lazyKeys = modelMetadata.getLazyKeys();
+    	JTree targetTree = mappingPanel.getTargetTree();
+		TreePath leadingPath = targetTree.getLeadSelectionPath();														
+		
+		System.out.println( "Lazy Keys: " + lazyKeys );
+		
+        if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
+        {
+        	superText = "Set as Eager";
+        }
+        else {
+        	superText = "Set as Lazy";
+        }
+        
         //Test Function
-		lazyEagerAction = new LazyEagerAction();
-		JMenuItem menuItem = new JMenuItem(lazyEagerAction);
+		testAction = new TestAction( mappingPanel, middlePanel, superText );
+		JMenuItem menuItem = new JMenuItem(testAction);
 		popupMenu.add(menuItem);
 			
 		//JTree sourceTree = mappingPanel.getSourceTree();			
-		JTree targetTree = mappingPanel.getTargetTree();
+		//JTree targetTree = mappingPanel.getTargetTree();
 		
 		testAction.setEnabled( false );
 		//Check to see if anything is selected
 		if( targetTree.getLeadSelectionPath() != null )
 		{
-			TreePath leadingPath = targetTree.getLeadSelectionPath();
+			leadingPath = targetTree.getLeadSelectionPath();
 				
 			//TreePath paths[] = sourceTree.getSelectionPaths();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
@@ -547,13 +568,40 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				testAction.setEnabled( true );
 			}
 		}		
-		
+	
 		return popupMenu;
 	}
 
+	public String parseNode( String node )
+	{
+		node = replace( node, ", ", "." );
+		node = replace( node, "[", " " );
+		node = replace( node, "]", " " );     
+        node = replace( node, "Data Model.", "" );         
+        node = node.trim();        
+		return node; 
+	}
+	
+    static String replace(String str, String pattern, String replace) {
+        int s = 0;
+        int e = 0;
+        StringBuffer result = new StringBuffer();
+    
+        while ((e = str.indexOf(pattern, s)) >= 0) {
+            result.append(str.substring(s, e));
+            result.append(replace);
+            s = e+pattern.length();
+        }
+        result.append(str.substring(s));
+        return result.toString();
+    }
+    
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/07 15:51:25  schroedn
+ * HISTORY      : New Feature, Primary Key and Lazy/Eager functions added to MMS
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

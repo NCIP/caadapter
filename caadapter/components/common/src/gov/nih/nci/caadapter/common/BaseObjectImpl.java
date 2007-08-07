@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.3 2007-07-16 18:03:46 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.4 2007-08-07 20:49:57 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,9 +40,9 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
  * The default implementation for the base class for all meta and data objects.
  *
  * @author OWNER: Eric Chen  Date: Jun 3, 2005
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.3 $
- * @date $$Date: 2007-07-16 18:03:46 $
+ * @author LAST UPDATE: $Author: schroedn $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2007-08-07 20:49:57 $
  * @since caAdapter v1.2
  */
 
@@ -139,7 +139,7 @@ public class BaseObjectImpl implements BaseObject
 		// TODO Auto-generated method stub
 		if (xmlPath == null)
 		{
-			System.out.println("BaseObjectImpl.getXmlPath()..."+xmlPath);
+			//System.out.println("BaseObjectImpl.getXmlPath()..."+xmlPath);
 			xmlPath = UUIDGenerator.getUniqueString();
 		}
 		return xmlPath;
@@ -152,6 +152,9 @@ public class BaseObjectImpl implements BaseObject
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/16 18:03:46  wangeug
+ * HISTORY      : change UIUID to xmlPath
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/05/24 15:00:13  wangeug
  * HISTORY      : add xmlPath attribute
  * HISTORY      :

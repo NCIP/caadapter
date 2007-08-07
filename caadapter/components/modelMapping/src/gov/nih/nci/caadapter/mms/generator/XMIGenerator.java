@@ -50,6 +50,7 @@ public class XMIGenerator
 	private ModelMetadata modelMetadata = null;
 	private LinkedHashMap myMap = null;
 	private static List<String> primaryKeys = new ArrayList<String>();
+	private static List<String> lazyKeys = new ArrayList<String>();
 	
 	public XMIGenerator(){
 	}
@@ -76,6 +77,7 @@ public class XMIGenerator
 		    
 		    //load all primaryKeys
 		    primaryKeys = modelMetadata.getPrimaryKeys();
+		    lazyKeys = modelMetadata.getLazyKeys();
 		    
 		    // Remove all dependencies from the Model
 		    for ( UMLDependency dep : model.getDependencies() )
@@ -103,11 +105,11 @@ public class XMIGenerator
 	{
 		for ( UMLClass clazz : pkg.getClasses() )
 		{
-			System.out.println( "Class: " + clazz.getName() );
+			//System.out.println( "Class: " + clazz.getName() );
 			
 			for( UMLAttribute att : clazz.getAttributes() ) 
 			{
-				System.out.println( "Attribute: " + att.getName() );
+				//System.out.println( "Attribute: " + att.getName() );
 				
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
 				{
@@ -168,6 +170,12 @@ public class XMIGenerator
 		for( String pKey : primaryKeys )
 		{
 			addPrimaryKey( pKey );
+		}
+		
+		//Add the Lazy Keys
+		for( String lKey : lazyKeys )
+		{
+			addLazyKey( lKey );
 		}
 		
 		addDependencies(this.dependencies);
@@ -484,7 +492,23 @@ public class XMIGenerator
 		
 		if ( column != null )
 		{			
-			column.addTaggedValue( "primarykey", pKey );
+			column.addTaggedValue( "id-attribute", pKey );
+		}
+	}
+	
+	public void addLazyKey( String lKey )
+	{
+		String lazyKey = "Logical View.Data Model." + lKey;
+		
+		System.out.println( "lKey = " + lKey );
+		System.out.println( "lazyKey = " + lazyKey );
+		
+		UMLAttribute column = ModelUtil.findAttribute(this.model, lazyKey);
+			
+		if( column != null)
+		{
+			System.out.println( "added lKey to xmi");
+			column.addTaggedValue( "lazy-load", lKey );
 		}
 	}
 	
