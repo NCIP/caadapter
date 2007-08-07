@@ -9,14 +9,17 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Hashtable;
 
 /**
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-08-07 18:00:17 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2007-08-07 20:26:46 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -39,7 +42,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private List<String> csvSegments;
 	private String csvSegment;
 	private boolean mapped;
-
+	private Hashtable <String,String> participantTraversalNames;
 	
 	/**
 	 * @return the mapped
@@ -307,6 +310,17 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 			 MIFAssociation clonnedObj = (MIFAssociation)super.clone();
 			 MIFClass clonnedMIFClass=(MIFClass)getMifClass().clone();
 			 clonnedObj.setMifClass(clonnedMIFClass);
+			 if(this.getParticipantTraversalNames()!=null)
+			 {
+				 Hashtable <String, String> clonedHT=new Hashtable<String,String>();
+				for(String partKey:this.getParticipantTraversalNames().keySet())
+				{
+					String traversalName=this.getParticipantTraversalNames().get(partKey);
+					clonedHT.put(partKey, traversalName);
+				}
+				clonnedObj.setParticipantTraversalNames(clonedHT);
+			 }		 
+			 
 			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -378,5 +392,12 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public String findTypeProperty() {
 		// TODO Auto-generated method stub
 		return "Association Clone";
+	}
+	public Hashtable<String, String> getParticipantTraversalNames() {
+		return participantTraversalNames;
+	}
+	public void setParticipantTraversalNames(
+			Hashtable<String, String> participantTraversalNames) {
+		this.participantTraversalNames = participantTraversalNames;
 	}
 }	

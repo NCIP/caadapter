@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.11 2007-08-07 18:11:56 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.12 2007-08-07 20:27:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2007-08-07 18:11:56 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2007-08-07 20:27:43 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -226,7 +226,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 						CMETRef cmetRef = CMETUtil.getCMET(choiceClass.getReferenceName());
 						if (cmetRef != null) 
 						{
-							MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif").clone();
+//							MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif").clone();
+							//there is not "traversalName" issue to load the CMET class for a choice item
+							MIFClass referencedMifClass =loadCMETClassWithMIF(cmetRef.getFilename() + ".mif",null);
 							referencedMifClass.setReference(true);
 							choiceClass=referencedMifClass;
 						}
@@ -281,7 +283,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				CMETRef cmetRef = CMETUtil.getCMET(asscMifClass.getReferenceName());
 				if (cmetRef != null) 
 				{
-					MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif").clone();
+//					MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif").clone();
+					MIFClass referencedMifClass = loadCMETClassWithMIF(cmetRef.getFilename() + ".mif",mifAssc.getParticipantTraversalNames());
 					referencedMifClass.setReference(true);
 					mifAssc.setMifClass(referencedMifClass);
 				}
@@ -297,7 +300,25 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		return childNode;
 	}
 	
-
+	private MIFClass loadCMETClassWithMIF(String cmetMifName, Hashtable<String, String>asscTraversalClassName)
+	{
+		MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();
+		//set traversal name with 
+		if (asscTraversalClassName!=null)
+		{
+			if(referencedMifClass.getChoices()==null
+					||referencedMifClass.getChoices().isEmpty())
+				Log.logError(this, "Choice classes are missed..:"+referencedMifClass);
+			else
+			{
+				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
+				{
+					refChoice.setTraversalName(asscTraversalClassName.get(refChoice.getName()));
+				}
+			}
+		}
+		return referencedMifClass;
+	}
 	private DefaultMutableTreeNode buildMIFAttributeNode(MIFAttribute mifAttribute)
 	{
 		DefaultMutableTreeNode rtnNode=constructTreeNodeBasedOnTreeType(mifAttribute,true);

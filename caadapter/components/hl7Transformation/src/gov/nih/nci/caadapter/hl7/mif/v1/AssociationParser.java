@@ -20,7 +20,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-08-07 18:01:26 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-08-07 20:27:06 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
@@ -73,6 +73,8 @@ public class AssociationParser {
         			}
         				
         		}
+        		mifAssociation.setParticipantTraversalNames(participantClassTraversalName);
+        		
         		Node targetConnectionChild = child.getFirstChild();
         		while (targetConnectionChild != null) {
                 	if (targetConnectionChild.getNodeName().equals(prefix+"participantClass")) {
