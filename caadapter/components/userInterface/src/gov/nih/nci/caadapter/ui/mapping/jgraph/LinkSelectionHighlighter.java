@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.2 2007-08-07 15:51:25 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,6 +39,28 @@ import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
 import gov.nih.nci.caadapter.ui.common.tree.MappingTargetTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
+import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.LazyEagerAction;
+import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.PrimaryKeyAction;
+import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.TestAction;
+
+import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
+import java.util.List;
+
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import org.jgraph.JGraph;
 import org.jgraph.event.GraphSelectionEvent;
@@ -47,25 +69,14 @@ import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
-import javax.swing.JTree;
-import javax.swing.JOptionPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.EventObject;
-import java.util.List;
-
 /**
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:57 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-07 15:51:25 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -81,17 +92,27 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.2 2007-08-07 15:51:25 schroedn Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
+	private MappingMiddlePanel middlePanel;
+	
+    private TestAction testAction;
+    private LazyEagerAction lazyEagerAction;
+    private PrimaryKeyAction primaryKeyAction;
+    private JPopupMenu popupMenu = null;	
+    
 	private boolean graphInSelection = false;
 	private boolean graphInClearSelectionMode = false;
 	private boolean sourceTreeInSelection = false;
 	private boolean targetTreeInSelection = false;
 
-	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph)
+	//private String selectedNode; 
+	
+	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
+		this.middlePanel = middlePanel;
 		this.mappingPanel = mappingPanel;
 		this.graph = graph;
 		initialize();
@@ -266,8 +287,11 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		if ((!(object instanceof DefaultGraphCell) && (object instanceof DefaultMutableTreeNode)))
 		{//screen out possible graph cell but just leave pure tree node to be highlighted
-			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;
+			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) object;			
 			TreePath treePath = new TreePath(treeNode.getPath());
+			
+			System.out.println( "HighlightTreeNodeInTree: " + treePath.toString() );
+			
 //			tree.scrollPathToVisible(treePath);
 			tree.setSelectionPath(treePath);
 		}
@@ -300,6 +324,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		TreePath path = e.getPath();
 		Object node = (path==null)? null : path.getLastPathComponent();
 //		Log.logInfo(this, "TreeSelectionSource:'" + (eventSource ==null? "null" : eventSource.getClass().getName()) + "'");
+		
+		//System.out.println( "TreeSelectionSource:'" + (eventSource ==null? "null" : eventSource.getClass().getName()) + "'");
+		
 		if(graphInSelection || sourceTreeInSelection || targetTreeInSelection)
 		{//if graph is in selection, no need to execute further logic; otherwise, we may run into an indefinite loop.
 //			Log.logInfo(this, "In Graph or tree selection mode, so just ignore.");
@@ -317,15 +344,16 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			{
 				searchMode = MappingViewCommonComponent.SEARCH_BY_SOURCE_NODE;
 				//notify that tree is selection process.
-				sourceTreeInSelection = true;
-				mappingPanel.getTargetTree().clearSelection();
+				//System.out.println( "sourceTreeInSelection is true");
+				sourceTreeInSelection = true;				
+				mappingPanel.getTargetTree().clearSelection();				
 			}
 			else if(eventSource instanceof MappingTargetTree)
 			{
 				searchMode = MappingViewCommonComponent.SEARCH_BY_TARGET_NODE;
 				//notify that tree is selection process.
 				targetTreeInSelection = true;
-				mappingPanel.getSourceTree().clearSelection();
+				mappingPanel.getSourceTree().clearSelection();	
 			}
 
 			graphInClearSelectionMode = true;
@@ -378,6 +406,37 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 */
 	public void mouseClicked(MouseEvent e)
 	{
+		// If Right Mouse Button
+		if (SwingUtilities.isRightMouseButton(e))
+		{         						
+			Container parentC = e.getComponent().getParent();
+			
+			while ( !(parentC instanceof JScrollPane))
+			{
+				parentC=parentC.getParent();
+			}
+			
+			MappingTreeScrollPane mappingScroll=(MappingTreeScrollPane)parentC;
+			
+			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_LEFT)) 
+			{
+				// Create PopupMenu for the Cell
+				JPopupMenu menu = createTargetPopupMenu();
+						
+				// Display PopupMenu
+				menu.show(e.getComponent(), e.getX(), e.getY());
+			}
+			
+			if(mappingScroll.getPaneType().equals(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT))
+			{
+				// Create PopupMenu for the Cell
+				JPopupMenu menu = createSourcePopupMenu();
+						
+				// Display PopupMenu
+				menu.show(e.getComponent(), e.getX(), e.getY());
+			}	
+		}
+
 		//if mouse clicked, it is definitely not in drag and drop.
         boolean previousValue;
         try
@@ -390,6 +449,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             return;
         }
         mappingPanel.setInDragDropMode(false);
+        
         if(previousValue)
 		{//previously in drag and drop mode, so to ensure the highlight back up, generate the corresponding tree or graph selection event.
 			Object source = e.getSource();
@@ -424,10 +484,79 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			}
 		}
 	}
+	
+	//
+	// PopupMenu
+	//
+	protected JPopupMenu createSourcePopupMenu()
+	{
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+        //Primary Key Function
+		primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel );
+		JMenuItem menuItem = new JMenuItem(primaryKeyAction);
+		popupMenu.add(menuItem);
+		
+		JTree sourceTree = mappingPanel.getSourceTree();			
+		//JTree targetTree = mappingPanel.getTargetTree();
+		
+		// Disable PK function if selected node has children
+		primaryKeyAction.setEnabled( false );
+		//Check to see if anything is selected		
+		if( sourceTree.getLeadSelectionPath() != null )
+		{
+			TreePath leadingPath = sourceTree.getLeadSelectionPath();
+			
+			//TreePath paths[] = sourceTree.getSelectionPaths();
+			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();			
+		
+			if( mutNode.getChildCount() == 0 )
+			{
+				primaryKeyAction.setEnabled( true );
+			}
+		}		
+		return popupMenu;
+	}
+	//
+	// PopupMenu
+	//
+	protected JPopupMenu createTargetPopupMenu()
+	{
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+        //Test Function
+		lazyEagerAction = new LazyEagerAction();
+		JMenuItem menuItem = new JMenuItem(lazyEagerAction);
+		popupMenu.add(menuItem);
+			
+		//JTree sourceTree = mappingPanel.getSourceTree();			
+		JTree targetTree = mappingPanel.getTargetTree();
+		
+		testAction.setEnabled( false );
+		//Check to see if anything is selected
+		if( targetTree.getLeadSelectionPath() != null )
+		{
+			TreePath leadingPath = targetTree.getLeadSelectionPath();
+				
+			//TreePath paths[] = sourceTree.getSelectionPaths();
+			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
+			
+			// Disable PK function if selected node has children		
+			if( mutNode.getChildCount() == 0 )
+			{
+				testAction.setEnabled( true );
+			}
+		}		
+		
+		return popupMenu;
+	}
 
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2006/12/19 22:48:30  umkis
  * HISTORY      : Null pointer error protetion
  * HISTORY      :

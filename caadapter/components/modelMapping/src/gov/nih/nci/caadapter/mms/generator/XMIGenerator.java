@@ -49,7 +49,8 @@ public class XMIGenerator
     private HashMap dependencyMap = new HashMap();
 	private ModelMetadata modelMetadata = null;
 	private LinkedHashMap myMap = null;
-    
+	private static List<String> primaryKeys = new ArrayList<String>();
+	
 	public XMIGenerator(){
 	}
 	
@@ -67,11 +68,14 @@ public class XMIGenerator
 		    if (modelMetadata == null) 
 		    {
 		    	ModelMetadata.createModel(xmiFileName);
-			    modelMetadata = ModelMetadata.getInstance();
+			    modelMetadata = ModelMetadata.getInstance();			    
 		    }
 					    
 		    myMap = modelMetadata.getModelMetadata();					    
 		    model = modelMetadata.getModel();
+		    
+		    //load all primaryKeys
+		    primaryKeys = modelMetadata.getPrimaryKeys();
 		    
 		    // Remove all dependencies from the Model
 		    for ( UMLDependency dep : model.getDependencies() )
@@ -80,44 +84,12 @@ public class XMIGenerator
 		    }
 		    
 		    model.emptyDependency();
-		    		  
-		    // Remove all mapped-attributes, associations from tagged values
+		    
 			for( UMLPackage pkg : model.getPackages() ) 
 			{
-				for( UMLPackage pkg2 : pkg.getPackages() )
-				{	
-					for( UMLClass clazz : pkg2.getClasses() )
-					{					
-						StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
-						for( UMLAttribute att : clazz.getAttributes() ) 
-						{
-							for( UMLTaggedValue tagValue : att.getTaggedValues() )
-							{								
-								if( tagValue.getName().contains( "inverse-of" ))
-								{
-									//System.out.println( "deleted m-a" );
-									att.removeTaggedValue( "inverse-of" );
-								}
-								if( tagValue.getName().contains( "mapped-attributes" ))
-								{
-									//System.out.println( "deleted m-a" );
-									att.removeTaggedValue( "mapped-attributes" );
-								}
-								if( tagValue.getName().contains( "implements-association" ))
-								{
-									//System.out.println( "deleted assoc" );
-									att.removeTaggedValue( "implements-association" );
-								}
-								if( tagValue.getName().contains( "correlation-table" ))
-								{
-									//System.out.println( "deleted corr-t" );
-									att.removeTaggedValue( "correlation-table" );
-								}																
-							}
-						}  								
-					}
-				}
-			}
+				//System.out.println( "Package1: " + pkg.getName() );
+				getPackages( pkg );
+			}								
 			
 			handler = modelMetadata.getHandler();
 	    } 
@@ -125,6 +97,53 @@ public class XMIGenerator
 	    {
 	      e.printStackTrace();
 	    }
+	}
+		
+	public void getPackages( UMLPackage pkg )
+	{
+		for ( UMLClass clazz : pkg.getClasses() )
+		{
+			System.out.println( "Class: " + clazz.getName() );
+			
+			for( UMLAttribute att : clazz.getAttributes() ) 
+			{
+				System.out.println( "Attribute: " + att.getName() );
+				
+				for( UMLTaggedValue tagValue : att.getTaggedValues() )
+				{
+					if( tagValue.getName().contains( "primarykey" ))
+					{
+						//System.out.println( "deleted primarykey" );
+						att.removeTaggedValue( "primarykey" );
+					}
+					if( tagValue.getName().contains( "mapped-attributes" ))
+					{
+						//System.out.println( "deleted m-a" );
+						att.removeTaggedValue( "mapped-attributes" );
+					}
+					if( tagValue.getName().contains( "implements-association" ))
+					{
+						//System.out.println( "deleted assoc" );
+						att.removeTaggedValue( "implements-association" );
+					}
+					if( tagValue.getName().contains( "correlation-table" ))
+					{
+						//System.out.println( "deleted corr-t" );
+						att.removeTaggedValue( "correlation-table" );
+					}												
+					if( tagValue.getName().contains( "inverse-of" ))
+					{
+						//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
+						att.removeTaggedValue( "inverse-of" );
+					}
+				}
+			}				
+		}
+		
+		for ( UMLPackage pkg2 : pkg.getPackages() )
+		{
+			getPackages( pkg2 );
+		}
 	}
 	
 	/**
@@ -144,6 +163,13 @@ public class XMIGenerator
 	public void annotateXMIFile()
 	{
 		loadLinks();
+		
+		//Add the Primary Keys
+		for( String pKey : primaryKeys )
+		{
+			addPrimaryKey( pKey );
+		}
+		
 		addDependencies(this.dependencies);
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
@@ -213,7 +239,7 @@ public class XMIGenerator
 			addDependency(this.model,dependency);
 		}
 	}
-	
+		
 	/**
 	 * @param model
 	 * @param dependency
@@ -248,7 +274,7 @@ public class XMIGenerator
 	    dep.addTaggedValue("direction", "Source -> Destination");
 	    dep.addTaggedValue("style", "3");
 	}
-	
+		
 	/**
 	 * @param model
 	 * @param attribute
@@ -272,10 +298,24 @@ public class XMIGenerator
 			{
 			//	System.out.println( "found dependency!" );			
 				target.addTaggedValue("mapped-attributes", getCleanPath(attribute.getChildText("source")));
-			}						
-	    }	        	
+			}
+	    }	       	
 	}
 	
+    static String replace(String str, String pattern, String replace) {
+        int s = 0;
+        int e = 0;
+        StringBuffer result = new StringBuffer();
+    
+        while ((e = str.indexOf(pattern, s)) >= 0) {
+            result.append(str.substring(s, e));
+            result.append(replace);
+            s = e+pattern.length();
+        }
+        result.append(str.substring(s));
+        return result.toString();
+    }
+    
 	/**
 	 * @param model
 	 * @param attribute
@@ -331,10 +371,17 @@ public class XMIGenerator
 	    	UMLTaggedValue element = (UMLTaggedValue)it.next();	  
 	    	if ( element.getName().equals("implements-association") )
 	    	{
-	    		target.removeTaggedValue( element.getName() );	    	
+	    		System.out.println( "removing implements-association" );
+	    		target.removeTaggedValue( element.getName() );	    		
 	    	}
 	    	if ( element.getName().equals("correlation-table") )
 	    	{
+	    		System.out.println( "removing correlation-table" );
+	    		target.removeTaggedValue( element.getName() );	    	
+	    	}
+	    	if ( element.getName().equals("inverse-of") )
+	    	{
+	    		System.out.println( "removing inverse-of:" + element.getName() );
 	    		target.removeTaggedValue( element.getName() );	    	
 	    	}
 	    }
@@ -353,8 +400,9 @@ public class XMIGenerator
 	    }
 	   
 	    target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
-	    if(!reciprolRoleHasInverseOfTag(attribute.getChildText("source")))
+	    if(reciprolRoleHasInverseOfTag(attribute.getChildText("source")) == false )
 	    {
+	    	System.out.println( "reciprol Role has no inverse_of tag value. Checked " + attribute.getChildText("source") + "\n");	    	
 	    	addInverseOfTagValue(target,attribute);
 	    	saveModel();
 	    }
@@ -366,8 +414,15 @@ public class XMIGenerator
 	 */
 	public void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
 	{
-		Target.addTaggedValue("inverse-of", getInverseRoleName(attribute.getChildText("source")));
-	    saveModel();
+		//check to see if this Tag Value already exists
+//		if( !checkInverseOfTagValue( getInverseRoleName(attribute.getChildText("source")) ) )
+//		{
+			//System.out.println( "Adding inverse_of to: " + getInverseRoleName(attribute.getChildText("source")) );
+			Target.addTaggedValue( "inverse-of", getInverseRoleName(attribute.getChildText("source")) );
+			saveModel();
+//		} else {
+//			System.out.println( "NOT ADDING already has inverse-of tag value");
+//		}	
 	}
 	
 	/**
@@ -394,8 +449,8 @@ public class XMIGenerator
 		{
 			Element manytomany = (Element)this.manytomanys.get(i);
 			if (!manytomany.getChildText("source").equals(pathToThisEnd))
-			{
-				hasInverseOfTagValue = checkInverseOfTagValue(manytomany.getChildText("target"));
+			{	
+				hasInverseOfTagValue = checkInverseOfTagValue(manytomany.getChildText("target"));				
 			}
 		}
 		return hasInverseOfTagValue;
@@ -407,6 +462,7 @@ public class XMIGenerator
 	 */
 	public boolean checkInverseOfTagValue(String pathToColumnName)
 	{
+		System.out.println( "Path to column: " + pathToColumnName );
 		boolean hasInverseOfTaggedValue = false;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, pathToColumnName);
 		for(UMLTaggedValue taggedValue : column.getTaggedValues()) 
@@ -417,6 +473,19 @@ public class XMIGenerator
 			}
 		}
 		return hasInverseOfTaggedValue;
+	}
+	
+	public void addPrimaryKey( String pKey )
+	{
+		String primaryKey = "Logical View.Logical Model." + pKey;
+		
+		System.out.println( "pKey=" + primaryKey );		
+		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
+		
+		if ( column != null )
+		{			
+			column.addTaggedValue( "primarykey", pKey );
+		}
 	}
 	
 	/**
@@ -506,7 +575,7 @@ public class XMIGenerator
 		      
 		      while ( i.hasNext() ) 
 		      {
-		        Element link = (Element) i.next();
+		        Element link = (Element) i.next();		        
 		        if (link.getAttribute("type").getValue().equals("dependency")) 
 		        {
 		        	this.dependencies.add(link);
@@ -557,9 +626,10 @@ public class XMIGenerator
 		this.xmiFileName = xmiFileName;
 	}
 	  public static void main(String[] args) {
+//		  System.out.println("aaa");
 		  try {
-			 // XMIGenerator generator = new XMIGenerator("D:/temp/caAdapter/workingspace/examples/Object-2-DB-Example/sdk-test.map","D:/temp/caAdapter/workingspace/examples/Object-2-DB-Example/sdk-test.xmi");
-		     // generator.annotateXMI();
+			    XMIGenerator generator = new XMIGenerator("C:/Documents and Settings/Administrator/My Documents/MMs Example XMI/All_Mappings_test_validator.map","C:/Documents and Settings/Administrator/My Documents/MMs Example XMI/All_Mappings_test_validator.xmi");
+		        generator.init();
 		  } catch (Exception e){
 			  e.printStackTrace();
 		  }

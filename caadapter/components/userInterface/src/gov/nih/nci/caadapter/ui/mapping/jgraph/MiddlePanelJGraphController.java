@@ -89,8 +89,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.10 $ date $Date: 2007-07-23 16:14:53 $
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v1.2 revision $Revision: 1.11 $ date $Date: 2007-08-07 15:52:19 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -105,7 +105,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.10 2007-07-23 16:14:53 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.11 2007-08-07 15:52:19 schroedn Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -225,7 +225,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			}
 			this.graph.removeGraphSelectionListener(linkSelectionHighlighter);
 		}
-		linkSelectionHighlighter = new LinkSelectionHighlighter(mappingPanel, this.graph);
+		linkSelectionHighlighter = new LinkSelectionHighlighter(mappingPanel, this.graph, middlePanel);
 		// linkSelectionHighlighter = new LinkSelectionHighlighter(mappingPanel);
 		// linkSelectionHighlighter.setGraph(this.graph);
 		this.graph.addGraphSelectionListener(linkSelectionHighlighter);
@@ -1459,6 +1459,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.10  2007/07/23 16:14:53  wangeug
+ * HISTORY : bug fixing: refresh source and target tree when new mapping is created
+ * HISTORY :
  * HISTORY : Revision 1.9  2007/07/20 17:06:42  wangeug
  * HISTORY : integrate Hl7 transformation service
  * HISTORY :

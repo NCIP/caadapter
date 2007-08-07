@@ -61,6 +61,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -96,14 +97,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.4 2007-07-03 19:33:48 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.5 2007-08-07 15:54:47 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -113,6 +114,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String ANNOTATE_XMI = "Tag XMI File";
 
 	private static final String GENERATE_HBM = "Generate HBM Files";
+	
+	private static List<String> primaryKeys = new ArrayList<String>();
 
 	public Object2DBMappingPanel() {
 		this("defaultObjectToDatabaseMapping");
@@ -509,6 +512,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		return nodes;
 	}
+	
+//	protected void buildSourceTree(Object, File, boolean){
+//		
+//		super.buildSourceTree(metaInfo, file, isToResetGraph);
+//		sTree.setCellRenderer(new MMSRenderer());
+//	}
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile,
 			boolean isToResetGraph) throws Exception {
@@ -732,6 +741,17 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					}
 				}
 			}
+			
+			primaryKeys = new ArrayList<String>();
+			
+			//Retrieve all the primaryKeys saved as TaggedValues
+			for( UMLPackage pkg : myUMLModel.getPackages() ) 
+			{
+				getPackages( pkg );
+			}				
+			
+			myModel.setPrimaryKeys(primaryKeys);
+			
 		} else {
 			JOptionPane
 					.showMessageDialog(
@@ -741,6 +761,30 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		return null;
 	}
 
+	//Recursive loop required to find all primaryKeys
+	public void getPackages( UMLPackage pkg )
+	{
+		for ( UMLClass clazz : pkg.getClasses() )
+		{
+			for( UMLAttribute att : clazz.getAttributes() ) 
+			{	
+				for( UMLTaggedValue tagValue : att.getTaggedValues() )
+				{
+					if( tagValue.getName().contains( "primarykey" ))
+					{											
+						System.out.println( "Loading, found a primaryKey " + att.getName() + " value=" + tagValue.getValue() );											
+						primaryKeys.add( tagValue.getValue() );
+					}
+				}
+			}				
+		}
+		
+		for ( UMLPackage pkg2 : pkg.getPackages() )
+		{
+			getPackages( pkg2 );
+		}
+	}
+	
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
 	 * 
@@ -1040,10 +1084,51 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					false);
 		}
 	}
+	
+//	  private class MMSRenderer extends DefaultTreeCellRenderer
+//	    {
+//		  // this control comes here
+//
+//	        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
+//	        {
+//	            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+//	            ImageIcon tutorialIcon;
+//	            try
+//	            {
+//	                String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
+//	               
+//	                }
+//	            } catch (Exception e)
+//	            {
+//	              
+//	            }
+//	            return this;
+//	        }
+//	    }
+///**
+// * Returns an ImageIcon, or null if the path was invalid.
+// */
+//protected static ImageIcon createImageIcon(String path)
+//{
+//    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
+//    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
+//    if (imgURL != null)
+//    {
+//        //System.out.println("class.getResource is "+imgURL.toString());
+//        return new ImageIcon(imgURL);
+//    } else
+//    {
+//        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
+//        return null;
+//    }
+//}
 }
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.4  2007/07/03 19:33:48  wangeug
+ * HISTORY : initila loading hl7 code without "clone"
+ * HISTORY :
  * HISTORY : Revision 1.3  2007/06/13 17:22:08  schroedn
  * HISTORY : removed functions
  * HISTORY :

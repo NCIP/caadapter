@@ -53,6 +53,7 @@ public class ModelMetadata {
 	private static HashMap inheritanceHashMap = new HashMap();
 	private static TreeSet sortedModel = new TreeSet(new XPathComparator());
 	private static String xmiFileName;
+	private static List<String> primaryKeys = new ArrayList<String>();
 	
 	public ModelMetadata(){}
 	
@@ -319,6 +320,17 @@ public class ModelMetadata {
 		public void setXmiFileName(String xmiFileName) {
 			this.xmiFileName = xmiFileName;
 		}
+		
+		public List getPrimaryKeys()
+		{
+			return primaryKeys;
+		}
+		
+		public void setPrimaryKeys( List keyList )		
+		{
+			primaryKeys = keyList;
+		}
+				
 		/**
 		 * @return Returns the model.
 		 */

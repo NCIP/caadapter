@@ -204,4 +204,9 @@ public class MappingTreeScrollPane extends JScrollPane
 			xPieceStart+=2*BROKEN_LINE_PIECE;
 		}
 	}
+	
+	public String getPaneType() {
+		return paneType;
+	}
+	
 }
