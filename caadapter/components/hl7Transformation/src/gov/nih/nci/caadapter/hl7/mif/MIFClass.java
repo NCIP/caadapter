@@ -24,7 +24,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-08-06 19:45:11 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-08-07 17:59:31 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -44,6 +44,7 @@ import java.util.Iterator;
  	 private List<String> csvSegments;
  	 private String csvSegment;
  	 private String messageType;
+ 	private String traversalName;
 	 /**
 	  * This method will add an attribute object to a given MIF object.
 	  * 
@@ -438,7 +439,10 @@ import java.util.Iterator;
 
 	}
 	public String getNodeXmlName() {
-			return this.getName();
+		if (traversalName!=null)
+			return traversalName;
+		
+		return this.getName();
 	}
 
 	public String getParentXmlPath() {
@@ -533,5 +537,11 @@ import java.util.Iterator;
 	}
 	public void setMessageType(String msgType) {
 		this.messageType = msgType;
+	}
+	public String getTraversalName() {
+		return traversalName;
+	}
+	public void setTraversalName(String traversalName) {
+		this.traversalName = traversalName;
 	}
  }
