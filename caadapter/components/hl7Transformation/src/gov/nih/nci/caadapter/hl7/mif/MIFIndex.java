@@ -7,7 +7,7 @@ import java.util.Hashtable;
 
 public class MIFIndex implements Serializable {
 
-	private TreeSet messageCategory =new TreeSet<String>();
+	private TreeSet<String> messageCategory =new TreeSet<String>();
 	private Hashtable <String, String> mifNames=new Hashtable<String, String>();
 	
 	public void addMessageType(String mifFileName)
@@ -19,6 +19,11 @@ public class MIFIndex implements Serializable {
 			if (existingMif.equalsIgnoreCase(mifFileName))
 				return ;
 		}
+		//only the _MT MIFs are implemented artificates
+		//the _HD MIFs "hierachicalmessage defineitionthat serialize the 
+		//elements in RMMI
+		if (mifFileName.indexOf("_HD")>-1)
+			return;
 		if (mifFileName.indexOf(".mif")<0)
 			return;
 		
@@ -35,11 +40,12 @@ public class MIFIndex implements Serializable {
 		mifNames.put(msgType, mifFileName);
 	}
 	
-	public Set getMessageCategory()
+	public Set<String> getMessageCategory()
 	{
 		return messageCategory;
 	}
 	
+
 	public Set fingMessageTypesWithCategory(String msgCat)
 	{
 		TreeSet<String> rtnSet=new TreeSet<String>();
