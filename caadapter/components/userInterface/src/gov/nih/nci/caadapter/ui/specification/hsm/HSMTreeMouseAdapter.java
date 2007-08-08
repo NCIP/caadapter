@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.4 2007-07-12 16:08:39 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.5 2007-08-08 15:13:32 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,8 +58,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-12 16:08:39 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-08 15:13:32 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -193,7 +193,17 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 	validateHSMAction.setEnabled(true);
                 	MIFAssociation mifAssc = (MIFAssociation) userObj;               	
                     if (MIFUtil.isChoiceAssociation(mifAssc))
+                    {
                     	selectChoiceAction.setEnabled(true);
+                    	//it may be a 0..1 association, but it is allowed
+                		//to duplicate if there is any choice group down stream
+            			 if (mifAssc.getMultiplicityIndex()>0)
+                         {
+                             removeMultipleCloneAction.setEnabled(true);
+                         }
+                         else
+                         	addMultipleCloneAction.setEnabled(true);
+                    }
                     else 
                     {
                     	if (mifAssc.getMaximumMultiplicity()!= 1)
