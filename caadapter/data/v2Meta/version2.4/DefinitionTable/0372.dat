@@ -1,8 +1,0 @@
-HL7	Specimen component	0372	BLD	Whole blood, homogeneous
-HL7	Specimen component	0372	BSEP	Whole blood, separated
-HL7	Specimen component	0372	PLAS	Plasma, NOS (not otherwise specified)
-HL7	Specimen component	0372	PPP	Platelet poor plasma
-HL7	Specimen component	0372	PRP	Platelet rich plasma
-HL7	Specimen component	0372	SED	Sediment
-HL7	Specimen component	0372	SER	Serum, NOS (not otherwise specified)
-HL7	Specimen component	0372	SUP	Supernatant

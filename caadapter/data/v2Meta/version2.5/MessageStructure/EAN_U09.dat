@@ -1,7 +1,0 @@
-Message Type=EAN
-Message Type Name=Automated equipment notification message
-Trigger Event=U09
-Trigger Description=EAN/ACK _ Automated equipment notification
-Message Structure=MSH [ { SFT } ] EQU { !NOTIFICATION! NDS [ NTE ] } [ ROL ]
-Return Message=ACK^U09
-Called by=

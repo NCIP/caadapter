@@ -1,7 +1,0 @@
-Message Type=SRR
-Message Type Name=Scheduled request response
-Trigger Event=S01
-Trigger Description=SRM/SRR - Request new appointment booking
-Message Structure=MSH MSA [ { ERR } ] [ !SCHEDULE! SCH [ { TQ1 } ] [ { NTE } ] [ { !PATIENT! PID [ PV1 ] [ PV2 ] [ { DG1 } ] } ] { !RESOURCES! RGS [ { !SERVICE! AIS [ { NTE } ] } ] [ { !GENERAL_RESOURCE! AIG [ { NTE } ] } ] [ { !LOCATION RESOURCE! AIL [ { NTE } ] } ] [ { !PERSONNEL_RESOURCE! AIP [ { NTE } ] } ] } ]
-Return Message=ACK^S01
-Called by=SRM^S01

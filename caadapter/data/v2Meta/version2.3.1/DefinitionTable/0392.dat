@@ -1,4 +1,0 @@
-HL7	Match reason	0392	DB	Match on Date of Birth
-HL7	Match reason	0392	NA	Match on Name (Alpha Match)
-HL7	Match reason	0392	NP	Match on Name (Phonetic Match)
-HL7	Match reason	0392	SS	Match on Social Security Number

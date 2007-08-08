@@ -1,7 +1,0 @@
-Message Type=RGV
-Message Type Name=Pharmacy/treatment give message
-Trigger Event=O15
-Trigger Description=RGV _ Pharmacy/treatment give
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ { NTE } ] [ { AL1 } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !ORDER_DETAIL! RXO [ !ORDER_DETAIL_SUPPLEMENT! { NTE } { RXR } [ { !COMPONENTS! RXC [ { NTE } ] } ] ] ] [ !ENCODING! RXE { !TIMING_ENCODED! TQ1 [ { TQ2 } ] } { RXR } [ { RXC } ] ] { !GIVE! RXG { !TIMING_GIVE! TQ1 [ { TQ2 } ] } { RXR } [ { RXC } ] { !OBSERVATION! [ OBX ] [ { NTE } ] } } }
-Return Message=RRG^O16
-Called by=

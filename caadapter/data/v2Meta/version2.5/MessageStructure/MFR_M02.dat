@@ -1,7 +1,0 @@
-Message Type=MFR
-Message Type Name=Master files response
-Trigger Event=M02
-Trigger Description=MFN/MFK - Master file _ staff practitioner
-Message Structure=MFR_M01
-Return Message=ACK^M02
-Called by=MFQ^M02

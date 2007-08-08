@@ -1,4 +1,0 @@
-HL7	Check digit scheme	0061	ISO	ISO 7064: 1983
-HL7	Check digit scheme	0061	M10	Mod 10 algorithm
-HL7	Check digit scheme	0061	M11	Mod 11 algorithm
-HL7	Check digit scheme	0061	NPI	Check digit algorithm in the US National Provider Identifier

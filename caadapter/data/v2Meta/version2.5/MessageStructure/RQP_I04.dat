@@ -1,7 +1,0 @@
-Message Type=RQP
-Message Type Name=Request patient demographics
-Trigger Event=I04
-Trigger Description=RQP/RPI - Request for patient demographic data
-Message Structure=MSH [ { SFT } ] { !PROVIDER! PRD [ { CTD } ] } PID [ { NK1 } ] [ { GT1 } ] [ { NTE } ]
-Return Message=RPI^I04
-Called by=

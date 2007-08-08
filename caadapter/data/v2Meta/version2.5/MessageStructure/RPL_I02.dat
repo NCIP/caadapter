@@ -1,7 +1,0 @@
-Message Type=RPL
-Message Type Name=Return patient display list
-Trigger Event=I02
-Trigger Description=RQI/RPL - Request/receipt of patient selection display list
-Message Structure=MSH [ { SFT } ] MSA { !PROVIDER! PRD [ { CTD } ] } [ { NTE } ] [ { DSP } ] [ DSC ]
-Return Message=ACK^I02
-Called by=RQI^I02

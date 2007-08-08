@@ -1,7 +1,0 @@
-Message Type=PMU
-Message Type Name=Add personnel record
-Trigger Event=B01
-Trigger Description=PMU/ACK _ Add personnel record
-Message Structure=MSH [ { SFT } ] EVN STF [ { PRA } ] [ { ORG } ] [ { AFF } ] [ { LAN } ] [ { EDU } ] [ { CER } ]
-Return Message=ACK^B01
-Called by=

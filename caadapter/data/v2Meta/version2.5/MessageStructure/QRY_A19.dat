@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=A19
-Trigger Description=QRY/ADR -  Patient query
-Message Structure=MSH [ { SFT } ] QRD [ QRF ]
-Return Message=ADR^A19
-Called by=

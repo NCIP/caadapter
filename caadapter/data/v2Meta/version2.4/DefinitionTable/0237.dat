@@ -1,8 +1,0 @@
-HL7	Event qualification	0237	A	Abuse
-HL7	Event qualification	0237	B	Unexpected beneficial effect
-HL7	Event qualification	0237	D	Dependency
-HL7	Event qualification	0237	I	Interaction
-HL7	Event qualification	0237	L	Lack of expect therapeutic effect
-HL7	Event qualification	0237	M	Misuse
-HL7	Event qualification	0237	O	Overdose
-HL7	Event qualification	0237	W	Drug withdrawal

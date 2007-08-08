@@ -1,4 +1,0 @@
-RMC	1	IS	0145	20	R	room type	N	^
-RMC	2	IS	0146	20		amount type	N	^
-RMC	3	NM		16	B	coverage amount	N	^
-RMC	4	MOP		23	R	Money or Percentage	N	E

@@ -1,7 +1,0 @@
-Message Type=SRM
-Message Type Name=Schedule request message
-Trigger Event=S10
-Trigger Description=SRM/SRR - Request discontinuation of service/resource on appointment
-Message Structure=SRM_S01
-Return Message=SRR^S10
-Called by=

@@ -1,7 +1,0 @@
-Message Type=PMU
-Message Type Name=Add personnel record
-Trigger Event=B02
-Trigger Description=PMU/ACK _ Update personnel record
-Message Structure=PMU_B01
-Return Message=ACK^B02
-Called by=

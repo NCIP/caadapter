@@ -1,1 +1,0 @@
-SQR	S25	 				 MSH  MSA [  ERR ]  QAK [ {  SCH [ {  NTE } ] [ !PATIENT! PID [  PV1 ] [  PV2 ] [  DG1 ] ] {  RGS [ {  AIS [ {  NTE } ] } ] [ {  AIG [ {  NTE } ] } ] [ {  AIP [ {  NTE } ] } ] [ {  AIL [ {  NTE } ] } ] } } ] [  DSC ] 	Schedule Query Response	Schedule query response	SQM/SQR - Schedule query message and response

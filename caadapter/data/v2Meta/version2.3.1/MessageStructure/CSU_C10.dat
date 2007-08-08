@@ -1,1 +1,0 @@
-CSU	C10	CSU	C09			 MSH {  PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ]  CSR { [  CSP ] { [  CSS ] { !ORDER![  ORC ]  OBR {  OBX } } { !ORDER![  ORC ] { !ADMINISTRATION! RXA  RXR } } } } } 	Unsolicited Study Data Message - Patient completes the clinical trial	Unsolicited study data message	CSU - Patient completes the clinical trial

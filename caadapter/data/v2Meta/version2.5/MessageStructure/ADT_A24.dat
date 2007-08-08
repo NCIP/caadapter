@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A24
-Trigger Description=ADT/ACK -  Link patient information
-Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ PV1 ] [ { DB1 } ] PID [ PD1 ] [ PV1 ] [ { DB1 } ]
-Return Message=ACK^A24
-Called by=

@@ -1,4 +1,0 @@
-HL7	Response level	0179	AL	Always.  All MFA segments (whether denoting errors or not) must be returned via the application-level acknowledgment message
-HL7	Response level	0179	ER	Error/Reject conditions only.  Only MFA segments denoting errors must be returned via the application-level acknowledgment for this message
-HL7	Response level	0179	NE	Never.  No application-level response needed
-HL7	Response level	0179	SU	Success.  Only MFA segments denoting success must be returned via the application-level acknowledgment for this message

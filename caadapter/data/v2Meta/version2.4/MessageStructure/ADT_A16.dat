@@ -1,1 +1,0 @@
-ADT	A16	ADT	A16	ACK		 MSH  EVN  PID [  PD1 ] [ {  ROL } ]  PV1 [  PV2 ] [ {  ROL } ] [ {  DB1 } ] [ {  OBX } ] [ {  DG1 } ] [  DRG ] 		ADT message	ADT/ACK -  Pending discharge

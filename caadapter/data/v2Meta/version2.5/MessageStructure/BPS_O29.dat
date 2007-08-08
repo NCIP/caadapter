@@ -1,7 +1,0 @@
-Message Type=BPS
-Message Type Name=Blood product dispense status message
-Trigger Event=O29
-Trigger Description=BPS _ Blood product dispense status
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] BPO [ { NTE } ] [ { !PRODUCT! BPX [ { NTE } ] } ] }
-Return Message=BRP^O30
-Called by=

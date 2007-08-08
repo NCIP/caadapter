@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A18
-Trigger Description=ADT/ACK -  Merge patient information (for backward compatibility only)
-Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] MRG PV1
-Return Message=ACK^A18
-Called by=

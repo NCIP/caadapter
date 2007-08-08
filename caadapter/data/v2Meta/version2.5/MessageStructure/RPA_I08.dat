@@ -1,7 +1,0 @@
-Message Type=RPA
-Message Type Name=Return patient authorization
-Trigger Event=I08
-Trigger Description=RQA/RPA - Request for treatment authorization information
-Message Structure=MSH [ { SFT } ] MSA [ RF1 ] [ !AUTHORIZATION! AUT [ CTD ] ] { !PROVIDER! PRD [ { CTD } ] } PID [ { NK1 } ] [ { GT1 } ] [ !INSURANCE! { IN1 [ IN2 ] [ IN3 ] } ] [ ACC ] [ { DG1 } ] [ { DRG } ] [ { AL1 } ] { !PROCEDURE! PR1 [ !AUTHORIZATION! AUT [ CTD ] ] } [ !OBSERVATION! { OBR [ { NTE } ] [ !RESULTS! { OBX [ { NTE } ] } ] } ] [ !VISIT! PV1 [ PV2 ] ]
-Return Message=ACK^I08
-Called by=RQA^I08

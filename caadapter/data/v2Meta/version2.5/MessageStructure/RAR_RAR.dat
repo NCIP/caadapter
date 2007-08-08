@@ -1,7 +1,0 @@
-Message Type=RAR
-Message Type Name=Pharmacy/treatment administration information
-Trigger Event=RAR
-Trigger Description=QRY/RAR - Pharmacy/treatment administration information
-Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] { !DEFINITION! QRD [ QRF ] [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ !ENCODING! RXE { RXR } [ { RXC } ] ] { RXA } RXR } } [ DSC ]
-Return Message=ACK^RAR
-Called by=QRY^Q27

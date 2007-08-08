@@ -1,3 +1,0 @@
-HL7	Allow Substitution	0161	G	Allow generic substitutions.
-HL7	Allow Substitution	0161	N	Substitutions are NOT authorized.  (This is the default - null.)
-HL7	Allow Substitution	0161	T	Allow therapeutic substitutions

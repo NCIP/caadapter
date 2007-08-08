@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A12
-Trigger Description=ADT/ACK -  Cancel transfer
-Message Structure=ADT_A09
-Return Message=ACK^A12
-Called by=

@@ -1,9 +1,0 @@
-HL7	Order status	0038	A	Some/ but not all/ results available
-HL7	Order status	0038	CA	Order was canceled
-HL7	Order status	0038	CM	Order is completed
-HL7	Order status	0038	DC	Order was discontinued
-HL7	Order status	0038	ER	Error/ order not found
-HL7	Order status	0038	HD	Order is on hold
-HL7	Order status	0038	IP	In process/ unspecified
-HL7	Order status	0038	RP	Order has been replaced
-HL7	Order status	0038	SC	In process/ scheduled

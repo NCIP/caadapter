@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=Q02
-Trigger Description=QRY/QCK - Query sent for deferred response
-Message Structure=MSH [ { SFT } ] QRD [ QRF ] [ DSC ]
-Return Message=QCK^Q02
-Called by=

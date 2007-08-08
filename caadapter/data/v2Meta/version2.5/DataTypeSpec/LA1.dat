@@ -1,9 +1,0 @@
-LA1	1	IS	0302	20		point of care	N	^
-LA1	2	IS	0303	20		room	N	^
-LA1	3	IS	0304	20		bed	N	^
-LA1	4	HD		227		facility	N	^
-LA1	5	IS	0306	20		location status	N	^
-LA1	6	IS	0305	20		patient location type	N	^
-LA1	7	IS	0307	20		building	N	^
-LA1	8	IS	0308	20		floor	N	^
-LA1	9	AD		415		address	N	E

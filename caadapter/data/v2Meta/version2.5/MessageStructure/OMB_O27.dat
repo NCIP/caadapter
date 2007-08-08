@@ -1,7 +1,0 @@
-Message Type=OMB
-Message Type Name=Blood product order message
-Trigger Event=O27
-Trigger Description=OMB _ Blood product order
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] BPO [ SPM ] [ { NTE } ] [ { DG1 } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] [ { FT1 } ] [ BLG ] }
-Return Message=ORB^O28
-Called by=

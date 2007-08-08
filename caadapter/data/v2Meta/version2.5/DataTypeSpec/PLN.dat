@@ -1,4 +1,0 @@
-PLN	1	ST		20	R	ID number	N	^
-PLN	2	IS	0338	8	R	type of ID number	N	^
-PLN	3	ST		62		state/other qualifying info	N	^
-PLN	4	DT		8		expiration date	N	E

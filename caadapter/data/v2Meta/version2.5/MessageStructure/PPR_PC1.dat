@@ -1,7 +1,0 @@
-Message Type=PPR
-Message Type Name=Patient problem message
-Trigger Event=PC1
-Trigger Description=PPR - PC/ problem add
-Message Structure=MSH [ { SFT } ] PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PATHWAY! PTH [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] [ { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] }
-Return Message=ACK^PC1
-Called by=

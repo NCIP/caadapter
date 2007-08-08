@@ -1,7 +1,0 @@
-Message Type=MFQ
-Message Type Name=Master files query
-Trigger Event=M01
-Trigger Description=MFN/MFK - Master file not otherwise specified (for backward compatibility only)
-Message Structure=MSH [ { SFT } ] QRD [ QRF ] [ DSC ]
-Return Message=MFR^M01
-Called by=

@@ -1,7 +1,0 @@
-Message Type=MFR
-Message Type Name=Master files response
-Trigger Event=M01
-Trigger Description=MFN/MFK - Master file not otherwise specified (for backward compatibility only)
-Message Structure=MSH [ { SFT } ] MSA [ { ERR } ] [ QAK ] QRD [ QRF ] MFI { !MF_QUERY! MFE [ { VRY } ] } [ DSC ]
-Return Message=ACK^M01
-Called by=MFQ^M01

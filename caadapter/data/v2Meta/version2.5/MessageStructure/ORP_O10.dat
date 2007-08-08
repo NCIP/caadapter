@@ -1,7 +1,0 @@
-Message Type=ORP
-Message Type Name=Pharmacy/treatment order acknowledgment message
-Trigger Event=O10
-Trigger Description=ORP _ Pharmacy/treatment order acknowledgment
-Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !ORDER_DETAIL! RXO [ { NTE } ] { RXR } [ { !COMPONENT! RXC [ { NTE } ] } ] ] } ]
-Return Message=ACK^O10
-Called by=OMP^O09

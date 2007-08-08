@@ -1,1 +1,0 @@
-RPI	I04	RPI	I04			 MSH  MSA {  PRD [ {  CTD } ] }  PID [ {  NK1 } ] [ [ {  GT1 } ] { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [ {  NTE } ] 	Return Patient Information - request for patient demographic data	Return patient information	RQD/RPI - Request for patient demographic data

@@ -1,1 +1,0 @@
-ORR	O02	ORR	O02			 MSH  MSA [  ERR ] [ {  NTE } ] [ !RESPONSE![ !PATIENT! PID [ {  NTE } ] ] { !ORDER! ORC <  OBR  RQD  RQ1  RXO  ODS  ODT > [ {  NTE } ] [ {  CTI } ] } ] 		General order response message response to any ORM	ORR - Order response (also RRE, RRD, RRG, RRA)

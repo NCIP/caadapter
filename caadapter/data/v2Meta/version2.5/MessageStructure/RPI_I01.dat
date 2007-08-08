@@ -1,7 +1,0 @@
-Message Type=RPI
-Message Type Name=Return patient information
-Trigger Event=I01
-Trigger Description=RQI/RPI - Request for insurance information
-Message Structure=MSH [ { SFT } ] MSA { !PROVIDER! PRD [ { CTD } ] } PID [ { NK1 } ] [ !GUARANTOR_INSURANCE! [ { GT1 } ] { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ { NTE } ]
-Return Message=ACK^I01
-Called by=RQI^I01

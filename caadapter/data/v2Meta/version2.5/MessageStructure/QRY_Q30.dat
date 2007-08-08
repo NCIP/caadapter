@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=Q30
-Trigger Description=QRY/RGR - Pharmacy/treatment dose information
-Message Structure=QRY_Q01
-Return Message=RGR^RGR
-Called by=

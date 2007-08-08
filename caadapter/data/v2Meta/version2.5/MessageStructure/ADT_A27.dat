@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A27
-Trigger Description=ADT/ACK -  Cancel pending admit
-Message Structure=ADT_A21
-Return Message=ACK^A27
-Called by=

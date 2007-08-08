@@ -1,1 +1,0 @@
-OMN	O07	OMN	O07			 MSH [ {  NTE } ] [ !PATIENT! PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ] [ { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [  GT1 ] [ {  AL1 } ] ] { !ORDER! ORC  RQD [  RQ1 ] [ {  NTE } ] [ { !OBSERVATION! OBX [ {  NTE } ] } ] [  BLG ] } 		Non-stock requisition order message	OMN - Non-stock requisition order

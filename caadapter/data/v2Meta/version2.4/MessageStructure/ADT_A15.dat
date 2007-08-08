@@ -1,1 +1,0 @@
-ADT	A15	ADT	A15	ACK		 MSH  EVN  PID [  PD1 ] [ {  ROL } ]  PV1 [  PV2 ] [ {  ROL } ] [ {  DB1 } ] [ {  OBX } ] [ {  DG1 } ] 		ADT message	ADT/ACK -  Pending transfer

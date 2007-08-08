@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A31
-Trigger Description=ADT/ACK -  Update person information
-Message Structure=ADT_A05
-Return Message=ACK^A31
-Called by=

@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A62
-Trigger Description=ADT/ACK _ Cancel change consulting doctor
-Message Structure=ADT_A61
-Return Message=ACK^A62
-Called by=

@@ -1,7 +1,0 @@
-Message Type=CRM
-Message Type Name=Clinical study registration message
-Trigger Event=C01
-Trigger Description=CRM - Register a patient on a clinical trial
-Message Structure=MSH [ { SFT } ] { !PATIENT! PID [ PV1 ] CSR { [ CSP ] } }
-Return Message=
-Called by=

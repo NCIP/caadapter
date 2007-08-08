@@ -1,6 +1,0 @@
-CF	1	ID				identifier	N	^
-CF	2	FT				formatted text	N	^
-CF	3	ST				name of coding system	N	^
-CF	4	ID				alternate identifier	N	^
-CF	5	FT				alternate formatted text	N	^
-CF	6	ST				name of alternate coding system	N	E

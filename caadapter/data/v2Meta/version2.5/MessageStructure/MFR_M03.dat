@@ -1,7 +1,0 @@
-Message Type=MFR
-Message Type Name=Master files response
-Trigger Event=M03
-Trigger Description=MFN/MFK - Master file - test/observation (for backward compatibility only)
-Message Structure=MFR_M01
-Return Message=ACK^M03
-Called by=MFQ^M03

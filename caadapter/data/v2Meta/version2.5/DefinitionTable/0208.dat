@@ -1,4 +1,0 @@
-HL7	Query Response Status	0208	AE	Application error
-HL7	Query Response Status	0208	AR	Application reject
-HL7	Query Response Status	0208	NF	No data found/ no errors
-HL7	Query Response Status	0208	OK	Data found/ no errors (this is the default)

@@ -1,7 +1,0 @@
-Message Type=MFR
-Message Type Name=Master files response
-Trigger Event=M04
-Trigger Description=MFN/MFK - Master files charge description
-Message Structure=MFR_M01
-Return Message=ACK^M04
-Called by=MFQ^M04

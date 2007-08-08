@@ -1,7 +1,0 @@
-Message Type=MFN
-Message Type Name=Master files notification
-Trigger Event=M01
-Trigger Description=MFN/MFK - Master file not otherwise specified (for backward compatibility only)
-Message Structure=MSH [ { SFT } ] MFI { !MF! MFE [ { VRY } ] }
-Return Message=MFK^M01
-Called by=

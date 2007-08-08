@@ -1,8 +1,0 @@
-HL7	Relational operator	0209	CT	Contains
-HL7	Relational operator	0209	EQ	Equal
-HL7	Relational operator	0209	GE	Greater than or equal
-HL7	Relational operator	0209	GN	Generic
-HL7	Relational operator	0209	GT	Greater than
-HL7	Relational operator	0209	LE	Less than or equal
-HL7	Relational operator	0209	LT	Less than
-HL7	Relational operator	0209	NE	Not Equal

@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A13
-Trigger Description=ADT/ACK -  Cancel discharge/end visit
-Message Structure=ADT_A01
-Return Message=ACK^A13
-Called by=

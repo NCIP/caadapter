@@ -1,7 +1,0 @@
-Message Type=OUL
-Message Type Name=Unsolicited laboratory observation message
-Trigger Event=R21
-Trigger Description=OUL _ Unsolicited laboratory observation
-Message Structure=MSH [ { SFT } ] [ NTE ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] ] [ !VISIT! PV1 [ PV2 ] ] { !ORDER_OBSERVATION! [ !CONTAINER! SAC [ SID ] ] [ ORC ] OBR [ { NTE } ] [ { !TIMING_QTY! TQ1 [ { TQ2 } ] } ] { !OBSERVATION! [ OBX ] [ TCD ] { [ SID ] } [ { NTE } ] } [ { CTI } ] } [ DSC ]
-Return Message=
-Called by=

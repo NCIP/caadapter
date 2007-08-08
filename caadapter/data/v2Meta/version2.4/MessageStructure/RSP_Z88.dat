@@ -1,1 +1,0 @@
-RSP	Z88	RSP	Z88			 MSH  MSA [  ERR ]  QAK  QPD  RCP { [ !PATIENT! PID [  PD1 ] [ {  NTE } ] [ {  AL1 } [ !PATIENT_VISIT! PV1 [  PV2 ] ] ] { !ORDER! ORC [ !ORDER_DETAIL! RXO [ {  NTE } ] {  RXR } [ { !COMPONENT! RXC } [ {  NTE } ] ] ] [ !ENCODING! RXE {  RXR } [ {  RXC } ] ]  RXD {  RXR } [ {  RXC } ] { !OBSERVATION![  OBX ] [ {  NTE } ] } } ]  DSC } 		Segment pattern response	

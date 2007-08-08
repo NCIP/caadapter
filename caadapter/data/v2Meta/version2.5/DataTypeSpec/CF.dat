@@ -1,6 +1,0 @@
-CF	1	ST		20		identifier	N	^
-CF	2	FT		65536		formatted text	N	^
-CF	3	ID	0396	20		name of coding system	N	^
-CF	4	ST		20		alternate identifier	N	^
-CF	5	FT		65536		alternate formatted text	N	^
-CF	6	ID	0396	20		name of alternate coding system	N	E

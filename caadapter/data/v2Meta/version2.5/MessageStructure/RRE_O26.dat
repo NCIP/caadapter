@@ -1,7 +1,0 @@
-Message Type=RRE
-Message Type Name=Pharmacy/treatment encoded order acknowledgment message
-Trigger Event=O26
-Trigger Description=RRE - Pharmacy/Treatment Refill Authorization Acknowledgement
-Message Structure=RRE_O12
-Return Message=ACK^O26
-Called by=RDE^O25

@@ -1,9 +1,0 @@
-HL7	Event Consequence	0240	C	Congenital anomaly/birth defect
-HL7	Event Consequence	0240	D	Death
-HL7	Event Consequence	0240	H	Caused hospitalized
-HL7	Event Consequence	0240	I	Incapacity which is significant/ persistent or permanent
-HL7	Event Consequence	0240	J	Disability which is significant/ persistent or permanent
-HL7	Event Consequence	0240	L	Life threatening
-HL7	Event Consequence	0240	O	Other
-HL7	Event Consequence	0240	P	Prolonged hospitalization
-HL7	Event Consequence	0240	R	Required intervention to prevent permanent impairment/damage

@@ -1,9 +1,0 @@
-OM5	1	-1	-1	4	00586	NM	O		0				Sequence Number	Numeric	
-OM5	2	0	-1	250	00655	CE	O	Y	0	9999			Test/Observations Included within an Ordered Test Battery	Coded element	
-OM5	2	1	-1	0		ST			0					String	identifier
-OM5	2	2	-1	0		ST			0					String	text
-OM5	2	3	-1	0		IS			0	9999				Coded value for user-defined tables	name of coding system
-OM5	2	4	-1	0		ST			0					String	alternate identifier
-OM5	2	5	-1	0		ST			0					String	alternate text
-OM5	2	6	-1	0		IS			0	9999				Coded value for user-defined tables	name of alternate coding system
-OM5	3	-1	-1	250	00656	ST	O		0				Observation ID Suffixes	String	

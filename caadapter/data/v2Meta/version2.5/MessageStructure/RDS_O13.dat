@@ -1,7 +1,0 @@
-Message Type=RDS
-Message Type Name=Pharmacy/treatment dispense message
-Trigger Event=O13
-Trigger Description=RDS _ Pharmacy/treatment dispense
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ { AL1 } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !ORDER_DETAIL! RXO [ !ORDER_DETAIL_SUPPLEMENT! { NTE } { RXR } [ { !COMPONENT! RXC [ { NTE } ] } ] ] ] [ !ENCODING! RXE [ { NTE } ] { !TIMING_ENCODED! TQ1 [ { TQ2 } ] } { RXR } [ { RXC } ] ] RXD [ { NTE } ] { RXR } [ { RXC } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] [ { FT1 } ] }
-Return Message=RRD^O14
-Called by=

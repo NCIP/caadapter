@@ -1,3 +1,0 @@
-BTS	1	-1	-1	10	00093	ST	O		0				Batch Message Count	String	
-BTS	2	-1	-1	80	00090	ST	O		0				Batch Comment	String	
-BTS	3	-1	-1	100	00095	NM	O	Y	0				Batch Totals	Numeric	

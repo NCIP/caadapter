@@ -1,7 +1,0 @@
-Message Type=SQR
-Message Type Name=Schedule query response
-Trigger Event=S25
-Trigger Description=SQM/SQR - Schedule query message and response
-Message Structure=MSH MSA [ { ERR } ] QAK [ { !SCHEDULE! SCH [ { TQ1 } ] [ { NTE } ] [ !PATIENT! PID [ PV1 ] [ PV2 ] [ DG1 ] ] { !RESOURCES! RGS [ { !SERVICE! AIS [ { NTE } ] } ] [ { !GENERAL_RESOURCE! AIG [ { NTE } ] } ] [ { !PERSONNEL_RESOURCE! AIP [ { NTE } ] } ] [ { !LOCATION_RESOURCE! AIL [ { NTE } ] } ] } } ] [ DSC ]
-Return Message=ACK^S25
-Called by=SQM^S25

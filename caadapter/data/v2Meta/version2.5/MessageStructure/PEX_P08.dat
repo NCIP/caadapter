@@ -1,7 +1,0 @@
-Message Type=PEX
-Message Type Name=Product experience message
-Trigger Event=P08
-Trigger Description=PEX - Unsolicited update individual product experience report
-Message Structure=PEX_P07
-Return Message=
-Called by=

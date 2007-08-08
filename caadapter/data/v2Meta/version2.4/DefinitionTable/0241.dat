@@ -1,7 +1,0 @@
-HL7	Patient outcome	0241	D	Died
-HL7	Patient outcome	0241	F	Fully recovered
-HL7	Patient outcome	0241	N	Not recovering/unchanged
-HL7	Patient outcome	0241	R	Recovering
-HL7	Patient outcome	0241	S	Sequelae
-HL7	Patient outcome	0241	U	Unknown
-HL7	Patient outcome	0241	W	Worsening

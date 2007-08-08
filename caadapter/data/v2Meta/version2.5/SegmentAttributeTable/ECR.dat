@@ -1,9 +1,0 @@
-ECR	1	0	-1	250	01395	CE	R		0	0387			Command Response	Coded element	
-ECR	1	1	-1	20		IS			0	0387				String	identifier
-ECR	1	2	-1	199		ST			0					String	text
-ECR	1	3	-1	20		IS			0	0396				Coded value for user-defined tables	name of coding system
-ECR	1	4	-1	20		ST			0					String	alternate identifier
-ECR	1	5	-1	199		ST			0					String	alternate text
-ECR	1	6	-1	20		IS			0	0396				Coded value for user-defined tables	name of alternate coding system
-ECR	2	-1	-1	26	01396	TS	R		0				Date/Time Completed	Time stamp	
-ECR	3	-1	-1	65536	01397	TX	O	Y	0				Command Response Parameters	Text data	

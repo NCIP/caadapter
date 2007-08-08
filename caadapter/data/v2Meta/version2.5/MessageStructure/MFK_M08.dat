@@ -1,7 +1,0 @@
-Message Type=MFK
-Message Type Name=Master files application acknowledgment
-Trigger Event=M08
-Trigger Description=MFN/MFK - Test/observation (numeric) master file
-Message Structure=MFK_M01
-Return Message=ACK^M08
-Called by=MFN^M08

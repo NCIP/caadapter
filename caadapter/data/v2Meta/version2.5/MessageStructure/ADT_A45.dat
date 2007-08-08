@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A45
-Trigger Description=ADT/ACK - Move visit information - visit number
-Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] { !MERGE_INFO! MRG PV1 }
-Return Message=ACK^A45
-Called by=

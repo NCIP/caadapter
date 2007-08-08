@@ -1,7 +1,0 @@
-Message Type=RQI
-Message Type Name=Request patient information
-Trigger Event=I03
-Trigger Description=RQI/RPR - Request/receipt of patient selection list
-Message Structure=RQI_I01
-Return Message=RPR^I03
-Called by=

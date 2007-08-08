@@ -1,6 +1,0 @@
-CP	1	MO		20	R	price	N	^
-CP	2	ID	0205	2		price type	N	^
-CP	3	NM		16		from value	N	^
-CP	4	NM		16		to value	N	^
-CP	5	CE		483		range units	N	^
-CP	6	ID	0298	1		range type	N	E

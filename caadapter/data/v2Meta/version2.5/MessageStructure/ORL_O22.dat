@@ -1,7 +1,0 @@
-Message Type=ORL
-Message Type Name=Laboratory acknowledgment message (unsolicited)
-Trigger Event=O22
-Trigger Description=ORL - General laboratory order response message to any OML
-Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !OBSERVATION_REQUEST! OBR [ { !SPECIMEN! SPM [ { SAC } ] } ] ] } ] ] ]
-Return Message=ACK^O22
-Called by=OML^O21

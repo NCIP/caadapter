@@ -1,7 +1,0 @@
-Message Type=RRA
-Message Type Name=Pharmacy/treatment administration acknowledgment message
-Trigger Event=O18
-Trigger Description=RRA _ Pharmacy/treatment administration acknowledgment
-Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !ADMINISTRATION! { RXA } RXR ] } ]
-Return Message=ACK^O18
-Called by=RAS^O17

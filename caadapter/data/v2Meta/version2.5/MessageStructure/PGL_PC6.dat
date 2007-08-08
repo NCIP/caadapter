@@ -1,7 +1,0 @@
-Message Type=PGL
-Message Type Name=Patient goal message
-Trigger Event=PC6
-Trigger Description=PGL - PC/ goal add
-Message Structure=MSH [ { SFT } ] PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !PATHWAY! PTH [ { VAR } ] } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] [ { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] }
-Return Message=ACK^PC6
-Called by=

@@ -1,4 +1,0 @@
-ELD	1	ST		3		segment ID	N	^
-ELD	2	NM		2		segment sequence	N	^
-ELD	3	NM		2		field position	N	^
-ELD	4	CE	0357	483		code identifying error	N	E

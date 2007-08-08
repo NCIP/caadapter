@@ -1,7 +1,0 @@
-Message Type=CSU
-Message Type Name=Unsolicited study data message
-Trigger Event=C12
-Trigger Description=CSU - Update/correction of patient order/result information
-Message Structure=CSU_C09
-Return Message=
-Called by=

@@ -1,8 +1,0 @@
-HL7	Container status	0370	I	Identified
-HL7	Container status	0370	L	Left Equipment
-HL7	Container status	0370	M	Missing
-HL7	Container status	0370	O	In Process
-HL7	Container status	0370	P	In Position
-HL7	Container status	0370	R	Process Completed
-HL7	Container status	0370	U	Unknown
-HL7	Container status	0370	X	Container Unavailable

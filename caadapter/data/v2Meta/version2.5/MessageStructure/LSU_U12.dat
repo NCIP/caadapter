@@ -1,7 +1,0 @@
-Message Type=LSU
-Message Type Name=Automated equipment log/service update message
-Trigger Event=U12
-Trigger Description=LSU/ACK _ Automated equipment log/service update
-Message Structure=MSH [ { SFT } ] EQU { EQP } [ ROL ]
-Return Message=ACK^U12
-Called by=

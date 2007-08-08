@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=PCE
-Trigger Description=QRY - PC/ pathway (problem-oriented) query
-Message Structure=QRY_PC4
-Return Message=PTR^PCF
-Called by=

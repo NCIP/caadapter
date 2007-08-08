@@ -1,7 +1,0 @@
-Message Type=VQQ
-Message Type Name=Virtual table query
-Trigger Event=Q07
-Trigger Description=VQQ _ Virtual table query
-Message Structure=MSH [ { SFT } ] VTQ [ RDF ] [ DSC ]
-Return Message=TBR^R08/EDR^R07
-Called by=

@@ -1,6 +1,0 @@
-HL7	Which date/time status qualifier	0157	ANY	Any status
-HL7	Which date/time status qualifier	0157	CFN	Current final value, whether final or corrected
-HL7	Which date/time status qualifier	0157	COR	Corrected only (no final with corrections)
-HL7	Which date/time status qualifier	0157	FIN	Final only (no corrections)
-HL7	Which date/time status qualifier	0157	PRE	Preliminary
-HL7	Which date/time status qualifier	0157	REP	Report completion date/time

@@ -1,7 +1,0 @@
-Message Type=UDM
-Message Type Name=Unsolicited display update message
-Trigger Event=Q05
-Trigger Description=UDM/ACK - Unsolicited display update message
-Message Structure=MSH [ { SFT } ] URD [ URS ] { DSP } [ DSC ]
-Return Message=ACK^Q05
-Called by=

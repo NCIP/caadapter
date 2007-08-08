@@ -1,7 +1,0 @@
-User	Immunization registry status	0441	A	Active
-User	Immunization registry status	0441	I	Inactive
-User	Immunization registry status	0441	L	Inactive - Lost to follow-up (cancel contract)
-User	Immunization registry status	0441	M	Inactive - Moved or gone elsewhere (cancel contract)
-User	Immunization registry status	0441	O	Other
-User	Immunization registry status	0441	P	Inactive - Permanently inactive (Do not reactivate or add new entries to the record)
-User	Immunization registry status	0441	U	Unknown

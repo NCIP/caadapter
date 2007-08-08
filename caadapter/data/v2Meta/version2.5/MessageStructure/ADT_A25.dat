@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A25
-Trigger Description=ADT/ACK -  Cancel pending discharge
-Message Structure=ADT_A21
-Return Message=ACK^A25
-Called by=

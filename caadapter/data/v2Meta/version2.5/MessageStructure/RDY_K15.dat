@@ -1,7 +1,0 @@
-Message Type=RDY
-Message Type Name=Display based response
-Trigger Event=K15
-Trigger Description=RDY - Display response in response to QBP^Q15
-Message Structure=MSH [ { SFT } ] MSA [ ERR ] QAK QPD [ { DSP } ] [ DSC ]
-Return Message=ACK^K15
-Called by=QBP^Q15

@@ -1,7 +1,0 @@
-Message Type=OMP
-Message Type Name=Pharmacy/treatment order message
-Trigger Event=O09
-Trigger Description=OMP _ Pharmacy/treatment order
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] RXO [ { NTE } ] { RXR } [ { !COMPONENT! RXC [ { NTE } ] } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] [ { FT1 } ] [ BLG ] }
-Return Message=ORP^O10
-Called by=

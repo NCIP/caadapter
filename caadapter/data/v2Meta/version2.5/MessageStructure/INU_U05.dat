@@ -1,7 +1,0 @@
-Message Type=INU
-Message Type Name=Automated equipment inventory update message
-Trigger Event=U05
-Trigger Description=INU/ACK  - Automated equipment inventory update
-Message Structure=MSH [ { SFT } ] EQU { INV } [ ROL ]
-Return Message=ACK^U05
-Called by=

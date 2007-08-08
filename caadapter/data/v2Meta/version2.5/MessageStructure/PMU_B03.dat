@@ -1,7 +1,0 @@
-Message Type=PMU
-Message Type Name=Add personnel record
-Trigger Event=B03
-Trigger Description=PMU/ACK _ Delete personnel re cord
-Message Structure=MSH [ { SFT } ] EVN STF
-Return Message=ACK^B03
-Called by=

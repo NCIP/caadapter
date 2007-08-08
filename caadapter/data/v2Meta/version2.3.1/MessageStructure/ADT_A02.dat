@@ -1,1 +1,0 @@
-ADT	A02	ADT	A02	ACK		 MSH  EVN  PID [  PD1 ] [ {  ROL } ]  PV1 [  PV2 ] [ {  ROL } ] [ {  DB1 } ] [ {  OBX } ] [  PDA ] 		ADT message	ADT/ACK - Transfer a patient

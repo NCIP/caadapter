@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A20
-Trigger Description=ADT/ACK -  Bed status update
-Message Structure=MSH [ { SFT } ] EVN NPU
-Return Message=ACK^A20
-Called by=

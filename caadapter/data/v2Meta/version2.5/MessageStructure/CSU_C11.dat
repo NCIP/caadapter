@@ -1,7 +1,0 @@
-Message Type=CSU
-Message Type Name=Unsolicited study data message
-Trigger Event=C11
-Trigger Description=CSU - Patient completes a phase of the clinical trial
-Message Structure=CSU_C09
-Return Message=
-Called by=

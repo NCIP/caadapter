@@ -1,4 +1,0 @@
-HL7	Date/time selection qualifier	0158	1ST	First value within range
-HL7	Date/time selection qualifier	0158	ALL	All values within the range
-HL7	Date/time selection qualifier	0158	LST	Last value within the range
-HL7	Date/time selection qualifier	0158	REV	All values within the range returned in reverse chronological order (This is the default if not otherwise specified.)

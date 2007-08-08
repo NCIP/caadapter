@@ -1,1 +1,0 @@
-ORG	O20	ORG	O20	ORL		 MSH  MSA [  ERR ] [ {  NTE } ] [ !RESPONSE![ !PATIENT! PID [ {  NTE } ] ] { !ORDER! ORC [  OBR ] [ {  NTE } ] [ {  CTI } ] } ] 		General clinical order acknowledgement message	ORG/ORL - General clinical order response

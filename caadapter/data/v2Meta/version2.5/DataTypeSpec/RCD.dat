@@ -1,3 +1,0 @@
-RCD	1	ST		12		segment field name	N	^
-RCD	2	ID	0440	3		HL7 data type	N	^
-RCD	3	NM		2		maximum column width	N	E

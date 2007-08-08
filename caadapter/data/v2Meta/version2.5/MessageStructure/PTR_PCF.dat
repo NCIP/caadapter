@@ -1,7 +1,0 @@
-Message Type=PTR
-Message Type Name=Patient pathway problem-oriented response
-Trigger Event=PCF
-Trigger Description=PTR - PC/ pathway (problem-oriented) query response
-Message Structure=MSH [ { SFT } ] MSA [ { ERR } ] [ QAK ] QRD { !PATIENT! PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !PATHWAY! PTH [ { NTE } ] [ { VAR } ] [ { !PATHWAY_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] [ { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] } ] } }
-Return Message=ACK^PCF
-Called by=QRY^PCE

@@ -1,1 +1,0 @@
-CSU	C09	CSU	C09			 MSH {  PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ]  CSR { [  CSP ] { [  CSS ] { !ORDER![  ORC ]  OBR {  OBX } } { !ORDER![  ORC ] { !ADMINISTRATION! RXA  RXR } } } } } 	Unsolicited Study Data Message - Automated time intervals for reporting, like monthly	Unsolicited study data message	CSU - Automated time intervals for reporting, like monthly

@@ -1,7 +1,0 @@
-Message Type=QCN
-Message Type Name=Cancel query
-Trigger Event=J01
-Trigger Description=QCN/ACK _ Cancel query/acknowledge message
-Message Structure=MSH [ { SFT } ] QID
-Return Message=ACK^J01
-Called by=

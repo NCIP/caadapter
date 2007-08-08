@@ -1,7 +1,0 @@
-Message Type=MFN
-Message Type Name=Master files notification
-Trigger Event=M08
-Trigger Description=MFN/MFK - Test/observation (numeric) master file
-Message Structure=MSH [ { SFT } ] MFI { !MF_TEST_NUMERIC! MFE OM1 [ OM2 ] [ OM3 ] [ OM4 ] }
-Return Message=MFK^M08
-Called by=

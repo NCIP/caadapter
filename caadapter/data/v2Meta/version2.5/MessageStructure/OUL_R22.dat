@@ -1,7 +1,0 @@
-Message Type=OUL
-Message Type Name=Unsolicited laboratory observation message
-Trigger Event=R22
-Trigger Description=OUL _ Unsolicited Specimen Oriented Observation Message
-Message Structure=MSH [ { SFT } ] [ NTE ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] ] [ !VISIT! PV1 [ PV2 ] ] { !SPECIMEN! SPM [ { OBX } ] [ { !CONTAINER! SAC [ INV ] } ] { !ORDER! OBR [ ORC ] [ { NTE } ] [ { !TIMING_QTY! TQ1 [ { TQ2 } ] } ] [ { !RESULT! OBX [ TCD ] { [ SID ] } [ { NTE } ] } ] [ { CTI } ] } } [ DSC ]
-Return Message=
-Called by=

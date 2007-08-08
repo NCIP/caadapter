@@ -1,7 +1,0 @@
-HL7	Special handling considerations	0376	C37	Critical maintain at 37C (e.g., cryoglobulin specimen
-HL7	Special handling considerations	0376	C#	Critical maintain at #C
-HL7	Special handling considerations	0376	CAMB	Critical ambient temperature
-HL7	Special handling considerations	0376	CATM	Critical do not expose to atmosphere - Do not uncap
-HL7	Special handling considerations	0376	CFRZ	Critical Frozen
-HL7	Special handling considerations	0376	CREF	Critical refrigerated
-HL7	Special handling considerations	0376	PRTL	Protect from light

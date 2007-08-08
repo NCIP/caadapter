@@ -1,7 +1,0 @@
-Message Type=SSR
-Message Type Name=Specimen status request message
-Trigger Event=U04
-Trigger Description=SSR/ACK - specimen status request
-Message Structure=MSH [ { SFT } ] EQU { !SPECIMEN_CONTAINER! SAC { [ SPM ] } } [ ROL ]
-Return Message=ACK^U04
-Called by=

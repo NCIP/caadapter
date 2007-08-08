@@ -1,7 +1,0 @@
-Message Type=RPA
-Message Type Name=Return patient authorization
-Trigger Event=I10
-Trigger Description=RQA/RPA - Request for resubmission of an authorization
-Message Structure=RPA_I08
-Return Message=ACK^I10
-Called by=RQA^I10

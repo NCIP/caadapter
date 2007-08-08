@@ -1,4 +1,0 @@
-HL7	Analyte repeat status	0389	D	Repeated with dilution
-HL7	Analyte repeat status	0389	F	Reflex test
-HL7	Analyte repeat status	0389	O	Original, first run
-HL7	Analyte repeat status	0389	R	Repeated without dilution

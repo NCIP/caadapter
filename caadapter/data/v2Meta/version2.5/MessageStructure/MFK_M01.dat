@@ -1,7 +1,0 @@
-Message Type=MFK
-Message Type Name=Master files application acknowledgment
-Trigger Event=M01
-Trigger Description=MFN/MFK - Master file not otherwise specified (for backward compatibility only)
-Message Structure=MSH [ { SFT } ] MSA [ { ERR } ] MFI [ { MFA } ]
-Return Message=ACK^M01
-Called by=MFN^M01

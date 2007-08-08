@@ -1,7 +1,0 @@
-Message Type=CSU
-Message Type Name=Unsolicited study data message
-Trigger Event=C09
-Trigger Description=CSU - Automated time intervals for reporting/ like monthly
-Message Structure=MSH [ { SFT } ] { !PATIENT! PID [ PD1 ] [ { NTE } ] [ !VISIT! PV1 [ PV2 ] ] CSR { !STUDY_PHASE! [ CSP ] { !STUDY_SCHEDULE! [ CSS ] { !STUDY_OBSERVATION! [ ORC ] OBR [ { !TIMING_QTY! TQ1 [ { TQ2 } ] } ] { OBX } } { !STUDY_PHARM! [ ORC ] { !RX_ADMIN! RXA RXR } } } } }
-Return Message=
-Called by=

@@ -1,6 +1,0 @@
-HL7	Modifier Edit Code	0467	0	Modifier does NOT exist
-HL7	Modifier Edit Code	0467	1	Modifier present/ no errors
-HL7	Modifier Edit Code	0467	2	Modifier invalid
-HL7	Modifier Edit Code	0467	3	Modifier NOT approved for ASC/HOPD use
-HL7	Modifier Edit Code	0467	4	Modifier approved for ASC/HOPD use/ inappropriate for code
-HL7	Modifier Edit Code	0467	U	Modifier edit code unknown

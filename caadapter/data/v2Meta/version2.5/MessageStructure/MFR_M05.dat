@@ -1,7 +1,0 @@
-Message Type=MFR
-Message Type Name=Master files response
-Trigger Event=M05
-Trigger Description=MFN/MFK - Patient location master file
-Message Structure=MFR_M01
-Return Message=ACK^M05
-Called by=MFQ^M05

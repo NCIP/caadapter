@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A43
-Trigger Description=ADT/ACK - Move patient information _ patient identifier list
-Message Structure=MSH [ { SFT } ] EVN { !PATIENT! PID [ PD1 ] MRG }
-Return Message=ACK^A43
-Called by=

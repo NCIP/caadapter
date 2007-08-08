@@ -1,7 +1,0 @@
-Message Type=SSU
-Message Type Name=Specimen status update message
-Trigger Event=U03
-Trigger Description=SSU/ACK - Specimen status update
-Message Structure=MSH [ { SFT } ] EQU { !SPECIMEN_CONTAINER! SAC { [ OBX ] } { [ !SPECIMEN! SPM { [ OBX ] } ] } } [ ROL ]
-Return Message=ACK^U03
-Called by=

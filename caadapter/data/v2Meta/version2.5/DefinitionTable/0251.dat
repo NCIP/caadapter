@@ -1,6 +1,0 @@
-HL7	Action Taken in Response to the Event	0251	DI	Product dose or frequency of use increased
-HL7	Action Taken in Response to the Event	0251	DR	Product dose or frequency of use reduced
-HL7	Action Taken in Response to the Event	0251	N	None
-HL7	Action Taken in Response to the Event	0251	OT	Other
-HL7	Action Taken in Response to the Event	0251	WP	Product withdrawn permanently
-HL7	Action Taken in Response to the Event	0251	WT	Product withdrawn temporarily

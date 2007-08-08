@@ -1,7 +1,0 @@
-Message Type=ACK
-Message Type Name=General acknowledgment
-Trigger Event=Varies
-Trigger Description=General acknowledgment
-Message Structure=MSH [ { SFT } ] MSA [ { ERR } ]
-Return Message=
-Called by=

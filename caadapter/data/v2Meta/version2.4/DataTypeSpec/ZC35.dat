@@ -1,7 +1,0 @@
-ZC35	1	NM				channel sensitivity	N	^
-ZC35	2	ST				unit of measure identifier	N	^
-ZC35	3	ST				unit of measure description	N	^
-ZC35	4	IS	0396			unit of measure coding system	N	^
-ZC35	5	ST				alternate unit of measure identifier	N	^
-ZC35	6	ST				alternate unit of measure description	N	^
-ZC35	7	IS	0396			alternate unit of measure coding system	N	E

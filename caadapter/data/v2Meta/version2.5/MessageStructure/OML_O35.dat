@@ -1,7 +1,0 @@
-Message Type=OML
-Message Type Name=Laboratory order message
-Trigger Event=O35
-Trigger Description=OML _ Laboratory order for multiple orders related to a single container of a specimen
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ { NK1 } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !SPECIMEN! SPM [ { OBX } ] { !SPECIMEN_CONTAINER! SAC { !ORDER! ORC [ { !TIIMING! TQ1 [ { TQ2 } ] } ] [ !OBSERVATION_REQUEST! OBR [ TCD ] [ { NTE } ] [ { DG1 } ] [ { !OBSERVATION! OBX [ TCD ] [ { NTE } ] } ] [ { !PRIOR_RESULT! [ !PATIENT_PRIOR! PID [ PD1 ] ] [ !PATIENT_VISIT_PRIOR! PV1 [ PV2 ] ] [ { AL1 } ] { !ORDER_PRIOR! [ ORC ] OBR [ { NTE } ] [ { !TIMING_PRIOR! TQ1 [ { TQ2 } ] } ] { !OBSERVATION_PRIOR! OBX [ { NTE } ] } } } ] ] [ { FT1 } ] [ { CTI } ] [ BLG ] } } }
-Return Message=ORL^O36
-Called by=

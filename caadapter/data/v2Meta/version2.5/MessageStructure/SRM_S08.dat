@@ -1,7 +1,0 @@
-Message Type=SRM
-Message Type Name=Schedule request message
-Trigger Event=S08
-Trigger Description=SRM/SRR - Request modification of service/resource on appointment
-Message Structure=SRM_S01
-Return Message=SRR^S08
-Called by=

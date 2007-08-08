@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=PCK
-Trigger Description=QRY - PC/ pathway (goal-oriented) query
-Message Structure=QRY_PC4
-Return Message=PPT^PCL
-Called by=

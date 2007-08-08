@@ -1,9 +1,0 @@
-CNE	1	ST		20	R	identifier	N	^
-CNE	2	ST		199		text	N	^
-CNE	3	ID	0396	20		name of coding system	N	^
-CNE	4	ST		20		alternate identifier	N	^
-CNE	5	ST		199		alternate text	N	^
-CNE	6	ID	0396	20		name of alternate coding system	N	^
-CNE	7	ST		10		coding system version ID	N	^
-CNE	8	ST		10		alternate coding system version ID	N	^
-CNE	9	ST		199		original text	N	E

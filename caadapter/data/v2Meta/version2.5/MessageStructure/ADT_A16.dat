@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A16
-Trigger Description=ADT/ACK -  Pending discharge
-Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] [ { ROL } ] [ { NK1 } ] PV1 [ PV2 ] [ { ROL } ] [ { DB1 } ] [ { OBX } ] [ { AL1 } ] [ { DG1 } ] [ DRG ] [ { !PROCEDURE! PR1 [ { ROL } ] } ] [ { GT1 } ] [ { !INSURANCE! IN1 [ IN2 ] [ { IN3 } ] [ { ROL } ] } ] [ ACC ]
-Return Message=ACK^A16
-Called by=

@@ -1,7 +1,0 @@
-Message Type=ORR
-Message Type Name=General order response message response to any ORM
-Trigger Event=O02
-Trigger Description=ORR - Order response (also RRE/ RRD/ RRG/ RRA)
-Message Structure=MSH MSA [ { ERR } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { CTI } ] } ]
-Return Message=ACK^O02
-Called by=ORM^O01

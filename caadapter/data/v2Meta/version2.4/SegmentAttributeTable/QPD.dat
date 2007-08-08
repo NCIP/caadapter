@@ -1,9 +1,0 @@
-QPD	1	0	-1	250	01375	CE	R		0	0471			Message Query Name	Coded element	
-QPD	1	1	-1	0		ST			0					String	identifier
-QPD	1	2	-1	0		ST			0					String	text
-QPD	1	3	-1	0		IS			0	0471				Coded value for user-defined tables	name of coding system
-QPD	1	4	-1	0		ST			0					String	alternate identifier
-QPD	1	5	-1	0		ST			0					String	alternate text
-QPD	1	6	-1	0		IS			0	0471				Coded value for user-defined tables	name of alternate coding system
-QPD	2	-1	-1	32	00696	ST	C		0				Query Tag	String	
-QPD	3	-1	-1	256	01435	VRY	O	Y	0				User Parameters (in successive fields)	Varis	

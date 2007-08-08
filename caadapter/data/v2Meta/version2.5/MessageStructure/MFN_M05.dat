@@ -1,7 +1,0 @@
-Message Type=MFN
-Message Type Name=Master files notification
-Trigger Event=M05
-Trigger Description=MFN/MFK - Patient location master file
-Message Structure=MSH [ { SFT } ] MFI { !MF_LOCATION! MFE LOC [ { LCH } ] [ { LRL } ] { !MF_LOC_DEPT! LDP [ { LCH } ] [ { LCC } ] } }
-Return Message=MFK^M05
-Called by=

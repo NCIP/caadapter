@@ -1,8 +1,0 @@
-User	Diagnosis classification	0228	C	Consultation
-User	Diagnosis classification	0228	D	Diagnosis
-User	Diagnosis classification	0228	I	Invasive procedure not classified elsewhere (I.V., catheter, etc.)
-User	Diagnosis classification	0228	M	Medication (antibiotic)
-User	Diagnosis classification	0228	O	Other
-User	Diagnosis classification	0228	R	Radiological scheduling (not using ICDA codes)
-User	Diagnosis classification	0228	S	Sign and symptom
-User	Diagnosis classification	0228	T	Tissue diagnosis

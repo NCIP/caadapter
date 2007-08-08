@@ -1,7 +1,0 @@
-Message Type=ORF
-Message Type Name=Query for results of observation
-Trigger Event=R04
-Trigger Description=ORF - Response to query; transmission of requested observation
-Message Structure=MSH [ { SFT } ] MSA QRD [ QRF ] { !QUERY_RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! [ ORC ] OBR { [ NTE ] } [ { !TIMING_QTY! TQ1 [ { TQ2 } ] } ] [ CTD ] { !OBSERVATION! [ OBX ] { [ NTE ] } } { [ CTI ] } } } [ { ERR } ] [ QAK ] [ DSC ]
-Return Message=ACK^R04
-Called by=QRY^R02

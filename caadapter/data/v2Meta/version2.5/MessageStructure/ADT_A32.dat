@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A32
-Trigger Description=ADT/ACK -  Cancel patient arriving - tracking
-Message Structure=ADT_A21
-Return Message=ACK^A32
-Called by=

@@ -1,8 +1,0 @@
-AD	1	ST		120		street address	N	^
-AD	2	ST		120		other designation	N	^
-AD	3	ST		50		city	N	^
-AD	4	ST		50		state or province	N	^
-AD	5	ST		12		zip or postal code	N	^
-AD	6	ID	0399	3		country	N	^
-AD	7	ID	0190	3		address type	N	^
-AD	8	ST		50		other geographic designation	N	E

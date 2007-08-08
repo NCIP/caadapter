@@ -1,1 +1,0 @@
-OMP	O09	OMP	O09			 MSH [ {  NTE } ] [ !PATIENT! PID [  PD1 ] [ {  NTE } ] [ !PATIENT_VISIT! PV1 [  PV2 ] ] [ { !INSURANCE! IN1 [  IN2 ] [  IN3 ] } ] [  GT1 ] [ {  AL1 } ] ] { !ORDER! ORC  RXO [ {  NTE } ] {  RXR } [ { !COMPONENT! RXC [ {  NTE } ] } ] [ { !OBSERVATION! OBX [ {  NTE } ] } ] [ {  FT1 } ] [  BLG ] } 		Pharmacy/treatment order message	OMP - Pharmacy/treatment order

@@ -1,7 +1,0 @@
-HL7	Specimen Action Code	0065	A	Add ordered tests to the existing specimen
-HL7	Specimen Action Code	0065	G	Generated order; reflex order
-HL7	Specimen Action Code	0065	L	Lab to obtain specimen from patient
-HL7	Specimen Action Code	0065	O	Specimen obtained by service other than Lab
-HL7	Specimen Action Code	0065	P	Pending specimen; Order sent prior to delivery
-HL7	Specimen Action Code	0065	R	Revised order
-HL7	Specimen Action Code	0065	S	Schedule the tests specified below

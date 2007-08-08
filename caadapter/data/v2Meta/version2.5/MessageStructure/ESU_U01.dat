@@ -1,7 +1,0 @@
-Message Type=ESU
-Message Type Name=Automated equipment status update message
-Trigger Event=U01
-Trigger Description=ESU/ACK _ Automated equipment status update
-Message Structure=MSH [ { SFT } ] EQU { [ ISD ] } [ ROL ]
-Return Message=ACK^U01
-Called by=

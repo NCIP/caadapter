@@ -1,7 +1,0 @@
-Message Type=MFD
-Message Type Name=Master files delayed application acknowledgment
-Trigger Event=MFA
-Trigger Description=MFD - Master files delayed application acknowledgment
-Message Structure=MSH [ { SFT } ] MFI [ { MFA } ]
-Return Message=ACK^MFA
-Called by=

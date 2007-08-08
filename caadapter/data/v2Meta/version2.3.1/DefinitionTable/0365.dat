@@ -1,9 +1,0 @@
-HL7	Equipment state	0365	CL	Clearing
-HL7	Equipment state	0365	CO	Configuring
-HL7	Equipment state	0365	ES	E-stopped
-HL7	Equipment state	0365	ID	Idle
-HL7	Equipment state	0365	IN	Initializing
-HL7	Equipment state	0365	OP	Normal Operation
-HL7	Equipment state	0365	PA	Pausing
-HL7	Equipment state	0365	PD	Paused
-HL7	Equipment state	0365	PU	Powered Up

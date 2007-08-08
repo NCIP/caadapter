@@ -1,7 +1,0 @@
-Message Type=SIU
-Message Type Name=Schedule information unsolicited
-Trigger Event=S17
-Trigger Description=SIU/ACK - Notification of appointment deletion
-Message Structure=SIU_S12
-Return Message=ACK^S17
-Called by=

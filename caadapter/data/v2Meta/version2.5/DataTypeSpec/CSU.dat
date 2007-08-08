@@ -1,7 +1,0 @@
-CSU	1	NM		60	R	channel sensitivity	N	^
-CSU	2	ST		20	C	unit of measure identifier	N	^
-CSU	3	ST		199	C	unit of measure description	N	^
-CSU	4	ID	0396	20	C	unit of measure coding system	N	^
-CSU	5	ST		20		alternate unit of measure identifier	N	^
-CSU	6	ST		199		alternate unit of measure description	N	^
-CSU	7	ID	0396	20		alternate unit of measure coding system	N	E

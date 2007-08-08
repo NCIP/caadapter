@@ -1,8 +1,0 @@
-AD	1	ST				street address	N	^
-AD	2	ST				other designation	N	^
-AD	3	ST				city	N	^
-AD	4	ST				state or province	N	^
-AD	5	ST				zip or postal code	N	^
-AD	6	ID	0399			country	N	^
-AD	7	ID	0190			address type	N	^
-AD	8	ST				other geographic designation	N	E

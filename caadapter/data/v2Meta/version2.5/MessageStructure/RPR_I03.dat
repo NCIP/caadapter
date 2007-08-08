@@ -1,7 +1,0 @@
-Message Type=RPR
-Message Type Name=Return patient list
-Trigger Event=I03
-Trigger Description=RQI/RPR - Request/receipt of patient selection list
-Message Structure=MSH [ { SFT } ] MSA { !PROVIDER! PRD [ { CTD } ] } [ { PID } ] [ { NTE } ]
-Return Message=ACK^I03
-Called by=RQI^I03

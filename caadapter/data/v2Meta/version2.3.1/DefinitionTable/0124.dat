@@ -1,4 +1,0 @@
-HL7	Transportation mode	0124	CART	Cart - patient travels on cart or gurney
-HL7	Transportation mode	0124	PORT	The examining device goes to patient`s location
-HL7	Transportation mode	0124	WALK	Patient walks to diagnostic service
-HL7	Transportation mode	0124	WHLC	Wheelchair

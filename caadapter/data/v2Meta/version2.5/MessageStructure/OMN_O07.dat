@@ -1,7 +1,0 @@
-Message Type=OMN
-Message Type Name=Non-stock requisition order message
-Trigger Event=O07
-Trigger Description=OMN _ Non-stock requisition order
-Message Structure=MSH [ { SFT } ] [ { NTE } ] [ !PATIENT! PID [ PD1 ] [ { NTE } ] [ !PATIENT_VISIT! PV1 [ PV2 ] ] [ { !INSURANCE! IN1 [ IN2 ] [ IN3 ] } ] [ GT1 ] [ { AL1 } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] RQD [ RQ1 ] [ { NTE } ] [ { !OBSERVATION! OBX [ { NTE } ] } ] [ BLG ] }
-Return Message=ORN^O08
-Called by=

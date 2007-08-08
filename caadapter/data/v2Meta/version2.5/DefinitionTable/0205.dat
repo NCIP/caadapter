@@ -1,7 +1,0 @@
-HL7	Price type	0205	AP	administrative price or handling fee
-HL7	Price type	0205	DC	direct unit cost
-HL7	Price type	0205	IC	indirect unit cost
-HL7	Price type	0205	PF	professional fee for performing provider
-HL7	Price type	0205	TF	technology fee for use of equipment
-HL7	Price type	0205	TP	total price
-HL7	Price type	0205	UP	unit price/ may be based on length of procedure or service

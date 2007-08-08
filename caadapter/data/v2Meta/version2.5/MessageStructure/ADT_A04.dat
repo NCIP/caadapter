@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A04
-Trigger Description=ADT/ACK -  Register a patient
-Message Structure=ADT_A01
-Return Message=ACK^A04
-Called by=

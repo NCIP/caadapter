@@ -1,7 +1,0 @@
-Message Type=PRR
-Message Type Name=Patient problem response
-Trigger Event=PC5
-Trigger Description=PRR - PC/ problem response
-Message Structure=MSH [ { SFT } ] MSA [ { ERR } ] [ QAK ] QRD { !PATIENT! PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_PATHWAY! PTH [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] [ { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] } }
-Return Message=ACK^PC5
-Called by=QRY^PC4

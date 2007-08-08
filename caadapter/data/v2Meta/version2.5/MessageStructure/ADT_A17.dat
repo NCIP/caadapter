@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A17
-Trigger Description=ADT/ACK -  Swap patients
-Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] PV1 [ PV2 ] [ { DB1 } ] [ { OBX } ] PID [ PD1 ] PV1 [ PV2 ] [ { DB1 } ] [ { OBX } ]
-Return Message=ACK^A17
-Called by=

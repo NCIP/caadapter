@@ -1,7 +1,0 @@
-Message Type=MDM
-Message Type Name=Medical document management
-Trigger Event=T01
-Trigger Description=MDM/ACK - Original document notification
-Message Structure=MSH [ { SFT } ] EVN PID PV1 [ { !COMMON_ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] OBR [ { NTE } ] } ] TXA
-Return Message=ACK^T01
-Called by=

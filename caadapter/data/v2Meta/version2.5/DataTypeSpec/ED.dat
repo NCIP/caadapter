@@ -1,5 +1,0 @@
-ED	1	HD		227		source application	N	^
-ED	2	ID	0191	9	R	type of data	N	^
-ED	3	ID	0291	18		data subtype	N	^
-ED	4	ID	0299	6	R	encoding	N	^
-ED	5	TX		65536	R	data	N	E

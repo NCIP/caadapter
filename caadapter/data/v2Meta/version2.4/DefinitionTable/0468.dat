@@ -1,5 +1,0 @@
-User	Payment adjustment code	0468	1	No payment adjustment
-User	Payment adjustment code	0468	2	Designated current drug or biological payment adjustment applies to APC (status indicator G)
-User	Payment adjustment code	0468	3	Designated new device payment adjustment applies to APC (status indicator H)
-User	Payment adjustment code	0468	4	Designated new drug or new biological payment adjustment applies to APC (status indicator J)
-User	Payment adjustment code	0468	5	Deductible not applicable (specific list of HCPCS codes)

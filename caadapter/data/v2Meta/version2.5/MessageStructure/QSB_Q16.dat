@@ -1,7 +1,0 @@
-Message Type=QSB
-Message Type Name=Create subscription
-Trigger Event=Q16
-Trigger Description=QSB _ Create subscription
-Message Structure=MSH [ { SFT } ] QPD RCP [ DSC ]
-Return Message=ACK^Q16
-Called by=

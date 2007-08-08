@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=Q01
-Trigger Description=QRY/DSR - Query sent for immediate response
-Message Structure=MSH [ { SFT } ] QRD [ QRF ] [ DSC ]
-Return Message=DSR^Q01
-Called by=

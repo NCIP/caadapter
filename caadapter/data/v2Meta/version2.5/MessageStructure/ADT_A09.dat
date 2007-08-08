@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A09
-Trigger Description=ADT/ACK -  Patient departing - tracking
-Message Structure=MSH [ { SFT } ] EVN PID [ PD1 ] PV1 [ PV2 ] [ { DB1 } ] [ { OBX } ] [ { DG1 } ]
-Return Message=ACK^A09
-Called by=

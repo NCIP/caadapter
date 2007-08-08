@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A29
-Trigger Description=ADT/ACK -  Delete person information
-Message Structure=ADT_A21
-Return Message=ACK^A29
-Called by=

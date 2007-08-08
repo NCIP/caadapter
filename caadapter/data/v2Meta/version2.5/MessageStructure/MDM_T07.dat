@@ -1,7 +1,0 @@
-Message Type=MDM
-Message Type Name=Medical document management
-Trigger Event=T07
-Trigger Description=MDM/ACK - Document edit notification
-Message Structure=MDM_T01
-Return Message=ACK^T07
-Called by=

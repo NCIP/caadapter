@@ -1,7 +1,0 @@
-Message Type=SIU
-Message Type Name=Schedule information unsolicited
-Trigger Event=S13
-Trigger Description=SIU/ACK - Notification of appointment rescheduling
-Message Structure=SIU_S12
-Return Message=ACK^S13
-Called by=

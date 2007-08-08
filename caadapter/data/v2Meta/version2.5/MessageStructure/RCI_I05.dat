@@ -1,7 +1,0 @@
-Message Type=RCI
-Message Type Name=Return clinical information
-Trigger Event=I05
-Trigger Description=RQC/RCI - Request for patient clinical information
-Message Structure=MSH [ { SFT } ] MSA QRD [ QRF ] { !PROVIDER! PRD [ { CTD } ] } PID [ { DG1 } ] [ { DRG } ] [ { AL1 } ] [ !OBSERVATION! { OBR [ { NTE } ] [ !RESULTS! { OBX [ { NTE } ] } ] } ] [ { NTE } ]
-Return Message=ACK^I05
-Called by=RQC^I05

@@ -1,1 +1,0 @@
-ORL	O22	ORL	O22			 MSH  MSA [  ERR ] [ {  NTE } ] [ !RESPONSE![ !PATIENT! PID { !CONTAINER![  SAC [ {  OBX } ] ] [ { !ORDER! ORC [ !OBSERVATION_REQUEST! OBR [ {  SAC } ] ] } ] } ] ] 		Laboratory acknowledgement message (unsolicited)	ORL - General laboratory order response message to any OML

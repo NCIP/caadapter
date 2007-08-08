@@ -1,7 +1,0 @@
-Message Type=MFN
-Message Type Name=Master files notification
-Trigger Event=M10
-Trigger Description=MFN/MFK - Test /observation batteries master file
-Message Structure=MSH [ { SFT } ] MFI { !MF_TEST_BATTERIES! MFE OM1 [ !MF_TEST_BATT_DETAIL! OM5 [ { OM4 } ] ] }
-Return Message=MFK^M10
-Called by=

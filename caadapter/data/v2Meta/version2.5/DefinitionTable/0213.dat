@@ -1,3 +1,0 @@
-User	Purge Status Code	0213	D	The visit is marked for deletion and the user cannot enter new data against it.
-User	Purge Status Code	0213	I	The visit is marked inactive and the user cannot enter new data against it.
-User	Purge Status Code	0213	P	Marked for purge.  User is no longer able to update the visit.

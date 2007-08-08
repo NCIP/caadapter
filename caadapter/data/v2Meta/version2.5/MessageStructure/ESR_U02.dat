@@ -1,7 +1,0 @@
-Message Type=ESR
-Message Type Name=Automated equipment status update acknowledgment message
-Trigger Event=U02
-Trigger Description=ESR/ACK _ Automated equipment status request
-Message Structure=MSH [ { SFT } ] EQU [ ROL ]
-Return Message=ACK^U02
-Called by=

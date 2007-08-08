@@ -1,1 +1,0 @@
-ADT	A03	ADT	A03	ACK		 MSH  EVN  PID [  PD1 ] [ {  ROL } ]  PV1 [  PV2 ] [ {  ROL } ] [ {  DB1 } ] [ {  DG1 } ] [  DRG ] [ { !PROCEDURE! PR1 [ {  ROL } ] } ] [ {  OBX } ] [  PDA ] 		ADT message	ADT/ACK -  Discharge/end visit

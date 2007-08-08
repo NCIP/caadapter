@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A08
-Trigger Description=ADT/ACK -  Update patient information
-Message Structure=ADT_A01
-Return Message=ACK^A08
-Called by=

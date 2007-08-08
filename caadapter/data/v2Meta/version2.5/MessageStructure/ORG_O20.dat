@@ -1,7 +1,0 @@
-Message Type=ORG
-Message Type Name=General clinical order acknowledgment message
-Trigger Event=O20
-Trigger Description=ORG _ General clinical order response
-Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ OBR ] [ { NTE } ] [ { CTI } ] [ { !SPECIMEN! SPM [ { SAC } ] } ] } ]
-Return Message=ACK^O20
-Called by=OMG^O19

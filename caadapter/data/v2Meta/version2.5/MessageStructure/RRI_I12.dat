@@ -1,7 +1,0 @@
-Message Type=RRI
-Message Type Name=Return referral information
-Trigger Event=I12
-Trigger Description=REF/RRI - Patient referral
-Message Structure=MSH [ { SFT } ] [ MSA ] [ RF1 ] [ !AUTHORIZATION_CONTACT! AUT [ CTD ] ] { !PROVIDER_CONTACT! PRD [ { CTD } ] } PID [ ACC ] [ { DG1 } ] [ { DRG } ] [ { AL1 } ] [ !PROCEDURE! { PR1 [ !AUTHORIZATION_CONTACT! AUT [ CTD ] ] } ] [ !OBSERVATION! { OBR [ { NTE } ] [ !RESULTS_NOTES! { OBX [ { NTE } ] } ] } ] [ !PATIENT VISIT! PV1 [ PV2 ] ] [ { NTE } ]
-Return Message=ACK^I12
-Called by=REF^I12

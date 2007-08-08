@@ -1,7 +1,0 @@
-Message Type=RSP
-Message Type Name=Segment pattern response
-Trigger Event=K11
-Trigger Description=RSP - Segment pattern response in response to QBP^Q11
-Message Structure=MSH [ { SFT } ] MSA [ ERR ] QAK QPD [ !ROW_DEFINITION! RDF [ { RDT } ] ] [ DSC ]
-Return Message=ACK^K11
-Called by=QBP^Q11

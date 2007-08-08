@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A42
-Trigger Description=ADT/ACK - Merge visit - visit number
-Message Structure=ADT_A39
-Return Message=ACK^A42
-Called by=

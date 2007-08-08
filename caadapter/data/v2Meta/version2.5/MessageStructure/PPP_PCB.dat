@@ -1,7 +1,0 @@
-Message Type=PPP
-Message Type Name=Patient pathway message (problem-oriented)
-Trigger Event=PCB
-Trigger Description=PPP - PC/ pathway (problem-oriented) add
-Message Structure=MSH [ { SFT } ] PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !PATHWAY! PTH [ { NTE } ] [ { VAR } ] [ { !PATHWAY_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] [ { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] } ] }
-Return Message=ACK^PCB
-Called by=

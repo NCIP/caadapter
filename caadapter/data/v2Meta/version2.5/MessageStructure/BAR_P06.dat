@@ -1,7 +1,0 @@
-Message Type=BAR
-Message Type Name=Add/change billing account
-Trigger Event=P06
-Trigger Description=BAR/ACK - End account
-Message Structure=MSH [ { SFT } ] EVN { !PATIENT! PID [ PV1 ] }
-Return Message=ACK^P06
-Called by=

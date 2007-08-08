@@ -1,7 +1,0 @@
-Message Type=RRD
-Message Type Name=Pharmacy/treatment dispense acknowledgment message
-Trigger Event=O14
-Trigger Description=RRD _ Pharmacy/treatment dispense acknowledgment
-Message Structure=MSH MSA [ { ERR } ] [ { SFT } ] [ { NTE } ] [ !RESPONSE! [ !PATIENT! PID [ { NTE } ] ] { !ORDER! ORC [ { !TIMING! TQ1 [ { TQ2 } ] } ] [ !DISPENSE! RXD [ { NTE } ] { RXR } [ { RXC } ] ] } ]
-Return Message=ACK^O14
-Called by=RDS^O13

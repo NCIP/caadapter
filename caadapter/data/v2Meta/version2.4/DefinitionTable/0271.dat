@@ -1,7 +1,0 @@
-HL7	Document completion status	0271	AU	Authenticated
-HL7	Document completion status	0271	DI	Dictated
-HL7	Document completion status	0271	DO	Documented
-HL7	Document completion status	0271	IN	Incomplete
-HL7	Document completion status	0271	IP	In Progress
-HL7	Document completion status	0271	LA	Legally authenticated
-HL7	Document completion status	0271	PA	Pre-authenticated

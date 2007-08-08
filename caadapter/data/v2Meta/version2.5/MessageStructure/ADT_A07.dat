@@ -1,7 +1,0 @@
-Message Type=ADT
-Message Type Name=ADT message
-Trigger Event=A07
-Trigger Description=ADT/ACK -  Change an inpatient to an outpatient
-Message Structure=ADT_A06
-Return Message=ACK^A07
-Called by=

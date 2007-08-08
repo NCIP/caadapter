@@ -1,5 +1,0 @@
-User	Overall Claim Disposition Code	0457	0	No edits present on claim
-User	Overall Claim Disposition Code	0457	1	Only edits present are for line item denial or rejection
-User	Overall Claim Disposition Code	0457	2	Multiple-day claim with one or more days denied or rejected
-User	Overall Claim Disposition Code	0457	3	Claim denied/ rejected/ suspended or returned to provider with only post payment edits
-User	Overall Claim Disposition Code	0457	4	Claim denied/ rejected/ suspended or returned to provider with only pre payment edits

@@ -1,1 +1,0 @@
-CRM	C02	CRM	C01			 MSH {  PID [  PV1 ]  CSR { [  CSP ] } } 	Clinical Study Registration Message - Cancel a patient registration on clinical trial (for clerical mistakes since an intended registration should not be canceled)	Clinical study registration message	CRM - Cancel a patient registration on clinical trial (for clerical mistakes only)

@@ -1,3 +1,0 @@
-HL7	Name/address representation	0465	A	Alphabetic (i.e., Default or some single-byte)
-HL7	Name/address representation	0465	I	Ideographic (i.e., Kanji)
-HL7	Name/address representation	0465	P	Phonetic (i.e., ASCII, Katakana, Hiragana, etc.)

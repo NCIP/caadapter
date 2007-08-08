@@ -1,9 +1,0 @@
-CN	1	ST				ID number	N	^
-CN	2	FN				family name	N	^
-CN	3	ST				given name	N	^
-CN	4	ST				second and further given names or initials thereof	N	^
-CN	5	ST				suffix (e.g., JR or III)	N	^
-CN	6	ST				prefix (e.g., DR)	N	^
-CN	7	ST				degree (e.g., MD)	N	^
-CN	8	IS	0297			source table	N	^
-CN	9	ZHD1				assigning authority	N	E

@@ -1,1 +1,0 @@
-ADT	A28	ADT	A05	ACK		 MSH  EVN  PID [  PD1 ] [ {  ROL } ] [ {  NK1 } ]  PV1 [  PV2 ] [ {  ROL } ] [ {  DB1 } ] [ {  OBX } ] [ {  AL1 } ] [ {  DG1 } ] [  DRG ] [ { !PROCEDURE! PR1 [ {  ROL } ] } ] [ {  GT1 } ] [ { !INSURANCE! IN1 [  IN2 ] [ {  IN3 } ] [ {  ROL } ] } ] [  ACC ] [  UB1 ] [  UB2 ] 		ADT message	ADT/ACK -  Add person information

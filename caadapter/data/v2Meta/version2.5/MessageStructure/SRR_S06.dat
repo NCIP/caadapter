@@ -1,7 +1,0 @@
-Message Type=SRR
-Message Type Name=Scheduled request response
-Trigger Event=S06
-Trigger Description=SRM/SRR - Request appointment deletion
-Message Structure=SRR_S01
-Return Message=ACK^S06
-Called by=SRM^S06

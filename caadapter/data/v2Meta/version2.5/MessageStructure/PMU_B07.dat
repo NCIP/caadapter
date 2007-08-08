@@ -1,7 +1,0 @@
-Message Type=PMU
-Message Type Name=Add personnel record
-Trigger Event=B07
-Trigger Description=PMU/ACK _ Grant Certificate/Permission
-Message Structure=MSH [ { SFT } ] EVN STF [ PRA ] [ !CERTIFICATE! { CER [ { ROL } ] } ]
-Return Message=ACK^B07
-Called by=

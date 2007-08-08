@@ -1,7 +1,0 @@
-Message Type=QRY
-Message Type Name=Query/ original mode
-Trigger Event=Q29
-Trigger Description=QRY/RER - Pharmacy/treatment encoded order information
-Message Structure=QRY_Q01
-Return Message=RER^RER
-Called by=

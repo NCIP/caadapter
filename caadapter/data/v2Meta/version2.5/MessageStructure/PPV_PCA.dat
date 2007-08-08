@@ -1,7 +1,0 @@
-Message Type=PPV
-Message Type Name=Patient goal response
-Trigger Event=PCA
-Trigger Description=PPV - PC/ goal response
-Message Structure=MSH [ { SFT } ] MSA [ { ERR } ] [ QAK ] QRD { !PATIENT! PID [ !PATIENT_VISIT! PV1 [ PV2 ] ] { !GOAL! GOL [ { NTE } ] [ { VAR } ] [ { !GOAL_ROLE! ROL [ { VAR } ] } ] [ { !GOAL_PATHWAY! PTH [ { VAR } ] } ] [ { !GOAL_OBSERVATION! OBX [ { NTE } ] } ] [ { !PROBLEM! PRB [ { NTE } ] [ { VAR } ] [ { !PROBLEM_ROLE! ROL [ { VAR } ] } ] [ { !PROBLEM_OBSERVATION! OBX [ { NTE } ] } ] } ] [ { !ORDER! ORC [ !ORDER_DETAIL! < OBR | RQD | RQ1 | RXO | ODS | ODT > [ { NTE } ] [ { VAR } ] [ { !ORDER_OBSERVATION! OBX [ { NTE } ] [ { VAR } ] } ] ] } ] } }
-Return Message=ACK^PCA
-Called by=QRY^PC9

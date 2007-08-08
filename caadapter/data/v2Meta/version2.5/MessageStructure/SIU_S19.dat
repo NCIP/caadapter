@@ -1,7 +1,0 @@
-Message Type=SIU
-Message Type Name=Schedule information unsolicited
-Trigger Event=S19
-Trigger Description=SIU/ACK - Notification of modification of service/resource on appointment
-Message Structure=SIU_S12
-Return Message=ACK^S19
-Called by=
