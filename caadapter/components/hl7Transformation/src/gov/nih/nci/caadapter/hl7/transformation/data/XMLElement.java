@@ -19,8 +19,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-31 14:05:59 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-08 14:35:24 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -29,6 +29,7 @@ public class XMLElement implements Cloneable{
 	private Vector<XMLElement> children = new Vector<XMLElement>();
 	private ArrayList<String> segments = new ArrayList<String>();
 	private ValidatorResults validatorResults = null;
+	private boolean hasUserMappedData = false;
 
 	/**
 	 * @return the name
@@ -165,5 +166,23 @@ public class XMLElement implements Cloneable{
 	 */
 	public void setValidatorResults(ValidatorResults validatorResults) {
 		this.validatorResults = validatorResults;
+	}
+	/**
+	 * @param attributes the attributes to set
+	 */
+	public void setAttributes(ArrayList<Attribute> attributes) {
+		this.attributes = attributes;
+	}
+	/**
+	 * @return the hasUserMappedData
+	 */
+	public boolean hasUserMappedData() {
+		return hasUserMappedData;
+	}
+	/**
+	 * @param hasUserMappedData the hasUserMappedData to set
+	 */
+	public void setHasUserMappedData(boolean hasUserMappedData) {
+		this.hasUserMappedData = hasUserMappedData;
 	}
 }
