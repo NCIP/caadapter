@@ -143,16 +143,27 @@ public class ModelMetadata {
 	{
 		for( UMLPackage pkg : model.getPackages() ) 
 		{
-			printPackage(pkg);
+			printPackage(pkg, "");
 		}
 	}
 	   
-	private static void printPackage(UMLPackage pkg) 
+	private static void printPackage(UMLPackage pkg, String parentString) 
 	{
 	    for(UMLClass clazz : pkg.getClasses()) 
 	    {    	
   	      StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
-  	      if (pathKey.toString().contains("Data Model")) {
+  	      String packageName ="";
+  	      if (parentString.equals(""))
+  	      {
+  	    	  packageName = clazz.getName();   
+  	      }
+  	      else {
+//	  	      packageName = parentString + "." + pathKey.toString();   	    	  
+	  	      packageName = parentString + "." + pathKey.toString();   	    	  
+  	      }
+  	      System.out.println("packageName class leve:" + clazz.getName());
+	      if (packageName.contains("Data Model")) {
+//  	      if (pathKey.toString().contains("Data Model")) {
   	    	  //create a TableMetadata object
   	    	  TableMetadata table = new TableMetadata();
   	    	  table.setName(clazz.getName());
@@ -164,7 +175,7 @@ public class ModelMetadata {
   	    	  for(UMLAttribute att : clazz.getAttributes()) {
   		          printColumnAttribute(att, table, pathKey);
   		      }  
-  	      } else if (pathKey.toString().contains("Logical Model") && !pathKey.toString().contains("java")) {
+  	      } else if (packageName.contains("Logical Model") && !packageName.contains("java")) {
   	    	  
   	    	  ObjectMetadata object = new ObjectMetadata();
   	    	  object.setName(clazz.getName());
@@ -226,7 +237,16 @@ public class ModelMetadata {
   	      }
 	    }
 	    for(UMLPackage _pkg : pkg.getPackages()) {
-	      printPackage(_pkg);
+	  	      String packageName ="";
+	  	      if (parentString.equals(""))
+	  	      {
+	  	    	  packageName = _pkg.getName();   
+	  	      }
+	  	      else {
+	  	  	      packageName = parentString + "." + _pkg.getName();   	    	  
+	  	      }
+	  	      System.out.println("packageName" + packageName);
+	  	      printPackage(_pkg, packageName);
 	    }
 	  }
 
