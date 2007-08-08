@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.12 2007-08-07 20:27:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.13 2007-08-08 14:32:18 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-08-07 20:27:43 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-08-08 14:32:18 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -290,6 +290,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				}
 				else
 				{
+
 					Log.logError(this, "Not Found..:"+asscMifClass.getReferenceName());
 //					childNode=new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName());				
 				}
@@ -308,7 +309,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		{
 			if(referencedMifClass.getChoices()==null
 					||referencedMifClass.getChoices().isEmpty())
-				Log.logError(this, "Choice classes are missed..:"+referencedMifClass);
+				Log.logInfo(this, "No choice classes needs to set..:"+referencedMifClass);
 			else
 			{
 				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
