@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.4 2007-07-14 20:16:02 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.5 2007-08-08 23:05:48 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,13 +53,14 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class FileUtil
 {
     private static final String OUTPUT_DIR_NAME = "out";
     private static File OUTPUT_DIR = null;
+    private static File ODI_FILE = null;
 
     //private static String dateFormat = "yyyyMMddHHmmssSSS";
 
@@ -147,6 +148,58 @@ public class FileUtil
     public static String getV2DataDirPath()
     {
         File f = new File(getWorkingDirPath() + File.separator + "data" + File.separator + "v2Meta");
+        if ((!f.exists())||(!f.isDirectory()))
+        {
+            ClassLoaderUtil loaderUtil = null;
+            try
+            {
+                loaderUtil = new ClassLoaderUtil("v2Meta");
+            }
+            catch(IOException ie)
+            {
+                System.err.println("Make V2 Meta Drectory : " + ie.getMessage());
+                return null;
+            }
+            for(int i=0;i<loaderUtil.getSizeOfInputStreams();i++)
+            {
+                String path = loaderUtil.getName(i);
+                if (!path.trim().toLowerCase().endsWith(".dat")) continue;
+                path = path.replace("/", File.separator);
+                path = getWorkingDirPath() + File.separator + "data" + File.separator + path;
+                int index = -1;
+                for (int j=path.length();j>0;j--)
+                {
+                    String achar = path.substring(j-1, j);
+                    if (achar.equals(File.separator))
+                    {
+                        index = j;
+                        break;
+                    }
+                }
+                if (index <= 0)
+                {
+                    System.err.println("V2 Meta file is invalid : " + path);
+                    return null;
+                }
+                File dir = new File(path.substring(0,(index-1)));
+                if ((!dir.exists())||(!dir.isDirectory()))
+                {
+                    if (!dir.mkdirs())
+                    {
+                        System.err.println("V2 Meta directory making failure : " + dir);
+                        return null;
+                    }
+                }
+                File datFile = new File(loaderUtil.getFileName(i));
+                if ((!datFile.exists())||(!datFile.isFile()))
+                {
+                    System.err.println("Not Found This V2 Meta temporary file : " + path);
+                    continue;
+                }
+                if (!datFile.renameTo(new File(path))) System.err.println("V2 Meta rename failure : " + path);
+
+            }
+        }
         return f.getAbsolutePath();
     }
 
@@ -330,10 +383,17 @@ public class FileUtil
 
     public static String findODIWithDomainName(String str) throws IOException
     {
+        if (ODI_FILE == null)
+        {
+            ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/HL7_ODI.csv");
+            if (loaderUtil.getFileNames().size() == 0) throw new IOException("HL7_ODI.csv file class loading failure.");
+            ODI_FILE = new File(loaderUtil.getFileNames().get(0));
+            ODI_FILE.deleteOnExit();
+        }
         FileReader fr = null;
-        String fileName = getWorkingDirPath() + File.separator + "data" + File.separator + "HL7_ODI.csv";
-        try { fr = new FileReader(fileName); }
-        catch(FileNotFoundException fe) { throw new IOException("FileNotFoundException in FileUtil.readFileIntoList() : " + fileName); }
+        //String fileName = ODI_FILE_NAME;
+        try { fr = new FileReader(ODI_FILE); }
+        catch(FileNotFoundException fe) { throw new IOException("ODI File : FileNotFoundException in FileUtil.readFileIntoList() : " + ODI_FILE.getName()); }
 
         BufferedReader br = new BufferedReader(fr);
         String readLineOfFile = "";
@@ -367,7 +427,7 @@ public class FileUtil
         }
         catch(IOException ie)
         {
-            throw new IOException("File reading Error in FileUtil.readFileIntoList() : " + fileName);
+            throw new IOException("ODI File reading Error in FileUtil.readFileIntoList() : " + ODI_FILE.getName());
         }
 
         try
@@ -375,7 +435,7 @@ public class FileUtil
             fr.close();
             br.close();
         }
-        catch(IOException ie) { throw new IOException("File Closing Error in FileUtil.readFileIntoList() : " + fileName); }
+        catch(IOException ie) { throw new IOException("ODI File Closing Error in FileUtil.readFileIntoList() : " + ODI_FILE.getName()); }
         return result;
     }
 
@@ -833,6 +893,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/07/14 20:16:02  umkis
+ * add 'downloadFromInputStreamToFile()'
+ *
  * Revision 1.3  2007/07/12 17:30:06  umkis
  * add 'getComponentsDirPath()' and directory paths of the componts.
  *
