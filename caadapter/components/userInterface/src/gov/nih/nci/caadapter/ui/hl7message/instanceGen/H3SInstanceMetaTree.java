@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.5 2007-08-07 15:43:26 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.6 2007-08-08 20:45:48 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -78,6 +78,8 @@ import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
@@ -96,7 +98,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -116,7 +118,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.5 2007-08-07 15:43:26 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.6 2007-08-08 20:45:48 umkis Exp $";
 
     boolean isCode = false;
 
@@ -191,10 +193,10 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         displayTreeWithText();
         System.out.println("");
 
-        if (!buildVocabularyTree())
+        if (GeneralUtilities.getV3VocabularySeeker() == null)
         {
             //h3sVocTree.displayTreeWithText();
-            System.out.println("Vocabulary Tree buliding failure....");
+            System.err.println("Vocabulary Tree buliding failure....");
             return;
         }
 
@@ -203,7 +205,14 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         List<String> changeList = null;
         try
         {
-            changeList = FileUtil.readFileIntoList("C:\\projects\\changeList.txt");
+            ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/changeList.txt");
+            List<String> list = loaderUtil.getFileNames();
+            if ((list == null)||(list.size() == 0))
+            {
+                System.out.println("Not found class loader : changeList.txt");
+                return;
+            }
+            changeList = FileUtil.readFileIntoList(list.get(0));
         }
         catch(IOException ie)
         {
@@ -214,11 +223,18 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         List<String> replaceList = null;
         try
         {
-            replaceList = FileUtil.readFileIntoList("C:\\projects\\replaceList.txt");
+            ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/replaceList.txt");
+            List<String> list = loaderUtil.getFileNames();
+            if ((list == null)||(list.size() == 0))
+            {
+                System.out.println("Not found class loader : replaceList.txt");
+                return;
+            }
+            replaceList = FileUtil.readFileIntoList(list.get(0));
         }
         catch(IOException ie)
         {
-            System.out.println("IOException :replaceList : " + ie.getMessage());
+            System.out.println("IOException : replaceList : " + ie.getMessage());
             return;
         }
 
@@ -489,9 +505,14 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 if ((!userDefault.equals(""))||(!hl7Default.equals("")))
                 {
                     if (hl7Default.equals("")) hl7Default = userDefault;
-                    res = getVocabularyDomainCode(domainName, hl7Default);
+                    //res = getVocabularyDomainCode(domainName, hl7Default);
+                    res = GeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName, hl7Default);
                 }
-                else res = getVocabularyDomainCode(domainName);
+                else
+                {
+                    //res = getVocabularyDomainCode(domainName);
+                    res = GeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName);
+                }
 
                 if (res != null)
                 {
@@ -1114,156 +1135,112 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         }
         else return false;
     }
-    private String[] getVocabularyDomainCode(String domainName)
-    {
-        return getVocabularyDomainCode(domainName, null);
-    }
-    private String[] getVocabularyDomainCode(String domainName, String findCode)
-    {
-        if (findCode == null) findCode = "";
-        findCode = findCode.trim();
-        if ((domainName == null)||(domainName.trim().equals(""))) return null;
-        domainName = domainName.trim();
-        CommonNode temp = h3sVocTree.getHeadSegment();
-        MetaSegment post = null;
-        List<String> codeList = new ArrayList<String>();
-        List<String> displayList = new ArrayList<String>();
-        boolean found = false;
-        boolean success = false;
-        while(temp!=null)
-        {
-            CommonAttribute attribute = temp.getAttributes();
-            if (!found)
-            {
-                for (int i=0;i<attribute.getAttributeItems().size();i++)
-                {
-                    CommonAttributeItem item = attribute.getAttributeItems().get(i);
-                    if (item.getItemValue().equals(domainName))
-                    {
-                        if (temp instanceof MetaSegment)
-                        {
-                            found = true;
-                            success = true;
-                            post = (MetaSegment)temp;
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (h3sVocTree.isAncestor(post, temp))
-                {
-                    if (temp.getName().equals("leafTerm"))
-                    {
-                        String code = "";
-                        String display = "";
-                        for (int i=0;i<attribute.getAttributeItems().size();i++)
-                        {
-                            CommonAttributeItem item = attribute.getAttributeItems().get(i);
-                            if (item.getName().equals("Code"))
-                            {
-                                code = item.getItemValue();
-                            }
-                            if (item.getName().equals("printName"))
-                            {
-                                display = item.getItemValue();
-                            }
-                            if ((code.length() > 0)&&(display.length() > 0))
-                            {
-                                codeList.add(code);
-                                displayList.add(display);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    found = false;
-                    post = null;
-                    continue;
-                }
-            }
+//    private String[] getVocabularyDomainCode(String domainName)
+//    {
+//        return getVocabularyDomainCode(domainName, null);
+//    }
+//    private String[] getVocabularyDomainCode(String domainName, String findCode)
+//    {
+//        if (findCode == null) findCode = "";
+//        findCode = findCode.trim();
+//        if ((domainName == null)||(domainName.trim().equals(""))) return null;
+//        domainName = domainName.trim();
+//        CommonNode temp = h3sVocTree.getHeadSegment();
+//        MetaSegment post = null;
+//        List<String> codeList = new ArrayList<String>();
+//        List<String> displayList = new ArrayList<String>();
+//        boolean found = false;
+//        boolean success = false;
+//        while(temp!=null)
+//        {
+//            CommonAttribute attribute = temp.getAttributes();
+//            if (!found)
+//            {
+//                for (int i=0;i<attribute.getAttributeItems().size();i++)
+//                {
+//                    CommonAttributeItem item = attribute.getAttributeItems().get(i);
+//                    if (item.getItemValue().equals(domainName))
+//                    {
+//                        if (temp instanceof MetaSegment)
+//                        {
+//                            found = true;
+//                            success = true;
+//                            post = (MetaSegment)temp;
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//            else
+//            {
+//                if (h3sVocTree.isAncestor(post, temp))
+//                {
+//                    if (temp.getName().equals("leafTerm"))
+//                    {
+//                        String code = "";
+//                        String display = "";
+//                        for (int i=0;i<attribute.getAttributeItems().size();i++)
+//                        {
+//                            CommonAttributeItem item = attribute.getAttributeItems().get(i);
+//                            if (item.getName().equals("Code"))
+//                            {
+//                                code = item.getItemValue();
+//                            }
+//                            if (item.getName().equals("printName"))
+//                            {
+//                                display = item.getItemValue();
+//                            }
+//                            if ((code.length() > 0)&&(display.length() > 0))
+//                            {
+//                                codeList.add(code);
+//                                displayList.add(display);
+//                            }
+//                        }
+//                    }
+//                }
+//                else
+//                {
+//                    found = false;
+//                    post = null;
+//                    continue;
+//                }
+//            }
+//
+//            try
+//            {
+//                temp = h3sVocTree.nextTraverse(temp);
+//                 if (temp == h3sVocTree.getHeadSegment()) break;
+//            }
+//            catch(ApplicationException ae)
+//            {
+//                return null;
+//            }
+//        }
+//        if (!success) return null;
+//
+//        int idx = -1;
+//        if (findCode.equals(""))
+//        {
+//            if (codeList.size() == 0) return new String[] {"NoData", "Domain was found but no Data implemented"};
+//            if (codeList.size() == 1) return new String[] {codeList.get(0), displayList.get(0)};
+//
+//            idx = FileUtil.getRandomNumber(0, codeList.size());
+//        }
+//        else
+//        {
+//            for (int i=0;i<codeList.size();i++)
+//            {
+//                if (findCode.equals(codeList.get(i).trim())) idx = i;
+//            }
+//        }
+//        if (idx < 0) return new String[] {findCode, "This default code cannot be found"};
+//        else
+//        {
+//            if (idx >= displayList.size()) return new String[] {codeList.get(idx), "No Display Name"};
+//            else return new String[] {codeList.get(idx), displayList.get(idx)};
+//        }
+//    }
 
-            try
-            {
-                temp = h3sVocTree.nextTraverse(temp);
-                 if (temp == h3sVocTree.getHeadSegment()) break;
-            }
-            catch(ApplicationException ae)
-            {
-                return null;
-            }
-        }
-        if (!success) return null;
-
-        int idx = -1;
-        if (findCode.equals(""))
-        {
-            if (codeList.size() == 0) return new String[] {"NoData", "Domain was found but no Data implemented"};
-            if (codeList.size() == 1) return new String[] {codeList.get(0), displayList.get(0)};
-
-            idx = FileUtil.getRandomNumber(0, codeList.size());
-        }
-        else
-        {
-            for (int i=0;i<codeList.size();i++)
-            {
-                if (findCode.equals(codeList.get(i).trim())) idx = i;
-            }
-        }
-        if (idx < 0) return new String[] {findCode, "This default code cannot be found"};
-        else
-        {
-            if (idx >= displayList.size()) return new String[] {codeList.get(idx), "No Display Name"};
-            else return new String[] {codeList.get(idx), displayList.get(idx)};
-        }
-    }
-
-
-        private boolean buildVocabularyTree()
-        {
-            String VocFileName = "C:\\projects\\javasig\\data\\vocab.xml";
-            boolean res = false;
-            H3SVocabTreeBuildEventHandler handler = null;
-            try
-            {
-                SAXParserFactory factory = SAXParserFactory.newInstance();
-                SAXParser parser = factory.newSAXParser();
-
-                XMLReader producer = parser.getXMLReader();
-                handler = new H3SVocabTreeBuildEventHandler();
-
-                producer.setContentHandler(handler);
-
-                //producer.parse(new InputSource("file:///" + h3sFileName.replaceAll("\\", "/")));
-                producer.parse(new InputSource("file:///" + VocFileName));
-                res = true;
-            }
-            catch(IOException e)
-            {
-                System.out.println("H3SVocabTreeBuildEventHandler IOException 1 : " + e.getMessage());
-            }
-            catch(Exception e)
-            {
-                System.out.println("H3SVocabTreeBuildEventHandler IOException 2 : " + e.getMessage());
-
-                e.printStackTrace(System.err);
-            }
-            if(res)
-            {
-                try
-                {
-                    h3sVocTree = new MetaTreeMetaImpl(handler.getHeadSegment());
-                    return true;
-                }
-                catch(ApplicationException ae)
-                {
-                    System.out.println("H3SVocabTreeBuildEventHandler ApplicationException : " + ae.getMessage());
-                }
-            }
-            return false;
-        }
 
     public void build(File h3sFile) throws ApplicationException
     {
@@ -1678,6 +1655,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/08/07 15:43:26  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/07 04:10:03  umkis
  * HISTORY      : upgrade test instance generator
  * HISTORY      :
