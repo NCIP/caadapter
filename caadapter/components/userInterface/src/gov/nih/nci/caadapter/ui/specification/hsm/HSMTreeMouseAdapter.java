@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.5 2007-08-08 15:13:32 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.6 2007-08-08 16:38:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,6 +47,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -58,8 +59,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-08 15:13:32 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-08 16:38:29 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -76,7 +77,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
     private RemoveMultipleAttributeAction removeMultipleAttributeAction;
     private SelectChoiceAction selectChoiceAction;
     private ValidateHSMAction validateHSMAction;
-    private SelectAddressPartsAction selectAddressPartsAction;
+    private SelectAddressPartsAction addAddressPartsAction;
+    private SelectAddressPartsAction removeAddressPartsAction;
     private EnableAttributeDatafieldAction enableDatafield;
     private EnableAttributeDatafieldAction disableDatafield;
     public HSMTreeMouseAdapter(HSMPanel parentPanel)
@@ -92,7 +94,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         removeMultipleAttributeAction = new RemoveMultipleAttributeAction(this.parentPanel);
         selectChoiceAction = new SelectChoiceAction(this.parentPanel);
         validateHSMAction = new ValidateHSMAction(this.parentPanel);
-        selectAddressPartsAction=new SelectAddressPartsAction(this.parentPanel);
+        addAddressPartsAction=new SelectAddressPartsAction(SelectAddressPartsAction.ADD_PART_COMMAND_NAME,this.parentPanel);
+        removeAddressPartsAction=new SelectAddressPartsAction(SelectAddressPartsAction.REMOVE_PART_COMMAND_NAME,this.parentPanel);
         enableDatafield=new EnableAttributeDatafieldAction(this.parentPanel,true);
         disableDatafield=new EnableAttributeDatafieldAction(this.parentPanel,false);
         
@@ -135,7 +138,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
             popupMenu.add(validateHSMAction);
             popupMenu.add(forceOptionCloneAction);
             popupMenu.addSeparator();
-            popupMenu.add(selectAddressPartsAction);         
+            popupMenu.add(addAddressPartsAction); 
+            popupMenu.add(removeAddressPartsAction);
         }
     }
 
@@ -150,7 +154,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 	    removeMultipleAttributeAction.setEnabled(value);
 	    selectChoiceAction.setEnabled(value);
 	    validateHSMAction.setEnabled(value);
-	    selectAddressPartsAction.setEnabled(value);
+	    addAddressPartsAction.setEnabled(value);
+	    removeAddressPartsAction.setEnabled(value);
 	    enableDatafield.setEnabled(value);
 	    disableDatafield.setEnabled(value);
 	}
@@ -245,7 +250,23 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                         	
                     }
                 	if (mifAttr.getType().equals("AD"))
-                		selectAddressPartsAction.setEnabled(true);
+                	{
+                		Datatype dt =mifAttr.getDatatype();
+                		int toAddCnt=0;
+                		int toRemoveCnt=0;
+                		for (Object dtAttrKey: dt.getAttributes().keySet())
+                		{
+                			Attribute dtAttr=(Attribute)dt.getAttributes().get((String)dtAttrKey);
+                   			if (dtAttr.isOptionChosen())
+                				toRemoveCnt++;
+                			else
+                				toAddCnt++;
+                		}
+                		if(toAddCnt>0)
+                			addAddressPartsAction.setEnabled(true);
+                		if (toRemoveCnt>0)
+                			removeAddressPartsAction.setEnabled(true);
+                	}
                 }
                 
                 if (userObj instanceof Attribute)

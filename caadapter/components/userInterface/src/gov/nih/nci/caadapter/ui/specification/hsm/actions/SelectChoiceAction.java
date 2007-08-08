@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.3 2007-08-07 18:09:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.4 2007-08-08 16:39:22 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,16 +42,13 @@ import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
 
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
-import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,8 +59,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-07 18:09:54 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-08 16:39:22 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -78,7 +75,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.3 2007-08-07 18:09:54 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.4 2007-08-08 16:39:22 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');

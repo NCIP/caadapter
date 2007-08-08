@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.4 2007-08-03 15:04:38 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.5 2007-08-08 16:39:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,14 +46,12 @@ import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Enumeration;
 import java.util.Vector;
 
 /**
@@ -62,8 +60,8 @@ import java.util.Vector;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-03 15:04:38 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-08 16:39:05 $
  */
 public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 {
@@ -79,9 +77,10 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.4 2007-08-03 15:04:38 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.5 2007-08-08 16:39:05 wangeug Exp $";
 
-    private static final String COMMAND_NAME = "Select Address Parts";
+    public static final String ADD_PART_COMMAND_NAME = "Add Address Parts";
+    public static final String REMOVE_PART_COMMAND_NAME = "Remove Address Parts";
     private static final Character COMMAND_MNEMONIC = new Character('S');
 
 
@@ -89,9 +88,9 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      * Defines an <code>Action</code> object with a default
      * description string and default icon.
      */
-    public SelectAddressPartsAction(HSMPanel parentPanel)
+    public SelectAddressPartsAction(String cmdName, HSMPanel parentPanel)
     {
-        this(COMMAND_NAME, null, parentPanel);
+        this(cmdName, null, parentPanel);
     }
 
 
@@ -141,53 +140,50 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
            	}
            	try
        		{
-                    final Enumeration attrEnum = mifAttr.getDatatype().getAttributes().elements();
-                    List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
-                    while(attrEnum.hasMoreElements())
-                    	baseList.add((DatatypeBaseObject)attrEnum.nextElement());
-                    AssociationListWizard listWizard =
-                        new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Added", true);
-                    DefaultSettings.centerWindow(listWizard);
-                    listWizard.setVisible(true);
-                    if (listWizard.isOkButtonClicked())
-                    {
-                        List<DatatypeBaseObject> userSelectedAssociation = listWizard.getUserSelectedAssociation();
-                        if (userSelectedAssociation.size()>0)
-                        {
-                        	mifAttr.setEnabled(true);
-                        	mifAttr.getDatatype().setEnabled(true);
-                        	Vector dtAttrVec=new Vector(mifAttr.getDatatype().getAttributes().keySet());
-                        	Collections.sort(dtAttrVec);
-                        	Iterator attriIt = dtAttrVec.iterator();
-                    		while (attriIt.hasNext()) 
-                    		{
-                    			String attributeName = (String)attriIt.next();
-                 			   	Attribute attr = (Attribute)mifAttr.getDatatype().getAttributes().get(attributeName);
-                 			   	attr.setEnabled(true);
-                    		}
-                        	//remove existing selection
-                        	Enumeration enuOldFields=mifAttr.getDatatype().getAttributes().elements();
-                        	while(enuOldFields.hasMoreElements())
-                        	{
-                        		DatatypeBaseObject oneAttrField=(DatatypeBaseObject)enuOldFields.nextElement();
-                        		oneAttrField.setOptionChosen(false);
-                        	}
+           		List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
+                boolean toAdd=true;
+                if (getName().equals(REMOVE_PART_COMMAND_NAME))
+                	toAdd=false;
+           		Vector a = new Vector(mifAttr.getDatatype().getAttributes().keySet());
+           	 	Collections.sort(a);
+           	 	Iterator attriIt = a.iterator();
+           	 	while (attriIt.hasNext()) {
+           	 		String attributeName = (String)attriIt.next();
+           	 		Attribute attr = (Attribute)mifAttr.getDatatype().getAttributes().get(attributeName);
+           	 		if (toAdd&&(!attr.isOptionChosen()))
+           	 			baseList.add(attr);
+           	 		else if((!toAdd)&&attr.isOptionChosen())
+           	 			baseList.add(attr);
+           	 	}
 
-                        	for (DatatypeBaseObject oneAssc:userSelectedAssociation)
-                        		oneAssc.setOptionChosen(true);
-                        }
+                String popupTitle="Address Parts To Be Added";
+                if (!toAdd)
+                	popupTitle="Address Parts To Be Removed";
+                
+                AssociationListWizard listWizard = 
+                    new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(),popupTitle, true);
+                DefaultSettings.centerWindow(listWizard);
+                listWizard.setVisible(true);
+                if (listWizard.isOkButtonClicked())
+                {
+                    List<DatatypeBaseObject> userSelectedAssociation = listWizard.getUserSelectedAssociation();
+                    if (userSelectedAssociation.size()>0)
+                    {
+                    	for (DatatypeBaseObject oneAssc:userSelectedAssociation)
+                    	{
+                    		if (toAdd)
+                    			oneAssc.setOptionChosen(true);
+                    		else
+                    			oneAssc.setOptionChosen(false);
+                    	}
                     }
-                    System.out.println("SelectAddressPartsAction.doAction()..addresss datatype isEnabled:"+mifAttr.getDatatype().isEnabled());
-                    
-                    NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
-                    DefaultMutableTreeNode  newMIFAsscNode =mifTreeLoader.buildObjectNode(mifAttr);
-                	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
-                	int oldAssIndx=parentNode.getIndex(targetNode);
-                	parentNode.remove(targetNode);
-                	parentNode.insert(newMIFAsscNode,oldAssIndx);
-                	((DefaultTreeModel) tree.getModel()).nodeStructureChanged(parentNode);
-                	tree.expandPath(new TreePath(parentNode.getPath()));
-                    setSuccessfullyPerformed(true);
+                }
+                System.out.println("SelectAddressPartsAction.doAction()..addresss datatype isEnabled:"+mifAttr.getDatatype().isEnabled());
+                
+                NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
+                DefaultMutableTreeNode  newAddressNode =mifTreeLoader.buildObjectNode(mifAttr);
+            	NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newAddressNode, tree);
+            	setSuccessfullyPerformed(true);
             }
             catch (Exception e1)
             {
