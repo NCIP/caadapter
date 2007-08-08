@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.1 2007-08-08 20:33:11 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.2 2007-08-08 20:53:57 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -58,8 +58,8 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
 import gov.nih.nci.caadapter.common.standard.*;
-import gov.nih.nci.caadapter.ui.hl7message.instanceGen.*;
-import gov.nih.nci.caadapter.ui.hl7message.instanceGen.H3SVocabTreeBuildEventHandler;
+//import gov.nih.nci.caadapter.ui.hl7message.instanceGen.*;
+//import gov.nih.nci.caadapter.ui.hl7message.instanceGen.H3SVocabTreeBuildEventHandler;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
@@ -77,7 +77,7 @@ import java.util.ArrayList;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Aug 8, 2007
  *          Time:       1:22:08 PM $
  */
@@ -96,7 +96,7 @@ public class V3VocabularySeeker
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.1 2007-08-08 20:33:11 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.2 2007-08-08 20:53:57 umkis Exp $";
 
     MetaTreeMeta h3sVocTree = null;
     List<String> codeList = null;
@@ -137,14 +137,14 @@ public class V3VocabularySeeker
 
         //String VocFileName = "C:\\projects\\javasig\\data\\vocab.xml";
         boolean res = false;
-        gov.nih.nci.caadapter.ui.hl7message.instanceGen.H3SVocabTreeBuildEventHandler handler = null;
+        V3VocabularyTreeBuildEventHandler handler = null;
         try
         {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser parser = factory.newSAXParser();
 
             XMLReader producer = parser.getXMLReader();
-            handler = new H3SVocabTreeBuildEventHandler();
+            handler = new V3VocabularyTreeBuildEventHandler();
 
             producer.setContentHandler(handler);
 
@@ -303,4 +303,7 @@ public class V3VocabularySeeker
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/08 20:33:11  umkis
+ * HISTORY      : V3 Vocavulary utility objects initializing setup
+ * HISTORY      :
  */
