@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.2 2007-07-15 05:27:25 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.3 2007-08-08 20:33:11 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -93,7 +93,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.2 2007-07-15 05:27:25 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.3 2007-08-08 20:33:11 umkis Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -101,6 +101,15 @@ public class ClassLoaderUtil
 
     public ClassLoaderUtil(String name) throws IOException
     {
+        initialWork(name, true);
+    }
+    public ClassLoaderUtil(String name, boolean transformYNStreamsToFiles) throws IOException
+    {
+        initialWork(name, transformYNStreamsToFiles);
+    }
+    private void initialWork(String name, boolean transformYNStreamsToFiles) throws IOException
+    {
+        if (!transformYNStreamsToFiles) fileNames = null;
         if ((name == null)||(name.trim().equals(""))) throw new IOException("Class loader Path is null");
         name = name.trim();
 
@@ -110,116 +119,117 @@ public class ClassLoaderUtil
 
         if (fileURLs == null) throw new IOException("Class loader search Result : " + name + " : Not Found");
 
+        while(fileURLs.hasMoreElements())
+        {
+            URL fileURL = fileURLs.nextElement();
+            String url = fileURL.toString();
+            InputStream stream = null;
 
-
-            while(fileURLs.hasMoreElements())
+            if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
             {
-                URL fileURL = fileURLs.nextElement();
-                String url = fileURL.toString();
-                InputStream stream = null;
-
-                if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
+                int idx = url.indexOf("!");
+                if (idx < 0)
                 {
-                    int idx = url.indexOf("!");
-                    if (idx < 0)
-                    {
-                        messages = messages + "Invalid jar file url : " + url + "\r\n";
-                        continue;
-                    }
+                    messages = messages + "Invalid jar file url : " + url + "\r\n";
+                    continue;
+                }
 
-                    String jarFileName = url.substring(4, idx);
-                    ZipFile jarFile = null;
-                    try
-                    {
-                        jarFile = new JarFile(new File(new URI(jarFileName)));
-                    }
-                    catch(IOException ie)
-                    {
-                        messages = messages + "IOException - jar file failure : " + jarFileName + "\r\n";
-                        continue;
-                    }
-                    catch(URISyntaxException ue)
-                    {
-                        messages = messages + "URISyntaxException - jar file failure : " + jarFileName + "\r\n";
-                        continue;
-                    }
-                    Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
+                String jarFileName = url.substring(4, idx);
+                ZipFile jarFile = null;
+                try
+                {
+                    jarFile = new JarFile(new File(new URI(jarFileName)));
+                }
+                catch(IOException ie)
+                {
+                    messages = messages + "IOException - jar file failure : " + jarFileName + "\r\n";
+                    continue;
+                }
+                catch(URISyntaxException ue)
+                {
+                    messages = messages + "URISyntaxException - jar file failure : " + jarFileName + "\r\n";
+                    continue;
+                }
+                Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
 
-                    while(jarEntries.hasMoreElements())
-                    {
-                        ZipEntry jarEntry = jarEntries.nextElement();
+                while(jarEntries.hasMoreElements())
+                {
+                    ZipEntry jarEntry = jarEntries.nextElement();
 
-                        String nameE = jarEntry.getName();
-                        if (nameE.startsWith(name))
+                    String nameE = jarEntry.getName();
+                    if (nameE.startsWith(name))
+                    {
+                        //System.out.println("JarEntry : " + jarEntry.getName());
+                        DataInputStream dis = null;
+                        try
                         {
-                            //System.out.println("JarEntry : " + jarEntry.getName());
-                            DataInputStream dis = null;
-                            try
-                            {
-                                stream = jarFile.getInputStream(jarEntry);
-                                streams.add(stream);
-                                names.add(getFileName(nameE));
-                                //System.out.println("WWWZZ : " + getFileName(nameE));
-                            }
-                            catch(IOException ie)
-                            {
-                                messages = messages + "Connection IOException : " + ie.getMessage() + "\r\n";
-                                continue;
-                            }
+                            stream = jarFile.getInputStream(jarEntry);
+                            streams.add(stream);
+                            names.add(getFileName(nameE));
+                            //System.out.println("WWWZZ : " + getFileName(nameE));
+                        }
+                        catch(IOException ie)
+                        {
+                            messages = messages + "Connection IOException : " + ie.getMessage() + "\r\n";
+                            continue;
                         }
                     }
                 }
-                else
+            }
+            else
+            {
+                try
                 {
-                    try
-                    {
-                        stream = (fileURL.openConnection()).getInputStream();
-                        streams.add(stream);
-                        names.add(getFileName(fileURL.toString()));
-                        //System.out.println("WXXZZ : " + getFileName(fileURL.toString()));
-                    }
-                    catch(IOException ie)
-                    {
-                        messages = messages + "Connection IOException : " + ie.getMessage() + "\r\n";
-                        continue;
-                    }
+                    stream = (fileURL.openConnection()).getInputStream();
+                    streams.add(stream);
+                    names.add(getFileName(fileURL.toString()));
+                }
+                catch(IOException ie)
+                {
+                    messages = messages + "Connection IOException : " + ie.getMessage() + "\r\n";
+                    continue;
+                }
+            }
+        }
+
+
+        if (transformYNStreamsToFiles)
+        {
+            List<InputStream> Tstreams = new ArrayList<InputStream>();
+            List<String> Tnames = new ArrayList<String>();
+            for (int i=0;i<streams.size();i++)
+            {
+                InputStream stream = streams.get(i);
+                String nameS = names.get(i);
+
+
+                String fileName = FileUtil.getTemporaryFileName();
+                if ((nameS.length() > 5)&&(nameS.substring(nameS.length()-4, nameS.length()-3).equals(".")))
+                {
+                    fileName = fileName.substring(0, fileName.length()-4) + "." + nameS.substring(nameS.length()-3);
                 }
 
+                try
+                {
+                    fileName = FileUtil.downloadFromInputStreamToFile(stream, fileName);
+                }
+                catch(IOException ie)
+                {
+                    continue;
+                }
+                Tstreams.add(stream);
+                Tnames.add(nameS);
+                fileNames.add(fileName);
+    //            File file = new File(fileName);
+    //            file.delete();
             }
 
-        List<InputStream> Tstreams = new ArrayList<InputStream>();
-        List<String> Tnames = new ArrayList<String>();
-        for (int i=0;i<streams.size();i++)
-        {
-            InputStream stream = streams.get(i);
-            String nameS = names.get(i);
-            String fileName = FileUtil.getTemporaryFileName();
+            if (streams.size() != Tstreams.size()) names = Tnames;
 
-            if ((nameS.length() > 5)&&(nameS.substring(nameS.length()-4, nameS.length()-3).equals(".")))
-            {
-                fileName = fileName.substring(0, fileName.length()-4) + "." + nameS.substring(nameS.length()-3); 
-            }
-
-            try
-            {
-                fileName = FileUtil.downloadFromInputStreamToFile(stream, fileName);
-            }
-            catch(IOException ie)
-            {
-                continue;
-            }
-            Tstreams.add(stream);
-            Tnames.add(nameS);
-            fileNames.add(fileName);
-//            File file = new File(fileName);
-//            file.delete();
+            streams = null;
         }
 
-        if (streams.size() != Tstreams.size())
-        {
-            streams = Tstreams;
-            names = Tnames;
-        }
+
 
         if (streams.size() == 0)
         {
@@ -228,6 +238,36 @@ public class ClassLoaderUtil
         }
     }
 
+    public List<InputStream> getInputStreams()
+    {
+        return streams;
+    }
+    public InputStream getInputStreamWithName(String name)
+    {
+        if (streams == null) return null;
+
+        try
+        {
+            return streams.get(getIndex(name));
+        }
+        catch(Exception ee)
+        {
+            return null;
+        }
+    }
+    public String getFileNameWithName(String name)
+    {
+        if (fileNames == null) return null;
+
+        try
+        {
+            return fileNames.get(getIndex(name));
+        }
+        catch(Exception ee)
+        {
+            return null;
+        }
+    }
     public List<String> getFileNames()
     {
         return fileNames;
@@ -235,12 +275,18 @@ public class ClassLoaderUtil
 
     public String getFileName(int index)
     {
+        if (fileNames == null) return null;
         if (fileNames.size() <= index) return null;
         return fileNames.get(index);
     }
-
     public int getSizeOfInputStreams()
     {
+        if (streams == null) return 0;
+        return streams.size();
+    }
+    public int getSizeOfFiles()
+    {
+        if (fileNames == null) return 0;
         return fileNames.size();
     }
 
@@ -266,10 +312,25 @@ public class ClassLoaderUtil
         if (names.size() <= index) return null;
         return names.get(index);
     }
+    public int getIndex(String name)
+    {
+        if ((name == null)||(name.trim().equals(""))) return -1;
+        name = name.trim();
+
+        for (int i=0;i<names.size();i++)
+        {
+            String str = names.get(i).trim();
+            if (str.equals(name)) return i;
+        }
+        return -1;
+    }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/15 05:27:25  umkis
+ * HISTORY      : change InputStream to Temp file
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/14 20:17:17  umkis
  * HISTORY      : new utils
  * HISTORY      :

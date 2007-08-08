@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.2 2007-07-09 15:39:58 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.3 2007-08-08 20:33:11 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,8 @@ package gov.nih.nci.caadapter.common.util;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.vocabulary.V3VocabularySeeker;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 
@@ -48,16 +50,39 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-09 15:39:58 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-08 20:33:11 $
  */
 public class GeneralUtilities
 {
-	private GeneralUtilities()
+    public static V3VocabularySeeker vocabulrarySeeker = null;
+
+    private GeneralUtilities()
 	{//never instantiable
+        getV3VocabularySeeker();
+    }
+
+    /**
+	 * Return V3VocabularySeeker object.
+	 * @return V3VocabularySeeker.
+	 */
+	public static final V3VocabularySeeker getV3VocabularySeeker()
+	{
+        if (vocabulrarySeeker == null)
+        {
+            try
+            {
+                vocabulrarySeeker = new V3VocabularySeeker();
+            }
+            catch(ApplicationException ae)
+            {
+                System.err.println("V3 Vocabulary tree building failure...");
+            }
+        }
+        return vocabulrarySeeker;
 	}
 
-	/**
+    /**
 	 * Return true if one is equal to another.
 	 * @param one
 	 * @param another
@@ -338,6 +363,9 @@ public class GeneralUtilities
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/09 15:39:58  umkis
+ * HISTORY      : Update for csv cardinality and test instance generating.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :
