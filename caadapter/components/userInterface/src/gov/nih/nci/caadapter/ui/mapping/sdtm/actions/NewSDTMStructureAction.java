@@ -2,7 +2,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.5 2007-07-26 19:57:55 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.6 2007-08-08 20:54:52 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,7 +47,7 @@ import java.util.HashMap;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.6 $
  */
 public class NewSDTMStructureAction extends AbstractContextAction
 {
@@ -57,7 +57,7 @@ public class NewSDTMStructureAction extends AbstractContextAction
      */
     private static final long serialVersionUID = 1L;
 
-    private static final String COMMAND_NAME = "SDTM Text File";
+    private static final String COMMAND_NAME = "RDS Text File";
 
     private static final Character COMMAND_MNEMONIC = new Character('S');
 
