@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.2 2007-06-12 15:57:07 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.3 2007-08-08 21:13:47 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,10 +40,10 @@ import gov.nih.nci.caadapter.common.util.Config;
  * Define a list of constants that are used by menu and some of action definition.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-12 15:57:07 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-08 21:13:47 $
  */
 public interface ActionConstants
 {
@@ -65,7 +65,7 @@ public interface ActionConstants
 	String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
 	String OPEN_MAP_FILE = "Open HL7 v2 to HL7 v3 " + OPEN_MAP_FILE_TXT;
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
-	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV to SDTM Map Specification";
+	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV to RDS/Database Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
 	String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
 	String OPEN_CSV_SPEC = "Open " + OPEN_CSV_SPEC_TXT;
@@ -95,6 +95,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/12 15:57:07  wangeug
+ * HISTORY      : enable new module: HL7 V3 to CSV Transformation
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
