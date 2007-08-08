@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.8 2007-08-06 18:29:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.9 2007-08-08 18:50:36 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-06 18:29:49 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-08 18:50:36 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -96,7 +96,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.8 2007-08-06 18:29:49 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.9 2007-08-08 18:50:36 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -395,7 +395,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			//set parent name form xmlPath
 			String parentXmlPath=userDatatypeObj.getParentXmlPath();//xmlPath.substring(0, xmlPath.lastIndexOf("."));
 			elementParentField.setText(parentXmlPath);
-			
+ 
 			if (userDatatypeObj instanceof Attribute )
 			{
 				//userDefaultValue  is editable
@@ -416,7 +416,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				else 
 					abstractField.setText("N"); 
 				dataTypeField.addItem(dtAttr.getType());
-				setEditableField(userDefaultValueField, true);
+				setEditableField(userDefaultValueField, dtAttr.isEnabled());
 				//HL7 default is not present
 				//HL7 Domain is not present
 				//code strength is not present
@@ -493,7 +493,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 						
 				}
 				//Abstract is not present
-				dataTypeField.addItem(mifClass.getName());
+//				dataTypeField.addItem(mifClass.getName());
+//				dataTypeField.setEditable(false);
 				if (mifClass.isReference())//.getReferenceName()!=null)
 				{
 					cmetField.setText(mifClass.getName());
@@ -516,8 +517,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				
 //				abstractField.setText(mifAssc.getMifClass().isDynamic()); //Abstract is not presentt
 				MIFClass asscClass=mifAssc.getMifClass();
-				if(asscClass.getChoices().isEmpty())
-					dataTypeField.addItem(asscClass.getName());
+//				if(asscClass.getChoices().isEmpty())
+//					dataTypeField.addItem(asscClass.getName());
 
 				if (asscClass.isReference())//.getReferenceName()!=null)
 				{
@@ -543,7 +544,6 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		cardinalityField.setText("");
 		mandatoryField.setText("");
 		conformanceField.setText("");
-//		rimSourceField.setText("");
 		abstractField.setText("");
 		dataTypeField.removeAllItems();
 		hl7DefaultValueField.setText("");
@@ -592,9 +592,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		}
 		else if (seletedBaseObject instanceof MIFAssociation)
 		{
-			result=false;
-//			MIFAssociation mifClass=(MIFAssociation)seletedBaseObject;
-			
+			result=false;		
 		}
 		else if (seletedBaseObject instanceof MIFAttribute)
 		{
@@ -644,7 +642,6 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		 TreePath treePath=parentPanel.getTree().getSelectionPath();
 		DefaultMutableTreeNode slctdNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		this.setDisplayData(slctdNode,true);
-		//.setDatatypeBaseObject((DatatypeBaseObject)targetNode, true);
 	}
 }
 
