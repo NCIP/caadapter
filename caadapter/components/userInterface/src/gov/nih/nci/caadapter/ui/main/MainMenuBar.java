@@ -80,7 +80,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.11 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.12 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -477,7 +477,7 @@ public class MainMenuBar extends AbstractMenuBar
     {
         NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCsvToSdtmSpecificationItem1 = new JMenuItem(newCSVSpecificationActionDbToSdtm);
-        JMenu newGroup = new JMenu("SDTM Mapping and Transformation Service");
+        JMenu newGroup = new JMenu("RDS/Database Mapping and Transformation Service");
         Database2SDTMAction newDB2SDTMAction = new Database2SDTMAction(mainFrame);
         NewSDTMStructureAction newSDTMStructureAction = new NewSDTMStructureAction(mainFrame);
         newGroup.add(newCsvToSdtmSpecificationItem1);
@@ -712,6 +712,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.11  2007/07/27 14:30:56  jayannah
+ * HISTORY : Changes for preferences to check for null value
+ * HISTORY :
  * HISTORY : Revision 1.10  2007/07/26 20:47:36  jayannah
  * HISTORY : provided a get method for preferences
  * HISTORY :

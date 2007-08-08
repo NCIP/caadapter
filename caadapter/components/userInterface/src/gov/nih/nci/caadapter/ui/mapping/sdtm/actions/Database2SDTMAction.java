@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.6 2007-07-26 19:57:50 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.7 2007-08-08 20:54:35 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,7 +52,7 @@ import javax.swing.KeyStroke;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
  *          2006/10/03 13:50:47 $
  */
 public class Database2SDTMAction extends AbstractContextAction {
@@ -61,7 +61,7 @@ public class Database2SDTMAction extends AbstractContextAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final String COMMAND_NAME = "CSV To SDTM Map Specification";
+	private static final String COMMAND_NAME = "CSV/Database To RDS Map Specification";
 
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 
@@ -130,6 +130,9 @@ public class Database2SDTMAction extends AbstractContextAction {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.6  2007/07/26 19:57:50  jayannah
+ * HISTORY : Changes for preferences menu
+ * HISTORY :
  * HISTORY : Revision 1.5  2007/07/19 18:51:37  jayannah
  * HISTORY : Changes for 4.0 release
  * HISTORY :
