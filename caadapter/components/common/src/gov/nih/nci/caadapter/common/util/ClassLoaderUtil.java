@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.3 2007-08-08 20:33:11 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.4 2007-08-08 21:18:10 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -93,7 +93,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.3 2007-08-08 20:33:11 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.4 2007-08-08 21:18:10 umkis Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -192,6 +192,12 @@ public class ClassLoaderUtil
             }
         }
 
+        if (streams.size() == 0)
+        {
+            if (messages.equals("")) throw new IOException("Not found any InputStream : " + name);
+            else throw new IOException(messages);
+        }
+
 
         if (transformYNStreamsToFiles)
         {
@@ -231,11 +237,7 @@ public class ClassLoaderUtil
 
 
 
-        if (streams.size() == 0)
-        {
-            if (messages.equals("")) throw new IOException("Not found any InputStream : " + name);
-            else throw new IOException(messages);
-        }
+
     }
 
     public List<InputStream> getInputStreams()
@@ -328,6 +330,9 @@ public class ClassLoaderUtil
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/08 20:33:11  umkis
+ * HISTORY      : V3 Vocavulary utility objects initializing setup
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/15 05:27:25  umkis
  * HISTORY      : change InputStream to Temp file
  * HISTORY      :

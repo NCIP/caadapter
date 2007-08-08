@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.3 2007-08-08 20:33:11 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.4 2007-08-08 21:17:53 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,8 +50,8 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-08 20:33:11 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-08 21:17:53 $
  */
 public class GeneralUtilities
 {
@@ -76,7 +76,7 @@ public class GeneralUtilities
             }
             catch(ApplicationException ae)
             {
-                System.err.println("V3 Vocabulary tree building failure...");
+                System.err.println("V3 Vocabulary tree building failure... : " + ae.getMessage());
             }
         }
         return vocabulrarySeeker;
@@ -363,6 +363,9 @@ public class GeneralUtilities
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/08 20:33:11  umkis
+ * HISTORY      : V3 Vocavulary utility objects initializing setup
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/09 15:39:58  umkis
  * HISTORY      : Update for csv cardinality and test instance generating.
  * HISTORY      :
