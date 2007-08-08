@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.4 2007-07-23 18:48:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.5 2007-08-08 19:34:42 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,7 +34,6 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
-import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -42,7 +41,6 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
-//import javax.swing.*;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.UIManager;
@@ -57,31 +55,21 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-23 18:48:11 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-08 19:34:42 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
-	private static final Color ALTERNATE_COLOR = new Color(220, 220, 220);
 	private static final Color NONDRAG_COLOR = new Color(140, 140, 175);
 	private static final Color MANYTOONE_COLOR = Color.pink;
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
-	//private HL7MappingPanel mappingPanel;
 	private static ImageIcon pseudoRootIcon = new ImageIcon(DefaultSettings.getImage("pseudo_root.gif"));
-
+	private static ImageIcon disableItemIcon = new ImageIcon(DefaultSettings.getImage("blue.png"));
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 	{
 		if (!selected)
 		{
 			setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
-			/*			if (row % 2 == 0)
-			{//even
-				setBackgroundNonSelectionColor(ALTERNATE_COLOR);
-			}
-			else
-			{//odd
-				setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
-			}*/
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 			if (node.getUserObject() instanceof AssociationMetadata) {
 				AssociationMetadata assoMeta = (AssociationMetadata)node.getUserObject();
@@ -103,7 +91,10 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 			DatatypeBaseObject nodeBase=(DatatypeBaseObject)node.getUserObject();
 			returnValue.setEnabled(nodeBase.isEnabled());
 			if (!nodeBase.isEnabled())
+			{
+				setIcon(disableItemIcon);
 				returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
+			}
 			String treeCellText=nodeBase.getName();	
 			
 			if(nodeBase instanceof MIFAttribute)
