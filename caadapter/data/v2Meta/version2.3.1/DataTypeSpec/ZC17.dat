@@ -1,7 +1,0 @@
-ZC17	1	ZCM3				the reference (normal) range	N	^
-ZC17	2	IS	0001			sex	N	^
-ZC17	3	ZCM3				age range	N	^
-ZC17	4	ZCM3				gestational age range	N	^
-ZC17	5	TX				species	N	^
-ZC17	6	ST				race/subspecies	N	^
-ZC17	7	TX				conditions	Y	~

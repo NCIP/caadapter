@@ -1,5 +1,0 @@
-ED	1	HD				source application	N	^
-ED	2	ID	0191			type of data	N	^
-ED	3	ID	0291			data subtype	N	^
-ED	4	ID	0299	0290		encoding	N	^
-ED	5	ST				data	N	E
