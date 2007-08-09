@@ -97,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.7 2007-08-09 16:24:40 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.8 2007-08-09 18:14:31 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -413,8 +413,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
+
             System.out.println("Key " + key );
             System.out.println("Prefix " + PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
+
             if (key.contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
 					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
@@ -707,7 +709,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 									targetXpath = pathKey + "."
 											+ clazz.getName() + "."
 											+ att.getName();
-									sourceXpath = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL )
+									sourceXpath = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
 											+ tagValue.getValue();
 									// System.out.println( "targetXpath:" +
 									// targetXpath );
@@ -1184,6 +1186,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.7  2007/08/09 16:24:40  schroedn
+ * HISTORY : New Feature - Preferences to change prefex in XMI
+ * HISTORY :
  * HISTORY : Revision 1.6  2007/08/07 20:50:47  schroedn
  * HISTORY : New Feature, Primary Key and Lazy/Eager functions added to MMS
  * HISTORY :
