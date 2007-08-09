@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.5 2007-08-08 16:39:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.6 2007-08-09 15:27:24 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -60,8 +60,8 @@ import java.util.Vector;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-08 16:39:05 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-09 15:27:24 $
  */
 public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 {
@@ -77,7 +77,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.5 2007-08-08 16:39:05 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.6 2007-08-09 15:27:24 wangeug Exp $";
 
     public static final String ADD_PART_COMMAND_NAME = "Add Address Parts";
     public static final String REMOVE_PART_COMMAND_NAME = "Remove Address Parts";
@@ -169,12 +169,11 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
                     List<DatatypeBaseObject> userSelectedAssociation = listWizard.getUserSelectedAssociation();
                     if (userSelectedAssociation.size()>0)
                     {
-                    	for (DatatypeBaseObject oneAssc:userSelectedAssociation)
+                    	for (DatatypeBaseObject oneAddrPart:userSelectedAssociation)
                     	{
-                    		if (toAdd)
-                    			oneAssc.setOptionChosen(true);
-                    		else
-                    			oneAssc.setOptionChosen(false);
+                    		//either set as "true" or "false" based on action type
+                    		oneAddrPart.setOptionChosen(toAdd);
+                    		oneAddrPart.setEnabled(toAdd);
                     	}
                     }
                 }
