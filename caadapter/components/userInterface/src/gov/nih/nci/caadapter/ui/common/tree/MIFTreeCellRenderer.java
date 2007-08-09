@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.4 2007-08-07 18:10:16 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.5 2007-08-09 19:28:01 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-07 18:10:16 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-09 19:28:01 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -73,7 +73,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.4 2007-08-07 18:10:16 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.5 2007-08-09 19:28:01 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -104,7 +104,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 
 			if(userObj instanceof MIFClass)
 			{
-				setText(((MIFClass)userObj).getNodeXmlName());
+				setText(((MIFClass)userObj).getMessageType()+":"+((MIFClass)userObj).getNodeXmlName());
 				setIcon(CLONE_IMAGE_ICON);	
 			}
 			else if(userObj instanceof MIFAttribute)
@@ -126,14 +126,31 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				{
 					Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
 					MIFClass parentMIFClass=null;
+					int attrMultiplicity=0;
 					if (parentObj instanceof MIFClass)
+					{
 						parentMIFClass=(MIFClass)parentObj;
+						attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+					}
 					else if (parentObj instanceof MIFAssociation )
 					{
 						MIFAssociation mifAssc=(MIFAssociation)parentObj;
 						parentMIFClass=mifAssc.getMifClass();
+						attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+						//if (attrMultiplicity==1), this MIFAttribute belong to MIFAssociation
+						if (mifAssc.isChoiceSelected()&&attrMultiplicity!=1)
+						{
+							for(MIFClass choiceClass:mifAssc.getMifClass().getSortedChoices())
+							{
+								if (choiceClass.isChoiceSelected())
+								{
+									attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+									break;
+								}
+							}
+						}
 					}
-					int attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+//					int attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 					
 					if (attrMultiplicity==1)
 						treeCellText=treeCellText+"  [Multiple]";
@@ -151,19 +168,35 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				MIFAssociation mifAssc=(MIFAssociation)userObj;
 				String viewName=mifAssc.getName(); //.toString();
 				String viewIndex="";
-				if (mifAssc.getMaximumMultiplicity()!=1&&mifAssc.getMultiplicityIndex()==0)
+				if (mifAssc.getMaximumMultiplicity()!=1
+						&&mifAssc.getMultiplicityIndex()==0)
 				{
 					Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
 					MIFClass parentMIFClass=null;
+					int asscMultiplicity=0;
 					if (parentObj instanceof MIFClass)
 						parentMIFClass=(MIFClass)parentObj;
 					else if (parentObj instanceof MIFAssociation )
 					{
 						MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
 						parentMIFClass=parentMifAssc.getMifClass();//.getReferencedMifClass();
+						asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+						// if (asscMultiplicity==1)
+						// this clone belongs to the MIFAssociation
+						if (parentMifAssc.isChoiceSelected()&&asscMultiplicity!=1)
+						{
+							for(MIFClass choiceClass:parentMifAssc.getMifClass().getSortedChoices())
+							{
+								if (choiceClass.isChoiceSelected())
+								{
+									asscMultiplicity=choiceClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+									break;
+								}
+							}
+						}
 					}
 					
-					int asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+//					int asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
 					if (asscMultiplicity==1)
 						viewIndex="  [Multiple]";
 					else
