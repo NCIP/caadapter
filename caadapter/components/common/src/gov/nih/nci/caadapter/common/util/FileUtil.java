@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.5 2007-08-08 23:05:48 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.6 2007-08-09 01:56:52 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,7 +53,7 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class FileUtil
@@ -160,9 +160,9 @@ public class FileUtil
                 System.err.println("Make V2 Meta Drectory : " + ie.getMessage());
                 return null;
             }
-            for(int i=0;i<loaderUtil.getSizeOfInputStreams();i++)
+            for(int i=0;i<loaderUtil.getSizeOfFiles();i++)
             {
-                String path = loaderUtil.getName(i);
+                String path = loaderUtil.getPath(i);
                 if (!path.trim().toLowerCase().endsWith(".dat")) continue;
                 path = path.replace("/", File.separator);
                 path = getWorkingDirPath() + File.separator + "data" + File.separator + path;
@@ -176,6 +176,7 @@ public class FileUtil
                         break;
                     }
                 }
+                //System.out.println("V2 Meta : " + path);
                 if (index <= 0)
                 {
                     System.err.println("V2 Meta file is invalid : " + path);
@@ -893,6 +894,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/08/08 23:05:48  umkis
+ * update getV2DataDirPath()
+ *
  * Revision 1.4  2007/07/14 20:16:02  umkis
  * add 'downloadFromInputStreamToFile()'
  *

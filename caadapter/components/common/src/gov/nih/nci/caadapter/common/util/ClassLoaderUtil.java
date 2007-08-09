@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.4 2007-08-08 21:18:10 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.5 2007-08-09 01:56:52 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -93,7 +93,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.4 2007-08-08 21:18:10 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.5 2007-08-09 01:56:52 umkis Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -165,8 +165,8 @@ public class ClassLoaderUtil
                         {
                             stream = jarFile.getInputStream(jarEntry);
                             streams.add(stream);
-                            names.add(getFileName(nameE));
-                            //System.out.println("WWWZZ : " + getFileName(nameE));
+                            names.add(nameE);
+                            //System.out.println("WWWZZ : " + getFileName(nameE) + " : " + nameE);
                         }
                         catch(IOException ie)
                         {
@@ -234,10 +234,6 @@ public class ClassLoaderUtil
 
             streams = null;
         }
-
-
-
-
     }
 
     public List<InputStream> getInputStreams()
@@ -250,7 +246,7 @@ public class ClassLoaderUtil
 
         try
         {
-            return streams.get(getIndex(name));
+            return streams.get(getIndexWithName(name));
         }
         catch(Exception ee)
         {
@@ -263,7 +259,33 @@ public class ClassLoaderUtil
 
         try
         {
-            return fileNames.get(getIndex(name));
+            return fileNames.get(getIndexWithName(name));
+        }
+        catch(Exception ee)
+        {
+            return null;
+        }
+    }
+    public InputStream getInputStreamWithPath(String path)
+    {
+        if (streams == null) return null;
+
+        try
+        {
+            return streams.get(getIndexWithPath(path));
+        }
+        catch(Exception ee)
+        {
+            return null;
+        }
+    }
+    public String getFileNameWithPath(String path)
+    {
+        if (fileNames == null) return null;
+
+        try
+        {
+            return fileNames.get(getIndexWithPath(path));
         }
         catch(Exception ee)
         {
@@ -281,6 +303,7 @@ public class ClassLoaderUtil
         if (fileNames.size() <= index) return null;
         return fileNames.get(index);
     }
+
     public int getSizeOfInputStreams()
     {
         if (streams == null) return 0;
@@ -312,9 +335,14 @@ public class ClassLoaderUtil
     public String getName(int index)
     {
         if (names.size() <= index) return null;
+        return getFileName(names.get(index));
+    }
+    public String getPath(int index)
+    {
+        if (names.size() <= index) return null;
         return names.get(index);
     }
-    public int getIndex(String name)
+    public int getIndexWithName(String name)
     {
         if ((name == null)||(name.trim().equals(""))) return -1;
         name = name.trim();
@@ -322,7 +350,19 @@ public class ClassLoaderUtil
         for (int i=0;i<names.size();i++)
         {
             String str = names.get(i).trim();
-            if (str.equals(name)) return i;
+            if ((getFileName(str)).equals(name)) return i;
+        }
+        return -1;
+    }
+    public int getIndexWithPath(String path)
+    {
+        if ((path == null)||(path.trim().equals(""))) return -1;
+        path = path.trim();
+
+        for (int i=0;i<names.size();i++)
+        {
+            String str = names.get(i).trim();
+            if (str.equals(path)) return i;
         }
         return -1;
     }
@@ -330,6 +370,9 @@ public class ClassLoaderUtil
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/08/08 21:18:10  umkis
+ * HISTORY      : Change to V3VocabularyTreeBuildEventHandler
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/08/08 20:33:11  umkis
  * HISTORY      : V3 Vocavulary utility objects initializing setup
  * HISTORY      :
