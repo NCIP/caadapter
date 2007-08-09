@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.14 2007-08-08 16:37:06 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.15 2007-08-09 15:29:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2007-08-08 16:37:06 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2007-08-09 15:29:08 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -195,7 +195,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			int childCount = newNode.getChildCount();
 			targetNode.setAllowsChildren(true);
 			for(int i=0; i<childCount; i++)
-			{
+			{//once a node is moved from newNode to targetNode, it 
+			//is removed from the newNode children list, so always getChildAt(0)
 				targetNode.add((MutableTreeNode) newNode.getChildAt(0));
 			}
 		}
@@ -238,9 +239,10 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					}
 					//choiceClassNode
 					DefaultMutableTreeNode choicClassNode=buildMIFClassNode(choiceClass);
-					for (int childCnt=0;childCnt<choicClassNode.getChildCount();childCnt++)
+					int choiceChildrenCnt=choicClassNode.getChildCount();
+					for (int childCnt=0;childCnt<choiceChildrenCnt;childCnt++)
 					{
-						rtnNode.add((DefaultMutableTreeNode)choicClassNode.getChildAt(childCnt));
+						rtnNode.add((DefaultMutableTreeNode)choicClassNode.getChildAt(0));
 					}
 //					rtnNode.add(buildMIFClassNode(choiceClass));
 				}
@@ -299,6 +301,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	
 	private MIFClass loadCMETClassWithMIF(String cmetMifName, Hashtable<String, String>asscTraversalClassName)
 	{
+		Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
 		MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();
 		//set traversal name with 
 		if (asscTraversalClassName!=null)
