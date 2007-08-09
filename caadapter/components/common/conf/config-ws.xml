@@ -15,6 +15,8 @@
     <constant name="MAP_COMPONENT_SOURCE_TYPE" type="String" value="source"/>
     <constant name="MAP_COMPONENT_TARGET_TYPE" type="String" value="target"/>
     <constant name="MAP_COMPONENT_FUNCTION_TYPE" type="String" value="function"/>
+	<constant name="MMS_PREFIX_DATAMODEL" type="String" value="cadapter.mms.prefix.datamodel"/>
+	<constant name="MMS_PREFIX_OBJECTMODEL" type="String" value="cadapter.mms.prefix.objectmodel"/>
 
     <constant name="CSV_METADATA_FILE_DEFAULT_EXTENTION" type="String" value=".scs"/>
     <constant name="CSV_DATA_FILE_DEFAULT_EXTENSTION" type="String" value=".csv"/>

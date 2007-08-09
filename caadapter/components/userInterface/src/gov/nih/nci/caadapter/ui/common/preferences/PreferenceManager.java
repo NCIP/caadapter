@@ -51,6 +51,9 @@ public class PreferenceManager extends JDialog implements ActionListener
         //
         JComponent panel2 = new Hl7V3SpecificationPreferencePane(this);
         tabbedPane.addTab("HL7 V3 Transformation", null, panel2, "");
+
+        JComponent panel3 = new MMSPreferencePane(this);
+        tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -67,6 +70,9 @@ public class PreferenceManager extends JDialog implements ActionListener
         //
         JComponent panel2 = new Hl7V3SpecificationPreferencePane(this);
         tabbedPane.addTab("Hl7 V3 Transformation", null, panel2, "");
+        //
+        JComponent panel3 = new MMSPreferencePane(this);
+        tabbedPane.addTab("MMS Preference Pane", null, panel3, "");  
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

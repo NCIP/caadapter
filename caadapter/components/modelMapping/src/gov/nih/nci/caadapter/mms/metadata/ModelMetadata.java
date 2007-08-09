@@ -17,6 +17,8 @@ import java.util.TreeSet;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -139,116 +141,103 @@ public class ModelMetadata {
 		 return modelMetadata; 
 	}
 	
-	private static void createModel(UMLModel model)
-	{
-		for( UMLPackage pkg : model.getPackages() ) 
-		{
-			printPackage(pkg, "");
-		}
-	}
-	   
-	private static void printPackage(UMLPackage pkg, String parentString) 
-	{
-	    for(UMLClass clazz : pkg.getClasses()) 
-	    {    	
-  	      StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
-  	      String packageName ="";
-  	      if (parentString.equals(""))
-  	      {
-  	    	  packageName = clazz.getName();   
-  	      }
-  	      else {
-//	  	      packageName = parentString + "." + pathKey.toString();   	    	  
-	  	      packageName = parentString + "." + pathKey.toString();   	    	  
-  	      }
-  	      System.out.println("packageName class leve:" + clazz.getName());
-	      if (packageName.contains("Data Model")) {
-//  	      if (pathKey.toString().contains("Data Model")) {
-  	    	  //create a TableMetadata object
-  	    	  TableMetadata table = new TableMetadata();
-  	    	  table.setName(clazz.getName());
-  	    	  pathKey.append(".");
-  	    	  pathKey.append(clazz.getName());
-  	    	  table.setXPath(pathKey.toString());
-  	    	  //System.out.println("Class : "+ pathKey.toString()+ " to hash map");
-  	    	  sortedModel.add(table);
-  	    	  for(UMLAttribute att : clazz.getAttributes()) {
-  		          printColumnAttribute(att, table, pathKey);
-  		      }  
-  	      } else if (packageName.contains("Logical Model") && !packageName.contains("java")) {
-  	    	  
-  	    	  ObjectMetadata object = new ObjectMetadata();
-  	    	  object.setName(clazz.getName());
-//  	    	  System.out.println(clazz);
-  	    	  pathKey.append(".");
-  	    	  pathKey.append(clazz.getName());
-  	    	  object.setXPath(pathKey.toString());
-  	    	  object.setId(clazz.toString());
-  	    	  objectHashMap.put(clazz.toString(), pathKey.toString());
-  	    	  //System.out.println("Class: "+ pathKey.toString() + "\n");
-  	    	  sortedModel.add(object);
+    private static void createModel(UMLModel model)
+    {
+        for( UMLPackage pkg : model.getPackages() )
+        {
+            printPackage(pkg);
+        }
+    }
 
-  	    	  /* The following code look through the inheritance hierachy and populate
-  	    	   * attributes of all parents to the object
-  	    	   */
-  	    	  ArrayList<UMLClass> parents = new ArrayList();
-  	    	  UMLClass parent = null;
-  	    	  UMLClass pre = null;
-  	    	  List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
-  	    	  
-  	    	  /* Step 1
-  	    	   * trace to all of the ancesters.
-  	    	   * when clazzG is not empty, it could have supertype, or subtype
-  	    	   * To verify it really has a parent, we need to make sure the supertype is different then itself
-  	    	   * also, one assumption is one class can only have one supertype
-  	    	   */
-  	    	  for (UMLGeneralization clazzG : clazzGs) {
-  	    		  parent = clazzG.getSupertype();
-  	    		  if (parent != clazz) {
-  	    			  inheritanceHashMap.put(clazz.toString(),parent.toString());
-  	    			  break;
-  	    		  }
-  	    	  }
-  	    	  if (parent!=clazz) {
-  	    		  while (parent != null) {
-  	    			  parents.add(parent);
-  	    			  clazzGs = parent.getGeneralizations();
-  	    			  pre = parent;
-  	    			  parent = null;
-  	    			  for (UMLGeneralization clazzG : clazzGs) {
-  	    				  parent = clazzG.getSupertype();
-  	    				  if (parent != pre) {break;}
-  	    			  }
-  	    			  if (parent == pre) parent = null;
-  	    		  }
-  	    		  for(UMLClass p : parents) {
-  	    			  for(UMLAttribute att : p.getAttributes()) {
-  	    				  printAttribute(att, object, pathKey, true);
-  	    			  }
-  	    		  }
-  	    	  }
-  	    	  for(UMLAttribute att : clazz.getAttributes()) {
-  		          printAttribute(att, object, pathKey, false);
-  		      }
-  	    	  for(UMLAssociation assoc : clazz.getAssociations()) {
-   				  printAssociation(assoc, object, pathKey, clazz);
- 	        }
-  	    	  //create an object metadata object
-  	      }
-	    }
-	    for(UMLPackage _pkg : pkg.getPackages()) {
-	  	      String packageName ="";
-	  	      if (parentString.equals(""))
-	  	      {
-	  	    	  packageName = _pkg.getName();   
-	  	      }
-	  	      else {
-	  	  	      packageName = parentString + "." + _pkg.getName();   	    	  
-	  	      }
-	  	      System.out.println("packageName" + packageName);
-	  	      printPackage(_pkg, packageName);
-	    }
-	  }
+    private static void printPackage(UMLPackage pkg)
+    {
+        for(UMLClass clazz : pkg.getClasses())
+        {
+            StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
+            if (pathKey.toString().contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) )) {
+                //create a TableMetadata object
+                TableMetadata table = new TableMetadata();
+                table.setName(clazz.getName());
+                pathKey.append(".");
+                pathKey.append(clazz.getName());
+                table.setXPath(pathKey.toString());
+
+                System.out.println("DAT clazz.getName : " + clazz.getName() );
+                System.out.println("DAT pathKey.toString() : "+ pathKey.toString() );
+
+                sortedModel.add(table);
+                for(UMLAttribute att : clazz.getAttributes()) {
+                    printColumnAttribute(att, table, pathKey);
+                }
+            } else if (pathKey.toString().contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) ) && !pathKey.toString().contains("java")) {
+
+                ObjectMetadata object = new ObjectMetadata();
+                object.setName(clazz.getName());
+//  	    	  System.out.println(clazz);
+                pathKey.append(".");
+                pathKey.append(clazz.getName());
+                object.setXPath(pathKey.toString());
+                object.setId(clazz.toString());
+                objectHashMap.put(clazz.toString(), pathKey.toString());
+                //System.out.println("Class: "+ pathKey.toString() + "\n");
+                System.out.println("OBJ clazz.getName : " + clazz.getName() );
+                System.out.println("OBJ pathKey.toString() : "+ pathKey.toString() );
+
+                sortedModel.add(object);
+
+                /* The following code look through the inheritance hierachy and populate
+                 * attributes of all parents to the object
+                 */
+                ArrayList<UMLClass> parents = new ArrayList();
+                UMLClass parent = null;
+                UMLClass pre = null;
+                List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
+
+                /* Step 1
+                 * trace to all of the ancesters.
+                 * when clazzG is not empty, it could have supertype, or subtype
+                 * To verify it really has a parent, we need to make sure the supertype is different then itself
+                 * also, one assumption is one class can only have one supertype
+                 */
+                for (UMLGeneralization clazzG : clazzGs) {
+                    parent = clazzG.getSupertype();
+                    if (parent != clazz) {
+                        inheritanceHashMap.put(clazz.toString(),parent.toString());
+                        break;
+                    }
+                }
+                if (parent!=clazz) {
+                    while (parent != null) {
+                        parents.add(parent);
+                        clazzGs = parent.getGeneralizations();
+                        pre = parent;
+                        parent = null;
+                        for (UMLGeneralization clazzG : clazzGs) {
+                            parent = clazzG.getSupertype();
+                            if (parent != pre) {break;}
+                        }
+                        if (parent == pre) parent = null;
+                    }
+                    for(UMLClass p : parents) {
+                        for(UMLAttribute att : p.getAttributes()) {
+                            printAttribute(att, object, pathKey, true);
+                        }
+                    }
+                }
+                for(UMLAttribute att : clazz.getAttributes()) {
+                    printAttribute(att, object, pathKey, false);
+                }
+                for(UMLAssociation assoc : clazz.getAssociations()) {
+                     printAssociation(assoc, object, pathKey, clazz);
+             }
+                //create an object metadata object
+            }
+        }
+        for(UMLPackage _pkg : pkg.getPackages()) {
+          printPackage(_pkg);
+        }
+      }
+
 
 	  private static void printAssociation(UMLAssociation assoc, ObjectMetadata object, StringBuffer keyPath, UMLClass clazz) {
 		  	boolean isOneToMany = false;

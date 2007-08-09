@@ -17,27 +17,24 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaFileParser;
-//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3MetaResult;
-//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaParserImpl;
-//import gov.nih.nci.caadapter.hl7.database.DatabaseMetaResult;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerator;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.sdtm.meta.QBTableMetaData;
+import gov.nih.nci.caadapter.sdtm.meta.QueryBuilderMeta;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
+import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
-import gov.nih.nci.caadapter.ui.common.functions.FunctionLibraryPane;
-import gov.nih.nci.caadapter.ui.common.properties.DefaultPropertiesPage;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
@@ -52,12 +49,13 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -72,8 +70,8 @@ import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -81,8 +79,9 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
@@ -98,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.6 2007-08-07 20:50:47 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.7 2007-08-09 16:24:40 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -414,13 +413,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
-			if (key.contains("Logical View.Logical Model.")) {
+            System.out.println("Key " + key );
+            System.out.println("Prefix " + PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
+            if (key.contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
-					construct_node(nodes, key, "Logical View.Logical Model."
-							.length(), true, true);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
 				} else {
-					construct_node(nodes, key, "Logical View.Logical Model."
-							.length(), false, true);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false, true);
 				}
 			}
 		}
@@ -500,14 +499,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
-			if (key.contains("Logical View.Data Model.")) 
+			if (key.contains(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "."))
 			{
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
-					construct_node(nodes, key, "Logical View.Data Model."
-							.length(), true, false);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
 				} else {
-					construct_node(nodes, key, "Logical View.Data Model."
-							.length(), false, false);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
 				}
 			}
 		}
@@ -523,6 +520,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	protected void buildTargetTree(Object metaInfo, File absoluteFile,
 			boolean isToResetGraph) throws Exception {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
+		
+		 tTree.setCellRenderer(new MMSRenderer());
+		 
 		// instantiate the "DropTransferHandler"
 		mmsTargetTreeDropTransferHandler = new MmsTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
@@ -630,8 +630,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			Hashtable sourceNodes = new Hashtable();
 			Hashtable targetNodes = new Hashtable();
 
-			buildHash(sourceNodes, rootSTree, "Logical View.Logical Model");
-			buildHash(targetNodes, rootTTree, "Logical View.Data Model");
+			buildHash(sourceNodes, rootSTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+			buildHash(targetNodes, rootTTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
 
 			MappingImpl newMappingImpl = new MappingImpl();
 			newMappingImpl.setSourceComponent(null);
@@ -707,7 +707,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 									targetXpath = pathKey + "."
 											+ clazz.getName() + "."
 											+ att.getName();
-									sourceXpath = "Logical View.Logical Model."
+									sourceXpath = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL )
 											+ tagValue.getValue();
 									// System.out.println( "targetXpath:" +
 									// targetXpath );
@@ -847,8 +847,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 				.getRoot();
 		Hashtable sourceNodes = new Hashtable();
 		Hashtable targetNodes = new Hashtable();
-		buildHash(sourceNodes, rootSTree, "Logical View.Logical Model");
-		buildHash(targetNodes, rootTTree, "Logical View.Data Model");
+		buildHash(sourceNodes, rootSTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+		buildHash(targetNodes, rootTTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
 
 		MappingImpl newMappingImpl = new MappingImpl();
 		newMappingImpl.setSourceComponent(null);
@@ -911,9 +911,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private void buildHash(Hashtable hashtable, DefaultMutableTreeNode root,
 			String parent) {
 		if ((root.getUserObject().toString().equals("Object Model") && parent
-				.equals("Logical View.Logical Model"))
+				.equals(PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL )))
 				|| (root.getUserObject().toString().equals("Data Model") && parent
-						.equals("Logical View.Data Model"))) {
+						.equals(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL )))) {
 			for (int i = 0; i < root.getChildCount(); i++) {
 				buildHash(hashtable, (DefaultMutableTreeNode) root
 						.getChildAt(i), parent);
@@ -1095,47 +1095,98 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 	}
 	
-//	  private class MMSRenderer extends DefaultTreeCellRenderer
-//	    {
-//		  // this control comes here
-//
-//	        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-//	        {
-//	            super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-//	            ImageIcon tutorialIcon;
-//	            try
-//	            {
-//	                String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
-//	               
-//	                }
-//	            } catch (Exception e)
-//	            {
-//	              
-//	            }
-//	            return this;
-//	        }
-//	    }
-///**
-// * Returns an ImageIcon, or null if the path was invalid.
-// */
-//protected static ImageIcon createImageIcon(String path)
-//{
-//    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
-//    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
-//    if (imgURL != null)
-//    {
-//        //System.out.println("class.getResource is "+imgURL.toString());
-//        return new ImageIcon(imgURL);
-//    } else
-//    {
-//        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
-//        return null;
-//    }
-//}
+	private class MMSRenderer extends DefaultTreeCellRenderer
+	{
+	  // this control comes here
+	
+	    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
+	    {
+	        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+	        ImageIcon tutorialIcon;
+	        try
+	        {
+	            String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
+                if (_tmpStr.equalsIgnoreCase("Data Model"))
+                {
+                    tutorialIcon = createImageIcon("database.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Data model");
+                } else
+                {
+                    tutorialIcon = createImageIcon("schema.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Schema");
+                }
+                return this;
+	        } catch (Exception e) 
+	        { 
+	        	//continue 
+	        }
+
+            try
+            {
+                gov.nih.nci.caadapter.mms.metadata.TableMetadata qbTableMetaData = (gov.nih.nci.caadapter.mms.metadata.TableMetadata) ((DefaultTargetTreeNode) value).getUserObject();
+                if (qbTableMetaData.getType().equalsIgnoreCase("normal"))
+                {
+                    tutorialIcon = createImageIcon("table.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Table");
+                } else if (qbTableMetaData.getType().equalsIgnoreCase("VIEW"))
+                {
+                    tutorialIcon = createImageIcon("view.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("View");
+                }
+            } catch (ClassCastException e)
+            {
+                try
+                {
+                    gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();                    
+                    tutorialIcon = createImageIcon("column.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Column");
+                } catch (Exception ee)
+                {
+                    try
+                    {
+                        //String queryBuilderMeta = (String) ((DefaultSourceTreeNode) value).getUserObject();
+                        tutorialIcon = createImageIcon("load.gif");
+                        setIcon(tutorialIcon);
+                    } catch (Exception e1)
+                    {
+                        setToolTipText(null);
+                    }
+                }
+            }
+	        
+	        return this;
+	    }
+	}
+
+	/**
+	 * Returns an ImageIcon, or null if the path was invalid.
+	 */
+	protected static ImageIcon createImageIcon(String path)
+	{
+	    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
+	    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
+	    if (imgURL != null)
+	    {
+	        //System.out.println("class.getResource is "+imgURL.toString());
+	        return new ImageIcon(imgURL);
+	    } else
+	    {
+	        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
+	        return null;
+	    }
+	}
 }
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.6  2007/08/07 20:50:47  schroedn
+ * HISTORY : New Feature, Primary Key and Lazy/Eager functions added to MMS
+ * HISTORY :
  * HISTORY : Revision 1.5  2007/08/07 15:54:47  schroedn
  * HISTORY : New Feature, Primary Key and Lazy/Eager functions added to MMS
  * HISTORY :

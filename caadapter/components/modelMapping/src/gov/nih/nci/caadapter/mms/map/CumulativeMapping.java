@@ -101,7 +101,7 @@ public class CumulativeMapping {
 	
 	/**
 	 *
-	 * @param dependencyMapping
+	 * @param associationEndMetadata
 	 */
 	public boolean isDependencyMapped(AssociationMetadata associationEndMetadata){
 		boolean isDependencyMapped = false;
@@ -123,7 +123,7 @@ public class CumulativeMapping {
 	}
 	/**
 	 *
-	 * @param manyToManyCorrelationMapping
+	 * @param manyToManyMapping
 	 */
 	public boolean containsManyToManyMapping(ManyToManyMapping manyToManyMapping){
 		return manyToManyMappings.contains(manyToManyMapping);
@@ -191,7 +191,7 @@ public class CumulativeMapping {
 
 	/**
 	 *
-	 * @param manyToManyCorrelationMapping
+	 * @param manyToManyMapping
 	 */
 	public void removeManyToManyMapping(ManyToManyMapping manyToManyMapping){
 		manyToManyMappings.remove(manyToManyMapping);

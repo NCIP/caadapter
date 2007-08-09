@@ -17,6 +17,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 import gov.nih.nci.caadapter.common.SDKMetaData;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 
 import java.io.*;
 import java.util.*;
@@ -485,7 +487,7 @@ public class XMIGenerator
 	
 	public void addPrimaryKey( String pKey )
 	{
-		String primaryKey = "Logical View.Logical Model." + pKey;
+        String primaryKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "." + pKey;
 		
 		System.out.println( "pKey=" + primaryKey );		
 		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
@@ -498,7 +500,7 @@ public class XMIGenerator
 	
 	public void addLazyKey( String lKey )
 	{
-		String lazyKey = "Logical View.Data Model." + lKey;
+		String lazyKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "." + lKey;
 		
 		System.out.println( "lKey = " + lKey );
 		System.out.println( "lazyKey = " + lazyKey );
@@ -558,9 +560,9 @@ public class XMIGenerator
 	public String getCleanPath(String grossPath)
 	{
 		String cleanPath = null;
-		if (grossPath.startsWith("Logical View.Logical Model")) 
+		if (grossPath.startsWith( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) ))
 		{
-		    cleanPath = grossPath.replaceAll("Logical View.Logical Model.","");
+		    cleanPath = grossPath.replaceAll( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".", "" );
 		}
 		return cleanPath;
 	}

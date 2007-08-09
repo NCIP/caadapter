@@ -12,7 +12,9 @@
 	<constant name="CAADAPTER_COMPONENT_WEB_SERVICE_ACTIVATED" type="String" value="caadapter.web.service.activated"/>	
 	<constant name="CAADAPTER_HELP_MENU_ACTIVATED" type="String" value="caadapter.help.menu.activated"/>	
 	<constant name="CAADAPTER_QUERYBUILDER_MENU_ACTIVATED" type="String" value="caadapter.querybuilder.menu.activated"/>	
-
+	<constant name="MMS_PREFIX_DATAMODEL" type="String" value="cadapter.mms.prefix.datamodel"/>
+	<constant name="MMS_PREFIX_OBJECTMODEL" type="String" value="cadapter.mms.prefix.objectmodel"/>
+	    
 	<!-- feature controlling flag -->
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED" type="String" value="caadapter.hl7.specification.nullflavor.enabled"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED" type="String" value="caadapter.hl7.specification.complextype.enabled"/>
