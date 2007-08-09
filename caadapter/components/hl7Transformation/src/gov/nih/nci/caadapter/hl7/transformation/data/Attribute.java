@@ -11,13 +11,14 @@ package gov.nih.nci.caadapter.hl7.transformation.data;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-31 14:05:28 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-09 20:17:26 $
  */
 
 public class Attribute {
 	private String name;
 	private String value;
+	private String datatype;
 	/**
 	 * @return the name
 	 */
@@ -41,5 +42,17 @@ public class Attribute {
 	 */
 	public void setValue(String value) {
 		this.value = value;
+	}
+	/**
+	 * @return the datatype
+	 */
+	public String getDatatype() {
+		return datatype;
+	}
+	/**
+	 * @param datatype the datatype to set
+	 */
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
 	}
 }
