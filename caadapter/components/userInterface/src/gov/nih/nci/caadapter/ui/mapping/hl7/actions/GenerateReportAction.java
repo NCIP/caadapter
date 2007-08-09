@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/actions/GenerateReportAction.java,v 1.1 2007-07-03 19:37:42 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/actions/GenerateReportAction.java,v 1.2 2007-08-09 13:49:13 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,6 +39,7 @@ import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 //import gov.nih.nci.caadapter.hl7.map.MapReportGenerator;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
+import gov.nih.nci.caadapter.hl7.report.MapReportGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -54,10 +55,10 @@ import java.io.File;
  * This class defines the action to carry out process report functionality on a SCM file.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:37:42 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-09 13:49:13 $
  */
 public class GenerateReportAction extends AbstractContextAction
 {
@@ -76,7 +77,7 @@ public class GenerateReportAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/actions/GenerateReportAction.java,v 1.1 2007-07-03 19:37:42 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/actions/GenerateReportAction.java,v 1.2 2007-08-09 13:49:13 wuye Exp $";
 
 	protected HL7MappingPanel mappingPanel;
 
@@ -128,6 +129,7 @@ public class GenerateReportAction extends AbstractContextAction
 	{
 		//		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, getUIWorkingDirectoryPath(), Config.REPORT_FILE_DEFAULT_EXTENSION, "Select File to Save Generated Report", true, true);
 		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.REPORT_FILE_DEFAULT_EXTENSION, "Select File to Save Generated Report", true, true);
+		System.out.println("File:"+file);
 		if (file != null)
 		{
 			//do something.
@@ -165,23 +167,23 @@ public class GenerateReportAction extends AbstractContextAction
 				return isSuccessfullyPerformed();
 			}
 
-//			MapReportGenerator generator = new MapReportGenerator();
-//			ValidatorResults validatorResults = null;
-//			try
-//			{
-//				GeneralUtilities.setCursorWaiting(mappingPanel);
-//				validatorResults = generator.generateReport(file, mappingData);
-//			}
-//			finally
-//			{
-//				GeneralUtilities.setCursorDefault(mappingPanel);
-//			}
-//			boolean everythingGood = handleValidatorResults(validatorResults);
-//			if (everythingGood)
-//			{
-//				JOptionPane.showMessageDialog(mappingPanel.getParent(), "Report has been successfully generated.", "Action Complete", JOptionPane.INFORMATION_MESSAGE);
-//			}
-//			setSuccessfullyPerformed(everythingGood);
+			MapReportGenerator generator = new MapReportGenerator();
+			ValidatorResults validatorResults = null;
+			try
+			{
+				GeneralUtilities.setCursorWaiting(mappingPanel);
+				validatorResults = generator.generate(file, mappingData);
+			}
+			finally
+			{
+				GeneralUtilities.setCursorDefault(mappingPanel);
+			}
+			boolean everythingGood = handleValidatorResults(validatorResults);
+			if (everythingGood)
+			{
+				JOptionPane.showMessageDialog(mappingPanel.getParent(), "Report has been successfully generated.", "Action Complete", JOptionPane.INFORMATION_MESSAGE);
+			}
+			setSuccessfullyPerformed(everythingGood);
 		}
 		return isSuccessfullyPerformed();
 	}
@@ -198,6 +200,9 @@ public class GenerateReportAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:37:42  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:23  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
