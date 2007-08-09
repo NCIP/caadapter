@@ -13,8 +13,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-08 14:30:47 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-09 19:25:56 $
  */
 public class MIFParserUtil {
 
@@ -24,7 +24,8 @@ public class MIFParserUtil {
 		try {
 			mifClass = mifParser.loadMIF(mifFileName);
 		//resolve the internal reference
-			MIFReferenceResolver.getReferenceResolved(mifClass, mifParser);
+			MIFReferenceResolver refResolver=new MIFReferenceResolver();
+			refResolver.getReferenceResolved(mifClass);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
