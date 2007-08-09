@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.15 2007-08-09 15:29:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.16 2007-08-09 19:29:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -66,6 +66,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -80,8 +81,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2007-08-09 15:29:08 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2007-08-09 19:29:54 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -216,35 +217,48 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		DefaultMutableTreeNode rtnNode =new DefaultMutableTreeNode(mifClass);	
 		if(!mifClass.getSortedChoices().isEmpty())
 		{
-			for (MIFClass choiceClass:mifClass.getSortedChoices())
-			{
-				if (choiceClass.isChoiceSelected())
-				{	
-					if (treeEditable&&!choiceClass.getReferenceName().equals(""))
+//			if(treeEditable)
+//			{
+				HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
+				for (MIFClass choiceClass:mifClass.getSortedChoices())
+				{
+					//load the choice and resolve internal reference
+					if (!choiceClass.getReferenceName().equals(""))
 					{
-//						loading the referenced MIF class from CMET
+						//loading the referenced MIF class from CMET
 						Log.logInfo(this, "load CMET Reference:"+choiceClass.getReferenceName());
 						CMETRef cmetRef = CMETUtil.getCMET(choiceClass.getReferenceName());
 						if (cmetRef != null) 
 						{
 							//there is not "traversalName" issue to load the CMET class for a choice item
 							MIFClass referencedMifClass =loadCMETClassWithMIF(cmetRef.getFilename() + ".mif",null);
-							choiceClass=referencedMifClass;
+							referencedMifClass.setChoiceSelected(choiceClass.isChoiceSelected());
+							resolvedChoices.add(referencedMifClass);
 						}
 						else
 						{
+							resolvedChoices.add(choiceClass);
 							Log.logError(this, "Not Found..:"+choiceClass.getReferenceName());
-//							childNode=new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName());				
+							//						childNode=new DefaultMutableTreeNode("Reference Not Found..:"+asscMifClass.getReferenceName());				
 						}
 					}
+					else
+						resolvedChoices.add(choiceClass);
+//				}
+				mifClass.setChoice(resolvedChoices);
+			}
+			for (MIFClass choiceToNode:mifClass.getSortedChoices())
+			{
+				if (choiceToNode.isChoiceSelected())
+				{	
 					//choiceClassNode
-					DefaultMutableTreeNode choicClassNode=buildMIFClassNode(choiceClass);
+					DefaultMutableTreeNode choicClassNode=buildMIFClassNode(choiceToNode);
 					int choiceChildrenCnt=choicClassNode.getChildCount();
 					for (int childCnt=0;childCnt<choiceChildrenCnt;childCnt++)
 					{
 						rtnNode.add((DefaultMutableTreeNode)choicClassNode.getChildAt(0));
 					}
-//					rtnNode.add(buildMIFClassNode(choiceClass));
+					break;//there is only node can be selected
 				}
 			}
 		}
