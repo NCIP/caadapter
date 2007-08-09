@@ -5,10 +5,17 @@
 
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -19,8 +26,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-09 20:17:26 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-09 21:40:13 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -63,6 +70,7 @@ public class XMLElement implements Cloneable{
 	 * @param value the value of the attribute
 	 */
 	public void addAttribute(String name, String value, String datatype) {
+		System.out.println("name" + name + " type:"+datatype);
 		Attribute attribute = new Attribute();
 		attribute.setName(name);
 		attribute.setValue(value);
@@ -99,12 +107,40 @@ public class XMLElement implements Cloneable{
 	public void addSegment(String segment) {
 		segments.add(segment);
 	}
+	/**
+	 * @return the validatorResults
+	 */
+	public ValidatorResults getValidatorResults() {
+		return validatorResults;
+	}
+	/**
+	 * @param validatorResults the validatorResults to set
+	 */
+	public void setValidatorResults(ValidatorResults validatorResults) {
+		this.validatorResults = validatorResults;
+	}
+	/**
+	 * @param attributes the attributes to set
+	 */
+	public void setAttributes(ArrayList<Attribute> attributes) {
+		this.attributes = attributes;
+	}
+	/**
+	 * @return the hasUserMappedData
+	 */
+	public boolean hasUserMappedData() {
+		return hasUserMappedData;
+	}
+	/**
+	 * @param hasUserMappedData the hasUserMappedData to set
+	 */
+	public void setHasUserMappedData(boolean hasUserMappedData) {
+		this.hasUserMappedData = hasUserMappedData;
+	}
 	
 	public StringBuffer toXML() {
 		StringBuffer output = new StringBuffer();
 		output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-//		addAttribute("xmlns","urn:hl7-org:v3");
-//		addAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
 		output.append(toXMLBody(0));
 		return output;
 	}
@@ -122,10 +158,6 @@ public class XMLElement implements Cloneable{
 		for(Attribute attribute:attributes) {
 			String key = attribute.getName();
 			String value = attribute.getValue();
-//			if (key.equals("extension")) {
-//				output.append(" extension="+"\"abac\"");
-//				continue;
-//			}
 			if (key.equalsIgnoreCase("inlineText")) {
 				addBody = true;
 				bodyValue = value;
@@ -156,34 +188,58 @@ public class XMLElement implements Cloneable{
 		}
 		return output;
 	}
-	/**
-	 * @return the validatorResults
-	 */
-	public ValidatorResults getValidatorResults() {
+
+	public ValidatorResults validate() {
+		try {
+			Hashtable datatypes = new Hashtable();
+			InputStream is = this.getClass().getResourceAsStream("/datatypes");
+			ObjectInputStream ois = new ObjectInputStream(is);
+			datatypes = (Hashtable)ois.readObject();
+			ois.close();
+			is.close();
+			ValidatorResults validatorResults_sub = validate(datatypes, name);
+			if (validatorResults_sub == null) return validatorResults;
+			if (validatorResults_sub.getAllMessages().size() == 0) return validatorResults;
+			validatorResults.addValidatorResults(validatorResults_sub);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return validatorResults;
 	}
-	/**
-	 * @param validatorResults the validatorResults to set
-	 */
-	public void setValidatorResults(ValidatorResults validatorResults) {
-		this.validatorResults = validatorResults;
-	}
-	/**
-	 * @param attributes the attributes to set
-	 */
-	public void setAttributes(ArrayList<Attribute> attributes) {
-		this.attributes = attributes;
-	}
-	/**
-	 * @return the hasUserMappedData
-	 */
-	public boolean hasUserMappedData() {
-		return hasUserMappedData;
-	}
-	/**
-	 * @param hasUserMappedData the hasUserMappedData to set
-	 */
-	public void setHasUserMappedData(boolean hasUserMappedData) {
-		this.hasUserMappedData = hasUserMappedData;
+
+	public ValidatorResults validate(Hashtable datatypes, String pXmlPath) {
+		ValidatorResults validatorResults_temp = new ValidatorResults();
+		for(Attribute attribute: attributes) {
+			if (attribute.getDatatype() != null) 
+			{
+				if (!attribute.getDatatype().equals(""))
+				{
+					String dt = attribute.getDatatype();
+					if (dt.equals("cs")) continue;
+					
+//					System.out.println("Validating:"+pXmlPath + "." + attribute.getName());
+					
+					Datatype datatype = (Datatype)datatypes.get(dt);
+					if (datatype!= null) 
+					{
+						HashSet predefinedValues = datatype.getPredefinedValues();
+						if (predefinedValues.size()>0) {
+							if (!predefinedValues.contains(attribute.getValue())) 
+							{
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contains valid value (" + attribute.getValue() + ")"});
+					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));			
+							}
+						}
+					}
+				}
+			}
+		}
+		for (XMLElement xmlElement:children) {
+			ValidatorResults validatorResults_sub = xmlElement.validate(datatypes, pXmlPath+"."+xmlElement.getName());
+			if (validatorResults_sub == null) continue;
+			if (validatorResults_sub.getAllMessages().size() == 0) continue;
+			validatorResults_temp.addValidatorResults(validatorResults_sub);
+		}
+		return validatorResults_temp;
 	}
 }

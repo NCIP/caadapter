@@ -43,8 +43,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2007-08-08 22:01:39 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2007-08-09 21:40:43 $
  */
 
 public class MapProcessor {
@@ -261,13 +261,13 @@ public class MapProcessor {
     			if (mifAttribute.isStrutural()) {
     				if (mifAttribute.getDefaultValue()!=null)
     				{
-    					xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue());
+    					xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue(),null);
     				}
     				else 
     				{
     					if (mifAttribute.getFixedValue()!=null)
     					{
-    						xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue());
+    						xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue(),null);
     					}
     					else {
     			    		String scsPath = mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName();
@@ -285,7 +285,7 @@ public class MapProcessor {
     	    						}
     	    						else {
     	    							xmlElement.setHasUserMappedData(true);
-    	    							xmlElement.addAttribute(mifAttribute.getName(), csvField.getValue());
+    	    							xmlElement.addAttribute(mifAttribute.getName(), csvField.getValue(),null);
     	    						}
     	    					}
     	    					else {
@@ -294,7 +294,7 @@ public class MapProcessor {
     	    						}
     	    						else {
     	    							xmlElement.setHasUserMappedData(true);
-    	    							xmlElement.addAttribute(mifAttribute.getName(), data.get(scsPath));
+    	    							xmlElement.addAttribute(mifAttribute.getName(), data.get(scsPath), null);
     	    						}
     	    					}
     						}    						
@@ -400,7 +400,7 @@ public class MapProcessor {
     	
     	xmlElements  = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
     	for(XMLElement xmlElement:xmlElements)
-    		xmlElement.addAttribute("xsi:type", mifAttribute.getDatatype().getName());
+    		xmlElement.addAttribute("xsi:type", mifAttribute.getDatatype().getName(), null);
     	return xmlElements;
     }
 
@@ -433,7 +433,7 @@ public class MapProcessor {
     			{
     				if (!attr.getDefaultValue().equals(""))
     				{
-    					xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+    					xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
     				}
     			}
     		}
@@ -577,14 +577,13 @@ public class MapProcessor {
         			if (attr.getReferenceDatatype().isSimple()) isSimple = true;
         		}
         		if (isSimple) {
-    				
     				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
 //    				System.out.println("---------try"+parentXPath+"."+attributeName + " actualdata:"+scsXmlPath);
     				if (scsXmlPath==null) continue;
     				if (scsXmlPath.startsWith("function.")) { //function mapping to target
     					MutableFlag hasUserData = new MutableFlag();
     					String datavalue = getFunctionValue(csvSegment,scsXmlPath,data, hasUserData);
-    					xmlElement.addAttribute(attributeName, datavalue);
+    					xmlElement.addAttribute(attributeName, datavalue, attr.getType());
     					xmlElement.setHasUserMappedData(hasUserData.hasUserMappedData());
     				}
     				else { //direct mapping from source to target
@@ -593,21 +592,21 @@ public class MapProcessor {
     						CSVField csvField = findCSVField(csvSegment, scsXmlPath);
     						if (csvField.getValue().equals("")) {
     							if (attr.getDefaultValue()!=null)
-    								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+    								xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
     						}
     						else {
     							xmlElement.setHasUserMappedData(true);
-    							xmlElement.addAttribute(attributeName, csvField.getValue());
+    							xmlElement.addAttribute(attributeName, csvField.getValue(), attr.getType());
     						}
     					}
     					else {
     						if (data.get(scsXmlPath).equals("")) {
     							if (attr.getDefaultValue()!=null)
-    								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+    								xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
     						}
     						else {
     							xmlElement.setHasUserMappedData(true);
-    							xmlElement.addAttribute(attributeName, data.get(scsXmlPath));
+    							xmlElement.addAttribute(attributeName, data.get(scsXmlPath), attr.getType());
     						}
     					}
     				}
@@ -661,7 +660,7 @@ public class MapProcessor {
 				if (scsXmlPath.startsWith("function.")) { //function mapping to target
 					MutableFlag hasUserData = new MutableFlag();
 					String datavalue = getFunctionValue(csvSegments,scsXmlPath,data, hasUserData);
-					xmlElement.addAttribute(attributeName, datavalue);
+					xmlElement.addAttribute(attributeName, datavalue, attr.getType());
 					xmlElement.setHasUserMappedData(hasUserData.hasUserMappedData());
 				}
 				else { //direct mapping from source to target
@@ -670,21 +669,21 @@ public class MapProcessor {
 						CSVField csvField = findCSVField(csvSegments, scsXmlPath);
 						if (csvField.getValue().equals("")) {
 							if (attr.getDefaultValue()!=null)
-								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+								xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
 						}
 						else {
 							xmlElement.setHasUserMappedData(true);
-							xmlElement.addAttribute(attributeName, csvField.getValue());
+							xmlElement.addAttribute(attributeName, csvField.getValue(), attr.getType());
 						}
 					}
 					else {
 						if (data.get(scsXmlPath).equals("")) {
 							if (attr.getDefaultValue()!=null)
-								xmlElement.addAttribute(attributeName, attr.getDefaultValue());
+								xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
 						}
 						else {
 							xmlElement.setHasUserMappedData(true);
-							xmlElement.addAttribute(attributeName, data.get(scsXmlPath));
+							xmlElement.addAttribute(attributeName, data.get(scsXmlPath), attr.getType());
 						}
 					}
 				}
@@ -886,6 +885,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2007/08/08 22:01:39  wuye
+ * HISTORY      : Added force generate capability
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2007/08/07 22:28:39  wuye
  * HISTORY      : Fixed choice with 0..1 problem.
  * HISTORY      :
