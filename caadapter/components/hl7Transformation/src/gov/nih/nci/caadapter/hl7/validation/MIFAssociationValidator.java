@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAssociationValidator.java,v 1.2 2007-07-11 17:55:06 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAssociationValidator.java,v 1.3 2007-08-10 16:47:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,17 +34,13 @@
 
 package gov.nih.nci.caadapter.hl7.validation;
 
-import java.util.HashSet;
 import java.util.TreeSet;
-
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
-import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 /**
@@ -52,8 +48,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-07-11 17:55:06 $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-08-10 16:47:29 $
  * @since caAdapter v1.2
  */
 
