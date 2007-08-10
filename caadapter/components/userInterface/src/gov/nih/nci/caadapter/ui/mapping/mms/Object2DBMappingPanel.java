@@ -97,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.8 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.9 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.8 2007-08-09 18:14:31 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.9 2007-08-10 15:57:39 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -759,8 +759,18 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			
 			myModel.setPrimaryKeys(primaryKeys);
 			myModel.setLazyKeys(lazyKeys);
-			
-		} else {
+
+            if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
+            {
+                myModel.setMmsPrefixDataModel(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
+            }
+
+            if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
+            {
+                myModel.setMmsPrefixObjectModel(PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+            }
+
+        } else {
 			JOptionPane
 					.showMessageDialog(
 							null,
@@ -1186,6 +1196,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.8  2007/08/09 18:14:31  schroedn
+ * HISTORY : New Feature - Preferences to change prefex in XMI
+ * HISTORY :
  * HISTORY : Revision 1.7  2007/08/09 16:24:40  schroedn
  * HISTORY : New Feature - Preferences to change prefex in XMI
  * HISTORY :

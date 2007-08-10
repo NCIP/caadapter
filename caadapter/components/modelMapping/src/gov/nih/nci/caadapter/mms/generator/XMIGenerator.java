@@ -18,7 +18,7 @@ import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
+//import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 
 import java.io.*;
 import java.util.*;
@@ -67,7 +67,7 @@ public class XMIGenerator
 	{
 	    try {
 		    modelMetadata = ModelMetadata.getInstance();
-		    
+
 		    if (modelMetadata == null) 
 		    {
 		    	ModelMetadata.createModel(xmiFileName);
@@ -115,12 +115,13 @@ public class XMIGenerator
 				
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
 				{
-					if( tagValue.getName().contains( "primarykey" ))
+					if( tagValue.getName().contains( "id-attribute" ))
 					{
 						//System.out.println( "deleted primarykey" );
-						att.removeTaggedValue( "primarykey" );
+						att.removeTaggedValue( "id-attribute" );
 					}
-					if( tagValue.getName().contains( "mapped-attributes" ))
+                    
+                    if( tagValue.getName().contains( "mapped-attributes" ))
 					{
 						//System.out.println( "deleted m-a" );
 						att.removeTaggedValue( "mapped-attributes" );
@@ -419,7 +420,7 @@ public class XMIGenerator
 	}
 	
 	/**
-	 * @param leftTarget
+	 * @param Target
 	 * @param attribute
 	 */
 	public void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
@@ -487,9 +488,10 @@ public class XMIGenerator
 	
 	public void addPrimaryKey( String pKey )
 	{
-        String primaryKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "." + pKey;
-		
-		System.out.println( "pKey=" + primaryKey );		
+        //String primaryKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "." + pKey;
+        String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
+
+        System.out.println( "pKey=" + primaryKey );
 		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
 		
 		if ( column != null )
@@ -500,9 +502,10 @@ public class XMIGenerator
 	
 	public void addLazyKey( String lKey )
 	{
-		String lazyKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "." + lKey;
-		
-		System.out.println( "lKey = " + lKey );
+		//String lazyKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "." + lKey;
+		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
+
+        System.out.println( "lKey = " + lKey );
 		System.out.println( "lazyKey = " + lazyKey );
 		
 		UMLAttribute column = ModelUtil.findAttribute(this.model, lazyKey);
@@ -558,11 +561,11 @@ public class XMIGenerator
 	 * @return cleanPath
 	 */
 	public String getCleanPath(String grossPath)
-	{
+    {
 		String cleanPath = null;
-		if (grossPath.startsWith( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) ))
+		if (grossPath.startsWith( modelMetadata.getMmsPrefixObjectModel() ))
 		{
-		    cleanPath = grossPath.replaceAll( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".", "" );
+		    cleanPath = grossPath.replaceAll( modelMetadata.getMmsPrefixObjectModel() + ".", "" );
 		}
 		return cleanPath;
 	}

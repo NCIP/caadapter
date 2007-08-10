@@ -18,7 +18,7 @@ import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
+//import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -57,8 +57,10 @@ public class ModelMetadata {
 	private static String xmiFileName;
 	private static List<String> primaryKeys = new ArrayList<String>();
 	private static List<String> lazyKeys = new ArrayList<String>();
-	
-	public ModelMetadata(){}
+	private static String mmsPrefixObjectModel = "Logical View.Logical Model";
+    private static String mmsPrefixDataModel = "Logical View.Data Model";
+
+    public ModelMetadata(){}
 	
 	public ModelMetadata(String xmiFileName){
 		this.xmiFileName = xmiFileName;
@@ -153,8 +155,9 @@ public class ModelMetadata {
     {
         for(UMLClass clazz : pkg.getClasses())
         {
+
             StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
-            if (pathKey.toString().contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) )) {
+            if (pathKey.toString().contains(  modelMetadata.getMmsPrefixDataModel() )) {
                 //create a TableMetadata object
                 TableMetadata table = new TableMetadata();
                 table.setName(clazz.getName());
@@ -162,14 +165,14 @@ public class ModelMetadata {
                 pathKey.append(clazz.getName());
                 table.setXPath(pathKey.toString());
 
-                System.out.println("DAT clazz.getName : " + clazz.getName() );
-                System.out.println("DAT pathKey.toString() : "+ pathKey.toString() );
+//                System.out.println("DAT clazz.getName : " + clazz.getName() );
+//                System.out.println("DAT pathKey.toString() : "+ pathKey.toString() );
 
                 sortedModel.add(table);
                 for(UMLAttribute att : clazz.getAttributes()) {
                     printColumnAttribute(att, table, pathKey);
                 }
-            } else if (pathKey.toString().contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) ) && !pathKey.toString().contains("java")) {
+            } else if (pathKey.toString().contains( modelMetadata.getMmsPrefixObjectModel() ) && !pathKey.toString().contains("java")) {
 
                 ObjectMetadata object = new ObjectMetadata();
                 object.setName(clazz.getName());
@@ -364,8 +367,24 @@ public class ModelMetadata {
 		public void setModel(UMLModel model) {
 			this.model = model;
 		}
-		
-		private static int getReciprocalMultiplicity(UMLAssociationEnd assocEnd) {
+
+        public static String getMmsPrefixObjectModel() {
+            return mmsPrefixObjectModel;
+        }
+
+        public static void setMmsPrefixObjectModel(String mmsPrefixObjectModel) {
+            ModelMetadata.mmsPrefixObjectModel = mmsPrefixObjectModel;
+        }
+
+        public static String getMmsPrefixDataModel() {
+            return mmsPrefixDataModel;
+        }
+
+        public static void setMmsPrefixDataModel(String mmsPrefixDataModel) {
+            ModelMetadata.mmsPrefixDataModel = mmsPrefixDataModel;
+        }
+
+        private static int getReciprocalMultiplicity(UMLAssociationEnd assocEnd) {
 			int otherEndMultiplicity = 0;
 			otherEndMultiplicity = getOtherAssociationEnd(assocEnd).getHighMultiplicity();
 			return otherEndMultiplicity;
