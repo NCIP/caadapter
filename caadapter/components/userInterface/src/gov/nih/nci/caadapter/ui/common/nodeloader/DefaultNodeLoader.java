@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DefaultNodeLoader.java,v 1.2 2007-04-19 14:02:55 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/DefaultNodeLoader.java,v 1.3 2007-08-10 16:49:31 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,8 +42,8 @@ import javax.swing.tree.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-04-19 14:02:55 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-10 16:49:31 $
  */
 public class DefaultNodeLoader implements NodeLoader
 {
@@ -104,22 +104,20 @@ public class DefaultNodeLoader implements NodeLoader
 	 * @param object
 	 * @param tree if null, no corresponding tree update information will be broadcast.
 	 */
-	public void refreshSubTreeByGivenMetaObject(DefaultMutableTreeNode targetNode, Object object, JTree tree) throws MetaDataloadException
+	public static void refreshSubTreeByGivenMifObject(DefaultMutableTreeNode targetNode, DefaultMutableTreeNode newNode, JTree tree) 
 	{
-		DefaultMutableTreeNode newNode = (DefaultMutableTreeNode) this.loadData(object);
 		if(newNode!=null)
 		{//clear out all children and add in new ones, if any
 			targetNode.removeAllChildren();
 			int childCount = newNode.getChildCount();
 			targetNode.setAllowsChildren(true);
 			for(int i=0; i<childCount; i++)
-			{
-				//the targetNode.add() shall remove the given node from its previous parent
-				//therefore, only need to find add the first one, which always be different from each iteration.
+			{//once a node is moved from newNode to targetNode, it 
+			//is removed from the newNode children list, so always getChildAt(0)
 				targetNode.add((MutableTreeNode) newNode.getChildAt(0));
 			}
 		}
-		targetNode.setUserObject(object);
+		targetNode.setUserObject(newNode.getUserObject());
 		if(tree!=null)
 		{
 			TreeModel treeModel = tree.getModel();
@@ -132,6 +130,9 @@ public class DefaultNodeLoader implements NodeLoader
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/04/19 14:02:55  wangeug
+ * HISTORY      : clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:13  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
