@@ -24,7 +24,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-08-07 17:59:31 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2007-08-10 13:33:16 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -65,8 +65,6 @@ import java.util.Iterator;
 	 * @param newAttributes the attributes to set
 	 */
 	public void setAttributes(HashSet<MIFAttribute> newAttributes) {
-//		attributes = new HashSet<MIFAttribute>();
-//		attributes.addAll(newAttributes);
 		attributes=newAttributes;
 	}
 	
@@ -142,9 +140,6 @@ import java.util.Iterator;
 	 
 	 public void setAssociation(HashSet<MIFAssociation> newAsscs)
 	 {
-//		 associations = new HashSet<MIFAssociation>();
-//		 associations.clear();
-//		 associations.addAll(newAsscs);
 		 associations=newAsscs;
 	 }
 	 
@@ -499,7 +494,6 @@ import java.util.Iterator;
 	}
 	
 	public PropertiesResult getPropertyDescriptors() throws Exception {
-		// TODO Auto-generated method stub
 		Class beanClass = this.getClass();
 
 		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
@@ -517,7 +511,6 @@ import java.util.Iterator;
 	}
 	
 	public String getTitle() {
-		// TODO Auto-generated method stub
 		return "MIF Clone Properties";
 	}
 	
@@ -527,9 +520,7 @@ import java.util.Iterator;
 		return Config.CARDINALITY_ONE_TO_ONE;
 	}
 
-
 	public String findTypeProperty() {
-		// TODO Auto-generated method stub
 		return "Clone";
 	}
 	public String getMessageType() {

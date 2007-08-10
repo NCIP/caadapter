@@ -9,8 +9,6 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Hashtable;
 
@@ -19,7 +17,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2007-08-07 20:26:46 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-08-10 13:33:16 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
