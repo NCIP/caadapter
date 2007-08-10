@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/SingleFileFilter.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/SingleFileFilter.java,v 1.2 2007-08-10 16:46:03 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,8 +43,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:02:37 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-10 16:46:03 $
  */
 public class SingleFileFilter extends FileFilter
 {
@@ -110,9 +110,16 @@ public class SingleFileFilter extends FileFilter
 	{
 		return this.extension;
 	}
+
+	public String getExtension() {
+		return extension;
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

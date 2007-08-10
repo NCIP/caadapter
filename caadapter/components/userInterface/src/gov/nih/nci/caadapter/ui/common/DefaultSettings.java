@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.4 2007-07-14 20:26:18 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.5 2007-08-10 16:48:24 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,15 +53,17 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 //import java.net.URL;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * This class defines a list of default settings for GUI Settings.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-07-14 20:26:18 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-10 16:48:24 $
  */
 public class DefaultSettings
 {
@@ -265,10 +267,19 @@ public class DefaultSettings
 	public static final File getUserInputOfFileFromGUI(Component parentComponent, String workingDirectoryPath, String fileExtension, String title, boolean saveMode, boolean checkDuplicate)
 	{
 		File file = null;
-		FileFilter fileFilter = new SingleFileFilter(fileExtension);
+		
 		JFileChooser fileChooser = getJFileChooser(true);
 		fileChooser.setCurrentDirectory(new File(workingDirectoryPath));
-		fileChooser.addChoosableFileFilter(fileFilter);
+		StringTokenizer stk=new StringTokenizer(fileExtension,";");
+		ArrayList<FileFilter> fileFilters=new ArrayList<FileFilter>();
+		while (stk.hasMoreElements())
+		{
+			String nxtExt=(String)stk.nextElement();
+			FileFilter singleFileFilter = new SingleFileFilter(nxtExt);
+			fileFilters.add(singleFileFilter);
+			fileChooser.addChoosableFileFilter(singleFileFilter);
+		}
+		
 		fileChooser.setDialogTitle(title);
 		do
 		{
@@ -293,11 +304,14 @@ public class DefaultSettings
 				}
 
 				//since this point on, file will not be null.
+				for(FileFilter fileFilter:fileFilters)
+				{
 				if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
 				{//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
-					file = FileUtil.appendFileNameWithGivenExtension(file, fileExtension, true);
+					file = FileUtil.appendFileNameWithGivenExtension(file, ((SingleFileFilter)fileFilter).getExtension(), true);
+					break;
 				}
-
+				}
 				if (checkDuplicate)
 				{
 					if (file.exists())
@@ -341,6 +355,7 @@ public class DefaultSettings
 		}
 
 		//clear out the file filter after usage.
+		for(FileFilter fileFilter:fileFilters)
 		fileChooser.removeChoosableFileFilter(fileFilter);
 
 		//NOTE: Do not manually clear the selection, or should come up better way to clear out the selection memorized in other classes.
@@ -515,6 +530,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/07/14 20:26:18  umkis
+ * HISTORY      : add a comment about 'imageFileName'
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/06/12 15:47:59  wangeug
  * HISTORY      : load image with "getResource()" as an input stream and read the image with bufferedImage
  * HISTORY      :
