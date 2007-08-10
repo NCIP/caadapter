@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.2 2007-08-10 16:57:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -60,8 +60,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-10 16:57:57 $
  */
 public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextAction
 {
@@ -77,7 +77,7 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.2 2007-08-10 16:57:57 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.OPEN_HSM_FILE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -230,7 +230,7 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	protected boolean doAction(ActionEvent e)
 	{
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
-				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_HSM_FILE, false, false);
+				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_HSM_FILE, false, false);
 		if (file != null)
 		{
 			openFile = file;
@@ -247,6 +247,9 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.28  2006/11/28 15:17:39  jayannah
  * HISTORY      : Changed the order and names of the menuitems
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.3 2007-07-31 20:54:03 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.4 2007-08-10 16:58:09 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -98,13 +98,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-31 20:54:03 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-10 16:58:09 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.3 2007-07-31 20:54:03 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.4 2007-08-10 16:58:09 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -244,7 +244,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			else if (SELECT_TARGET.equals(command))
 			{
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 				if (file != null)
 				{
 					everythingGood = processOpenTargetTree(file, true, true);
@@ -296,7 +296,8 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
 
 		TreeNode nodes;
-		if (Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION.equals(fileExtension))
+		if (Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION.equals(fileExtension)
+				||Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION.equals(fileExtension))
 		{
 			// generate GUI nodes from object graph.
 	        try
@@ -619,6 +620,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/31 20:54:03  wangeug
+ * HISTORY      : resolve issues with preliminary test of release 4.0
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/20 17:05:29  wangeug
  * HISTORY      : integrate Hl7 transformation service
  * HISTORY      :

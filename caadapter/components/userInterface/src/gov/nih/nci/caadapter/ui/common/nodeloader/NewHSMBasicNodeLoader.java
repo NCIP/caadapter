@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.16 2007-08-09 19:29:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.17 2007-08-10 16:58:36 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,7 +35,6 @@
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
 import gov.nih.nci.caadapter.common.Log;
-//import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -46,9 +45,9 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
-//import gov.nih.nci.caadapter.ui.common.nodeloader.NodeLoader.MetaDataloadException;
 import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -81,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2007-08-09 19:29:54 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2007-08-10 16:58:36 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -107,11 +106,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		treeEditable=editableFlag;
 		newSpecificationFlag=preferenceFlag;
-//		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED))
 		String nullFlavorSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED);
 		if (nullFlavorSetting!=null&&nullFlavorSetting.equalsIgnoreCase("true"))
 			nullFlavorEnabled=true;
-//		if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED))
 		String complexTypeSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED);
 		if (complexTypeSetting!=null&&complexTypeSetting.equalsIgnoreCase("true"))
 			complexTypeEnabled=true;
@@ -138,11 +135,20 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			System.out.println("NewHSMBasicNodeLoader.loadData()..with file:"+((File)o).getAbsolutePath());
 			FileInputStream fis;
 			try {
+				File file=(File)o;
+				if (file.getName().endsWith(".xml"))
+				{
+					XmlToMIFImporter mifImport=new XmlToMIFImporter();
+					rootMif=mifImport.importMifFromXml(file);
+				}
+				else
+				{
 				fis = new FileInputStream ((File)o);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 	        	rootMif = (MIFClass)ois.readObject();
 	    		ois.close();
 	    		fis.close();
+				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				Log.logException(this, e);
@@ -179,37 +185,6 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		
 		setXmlpathForUserObject(rtnNode);
 		return rtnNode;
-	}
-
-	/**
-	 * Refresh subtree whose root is the given treeNode reflecting the given object.
-	 * After the refreshing, the given tree will be notified for the update information.
-	 * @param targetNode
-	 * @param object
-	 * @param tree if null, no corresponding tree update information will be broadcast.
-	 */
-	public static void refreshSubTreeByGivenMifObject(DefaultMutableTreeNode targetNode, DefaultMutableTreeNode newNode, JTree tree) 
-	{
-		if(newNode!=null)
-		{//clear out all children and add in new ones, if any
-			targetNode.removeAllChildren();
-			int childCount = newNode.getChildCount();
-			targetNode.setAllowsChildren(true);
-			for(int i=0; i<childCount; i++)
-			{//once a node is moved from newNode to targetNode, it 
-			//is removed from the newNode children list, so always getChildAt(0)
-				targetNode.add((MutableTreeNode) newNode.getChildAt(0));
-			}
-		}
-		targetNode.setUserObject(newNode.getUserObject());
-		if(tree!=null)
-		{
-			TreeModel treeModel = tree.getModel();
-			if (treeModel instanceof DefaultTreeModel)
-			{//notify change.
-				((DefaultTreeModel) treeModel).nodeStructureChanged(targetNode);
-			}
-		}
 	}
 	
 	private DefaultMutableTreeNode buildMIFClassNode(MIFClass mifClass)

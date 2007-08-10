@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.3 2007-08-10 16:57:39 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,8 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFToXmlExporter;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
@@ -55,8 +57,8 @@ import java.io.OutputStream;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 20:25:59 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-10 16:57:39 $
  */
 public class SaveAsHsmAction extends DefaultSaveAsAction
 {
@@ -72,7 +74,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.2 2007-07-03 20:25:59 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.3 2007-08-10 16:57:39 wangeug Exp $";
 
 	protected transient HSMPanel hsmPanel;
 
@@ -138,6 +140,19 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 			oos.writeObject(specObject);
 			oos.close();
 			os.close();
+			//save as xml
+			MIFToXmlExporter xmlExporter;
+			try {
+				String h3sFileName=file.getPath();
+				System.out.println("SaveAsHsmAction.processSaveFile()..filePath"+file.getPath());
+				String xmlFileName=h3sFileName.replace(".h3s", "_spec.xml");				
+				System.out.println("SaveAsHsmAction.processSaveFile()...xmlFileName:"+xmlFileName);
+				xmlExporter = new MIFToXmlExporter((MIFClass)specObject);
+				xmlExporter.exportToFile(xmlFileName);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
