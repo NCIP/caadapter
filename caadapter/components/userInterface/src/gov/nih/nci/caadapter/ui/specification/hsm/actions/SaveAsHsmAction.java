@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.3 2007-08-10 16:57:39 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.4 2007-08-13 15:24:02 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.io.OutputStream;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-10 16:57:39 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-13 15:24:02 $
  */
 public class SaveAsHsmAction extends DefaultSaveAsAction
 {
@@ -74,7 +74,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.3 2007-08-10 16:57:39 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.4 2007-08-13 15:24:02 wangeug Exp $";
 
 	protected transient HSMPanel hsmPanel;
 
@@ -115,7 +115,8 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 //		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, getUIWorkingDirectoryPath(), Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
-		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
+		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, 
+				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
 		if (file != null)
 		{
 			setSuccessfullyPerformed(processSaveFile(file, true));
@@ -133,27 +134,28 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 		boolean oldChangeValue = hsmPanel.isChanged();
 		try
 		{
+			String specFileName=file.getPath();
 			Object treeRoot=hsmPanel.getTree().getModel().getRoot();
 			Object specObject =((DefaultMutableTreeNode)treeRoot).getUserObject();
-			OutputStream os = new FileOutputStream(file);
-			ObjectOutputStream oos = new ObjectOutputStream(os); 
-			oos.writeObject(specObject);
-			oos.close();
-			os.close();
-			//save as xml
-			MIFToXmlExporter xmlExporter;
-			try {
-				String h3sFileName=file.getPath();
-				System.out.println("SaveAsHsmAction.processSaveFile()..filePath"+file.getPath());
-				String xmlFileName=h3sFileName.replace(".h3s", "_spec.xml");				
-				System.out.println("SaveAsHsmAction.processSaveFile()...xmlFileName:"+xmlFileName);
-				xmlExporter = new MIFToXmlExporter((MIFClass)specObject);
-				xmlExporter.exportToFile(xmlFileName);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			if (specFileName.endsWith(Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION))
+			{
+				System.out.println("SaveAsHsmAction.processSaveFile()..H3S format:"+specFileName);
+				OutputStream os = new FileOutputStream(file);
+				ObjectOutputStream oos = new ObjectOutputStream(os); 
+				oos.writeObject(specObject);
+				oos.close();
+				os.close();
 			}
-			
+			else if (specFileName.endsWith(".xml"))
+			{
+				//save as xml
+				MIFToXmlExporter xmlExporter;					
+				xmlExporter = new MIFToXmlExporter((MIFClass)specObject);
+				xmlExporter.exportToFile(specFileName);
+			}
+			else
+				throw new Exception("Invalid format:"+specFileName);
 			if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
 				removeFileUsageListener(defaultFile, hsmPanel);

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.2 2007-08-10 16:57:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.3 2007-08-13 15:24:02 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,6 +49,7 @@ import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -60,8 +61,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-10 16:57:57 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-13 15:24:02 $
  */
 public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextAction
 {
@@ -77,14 +78,14 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.2 2007-08-10 16:57:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.3 2007-08-13 15:24:02 wangeug Exp $";
 
-	private static final String COMMAND_NAME = ActionConstants.OPEN_HSM_FILE_TXT;
+	private static final String COMMAND_NAME_H3S = ActionConstants.OPEN_HSM_FILE_TXT +"(.h3s)";
 	private static final Character COMMAND_MNEMONIC = new Character('S');
-	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false);
+	private static final KeyStroke ACCELERATOR_KEY_STROKE_H3S = KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
 	private static final String TOOL_TIP_DESCRIPTION = "Open HL7 v3 Specification";
-
+	
 	private transient File openFile;
 
 	/**
@@ -93,7 +94,7 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 */
 	public OpenHSMAction(AbstractMainFrame mainFrame)
 	{
-		this(COMMAND_NAME, mainFrame);
+		this(COMMAND_NAME_H3S, mainFrame);
 	}
 
 	/**
@@ -112,17 +113,20 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	public OpenHSMAction(String name, Icon icon, AbstractMainFrame mainFrame)
 	{
 		super(name, icon,  mainFrame);
-//		setMnemonic(COMMAND_MNEMONIC);
-//		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
-//		setActionCommandType(DESKTOP_ACTION_TYPE);
-//		setShortDescription(TOOL_TIP_DESCRIPTION);
-		//do not know how to set the icon location name, or just do not matter.
 	}
 
 	protected void setAdditionalAttributes()
 	{
 		setMnemonic(COMMAND_MNEMONIC);
-		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
+			
+		if (!super.getName().equals(COMMAND_NAME_H3S))
+		{
+			KeyStroke xmlHsmStroke=KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false);
+			setAcceleratorKey(xmlHsmStroke);
+			
+		}
+		else
+			setAcceleratorKey(ACCELERATOR_KEY_STROKE_H3S);
 		setActionCommandType(DESKTOP_ACTION_TYPE);
 		setShortDescription(TOOL_TIP_DESCRIPTION);
 	}
@@ -229,8 +233,16 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
+		//invoke openFile dialog based on Hl7 V3 specification file type
+		String specExtension=Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
+		String dialogTitle=Config.OPEN_DIALOG_TITLE_FOR_H3S_HSM_FILE;
+		if (!super.getName().equals(COMMAND_NAME_H3S))
+		{
+			specExtension=Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION;
+			dialogTitle=Config.OPEN_DIALOG_TITLE_FOR_XML_HSM_FILE;
+		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
-				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_HSM_FILE, false, false);
+				specExtension, dialogTitle, false, false);
 		if (file != null)
 		{
 			openFile = file;
@@ -247,6 +259,9 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/10 16:57:57  wangeug
+ * HISTORY      : Export MIF class as xml file or read a MIF class from an xml file
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

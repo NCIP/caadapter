@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterNextProcessDialog.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterNextProcessDialog.java,v 1.2 2007-08-13 15:23:25 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -71,8 +71,8 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v 3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:32:58 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-13 15:23:25 $
  */
 public class V2ConverterNextProcessDialog extends JDialog implements ActionListener
 {
@@ -89,7 +89,7 @@ public class V2ConverterNextProcessDialog extends JDialog implements ActionListe
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterNextProcessDialog.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterNextProcessDialog.java,v 1.2 2007-08-13 15:23:25 wangeug Exp $";
 
     private String title = "Select next job";
 
@@ -188,7 +188,7 @@ public class V2ConverterNextProcessDialog extends JDialog implements ActionListe
         if (e.getSource() == jbBrowse)
         {
             File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-			            Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_HSM_FILE, false, false);
+			            Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_H3S_HSM_FILE, false, false);
             if (file == null) return;
             jtH3SFile.setText(file.getAbsolutePath());
             fileH3S = jtH3SFile.getText();
@@ -322,6 +322,9 @@ public class V2ConverterNextProcessDialog extends JDialog implements ActionListe
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2006/11/10 03:55:43  umkis
  * HISTORY      : V2-V3 mapping job version 1.0
  * HISTORY      :

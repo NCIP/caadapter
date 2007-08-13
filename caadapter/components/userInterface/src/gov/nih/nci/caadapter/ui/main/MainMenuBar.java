@@ -79,107 +79,18 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.13 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.14 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
 
     //ContextManager contextManager = null;
-
     MainFrame mainFrame = null;
-
-    // --menu and menu item list.
-    // definition of menu items, refer to constructXXXMenu() functions for
-    // construction.
-    //JMenu fileMenu = null;
-    //JMenu newMenu = null;
-    //	JMenuItem newMapFileItem = null;
-    //	JMenuItem newCsvToV3MapFileItem = null;
-    //	JMenuItem newCSVSpecificationItem = null;
-    //JMenuItem newCsvToSdtmSpecificationItem1 = null;
-    //	JMenuItem newHSMFileItem = null;
-    //	JMenuItem newHL7V3MessageItem = null;
-    //JMenuItem newHSMFileItem_1 = null;
-    //	JMenuItem newHL7V3MessageItem_1 = null;
-    //	JMenuItem newO2DBMapFileItem = null;
-    //	JMenuItem openMapFileItem = null;
-    //	JMenuItem openO2DBMapFileItem = null;
-    //	JMenuItem openSDTMMapFile = null;
-    //
-    //	JMenuItem openCSVSpecificationItem = null;
-    //
-    //	JMenuItem openHSMFileItem = null;
-    //
-    //	JMenuItem openHL7V3MessageItem = null;
-    //	JMenuItem newSDTMStructure = null;
-    //	JMenuItem saveMenuItem = null;
-    //
-    //	JMenuItem saveAsMenuItem = null;
-    //
-    //	JMenuItem validateMenuItem = null;
-    //
-    //	JMenuItem anotateMenuItem = null;
-    //
-    //	JMenuItem closeMenuItem = null;
-    //
-    //	JMenuItem closeAllMenuItem = null;
-    //	JMenuItem exitMenuItem = null;
-    //	JMenu reportMenu = null;
-    //	JMenuItem generateReportMenuItem = null;
-    //JMenu helpMenu = null;
-    //JMenuItem helpTopicMenuItem = null;
-    // JMenuItem helpTopicMenuItem2 = null;
-    // JMenuItem helpManageMenuItem = null; // Kisung add
-    //JMenuItem aboutMenuItem = null;
-    // --end of menu and menu item list.
-    // --action list
-    //	DefaultSaveAction defaultSaveAction = null;
-    //
-    //	DefaultSaveAsAction defaultSaveAsAction = null;
-    //
-    //	DefaultValidateAction defaultValidateAction = null;
-    //
-    //	DefaultAnotateAction defaultAnotateAction = null;
-    //
-    //	DefaultCloseAction defaultCloseAction = null;
-    //
-    //	CloseAllAction closeAllAction = null;
-    //	ExitAction exitAction = null;
-    //AboutAction aboutAction = null;
-    //HelpTopicAction helpTopicAction = null;
-    // HelpAction2 helpTopicAction2 = null;
-    // HelpContentManageAction helpManageAction = null; // Kisung add
-    //NewMapFileAction newMapAction = null;
-    //	NewMapFileAction newMapAction1 = null;
-    //	OpenMapFileAction openMapAction = null;
-    //	gov.nih.nci.caadapter.ui.mapping.mms.actions.OpenObjectToDbMapAction openO2DBMapAction = null;
-    //	gov.nih.nci.caadapter.ui.mapping.sdtm.actions.OpenSDTMMapAction openSDTMMapAction = null;
-    //	NewCsvSpecificationAction newCSVSpecificationAction = null;
-    //NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = null;
-    //	OpenCsvSpecificationAction openCSVSpecificationAction = null;
-    //	NewHSMAction newHSMAction = null;
-    //	NewHSMAction newHSMAction_1 = null;
-    //	OpenHSMAction openHSMAction = null;
-    //	NewHL7V3MessageAction newHL7V3MessageAction = null;
-    //	NewHL7V3MessageAction newHL7V3MessageAction_1 = null;
-    //	OpenHL7V3MessageAction openHL7V3MessageAction = null;
-    //	NewObject2DBMapAction newObject2DBMapAction = null;
-    //	V2V3MapAction newV2V3MapAction = null;
-    //	Database2SDTMAction newDB2SDTMAction = null;
-    //
-    //	NewSDTMStructureAction newSDTMStructureAction = null;
-    // --end of action list.
-    // key: ActionConstants, value: soft reference of the action.
-
     private Map<String, AbstractContextAction> actionMap;
-
     private Map<String, JMenuItem> menuItemMap;
-
     private Map<String, JMenu> menuMap;
-
-    //java.util.prefs.Preferences prefs;
     private static HashMap prefs;
 
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
@@ -203,12 +114,10 @@ public class MainMenuBar extends AbstractMenuBar
         menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
         menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
         readPreferencesMap();
-        // prefs = java.util.prefs.Preferences.userNodeForPackage(this.getClass());
+ 
         add(constructFileMenu());
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
         {
-            System.out.println("query builder activated");
-            //add(constructOpenQueryBuilderMenu());
             add(constructPreferenceMenu());
         } else
         {
@@ -503,10 +412,15 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem openCSVSpecificationItem = new JMenuItem(openCSVSpecificationAction);
         actionMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationAction);
         menuItemMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationItem);
-        OpenHSMAction openHSMAction = new OpenHSMAction(mainFrame);
+        OpenHSMAction openHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.h3s)", mainFrame);
         JMenuItem openHSMFileItem = new JMenuItem(openHSMAction);
         actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
         menuItemMap.put(ActionConstants.OPEN_HSM_FILE, openHSMFileItem);
+        
+        OpenHSMAction openXmlHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.xml)", mainFrame);
+        actionMap.put(ActionConstants.OPEN_XML_HSM_FILE, openXmlHSMAction);
+        menuItemMap.put(ActionConstants.OPEN_XML_HSM_FILE, new JMenuItem(openXmlHSMAction));
+        
         OpenHL7V3MessageAction openHL7V3MessageAction = new OpenHL7V3MessageAction(mainFrame);
         JMenuItem openHL7V3MessageItem = new JMenuItem(openHL7V3MessageAction);
         actionMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageAction);
@@ -518,6 +432,7 @@ public class MainMenuBar extends AbstractMenuBar
         {
             //set csvToV3 as default
             openMenu.add(openCSVSpecificationItem);
+            openMenu.add(openXmlHSMAction);
             openMenu.add(openHSMFileItem);
             openMenu.add(openMapFileItem);
         } else
@@ -532,6 +447,7 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
                 openMenu.add(openCSVSpecificationItem);
+                openMenu.add(openXmlHSMAction);
                 openMenu.add(openHSMFileItem);
                 openMenu.add(openMapFileItem);
             }
@@ -625,18 +541,10 @@ public class MainMenuBar extends AbstractMenuBar
     {
         if (!hasActiveDocument)
         {
-            //			openMapFileItem.getAction().setEnabled(true);
-            resetMenuItem(ActionConstants.OPEN_MAP_FILE, true);
-            //			menuItemMap.get(ActionConstants.OPEN_MAP_FILE).getAction().setEnabled(true);
-            //			openCSVSpecificationItem.getAction().setEnabled(true);
+        	resetMenuItem(ActionConstants.OPEN_MAP_FILE, true);
             resetMenuItem(ActionConstants.OPEN_CSV_SPEC, true);
-            //			menuItemMap.get(ActionConstants.OPEN_CSV_SPEC).getAction().setEnabled(true);
-            //			openHSMFileItem.getAction().setEnabled(true);
             resetMenuItem(ActionConstants.OPEN_HSM_FILE, true);
-            //			menuItemMap.get(ActionConstants.OPEN_HSM_FILE).getAction().setEnabled(true);
-            //			openHL7V3MessageItem.getAction().setEnabled(true);
             resetMenuItem(ActionConstants.OPEN_HL7_V3_MESSAGE, true);
-            //			menuItemMap.get(ActionConstants.OPEN_HL7_V3_MESSAGE).getAction().setEnabled(true);
         }
     }
 
@@ -645,10 +553,6 @@ public class MainMenuBar extends AbstractMenuBar
         if (!hasActiveDocument)
         {
             resetMenuItem(ActionConstants.GENERATE_REPORT, false);
-            //			Action a = menuItemMap.get(ActionConstants.GENERATE_REPORT).getAction();//. generateReportMenuItem.getAction();
-            //			if (a != null) {
-            //				a.setEnabled(false);
-            //			}
         }
     }
 
@@ -664,54 +568,12 @@ public class MainMenuBar extends AbstractMenuBar
             // closeAllMenuItem.invalidate();
         }
     }
-
-    //	private void constructActionMap()
-    //	{
-    //		actionMap.put(ActionConstants.SAVE, defaultSaveAction);
-    //		menuItemMap.put(ActionConstants.SAVE, saveMenuItem);
-    //		actionMap.put(ActionConstants.SAVE_AS, defaultSaveAsAction);
-    //		menuItemMap.put(ActionConstants.SAVE_AS, saveAsMenuItem);
-    //		actionMap.put(ActionConstants.ANOTATE, defaultAnotateAction);
-    //		menuItemMap.put(ActionConstants.ANOTATE, anotateMenuItem);
-    //		actionMap.put(ActionConstants.VALIDATE, defaultValidateAction);
-    //		menuItemMap.put(ActionConstants.VALIDATE, validateMenuItem);
-    //		actionMap.put(ActionConstants.CLOSE, defaultCloseAction);
-    //		menuItemMap.put(ActionConstants.CLOSE, closeMenuItem);
-    //		actionMap.put(ActionConstants.CLOSE_ALL, closeAllAction);
-    //		menuItemMap.put(ActionConstants.CLOSE_ALL, closeAllMenuItem);
-    //		actionMap.put(ActionConstants.EXIT, exitAction);
-    //		menuItemMap.put(ActionConstants.EXIT, exitMenuItem);
-    //		actionMap.put(ActionConstants.ABOUT, aboutAction);
-    //		menuItemMap.put(ActionConstants.ABOUT, closeMenuItem);
-    //		actionMap.put(ActionConstants.HELP_TOPIC, helpTopicAction);
-    //		menuItemMap.put(ActionConstants.HELP_TOPIC, anotateMenuItem);
-    //
-    //		actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
-    //		menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, this.newO2DBMapFileItem);
-    //		actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
-    //		menuItemMap.put(ActionConstants.NEW_MAP_FILE, newCsvToV3MapFileItem);
-    //		actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
-    //		menuItemMap.put(ActionConstants.OPEN_MAP_FILE, this.openMapFileItem);
-    //		actionMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapAction);
-    //		menuItemMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, this.openO2DBMapFileItem);
-    //		actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
-    //		menuItemMap.put(ActionConstants.NEW_CSV_SPEC, this.newCSVSpecificationItem);
-    //		actionMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationAction);
-    //		menuItemMap.put(ActionConstants.OPEN_CSV_SPEC, this.openCSVSpecificationItem);
-    //		actionMap.put(ActionConstants.NEW_HSM_FILE, newHSMAction);
-    //		menuItemMap.put(ActionConstants.NEW_HSM_FILE, this.newHSMFileItem);
-    //		actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
-    //		menuItemMap.put(ActionConstants.OPEN_HSM_FILE, this.openHSMFileItem);
-    //		actionMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageAction);
-    //		menuItemMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, this.newHL7V3MessageItem);
-    //		actionMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageAction);
-    //		menuItemMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, this.openHL7V3MessageItem);
-    // actionMap.put(ActionConstants.GENERATE_REPORT,
-    // generateReportMenuItem);
-    //	}
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.13  2007/08/08 20:55:58  jayannah
+ * HISTORY : Changed the verbage from SDTM to RDS
+ * HISTORY :
  * HISTORY : Revision 1.12  2007/08/08 20:53:54  jayannah
  * HISTORY : Changed the verbage from SDTM to RDS
  * HISTORY :
