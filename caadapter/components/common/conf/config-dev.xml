@@ -64,7 +64,8 @@
     <constant name="OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE" type="String" value="Open Target File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_DEFAULT_HL7_META_DEFINITION_FILE" type="String" value="Open HL7 Metadata Definition (HMD) File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_MAP_FILE" type="String" value="Open Map File..."/>
-    <constant name="OPEN_DIALOG_TITLE_FOR_HSM_FILE" type="String" value="Open HL7 v3 Specification (H3S) File..."/>
+    <constant name="OPEN_DIALOG_TITLE_FOR_H3S_HSM_FILE" type="String" value="Open HL7 v3 Specification (H3S) File..."/>
+    <constant name="OPEN_DIALOG_TITLE_FOR_XML_HSM_FILE" type="String" value="Open HL7 v3 Specification (XML) File..."/>
     <constant name="OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE" type="String" value="Open HL7 v3 Message File..."/>
 
     <!--define the initial field number, for example now it is set to 1-->

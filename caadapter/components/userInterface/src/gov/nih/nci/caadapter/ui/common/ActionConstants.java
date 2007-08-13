@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.3 2007-08-08 21:13:47 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.4 2007-08-13 15:22:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,10 +40,10 @@ import gov.nih.nci.caadapter.common.util.Config;
  * Define a list of constants that are used by menu and some of action definition.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-08 21:13:47 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-13 15:22:08 $
  */
 public interface ActionConstants
 {
@@ -72,8 +72,9 @@ public interface ActionConstants
 	String OPEN_HL7_V3_MESSAGE_TXT = NEW_HL7_V3_MESSAGE_TXT;
 	String OPEN_HL7_V3_MESSAGE = "Open " + OPEN_HL7_V3_MESSAGE_TXT;
 	String OPEN_HSM_FILE_TXT = NEW_HSM_FILE_TXT;
-	String OPEN_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT;
-
+	String OPEN_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT +"(.h3s)";
+	String OPEN_XML_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT +"(.xml)";
+	
 	String OPEN = "Open...";
 	String CLOSE = "Close";
 	String CLOSE_ALL = "Close All";
@@ -95,6 +96,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/08 21:13:47  jayannah
+ * HISTORY      : Changed the verbage from SDTM to RDS
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/06/12 15:57:07  wangeug
  * HISTORY      : enable new module: HL7 V3 to CSV Transformation
  * HISTORY      :

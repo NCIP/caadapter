@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/BrowseHLV3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/BrowseHLV3MessageAction.java,v 1.2 2007-08-13 15:22:26 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -51,8 +51,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:33:17 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-13 15:22:26 $
  */
 public class BrowseHLV3MessageAction extends AbstractContextAction
 {
@@ -68,7 +68,7 @@ public class BrowseHLV3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/BrowseHLV3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/BrowseHLV3MessageAction.java,v 1.2 2007-08-13 15:22:26 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Browse...";
 	private static final Character COMMAND_MNEMONIC = new Character('B');
@@ -141,7 +141,7 @@ public class BrowseHLV3MessageAction extends AbstractContextAction
         if (fileExtension.equals(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_CSV_FILE;
         else if (fileExtension.equals(Config.MAP_FILE_DEFAULT_EXTENTION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE;
         else if (fileExtension.equals(Config.CSV_METADATA_FILE_DEFAULT_EXTENTION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_CSV_METADATA_FILE;
-        else if (fileExtension.equals(Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_HSM_FILE;
+        else if (fileExtension.equals(Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_H3S_HSM_FILE;
         //else if (fileExtension.equals(Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE;
         //else if (fileExtension.equals(Config.DATABASE_META_FILE_DEFAULT_EXTENSION)) scrTitle = Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE;
         else scrTitle = "Open";
@@ -162,6 +162,9 @@ public class BrowseHLV3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
