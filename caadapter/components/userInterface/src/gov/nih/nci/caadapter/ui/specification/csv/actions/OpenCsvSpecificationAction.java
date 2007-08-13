@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/OpenCsvSpecificationAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/OpenCsvSpecificationAction.java,v 1.2 2007-08-13 15:23:45 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -60,14 +60,14 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-13 15:23:45 $
  */
 public class OpenCsvSpecificationAction extends DefaultContextOpenAction//AbstractContextAction
 {
 	public static final String COMMAND_NAME = ActionConstants.OPEN_CSV_SPEC_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('C');
-	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false);
+	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_0, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	private static final String TOOL_TIP_DESCRIPTION = "Open CSV Specification";
 
 	private transient File openFile;
@@ -220,6 +220,9 @@ public class OpenCsvSpecificationAction extends DefaultContextOpenAction//Abstra
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.25  2006/11/28 15:14:41  jayannah
  * HISTORY      : Changed the order and names of the menuitems
  * HISTORY      :
