@@ -43,8 +43,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2007-08-09 21:40:43 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2007-08-13 19:21:05 $
  */
 
 public class MapProcessor {
@@ -215,12 +215,13 @@ public class MapProcessor {
 //    			System.out.println("Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
     			if (!mifAttribute.isStrutural()) {
     				List<XMLElement> attrXmlElements = processAttribute(mifAttribute ,csvSegment, forceGenerate);
-    				if (attrXmlElements.size() != 0)
-    					xmlElement.addChildren(attrXmlElements);
     				if (mifAttribute.getMaximumMultiplicity() == 1) {
     					if (attrXmlElements.size()>1) {
     			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
-    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+    			            for(int i = attrXmlElements.size()-1;i>=1; i--) {
+    			            	attrXmlElements.remove(i);
+    			            }
     					}
     				}
     				if (mifAttribute.getMinimumMultiplicity() == 1) {
@@ -229,6 +230,8 @@ public class MapProcessor {
     			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
     					}
     				}
+    				if (attrXmlElements.size() != 0)
+    					xmlElement.addChildren(attrXmlElements);
     			}
     		}
 
@@ -885,6 +888,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2007/08/09 21:40:43  wuye
+ * HISTORY      : Complete voc validation
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2007/08/08 22:01:39  wuye
  * HISTORY      : Added force generate capability
  * HISTORY      :
