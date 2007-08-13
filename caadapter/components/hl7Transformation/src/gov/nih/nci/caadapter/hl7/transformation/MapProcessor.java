@@ -43,8 +43,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2007-08-13 19:21:05 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2007-08-13 20:16:02 $
  */
 
 public class MapProcessor {
@@ -160,8 +160,9 @@ public class MapProcessor {
 	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
 	 */
     
-    private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment, boolean forceGenerate) throws MappingException,FunctionException {
+    private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment, boolean forceGeneratePassed) throws MappingException,FunctionException {
 
+    	boolean forceGenerate = forceGeneratePassed;
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
     	List<XMLElement> choiceXMLElements = new ArrayList<XMLElement>(); 
 
@@ -280,7 +281,7 @@ public class MapProcessor {
     							for (CSVField csvField:csvFields) {
     								data.put(csvField.getXmlPath(),csvField.getValue());
     							}
-    							System.out.println(scsPath);
+//    							System.out.println(scsPath);
     	    					if (data.get(scsPath) == null) { //inverse relationship
     	    						CSVField csvField = findCSVField(csvSegment, scsPath);
     	    						if (csvField.getValue().equals("")) {
@@ -318,7 +319,8 @@ public class MapProcessor {
 	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
 	 */
 
-    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, boolean forceGenerate) throws MappingException,FunctionException {
+    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, boolean forceGeneratePassed) throws MappingException,FunctionException {
+    	boolean forceGenerate = forceGeneratePassed;
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
 
 //    	System.out.println("association name:"+mifAssociation.getName()+" forced:"+forceGenerate + "mifforced"+mifAssociation.isOptionForced());
@@ -333,8 +335,9 @@ public class MapProcessor {
     	if (mifClass.getChoices().size() > 0) { //Handle choice
     		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
     	    	if (choiceMIFClass.isChoiceSelected()) {
+    	    		System.out.println(choiceMIFClass.getXmlPath());
     	    		if (mifAssociation.isOptionForced()) forceGenerate = true;
-    	    		if (mifAssociation.getMinimumMultiplicity() > 0) forceGenerate = true;
+//    	    		if (mifAssociation.getMinimumMultiplicity() > 0) forceGenerate = true;
     	    		for(XMLElement xmlElement:processMIFclass(mifClass,csvSegment, forceGenerate)) {
     	    			xmlElement.setName(mifAssociation.getNodeXmlName());
     	    			xmlElements.add(xmlElement);
@@ -350,7 +353,7 @@ public class MapProcessor {
     		if (mifClass == null) {
     			throw new MappingException("There is an error in your .h3s file, " + mifAssociation.getXmlPath() + " does not have specification", null);
     		}
-    		if (mifAssociation.getMinimumMultiplicity() > 0) forceGenerate = true;
+//    		if (mifAssociation.getMinimumMultiplicity() > 0) forceGenerate = true;
     		if (mifAssociation.isOptionForced()) forceGenerate = true;
     		List<XMLElement> xmlEments = processMIFclass(mifClass,csvSegment, forceGenerate);
     		for(XMLElement xmlElement:xmlEments) {
@@ -369,7 +372,9 @@ public class MapProcessor {
 	 * 		  and data for all Datatypes of the MIFAttribute 
 	 */
     
-    private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment, boolean forceGenerate) throws MappingException,FunctionException{
+    private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment, boolean forceGeneratePassed) throws MappingException,FunctionException{
+    	
+    	boolean forceGenerate = forceGeneratePassed;
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
@@ -888,6 +893,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.19  2007/08/13 19:21:05  wuye
+ * HISTORY      : remove extra element when error occured
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2007/08/09 21:40:43  wuye
  * HISTORY      : Complete voc validation
  * HISTORY      :
