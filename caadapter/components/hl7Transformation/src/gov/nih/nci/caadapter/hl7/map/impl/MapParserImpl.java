@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.6 2007-07-31 20:52:40 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.7 2007-08-13 15:52:12 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -70,6 +70,7 @@ import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
 //import gov.nih.nci.caadapter.hl7.map.MappingResult;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
 //import gov.nih.nci.caadapter.hl7.validation.MapValidator;
@@ -88,14 +89,14 @@ import java.util.Hashtable;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.6 $
- * @date $Date: 2007-07-31 20:52:40 $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2007-08-13 15:52:12 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.6 2007-07-31 20:52:40 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.7 2007-08-13 15:52:12 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -160,11 +161,19 @@ public class MapParserImpl {
                     //read mifclass
                     FileInputStream fis;
         			try {
-        				fis = new FileInputStream ((File)hsmFile);
-        				ObjectInputStream ois = new ObjectInputStream(fis);
-        				srcMif = (MIFClass)ois.readObject();
-        	    		ois.close();
-        	    		fis.close();
+        				if (hsmFile.getName().endsWith(".h3s"))
+        				{
+        					fis = new FileInputStream ((File)hsmFile);
+	        				ObjectInputStream ois = new ObjectInputStream(fis);
+	        				srcMif = (MIFClass)ois.readObject();
+	        	    		ois.close();
+	        	    		fis.close();
+        				}
+        				else
+        				{
+        					XmlToMIFImporter xmlImporter=new XmlToMIFImporter();
+        					srcMif=xmlImporter.importMifFromXml(hsmFile);
+        				}
         	    		component.setMeta(srcMif);
         	    		metaLookupTable.put(component.getKind(), new MifMetaLookup(srcMif));
         			} catch (FileNotFoundException e) {
