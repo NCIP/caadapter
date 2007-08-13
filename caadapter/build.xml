@@ -14,7 +14,8 @@
 	<property name="config.dir"    value="${basedir}/conf"/>
 	<property name="docs.dir"    value="${basedir}/docs"/>
 	<property name="project.jar.name"    value="caAdapter.jar"/>
-		
+	<property name="project.deploy.root"    value="L:/caAdapter/releases/caAdapter v4.0/2007-08-13"/>
+	
 	<property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
 	<property name="webstart.config.files" value="${basedir}/etc/webstart"/>	
 	<property name="webstart.warfile.name" value="caadapter-mms.war"/>
@@ -156,29 +157,30 @@
 		<echo message="build demo_ui.jar...."  />
 		<ant antfile="build_demo.xml" target="demo.ui.jar"/>
 
-		<delete dir="C:/distBin/testCaAdapter/lib"/>
+		<delete dir="${project.deploy.root}/lib"/>
 		<delete dir="C:/distBin/testCaAdapter/dist"/>
 		
-		<mkdir dir="C:/distBin/testCaAdapter/lib"/>
-		<copy todir="C:/distBin/testCaAdapter/lib">
+		<mkdir dir="${project.deploy.root}/lib"/>
+		<copy todir="${project.deploy.root}/lib">
 			<fileset dir="${lib.dir}">
 				<exclude name="*.zip, *.jar"/>
 			</fileset>				
 		</copy>
 
-		<copy todir="C:/distBin/testCaAdapter/dist">
+		<!-- copy todir="C:/distBin/testCaAdapter/dist">
 			<fileset dir="${dist.dir}">
 				<exclude name="*.zip, *.jar"/>
 			</fileset>	
-		</copy>
+		</copy -->
 		
-		<copy todir="C:/distBin/testCaAdapter/conf">
+		<copy todir="${project.deploy.root}/conf">
 			<fileset dir="${config.dir}">
 				<include name="*.properties"/>
 			</fileset>			
 		</copy>
 
-		<copy file="demo_ui.jar" todir="C:/distBin/testCaAdapter"/>
+		<copy file="demo_ui.jar" todir="${project.deploy.root}"/>
+		<copy file="run.bat" todir="${project.deploy.root}"/>
 	</target>
 	
 	<target name="demo">
