@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.17 2007-08-10 16:58:36 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.18 2007-08-14 15:50:41 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,11 +52,8 @@ import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
 import java.io.FileInputStream;
@@ -80,8 +77,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2007-08-10 16:58:36 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2007-08-14 15:50:41 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -162,10 +159,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
         	
 		}
 		if (rootMif!=null)
-			root = buildMIFClassNode(rootMif);
+			root = buildObjectNode(rootMif);
 		else
 			Log.logError(this, "Unable to intialized tree root with object:"+o.toString());
-		setXmlpathForUserObject(root);
 		return root;
 	}
 		
@@ -182,8 +178,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			rtnNode= buildDatatypeAttributeNode((Attribute)objToLoad);
 		else
 			rtnNode= new DefaultMutableTreeNode(objToLoad);
-		
-		setXmlpathForUserObject(rtnNode);
+		//only set the node xmlPath if the tree is editable
+		if (treeEditable)
+			setXmlpathForUserObject(rtnNode);
 		return rtnNode;
 	}
 	
