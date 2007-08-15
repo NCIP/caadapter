@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.6 2007-07-09 13:59:26 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.7 2007-08-15 17:54:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,8 +49,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.6 $
- * @date $$Date: 2007-07-09 13:59:26 $
+ * @version $Revision: 1.7 $
+ * @date $$Date: 2007-08-15 17:54:23 $
  * @since caAdapter v1.2
  */
 
@@ -60,22 +60,22 @@ public class CaadapterUtil {
     static {
         Properties properties = new Properties();
         InputStream fi = null;
-        try {
-            fi = CaadapterUtil.class.getClassLoader().getResource("message-types.properties").openStream();
-            properties.load(fi);
-
-            if (properties != null) {
-                SUPPORTED_MESSAGE_TYPES = properties.getProperty("supported").split(",");
-                NONPREFIXED_MESSAGE_TYPES = properties.getProperty("nonprefixed").split(",");
-            }
-        } catch (Exception ex) {
-            Log.logException(CaadapterUtil.class, "message-types.properties is not found", ex);
-        } finally {
-            if (fi != null) try {
-                fi.close();
-            } catch (IOException ignore) {
-            }
-        }
+//        try {
+//            fi = CaadapterUtil.class.getClassLoader().getResource("message-types.properties").openStream();
+//            properties.load(fi);
+//
+//            if (properties != null) {
+//                SUPPORTED_MESSAGE_TYPES = properties.getProperty("supported").split(",");
+//                NONPREFIXED_MESSAGE_TYPES = properties.getProperty("nonprefixed").split(",");
+//            }
+//        } catch (Exception ex) {
+//            Log.logException(CaadapterUtil.class, "message-types.properties is not found", ex);
+//        } finally {
+//            if (fi != null) try {
+//                fi.close();
+//            } catch (IOException ignore) {
+//            }
+//        }
         //load caadapter component types to run
         properties=new Properties();
         
@@ -115,11 +115,11 @@ public class CaadapterUtil {
         }
     }
 
-    private static String[] SUPPORTED_MESSAGE_TYPES;
-    private static String[] NONPREFIXED_MESSAGE_TYPES;
-    private static final String[] HL7_DEFINED_VALUE_STRUCTURE_ATTRIBUTES = new String[] {
-        "moodCode", "classCode", "typeCode", "determinerCode", "contextControlCode"
-    };
+//    private static String[] SUPPORTED_MESSAGE_TYPES;
+//    private static String[] NONPREFIXED_MESSAGE_TYPES;
+//    private static final String[] HL7_DEFINED_VALUE_STRUCTURE_ATTRIBUTES = new String[] {
+//        "moodCode", "classCode", "typeCode", "determinerCode", "contextControlCode"
+//    };
 
     // getters.
     public static final ArrayList getInlineTextAttributes() {
@@ -128,23 +128,23 @@ public class CaadapterUtil {
     public static final ArrayList getAllActivatedComponents() {
         return ACTIVATED_CAADAPTER_COMPONENTS;
     }
-    public static final String[] getAllSupportedMessageTypes() {
-        return SUPPORTED_MESSAGE_TYPES;
-    }
-    public static String[] getNonPrefixedMessageTypes() {
-        return NONPREFIXED_MESSAGE_TYPES;
-    }
-    public static final String[] getHL7DefinedValueStructureAttributes(){
-        return HL7_DEFINED_VALUE_STRUCTURE_ATTRIBUTES;
-    }
+//    public static final String[] getAllSupportedMessageTypes() {
+//        return SUPPORTED_MESSAGE_TYPES;
+//    }
+//    public static String[] getNonPrefixedMessageTypes() {
+//        return NONPREFIXED_MESSAGE_TYPES;
+//    }
+//    public static final String[] getHL7DefinedValueStructureAttributes(){
+//        return HL7_DEFINED_VALUE_STRUCTURE_ATTRIBUTES;
+//    }
 
-     public static boolean isPrefixed(String messageIdentifier){
-        if(Arrays.asList(NONPREFIXED_MESSAGE_TYPES).contains(messageIdentifier)){
-            return false;
-        }else{
-            return true;
-        }
-    }
+//     public static boolean isPrefixed(String messageIdentifier){
+//        if(Arrays.asList(NONPREFIXED_MESSAGE_TYPES).contains(messageIdentifier)){
+//            return false;
+//        }else{
+//            return true;
+//        }
+//    }
      
      /**
       * Move this method from GeneralUtilities
@@ -191,6 +191,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/07/09 13:59:26  wangeug
+ * HISTORY      : initila loading hl7 code without "clone"
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/06/12 14:58:20  wuye
  * HISTORY      : change the getsystemresouce as getresource.openinputstream
  * HISTORY      :
