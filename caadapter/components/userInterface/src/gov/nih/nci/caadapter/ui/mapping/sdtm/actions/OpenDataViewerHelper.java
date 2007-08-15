@@ -134,13 +134,13 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
             public void run() {
                 try {
                     if (panel.getConnectionParameters() != null) {
-                        new MainDataViewerFrame(panel, d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
+                        new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
                     }
                 } catch (Exception e) {
                     try {
                         Hashtable collectParams = getConnectionParametersfromUI(_mainFrame, file);
                         if (collectParams != null)
-                            new MainDataViewerFrame(panel, d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
+                            new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

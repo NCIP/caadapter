@@ -42,7 +42,7 @@ public class MainDataViewerFrame {
      */
     private HashSet alreadyFilled = new HashSet();
     private ArrayList arrayList = new ArrayList();
-    private HashMap sqlSaveHashMap = new HashMap();
+    private java.util.HashMap sqlSaveHashMap = new HashMap();
 
     public boolean isOpenMapAction() {
         return isOpenMapAction;
@@ -135,7 +135,7 @@ public class MainDataViewerFrame {
         1. Called by the opendataviewer helper; during times times when the dataviewer needs to be opened after the mapping is complete;
         2. Called by saveassdtmaction;
      */
-    public MainDataViewerFrame(Database2SDTMMappingPanel database2SDTMMappingPanel, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) {
+    public MainDataViewerFrame(boolean openDBMap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) {
         this.columnsForTables = tableColums;
         this.saveFile = saveFile;
         this.xmlString = out;
@@ -215,7 +215,7 @@ public class MainDataViewerFrame {
             }
         }
         this.get_alreadyFilled().add(new Integer(0));
-        if (database2SDTMMappingPanel.isOpenDBmap()) {
+        if (openDBMap) {
             qbAddButtons.getSaveButton().setEnabled(true);
             setSQLStmtSaved(true);
             Enumeration en = sqlTables.keys();
