@@ -1,11 +1,15 @@
 package gov.nih.nci.caadapter.dataviewer.helper;
 
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
+import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
+import nickyb.sqleonardo.querybuilder.QueryModel;
+import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -16,43 +20,54 @@ import java.util.StringTokenizer;
  * Time: 5:01:09 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TopPaneListener implements ChangeListener
-{
-
+public class TopPaneListener implements ChangeListener {
     private MainDataViewerFrame mD;
 
-    public TopPaneListener(MainDataViewerFrame _mD)
-    {
+    public TopPaneListener(MainDataViewerFrame _mD) {
         this.mD = _mD;
     }
 
-    public void stateChanged(ChangeEvent evt)
-    {
+    public void stateChanged(ChangeEvent evt) {
         JTabbedPane pane = (JTabbedPane) evt.getSource();
-        int sel = pane.getSelectedIndex();
-        //System.out.println("jtab title " + pane.getTitleAt(sel));
-        if (!mD.get_alreadyFilled().contains(new Integer(sel)))
-        {
-            //this has to be a loop begin
-            ArrayList tableList = null;
-            try
-            {
-                tableList = (ArrayList) mD.getTabsForDomains().get(pane.getTitleAt(sel).substring(0, 2));
-            } catch (Exception e)
-            {
-                JOptionPane.showMessageDialog(mD.get_jf(), e.getMessage().toString() + "\n Please restart the Application", "General Exception", JOptionPane.ERROR_MESSAGE);
+        final int sel = pane.getSelectedIndex();
+        if (!mD.get_alreadyFilled().contains(new Integer(sel))) {
+            if ((mD.getSqls4Domain() != null) && (mD.getSqls4Domain().size() > 0)) {
+                try {
+                    String query = (String) mD.getSqls4Domain().get(pane.getTitleAt(sel).substring(0, 2));
+                    final int _int = sel;
+                    final QueryModel qm = SQLParser.toQueryModel(query);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            ((Querypanel) mD.get_tPane().getComponentAt(_int)).get_queryBuilder().setQueryModel(qm);
+                        }
+                    });
+                    mD.get_jf().repaint();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                final ArrayList tableList = (ArrayList) mD.getTabsForDomains().get(pane.getTitleAt(sel).substring(0, 2));
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        for (int i = 0; i < tableList.size(); i++) {
+                            StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
+                            String schema = temp.nextElement().toString();
+                            String table = temp.nextElement().toString();
+                            ((Querypanel) mD.get_aryList().get(mD.get_tPane().getSelectedIndex())).loadTables(schema, table);
+                        }
+                        // So, Mr.Thread finished loading; now go and check-mark the columns
+                        try {
+                            String query = ((Querypanel) mD.get_tPane().getComponentAt(sel)).get_queryBuilder().getQueryModel().toString().toUpperCase();
+                            String returnedQuery = new CaDataViewHelper().processColumns(mD.get_tPane().getTitleAt(sel).substring(0, 2), query, mD.getSaveFile());
+                            final QueryModel qm2 = SQLParser.toQueryModel(returnedQuery);
+                            ((Querypanel) mD.get_tPane().getComponentAt(sel)).get_queryBuilder().setQueryModel(qm2);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
-            for (int i = 0; i < tableList.size(); i++)
-            {
-                StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
-                String schema = temp.nextElement().toString();
-                String table = temp.nextElement().toString();
-                ((Querypanel) mD.get_aryList().get(mD.get_tPane().getSelectedIndex())).loadTables(schema, table);
-            }
-            mD.get_alreadyFilled().add(new Integer(mD.get_tPane().getSelectedIndex()));
-            mD.get_lPane().setSelectedIndex(0);
-            mD.get_jf().repaint();
         }
-        mD.get_lPane().setSelectedIndex(0);
+        mD.get_alreadyFilled().add(new Integer(mD.get_tPane().getSelectedIndex()));     
     }
 }

@@ -32,7 +32,7 @@ import java.awt.event.ComponentEvent;
 
         public void componentResized(ComponentEvent componentEvent)
         {
-            mainDataViewerFrame.getSplitPane().setDividerLocation(.65);
+           // mainDataViewerFrame.getSplitPane().setDividerLocation(1.0);
         }
 
         public void componentShown(ComponentEvent componentEvent)

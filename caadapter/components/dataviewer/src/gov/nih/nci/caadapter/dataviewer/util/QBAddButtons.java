@@ -13,71 +13,39 @@ import java.net.URL;
  * Time: 11:22:35 AM
  * To change this template use File | Settings | File Templates.
  */
-public class QBAddButtons
-{
-
+public class QBAddButtons {
     MainDataViewerFrame maindialog;
+    JButton saveButton = null;
 
-    public QBAddButtons(MainDataViewerFrame maindialog)
-    {
+    public QBAddButtons(MainDataViewerFrame maindialog) {
         this.maindialog = maindialog;
+        this.saveButton = makeNavigationButton("wrench", "exit", "Save & Exit", "Save & Exit");
     }
 
-    public void addButtons(JToolBar toolBar)
-    {
+    public void addButtons(JToolBar toolBar) {
         JButton button = null;
-        button = makeNavigationButton("load", QBConstants.Load, "load", "Load SQL");
-        //toolBar.add(button).setEnabled(false);
-        button = makeNavigationButton("save", QBConstants.Save, "save", "Save SQL");
+        //String imageName, String actionCommand, String toolTipText, String altText
+        toolBar.add(saveButton);
+        this.getSaveButton().setEnabled(false);
+        button = makeNavigationButton("wrench", "Save", "Save", "Save SQL");
         toolBar.add(button);
         button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
         toolBar.add(button);
         button = makeNavigationButton("Check", "Validate", "Validate", "Validate");
         toolBar.add(button);
-        button = makeNavigationButton("reset", QBConstants.Reset, "reset", "Reset Diagram");
-        //toolBar.add(button);
-        button = makeNavigationButton("Add_tables", QBConstants.ADD, "Add Tables", "Add Tables");
-        // toolBar.add(button);
         button = makeNavigationButton("Print", QBConstants.PRINT, "Print", "Print");
         toolBar.add(button);
         button = makeNavigationButton("Help", QBConstants.HELP, "Help", "Help");
         toolBar.add(button);
     }
 
-    public void addButtons(JToolBar toolBar, boolean fromMenu)
-    {
-        JButton button = null;
-        button = makeNavigationButton("load", QBConstants.Load, "load", "Load SQL");
-        if (fromMenu)
-            toolBar.add(button).setEnabled(true);
-        else
-            toolBar.add(button).setEnabled(false);
-        button = makeNavigationButton("save", QBConstants.Save, "save", "Save SQL");
-        toolBar.add(button);
-         button = makeNavigationButton("Check", "Validate", "Validate", "Validate");
-        toolBar.add(button);
-        button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
-        toolBar.add(button);
-        button = makeNavigationButton("reset", QBConstants.Reset, "reset", "Reset Diagram");
-        //toolBar.add(button);
-        button = makeNavigationButton("Add_tables", QBConstants.ADD, "Add Tables", "Add Tables");
-        // toolBar.add(button);
-        button = makeNavigationButton("Print", QBConstants.PRINT, "Print", "Print");
-        toolBar.add(button);
-        button = makeNavigationButton("Help", QBConstants.HELP, "Help", "Help");
-        toolBar.add(button);
-    }
-
-    protected JButton makeNavigationButton(String imageName, String actionCommand, String toolTipText, String altText)
-    {
+    protected JButton makeNavigationButton(String imageName, String actionCommand, String toolTipText, String altText) {
         String imgLocation = "/images/_" + imageName + ".gif";
         URL imageURL = null;
-        try
-        {
+        try {
             imageURL = MainDataViewerFrame.class.getResource(imgLocation);
-        } catch (Exception e)
-        {
-            System.out.println("Unable to find image "+imageName);
+        } catch (Exception e) {
+            System.out.println("Unable to find image " + imageName);
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
         }
         //Create and initialize the button.
@@ -85,15 +53,17 @@ public class QBAddButtons
         button.setActionCommand(actionCommand);
         button.setToolTipText(toolTipText);
         button.addActionListener(new ToolBarAction(maindialog));
-        if (imageURL != null)
-        {//image found
+        if (imageURL != null) {//image found
             button.setIcon(new ImageIcon(imageURL, altText));
             button.setText(altText);
-        } else
-        {//no image found
+        } else {//no image found
             button.setText(altText);
             System.err.println("Resource not found: " + imgLocation);
         }
         return button;
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
     }
 }

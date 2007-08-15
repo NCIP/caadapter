@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -22,21 +23,20 @@ import java.awt.event.*;
  * To change this template use File | Settings | File Templates.
  */
 
-public class QBGetPasswordWindow implements WindowListener, KeyListener
-{
+public class QBGetPasswordWindow implements WindowListener, KeyListener {
 
     private JPasswordField _passWd;
 
     private JDialog dialog;
 
-    public QBGetPasswordWindow(Frame owner, String params, String title)
-    {
+    public QBGetPasswordWindow(Frame owner, String params, String title) {
         dialog = new JDialog(owner);
+        dialog.setUndecorated(true);
         dialog.setTitle("Get password to open map file " + title);
         EmptyStringTokenizer empt = new EmptyStringTokenizer(params, "~");
         JPanel mainPan = new JPanel();
         TitledBorder titleBorder = BorderFactory.createTitledBorder("Connection Information");
-        mainPan.setBorder(titleBorder);
+        mainPan.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         //
         JPanel centerPan = new JPanel();
         centerPan.setLayout(new GridLayout(5, 2));
@@ -53,15 +53,12 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener
         centerPan.add(new JLabel("Enter Password :"));
         centerPan.add(_passWd = new JPasswordField());
         String tmpStr = GetConnectionSingleton.isConnectionAvailable();
-        if (tmpStr != null)
-        {
-            if (tmpStr.equalsIgnoreCase(url))
-            {
+        if (tmpStr != null) {
+            if (tmpStr.equalsIgnoreCase(url)) {
                 _passWd.setText(GetConnectionSingleton.getPassword());
                 _passWd.setSelectionStart(0);
                 _passWd.setSelectionEnd(_passWd.getPassword().toString().length());
-            } else
-            {
+            } else {
                 JOptionPane.showMessageDialog(dialog, "The current connection object points to <b>" + tmpStr + "</b> Database \n Please exit from the panel and re-open again", "Connection INVALID", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -79,23 +76,35 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener
         butPan.setLayout(new FlowLayout());
         JButton ok = new JButton("Ok");
         butPan.add(ok);
-        ok.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent event)
-            {
-                if (!(_passWd.getPassword().length > 0))
-                {
+        ok.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                if (!(_passWd.getPassword().length > 0)) {
                     JOptionPane.showMessageDialog(dialog, "Please enter a password");
-                } else
-                {
+                } else {
                     dialog.dispose();
                 }
             }
         });
+        JButton cancel = new JButton("Cancel");
+        butPan.add(cancel);
+        cancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                dialog.dispose();
+            }
+        });
+        //title begin
+        JLabel label01 = new JLabel("Enter Password...");
+        label01.setBorder(BorderFactory.createLineBorder(Color.black));
+        label01.setBackground(Color.BLACK);
+        label01.setFont(new Font("Arial", Font.BOLD, 13));
+        label01.setForeground(Color.BLACK);
+        label01.setHorizontalAlignment(SwingConstants.CENTER);
+        //title end
         Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         centerPan.setBorder(raisedetched);
         butPan.setBorder(raisedetched);
         mainPan.setLayout(new BorderLayout());
+        mainPan.add(label01, BorderLayout.NORTH);
         mainPan.add(centerPan, BorderLayout.CENTER);
         mainPan.add(butPan, BorderLayout.SOUTH);
         dialog.setModal(true);
@@ -107,76 +116,60 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener
         dialog.setVisible(true);
     }
 
-    public void windowOpened(WindowEvent e)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+    public void windowOpened(WindowEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 _passWd.requestFocus();
             }
         });
     }
 
-    public void windowClosing(WindowEvent e)
-    {
+    public void windowClosing(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowClosed(WindowEvent e)
-    {
+    public void windowClosed(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowIconified(WindowEvent e)
-    {
+    public void windowIconified(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowDeiconified(WindowEvent e)
-    {
+    public void windowDeiconified(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowActivated(WindowEvent e)
-    {
+    public void windowActivated(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowDeactivated(WindowEvent e)
-    {
+    public void windowDeactivated(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void keyTyped(KeyEvent e)
-    {
+    public void keyTyped(KeyEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void keyPressed(KeyEvent e)
-    {
+    public void keyPressed(KeyEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
-            if (!(_passWd.getPassword().length > 0))
-            {
+            if (!(_passWd.getPassword().length > 0)) {
                 JOptionPane.showMessageDialog(dialog, "Please enter a password");
-            } else
-            {
+            } else {
                 dialog.dispose();
             }
     }
 
-    public void keyReleased(KeyEvent e)
-    {
+    public void keyReleased(KeyEvent e) {
     }
 
-    public String getPassword()
-    {
+    public String getPassword() {
         return _passWd.getText();
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         new QBGetPasswordWindow(null, "jdbc:oracle:thin:@localhost:1521:XE~oracle.jdbc.OracleDriver~hr~hr", "blah blah");
     }
 }

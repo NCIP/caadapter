@@ -33,28 +33,21 @@ import java.util.Hashtable;
  * Time: 3:18:22 PM
  * To change this template use File | Settings | File Templates.
  */
-public class OpenDataViewerHelper extends JDialog implements ActionListener
-{
+public class OpenDataViewerHelper extends JDialog implements ActionListener {
+    Frame _mainFrame=null;
+    JFileChooser mapLocation=null;
+    JTextField mapTextField=null;
+    File mapFileObj=null;
+    String mapFileStr=null;
+    File mapFile=null;
+    Database2SDTMMappingPanel panel=null;
+    JButton transformBut=null;
 
-    Frame _mainFrame;
-
-    JFileChooser mapLocation;
-
-    JTextField mapTextField;
-
-    File mapFileObj;
-
-    String mapFileStr;
-
-    File mapFile;
-
-    Database2SDTMMappingPanel panel;
-
-    public OpenDataViewerHelper(Frame owner, Database2SDTMMappingPanel _panel, File _mapFile)
-    {
+    public OpenDataViewerHelper(Frame owner, Database2SDTMMappingPanel _panel, File _mapFile, JButton _transformBut) {
         super(owner, true);
         this._mainFrame = owner;
         this.panel = _panel;
+        this.transformBut = _transformBut;
         if (_mapFile != null)
             this.mapFile = _mapFile;
         JPanel masterPanel = new JPanel();
@@ -70,16 +63,18 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener
         setVisible(true);
     }
 
-    private JPanel createRow()
-    {
+    private JPanel createRow() {
         JPanel pan = new JPanel();
         pan.setLayout(new GridLayout(1, 3));
         JLabel label = new JLabel("Enter Map file for Data Viewer");
-        if (mapFile != null)
+        if (mapFile != null) {
             mapTextField = new JTextField(mapFile.getAbsolutePath());
-        else
+            mapTextField.setEditable(false);
+        } else {
             mapTextField = new JTextField();
+        }
         JButton button = new JButton("Browse");
+        button.setEnabled(false);
         button.addActionListener(this);
         pan.add(label);
         pan.add(mapTextField);
@@ -88,8 +83,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener
         return pan;
     }
 
-    private JPanel createButRow()
-    {
+    private JPanel createButRow() {
         JPanel butPan = new JPanel();
         butPan.setLayout(new FlowLayout());
         JButton okBut = new JButton("OK");
@@ -102,77 +96,58 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener
         return butPan;
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
-        if (cmd.equalsIgnoreCase("Browse"))
-        {
+        if (cmd.equalsIgnoreCase("Browse")) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("map");
             filter.setDescription("map");
             mapLocation = new JFileChooser(System.getProperty("user.home"));
             mapLocation.setFileFilter(filter);
             int returnVal = mapLocation.showSaveDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 mapFileObj = mapLocation.getSelectedFile();
                 // This is where a real application would open the file.
-                if (mapFileObj.getAbsolutePath().endsWith("map"))
-                {
+                if (mapFileObj.getAbsolutePath().endsWith("map")) {
                     mapFileStr = mapFileObj.getAbsolutePath();
-                } else
-                {
+                } else {
                     mapFileStr = mapFileObj.getAbsolutePath() + ".map";
                 }
                 mapTextField.setText(mapFileStr);
                 mapTextField.setEnabled(false);
             }
-        } else if (cmd.equalsIgnoreCase("OK"))
-        {
-            if (mapFile != null)
-            {
-                OpenQueryBuilder((Hashtable) getMappingsFromMapFile(mapFile).get(0), (HashSet) getMappingsFromMapFile(mapFile).get(1), mapFile, readMapFile(mapFile.getAbsolutePath()));
-            } else
-            {
-                OpenQueryBuilder((Hashtable) getMappingsFromMapFile(mapFileObj).get(0), (HashSet) getMappingsFromMapFile(mapFileObj).get(1), mapFileObj, readMapFile(mapFileStr));
+        } else if (cmd.equalsIgnoreCase("OK")) {
+            if (mapFile != null) {
+                OpenQueryBuilder((Hashtable) getMappingsFromMapFile(mapFile).get(0), (HashSet) getMappingsFromMapFile(mapFile).get(1), mapFile, readMapFile(mapFile.getAbsolutePath()), (Hashtable) getMappingsFromMapFile(mapFile).get(2));
+            } else {
+                OpenQueryBuilder((Hashtable) getMappingsFromMapFile(mapFileObj).get(0), (HashSet) getMappingsFromMapFile(mapFileObj).get(1), mapFileObj, readMapFile(mapFileStr), (Hashtable) getMappingsFromMapFile(mapFileObj).get(2));
             }
-            //System.out.println(readMapFile(mapFileStr));
             this.dispose();
-        } else if (cmd.equalsIgnoreCase("Cancel"))
-        {
+        } else if (cmd.equalsIgnoreCase("Cancel")) {
             this.dispose();
         }
     }
 
-    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out)
-    {
+    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out, final Hashtable sqlHashtable) {
         final Dialog d = new Dialog(_mainFrame, "SQL Query", true);
-        (new Thread()
-        {
-            public void run()
-            {
-                try
-                {
-                    if (panel.getConnectionParameters() != null)
-                    {
-                        new MainDataViewerFrame(_mainFrame, false, d, list, cols, panel.getConnectionParameters(), file, out);
+        (new Thread() {
+            public void run() {
+                try {
+                    if (panel.getConnectionParameters() != null) {
+                        new MainDataViewerFrame(panel, d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
                     }
-                } catch (Exception e)
-                {
-                    try
-                    {
+                } catch (Exception e) {
+                    try {
                         Hashtable collectParams = getConnectionParametersfromUI(_mainFrame, file);
                         if (collectParams != null)
-                            new MainDataViewerFrame(_mainFrame, false, d, list, cols, collectParams, file, out);
-                    } catch (Exception e1)
-                    {
-                        e1.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+                            new MainDataViewerFrame(panel, d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
                     }
                 }
                 d.dispose();
             }
         }).start();
-        //d = new Dialog(mainFrame, "SQL Query", true);
         JPanel pane = new JPanel();
         TitledBorder _title = BorderFactory.createTitledBorder("Visual SQL Builder");
         pane.setBorder(_title);
@@ -185,12 +160,10 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener
         d.setVisible(true);
     }
 
-    private Hashtable getConnectionParametersfromUI(Frame _mainFrame, File file) throws Exception
-    {
+    private Hashtable getConnectionParametersfromUI(Frame _mainFrame, File file) throws Exception {
         Hashtable connectionParameters = null;
         String dbParams = getConnectionParamsFromMapFile(file);
-        if (dbParams != null)
-        {
+        if (dbParams != null) {
             QBGetPasswordWindow getPass = new QBGetPasswordWindow(_mainFrame, dbParams, file.getAbsolutePath());
             String pass = getPass.getPassword();
             EmptyStringTokenizer empt = new EmptyStringTokenizer(dbParams, "~");
@@ -200,101 +173,81 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener
             connectionParameters.put("PWD", pass);
             connectionParameters.put("SCHEMA", empt.getTokenAt(3));
             connectionParameters.put("Driver", empt.getTokenAt(1));
-            try
-            {
+            try {
                 connectionParameters.put("connection", DBConnector.getDBConnection(empt.getTokenAt(0), empt.getTokenAt(1), empt.getTokenAt(2), pass));
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(_mainFrame, e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         return connectionParameters;
     }
 
-    private String readMapFile(String mapFile)
-    {
+    private String readMapFile(String mapFile) {
         StringBuffer strBuf = new StringBuffer();
-        try
-        {
+        try {
             BufferedReader in = new BufferedReader(new FileReader(mapFile));
             String str;
-            while ((str = in.readLine()) != null)
-            {
+            while ((str = in.readLine()) != null) {
                 if (!str.equalsIgnoreCase("</mapping>"))
                     strBuf.append(str + "\n");
             }
             in.close();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return strBuf.toString();
     }
 
-    public ArrayList getMappingsFromMapFile(File mapFile)
-    {
+    public ArrayList getMappingsFromMapFile(File mapFile) {
         ArrayList retAry = new ArrayList();
         QBParseMappingFile _qbparse = new QBParseMappingFile(mapFile);
         _qbparse.parseFile();
         retAry.add(_qbparse.getHashTable());
         retAry.add(_qbparse.getHashTblColumns());
+        retAry.add(_qbparse.getHashSQLfromMappings());
         return retAry;
     }
 
-    public static void main(String[] args)
-    {
-        try
-        {
+    public static void main(String[] args) {
+        try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e)
-        {
+        } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                new OpenDataViewerHelper(null, null, null);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new OpenDataViewerHelper(null, null, null, null);
             }
         });
     }
 
-    private String getConnectionParamsFromMapFile(File mapFile) throws Exception
-    {
+    private String getConnectionParamsFromMapFile(File mapFile) throws Exception {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(mapFile);
         System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
         NodeList compLinkNodeList = doc.getElementsByTagName("components");
         String _xmlFileName = "", _scsFileName, _dbParams = null;
-        for (int s = 0; s < compLinkNodeList.getLength(); s++)
-        {
+        for (int s = 0; s < compLinkNodeList.getLength(); s++) {
             Node node = compLinkNodeList.item(s);
-            if (node.getNodeType() == Node.ELEMENT_NODE)
-            {
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element firstCompElement = (Element) node;
                 NodeList targetNode = firstCompElement.getElementsByTagName("component");
                 Element targetName1 = (Element) targetNode.item(0);
                 targetName1.getAttribute("location").toString();
-                if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS"))
-                {
+                if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
                     _scsFileName = targetName1.getAttribute("location").toString();
-                } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database"))
-                {
+                } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
                     _dbParams = targetName1.getAttribute("param").toString();
                 }
                 Element targetName2 = (Element) targetNode.item(1);
-                if (targetName2.getAttribute("kind").toString().equalsIgnoreCase("XML"))
-                {
+                if (targetName2.getAttribute("kind").toString().equalsIgnoreCase("XML")) {
                     _xmlFileName = targetName2.getAttribute("location").toString();
                 }
             }

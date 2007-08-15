@@ -60,70 +60,41 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $
  */
-
-public class Database2SDTMMappingPanel extends AbstractMappingPanel
-{
-
+public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.7 2007-07-31 20:45:41 jayannah Exp $";
-
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.8 2007-08-15 19:52:54 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
-
     private static final String SELECT_TARGET = "Open SDTM definition file...";
-
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
-
     static ArrayList<String> _retArray = null;
-
     private String defineXMLLocation = null;
-
-    private SDTMMappingGenerator sdtmMappingGenerator = null;//new SDTMMappingGenerator();
-
-    private Connection _dbConnection;
-
+    private SDTMMappingGenerator sdtmMappingGenerator = null;
     private static String OPENDB = "Choose Database";
-
-    private boolean connectDB;
-
-    private TreeNode sourceNodes;
-
-    private AbstractMainFrame _mainFrame;
-
-    private Hashtable connectionParameters;
-
-    private JButton _dbCon;
-
-    private JButton openSCSButton;
-
+    private boolean connectDB=false;
+    private JButton openTargetButton=null;
+    private AbstractMainFrame _mainFrame=null;
+    private Hashtable connectionParameters=null;
+    private JButton _dbCon=null;
+    private JButton openSCSButton=null;
     private boolean openDBmap = false;
-
-    private Hashtable sqlQueries;
-
+    private Hashtable sqlQueries=null;
     private JButton transformBut = null;
-
-    private JButton _commonBut = null;
-
+    private JButton _commonBut = null;   
     private boolean isDataBase = false;
 
-    private Connection connection;
-
-    public JButton getTransFormBut()
-    {
+    public JButton getTransFormBut() {
         return transformBut;
     }
 
-    public static Hashtable getDomainFieldsList()
-    {
+    public static Hashtable getDomainFieldsList() {
         return domainFieldsList;
     }
 
     private static Hashtable domainFieldsList = null;
 
-    public Database2SDTMMappingPanel(AbstractMainFrame mf)
-    {
+    public Database2SDTMMappingPanel(AbstractMainFrame mf) {
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this.add(getCenterPanel(false), BorderLayout.CENTER);
@@ -131,8 +102,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         this._mainFrame = mf;
     }
 
-    public Database2SDTMMappingPanel(AbstractMainFrame mf, String _conn)
-    {
+    public Database2SDTMMappingPanel(AbstractMainFrame mf, String _conn) {
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this._mainFrame = mf;
@@ -140,13 +110,11 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         fileSynchronizer = new MappingFileSynchronizer(this);
     }
 
-    public Hashtable getSqlQueries()
-    {
+    public Hashtable getSqlQueries() {
         return sqlQueries;
     }
 
-    public Database2SDTMMappingPanel(AbstractMainFrame mf, String _conn, boolean openDatabaseMap)
-    {
+    public Database2SDTMMappingPanel(AbstractMainFrame mf, String _conn, boolean openDatabaseMap) {
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this._mainFrame = mf;
@@ -154,20 +122,16 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         this.add(getCenterPanel(false), BorderLayout.CENTER);
         fileSynchronizer = new MappingFileSynchronizer(this);
         sqlQueries = new Hashtable();
+        openDBmap = openDatabaseMap;
     }
 
-    public Hashtable getConnectionParameters() throws SQLException
-    {
-        try
-        {
+    public Hashtable getConnectionParameters() throws SQLException {
+        try {
             connectionParameters.put("connection", DBConnector.getConnection());
-        } catch (Exception e)
-        {
-            try
-            {
+        } catch (Exception e) {
+            try {
                 connectionParameters.put("connection", DBConnector.getDBConnection(connectionParameters.get("URL").toString(), connectionParameters.get("Driver").toString(), connectionParameters.get("UserID").toString(), connectionParameters.get("PWD").toString()));
-            } catch (Exception e1)
-            {
+            } catch (Exception e1) {
                 // e1.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
                 JOptionPane.showMessageDialog(this, e1.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -175,13 +139,23 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         return connectionParameters;
     }
 
-    public SDTMMappingGenerator getSDTMappingGenerator()
-    {
+    public SDTMMappingGenerator getSDTMappingGenerator() {
         return sdtmMappingGenerator;
     }
 
-    protected JPanel getTopLevelLeftPanel()
-    {
+    public JButton get_commonBut() {
+        return _commonBut;
+    }
+
+    public AbstractMainFrame get_mainFrame() {
+        return _mainFrame;
+    }
+
+    public JButton getTransformBut() {
+        return transformBut;
+    }
+
+    protected JPanel getTopLevelLeftPanel() {
         JPanel topCenterPanel = new JPanel(new BorderLayout());
         topCenterPanel.setBorder(BorderFactory.createEmptyBorder());
         JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -225,7 +199,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         targetLocationArea.setEditable(false);
         targetLocationArea.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 10), 24));
         targetLocationPanel.add(targetLocationArea, BorderLayout.CENTER);
-        JButton openTargetButton = new JButton(SELECT_TARGET);
+        openTargetButton = new JButton(SELECT_TARGET);
         targetLocationPanel.add(openTargetButton, BorderLayout.EAST);
         openTargetButton.setMnemonic('T');
         openTargetButton.setToolTipText("Open SDTM Structure file");
@@ -235,13 +209,14 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
         targetButtonPanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 5), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
         // construct middle panel
-        JPanel centerFunctionPanel = new JPanel(new BorderLayout(2, 0));
+        //JPanel centerFunctionPanel = new JPanel(new BorderLayout(2, 0));
+        JPanel centerFunctionPanel = new JPanel(new FlowLayout());
         JPanel middleContainerPanel = new JPanel(new BorderLayout());
         JLabel placeHolderLabel = new JLabel();
         placeHolderLabel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
         middlePanel = new MappingMiddlePanel(this);
         middlePanel.setKind("SDTM");
-        sdtmMappingGenerator = new SDTMMappingGenerator();
+        sdtmMappingGenerator = new SDTMMappingGenerator(this);
         sdtmMappingGenerator.set_sdtmMappingGeneratorReference(sdtmMappingGenerator);
         middlePanel.setSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
         _dbCon = new JButton("Choose Database...");
@@ -252,14 +227,21 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         transformBut = new JButton("Transform...");
         transformBut.setActionCommand("transform");
         transformBut.addActionListener(this);
+        if (!openDBmap) {
+            _commonBut.setEnabled(false);
+            transformBut.setEnabled(false);
+        }
         JPanel westpanel = new JPanel();
         westpanel.add(_dbCon);
         westpanel.add(transformBut, BorderLayout.EAST);
         westpanel.add(_commonBut, BorderLayout.EAST);
-        centerFunctionPanel.add(westpanel, BorderLayout.WEST);
+        //centerFunctionPanel.add(transformBut, BorderLayout.WEST);
+        centerFunctionPanel.add(_dbCon);
+        centerFunctionPanel.add(_commonBut);
+        centerFunctionPanel.add(transformBut);
         _dbCon.addActionListener(this);
-        centerFunctionPanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 30));
-        centerFunctionPanel.add(placeHolderLabel, BorderLayout.EAST);
+        centerFunctionPanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
+        //centerFunctionPanel.add(placeHolderLabel, BorderLayout.EAST);
         middleContainerPanel.add(centerFunctionPanel, BorderLayout.NORTH);
         // middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
         middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
@@ -272,63 +254,58 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         centerSplitPane.setRightComponent(rightSplitPane);
         topCenterPanel.add(centerSplitPane, BorderLayout.CENTER);
         topCenterPanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH * 0.8), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
+        if (openDBmap) {
+            _dbCon.setEnabled(false);
+            openTargetButton.setEnabled(false);
+            openSCSButton.setEnabled(false);
+        }
         return topCenterPanel;
     }
 
-    public boolean isConnectDB()
-    {
+    public boolean isConnectDB() {
         return connectDB;
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public boolean isOpenDBmap() {
+        return openDBmap;
+    }
+
+    public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        try
-        {
+        try {
             boolean everythingGood = true;
-            if (SELECT_SCS.equals(command))
-            {
+            if (SELECT_SCS.equals(command)) {
                 _dbCon.setEnabled(false);
                 File file = DefaultSettings.getUserInputOfFileFromGUI(this, ".scs", "Open SCS file ...", false, false);
-                if (file != null)
-                {
+                if (file != null) {
                     everythingGood = processOpenSourceTree(file, true, true);
                 }
-            } else if (SELECT_TARGET.equals(command))
-            {
+                openSCSButton.setEnabled(false);
+            } else if (SELECT_TARGET.equals(command)) {
                 File file = DefaultSettings.getUserInputOfFileFromGUI(this, ".xml", "Open SDTM Structure file ...", false, false);
-                if (file != null)
-                {
+                if (file != null) {
                     buildTargetTree(null, file, true);
                 }
-            } else if (OPENDB.equalsIgnoreCase(command))
-            {
+                openTargetButton.setEnabled(false);
+            } else if (OPENDB.equalsIgnoreCase(command)) {
                 isDataBase = true;
-                //final Dialog _queryWaitDialog = new Dialog(_mainFrame);
                 final Dialog _queryWaitDialog = new Dialog(_mainFrame);
-                new Thread(new Runnable()
-                {
-
-                    public void run()
-                    {
-                        try
-                        {
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
                             connectDB = true;
                             openSCSButton.setEnabled(false);
                             OpenDatabaseConnectionHelper _openDatabaseConnectionHelper = new OpenDatabaseConnectionHelper(_mainFrame);
                             //System.out.println("The connection values are " + _openDatabaseConnectionHelper.getDatabaseConnectionInfo());
                             connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
                             processOpenSourceTree(null, true, true);
-                            try
-                            {
+                            try {
                                 Thread.sleep(100);
-                            } catch (Exception e)
-                            {
+                            } catch (Exception e) {
                             }
                             _queryWaitDialog.dispose();
                             _dbCon.setEnabled(false);
-                        } catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             _queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -345,36 +322,26 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
                 _queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
                 _queryWaitDialog.add(_waitLabel, BorderLayout.CENTER);
                 _queryWaitDialog.setVisible(true);
-            } else if (command.equalsIgnoreCase("Transform"))
-            {
-                try
-                {
+                _dbCon.setEnabled(false);
+            } else if (command.equalsIgnoreCase("Transform")) {
+                try {
                     new QBTransformAction(_mainFrame, this, (Connection) connectionParameters.get("connection"));
-                } catch (Exception e1)
-                {
+                } catch (Exception e1) {
                     JOptionPane.showMessageDialog(this, e1.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } else if (command.equalsIgnoreCase("Open Query"))
-            {
-                new MainDataViewerFrame(_mainFrame, true, null, connectionParameters, sqlQueries, getSaveFile(), connectionParameters.get("SCHEMA").toString());
-            } else if (command.equalsIgnoreCase("dataview"))
-            {
-                new OpenDataViewerHelper(_mainFrame, this, getSaveFile());
-            } else if (!everythingGood)
-            {
+            } else if (command.equalsIgnoreCase("dataview")) {
+                new OpenDataViewerHelper(_mainFrame, this, getSaveFile(), transformBut);
+            } else if (!everythingGood) {
                 Message msg = MessageResources.getMessage("GEN3", new Object[0]);
                 JOptionPane.showMessageDialog(this, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception e1)
-        {
+        } catch (Exception e1) {
             DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this, false, false);
         }
     }
 
-    public void openDataBaseMapFile(String params)
-    {
-        try
-        {
+    public void openDataBaseMapFile(String params) {
+        try {
             QBGetPasswordWindow getPass = new QBGetPasswordWindow(_mainFrame, params, this.getSaveFile().toString());
             String pass = getPass.getPassword();
             EmptyStringTokenizer empt = new EmptyStringTokenizer(params, "~");
@@ -385,50 +352,39 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
             connectionParameters.put("PWD", pass);
             connectionParameters.put("SCHEMA", empt.getTokenAt(3));
             connectionParameters.put("Driver", empt.getTokenAt(1));
-            try
-            {
+            try {
                 connectionParameters.put("connection", DBConnector.getDBConnection(empt.getTokenAt(0), empt.getTokenAt(1), empt.getTokenAt(2), pass));
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             processOpenSourceTree(null, true, true);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile) throws Exception
-    {
-        if (!connectDB)
-        {
+    protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile) throws Exception {
+        if (!connectDB) {
             TreeNode node = new DefaultMutableTreeNode("SCS Model");
             // build source tree end
             SCMMapSourceNodeLoader scmMapSourceNodeLoader = new SCMMapSourceNodeLoader();
             node = scmMapSourceNodeLoader.loadData(metaInfo);
             return node;
-        } else
-        {
+        } else {
             TreeNode node = new DefaultMutableTreeNode("Data Model");
             return createSourceNodes(node, "");
         }
     }
 
-    protected void buildSourceTree(Object metaInfo, File file, boolean isToResetGraph) throws Exception
-    {
+    protected void buildSourceTree(Object metaInfo, File file, boolean isToResetGraph) throws Exception {
         super.buildSourceTree(metaInfo, file, isToResetGraph);
-        if (connectDB)
-        {
+        if (connectDB) {
             sTree.setCellRenderer(new SourceRenderer());
             ToolTipManager.sharedInstance().registerComponent(sTree);
         }
-        sTree.addTreeSelectionListener(new TreeSelectionListener()
-        {
-
-            public void valueChanged(TreeSelectionEvent e)
-            {
+        sTree.addTreeSelectionListener(new TreeSelectionListener() {
+            public void valueChanged(TreeSelectionEvent e) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) sTree.getLastSelectedPathComponent();
                 if (node == null)
                     return;
@@ -436,37 +392,28 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         });
     }
 
-    public TreeNode createSourceNodes(TreeNode nodes, String flavor)
-    {
+    public TreeNode createSourceNodes(TreeNode nodes, String flavor) {
         ArrayList ary = null;
-        try
-        {
+        try {
             ary = DBConnector.getSchemaCollection(connectionParameters);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(_mainFrame, "         " + e.getMessage().toString() + "                 ", "Could not connect to Database : " + connectionParameters.get("URL").toString(), JOptionPane.ERROR_MESSAGE);
         }
         DefaultMutableTreeNode pNode = null;
         DefaultSourceTreeNode tableNode = null;
-        if (ary != null)
-        {
-            for (int k = 0; k < ary.size(); k++)
-            {
-                if (ary.get(k) instanceof String)
-                {
+        if (ary != null) {
+            for (int k = 0; k < ary.size(); k++) {
+                if (ary.get(k) instanceof String) {
                     String _tmpStr = ary.get(k).toString();
                     String _str1 = _tmpStr.substring(3, _tmpStr.length());
                     pNode = new DefaultMutableTreeNode(_str1);
                     ((DefaultMutableTreeNode) nodes).add(pNode);
-                } else if (ary.get(k) instanceof QBTableMetaData)
-                {
+                } else if (ary.get(k) instanceof QBTableMetaData) {
                     tableNode = new DefaultSourceTreeNode(ary.get(k));
                     if (pNode != null)
                         pNode.add(tableNode);
-                } else if (ary.get(k) instanceof QueryBuilderMeta)
-                {
-                    if (tableNode != null)
-                    {
+                } else if (ary.get(k) instanceof QueryBuilderMeta) {
+                    if (tableNode != null) {
                         tableNode.add(new DefaultSourceTreeNode(ary.get(k)));
                     }
                 }
@@ -475,16 +422,14 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         return nodes;
     }
 
-    public static ArrayList getDefaultTargetTreeNodeList()
-    {
+    public static ArrayList getDefaultTargetTreeNodeList() {
         return defaultTargetTreeNodeList;
     }
 
     private static ArrayList defaultTargetTreeNodeList;
 
     @SuppressWarnings("unchecked")
-    public static void createTargetNodes(TreeNode nodes, File SDTMXmlFile)
-    {
+    public static void createTargetNodes(TreeNode nodes, File SDTMXmlFile) {
         defaultTargetTreeNodeList = new ArrayList();
         ParseSDTMXMLFile _parseSDTMFile = new ParseSDTMXMLFile(SDTMXmlFile.getAbsolutePath().toString());
         _retArray = _parseSDTMFile.getSDTMStructure();
@@ -494,10 +439,8 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         StringBuffer fieldsString = null;
         String _tempHolder;
         domainFieldsList = new Hashtable();
-        for (int k = 0; k < _retArray.size(); k++)
-        {
-            if (_retArray.get(k).startsWith("KEY"))
-            {
+        for (int k = 0; k < _retArray.size(); k++) {
+            if (_retArray.get(k).startsWith("KEY")) {
                 if (fieldsString != null)
                     domainFieldsList.put(domainString, fieldsString.toString().substring(0, fieldsString.toString().lastIndexOf(',')));
                 fieldsString = new StringBuffer();
@@ -506,8 +449,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
                 ((DefaultMutableTreeNode) nodes).add(pNode);
                 defaultTargetTreeNodeList.add(pNode);
                 domainString = pNode.toString();
-            } else
-            {
+            } else {
                 EmptyStringTokenizer _str = new EmptyStringTokenizer(_retArray.get(k), ",");
                 _tempHolder = _str.getTokenAt(1);
                 pNode.add(new DefaultTargetTreeNode(new SDTMMetadata(pNode.toString(), _tempHolder, _str.getTokenAt(2), _str.getTokenAt(3), _str.getTokenAt(4))));
@@ -517,8 +459,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         System.out.println("wait");
     }
 
-    protected TreeNode loadTargetTreeData(Object metaInfo, File file) throws Exception
-    {
+    protected TreeNode loadTargetTreeData(Object metaInfo, File file) throws Exception {
         String fileName = file.getAbsolutePath();
         sdtmMappingGenerator.setScsDefineXMLFIle(fileName);
         TreeNode targetNodes = new DefaultMutableTreeNode("SDTM Data Structure");
@@ -527,8 +468,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         return targetNodes;
     }
 
-    protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
-    {
+    protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception {
         super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
         //instantiate the "DropTransferHandler"
         tTree.setCellRenderer(new TargetRenderer());
@@ -542,19 +482,15 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
      * @param file
      * @throws Exception
      */
-
-    protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
-    {
+    protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception {
         MetaObject metaInfo = null;
         BaseResult returnResult = null;
         MetaParser parser = null;
-        if (!connectDB)
-        {
+        if (!connectDB) {
             parser = new CSVMetaParserImpl();
             returnResult = parser.parse(new FileReader(file));
             ValidatorResults validatorResults = returnResult.getValidatorResults();
-            if (validatorResults != null && validatorResults.hasFatal())
-            {
+            if (validatorResults != null && validatorResults.hasFatal()) {
                 Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
                 DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
                 return false;
@@ -573,9 +509,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
      * @param file
      * @throws Exception
      */
-
-    protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
-    {
+    protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception {
         buildTargetTree(null, file, isToResetGraph);
         return true;
     }
@@ -586,23 +520,18 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
      * @param file
      * @throws Exception changed from protected to pulic by sean
      */
-
-    public ValidatorResults processOpenMapFile(File file) throws Exception
-    {
+    public ValidatorResults processOpenMapFile(File file) throws Exception {
         new OpenSDTMMapFile(this, file.toString());
         return null;
     }
 
-    public Map getMenuItems(String menu_name)
-    {
+    public Map getMenuItems(String menu_name) {
         Action action = null;
         ContextManager contextManager = ContextManager.getContextManager();
         Map<String, Action> actionMap = contextManager.getClientMenuActions(MenuConstants.DB_TO_SDTM, menu_name);
-        if (MenuConstants.FILE_MENU_NAME.equals(menu_name))
-        {
+        if (MenuConstants.FILE_MENU_NAME.equals(menu_name)) {
             JRootPane rootPane = this.getRootPane();
-            if (rootPane != null)
-            {//rootpane is not null implies this panel is fully displayed;
+            if (rootPane != null) {//rootpane is not null implies this panel is fully displayed;
                 //on the flip side, if it is null, it implies it is under certain construction.
                 contextManager.enableAction(ActionConstants.NEW_O2DB_MAP_FILE, false);
                 //contextManager.enableAction(ActionConstants.OPEN_MAP_FILE, true);
@@ -647,9 +576,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
     /**
      * return the open action inherited with this client.
      */
-
-    public Action getDefaultOpenAction()
-    {
+    public Action getDefaultOpenAction() {
         ContextManager contextManager = ContextManager.getContextManager();
         return contextManager.getDefinedAction(ActionConstants.OPEN_CSV2SDTM_MAP_FILE_TXT);
     }
@@ -659,15 +586,12 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
      *
      * @throws Exception
      */
-
-    public void reload() throws Exception
-    {
+    public void reload() throws Exception {
         //processOpenMapFile(getSaveFile());
         processOpenSourceTree(getSaveFile(), false, true);
     }
 
-    protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler()
-    {
+    protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler() {
         return this.sdtmTargetTreeDropTransferHandler;
     }
 
@@ -676,9 +600,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
      *
      * @param changedFileMap
      */
-
-    public void reload(Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap)
-    {
+    public void reload(Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap) {
         /**
 
          * Design rationale: 1) if the changedFileMap is null, simply return; 2)
@@ -696,152 +618,119 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
          * MappingFileSynchronizer.FILE_TYPE.Mapping_File item in the map;
 
          */
-        if (changedFileMap == null)
-        {
+        if (changedFileMap == null) {
             return;
         }
         File existMapFile = getSaveFile();
-        try
-        {
-            if (existMapFile != null)
-            {
-                if (existMapFile.exists())
-                {
+        try {
+            if (existMapFile != null) {
+                if (existMapFile.exists()) {
                     processOpenMapFile(existMapFile);
-                } else
-                {// exist map file does not exist anymore
+                } else {// exist map file does not exist anymore
                     JOptionPane.showMessageDialog(this, existMapFile.getAbsolutePath() + " does not exist or is not accessible anymore", "File Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-            } else
-            {// exist map file does not exist, simply reload source
+            } else {// exist map file does not exist, simply reload source
                 // and/or target file
                 Iterator it = changedFileMap.keySet().iterator();
-                while (it.hasNext())
-                {
+                while (it.hasNext()) {
                     MappingFileSynchronizer.FILE_TYPE key = (MappingFileSynchronizer.FILE_TYPE) it.next();
                     File file = changedFileMap.get(key);
-                    if (GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Source_File, key))
-                    {
+                    if (GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Source_File, key)) {
                         processOpenSourceTree(file, true, true);
-                    } else if (GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Target_File, key))
-                    {
+                    } else if (GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Target_File, key)) {
                         processOpenTargetTree(file, true, true);
                     }
                 }// end of while
             }// end of else
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             DefaultSettings.reportThrowableToLogAndUI(this, e, "", this, false, false);
         }
     }
 
-    public String getDefineXMLLocation()
-    {
+    public String getDefineXMLLocation() {
         return defineXMLLocation;
     }
 
-    public void setDefineXMLLocation(String defineXMLLocation)
-    {
+    public void setDefineXMLLocation(String defineXMLLocation) {
         this.defineXMLLocation = defineXMLLocation;
     }
 
-    public TreeNode getTargetNodes()
-    {
+    public TreeNode getTargetNodes() {
         if (tTree != null)
             return tTree.getRootTreeNode();
         else
             return null;
     }
 
-    public TreeNode getSourceNodes()
-    {
+    public TreeNode getSourceNodes() {
         if (sTree != null)
             return sTree.getRootTreeNode();
         else
             return null;
     }
 
-    public SDTMMappingGenerator getSdtmMappingGenerator()
-    {
+    public SDTMMappingGenerator getSdtmMappingGenerator() {
         return sdtmMappingGenerator;
     }
 
     /**
      * Returns an ImageIcon, or null if the path was invalid.
      */
-    protected static ImageIcon createImageIcon(String path)
-    {
+    protected static ImageIcon createImageIcon(String path) {
         //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
         java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
-        if (imgURL != null)
-        {
+        if (imgURL != null) {
             //System.out.println("class.getResource is "+imgURL.toString());
             return new ImageIcon(imgURL);
-        } else
-        {
+        } else {
             System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
             return null;
         }
     }
 
-    private class SourceRenderer extends DefaultTreeCellRenderer
-    {
-
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-        {
+    private class SourceRenderer extends DefaultTreeCellRenderer {
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
             ImageIcon tutorialIcon;
-            try
-            {
+            try {
                 String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
-                if (_tmpStr.equalsIgnoreCase("Data Model"))
-                {
+                if (_tmpStr.equalsIgnoreCase("Data Model")) {
                     tutorialIcon = createImageIcon("database.png");
                     setIcon(tutorialIcon);
                     setToolTipText("Data model");
-                } else
-                {
+                } else {
                     tutorialIcon = createImageIcon("schema.png");
                     setIcon(tutorialIcon);
                     setToolTipText("Schema");
                 }
                 return this;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 //continue;
             }
-            try
-            {
+            try {
                 QBTableMetaData qbTableMetaData = (QBTableMetaData) ((DefaultSourceTreeNode) value).getUserObject();
-                if (qbTableMetaData.getType().equalsIgnoreCase("TABLE"))
-                {
+                if (qbTableMetaData.getType().equalsIgnoreCase("TABLE")) {
                     tutorialIcon = createImageIcon("table.png");
                     setIcon(tutorialIcon);
                     setToolTipText("Table");
-                } else if (qbTableMetaData.getType().equalsIgnoreCase("VIEW"))
-                {
+                } else if (qbTableMetaData.getType().equalsIgnoreCase("VIEW")) {
                     tutorialIcon = createImageIcon("view.png");
                     setIcon(tutorialIcon);
                     setToolTipText("View");
                 }
-            } catch (ClassCastException e)
-            {
-                try
-                {
+            } catch (ClassCastException e) {
+                try {
                     QueryBuilderMeta queryBuilderMeta = (QueryBuilderMeta) ((DefaultSourceTreeNode) value).getUserObject();
                     setToolTipText("Column ; Type= " + queryBuilderMeta.getTypeName() + " ; Size= " + queryBuilderMeta.getColumnSize());
                     tutorialIcon = createImageIcon("column.png");
                     setIcon(tutorialIcon);
-                } catch (Exception ee)
-                {
-                    try
-                    {
+                } catch (Exception ee) {
+                    try {
                         //String queryBuilderMeta = (String) ((DefaultSourceTreeNode) value).getUserObject();
                         tutorialIcon = createImageIcon("load.gif");
                         setIcon(tutorialIcon);
-                    } catch (Exception e1)
-                    {
+                    } catch (Exception e1) {
                         setToolTipText(null);
                     }
                 }
@@ -850,29 +739,22 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         }
     }
 
-    private class TargetRenderer extends DefaultTreeCellRenderer
-    {
-
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-        {
+    private class TargetRenderer extends DefaultTreeCellRenderer {
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
             super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
             ImageIcon tutorialIcon;
-            try
-            {
+            try {
                 String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
-                if (!_tmpStr.equalsIgnoreCase("SDTM Data Structure"))
-                {
+                if (!_tmpStr.equalsIgnoreCase("SDTM Data Structure")) {
                     tutorialIcon = createImageIcon("book.png");
                     setIcon(tutorialIcon);
                     setToolTipText(_tmpStr);
-                } else
-                {
+                } else {
                     tutorialIcon = createImageIcon("house.png");
                     setIcon(tutorialIcon);
                     setToolTipText("SDTM Root");
                 }
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 SDTMMetadata sdtmMetadata = (SDTMMetadata) ((DefaultTargetTreeNode) value).getUserObject();
                 setToolTipText(sdtmMetadata.getName() + "; isMandatory " + sdtmMetadata.getMandatory());
                 tutorialIcon = createImageIcon("blue.png");

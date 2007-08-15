@@ -43,7 +43,7 @@ public class TopPaneListenerOpenAction implements ChangeListener
                 QueryModel qm = SQLParser.toQueryModel(queryFromList);
                 int selected = mD.get_tPane().getSelectedIndex();
                 Querypanel panel = (Querypanel) mD.get_aryList().get(selected);
-                panel.get_queryBuilder().setModel(qm);
+                panel.get_queryBuilder().setQueryModel(qm);
                 //((Querypanel) mD.get_aryList().get(mD.get_tPane().getSelectedIndex())).get_queryBuilder().setModel(qm);
                 //((Querypanel) mD.get_aryList().get(mD.get_tPane().getSelectedIndex())).get_queryBuilder().getDiagram().getTemporany().callResize();
                 //System.out.println("The number of components are "+((Querypanel) mD.get_aryList().get(mD.get_tPane().getSelectedIndex())).get_queryBuilder().getDiagram().getComponents().length);
@@ -52,9 +52,9 @@ public class TopPaneListenerOpenAction implements ChangeListener
                 e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
             }
             mD.get_alreadyFilled().add(new Integer(mD.get_tPane().getSelectedIndex()));
-            mD.get_lPane().setSelectedIndex(0);
+            //mD.get_lPane().setSelectedIndex(0);
             mD.get_jf().repaint();
         }
-        mD.get_lPane().setSelectedIndex(0);
+       // mD.get_lPane().setSelectedIndex(0);
     }
 }
