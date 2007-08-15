@@ -60,11 +60,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.8 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.9 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.8 2007-08-15 19:52:54 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.9 2007-08-15 20:37:48 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -81,7 +81,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private boolean openDBmap = false;
     private Hashtable sqlQueries=null;
     private JButton transformBut = null;
-    private JButton _commonBut = null;   
+    private JButton _commonBut = null;
     private boolean isDataBase = false;
 
     public JButton getTransFormBut() {
@@ -216,7 +216,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         placeHolderLabel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
         middlePanel = new MappingMiddlePanel(this);
         middlePanel.setKind("SDTM");
-        sdtmMappingGenerator = new SDTMMappingGenerator(this);
+        sdtmMappingGenerator = new SDTMMappingGenerator();
         sdtmMappingGenerator.set_sdtmMappingGeneratorReference(sdtmMappingGenerator);
         middlePanel.setSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
         _dbCon = new JButton("Choose Database...");
