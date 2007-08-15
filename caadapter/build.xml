@@ -14,8 +14,8 @@
 	<property name="config.dir"    value="${basedir}/conf"/>
 	<property name="docs.dir"    value="${basedir}/docs"/>
 	<property name="project.jar.name"    value="caAdapter.jar"/>
-	<property name="project.deploy.root"    value="L:/caAdapter/releases/caAdapter v4.0/2007-08-13"/>
-	
+	<property name="project.deploy.root"    value="L:/caAdapter/releases/caAdapter v4.0/2007-08-14"/>
+	<property name="project.deploy.root1"    value="c:/distBin/test2007-08-13"/>
 	<property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
 	<property name="webstart.config.files" value="${basedir}/etc/webstart"/>	
 	<property name="webstart.warfile.name" value="caadapter-mms.war"/>
@@ -56,7 +56,7 @@
 	<property name="ws.module.home"    value="${basedir}/components/webservices"/>
 	<property name="ws.module.build"    value="${ws.module.home}/build.xml"/>
 
-	<target name="jar.all" depends="build.modules, copy.modules.lib" >
+	<target name="jar.all" depends="build.modules" >
 		<echo message="-------- build jar for all modules  --------"/>
 		<copy todir="${build.dir}">
 				<fileset dir="${common.module.home}/build"/>
@@ -76,7 +76,11 @@
 			</fileset>			
 		</copy>
 		
-		<jar destfile="${lib.dir}/${project.jar.name}">
+		<delete includeemptydirs="true">
+		    <fileset dir="${dist.dir}" includes="**/*"/>
+		</delete>
+
+		<jar destfile="${dist.dir}/${project.jar.name}">
 			<fileset dir="${build.dir}"/>
 			<fileset dir="${config.dir}"/>
 		</jar>
@@ -155,10 +159,13 @@
 	
 	<target name="demo.dist" depends="copy.modules.lib">
 		<echo message="build demo_ui.jar...."  />
+		<copy todir="${lib.dir}">
+			<fileset dir="${dist.dir}"/>			
+		</copy>
+					
 		<ant antfile="build_demo.xml" target="demo.ui.jar"/>
 
 		<delete dir="${project.deploy.root}/lib"/>
-		<delete dir="C:/distBin/testCaAdapter/dist"/>
 		
 		<mkdir dir="${project.deploy.root}/lib"/>
 		<copy todir="${project.deploy.root}/lib">
@@ -166,12 +173,6 @@
 				<exclude name="*.zip, *.jar"/>
 			</fileset>				
 		</copy>
-
-		<!-- copy todir="C:/distBin/testCaAdapter/dist">
-			<fileset dir="${dist.dir}">
-				<exclude name="*.zip, *.jar"/>
-			</fileset>	
-		</copy -->
 		
 		<copy todir="${project.deploy.root}/conf">
 			<fileset dir="${config.dir}">
