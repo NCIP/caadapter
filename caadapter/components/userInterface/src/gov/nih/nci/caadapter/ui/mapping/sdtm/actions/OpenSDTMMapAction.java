@@ -26,7 +26,7 @@ import java.io.File;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.5 $ date $Date: 2007-07-19 18:51:37 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.6 $ date $Date: 2007-08-15 21:16:50 $
  */
 public class OpenSDTMMapAction extends DefaultContextOpenAction
 {
@@ -37,7 +37,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_4, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 
 	// private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
-	protected static String TOOL_TIP_DESCRIPTION = "Open a CSV-2-SDTM Mapping File";
+	protected static String TOOL_TIP_DESCRIPTION = "Open a CSV/Database-2-RDS Mapping File";
 
 	private transient File openFile;
 
@@ -98,7 +98,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 	 */
 	protected void launchPanel(final ContextManagerClient panel, final File file) 
 	{
-		final Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame, "Test", true);			
+		final Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame, "_conn", true);			
 		// have to add the new tab so as the panel may update its panel title in the tabbed pane.
 		SwingWorker worker = new SwingWorker() {
 			public Object construct()

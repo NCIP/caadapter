@@ -21,26 +21,32 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm;
  * LICENSE_TEXT_END -->
  */
 
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.QBTransformAction;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
 
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.6 $
  */
 @SuppressWarnings("serial")
-public class NewSDTMWizard extends JDialog implements ActionListener
-{
+public class NewSDTMWizard extends JDialog implements ActionListener {
 
     String curDir;
 
@@ -84,7 +90,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener
 
     JPanel fileZone1 = new JPanel(new GridLayout(7, 1, 2, 2));
 
-    JPanel fileZone2 = new JPanel(new GridLayout(3, 3));
+    JPanel fileZone2 = new JPanel(new GridLayout(2, 3));
 
     JPanel csvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -111,16 +117,46 @@ public class NewSDTMWizard extends JDialog implements ActionListener
 
     String _defineXML = "";
 
-   //HashMap prefs;
+    //HashMap prefs;
 
     /*
       * The SCS file that is generated
-      */ String _genSCSFileName = "";
+      */
+    String _genSCSFileName = "";
 
     AbstractMainFrame callingFrame;
 
-    public NewSDTMWizard(AbstractMainFrame _callingFrame)
-    {
+    boolean isDatabase;
+
+    String defineXMLFileLocation;
+
+
+    public NewSDTMWizard(AbstractMainFrame _callingFrame) {
+        try {
+            JFileChooser fc = new JFileChooser(Config.CAADAPTER_HOME_DIR_TAG);
+            CaadapterFileFilter filter = new CaadapterFileFilter();
+            filter.addExtension("map");
+            filter.setDescription("map");
+            fc.setFileFilter(filter);
+            fc.setDialogTitle("Open a RDS map file.....");
+            fc.showOpenDialog(_callingFrame);
+            File selFile = fc.getSelectedFile();
+            if (!selFile.getName().endsWith("map")) {
+                JOptionPane.showMessageDialog(_callingFrame, "Please a valid map file", "Invalid file", JOptionPane.ERROR_MESSAGE);
+            }
+            preProcessMapFile(selFile.getAbsolutePath());
+            if (isDatabase) {
+                new QBTransformAction(_callingFrame, selFile.getAbsolutePath(), defineXMLFileLocation, null);
+            } else {
+                transformSCS(_callingFrame, selFile.getAbsolutePath());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void transformSCS(AbstractMainFrame _callingFrame, String mapFile) {
         // super("Create SDTM Structure");
 
         callingFrame = _callingFrame;
@@ -169,9 +205,9 @@ public class NewSDTMWizard extends JDialog implements ActionListener
         hl7csvlocation.addActionListener(this);
         hl7csvTextField = new JTextField("");
         hl7MesLocTextField.setColumns(30);
-        fileZone2.add(hl7fileLabel);
-        fileZone2.add(hl7MesLocTextField);
-        fileZone2.add(hl7MessageFilelocation);
+//        fileZone2.add(hl7fileLabel);
+//        fileZone2.add(hl7MesLocTextField);
+//        fileZone2.add(hl7MessageFilelocation);
         saveCSVLocation = new JFileChooser(_defaultLoc);
         choosedefineXMLLocation = new JFileChooser(_defaultLoc);
         hl7csvTextField.setColumns(30);
@@ -221,58 +257,47 @@ public class NewSDTMWizard extends JDialog implements ActionListener
         setVisible(true);
     }
 
-    protected ImageIcon createImageIcon(String icon)
-    {
+    protected ImageIcon createImageIcon(String icon) {
         java.net.URL imgURL = getClass().getClassLoader().getResource(icon);
-        if (imgURL != null)
-        {
+        if (imgURL != null) {
             return new ImageIcon(imgURL);
-        } else
-        {
+        } else {
             System.err.println("Couldn't find file: ");
             return null;
         }
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         String newline = "\n";
-        if (e.getSource() == directoryLocation)
-        {
+        if (e.getSource() == directoryLocation) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("csv");
             // filter.setDescription("csv");
             directoryLoc.setFileFilter(filter);
             int returnVal = directoryLoc.showOpenDialog(NewSDTMWizard.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 directory = directoryLoc.getSelectedFile();
                 // This is where a real application would open the file.
                 dirLocTextField.setText(directory.getAbsolutePath().toString());
                 dirLocTextField.setEnabled(false);
-            } else
-            {
+            } else {
                 log.append("command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
-        } else if (e.getSource() == hl7MessageFilelocation)
-        {
+        } else if (e.getSource() == hl7MessageFilelocation) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("map");
             // filter.setDescription("map");
             HL7V24Message.setFileFilter(filter);
             int returnVal = HL7V24Message.showOpenDialog(NewSDTMWizard.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 hl7MessageFile = HL7V24Message.getSelectedFile();
                 hl7MesLocTextField.setText(hl7MessageFile.getAbsolutePath().toString());
                 hl7MesLocTextField.setEnabled(false);
-            } else
-            {
+            } else {
                 log.append("command cancelled by user." + newline);
             }
-        } else if (e.getSource() == hl7csvlocation)
-        {
+        } else if (e.getSource() == hl7csvlocation) {
             String CSVSaveFileName = "";
             CaadapterFileFilter filter = new CaadapterFileFilter();
             //filter.addExtension("txt");
@@ -280,80 +305,87 @@ public class NewSDTMWizard extends JDialog implements ActionListener
             // filter.setDescription("txt");
             //saveCSVLocation.setFileFilter(filter);
             int returnVal = saveCSVLocation.showOpenDialog(NewSDTMWizard.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 csvSaveFile = saveCSVLocation.getSelectedFile();
                 _saveCSV = csvSaveFile.getAbsolutePath();
                 hl7csvTextField.setText(_saveCSV);
                 hl7csvTextField.setEnabled(false);
-            } else
-            {
+            } else {
                 log.append("command cancelled by user." + newline);
             }
         }
-        if (e.getSource() == defineXMLLocation)
-        {
+        if (e.getSource() == defineXMLLocation) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("scs");
-            // filter.setDescription("txt");
             choosedefineXMLLocation.setFileFilter(filter);
             int returnVal = choosedefineXMLLocation.showOpenDialog(NewSDTMWizard.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 defineXMLFile = choosedefineXMLLocation.getSelectedFile();
                 _defineXML = defineXMLFile.getAbsolutePath();
                 defineXMLTextField.setText(_defineXML);
                 defineXMLTextField.setEnabled(false);
-            } else
-            {
+            } else {
                 log.append("command cancelled by user." + newline);
             }
-        } else if (e.getSource() == process)
-        {
-            try
-            {
+        } else if (e.getSource() == process) {
+            try {
                 String CSVSaveFileName = "";
-                if (csvSaveFile != null)
-                {
+                if (csvSaveFile != null) {
                     CSVSaveFileName = hl7csvTextField.getText();
                 }
-                try
-                {
-                    // new SDTMMapFileTransformer(hl7MessageFile.getAbsolutePath().toString(),
-                    // directory.getAbsolutePath().toString(), callingFrame, CSVSaveFileName);
+                try {
                     this.dispose();
-                    //new SDTMNewTransformer(hl7MessageFile.getAbsolutePath().toString(), directory.getAbsolutePath().toString(), _defineXML, callingFrame, CSVSaveFileName);
-                    //new SDTMDomainsCSVTransformer(new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _defineXML, _saveCSV);
                     new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV);
-                } catch (RuntimeException e1)
-                {
+                } catch (RuntimeException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 log.append("Created the \"" + _genSCSFileName + "\" successfully" + newline);
                 log.append("Created the \"" + CSVSaveFileName + "\" successfully" + newline);
-                // scsFilewithPath = "D:\\dev\\caAdapter\\" + _tmp;
-            } catch (Exception e1)
-            {
+            } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 log.append(e1.getMessage());
             }
-        } else if (e.getSource() == cancel)
-        {
+        } else if (e.getSource() == cancel) {
             this.dispose();
-        } else if (e.getSource() == directoryLocation)
-        {
+        } else if (e.getSource() == directoryLocation) {
         }
     }
 
-    public static void main(String[] args)
-    {
-        try
-        {
+    private void preProcessMapFile(String mapFileName) throws Exception {
+
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(new File(mapFileName));
+        System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+        NodeList compLinkNodeList = doc.getElementsByTagName("components");
+
+        for (int s = 0; s < compLinkNodeList.getLength(); s++) {
+            Node node = compLinkNodeList.item(s);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element firstCompElement = (Element) node;
+                NodeList targetNode = firstCompElement.getElementsByTagName("component");
+                Element targetName1 = (Element) targetNode.item(0);
+                targetName1.getAttribute("location").toString();
+                if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
+
+                } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
+                    isDatabase = true;
+                }
+                Element targetName2 = (Element) targetNode.item(1);
+                if (targetName2.getAttribute("kind").toString().equalsIgnoreCase("XML")) {
+                    defineXMLFileLocation = targetName2.getAttribute("location").toString();
+                }
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-          //  new NewSDTMWizard(null, null);
-        } catch (Exception e)
-        {
+            //  new NewSDTMWizard(null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
