@@ -17,7 +17,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-08-10 13:33:16 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2007-08-15 17:55:14 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -133,6 +133,21 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public MIFClass getMifClass() {
 		return mifClass;
 	}
+	
+	/**
+	 * Found the choiceSelected MIFClass if this Association contains a choice
+	 * @return chosenMIFClass
+	 */
+	public MIFClass findChoiceSelectedMifClass() {
+		if (!isChoiceSelected())
+			return null;
+		for(MIFClass choiceClass:getMifClass().getSortedChoices())
+		{
+			if (choiceClass.isChoiceSelected())
+				return choiceClass;
+		}
+		return null;
+	}
 	/**
 	 * @param mifClass the mifClass to set
 	 */
@@ -172,11 +187,8 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		String viewName=getName();
 		if (isChoiceSelected()&&getMifClass().getChoices().size()>0)
 		{
-			for (MIFClass choiceClass:getMifClass().getSortedChoices())
-			{
-				if (choiceClass.isChoiceSelected())
-					viewName=choiceClass.getNodeXmlName();
-			}
+			MIFClass chosenMif=findChoiceSelectedMifClass();
+			viewName=chosenMif.getNodeXmlName();
 		}
 			
 		if (getMaximumMultiplicity()==1)
@@ -266,42 +278,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public void setChoiceSelected(boolean choiceSelected) {
 		this.choiceSelected = choiceSelected;
 	}
-	public void setChoiceClass(String mifClassName)
-	{
-//		System.out.println("MIFAssociation.setChoiceClass()..xmlPath:"+getXmlPath());
-		if (this.isChoiceSelected())
-		{
-			//unset the previous choice
-			for (MIFClass choiceClass:getMifClass().getChoices())
-			{
-				if (choiceClass.isChoiceSelected())
-				{
-					choiceClass.setChoiceSelected(false);
-					//remove attribute, association from the chosen class 
-					//if they were added from parent class
-					for (MIFAttribute parentAttr:getMifClass().getAttributes())
-						choiceClass.removeAttributeWithName(parentAttr.getName());
-					for (MIFAssociation parentAssc:getMifClass().getAssociations())
-						choiceClass.removeAassociationWithNodeXmlName(parentAssc.getNodeXmlName());
-					break;
-				}
-			}
-		}
-		this.setChoiceSelected(true);
-		for (MIFClass choiceClass:getMifClass().getChoices())
-		{
-			if (choiceClass.getName().equals(mifClassName))
-			{
-				choiceClass.setChoiceSelected(true);
-				//add attribute, associatoin from parent class to the chosen class
-				for (MIFAttribute parentAttr:getMifClass().getAttributes())
-					choiceClass.addAttribute((MIFAttribute)parentAttr.clone());
-				for (MIFAssociation parentAssc:getMifClass().getAssociations())
-					choiceClass.addAssociation((MIFAssociation)parentAssc.clone());	
-				break;
-			}
-		}
-	}
+
 	public Object clone()
 	{
 		 try {

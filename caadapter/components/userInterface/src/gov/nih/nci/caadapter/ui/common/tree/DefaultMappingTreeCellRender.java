@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.6 2007-08-09 19:28:01 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.7 2007-08-15 17:55:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-09 19:28:01 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-15 17:55:34 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -126,14 +126,8 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 							if (mifAssc.isChoiceSelected()
 									&&attrMultiplicity!=1)
 							{
-								for(MIFClass choiceClass:mifAssc.getMifClass().getSortedChoices())
-								{
-									if (choiceClass.isChoiceSelected())
-									{
-										attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
-										break;
-									}
-								}
+								MIFClass choiceClass=mifAssc.findChoiceSelectedMifClass();
+								attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 							}
 						}
 												

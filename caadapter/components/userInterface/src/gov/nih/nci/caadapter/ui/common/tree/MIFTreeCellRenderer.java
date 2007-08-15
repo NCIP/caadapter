@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.6 2007-08-13 17:15:31 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.7 2007-08-15 17:55:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-13 17:15:31 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-15 17:55:44 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -73,7 +73,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.6 2007-08-13 17:15:31 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.7 2007-08-15 17:55:44 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -138,16 +138,11 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 						parentMIFClass=mifAssc.getMifClass();
 						attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 						//if (attrMultiplicity==1), this MIFAttribute belong to MIFAssociation
-						if (mifAssc.isChoiceSelected()&&attrMultiplicity!=1)
+						if (mifAssc.isChoiceSelected()
+								&&attrMultiplicity!=1)
 						{
-							for(MIFClass choiceClass:mifAssc.getMifClass().getSortedChoices())
-							{
-								if (choiceClass.isChoiceSelected())
-								{
-									attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
-									break;
-								}
-							}
+							MIFClass choiceClass=mifAssc.findChoiceSelectedMifClass();
+							attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
 						}
 					}				
 					if (attrMultiplicity==1)

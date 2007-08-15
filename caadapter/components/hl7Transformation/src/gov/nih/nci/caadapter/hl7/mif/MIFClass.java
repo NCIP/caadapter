@@ -24,7 +24,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2007-08-10 13:33:16 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-08-15 17:54:49 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -67,26 +67,7 @@ import java.util.Iterator;
 	public void setAttributes(HashSet<MIFAttribute> newAttributes) {
 		attributes=newAttributes;
 	}
-	
-	 public void removeAttributeWithName(String mifNameToRemove)
-	 {
-		 for(MIFAttribute attr:attributes)
-			 if (attr.getName().equals(mifNameToRemove))
-			 {
-				 attributes.remove(attr);
-				 return;
-			 }
-	 }
-	 
-	 public void removeAassociationWithNodeXmlName(String asscNodeXmlNameToRemove)
-	 {
-		 for(MIFAssociation assc:associations)
-			 if (assc.getNodeXmlName().equals(asscNodeXmlNameToRemove))
-			 {
-				 associations.remove(assc);
-				 return;
-			 }
-	 }
+		 
 	 public void removeAttribute(MIFAttribute attrToRemove)
 	 {
 			Iterator it=getAttributes().iterator();
