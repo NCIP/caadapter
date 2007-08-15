@@ -132,25 +132,25 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         bottomPanel.setLayout(new BorderLayout());
         JPanel statpan = new JPanel();
         statpan.setLayout(new BorderLayout());
-        try
-        {
-            if (GetConnectionSingleton.getConnection() != null)
-            {
-                JLabel alreadyConInfo1 = new JLabel("Connection present for " + GetConnectionSingleton.getServerName());
-                alreadyConInfo1.setFont(new Font("SansSerif", Font.BOLD, 12));
-                alreadyConInfo1.setForeground(Color.RED);
-                alreadyConInfo1.setHorizontalAlignment(SwingConstants.CENTER);
-                JLabel alreadyConInfo2 = new JLabel("Please press 'Cancel' and restart the application");
-                alreadyConInfo2.setFont(new Font("SansSerif", Font.BOLD, 12));
-                alreadyConInfo2.setForeground(Color.RED);
-                alreadyConInfo2.setHorizontalAlignment(SwingConstants.CENTER);
-                statpan.add(alreadyConInfo1, BorderLayout.CENTER);
-                statpan.add(alreadyConInfo2, BorderLayout.SOUTH);
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        }
+//        try
+//        {
+//            if (GetConnectionSingleton.getConnection() != null)
+//            {
+//                JLabel alreadyConInfo1 = new JLabel("Connection present for " + GetConnectionSingleton.getServerName());
+//                alreadyConInfo1.setFont(new Font("SansSerif", Font.BOLD, 12));
+//                alreadyConInfo1.setForeground(Color.RED);
+//                alreadyConInfo1.setHorizontalAlignment(SwingConstants.CENTER);
+//                JLabel alreadyConInfo2 = new JLabel("Please press 'Cancel' and restart the application");
+//                alreadyConInfo2.setFont(new Font("SansSerif", Font.BOLD, 12));
+//                alreadyConInfo2.setForeground(Color.RED);
+//                alreadyConInfo2.setHorizontalAlignment(SwingConstants.CENTER);
+//                statpan.add(alreadyConInfo1, BorderLayout.CENTER);
+//                statpan.add(alreadyConInfo2, BorderLayout.SOUTH);
+//            }
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+//        }
         /*
            If already connected panel
         */
