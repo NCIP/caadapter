@@ -1,7 +1,7 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
-import nickyb.sqleonardo.environment.Preferences;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -72,7 +72,7 @@ public class PreferenceManager extends JDialog implements ActionListener
         tabbedPane.addTab("Hl7 V3 Transformation", null, panel2, "");
         //
         JComponent panel3 = new MMSPreferencePane(this);
-        tabbedPane.addTab("MMS Preference Pane", null, panel3, "");  
+        tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -90,7 +90,7 @@ public class PreferenceManager extends JDialog implements ActionListener
         panel.add(filler);
         return panel;
     }
-   
+
     protected JComponent makeRDSPanel()
     {
         JPanel mainPan = new JPanel(false);
@@ -168,7 +168,7 @@ public class PreferenceManager extends JDialog implements ActionListener
 
     public static void main(String args[])
     {
-        Preferences.loadDefaults();
+
         try
         {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
