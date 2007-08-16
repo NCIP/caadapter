@@ -20,6 +20,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.*;
 
+
+
+/**
+ * This is data viewer main window. The RDS module calls this class with arguments to
+ * show tables to the user
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.8 $
+ *          $Date: 2007-08-16 18:06:24 $
+ */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
     private String schema = null;
