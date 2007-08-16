@@ -29,8 +29,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-08-16 18:12:43 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-08-16 18:13:26 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -241,6 +241,6 @@ public class MainDataViewerFrame {
 
 /**
    Change History
-   $log:$
+   $Log: not supported by cvs2svn $
 
  */
