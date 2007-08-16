@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $
  */
 public class SDTMMetadata extends MetaObjectImpl implements SDKMetaData
 {
@@ -182,7 +182,7 @@ public class SDTMMetadata extends MetaObjectImpl implements SDKMetaData
     }
 
     /**
-     * @param datatype
+     * @param name
      */
     public void setName(String name)
     {
@@ -205,7 +205,7 @@ public class SDTMMetadata extends MetaObjectImpl implements SDKMetaData
     /**
      * /**
      *
-     * @param isForeignKey
+     * @param 
      */
     public String getParentXPath()
     {
@@ -232,3 +232,7 @@ public class SDTMMetadata extends MetaObjectImpl implements SDKMetaData
         return xPath;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

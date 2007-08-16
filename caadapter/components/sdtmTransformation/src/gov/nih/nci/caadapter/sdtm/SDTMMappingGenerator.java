@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v3.2 revision
+ * $Revision: 1.2 $
+ * 
  */
 public class SDTMMappingGenerator
 {
