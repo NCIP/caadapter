@@ -23,6 +23,16 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+/**
+ * This class saves the map file and passes the control over to the
+ * Data Viewer
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.8 $
+ *          $Date: 2007-08-16 19:39:46 $
+ */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     /**
      * Logging constant used to identify source of log entry, that could be later used to create logging mechanism to uniquely identify the logged class.
@@ -34,7 +44,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.7 2007-08-15 20:26:57 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.8 2007-08-16 19:39:46 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -199,3 +209,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         d.setVisible(true);
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

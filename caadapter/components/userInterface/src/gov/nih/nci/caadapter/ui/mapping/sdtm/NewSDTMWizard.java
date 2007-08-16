@@ -43,78 +43,43 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
-
     String curDir;
-
     String sourceName1 = "";
-
     String reportName1 = "";
-
-    // main is split into north/center regions
     JPanel north = new JPanel(new FlowLayout());
-
     JPanel center = new JPanel(new BorderLayout());
-
-    // BorderLayout panel to hold all JPanels using the Center region
     JPanel main = new JPanel(new BorderLayout());
-
     JTextArea log = new JTextArea();
-
     File sourceFile;
-
     File reportFile = new File(reportName1);
-
-    // declare file area components
     JLabel sourceLabel1 = new JLabel("Source: ");
-
     JTextField sourceField1 = new JTextField(12);
-
     JButton sourceBrow1 = new JButton("Browse...");
-
     JPanel dirBrowsePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
     JLabel reportLabel1 = new JLabel("Report: ");
-
-    // JLabel reportLabel1 = new JLabel("Report: ");
     JTextField reportField1 = new JTextField(12);
-
     JButton reportBrow1 = new JButton("Browse...");
-
     JPanel hl7MessagePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
     JPanel defineXMLPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
     JPanel fileZone1 = new JPanel(new GridLayout(7, 1, 2, 2));
-
     JPanel fileZone2 = new JPanel(new GridLayout(2, 3));
-
     JPanel csvPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
     // New fields begin here
     JButton directoryLocation, hl7MessageFilelocation, hl7csvlocation, defineXMLLocation;
-
     JTextField dirLocTextField, hl7MesLocTextField, hl7csvTextField, defineXMLTextField;
-
     JFileChooser directoryLoc, HL7V24Message, saveCSVLocation, choosedefineXMLLocation;
-
     JButton process = new JButton("  Transform  ");
-
     JButton cancel = new JButton("   Cancel    ");
-
     // JButton next = new JButton("Next");
     // JPanel navZone1 = new JPanel(new GridLayout(3, 1, 2, 2));
     JPanel _bPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
     JPanel emptyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
     File directory, hl7MessageFile, csvSaveFile, defineXMLFile;
-
     String _saveCSV = "";
-
     String _defineXML = "";
 
     //HashMap prefs;
@@ -123,13 +88,9 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
       * The SCS file that is generated
       */
     String _genSCSFileName = "";
-
     AbstractMainFrame callingFrame;
-
     boolean isDatabase;
-
     String defineXMLFileLocation;
-
 
     public NewSDTMWizard(AbstractMainFrame _callingFrame) {
         try {
@@ -150,7 +111,6 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
             } else {
                 transformSCS(_callingFrame, selFile.getAbsolutePath());
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,7 +118,6 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 
     public void transformSCS(AbstractMainFrame _callingFrame, String mapFile) {
         // super("Create SDTM Structure");
-
         callingFrame = _callingFrame;
         Color logColor = new Color(220, 220, 220);
         //setBounds(355, 355, 670, 180);
@@ -353,13 +312,11 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     }
 
     private void preProcessMapFile(String mapFileName) throws Exception {
-
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(new File(mapFileName));
         System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
         NodeList compLinkNodeList = doc.getElementsByTagName("components");
-
         for (int s = 0; s < compLinkNodeList.getLength(); s++) {
             Node node = compLinkNodeList.item(s);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -368,7 +325,6 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
                 Element targetName1 = (Element) targetNode.item(0);
                 targetName1.getAttribute("location").toString();
                 if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
-
                 } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
                     isDatabase = true;
                 }
@@ -379,7 +335,6 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
             }
         }
     }
-
 
     public static void main(String[] args) {
         try {

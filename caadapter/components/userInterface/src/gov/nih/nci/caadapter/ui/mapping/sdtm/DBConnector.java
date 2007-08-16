@@ -18,11 +18,13 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Mar 22, 2007
- * Time: 10:20:14 AM
- * To change this template use File | Settings | File Templates.
+ * This is the class which read the db.properties file
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.2 $
+ *          $Date: 2007-08-16 19:39:45 $
  */
 public class DBConnector
 {

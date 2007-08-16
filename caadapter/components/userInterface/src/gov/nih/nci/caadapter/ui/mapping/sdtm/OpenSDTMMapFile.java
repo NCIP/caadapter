@@ -16,23 +16,23 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.File;
 import java.util.*;
-
+/**
+ * The class helps in opening a MAP file(both SCS and Database)
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-16 19:39:45 $
+ */
 public class OpenSDTMMapFile extends JDialog {
-
-    private MappingDataManager _mappingDataMananger;
-
-    private HashMap _mappedData;
-
-    private Database2SDTMMappingPanel _database2SDTMMappingPanel;
-
-    public String _xmlFile;
-
-    JFileChooser directoryLoc, scsFile;
-
-    File directory, scsFileChosen;
-
+    private MappingDataManager _mappingDataMananger=null;
+    private HashMap _mappedData=null;
+    private Database2SDTMMappingPanel _database2SDTMMappingPanel=null;
+    public String _xmlFile=null;
+    JFileChooser directoryLoc, scsFile=null;
+    File directory, scsFileChosen=null;
     String _scsFileName = null, _dbParams = null;
-
     private Hashtable xPathNodeSet = null;
 
     OpenSDTMMapFile() {
@@ -45,7 +45,6 @@ public class OpenSDTMMapFile extends JDialog {
 
     public OpenSDTMMapFile(final Database2SDTMMappingPanel database2SDTMMappingPanel, final String mapFile) throws Exception {
         _database2SDTMMappingPanel = database2SDTMMappingPanel;
-
         _mappingDataMananger = database2SDTMMappingPanel.getMiddlePanel().getMappingDataManager();
         // start a thread here
         final Dialog _openMapfileWaitDialog = new Dialog(_database2SDTMMappingPanel.get_mainFrame());
@@ -53,7 +52,7 @@ public class OpenSDTMMapFile extends JDialog {
             public void run() {
                 try {
                     getMappingInfo(mapFile);
-                     database2SDTMMappingPanel.setChanged(false);
+                    database2SDTMMappingPanel.setChanged(false);
                     _openMapfileWaitDialog.dispose();
                 } catch (Exception e) {
                     _openMapfileWaitDialog.dispose();
@@ -68,12 +67,11 @@ public class OpenSDTMMapFile extends JDialog {
         LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
         JPanel _waitLabel = new JPanel();
         _waitLabel.setBorder(lineBorder);
-        _waitLabel.add(new JLabel("      Opening the file, "+mapFile+" ..."));
+        _waitLabel.add(new JLabel("      Opening the file, " + mapFile + " ..."));
         _openMapfileWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
         _openMapfileWaitDialog.add(_waitLabel, BorderLayout.CENTER);
         _openMapfileWaitDialog.setVisible(true);
         // the thread ends here
-
     }
 
     public OpenSDTMMapFile(Database2SDTMMappingPanel database2SDTMMappingPanel, String mapFile, String xmlFile) throws Exception {
@@ -297,33 +295,11 @@ public class OpenSDTMMapFile extends JDialog {
         return null;
     }
 
-    //    public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode)
-    //    {
-    //        DefaultMutableTreeNode node = null;
-    //        java.util.Enumeration enum1 = rootNode.depthFirstEnumeration();
-    //        //java.util.Enumeration enum1 = rootNode.children();
-    //        while (enum1.hasMoreElements())
-    //        {
-    //            node = (DefaultMutableTreeNode) enum1.nextElement();
-    //            for (int i = 0; i < node.getChildCount(); i++)
-    //            {
-    //                String temp = processTargetNode(node.getChildAt(i));
-    //                if (nodeStr.equals(temp))
-    //                {
-    //                    return node;
-    //                }
-    //            }
-    //        }
-    //        System.out.println("end=========================================");
-    //        return null;
-    //    }
-
-    public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
+   public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
         DefaultMutableTreeNode node = null;
         java.util.Enumeration enum1 = rootNode.depthFirstEnumeration();
         while (enum1.hasMoreElements()) {
             node = (DefaultMutableTreeNode) enum1.nextElement();
-
             if (nodeStr.equals(processTargetNode(node))) {
                 return node;
             }
@@ -363,31 +339,11 @@ public class OpenSDTMMapFile extends JDialog {
             System.out.println("+======================================= " + node.toString());
             return null;
         }
-        // System.out.println("found************************" + s.getXPath());
-        // tree node with string found
         return s.getXPath();
     }
 
-    //    public String processTargetNode(DefaultMutableTreeNode node)
-    //    {
-    //        SDTMMetadata s = null;
-    //        try
-    //        {
-    //            s = (SDTMMetadata) node.getUserObject();
-    //        } catch (Exception e)
-    //        {
-    //            System.out.println(e.getLocalizedMessage());
-    //            System.out.println("+======================================= " + node.toString());
-    //        }
-    //        // System.out.println("found************************" + s.getXPath());
-    //        // tree node with string found
-    //        return s.getXPath();
-    //    }
-
     public String processTargetNode1(DefaultMutableTreeNode node) {
         SDTMMetadata s = (SDTMMetadata) node.getUserObject();
-        // System.out.println("found************************" + s.getXPath());
-        // tree node with string found
         return s.getXPath();
     }
 
@@ -397,3 +353,6 @@ public class OpenSDTMMapFile extends JDialog {
         System.out.print("The values are" + n._mappedData);
     }
 }
+/**
+ * $Log: not supported by cvs2svn $
+ */

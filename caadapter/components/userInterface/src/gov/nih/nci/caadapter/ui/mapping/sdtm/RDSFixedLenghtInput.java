@@ -11,32 +11,28 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Jul 5, 2007
- * Time: 10:49:13 AM
- * To change this template use File | Settings | File Templates.
+ * This class implements the fixed length records
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.2 $
+ *          $Date: 2007-08-16 19:39:45 $
  */
-public class RDSFixedLenghtInput extends JDialog implements ActionListener
-{
+public class RDSFixedLenghtInput extends JDialog implements ActionListener {
+    JPanel butPan=null;
+    HashMap userValues=null;
 
-    JPanel butPan;
-
-    HashMap userValues;
-
-    public RDSFixedLenghtInput(JFrame callingFrame, HashSet keyList)
-    {
+    public RDSFixedLenghtInput(JFrame callingFrame, HashSet keyList) {
         super(callingFrame, "Enter the length for desired key field(s)... ", true);
         userValues = new HashMap();
         JPanel finalPane = createPanels(keyList);
         finalPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Fixed Length parameters"));
         add(finalPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        if (keyList.size() > 9)
-        {
+        if (keyList.size() > 9) {
             setSize(350, 300);
-        } else
-        {
+        } else {
             pack();
         }
         setLocation(400, 300);
@@ -44,22 +40,18 @@ public class RDSFixedLenghtInput extends JDialog implements ActionListener
         setVisible(true);
     }
 
-    public HashMap getUserValues()
-    {
+    public HashMap getUserValues() {
         return userValues;
     }
 
-    public RDSFixedLenghtInput(HashSet keyList)
-    {
+    public RDSFixedLenghtInput(HashSet keyList) {
         JPanel finalPane = createPanels(keyList);
         finalPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Fixed Length parameters"));
         add(finalPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        if (keyList.size() > 9)
-        {
+        if (keyList.size() > 9) {
             setSize(350, 300);
-        } else
-        {
+        } else {
             pack();
         }
         setLocation(400, 300);
@@ -67,16 +59,14 @@ public class RDSFixedLenghtInput extends JDialog implements ActionListener
         setVisible(true);
     }
 
-    private JPanel createPanels(HashSet keyList)
-    {
+    private JPanel createPanels(HashSet keyList) {
         JPanel mainPan = new JPanel();
         butPan = new JPanel();
         butPan.setLayout(new GridLayout(keyList.size(), 2));
         Iterator iterator = keyList.iterator();
         JTextField _tempFld;
         JLabel _tempLabel;
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             _tempLabel = new JLabel(iterator.next().toString());
             _tempLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 25));
             butPan.add(_tempLabel);
@@ -103,57 +93,40 @@ public class RDSFixedLenghtInput extends JDialog implements ActionListener
         return mainPan;
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getActionCommand().equalsIgnoreCase("OK"))
-        {
-            for (int i = 0; i < butPan.getComponentCount(); i++)
-            {
-                try
-                {
-                    if ((butPan.getComponent(i) instanceof javax.swing.JTextField))
-                    {
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equalsIgnoreCase("OK")) {
+            for (int i = 0; i < butPan.getComponentCount(); i++) {
+                try {
+                    if ((butPan.getComponent(i) instanceof javax.swing.JTextField)) {
                         String _temp = ((JTextField) butPan.getComponent(i)).getText();
-                        if (_temp.length() > 0)
-                        {
+                        if (_temp.length() > 0) {
                             userValues.put(((JLabel) butPan.getComponent(i - 1)).getText(), _temp);
                         }
                     }
-                } catch (Exception e1)
-                {
+                } catch (Exception e1) {
                     System.out.println(e1.getMessage());
                 }
             }
             this.dispose();
-        } else if (e.getActionCommand().equalsIgnoreCase("Cancel"))
-        {
+        } else if (e.getActionCommand().equalsIgnoreCase("Cancel")) {
             this.dispose();
         }
     }
 
-    public static void main(String[] args)
-    {
-       
-        try
-        {
+    public static void main(String[] args) {
+        try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        } catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        } catch (UnsupportedLookAndFeelException e)
-        {
+        } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
         }
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 LinkedHashSet _set = new LinkedHashSet();
                 _set.add("TE.STUDYID");
                 _set.add("TE.TESTRL");
@@ -217,3 +190,7 @@ public class RDSFixedLenghtInput extends JDialog implements ActionListener
         });
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

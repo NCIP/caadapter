@@ -21,26 +21,29 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class SDTMMany2ManyMapping
-{
-
+/**
+ * This class preprocess the CSV data for transformation 
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.5 $
+ *          $Date: 2007-08-16 19:39:45 $
+ */
+public class SDTMMany2ManyMapping {
     // MultiValueMap returnCsvMapData = new MultiValueMap();
     // LinkedHashMap returnCsvMapData.get( key); = new LinkedHashMap();
-    public List<String> returnCsvMapData1;
+    public List<String> returnCsvMapData1=null;
+    private HashSet checkRepeats=null;
 
-    private HashSet checkRepeats;
-
-    public CSVDataResult parse(File dataFile, CSVMeta csvMeta)
-    {
+    public CSVDataResult parse(File dataFile, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
-        try
-        {
+        try {
             String[][] data = CsvCache.getCsv(dataFile.getPath());
             return parse(data, csvMeta);
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             Log.logException(this, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -49,8 +52,7 @@ public class SDTMMany2ManyMapping
         }
     }
 
-    public CSVDataResult parse(String[][] data, CSVMeta csvMeta)
-    {
+    public CSVDataResult parse(String[][] data, CSVMeta csvMeta) {
         checkRepeats = new HashSet();
         returnCsvMapData1 = new LinkedList<String>();
         ValidatorResults validatorResults = new ValidatorResults();
@@ -68,14 +70,12 @@ public class SDTMMany2ManyMapping
         // test code begin -harsha
         ArrayList _myAry = new ArrayList();
         // harsha end
-        for (int i = 0; i < data.length; i++)
-        {
+        for (int i = 0; i < data.length; i++) {
             String[] row = data[i];
             String segmentName = row[0];
             // find the metadata for this row.
             currentSegmentMeta = findCSVSegmentMeta(rootSegmentMeta, segmentName);
-            if (currentSegmentMeta == null)
-            {
+            if (currentSegmentMeta == null) {
                 Message msg = MessageResources.getMessage("CSV2", new Object[]{segmentName});
                 validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
                 return csvDataResult;
@@ -84,12 +84,10 @@ public class SDTMMany2ManyMapping
             currentSegment = createSegment(currentSegmentMeta, row, validatorResults);
             // now we need to assign it to the hierarchy.
             // if it's a root segment it needs to be a new logical record.
-            if (segmentName.equalsIgnoreCase(rootSegmentMeta.getName()))
-            {
+            if (segmentName.equalsIgnoreCase(rootSegmentMeta.getName())) {
                 // if there is something on the stack - add it to the logical records.
                 // empty the stack (prepare a new logical record)
-                if (segmentStack.size() != 0)
-                {
+                if (segmentStack.size() != 0) {
                     logicalRecords.add(rootSegment);
                     segmentStack = new Stack<CSVSegment>();
                 }
@@ -97,8 +95,7 @@ public class SDTMMany2ManyMapping
                 segmentStack.push(rootSegment);
                 // harsha
                 StringBuffer _val = new StringBuffer();
-                for (int k = 0; k < data[i].length; k++)
-                {
+                for (int k = 0; k < data[i].length; k++) {
                     _val.append("," + data[i][k]);
                 }
                 EmptyStringTokenizer emp = new EmptyStringTokenizer(_val.toString().substring(1), ",");
@@ -109,31 +106,25 @@ public class SDTMMany2ManyMapping
                 returnCsvMapData1.add("\\Source Tree\\" + rootSegment + "^" + finalStr);
                 // _myAry.add( "\\Source Tree\\" + rootSegment + "=" + finalStr);
                 // harsha
-            } else
-            {
+            } else {
                 // we have a child segment.
                 // we need to find the parent + assign it appropriately.
                 CSVSegmentMeta parentSegmentMeta = currentSegmentMeta.getParent();
                 String parentSegmentMetaName = parentSegmentMeta.getName();
                 // the stack should contain the parent
                 boolean found = false;
-                while (!found)
-                {
+                while (!found) {
                     // check the top of the stack.
                     CSVSegment segment = null;
-                    try
-                    {
-                        if (!segmentStack.isEmpty())
-                        {
+                    try {
+                        if (!segmentStack.isEmpty()) {
                             segment = segmentStack.peek();
-                        } else
-                        {// if nothing is found before the stack is empty, return
+                        } else {// if nothing is found before the stack is empty, return
                             Message msg = MessageResources.getMessage("CSV4", new Object[]{segmentName, parentSegmentMetaName, i});
                             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
                             return csvDataResult;
                         }
-                    } catch (EmptyStackException e)
-                    {
+                    } catch (EmptyStackException e) {
                         Log.logException(this, e);
                         Message msg = MessageResources.getMessage("CSV4", new Object[]{segmentName, parentSegmentMetaName, i});
                         validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -141,30 +132,25 @@ public class SDTMMany2ManyMapping
                     }
                     // if found...
                     String segmentNameLocal = segment == null ? null : segment.getName();
-                    if (parentSegmentMetaName.equalsIgnoreCase(segmentNameLocal))
-                    {
+                    if (parentSegmentMetaName.equalsIgnoreCase(segmentNameLocal)) {
                         found = true;
                         // assign it to the sement that's on the top + add it.
                         segment.addChildSegment(currentSegment);
                         currentSegment.setParentSegment(segment);
                         segmentStack.push(currentSegment);
-                    } else
-                    {
+                    } else {
                         // otherwise, check the next one..
-                        if (!segmentStack.isEmpty())
-                        {
+                        if (!segmentStack.isEmpty()) {
                             segmentStack.pop();
                         }
                     }
                     // harsha
                     StringBuffer _put = new StringBuffer();
-                    for (int j = 0; j < segmentStack.size(); j++)
-                    {
+                    for (int j = 0; j < segmentStack.size(); j++) {
                         _put.append("\\" + segmentStack.get(j));
                     }
                     StringBuffer _val = new StringBuffer();
-                    for (int k = 0; k < data[i].length; k++)
-                    {
+                    for (int k = 0; k < data[i].length; k++) {
                         _val.append("," + data[i][k]);
                     }
                     String first = _put.toString();
@@ -173,16 +159,13 @@ public class SDTMMany2ManyMapping
                     String _first = str1.getTokenAt(str1.countTokens() - 1).toString();
                     EmptyStringTokenizer str2 = new EmptyStringTokenizer(second, ",");
                     String _second = str2.getTokenAt(0).toString();
-                    if (_first.equalsIgnoreCase(_second))
-                    {
+                    if (_first.equalsIgnoreCase(_second)) {
                         int a = _val.toString().substring(1).indexOf(',');
                         String forCompare = returnCsvMapData1.get(returnCsvMapData1.size() - 1);
                         String clean = forCompare.substring(0, forCompare.indexOf('^'));
-                        if (checkRepeats.contains("\\Source Tree" + _put.toString()))
-                        {
+                        if (checkRepeats.contains("\\Source Tree" + _put.toString())) {
                             returnCsvMapData1.add("\\Source Tree" + _put.toString() + "^" + _val.toString().substring(a + 2));
-                        } else
-                        {
+                        } else {
                             returnCsvMapData1.add("\\Source Tree" + _put.toString() + "^" + _val.toString().substring(a + 2));
                             checkRepeats.add("\\Source Tree" + _put.toString());
                         }
@@ -225,20 +208,15 @@ public class SDTMMany2ManyMapping
         return csvDataResult;
     }
 
-    public CSVSegmentMeta findCSVSegmentMeta(CSVSegmentMeta rootsegment, String segmentname)
-    {
-        if (segmentname.equalsIgnoreCase(rootsegment.getName()))
-        {
+    public CSVSegmentMeta findCSVSegmentMeta(CSVSegmentMeta rootsegment, String segmentname) {
+        if (segmentname.equalsIgnoreCase(rootsegment.getName())) {
             return rootsegment;
-        } else
-        {
+        } else {
             List<CSVSegmentMeta> csvSegmentMetas = rootsegment.getChildSegments();
-            for (int i = 0; i < csvSegmentMetas.size(); i++)
-            {
+            for (int i = 0; i < csvSegmentMetas.size(); i++) {
                 CSVSegmentMeta csvSegmentMeta = csvSegmentMetas.get(i);
                 CSVSegmentMeta foundsegment = findCSVSegmentMeta(csvSegmentMeta, segmentname);
-                if (foundsegment != null)
-                {
+                if (foundsegment != null) {
                     return foundsegment;
                 }
             }
@@ -246,32 +224,27 @@ public class SDTMMany2ManyMapping
         return null;
     }
 
-    private CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults)
-    {
+    private CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults) {
         CSVSegmentImpl segment = new CSVSegmentImpl(meta);
         //segment.setUUID(meta.getUUID());
         // check for validation rule #3
         int metaFields = meta.getFields().size();
         int dataFields = data.length - 1;
-        if (dataFields > metaFields)
-        {
+        if (dataFields > metaFields) {
             Message msg = MessageResources.getMessage("CSV3", new Object[]{meta.getName(), dataFields, metaFields});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         }
         // setup the fields.
         ArrayList<CSVField> fields = new ArrayList<CSVField>();
         List<CSVFieldMeta> fieldMeta = meta.getFields();
-        for (int i = 0; i < fieldMeta.size(); i++)
-        {
+        for (int i = 0; i < fieldMeta.size(); i++) {
             CSVFieldMeta csvFieldMeta = fieldMeta.get(i);
             CSVFieldImpl field = new CSVFieldImpl(csvFieldMeta);
             field.setColumn(csvFieldMeta.getColumn());
-           // field.setUUID(csvFieldMeta.getUUID());
-            try
-            {
+            // field.setUUID(csvFieldMeta.getUUID());
+            try {
                 field.setValue(data[csvFieldMeta.getColumn()]);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 field.setValue("");
             }
             fields.add(field);
@@ -280,8 +253,7 @@ public class SDTMMany2ManyMapping
         return segment;
     }
 
-    public List getHashMapData(String csv, String scs)
-    {
+    public List getHashMapData(String csv, String scs) {
         //CSVPanel csvPanel = new CSVPanel();
         //File csvFile = new File(csv);
         //ValidatorResults validatorResults = csvPanel.setSaveFile(new File(scs), true);
@@ -291,19 +263,16 @@ public class SDTMMany2ManyMapping
         return returnCsvMapData1;
     }
 
-    public static void clearReturnDataList()
-    {
+    public static void clearReturnDataList() {
         //returnCsvMapData1.clear();
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         //System.out.println(SDTMMany2ManyMapping.getHashMapData("d:\\aa.csv", "d:\\aa.scs"));
         // s.processList();
     }
 
-    public CSVDataResult parseorig(String[][] data, CSVMeta csvMeta)
-    {
+    public CSVDataResult parseorig(String[][] data, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -316,14 +285,12 @@ public class SDTMMany2ManyMapping
         CSVSegment currentSegment = null;
         CSVSegment rootSegment = null;
         Stack<CSVSegment> segmentStack = new Stack<CSVSegment>();
-        for (int i = 0; i < data.length; i++)
-        {
+        for (int i = 0; i < data.length; i++) {
             String[] row = data[i];
             String segmentName = row[0];
             //find the metadata for this row.
             currentSegmentMeta = findCSVSegmentMeta(rootSegmentMeta, segmentName);
-            if (currentSegmentMeta == null)
-            {
+            if (currentSegmentMeta == null) {
                 Message msg = MessageResources.getMessage("CSV2", new Object[]{segmentName});
                 validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
                 return csvDataResult;
@@ -332,42 +299,34 @@ public class SDTMMany2ManyMapping
             currentSegment = createSegment(currentSegmentMeta, row, validatorResults);
             //  now we need to assign it to the hierarchy.
             // if it's a root segment it needs to be a new logical record.
-            if (segmentName.equalsIgnoreCase(rootSegmentMeta.getName()))
-            {
+            if (segmentName.equalsIgnoreCase(rootSegmentMeta.getName())) {
                 // if there is something on the stack - add it to the logical records.
                 // empty the stack (prepare a new logical record)
-                if (segmentStack.size() != 0)
-                {
+                if (segmentStack.size() != 0) {
                     logicalRecords.add(rootSegment);
                     segmentStack = new Stack<CSVSegment>();
                 }
                 rootSegment = currentSegment;
                 segmentStack.push(rootSegment);
-            } else
-            {
+            } else {
                 // we have a child segment.
                 // we need to find the parent + assign it appropriately.
                 CSVSegmentMeta parentSegmentMeta = currentSegmentMeta.getParent();
                 String parentSegmentMetaName = parentSegmentMeta.getName();
                 // the stack should contain the parent
                 boolean found = false;
-                while (!found)
-                {
+                while (!found) {
                     // check the top of the stack.
                     CSVSegment segment = null;
-                    try
-                    {
-                        if (!segmentStack.isEmpty())
-                        {
+                    try {
+                        if (!segmentStack.isEmpty()) {
                             segment = segmentStack.peek();
-                        } else
-                        {//if nothing is found before the stack is empty, return
+                        } else {//if nothing is found before the stack is empty, return
                             Message msg = MessageResources.getMessage("CSV4", new Object[]{segmentName, parentSegmentMetaName, i});
                             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
                             return csvDataResult;
                         }
-                    } catch (EmptyStackException e)
-                    {
+                    } catch (EmptyStackException e) {
                         Log.logException(this, e);
                         Message msg = MessageResources.getMessage("CSV4", new Object[]{segmentName, parentSegmentMetaName, i});
                         validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -375,18 +334,15 @@ public class SDTMMany2ManyMapping
                     }
                     // if found...
                     String segmentNameLocal = segment == null ? null : segment.getName();
-                    if (parentSegmentMetaName.equalsIgnoreCase(segmentNameLocal))
-                    {
+                    if (parentSegmentMetaName.equalsIgnoreCase(segmentNameLocal)) {
                         found = true;
                         // assign it to the sement that's on the top + add it.
                         segment.addChildSegment(currentSegment);
                         currentSegment.setParentSegment(segment);
                         segmentStack.push(currentSegment);
-                    } else
-                    {
+                    } else {
                         // otherwise, check the next one..
-                        if (!segmentStack.isEmpty())
-                        {
+                        if (!segmentStack.isEmpty()) {
                             segmentStack.pop();
                         }
                     }
@@ -400,3 +356,7 @@ public class SDTMMany2ManyMapping
         return csvDataResult;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

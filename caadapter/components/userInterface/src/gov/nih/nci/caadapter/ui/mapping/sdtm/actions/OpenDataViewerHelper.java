@@ -27,11 +27,13 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Jul 25, 2007
- * Time: 3:18:22 PM
- * To change this template use File | Settings | File Templates.
+ * The class opens the Data viewer window by passing the appropriate controls to it
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.5 $
+ *          $Date: 2007-08-16 19:39:45 $
  */
 public class OpenDataViewerHelper extends JDialog implements ActionListener {
     Frame _mainFrame=null;
@@ -255,3 +257,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
         return _dbParams;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

@@ -8,7 +8,6 @@ import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import gov.nih.nci.caadapter.dataviewer.util.OpenDatabaseConnectionHelper;
 import gov.nih.nci.caadapter.sdtm.ParseSDTMXMLFile;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
@@ -60,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.9 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.10 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.9 2007-08-15 20:37:48 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.10 2007-08-16 19:39:45 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -72,14 +71,14 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private String defineXMLLocation = null;
     private SDTMMappingGenerator sdtmMappingGenerator = null;
     private static String OPENDB = "Choose Database";
-    private boolean connectDB=false;
-    private JButton openTargetButton=null;
-    private AbstractMainFrame _mainFrame=null;
-    private Hashtable connectionParameters=null;
-    private JButton _dbCon=null;
-    private JButton openSCSButton=null;
+    private boolean connectDB = false;
+    private JButton openTargetButton = null;
+    private AbstractMainFrame _mainFrame = null;
+    private Hashtable connectionParameters = null;
+    private JButton _dbCon = null;
+    private JButton openSCSButton = null;
     private boolean openDBmap = false;
-    private Hashtable sqlQueries=null;
+    private Hashtable sqlQueries = null;
     private JButton transformBut = null;
     private JButton _commonBut = null;
     private boolean isDataBase = false;
@@ -764,3 +763,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         }
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

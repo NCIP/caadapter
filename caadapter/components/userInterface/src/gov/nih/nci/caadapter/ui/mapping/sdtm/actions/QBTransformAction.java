@@ -36,27 +36,21 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: May 11, 2007
- * Time: 2:26:11 PM
- * To change this template use File | Settings | File Templates.
+ * The class helps as a helper during transformation
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.7 $
+ *          $Date: 2007-08-16 19:39:45 $
  */
 public class QBTransformAction {
-
-    JFileChooser directoryLoc, saveXLSLocation;
-
-    File directory;
-
-    private Connection con;
-
-    // Preferences prefs;
-
-    HashMap fixedLengthRecords;
-
+    JFileChooser directoryLoc, saveXLSLocation=null;
+    File directory=null;
+    private Connection con=null;
+    HashMap fixedLengthRecords=null;
     boolean fixedLengthIndicator = false;
-
-    Hashtable sqlAsColumnMap;
+    Hashtable sqlAsColumnMap=null;
 
     /*
         This constructor is used by the mapping panel
@@ -94,7 +88,7 @@ public class QBTransformAction {
     public QBTransformAction(AbstractMainFrame _mainFrame, String mapFile, String defineXMLocation, Connection _con) throws Exception {
         //this(_mainFrame, mappingPanel, "");
         //process _con since it is always null
-        if(_con==null){
+        if (_con == null) {
             String params = getDBParams(mapFile);
             _con = getConnection(_mainFrame, params, mapFile);
         }
@@ -122,7 +116,6 @@ public class QBTransformAction {
             }
         }
     }
-
 
     public static Hashtable getAllFieldsForDomains(File SDTMXmlFile) {
         ParseSDTMXMLFile _parseSDTMFile = new ParseSDTMXMLFile(SDTMXmlFile.getAbsolutePath().toString());
@@ -246,7 +239,6 @@ public class QBTransformAction {
         return (String) tempMap.get(colName);
     }
 
-
     private Connection getConnection(AbstractMainFrame _mainFrame, String params, String mapFile) {
         Connection conn = null;
         QBGetPasswordWindow getPass = new QBGetPasswordWindow(_mainFrame, params, mapFile.toString());
@@ -255,15 +247,13 @@ public class QBTransformAction {
         try {
             conn = DBConnector.getDBConnection(empt.getTokenAt(0), empt.getTokenAt(1), empt.getTokenAt(2), pass);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(_mainFrame, e.getMessage().toString()+"\n\n Please restart the application", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(_mainFrame, e.getMessage().toString() + "\n\n Please restart the application", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
         return conn;
     }
 
     private String getDBParams(String mapFileName) {
-
-
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -299,3 +289,7 @@ public class QBTransformAction {
         return null;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */
