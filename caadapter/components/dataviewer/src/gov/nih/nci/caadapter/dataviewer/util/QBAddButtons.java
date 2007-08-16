@@ -7,14 +7,16 @@ import javax.swing.*;
 import java.net.URL;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Apr 27, 2007
- * Time: 11:22:35 AM
- * To change this template use File | Settings | File Templates.
+ * This class creates all the JButtons on the toolbar
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.6 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
 public class QBAddButtons {
-    MainDataViewerFrame maindialog;
+    MainDataViewerFrame maindialog=null;
     JButton saveButton = null;
 
     public QBAddButtons(MainDataViewerFrame maindialog) {
@@ -67,3 +69,7 @@ public class QBAddButtons {
         return saveButton;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

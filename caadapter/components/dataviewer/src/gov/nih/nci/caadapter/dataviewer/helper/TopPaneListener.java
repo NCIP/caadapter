@@ -14,11 +14,13 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Apr 27, 2007
- * Time: 5:01:09 PM
- * To change this template use File | Settings | File Templates.
+ * This class file handles the events generated from the data viewer top pane
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
 public class TopPaneListener implements ChangeListener {
     private MainDataViewerFrame mD;
@@ -71,3 +73,7 @@ public class TopPaneListener implements ChangeListener {
         mD.get_alreadyFilled().add(new Integer(mD.get_tPane().getSelectedIndex()));     
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

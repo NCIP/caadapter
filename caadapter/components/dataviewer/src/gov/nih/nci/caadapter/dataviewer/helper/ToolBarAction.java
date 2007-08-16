@@ -19,12 +19,15 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Apr 27, 2007
- * Time: 4:42:03 PM
- * To change this template use File | Settings | File Templates.
+ * This class file handles the events generated from the data viewer frame 
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
+
 public class ToolBarAction implements ActionListener {
     MainDataViewerFrame _mD;
 
@@ -301,3 +304,9 @@ public class ToolBarAction implements ActionListener {
         }
     }
 }
+
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */
+

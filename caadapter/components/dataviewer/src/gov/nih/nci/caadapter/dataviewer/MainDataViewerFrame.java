@@ -29,8 +29,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-08-16 18:13:26 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -172,7 +172,8 @@ public class MainDataViewerFrame {
         while (enum1.hasMoreElements()) {
             String tmp = enum1.nextElement().toString();
             String tmp1 = new SDTMDomainLookUp().getDescription(tmp);
-            Querypanel _qp = new Querypanel(connection, this, schema, tmp);
+            //Querypanel _qp = new Querypanel(connection, this, schema, tmp);
+            Querypanel _qp = new Querypanel(connection,schema);
             arrayList.add(_qp);
             tabbedPane.addTab(tmp + "-" + tmp1, _qp);
             dataViewerFrame.add(tabbedPane, BorderLayout.CENTER);
@@ -242,5 +243,8 @@ public class MainDataViewerFrame {
 /**
    Change History
    $Log: not supported by cvs2svn $
+   Revision 1.10  2007/08/16 18:13:26  jayannah
+   Change history log test
+
 
  */

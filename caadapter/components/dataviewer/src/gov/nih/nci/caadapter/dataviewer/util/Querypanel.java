@@ -1,6 +1,5 @@
 package gov.nih.nci.caadapter.dataviewer.util;
 
-import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import nickyb.sqleonardo.querybuilder.DiagramLoader;
 import nickyb.sqleonardo.querybuilder.QueryBuilder;
 import nickyb.sqleonardo.querybuilder.syntax.QueryTokens;
@@ -10,18 +9,18 @@ import java.awt.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+/**
+ * This class helps during transformation
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-16 18:53:55 $
+ */
 public class Querypanel extends JPanel {
-
-    private MainDataViewerFrame _tf;
-
-    private String schema;
-
-    private QueryBuilder _queryBuilder;
-
-    private MainDataViewerFrame _controller;
-
-    private String domain;
-
+    private String schema=null;
+    private QueryBuilder _queryBuilder=null;
     public ArrayList<DiagramLoader> _diagramLoaderList = new ArrayList<DiagramLoader>();
 
     public QueryBuilder get_queryBuilder() {
@@ -38,14 +37,11 @@ public class Querypanel extends JPanel {
         this.add(_queryBuilder, BorderLayout.CENTER);
     }
 
-    public Querypanel(Connection con, MainDataViewerFrame tf, String _schema, String _domain) {
+    public Querypanel(Connection con, String _schema) {
         this.setLayout(new BorderLayout());
-        this._tf = tf;
         this.schema = _schema;
-        this.domain = _domain;
         _queryBuilder = new QueryBuilder(con);
         this.add(_queryBuilder, BorderLayout.CENTER);
-
     }
 
     public void loadTables(String schema, String tableName) {
@@ -53,3 +49,7 @@ public class Querypanel extends JPanel {
         DiagramLoader.run(55, _queryBuilder, token2, true);
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

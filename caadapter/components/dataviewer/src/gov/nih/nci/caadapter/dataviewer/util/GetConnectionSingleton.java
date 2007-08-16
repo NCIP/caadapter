@@ -6,82 +6,67 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Jul 9, 2007
- * Time: 2:02:51 PM
- * To change this template use File | Settings | File Templates.
+ * This class manages the connection and ensures that one connection is created and
+ * returns the password for that connection if the connection is alive
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
-public class GetConnectionSingleton
-{
+public class GetConnectionSingleton {
+    private static GetConnectionSingleton singletonObject=null;
+    private static Connection connection=null;
+    private static String serverURL=null;
+    private static String userID=null;
+    private static JPasswordField password=null;
 
-    private static GetConnectionSingleton singletonObject;
-
-    private static Connection connection;
-
-    private static String serverURL;
-
-    private static String userID;
-
-    private static JPasswordField password;
-
-    public static synchronized Connection getConnection() throws Exception
-    {
-        if (connection !=null && !connection.isClosed())
+    public static synchronized Connection getConnection() throws Exception {
+        if (connection != null && !connection.isClosed())
             return connection;
         else
             return null;
     }
 
-    public static synchronized String getServerName()
-    {
+    public static synchronized String getServerName() {
         return serverURL;
     }
 
     /**
      * A private Constructor prevents any other class from instantiating.
      */
-    private GetConnectionSingleton(String drv, String url, String uid, String pwd) throws Exception
-    {
-        try
-        {
+    private GetConnectionSingleton(String drv, String url, String uid, String pwd) throws Exception {
+        try {
             Class.forName(drv);
             serverURL = url;
             userID = uid;
             connection = DriverManager.getConnection(url, uid, pwd);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw e;
         }
     }
 
-    public static String getPassword()
-    {
+    public static String getPassword() {
         return password.getText();
     }
 
-    public static synchronized Connection getConnectionSingletonObject(String drv, String _url, String uid, String pwd) throws Exception
-    {
-        if (singletonObject == null)
-        {
+    public static synchronized Connection getConnectionSingletonObject(String drv, String _url, String uid, String pwd) throws Exception {
+        if (singletonObject == null) {
             singletonObject = new GetConnectionSingleton(drv, _url, uid, pwd);
             password = new JPasswordField(pwd);
         }
         return connection;
     }
 
-    public Object clone() throws CloneNotSupportedException
-    {
+    public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
 
-    public static synchronized void closeConnection()
-    {
+    public static synchronized void closeConnection() {
         System.out.println("close connection called");
-        try
-        {
-            if ((connection != null) && (!connection.isClosed()))
-            {
+        try {
+            if ((connection != null) && (!connection.isClosed())) {
                 connection.close();
                 connection = null;
                 singletonObject = null;
@@ -89,24 +74,23 @@ public class GetConnectionSingleton
                 password = null;
                 userID = null;
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static String isConnectionAvailable()
-    {
-        try
-        {
-            if ((connection != null) && (!connection.isClosed()))
-            {
+    public static String isConnectionAvailable() {
+        try {
+            if ((connection != null) && (!connection.isClosed())) {
                 return serverURL;
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

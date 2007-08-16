@@ -3,11 +3,13 @@ package gov.nih.nci.caadapter.dataviewer.util;
 import java.util.Hashtable;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: May 3, 2007
- * Time: 10:38:04 AM
- * To change this template use File | Settings | File Templates.
+ * This object serves as a lookup for all the SDTM domain names
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.2 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
 public class SDTMDomainLookUp
 {
@@ -43,3 +45,7 @@ public class SDTMDomainLookUp
         return tab.get(val);
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

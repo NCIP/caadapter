@@ -1,7 +1,5 @@
 package gov.nih.nci.caadapter.dataviewer.util;
 
-import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
 
 import javax.swing.*;
@@ -20,78 +18,53 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Properties;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Apr 18, 2007
- * Time: 3:29:32 PM
- * To change this template use File | Settings | File Templates.
+ * This class allows the connection window to show up and manages all the connections
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
-public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener
-{
-
-    private JTree tree;
-
-    private JDialog dialog;
-
-    private JTextField _profileField;
-
-    private JTextField _hostField;
-
-    private JTextField _userIdField;
-
-    private JComboBox _dataBaseDriverCombo;
-
-    private JTextField _dataBaseDriver;
-
-    private JPasswordField _pwdField;
-
-    private JTextField _schemaField;
-
-    private Hashtable _profileConnections;
-
-    private String _nodeName;//this is to disable right click for the root
-
-    private DefaultMutableTreeNode top;
-
-    private DefaultTreeModel model;
-
-    private JCheckBox _def;
-
-    private JButton _ok;
-
+public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
+    private JTree tree=null;
+    private JDialog dialog=null;
+    private JTextField _profileField=null;
+    private JTextField _hostField=null;
+    private JTextField _userIdField=null;
+    private JTextField _dataBaseDriver=null;
+    private JPasswordField _pwdField=null;
+    private JTextField _schemaField=null;
+    private Hashtable _profileConnections=null;
+    private String _nodeName=null;//this is to disable right click for the root
+    private DefaultMutableTreeNode top=null;
+    private DefaultTreeModel model=null;
+    private JCheckBox _def=null;
+    private JButton _ok=null;
     private Hashtable driverInfo = new Hashtable();
-
     private DefaultMutableTreeNode firstNode = null;
 
-    public JTextField getPwdFld()
-    {
+    public JTextField getPwdFld() {
         return _pwdField;
     }
 
-    public OpenDatabaseConnectionHelper()
-    {
+    public OpenDatabaseConnectionHelper() {
     }
 
-    public OpenDatabaseConnectionHelper(JFrame owner) throws Exception
-    {
-        try
-        {
-            if (System.getProperty("debug").equalsIgnoreCase("true"))
-            {
+    public OpenDatabaseConnectionHelper(JFrame owner) throws Exception {
+        try {
+            if (System.getProperty("debug").equalsIgnoreCase("true")) {
                 System.out.println("+++++++++++++++++++++++++++++++++++++++++ debugging");
                 String temp = System.getProperty("java.library.path");
                 EmptyStringTokenizer emt = new EmptyStringTokenizer(temp, ";");
-                while (emt.hasMoreTokens())
-                {
+                while (emt.hasMoreTokens()) {
                     System.out.println("path is : " + emt.nextToken());
                 }
                 System.out.println("+++++++++++++++++++++++++++++++++++++++++");
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         driverInfo.put("Oracle", "jdbc:oracle:thin:@~oracle.jdbc.OracleDriver");
@@ -132,26 +105,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         bottomPanel.setLayout(new BorderLayout());
         JPanel statpan = new JPanel();
         statpan.setLayout(new BorderLayout());
-//        try
-//        {
-//            if (GetConnectionSingleton.getConnection() != null)
-//            {
-//                JLabel alreadyConInfo1 = new JLabel("Connection present for " + GetConnectionSingleton.getServerName());
-//                alreadyConInfo1.setFont(new Font("SansSerif", Font.BOLD, 12));
-//                alreadyConInfo1.setForeground(Color.RED);
-//                alreadyConInfo1.setHorizontalAlignment(SwingConstants.CENTER);
-//                JLabel alreadyConInfo2 = new JLabel("Please press 'Cancel' and restart the application");
-//                alreadyConInfo2.setFont(new Font("SansSerif", Font.BOLD, 12));
-//                alreadyConInfo2.setForeground(Color.RED);
-//                alreadyConInfo2.setHorizontalAlignment(SwingConstants.CENTER);
-//                statpan.add(alreadyConInfo1, BorderLayout.CENTER);
-//                statpan.add(alreadyConInfo2, BorderLayout.SOUTH);
-//            }
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-//        }
-        /*
+       /*
            If already connected panel
         */
         JPanel _butPan = new JPanel();
@@ -159,27 +113,20 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         _butPan.setBounds(2, 1, 10, 10);
         _butPan.setBorder(raisedetched);
         JButton _prof = new JButton("New profile");
-        _prof.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        _prof.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 showConnectionWindow(dialog, "New Profile", null, null);
             }
         });
         _ok = new JButton("      Connect      ");
-        _ok.addActionListener(new ActionListener()
-        {
-
-            public void actionPerformed(ActionEvent e)
-            {
+        _ok.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 closeDialog();
             }
         });
         JButton _can = new JButton("      Cancel     ");
-        _can.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        _can.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 dialog.dispose();
             }
         });
@@ -234,47 +181,38 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         //_profileField.transferFocus(); _hostField.transferFocus(); _userIdField.transferFocus(); _dataBaseDriver.transferFocus();;
     }
 
-    public void setSelected(DefaultMutableTreeNode node)
-    {
-        if (node != null)
-        {
+    public void setSelected(DefaultMutableTreeNode node) {
+        if (node != null) {
             TreePath path = new TreePath(node.getPath());
             tree.setSelectionPath(path);
         }
     }
 
-    private void closeDialog()
-    {
-        if (_pwdField.getText().length() == 0)
-        {
+    private void closeDialog() {
+        if (_pwdField.getText().length() == 0) {
             JOptionPane.showMessageDialog(dialog, "Please enter a password, before connecting to database");
             return;
         }
-        if (_def.isSelected())
-        {
-            try
-            {
+        if (_def.isSelected()) {
+            try {
                 File saveConInfo = new File((System.getProperty("user.home") + "\\.dataviewer"));
                 saveConInfo.delete();
                 BufferedWriter out = new BufferedWriter(new FileWriter(saveConInfo, saveConInfo.exists()));
                 //write the contents of the hashtable
                 Iterator it = _profileConnections.values().iterator();
-                while (it.hasNext())
-                {
+                while (it.hasNext()) {
                     EmptyStringTokenizer empt = new EmptyStringTokenizer(it.next().toString(), "~");
                     out.write(empt.getTokenAt(0) + "~" + empt.getTokenAt(1) + "~" + empt.getTokenAt(2) + "~" + empt.getTokenAt(3) + "~" + empt.getTokenAt(4) + "\n");
                 }
                 out.close();
-            } catch (IOException e1)
-            {
+            } catch (IOException e1) {
                 e1.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
             }
         }
         dialog.dispose();
     }
 
-    public Hashtable getDatabaseConnectionInfo()
-    {
+    public Hashtable getDatabaseConnectionInfo() {
         Hashtable<String, String> _conInfo = new Hashtable<String, String>();
         //map the host field to the right URL depending on the database
         //_conInfo.put("URL", _hostField.getText());
@@ -290,46 +228,38 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         return _conInfo;
     }
 
-    private JTree createTrees()
-    {
+    private JTree createTrees() {
         top = new DefaultMutableTreeNode("Profiles");
         model = new DefaultTreeModel(top);
         tree = new JTree(model);
         //query if the file exists and add the connections
         //
         File saveConInfo = new File((System.getProperty("user.home") + "\\.dataviewer"));
-        try
-        {
+        try {
             BufferedReader in = new BufferedReader(new FileReader(saveConInfo));
             String str;
-            while ((str = in.readLine()) != null)
-            {
+            while ((str = in.readLine()) != null) {
                 //process(str);
                 EmptyStringTokenizer empt = new EmptyStringTokenizer(str, "~");
                 _profileConnections.put(empt.getTokenAt(0), str);
             }
             in.close();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
         }
         // Iterate over the values in the map
         Iterator it = _profileConnections.keySet().iterator();
         RightClickHelper rightClickHelp = null;
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             // Get key
             EmptyStringTokenizer empt = new EmptyStringTokenizer(it.next().toString(), "~");
             DefaultMutableTreeNode def = null;
-            try
-            {
+            try {
                 def = new DefaultMutableTreeNode(empt.getTokenAt(0));
-                if (firstNode == null)
-                {
+                if (firstNode == null) {
                     firstNode = new DefaultMutableTreeNode();
                     firstNode = def;
                 }
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
             if (def != null)
@@ -342,21 +272,17 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         return tree;
     }
 
-    public void valueChanged(TreeSelectionEvent e)
-    {
+    public void valueChanged(TreeSelectionEvent e) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         //System.out.println("Node " + node);
-        if (node == null)
-        {
+        if (node == null) {
             //System.out.println("Returned");
             return;
         }
         Object nodeInfo = node.getUserObject();
-        if (node.isLeaf())
-        {
+        if (node.isLeaf()) {
             _nodeName = nodeInfo.toString();
-            if (_profileConnections.containsKey(nodeInfo.toString()))
-            {
+            if (_profileConnections.containsKey(nodeInfo.toString())) {
                 EmptyStringTokenizer empt = new EmptyStringTokenizer(_profileConnections.get(nodeInfo.toString()).toString(), "~");
                 //System.out.println(empt.toSameString());
                 _profileField.setText(empt.getTokenAt(0));
@@ -372,109 +298,86 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                 _pwdField.setText("");
                 _pwdField.setEditable(true);
             }
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                public void run()
-                {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
                     _pwdField.requestFocus();
                 }
             });
         }
     }
 
-    public void focusGained(FocusEvent e)
-    {
+    public void focusGained(FocusEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
         System.out.println("kjsdhfkjhsdfdsf");
     }
 
-    public void focusLost(FocusEvent e)
-    {
+    public void focusLost(FocusEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowOpened(WindowEvent e)
-    {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+    public void windowOpened(WindowEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 _pwdField.requestFocus();
             }
         });
     }
 
-    public void windowClosing(WindowEvent e)
-    {
+    public void windowClosing(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowClosed(WindowEvent e)
-    {
+    public void windowClosed(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowIconified(WindowEvent e)
-    {
+    public void windowIconified(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowDeiconified(WindowEvent e)
-    {
+    public void windowDeiconified(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowActivated(WindowEvent e)
-    {
+    public void windowActivated(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void windowDeactivated(WindowEvent e)
-    {
+    public void windowDeactivated(WindowEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void keyTyped(KeyEvent e)
-    {
+    public void keyTyped(KeyEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void keyPressed(KeyEvent e)
-    {
+    public void keyPressed(KeyEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
         if (e.getKeyCode() == KeyEvent.VK_ENTER)
             closeDialog();
     }
 
-    public void keyReleased(KeyEvent e)
-    {
+    public void keyReleased(KeyEvent e) {
     }
 
-    class RightClickHelper implements MouseListener, ActionListener
-    {
-
+    class RightClickHelper implements MouseListener, ActionListener {
         private JTextField textField;
-
         private JTree _tree;
-
         private JPopupMenu popedit;
 
-        RightClickHelper(JTextField fld)
-        {
+        RightClickHelper(JTextField fld) {
             this.textField = fld;
             this.popedit = new JPopupMenu();
             init();
         }
 
-        RightClickHelper(JTree fld)
-        {
+        RightClickHelper(JTree fld) {
             this._tree = fld;
             this.popedit = new JPopupMenu();
             init();
         }
 
-        private void init()
-        {
+        private void init() {
             JMenuItem copy = new JMenuItem("Edit Profile");
             copy.addActionListener(this);
             copy.setActionCommand("edit");
@@ -486,98 +389,72 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         }
 
         //this method exists
-        public void mousePressed(MouseEvent e)
-        {
-            if (e.getModifiers() == 4)
-            {// right click
+        public void mousePressed(MouseEvent e) {
+            if (e.getModifiers() == 4) {// right click
                 popedit.show(_tree, e.getX(), e.getY());
             }
         }
 
-        public void mouseReleased(MouseEvent e)
-        {
+        public void mouseReleased(MouseEvent e) {
         }
 
-        public void mouseClicked(MouseEvent e)
-        {
+        public void mouseClicked(MouseEvent e) {
         }
 
-        public void mouseEntered(MouseEvent e)
-        {
+        public void mouseEntered(MouseEvent e) {
         }
 
-        public void mouseExited(MouseEvent e)
-        {
+        public void mouseExited(MouseEvent e) {
         }
 
         //this method exists
-        public void actionPerformed(ActionEvent a)
-        {
+        public void actionPerformed(ActionEvent a) {
             String command = a.getActionCommand();
-            if (command.equals("edit"))
-            {
+            if (command.equals("edit")) {
                 showConnectionWindow(dialog, "Edit Profile", _profileField.getText() + "~" + _hostField.getText() + "~" + _dataBaseDriver.getText() + "~" + _userIdField.getText() + "~" + _schemaField.getText(), getSelectedNode());
-            } else if (command.equals("delete"))
-            {
+            } else if (command.equals("delete")) {
                 int response = JOptionPane.showConfirmDialog(dialog, "Do you want to delete profile \"" + _nodeName + "\" ?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (response == JOptionPane.NO_OPTION)
-                {
+                if (response == JOptionPane.NO_OPTION) {
                     //System.out.println("No button clicked");
-                } else if (response == JOptionPane.YES_OPTION)
-                {
+                } else if (response == JOptionPane.YES_OPTION) {
                     model.removeNodeFromParent(getSelectedNode());
                     _profileConnections.remove(_nodeName);
                     tree.setSelectionRow(1);
-                } else if (response == JOptionPane.CLOSED_OPTION)
-                {
+                } else if (response == JOptionPane.CLOSED_OPTION) {
                     System.out.println("JOptionPane closed");
                 }
             }
         }
 
-        private DefaultMutableTreeNode getSelectedNode()
-        {
+        private DefaultMutableTreeNode getSelectedNode() {
             return (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
         }
 
-        public String toString()
-        {
+        public String toString() {
             //return super.toString();//To change body of overridden methods use File | Settings | File Templates.
             return textField.getText();
         }
     }
 
     JDialog conDialog;
-
     JTextField profile = new JTextField();
-
     JTextField host = new JTextField();
-
     //JTextField three = new JTextField();
     String selectedDriver = null;
-
     JComboBox driver = new JComboBox();
-
     JTextField four = new JTextField();
-
     JPasswordField five = new JPasswordField();
-
     JTextField six = new JTextField();
-
     boolean retVal = false;
-
     ArrayList driverDropDown = null;
-
     String editDriver = null;
 
-    private void showConnectionWindow(JDialog owner, final String title, String values, final DefaultMutableTreeNode selectedNode)
-    {
+    private void showConnectionWindow(JDialog owner, final String title, String values, final DefaultMutableTreeNode selectedNode) {
         conDialog = new JDialog(owner);
         conDialog.setTitle(title);
         JPanel conPan = new JPanel();
         conPan.setLayout(new BorderLayout());
-        if (title.equalsIgnoreCase("New Profile"))
-        {
+        if (title.equalsIgnoreCase("New Profile")) {
             profile.setText("");
             host.setText("");
             //three.setText(""); set the conbox here
@@ -585,8 +462,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
             five.setText("");
             six.setText("");
         }
-        if (values != null)
-        {
+        if (values != null) {
             EmptyStringTokenizer empt = new EmptyStringTokenizer(values, "~");
             profile.setText(empt.getTokenAt(0));
             host.setText(empt.getTokenAt(1));
@@ -601,11 +477,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         JPanel conInfo = new JPanel();
         conInfo.setLayout(new GridLayout(5, 2));
         conInfo.add(new JLabel("Enter the Profile Name: "));
-        if (title.equalsIgnoreCase("Edit Profile"))
-        {
+        if (title.equalsIgnoreCase("Edit Profile")) {
             profile.setEditable(false);
-        } else
-        {
+        } else {
             profile.setEditable(true);
         }
         conInfo.add(profile);
@@ -614,23 +488,17 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         conInfo.add(host);
         //
         conInfo.add(new JLabel("Enter the Database driver: "));
-        if (title.equalsIgnoreCase("New Profile"))
-        {
+        if (title.equalsIgnoreCase("New Profile")) {
             conInfo.add(driver);
             //driver.setSelectedIndex(0);
-        } else
-        {
+        } else {
             conInfo.add(driver);
         }
-        driver.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
+        driver.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
                     selectedDriver = ((JComboBox) e.getSource()).getSelectedItem().toString();
-                } catch (Exception ee)
-                {
+                } catch (Exception ee) {
                     selectedDriver = driver.getItemAt(0).toString();
                 }
                 //System.out.println("selcetd driver is " + selectedDriver);
@@ -649,20 +517,15 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         JPanel butInfo = new JPanel();
         butInfo.setLayout(new FlowLayout());
         JButton okBut = new JButton("OK");
-        okBut.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent event)
-            {
-                if (!areFieldsEmpty(title))
-                {
-                    if (selectedDriver == null)
-                    {
+        okBut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                if (!areFieldsEmpty(title)) {
+                    if (selectedDriver == null) {
                         selectedDriver = editDriver;
                     }
                     String _temp = profile.getText() + "~" + host.getText() + "~" + selectedDriver + "~" + four.getText() + "~" + six.getText();
                     _profileConnections.put(profile.getText(), _temp);
-                    if (title.equalsIgnoreCase("New profile"))
-                    {
+                    if (title.equalsIgnoreCase("New profile")) {
                         model.insertNodeInto(new DefaultMutableTreeNode(profile.getText()), top, 0);
                     }
                     //tree.setSelectionRow(1);
@@ -680,17 +543,14 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                     _pwdField.setEditable(true);
                     tree.setSelectionRow(1);
                     conDialog.dispose();
-                } else
-                {
+                } else {
                     JOptionPane.showMessageDialog(dialog, "All the fields are required");
                 }
             }
         });
         JButton canBut = new JButton("Cancel");
-        canBut.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent event)
-            {
+        canBut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
                 conDialog.dispose();
             }
         });
@@ -709,73 +569,61 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         conDialog.setVisible(true);
     }
 
-    private boolean areFieldsEmpty(String title)
-    {
+    private boolean areFieldsEmpty(String title) {
         if (title.equals("Edit Profile"))
             return false;
         boolean retVal = false;
-        if (profile.getText().length() == 0)
-        {
+        if (profile.getText().length() == 0) {
             return true;
-        } else if (host.getText().length() == 0)
-        {
+        } else if (host.getText().length() == 0) {
             return true;
-        } else if (selectedDriver == null)
-        {
+        } else if (selectedDriver == null) {
             return true;
-        } else if (four.getText().length() == 0)
-        {
+        } else if (four.getText().length() == 0) {
             return true;
-        } else if (six.getText().length() == 0)
-        {
+        } else if (six.getText().length() == 0) {
             return true;
         }
         return retVal;
     }
 
-    public static void main(String args[]) throws Exception
-    {
+    public static void main(String args[]) throws Exception {
         new OpenDatabaseConnectionHelper(null);
     }
 
-    private void populateDriverDropDown()
-    {
+    private void populateDriverDropDown() {
         driverDropDown = new ArrayList();
-        try
-        {
+        try {
             driver.addItem("--Select--");
             //add oracle
             driver.addItem("Oracle");
             driverDropDown.add("Oracle");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void readDriverProperties(String old)
-    {
+    private void readDriverProperties(String old) {
         driverDropDown = new ArrayList();
-        try
-        {
+        try {
             BufferedReader in = new BufferedReader(new FileReader("driver.properties"));
             String str;
             driver.addItem("--Select--");
-            while ((str = in.readLine()) != null)
-            {
+            while ((str = in.readLine()) != null) {
                 driver.addItem(str);
                 driverDropDown.add(str);
             }
             in.close();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void readDriverProperties()
-    {
+    private void readDriverProperties() {
+        //todo : this has to be read from a property file in future
+
         /**
+         *
          * hard coding it for now;
          */
         populateDriverDropDown();
@@ -812,3 +660,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 //        }
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

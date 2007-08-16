@@ -7,11 +7,16 @@ import java.util.ArrayList;
 import java.io.File;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Aug 15, 2007
- * Time: 10:01:28 AM
- * To change this template use File | Settings | File Templates.
+ *
+ * This class is an intermediary class which is called to process the
+ * MAP file, with the SQL query which results in checking the right
+ * check boxes in the data viewer frame
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.2 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
 public class CaDataViewHelper {
 
@@ -65,3 +70,7 @@ public class CaDataViewHelper {
         return returnString.toString();
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

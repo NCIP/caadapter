@@ -1,53 +1,49 @@
 package gov.nih.nci.caadapter.dataviewer.util;
 
-import gov.nih.nci.caadapter.dataviewer.util.QueryTableModel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 
-public class DatabaseTest extends JFrame
-{
+/**
+ * This class helps in executing the query and returning the resultset
+ * which is limited to just 10 rows only
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.2 $
+ *          $Date: 2007-08-16 18:53:55 $
+ */
+public class DatabaseTest extends JFrame {
+    JTextField hostField=null;
+    JTextField queryField=null;
+    QueryTableModel qtm=null;
+    JScrollPane scrollpane=null;
+    JTable table=null;
 
-    JTextField hostField;
-
-    JTextField queryField;
-
-    QueryTableModel qtm;
-
-    public JTable getTable()
-    {
+    public JTable getTable() {
         return table;
     }
 
-    JTable table;
-
-    public JScrollPane getScrollpane()
-    {
+    public JScrollPane getScrollpane() {
         return scrollpane;
     }
 
-    JScrollPane scrollpane;                           
-
-    public QueryTableModel getQTM(){
+    public QueryTableModel getQTM() {
         return qtm;
     }
-    public DatabaseTest(Connection conn, String query) throws Exception
-    {
+
+    public DatabaseTest(Connection conn, String query) throws Exception {
         qtm = new QueryTableModel();
         qtm.setConnection(conn);
-        if (qtm.setQuery(query).equalsIgnoreCase("bad_token"))
-        {
+        if (qtm.setQuery(query).equalsIgnoreCase("bad_token")) {
             throw new Exception("badtoken");
         }
-        //JTable table = new JTable(qtm);
-        //scrollpane = new JScrollPane(table);
     }
 
-    public DatabaseTest() throws Exception
-    {
+    public DatabaseTest() throws Exception {
         super("Database Test Frame");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(350, 200);
@@ -62,18 +58,13 @@ public class DatabaseTest extends JFrame
         p1.add(queryField = new JTextField());
         p1.add(new JLabel("Click here to send: "));
         JButton jb = new JButton("Search");
-        jb.addActionListener(new ActionListener()
-        {
-
-            public void actionPerformed(ActionEvent e)
-            {
+        jb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 qtm.setHostURL(hostField.getText().trim());
-                try
-                {
+                try {
                     qtm.setQuery(queryField.getText().trim());
-                } catch (Exception e1)
-                {
-                    e1.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
             }
         });
@@ -82,12 +73,15 @@ public class DatabaseTest extends JFrame
         getContentPane().add(scrollpane, BorderLayout.CENTER);
     }
 
-    public static void main(String args[])  throws Exception
-    {
+    public static void main(String args[]) throws Exception {
         DatabaseTest tt = new DatabaseTest();
         tt.setVisible(true);
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */
 
 
 

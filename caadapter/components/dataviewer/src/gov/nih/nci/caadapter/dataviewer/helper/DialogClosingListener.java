@@ -12,11 +12,13 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Apr 27, 2007
- * Time: 4:13:59 PM
- * To change this template use File | Settings | File Templates.
+ * This class is a listener to save the map file during a window close event
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.5 $
+ *          $Date: 2007-08-16 18:53:55 $
  */
 public class DialogClosingListener implements WindowListener {
     private MainDataViewerFrame mainDataViewerFrame = null;
@@ -98,3 +100,8 @@ public class DialogClosingListener implements WindowListener {
         }
     }
 }
+
+/*
+    Change History
+    $Log: not supported by cvs2svn $
+ */
