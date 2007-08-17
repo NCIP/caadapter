@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-08-17 15:53:24 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -45,12 +45,14 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
     private JButton _ok=null;
     private Hashtable driverInfo = new Hashtable();
     private DefaultMutableTreeNode firstNode = null;
+    private boolean isCancelled=false;
 
     public JTextField getPwdFld() {
         return _pwdField;
     }
 
-    public OpenDatabaseConnectionHelper() {
+    public boolean isCancelled() {
+        return isCancelled;
     }
 
     public OpenDatabaseConnectionHelper(JFrame owner) throws Exception {
@@ -127,6 +129,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         JButton _can = new JButton("      Cancel     ");
         _can.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                isCancelled = true;
                 dialog.dispose();
             }
         });
@@ -663,4 +666,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

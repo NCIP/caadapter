@@ -17,8 +17,8 @@ import java.util.Set;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-08-17 15:53:23 $
  */
 public class DialogClosingListener implements WindowListener {
     private MainDataViewerFrame mainDataViewerFrame = null;
@@ -32,7 +32,7 @@ public class DialogClosingListener implements WindowListener {
             JOptionPane.showMessageDialog(mainDataViewerFrame.get_jf(), "Please save all the SQL statements in the panels before exiting", "Save exception", JOptionPane.INFORMATION_MESSAGE);
         } else if (!mainDataViewerFrame.isSQLStmtSaved()) {
             Object[] options = {"Yes", "No"};
-            int n = JOptionPane.showOptionDialog(mainDataViewerFrame.get_jf(), " SQL are not saved, Do you want to save?", "Save all queries confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+            int n = JOptionPane.showOptionDialog(mainDataViewerFrame.get_jf(),"\""+ mainDataViewerFrame.getSaveFile()+ "\" map file is not saved, Do you want to save it now?", "Save the map file confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
             if (n == 0) {
                 mainDataViewerFrame.getDialog().removeAll();
                 BufferedWriter out = null;
@@ -104,4 +104,7 @@ public class DialogClosingListener implements WindowListener {
 /*
     Change History
     $Log: not supported by cvs2svn $
+    Revision 1.5  2007/08/16 18:53:55  jayannah
+    Reformatted and added the Comments and the log tags for all the files
+
  */
