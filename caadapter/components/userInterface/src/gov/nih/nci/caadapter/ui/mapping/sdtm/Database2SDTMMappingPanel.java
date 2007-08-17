@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.11 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.12 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.11 2007-08-17 15:55:52 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.12 2007-08-17 20:12:05 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -209,7 +209,8 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         targetButtonPanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 5), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
         // construct middle panel
         //JPanel centerFunctionPanel = new JPanel(new BorderLayout(2, 0));
-        JPanel centerFunctionPanel = new JPanel(new FlowLayout());
+        JPanel centerFunctionPanel = new JPanel(new BorderLayout());
+        //JPanel centerFunctionPanel = new JPanel(new FlowLayout());
         JPanel middleContainerPanel = new JPanel(new BorderLayout());
         JLabel placeHolderLabel = new JLabel();
         placeHolderLabel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
@@ -218,30 +219,36 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         sdtmMappingGenerator = new SDTMMappingGenerator();
         sdtmMappingGenerator.set_sdtmMappingGeneratorReference(sdtmMappingGenerator);
         middlePanel.setSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-        _dbCon = new JButton("Choose Database...");
+        _dbCon = new JButton("Choose Database");
         _dbCon.setActionCommand("Choose Database");
-        _commonBut = new JButton("Data Viewer...");
+        _commonBut = new JButton("Data Viewer");
         _commonBut.setActionCommand("dataview");
         _commonBut.addActionListener(this);
-        transformBut = new JButton("Transform...");
+        transformBut = new JButton("Transform");
         transformBut.setActionCommand("transform");
         transformBut.addActionListener(this);
         if (!openDBmap) {
             _commonBut.setEnabled(false);
             transformBut.setEnabled(false);
         }
-        JPanel westpanel = new JPanel();
+        JPanel westpanel = new JPanel(new FlowLayout());
         westpanel.add(_dbCon);
-        westpanel.add(transformBut, BorderLayout.EAST);
-        westpanel.add(_commonBut, BorderLayout.EAST);
-        //centerFunctionPanel.add(transformBut, BorderLayout.WEST);
-        centerFunctionPanel.add(_dbCon);
-        centerFunctionPanel.add(_commonBut);
-        centerFunctionPanel.add(transformBut);
+        westpanel.add(_commonBut);
+        westpanel.add(transformBut);
+        _dbCon.setPreferredSize(new Dimension(135, 19));
+        transformBut.setPreferredSize(new Dimension(100, 19));
+        _commonBut.setPreferredSize(new Dimension(110, 19));
+        //_dbCon.setBounds(2,2,2,2);
+        //centerFunctionPanel.add(westpanel, BorderLayout.CENTER);
+//        centerFunctionPanel.add(_dbCon);
+//        centerFunctionPanel.add(_commonBut);
+//        centerFunctionPanel.add(transformBut);
         _dbCon.addActionListener(this);
-        centerFunctionPanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
+        westpanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
+        System.out.println("+--------------------------------- "+((Rectangle)_dbCon.getBounds()).getHeight());
+        System.out.println("+--------------------------------- "+((Rectangle)_dbCon.getBounds()).getWidth());
         //centerFunctionPanel.add(placeHolderLabel, BorderLayout.EAST);
-        middleContainerPanel.add(centerFunctionPanel, BorderLayout.NORTH);
+        middleContainerPanel.add(westpanel, BorderLayout.NORTH);
         // middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
         middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
         JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -766,6 +773,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/08/17 15:55:52  jayannah
+ * Reformatted, the source file and enabled the button when the user cancelled the action
+ *
  * Revision 1.10  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

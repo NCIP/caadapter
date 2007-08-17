@@ -12,8 +12,8 @@ import java.net.URL;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.6 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.7 $
+ *          $Date: 2007-08-17 20:12:04 $
  */
 public class QBAddButtons {
     MainDataViewerFrame maindialog=null;
@@ -21,7 +21,7 @@ public class QBAddButtons {
 
     public QBAddButtons(MainDataViewerFrame maindialog) {
         this.maindialog = maindialog;
-        this.saveButton = makeNavigationButton("wrench", "exit", "Save & Exit", "Save & Exit");
+        this.saveButton = makeNavigationButton("saveandexit", "exit", "Save & Exit", "Save & Exit");
     }
 
     public void addButtons(JToolBar toolBar) {
@@ -29,7 +29,7 @@ public class QBAddButtons {
         //String imageName, String actionCommand, String toolTipText, String altText
         toolBar.add(saveButton);
         this.getSaveButton().setEnabled(false);
-        button = makeNavigationButton("wrench", "Save", "Save", "Save SQL");
+        button = makeNavigationButton("Save", "Save", "Save", "Save SQL");
         toolBar.add(button);
         button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
         toolBar.add(button);
@@ -72,4 +72,7 @@ public class QBAddButtons {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
