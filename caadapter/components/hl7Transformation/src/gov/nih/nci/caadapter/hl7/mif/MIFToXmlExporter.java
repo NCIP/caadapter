@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -30,8 +31,8 @@ import gov.nih.nci.caadapter.common.Log;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-08-10 16:46:44 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-08-17 21:28:00 $
  * @since caAdapter v4.0
  */
 public class MIFToXmlExporter {
@@ -153,6 +154,20 @@ public class MIFToXmlExporter {
 			return new Element("No_MIFAssociation_being_defined");
 		Element rtnElm=new Element("association");
 		setPrimaryAttributes(tbBuilt, rtnElm);
+		if (tbBuilt.getParticipantTraversalNames()!=null)
+		{
+			Hashtable traversalNameHash=tbBuilt.getParticipantTraversalNames();
+			Enumeration nameKeys=traversalNameHash.keys();
+			while (nameKeys.hasMoreElements())
+			{
+				Element traversalEl=new Element("participantClassSpecialization");
+				String nameKey=(String)nameKeys.nextElement();
+				String nameValue=(String)traversalNameHash.get(nameKey);
+				addAttibuteToElement(traversalEl, "className",nameKey);
+				addAttibuteToElement(traversalEl, "traversalName",nameValue);
+				rtnElm.addContent(traversalEl);
+			}
+		}
 		return rtnElm;
 	}
 

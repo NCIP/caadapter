@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeSet;
+
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,7 +33,7 @@ public class MIFUtil {
 	public static List<MIFAssociation> findAddableAssociation(MIFClass mifClass)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
-		HashSet mifAsscs=mifClass.getAssociations();
+		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
 		Iterator mifAsscIt=mifAsscs.iterator();
 		while(mifAsscIt.hasNext())
 		{
@@ -45,7 +47,7 @@ public class MIFUtil {
 	public static List<MIFAssociation> findRemovableAssociation(MIFClass mifClass)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
-		HashSet mifAsscs=mifClass.getAssociations();
+		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
 		Iterator mifAsscIt=mifAsscs.iterator();
 		while(mifAsscIt.hasNext())
 		{

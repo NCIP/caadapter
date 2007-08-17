@@ -12,6 +12,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.jdom.Document;
@@ -24,8 +25,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-08-10 16:46:44 $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-08-17 21:28:02 $
  * @since caAdapter v4.0
  */
 
@@ -97,6 +98,20 @@ public class XmlToMIFImporter {
 		Element mifClassElm=elm.getChild("class");
 		if (mifClassElm!=null)
 			rtnMif.setMifClass(parserMIFClass(mifClassElm));
+		List<Element> participantList=elm.getChildren("participantClassSpecialization");
+		if (!participantList.isEmpty())
+		{
+			Hashtable<String, String> participantHash=new Hashtable<String, String> ();
+			for (Element partEl:participantList)
+			{
+				participantHash.put(
+						partEl.getAttribute("className").getValue(),
+						partEl.getAttribute("className").getValue()				
+				);
+				
+			}
+			rtnMif.setParticipantTraversalNames(participantHash);
+		}
 		return rtnMif;
 	}
 	
