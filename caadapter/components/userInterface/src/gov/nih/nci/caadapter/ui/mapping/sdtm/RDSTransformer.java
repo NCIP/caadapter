@@ -23,8 +23,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.3 $
- *          $Date: 2007-08-16 19:39:45 $
+ *          $Revision: 1.4 $
+ *          $Date: 2007-08-17 15:15:02 $
  */
 public class RDSTransformer {
     String directoryLocation=null;
@@ -286,7 +286,7 @@ public class RDSTransformer {
         try {
             ArrayList domainHeader = (ArrayList) globaldomainList.get(domainName);
             //create a file with domain name
-            FileWriter fstream = new FileWriter(directoryLocation + "\\" + domainName + ".csv");
+            FileWriter fstream = new FileWriter(directoryLocation + "\\" + domainName + ".txt");
             BufferedWriter out = new BufferedWriter(fstream);
             out.write(domainHeader.toString().substring(1, domainHeader.toString().indexOf(']')));
             for (int i = 0; i < resultData.size(); i++) {
@@ -320,4 +320,7 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

@@ -20,10 +20,12 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -41,21 +43,21 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-08-16 19:39:45 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-08-17 15:16:30 $
  */
 public class QBTransformAction {
-    JFileChooser directoryLoc, saveXLSLocation=null;
-    File directory=null;
-    private Connection con=null;
-    HashMap fixedLengthRecords=null;
+    JFileChooser directoryLoc, saveXLSLocation = null;
+    File directory = null;
+    private Connection con = null;
+    HashMap fixedLengthRecords = null;
     boolean fixedLengthIndicator = false;
-    Hashtable sqlAsColumnMap=null;
+    Hashtable sqlAsColumnMap = null;
 
     /*
         This constructor is used by the mapping panel
      */
-    public QBTransformAction(AbstractMainFrame _mainFrame, Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception {
+    public QBTransformAction(AbstractMainFrame _mainFrame, final Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception {
         //this(_mainFrame, mappingPanel, "");
         this.con = _con;
         directoryLoc = new JFileChooser(System.getProperty("user.dir"));
@@ -73,11 +75,35 @@ public class QBTransformAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             directory = directoryLoc.getSelectedFile();
             try {
-                processTransform1(mappingPanel.getSaveFile().getAbsolutePath(), mappingPanel.getDefineXMLLocation(), directory.getAbsolutePath().toString());
+                //a wait dialog window
+                final Dialog queryWaitDialog = new Dialog(_mainFrame);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            processTransform4SQLStatments(mappingPanel.getSaveFile().getAbsolutePath(), mappingPanel.getDefineXMLLocation(), directory.getAbsolutePath().toString());
+                            queryWaitDialog.dispose();
+                        } catch (Exception e) {
+                            queryWaitDialog.dispose();
+                            JOptionPane.showMessageDialog(mappingPanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        } finally {
+                            GetConnectionSingleton.closeConnection();
+                        }
+                    }
+                }).start();
+                queryWaitDialog.setTitle("Transforming file " + mappingPanel.getSaveFile().getAbsolutePath() + "in Progress");
+                queryWaitDialog.setSize(350, 100);
+                queryWaitDialog.setLocation(450, 450);
+                queryWaitDialog.setLayout(new BorderLayout());
+                LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                JPanel waitLabel = new JPanel();
+                waitLabel.setBorder(lineBorder);
+                waitLabel.add(new JLabel("      Transformation in progress, Please wait ..."));
+                queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
+                queryWaitDialog.add(waitLabel, BorderLayout.CENTER);
+                queryWaitDialog.setVisible(true);
+                //wait dialog window needs to be destroyed
             } catch (Exception e) {
                 throw e;
-            } finally {
-                GetConnectionSingleton.closeConnection();
             }
         }
     }
@@ -85,7 +111,7 @@ public class QBTransformAction {
     /*
         This constructor is used by the menu
      */
-    public QBTransformAction(AbstractMainFrame _mainFrame, String mapFile, String defineXMLocation, Connection _con) throws Exception {
+    public QBTransformAction(final AbstractMainFrame _mainFrame, final String mapFile, final String defineXMLocation, Connection _con) throws Exception {
         //this(_mainFrame, mappingPanel, "");
         //process _con since it is always null
         if (_con == null) {
@@ -108,11 +134,35 @@ public class QBTransformAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             directory = directoryLoc.getSelectedFile();
             try {
-                processTransform1(mapFile, defineXMLocation, directory.getAbsolutePath().toString());
+                //a wait dialog window
+                final Dialog queryWaitDialog = new Dialog(_mainFrame);
+                new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            processTransform4SQLStatments(mapFile, defineXMLocation, directory.getAbsolutePath().toString());
+                            queryWaitDialog.dispose();
+                        } catch (Exception e) {
+                            queryWaitDialog.dispose();
+                            JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        } finally {
+                            GetConnectionSingleton.closeConnection();
+                        }
+                    }
+                }).start();
+                queryWaitDialog.setTitle("Transforming file " + mapFile + "in Progress");
+                queryWaitDialog.setSize(350, 100);
+                queryWaitDialog.setLocation(450, 450);
+                queryWaitDialog.setLayout(new BorderLayout());
+                LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                JPanel waitLabel = new JPanel();
+                waitLabel.setBorder(lineBorder);
+                waitLabel.add(new JLabel("      Transformation in progress, Please wait ..."));
+                queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
+                queryWaitDialog.add(waitLabel, BorderLayout.CENTER);
+                queryWaitDialog.setVisible(true);
+                //wait dialog window needs to be destroyed
             } catch (Exception e) {
                 throw e;
-            } finally {
-                GetConnectionSingleton.closeConnection();
             }
         }
     }
@@ -146,7 +196,7 @@ public class QBTransformAction {
         return domainFieldsList;
     }
 
-    public void processTransform1(String savedMapFile, String defineXML, String xlsFile) throws Exception {
+    public void processTransform4SQLStatments(String savedMapFile, String defineXML, String xlsFile) throws Exception {
         try {
             QBParseMappingFile qb = new QBParseMappingFile(new File(savedMapFile));
             Hashtable tempTable = getAllFieldsForDomains(new File(defineXML));
@@ -158,7 +208,7 @@ public class QBTransformAction {
                 //get the domain name
                 String domainName = _iter.next().toString();
                 //create a file with domain name
-                FileWriter fstream = new FileWriter(xlsFile + "\\" + domainName + ".csv");
+                FileWriter fstream = new FileWriter(xlsFile + "\\" + domainName + ".txt");
                 BufferedWriter out = new BufferedWriter(fstream);
                 //get the query and fire it
                 String query = qb.getHashSQLfromMappings().get(domainName);
@@ -292,4 +342,7 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
