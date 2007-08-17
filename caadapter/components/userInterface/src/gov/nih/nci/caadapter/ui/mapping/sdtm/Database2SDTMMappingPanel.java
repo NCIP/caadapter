@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.10 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.11 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.10 2007-08-16 19:39:45 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.11 2007-08-17 15:55:52 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -295,15 +295,15 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                             connectDB = true;
                             openSCSButton.setEnabled(false);
                             OpenDatabaseConnectionHelper _openDatabaseConnectionHelper = new OpenDatabaseConnectionHelper(_mainFrame);
-                            //System.out.println("The connection values are " + _openDatabaseConnectionHelper.getDatabaseConnectionInfo());
-                            connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
-                            processOpenSourceTree(null, true, true);
-                            try {
-                                Thread.sleep(100);
-                            } catch (Exception e) {
+                            if (!_openDatabaseConnectionHelper.isCancelled()) {
+                                connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
+                                processOpenSourceTree(null, true, true);
+                                _dbCon.setEnabled(false);
+                            } else {
+                                _dbCon.setEnabled(true);
+                                openSCSButton.setEnabled(true);
                             }
                             _queryWaitDialog.dispose();
-                            _dbCon.setEnabled(false);
                         } catch (Exception e) {
                             _queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -766,4 +766,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
