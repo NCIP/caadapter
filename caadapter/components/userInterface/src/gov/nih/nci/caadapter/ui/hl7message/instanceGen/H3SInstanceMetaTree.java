@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.7 2007-08-09 01:56:52 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.8 2007-08-17 01:11:36 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -98,7 +98,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.7 $
+ *          revision    $Revision: 1.8 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -118,7 +118,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.7 2007-08-09 01:56:52 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.8 2007-08-17 01:11:36 umkis Exp $";
 
     boolean isCode = false;
 
@@ -1647,7 +1647,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         //String fileName = "T:\\YeWu\\xmlpathSpec\\newCOCT_MT150003.h3s";
         //String fileName = "C:\\projects\\caadapter\\workingspace\\NewEncounter\\NewEncounter.h3s";
         //String fileName = "C:\\projects\\caadapter\\workingspace\\010000\\010000-Person.h3s";
-        String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\COCT_MT010000_Choice.h3s";
+        String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\COCT_MT010000_Choice_S.h3s";
 
         new H3SInstanceMetaTree(fileName);
     }
@@ -1656,6 +1656,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/08/09 01:56:52  umkis
+ * HISTORY      : add a feature that v2Meta directory creating when search the directory
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/08/08 20:45:48  umkis
  * HISTORY      : Change to V3VocabularyTreeBuildEventHandler
  * HISTORY      :

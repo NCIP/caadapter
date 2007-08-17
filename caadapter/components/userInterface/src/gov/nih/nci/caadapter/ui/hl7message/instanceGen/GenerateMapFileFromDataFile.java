@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.3 2007-08-06 14:27:43 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.4 2007-08-17 01:11:38 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -80,7 +80,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -99,7 +99,7 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.3 2007-08-06 14:27:43 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.4 2007-08-17 01:11:38 umkis Exp $";
 
 
     private boolean success = false;
@@ -1265,29 +1265,29 @@ class DataTree
         }
         catch(org.xml.sax.SAXParseException e)
 		{
-            System.out.println("SCStree SAXParseException : " + scsFileName);
+            //System.out.println("SCStree SAXParseException : " + scsFileName);
             message = "SCStree SAXParseException : " + e.getMessage();
             return false;
         }
         catch(IOException e)
 		{
-			System.out.println("SCStree IOException");
+			//System.out.println("SCStree IOException");
             message = "SCStree IOException : " + e.getMessage();
             return false;
         }
 		catch(Exception e)
 		{
-			e.printStackTrace(System.err);
+			//e.printStackTrace(System.err);
             message = "SCStree Exception : " + e.getMessage();
             return false;
         }
-        NodeElement tmp = scsHead;
-        while(true)
-        {
-            if (tmp == null) break;
-            System.out.println(this.getSCSNodePath(tmp));
-            tmp = this.getNextNode(tmp);
-        }
+        //NodeElement tmp = scsHead;
+//        while(true)
+//        {
+//            if (tmp == null) break;
+//            System.out.println(this.getSCSNodePath(tmp));
+//            tmp = this.getNextNode(tmp);
+//        }
         return res;
     }
 
@@ -1968,7 +1968,7 @@ class DataTree
             if (temp != null) curr = temp;
             else
             {
-                System.out.println("Not found search : " + ser + " ; " + curr.getLevel() + ", " + curr.getName() + ", " + curr.getLower().getName() + ", " + curr.getLower().getLower().getName() +"\n  **str : " + str  + "\n  **pth : " + this.getH3SNodePath(curr));
+                System.err.println("Not found search : " + ser + " ; " + curr.getLevel() + ", " + curr.getName() + ", " + curr.getLower().getName() + ", "/* + curr.getLower().getLower().getName()*/ +"\n  **str : " + str  + "\n  **pth : " + this.getH3SNodePath(curr));
                 return null;
             }
         }
@@ -2057,10 +2057,10 @@ class SCSEventHandler extends DefaultHandler
 		for(int i=start;i<(start+length);i++) st = st + cha[i];
         String trimed = st.trim();
         if (trimed.equals("")) return;
-        System.out.println("Invalid inLine text for scs Tree : " + trimed);
-        int len = trimed.length();
-        if (len < 1000) System.out.println("***** Path : " + currentPath + ", content : " + trimed + ", start : " + start + ", length : " + length);
-        else System.out.println("$$$$$ Path : " + currentPath + ", length : " + len + ", content : " + chars.substring(0,200));
+        //System.out.println("Invalid inLine text for scs Tree : " + trimed);
+        //int len = trimed.length();
+        //if (len < 1000) System.out.println("***** Path : " + currentPath + ", content : " + trimed + ", start : " + start + ", length : " + length);
+        //else System.out.println("$$$$$ Path : " + currentPath + ", length : " + len + ", content : " + chars.substring(0,200));
     }
     public void endElement(String namespaceURI, String localName, String qName)
     {
@@ -2195,10 +2195,10 @@ class H3SEventHandler extends DefaultHandler
         String trimed = st.trim();
 
         if (trimed.equals("")) return;
-        System.out.println("Invalid inLine text for h3s Tree : " + trimed);
-        int len = trimed.length();
-        if (len < 1000) System.out.println("***** Path : " + currentPath + ", content : " + trimed + ", start : " + start + ", length : " + length);
-        else System.out.println("$$$$$ Path : " + currentPath + ", length : " + len + ", content : " + chars.substring(0,200));
+        //System.out.println("Invalid inLine text for h3s Tree : " + trimed);
+        //int len = trimed.length();
+        //if (len < 1000) System.out.println("***** Path : " + currentPath + ", content : " + trimed + ", start : " + start + ", length : " + length);
+        //else System.out.println("$$$$$ Path : " + currentPath + ", length : " + len + ", content : " + chars.substring(0,200));
     }
     public void endElement(String namespaceURI, String localName, String qName)
     {
@@ -2502,6 +2502,9 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/06 14:27:43  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/03 05:01:32  umkis
  * HISTORY      : add items which have to be input data
  * HISTORY      :

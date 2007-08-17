@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/SCSIDChangerToXMLPath.java,v 1.1 2007-08-02 16:29:40 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/SCSIDChangerToXMLPath.java,v 1.2 2007-08-17 01:11:38 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -65,7 +65,7 @@ import java.util.Stack;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Aug 1, 2007
  *          Time:       11:13:15 AM $
  */
@@ -84,7 +84,7 @@ public class SCSIDChangerToXMLPath
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/SCSIDChangerToXMLPath.java,v 1.1 2007-08-02 16:29:40 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/SCSIDChangerToXMLPath.java,v 1.2 2007-08-17 01:11:38 umkis Exp $";
 
     private String saveFileName;
 
@@ -119,7 +119,7 @@ public class SCSIDChangerToXMLPath
 
     private void mainProcess(String source, String target)
     {
-        System.out.println("CVVV : X1 " +source + " : " + target);
+        //System.out.println("CVVV : X1 " +source + " : " + target);
         success = false;
         if ((source == null)||(source.trim().length() < 5)||(!source.trim().toLowerCase().endsWith(".scs")))
         {
@@ -156,7 +156,7 @@ public class SCSIDChangerToXMLPath
             message = "Writing file open error (" + target + ") : " + ie.getMessage();
             return;
         }
-        System.out.println("CVVV : Writing file open (" + target + ") " + node);
+        //System.out.println("CVVV : Writing file open (" + target + ") " + node);
         int beforeDepth = 0;
         int depth = 0;
         int column = 0;
@@ -239,6 +239,9 @@ public class SCSIDChangerToXMLPath
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
+ * HISTORY      : This package was moved from the common component
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 15:43:55  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :
