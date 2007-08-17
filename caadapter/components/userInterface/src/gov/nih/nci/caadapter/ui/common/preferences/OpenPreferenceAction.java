@@ -1,7 +1,6 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 
 import javax.swing.*;
@@ -13,34 +12,24 @@ import java.util.HashMap;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $
  */
-public class OpenPreferenceAction extends AbstractContextAction
-{
-
+public class OpenPreferenceAction extends AbstractContextAction {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
-
     private static final String COMMAND_NAME = "Preferences";
-
     private static final Character COMMAND_MNEMONIC = new Character('Q');
-
     private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_Q, Event.CTRL_MASK, false);
-
     private AbstractMainFrame mainFrame;
-
     HashMap prefs;
-
-
 
     /**
      * Defines an <code>Action</code> object with a default description
      * string and default icon.
      */
-    public OpenPreferenceAction(AbstractMainFrame mainFrame)
-    {
+    public OpenPreferenceAction(AbstractMainFrame mainFrame) {
         this(COMMAND_NAME, mainFrame);
         // mainContextManager = cm;
     }
@@ -49,8 +38,7 @@ public class OpenPreferenceAction extends AbstractContextAction
      * Defines an <code>Action</code> object with the specified
      * description string and a default icon.
      */
-    public OpenPreferenceAction(String name, AbstractMainFrame mainFrame)
-    {
+    public OpenPreferenceAction(String name, AbstractMainFrame mainFrame) {
         this(name, null, mainFrame);
     }
 
@@ -58,11 +46,9 @@ public class OpenPreferenceAction extends AbstractContextAction
      * Defines an <code>Action</code> object with the specified
      * description string and a the specified icon.
      */
-    public OpenPreferenceAction(String name, Icon icon, AbstractMainFrame mainFrame)
-    {
+    public OpenPreferenceAction(String name, Icon icon, AbstractMainFrame mainFrame) {
         super(name, icon);
         this.mainFrame = mainFrame;
-
         setMnemonic(COMMAND_MNEMONIC);
         setAcceleratorKey(ACCELERATOR_KEY_STROKE);
         setActionCommandType(DESKTOP_ACTION_TYPE);
@@ -70,8 +56,7 @@ public class OpenPreferenceAction extends AbstractContextAction
         // matter.
     }
 
-    public OpenPreferenceAction(AbstractMainFrame mainFrame, HashMap prefs)
-    {
+    public OpenPreferenceAction(AbstractMainFrame mainFrame, HashMap prefs) {
         this(COMMAND_NAME, mainFrame);
 
         // mainContextManager = cm;
@@ -85,8 +70,7 @@ public class OpenPreferenceAction extends AbstractContextAction
      * @return true if the action is finished successfully; otherwise,
      *         return false.
      */
-    protected boolean doAction(ActionEvent e) throws Exception
-    {
+    protected boolean doAction(ActionEvent e) throws Exception {
         // new NewSDTMWizard(mainFrame);
 //        if (_qbFrame != null)
 //        {
@@ -136,8 +120,11 @@ public class OpenPreferenceAction extends AbstractContextAction
      *
      * @return the associated UI component.
      */
-    protected Component getAssociatedUIComponent()
-    {
+    protected Component getAssociatedUIComponent() {
         return mainFrame;
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */

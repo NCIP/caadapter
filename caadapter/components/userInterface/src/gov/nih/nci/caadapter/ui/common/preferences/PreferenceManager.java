@@ -17,8 +17,8 @@ import java.util.HashMap;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-08-17 14:31:22 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-08-17 15:15:25 $
  */
 public class PreferenceManager extends JDialog implements ActionListener {
 
@@ -132,10 +132,10 @@ public class PreferenceManager extends JDialog implements ActionListener {
         group.add(fixedLength);
         group.add(spreadSheet);
         group.add(none);
-        radioPanel.add(comma);
-        radioPanel.add(tab);
+        //radioPanel.add(comma);
+        //radioPanel.add(tab);
         radioPanel.add(fixedLength);
-        radioPanel.add(spreadSheet);
+        //radioPanel.add(spreadSheet);
         radioPanel.add(none);
         //
         JPanel buttonPanel = new JPanel();
@@ -230,4 +230,7 @@ public class PreferenceManager extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/08/17 14:31:22  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
