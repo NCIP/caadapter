@@ -2,7 +2,6 @@ package gov.nih.nci.caadapter.ui.common.preferences;
 
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -13,36 +12,30 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 
 /**
- * Created by IntelliJ IDEA.
- * User: hjayanna
- * Date: Jun 26, 2007
- * Time: 11:06:32 AM
- * To change this template use File | Settings | File Templates.
+ * This class implements preferences in caAdapter
+ *
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.8 $
+ *          $Date: 2007-08-17 14:31:22 $
  */
-public class PreferenceManager extends JDialog implements ActionListener
-{
+public class PreferenceManager extends JDialog implements ActionListener {
 
-    //HashMap prefs;
+    private PrefListener prefListener=null;
+    private String regValue=null;
 
-    PrefListener prefListener;
-
-    String regValue;
-
-    public PreferenceManager(JFrame callingFrame)
-    {
+    public PreferenceManager(JFrame callingFrame) {
         super(callingFrame, "Preference Menu", true);
         //get the value stored in the registry
-        try
-        {
+        try {
             regValue = (String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR");
-            if (regValue == null)
-            {
+            if (regValue == null) {
                 regValue = "none";
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             regValue = "none";
-            e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         //
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -51,7 +44,6 @@ public class PreferenceManager extends JDialog implements ActionListener
         //
         JComponent panel2 = new Hl7V3SpecificationPreferencePane(this);
         tabbedPane.addTab("HL7 V3 Transformation", null, panel2, "");
-
         JComponent panel3 = new MMSPreferencePane(this);
         tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
         //
@@ -62,8 +54,7 @@ public class PreferenceManager extends JDialog implements ActionListener
         setVisible(true);
     }
 
-    public PreferenceManager()
-    {
+    public PreferenceManager() {
         JTabbedPane tabbedPane = new JTabbedPane();
         //
         tabbedPane.addTab("RDS Module", null, makeRDSPanel(), "");
@@ -81,8 +72,7 @@ public class PreferenceManager extends JDialog implements ActionListener
         setVisible(true);
     }
 
-    protected JComponent makeTextPanel(String text)
-    {
+    protected JComponent makeTextPanel(String text) {
         JPanel panel = new JPanel(false);
         JLabel filler = new JLabel(text);
         filler.setHorizontalAlignment(JLabel.CENTER);
@@ -91,8 +81,7 @@ public class PreferenceManager extends JDialog implements ActionListener
         return panel;
     }
 
-    protected JComponent makeRDSPanel()
-    {
+    protected JComponent makeRDSPanel() {
         JPanel mainPan = new JPanel(false);
         //initialize the preference listener
         prefListener = new PrefListener();
@@ -166,94 +155,79 @@ public class PreferenceManager extends JDialog implements ActionListener
         return mainPan;
     }
 
-    public static void main(String args[])
-    {
-
-        try
-        {
+    public static void main(String args[]) {
+        try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        } catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
-        } catch (UnsupportedLookAndFeelException e)
-        {
+        } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
         }
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 new PreferenceManager();
             }
         });
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         //handle 'ok' and 'cancel'
-        if (e.getActionCommand().equalsIgnoreCase("ok"))
-        {
-            if (prefListener.getValue() != null)
-            {
+        if (e.getActionCommand().equalsIgnoreCase("ok")) {
+            if (prefListener.getValue() != null) {
                 savePrefParams("FIXED_LENGTH_VAR", prefListener.getValue());
-            } else
-            {
+            } else {
                 savePrefParams("FIXED_LENGTH_VAR", regValue);
             }
             this.dispose();
-        } else
-        {
+        } else {
             this.dispose();
         }
     }
-/**
- * Read a preference value given its key as a string
- * @param key -- The key value of a preference
- * @return A preference value as a string
- */
-    public static String readPrefParams(String key)
-    {
-    	HashMap prefs=MainMenuBar.getCaAdapterPreferences();
-    	if (prefs==null)
-    		return null;
-    	return (String)prefs.get(key);
+
+    /**
+     * Read a preference value given its key as a string
+     *
+     * @param key -- The key value of a preference
+     * @return A preference value as a string
+     */
+    public static String readPrefParams(String key) {
+        HashMap prefs = MainMenuBar.getCaAdapterPreferences();
+        if (prefs == null)
+            return null;
+        return (String) prefs.get(key);
     }
-    public static void savePrefParams(String key, String value)
-    {
-        try
-        {
-            if(MainMenuBar.getCaAdapterPreferences() != null){
+
+    public static void savePrefParams(String key, String value) {
+        try {
+            if (MainMenuBar.getCaAdapterPreferences() != null) {
                 MainMenuBar.getCaAdapterPreferences().put(key, value);
             } else {
                 HashMap tempMap = new HashMap();
                 tempMap.put(key, value);
                 MainMenuBar.setCaAdapterPreferences(tempMap);
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    class PrefListener implements ActionListener
-    {
-
+    class PrefListener implements ActionListener {
         private String value = null;
 
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             value = e.getActionCommand();
         }
 
-        public String getValue()
-        {
+        public String getValue() {
             return value;
         }
     }
 }
+/**
+ * Change History
+ * $Log: not supported by cvs2svn $
+ */
