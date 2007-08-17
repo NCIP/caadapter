@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.2 2007-07-09 16:21:42 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.3 2007-08-17 01:13:28 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -73,6 +73,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.SCSIDChangerToXMLPath;
 
 /**
  * This class defines ...
@@ -80,8 +81,8 @@ import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-09 16:21:42 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-17 01:13:28 $
  */
 public class V2Converter
 {
@@ -98,7 +99,7 @@ public class V2Converter
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.2 2007-07-09 16:21:42 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.3 2007-08-17 01:13:28 umkis Exp $";
 
 
     HL7V2MessageTree messageTree = null;
@@ -156,8 +157,11 @@ public class V2Converter
     {
         return new HL7V2MessageTree(dataPath, version, v2FileName);
     }
-
     public void process(String outSCS, String outCSV, boolean filteringNonDataSegment, boolean groupingYesOrNo, List<String> listDataTypeOfOBX, String scsTargetFileName)
+    {
+        process(outSCS, outCSV, filteringNonDataSegment, groupingYesOrNo, listDataTypeOfOBX, scsTargetFileName, true);
+    }
+    public void process(String outSCS, String outCSV, boolean filteringNonDataSegment, boolean groupingYesOrNo, List<String> listDataTypeOfOBX, String scsTargetFileName, boolean xmlPathAsID)
     {
         wasSuccessful = false;
         validationMessages = new ArrayList<String>();
@@ -238,7 +242,7 @@ public class V2Converter
 
         if (checkYesOrNoForGeneratingSCS)
         {
-            if (!outSCS.equals("")) generateSCSFile(outSCS, filteringNonDataSegment, listDataTypeOfOBX, groupingYesOrNo);
+            if (!outSCS.equals("")) generateSCSFile(outSCS, filteringNonDataSegment, listDataTypeOfOBX, groupingYesOrNo, xmlPathAsID);
             if (!wasSuccessful)
             {
                 if (errorMessage.equals("")) errorMessage = "Unidentified error during SCS generating";
@@ -301,7 +305,7 @@ public class V2Converter
         errorMessage = "";
     }
 
-    private void generateSCSFile(String pathSCS, boolean filteringNonDataSegment, List<String> list, boolean groupingYesOrNo)
+    private void generateSCSFile(String pathSCS, boolean filteringNonDataSegment, List<String> list, boolean groupingYesOrNo, boolean xmlPathAsID)
     {
         int numberOfOBXSegment = 0;
         wasSuccessful = false;
@@ -630,6 +634,17 @@ public class V2Converter
             errorMessage = "ERR017 : SCS File Writing error (" + scsFileName + ") : " + ie.getMessage();
             return;
         }
+
+        if (xmlPathAsID)
+        {
+            SCSIDChangerToXMLPath changer = new SCSIDChangerToXMLPath(pathSCS);
+            if (!changer.wasSuccessful())
+            {
+                errorMessage = "ERR017 : Failure to change SCS file node ID to xmlPath : " + changer.getErrorMessage();
+                return;
+            }
+        }
+
         wasSuccessful = true;
     }
 
@@ -1101,6 +1116,9 @@ public class V2Converter
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/09 16:21:42  umkis
+ * HISTORY      : add a try-catch block on to 'result = segmentedCSVParser.parse(csvFile, rootMeta);'
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

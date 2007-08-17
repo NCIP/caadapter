@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.2 2007-07-12 16:44:39 umkis Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.3 2007-08-17 01:13:28 umkis Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -25,6 +25,7 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
 import gov.nih.nci.caadapter.hl7.v2v3.SgDataInfo;
 import gov.nih.nci.caadapter.hl7.v2v3.V2V3CSVWriter;
 import gov.nih.nci.caadapter.hl7.v2v3.XMLHelper;
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.SCSIDChangerToXMLPath;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,7 +48,7 @@ import javax.swing.JOptionPane;
  * 
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
  *          2006/11/27 22:00:07 $
  */
 public class MappingMain extends JFrame {
@@ -80,7 +81,7 @@ public class MappingMain extends JFrame {
     //For compatibility with the outputs of the advanced V2-V3 mapping function, this method is replaced by umkis.
     //This Changing will be restored after the test.
     //The original method with this name was changed to beginTransformationOriginal(....).
-    public boolean beginTransformation(String dir, String filename, String csvLocation, String scsLocation) throws Exception
+    public boolean beginTransformation(String dir, String filename, String csvLocation, String scsLocation, boolean xmlPathAsID) throws Exception
     {
         boolean resBoolean = true;
         File dirFile = new File(dir);
@@ -88,10 +89,13 @@ public class MappingMain extends JFrame {
         if (!dirFile.isDirectory()) throw new Exception("This is not a directory name. : " + dir);
         File dataDir = dirFile.getParentFile();
         String temp = (new File(FileUtil.getV2DataDirPath())).getName();
-        if (!dataDir.getName().equals(temp)) throw new Exception("This is not a HL7 V2 Data directory. : " + dir);
+        String dataDirAbsolutePath = "";
+        if (dataDir.getName().equals(temp)) dataDirAbsolutePath = dataDir.getAbsolutePath();
+        else if (dirFile.getName().equals(temp)) dataDirAbsolutePath = dirFile.getAbsolutePath();
+        else throw new Exception("This is not a HL7 V2 Data directory. : " + dir);
 
-        V2Converter converter = new V2Converter(filename, dataDir.getAbsolutePath());
-        converter.process(scsLocation, csvLocation, false, true, null, "");
+        V2Converter converter = new V2Converter(filename, dataDirAbsolutePath);
+        converter.process(scsLocation, csvLocation, false, true, null, "", xmlPathAsID);
 
         return resBoolean;
     }
@@ -100,7 +104,7 @@ public class MappingMain extends JFrame {
          * @return booleanVal
          * @throws Exception
          */
-    public boolean beginTransformationOriginal(String dir, String filename, String csvLocation, String scsLocation) throws Exception {
+    public boolean beginTransformation(String dir, String filename, String csvLocation, String scsLocation) throws Exception {
 	System.out.println("The file name which is passed is " + filename);
 	ArrayList<String> _segNames = new ArrayList<String>();
 	java.util.Set<String> sNames = new java.util.HashSet<String>();
@@ -161,7 +165,7 @@ public class MappingMain extends JFrame {
 
     public boolean execute(String directoryName, String hl7v2FileName, String _csvFileLocation) throws Exception {
 	MappingMain transFormFiles = new MappingMain();
-	if (transFormFiles.beginTransformation(directoryName, hl7v2FileName, _csvFileLocation, null)) {
+	if (transFormFiles.beginTransformation(directoryName, hl7v2FileName, _csvFileLocation, null, true)) {
 	    return true;
 	} else {
 	    return false;
@@ -170,7 +174,7 @@ public class MappingMain extends JFrame {
 
     public boolean execute(String directoryName, String hl7v2FileName, String _csvFileLocation, String _scsFileLocation) throws Exception {
 	MappingMain transFormFiles = new MappingMain();
-	if (transFormFiles.beginTransformation(directoryName, hl7v2FileName, _csvFileLocation, _scsFileLocation)) {
+	if (transFormFiles.beginTransformation(directoryName, hl7v2FileName, _csvFileLocation, _scsFileLocation, true)) {
 	    return true;
 	} else {
 	    return false;
@@ -261,7 +265,7 @@ public class MappingMain extends JFrame {
 
     public String execute(String directoryName, String hl7v2FileName) throws Exception {
 	MappingMain transFormFiles = new MappingMain();
-	if (transFormFiles.beginTransformation(directoryName, hl7v2FileName, "", "")) {
+	if (transFormFiles.beginTransformation(directoryName, hl7v2FileName, "", "", true)) {
 	    String s2 = transFormFiles._MSG_TYPE + ".scs";
 	    return (s2);
 	} else {
@@ -277,7 +281,7 @@ public class MappingMain extends JFrame {
 	Long t1 = System.currentTimeMillis();
 	MappingMain transFormFiles = new MappingMain();
 	try {
-	    if (transFormFiles.beginTransformation(args[0], args[1], args[2], args[3]))
+	    if (transFormFiles.beginTransformation(args[0], args[1], args[2], args[3], true))
 		System.out.println("\"" + transFormFiles._MSG_TYPE + ".CSV\" file created successfully");
 	} catch (Exception e) {
 	    // TODO Auto-generated catch block
@@ -551,6 +555,9 @@ public class MappingMain extends JFrame {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2007/07/12 16:44:39  umkis
+ * HISTORY : no message
+ * HISTORY :
  * HISTORY : Revision 1.1  2007/07/03 19:32:58  wangeug
  * HISTORY : initila loading
  * HISTORY :

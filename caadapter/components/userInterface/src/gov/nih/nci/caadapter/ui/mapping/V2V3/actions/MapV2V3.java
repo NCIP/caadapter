@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.3 2007-08-01 16:02:25 jayannah Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.4 2007-08-17 01:13:28 umkis Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -37,8 +37,8 @@ import java.io.File;
  * This class provides a SWING panel to help the user to browse the files and choose the necessary files and directories
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date: 2007-08-01 16:02:25 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date: 2007-08-17 01:13:28 $
  */
 @SuppressWarnings("serial")
 public class MapV2V3 extends JDialog implements ActionListener
@@ -127,7 +127,7 @@ public class MapV2V3 extends JDialog implements ActionListener
         this.setTitle("Map HL7 v2 to HL7 v3 messages");
         //Color logColor = new Color(220, 220, 220);
         //setSize(300,275);                                             
-         setLocation(300, 300);
+         setLocation(200, 300);
         //setBounds(325, 325, 710, 275);
 
         setResizable(false);
@@ -144,12 +144,12 @@ public class MapV2V3 extends JDialog implements ActionListener
          * new code begin
          */
         @SuppressWarnings("unused") String _defaultLoc = System.getProperty("user.dir") + "\\workingspace\\examples\\V2V3 Mapping Examples";
-        directoryLoc = new JFileChooser(_defaultLoc);
+        directoryLoc = new JFileChooser(FileUtil.getV2DataDirPath());
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         HL7V24Message = new JFileChooser(_defaultLoc);
         directoryLocation = new JButton("Browse..");
         directoryLocation.addActionListener(this);
-        dirLocTextField = new JTextField("");
+        dirLocTextField = new JTextField(FileUtil.getV2DataDirPath());
         dirLocTextField.setColumns(20);
         JLabel dirLabel = new JLabel("Select HL7 v2.x Resources Directory");
         JLabel hl7fileLabel = new JLabel("Select HL7 v2.x Message file");
@@ -473,6 +473,9 @@ public class MapV2V3 extends JDialog implements ActionListener
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.3  2007/08/01 16:02:25  jayannah
+ * HISTORY : further modifications for the GUI and resize
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/08/01 15:25:16  jayannah
  * HISTORY : changed the look and feel of the v2-v3 GUI
  * HISTORY :
