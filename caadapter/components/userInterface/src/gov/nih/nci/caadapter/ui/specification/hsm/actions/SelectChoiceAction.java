@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.5 2007-08-17 21:30:02 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.6 2007-08-20 20:43:26 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,6 +42,7 @@ import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
 
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 import javax.swing.*;
@@ -59,8 +60,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-17 21:30:02 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-20 20:43:26 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -75,7 +76,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.5 2007-08-17 21:30:02 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.6 2007-08-20 20:43:26 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -162,7 +163,10 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     		oneChoice.setChoiceSelected(false);
                     	}
                     	for (DatatypeBaseObject oneChoiceSelected:userSelectedMIFClass)
+                    	{
+                    		oneChoiceSelected.setParentXmlPath(mifAssc.getParentXmlPath());
                     		oneChoiceSelected.setChoiceSelected(true);
+                    	}
                     	
                     	mifAssc.setChoiceSelected(true);
                     	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);    	
