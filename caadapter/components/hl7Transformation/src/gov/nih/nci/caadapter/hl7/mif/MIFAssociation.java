@@ -17,7 +17,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2007-08-15 17:55:14 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-08-20 20:39:13 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -188,7 +188,8 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		if (isChoiceSelected()&&getMifClass().getChoices().size()>0)
 		{
 			MIFClass chosenMif=findChoiceSelectedMifClass();
-			viewName=chosenMif.getNodeXmlName();
+			if (chosenMif!=null)
+				viewName=chosenMif.getNodeXmlName();
 		}
 			
 		if (getMaximumMultiplicity()==1)
