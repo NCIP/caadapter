@@ -41,10 +41,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.20 $
- *          date        $Date: 2007-08-13 20:16:02 $
+ *          revision    $Revision: 1.21 $
+ *          date        $Date: 2007-08-20 20:40:19 $
  */
 
 public class MapProcessor {
@@ -318,7 +318,7 @@ public class MapProcessor {
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
 	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
 	 */
-
+    
     private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, boolean forceGeneratePassed) throws MappingException,FunctionException {
     	boolean forceGenerate = forceGeneratePassed;
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
@@ -332,22 +332,22 @@ public class MapProcessor {
     		mifClass =  mifAssociation.getMifClass();
     	}
     	//Scenario 1: process choices, and for each assoication, there can be multiple choices
-    	if (mifClass.getChoices().size() > 0) { //Handle choice
-    		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
-    	    	if (choiceMIFClass.isChoiceSelected()) {
-    	    		System.out.println(choiceMIFClass.getXmlPath());
-    	    		if (mifAssociation.isOptionForced()) forceGenerate = true;
+//    	if (mifClass.getChoices().size() > 0) { //Handle choice
+//    		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
+//    	    	if (choiceMIFClass.isChoiceSelected()) {
+//    	    		System.out.println("process choiceMIFClass:"+choiceMIFClass.getXmlPath());
+//    	    		if (mifAssociation.isOptionForced()) forceGenerate = true;
 //    	    		if (mifAssociation.getMinimumMultiplicity() > 0) forceGenerate = true;
-    	    		for(XMLElement xmlElement:processMIFclass(mifClass,csvSegment, forceGenerate)) {
-    	    			xmlElement.setName(mifAssociation.getNodeXmlName());
-    	    			xmlElements.add(xmlElement);
-    	    		}
-    	    	}
-    	    
-    		}
-    	}
-    	//Scenario 2: process mifclass that associated with MIFAssociation
-    	else {
+//    	    		for(XMLElement xmlElement:processMIFclass(mifClass,csvSegment, forceGenerate)) {
+//    	    			xmlElement.setName(mifAssociation.getNodeXmlName());
+//    	    			xmlElements.add(xmlElement);
+//    	    		}
+//    	    	}
+//    	    
+//    		}
+//    	}
+//    	//Scenario 2: process mifclass that associated with MIFAssociation
+//    	else {
     		// Pre-requsite one assoication must have a MIFClass object
     		// mifClass can not be null
     		if (mifClass == null) {
@@ -357,10 +357,13 @@ public class MapProcessor {
     		if (mifAssociation.isOptionForced()) forceGenerate = true;
     		List<XMLElement> xmlEments = processMIFclass(mifClass,csvSegment, forceGenerate);
     		for(XMLElement xmlElement:xmlEments) {
-    			xmlElement.setName(mifAssociation.getName());
+    			if (mifAssociation.isChoiceSelected())
+    				xmlElement.setName(mifAssociation.findChoiceSelectedMifClass().getTraversalName());	
+    			else
+    				xmlElement.setName(mifAssociation.getName());
     			xmlElements.add(xmlElement);
     		}
-    	}
+//    	}
     	return xmlElements;
     }
 
@@ -735,17 +738,18 @@ public class MapProcessor {
     	if (targetXmlPath.contains(csvSegment.getXmlPath())) {
 			CSVSegment current = csvSegment;
     		while (true) {
-    			boolean canStop = false;
+    			boolean canStop = true;
     			if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
+ 
     			for(CSVSegment childSegment:current.getChildSegments()) {
 //    				System.out.println("ChildSegment" + childSegment.getXmlPath());
     				if (childSegment.getXmlPath().equals(targetXmlPath)) {
     					csvSegments.add(childSegment);
-    					canStop = true;
     				}
     				else {
     					if (targetXmlPath.contains(childSegment.getXmlPath())) {
     						current = childSegment;
+    						canStop=false;
     						break;
     					}
     				}
@@ -893,6 +897,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.20  2007/08/13 20:16:02  wuye
+ * HISTORY      : fixed the extra xml elements
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2007/08/13 19:21:05  wuye
  * HISTORY      : remove extra element when error occured
  * HISTORY      :
