@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.19 2007-08-17 21:30:42 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.20 2007-08-20 20:41:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,8 +77,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2007-08-17 21:30:42 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2007-08-20 20:41:49 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -203,7 +203,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 						if (cmetRef != null) 
 						{
 							//there is not "traversalName" issue to load the CMET class for a choice item
-							MIFClass referencedMifClass =loadCMETClassWithMIF(cmetRef.getFilename() + ".mif");
+							MIFClass referencedMifClass =loadCMETClassWithMIF(cmetRef.getFilename() + ".mif", null);
 							referencedMifClass.setChoiceSelected(choiceClass.isChoiceSelected());
 							referencedMifClass.setTraversalName(choiceClass.getTraversalName());
 							referencedMifClass.setSortKey(choiceClass.getSortKey());
@@ -271,7 +271,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				CMETRef cmetRef = CMETUtil.getCMET(asscMifClass.getReferenceName());
 				if (cmetRef != null) 
 				{
-					MIFClass referencedMifClass = loadCMETClassWithMIF(cmetRef.getFilename() + ".mif");
+					MIFClass referencedMifClass = loadCMETClassWithMIF(cmetRef.getFilename() + ".mif",
+											mifAssc.getParticipantTraversalNames());
 					mifAssc.setMifClass(referencedMifClass);
 				}
 				else
@@ -286,24 +287,24 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		return childNode;
 	}
 	
-	private MIFClass loadCMETClassWithMIF(String cmetMifName)
+	private MIFClass loadCMETClassWithMIF(String cmetMifName, Hashtable asscTraversalClassName )
 	{
 		Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
 		MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();
 		//set traversal name with 
-//		if (asscTraversalClassName!=null)
-//		{
-//			if(referencedMifClass.getChoices()==null
-//					||referencedMifClass.getChoices().isEmpty())
-//				Log.logInfo(this, "No choice classes needs to set..:"+referencedMifClass);
-//			else
-//			{
-//				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
-//				{
-//					refChoice.setTraversalName(asscTraversalClassName.get(refChoice.getName()));
-//				}
-//			}
-//		}
+		if (asscTraversalClassName!=null)
+		{
+			if(referencedMifClass.getChoices()==null
+					||referencedMifClass.getChoices().isEmpty())
+				Log.logInfo(this, "No choice classes needs to set..:"+referencedMifClass);
+			else
+			{
+				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
+				{
+					refChoice.setTraversalName((String)asscTraversalClassName.get(refChoice.getName()));
+				}
+			}
+		}
 		return referencedMifClass;
 	}
 	private DefaultMutableTreeNode buildMIFAttributeNode(MIFAttribute mifAttribute)
