@@ -17,16 +17,13 @@
 	<property name="module.conf.dir" value="${dataview.module.home}/conf"/>
 	<property name="module.etc.dir" value="${dataview.module.home}/etc"/>
 	<property name="module.src.dir" value="${dataview.module.home}/src"/>
-    <property name="download.jar.location" value="${basedir}"/>
-
+    <property name="download.jar.location" value="${basedir}/lib"/>
     <!-- Define project properties !-->
 	<property name="caadapter.project.lib.dir" value="${dataview.module.home}/../../lib"/>
 	<property name="caadapter.project.dist.dir" value="${dataview.module.home}/../../dist"/>
-
-
 	<path id="module.class.path">
         <fileset dir="${download.jar.location}">
-			<include name="delete.jar"/>			
+			<include name="**/*.jar"/>			
 		</fileset>
         <fileset dir="${module.lib.dir}">
 			<include name="**/*.jar"/>
@@ -42,8 +39,6 @@
 		<echo message="-- deliver ${module.name}  --------"/>
 		<copy file="${module.dist.dir}/${dataview.module.dist.name}" 
 				tofile="${caadapter.project.dist.dir}/${dataview.module.dist.name}"/>
-        <delete file="${module.lib.dir}\delete.jar"></delete>
-        <delete dir="${module.lib.dir}\deletethisfolder.jar"></delete>
     </target>
 
 	<target name="jar" depends="compile" description="create the distribution jars">
@@ -75,17 +70,20 @@
 		<delete dir="${module.build.dir}"/>
 		<delete dir="${module.dist.dir}"/>		
 	</target>
-
+    
     <target name="d2" description="download sqleonardo file">
         <echo message="--Downloading jar file from http://sourceforge.net-----"/>
            <get src="http://downloads.sourceforge.net/sqleonardo/sqleonardo-2007.06.rc1.zip?modtime=1182460601&amp;big_mirror=0"
-                dest="${module.lib.dir}\delete.jar"
+                dest="${download.jar.location}\delete.jar"
                 verbose="on"
                    >
            </get>
-       </target>
+    </target>
+
     <target name="unzipDownloadedJar" depends="d2">
         <echo message="--unzipping the downloaded file from sourceforge-----"/>
-        <unzip src="${module.lib.dir}\delete.jar" dest="${module.lib.dir}\deletethisfolder.jar"/>
+        <unzip src="${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar"/>
     </target>
+
+
 </project>
