@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="caadapter.demo" default="demo.ui.jar">
+<project name="caadapter.demo" default="demo.zip" >
 	<description>
 					caAdapter: Demo
 		************************************************************************** 
@@ -27,20 +27,26 @@
 		<map from="${basedir}" to="."/>
 	</pathconvert>
 	
-	<target name="jarcaadapter"  description="create the distribution jars">
+	<!-- target name="jarcaadapter"  description="create the distribution jars">
 		<jar destfile="caadapterTotal.jar">
 			<fileset dir="dist"
 				excludes="**/Test.class,org/hl7/**"	/>
 			<fileset dir="etc"/>
 			<fileset dir="conf"/>
 		</jar>
-	</target>
+	</target -->
 
-	<target name="demo.ui.jar" depends="compile.demo" description="create the distribution jars">
+	<target name="demo.zip"  depends="demo.ui.jar" >
+		<zip destfile="releaseCaadapter.zip">
+			<zipfileset dir="." />
+		</zip>
+    </target>
+
+	<target name="demo.ui.jar"  depends="compile.demo" description="create the distribution jars">
 		<!-- Create an executable jar that runs the UI.-->
 		<echo message="${distribution.manifest.class.property}"/>
 		<jar destfile="demo_ui.jar">
-			<fileset dir="build" includes="**/LaunchUI.class"/>
+			<fileset dir="../build" includes="**/LaunchUI.class"/>
 			<!-- fileset dir="etc"/ -->
 			<!-- fileset dir="conf"/ -->
 			<manifest>
@@ -52,10 +58,10 @@
 
 
 	<target name="compile.demo"  description="compile the source">
-		<javac destdir="build" 
+		<javac destdir="../build" 
 				classpathref="execution.class.path"
 				fork="yes" debug="on">
-			<src path="demo" />
+			<src path="../demo" />
 			<exclude name="test/**"/>
 		</javac>
 	</target>

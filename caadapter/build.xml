@@ -8,14 +8,15 @@
 
     <!-- Define project properties !-->
     <property name="project.name" value="caAdapter"/>
+    <property name="project.ref.lib.dir" value="${basedir}/referenceLib" />
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="config.dir" value="${basedir}/conf"/>
     <property name="docs.dir" value="${basedir}/docs"/>
     <property name="project.jar.name" value="caAdapter.jar"/>
-    <property name="project.deploy.root" value="L:\caAdapter\releases\caAdapter v4.0\2007-08-16"/>
-    <property name="project.deploy.root1" value="d:\distBin\test2007-08-15"/>
+    <property name="project.deploy.root1" value="L:\caAdapter\releases\caAdapter v4.0\2007-08-21"/>
+    <property name="project.deploy.root" value="c:\distBin\test2007-08-21"/>
     <property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
     <property name="webstart.config.files" value="${basedir}/etc/webstart"/>
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
@@ -65,6 +66,7 @@
             <fileset dir="${dataview.module.home}/build"/>
             <fileset dir="${sdtm.module.home}/build"/>
             <fileset dir="${ui.module.home}/build"/>
+            <fileset dir="${lib.dir}" />
         </copy>
         <!-- "${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar" -->
         <delete file="${lib.dir}\delete.jar"/>
@@ -83,7 +85,7 @@
             <fileset dir="${dist.dir}" includes="**/*"/>
         </delete>
 
-        <jar destfile="${dist.dir}/${project.jar.name}">
+        <jar destfile="${project.ref.lib.dir}/${project.jar.name}">
             <fileset dir="${build.dir}"/>
             <fileset dir="${config.dir}"/>
         </jar>
@@ -159,21 +161,20 @@
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
-
-    <target name="demo.dist" depends="copy.modules.lib">
-        <echo message="build demo_ui.jar...."/>
-        <copy todir="${lib.dir}">
-            <fileset dir="${dist.dir}"/>
-        </copy>
-
-        <ant antfile="build_demo.xml" target="demo.ui.jar"/>
+	
+	<!-- target name="demo.dist"  -->    
+    <target name="demo.dist" >
+        <!-- ant antfile="build_demo.xml" target="demo.ui.jar"/ -->
 
         <delete dir="${project.deploy.root}/lib"/>
 
         <mkdir dir="${project.deploy.root}/lib"/>
         <copy todir="${project.deploy.root}/lib">
-            <fileset dir="${lib.dir}">
+            <fileset dir="${dist.dir}/lib">
                 <exclude name="*.zip, *.jar"/>
+            </fileset>
+            <fileset dir="${project.ref.lib.dir}">
+			      	<exclude name="*.zip, *.jar"/>
             </fileset>
         </copy>
 
@@ -183,18 +184,39 @@
             </fileset>
         </copy>
 
-        <copy file="demo_ui.jar" todir="${project.deploy.root}"/>
+        <copy file="dist/demo_ui.jar" todir="${project.deploy.root}"/>
         <copy file="run.bat" todir="${project.deploy.root}"/>
     </target>
 
-    <target name="demo">
+    <target name="dist.prepare" depends="copy.modules.lib">
+         <echo message="build demo_ui.jar...."/>
+		 <copy  tofile="${dist.dir}/build.xml" flatten="true">
+			<path>
+					<pathelement path="build_demo.xml"/>
+			</path>
+		 </copy>
+		 <copy  todir="${dist.dir}" flatten="true">
+		 			<path>
+		 					<pathelement path="run.bat"/>
+		 			</path>
+		 </copy>
+		<mkdir dir="dist/conf"/>
+		<copy todir="/dist/conf">
+		 		<fileset dir="${config.dir}">
+		 	         <include name="*.properties"/>
+		        </fileset>
+        </copy>
+    </target>
+
+	<target name="demo.jar">
+         <echo message="build demo_ui.jar...."/>
+		 <ant antfile="build_demo.xml" target="compile.demo"/>
         <echo message="Call Generating castor CODE...."/>
         <ant antfile="build_demo.xml" target="demo.ui.jar"/>
     </target>
-
     <target name="copy.modules.lib">
         <!-- delete dir="${lib.dir}"/ -->
-        <copy todir="${lib.dir}">
+        <copy todir="${dist.dir}/lib">
             <fileset dir="${common.module.home}/lib"/>
             <fileset dir="${hl7.module.home}/lib"/>
             <fileset dir="${mms.module.home}/lib"/>
@@ -202,6 +224,8 @@
             <fileset dir="${sdtm.module.home}/lib"/>
             <fileset dir="${ui.module.home}/lib"/>
             <fileset dir="${ui.module.home}/../dataviewer/lib"/>
+            <fileset dir="${lib.dir}"/>
+            <fileset dir="${project.ref.lib.dir}"/>
         </copy>
     </target>
 
