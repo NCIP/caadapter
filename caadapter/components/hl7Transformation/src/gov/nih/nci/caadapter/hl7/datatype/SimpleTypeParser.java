@@ -15,7 +15,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-08-21 03:54:50 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2007-08-21 21:15:28 $
  */
 
 public class SimpleTypeParser {
@@ -73,13 +73,46 @@ public class SimpleTypeParser {
         	if (child.getNodeName().equals(prefix+"annotation")); //ignore for now
         	if (child.getNodeName().equals(prefix+"union"))
         	{
+//        		System.out.println("Datatype:" + datatype.getName() + " " + XSDParserUtil.getAttribute(child, "memberTypes"));
         		datatype.setUnions(XSDParserUtil.getAttribute(child, "memberTypes"));
+        		parseSimpleWithinUnion(child, prefix, datatype);
         	}
-        	if (child.getNodeName().equals(prefix+"list")); //no processing is necessary for complex type
+        	if (child.getNodeName().equals(prefix+"list"))
+        	{
+        		datatype.setUnions(XSDParserUtil.getAttribute(child, "itemType"));
+        	}
         	
             child = child.getNextSibling();
         }
         return datatype;
+	}
+
+	public static void parseSimpleWithinUnion(Node node, String prefix, Datatype datatype) {
+		
+        Node children = node.getFirstChild();
+        while (children != null) {
+        	if (children.getNodeName().equals(prefix+"simpleType")) {
+                Node child = children.getFirstChild();
+        		while (child != null) {
+
+        			//Parsing child node with type "restriction" 
+        			allChild.add(child.getNodeName());
+        			if (child.getNodeName().equals(prefix+"restriction")) {
+        				Node restrictionChild = child.getFirstChild();
+        				while (restrictionChild != null) {
+        					allWithinChild.add(restrictionChild.getNodeName());
+        					if (restrictionChild.getNodeName().equals(prefix + "enumeration")) {
+        						datatype.addPredefinedValue(XSDParserUtil.getAttribute(restrictionChild, "value"));
+        					}
+                        	restrictionChild = restrictionChild.getNextSibling();
+        				}
+        			}
+
+        			child = child.getNextSibling();
+        		}
+        	}
+        	children = children.getNextSibling();
+        }
 	}
 	public static void printMeta() {
 		System.out.println("all child nodes = " + allChild);

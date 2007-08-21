@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -33,8 +34,8 @@ import org.w3c.dom.Node;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-21 03:54:50 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-21 21:15:28 $
  */
 
 public class DatatypeParser {
@@ -93,8 +94,36 @@ public class DatatypeParser {
 		Iterator datatypeCheckIt = datatypes.keySet().iterator();
 		while (datatypeCheckIt.hasNext()) {
 			String datatypeString = (String)datatypeCheckIt.next();
-			Datatype datattype = (Datatype)datatypes.get(datatypeString);
-			if (datattype.isSimple())datatypes_check.put(datatypeString, COMPLETE);
+			Datatype datatype = (Datatype)datatypes.get(datatypeString);
+			if (datatype.isSimple()) {
+				datatypes_check.put(datatypeString, COMPLETE);
+				//Process patterns
+				
+//				System.out.println("Unions for:"+datatype.getName()+ " -- unions"+ datatype.getUnions());
+				if (datatype.getUnions()!= null)
+				{
+//					System.out.println("Unions for:"+datatype.getName());
+					String unions = datatype.getUnions();
+					StringTokenizer st = new StringTokenizer(unions);
+					while (st.hasMoreTokens()) {
+					   String union = st.nextToken();
+					   Datatype uDT = ((Datatype)datatypes.get(union));
+					   if (uDT!=null)
+					   {
+						   if (uDT.getPatterns().size()>0) {
+							   for(String p:uDT.getPatterns()) {
+								   datatype.addPattern(p);
+							   }
+						   }
+						   for (String enumValue:(HashSet<String>)getEnums(union))
+						   {
+							   datatype.addPredefinedValue(enumValue);
+						   }
+					   }
+					} 
+				}
+
+			}
 			else {
 				if (datatypeString.equals("ANY")) {
 					datatypes_check.put(datatypeString, COMPLETE);
@@ -117,7 +146,7 @@ public class DatatypeParser {
 				String currentDatatypeString = processingStack.pop();
 				Datatype currentDatatype = (Datatype)datatypes.get(currentDatatypeString);
 				String parentDatatypeString = currentDatatype.getParents();
-				System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
+//				System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
 				if ((Integer)datatypes_check.get(parentDatatypeString) == NONCOMPLETE) {
 					processingStack.push(currentDatatypeString);
 					processingStack.push(parentDatatypeString);
@@ -137,24 +166,6 @@ public class DatatypeParser {
 					if (attributes.get(pAttribute.getName()) == null) {
 						currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
 					}
-				}
-				//Process patterns
-				if (!datatype.getUnions().equals(""))
-				{
-					String unions = datatype.getUnions();
-					StringTokenizer st = new StringTokenizer(unions);
-					while (st.hasMoreTokens()) {
-					   String union = st.nextToken();
-					   Datatype uDT = ((Datatype)datatypes.get(parentDatatypeString));
-					   if (uDT!=null)
-					   {
-						   if (uDT.getPatterns().size()>0) {
-							   for(String p:uDT.getPatterns()) {
-								   datatype.addPattern(p);
-							   }
-						   }
-					   }
-					} 
 				}
 				
 				datatypes_check.put(currentDatatypeString,COMPLETE);
@@ -185,11 +196,37 @@ public class DatatypeParser {
 	    	   for(String p:datatype.getPatterns()) {
 		    	   System.out.println("      Pattern: " + p);
 	    	   }
+
+	    	   for(String p:(HashSet<String>)datatype.getPredefinedValues()) {
+		    	   System.out.println("      PredefinedValue: " + p);
+	    	   }
 	       }
 	    }
 
 	}
 
+	private HashSet getEnums(String datatypeString) {
+		HashSet enums = new HashSet();
+		Datatype datatype = (Datatype)datatypes.get(datatypeString);
+		if (datatype == null) return enums; 
+		if (datatype.getUnions()!= null)
+		{
+			String unions = datatype.getUnions();
+			StringTokenizer st = new StringTokenizer(unions);
+			while (st.hasMoreTokens()) {
+			   String union = st.nextToken();
+			   Datatype uDT = ((Datatype)datatypes.get(union));
+			   if (uDT!=null)
+			   {
+				   enums.addAll(getEnums(union));
+			   }
+			}
+			return enums;	
+		}
+		else {
+			return datatype.getPredefinedValues();
+		}
+	}
 	/*
 	 * This method will serialize the datatype objects into a file. 
 	 *
@@ -292,7 +329,7 @@ public class DatatypeParser {
 		ComplexTypeParser.printMeta();
 		datatypeParser.populateDatatypes();
 		//		datatypeParser.printDatatypes(true, false);
-		datatypeParser.printDatatypes(false, true);
+		datatypeParser.printDatatypes(false, false);
 		datatypeParser.saveDatatypes("c:/temp/datatypes");
 		
 /*		DatatypeParser datatypeParser = new DatatypeParser();

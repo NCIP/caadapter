@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-21 03:54:50 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-21 21:15:28 $
  */
 
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -34,7 +34,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private HashSet predefinedValues = new HashSet();
 	
 	private ArrayList<String> patterns = new ArrayList<String>();
-	private String unions = "";
+	private String unions = null;
 	
 	private String name;
 	private boolean simple = false;
@@ -215,7 +215,8 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return enabled;
+//		return enabled;
+		return true;
 	}
 
 	@Override
@@ -281,6 +282,6 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	 * @param unions the unions to set
 	 */
 	public void setUnions(String unions) {
-		this.unions = unions;
+		this.unions = new String(unions);
 	}	
 }
