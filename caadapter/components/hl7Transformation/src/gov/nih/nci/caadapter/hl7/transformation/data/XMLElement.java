@@ -26,8 +26,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-09 21:40:13 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-21 04:12:34 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -226,7 +226,25 @@ public class XMLElement implements Cloneable{
 						if (predefinedValues.size()>0) {
 							if (!predefinedValues.contains(attribute.getValue())) 
 							{
-					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contains valid value (" + attribute.getValue() + ")"});
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
+					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));			
+							}
+						}
+						
+						if (datatype.getPatterns().size() > 0) 
+						{
+							String vPattern = "";
+							boolean patternMatch = false;
+							for (String pattern:datatype.getPatterns())
+							{
+								vPattern = vPattern + " " + pattern;
+								if (attribute.getValue().matches(pattern)) {
+									patternMatch = true;
+									break;
+								}
+							}
+							if (!patternMatch) {
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not match attribute pattern " + vPattern + "(" + attribute.getValue() + ")"});
 					            validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));			
 							}
 						}
