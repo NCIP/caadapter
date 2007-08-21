@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleAttributeAction.java,v 1.4 2007-08-01 13:27:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleAttributeAction.java,v 1.5 2007-08-21 15:50:42 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-01 13:27:43 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-21 15:50:42 $
  */
 public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
 {
@@ -73,7 +73,7 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleAttributeAction.java,v 1.4 2007-08-01 13:27:43 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleAttributeAction.java,v 1.5 2007-08-21 15:50:42 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Remove Multiple Attribute";
     private static final Character COMMAND_MNEMONIC = new Character('u');
@@ -131,12 +131,15 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
             	Object parentObj=parentNode.getUserObject();
             	
             	MIFClass parentMif=null;
+            	MIFClass chosenMif=null;
             	if (parentObj instanceof MIFClass)
             		parentMif=(MIFClass)parentObj;
             	else if (parentObj instanceof MIFAssociation)
             	{
             		MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
            			parentMif=parentMifAssc.getMifClass();
+           			if (parentMifAssc.isChoiceSelected())
+           				chosenMif=parentMifAssc.findChoiceSelectedMifClass(); 
             	}
 
             	if (parentMif==null)
@@ -148,6 +151,10 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
             	}
             	
             	parentMif.removeAttribute(mifAttr);
+            	//the MIFAttribute to be removed may exist with ChosenMIFClass
+            	if (chosenMif!=null)
+            		chosenMif.removeAttribute(mifAttr);
+            	
             	//this sibling MIFAttribute object has been reset with new multiplicity index,
             	//reload them
             	parentNode.remove(targetNode);
@@ -167,6 +174,9 @@ public class RemoveMultipleAttributeAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/08/01 13:27:43  wangeug
+ * HISTORY      : resolve issues with preliminary test of release 4.0
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/09 20:15:34  wangeug
  * HISTORY      : remove referenceMIFClass attribute; use mifClass instead
  * HISTORY      :
