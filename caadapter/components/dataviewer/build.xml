@@ -42,7 +42,7 @@
 		<echo message="-- deliver ${module.name}  --------"/>
 		<copy file="${module.dist.dir}/${dataview.module.dist.name}" 
 				tofile="${caadapter.project.dist.dir}/${dataview.module.dist.name}"/>
-        <delete file="${module.lib.dir}\main.jar"></delete>
+        <delete file="${module.lib.dir}\delete.jar"></delete>
         <delete dir="${module.lib.dir}\deletethisfolder.jar"></delete>
     </target>
 
@@ -86,6 +86,6 @@
        </target>
     <target name="unzipDownloadedJar" depends="d2">
         <echo message="--unzipping the downloaded file from sourceforge-----"/>
-        <unzip src="${module.lib.dir}\main.jar" dest="${module.lib.dir}\deletethisfolder.jar"/>
+        <unzip src="${module.lib.dir}\delete.jar" dest="${module.lib.dir}\deletethisfolder.jar"/>
     </target>
 </project>
