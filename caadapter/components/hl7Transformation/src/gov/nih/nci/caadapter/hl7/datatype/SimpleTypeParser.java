@@ -15,7 +15,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:58 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-08-21 03:54:50 $
  */
 
 public class SimpleTypeParser {
@@ -59,7 +59,9 @@ public class SimpleTypeParser {
                 	if (restrictionChild.getNodeName().equals(prefix + "enumeration")) {
                 		datatype.addPredefinedValue(XSDParserUtil.getAttribute(restrictionChild, "value"));
                 	}
-                	if (restrictionChild.getNodeName().equals(prefix + "pattern")); //ignore for now
+                	if (restrictionChild.getNodeName().equals(prefix + "pattern")) {
+                		datatype.addPattern(XSDParserUtil.getAttribute(restrictionChild,"value"));
+                	}
                 	if (restrictionChild.getNodeName().equals(prefix + "minInclusive"));//ignore for now
                 	if (restrictionChild.getNodeName().equals(prefix + "minLength"));//ignore for now
                 	if (restrictionChild.getNodeName().equals(prefix + "maxInclusive"));//ignore for now
@@ -69,7 +71,10 @@ public class SimpleTypeParser {
         	}
         	if (child.getNodeName().equals("#text"));//ignore for now
         	if (child.getNodeName().equals(prefix+"annotation")); //ignore for now
-        	if (child.getNodeName().equals(prefix+"union")); //no processing is necessary for simple type
+        	if (child.getNodeName().equals(prefix+"union"))
+        	{
+        		datatype.setUnions(XSDParserUtil.getAttribute(child, "memberTypes"));
+        	}
         	if (child.getNodeName().equals(prefix+"list")); //no processing is necessary for complex type
         	
             child = child.getNextSibling();

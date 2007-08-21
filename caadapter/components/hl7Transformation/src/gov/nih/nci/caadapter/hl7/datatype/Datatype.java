@@ -8,10 +8,10 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-07-24 18:19:22 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-21 03:54:50 $
  */
 
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -32,6 +32,10 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 
 	private Hashtable attributes = new Hashtable();
 	private HashSet predefinedValues = new HashSet();
+	
+	private ArrayList<String> patterns = new ArrayList<String>();
+	private String unions = "";
+	
 	private String name;
 	private boolean simple = false;
 	private boolean isAbstract =false;
@@ -247,4 +251,36 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	public void setCsvSegments(List<String> csvSegments) {
 		this.csvSegments = csvSegments;
 	}
+
+	/**
+	 * @return the patterns
+	 */
+	public ArrayList<String> getPatterns() {
+		return patterns;
+	}
+
+	/**
+	 * @param patterns the patterns to set
+	 */
+	public void setPatterns(ArrayList<String> patterns) {
+		this.patterns = patterns;
+	}
+	
+	public void addPattern(String pattern) {
+		patterns.add(pattern);
+	}
+
+	/**
+	 * @return the unions
+	 */
+	public String getUnions() {
+		return unions;
+	}
+
+	/**
+	 * @param unions the unions to set
+	 */
+	public void setUnions(String unions) {
+		this.unions = unions;
+	}	
 }

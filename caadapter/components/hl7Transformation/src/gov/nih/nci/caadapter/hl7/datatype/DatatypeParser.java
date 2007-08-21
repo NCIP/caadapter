@@ -16,6 +16,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -30,10 +31,10 @@ import org.w3c.dom.Node;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-13 15:53:02 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-21 03:54:50 $
  */
 
 public class DatatypeParser {
@@ -129,11 +130,31 @@ public class DatatypeParser {
 				Hashtable attributes = currentDatatype.getAttributes();
 				
 				Iterator pAttrIt = pAttributes.keySet().iterator();
+
+				//Process attributes
 				while (pAttrIt.hasNext()) {
 					Attribute pAttribute = (Attribute)pAttributes.get(pAttrIt.next());
 					if (attributes.get(pAttribute.getName()) == null) {
 						currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
 					}
+				}
+				//Process patterns
+				if (!datatype.getUnions().equals(""))
+				{
+					String unions = datatype.getUnions();
+					StringTokenizer st = new StringTokenizer(unions);
+					while (st.hasMoreTokens()) {
+					   String union = st.nextToken();
+					   Datatype uDT = ((Datatype)datatypes.get(parentDatatypeString));
+					   if (uDT!=null)
+					   {
+						   if (uDT.getPatterns().size()>0) {
+							   for(String p:uDT.getPatterns()) {
+								   datatype.addPattern(p);
+							   }
+						   }
+					   }
+					} 
 				}
 				
 				datatypes_check.put(currentDatatypeString,COMPLETE);
@@ -160,6 +181,9 @@ public class DatatypeParser {
 	    		   Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
 	    		   if (attr.isValid())
 	    			   System.out.format("%-30s,%s","    attribute: " + attr.getName(), "type = " + attr.getType() + "\n");
+	    	   }
+	    	   for(String p:datatype.getPatterns()) {
+		    	   System.out.println("      Pattern: " + p);
 	    	   }
 	       }
 	    }
