@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.20 2007-08-20 20:41:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.21 2007-08-21 15:49:37 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,8 +77,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.20 $
- *          date        $Date: 2007-08-20 20:41:49 $
+ *          revision    $Revision: 1.21 $
+ *          date        $Date: 2007-08-21 15:49:37 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -254,7 +254,6 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				rtnNode.add(buildMIFAssociationNode(mifAssc));
 			}
 		}
-		System.out.println("NewHSMBasicNodeLoader.buildMIFClassNode()..:resolvedChoices\n"+mifClass.getSortedChoices());
 		return rtnNode;
 	}
 	private DefaultMutableTreeNode buildMIFAssociationNode(MIFAssociation mifAssc)
