@@ -49,7 +49,7 @@
 		</jar>
 	</target>
 
-	<target name="compile" depends="init" description="compile the source">
+	<target name="compile" depends="init,unzipDownloadedJar" description="compile the source">
 
         <javac destdir="${module.build.dir}"                
                 classpathref="module.class.path"
@@ -59,7 +59,7 @@
 		</javac>
 	</target>
 
-	<target name="init" depends="unzipDownloadedJar">
+	<target name="init">
 		<echo message="-------- initialize ${module.name}  --------"/>
 		<mkdir dir="${module.build.dir}"/>
 		<mkdir dir="${module.dist.dir}"/>
