@@ -17,14 +17,18 @@
 	<property name="module.conf.dir" value="${ui.module.home}/conf"/>
 	<property name="module.etc.dir" value="${ui.module.home}/etc"/>
 	<property name="module.src.dir" value="${ui.module.home}/src"/>
+    <property name="download.jar.location" value="${basedir}/lib"/>
 
-	<!-- Define project properties !-->
+    <!-- Define project properties !-->
 	<property name="caadapter.project.lib.dir" value="${ui.module.home}/../../lib"/>
 	<property name="caadapter.project.dist.dir" value="${ui.module.home}/../../dist"/>
 
 
 	<path id="module.class.path">
-		<fileset dir="${module.lib.dir}">
+        <fileset dir="${download.jar.location}">
+			<include name="**/*.jar"/>
+		</fileset>
+        <fileset dir="${module.lib.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
@@ -130,7 +134,6 @@
 	<target name="clean">
 		<echo message="-------- clean ${module.name}  --------"/>
 		<delete dir="${module.build.dir}"/>
-		<delete dir="${module.dist.dir}"/>
-		<delete dir="${module.gencode.dir}"/>
+		<delete dir="${module.dist.dir}"/> 		
 	</target>
 </project>
