@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.12 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.13 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.12 2007-08-17 20:12:05 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.13 2007-08-22 14:27:06 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -245,8 +245,6 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 //        centerFunctionPanel.add(transformBut);
         _dbCon.addActionListener(this);
         westpanel.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
-        System.out.println("+--------------------------------- "+((Rectangle)_dbCon.getBounds()).getHeight());
-        System.out.println("+--------------------------------- "+((Rectangle)_dbCon.getBounds()).getWidth());
         //centerFunctionPanel.add(placeHolderLabel, BorderLayout.EAST);
         middleContainerPanel.add(westpanel, BorderLayout.NORTH);
         // middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
@@ -773,6 +771,10 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/08/17 20:12:05  jayannah
+ * added a new image for QBAddButtons
+ * Reduced the height for viewing the 3 buttons in the center panel
+ *
  * Revision 1.11  2007/08/17 15:55:52  jayannah
  * Reformatted, the source file and enabled the button when the user cancelled the action
  *
