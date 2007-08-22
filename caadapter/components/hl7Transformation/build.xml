@@ -43,10 +43,10 @@
 			<include name="**/*.zip"/>
 		</fileset>
 		<fileset dir="${caadapter.project.lib.dir}">
-					<include name="**/*.jar"/>
-					<include name="**/*.zip"/>
-					<exclude name="caAdapter.jar"/>
-				</fileset>
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+			<exclude name="caAdapter.jar"/>
+		</fileset>
 		<fileset dir="${caadapter.project.dist.dir}">
 			<include name="**/*.jar"/>
 		<include name="**/*.zip"/>
