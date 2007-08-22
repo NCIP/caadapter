@@ -92,7 +92,19 @@
             <fileset dir="${build.dir}"/>
             <fileset dir="${config.dir}"/>
         </jar>
+        <echo message="create caadapterSrc.zip"/>
+
+		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
+			excludes="**/*.class, build/**, dist/**, gencode/**, referenceLib/**">
+		</zip>		  
+
     </target>
+
+<target name="zip.test">
+<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
+			excludes="**/*.class, build/**, **/dist/**, gencode/**, referenceLib/**">
+		</zip>	
+</target>
 
     <target name="webstart" depends="jar.all">
         <echo message="------- cleaning webstart deploy directory ------"/>
