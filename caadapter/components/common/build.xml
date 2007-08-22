@@ -22,6 +22,7 @@
 	<property name="module.gencode.name" value="gencode"/>
 
 	<!-- Define project properties !-->
+	<property name="caadapter.project.lib.dir" value="${common.module.home}/../../lib"/>
 	<property name="caadapter.project.schema.dir" value="${common.module.home}/../../etc"/>
 	<property name="caadapter.project.dist.dir" value="${common.module.home}/../../dist"/>
 	<property name="caadapter.project.conf.dir" value="${common.module.home}/../../conf"/>
@@ -51,9 +52,14 @@
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
+		<fileset dir="${caadapter.project.lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
 		<fileset dir="${caadapter.project.ref.lib.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
+			<exclude name="caAdapter.jar"/>
 		</fileset>
 	</path>
 
