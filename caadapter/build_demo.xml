@@ -38,8 +38,11 @@
 
 	<target name="demo.zip"  depends="demo.ui.jar" >
         <delete file="./lib/sqleonardo.jar"/>
-        <delete dir="./lib/deletethisfolder.jar"/>               
-        <zip destfile="releaseCaadapter.zip">
+        <delete dir="./lib/deletethisfolder.jar"/>  
+        <tstamp>
+		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
+        </tstamp>
+        <zip destfile="caadapter4_0_Bin_${DATE}.zip">
             <zipfileset dir="." />
 		</zip>
     </target>
