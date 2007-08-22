@@ -1,5 +1,9 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
+import edu.stanford.ejalbert.BrowserLauncher;
+import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
+import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
+import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
@@ -17,7 +21,6 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -30,8 +33,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-08-16 19:39:46 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-08-22 15:01:24 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     /**
@@ -44,7 +47,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.8 2007-08-16 19:39:46 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.9 2007-08-22 15:01:24 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -183,14 +186,37 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         return retAry;
     }
 
-    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out) {
+    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out) {        
+        try {
+            nickyb.sqleonardo.querybuilder.QueryBuilder.getDefaultLocale();
+        } catch (Error e) {
+            Object[] options = {"Open Instructions page..", "Cancel..."};
+            int n = JOptionPane.showOptionDialog(mainFrame, "This module is missing the JAR file and unable to continue further processing \n" +
+                    "To download the jar file, please refer to the instructions", "Missing SQLeonardo.jar file...",
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+            if (n == 0) {
+                try {
+                    BrowserLauncher.openURL("https://cabig.nci.nih.gov/tools/caAdapter");
+                    return;
+                } catch (UnsupportedOperatingSystemException e1) {
+                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (BrowserLaunchingExecutionException e1) {
+                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (BrowserLaunchingInitializingException e1) {
+                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            } else {
+                return;
+            }
+        }
         final Dialog d = new Dialog(mainFrame, "SQL Query", true);
         final ArrayList tempArray;
         (new Thread() {
             public void run() {
                 try {
                     new MainDataViewerFrame(((Database2SDTMMappingPanel) mappingPanel).isOpenDBmap(), d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut());
-                } catch (SQLException e) {
+                } catch (Exception e) {
+                    d.dispose();
                     JOptionPane.showMessageDialog(mainFrame, e.getMessage().toString(), "Could not open the Querybuilder", JOptionPane.ERROR_MESSAGE);
                 }
                 d.dispose();
@@ -212,4 +238,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/08/16 19:39:46  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
