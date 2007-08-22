@@ -26,6 +26,7 @@
 	<property name="caadapter.project.dist.dir" value="${common.module.home}/../../dist"/>
 	<property name="caadapter.project.conf.dir" value="${common.module.home}/../../conf"/>
 	<property name="caadapter.project.gencode.dir" value="${common.module.home}/../../${module.gencode.name}"/>
+	<property name="caadapter.project.ref.lib.dir" value="${hl7.module.home}/../../referenceLib"/>
 
 	<!-- Define genCode parameters !-->
 	<property name="common.config.xml" value="${module.conf.dir}/config-dev.xml"/>
@@ -50,10 +51,14 @@
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
+		<fileset dir="${caadapter.project.ref.lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
 	</path>
 
 	<path id="castor.gencode.path">
-		<pathelement location="${module.lib.dir}/castor-0.9.9.jar"/>
+		<pathelement location="${caadapter.project.ref.lib.dir}/castor-0.9.9.jar"/>
 		<pathelement location="${module.lib.dir}/commons-logging-1.0.4.jar"/>
 		<pathelement location="${module.lib.dir}/xercesImpl.jar"/>
 	</path>

@@ -21,7 +21,8 @@
 	<property name="caadapter.project.schema.dir" value="${hl7.module.home}/../../etc"/>
 	<property name="caadapter.project.dist.dir" value="${hl7.module.home}/../../dist"/>
 	<property name="caadapter.project.conf.dir" value="${hl7.module.home}/../../conf"/>
-
+	<property name="caadapter.project.ref.lib.dir" value="${hl7.module.home}/../../referenceLib"/>
+	
 	<property name="module.conf.dir" value="${hl7.module.home}/conf"/>
 	<property name="module.etc.dir" value="${hl7.module.home}/etc"/>
 	<property name="module.src.dir" value="${hl7.module.home}/src"/>
@@ -51,10 +52,14 @@
 			<include name="**/*.jar"/>
 		<include name="**/*.zip"/>
 		</fileset>
+		<fileset dir="${caadapter.project.ref.lib.dir}">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+		</fileset>
 	</path>
 
 	<path id="castor.gencode.path">
-		<pathelement location="${module.lib.dir}/castor-0.9.9.jar"/>
+		<pathelement location="${caadapter.project.ref.lib.dir}/castor-0.9.9.jar"/>
 		<pathelement location="${module.lib.dir}/commons-logging-1.0.4.jar"/>
 		<pathelement location="${module.lib.dir}/xercesImpl.jar"/>
 	</path>
