@@ -37,8 +37,10 @@
 	</target -->
 
 	<target name="demo.zip"  depends="demo.ui.jar" >
-		<zip destfile="releaseCaadapter.zip">
-			<zipfileset dir="." />
+        <delete file="./lib/sqleonardo.jar"/>
+        <delete dir="./lib/deletethisfolder.jar"/>               
+        <zip destfile="releaseCaadapter.zip">
+            <zipfileset dir="." />
 		</zip>
     </target>
 

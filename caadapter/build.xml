@@ -7,21 +7,24 @@
     </description>
 
     <!-- Define project properties !-->
+
     <property name="project.name" value="caAdapter"/>
-    <property name="project.ref.lib.dir" value="${basedir}/referenceLib" />
+    <property name="project.ref.lib.dir" value="${basedir}/referenceLib"/>
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="config.dir" value="${basedir}/conf"/>
     <property name="docs.dir" value="${basedir}/docs"/>
     <property name="project.jar.name" value="caAdapter.jar"/>
-    <property name="project.deploy.root1" value="L:\caAdapter\releases\caAdapter v4.0\2007-08-21"/>
-    <property name="project.deploy.root" value="c:\distBin\test2007-08-21"/>
+    <property name="project.deploy.root1" value="L:\caAdapter\releases\caAdapter v4.0\${DATE}"/>
+    <property name="project.deploy.root" value="c:\distBin\test_${DATE}"/>
     <property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
     <property name="webstart.config.files" value="${basedir}/etc/webstart"/>
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
     <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
     <property name="webserver" value="http://localhost:8080/caadapter-mms/"/>
+    <property file="mail.properties"/>
+    
 
     <property name="signjar.alias" value="myAlias"/>
     <property name="signjar.storepass" value="saic123"/>
@@ -66,11 +69,11 @@
             <fileset dir="${dataview.module.home}/build"/>
             <fileset dir="${sdtm.module.home}/build"/>
             <fileset dir="${ui.module.home}/build"/>
-            <fileset dir="${lib.dir}" />
+            <fileset dir="${lib.dir}"/>
         </copy>
         <!-- "${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar" -->
-        <delete file="${lib.dir}\delete.jar"/>
-        <delete dir="${lib.dir}\deletethisfolder.jar"/>
+        <!--delete file="${lib.dir}\delete.jar"/>
+        <delete dir="${lib.dir}\deletethisfolder.jar"/-->
 
         <copy todir="${build.dir}">
             <fileset dir="${ui.module.home}/resources">
@@ -161,9 +164,9 @@
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
-	
-	<!-- target name="demo.dist"  -->    
-    <target name="demo.dist" >
+
+    <!-- target name="demo.dist"  -->
+    <target name="demo.dist">
         <!-- ant antfile="build_demo.xml" target="demo.ui.jar"/ -->
 
         <delete dir="${project.deploy.root}/lib"/>
@@ -174,7 +177,7 @@
                 <exclude name="*.zip, *.jar"/>
             </fileset>
             <fileset dir="${project.ref.lib.dir}">
-			      	<exclude name="*.zip, *.jar"/>
+                <exclude name="*.zip, *.jar"/>
             </fileset>
         </copy>
 
@@ -189,32 +192,45 @@
     </target>
 
     <target name="dist.prepare" depends="copy.modules.lib">
-         <echo message="build demo_ui.jar...."/>
-		 <copy  tofile="${dist.dir}/build.xml" flatten="true">
-			<path>
-					<pathelement path="build_demo.xml"/>
-			</path>
-		 </copy>
-		 <copy  todir="${dist.dir}" flatten="true">
-		 			<path>
-		 					<pathelement path="run.bat"/>
-		 			</path>
-		 </copy>
-		<mkdir dir="dist/conf"/>
-		<copy todir="/dist/conf">
-		 		<fileset dir="${config.dir}">
-		 	         <include name="*.properties"/>
-		        </fileset>
+
+        <echo message="build demo_ui.jar...."/>
+        <copy tofile="${dist.dir}/build.xml" flatten="true">
+            <fileset file="build_demo.xml"></fileset>
+            <!-- path>
+				<pathelement path="build_demo.xml"/>
+			</path-->
         </copy>
+        <copy todir="${dist.dir}" flatten="true">
+            <fileset file="run.bat"></fileset>
+            <!-- path>
+                                <pathelement path="run.bat"/>
+                        </path-->
+        </copy>
+        <mkdir dir="dist/conf"/>
+        <copy todir="/dist/conf">
+            <fileset dir="${config.dir}">
+                <include name="*.properties"/>
+            </fileset>
+        </copy>
+
+        <!-- delete file="${lib.dir}\delete.jar"/>
+        <delete dir="${lib.dir}\deletethisfolder.jar"/ -->
+
     </target>
 
-	<target name="demo.jar">
-         <echo message="build demo_ui.jar...."/>
-		 <ant antfile="build_demo.xml" target="compile.demo"/>
+    <target name="demo.jar">
+        <echo message="build demo_ui.jar...."/>
+        <ant antfile="build_demo.xml" target="compile.demo"/>
         <echo message="Call Generating castor CODE...."/>
         <ant antfile="build_demo.xml" target="demo.ui.jar"/>
     </target>
     <target name="copy.modules.lib">
+        <!-- deleting the folder deletethisfolder.jar and just copying the sqleonardo,jar as /lib/sqleonardo.jar so that
+        it exists in the manifest file-->
+        <copy tofile="${basedir}/lib/sqleonardo.jar">
+            <fileset file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1/**.jar"/>
+        </copy>
+        <delete dir="${basedir}/lib/deletethisfolder.jar"/>
         <!-- delete dir="${lib.dir}"/ -->
         <copy todir="${dist.dir}/lib">
             <fileset dir="${common.module.home}/lib"/>
@@ -265,6 +281,10 @@
 
     <target name="init" depends="clean">
         <echo message="-------- initialize ${project.name}  --------"/>
+        <tstamp>
+            <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
+        </tstamp>
+
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
 
