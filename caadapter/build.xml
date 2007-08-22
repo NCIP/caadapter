@@ -299,7 +299,7 @@
 
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
-
+    	<mkdir dir="./referenceLib"/>
         <ant antfile="${common.module.build}" target="init"/>
         <!--		<ant antfile="${hl7.module.build}" target="init"/> -->
         <ant antfile="${mms.module.build}" target="init"/>
