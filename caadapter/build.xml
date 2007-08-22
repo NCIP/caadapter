@@ -95,14 +95,14 @@
         <echo message="create caadapterSrc.zip"/>
 
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-			excludes="**/*.class, build/**, dist/**, gencode/**, referenceLib/**">
+			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
 		</zip>		  
 
     </target>
 
 <target name="zip.test">
 <zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-			excludes="**/*.class, build/**, **/dist/**, gencode/**, referenceLib/**">
+			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
 		</zip>	
 </target>
 
@@ -239,10 +239,10 @@
     <target name="copy.modules.lib">
         <!-- deleting the folder deletethisfolder.jar and just copying the sqleonardo,jar as /lib/sqleonardo.jar so that
         it exists in the manifest file-->
-        <copy tofile="${basedir}/lib/sqleonardo.jar">
+        <!-- copy tofile="${basedir}/lib/sqleonardo.jar">
             <fileset file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1/**.jar"/>
-        </copy>
-        <delete dir="${basedir}/lib/deletethisfolder.jar"/>
+        </copy -->
+        <!-- delete dir="${basedir}/lib/deletethisfolder.jar"/ -->
         <!-- delete dir="${lib.dir}"/ -->
         <copy todir="${dist.dir}/lib">
             <fileset dir="${common.module.home}/lib"/>
