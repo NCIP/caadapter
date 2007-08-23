@@ -32,10 +32,10 @@ import org.w3c.dom.Node;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-21 21:15:28 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-23 17:57:53 $
  */
 
 public class DatatypeParser {
@@ -330,7 +330,7 @@ public class DatatypeParser {
 		datatypeParser.populateDatatypes();
 		//		datatypeParser.printDatatypes(true, false);
 		datatypeParser.printDatatypes(false, false);
-		datatypeParser.saveDatatypes("c:/temp/datatypes");
+		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
 		
 /*		DatatypeParser datatypeParser = new DatatypeParser();
 		datatypeParser.loadDatatypes();

@@ -25,10 +25,10 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * The class load a MIF document into the MIF class object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-05-16 20:20:59 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-23 17:57:40 $
  */
 
 public class CMETInfoParser {
@@ -113,7 +113,7 @@ public class CMETInfoParser {
 		CMETInfoParser cmetInfoParser = new CMETInfoParser();
 		cmetInfoParser.parseCMETInfo("T:/YeWu/Edition2006/mif/cmetinfo.coremif");
 		cmetInfoParser.printCMETInfo();
-//		cmetInfoParser.saveCMETInofs("c:/temp/cmetInfos");
+		cmetInfoParser.saveCMETInofs("C:/temp/serializedMIF/resource/cmetInfos");
 //		CMETInfoParser cmetInfoParser = new CMETInfoParser();
 //		cmetInfoParser.loadCMETInofs();
 //		cmetInfoParser.printCMETInfo();
