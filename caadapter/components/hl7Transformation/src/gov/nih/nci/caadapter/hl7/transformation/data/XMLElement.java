@@ -26,8 +26,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-21 04:12:34 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-23 20:32:06 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -70,7 +70,7 @@ public class XMLElement implements Cloneable{
 	 * @param value the value of the attribute
 	 */
 	public void addAttribute(String name, String value, String datatype) {
-		System.out.println("name" + name + " type:"+datatype);
+//		System.out.println("name" + name + " type:"+datatype);
 		Attribute attribute = new Attribute();
 		attribute.setName(name);
 		attribute.setValue(value);
