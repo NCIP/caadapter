@@ -41,10 +41,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.21 $
- *          date        $Date: 2007-08-20 20:40:19 $
+ *          revision    $Revision: 1.22 $
+ *          date        $Date: 2007-08-23 20:31:25 $
  */
 
 public class MapProcessor {
@@ -601,13 +601,16 @@ public class MapProcessor {
 //  					System.out.println(scsXmlPath);
     					if (data.get(scsXmlPath) == null) { //inverse relationship
     						CSVField csvField = findCSVField(csvSegment, scsXmlPath);
-    						if (csvField.getValue().equals("")) {
-    							if (attr.getDefaultValue()!=null)
-    								xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
-    						}
-    						else {
-    							xmlElement.setHasUserMappedData(true);
-    							xmlElement.addAttribute(attributeName, csvField.getValue(), attr.getType());
+    						if (csvField != null)
+    						{
+    							if (csvField.getValue().equals("")) {
+    								if (attr.getDefaultValue()!=null)
+    									xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType());
+    							}
+    							else {
+    								xmlElement.setHasUserMappedData(true);
+    								xmlElement.addAttribute(attributeName, csvField.getValue(), attr.getType());
+    							}
     						}
     					}
     					else {
@@ -762,7 +765,8 @@ public class MapProcessor {
 
     private CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-    	CSVSegment current = csvSegment.getParentSegment();
+//    	CSVSegment current = csvSegment.getParentSegment();
+    	CSVSegment current = csvSegment;
     	while (true) {
     		if (current.getXmlPath().equals(targetSegmentXmlPath)) {
     			for(CSVField csvField:current.getFields()) {
@@ -772,6 +776,8 @@ public class MapProcessor {
     		current = current.getParentSegment();
     		if (current == null) {
     			System.out.println("Error");
+    			System.out.println("csvSegment="+csvSegment.getXmlPath());
+    			System.out.println("target="+targetXmlPath);
     	    	return null;
     			/*
     			 * TODO throw error
@@ -897,6 +903,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.21  2007/08/20 20:40:19  wangeug
+ * HISTORY      : process choice; fix bug of indefinite loop
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2007/08/13 20:16:02  wuye
  * HISTORY      : fixed the extra xml elements
  * HISTORY      :
