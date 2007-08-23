@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultHSMTreeMutableTreeNode.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultHSMTreeMutableTreeNode.java,v 1.2 2007-08-23 17:54:15 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,8 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+
 
 /**
  * This class defines a customized tree node used in HSM tree manipulation.
@@ -41,18 +43,45 @@ package gov.nih.nci.caadapter.ui.common.tree;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-23 17:54:15 $
  */
 public class DefaultHSMTreeMutableTreeNode extends DefaultMappableTreeNode
 {
+	private MIFClass rootMif=null;
+	/**
+	 * Default constructor to create root MIFClass tree node
+	 * @param userObject
+	 * @param allowsChildren
+	 */
 	public DefaultHSMTreeMutableTreeNode(Object userObject, boolean allowsChildren)
 	{
+		this(userObject, allowsChildren, null);
+	}
+	/**
+	 * Construct a tree node given root MIFClass
+	 * @param userObject valid objects include MIFClass, MIFAssociation, MIFAttribute
+	 * @param allowsChildren
+	 * @param rootClass
+	 */
+	public DefaultHSMTreeMutableTreeNode(Object userObject, boolean allowsChildren, MIFClass rootClass)
+	{
 		super(userObject, allowsChildren);
+		rootMif=rootClass;
+	}
+	
+	public MIFClass getRootMif() {
+		return rootMif;
+	}
+	public void setRootMif(MIFClass rootMif) {
+		this.rootMif = rootMif;
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
