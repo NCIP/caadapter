@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.21 2007-08-21 15:49:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.22 2007-08-23 17:56:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,12 +44,14 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
 import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
-import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
+//import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -77,8 +79,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.21 $
- *          date        $Date: 2007-08-21 15:49:37 $
+ *          revision    $Revision: 1.22 $
+ *          date        $Date: 2007-08-23 17:56:05 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -93,7 +95,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	private boolean complexTypeEnabled=false;
 	private boolean treeEditable=false;
 	private boolean newSpecificationFlag=false;
-	
+	private MIFClass rootMIFClass=null;
 	public NewHSMBasicNodeLoader(boolean editableFlag)
 	{
 		this (editableFlag,false);
@@ -114,7 +116,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		isMappingTree=true;
 		TreeNode realRoot=loadData(o);
-		DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
+//		DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
+		DefaultTargetTreeNode node = new DefaultTargetTreeNode("Target Tree", true);
 		node.add((MutableTreeNode) realRoot);
 		return node; 
 	}
@@ -122,10 +125,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	public TreeNode loadData(Object o)
 	{
 		DefaultMutableTreeNode root = null;
-		MIFClass rootMif=null;
 		if(o instanceof MIFClass)
 		{
-			rootMif = (MIFClass) o;
+			rootMIFClass = (MIFClass) o;
 		}
 		else if (o instanceof File)
 		{
@@ -136,13 +138,13 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				if (file.getName().endsWith(".xml"))
 				{
 					XmlToMIFImporter mifImport=new XmlToMIFImporter();
-					rootMif=mifImport.importMifFromXml(file);
+					rootMIFClass=mifImport.importMifFromXml(file);
 				}
 				else
 				{
 				fis = new FileInputStream ((File)o);
 				ObjectInputStream ois = new ObjectInputStream(fis);
-	        	rootMif = (MIFClass)ois.readObject();
+				rootMIFClass = (MIFClass)ois.readObject();
 	    		ois.close();
 	    		fis.close();
 				}
@@ -158,15 +160,18 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			}
         	
 		}
-		if (rootMif!=null)
-			root = buildObjectNode(rootMif);
+		if (rootMIFClass!=null)
+			root = buildObjectNode(rootMIFClass, null);
 		else
 			Log.logError(this, "Unable to intialized tree root with object:"+o.toString());
 		return root;
 	}
 		
-	public DefaultMutableTreeNode buildObjectNode(Object objToLoad)
+	public DefaultMutableTreeNode buildObjectNode(Object objToLoad, MIFClass treeNodeRootMIF)
 	{
+		if (treeNodeRootMIF!=null)
+			rootMIFClass=treeNodeRootMIF;
+		
 		DefaultMutableTreeNode rtnNode=null;
 		if (objToLoad instanceof MIFClass)
 			rtnNode=buildMIFClassNode((MIFClass)objToLoad);
@@ -186,7 +191,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	
 	private DefaultMutableTreeNode buildMIFClassNode(MIFClass mifClass)
 	{
-		DefaultMutableTreeNode rtnNode =new DefaultMutableTreeNode(mifClass);	
+		DefaultMutableTreeNode rtnNode =constructTreeNodeBasedOnTreeType(mifClass,true);	
 		if(!mifClass.getSortedChoices().isEmpty())
 		{
 			HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
@@ -197,13 +202,10 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					//load the choice and resolve internal reference
 					if (!choiceClass.getReferenceName().equals(""))
 					{
-						//loading the referenced MIF class from CMET
-						Log.logInfo(this, choiceClass.getTraversalName() +" ...load CMET Reference:"+choiceClass.getReferenceName());
-						CMETRef cmetRef = CMETUtil.getCMET(choiceClass.getReferenceName());
-						if (cmetRef != null) 
+						MIFClass referencedMifClass =this.loadReferenceMIFClass(choiceClass.getReferenceName(), null);
+						if (referencedMifClass != null) 
 						{
 							//there is not "traversalName" issue to load the CMET class for a choice item
-							MIFClass referencedMifClass =loadCMETClassWithMIF(cmetRef.getFilename() + ".mif", null);
 							referencedMifClass.setChoiceSelected(choiceClass.isChoiceSelected());
 							referencedMifClass.setTraversalName(choiceClass.getTraversalName());
 							referencedMifClass.setSortKey(choiceClass.getSortKey());
@@ -256,6 +258,55 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		}
 		return rtnNode;
 	}
+	
+	private MIFClass loadReferenceMIFClass(String refClassName, Hashtable asscRefTraversalNames)
+	{
+		MIFClass rtnMif=null;
+		if (refClassName.equals(rootMIFClass.getName()))
+		{
+			//resolve reference with root MIFClass
+
+				try {
+					String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(rootMIFClass.getMessageType());
+					Log.logInfo(this, "Resolving referenece:"+refClassName);
+					rtnMif=(MIFClass)MIFParserUtil.getMIFClass(refClassMIFFileName).clone();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
+//				rtnMif.setReferenceLevel(1);
+		}
+		else
+		{
+			//loading the referenced MIF class from CMET
+			CMETRef cmetRef = CMETUtil.getCMET(refClassName);
+			if (cmetRef != null) 
+			{
+				String cmetMifName=cmetRef.getFilename() + ".mif";
+				Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
+				rtnMif = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();			
+			}
+			else
+			{
+				Log.logError(this, "Not Found..:"+refClassName);				
+			}
+		}
+//		set traversal name with 
+		if (rtnMif!=null&&asscRefTraversalNames!=null)
+		{
+			if(rtnMif.getChoices()==null
+					||rtnMif.getChoices().isEmpty())
+				Log.logInfo(this, "No choice classes needs to set..:"+rtnMif);
+			else
+			{
+				for(MIFClass refChoice:rtnMif.getSortedChoices())
+				{
+					refChoice.setTraversalName((String)asscRefTraversalNames.get(refChoice.getName()));
+				}
+			}
+		}
+		return rtnMif;
+	}
 	private DefaultMutableTreeNode buildMIFAssociationNode(MIFAssociation mifAssc)
 	{
 		MIFClass asscMifClass=mifAssc.getMifClass();
@@ -263,22 +314,13 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		if (treeEditable)
 		{
 			//load reference class
-			if(!asscMifClass.getReferenceName().equals(""))
+			String asscMIFClassRefName=asscMifClass.getReferenceName();
+			if(!asscMIFClassRefName.equals(""))
 			{
-				//loading the referenced MIF class from CMET
-				Log.logInfo(this, "load CMET Reference:"+asscMifClass.getReferenceName());
-				CMETRef cmetRef = CMETUtil.getCMET(asscMifClass.getReferenceName());
-				if (cmetRef != null) 
-				{
-					MIFClass referencedMifClass = loadCMETClassWithMIF(cmetRef.getFilename() + ".mif",
-											mifAssc.getParticipantTraversalNames());
-					mifAssc.setMifClass(referencedMifClass);
-				}
-				else
-				{
-
-					Log.logError(this, "Not Found..:"+asscMifClass.getReferenceName());				
-				}
+				MIFClass referedMifClass=loadReferenceMIFClass(asscMIFClassRefName,mifAssc.getParticipantTraversalNames());
+				if(referedMifClass!=null)
+					mifAssc.setMifClass(referedMifClass);
+				
 			}
 		}
 		childNode=buildMIFClassNode(mifAssc.getMifClass());
@@ -286,26 +328,26 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		return childNode;
 	}
 	
-	private MIFClass loadCMETClassWithMIF(String cmetMifName, Hashtable asscTraversalClassName )
-	{
-		Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
-		MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();
-		//set traversal name with 
-		if (asscTraversalClassName!=null)
-		{
-			if(referencedMifClass.getChoices()==null
-					||referencedMifClass.getChoices().isEmpty())
-				Log.logInfo(this, "No choice classes needs to set..:"+referencedMifClass);
-			else
-			{
-				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
-				{
-					refChoice.setTraversalName((String)asscTraversalClassName.get(refChoice.getName()));
-				}
-			}
-		}
-		return referencedMifClass;
-	}
+//	private MIFClass loadCMETClassWithMIF(String cmetMifName, Hashtable asscTraversalClassName )
+//	{
+//		Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
+//		MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();
+//		//set traversal name with 
+//		if (asscTraversalClassName!=null)
+//		{
+//			if(referencedMifClass.getChoices()==null
+//					||referencedMifClass.getChoices().isEmpty())
+//				Log.logInfo(this, "No choice classes needs to set..:"+referencedMifClass);
+//			else
+//			{
+//				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
+//				{
+//					refChoice.setTraversalName((String)asscTraversalClassName.get(refChoice.getName()));
+//				}
+//			}
+//		}
+//		return referencedMifClass;
+//	}
 	private DefaultMutableTreeNode buildMIFAttributeNode(MIFAttribute mifAttribute)
 	{
 		DefaultMutableTreeNode rtnNode=constructTreeNodeBasedOnTreeType(mifAttribute,true);
@@ -434,7 +476,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		if (isMappingTree)
 			node = new DefaultTargetTreeNode(userObject, allowsChildren);
 		else 
-			node=new DefaultMutableTreeNode(userObject,allowsChildren);
+			node=new DefaultHSMTreeMutableTreeNode(userObject,allowsChildren, rootMIFClass);
 		return node;
 	}
 

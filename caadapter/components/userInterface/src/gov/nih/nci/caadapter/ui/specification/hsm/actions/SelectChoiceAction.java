@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.6 2007-08-20 20:43:26 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
 
@@ -60,8 +61,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-20 20:43:26 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-23 17:54:58 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -76,7 +77,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.6 2007-08-20 20:43:26 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -169,8 +170,9 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     	}
                     	
                     	mifAssc.setChoiceSelected(true);
-                    	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);    	
-                    	DefaultMutableTreeNode  newMIFAsscNode =mifTreeLoader.buildObjectNode(mifAssc);
+                    	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);  
+                    	DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
+                    	DefaultMutableTreeNode  newMIFAsscNode =mifTreeLoader.buildObjectNode(mifAssc,hsmNode.getRootMif());
                     	DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)targetNode.getParent();
                     	int oldAssIndx=parentNode.getIndex(targetNode);
                     	parentNode.remove(targetNode);

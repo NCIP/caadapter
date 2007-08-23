@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.6 2007-08-09 15:27:24 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.wizard.AssociationListWizard;
 
@@ -60,8 +61,8 @@ import java.util.Vector;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-09 15:27:24 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-23 17:54:58 $
  */
 public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 {
@@ -77,7 +78,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.6 2007-08-09 15:27:24 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $";
 
     public static final String ADD_PART_COMMAND_NAME = "Add Address Parts";
     public static final String REMOVE_PART_COMMAND_NAME = "Remove Address Parts";
@@ -180,7 +181,8 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
                 System.out.println("SelectAddressPartsAction.doAction()..addresss datatype isEnabled:"+mifAttr.getDatatype().isEnabled());
                 
                 NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
-                DefaultMutableTreeNode  newAddressNode =mifTreeLoader.buildObjectNode(mifAttr);
+                DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
+                DefaultMutableTreeNode  newAddressNode =mifTreeLoader.buildObjectNode(mifAttr,hsmNode.getRootMif());
             	NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newAddressNode, tree);
             	setSuccessfullyPerformed(true);
             }

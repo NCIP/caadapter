@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.2 2007-08-01 13:27:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.3 2007-08-23 17:54:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -66,7 +66,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.2 2007-08-01 13:27:43 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.3 2007-08-23 17:54:58 wangeug Exp $";
 
     private static final String COMMAND_ENABLE_DATA = "Enable Attribute Field";
     private static final String COMMAND_DISABLE_DATA = "Disable Attribute Field";
@@ -139,7 +139,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
         		else
         		{
         			NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
-        			DefaultMutableTreeNode newTtargetNode = mifTreeLoader.buildObjectNode(mifDt);
+        			DefaultMutableTreeNode newTtargetNode = mifTreeLoader.buildObjectNode(mifDt,null);
         			NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newTtargetNode, tree);        		}       		
         		}
   				((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);

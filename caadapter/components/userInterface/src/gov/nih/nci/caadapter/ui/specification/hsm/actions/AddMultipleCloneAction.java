@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.5 2007-08-15 17:57:00 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.6 2007-08-23 17:54:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
@@ -56,8 +57,8 @@ import java.util.HashSet;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-15 17:57:00 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-23 17:54:58 $
  */
 public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -73,7 +74,7 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.5 2007-08-15 17:57:00 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.6 2007-08-23 17:54:58 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Clone";
     private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -161,8 +162,8 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 
             	if (parentObj instanceof DatatypeBaseObject )
             		clonnedAssc.setParentXmlPath(((DatatypeBaseObject)parentObj).getXmlPath());
-            	
-            	DefaultMutableTreeNode  clonnedMIFAsscNode =mifTreeLoader.buildObjectNode(clonnedAssc);
+            	DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
+            	DefaultMutableTreeNode  clonnedMIFAsscNode =mifTreeLoader.buildObjectNode(clonnedAssc,hsmNode.getRootMif());
             	int oldNodeIndex =parentNode.getIndex(targetNode);
             	parentNode.insert(clonnedMIFAsscNode, oldNodeIndex+exitingAsscCount+1);           	
             	
@@ -196,6 +197,9 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/08/15 17:57:00  wangeug
+ * HISTORY      : add duplicated MIFAssociation(Clone) to chosen MIFClass within a choice group:fix bug
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/03 15:05:14  wangeug
  * HISTORY      : enable the Address attribute field once added
  * HISTORY      :

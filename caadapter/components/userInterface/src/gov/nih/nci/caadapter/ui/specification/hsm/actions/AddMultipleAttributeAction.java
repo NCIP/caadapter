@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.5 2007-08-15 17:56:39 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.6 2007-08-23 17:54:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
 import javax.swing.*;
@@ -57,8 +58,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-15 17:56:39 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-08-23 17:54:58 $
  */
 public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
 {
@@ -74,7 +75,7 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.5 2007-08-15 17:56:39 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.6 2007-08-23 17:54:58 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Attribute";
     private static final Character COMMAND_MNEMONIC = new Character('M');
@@ -156,7 +157,8 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
             	parentMif.addAttribute(mifClonned);
             	
             	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
-            	DefaultMutableTreeNode clonnedAttrNode =mifTreeLoader.buildObjectNode(mifClonned);
+            	DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
+            	DefaultMutableTreeNode clonnedAttrNode =mifTreeLoader.buildObjectNode(mifClonned, hsmNode.getRootMif());
             	int oldNodeIndex =parentNode.getIndex(targetNode);
             	parentNode.insert(clonnedAttrNode, oldNodeIndex+exitingMIFCount+1); 
             	
@@ -176,6 +178,9 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/08/15 17:56:39  wangeug
+ * HISTORY      : add duplicated MIFAttribute to chosen MIFClass within a choice group:fix bug
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/01 13:27:43  wangeug
  * HISTORY      : resolve issues with preliminary test of release 4.0
  * HISTORY      :
