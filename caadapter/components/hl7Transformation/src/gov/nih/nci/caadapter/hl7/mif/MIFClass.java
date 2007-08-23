@@ -24,7 +24,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-08-15 17:54:49 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2007-08-23 17:56:55 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -415,7 +415,7 @@ import java.util.Iterator;
 
 	}
 	public String getNodeXmlName() {
-		if (traversalName!=null)
+		if (traversalName!=null&&!traversalName.equals(""))
 			return traversalName;
 		
 		return this.getName();
@@ -515,5 +515,9 @@ import java.util.Iterator;
 	}
 	public void setTraversalName(String traversalName) {
 		this.traversalName = traversalName;
+	}
+	public String toString()
+	{
+		return getNodeXmlName();
 	}
  }
