@@ -41,10 +41,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.22 $
- *          date        $Date: 2007-08-23 20:31:25 $
+ *          revision    $Revision: 1.23 $
+ *          date        $Date: 2007-08-24 21:14:28 $
  */
 
 public class MapProcessor {
@@ -184,7 +184,7 @@ public class MapProcessor {
 
     		XMLElement xmlElement = new XMLElement();
     		xmlElement.setName(mifClass.getName());
-
+    		xmlElement.setMessageType(mifClass.getMessageType());
     		//Step 1.1 process Choice 
         	if (mifClass.getChoices().size() > 0) { //Handle choice
         		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
@@ -903,6 +903,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.22  2007/08/23 20:31:25  wuye
+ * HISTORY      : Added code to check empty csvField
+ * HISTORY      :
  * HISTORY      : Revision 1.21  2007/08/20 20:40:19  wangeug
  * HISTORY      : process choice; fix bug of indefinite loop
  * HISTORY      :
