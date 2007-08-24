@@ -5,9 +5,11 @@
         caAdapter ANT BUILD SCRIPT
         **************************************************************************
     </description>
-
+    <!-- To enable notification of the email use 
+    	"ant -logger org.apache.tools.ant.listener.MailLogger" or "run.bat"
+    	-->
     <!-- Define project properties !-->
-
+    <property name="logger" value="org.apache.tools.ant.listener.MailLogger"/>
     <property name="project.name" value="caAdapter"/>
     <property name="project.ref.lib.dir" value="${basedir}/referenceLib"/>
     <property name="build.dir" value="${basedir}/build"/>
@@ -23,13 +25,19 @@
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
     <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
     <property name="webserver" value="http://localhost:8080/caadapter-mms/"/>
-    <property file="mail.properties"/>
-    
+
+    <!-- Mailer properties begin-->
+    <property name="MailLogger.from" value="caAdapter.build.notifier"/>
+    <property name="MailLogger.failure.to" value="jayannah@mail.nih.gov,wuye@mail.nih.gov,wangeug@mail.nih.gov,schroedln@mail.nih.gov"/>
+    <property name="MailLogger.mailhost" value="mailfwd.nih.gov"/>
+    <property name="MailLogger.success.to" value="jayannah@mail.nih.gov,wuye@mail.nih.gov,wangeug@mail.nih.gov,schroedln@mail.nih.gov"/>
+    <property name="MailLogger.success.subject" value="Build successful"/>
+    <property name="MailLogger.failure.subject" value="Build failed"/>
+    <property name="MailLogger.success.notify" value="on"/>
 
     <property name="signjar.alias" value="myAlias"/>
     <property name="signjar.storepass" value="saic123"/>
     <property name="signjar.keystore" value="NCICBkey"/>
-
     <property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
 
     <!-- Define dataview module properties !-->
@@ -92,19 +100,7 @@
             <fileset dir="${build.dir}"/>
             <fileset dir="${config.dir}"/>
         </jar>
-        <echo message="create caadapterSrc.zip"/>
-
-		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
-		</zip>		  
-
     </target>
-
-<target name="zip.test">
-<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
-		</zip>	
-</target>
 
     <target name="webstart" depends="jar.all">
         <echo message="------- cleaning webstart deploy directory ------"/>
@@ -239,10 +235,10 @@
     <target name="copy.modules.lib">
         <!-- deleting the folder deletethisfolder.jar and just copying the sqleonardo,jar as /lib/sqleonardo.jar so that
         it exists in the manifest file-->
-        <!-- copy tofile="${basedir}/lib/sqleonardo.jar">
+        <copy tofile="${basedir}/lib/sqleonardo.jar">
             <fileset file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1/**.jar"/>
-        </copy -->
-        <!-- delete dir="${basedir}/lib/deletethisfolder.jar"/ -->
+        </copy>
+        <delete dir="${basedir}/lib/deletethisfolder.jar"/>
         <!-- delete dir="${lib.dir}"/ -->
         <copy todir="${dist.dir}/lib">
             <fileset dir="${common.module.home}/lib"/>
@@ -299,7 +295,7 @@
 
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
-    	<mkdir dir="./referenceLib"/>
+
         <ant antfile="${common.module.build}" target="init"/>
         <!--		<ant antfile="${hl7.module.build}" target="init"/> -->
         <ant antfile="${mms.module.build}" target="init"/>
@@ -324,7 +320,8 @@
     </target>
 
     <target name="build" description="build caadapter">
-        <echo message="-------- clean ${project.name}  --------"/>
+
+        <echo message="-------- clean ${project.name}  --------"/>        
     </target>
 
 
