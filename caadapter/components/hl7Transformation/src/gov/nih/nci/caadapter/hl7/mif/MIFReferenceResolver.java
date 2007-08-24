@@ -50,7 +50,7 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 				 if (referedClass!=null)
 				 {
 					 MIFClass asscRefMifClass=(MIFClass)referedClass.clone();
-					 resolveReference(asscRefMifClass,sender, assc.getParticipantTraversalNames());
+//					 resolveReference(asscRefMifClass,sender, assc.getParticipantTraversalNames());
 					 assc.setMifClass(asscRefMifClass);
 				 }
 				 else
@@ -85,12 +85,12 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 					 Log.logError(sender,"Reference is not resolved..className:"+choiceClass.getName() +"..messageType:"+messageType);
 				 }
 			}
-			resolvedChoices.add(choiceClass);
+			resolvedChoices.add(clsToAdd);
 			if (asscParticipants!=null)
 			{
 				String resolvedTraversalName=asscParticipants.get(choiceClass.getName());
 				if (resolvedTraversalName!=null)
-					choiceClass.setTraversalName(resolvedTraversalName);
+					clsToAdd.setTraversalName(resolvedTraversalName);
 			}
 		}
 		mifClass.setChoice(resolvedChoices);
