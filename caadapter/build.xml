@@ -100,6 +100,11 @@
             <fileset dir="${build.dir}"/>
             <fileset dir="${config.dir}"/>
         </jar>
+    	
+    	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
+		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
+			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
+		</zip>
     </target>
 
     <target name="webstart" depends="jar.all">
