@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.7 2007-07-31 20:53:10 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.8 2007-08-24 21:15:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,6 +39,7 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
+import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -48,8 +49,12 @@ import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
 import gov.nih.nci.caadapter.ui.common.nodeloader.HL7V3MessageLoader;
+import gov.nih.nci.caadapter.ui.common.preferences.CaAdapterPref;
+import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.hl7message.actions.RegenerateHL7V3MessageAction;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
+import gov.nih.nci.caadapter.hl7.validation.HL7V3MessageValidator;
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -69,8 +74,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-07-31 20:53:10 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-24 21:15:54 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -387,14 +392,37 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
         scrollPane.getViewport().remove(outputMessageArea);
 		if(totalNumberOfMessages > 0)
 		{
-//			TransformationResult result = (TransformationResult) mV3MessageList.get(currentCount - 1);
-//			setMessageText(result.getHl7V3MessageText());
 			Object generalMssg= messageList.get(currentCount - 1);
+			String messageValidationLevel=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
 			if (generalMssg instanceof XMLElement)
 			{
-				XMLElement result =(XMLElement)generalMssg;
-				setMessageText(result.toXML().toString());
-				validationMessagePane.setValidatorResults(result.getValidatorResults());
+				XMLElement xmlMsg =(XMLElement)generalMssg;
+				setMessageText(xmlMsg.toXML().toString());
+				System.out.println("HL7MessagePanel.changeDisplay()..validation level:"+messageValidationLevel);
+				ValidatorResults validatorsToShow;
+				if(messageValidationLevel!=null&&
+						!messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0))
+				{
+					//add vocabulary validation
+					xmlMsg.getValidatorResults().addValidatorResults(xmlMsg.validate());
+					validatorsToShow=xmlMsg.getValidatorResults();
+					if(messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2))
+					{	//add xsd validation
+						try {
+							String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(xmlMsg.getMessageType());
+							System.out.println("HL7MessagePanel.changeDisplay()...:add schema validation xsd:"+refClassMIFFileName.replace(".mif", ".xsd"));
+							String xsdFile="C:\\CVS\\caadapter\\etc\\schemas\\multicacheschemas\\COCT_MT010000UV01.xsd";
+							HL7V3MessageValidator h7v3Validator=new HL7V3MessageValidator();
+							h7v3Validator.validate(xmlMsg.toXML().toString(), xsdFile);//"C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
+
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+//						validatorsToShow=h7v3Validator
+					}
+				}
+				validationMessagePane.setValidatorResults(xmlMsg.getValidatorResults());
 			}
 			else if (generalMssg instanceof TransformationResult)
 			{
@@ -402,7 +430,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				setMessageText(hl7ToCsv.getMessageText());
 				validationMessagePane.setValidatorResults(hl7ToCsv.getValidatorResults());
 			}
-			
 		}
 		else
 		{//just clean up
@@ -423,9 +450,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private ValidatorResults processFiles(File dataFile, File mapFile) throws Exception
 	{
     	ValidatorResults validatorResults = null;
-//		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
-//		svc.process(null);
-//		this.setMessageText(svc.getMsgGenerated());
     	dataFileNameField.setText(dataFile.getAbsolutePath());
     	mapFileNameField.setText(mapFile.getAbsolutePath());
     	TransformationService ts=new TransformationService(mapFile, dataFile);
@@ -609,6 +633,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/07/31 20:53:10  wangeug
+ * HISTORY      : display validation result with level and message text
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/07/31 14:27:13  wangeug
  * HISTORY      : enable HL7 V3 to CSV transformation service
  * HISTORY      :

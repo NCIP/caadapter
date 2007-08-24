@@ -18,7 +18,7 @@
 	<!-- feature controlling flag -->
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED" type="String" value="caadapter.hl7.specification.nullflavor.enabled"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED" type="String" value="caadapter.hl7.specification.complextype.enabled"/>
-	
+	<constant name="CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL" type="String" value= "caadapter.hl7.transformation.validation.level";
 	<constant name="CAADAPTER_VERSION" type="String" value="V3.2"/>
     <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="caAdapter_3_2_Final"/>
     <constant name="JDK_VERSION" type="String" value="1.5.0_06"/>
