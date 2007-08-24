@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.7 2007-08-15 17:54:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.8 2007-08-24 21:13:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,33 +49,17 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.7 $
- * @date $$Date: 2007-08-15 17:54:23 $
+ * @version $Revision: 1.8 $
+ * @date $$Date: 2007-08-24 21:13:54 $
  * @since caAdapter v1.2
  */
 
 public class CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
 	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
-    static {
+	static {
         Properties properties = new Properties();
         InputStream fi = null;
-//        try {
-//            fi = CaadapterUtil.class.getClassLoader().getResource("message-types.properties").openStream();
-//            properties.load(fi);
-//
-//            if (properties != null) {
-//                SUPPORTED_MESSAGE_TYPES = properties.getProperty("supported").split(",");
-//                NONPREFIXED_MESSAGE_TYPES = properties.getProperty("nonprefixed").split(",");
-//            }
-//        } catch (Exception ex) {
-//            Log.logException(CaadapterUtil.class, "message-types.properties is not found", ex);
-//        } finally {
-//            if (fi != null) try {
-//                fi.close();
-//            } catch (IOException ignore) {
-//            }
-//        }
         //load caadapter component types to run
         properties=new Properties();
         
@@ -191,6 +175,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/08/15 17:54:23  wangeug
+ * HISTORY      : remove property file "message-types.properties"
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/07/09 13:59:26  wangeug
  * HISTORY      : initila loading hl7 code without "clone"
  * HISTORY      :
