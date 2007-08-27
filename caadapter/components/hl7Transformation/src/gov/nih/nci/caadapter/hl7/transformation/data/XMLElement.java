@@ -24,10 +24,10 @@ import java.util.Vector;
  * The class contains final xml tree for the v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-24 21:14:47 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-27 15:00:14 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -37,6 +37,7 @@ public class XMLElement implements Cloneable{
 	private ArrayList<String> segments = new ArrayList<String>();
 	private ValidatorResults validatorResults = null;
 	private boolean hasUserMappedData = false;
+	private boolean hasDefaultMappedData = false;
 
 	private String messageType;
 	/**
@@ -266,5 +267,17 @@ public class XMLElement implements Cloneable{
 	}
 	public void setMessageType(String messageType) {
 		this.messageType = messageType;
+	}
+	/**
+	 * @return the hasDefaultMappedData
+	 */
+	public boolean hasDefaultMappedData() {
+		return hasDefaultMappedData;
+	}
+	/**
+	 * @param hasDefaultMappedData the hasDefaultMappedData to set
+	 */
+	public void setHasDefaultMappedData(boolean hasDefaultMappedData) {
+		this.hasDefaultMappedData = hasDefaultMappedData;
 	}
 }
