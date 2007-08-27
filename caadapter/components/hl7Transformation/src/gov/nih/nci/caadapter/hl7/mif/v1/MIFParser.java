@@ -15,11 +15,15 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.Hashtable;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
@@ -28,8 +32,8 @@ import org.w3c.dom.Node;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-07 18:07:26 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-27 17:34:06 $
  */
 
 public class MIFParser {
@@ -45,8 +49,11 @@ public class MIFParser {
         	prefix = schemaString.substring(0,schemaString.lastIndexOf(":serializedStaticModel")+1);
         }
         Node child = document.getDocumentElement().getFirstChild();
+        Hashtable<String, String> mifPackageLocation=new Hashtable<String, String>();
         while (child != null) {
-        	if (child.getNodeName().equals(prefix+"ownedEntryPoint")) {
+        	if (child.getNodeName().equals(prefix+"packageLocation"))
+        		mifPackageLocation=MIFParserUtil.getDocumentElementAttributes(child);
+        	else if (child.getNodeName().equals(prefix+"ownedEntryPoint")) {
         		Node ownedEntryPointChild = child.getFirstChild();
         		while (ownedEntryPointChild != null) {
         			if (ownedEntryPointChild.getNodeName().equals(prefix+"specializedClass")) {
@@ -58,6 +65,7 @@ public class MIFParser {
         	}
             child = child.getNextSibling();
         }
+        mifClass.setPackageLocation(mifPackageLocation);
         return true;
 	}
 	

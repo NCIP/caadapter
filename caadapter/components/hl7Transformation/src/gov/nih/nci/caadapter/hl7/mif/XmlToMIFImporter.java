@@ -18,6 +18,7 @@ import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 /**
@@ -25,8 +26,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-08-17 21:28:02 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-08-27 17:34:44 $
  * @since caAdapter v4.0
  */
 
@@ -57,7 +58,39 @@ public class XmlToMIFImporter {
 	{
 		MIFClass rtnMif=new MIFClass();
 		setPrimaryAttributes(rtnMif, elm);
-		List<Element> attrList=elm.getChildren("attribute");
+		//set package location
+		Element packageLoc=null;
+		List allcontents=elm.getContent();
+		for (Object contObj:allcontents)
+		{
+			if (contObj instanceof Element)
+			{
+				Element contElem=(Element)contObj;
+				if (contElem.getName().indexOf("packageLocation")>-1)
+					packageLoc=contElem;
+			}
+			
+		}
+
+		if (packageLoc==null)
+			packageLoc=elm.getChild("packageLocation");
+		System.out.println("XmlToMIFImporter.parserMIFClass()...packageLocation:"+packageLoc);
+		if (packageLoc!=null)
+		{
+			Hashtable<String, String> packageLocation=new Hashtable<String, String>();
+			if (packageLoc.getNamespacePrefix()!=null
+					&&!packageLoc.getNamespacePrefix().equals(""))
+				packageLocation.put("xmlns:"+packageLoc.getNamespacePrefix(),packageLoc.getNamespaceURI());
+			List packageAttrs=packageLoc.getAttributes();
+			for(Object packAttr:packageAttrs)
+			{
+				org.jdom.Attribute jdomAttr=(org.jdom.Attribute)packAttr;
+
+				packageLocation.put(jdomAttr.getName(), jdomAttr.getValue());
+			}
+			rtnMif.setPackageLocation(packageLocation);
+		}
+		List<Element> attrList=(List<Element> )elm.getChildren("attribute");
 		if (!attrList.isEmpty())
 		{
 			for(Element oneElmnt: attrList)

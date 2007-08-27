@@ -15,6 +15,7 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Iterator;
@@ -24,11 +25,12 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2007-08-23 17:56:55 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-08-27 17:34:35 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
 		static final long serialVersionUID = 6L;
+		private Hashtable<String, String> packageLocation = new Hashtable<String, String> ();
 	 private HashSet<MIFAttribute> attributes = new HashSet<MIFAttribute>();
 	 private HashSet<MIFAssociation> associations = new HashSet<MIFAssociation>();
 	 private HashSet<MIFClass> choices = new HashSet<MIFClass>();
@@ -519,5 +521,11 @@ import java.util.Iterator;
 	public String toString()
 	{
 		return getNodeXmlName();
+	}
+	public Hashtable<String, String> getPackageLocation() {
+		return packageLocation;
+	}
+	public void setPackageLocation(Hashtable<String, String> packageLocation) {
+		this.packageLocation = packageLocation;
 	}
  }

@@ -23,6 +23,7 @@ import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import gov.nih.nci.caadapter.common.Log;
@@ -31,8 +32,8 @@ import gov.nih.nci.caadapter.common.Log;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-08-17 21:28:00 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-08-27 17:34:44 $
  * @since caAdapter v4.0
  */
 public class MIFToXmlExporter {
@@ -111,6 +112,28 @@ public class MIFToXmlExporter {
 			return new Element("No_MIFClass_being_defined");
 		Element rtnElm=new Element("class");
 		setPrimaryAttributes(tbBuilt, rtnElm);
+		//set packageLocation
+		Hashtable<String, String> packageLocation=tbBuilt.getPackageLocation();
+		if (packageLocation!=null)	
+		{
+			Element packageLocationElm=new Element("packageLocation");
+			Enumeration pKeys=packageLocation.keys();
+			while ( pKeys.hasMoreElements())
+			{
+				String packageAttrName=(String)pKeys.nextElement();
+				String packageAttrValue=(String)packageLocation.get(packageAttrName);
+				if (packageAttrName.indexOf("xmlns")>-1)
+				{
+					packageLocationElm.setNamespace(Namespace.getNamespace("mif",packageAttrValue));
+					 
+				}
+				else
+					packageLocationElm.setAttribute(packageAttrName,packageAttrValue);		
+			System.out.println("MIFToXmlExporter.buildMIFClassElement()..add attribute:"+ packageAttrName+"="+packageLocation.get(packageAttrName));
+			}
+			 
+			rtnElm.addContent(packageLocationElm);
+		}
 		//add MIFAttibute
 		TreeSet<MIFAttribute> attrSet=tbBuilt.getSortedAttributes();
 		for(MIFAttribute mifAttr:attrSet)
