@@ -4,6 +4,11 @@
  */
 package gov.nih.nci.caadapter.hl7.validation;
 
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
+import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 
@@ -21,12 +26,13 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-31 14:02:07 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-27 04:25:57 $
  */
 
 public class HL7V3MessageValidator {
 	private Validator validator = null;
+    ValidatorResults theValidatorResults = new ValidatorResults();
 	
 	/**
 	 * @param xsdSchema is XSD associated with the HL7 v3 message
@@ -49,11 +55,12 @@ public class HL7V3MessageValidator {
 	/**
 	 * @param xmlString is the HL7 v3 xml string to be validated
 	 */
-	public void validate(String xmlString) {
+	public ValidatorResults validate(String xmlString) {
 
 		if (validator == null) {
-			System.out.println("No validator specified");
-			return;
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Error loading XSD for this Message!"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
 		}
         // 4. Parse the document you want to check.
         ByteArrayInputStream domSource = new ByteArrayInputStream(xmlString.getBytes());  
@@ -62,14 +69,19 @@ public class HL7V3MessageValidator {
         // 5. Check the document
         try {
             validator.validate(source);
-            System.out.println("valid.");
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The HL7 v3 message is valid against xsd file"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
         }
         catch (SAXException ex) {
-            System.out.println("not valid because ");
-            System.out.println(ex.getMessage());
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Not Valid:" + ex.getMessage()});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
         }  
         catch (Exception ex) {
-        	System.out.println(ex.getMessage());
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Unexpected Error:" + ex.getMessage()});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
         }
 
 	}
@@ -78,13 +90,14 @@ public class HL7V3MessageValidator {
 	 * @param xmlString is the HL7 v3 xml string to be validated
 	 * @param xsdSchema is the XSD associated with the HL7 v3 message
 	 */
-	public void validate(String xmlString, String xsdSchema) {
+	public ValidatorResults validate(String xmlString, String xsdSchema) {
 
 		Validator validator = getValidator(xsdSchema);
         
 		if (validator == null) {
-			System.out.println("Not valid");
-			return;
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Error loading XSD for this Message!"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
 		}
         // 4. Parse the document you want to check.
         ByteArrayInputStream domSource = new ByteArrayInputStream(xmlString.getBytes());  
@@ -93,15 +106,20 @@ public class HL7V3MessageValidator {
         // 5. Check the document
         try {
             validator.validate(source);
-            System.out.println("valid.");
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The HL7 v3 message is valid against xsd file"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         }
         catch (SAXException ex) {
-            System.out.println("not valid because ");
-            System.out.println(ex.getMessage());
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Not Valid:" + ex.getMessage()});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
         }  
         catch (Exception ex) {
-        	System.out.println(ex.getMessage());
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Unexpected Error:" + ex.getMessage()});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			return theValidatorResults;
         }
+		return theValidatorResults;
 
 	}
 	private Validator getValidator(String xsdSchema) {
