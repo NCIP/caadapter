@@ -11,6 +11,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -24,10 +25,10 @@ import org.xml.sax.SAXException;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-27 04:25:57 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-27 15:36:24 $
  */
 
 public class HL7V3MessageValidator {
@@ -125,11 +126,13 @@ public class HL7V3MessageValidator {
 	private Validator getValidator(String xsdSchema) {
 		if (validator == null) {
 	        SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-	        
-	        File schemaLocation = new File(xsdSchema);
+	       System.out.println("HL7V3MessageValidator.getValidator()..from stream source");
+//	        File schemaLocation = new File(xsdSchema);
 	        Schema schema=null;
 	        try {
-	        	schema = factory.newSchema(schemaLocation);
+	        	InputStream xsdStream=this.getClass().getClassLoader().getResource(xsdSchema).openStream();
+	 	        StreamSource stSrc=new StreamSource(xsdStream);
+	        	schema = factory.newSchema(stSrc);
 	        }
 	        catch (Exception ex) {
 	        	System.out.println(ex.getMessage());

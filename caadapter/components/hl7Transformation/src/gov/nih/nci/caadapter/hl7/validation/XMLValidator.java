@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/XMLValidator.java,v 1.1 2007-07-03 18:23:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/XMLValidator.java,v 1.2 2007-08-27 15:36:24 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,15 +42,11 @@ import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
-import org.hl7.xml.validator.ValidateXMLSchema;
-import java.util.logging.Logger;
-
 /**
  * Perform XML validations.
  */
 public class XMLValidator extends Validator
 {
-    protected static final Logger LOGGER = Logger.getLogger("gov.nih.nci.caadapter.hl7.validation");
     private String xsd = null;
 
     public XMLValidator(String xmlFilename)
@@ -155,137 +151,4 @@ public class XMLValidator extends Validator
         }
         return result;
     }
-
-    /**
-     * Is this XML document well formed?
-     *
-     * @return true if valid, false if not
-     * @deprecated replaced by validate method
-     */
-    private boolean isWellFormed() throws Exception
-    {
-        return new ValidateXMLSchema().isWellFormedSAX((String) toBeValidatedObject);
-    }
-
-    /**
-     * Is this XML document valid according to this schema?
-     *
-     * @param xml The XML Instance
-     * @param xsd The Schema Definition
-     * @return true if valid, false if not
-     * @deprecated replaced by validate method
-     */
-    private boolean validAgainstSchema(String xml, String xsd)
-    {   //todo: should be depreciated, using validate
-        try
-        {
-            return new ValidateXMLSchema().isValidSAX(xml, xsd);
-        }
-        catch (Exception e)
-        {
-            Log.logException(this, e);
-        }
-        return false;
-    }
-
-    private void checkHeadAndTail(String xml)
-    {
-        String src = xml.trim();
-        if (!src.startsWith("<?")) return;
-        if (!src.endsWith(">")) return;
-        src = src.substring(2);
-        src = src.substring(src.indexOf("<"));
-        int idx = 0;
-        int idx1 = src.indexOf(" ");
-        int idx2 = src.indexOf(">");
-        if (idx1 < 0) return;
-        if (idx2 < 0) return;
-        if (idx1 < idx2) idx = idx1;
-        else idx = idx2;
-        String head = src.substring(1, idx);
-        String tailString = "</" + head + ">";
-        String tail = "";
-        String achar = "";
-        int i = src.length();
-        while(true)
-        {
-            achar = src.substring(i-1, i);
-            tail = achar + tail;
-            if (achar.equals("<")) break;
-            i--;
-        }
-        if (tail.equals(tailString)) return;
-        src = xml.trim() + "\n" + tailString;
-        super.setToBeValidatedObject(src);
-        return;
-    }
-}
-
-
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.20  2006/08/10 20:34:41  umkis
- * HISTORY      : In case of temporary file, file name won't be appeared in spite of a valid file name using FileUtil.isTemporaryFileName(String)
- * HISTORY      :
- * HISTORY      : Revision 1.19  2006/08/10 20:16:27  umkis
- * HISTORY      : small modify - remarks change
- * HISTORY      :
- * HISTORY      : Revision 1.18  2006/08/10 20:13:34  umkis
- * HISTORY      : small modify - remarks change
- * HISTORY      :
- * HISTORY      : Revision 1.17  2006/08/10 20:09:35  umkis
- * HISTORY      : In case of temporary file, file name won't be appeared in spite of valid file name.
- * HISTORY      :
- * HISTORY      : Revision 1.16  2006/08/02 18:44:25  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.15  2006/05/16 16:16:44  umkis
- * HISTORY      : The inserted method 'checkHeadAndTail' is a temporary expedient to aviod from the fatal error caused by not matched head and tail.
- * HISTORY      :
- * HISTORY      : Revision 1.14  2006/01/05 17:14:24  giordanm
- * HISTORY      : remove some hard coded values + move the metamigrator and metamerge over to the test directory.
- * HISTORY      :
- * HISTORY      : Revision 1.13  2006/01/03 19:16:53  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.12  2006/01/03 18:56:26  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.11  2005/12/29 23:06:13  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.10  2005/12/29 15:39:07  chene
- * HISTORY      : Optimize imports
- * HISTORY      :
- * HISTORY      : Revision 1.9  2005/12/21 19:35:34  giordanm
- * HISTORY      : more function rework / overhaul
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/12/15 19:50:43  chene
- * HISTORY      : Collect all schema validation error when parsing the xml
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/11/22 18:13:19  chene
- * HISTORY      : Validate XML Schema now throws SAXException contains column and row number related to this error.
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/11/22 17:53:34  chene
- * HISTORY      : Validate XML Schema now throws SAXException contains column and row number related to this error.
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/11/02 22:36:06  chene
- * HISTORY      : change "\\" to "/"
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/10/26 21:30:10  chene
- * HISTORY      : Clean up e.printStackTrace()
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/10/25 21:49:19  chene
- * HISTORY      : Kludge Fix to add a log at ValidatorResult constructor
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/10/25 20:20:25  chene
- * HISTORY      : Support Schema Location
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/10/21 20:19:59  chene
- * HISTORY      : Created XMLValidator
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/10/21 15:23:11  chene
- * HISTORY      : Clean up ValidateXML.
- * HISTORY      :
- * HISTORY      :
- */
+  }
