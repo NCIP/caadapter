@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.8 2007-08-24 21:15:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.9 2007-08-27 15:05:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.hl7message;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
@@ -74,8 +75,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-24 21:15:54 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-27 15:05:05 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -399,30 +400,29 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				XMLElement xmlMsg =(XMLElement)generalMssg;
 				setMessageText(xmlMsg.toXML().toString());
 				System.out.println("HL7MessagePanel.changeDisplay()..validation level:"+messageValidationLevel);
-				ValidatorResults validatorsToShow;
+				ValidatorResults validatorsToShow=xmlMsg.getValidatorResults();
 				if(messageValidationLevel!=null&&
 						!messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0))
 				{
 					//add vocabulary validation
-					xmlMsg.getValidatorResults().addValidatorResults(xmlMsg.validate());
-					validatorsToShow=xmlMsg.getValidatorResults();
+					validatorsToShow.addValidatorResults(xmlMsg.validate());
 					if(messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2))
 					{	//add xsd validation
 						try {
-							String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(xmlMsg.getMessageType());
-							System.out.println("HL7MessagePanel.changeDisplay()...:add schema validation xsd:"+refClassMIFFileName.replace(".mif", ".xsd"));
-							String xsdFile="C:\\CVS\\caadapter\\etc\\schemas\\multicacheschemas\\COCT_MT010000UV01.xsd";
+//							String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(xmlMsg.getMessageType());
+							
+//							String xsdFile="C:\\CVS\\caadapter\\etc\\schemas\\multicacheschemas\\COCT_MT010000UV01.xsd";
+							String xsdFile=FileUtil.getSchemaFile(xmlMsg.getMessageType());
+							System.out.println("HL7MessagePanel.changeDisplay()...:add schema validation xsd:"+xsdFile);
 							HL7V3MessageValidator h7v3Validator=new HL7V3MessageValidator();
-							h7v3Validator.validate(xmlMsg.toXML().toString(), xsdFile);//"C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
-
+							validatorsToShow.addValidatorResults(h7v3Validator.validate(xmlMsg.toXML().toString(), xsdFile));//"C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-//						validatorsToShow=h7v3Validator
+
 					}
 				}
-				validationMessagePane.setValidatorResults(xmlMsg.getValidatorResults());
+				validationMessagePane.setValidatorResults(validatorsToShow);
 			}
 			else if (generalMssg instanceof TransformationResult)
 			{
@@ -633,6 +633,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/08/24 21:15:54  wangeug
+ * HISTORY      : add hl7 transformation validation level
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/07/31 20:53:10  wangeug
  * HISTORY      : display validation result with level and message text
  * HISTORY      :
