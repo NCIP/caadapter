@@ -41,10 +41,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.24 $
- *          date        $Date: 2007-08-27 18:57:38 $
+ *          revision    $Revision: 1.25 $
+ *          date        $Date: 2007-08-27 20:49:32 $
  */
 
 public class MapProcessor {
@@ -820,7 +820,7 @@ public class MapProcessor {
     	}
     	return csvSegments;
     }
-
+/*
     private CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
 //    	CSVSegment current = csvSegment.getParentSegment();
@@ -836,12 +836,40 @@ public class MapProcessor {
     			System.out.println("Error");
     			System.out.println("csvSegment="+csvSegment.getXmlPath());
     			System.out.println("target="+targetXmlPath);
+    	    	return null;  /*
+    			/*
+    			 * TODO throw error
+    			 */
+/*    		}
+    	}
+    }
+*/  
+        private CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
+    	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
+//    	CSVSegment current = csvSegment.getParentSegment();
+    	CSVSegment current = csvSegment;
+    	while (true) {
+            //System.out.println("CCC1 : " +  current + " : " + csvSegment.getName() + " : " + targetXmlPath);
+            if (current == null) return null;
+            String str = current.getXmlPath();
+            //System.out.println("CCC : " +  current.getName() + str);
+            if (str.equals(targetSegmentXmlPath)) {
+    			for(CSVField csvField:current.getFields()) {
+    				if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
+    			}
+    		}
+    		current = current.getParentSegment();
+    		if (current == null) {
+    			System.out.println("Error");
+    			System.out.println("csvSegment="+csvSegment.getXmlPath());
+    			System.out.println("target="+targetXmlPath);
     	    	return null;
     			/*
     			 * TODO throw error
     			 */
     		}
     	}
+
     }
 
     private CSVField findCSVField(List<CSVSegment> csvSegments, String targetXmlPath) {
@@ -994,6 +1022,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.24  2007/08/27 18:57:38  wuye
+ * HISTORY      : Added validation message for error situations
+ * HISTORY      :
  * HISTORY      : Revision 1.23  2007/08/24 21:14:28  wangeug
  * HISTORY      : set message type to XMLElement
  * HISTORY      :
