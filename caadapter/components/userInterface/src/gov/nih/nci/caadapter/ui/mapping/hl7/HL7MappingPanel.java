@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.6 2007-08-13 15:53:39 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.7 2007-08-27 20:44:26 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -90,21 +90,21 @@ import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.util.Iterator;
 import java.util.Map;
-
+import org.jgraph.graph.GraphModel;
 /**
  * The class is the main panel to construct the UI and initialize the utilities to
  * facilitate mapping functions.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-13 15:53:39 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-27 20:44:26 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.6 2007-08-13 15:53:39 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.7 2007-08-27 20:44:26 umkis Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -112,10 +112,10 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	private static final String SELECT_HMD_TIP = "Select an " + Config.HL7_V3_METADATA_MODULE_NAME;//HL7 v3 Specification";
 
 	private TargetTreeDropTransferHandler targetTreeDropTransferHandler = null;
-	
+
 	private JButton openSourceButton = new JButton(SELECT_SOURCE);
 	private JButton openTargetButton = new JButton(SELECT_TARGET);
-	
+
 	public HL7MappingPanel() throws Exception
 	{
 		this("","calledFromConstructor","");
@@ -131,8 +131,8 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		this.setLayout(new BorderLayout());
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
 		fileSynchronizer = new MappingFileSynchronizer(this);
-		
-		if (!sourceFile.equals("")) 
+
+		if (!sourceFile.equals(""))
 			processOpenSourceTree(new File(sourceFile), false, false);
 
         if ((targetFile == null)||(targetFile.equals(""))) throw new Exception("Empty Target File");
@@ -243,7 +243,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			}
 			else if (SELECT_TARGET.equals(command))
 			{
-				File file = DefaultSettings.getUserInputOfFileFromGUI(this, 
+				File file = DefaultSettings.getUserInputOfFileFromGUI(this,
 //						Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 						//FileUtil.getUIWorkingDirectoryPath(),
 					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
@@ -264,7 +264,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		}
 	}
 
-	
+
 	protected TreeNode loadSourceTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
 		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
@@ -288,7 +288,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			throw new ApplicationException("Unknow Source File Extension:" + absoluteFile,
 				new IllegalArgumentException());
 		}
-		
+
 		return node;
 	}
 
@@ -303,7 +303,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		{
 			// generate GUI nodes from object graph.
 	        try
-	        {       
+	        {
 //	        	HSMMapTargetNodeLoader hl7MapTargetNodeLoader = new HSMMapTargetNodeLoader();
 //				nodes = hl7MapTargetNodeLoader.loadData(metaInfo);
 	        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(false);
@@ -328,7 +328,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	}
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
-	{	
+	{
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
 //		drop target for DnD from source tree.
 		targetTreeDropTransferHandler = new TargetTreeDropTransferHandler(tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
@@ -477,7 +477,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		return validatorResults;
 	}
 
-	 
+
 	public Map getMenuItems(String menu_name)
 	{
 		Action action = null;
@@ -522,21 +522,21 @@ public class HL7MappingPanel extends AbstractMappingPanel
 				action = new gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction(this);
 				contextManager.addClientMenuAction(MenuConstants.CSV_TO_HL7V3, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
 				action.setEnabled(true);
-				
+
 				action = new gov.nih.nci.caadapter.ui.mapping.hl7.actions.GenerateReportAction(this);
-				contextManager.addClientMenuAction(MenuConstants.CSV_TO_HL7V3, MenuConstants.REPORT_MENU_NAME,ActionConstants.GENERATE_REPORT, action);			
+				contextManager.addClientMenuAction(MenuConstants.CSV_TO_HL7V3, MenuConstants.REPORT_MENU_NAME,ActionConstants.GENERATE_REPORT, action);
 				contextManager.addClientMenuAction(MenuConstants.CSV_TO_HL7V3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.GENERATE_REPORT, action);
 				action.setEnabled(true);
-				
-				action = new RefreshMapAction(this);			
+
+				action = new RefreshMapAction(this);
 				contextManager.addClientMenuAction(MenuConstants.CSV_TO_HL7V3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.REFRESH, action);
 				action.setEnabled(true);
-				
+
 				actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_TO_HL7V3, menu_name);
-//		}		
+//		}
 		return actionMap;
 	}
-	
+
 	/**
 	 * return the open action inherited with this client.
 	 */
@@ -622,6 +622,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/08/13 15:53:39  wangeug
+ * HISTORY      : Export MIF class as xml file or read a MIF class from an xml file
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/08/13 15:23:11  wangeug
  * HISTORY      : add new menu:open H3S with "xml" format
  * HISTORY      :
