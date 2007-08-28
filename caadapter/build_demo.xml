@@ -36,20 +36,14 @@
 		</jar>
 	</target -->
 
-	<target name="demo.zip"  depends="demo.ui.jar" >
-        <delete file="./lib/sqleonardo.jar"/>
-        <delete dir="./lib/deletethisfolder.jar"/>  
-        <delete file="./lib/javasig.jar"/> 
-        <!-- delete file="./lib/jgraph.jar"/> 
-        <delete file="./lib/castor-0.9.9.jar"/> 
-        <delete file="./lib/ostermillerutils_1_04_03_for_java_1_4.jar"/ --> 
-        <delete file="./lib/mif.zip"/> 
-        
+	<target name="demo.zip"  depends="demo.ui.jar" >       
         <tstamp>
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
-            <zipfileset dir="." />
+            <zipfileset dir="." excludes="lib/sqleonardo.jar,
+            lib/lib/deletethisfolder.jar,lib/mif.zip" />
+            <!-- to be excluded :lib/castor*, lib/ostermill*, lib/jgraph.jar, -->
 		</zip>
     </target>
 
