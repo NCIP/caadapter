@@ -26,7 +26,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-08-28 18:48:54 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2007-08-28 23:07:47 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -471,6 +471,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		String dmName=getDomainName();
 		if(dmName==null||dmName.equals(""))
 			return dmName;
+		long sTime=System.currentTimeMillis();
 		String oid="";
 		try {
 			oid= FileUtil.findODIWithDomainName(dmName);
@@ -480,6 +481,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
 		return dmName;
 	}
 	/**
