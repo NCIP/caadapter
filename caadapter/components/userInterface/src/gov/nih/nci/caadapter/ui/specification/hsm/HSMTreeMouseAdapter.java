@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.6 2007-08-08 16:38:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.7 2007-08-28 20:45:17 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-08 16:38:29 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-28 20:45:17 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -197,31 +197,33 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 {
                 	validateHSMAction.setEnabled(true);
                 	MIFAssociation mifAssc = (MIFAssociation) userObj;               	
-                    if (MIFUtil.isChoiceAssociation(mifAssc))
+                    
+                	if (mifAssc.getMaximumMultiplicity()!= 1)
                     {
-                    	selectChoiceAction.setEnabled(true);
-                    	//it may be a 0..1 association, but it is allowed
-                		//to duplicate if there is any choice group down stream
-            			 if (mifAssc.getMultiplicityIndex()>0)
-                         {
-                             removeMultipleCloneAction.setEnabled(true);
-                         }
-                         else
-                         	addMultipleCloneAction.setEnabled(true);
-                    }
-                    else 
-                    {
-                    	if (mifAssc.getMaximumMultiplicity()!= 1)
+                        
+                        if (mifAssc.getMultiplicityIndex()>0)
                         {
-                            
-                            if (mifAssc.getMultiplicityIndex()>0)
-                            {
-                                removeMultipleCloneAction.setEnabled(true);
-                            }
-                            else
-                            	addMultipleCloneAction.setEnabled(true);
+                            removeMultipleCloneAction.setEnabled(true);
                         }
+                        else
+                        	addMultipleCloneAction.setEnabled(true);
                     }
+                	else
+                	{
+                		if (MIFUtil.containAssociation(mifAssc))
+                        {
+                        	selectChoiceAction.setEnabled(true);
+                        	//it may be a 0..1 association, but it is allowed
+                    		//to duplicate if there is any choice group down stream
+                			 if (mifAssc.getMultiplicityIndex()>0)
+                             {
+                                 removeMultipleCloneAction.setEnabled(true);
+                             }
+                             else
+                             	addMultipleCloneAction.setEnabled(true);
+                        }                    		
+                	}
+ 
                     //check if add/remove clone Item is required
                     MIFClass asscMifClass=mifAssc.getMifClass();
                     final List<MIFAssociation> asscToAdd= MIFUtil.findAddableAssociation(asscMifClass);

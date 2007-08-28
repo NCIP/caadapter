@@ -21,13 +21,21 @@ public class MIFUtil {
 		return false;
 	}
 	
-	public static boolean isChoiceAssociation(MIFAssociation assc)
+	public static boolean containAssociation(MIFAssociation assc)
 	{
 		MIFClass mifClass=assc.getMifClass();
-		if (mifClass.getChoices().isEmpty())
+		if (mifClass.getAssociations().isEmpty())
 			return false;
-		else
-			return true;
+		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
+		Iterator mifAsscIt=mifAsscs.iterator();
+		while(mifAsscIt.hasNext())
+		{
+			MIFAssociation mifAssc=(MIFAssociation)mifAsscIt.next();
+			if (!mifAssc.getMifClass().getChoices().isEmpty())
+				return true;
+		}
+		
+		return false;
 	}
 	
 	public static List<MIFAssociation> findAddableAssociation(MIFClass mifClass)
