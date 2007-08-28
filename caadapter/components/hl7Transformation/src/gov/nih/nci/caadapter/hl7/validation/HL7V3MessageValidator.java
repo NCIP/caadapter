@@ -11,7 +11,6 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.InputStream;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -27,8 +26,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-27 15:36:24 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-08-28 13:57:04 $
  */
 
 public class HL7V3MessageValidator {
@@ -96,7 +95,7 @@ public class HL7V3MessageValidator {
 		Validator validator = getValidator(xsdSchema);
         
 		if (validator == null) {
-            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Error loading XSD for this Message!"});
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Error loading XSD for this Message!..schema:"+xsdSchema});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 			return theValidatorResults;
 		}
@@ -126,19 +125,16 @@ public class HL7V3MessageValidator {
 	private Validator getValidator(String xsdSchema) {
 		if (validator == null) {
 	        SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-	       System.out.println("HL7V3MessageValidator.getValidator()..from stream source");
-//	        File schemaLocation = new File(xsdSchema);
+	        File schemaLocation = new File(xsdSchema);
 	        Schema schema=null;
 	        try {
-	        	InputStream xsdStream=this.getClass().getClassLoader().getResource(xsdSchema).openStream();
-	 	        StreamSource stSrc=new StreamSource(xsdStream);
-	        	schema = factory.newSchema(stSrc);
-	        }
+	        	schema = factory.newSchema(schemaLocation);
+	        }       
 	        catch (Exception ex) {
-	        	System.out.println(ex.getMessage());
+	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Loading Schema Error:" + ex.getMessage()});
+	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 	        	return null;
 	        }
-	   
 	        validator = schema.newValidator();
 			return validator;
 		}

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.6 2007-08-09 01:56:52 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.7 2007-08-28 13:58:51 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.common.util;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
@@ -52,8 +53,8 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.6 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.7 $
  */
 
 public class FileUtil
@@ -204,12 +205,6 @@ public class FileUtil
         return f.getAbsolutePath();
     }
 
-    public static String getSchemaFile(String messageId) throws FileNotFoundException
-    {
-        //String fileLocation = StringUtils.searchMessageTypeFileName(Config.SCHEMA_LOCATION, messageId, "xsd");
-       return searchMessageTypeFileName( messageId, "xsd");
-    }
-
     /**
      * Copied from javaSig code
      * SInce 2005 Normative Edition, the name convention is changed. It has to following
@@ -233,30 +228,26 @@ public class FileUtil
      * @param fileExtension
      * @return File Name
      */
-  public static String searchMessageTypeFileName(String messageType, String fileExtension)
+  public static String searchMessageTypeSchemaFileName(String messageType, String fileExtension)
         throws FileNotFoundException
   {
-        String schemaFileName = "";
-        URL fileURL = null;
-        File file = null;
-//      String schemaFileName=Config.SCHEMA_LOCATION+messageType+ "." + fileExtension;
-//      URL fileURL= ClassLoader.getSystemResource(schemaFileName);
-//      if (fileURL!=null)
-//    	  return fileURL.getFile();
-
 	  for (int i = -1; i < 100; i++)
       {
           String pad = "";
           if (i < 0) pad = "";
           else pad = i < 10 ? "UV0" + i : "UV" + String.valueOf(i);
-          schemaFileName = Config.SCHEMA_LOCATION+messageType+pad + "." + fileExtension;
+          String schemaFileName = Config.SCHEMA_LOCATION+messageType+pad + "." + fileExtension;
           String schemaFileNamePath=FileUtil.getETCDirPath() + File.separator + schemaFileName;
-          file = new File(schemaFileNamePath);
-          if ((file.exists())&&(file.isFile())) return file.getAbsolutePath();
+          File file = new File(schemaFileNamePath);
+          if ((file.exists())&&(file.isFile()))
+        	  return schemaFileName;
+//        	  return file.getAbsolutePath();
 
-          fileURL= ClassLoader.getSystemResource(schemaFileName);
+          System.out.println("FileUtil.searchMessageTypeSchemaFileName()..search URI");
+          URL fileURL= ClassLoader.getSystemResource(schemaFileName);
           if (fileURL!=null)
-        	  return fileURL.getFile();
+        	  return schemaFileName;
+//        	  return fileURL.getFile();
       }
 	  //Throw exception since file is not found....
       throw new FileNotFoundException("File Directory:" + Config.SCHEMA_LOCATION + " Message Type:" + messageType
@@ -894,6 +885,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/08/09 01:56:52  umkis
+ * add a feature that v2Meta directory creating when search the directory
+ *
  * Revision 1.5  2007/08/08 23:05:48  umkis
  * update getV2DataDirPath()
  *
