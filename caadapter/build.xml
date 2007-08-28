@@ -77,7 +77,7 @@
             <fileset dir="${dataview.module.home}/build"/>
             <fileset dir="${sdtm.module.home}/build"/>
             <fileset dir="${ui.module.home}/build"/>
-            <fileset dir="${lib.dir}"/>
+            <!-- fileset dir="${lib.dir}"/ -->
         </copy>
         <!-- "${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar" -->
         <!--delete file="${lib.dir}\delete.jar"/>
@@ -91,7 +91,9 @@
                 <exclude name="*.html"/>
             </fileset>
         </copy>
-
+        
+        <delete dir="${build.dir}/schemas"/>
+        	
         <delete includeemptydirs="true">
             <fileset dir="${dist.dir}" includes="**/*"/>
         </delete>
@@ -209,15 +211,12 @@
         <echo message="build demo_ui.jar...."/>
         <copy tofile="${dist.dir}/build.xml" flatten="true">
             <fileset file="build_demo.xml"></fileset>
-            <!-- path>
-				<pathelement path="build_demo.xml"/>
-			</path-->
         </copy>
         <copy todir="${dist.dir}" flatten="true">
             <fileset file="run.bat"></fileset>
-            <!-- path>
-                                <pathelement path="run.bat"/>
-                        </path-->
+        </copy>
+    	<copy todir="${dist.dir}/schemas" >
+        	<fileset dir="etc/schemas"/>
         </copy>
         <mkdir dir="dist/conf"/>
         <copy todir="/dist/conf">
