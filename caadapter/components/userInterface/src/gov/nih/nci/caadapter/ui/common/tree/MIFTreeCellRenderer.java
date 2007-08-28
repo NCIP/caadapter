@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.7 2007-08-15 17:55:44 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.8 2007-08-28 21:01:45 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,6 +45,7 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -56,8 +57,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-15 17:55:44 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-28 21:01:45 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -73,7 +74,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.7 2007-08-15 17:55:44 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.8 2007-08-28 21:01:45 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -161,7 +162,8 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				MIFAssociation mifAssc=(MIFAssociation)userObj;
 				String viewName=mifAssc.getName();
 				String viewIndex="";
-				if (mifAssc.getMaximumMultiplicity()!=1
+				if ((mifAssc.getMaximumMultiplicity()!=1
+						||MIFUtil.containChoiceAssociation(mifAssc))
 						&&mifAssc.getMultiplicityIndex()==0)
 				{
 					Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
@@ -198,7 +200,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 					else
 						viewIndex="  [1]";
 				}
-				else if (mifAssc.getMaximumMultiplicity()!=1)
+				else if (mifAssc.getMultiplicityIndex()>0)
 					viewIndex= "  ["+(mifAssc.getMultiplicityIndex()+1) +"]";
 				
 				MIFClass asscMIFClass=mifAssc.getMifClass();

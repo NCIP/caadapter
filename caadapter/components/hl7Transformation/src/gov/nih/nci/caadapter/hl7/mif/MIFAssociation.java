@@ -17,7 +17,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-08-20 20:39:13 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.16 $ date $Date: 2007-08-28 21:01:18 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -193,7 +193,11 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		}
 			
 		if (getMaximumMultiplicity()==1)
-			return viewName;
+		{
+			if(!MIFUtil.containChoiceAssociation(this))
+				return viewName;
+			
+		}
 		
 		String stB="";
 		if (getMultiplicityIndex()<10)

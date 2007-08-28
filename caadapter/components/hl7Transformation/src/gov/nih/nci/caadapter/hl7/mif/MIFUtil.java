@@ -21,7 +21,7 @@ public class MIFUtil {
 		return false;
 	}
 	
-	public static boolean containAssociation(MIFAssociation assc)
+	public static boolean containChoiceAssociation(MIFAssociation assc)
 	{
 		MIFClass mifClass=assc.getMifClass();
 		if (mifClass.getAssociations().isEmpty())
