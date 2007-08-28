@@ -97,20 +97,21 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.9 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.10 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.9 2007-08-10 15:57:39 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.10 2007-08-28 18:36:08 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
 	private static final String SELECT_XMI = "Open XMI file...";
+    private static final String SELECT_XSD = "Open XSD file...";
 
-	private static final String ANNOTATE_XMI = "Tag XMI File";
+    private static final String ANNOTATE_XMI = "Tag XMI File";
 
 	private static final String GENERATE_HBM = "Generate HBM Files";
 	
@@ -155,7 +156,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		JButton openXMIButton = new JButton(SELECT_XMI);
 		sourceLocationPanel.add(openXMIButton, BorderLayout.EAST);
 
-		openXMIButton.setMnemonic('O');
+        openXMIButton.setMnemonic('O');
 		openXMIButton.setToolTipText("Select XMI file...");
 		openXMIButton.addActionListener(this);
 		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
@@ -212,9 +213,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		//JButton annotateXMIButton = new JButton("Tag XMI File");
 		//centerFuncationPanel.add(annotateXMIButton, BorderLayout.WEST);
 		// annotateXMIButton.addActionListener(this);
-		JButton generateHMBButton = new JButton("Generate HBM Files");
+
+        JButton generateHMBButton = new JButton("Generate HBM Files");
 		centerFuncationPanel.add(generateHMBButton, BorderLayout.CENTER);
-		generateHMBButton.addActionListener(this);
+
+        generateHMBButton.addActionListener(this);
 		centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
 		centerFuncationPanel.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
@@ -414,8 +417,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
 
-            System.out.println("Key " + key );
-            System.out.println("Prefix " + PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
+//            System.out.println("Key " + key );
+//            System.out.println("Prefix " + PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
 
             if (key.contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
@@ -538,7 +541,17 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 */
 	protected boolean processOpenSourceTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
-		MetaObject metaInfo = null;
+
+        if( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
+        {
+              PreferenceManager.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View, Logical Model");
+        }
+        if( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null )
+        {
+              PreferenceManager.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View, Data Model");
+        }
+
+        MetaObject metaInfo = null;
 		buildSourceTree(metaInfo, file, isToResetGraph);
 		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo,
 				file);
@@ -756,8 +769,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			
 			System.out.println( "PrimaryKeys = " + primaryKeys );
 			System.out.println( "LazyKeys = " + lazyKeys );
-			
-			myModel.setPrimaryKeys(primaryKeys);
+
+            myModel.setPrimaryKeys(primaryKeys);
 			myModel.setLazyKeys(lazyKeys);
 
             if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
@@ -1196,6 +1209,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.9  2007/08/10 15:57:39  schroedn
+ * HISTORY : New Feature - Preferences to change prefex in XMI
+ * HISTORY :
  * HISTORY : Revision 1.8  2007/08/09 18:14:31  schroedn
  * HISTORY : New Feature - Preferences to change prefex in XMI
  * HISTORY :
