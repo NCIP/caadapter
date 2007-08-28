@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.22 2007-08-23 17:56:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.23 2007-08-28 21:45:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.ui.common.nodeloader;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -79,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.22 $
- *          date        $Date: 2007-08-23 17:56:05 $
+ *          revision    $Revision: 1.23 $
+ *          date        $Date: 2007-08-28 21:45:23 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -328,26 +329,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		return childNode;
 	}
 	
-//	private MIFClass loadCMETClassWithMIF(String cmetMifName, Hashtable asscTraversalClassName )
-//	{
-//		Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
-//		MIFClass referencedMifClass = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();
-//		//set traversal name with 
-//		if (asscTraversalClassName!=null)
-//		{
-//			if(referencedMifClass.getChoices()==null
-//					||referencedMifClass.getChoices().isEmpty())
-//				Log.logInfo(this, "No choice classes needs to set..:"+referencedMifClass);
-//			else
-//			{
-//				for(MIFClass refChoice:referencedMifClass.getSortedChoices())
-//				{
-//					refChoice.setTraversalName((String)asscTraversalClassName.get(refChoice.getName()));
-//				}
-//			}
-//		}
-//		return referencedMifClass;
-//	}
+
 	private DefaultMutableTreeNode buildMIFAttributeNode(MIFAttribute mifAttribute)
 	{
 		DefaultMutableTreeNode rtnNode=constructTreeNodeBasedOnTreeType(mifAttribute,true);
@@ -454,10 +436,15 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				//use user's preference to enable complexType
 				if (usePreference)
 					childAttr.setEnabled(complexTypeEnabled);
+				//force to enable selected attribute for name and address
+				if (CaadapterUtil.getMandatorySelectedAttributes().contains(childDataType.getName()))
+				{	childAttr.setEnabled(true);
+					childAttr.setOptionChosen(true);
+				}
 				childAttr.setSimple(false);
 			}
 		}
-
+	
 		if (MIFUtil.isInlineTextRequired(dtType.getName()))//(CaadapterUtil.getInlineTextAttributes().contains(dtType.getName()))
 		{
 			Attribute inlineText=new Attribute();
@@ -465,6 +452,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			inlineText.setMax(1);
 			inlineText.setMin(1);
 			inlineText.setSimple(true);
+			//always being selected/mandatory
+			inlineText.setOptionChosen(true);
 			dtType.addAttribute(inlineText.getName(),inlineText);
 		}
 			

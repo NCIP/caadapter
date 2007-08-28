@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.8 2007-08-24 21:13:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.9 2007-08-28 21:44:25 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,14 +49,15 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.8 $
- * @date $$Date: 2007-08-24 21:13:54 $
+ * @version $Revision: 1.9 $
+ * @date $$Date: 2007-08-28 21:44:25 $
  * @since caAdapter v1.2
  */
 
 public class CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
 	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
+	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
 	static {
         Properties properties = new Properties();
         InputStream fi = null;
@@ -81,12 +82,20 @@ public class CaadapterUtil {
             	}
              }
             //load datatypes require inlineText
-            String inlineTextTypes=(String)properties.getProperty("caadapter.hl7.attribute.inlinetext.required");
+            String inlineTextTypes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED);
             if (inlineTextTypes!=null)
             {
             	StringTokenizer tk=new StringTokenizer(inlineTextTypes, ",");
             	while(tk.hasMoreElements())
             		INLINETEXT_ATTRIBUTES.add((String)tk.nextElement());
+            }
+            
+            String mandatorySelectedAttributes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_MANDATORY_SELECTED);
+            if (mandatorySelectedAttributes!=null)
+            {
+            	StringTokenizer tk=new StringTokenizer(mandatorySelectedAttributes, ",");
+            	while(tk.hasMoreElements())
+            		MANDATORY_SELECTED_ATTRIBUTES.add((String)tk.nextElement());
             }
                         
         } catch (Exception ex) {
@@ -99,11 +108,7 @@ public class CaadapterUtil {
         }
     }
 
-//    private static String[] SUPPORTED_MESSAGE_TYPES;
-//    private static String[] NONPREFIXED_MESSAGE_TYPES;
-//    private static final String[] HL7_DEFINED_VALUE_STRUCTURE_ATTRIBUTES = new String[] {
-//        "moodCode", "classCode", "typeCode", "determinerCode", "contextControlCode"
-//    };
+
 
     // getters.
     public static final ArrayList getInlineTextAttributes() {
@@ -112,23 +117,10 @@ public class CaadapterUtil {
     public static final ArrayList getAllActivatedComponents() {
         return ACTIVATED_CAADAPTER_COMPONENTS;
     }
-//    public static final String[] getAllSupportedMessageTypes() {
-//        return SUPPORTED_MESSAGE_TYPES;
-//    }
-//    public static String[] getNonPrefixedMessageTypes() {
-//        return NONPREFIXED_MESSAGE_TYPES;
-//    }
-//    public static final String[] getHL7DefinedValueStructureAttributes(){
-//        return HL7_DEFINED_VALUE_STRUCTURE_ATTRIBUTES;
-//    }
 
-//     public static boolean isPrefixed(String messageIdentifier){
-//        if(Arrays.asList(NONPREFIXED_MESSAGE_TYPES).contains(messageIdentifier)){
-//            return false;
-//        }else{
-//            return true;
-//        }
-//    }
+    public static final ArrayList getMandatorySelectedAttributes() {
+        return MANDATORY_SELECTED_ATTRIBUTES;
+    }
      
      /**
       * Move this method from GeneralUtilities
@@ -175,6 +167,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/08/24 21:13:54  wangeug
+ * HISTORY      : clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/08/15 17:54:23  wangeug
  * HISTORY      : remove property file "message-types.properties"
  * HISTORY      :
