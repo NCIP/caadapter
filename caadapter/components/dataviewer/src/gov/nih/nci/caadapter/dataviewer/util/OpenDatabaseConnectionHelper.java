@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-08-17 15:53:24 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-08-28 14:47:18 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -69,6 +69,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        //todo : this information needs to come from the properties file in the future
         driverInfo.put("Oracle", "jdbc:oracle:thin:@~oracle.jdbc.OracleDriver");
         driverInfo.put("MySql", "jdbc:mysql://~com.mysql.jdbc.Driver");
         _profileConnections = new Hashtable();
@@ -666,6 +667,10 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/08/17 15:53:24  jayannah
+ * cosmetic changes for dialog closing listener
+ * handled the cancel request from the user., previously it was going back and loading the defing xml which is not required
+ *
  * Revision 1.4  2007/08/16 18:53:55  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
