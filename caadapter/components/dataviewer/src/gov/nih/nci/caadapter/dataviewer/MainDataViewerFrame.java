@@ -7,7 +7,6 @@ import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.QBAddButtons;
 import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.dataviewer.util.SDTMDomainLookUp;
-
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
@@ -16,11 +15,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.util.*;
-
-
 
 /**
  * This is data viewer main window. The RDS module calls this class with arguments to
@@ -29,8 +25,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.12 $
+ *          $Date: 2007-08-28 14:44:58 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -147,104 +143,130 @@ public class MainDataViewerFrame {
         1. Called by the opendataviewer helper; during times times when the dataviewer needs to be opened after the mapping is complete;
         2. Called by saveassdtmaction;
      */
-    public MainDataViewerFrame(boolean openDBMap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) {
-        this.columnsForTables = tableColums;
-        this.saveFile = saveFile;
-        this.xmlString = out;
-        this.sqls4Domain = sqlTables;
-        this.transformBut = transFormBut;
-        schema = connectionParams.get("SCHEMA").toString();
-        dataViewerFrame = new JFrame();
-        dataViewerFrame.setLayout(new BorderLayout());
-        tabbedPane = new JTabbedPane();
-        TitledBorder titleTop = BorderFactory.createTitledBorder("SQL Data Panel(s)");
-        tabbedPane.setBorder(titleTop);
-        toolBar = new JToolBar("");
-        qbAddButtons = new QBAddButtons(this);
-        qbAddButtons.addButtons(toolBar);
-        dataViewerFrame.add(toolBar, BorderLayout.PAGE_START);
-        // Add the panes after here
-        dataViewerFrame.addComponentListener(new DialogComponentListener(this));
-        connection = (Connection) connectionParams.get("connection");
-        this.tabsForDomains = table;
-        Enumeration enum1 = table.keys();
-        // Register a change listener
-        while (enum1.hasMoreElements()) {
-            String tmp = enum1.nextElement().toString();
-            String tmp1 = new SDTMDomainLookUp().getDescription(tmp);
-            //Querypanel _qp = new Querypanel(connection, this, schema, tmp);
-            Querypanel _qp = new Querypanel(connection,schema);
-            arrayList.add(_qp);
-            tabbedPane.addTab(tmp + "-" + tmp1, _qp);
-            dataViewerFrame.add(tabbedPane, BorderLayout.CENTER);
-        }
-        tabbedPane.addChangeListener(new TopPaneListener(this));
-        dataViewerFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
-        dataViewerFrame.setSize(1100, 950);
-        dataViewerFrame.setLocation(85, 30);
-        JPanel jp_status = new JPanel();
-        jp_status.setLayout(new BorderLayout());
-        jp_status.add(new JLabel(connectionParams.get("UserID").toString() + "@" + connectionParams.get("URL").toString()), BorderLayout.CENTER);
-        jp_status.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        TextArea _showDefaultValues = new TextArea();
-        _showDefaultValues.setEditable(false);
-        dataViewerFrame.add(jp_status, BorderLayout.SOUTH);
-        dataViewerFrame.setTitle("Data Viewer for caAdapter");
-        dataViewerFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        dataViewerFrame.addWindowListener(new DialogClosingListener(this));
-        dataViewerFrame.setVisible(true);
+    public MainDataViewerFrame(boolean openDBMap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) throws Exception {
         try {
-            _ref.dispose();
-        } catch (Exception e) {
-        }
-        if (sqlTables != null && sqlTables.size() > 0) {
-            String query = (String) sqlTables.get(tabbedPane.getTitleAt(0).substring(0, 2));
-            QueryModel qm = null;
-            try {
-                qm = SQLParser.toQueryModel(query);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            this.columnsForTables = tableColums;
+            this.saveFile = saveFile;
+            this.xmlString = out;
+            this.sqls4Domain = sqlTables;
+            this.transformBut = transFormBut;
+            schema = connectionParams.get("SCHEMA").toString();
+
+            dataViewerFrame = new JFrame();
+            dataViewerFrame.setLayout(new BorderLayout());
+            tabbedPane = new JTabbedPane();
+
+            TitledBorder titleTop = BorderFactory.createTitledBorder("SQL Data Panel(s)");
+            tabbedPane.setBorder(titleTop);
+            toolBar = new JToolBar("");
+            qbAddButtons = new QBAddButtons(this);
+
+            qbAddButtons.addButtons(toolBar);
+            dataViewerFrame.add(toolBar, BorderLayout.PAGE_START);
+            // Add the panes after here
+
+            dataViewerFrame.addComponentListener(new DialogComponentListener(this));
+            connection = (Connection) connectionParams.get("connection");
+            this.tabsForDomains = table;
+            Enumeration enum1 = table.keys();
+            // Register a change listener
+            while (enum1.hasMoreElements()) {
+                String tmp = enum1.nextElement().toString();
+                String tmp1 = new SDTMDomainLookUp().getDescription(tmp);
+                Querypanel _qp = null;
+                try {
+                    _qp = new Querypanel(connection, schema);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                }
+
+                arrayList.add(_qp);
+                tabbedPane.addTab(tmp + "-" + tmp1, _qp);
+                dataViewerFrame.add(tabbedPane, BorderLayout.CENTER);
             }
-            ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().setQueryModel(qm);
-        } else {
-            ArrayList tableList = (ArrayList) this.getTabsForDomains().get(tabbedPane.getTitleAt(0).substring(0, 2));
-            for (int i = 0; i < tableList.size(); i++) {
-                StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
-                String schema = temp.nextElement().toString();
-                String table1 = temp.nextElement().toString();
-                ((Querypanel) this.get_aryList().get(0)).loadTables(schema, table1);
-            }
+            tabbedPane.addChangeListener(new TopPaneListener(this));
+            dataViewerFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+            dataViewerFrame.setSize(1100, 950);
+            dataViewerFrame.setLocation(85, 30);
+            JPanel jp_status = new JPanel();
+            jp_status.setLayout(new BorderLayout());
+            jp_status.add(new JLabel(connectionParams.get("UserID").toString() + "@" + connectionParams.get("URL").toString()), BorderLayout.CENTER);
+            jp_status.setBorder(new BevelBorder(BevelBorder.LOWERED));
+            TextArea _showDefaultValues = new TextArea();
+            _showDefaultValues.setEditable(false);
+            dataViewerFrame.add(jp_status, BorderLayout.SOUTH);
+            dataViewerFrame.setTitle("Data Viewer for caAdapter");
+            dataViewerFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            dataViewerFrame.addWindowListener(new DialogClosingListener(this));
+            dataViewerFrame.setVisible(true);
             try {
-                String query = ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().getQueryModel().toString().toUpperCase();
-                String returnedQuery = new CaDataViewHelper().processColumns(tabbedPane.getTitleAt(0).substring(0, 2), query, this.getSaveFile());
-                final QueryModel qm2 = SQLParser.toQueryModel(returnedQuery);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().setQueryModel(qm2);
+                _ref.dispose();
+            } catch (Exception e) {
+            }
+            if (sqlTables != null && sqlTables.size() > 0) {
+                String query = (String) sqlTables.get(tabbedPane.getTitleAt(0).substring(0, 2));
+                QueryModel qm = null;
+                try {
+                    qm = SQLParser.toQueryModel(query);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                }
+                ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().setQueryModel(qm);
+            } else {
+                ArrayList tableList = (ArrayList) this.getTabsForDomains().get(tabbedPane.getTitleAt(0).substring(0, 2));
+                for (int i = 0; i < tableList.size(); i++) {
+                    StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
+                    String schema = temp.nextElement().toString();
+                    String table1 = temp.nextElement().toString();
+                    try {
+                        ((Querypanel) this.get_aryList().get(0)).loadTables(schema, table1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw e;
                     }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
+                }
+                try {
+                    String query = ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().getQueryModel().toString().toUpperCase();
+                    String returnedQuery = new CaDataViewHelper().processColumns(tabbedPane.getTitleAt(0).substring(0, 2), query, this.getSaveFile());
+                    final QueryModel qm2 = SQLParser.toQueryModel(returnedQuery);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().setQueryModel(qm2);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+            this.get_alreadyFilled().add(new Integer(0));
+            if (openDBMap) {
+                qbAddButtons.getSaveButton().setEnabled(true);
+                setSQLStmtSaved(true);
+                Enumeration en = sqlTables.keys();
+                while (en.hasMoreElements()) {
+                    String domainName = (String) en.nextElement();
+                    sqlSaveHashMap.put(domainName, sqlTables.get(domainName));
+                }
             }
         }
-        this.get_alreadyFilled().add(new Integer(0));
-        if (openDBMap) {
-            qbAddButtons.getSaveButton().setEnabled(true);
-            setSQLStmtSaved(true);
-            Enumeration en = sqlTables.keys();
-            while (en.hasMoreElements()) {
-                String domainName = (String) en.nextElement();
-                sqlSaveHashMap.put(domainName, sqlTables.get(domainName));
-            }
+        catch (Exception eee) {
+            eee.printStackTrace();
         }
     }
 }
 
 /**
-   Change History
-   $Log: not supported by cvs2svn $
-   Revision 1.10  2007/08/16 18:13:26  jayannah
-   Change history log test
+ Change History
+ $Log: not supported by cvs2svn $
+ Revision 1.11  2007/08/16 18:53:55  jayannah
+ Reformatted and added the Comments and the log tags for all the files
+
+ Revision 1.10  2007/08/16 18:13:26  jayannah
+ Change history log test
 
 
  */
