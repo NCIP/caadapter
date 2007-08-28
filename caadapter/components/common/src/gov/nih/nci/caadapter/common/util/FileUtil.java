@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.7 2007-08-28 13:58:51 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.8 2007-08-28 14:24:04 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,8 +34,16 @@
 
 package gov.nih.nci.caadapter.common.util;
 
-import java.io.*;
-import java.net.URI;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.FileReader;
+import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
@@ -54,7 +62,7 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 
 public class FileUtil
@@ -242,8 +250,6 @@ public class FileUtil
           if ((file.exists())&&(file.isFile()))
         	  return schemaFileName;
 //        	  return file.getAbsolutePath();
-
-          System.out.println("FileUtil.searchMessageTypeSchemaFileName()..search URI");
           URL fileURL= ClassLoader.getSystemResource(schemaFileName);
           if (fileURL!=null)
         	  return schemaFileName;
@@ -885,6 +891,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/08/28 13:58:51  wangeug
+ * remove schemas folder from caAdapter.jar and set it under root directory: xxxx.xsd use relative path as "include"
+ *
  * Revision 1.6  2007/08/09 01:56:52  umkis
  * add a feature that v2Meta directory creating when search the directory
  *
