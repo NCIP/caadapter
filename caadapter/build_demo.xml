@@ -40,9 +40,9 @@
         <delete file="./lib/sqleonardo.jar"/>
         <delete dir="./lib/deletethisfolder.jar"/>  
         <delete file="./lib/javasig.jar"/> 
-        <delete file="./lib/jgraph.jar"/> 
+        <!-- delete file="./lib/jgraph.jar"/> 
         <delete file="./lib/castor-0.9.9.jar"/> 
-        <delete file="./lib/ostermillerutils_1_04_03_for_java_1_4.jar"/> 
+        <delete file="./lib/ostermillerutils_1_04_03_for_java_1_4.jar"/ --> 
         <delete file="./lib/mif.zip"/> 
         
         <tstamp>
