@@ -103,6 +103,7 @@
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
 		</zip>
+    	<antcall target="dist.prepare" />
     </target>
 
     <target name="webstart" depends="jar.all">
