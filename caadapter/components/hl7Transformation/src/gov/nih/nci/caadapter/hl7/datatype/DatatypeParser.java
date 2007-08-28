@@ -32,10 +32,10 @@ import org.w3c.dom.Node;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-23 17:57:53 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-28 22:30:20 $
  */
 
 public class DatatypeParser {
@@ -86,7 +86,33 @@ public class DatatypeParser {
         }
         return true;
 	}
-
+	public void populateUnion(Datatype datatype) {
+		if (datatype.getUnions()!= null)
+		{
+//			System.out.println("Unions for:"+datatype.getName());
+			String unions = datatype.getUnions();
+			StringTokenizer st = new StringTokenizer(unions);
+			while (st.hasMoreTokens()) {
+			   String union = st.nextToken();
+			   Datatype uDT = ((Datatype)datatypes.get(union));
+			   if (uDT!=null)
+			   {
+				   
+				   if (uDT.getPatterns().size()>0) {
+					   for(String p:uDT.getPatterns()) {
+						   datatype.addPattern(p);
+					   }
+				   }
+				   
+				   for (String enumValue:(HashSet<String>)getEnums(union))
+				   {
+					   datatype.addPredefinedValue(enumValue);
+				   }
+			   }
+			} 
+		}
+		
+	}
 	public void populateDatatypes() {
 		Hashtable datatypes_check = new Hashtable();
 		Stack<String> processingStack = new Stack(); 
@@ -96,31 +122,16 @@ public class DatatypeParser {
 			String datatypeString = (String)datatypeCheckIt.next();
 			Datatype datatype = (Datatype)datatypes.get(datatypeString);
 			if (datatype.isSimple()) {
-				datatypes_check.put(datatypeString, COMPLETE);
 				//Process patterns
 				
 //				System.out.println("Unions for:"+datatype.getName()+ " -- unions"+ datatype.getUnions());
 				if (datatype.getUnions()!= null)
 				{
 //					System.out.println("Unions for:"+datatype.getName());
-					String unions = datatype.getUnions();
-					StringTokenizer st = new StringTokenizer(unions);
-					while (st.hasMoreTokens()) {
-					   String union = st.nextToken();
-					   Datatype uDT = ((Datatype)datatypes.get(union));
-					   if (uDT!=null)
-					   {
-						   if (uDT.getPatterns().size()>0) {
-							   for(String p:uDT.getPatterns()) {
-								   datatype.addPattern(p);
-							   }
-						   }
-						   for (String enumValue:(HashSet<String>)getEnums(union))
-						   {
-							   datatype.addPredefinedValue(enumValue);
-						   }
-					   }
-					} 
+					datatypes_check.put(datatypeString, NONCOMPLETE);
+				}
+				else {
+					datatypes_check.put(datatypeString, COMPLETE);					
 				}
 
 			}
@@ -143,32 +154,73 @@ public class DatatypeParser {
 			processingStack.push(datatypeString);
 			
 			while (processingStack.size() > 0) {
+				boolean restart = false;
 				String currentDatatypeString = processingStack.pop();
 				Datatype currentDatatype = (Datatype)datatypes.get(currentDatatypeString);
-				String parentDatatypeString = currentDatatype.getParents();
-//				System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
-				if ((Integer)datatypes_check.get(parentDatatypeString) == NONCOMPLETE) {
-					processingStack.push(currentDatatypeString);
-					processingStack.push(parentDatatypeString);
-					continue;
-				}
-				
-				Datatype parentDatatype = (Datatype)datatypes.get(parentDatatypeString);
-				
-				Hashtable pAttributes = parentDatatype.getAttributes();
-				Hashtable attributes = currentDatatype.getAttributes();
-				
-				Iterator pAttrIt = pAttributes.keySet().iterator();
-
-				//Process attributes
-				while (pAttrIt.hasNext()) {
-					Attribute pAttribute = (Attribute)pAttributes.get(pAttrIt.next());
-					if (attributes.get(pAttribute.getName()) == null) {
-						currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
+				if (currentDatatype.isSimple())
+				{
+					String unions = currentDatatype.getUnions();
+					StringTokenizer st = new StringTokenizer(unions);
+					while (st.hasMoreTokens()) {
+					   String union = st.nextToken();
+					   Datatype uDT = ((Datatype)datatypes.get(union));
+					   if (uDT!=null)
+					   {
+						   if ((Integer)datatypes_check.get(union) == NONCOMPLETE)
+						   {
+								processingStack.push(currentDatatypeString);
+								processingStack.push(union);
+								restart = true;
+								break;
+						   }
+						   if (uDT.getPatterns().size()>0) {
+							   for(String p:uDT.getPatterns()) {
+								   currentDatatype.addPattern(p);
+							   }
+						   }
+						   
+						   for (String enumValue:(HashSet<String>)getEnums(union))
+						   {
+							   currentDatatype.addPredefinedValue(enumValue);
+						   }
+					   }
+					}
+					if (restart) 
+					{
+						restart=false;
+						continue;
+					}
+					else {
+						datatypes_check.put(currentDatatypeString,COMPLETE);
 					}
 				}
-				
-				datatypes_check.put(currentDatatypeString,COMPLETE);
+				else 
+				{
+					String parentDatatypeString = currentDatatype.getParents();
+//					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
+					if ((Integer)datatypes_check.get(parentDatatypeString) == NONCOMPLETE) {
+						processingStack.push(currentDatatypeString);
+						processingStack.push(parentDatatypeString);
+						continue;
+					}
+
+					Datatype parentDatatype = (Datatype)datatypes.get(parentDatatypeString);
+
+					Hashtable pAttributes = parentDatatype.getAttributes();
+					Hashtable attributes = currentDatatype.getAttributes();
+
+					Iterator pAttrIt = pAttributes.keySet().iterator();
+
+					//Process attributes
+					while (pAttrIt.hasNext()) {
+						Attribute pAttribute = (Attribute)pAttributes.get(pAttrIt.next());
+						if (attributes.get(pAttribute.getName()) == null) {
+							currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
+						}
+					}
+
+					datatypes_check.put(currentDatatypeString,COMPLETE);
+				}
 			}
 		}
 	}
@@ -209,23 +261,7 @@ public class DatatypeParser {
 		HashSet enums = new HashSet();
 		Datatype datatype = (Datatype)datatypes.get(datatypeString);
 		if (datatype == null) return enums; 
-		if (datatype.getUnions()!= null)
-		{
-			String unions = datatype.getUnions();
-			StringTokenizer st = new StringTokenizer(unions);
-			while (st.hasMoreTokens()) {
-			   String union = st.nextToken();
-			   Datatype uDT = ((Datatype)datatypes.get(union));
-			   if (uDT!=null)
-			   {
-				   enums.addAll(getEnums(union));
-			   }
-			}
-			return enums;	
-		}
-		else {
-			return datatype.getPredefinedValues();
-		}
+		return datatype.getPredefinedValues();
 	}
 	/*
 	 * This method will serialize the datatype objects into a file. 
@@ -329,8 +365,8 @@ public class DatatypeParser {
 		ComplexTypeParser.printMeta();
 		datatypeParser.populateDatatypes();
 		//		datatypeParser.printDatatypes(true, false);
-		datatypeParser.printDatatypes(false, false);
-		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
+		datatypeParser.printDatatypes(true, false);
+//		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
 		
 /*		DatatypeParser datatypeParser = new DatatypeParser();
 		datatypeParser.loadDatatypes();
