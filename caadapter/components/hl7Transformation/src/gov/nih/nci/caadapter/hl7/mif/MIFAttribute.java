@@ -6,11 +6,13 @@ package gov.nih.nci.caadapter.hl7.mif;
 
 
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 
 import java.beans.Expression;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -24,7 +26,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-08-14 15:49:17 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-08-28 18:48:54 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -426,7 +428,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("Data Type", beanClass, "getType", null));
 //		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getDefaultValue", null));
 		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "findDefaultValueProperty", null));
-		propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "getDomainName", null));
+		propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "findDomainNameOidProperty", null));
 		propList.add(new PropertyDescriptor("Coding Strength", beanClass, "getCodingStrength", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
@@ -462,6 +464,23 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public String findTypeProperty() {
 		// TODO Auto-generated method stub
 		return "Attribute";
+	}
+	
+	public String findDomainNameOidProperty() {
+		// TODO Auto-generated method stub
+		String dmName=getDomainName();
+		if(dmName==null||dmName.equals(""))
+			return dmName;
+		String oid="";
+		try {
+			oid= FileUtil.findODIWithDomainName(dmName);
+			if (oid!=null&&!oid.equals(""))
+				dmName=dmName+" ("+oid +")";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dmName;
 	}
 	/**
 	 * Use fixedValue as default value if available
