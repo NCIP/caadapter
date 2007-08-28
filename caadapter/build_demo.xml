@@ -27,22 +27,13 @@
 		<map from="${basedir}" to="."/>
 	</pathconvert>
 	
-	<!-- target name="jarcaadapter"  description="create the distribution jars">
-		<jar destfile="caadapterTotal.jar">
-			<fileset dir="dist"
-				excludes="**/Test.class,org/hl7/**"	/>
-			<fileset dir="etc"/>
-			<fileset dir="conf"/>
-		</jar>
-	</target -->
-
 	<target name="demo.zip"  depends="demo.ui.jar" >       
         <tstamp>
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
             <zipfileset dir="." excludes="lib/sqleonardo.jar,
-            lib/lib/deletethisfolder.jar,lib/mif.zip" />
+            lib/lib/deletethisfolder.jar,lib/mif.zip, lib/ant.jar" />
             <!-- to be excluded :lib/castor*, lib/ostermill*, lib/jgraph.jar, -->
 		</zip>
     </target>
@@ -52,15 +43,12 @@
 		<echo message="${distribution.manifest.class.property}"/>
 		<jar destfile="demo_ui.jar">
 			<fileset dir="../build" includes="**/LaunchUI.class"/>
-			<!-- fileset dir="etc"/ -->
-			<!-- fileset dir="conf"/ -->
 			<manifest>
 				<attribute name="Main-Class" value="gov.nih.nci.caadapter.hl7.demo.LaunchUI"/>
 				<attribute name="Class-Path" value=". ./conf/ ${distribution.manifest.class.property}"/>
 			</manifest>
 			</jar>
 	</target>
-
 
 	<target name="compile.demo"  description="compile the source">
 		<javac destdir="../build" 
