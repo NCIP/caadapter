@@ -87,13 +87,9 @@
             <fileset dir="${ui.module.home}/resources">
                 <exclude name="CSV/**"/>
             </fileset>
-            <fileset dir="${basedir}/etc">
-                <exclude name="*.html"/>
-            </fileset>
+            <fileset dir="${basedir}/etc" excludes="*.html, schemas/**"/>
         </copy>
         
-        <delete dir="${build.dir}/schemas"/>
-        	
         <delete includeemptydirs="true">
             <fileset dir="${dist.dir}" includes="**/*"/>
         </delete>
