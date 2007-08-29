@@ -44,8 +44,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.30 $
- *          date        $Date: 2007-08-29 17:55:10 $
+ *          revision    $Revision: 1.31 $
+ *          date        $Date: 2007-08-29 23:10:18 $
  */
 
 public class MapProcessor {
@@ -321,48 +321,51 @@ public class MapProcessor {
     		//Step 4: Process structural attributes
     		for(MIFAttribute mifAttribute:attributes) {
     			if (mifAttribute.isStrutural()) {
-    				if (mifAttribute.getDefaultValue()!=null&&!mifAttribute.getDefaultValue().equals(""))
-    				{
-    					xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    				}
-    				else 
-    				{
-    					if (mifAttribute.getFixedValue()!=null && !mifAttribute.getFixedValue().equals(""))
-    					{
-    						xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		    		String h3sPath = mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName();
+					if (mappings.get(h3sPath)!= null) {
+						String scsPath = mappings.get(h3sPath); 
+						List<CSVField> csvFields = csvSegment.getFields();
+						Hashtable <String, String> data = new Hashtable<String,String>();
+						for (CSVField csvField:csvFields) {
+							data.put(csvField.getXmlPath(),csvField.getValue());
+						}
+    					if (data.get(scsPath) == null) { //inverse relationship
+    						CSVField csvField = csvUtil.findCSVField(csvSegment, scsPath);
+    						if (csvField.getValue().equals("")) {
+	   							processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); ///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
+    							break;
+    						}
+    						else {
+    							hasUserdata.setHasUserMappedData(true);
+    							xmlElement.setHasUserMappedData(true);
+    							xmlElement.addAttribute(mifAttribute.getName(), csvField.getValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
+    						}
     					}
     					else {
-    			    		String scsPath = mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName();
-    						if (mappings.get(scsPath)!= null) {
-    							List<CSVField> csvFields = csvSegment.getFields();
-    							Hashtable <String, String> data = new Hashtable<String,String>();
-    							for (CSVField csvField:csvFields) {
-    								data.put(csvField.getXmlPath(),csvField.getValue());
-    							}
-    	    					if (data.get(scsPath) == null) { //inverse relationship
-    	    						CSVField csvField = csvUtil.findCSVField(csvSegment, scsPath);
-    	    						if (csvField.getValue().equals("")) {
-        	   							processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); ///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
-    	    							break;
-    	    						}
-    	    						else {
-    	    							xmlElement.setHasUserMappedData(true);
-    	    							xmlElement.addAttribute(mifAttribute.getName(), csvField.getValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
-    	    						}
-    	    					}
-    	    					else {
-    	    						if (data.get(scsPath).equals("")) {
-        	   							processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); ///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
-    	    							break;
-    	    						}
-    	    						else {
-    	    							xmlElement.setHasUserMappedData(true);
-    	    							xmlElement.addAttribute(mifAttribute.getName(), data.get(scsPath), null, mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
-    	    						}
-    	    					}
-    						}    						
+    						if (data.get(scsPath).equals("")) {
+	   							processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); ///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
+    							break;
+    						}
+    						else {
+    							xmlElement.setHasUserMappedData(true);
+    							hasUserdata.setHasUserMappedData(true);
+    							xmlElement.addAttribute(mifAttribute.getName(), data.get(scsPath), null, mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
+    						}
     					}
-    				}
+					}
+					else {
+						if (mifAttribute.getDefaultValue()!=null&&!mifAttribute.getDefaultValue().equals(""))
+						{
+							xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+						}
+						else 
+						{
+							if (mifAttribute.getFixedValue()!=null && !mifAttribute.getFixedValue().equals(""))
+							{
+								xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							}
+						}
+					}
     			}
     		}
     		xmlElements.add(xmlElement);
@@ -1055,6 +1058,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.30  2007/08/29 17:55:10  wuye
+ * HISTORY      : Code refactor
+ * HISTORY      :
  * HISTORY      : Revision 1.29  2007/08/29 17:37:09  wuye
  * HISTORY      : Added comments block for packlocation info
  * HISTORY      :
