@@ -43,8 +43,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-08-17 15:16:30 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-08-29 19:35:37 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -83,10 +83,12 @@ public class QBTransformAction {
                             processTransform4SQLStatments(mappingPanel.getSaveFile().getAbsolutePath(), mappingPanel.getDefineXMLLocation(), directory.getAbsolutePath().toString());
                             queryWaitDialog.dispose();
                         } catch (Exception e) {
-                            queryWaitDialog.dispose();
+                            if (queryWaitDialog != null)
+                                queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(mappingPanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         } finally {
                             GetConnectionSingleton.closeConnection();
+                            System.gc(); //call garbage collector just in case to wipe out the references
                         }
                     }
                 }).start();
@@ -112,7 +114,6 @@ public class QBTransformAction {
         This constructor is used by the menu
      */
     public QBTransformAction(final AbstractMainFrame _mainFrame, final String mapFile, final String defineXMLocation, Connection _con) throws Exception {
-        //this(_mainFrame, mappingPanel, "");
         //process _con since it is always null
         if (_con == null) {
             String params = getDBParams(mapFile);
@@ -145,7 +146,8 @@ public class QBTransformAction {
                             queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         } finally {
-                            GetConnectionSingleton.closeConnection();
+                            // todo: Do not close connection here, close only when the panel closes
+                            //GetConnectionSingleton.closeConnection();
                         }
                     }
                 }).start();
@@ -212,18 +214,16 @@ public class QBTransformAction {
                 BufferedWriter out = new BufferedWriter(fstream);
                 //get the query and fire it
                 String query = qb.getHashSQLfromMappings().get(domainName);
-                System.out.println("Query is " + query);
+                //System.out.println("Query is " + query);
                 ResultSet rs = con.createStatement().executeQuery(query);
                 //get all the columns for the 'domainName'
                 ArrayList columns = qb.getHashTableTransform().get(domainName);
+                int sizeOfDomain = ((ArrayList)tempTable.get(domainName)).size();
                 out.write(tempTable.get(domainName).toString().substring(1, tempTable.get(domainName).toString().indexOf(']')));
                 ArrayList domainHeader = (ArrayList) tempTable.get(domainName);
                 //compute the number of commas for each mapped columnvalue and set if the retrieved value is
-                int rsIncrementer = 1;
                 while (rs.next()) {// each row begins here
                     try {
-                        // if(rsIncrementer == 5000)
-                        //     break;
                         int sizeOfEachRow = ((ArrayList) tempTable.get(domainName)).size();
                         ArrayList _tempArray = new ArrayList(sizeOfEachRow + 1);
                         for (int j = 0; j < (sizeOfEachRow + 1); j++) {
@@ -254,11 +254,14 @@ public class QBTransformAction {
                                     _tempArray.add(position, _dataStr);
                                 } catch (Exception e) {
                                     System.out.println("error at " + position);
+                                    throw e;
                                 }
                             }
                         }
-                        out.write("\n" + _tempArray.toString().substring(1, _tempArray.toString().indexOf(']')));
-                        rsIncrementer++;
+                        int index = _tempArray.size();
+                        _tempArray.remove(index - 1);
+                        out.write("\n" + _tempArray.toString().substring(1, _tempArray.toString().indexOf("]")));
+                        //out.write("\n" + _tempArray.toString().substring(1, sizeOfEachRow));
                     } catch (Exception e) {
                         e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
                         continue;
@@ -268,20 +271,26 @@ public class QBTransformAction {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            //System.out.println(e.getLocalizedMessage());
+            throw e;
         }
     }
 
     private ArrayList implementFixedRec(int position, String srcData, ArrayList _tempArray, int fixedsize) throws Exception {
         StringBuffer _setSize;
-        int finalSize = fixedsize - srcData.length();
-        _setSize = new StringBuffer();
-        _setSize.append(srcData);
-        for (int i = 0; i < finalSize; i++) {
-            _setSize.append(" ");
+        if (!(srcData.length() > fixedsize)) {
+            int finalSize = fixedsize - srcData.length();
+            _setSize = new StringBuffer();
+            _setSize.append(srcData);
+            for (int i = 0; i < finalSize; i++) {
+                _setSize.append(" ");
+            }
+            _tempArray.add(position, _setSize.toString());
+            _tempArray.remove(position+1);
+        } else {
+            _tempArray.add(position, srcData.substring(0, fixedsize));
+            _tempArray.remove(position+1);
         }
-        _tempArray.add(position - 1, _setSize.toString());
-        return _tempArray;
+         return _tempArray;
     }
 
     private String fetchCustColNameFromSQLMap(String domainName, String colName) {
@@ -290,7 +299,7 @@ public class QBTransformAction {
     }
 
     private Connection getConnection(AbstractMainFrame _mainFrame, String params, String mapFile) {
-        Connection conn = null;
+        Connection conn;
         QBGetPasswordWindow getPass = new QBGetPasswordWindow(_mainFrame, params, mapFile.toString());
         String pass = getPass.getPassword();
         EmptyStringTokenizer empt = new EmptyStringTokenizer(params, "~");
@@ -342,6 +351,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/08/17 15:16:30  jayannah
+ * added wait window during transformation
+ *
  * Revision 1.7  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
