@@ -26,8 +26,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2007-08-29 05:50:27 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2007-08-29 06:18:31 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -223,13 +223,14 @@ public class XMLElement implements Cloneable{
 			ois.close();
 			is.close();
 			ValidatorResults validatorResults_sub = validate(datatypes, name);
-			if (validatorResults_sub == null) return validatorResults;
-			if (validatorResults_sub.getAllMessages().size() == 0) return validatorResults;
-			validatorResults.addValidatorResults(validatorResults_sub);
+//			if (validatorResults_sub == null) return validatorResults;
+//			if (validatorResults_sub.getAllMessages().size() == 0) return validatorResults;
+//			validatorResults.addValidatorResults(validatorResults_sub);
+			return validatorResults_sub;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return validatorResults;
+		return null;
 	}
 
 	public ValidatorResults validate(Hashtable datatypes, String pXmlPath) {
