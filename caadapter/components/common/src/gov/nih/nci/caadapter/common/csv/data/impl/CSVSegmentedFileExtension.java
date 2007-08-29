@@ -112,17 +112,29 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	 */
 	private CSVSegment createChildSegment (CSVSegment parentSeg, String childSegName)
 	{	
+
 		CSVSegmentMeta newChildMeta=null;
-		for (CSVSegmentMeta childMeta:((CSVSegmentMeta)parentSeg.getMetaObject()).getChildSegments())
+		if (parentSeg==null)
 		{
-			if (childMeta.getName().equals(childSegName))
-				newChildMeta=childMeta;
+			//create root segement
+			newChildMeta=this.csvMeta.getRootSegment();
+		}
+		else
+		{
+			for (CSVSegmentMeta childMeta:((CSVSegmentMeta)parentSeg.getMetaObject()).getChildSegments())
+			{
+				if (childMeta.getName().equals(childSegName))
+					newChildMeta=childMeta;
+			}
 		}
 		CSVSegment newSeg=null;
 		if (newChildMeta!=null)
 		{
 			newSeg=initializeEmptyCsvSegment(newChildMeta);
-			((CSVSegmentExtension)parentSeg).attachDuplicateChildSegment(newSeg);
+			if (parentSeg!=null)
+				((CSVSegmentExtension)parentSeg).attachDuplicateChildSegment(newSeg);
+			else
+				getLogicalRecords().add(newSeg); //add to root
 		}
 
 		return newSeg;
@@ -177,9 +189,11 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	 */
 	private boolean setNewFieldValue(CSVSegment parentSeg, String fieldName, String fieldValue)
 	{
-//		System.out.println("CSVSegmentedFileExtension.setNewFieldValue()..parent:"+parentSeg +"..field:"+fieldName+"..value:"+fieldValue);
+		System.out.println("CSVSegmentedFileExtension.setNewFieldValue()..parent:"+parentSeg +"..field:"+fieldName+"..value:"+fieldValue);
 		boolean rtnValue=false;
 		CSVSegmentExtension segExt=(CSVSegmentExtension)parentSeg;
+		if (parentSeg==null)
+			return rtnValue;
 		CSVFieldExtension fieldExt=(CSVFieldExtension)segExt.getFieldByName(fieldName);
 		if (fieldExt!=null&&!fieldExt.isValueSet())
 		{
