@@ -44,8 +44,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.29 $
- *          date        $Date: 2007-08-29 17:37:09 $
+ *          revision    $Revision: 1.30 $
+ *          date        $Date: 2007-08-29 17:55:10 $
  */
 
 public class MapProcessor {
@@ -58,6 +58,7 @@ public class MapProcessor {
     private Hashtable <String, List<CSVSegment>> csvSegmentHash= new Hashtable <String, List<CSVSegment>>();
     MIFClass mifClass;
     private MapProcessorHelper mapHelper = null;
+    private MapProcssorCSVUtil csvUtil = null;
 
     // Class variables used during processing.
     List<XMLElement> resultsArray = null;
@@ -77,6 +78,7 @@ public class MapProcessor {
         this.mifClass = mifClass;
         this.functions = functions;
         MapProcessorHelper mapProcessorHelper = new MapProcessorHelper();
+        csvUtil = new MapProcssorCSVUtil();
 
         this.resultsArray = new ArrayList<XMLElement>();
 
@@ -84,16 +86,11 @@ public class MapProcessor {
 
         if (logicalRecords.size()==0) 
         {
-        	/**
-        	 * TODO
-        	 * Add a warning message
-        	 */
         	return resultsArray;
         }
         
         mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false, logicalRecords.get(0).getName());
         
-        System.out.println("Total " + logicalRecords.size() + " records");
         // process one CSV source logical record at a time.
         for (int i = 0; i < logicalRecords.size(); i++) {
         	csvSegmentHash = mapProcessorHelper.preprocessCSVSegments(logicalRecords.get(i));
@@ -114,19 +111,14 @@ public class MapProcessor {
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
 	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
 	 */
-    
     private List<XMLElement> processRootMIFclass(MIFClass mifClass, CSVSegment pCsvSegment) throws MappingException,FunctionException {
-
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
-
-//    	if (mifClass.getCsvSegments().size() == 0) return NullXMLElement.NULL;
-
     	List<CSVSegment> csvSegments = null;
 
     	//Step1: find all the csvSegments for attributes
     	if (mifClass.isMapped()) 
     	{
-    		csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    		csvSegments = csvUtil.findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
     	}
     	else {
     		csvSegments = new ArrayList<CSVSegment>();
@@ -154,8 +146,6 @@ public class MapProcessor {
     	}
     	return xmlElements;
     }
-
-    
 	/**
 	 * This method will process a MIFClass object and generate a list of HL7 v3 message objects 
 	 * 
@@ -166,7 +156,6 @@ public class MapProcessor {
 	 */
     
     private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment, boolean forceGeneratePassed, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException,FunctionException {
-
     	boolean forceGenerate = forceGeneratePassed;
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
     	List<XMLElement> choiceXMLElements = new ArrayList<XMLElement>(); 
@@ -178,7 +167,7 @@ public class MapProcessor {
     	//Step1: find all the csvSegments for attributes
     	if (mifClass.isMapped()) 
     	{
-    		csvSegments = findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
+    		csvSegments = csvUtil.findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
     	}
     	else {
     		csvSegments = new ArrayList<CSVSegment>();
@@ -186,7 +175,6 @@ public class MapProcessor {
     	}
 
     	for(CSVSegment csvSegment:csvSegments) {
-
     		XMLElement xmlElement = new XMLElement();
     		xmlElement.setName(mifClass.getName());
     		xmlElement.setMessageType(mifClass.getMessageType());
@@ -201,19 +189,15 @@ public class MapProcessor {
         	    		{
         	    			hasUserdata.setHasUserMappedData(true);
         	    		}
-        	    		if (choiceXMLElements.size()>1) {
-        	    			/**
-        	    			 * Warning message
-        	    			 */
+        	    		if (choiceXMLElements.size()>1) {//Should not happen
         	    		}
         	    		if (choiceXMLElements.size() == 1)
         	    		{
         	    			XMLElement xmlElementsChoice = choiceXMLElements.get(0);
         	    			xmlElement.setAttributes(xmlElementsChoice.getAttributes());
-        	    			xmlElement.addChildren(xmlElementsChoice.getChildren()); ///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        	    			xmlElement.addChildren(xmlElementsChoice.getChildren()); 
         	    		}
         	    	}
-        	    
         		}
         	}
 
@@ -221,10 +205,7 @@ public class MapProcessor {
 
     		//Step2: Process non-structural attributes 
     		//Non-structural attributes are child xmlelements vs structural attributes are attributes to xml elements
-    		
     		for(MIFAttribute mifAttribute:attributes) {
-//    			Log.logInfo(this,"Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
-//    			System.out.println("Process attribute="+mifAttribute.getName()+" in mifclass "+mifClass.getName());
     			if (!mifAttribute.isStrutural()) {
     	    	    MutableFlag mutableFlag = new MutableFlag(false);
     	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
@@ -250,7 +231,7 @@ public class MapProcessor {
     					if (!mutableFlagDefault.hasUserMappedData()) hasDefaultdata.setHasUserMappedData(false);
     				}
     				if (attrXmlElements.size() != 0)
-    					xmlElement.addChildren(attrXmlElements);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    					xmlElement.addChildren(attrXmlElements);
     			}
     		}
 
@@ -264,25 +245,19 @@ public class MapProcessor {
     		List<List<XMLElement>> choiceHolder = new ArrayList<List<XMLElement>>();
     		List<MutableFlag> choiceFlag = new ArrayList<MutableFlag>();
     		for(MIFAssociation mifAssociation : associations) {
-    			System.out.println("Associations:  " + mifAssociation.getXmlPath());
     			boolean canAdd = true;
     			if (MIFUtil.containChoiceAssociation(mifAssociation)&& mifAssociation.getMifClass()!= null) {
-    				System.out.println(mifAssociation.getNodeXmlName());
     				if (mifAssociation.getNodeXmlName().substring(mifAssociation.getNodeXmlName().length()-2).equals("00"))
     				{
     					if (startChoice){ //start a new choice and need to process old choice section
-    						
+    					    process_default_empty_choice(mifAssociation, xmlElement, choiceHolder, choiceFlag, choiceString);
     					}
     					choiceString = mifAssociation.getNodeXmlName().substring(0, mifAssociation.getNodeXmlName().length()-2);
     					startChoice = true;
     					totalChoiceHasData = 0;
     					choiceHolder.clear();
     					choiceFlag.clear();
-    					System.out.println("Start choice");
     					choiceAssociation = mifAssociation;
-    				}
-    				else {
-    					
     				}
     			}
     			else 
@@ -295,7 +270,6 @@ public class MapProcessor {
     					}
     				}
     			}
-//    			System.out.println(mifAssociation.getNodeXmlName());
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
 	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
 	    	    boolean forceGenerateAssociation = (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0); 
@@ -321,7 +295,7 @@ public class MapProcessor {
     				}
     			}
     			if (assoXmlElements.size() != 0&&canAdd)
-    				xmlElement.addChildren(assoXmlElements);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    				xmlElement.addChildren(assoXmlElements);
 				if (mifAssociation.getMaximumMultiplicity() == 1) {
 					if (assoXmlElements.size()>1) {
 			            Message msg = MessageResources.getMessage("RIM5", new Object[]{mifAssociation.getXmlPath(),mifAssociation.getMinimumMultiplicity() + "..1", mifAssociation.getName(),assoXmlElements.size()});
@@ -345,9 +319,6 @@ public class MapProcessor {
 			}
 
     		//Step 4: Process structural attributes
-    		/*
-    		 * TODO: needs to conform with Wendy that structural attributes can not has mappings
-    		 */
     		for(MIFAttribute mifAttribute:attributes) {
     			if (mifAttribute.isStrutural()) {
     				if (mifAttribute.getDefaultValue()!=null&&!mifAttribute.getDefaultValue().equals(""))
@@ -368,9 +339,8 @@ public class MapProcessor {
     							for (CSVField csvField:csvFields) {
     								data.put(csvField.getXmlPath(),csvField.getValue());
     							}
-//    							System.out.println(scsPath);
     	    					if (data.get(scsPath) == null) { //inverse relationship
-    	    						CSVField csvField = findCSVField(csvSegment, scsPath);
+    	    						CSVField csvField = csvUtil.findCSVField(csvSegment, scsPath);
     	    						if (csvField.getValue().equals("")) {
         	   							processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); ///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
     	    							break;
@@ -410,9 +380,6 @@ public class MapProcessor {
     
     private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, boolean choiceFlag, List<XMLElement> choiceXmlElements) throws MappingException,FunctionException {
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
-
-//    	System.out.println("association name:"+mifAssociation.getName());
-
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
     	
     	MIFClass mifClass =null;
@@ -467,7 +434,6 @@ public class MapProcessor {
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
 	 * 		  and data for all Datatypes of the MIFAttribute 
 	 */
-    
     private List<XMLElement> processAttribute(MIFAttribute mifAttribute, CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException,FunctionException{
     	
     	boolean forceGenerate = mifAttribute.getMinimumMultiplicity() > 0;
@@ -475,9 +441,7 @@ public class MapProcessor {
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
     	
-    	/*
-    	 * No mappings
-    	 */
+    	//No mappings
     	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
@@ -526,7 +490,6 @@ public class MapProcessor {
     	
     	if (forceGenerate)
     	{
-//    		System.out.println(mifAttribute.getXmlPath());
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
     		xmlElements  = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), true, mutableFlag, mutableFlagDefault);
@@ -600,8 +563,7 @@ public class MapProcessor {
     			{
     				if (!attr.getDefaultValue().equals(""))
     				{
-    					xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(), null,null);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    					
+    					xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(), null,null);
     				}
     			}
     		}
@@ -609,7 +571,7 @@ public class MapProcessor {
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
     			XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getName(), attr.getName(), mutableFlag);
     			if (attrsXMLElement != null)
-    				xmlElement.addChild(attrsXMLElement);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    				xmlElement.addChild(attrsXMLElement);
     		}
     	}
 //    	if (xmlElement.getAttributes().size()!=0) return xmlElement;
@@ -630,21 +592,16 @@ public class MapProcessor {
     private List<XMLElement> process_datatype(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
     	
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
-    	
     	if (datatype.getCsvSegments() == null)return NullXMLElement.NULL;
-    	
     	if (datatype.getCsvSegments().size()==0) return NullXMLElement.NULL;
-    	
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
-
 
     	//Scenario 1: Inputs are from different siblings
     	if (datatype.getCsvSegments().size() > 1) {    		
     		List<List<CSVSegment>> allListsCSVSegments = new ArrayList<List<CSVSegment>>();
     		
-    		
     		for (String csvS:datatype.getCsvSegments()) {
-    			allListsCSVSegments.add(findCSVSegment(pCsvSegment, csvS));
+    			allListsCSVSegments.add(csvUtil.findCSVSegment(pCsvSegment, csvS));
     		}
     		
     		List <CSVSegment> csvSegmentList = new ArrayList<CSVSegment>();
@@ -716,16 +673,10 @@ public class MapProcessor {
 	 * @xmlName the name that will used to determine the name of XMLElement 
 	 */
     private List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException {
-//    	System.out.println("Process Datatype:"+datatype.getName()+" attribute name"+attrName);
-    	
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
-    	
     	if (datatype.getCsvSegments() == null)return NullXMLElement.NULL;
-    	
     	if (datatype.getCsvSegments().size()==0) return NullXMLElement.NULL;
-    	
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
-
     	List<XMLElement> returnValue = new ArrayList<XMLElement>();
     	
 	    MutableFlag mutableFlag = new MutableFlag(false);
@@ -741,19 +692,14 @@ public class MapProcessor {
 		{
 			hasDefaultdata.setHasUserMappedData(false);
 		}
-	    
 	    return  returnValue;
     }
-    	
-    
-    
 
     private List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
     	
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
-
     	String current = datatype.getCsvSegments().get(0);
-    	List<CSVSegment> csvSegments = findCSVSegment(pCsvSegment, current);
+    	List<CSVSegment> csvSegments = csvUtil.findCSVSegment(pCsvSegment, current);
 
     	for(CSVSegment csvSegment:csvSegments) {
 			XMLElement xmlElement = new XMLElement();
@@ -766,10 +712,6 @@ public class MapProcessor {
     		Hashtable<String, Attribute> attrs = datatype.getAttributes();
     		for(String attributeName:(Set<String>)(attrs.keySet())) {
         		Attribute attr = attrs.get(attributeName);
-
-//        		String test = parentXPath+"."+attr.getName();
-//        		System.out.println(test);
-        		
         		boolean isSimple = false;
         		
         		if (attr.getReferenceDatatype() == null) {
@@ -780,7 +722,6 @@ public class MapProcessor {
         		}
         		if (isSimple) {
     				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
-//    				System.out.println("---------try"+parentXPath+"."+attributeName + " actualdata:"+scsXmlPath);
     				if (scsXmlPath==null) continue;
     				if (scsXmlPath.startsWith("function.")) { //function mapping to target
     					MutableFlag mutableFlag = new MutableFlag(false);
@@ -788,7 +729,7 @@ public class MapProcessor {
     					String datavalue = getFunctionValue(csvSegment,scsXmlPath,data, mutableFlag, mutableFlagDefault);
     					if (mutableFlag.hasUserMappedData()) 
     					{
-    						xmlElement.addAttribute(attributeName, datavalue, attr.getType(),null,null);///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
+    						xmlElement.addAttribute(attributeName, datavalue, attr.getType(),null,null);
         					hasUserdata.setHasUserMappedData(true);
     					}
     					else 
@@ -798,9 +739,8 @@ public class MapProcessor {
     					xmlElement.setHasUserMappedData(mutableFlag.hasUserMappedData());
     				}
     				else { //direct mapping from source to target
-//  					System.out.println(scsXmlPath);
     					if (data.get(scsXmlPath) == null) { //inverse relationship
-    						CSVField csvField = findCSVField(csvSegment, scsXmlPath);
+    						CSVField csvField = csvUtil.findCSVField(csvSegment, scsXmlPath);
     						if (csvField != null)
     						{
     							if (csvField.getValue().equals("")) 
@@ -862,9 +802,6 @@ public class MapProcessor {
 		for(String attributeName:(Set<String>)(attrs.keySet())) {
 			Attribute attr = attrs.get(attributeName);
 
-//			String test = parentXPath+"."+attr.getName();
-//			System.out.println(test);
-
 			boolean isSimple = false;
 
 			if (attr.getReferenceDatatype() == null) {
@@ -874,8 +811,6 @@ public class MapProcessor {
 				if (attr.getReferenceDatatype().isSimple()) isSimple = true;
 			}
 			if (isSimple) {
-
-//				System.out.println("---------try"+parentXPath+"."+attributeName);
 				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
 				if (scsXmlPath==null) continue;
 				if (scsXmlPath.startsWith("function.")) { //function mapping to target
@@ -892,14 +827,10 @@ public class MapProcessor {
 						processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null);
 					}
 					xmlElement.setHasUserMappedData(mutableFlag.hasUserMappedData());
-
-				
-				
 				}
 				else { //direct mapping from source to target
-//					System.out.println(scsXmlPath);
 					if (data.get(scsXmlPath) == null) { //inverse relationship
-						CSVField csvField = findCSVField(csvSegments, scsXmlPath);
+						CSVField csvField = csvUtil.findCSVField(csvSegments, scsXmlPath);
 						if (csvField.getValue().equals("")) {
    							processAttributeDefaultValue(forceGenerate, attr, xmlElement,attributeName, hasDefaultdata,null,null); ///BBBBBBBBBBBBBBBBBBBBBBBBBBBB
 						}
@@ -933,136 +864,11 @@ public class MapProcessor {
 				{
 					hasDefaultdata.setHasUserMappedData(false);
 				}
-				xmlElement.addChildren(attrsXMLElement);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+				xmlElement.addChildren(attrsXMLElement);
 			}
 		}
 		return xmlElement;
     }
-    
-    private List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) {
-//    	System.out.println("CSVSegment "+csvSegment.getXmlPath() + "-->target"+targetXmlPath);
-    	List<CSVSegment> csvSegments = new ArrayList<CSVSegment>();
-    	if (csvSegment.getXmlPath().equals(targetXmlPath)) {
-    		csvSegments.add(csvSegment);
-    		return csvSegments;
-    	}
-    	if (csvSegment.getXmlPath().contains(targetXmlPath)) {
-    		CSVSegment current = csvSegment.getParentSegment();
-    		while (true) {
-    			if (current.getXmlPath().equals(targetXmlPath)) {
-    	    		csvSegments.add(current);
-    	    		return csvSegments;
-    			}
-    			current = current.getParentSegment();
-    			if (current == null) {
-    				System.out.println("Error");
-    				break;
-    				/*
-    				 * TODO throw error
-    				 */
-    			}
-    		}
-    	}
-    	
-    	if (targetXmlPath.contains(csvSegment.getXmlPath())) {
-			CSVSegment current = csvSegment;
-    		while (true) {
-    			boolean canStop = true;
-    			if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
- 
-    			for(CSVSegment childSegment:current.getChildSegments()) {
-//    				System.out.println("ChildSegment" + childSegment.getXmlPath());
-    				if (childSegment.getXmlPath().equals(targetXmlPath)) {
-    					csvSegments.add(childSegment);
-    				}
-    				else {
-    					if (targetXmlPath.contains(childSegment.getXmlPath())) {
-    						current = childSegment;
-    						canStop=false;
-    						break;
-    					}
-    				}
-    			}
-				if (canStop) break;
-    		}
-    	}
-    	return csvSegments;
-    }
-/*
-    private CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
-    	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-//    	CSVSegment current = csvSegment.getParentSegment();
-    	CSVSegment current = csvSegment;
-    	while (true) {
-    		if (current.getXmlPath().equals(targetSegmentXmlPath)) {
-    			for(CSVField csvField:current.getFields()) {
-    				if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
-    			}
-    		}
-    		current = current.getParentSegment();
-    		if (current == null) {
-    			System.out.println("Error");
-    			System.out.println("csvSegment="+csvSegment.getXmlPath());
-    			System.out.println("target="+targetXmlPath);
-    	    	return null;  /*
-    			/*
-    			 * TODO throw error
-    			 */
-/*    		}
-    	}
-    }
-*/  
-        private CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
-    	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-//    	CSVSegment current = csvSegment.getParentSegment();
-    	CSVSegment current = csvSegment;
-    	while (true) {
-            //System.out.println("CCC1 : " +  current + " : " + csvSegment.getName() + " : " + targetXmlPath);
-            if (current == null) return null;
-            String str = current.getXmlPath();
-            //System.out.println("CCC : " +  current.getName() + str);
-            if (str.equals(targetSegmentXmlPath)) {
-    			for(CSVField csvField:current.getFields()) {
-    				if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
-    			}
-    		}
-    		current = current.getParentSegment();
-    		if (current == null) {
-    			System.out.println("Error");
-    			System.out.println("csvSegment="+csvSegment.getXmlPath());
-    			System.out.println("target="+targetXmlPath);
-    	    	return null;
-    			/*
-    			 * TODO throw error
-    			 */
-    		}
-    	}
-
-    }
-
-    private CSVField findCSVField(List<CSVSegment> csvSegments, String targetXmlPath) {
-    	
-    	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-    	
-    	for (CSVSegment csvSegment: csvSegments) {
-        	CSVSegment current = csvSegment.getParentSegment();
-    		while (true) {
-    			if (current.getXmlPath().equals(targetSegmentXmlPath)) {
-    				for(CSVField csvField:current.getFields()) {
-    					if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
-    				}
-    			}
-    			current = current.getParentSegment();
-    			if (current == null) {
-    				break;
-    			}
-    		}
-    	}
-    	
-    	return null;
-    	// Error should be thrown
-    }
-
     public String getFunctionValue(CSVSegment pCsvSegment, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
     	List<CSVSegment> csvSegments = new ArrayList<CSVSegment>();
     	csvSegments.add(pCsvSegment);
@@ -1077,7 +883,6 @@ public class MapProcessor {
     	outputpos = Integer.valueOf(scsXmlPath.substring(pos+9, scsXmlPath.length()));
     	String fXmlPath = scsXmlPath.substring(0,pos);
         List<String> inputValues = new ArrayList<String>();
-//        System.out.println(fXmlPath + " -- " +  outputpos);
         FunctionComponent functionComponent = functions.get(fXmlPath);
     	if (functionComponent == null)
     		throw new MappingException("count not find function: " + scsXmlPath, null);
@@ -1106,7 +911,7 @@ public class MapProcessor {
     		}
     		else { //direct mapping from source to target
     			if (data.get(inputData) == null) { //inverse relationship
-    				CSVField csvField = findCSVField(csvSegments, inputData);
+    				CSVField csvField = csvUtil.findCSVField(csvSegments, inputData);
     				inputvalue = csvField.getValue();
     				if (!inputvalue.equals("")) hasUserData.setHasUserMappedData(true);
     			}
@@ -1118,7 +923,7 @@ public class MapProcessor {
     		inputValues.add(inputvalue);
     	}
 
-    	// , is the FunctionVocabularyMapping?
+    	// It is the FunctionVocabularyMapping?
     	if (functionMeta.isFunctionVocabularyMapping())
     	{
     		FunctionVocabularyMapping vm = functionComponent.getFunctionVocabularyMapping();
@@ -1250,6 +1055,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.29  2007/08/29 17:37:09  wuye
+ * HISTORY      : Added comments block for packlocation info
+ * HISTORY      :
  * HISTORY      : Revision 1.28  2007/08/29 15:47:52  wuye
  * HISTORY      : complete choice(0..1, 1..1) generation
  * HISTORY      :
