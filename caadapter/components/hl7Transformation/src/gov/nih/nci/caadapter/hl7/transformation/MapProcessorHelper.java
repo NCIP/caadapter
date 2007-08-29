@@ -31,8 +31,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.10 $
- * @date $Date: 2007-08-07 22:28:39 $
+ * @version $Revision: 1.11 $
+ * @date $Date: 2007-08-29 05:50:41 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -85,6 +85,9 @@ public class MapProcessorHelper {
     	HashSet<MIFAttribute> attributes = mifClass.getAttributes();
 
     	for(MIFAttribute mifAttribute:attributes) {
+    		
+//    		System.out.println("Attribute "+ mifAttribute.getXmlPath());
+    		
 //  		Log.logInfo(this,"preprocess Attribute:"+mifAttribute.getName());
     		combine(csvSegments,preprocess_attribute(mifAttribute));
     	}
@@ -274,6 +277,7 @@ public class MapProcessorHelper {
     	return csvSegments;
     }
     protected List<String> preprocess_attribute(MIFAttribute mifAttribute) {
+//    	System.out.println(mifAttribute.getDatatype());
     	if (mifAttribute.getDatatype() == null) return new ArrayList<String>(); //Abstract attrbiute
 //    	System.out.println("------------------Attribute name" + mifAttribute.getNodeXmlName());
     	mifAttribute.setCsvSegments(preprocess_datatype(mifAttribute.getDatatype(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName()));

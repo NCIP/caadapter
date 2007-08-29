@@ -26,8 +26,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-08-29 00:20:46 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-08-29 05:50:27 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -253,7 +253,7 @@ public class XMLElement implements Cloneable{
 				{
 					HashSet predefinedValues = datatype.getPredefinedValues();
 					if (predefinedValues.size()>0) {
-						System.out.println("Validating..." + attribute.getValue() + " " + attribute.getDomainName() + datatype.getName());
+//						System.out.println("Validating..." + attribute.getValue() + " " + attribute.getDomainName() + datatype.getName());
 //						System.out.println(((Datatype)datatypes.get("ActClass")).getPredefinedValues());
 						if (!predefinedValues.contains(attribute.getValue())) 
 						{

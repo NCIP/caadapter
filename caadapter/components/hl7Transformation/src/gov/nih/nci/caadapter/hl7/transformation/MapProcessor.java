@@ -26,6 +26,7 @@ import gov.nih.nci.caadapter.hl7.map.MappingException;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.hl7.transformation.data.MutableFlag;
 import gov.nih.nci.caadapter.hl7.transformation.data.NullXMLElement;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
@@ -43,8 +44,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.26 $
- *          date        $Date: 2007-08-29 00:13:00 $
+ *          revision    $Revision: 1.27 $
+ *          date        $Date: 2007-08-29 05:50:41 $
  */
 
 public class MapProcessor {
@@ -92,7 +93,7 @@ public class MapProcessor {
         
         mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false, logicalRecords.get(0).getName());
         
-
+        System.out.println("Total " + logicalRecords.size() + " records");
         // process one CSV source logical record at a time.
         for (int i = 0; i < logicalRecords.size(); i++) {
         	csvSegmentHash = mapProcessorHelper.preprocessCSVSegments(logicalRecords.get(i));
@@ -118,7 +119,7 @@ public class MapProcessor {
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
 
-    	if (mifClass.getCsvSegments().size() == 0) return NullXMLElement.NULL;
+//    	if (mifClass.getCsvSegments().size() == 0) return NullXMLElement.NULL;
 
     	List<CSVSegment> csvSegments = null;
 
@@ -137,7 +138,7 @@ public class MapProcessor {
     	    ValidatorResults localValidatorResults = new ValidatorResults();
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-			List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment,false,mutableFlag,mutableFlagDefault);
+			List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment,true,mutableFlag,mutableFlagDefault);
     		if (theValidatorResults.getAllMessages().size() == 0) {
 	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"HL7 v3 message is successfully generated!"});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
@@ -258,16 +259,111 @@ public class MapProcessor {
     		 * TODO
     		 * Need to add clone selection here ... ...
     		 */
+    		boolean startChoice=false;
+    		String choiceString = "";
+    		int totalChoiceHasData = 0;
+    		List<List<XMLElement>> choiceHolder = new ArrayList<List<XMLElement>>();
+    		List<MutableFlag> choiceFlag = new ArrayList<MutableFlag>();
     		for(MIFAssociation mifAssociation : associations) {
+    			boolean canAdd = true;
+    			if (MIFUtil.containChoiceAssociation(mifAssociation)) {
+    				if (mifAssociation.getName().substring(mifAssociation.getName().length()-2).equals("00"))
+    				{
+    					if (startChoice){ //start a new choice and need to process old choice section
+    						
+    					}
+    					choiceString = mifAssociation.getXmlPath().substring(0, mifAssociation.getName().length()-2);
+    					startChoice = true;
+    					totalChoiceHasData = 0;
+    					choiceHolder.clear();
+    					choiceFlag.clear();
+    				}
+    				else {
+    					
+    				}
+    			}
+    			else 
+    			{
+    				if(startChoice) //need to process a set of choices 
+    				{
+    					if (totalChoiceHasData ==0) //no choice has data
+    					{
+    						if (mifAssociation.getMinimumMultiplicity() == 0)
+    						{
+    							//No action is needed
+    						}
+    						else 
+    						{
+    							boolean hasDefault = false;
+    							for(MutableFlag mf:choiceFlag) 
+    							{
+    								if (mf.hasUserMappedData()) hasDefault = true;
+    							}
+    							if (hasDefault)
+    							{
+    								if (mifAssociation.getMaximumMultiplicity() == 1) {
+    									for (int i=0;i<choiceFlag.size();i++) {
+    										if (choiceFlag.get(i).hasUserMappedData())
+    										{
+    											List<XMLElement> tempXmlElements = choiceHolder.get(i);
+    											xmlElement.addChildren(tempXmlElements);
+    											Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + choiceString + " does not have user data, default data is used instead."});
+    											theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+    											break;
+    										}
+    									}
+    								}
+    								else {
+    									for (int i=0;i<choiceFlag.size();i++) {
+    										if (choiceFlag.get(i).hasUserMappedData())
+    										{
+    											List<XMLElement> tempXmlElements = choiceHolder.get(i);
+    											xmlElement.addChildren(tempXmlElements);
+    										}
+    									}
+    									Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + choiceString + " does not have user data, default data is used instead."});
+    									theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+    								}
+    							}
+    							else // No default data 
+    							{
+    								List<XMLElement> tempXmlElements = choiceHolder.get(0);
+    								xmlElement.addChildren(tempXmlElements);
+    								Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + choiceString + " does not have user data and default data, an empty element is generated instead."});
+    								theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    							}
+    						}
+    					}
+    				}
+    			}
 //    			System.out.println(mifAssociation.getNodeXmlName());
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
 	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-    			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault);
+	    	    boolean isMandatory = false;
+	    	    if (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0) isMandatory = true;
+	    	    if (startChoice) isMandatory = false;
+	    	    List<XMLElement> choiceXmlElements = new ArrayList<XMLElement>();
+    			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, isMandatory, choiceXmlElements);
+    			if (startChoice) {
+    				choiceHolder.add(choiceXmlElements);
+    				choiceFlag.add(mutableFlagDefault);
+    			}
     			if (mutableFlag.hasUserMappedData())
     			{
     				hasUserdata.setHasUserMappedData(true);
+    				totalChoiceHasData ++;
+    				if (totalChoiceHasData > 1)
+    				{
+    					if (mifAssociation.getMaximumMultiplicity() == 1) {
+    						if (assoXmlElements.size()>0) {
+    							Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + mifAssociation.getXmlPath() + " is specified as "  + mifAssociation.getMinimumMultiplicity() + "..1" + ", but more than 1 choice contains data, and the data is dropped"});
+    							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+    							canAdd = false;
+    						}
+    					}
+    				}
     			}
-    			if (assoXmlElements.size() != 0)
+    			if (assoXmlElements.size() != 0&&canAdd)
     				xmlElement.addChildren(assoXmlElements);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 				if (mifAssociation.getMaximumMultiplicity() == 1) {
 					if (assoXmlElements.size()>1) {
@@ -289,13 +385,13 @@ public class MapProcessor {
     		 */
     		for(MIFAttribute mifAttribute:attributes) {
     			if (mifAttribute.isStrutural()) {
-    				if (mifAttribute.getDefaultValue()!=null)
+    				if (mifAttribute.getDefaultValue()!=null&&!mifAttribute.getDefaultValue().equals(""))
     				{
     					xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     				}
     				else 
     				{
-    					if (mifAttribute.getFixedValue()!=null)
+    					if (mifAttribute.getFixedValue()!=null && !mifAttribute.getFixedValue().equals(""))
     					{
     						xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getFixedValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     					}
@@ -347,11 +443,10 @@ public class MapProcessor {
 	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
 	 */
     
-    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException,FunctionException {
-    	boolean forceGenerate = false;
+    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, List<XMLElement> choiceXmlElements) throws MappingException,FunctionException {
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
 
-//    	System.out.println("association name:"+mifAssociation.getName()+" forced:"+forceGenerate + "mifforced"+mifAssociation.isOptionForced());
+//    	System.out.println("association name:"+mifAssociation.getName());
 
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
     	
@@ -362,7 +457,6 @@ public class MapProcessor {
     	if (mifClass == null) {
     		throw new MappingException("There is an error in your .h3s file, " + mifAssociation.getXmlPath() + " does not have specification", null);
     	}
-    	if (mifAssociation.isOptionForced()||mifAssociation.getMinimumMultiplicity() > 0) forceGenerate = true;
     	MutableFlag mutableFlag = new MutableFlag(false);
     	MutableFlag mutableFlagDefault = new MutableFlag(true);
     	List<XMLElement> xmlEments = processMIFclass(mifClass,csvSegment, forceGenerate, mutableFlag, mutableFlagDefault);
@@ -391,6 +485,7 @@ public class MapProcessor {
     			return xmlElements;
     		}
     		else {
+    			choiceXmlElements = xmlElements;
     			return new ArrayList<XMLElement>();
     		}
     	}
@@ -462,7 +557,7 @@ public class MapProcessor {
     	
     	if (forceGenerate)
     	{
-    		System.out.println(mifAttribute.getXmlPath());
+//    		System.out.println(mifAttribute.getXmlPath());
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
     		xmlElements  = 	process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), true, mutableFlag, mutableFlagDefault);
@@ -548,9 +643,10 @@ public class MapProcessor {
     				xmlElement.addChild(attrsXMLElement);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     		}
     	}
-    	if (xmlElement.getAttributes().size()!=0) return xmlElement;
-    	if (xmlElement.getChildren().size()!=0) return xmlElement;
-    	return null;
+//    	if (xmlElement.getAttributes().size()!=0) return xmlElement;
+//    	if (xmlElement.getChildren().size()!=0) return xmlElement;
+//    	return null;
+    	return xmlElement;
     }    	
 
     /**
@@ -1130,6 +1226,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.26  2007/08/29 00:13:00  wuye
+ * HISTORY      : Modified the default value generation strategy
+ * HISTORY      :
  * HISTORY      : Revision 1.25  2007/08/27 20:49:32  umkis
  * HISTORY      : fix the Bug of infinite looping when choice included HL7 transformation
  * HISTORY      :
