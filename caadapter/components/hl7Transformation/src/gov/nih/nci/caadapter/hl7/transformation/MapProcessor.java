@@ -44,8 +44,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.27 $
- *          date        $Date: 2007-08-29 05:50:41 $
+ *          revision    $Revision: 1.28 $
+ *          date        $Date: 2007-08-29 15:47:52 $
  */
 
 public class MapProcessor {
@@ -244,8 +244,9 @@ public class MapProcessor {
     				if (mifAttribute.getMinimumMultiplicity() == 1) {
     					if (attrXmlElements.size()== 0) {
     			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
-    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     					}
+    					if (!mutableFlagDefault.hasUserMappedData()) hasDefaultdata.setHasUserMappedData(false);
     				}
     				if (attrXmlElements.size() != 0)
     					xmlElement.addChildren(attrXmlElements);///AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -255,28 +256,29 @@ public class MapProcessor {
     		TreeSet<MIFAssociation> associations = mifClass.getSortedAssociations();
 
     		//Step 3: Process associations
-    		/**
-    		 * TODO
-    		 * Need to add clone selection here ... ...
-    		 */
     		boolean startChoice=false;
     		String choiceString = "";
+    		MIFAssociation choiceAssociation=null;
     		int totalChoiceHasData = 0;
     		List<List<XMLElement>> choiceHolder = new ArrayList<List<XMLElement>>();
     		List<MutableFlag> choiceFlag = new ArrayList<MutableFlag>();
     		for(MIFAssociation mifAssociation : associations) {
+    			System.out.println("Associations:  " + mifAssociation.getXmlPath());
     			boolean canAdd = true;
-    			if (MIFUtil.containChoiceAssociation(mifAssociation)) {
-    				if (mifAssociation.getName().substring(mifAssociation.getName().length()-2).equals("00"))
+    			if (MIFUtil.containChoiceAssociation(mifAssociation)&& mifAssociation.getMifClass()!= null) {
+    				System.out.println(mifAssociation.getNodeXmlName());
+    				if (mifAssociation.getNodeXmlName().substring(mifAssociation.getNodeXmlName().length()-2).equals("00"))
     				{
     					if (startChoice){ //start a new choice and need to process old choice section
     						
     					}
-    					choiceString = mifAssociation.getXmlPath().substring(0, mifAssociation.getName().length()-2);
+    					choiceString = mifAssociation.getNodeXmlName().substring(0, mifAssociation.getNodeXmlName().length()-2);
     					startChoice = true;
     					totalChoiceHasData = 0;
     					choiceHolder.clear();
     					choiceFlag.clear();
+    					System.out.println("Start choice");
+    					choiceAssociation = mifAssociation;
     				}
     				else {
     					
@@ -288,62 +290,16 @@ public class MapProcessor {
     				{
     					if (totalChoiceHasData ==0) //no choice has data
     					{
-    						if (mifAssociation.getMinimumMultiplicity() == 0)
-    						{
-    							//No action is needed
-    						}
-    						else 
-    						{
-    							boolean hasDefault = false;
-    							for(MutableFlag mf:choiceFlag) 
-    							{
-    								if (mf.hasUserMappedData()) hasDefault = true;
-    							}
-    							if (hasDefault)
-    							{
-    								if (mifAssociation.getMaximumMultiplicity() == 1) {
-    									for (int i=0;i<choiceFlag.size();i++) {
-    										if (choiceFlag.get(i).hasUserMappedData())
-    										{
-    											List<XMLElement> tempXmlElements = choiceHolder.get(i);
-    											xmlElement.addChildren(tempXmlElements);
-    											Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + choiceString + " does not have user data, default data is used instead."});
-    											theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
-    											break;
-    										}
-    									}
-    								}
-    								else {
-    									for (int i=0;i<choiceFlag.size();i++) {
-    										if (choiceFlag.get(i).hasUserMappedData())
-    										{
-    											List<XMLElement> tempXmlElements = choiceHolder.get(i);
-    											xmlElement.addChildren(tempXmlElements);
-    										}
-    									}
-    									Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + choiceString + " does not have user data, default data is used instead."});
-    									theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
-    								}
-    							}
-    							else // No default data 
-    							{
-    								List<XMLElement> tempXmlElements = choiceHolder.get(0);
-    								xmlElement.addChildren(tempXmlElements);
-    								Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + choiceString + " does not have user data and default data, an empty element is generated instead."});
-    								theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-    							}
-    						}
+    					    process_default_empty_choice(mifAssociation, xmlElement, choiceHolder, choiceFlag, choiceString);
     					}
     				}
     			}
 //    			System.out.println(mifAssociation.getNodeXmlName());
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
 	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-	    	    boolean isMandatory = false;
-	    	    if (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0) isMandatory = true;
-	    	    if (startChoice) isMandatory = false;
+	    	    boolean forceGenerateAssociation = (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0); 
 	    	    List<XMLElement> choiceXmlElements = new ArrayList<XMLElement>();
-    			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, isMandatory, choiceXmlElements);
+    			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, forceGenerateAssociation, startChoice, choiceXmlElements);
     			if (startChoice) {
     				choiceHolder.add(choiceXmlElements);
     				choiceFlag.add(mutableFlagDefault);
@@ -356,8 +312,8 @@ public class MapProcessor {
     				{
     					if (mifAssociation.getMaximumMultiplicity() == 1) {
     						if (assoXmlElements.size()>0) {
-    							Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of the the choice " + mifAssociation.getXmlPath() + " is specified as "  + mifAssociation.getMinimumMultiplicity() + "..1" + ", but more than 1 choice contains data, and the data is dropped"});
-    							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+    							Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of  the choice " + mifAssociation.getXmlPath() + " is specified as "  + mifAssociation.getMinimumMultiplicity() + "..1" + ", but more than 1 choice contains data, and the data is dropped"});
+    							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     							canAdd = false;
     						}
     					}
@@ -368,16 +324,24 @@ public class MapProcessor {
 				if (mifAssociation.getMaximumMultiplicity() == 1) {
 					if (assoXmlElements.size()>1) {
 			            Message msg = MessageResources.getMessage("RIM5", new Object[]{mifAssociation.getXmlPath(),mifAssociation.getMinimumMultiplicity() + "..1", mifAssociation.getName(),assoXmlElements.size()});
-			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 					}
 				}
-				if (mifAssociation.getMinimumMultiplicity() == 1) {
+				if (mifAssociation.getMinimumMultiplicity() == 1&&!startChoice) {
 					if (assoXmlElements.size()== 0) {
 			            Message msg = MessageResources.getMessage("RIM5", new Object[]{mifAssociation.getXmlPath(),mifAssociation.getMinimumMultiplicity() + "..1", mifAssociation.getName(),assoXmlElements.size()});
-			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 					}
+					if (!mutableFlagDefault.hasUserMappedData()) hasDefaultdata.setHasUserMappedData(false);
 				}
     		}
+			if(startChoice) //need to process a set of choices 
+			{
+				if (totalChoiceHasData ==0) //no choice has data
+				{
+				    process_default_empty_choice(choiceAssociation, xmlElement, choiceHolder, choiceFlag, choiceString);
+				}
+			}
 
     		//Step 4: Process structural attributes
     		/*
@@ -443,7 +407,7 @@ public class MapProcessor {
 	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
 	 */
     
-    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, List<XMLElement> choiceXmlElements) throws MappingException,FunctionException {
+    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, boolean choiceFlag, List<XMLElement> choiceXmlElements) throws MappingException,FunctionException {
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
 
 //    	System.out.println("association name:"+mifAssociation.getName());
@@ -481,11 +445,15 @@ public class MapProcessor {
     		return xmlElements;
     	else 
     	{
-    		if (forceGenerate) {
+    		if (forceGenerate&&!choiceFlag) {
     			return xmlElements;
     		}
     		else {
-    			choiceXmlElements = xmlElements;
+    			if (choiceFlag) 
+    			{
+    				for (XMLElement xElement:xmlElements)
+    					choiceXmlElements.add(xElement);
+    			}
     			return new ArrayList<XMLElement>();
     		}
     	}
@@ -515,7 +483,7 @@ public class MapProcessor {
     			XMLElement defaultXMLElement = process_default_datatype(mifAttribute.getDatatype(), mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), mutableFlag);
     			if (defaultXMLElement != null) 
     			{
-    	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + mifAttribute.getXmlPath()});
+    	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
     	            ValidatorResults validatorResults = new ValidatorResults();
     	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     	            defaultXMLElement.setValidatorResults(validatorResults);
@@ -525,7 +493,7 @@ public class MapProcessor {
     				defaultXMLElement = new XMLElement();
     				defaultXMLElement.setName(mifAttribute.getName());
 
-    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + mifAttribute.getXmlPath()});
+    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
     	            ValidatorResults validatorResults = new ValidatorResults();
     	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     	            defaultXMLElement.setValidatorResults(validatorResults);
@@ -540,7 +508,7 @@ public class MapProcessor {
         			XMLElement defaultXMLElement = process_default_datatype(mifAttribute.getDatatype(), mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(),mutableFlag);
         			if (defaultXMLElement != null)
         			{
-        				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + mifAttribute.getXmlPath()});
+        				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
         	            ValidatorResults validatorResults = new ValidatorResults();
         	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         	            defaultXMLElement.setValidatorResults(validatorResults);
@@ -1100,7 +1068,8 @@ public class MapProcessor {
     	return getFunctionValue(csvSegments,scsXmlPath, data, hasUserData, hasDefaultdata);
     }
 
-    public String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
+    public String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException
+    {
     	int outputpos = 0;
     	
     	int pos = scsXmlPath.lastIndexOf(".outputs.");
@@ -1184,48 +1153,105 @@ public class MapProcessor {
 
     public void processAttributeDefaultValue(boolean forceGenerate, Attribute attr, XMLElement xmlElement, String attributeName, MutableFlag hasDefaultData, String domainName, String codingStrength) 
     {
-		if (forceGenerate) {
-			if (attr == null) {
-	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
-	            ValidatorResults validatorResults = new ValidatorResults();
-	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-	            xmlElement.setValidatorResults(validatorResults);
-	            hasDefaultData.setHasUserMappedData(false);
-			}
-			if (attr.getDefaultValue()!= null && !attr.getDefaultValue().equals(""))
-			{
-	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", default data is used instead"});
-	            ValidatorResults validatorResults = new ValidatorResults();
-	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
-				xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(),domainName,codingStrength);
-	            xmlElement.setValidatorResults(validatorResults);
-			}
-			else {
-	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
-	            ValidatorResults validatorResults = new ValidatorResults();
-	            validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-	            xmlElement.setValidatorResults(validatorResults);
-	            hasDefaultData.setHasUserMappedData(false);
-			}
-		}
-		else {
-			if (attr == null) 
-			{
-				hasDefaultData.setHasUserMappedData(false);
-				return;
-			}
-			if (attr.getDefaultValue()!= null && !attr.getDefaultValue().equals(""))
-			{
-				xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(),domainName,codingStrength);
-			}
-			else {
-				hasDefaultData.setHasUserMappedData(false);
-			}
+    	if (forceGenerate) {
+    		if (attr == null) {
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
+    			ValidatorResults validatorResults = new ValidatorResults();
+    			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    			xmlElement.setValidatorResults(validatorResults);
+    			hasDefaultData.setHasUserMappedData(false);
+    		}
+    		if (attr.getDefaultValue()!= null && !attr.getDefaultValue().equals(""))
+    		{
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", default data is used instead"});
+    			ValidatorResults validatorResults = new ValidatorResults();
+    			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+    			xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(),domainName,codingStrength);
+    			xmlElement.setValidatorResults(validatorResults);
+    		}
+    		else {
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
+    			ValidatorResults validatorResults = new ValidatorResults();
+    			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    			xmlElement.setValidatorResults(validatorResults);
+    			hasDefaultData.setHasUserMappedData(false);
+    		}
+    	}
+    	else {
+    		if (attr == null) 
+    		{
+    			hasDefaultData.setHasUserMappedData(false);
+    			return;
+    		}
+    		if (attr.getDefaultValue()!= null && !attr.getDefaultValue().equals(""))
+    		{
+    			xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(),domainName,codingStrength);
+    		}
+    		else {
+    			hasDefaultData.setHasUserMappedData(false);
+    		}
+    	}
+    }
+    public void process_default_empty_choice(MIFAssociation mifAssociation, XMLElement xmlElement, List<List<XMLElement>> choiceHolder, List<MutableFlag> choiceFlag, String choiceString)
+    {
+    	if (mifAssociation.getMinimumMultiplicity() == 0)
+    	{
+    		//No action is needed
+    	}
+    	else 
+    	{
+    		boolean hasDefault = false;
+    		for(MutableFlag mf:choiceFlag) 
+    		{
+    			if (mf.hasUserMappedData()) hasDefault = true;
+    		}
+    		if (hasDefault)
+    		{
+    			if (mifAssociation.getMaximumMultiplicity() == 1) {
+    				for (int i=0;i<choiceFlag.size();i++) {
+    					if (choiceFlag.get(i).hasUserMappedData())
+    					{
+    						List<XMLElement> tempXmlElements = choiceHolder.get(i);
+    						xmlElement.addChildren(tempXmlElements);
+    						Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " + choiceString + " does not have user data, default data is used instead."});
+    						if (mifAssociation.getMinimumMultiplicity()==1)
+    							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+    						else
+    							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+    						break;
+    					}
+    				}
+    			}
+    			else {
+    				for (int i=0;i<choiceFlag.size();i++) {
+    					if (choiceFlag.get(i).hasUserMappedData())
+    					{
+    						List<XMLElement> tempXmlElements = choiceHolder.get(i);
+    						xmlElement.addChildren(tempXmlElements);
+    					}
+    				}
+    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " + choiceString + " does not have user data, default data is used instead."});
+					if (mifAssociation.getMinimumMultiplicity()==1)
+						theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+					else
+						theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+    			}
+    		}
+    		else // No default data 
+    		{
+    			List<XMLElement> tempXmlElements = choiceHolder.get(0);
+    			xmlElement.addChildren(tempXmlElements);
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " + choiceString + " does not have user data and default data, an empty element is generated instead."});
+    			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    		}
 		}
     }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.27  2007/08/29 05:50:41  wuye
+ * HISTORY      : Added default value handling for choice
+ * HISTORY      :
  * HISTORY      : Revision 1.26  2007/08/29 00:13:00  wuye
  * HISTORY      : Modified the default value generation strategy
  * HISTORY      :
