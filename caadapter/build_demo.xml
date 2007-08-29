@@ -29,8 +29,8 @@
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
-            <zipfileset dir="." excludes="lib/sqleonardo.jar,
-            lib/lib/deletethisfolder.jar,lib/mif.zip, lib/ant.jar,
+            <zipfileset dir="." excludes="build.xml,lib/mif.zip, lib/ant.jar,
+            lib/sqleonardo.jar,lib/lib/deletethisfolder.jar,
             lib/castor*, lib/ostermill*, lib/jgraph.jar" />
         	<zipfileset dir=".." includes="docs/**"/>
 		</zip>
