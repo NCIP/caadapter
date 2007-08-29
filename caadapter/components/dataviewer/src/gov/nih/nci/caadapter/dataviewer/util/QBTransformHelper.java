@@ -12,8 +12,8 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.2 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.3 $
+ *          $Date: 2007-08-29 20:42:38 $
  */
 public class QBTransformHelper {
     Hashtable sqlColumnNames=null;
@@ -43,7 +43,7 @@ public class QBTransformHelper {
         String removeSelect = chopSql.substring(6);
         EmptyStringTokenizer empt = new EmptyStringTokenizer(removeSelect.trim(), " ");
         if (!isEven(empt.countTokens())) {
-            System.out.println(" +------------------------------SQL NOT [EVEN] THERE IS A PROBLEM");
+            //System.out.println(" +------------------------------SQL NOT [EVEN] THERE IS A PROBLEM");
         }
         String _value;
         String _key = "";
@@ -76,4 +76,7 @@ public class QBTransformHelper {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
