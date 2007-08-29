@@ -32,6 +32,32 @@ public class MifMetaLookup implements MetaLookup {
 		return table.get(uuid);
 	}
 	
+	private void processDatatype(Datatype datatype) 
+	{
+		if (datatype==null)
+			return;
+		
+		Hashtable dtAttrs=datatype.getAttributes();
+		Enumeration<Attribute> childAttrsEnum=dtAttrs.elements();
+		while (childAttrsEnum.hasMoreElements())
+		{
+			boolean isSimple = false;
+			Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
+			table.put(childAttr.getXmlPath(), childAttr);
+    		if (childAttr.getReferenceDatatype() == null) {
+    			isSimple = true;
+    		}
+    		else {
+    			if (childAttr.getReferenceDatatype().isSimple()) isSimple = true;
+    		}
+    		if (isSimple) {
+    			continue;
+    		}
+    		else { //complexdatatype
+    			processDatatype(childAttr.getReferenceDatatype());
+    		}
+		}
+	}
 	private void initLookupTable(MIFClass mif)
 	{
 		table.put(mif.getXmlPath(), mif);
@@ -41,16 +67,7 @@ public class MifMetaLookup implements MetaLookup {
 			table.put(mifAttr.getXmlPath(), mifAttr);
 			//process datatype attribute
 			Datatype attrDt=mifAttr.getDatatype();
-			if (attrDt==null)
-				continue;
-			
-			Hashtable dtAttrs=attrDt.getAttributes();
-			Enumeration childAttrsEnum=dtAttrs.elements();
-			while (childAttrsEnum.hasMoreElements())
-			{
-				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
-				table.put(childAttr.getXmlPath(), childAttr);
-			}
+			processDatatype(attrDt);
 		}
 		//process assocations
 		if(mif.getAssociations()!=null)

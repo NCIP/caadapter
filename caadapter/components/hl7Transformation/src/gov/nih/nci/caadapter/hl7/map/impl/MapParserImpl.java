@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.8 2007-08-23 20:40:06 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.9 2007-08-29 19:47:32 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -83,20 +83,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * Parser of map files.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.8 $
- * @date $Date: 2007-08-23 20:40:06 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.9 $
+ * @date $Date: 2007-08-29 19:47:32 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.8 2007-08-23 20:40:06 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.9 2007-08-29 19:47:32 wuye Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -146,12 +147,16 @@ public class MapParserImpl {
                 String kind = cComponent.getKind();
                 if (Config.CSV_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
                     component = generateCsvComponent(cComponent, kind);
-                    File scmFile = FileUtil.fileLocate(mapfiledir, (String) cComponent.getLocation());
+                    System.out.println(mapfiledir + "  " + (String) cComponent.getLocation());
+                    System.out.println(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
+                    File scmFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
                     component.setFile(scmFile);
 
                 } else if (Config.HL7_V3_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
 //                	System.out.println("MapParserImpl.processComponents()...HL7v3MIF file loacation:"+cComponent.getLocation());
-                    File hsmFile = FileUtil.fileLocate(mapfiledir, (String) cComponent.getLocation());
+                    System.out.println(mapfiledir + "  " + (String) cComponent.getLocation());
+                    System.out.println(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
+                    File hsmFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
                     component = new BaseComponent();
                     component.setType(cComponent.getType());
                     component.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));//cComponent.getXmlPath());
