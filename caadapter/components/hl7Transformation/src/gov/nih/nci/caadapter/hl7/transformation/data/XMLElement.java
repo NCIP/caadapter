@@ -10,6 +10,7 @@ import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -26,8 +28,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-08-29 06:18:31 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-08-29 17:37:09 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -42,6 +44,7 @@ public class XMLElement implements Cloneable{
 	private String codingStrength;
 	private boolean populated = false;
 	private String messageType;
+	private MIFClass mifClass;
 	/**
 	 * @return the name
 	 */
@@ -166,6 +169,23 @@ public class XMLElement implements Cloneable{
 	public StringBuffer toXML() {
 		StringBuffer output = new StringBuffer();
 		output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		
+		MIFClass rootMIFClass = getMifClass();
+		Hashtable<String, String> comments = rootMIFClass.getPackageLocation();
+		if (comments!=null)
+		{
+			Set<String> keys = comments.keySet();
+			if (keys.size() > 0) {
+				output.append("<!--");
+			}
+			for(String key:keys)
+			{
+				output.append(" " + key + "=\'" + comments.get(key) + "\'");
+			}
+			if (keys.size() > 0) {
+				output.append("-->\n");
+			}
+		}
 		output.append(toXMLBody(0));
 		return output;
 	}
@@ -376,5 +396,17 @@ public class XMLElement implements Cloneable{
 	 */
 	public void setDomainName(String domainName) {
 		this.domainName = domainName;
+	}
+	/**
+	 * @return the mifClass
+	 */
+	public MIFClass getMifClass() {
+		return mifClass;
+	}
+	/**
+	 * @param mifClass the mifClass to set
+	 */
+	public void setMifClass(MIFClass mifClass) {
+		this.mifClass = mifClass;
 	}
 }

@@ -44,8 +44,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.28 $
- *          date        $Date: 2007-08-29 15:47:52 $
+ *          revision    $Revision: 1.29 $
+ *          date        $Date: 2007-08-29 17:37:09 $
  */
 
 public class MapProcessor {
@@ -147,6 +147,7 @@ public class MapProcessor {
     		//It should only return one element
     		if (xmlElementTemp.size()> 0) {
     			xmlElementTemp.get(0).setValidatorResults(localValidatorResults);
+    			xmlElementTemp.get(0).setMifClass(mifClass);
     		}
     		xmlElementTemp.get(0).populateValidatorResults();
     		xmlElements.addAll(xmlElementTemp);
@@ -1249,6 +1250,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.28  2007/08/29 15:47:52  wuye
+ * HISTORY      : complete choice(0..1, 1..1) generation
+ * HISTORY      :
  * HISTORY      : Revision 1.27  2007/08/29 05:50:41  wuye
  * HISTORY      : Added default value handling for choice
  * HISTORY      :
