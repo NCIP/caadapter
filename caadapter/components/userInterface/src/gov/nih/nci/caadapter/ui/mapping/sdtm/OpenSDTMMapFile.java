@@ -22,8 +22,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-08-16 19:39:45 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-08-29 21:01:00 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -104,8 +104,12 @@ public class OpenSDTMMapFile extends JDialog {
                 targetName1.getAttribute("location").toString();
                 if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
                     _scsFileName = targetName1.getAttribute("location").toString();
+                    _database2SDTMMappingPanel.get_dbCon().setEnabled(false);
+                    _database2SDTMMappingPanel.getTransFormBut().setEnabled(false);
+                    _database2SDTMMappingPanel.get_commonBut().setEnabled(false);
                 } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
                     _dbParams = targetName1.getAttribute("param").toString();
+                    _database2SDTMMappingPanel.getOpenSCSButton().setEnabled(false);
                 }
                 Element targetName2 = (Element) targetNode.item(1);
                 if (targetName2.getAttribute("kind").toString().equalsIgnoreCase("XML")) {
@@ -355,4 +359,7 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

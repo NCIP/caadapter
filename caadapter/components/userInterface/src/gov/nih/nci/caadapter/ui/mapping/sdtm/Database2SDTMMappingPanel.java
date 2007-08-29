@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.14 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.15 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.14 2007-08-29 14:46:48 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.15 2007-08-29 21:01:00 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -82,6 +82,14 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private JButton transformBut = null;
     private JButton _commonBut = null;
     private boolean isDataBase = false;
+
+    public JButton get_dbCon() {
+        return _dbCon;
+    }
+
+    public JButton getOpenSCSButton() {
+        return openSCSButton;
+    }
 
     public JButton getTransFormBut() {
         return transformBut;
@@ -774,6 +782,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/08/29 14:46:48  jayannah
+ * enabled the buttons for SCS file and Choose database if the user cancels during choosing a SCS file
+ *
  * Revision 1.13  2007/08/22 14:27:06  jayannah
  * show transform button
  *
