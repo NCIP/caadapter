@@ -12,9 +12,6 @@
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
-		<!-- fileset dir="dist/conf">
-			<include name="**/*.*"/>
-		</fileset -->
 	</path>
 
 	<pathconvert pathsep=" " 
@@ -33,21 +30,22 @@
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
             <zipfileset dir="." excludes="lib/sqleonardo.jar,
-            lib/lib/deletethisfolder.jar,lib/mif.zip, lib/ant.jar" />
-            <!-- to be excluded :lib/castor*, lib/ostermill*, lib/jgraph.jar, -->
+            lib/lib/deletethisfolder.jar,lib/mif.zip, lib/ant.jar,
+            lib/castor*, lib/ostermill*, lib/jgraph.jar" />
+        	<zipfileset dir=".." includes="docs/**"/>
 		</zip>
     </target>
 
 	<target name="demo.ui.jar"  depends="compile.demo" description="create the distribution jars">
 		<!-- Create an executable jar that runs the UI.-->
 		<echo message="${distribution.manifest.class.property}"/>
-		<jar destfile="demo_ui.jar">
+		<jar destfile="caAdapter_ui.jar">
 			<fileset dir="../build" includes="**/LaunchUI.class"/>
 			<manifest>
 				<attribute name="Main-Class" value="gov.nih.nci.caadapter.hl7.demo.LaunchUI"/>
 				<attribute name="Class-Path" value=". ./conf/ ${distribution.manifest.class.property}"/>
 			</manifest>
-			</jar>
+		</jar>
 	</target>
 
 	<target name="compile.demo"  description="compile the source">
