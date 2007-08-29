@@ -16,22 +16,23 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.File;
 import java.util.*;
+
 /**
  * The class helps in opening a MAP file(both SCS and Database)
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-08-29 21:01:00 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-08-29 21:26:52 $
  */
 public class OpenSDTMMapFile extends JDialog {
-    private MappingDataManager _mappingDataMananger=null;
-    private HashMap _mappedData=null;
-    private Database2SDTMMappingPanel _database2SDTMMappingPanel=null;
-    public String _xmlFile=null;
-    JFileChooser directoryLoc, scsFile=null;
-    File directory, scsFileChosen=null;
+    private MappingDataManager _mappingDataMananger = null;
+    private HashMap _mappedData = null;
+    private Database2SDTMMappingPanel _database2SDTMMappingPanel = null;
+    public String _xmlFile = null;
+    JFileChooser directoryLoc, scsFile = null;
+    File directory, scsFileChosen = null;
     String _scsFileName = null, _dbParams = null;
     private Hashtable xPathNodeSet = null;
 
@@ -139,8 +140,14 @@ public class OpenSDTMMapFile extends JDialog {
         }
         if (_dbParams != null) {
             //_database2SDTMMappingPanel.openDataBaseMapFile(_dbParams);
-            _database2SDTMMappingPanel.openDataBaseMapFile(_dbParams);
-            System.out.println("");
+            if (!_database2SDTMMappingPanel.openDataBaseMapFileFromOpenMapFile(_dbParams)) {
+                _database2SDTMMappingPanel.get_dbCon().setEnabled(true);
+                _database2SDTMMappingPanel.getTransFormBut().setEnabled(false);
+                _database2SDTMMappingPanel.get_commonBut().setEnabled(false);
+                _database2SDTMMappingPanel.getOpenSCSButton().setEnabled(true);
+                _database2SDTMMappingPanel.getOpenTargetButton().setEnabled(true);
+                return;
+            }
         }
         if (!new File(_xmlFileName).exists()) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
@@ -299,7 +306,7 @@ public class OpenSDTMMapFile extends JDialog {
         return null;
     }
 
-   public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
+    public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
         DefaultMutableTreeNode node = null;
         java.util.Enumeration enum1 = rootNode.depthFirstEnumeration();
         while (enum1.hasMoreElements()) {
@@ -359,6 +366,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/08/29 21:01:00  jayannah
+ * Made sure that the buttons on the mapping panel are correctly disabled and enables depending on the which map file is opened
+ *
  * Revision 1.4  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

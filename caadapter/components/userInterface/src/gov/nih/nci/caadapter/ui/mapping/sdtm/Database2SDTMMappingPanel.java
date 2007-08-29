@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.15 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.16 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.15 2007-08-29 21:01:00 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.16 2007-08-29 21:26:52 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -160,6 +160,10 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 
     public JButton getTransformBut() {
         return transformBut;
+    }
+
+    public JButton getOpenTargetButton() {
+        return openTargetButton;
     }
 
     protected JPanel getTopLevelLeftPanel() {
@@ -353,6 +357,37 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         } catch (Exception e1) {
             DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this, false, false);
         }
+    }
+
+    public boolean openDataBaseMapFileFromOpenMapFile(String params) {
+        boolean retVal = false;
+        try {
+            QBGetPasswordWindow getPass = new QBGetPasswordWindow(_mainFrame, params, this.getSaveFile().toString());
+            if (getPass.isResult()) {
+                String pass = getPass.getPassword();
+                EmptyStringTokenizer empt = new EmptyStringTokenizer(params, "~");
+                connectDB = true;
+                connectionParameters = new Hashtable();
+                connectionParameters.put("URL", empt.getTokenAt(0));
+                connectionParameters.put("UserID", empt.getTokenAt(2));
+                connectionParameters.put("PWD", pass);
+                connectionParameters.put("SCHEMA", empt.getTokenAt(3));
+                connectionParameters.put("Driver", empt.getTokenAt(1));
+                try {
+                    connectionParameters.put("connection", DBConnector.getDBConnection(empt.getTokenAt(0), empt.getTokenAt(1), empt.getTokenAt(2), pass));
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                processOpenSourceTree(null, true, true);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return retVal;
     }
 
     public void openDataBaseMapFile(String params) {
@@ -782,6 +817,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/08/29 21:01:00  jayannah
+ * Made sure that the buttons on the mapping panel are correctly disabled and enables depending on the which map file is opened
+ *
  * Revision 1.14  2007/08/29 14:46:48  jayannah
  * enabled the buttons for SCS file and Choose database if the user cancels during choosing a SCS file
  *

@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -22,12 +21,14 @@ import java.awt.event.*;
  * <p/>
  * To change this template use File | Settings | File Templates.
  */
-
 public class QBGetPasswordWindow implements WindowListener, KeyListener {
-
     private JPasswordField _passWd;
-
     private JDialog dialog;
+    private boolean result = false;
+
+    public boolean isResult() {
+        return result;
+    }
 
     public QBGetPasswordWindow(Frame owner, String params, String title) {
         dialog = new JDialog(owner);
@@ -78,6 +79,7 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener {
         butPan.add(ok);
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+                result = true;
                 if (!(_passWd.getPassword().length > 0)) {
                     JOptionPane.showMessageDialog(dialog, "Please enter a password");
                 } else {
