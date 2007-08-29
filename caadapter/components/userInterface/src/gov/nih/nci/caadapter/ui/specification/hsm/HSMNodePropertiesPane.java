@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.12 2007-08-28 18:49:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.13 2007-08-29 18:49:30 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-08-28 18:49:25 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-08-29 18:49:30 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -96,7 +96,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.12 2007-08-28 18:49:25 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.13 2007-08-29 18:49:30 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -641,8 +641,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	public void reloadData()
 	{
 		Object targetNode = getDatatypeObject(false);
-		
-		 TreePath treePath=parentPanel.getTree().getSelectionPath();
+		TreePath treePath=parentPanel.getTree().getSelectionPath();
 		DefaultMutableTreeNode slctdNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		this.setDisplayData(slctdNode,true);
 	}

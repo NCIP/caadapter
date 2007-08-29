@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.8 2007-08-28 21:02:00 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.9 2007-08-29 18:48:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-28 21:02:00 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-29 18:48:54 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -251,14 +251,18 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                         	addMultipleAttributeAction.setEnabled(true);
                         	
                     }
-                	if (mifAttr.getType().equals("AD"))
+                	Datatype mifDt =mifAttr.getDatatype();
+                	//find concrete datatype for "ANY" type  
+                	if (mifDt.isAbstract())
+            			mifDt=mifAttr.getConcreteDatatype();
+            		
+                	if (mifDt.getName().equals("AD")                			)
                 	{
-                		Datatype dt =mifAttr.getDatatype();
                 		int toAddCnt=0;
                 		int toRemoveCnt=0;
-                		for (Object dtAttrKey: dt.getAttributes().keySet())
+                		for (Object dtAttrKey: mifDt.getAttributes().keySet())
                 		{
-                			Attribute dtAttr=(Attribute)dt.getAttributes().get((String)dtAttrKey);
+                			Attribute dtAttr=(Attribute)mifDt.getAttributes().get((String)dtAttrKey);
                    			if (dtAttr.isOptionChosen())
                 				toRemoveCnt++;
                 			else

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.23 2007-08-28 21:45:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.24 2007-08-29 18:49:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.23 $
- *          date        $Date: 2007-08-28 21:45:23 $
+ *          revision    $Revision: 1.24 $
+ *          date        $Date: 2007-08-29 18:49:54 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -366,14 +366,27 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				mifAttribute.setEnabled(true);
 				
 			Hashtable dtAttrs=mifAttribute.getDatatype().getAttributes();
+			String dtTypeName=mifAttribute.getDatatype().getName();
+			if (mifAttribute.getDatatype().isAbstract())
+			{
+				Datatype concretDt=mifAttribute.getConcreteDatatype();
+	
+				enableDatatypeAttributesComplextype(concretDt, newSpecificationFlag);
+				if (concretDt.getName().equals("GTS"))
+					concretDt.setSimple(false);
+				dtAttrs=concretDt.getAttributes();
+				dtTypeName=concretDt.getName();
+			}
 			Enumeration childAttrsEnum=dtAttrs.elements();
+			
 			while (childAttrsEnum.hasMoreElements())
 			{
 				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
 				if (!childAttr.isProhibited()&&childAttr.isValid())
 				{
 					//and only the the chosen Datatype field for "AD" attributes
-					if (!mifAttribute.getType().equals("AD")||childAttr.isOptionChosen())
+					if (childAttr.isOptionChosen()
+							||!dtTypeName.equals("AD"))
 					{		
 						DefaultMutableTreeNode childNode=buildDatatypeAttributeNode(childAttr);
 						rtnNode.add(childNode);
@@ -429,7 +442,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			childAttr.setSimple(true);
 			Datatype childDataType=(Datatype)DatatypeParserUtil.getDatatype(childAttr.getType());
 			
-			if (!childDataType.isSimple())
+			if (childDataType!=null&&!childDataType.isSimple())
 			{
 				//only check the datatype of an attribute
 				childAttr.setEnabled(false);
@@ -437,7 +450,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				if (usePreference)
 					childAttr.setEnabled(complexTypeEnabled);
 				//force to enable selected attribute for name and address
-				if (CaadapterUtil.getMandatorySelectedAttributes().contains(childDataType.getName()))
+				if (childAttr.isOptionChosen()||CaadapterUtil.getMandatorySelectedAttributes().contains(childDataType.getName()))
 				{	childAttr.setEnabled(true);
 					childAttr.setOptionChosen(true);
 				}

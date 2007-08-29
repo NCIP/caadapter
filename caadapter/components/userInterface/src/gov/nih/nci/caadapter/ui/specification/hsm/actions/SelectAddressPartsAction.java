@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.8 2007-08-29 18:48:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
@@ -61,8 +62,8 @@ import java.util.Vector;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-23 17:54:58 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-29 18:48:40 $
  */
 public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 {
@@ -78,7 +79,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.8 2007-08-29 18:48:40 wangeug Exp $";
 
     public static final String ADD_PART_COMMAND_NAME = "Add Address Parts";
     public static final String REMOVE_PART_COMMAND_NAME = "Remove Address Parts";
@@ -131,8 +132,11 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
         if (obj instanceof MIFAttribute)
         {
         	MIFAttribute mifAttr = (MIFAttribute) obj;
-
-           	if (!mifAttr.getType().equals("AD"))
+        	Datatype mifDt=mifAttr.getDatatype();
+        	if (mifDt.isAbstract())
+        		mifDt=mifAttr.getConcreteDatatype();
+           	if (mifDt==null
+           			||!mifDt.getName().equals("AD"))
            	{
            		JOptionPane.showMessageDialog(tree.getRootPane().getParent(), "Invalid selection",
                     "The selected type is not \"AD\"", JOptionPane.WARNING_MESSAGE);
@@ -145,12 +149,12 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
                 boolean toAdd=true;
                 if (getName().equals(REMOVE_PART_COMMAND_NAME))
                 	toAdd=false;
-           		Vector a = new Vector(mifAttr.getDatatype().getAttributes().keySet());
+           		Vector a = new Vector(mifDt.getAttributes().keySet());
            	 	Collections.sort(a);
            	 	Iterator attriIt = a.iterator();
            	 	while (attriIt.hasNext()) {
            	 		String attributeName = (String)attriIt.next();
-           	 		Attribute attr = (Attribute)mifAttr.getDatatype().getAttributes().get(attributeName);
+           	 		Attribute attr = (Attribute)mifDt.getAttributes().get(attributeName);
            	 		if (toAdd&&(!attr.isOptionChosen()))
            	 			baseList.add(attr);
            	 		else if((!toAdd)&&attr.isOptionChosen())
