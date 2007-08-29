@@ -26,8 +26,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-08-27 15:00:14 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-08-29 00:20:46 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -38,7 +38,9 @@ public class XMLElement implements Cloneable{
 	private ValidatorResults validatorResults = null;
 	private boolean hasUserMappedData = false;
 	private boolean hasDefaultMappedData = false;
-
+	private String domainName;
+	private String codingStrength;
+	private boolean populated = false;
 	private String messageType;
 	/**
 	 * @return the name
@@ -71,12 +73,14 @@ public class XMLElement implements Cloneable{
 	 * @param name the name of the attribute
 	 * @param value the value of the attribute
 	 */
-	public void addAttribute(String name, String value, String datatype) {
+	public void addAttribute(String name, String value, String datatype, String domainName, String codingStrength) {
 //		System.out.println("name" + name + " type:"+datatype);
 		Attribute attribute = new Attribute();
 		attribute.setName(name);
 		attribute.setValue(value);
 		attribute.setDatatype(datatype);
+		attribute.setDomainName(domainName);
+		attribute.setCodingStrength(codingStrength);
 		attributes.add(attribute);
 	}
 
@@ -114,6 +118,25 @@ public class XMLElement implements Cloneable{
 	 */
 	public ValidatorResults getValidatorResults() {
 		return validatorResults;
+	}
+	public void populateValidatorResults() {
+		if (!populated)
+		{
+			validatorResults.addValidatorResults(getValidatorResults(false));
+			populated = true;
+		}
+	}
+	public ValidatorResults getValidatorResults(boolean flag) {
+		ValidatorResults validatorResults_temp = new ValidatorResults();
+		if (flag)
+			validatorResults_temp.addValidatorResults(validatorResults);
+		for (XMLElement xmlElement:children) {
+			ValidatorResults validatorResults_sub = xmlElement.getValidatorResults(true);
+			if (validatorResults_sub == null) continue;
+			if (validatorResults_sub.getAllMessages().size() == 0) continue;
+			validatorResults_temp.addValidatorResults(validatorResults_sub);
+		}
+		return validatorResults_temp;
 	}
 	/**
 	 * @param validatorResults the validatorResults to set
@@ -211,7 +234,56 @@ public class XMLElement implements Cloneable{
 
 	public ValidatorResults validate(Hashtable datatypes, String pXmlPath) {
 		ValidatorResults validatorResults_temp = new ValidatorResults();
+		
+		boolean checkCode = false;
+		if (getDomainName()!= null && !getDomainName().equals(""))
+		{
+			checkCode = true;
+		}
 		for(Attribute attribute: attributes) {
+			//Domain related validation
+			if (attribute.getDomainName()!= null && !attribute.getDomainName().equals("")||(checkCode && attribute.getName().equals("code")))
+			{
+				Datatype datatype;
+				if (attribute.getDomainName()!= null && !attribute.getDomainName().equals(""))
+					datatype = (Datatype)datatypes.get(attribute.getDomainName());
+				else
+					datatype = (Datatype)datatypes.get(getDomainName());
+				if (datatype!= null) 
+				{
+					HashSet predefinedValues = datatype.getPredefinedValues();
+					if (predefinedValues.size()>0) {
+						System.out.println("Validating..." + attribute.getValue() + " " + attribute.getDomainName() + datatype.getName());
+//						System.out.println(((Datatype)datatypes.get("ActClass")).getPredefinedValues());
+						if (!predefinedValues.contains(attribute.getValue())) 
+						{
+				            if (attribute.getCodingStrength()!=null && attribute.getCodingStrength().equals("CNE")||(getCodingStrength()!=null && getCodingStrength().equals("CNE")))
+				            {
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
+				            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+				            }
+				            else
+				            {
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " 	may not contain valid value (" + attribute.getValue() + ")"});
+				            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+				            }
+						}
+					}
+					else {
+			            if (attribute.getCodingStrength()!=null && attribute.getCodingStrength().equals("CNE")||(getCodingStrength()!=null && getCodingStrength().equals("CNE")))
+			            {
+				            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
+			            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			            }
+			            else
+			            {
+				            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " may not contain valid value (" + attribute.getValue() + ")"});
+			            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+			            }
+					}
+				}
+			}
+			
 			if (attribute.getDatatype() != null) 
 			{
 				if (!attribute.getDatatype().equals(""))
@@ -279,5 +351,29 @@ public class XMLElement implements Cloneable{
 	 */
 	public void setHasDefaultMappedData(boolean hasDefaultMappedData) {
 		this.hasDefaultMappedData = hasDefaultMappedData;
+	}
+	/**
+	 * @return the codingStrength
+	 */
+	public String getCodingStrength() {
+		return codingStrength;
+	}
+	/**
+	 * @param codingStrength the codingStrength to set
+	 */
+	public void setCodingStrength(String codingStrength) {
+		this.codingStrength = codingStrength;
+	}
+	/**
+	 * @return the domainName
+	 */
+	public String getDomainName() {
+		return domainName;
+	}
+	/**
+	 * @param domainName the domainName to set
+	 */
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 }

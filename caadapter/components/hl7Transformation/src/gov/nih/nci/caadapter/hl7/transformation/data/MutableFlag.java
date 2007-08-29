@@ -10,6 +10,10 @@ package gov.nih.nci.caadapter.hl7.transformation.data;
 public class MutableFlag {
 boolean hasUserMappedData = false;
 
+public MutableFlag(boolean flag) {
+	hasUserMappedData = flag;
+}
+
 /**
  * @return the hasUserMappedData
  */

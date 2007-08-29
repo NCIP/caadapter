@@ -11,14 +11,16 @@ package gov.nih.nci.caadapter.hl7.transformation.data;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-09 20:17:26 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-29 00:20:46 $
  */
 
 public class Attribute {
 	private String name;
 	private String value;
 	private String datatype;
+	private String domainName;
+	private String codingStrength;
 	/**
 	 * @return the name
 	 */
@@ -54,5 +56,29 @@ public class Attribute {
 	 */
 	public void setDatatype(String datatype) {
 		this.datatype = datatype;
+	}
+	/**
+	 * @return the codingStrength
+	 */
+	public String getCodingStrength() {
+		return codingStrength;
+	}
+	/**
+	 * @param codingStrength the codingStrength to set
+	 */
+	public void setCodingStrength(String codingStrength) {
+		this.codingStrength = codingStrength;
+	}
+	/**
+	 * @return the domainName
+	 */
+	public String getDomainName() {
+		return domainName;
+	}
+	/**
+	 * @param domainName the domainName to set
+	 */
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 }
