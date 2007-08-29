@@ -13,8 +13,8 @@ import java.util.List;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 18:25:43 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-08-29 18:47:50 $
  */
 public class DatatypeParserUtil {
 	private static DatatypeParser datatypeParser = null;
@@ -31,6 +31,8 @@ public class DatatypeParserUtil {
 		return datatypeParser;
 	}
 	public static Datatype getDatatype(String name) {
+		if (name==null||name.equals(""))
+			return null;
 		DatatypeParser datatypeParser = getDatatypeParser();
 		if (datatypeParser.getDatatypes().get(name) == null) return null;
 		return (Datatype)datatypeParser.getDatatypes().get(name);
