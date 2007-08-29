@@ -34,8 +34,8 @@ import org.w3c.dom.Node;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-28 22:30:20 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-29 00:01:54 $
  */
 
 public class DatatypeParser {
@@ -179,7 +179,7 @@ public class DatatypeParser {
 							   }
 						   }
 						   
-						   for (String enumValue:(HashSet<String>)getEnums(union))
+						   for (String enumValue:(HashSet<String>)uDT.getPredefinedValues())
 						   {
 							   currentDatatype.addPredefinedValue(enumValue);
 						   }
@@ -192,6 +192,8 @@ public class DatatypeParser {
 					}
 					else {
 						datatypes_check.put(currentDatatypeString,COMPLETE);
+						System.out.println(((Datatype)datatypes.get("ActClassDocument")).getPredefinedValues()+currentDatatypeString);
+
 					}
 				}
 				else 
@@ -250,7 +252,7 @@ public class DatatypeParser {
 	    	   }
 
 	    	   for(String p:(HashSet<String>)datatype.getPredefinedValues()) {
-		    	   System.out.println("      PredefinedValue: " + p);
+		    	   System.out.println("      PredefinedValue: '" + p + "'");
 	    	   }
 	       }
 	    }
@@ -347,7 +349,7 @@ public class DatatypeParser {
 	
 	public static void main(String argv[]) throws Exception{
     
-  		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+/*  		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db = dbf.newDocumentBuilder();
 
 		DOMImplementation domImpl = db.getDOMImplementation();
@@ -366,11 +368,16 @@ public class DatatypeParser {
 		datatypeParser.populateDatatypes();
 		//		datatypeParser.printDatatypes(true, false);
 		datatypeParser.printDatatypes(true, false);
-//		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
 		
-/*		DatatypeParser datatypeParser = new DatatypeParser();
-		datatypeParser.loadDatatypes();
-		datatypeParser.printDatatypes(false, true);
-		*/
+		System.out.println(((Datatype)datatypeParser.getDatatypes().get("ActClass")).getPredefinedValues());
+	*/	
+//		datatypeParser.saveDatatypes("C:/temp/serializedMIF/resource/datatypes");
+//		datatypeParser.saveDatatypes("C:/temp/datatypes");
+	
+		DatatypeParser datatypeParser1 = new DatatypeParser();
+		datatypeParser1.loadDatatypes();
+		System.out.println(((Datatype)datatypeParser1.getDatatypes().get("ActClass")).getPredefinedValues());
+//		datatypeParser1.printDatatypes(true, false);
+		
     }
 }

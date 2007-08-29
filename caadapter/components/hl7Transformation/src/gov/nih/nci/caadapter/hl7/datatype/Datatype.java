@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-08-21 21:15:28 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-08-29 00:01:54 $
  */
 
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -81,7 +81,8 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	 * @param value is a predefined value of the datatype
 	 */
 	public void addPredefinedValue(String value) {
-		predefinedValues.add(value);
+		String newValue = new String(value);
+		predefinedValues.add(newValue);
 	}
 	
 	public void setAttributes(Hashtable<String,Attribute> newAttrs)
