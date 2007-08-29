@@ -43,8 +43,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-08-29 19:35:37 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-08-29 20:41:12 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -87,7 +87,8 @@ public class QBTransformAction {
                                 queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(mappingPanel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         } finally {
-                            GetConnectionSingleton.closeConnection();
+                            // todo: Do not close connection here, close only when the panel closes
+                            //GetConnectionSingleton.closeConnection();
                             System.gc(); //call garbage collector just in case to wipe out the references
                         }
                     }
@@ -146,8 +147,8 @@ public class QBTransformAction {
                             queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         } finally {
-                            // todo: Do not close connection here, close only when the panel closes
-                            //GetConnectionSingleton.closeConnection();
+                            GetConnectionSingleton.closeConnection(); // needs to be closed since this is being called from menu
+                            System.gc();
                         }
                     }
                 }).start();
@@ -351,6 +352,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/08/29 19:35:37  jayannah
+ * fixed a bug which was adding a extra comma at the end and also when the specified fixed length was lesser than the length of the data, the data must be truncated to honor the specified length
+ *
  * Revision 1.8  2007/08/17 15:16:30  jayannah
  * added wait window during transformation
  *
