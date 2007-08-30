@@ -79,8 +79,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.14 $ date $Date:
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v1.2 revision $Revision: 1.15 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -114,7 +114,7 @@ public class MainMenuBar extends AbstractMenuBar
         menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
         menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
         readPreferencesMap();
- 
+
         add(constructFileMenu());
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
         {
@@ -386,7 +386,7 @@ public class MainMenuBar extends AbstractMenuBar
     {
         NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCsvToSdtmSpecificationItem1 = new JMenuItem(newCSVSpecificationActionDbToSdtm);
-        JMenu newGroup = new JMenu("CSV/Database Mapping and Transformation Service");
+        JMenu newGroup = new JMenu("RDS Mapping and Transformation Service");
         Database2SDTMAction newDB2SDTMAction = new Database2SDTMAction(mainFrame);
         NewSDTMStructureAction newSDTMStructureAction = new NewSDTMStructureAction(mainFrame);
         newGroup.add(newCsvToSdtmSpecificationItem1);
@@ -416,11 +416,11 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem openHSMFileItem = new JMenuItem(openHSMAction);
         actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
         menuItemMap.put(ActionConstants.OPEN_HSM_FILE, openHSMFileItem);
-        
+
         OpenHSMAction openXmlHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.xml)", mainFrame);
         actionMap.put(ActionConstants.OPEN_XML_HSM_FILE, openXmlHSMAction);
         menuItemMap.put(ActionConstants.OPEN_XML_HSM_FILE, new JMenuItem(openXmlHSMAction));
-        
+
         OpenHL7V3MessageAction openHL7V3MessageAction = new OpenHL7V3MessageAction(mainFrame);
         JMenuItem openHL7V3MessageItem = new JMenuItem(openHL7V3MessageAction);
         actionMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageAction);
@@ -571,6 +571,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.14  2007/08/13 15:22:56  wangeug
+ * HISTORY : add new menu:open H3S with "xml" format
+ * HISTORY :
  * HISTORY : Revision 1.13  2007/08/08 20:55:58  jayannah
  * HISTORY : Changed the verbage from SDTM to RDS
  * HISTORY :
