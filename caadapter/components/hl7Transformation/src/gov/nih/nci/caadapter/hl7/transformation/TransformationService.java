@@ -6,7 +6,6 @@
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
-import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MetaException;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
@@ -31,14 +30,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.8 $
- * @date $Date: 2007-08-29 00:13:15 $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2007-08-13 19:21:56 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.8 2007-08-29 00:13:15 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.7 2007-08-13 19:21:56 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -210,17 +209,11 @@ public class TransformationService
         for(XMLElement xmlElement:xmlElements) 
         {
         	System.out.println("Message:"+xmlElement.toXML());
-//        	xmlElement.validate();
+        	xmlElement.validate();
         	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages().size());
-        	for(Message message:xmlElement.getValidatorResults().getAllMessages())
-        	{
-        		System.out.println("Message:" + message+".");
-        	}
-//        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
+        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
         	
-        	System.out.println("XML validation results:");
-//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
-//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
+//        	validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
         }
         System.out.println("total message" + xmlElements.size());
         return xmlElements;
@@ -298,14 +291,14 @@ public class TransformationService
 //		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
 //       	TransformationService ts = new TransformationService("C:/xmlpathSpec/xmlpath150003.map",
 //		"C:/xmlpathSpec/COCT_MT150003.csv");
-//
+
 //        TransformationService ts = new TransformationService(
 //        	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT010000_MAP1-1.map",
 //			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT01000_Person.csv");
 
 //        TransformationService ts = new TransformationService(
-//            	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP7-1.map",
-//    			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP_Scenario_Test.csv");
+//            	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP3-1.map",
+//    			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP_Scenario_Test_Empty.csv");
 
         //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
 //		"C:/xmlpathSpec/NewEncounter_comp2.csv");
@@ -322,9 +315,6 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.7  2007/08/13 19:21:56  wuye
- * HISTORY      : load h3s in different format
- * HISTORY      :
  * HISTORY      : Revision 1.6  2007/08/03 13:25:32  wuye
  * HISTORY      : Fixed the mapping scenario #1 bug according to the design document
  * HISTORY      :
