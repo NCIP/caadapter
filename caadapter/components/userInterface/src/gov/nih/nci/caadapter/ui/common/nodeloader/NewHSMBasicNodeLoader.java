@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.24 2007-08-29 18:49:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.25 2007-08-30 17:24:09 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.24 $
- *          date        $Date: 2007-08-29 18:49:54 $
+ *          revision    $Revision: 1.25 $
+ *          date        $Date: 2007-08-30 17:24:09 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -370,12 +370,14 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			if (mifAttribute.getDatatype().isAbstract())
 			{
 				Datatype concretDt=mifAttribute.getConcreteDatatype();
-	
-				enableDatatypeAttributesComplextype(concretDt, newSpecificationFlag);
-				if (concretDt.getName().equals("GTS"))
-					concretDt.setSimple(false);
-				dtAttrs=concretDt.getAttributes();
-				dtTypeName=concretDt.getName();
+				if (concretDt!=null)
+				{
+					enableDatatypeAttributesComplextype(concretDt, newSpecificationFlag);
+					if (concretDt.getName().equals("GTS"))
+						concretDt.setSimple(false);
+					dtAttrs=concretDt.getAttributes();
+					dtTypeName=concretDt.getName();
+				}
 			}
 			Enumeration childAttrsEnum=dtAttrs.elements();
 			
