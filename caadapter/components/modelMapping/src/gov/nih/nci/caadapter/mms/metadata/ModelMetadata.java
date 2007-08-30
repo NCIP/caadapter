@@ -4,6 +4,8 @@
 package gov.nih.nci.caadapter.mms.metadata;
 
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -68,8 +70,35 @@ public class ModelMetadata {
 	
 	public static void init(String xmiFileName) {
 	    try {
-	    	handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
-	    	handler.load(xmiFileName);
+            // Check for the agrUML or EA XMI
+            // Decide which parser to use to open this XMI file
+            boolean eaExporter = false;
+
+            try {
+                BufferedReader in = new BufferedReader(new FileReader( xmiFileName ));
+                String str;
+                System.out.println("Checking for exporter type");
+
+                while ((str = in.readLine()) != null)
+                {
+                    if ( str.contains("<XMI.exporter>Enterprise Architect</XMI.exporter>") )
+                    {
+                        eaExporter = true;
+                    }
+                }
+                in.close();
+            } catch (IOException e) {
+            }
+
+            if ( eaExporter == true ) {
+                System.out.println("Handler using EADefault");
+                handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
+            } else {
+                System.out.println("Handler using ArgoUMLDefault");
+                handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.ArgoUMLDefault);
+            }
+
+            handler.load(xmiFileName);
 	    	model = handler.getModel();
 	    } catch (XmiException e) {
 	    	e.printStackTrace();
@@ -183,8 +212,8 @@ public class ModelMetadata {
                 object.setId(clazz.toString());
                 objectHashMap.put(clazz.toString(), pathKey.toString());
                 //System.out.println("Class: "+ pathKey.toString() + "\n");
-                System.out.println("OBJ clazz.getName : " + clazz.getName() );
-                System.out.println("OBJ pathKey.toString() : "+ pathKey.toString() );
+                //System.out.println("OBJ clazz.getName : " + clazz.getName() );
+                //System.out.println("OBJ pathKey.toString() : "+ pathKey.toString() );
 
                 sortedModel.add(object);
 
@@ -416,9 +445,9 @@ public class ModelMetadata {
 		Set mySet = myMap.keySet();
 		for (Iterator i = mySet.iterator(); i.hasNext();) {
 		   String key = (String)i.next();
-		   System.out.println(key);
+		   //System.out.println(key);
 		   Object x = myMap.get(key);
-		   System.out.println(x);
+		   //System.out.println(x);
 		}
 	}
 }
