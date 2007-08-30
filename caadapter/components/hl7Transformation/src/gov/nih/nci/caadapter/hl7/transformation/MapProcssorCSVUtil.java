@@ -34,26 +34,37 @@ public class MapProcssorCSVUtil {
     	
     	if (targetXmlPath.contains(csvSegment.getXmlPath())) {
 			CSVSegment current = csvSegment;
+			ArrayList<CSVSegment> parentHolder = new ArrayList<CSVSegment>();
+			parentHolder.add(current);
     		while (true) {
     			boolean canStop = true;
-    			if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
+    			if (parentHolder == null) break;
+    			ArrayList<CSVSegment> childHolder = new ArrayList<CSVSegment>();
+    			for(CSVSegment csvS:parentHolder)
+    			{
+    				current = csvS;
+    				if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
  
-    			for(CSVSegment childSegment:current.getChildSegments()) {
-//    				System.out.println("ChildSegment" + childSegment.getXmlPath());
-    				if (childSegment.getXmlPath().equals(targetXmlPath)) {
-    					csvSegments.add(childSegment);
-    				}
-    				else {
-    					if (targetXmlPath.contains(childSegment.getXmlPath())) {
-    						current = childSegment;
-    						canStop=false;
-    						break;
+    				for(CSVSegment childSegment:current.getChildSegments()) {
+//  					System.out.println("ChildSegment" + childSegment.getXmlPath());
+    					if (childSegment.getXmlPath().equals(targetXmlPath)) {
+    						csvSegments.add(childSegment);
+    					}
+    					else {
+    						if (targetXmlPath.contains(childSegment.getXmlPath())) {
+    							childHolder.add(childSegment);
+    							canStop=false;
+//    							break;
+    						}
     					}
     				}
     			}
+    			parentHolder.clear();
+    			parentHolder = childHolder;
 				if (canStop) break;
     		}
     	}
+//    	System.out.println(csvSegments.size());
     	return csvSegments;
     }
 /*
