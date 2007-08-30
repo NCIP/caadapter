@@ -26,8 +26,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-08-27 18:18:55 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2007-08-30 19:09:51 $
  * @since caAdapter v4.0
  */
 
@@ -65,7 +65,6 @@ public class XmlToMIFImporter {
 		
 		if (packageLoc!=null &&!packageLoc.getAttributes().isEmpty())
 		{
-			System.out.println("XmlToMIFImporter.parserMIFClass()...packageLocation:"+packageLoc);
 			Hashtable<String, String> packageLocation=new Hashtable<String, String>();
 			if (packageLoc.getNamespacePrefix()!=null
 					&&!packageLoc.getNamespacePrefix().equals(""))
