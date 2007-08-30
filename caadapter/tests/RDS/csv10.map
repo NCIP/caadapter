@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapping>
+  <components>
+  	<component kind="Database" param="jdbc:oracle:thin:@cbiodb2-d:1521:cadev~oracle.jdbc.OracleDriver~caadapter~caadapter"/>
+  	<component kind="XML" location="d:\My Documents\define.xml"/>
+  </components>
+  <link>
+  	<source>\Data Model\CAADAPTER\TEST_STUDY\STUDY_ID</source>
+  	<target>\#document\ODM\Study\MetaDataVersion\ItemGroupDef\DM.STUDYID</target>
+  </link>
+  <link>
+  	<source>\Data Model\CAADAPTER\TEST_STUDY\STUDY_NAME</source>
+  	<target>\#document\ODM\Study\MetaDataVersion\ItemGroupDef\DM.DMDY</target>
+  </link>
+  <link>
+  	<source>\Data Model\CAADAPTER\TEST_STUDY\SITE_ID</source>
+  	<target>\#document\ODM\Study\MetaDataVersion\ItemGroupDef\TE.TEDUR</target>
+  </link>
+
+<sql name="TE">SELECT TEST_STUDY."SITE_ID" AS TEST_STUDY_SITE_ID FROM "CAADAPTER"."TEST_STUDY" TEST_STUDY</sql>
+<sql name="DM">SELECT TEST_STUDY."STUDY_ID" AS TEST_STUDY_STUDY_ID, TEST_STUDY."STUDY_NAME" AS TEST_STUDY_STUDY_NAME FROM "CAADAPTER"."TEST_STUDY" TEST_STUDY</sql>
+</mapping>
