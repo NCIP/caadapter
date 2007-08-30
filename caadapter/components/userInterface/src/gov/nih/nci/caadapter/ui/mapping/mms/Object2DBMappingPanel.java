@@ -97,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.10 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.11 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.10 2007-08-28 18:36:08 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.11 2007-08-30 19:32:08 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -544,11 +544,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
         if( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
         {
-              PreferenceManager.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View, Logical Model");
+              PreferenceManager.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View.Logical Model");
         }
         if( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null )
         {
-              PreferenceManager.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View, Data Model");
+              PreferenceManager.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View.Data Model");
         }
 
         MetaObject metaInfo = null;
@@ -776,12 +776,17 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
             if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
             {
                 myModel.setMmsPrefixDataModel(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
+            } else {
+                myModel.setMmsPrefixDataModel( "Logical View.Data Model" );
             }
-
             if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
             {
                 myModel.setMmsPrefixObjectModel(PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+            } else {
+                myModel.setMmsPrefixObjectModel( "Logical View.Logical Model" );
             }
+            System.out.println( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) );
+            System.out.println( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
 
         } else {
 			JOptionPane
@@ -1209,6 +1214,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.10  2007/08/28 18:36:08  schroedn
+ * HISTORY : Added a NULL check for preferences
+ * HISTORY :
  * HISTORY : Revision 1.9  2007/08/10 15:57:39  schroedn
  * HISTORY : New Feature - Preferences to change prefex in XMI
  * HISTORY :
