@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.9 2007-08-29 18:48:54 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.10 2007-08-30 17:25:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-08-29 18:48:54 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-08-30 17:25:29 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -233,8 +233,14 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 
                     if (asscToRemove.size() > 0)
                         removeCloneAction.setEnabled(true);
-                    if (mifAssc.isOptionChosen()&&!mifAssc.isOptionForced())
+                    if (mifAssc.isOptionChosen())
+                    {
                     	forceOptionCloneAction.setEnabled(true);
+                    	if (mifAssc.isOptionForced())
+                    		forceOptionCloneAction.setName(ForceOptionCloneAction.DISABLE_COMMAND_FORCE_CLONE);
+                    	else
+                    		forceOptionCloneAction.setName(ForceOptionCloneAction.ENABLE_COMMAND_FORCE_CLONE);
+                    }
                 }
 
                 if (userObj instanceof MIFAttribute)

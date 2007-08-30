@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ForceOptionCloneAction.java,v 1.1 2007-07-12 16:08:50 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ForceOptionCloneAction.java,v 1.2 2007-08-30 17:24:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,10 +35,7 @@
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
 import javax.swing.JTree;
@@ -68,9 +65,12 @@ public class ForceOptionCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ForceOptionCloneAction.java,v 1.1 2007-07-12 16:08:50 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ForceOptionCloneAction.java,v 1.2 2007-08-30 17:24:48 wangeug Exp $";
 
-    private static final String COMMAND_FORCE_CLONE = "Force XML";
+    private static final String DEFAULT_COMMAND_FORCE_CLONE = "Force XML";
+    public static final String ENABLE_COMMAND_FORCE_CLONE = "Enable Force XML";
+    public static final String DISABLE_COMMAND_FORCE_CLONE = "Disable Force XML";
+    
     private static final Character COMMAND_MNEMONIC = new Character('F');
     
     /**
@@ -91,7 +91,7 @@ public class ForceOptionCloneAction extends AbstractHSMContextCRUDAction
     {
         super(null,icon, parentPanel);
 
-       	setName(COMMAND_FORCE_CLONE);
+       	setName(DEFAULT_COMMAND_FORCE_CLONE);
         setMnemonic(COMMAND_MNEMONIC);
         setActionCommandType(DOCUMENT_ACTION_TYPE);
     }
@@ -121,8 +121,12 @@ public class ForceOptionCloneAction extends AbstractHSMContextCRUDAction
         if (obj instanceof MIFAssociation)
         {
         	MIFAssociation mifAssc = (MIFAssociation) obj;
-        	mifAssc.setOptionForced(true);
+        	if (getName().equals(ENABLE_COMMAND_FORCE_CLONE))
+        		mifAssc.setOptionForced(true);
+        	else if (getName().equals(DISABLE_COMMAND_FORCE_CLONE))
+        		mifAssc.setOptionForced(false);
         	//reload the current node only if "nullFlavor" field
+        	setName(DEFAULT_COMMAND_FORCE_CLONE);
         	setSuccessfullyPerformed(true);
   			((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
         }
