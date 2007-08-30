@@ -222,8 +222,8 @@
             </fileset>
         </copy>
 
-        <!-- delete file="${lib.dir}\delete.jar"/>
-        <delete dir="${lib.dir}\deletethisfolder.jar"/ -->
+        <delete file="${lib.dir}\delete.jar"/>
+        <delete dir="${lib.dir}\deletethisfolder.jar"/>
 
     </target>
 
