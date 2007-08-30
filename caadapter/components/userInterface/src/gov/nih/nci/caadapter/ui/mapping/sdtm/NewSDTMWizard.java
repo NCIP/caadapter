@@ -43,7 +43,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -81,6 +81,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     File directory, hl7MessageFile, csvSaveFile, defineXMLFile;
     String _saveCSV = "";
     String _defineXML = "";
+    File selFile = null;
 
     //HashMap prefs;
 
@@ -92,7 +93,88 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     boolean isDatabase;
     String defineXMLFileLocation;
 
-    public NewSDTMWizard(AbstractMainFrame _callingFrame) {
+    public NewSDTMWizard(final AbstractMainFrame _callingFrame) {
+       final JDialog preFrame = new JDialog(_callingFrame, true);
+        //final JDialog preFrame = new JDialog();
+        preFrame.setLocation(400, 300);
+        preFrame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        preFrame.setTitle("Create RDS Txt file....");
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        //
+        JPanel centerPan = new JPanel(new GridLayout(1, 3));
+        centerPan.setBorder(new TitledBorder("Choose a Map file"));
+        centerPan.add(new JLabel("Select Map file"));
+        JButton button = new JButton("Browse");
+        final JTextField textField = new JTextField();
+        textField.setEnabled(false);
+        button.setPreferredSize(new Dimension(100, 25));
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+
+                handleButtonAction(_callingFrame);
+                textField.setText(selFile.getAbsolutePath());
+            }
+        });
+
+        centerPan.add(textField);
+        centerPan.add(button);
+        //
+        JPanel butPan = new JPanel();
+        butPan.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        JButton okBut = new JButton("OK");
+        okBut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                preFrame.dispose();
+                try {
+
+                    preProcessMapFile(selFile.getAbsolutePath());
+                    if (isDatabase) {
+                        new QBTransformAction(_callingFrame, selFile.getAbsolutePath(), defineXMLFileLocation, null);
+                    } else {
+                        transformSCS(_callingFrame, selFile.getAbsolutePath());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        JButton canBut = new JButton("Cancel");
+        canBut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                preFrame.dispose();
+            }
+        }
+        );
+        butPan.add(okBut);
+        butPan.add(canBut);
+        //
+        mainPanel.add(centerPan, BorderLayout.CENTER);
+        mainPanel.add(butPan, BorderLayout.SOUTH);
+        preFrame.add(mainPanel);
+        preFrame.pack();
+        preFrame.setVisible(true);
+    }
+
+    private void handleButtonAction(AbstractMainFrame _callingFrame) {
+        try {
+            JFileChooser fc = new JFileChooser(Config.CAADAPTER_HOME_DIR_TAG);
+            CaadapterFileFilter filter = new CaadapterFileFilter();
+            filter.addExtension("map");
+            filter.setDescription("map");
+            fc.setFileFilter(filter);
+            fc.setDialogTitle("Open a RDS map file.....");
+            fc.showOpenDialog(_callingFrame);
+            selFile = fc.getSelectedFile();
+            if (!selFile.getName().endsWith("map")) {
+                JOptionPane.showMessageDialog(_callingFrame, "Please a valid map file", "Invalid file", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public NewSDTMWizard(AbstractMainFrame _callingFrame, String deprecated) {
         try {
             JFileChooser fc = new JFileChooser(Config.CAADAPTER_HOME_DIR_TAG);
             CaadapterFileFilter filter = new CaadapterFileFilter();
@@ -339,7 +421,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            //  new NewSDTMWizard(null, null);
+            new NewSDTMWizard(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
