@@ -6,16 +6,10 @@
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
-import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.csv.data.CSVField;
-import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
-import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
-import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
-import gov.nih.nci.caadapter.hl7.map.MappingException;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -32,8 +26,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.13 $
- * @date $Date: 2007-08-30 04:51:35 $
+ * @version $Revision: 1.14 $
+ * @date $Date: 2007-08-30 21:56:57 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -46,11 +40,6 @@ public class MapProcessorHelper {
 	private Hashtable<String,String> mappings;
 
     private Hashtable<String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
-	
-	private Hashtable <String, List<CSVField>> csvFieldHash= new Hashtable <String, List<CSVField>>();
-
-	private Hashtable <String, List<CSVSegment>> csvSegmentHash= new Hashtable <String, List<CSVSegment>>();
-	
 	
 	/*
 	 * NOTE!!! setMapped(true) will only set the current MIFCLass
@@ -65,7 +54,7 @@ public class MapProcessorHelper {
     protected List<String> preprocess_mifclass(MIFClass mifClass, boolean isChoice, String xmlPath) {
 		String commonP = "";
 
-		List<String> csvSegments = new ArrayList();
+		List<String> csvSegments = new ArrayList<String>();
 
     	if (isChoice && !mifClass.isChoiceSelected()) return new ArrayList<String>();
 
@@ -174,13 +163,8 @@ public class MapProcessorHelper {
     		return strings;
     	}
 
-    	List<ParameterMeta> inputParameterMetas = functionMeta.getInputDefinitionList();
-
     	// for each input find it's input value.
     	for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
-    		ParameterMeta parameterMeta = inputParameterMetas.get(i);
-    		String inputvalue = null;
-
     		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
     		if (inputData.startsWith("function.")) { //function mapping to target
     			strings.addAll(preprocess_function(inputData));
@@ -194,13 +178,12 @@ public class MapProcessorHelper {
     protected List<String> preprocess_datatype(Datatype datatype, String parentXPath) {
     	
     	if (!datatype.isEnabled()) return new ArrayList<String>();
-    	List<String> csvSegments = new ArrayList();
+    	List<String> csvSegments = new ArrayList<String>();
     	if (datatype.isSimple()) return csvSegments;
     	for(String attributeName:(Set<String>)(datatype.getAttributes().keySet())) {
     		Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
     		boolean isSimple = false;
     		
-    		String datatypeattribute = parentXPath+"."+attr.getNodeXmlName();
     		if (attr.getReferenceDatatype() == null) {
     			isSimple = true;
     		}
@@ -211,7 +194,6 @@ public class MapProcessorHelper {
     			String newcsvField = mappings.get(parentXPath+"."+attributeName);
     			if (newcsvField!=null) {
     				List<String> strings = new ArrayList<String>();
-    				boolean isFuncation = true;
     				if (newcsvField.startsWith("function.")) {
     					strings.addAll(preprocess_function(newcsvField));
     					
@@ -273,12 +255,11 @@ public class MapProcessorHelper {
     }
     protected List<String> preprocess_structural_datatype(String parentXPath, MutableFlag structuralAttributeHasMapping) {
 
-    	List<String> csvSegments = new ArrayList();
+    	List<String> csvSegments = new ArrayList<String>();
 
     	String newcsvField = mappings.get(parentXPath);
     	if (newcsvField!=null) {
     		List<String> strings = new ArrayList<String>();
-    		boolean isFuncation = true;
     		if (newcsvField.startsWith("function.")) {
     			strings.addAll(preprocess_function(newcsvField));
 
@@ -448,45 +429,5 @@ public class MapProcessorHelper {
     	}
     	
     	return commonP;
-    }
-    
-    protected Hashtable <String, List<CSVSegment>> preprocessCSVSegments(CSVSegment csvSegment) {
-    	preprocess_CSVSegments(csvSegment);
-    	return csvSegmentHash;
-    }
-
-    protected void preprocess_CSVSegments(CSVSegment csvSegment) {
-    	List<CSVSegment> csvList = csvSegmentHash.get(csvSegment.getXmlPath()); 
-    	if (csvList == null) {
-    		ArrayList<CSVSegment> newcsvList = new ArrayList<CSVSegment>();
-    		newcsvList.add(csvSegment);
-    	}
-    	else {
-    		csvList.add(csvSegment);
-    	}
-    	for(CSVSegment childS:csvSegment.getChildSegments()) {
-    		preprocess_CSVSegments(childS);
-    	}
-    }
-
-    protected Hashtable <String, List<CSVField>> preprocessCSVField(CSVSegment csvSegment) {
-    	preprocess_CSVFields(csvSegment);
-    	return csvFieldHash;
-    }
-
-    protected void preprocess_CSVFields(CSVSegment csvSegment) {
-    	for(CSVField csvField : csvSegment.getFields()) {
-    		List<CSVField> csvList = csvFieldHash.get(csvField.getXmlPath()); 
-    		if (csvList == null) {
-    			ArrayList<CSVField> newcsvList = new ArrayList<CSVField>();
-    			newcsvList.add(csvField);
-    		}
-    		else {
-    			csvList.add(csvField);
-    		}
-    	}
-    	for(CSVSegment childS:csvSegment.getChildSegments()) {
-    		preprocess_CSVSegments(childS);
-    	}
     }
 }
