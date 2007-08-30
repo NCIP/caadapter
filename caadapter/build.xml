@@ -249,11 +249,12 @@
             <fileset dir="${sdtm.module.home}/lib"/>
             <fileset dir="${ui.module.home}/lib"/>
             <fileset dir="${ui.module.home}/../dataviewer/lib"/>
-            <fileset dir="${lib.dir}"/>
+            <fileset dir="${lib.dir}">
+                <exclude name="delete.jar"/>
+            </fileset>
             <fileset dir="${project.ref.lib.dir}"/>
         </copy>
     </target>
-
     <target name="build.modules" depends="init">
         <echo message="-------- build all modules in ${project.name}  --------"/>
         <mkdir dir="${build.dir}"/>
