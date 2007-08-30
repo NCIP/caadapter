@@ -19,6 +19,7 @@ import gov.nih.nci.caadapter.hl7.map.MappingException;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.transformation.data.MutableFlag;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,8 +32,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.12 $
- * @date $Date: 2007-08-29 23:10:18 $
+ * @version $Revision: 1.13 $
+ * @date $Date: 2007-08-30 04:51:35 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -50,6 +51,10 @@ public class MapProcessorHelper {
 
 	private Hashtable <String, List<CSVSegment>> csvSegmentHash= new Hashtable <String, List<CSVSegment>>();
 	
+	
+	/*
+	 * NOTE!!! setMapped(true) will only set the current MIFCLass
+	 */
     protected void preprocessMIF(Hashtable<String,String> mappings, Hashtable<String, FunctionComponent> functions, MIFClass mifClass, boolean isChoice, String rootCSVName) {
     	this.mappings = mappings;
     	this.functions = functions;
@@ -83,13 +88,17 @@ public class MapProcessorHelper {
 
     	HashSet<MIFAttribute> attributes = mifClass.getAttributes();
 
+    	MutableFlag structuralAttributeHasMapping = new MutableFlag(false);
     	for(MIFAttribute mifAttribute:attributes) {
-    		combine(csvSegments,preprocess_attribute(mifAttribute));
+    		combine(csvSegments,preprocess_attribute(mifAttribute, structuralAttributeHasMapping));
     	}
 
 
     	commonP = findCommonParent(csvSegments);
 
+    	if (structuralAttributeHasMapping.hasUserMappedData()) 
+    		mifClass.setMapped(true);
+    	
     	HashSet<MIFAssociation> associations = mifClass.getAssociations();
 
     	for(MIFAssociation mifAssociation : associations) {
@@ -121,10 +130,6 @@ public class MapProcessorHelper {
     	String conceptualMapping = mappings.get(xmlPath);
     	if (conceptualMapping == null) {    		
     		mifClass.setCsvSegment(commonP);
-    		if (!commonP.equals("")) 
-    		{
-    			mifClass.setMapped(true);
-    		}
     	}
     	else {
     		if (commonP.equals("")) 
@@ -266,7 +271,7 @@ public class MapProcessorHelper {
 //    	System.out.println("--------process dt:"+datatype.getName()+ "csvSgement:"+datatype.getCsvSegment());
     	return csvSegments;
     }
-    protected List<String> preprocess_structural_datatype(String parentXPath) {
+    protected List<String> preprocess_structural_datatype(String parentXPath, MutableFlag structuralAttributeHasMapping) {
 
     	List<String> csvSegments = new ArrayList();
 
@@ -303,15 +308,16 @@ public class MapProcessorHelper {
     			}
     		}
     	}
+    	if (csvSegments.size()>0)  structuralAttributeHasMapping.setHasUserMappedData(true);
     	return csvSegments;
     }
-    protected List<String> preprocess_attribute(MIFAttribute mifAttribute) {
+    protected List<String> preprocess_attribute(MIFAttribute mifAttribute, MutableFlag structuralAttributeHasMapping) {
     	if (mifAttribute.getDatatype() == null&&!mifAttribute.isStrutural()) return new ArrayList<String>(); //Abstract attrbiute
     	if (!mifAttribute.isStrutural())
     		mifAttribute.setCsvSegments(preprocess_datatype(mifAttribute.getDatatype(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName()));
     	else
     	{
-    		List<String> tempList = preprocess_structural_datatype(mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName()); 
+    		List<String> tempList = preprocess_structural_datatype(mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),structuralAttributeHasMapping); 
     		mifAttribute.setCsvSegments(tempList); 
     	}
 		if (mifAttribute.getCsvSegments().size() > 0) mifAttribute.setMapped(true); else mifAttribute.setMapped(false);

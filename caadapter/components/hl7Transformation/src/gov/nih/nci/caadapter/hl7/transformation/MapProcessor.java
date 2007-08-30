@@ -44,8 +44,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.31 $
- *          date        $Date: 2007-08-29 23:10:18 $
+ *          revision    $Revision: 1.32 $
+ *          date        $Date: 2007-08-30 04:51:36 $
  */
 
 public class MapProcessor {
@@ -189,16 +189,16 @@ public class MapProcessor {
         	    		{
         	    			hasUserdata.setHasUserMappedData(true);
         	    		}
-        	    		if (choiceXMLElements.size()>1) {//Should not happen
-        	    		}
-        	    		if (choiceXMLElements.size() == 1)
-        	    		{
-        	    			XMLElement xmlElementsChoice = choiceXMLElements.get(0);
-        	    			xmlElement.setAttributes(xmlElementsChoice.getAttributes());
-        	    			xmlElement.addChildren(xmlElementsChoice.getChildren()); 
-        	    		}
+        	    		return choiceXMLElements;
+//        	    		if (choiceXMLElements.size()>0)
+//        	    		{
+//        	    			XMLElement xmlElementsChoice = choiceXMLElements.get(0);
+//        	    			xmlElement.setAttributes(xmlElementsChoice.getAttributes());
+//        	    			xmlElement.addChildren(xmlElementsChoice.getChildren()); 
+//        	    		}
         	    	}
         		}
+        		return new ArrayList<XMLElement>();
         	}
 
         	TreeSet<MIFAttribute> attributes = mifClass.getSortedAttributes();
@@ -217,10 +217,10 @@ public class MapProcessor {
     				if (mifAttribute.getMaximumMultiplicity() == 1) {
     					if (attrXmlElements.size()>1) {
     			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
-    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
-    			            for(int i = attrXmlElements.size()-1;i>=1; i--) {
-    			            	attrXmlElements.remove(i);
-    			            }
+    			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+//    			            for(int i = attrXmlElements.size()-1;i>=1; i--) {
+//    			            	attrXmlElements.remove(i);
+//    			            }
     					}
     				}
     				if (mifAttribute.getMinimumMultiplicity() == 1) {
@@ -1058,6 +1058,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.31  2007/08/29 23:10:18  wuye
+ * HISTORY      : Fixed an issue with mapping to structural attribute
+ * HISTORY      :
  * HISTORY      : Revision 1.30  2007/08/29 17:55:10  wuye
  * HISTORY      : Code refactor
  * HISTORY      :
