@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.4 2007-08-13 15:22:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.5 2007-08-30 19:55:33 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -8,25 +8,25 @@
  *
  * The caAdapter Software License, Version 1.3
  * Copyright Notice.
- * 
- * Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute. To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. 
- * 
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
- * 
- * 1. Redistributions of source code must retain the Copyright Notice above, this list of conditions, and the disclaimer of Article 3, below. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
- * 
+ *
+ * Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute. To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the Copyright Notice above, this list of conditions, and the disclaimer of Article 3, below. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
  * 2. The end-user documentation included with the redistribution, if any, must include the following acknowledgment:
- * 
- * 
+ *
+ *
  * "This product includes software developed by the SAIC and the National Cancer Institute."
- * 
- * 
- * If no such end-user documentation is to be included, this acknowledgment shall appear in the software itself, wherever such third-party acknowledgments normally appear. 
- * 
- * 3. The names "The National Cancer Institute", "NCI" and "SAIC" must not be used to endorse or promote products derived from this software. 
- * 
- * 4. This license does not authorize the incorporation of this software into any third party proprietary programs. This license does not authorize the recipient to use any trademarks owned by either NCI or SAIC-Frederick. 
- * 
+ *
+ *
+ * If no such end-user documentation is to be included, this acknowledgment shall appear in the software itself, wherever such third-party acknowledgments normally appear.
+ *
+ * 3. The names "The National Cancer Institute", "NCI" and "SAIC" must not be used to endorse or promote products derived from this software.
+ *
+ * 4. This license does not authorize the incorporation of this software into any third party proprietary programs. This license does not authorize the recipient to use any trademarks owned by either NCI or SAIC-Frederick.
+ *
  * 5. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO EVENT SHALL THE UNITED STATES GOVERNMENT, THE NATIONAL CANCER INSTITUTE, SAIC, OR THEIR AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * <!-- LICENSE_TEXT_END -->
  */
@@ -40,10 +40,10 @@ import gov.nih.nci.caadapter.common.util.Config;
  * Define a list of constants that are used by menu and some of action definition.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-13 15:22:08 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-08-30 19:55:33 $
  */
 public interface ActionConstants
 {
@@ -65,7 +65,7 @@ public interface ActionConstants
 	String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
 	String OPEN_MAP_FILE = "Open HL7 v2 to HL7 v3 " + OPEN_MAP_FILE_TXT;
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
-	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV to RDS/Database Map Specification";
+	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
 	String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
 	String OPEN_CSV_SPEC = "Open " + OPEN_CSV_SPEC_TXT;
@@ -74,7 +74,7 @@ public interface ActionConstants
 	String OPEN_HSM_FILE_TXT = NEW_HSM_FILE_TXT;
 	String OPEN_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT +"(.h3s)";
 	String OPEN_XML_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT +"(.xml)";
-	
+
 	String OPEN = "Open...";
 	String CLOSE = "Close";
 	String CLOSE_ALL = "Close All";
@@ -83,7 +83,7 @@ public interface ActionConstants
 	String EXIT = "Exit";
 	String ABOUT = "About " + Config.PRODUCT_NAME + "...";
 	String HELP_TOPIC = "HELP_TOPIC";
-	
+
 	String HELP = "Help - Contents and Index...";
 	//String HELP_MANAGER = "Help Mgr";
 	//String HELP_MANAGER2 = "Help Content Manager";   // For Tool Tip
@@ -96,6 +96,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/08/13 15:22:08  wangeug
+ * HISTORY      : add new constants :open_dialog_tile_hsm_xml
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/08/08 21:13:47  jayannah
  * HISTORY      : Changed the verbage from SDTM to RDS
  * HISTORY      :
