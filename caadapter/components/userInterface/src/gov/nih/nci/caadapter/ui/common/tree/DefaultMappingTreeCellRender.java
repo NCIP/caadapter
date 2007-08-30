@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.7 2007-08-15 17:55:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.8 2007-08-30 19:08:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-15 17:55:34 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-08-30 19:08:57 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -122,7 +122,6 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 							MIFAssociation mifAssc=(MIFAssociation)parentObj;
 							parentMIFClass=mifAssc.getMifClass();
 							attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
-//							if (attrMultiplicity==1), this MIFAttribute belong to MIFAssociation
 							if (mifAssc.isChoiceSelected()
 									&&attrMultiplicity!=1)
 							{
@@ -143,44 +142,40 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 				if (mifAssc.isChoiceSelected())
 					treeCellText=mifAssc.getNodeXmlName();
 				if (mifAssc.getMultiplicityIndex()>0)
+				{
 					treeCellText=treeCellText+ "  ["+(mifAssc.getMultiplicityIndex()+1) +"]";
+					if (mifAssc.getMaximumMultiplicity()==1)
+						treeCellText=treeCellText+"  [Alert: For Choice]";
+				}
 				else
 				{
-					if (mifAssc.getMaximumMultiplicity()!=1)
+					Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
+					MIFClass parentMIFClass=null;
+					int asscMultiplicity=0;//parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+					if (parentObj instanceof MIFClass)
 					{
-						Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
-						MIFClass parentMIFClass=null;
-						int asscMultiplicity=0;//parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-						if (parentObj instanceof MIFClass)
+						parentMIFClass=(MIFClass)parentObj;
+						asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+					}
+					else if (parentObj instanceof MIFAssociation )
+					{
+						MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
+						parentMIFClass=parentMifAssc.getMifClass();//.getReferencedMifClass();
+						asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+						if (asscMultiplicity==1&&parentMifAssc.isChoiceSelected())
 						{
-							parentMIFClass=(MIFClass)parentObj;
-							asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+							//this association may belong to a chosen MIFClass
+							MIFClass asscChosenClass=parentMifAssc.findChoiceSelectedMifClass();
+							if (asscChosenClass!=null)
+								asscMultiplicity=asscChosenClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
 						}
-						else if (parentObj instanceof MIFAssociation )
-						{
-							MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
-							parentMIFClass=parentMifAssc.getMifClass();//.getReferencedMifClass();
-							asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-//							 if (asscMultiplicity==1)
-							// this clone belongs to the MIFAssociation
-							if (parentMifAssc.isChoiceSelected()
-									&&asscMultiplicity!=1)
-							{
-								for(MIFClass choiceClass:parentMifAssc.getMifClass().getSortedChoices())
-								{
-									if (choiceClass.isChoiceSelected())
-									{
-										asscMultiplicity=choiceClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-										break;
-									}
-								}
-							}
-						}
-						
-//						int asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-						if (asscMultiplicity!=1)
-							treeCellText=treeCellText+"  [1]";
-					}					
+					}
+					if (asscMultiplicity!=1)
+					{
+						treeCellText=treeCellText+"  [1]";	
+						if (mifAssc.getMaximumMultiplicity()==1)
+							treeCellText=treeCellText+"  [Alert: For Choice]";
+					}
 				}
 			}
 			setText(treeCellText);	

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.8 2007-08-28 21:01:45 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.9 2007-08-30 19:09:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-28 21:01:45 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-08-30 19:09:19 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -74,7 +74,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.8 2007-08-28 21:01:45 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.9 2007-08-30 19:09:19 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -105,125 +105,24 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 
 			if(userObj instanceof MIFClass)
 			{
-				setText(((MIFClass)userObj).getMessageType()+":"+((MIFClass)userObj).getNodeXmlName());
+				MIFClass nodeMIFC=(MIFClass)userObj;
+				String mifCViewName=nodeMIFC.getNodeXmlName();
+				if (nodeMIFC.getMessageType()!=null)
+					mifCViewName=nodeMIFC.getMessageType()+":"+mifCViewName;
+				
+				setText(mifCViewName);
 				setIcon(CLONE_IMAGE_ICON);	
 			}
 			else if(userObj instanceof MIFAttribute)
 			{
-				MIFAttribute mifAttr=(MIFAttribute)userObj;
-				String treeCellText=mifAttr.getName();
-				//set any type
-				Datatype mifDatatype=mifAttr.getDatatype();
-				if (mifDatatype!=null&&mifDatatype.isAbstract())
-				{
-					treeCellText=treeCellText +"  [Abstract - "+mifAttr.getType();
-					if (mifAttr.getConcreteDatatype()!=null)
-					{
-						treeCellText=treeCellText +":"+mifAttr.getConcreteDatatype().getName();
-					}
-					treeCellText=treeCellText +"]";
-				}
-				if (mifAttr.getMaximumMultiplicity()!=1&&mifAttr.getMultiplicityIndex()==0)
-				{
-					Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
-					MIFClass parentMIFClass=null;
-					int attrMultiplicity=0;
-					if (parentObj instanceof MIFClass)
-					{
-						parentMIFClass=(MIFClass)parentObj;
-						attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
-					}
-					else if (parentObj instanceof MIFAssociation )
-					{
-						MIFAssociation mifAssc=(MIFAssociation)parentObj;
-						parentMIFClass=mifAssc.getMifClass();
-						attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
-						//if (attrMultiplicity==1), this MIFAttribute belong to MIFAssociation
-						if (mifAssc.isChoiceSelected()
-								&&attrMultiplicity!=1)
-						{
-							MIFClass choiceClass=mifAssc.findChoiceSelectedMifClass();
-							attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
-						}
-					}				
-					if (attrMultiplicity==1)
-						treeCellText=treeCellText+"  [Multiple]";
-					else
-						treeCellText=treeCellText +"  [1]";
-				}
-				else if(mifAttr.getMaximumMultiplicity()!=1)
-					treeCellText=treeCellText+"  ["+(mifAttr.getMultiplicityIndex()+1) +"]";					
-				
-				setText(treeCellText);
+				MIFAttribute mifAttr=(MIFAttribute)userObj;		
+				setText(setViewNameForMIFAttribute(mifAttr, (DefaultMutableTreeNode)value));
 				setIcon(CLONE_ATTRIBUTE_IMAGE_ICON);
 			}
 			else if(userObj instanceof MIFAssociation)
 			{
 				MIFAssociation mifAssc=(MIFAssociation)userObj;
-				String viewName=mifAssc.getName();
-				String viewIndex="";
-				if ((mifAssc.getMaximumMultiplicity()!=1
-						||MIFUtil.containChoiceAssociation(mifAssc))
-						&&mifAssc.getMultiplicityIndex()==0)
-				{
-					Object parentObj=((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject();
-					MIFClass parentMIFClass=null;
-					int asscMultiplicity=0;
-					if (parentObj instanceof MIFClass)
-					{
-						parentMIFClass=(MIFClass)parentObj;
-						asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-					}
-					else if (parentObj instanceof MIFAssociation )
-					{
-						MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
-						parentMIFClass=parentMifAssc.getMifClass();//.getReferencedMifClass();
-						asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-						// if (asscMultiplicity==1)
-						// this clone belongs to the MIFAssociation
-						if (parentMifAssc.isChoiceSelected()&&asscMultiplicity!=1)
-						{
-							for(MIFClass choiceClass:parentMifAssc.getMifClass().getSortedChoices())
-							{
-								if (choiceClass.isChoiceSelected())
-								{
-									asscMultiplicity=choiceClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-									break;
-								}
-							}
-						}
-					}
-					
-//					int asscMultiplicity=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
-					if (asscMultiplicity==1)
-						viewIndex="  [Multiple]";
-					else
-						viewIndex="  [1]";
-				}
-				else if (mifAssc.getMultiplicityIndex()>0)
-					viewIndex= "  ["+(mifAssc.getMultiplicityIndex()+1) +"]";
-				
-				MIFClass asscMIFClass=mifAssc.getMifClass();
-				if(asscMIFClass.getChoices().size()>0)
-				{
-					
-					if (mifAssc.isChoiceSelected())
-					{
-						//show the selected choice
-						viewName=mifAssc.getNodeXmlName();
-						viewIndex= viewIndex+"  [Selected Choice -- for "+mifAssc.getName()+"]";
-					}
-					else
-						viewIndex=viewIndex+ "  [Choice - Unselected]";
-				}
-				String showText=viewName+viewIndex;
-				if (asscMIFClass.isReference())//.getReferenceName().equals(""))
-				{
-						showText=showText+" [Reference - " +asscMIFClass.getName()+ "]";
-				}
-				if (mifAssc.isOptionForced())
-					showText=showText+" [Force XML]";
-				setText(showText);			
+				setText(setViewNameForAssociation(mifAssc, (DefaultMutableTreeNode)value));			
 				setIcon(CLONE_IMAGE_ICON);	
 			}
 			else if(userObj instanceof Attribute)
@@ -232,5 +131,147 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			}
 		}		
 		return rtnComp;
+	}
+	
+	/**
+	 * Set display name for a MIFAttribute tree node
+	 * @param mifAttr
+	 * @param currentNode
+	 * @return
+	 */
+	private String setViewNameForMIFAttribute(MIFAttribute mifAttr, DefaultMutableTreeNode currentNode)
+	{
+		String treeCellText=mifAttr.getName();
+		//set any type
+		Datatype mifDatatype=mifAttr.getDatatype();
+		if (mifDatatype!=null&&mifDatatype.isAbstract())
+		{
+			treeCellText=treeCellText +"  [Abstract - "+mifAttr.getType();
+			if (mifAttr.getConcreteDatatype()!=null)
+			{
+				treeCellText=treeCellText +":"+mifAttr.getConcreteDatatype().getName();
+			}
+			treeCellText=treeCellText +"]";
+		}
+		if (mifAttr.getMaximumMultiplicity()!=1&&mifAttr.getMultiplicityIndex()==0)
+		{
+			Object parentObj=((DefaultMutableTreeNode)currentNode.getParent()).getUserObject();
+			MIFClass parentMIFClass=null;
+			int attrMultiplicity=0;
+			if (parentObj instanceof MIFClass)
+			{
+				parentMIFClass=(MIFClass)parentObj;
+				attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+			}
+			else if (parentObj instanceof MIFAssociation )
+			{
+				MIFAssociation mifAssc=(MIFAssociation)parentObj;
+				parentMIFClass=mifAssc.getMifClass();
+				attrMultiplicity=parentMIFClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+				//if (attrMultiplicity==1), this MIFAttribute belong to MIFAssociation
+				if (mifAssc.isChoiceSelected()
+						&&attrMultiplicity!=1)
+				{
+					MIFClass choiceClass=mifAssc.findChoiceSelectedMifClass();
+					attrMultiplicity=choiceClass.getMaxAttributeMultiplicityWithName(mifAttr.getName());
+				}
+			}				
+			if (attrMultiplicity==1)
+				treeCellText=treeCellText+"  [Multiple]";
+			else
+				treeCellText=treeCellText +"  [1]";
+		}
+		else if(mifAttr.getMaximumMultiplicity()!=1)
+			treeCellText=treeCellText+"  ["+(mifAttr.getMultiplicityIndex()+1) +"]";					
+
+		return treeCellText;
+	}
+	
+	/**
+	 * Set display name for a MIFAssociation tree node
+	 * @param mifAssc
+	 * @param currentNode
+	 * @return
+	 */
+	private String setViewNameForAssociation(MIFAssociation mifAssc, DefaultMutableTreeNode currentNode)
+	{
+		String viewName=mifAssc.getName();
+		boolean hasChoice =MIFUtil.containChoiceAssociation(mifAssc);
+		boolean multipleRequired=true;
+		//check if "multiple" is required
+		if (mifAssc.getMaximumMultiplicity()==1&&!hasChoice)
+			multipleRequired=false;			 
+				
+		//find the existing multiplicity of current association
+		boolean hasMoreThanOne=false;
+		if (mifAssc.getMultiplicityIndex()>0)
+			hasMoreThanOne=true;
+		else
+		{
+			Object parentObj=((DefaultMutableTreeNode)currentNode.getParent()).getUserObject();
+			int parentAsscCnt=0;
+			if (parentObj instanceof MIFClass)
+			{
+				MIFClass parentMIFClass=(MIFClass)parentObj;
+				parentAsscCnt=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+				
+			}
+			else if (parentObj instanceof MIFAssociation )
+			{
+				MIFAssociation parentMifAssc=(MIFAssociation)parentObj;
+				MIFClass parentMIFClass=parentMifAssc.getMifClass();
+				parentAsscCnt=parentMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+				if (parentAsscCnt==0&&parentMifAssc.isChoiceSelected())
+				{
+					//the association may belong to a choosenItem
+					MIFClass parentChosenMIFClass=parentMifAssc.findChoiceSelectedMifClass();
+					parentAsscCnt=parentChosenMIFClass.getMaxAssociationMultiplicityWithName(mifAssc.getName());
+				}
+			}
+			if (parentAsscCnt>1)
+				hasMoreThanOne=true;
+		}
+		
+		//set view text
+		String viewIndex="";
+		String viewIndexEnd="]";
+		if (mifAssc.getMultiplicityIndex()==0)
+		{
+			if(multipleRequired)	
+			{
+				viewIndex="  [Multiple";
+				if (hasMoreThanOne)
+					viewIndex="  [1";
+			}
+		}
+		else
+		{
+			viewIndex="  ["+(mifAssc.getMultiplicityIndex()+1);
+		}
+		if (hasChoice)
+			viewIndexEnd="--Alert:For Choice]";
+		if (!viewIndex.equals(""))
+			viewIndex=viewIndex+viewIndexEnd;
+		
+		MIFClass asscMIFClass=mifAssc.getMifClass();
+		if(asscMIFClass.getChoices().size()>0)
+		{
+			if (mifAssc.isChoiceSelected())
+			{
+				//show the selected choice
+				viewName=mifAssc.getNodeXmlName();
+				viewIndex= viewIndex+"  [Selected Choice -- for "+mifAssc.getName()+"]";
+			}
+			else
+				viewIndex=viewIndex+ "  [Choice - Unselected]";
+		}
+		String showText=viewName+viewIndex;
+		if (asscMIFClass.isReference())
+		{
+				showText=showText+" [Reference - " +asscMIFClass.getName()+ "]";
+		}
+		if (mifAssc.isOptionForced())
+			showText=showText+" [Force XML]";
+		return showText;
 	}
 }
