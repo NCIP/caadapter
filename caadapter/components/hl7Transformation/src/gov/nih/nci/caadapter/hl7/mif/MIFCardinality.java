@@ -166,7 +166,7 @@ public class MIFCardinality
 		}
 		else
 		{
-			if (getMinimum() == 1)
+			if (getMaximum() == 1)
 				rtnString = Config.CARDINALITY_ZERO_TO_ONE;
 		}
 		return rtnString;
