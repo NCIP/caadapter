@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.3 2007-08-30 14:21:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.4 2007-08-30 16:09:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,8 +46,8 @@ import java.awt.event.ActionListener;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.3 $
- * date        $Date: 2007-08-30 14:21:19 $
+ * revision    $Revision: 1.4 $
+ * date        $Date: 2007-08-30 16:09:21 $
  */
 public class NewHSMWizard extends JDialog implements ActionListener
 {
@@ -62,17 +62,11 @@ public class NewHSMWizard extends JDialog implements ActionListener
      * This String is for informational purposes only and MUST not be made final.
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.3 2007-08-30 14:21:19 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.4 2007-08-30 16:09:21 wangeug Exp $";
 
     private static final String OK_COMMAND = "OK";
     private static final String CANCEL_COMMAND = "Cancel";
     private boolean okButtonClicked = false;
-
-    private JPanel buttonPanel;
-    private JButton okButton;
-    private JButton cancelButton;
-
-    //center panel
     private NewHSMFrontPage frontPage;
     private String userSelectedMessageType;
 
@@ -90,30 +84,35 @@ public class NewHSMWizard extends JDialog implements ActionListener
 
     private void initialize()
     {
+    	setSize(400, 280);
         userSelectedMessageType = null;
-        Container contentPane = this.getContentPane();
+        Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
         frontPage = new NewHSMFrontPage(this);
         JScrollPane scrollPane = new JScrollPane(frontPage);
         contentPane.add(scrollPane, BorderLayout.CENTER);
+        JPanel btnPane=setButtonPane();
+        contentPane.add(btnPane, BorderLayout.SOUTH);
+    }
 
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));//.TRAILING));//new BorderLayout());
-        okButton = new JButton(OK_COMMAND);
+    private JPanel setButtonPane()
+    {
+    	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));//.TRAILING));//new BorderLayout());
+        JButton okButton = new JButton(OK_COMMAND);
         okButton.setMnemonic('O');
         okButton.addActionListener(this);
-        cancelButton = new JButton(CANCEL_COMMAND);
+        JButton cancelButton = new JButton(CANCEL_COMMAND);
         cancelButton.setMnemonic('C');
         cancelButton.addActionListener(this);
+        
         JPanel tempPanel = new JPanel(new GridLayout(1, 2));
         tempPanel.add(okButton);
         tempPanel.add(cancelButton);
         buttonPanel.add(tempPanel);
-
-        contentPane.add(buttonPanel, BorderLayout.SOUTH);
-        pack();
+        
+    	return buttonPanel;
     }
-
     /**
      * Invoked when an action occurs.
      */
@@ -195,6 +194,9 @@ public class NewHSMWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/30 14:21:19  wangeug
+ * HISTORY      : remove "How to add new message button"
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/03 20:19:34  wangeug
  * HISTORY      : initila loading hl7 code without "clone"
  * HISTORY      :
