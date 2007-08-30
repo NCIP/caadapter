@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.6 2007-08-06 20:02:22 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.7 2007-08-30 21:52:56 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,9 +36,13 @@ package gov.nih.nci.caadapter.ui.common.tree;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
@@ -67,8 +71,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-06 20:02:22 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-08-30 21:52:56 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -222,13 +226,7 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 				return false;
 		}
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-		 
-//		if (targetNode.getUserObject() instanceof MIFAttribute)
-//		{
-//			MIFAttribute targetMifAttr=(MIFAttribute)targetNode.getUserObject();
-//			if(targetMifAttr.isStrutural())
-//				return false;
-//		}
+
 		try
 		{
 			TransferableNode dragSourceObjectSelection = (TransferableNode) transferredData;
@@ -258,7 +256,35 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 				{// we have a valid map, so go to map it!
 					if(sourceNode instanceof MappableNode && targetNode instanceof MappableNode)
 					{
-						isSuccess = mappingDataMananger.createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
+						Object srcObj=((DefaultMutableTreeNode)sourceNode).getUserObject();
+						Object trgtObj=((DefaultMutableTreeNode)targetNode).getUserObject();
+						boolean isAllowedMapping=false;
+						String errMsg="";
+						if (srcObj instanceof CSVFieldMeta)
+						{
+							if( (trgtObj instanceof Attribute)
+									||(trgtObj instanceof MIFAttribute))
+								isAllowedMapping=true;
+							else
+								errMsg="The target is not a data field:"+trgtObj;
+						}
+					    else if (srcObj instanceof CSVSegmentMeta)
+						{
+					    	if ((trgtObj instanceof MIFClass)
+									||(trgtObj instanceof MIFAssociation))
+					    		isAllowedMapping=true;
+					    	else
+					    		errMsg="A CSVSegment can only be mapped to a Clone object";
+						}
+						else
+						{
+							errMsg="Invalid source selection: "+srcObj;
+						}
+
+						if (isAllowedMapping)
+							isSuccess = mappingDataMananger.createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
+						System.out
+								.println("TargetTreeDropTransferHandler.setDropData()..errMsg:"+errMsg);
 					}
 					else
 					{
@@ -341,6 +367,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/08/06 20:02:22  wangeug
+ * HISTORY      : all attriubute node is  mappable, but the system will take default value if it is avaliable
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/08/02 15:12:22  wangeug
  * HISTORY      : not allowed to map a conformed attribute
  * HISTORY      :
