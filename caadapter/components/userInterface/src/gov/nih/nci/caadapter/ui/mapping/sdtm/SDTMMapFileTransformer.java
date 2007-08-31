@@ -24,8 +24,8 @@ import org.xml.sax.SAXParseException;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $
  */
 public class SDTMMapFileTransformer
 {
@@ -90,7 +90,7 @@ public class SDTMMapFileTransformer
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(new File(mapFileName));
-			System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+			//System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 			NodeList linkNodeList = doc.getElementsByTagName("link");
 			int totalPersons = linkNodeList.getLength();
 			System.out.println("Total no of links are : " + totalPersons);
@@ -146,7 +146,7 @@ public class SDTMMapFileTransformer
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		Document doc = docBuilder.parse(new File(mapFileName));
-		System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+		//System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 		NodeList compLinkNodeList = doc.getElementsByTagName("components");
 		String _xmlFileName = "";
 		for (int s = 0; s < compLinkNodeList.getLength(); s++) {

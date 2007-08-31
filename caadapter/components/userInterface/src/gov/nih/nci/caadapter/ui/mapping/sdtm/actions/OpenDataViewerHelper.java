@@ -32,8 +32,8 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-08-16 19:39:45 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-08-31 19:40:09 $
  */
 public class OpenDataViewerHelper extends JDialog implements ActionListener {
     Frame _mainFrame=null;
@@ -233,7 +233,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(mapFile);
-        System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+        //System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
         NodeList compLinkNodeList = doc.getElementsByTagName("components");
         String _xmlFileName = "", _scsFileName, _dbParams = null;
         for (int s = 0; s < compLinkNodeList.getLength(); s++) {
@@ -260,4 +260,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

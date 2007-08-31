@@ -43,7 +43,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.8 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.9 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -94,7 +94,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     String defineXMLFileLocation;
 
     public NewSDTMWizard(final AbstractMainFrame _callingFrame) {
-       final JDialog preFrame = new JDialog(_callingFrame, true);
+        final JDialog preFrame = new JDialog(_callingFrame, true);
         //final JDialog preFrame = new JDialog();
         preFrame.setLocation(400, 300);
         preFrame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -111,12 +111,11 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
         button.setPreferredSize(new Dimension(100, 25));
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-
                 handleButtonAction(_callingFrame);
-                textField.setText(selFile.getAbsolutePath());
+                if (selFile != null)
+                    textField.setText(selFile.getAbsolutePath());
             }
         });
-
         centerPan.add(textField);
         centerPan.add(button);
         //
@@ -127,12 +126,13 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
             public void actionPerformed(ActionEvent event) {
                 preFrame.dispose();
                 try {
-
-                    preProcessMapFile(selFile.getAbsolutePath());
-                    if (isDatabase) {
-                        new QBTransformAction(_callingFrame, selFile.getAbsolutePath(), defineXMLFileLocation, null);
-                    } else {
-                        transformSCS(_callingFrame, selFile.getAbsolutePath());
+                    if (selFile != null) {
+                        preProcessMapFile(selFile.getAbsolutePath());
+                        if (isDatabase) {
+                            new QBTransformAction(_callingFrame, selFile.getAbsolutePath(), defineXMLFileLocation, null);
+                        } else {
+                            transformSCS(_callingFrame, selFile.getAbsolutePath());
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -166,8 +166,10 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
             fc.setDialogTitle("Open a RDS map file.....");
             fc.showOpenDialog(_callingFrame);
             selFile = fc.getSelectedFile();
-            if (!selFile.getName().endsWith("map")) {
-                JOptionPane.showMessageDialog(_callingFrame, "Please a valid map file", "Invalid file", JOptionPane.ERROR_MESSAGE);
+            if (selFile != null) {
+                if (!selFile.getName().endsWith("map")) {
+                    JOptionPane.showMessageDialog(_callingFrame, "Please a valid map file", "Invalid file", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -397,7 +399,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(new File(mapFileName));
-        System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+        //System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
         NodeList compLinkNodeList = doc.getElementsByTagName("components");
         for (int s = 0; s < compLinkNodeList.getLength(); s++) {
             Node node = compLinkNodeList.item(s);

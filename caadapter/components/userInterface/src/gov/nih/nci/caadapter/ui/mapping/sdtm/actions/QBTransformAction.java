@@ -43,8 +43,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-08-29 20:41:12 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-08-31 19:40:09 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -318,7 +318,7 @@ public class QBTransformAction {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc = docBuilder.parse(new File(mapFileName));
-            System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
             NodeList compLinkNodeList = doc.getElementsByTagName("components");
             String _xmlFileName = "";
             for (int s = 0; s < compLinkNodeList.getLength(); s++) {
@@ -352,6 +352,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/08/29 20:41:12  jayannah
+ * closed the connection when the transformation is requested using the menu
+ *
  * Revision 1.9  2007/08/29 19:35:37  jayannah
  * fixed a bug which was adding a extra comma at the end and also when the specified fixed length was lesser than the length of the data, the data must be truncated to honor the specified length
  *

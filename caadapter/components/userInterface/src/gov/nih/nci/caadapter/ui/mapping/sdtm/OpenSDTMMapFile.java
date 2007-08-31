@@ -22,8 +22,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-08-30 16:00:38 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-08-31 19:40:09 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -92,7 +92,7 @@ public class OpenSDTMMapFile extends JDialog {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(new File(mapFileName));
-        System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
+        //System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
         NodeList compLinkNodeList = doc.getElementsByTagName("components");
         String _xmlFileName = "";
         for (int s = 0; s < compLinkNodeList.getLength(); s++) {
@@ -356,6 +356,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/08/30 16:00:38  jayannah
+ * reverted back to the previous version
+ *
  * Revision 1.4  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
