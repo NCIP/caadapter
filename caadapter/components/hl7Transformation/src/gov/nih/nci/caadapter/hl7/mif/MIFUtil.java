@@ -8,15 +8,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MIFUtil {
 	
+	private static ArrayList <String> treatedSimpleType=new ArrayList<String>();
+	
+	static {
+		treatedSimpleType.add("CS");
+		treatedSimpleType.add("cs");
+		treatedSimpleType.add("bl");
+		treatedSimpleType.add("BL");
+	}
+	
 	public static boolean isTreatedAsSimpleType(String typeName)
 	{
-		if (typeName.trim().equals("CS"))
+		if (treatedSimpleType.contains(typeName.trim()))
 			return true;
 		return false;
 	}
