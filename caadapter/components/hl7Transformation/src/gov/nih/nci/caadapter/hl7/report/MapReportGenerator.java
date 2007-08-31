@@ -38,8 +38,8 @@ import java.util.*;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-31 21:37:16 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-31 20:00:35 $
  */
 public class MapReportGenerator
 {
@@ -55,7 +55,7 @@ public class MapReportGenerator
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/report/MapReportGenerator.java,v 1.1 2007-07-31 21:37:16 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/report/MapReportGenerator.java,v 1.2 2007-08-31 20:00:35 wuye Exp $";
 
 	/**
 	 * Terminology used within this class:
@@ -211,6 +211,7 @@ public class MapReportGenerator
 	
 	private void loadH3S(MIFAssociation mifAssociation, String parentXmlPath, String parentXmlPathMapped) {
     	if (mifAssociation.getMifClass()!= null) {
+	    	allMifElementMappedXML.put(parentXmlPathMapped+"." + mifAssociation.getNodeXmlName(),parentXmlPath+"." + mifAssociation.getName());
     		loadH3S(mifAssociation.getMifClass(),parentXmlPath+"."+mifAssociation.getName(), parentXmlPathMapped + "."+mifAssociation.getNodeXmlName());
     	}
 	}
@@ -409,4 +410,7 @@ public class MapReportGenerator
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/31 21:37:16  wuye
+ * HISTORY      : New map report generator
+ * HISTORY      :
  */
