@@ -24,6 +24,7 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
+import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
@@ -89,8 +90,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.11 $ date $Date: 2007-08-07 15:52:19 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.12 $ date $Date: 2007-08-31 13:10:43 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -105,7 +106,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.11 2007-08-07 15:52:19 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.12 2007-08-31 13:10:43 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1398,7 +1399,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			BaseMapElement targetMapComp = map.getTargetMapElement();
 			MappableNode sourceNode = null;
 			MappableNode targetNode = null;
-			if ( sourceMapComp.isComponentOfSourceType() ||sourceMapComp.getMetaObject() instanceof CSVFieldMeta) {
+			if ( sourceMapComp.isComponentOfSourceType() 
+					||sourceMapComp.getMetaObject() instanceof CSVFieldMeta
+					||sourceMapComp.getMetaObject() instanceof CSVSegmentMeta) {
 				sourceNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getMetaObject());
 			} else if ( sourceMapComp.isComponentOfFunctionType() ) {
 				FunctionComponent functionComp = (FunctionComponent) sourceMapComp.getComponent();
@@ -1420,8 +1423,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			}
 			
 			if ( targetMapComp.isComponentOfSourceType() 
-					||targetMapComp.getMetaObject() instanceof CSVFieldMeta) {
-				sourceNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), targetMapComp.getMetaObject());
+					||targetMapComp.getMetaObject() instanceof CSVFieldMeta
+					||targetMapComp.getMetaObject() instanceof CSVSegmentMeta) {
+				targetNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), targetMapComp.getMetaObject());
 			} else if ( targetMapComp.isComponentOfFunctionType() ) {
 				FunctionComponent functionComp = (FunctionComponent) targetMapComp.getComponent();
 				FunctionBoxMutableViewInterface functionView = getUsageManager().findFunctionUsageInstanceByComponentUUID(functionComp);
@@ -1459,6 +1463,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.11  2007/08/07 15:52:19  schroedn
+ * HISTORY : New Feature, Primary Key and Lazy/Eager functions added to MMS
+ * HISTORY :
  * HISTORY : Revision 1.10  2007/07/23 16:14:53  wangeug
  * HISTORY : bug fixing: refresh source and target tree when new mapping is created
  * HISTORY :
