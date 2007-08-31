@@ -22,8 +22,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-08-31 21:10:28 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-08-31 21:23:33 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -168,7 +168,7 @@ public class OpenSDTMMapFile extends JDialog {
         _database2SDTMMappingPanel.processOpenTargetTree(new File(_xmlFileName), false, true);
         NodeList linkNodeList = doc.getElementsByTagName("link");
         int totalPersons = linkNodeList.getLength();
-        System.out.println("Total no of links are : " + totalPersons);
+        //System.out.println("Total no of links are : " + totalPersons);
         _mappedData = new HashMap();
         for (int s = 0; s < linkNodeList.getLength(); s++) {
             Node node = linkNodeList.item(s);
@@ -362,6 +362,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/08/31 21:10:28  jayannah
+ * handled user cancel during the password input and transformation
+ *
  * Revision 1.8  2007/08/31 19:40:09  jayannah
  * Commented the system out statements
  *

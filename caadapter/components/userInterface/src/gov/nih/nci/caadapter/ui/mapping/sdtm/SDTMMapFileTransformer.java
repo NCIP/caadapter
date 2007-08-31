@@ -25,7 +25,7 @@ import org.xml.sax.SAXParseException;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $
  */
 public class SDTMMapFileTransformer
 {
@@ -93,8 +93,8 @@ public class SDTMMapFileTransformer
 			//System.out.println("Root element of the doc is " + doc.getDocumentElement().getNodeName());
 			NodeList linkNodeList = doc.getElementsByTagName("link");
 			int totalPersons = linkNodeList.getLength();
-			System.out.println("Total no of links are : " + totalPersons);
-			System.out.println(defineXMLList.toString());
+			//System.out.println("Total no of links are : " + totalPersons);
+			//System.out.println(defineXMLList.toString());
 			for (int s = 0; s < linkNodeList.getLength(); s++) {
 				Node node = linkNodeList.item(s);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
