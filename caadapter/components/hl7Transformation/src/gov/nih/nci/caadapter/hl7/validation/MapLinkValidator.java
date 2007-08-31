@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.1 2007-07-23 18:47:16 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.2 2007-08-31 16:26:00 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,6 +42,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 //import gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
 /**
  * This class defines a basic validator to check if two objects are valid to participate in mapping.
@@ -51,8 +52,8 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-23 18:47:16 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-08-31 16:26:00 $
  */
 public class MapLinkValidator extends Validator {
 	/**
@@ -67,7 +68,7 @@ public class MapLinkValidator extends Validator {
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.1 2007-07-23 18:47:16 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.2 2007-08-31 16:26:00 wangeug Exp $";
 
 	private transient Object source;
 	private transient Object target;
@@ -86,11 +87,13 @@ public class MapLinkValidator extends Validator {
 		 * 2) exam if the pair is valid;
 		 */
 
+		boolean foundError=false;
 		if ((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
-//				&& (target instanceof gov.nih.nci.caadapter.hl7.clone.meta.CloneDatatypeFieldMeta))
-				&& (target instanceof gov.nih.nci.caadapter.hl7.mif.MIFAttribute))
+				&&(target instanceof gov.nih.nci.caadapter.hl7.mif.MIFAttribute ))
 		{
-			//a valid map between a csv field and a clone datatypefield.
+			MIFAttribute mifAttr=(MIFAttribute)target;
+			if (!mifAttr.isStrutural())
+				foundError=true;
 		}
 		else if((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
 				&& (target instanceof gov.nih.nci.caadapter.hl7.datatype.Attribute))
@@ -105,17 +108,15 @@ public class MapLinkValidator extends Validator {
 		}
 		else if ((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta)
 //				&& (target instanceof gov.nih.nci.caadapter.hl7.clone.meta.CloneAttributeMeta))
-				&& (target instanceof gov.nih.nci.caadapter.hl7.mif.MIFAttribute))
+				&& (target instanceof gov.nih.nci.caadapter.hl7.mif.MIFAssociation))
 		{
 			//a valid map between a csv segment and a clone datatype (attribute).
 		}
+		else
+			foundError=true;
 		
-//		else if ((source instanceof gov.nih.nci.caadapter.hl7.database.meta.ColumnMeta)
-//				&& (target instanceof gov.nih.nci.caadapter.hl7.database.meta.ColumnMeta))
-//		{
-//			//a valid map between a database table column and a database table column.
-//		}
-		else {
+		if (foundError)
+		{
 			//an invalid map - create an error.
 			String strSourceValue = source == null ? "null" : source.toString();
 			String strTargetValue = target == null ? "null" : target.toString();
@@ -153,6 +154,9 @@ public class MapLinkValidator extends Validator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/23 18:47:16  wangeug
+ * HISTORY      : enable mapping validator for CSV to MIF mapping
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
