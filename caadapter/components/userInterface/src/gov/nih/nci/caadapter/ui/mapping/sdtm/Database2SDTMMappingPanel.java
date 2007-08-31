@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.16 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.17 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.16 2007-08-29 21:26:52 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.17 2007-08-31 21:22:27 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -113,7 +113,11 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         this.setBorder(BorderFactory.createEmptyBorder());
         this.setLayout(new BorderLayout());
         this._mainFrame = mf;
-        this.add(getCenterPanel(false), BorderLayout.CENTER);
+        try {
+            this.add(getCenterPanel(false), BorderLayout.CENTER);
+        } catch (Exception e) {
+            //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         fileSynchronizer = new MappingFileSynchronizer(this);
     }
 
@@ -506,7 +510,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                 fieldsString.append(_tempHolder.substring(0, _tempHolder.indexOf('&')) + ",");
             }
         }
-        System.out.println("wait");
+        //System.out.println("wait");
     }
 
     protected TreeNode loadTargetTreeData(Object metaInfo, File file) throws Exception {
@@ -817,6 +821,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/08/29 21:26:52  jayannah
+ * fixed bugs to gracelfully cancel during times when database open is cancelled by the user and proper enabling and disabling of the buttons
+ *
  * Revision 1.15  2007/08/29 21:01:00  jayannah
  * Made sure that the buttons on the mapping panel are correctly disabled and enables depending on the which map file is opened
  *
