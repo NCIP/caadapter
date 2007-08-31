@@ -74,7 +74,9 @@ public class MifMetaLookup implements MetaLookup {
 			for(MIFAssociation assc:mif.getAssociations())
 			{
 				MIFClass asscMif=assc.getMifClass();
+				table.put(assc.getXmlPath(), assc);
 				initLookupTable(asscMif);
+				
 			}
 		
 		//process choices
