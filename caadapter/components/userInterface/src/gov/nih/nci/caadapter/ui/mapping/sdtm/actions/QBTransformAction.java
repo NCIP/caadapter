@@ -43,8 +43,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-08-31 19:40:09 $
+ *          $Revision: 1.12 $
+ *          $Date: 2007-08-31 21:10:28 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -119,6 +119,10 @@ public class QBTransformAction {
         if (_con == null) {
             String params = getDBParams(mapFile);
             _con = getConnection(_mainFrame, params, mapFile);
+            // the user really Cancelled! BAH!
+            if(_con == null){
+                return;
+            }
         }
         this.con = _con;
         directoryLoc = new JFileChooser(System.getProperty("user.dir"));
@@ -352,6 +356,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/08/31 19:40:09  jayannah
+ * Commented the system out statements
+ *
  * Revision 1.10  2007/08/29 20:41:12  jayannah
  * closed the connection when the transformation is requested using the menu
  *

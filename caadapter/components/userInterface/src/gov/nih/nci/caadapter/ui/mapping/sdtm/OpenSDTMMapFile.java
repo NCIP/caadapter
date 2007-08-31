@@ -22,8 +22,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-08-31 19:40:09 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-08-31 21:10:28 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -135,9 +135,15 @@ public class OpenSDTMMapFile extends JDialog {
             }
         }
         if (_dbParams != null) {
-            //_database2SDTMMappingPanel.openDataBaseMapFile(_dbParams);
-            _database2SDTMMappingPanel.openDataBaseMapFile(_dbParams);
-            System.out.println("");
+            if(!_database2SDTMMappingPanel.openDataBaseMapFileFromOpenMapFile(_dbParams)){
+                _database2SDTMMappingPanel.getOpenSCSButton().setEnabled(true);
+                _database2SDTMMappingPanel.get_dbCon().setEnabled(true);
+                _database2SDTMMappingPanel.get_commonBut().setEnabled(false);
+                _database2SDTMMappingPanel.getTransFormBut().setEnabled(false);
+                _database2SDTMMappingPanel.getOpenTargetButton().setEnabled(true);
+                return;
+            }
+
         }
         if (!new File(_xmlFileName).exists()) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
@@ -202,7 +208,7 @@ public class OpenSDTMMapFile extends JDialog {
             //Node node = sqlQueryList.item(s);
             NamedNodeMap nodeList = sqlQueryList.item(s).getAttributes();
             Node attr = nodeList.getNamedItem("name");
-            System.out.println("the domain names are ---- " + attr.getNodeValue());
+            //System.out.println("the domain names are ---- " + attr.getNodeValue());
             String s1 = ((Node) sqlQueryList.item(s)).getFirstChild().toString();
             String s2 = s1.substring(s1.indexOf(": ") + 1, s1.length());
             _database2SDTMMappingPanel.getSqlQueries().put(attr.getNodeValue(), s2.substring(0, s2.lastIndexOf("]")).trim());
@@ -356,6 +362,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/08/31 19:40:09  jayannah
+ * Commented the system out statements
+ *
  * Revision 1.7  2007/08/30 16:00:38  jayannah
  * reverted back to the previous version
  *

@@ -156,12 +156,14 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener {
 
     public void keyPressed(KeyEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
-        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        if (e.getKeyCode() == KeyEvent.VK_ENTER){
+             result = true;
             if (!(_passWd.getPassword().length > 0)) {
                 JOptionPane.showMessageDialog(dialog, "Please enter a password");
             } else {
                 dialog.dispose();
             }
+        }
     }
 
     public void keyReleased(KeyEvent e) {
