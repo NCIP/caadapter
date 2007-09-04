@@ -22,10 +22,24 @@ public void progressUpdate(int completionPercent);
 public boolean isRequestValid();
 
 /**
+ * Inform the HL7 transformation request is cancelled 
+ * @return
+ */
+public boolean isRequestCancelled();
+
+
+/**
  * Inform the transformation observer if the transformation server is ready to process
  * a transformation request.
  * @return The status of a transformation server
  */
 public boolean isServiceReady();
+
+/*
+ * Set the total number of HL7 message with a transformation service request
+ * @param count The number of messages 
+ */
+public void setMessageCount(int count);
+
 
 }
