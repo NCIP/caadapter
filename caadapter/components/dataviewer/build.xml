@@ -21,6 +21,9 @@
     <!-- Define project properties !-->
 	<property name="caadapter.project.lib.dir" value="${dataview.module.home}/../../lib"/>
 	<property name="caadapter.project.dist.dir" value="${dataview.module.home}/../../dist"/>
+	<property name="sqleonardo.jar" value="${dataview.module.home}/../../lib/sqleonardo.jar"/>
+	<property name="ref_sqleonardo.jar" value="${dataview.module.home}/../../referenceLib/sqleonardo.jar"/>
+
 	<path id="module.class.path">
         <fileset dir="${download.jar.location}">
 			<include name="**/*.jar"/>			
@@ -32,6 +35,9 @@
 		<fileset dir="${caadapter.project.dist.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
+		</fileset>
+		<fileset dir="${caadapter.project.lib.dir}">
+			<include name="**/sql*.jar"/>
 		</fileset>
 	</path>
 
@@ -59,10 +65,22 @@
 		</javac>
 	</target>
 
+
+	<target name="copyRef" if="ref.sqleonardo">
+		<copy file="${ref_sqleonardo.jar}" tofile="${sqleonardo.jar}"/>
+	</target>
+	
 	<target name="init">
 		<echo message="-------- initialize ${module.name}  --------"/>
 		<mkdir dir="${module.build.dir}"/>
 		<mkdir dir="${module.dist.dir}"/>
+		<condition property="ref.sqleonardo">
+		   <available file="${ref_sqleonardo.jar}"/>
+		</condition>
+		<antcall target="copyRef"></antcall>
+		<condition property="download.sqleonardo">
+		   <available file="${sqleonardo.jar}"/>
+		</condition>
 	</target>
 
 	<target name="clean">
@@ -71,7 +89,7 @@
 		<delete dir="${module.dist.dir}"/>		
 	</target>
     
-    <target name="d2" description="download sqleonardo file">
+    <target name="d2" description="download sqleonardo file" unless="download.sqleonardo">
         <echo message="--Downloading jar file from http://sourceforge.net-----"/>
            <get src="http://downloads.sourceforge.net/sqleonardo/sqleonardo-2007.06.rc1.zip?modtime=1182460601&amp;big_mirror=0"
                 dest="${download.jar.location}\delete.jar"
@@ -80,7 +98,7 @@
            </get>
     </target>
 
-    <target name="unzipDownloadedJar" depends="d2">
+    <target name="unzipDownloadedJar" depends="d2" unless="download.sqleonardo">
         <echo message="--unzipping the downloaded file from sourceforge-----"/>
         <unzip src="${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar"/>
     </target>

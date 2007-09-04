@@ -40,6 +40,9 @@
     <property name="signjar.keystore" value="NCICBkey"/>
     <property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
 
+	<property name="sqleonardo.jar" value="${basedir}/lib/sqleonardo.jar"/>
+	<property name="ref_sqleonardo.jar" value="${basedir}/referenceLib/sqleonardo.jar"/>
+
     <!-- Define dataview module properties !-->
     <property name="dataview.module.home" value="${basedir}/components/dataviewer"/>
     <property name="dataview.module.build" value="${dataview.module.home}/build.xml"/>
@@ -100,6 +103,7 @@
         </jar>
     	
     	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
+    	<delete file="caadapter4_0_Src_${DATE}.zip"></delete>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
 		</zip>
@@ -233,13 +237,21 @@
         <echo message="Call Generating castor CODE...."/>
         <ant antfile="build_demo.xml" target="demo.ui.jar"/>
     </target>
-    <target name="copy.modules.lib">
-        <!-- deleting the folder deletethisfolder.jar and just copying the sqleonardo,jar as /lib/sqleonardo.jar so that
-        it exists in the manifest file-->
-        <copy tofile="${basedir}/lib/sqleonardo.jar">
+	<target name="copyDownload" if="sql.downloaded">
+        <copy tofile="${basedir}/lib/sqleonardo.jar" if="sql.downloaded">
             <fileset file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1/**.jar"/>
         </copy>
         <delete dir="${basedir}/lib/deletethisfolder.jar"/>
+	</target>
+    <target name="copy.modules.lib">
+        <!-- deleting the folder deletethisfolder.jar and just copying the sqleonardo,jar as /lib/sqleonardo.jar so that
+        it exists in the manifest file-->
+    	<condition property="sql.downloaded">
+    		<available file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1" type="dir"></available>
+    	</condition>
+    	
+    	<antcall target="copyDownload"></antcall>
+    	
         <!-- delete dir="${lib.dir}"/ -->
         <copy todir="${dist.dir}/lib">
             <fileset dir="${common.module.home}/lib"/>
@@ -297,8 +309,18 @@
 
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
+		
+    	<condition property="ref.sqleonardo">
+		   <available file="${ref_sqleonardo.jar}"/>
+		</condition>
+    	
+		<antcall target="copyRef"></antcall>
 
-        <ant antfile="${common.module.build}" target="init"/>
+    	<condition property="download.sqleonardo">
+		   <available file="${sqleonardo.jar}"/>
+		</condition>
+
+    	<ant antfile="${common.module.build}" target="init"/>
         <!--		<ant antfile="${hl7.module.build}" target="init"/> -->
         <ant antfile="${mms.module.build}" target="init"/>
         <ant antfile="${dataview.module.build}" target="init"/>
@@ -306,6 +328,10 @@
         <ant antfile="${ui.module.build}" target="init"/>
         <ant antfile="${ws.module.build}" target="init"/>
     </target>
+
+	<target name="copyRef" if="ref.sqleonardo">
+		<copy file="${ref_sqleonardo.jar}" tofile="${sqleonardo.jar}"/>
+	</target>
 
     <target name="clean">
         <echo message="-------- clean ${project.name}  --------"/>
