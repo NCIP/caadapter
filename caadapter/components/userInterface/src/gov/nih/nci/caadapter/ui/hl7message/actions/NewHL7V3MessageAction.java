@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.3 2007-09-04 17:36:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.4 2007-09-04 18:30:30 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-09-04 17:36:58 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-09-04 18:30:30 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -78,7 +78,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.3 2007-09-04 17:36:58 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.4 2007-09-04 18:30:30 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -122,7 +122,6 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	{
 		final String actionName=this.getName();
 		final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog((Frame)hl7Panel.getRootContainer(),false);
-		DefaultSettings.centerWindow(progressor);
 		SwingWorker worker = new SwingWorker()
 		{
 			public Object construct()
@@ -131,8 +130,8 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 				
 				try
 				{
-//					GeneralUtilities.setCursorWaiting(mainFrame);
-					GeneralUtilities.setCursorWaiting(progressor);
+					GeneralUtilities.setCursorWaiting(mainFrame);
+//					GeneralUtilities.setCursorWaiting(progressor);
 					mainFrame.addNewTab(hl7Panel);
 					setSuccessfullyPerformed(true);
 				}
@@ -144,8 +143,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 				finally
 				{
 					//back to normal, in case exception occurred.
-//					GeneralUtilities.setCursorDefault(mainFrame);
-					GeneralUtilities.setCursorWaiting(progressor);
+					GeneralUtilities.setCursorDefault(mainFrame);
 					return null;
 				}
 			}
@@ -160,7 +158,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 					{//no need to proceed further
 						return;
 					}
-//					GeneralUtilities.setCursorWaiting(mainFrame);
+					GeneralUtilities.setCursorWaiting(mainFrame);
 					System.out.println(".finished()..action Name:"+actionName);
 					validatorResults = hl7Panel.generateMappingMessages(dataFile, mapFile, progressor);
 					everythingGood = handleValidatorResults(validatorResults);
@@ -176,7 +174,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 				finally
 				{
 					//back to normal.
-//					GeneralUtilities.setCursorDefault(mainFrame);
+					GeneralUtilities.setCursorDefault(mainFrame);
 					setSuccessfullyPerformed(everythingGood);
 					if(!everythingGood)
 					{
@@ -191,7 +189,6 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 			}
 		};
 		worker.start();
-		progressor.setVisible(true);
 	}
 
 	/**
@@ -254,6 +251,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/09/04 17:36:58  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/27 20:37:32  wangeug
  * HISTORY      : clean codes
  * HISTORY      :

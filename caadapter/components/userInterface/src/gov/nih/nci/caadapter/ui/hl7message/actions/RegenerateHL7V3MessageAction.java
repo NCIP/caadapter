@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.2 2007-09-04 17:37:09 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.3 2007-09-04 18:30:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-09-04 17:37:09 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-09-04 18:30:44 $
  */
 public class RegenerateHL7V3MessageAction extends AbstractContextAction
 {
@@ -74,7 +74,7 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.2 2007-09-04 17:37:09 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.3 2007-09-04 18:30:44 wangeug Exp $";
 
 	public static final String COMMAND_NAME = "Regenerate";
 	public static final Character COMMAND_MNEMONIC = new Character('R');
@@ -128,7 +128,8 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 		final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog((Frame)hl7Panel.getRootPane().getParent(),true);
-		DefaultSettings.centerWindow(progressor);
+//		DefaultSettings.centerWindow(progressor);
+	 
 		SwingWorker worker = new SwingWorker()
 		{
 			private File dataFile;
@@ -242,7 +243,7 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 			}
 		};
 		worker.start();
-		progressor.setVisible(true);
+
 		return false;
 	}
 
@@ -258,6 +259,9 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/09/04 17:37:09  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
  * HISTORY      : initila loading
  * HISTORY      :
