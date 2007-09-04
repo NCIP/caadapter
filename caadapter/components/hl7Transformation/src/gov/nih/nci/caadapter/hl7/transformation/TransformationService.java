@@ -30,15 +30,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.8 $
- * @date $Date: 2007-08-29 00:13:15 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.9 $
+ * @date $Date: 2007-09-04 13:47:52 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.8 2007-08-29 00:13:15 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.9 2007-09-04 13:47:52 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -48,6 +48,7 @@ public class TransformationService
     private File scsfile = null;
     private InputStream csvStream = null;
     private CSVSegmentedFile csvSegmentedFile = null;
+    private ArrayList <TransformationObserver>transformationWatchList;
 
 	/**
 	 * This method will create a transformer that loads csv data from a file 
@@ -59,6 +60,7 @@ public class TransformationService
 
     public TransformationService(String mapfilename, String csvfilename)
     {
+    	this();
         if (mapfilename == null || csvfilename == null)
         {
             throw new IllegalArgumentException("Map File or csv File should not be null!");
@@ -78,6 +80,7 @@ public class TransformationService
 
     public TransformationService(String mapfilename, String csvString, boolean flag)
     {
+    	this();
         if (mapfilename == null)
         {
             throw new IllegalArgumentException("Map File should not be null!");
@@ -97,6 +100,7 @@ public class TransformationService
 	 */
     public TransformationService(String mapfilename, InputStream csvStream)
     {
+    	this();
         if (mapfilename == null)
         {
             throw new IllegalArgumentException("Map File should not be null!");
@@ -116,6 +120,7 @@ public class TransformationService
 	 */
     public TransformationService(File mapfile, File csvfile)
     {
+    	this();
         if (mapfile == null || csvfile == null)
         {
             throw new IllegalArgumentException("Map File or csv File should not be null!");
@@ -126,8 +131,32 @@ public class TransformationService
 
     private TransformationService()
     {
+    	transformationWatchList=new ArrayList<TransformationObserver>();
     }
 
+    /**
+     * Add an oberver to the tranformation server
+     * @param observer
+     */
+    public synchronized  void addProgressWatch(TransformationObserver observer)
+    {
+    	if (transformationWatchList==null)
+    		transformationWatchList=new ArrayList<TransformationObserver>();
+    	transformationWatchList.add(observer);
+    }
+    
+    /**
+     * Add an oberver to the tranformation server
+     * @param observer
+     */
+    public synchronized void removeProgressWatch(TransformationObserver observer)
+    {
+    	if (transformationWatchList==null)
+    		return;
+    	if (transformationWatchList.contains(observer))
+    			transformationWatchList.remove(observer);
+    }
+    
     /**
      * @return list of HL7 v3 message object.
      * To get HL7 v3 message of each object, call .toXML() method of each object
@@ -322,6 +351,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/08/29 00:13:15  wuye
+ * HISTORY      : Modified the default value generation strategy
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/08/13 19:21:56  wuye
  * HISTORY      : load h3s in different format
  * HISTORY      :
