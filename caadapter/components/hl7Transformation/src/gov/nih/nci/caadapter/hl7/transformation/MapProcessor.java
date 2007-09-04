@@ -34,8 +34,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.34 $
- *          date        $Date: 2007-08-31 17:01:54 $
+ *          revision    $Revision: 1.35 $
+ *          date        $Date: 2007-09-04 14:07:19 $
  */
 
 public class MapProcessor {
@@ -58,7 +58,7 @@ public class MapProcessor {
 	 * @param mapfilename the name of the mapping file
 	 * @param csvfilename the name of the csv file
 	 */
-    public List<XMLElement> process(Hashtable<String,String> mappings, Hashtable<String,FunctionComponent> functions, CSVSegmentedFile csvSegmentedFile, MIFClass mifClass) throws MappingException,FunctionException{
+    public List<XMLElement> process(Hashtable<String,String> mappings, Hashtable<String,FunctionComponent> functions, CSVSegmentedFile csvSegmentedFile, MIFClass mifClass, ArrayList <TransformationObserver>transformationWatchList) throws MappingException,FunctionException{
         // init class variables
         this.mappings = mappings;
         this.mifClass = mifClass;
@@ -80,11 +80,25 @@ public class MapProcessor {
         mapProcessorHelper.preprocessMIF(mappings,functions, mifClass, false, logicalRecords.get(0).getName());
         
         // process one CSV source logical record at a time.
+        if (transformationWatchList.size()!=0) {
+        	for (TransformationObserver tObserver:transformationWatchList)
+        	{
+        		tObserver.progressUpdate(0);
+        		tObserver.setMessageCount(logicalRecords.size());
+        	}
+        }
         for (int i = 0; i < logicalRecords.size(); i++) {
         	List<XMLElement> xmlElements = processRootMIFclass(mifClass, logicalRecords.get(i));
         	for(XMLElement xmlElement:xmlElements) {
         		resultsArray.add(xmlElement);
         	}
+            if (transformationWatchList.size()!=0) {
+            	for (TransformationObserver tObserver:transformationWatchList)
+            	{
+            		tObserver.progressUpdate(i);
+            		if (tObserver.isRequestCancelled()) break;
+            	}
+            }
         }
 
         return resultsArray;
@@ -600,6 +614,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.34  2007/08/31 17:01:54  wuye
+ * HISTORY      : Added mapping scenario when a constant is mapped to a structural attribute
+ * HISTORY      :
  * HISTORY      : Revision 1.33  2007/08/30 21:56:57  wuye
  * HISTORY      : code refector
  * HISTORY      :

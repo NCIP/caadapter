@@ -30,15 +30,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.9 $
- * @date $Date: 2007-09-04 13:47:52 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.10 $
+ * @date $Date: 2007-09-04 14:07:19 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.9 2007-09-04 13:47:52 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.10 2007-09-04 14:07:19 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -234,7 +234,7 @@ public class TransformationService
 
     	MapProcessor mapProcess = new MapProcessor();
         
-        List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass);
+        List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
 //    	HL7V3MessageValidator validator = new HL7V3MessageValidator();
         for(XMLElement xmlElement:xmlElements) 
         {
@@ -339,11 +339,11 @@ public class TransformationService
         //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
 //		"C:/xmlpathSpec/NewEncounter_comp2.csv");
         
-   	TransformationService ts = new TransformationService("C:/xmlpathSpec/COCT_MT010000_Simple.map",
-		"C:/xmlpathSpec/COCT_MT010000_Simple.csv");
+   	TransformationService ts = new TransformationService("C:/xmlpathSpec/COCT_MT010000.map",
+		"C:/xmlpathSpec/COCT_MT010000.csv");
 
-        //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/010000-Person.map",
-//		"C:/xmlpathSpec/010000-Person.csv");
+//           	TransformationService ts = new TransformationService("C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/test.map",
+//		"C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/COCT_MT150003.csv");
         ts.process();
        	System.out.println(System.currentTimeMillis()-begintime2);
     }
@@ -351,6 +351,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2007/09/04 13:47:52  wangeug
+ * HISTORY      : add an progress observer list
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/08/29 00:13:15  wuye
  * HISTORY      : Modified the default value generation strategy
  * HISTORY      :
