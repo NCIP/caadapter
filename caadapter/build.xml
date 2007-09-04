@@ -238,7 +238,7 @@
         <ant antfile="build_demo.xml" target="demo.ui.jar"/>
     </target>
 	<target name="copyDownload" if="sql.downloaded">
-        <copy tofile="${basedir}/lib/sqleonardo.jar" if="sql.downloaded">
+        <copy tofile="${basedir}/lib/sqleonardo.jar">
             <fileset file="${basedir}/lib/deletethisfolder.jar/sqleonardo-2007.06.rc1/**.jar"/>
         </copy>
         <delete dir="${basedir}/lib/deletethisfolder.jar"/>
