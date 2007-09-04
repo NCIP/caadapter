@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.4 2007-09-04 18:30:30 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.5 2007-09-04 20:45:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-04 18:30:30 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-09-04 20:45:16 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -78,7 +78,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.4 2007-09-04 18:30:30 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.5 2007-09-04 20:45:16 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -121,17 +121,14 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	protected void launchPanel(final HL7MessagePanel hl7Panel, final File dataFile, final File mapFile, final ActionEvent actionEvent)
 	{
 		final String actionName=this.getName();
-		final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog((Frame)hl7Panel.getRootContainer(),false);
 		SwingWorker worker = new SwingWorker()
 		{
+			HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog((Frame)hl7Panel.getRootContainer(),false);
 			public Object construct()
 			{
-//				DefaultSetting.center(progressor);
-				
 				try
 				{
 					GeneralUtilities.setCursorWaiting(mainFrame);
-//					GeneralUtilities.setCursorWaiting(progressor);
 					mainFrame.addNewTab(hl7Panel);
 					setSuccessfullyPerformed(true);
 				}
@@ -251,6 +248,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/09/04 18:30:30  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/09/04 17:36:58  wangeug
  * HISTORY      : add progressor
  * HISTORY      :

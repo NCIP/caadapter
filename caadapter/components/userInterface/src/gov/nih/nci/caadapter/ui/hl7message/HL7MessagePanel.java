@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.12 2007-09-04 20:41:28 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.13 2007-09-04 20:45:04 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,8 +77,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-09-04 20:41:28 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-09-04 20:45:04 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -352,9 +352,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				progressor.setMaximum(TransformationObserver.TRANSFORMATION_DATA_LOADING_STEPS);
 				progressor.setNote(TransformationObserver.TRANSFORMATION_MESSAGE_GENERATING_STEP);
 				progressor.setProgress(1);
-				
-//				GeneralUtilities.setCursorWaiting(progressor.get);
-		    	final TransformationService ts=new TransformationService(mapFile, dataFile);
+
+				final TransformationService ts=new TransformationService(mapFile, dataFile);
 		    	progressor.setProgress(100);
 		    	final HL7MessagePanel listnerPane=this;
 		    	ts.addProgressWatch(progressor);
@@ -649,6 +648,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2007/09/04 20:41:28  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2007/09/04 17:36:35  wangeug
  * HISTORY      : add progressor
  * HISTORY      :

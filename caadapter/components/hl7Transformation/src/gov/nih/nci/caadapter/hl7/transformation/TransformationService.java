@@ -30,15 +30,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.10 $
- * @date $Date: 2007-09-04 14:07:19 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.11 $
+ * @date $Date: 2007-09-04 20:42:14 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.10 2007-09-04 14:07:19 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.11 2007-09-04 20:42:14 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -157,6 +157,16 @@ public class TransformationService
     			transformationWatchList.remove(observer);
     }
     
+    private void informProcessProgress(int steps)
+    {
+    	if (transformationWatchList.size()!=0) {
+        	for (TransformationObserver tObserver:transformationWatchList)
+        	{
+        		tObserver.progressUpdate(steps);
+        		if (tObserver.isRequestCancelled()) break;
+        	}
+        }
+    }
     /**
      * @return list of HL7 v3 message object.
      * To get HL7 v3 message of each object, call .toXML() method of each object
@@ -171,9 +181,12 @@ public class TransformationService
     	/*
     	 * TODO Exception handling here
     	 */
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
         long mapbegintime = System.currentTimeMillis();
         MapParser mapParser = new MapParser();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
         mappings = mapParser.processOpenMapFile(mapfile);
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
         funcations = mapParser.getFunctions();
     	System.out.println("Map Parsing time" + (System.currentTimeMillis()-mapbegintime));
 
@@ -198,10 +211,12 @@ public class TransformationService
         {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_DATA);
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
     	
         // parse the datafile, if there are errors.. return.
         final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_DATA);
 //        prepareValidatorResults.addValidatorResults(csvDataValidatorResults);
         /*
          * TODO consolidate validatorResults
@@ -351,6 +366,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/09/04 14:07:19  wuye
+ * HISTORY      : Added progress bar
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/09/04 13:47:52  wangeug
  * HISTORY      : add an progress observer list
  * HISTORY      :

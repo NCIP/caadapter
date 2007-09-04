@@ -5,8 +5,13 @@ package gov.nih.nci.caadapter.hl7.transformation;
  *
  */
 public interface TransformationObserver {
-public static int TRANSFORMATION_BEGIN=0;
-public static int TRANSFORMATION_FINISH=100;
+public static int TRANSFORMATION_DATA_LOADING_START=0;
+public static int TRANSFORMATION_DATA_LOADING_READ_DATA=3;
+public static int TRANSFORMATION_DATA_LOADING_PARSER_DATA=4;
+public static int TRANSFORMATION_DATA_LOADING_READ_MAPPING=1;
+public static int TRANSFORMATION_DATA_LOADING_PARSER_MAPPING=2;
+public static int TRANSFORMATION_DATA_LOADING_STEPS=5;
+public static String TRANSFORMATION_MESSAGE_GENERATING_STEP="Loading Data ...";
 
 /**
  * Notify the transformation observer for the progress with completion percentage

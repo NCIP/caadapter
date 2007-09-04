@@ -23,12 +23,9 @@ public class HL7TransformationProgressDialog extends ProgressMonitor implements 
 {
 	private int messageCount; 
 	private boolean requestCanceled=false;
-	private JLabel progressMessage;
 	private boolean tranformationComplete=false;
-	private static final String OK_COMMAND = "OK";
-	private static final String CANCEL_COMMAND = "Cancel";
 
-	public static final String DEFAULT_OBSERVER_DIALOG_TITLE="Transfomation Progress";
+	public static final String DEFAULT_OBSERVER_DIALOG_TITLE="";//"Transfomation Progress";
 
 	public HL7TransformationProgressDialog(Frame arg0, boolean dialogType)
 			throws HeadlessException {
@@ -64,11 +61,14 @@ public class HL7TransformationProgressDialog extends ProgressMonitor implements 
 		{		
 			setTranformationComplete(true);
 		}
-			String msgText="Transformation progress: "+ completionCnt +" of "+ this.messageCount;
+			String msgText="Generating message : "+ completionCnt +" of "+ this.messageCount;
 			System.out.println("HL7TransformationProgressDialog.progressUpdate():"+msgText);
-			this.setNote(msgText);
+			if (messageCount>0)
+				setNote(msgText);
+			
 			this.setProgress(completionCnt);
-
+			System.out
+					.println("HL7TransformationProgressDialog.progressUpdate()..getNote():"+getNote());
 	}
 
 	public void setMessageCount(int count) {
