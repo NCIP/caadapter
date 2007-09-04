@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.11 2007-09-04 17:36:35 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.12 2007-09-04 20:41:28 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,10 +37,12 @@ package gov.nih.nci.caadapter.ui.hl7message;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -75,8 +77,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2007-09-04 17:36:35 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2007-09-04 20:41:28 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -336,7 +338,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     public ValidatorResults generateMappingMessages(File dataFile, File mapFile, HL7TransformationProgressDialog progressor)
     {
     	System.out.println(this.getClass().getName()+"generateMappingMessages"+System.currentTimeMillis());
-        ValidatorResults validatorResults = new ValidatorResults();
+        final ValidatorResults validatorResults = new ValidatorResults();
     	dataFileNameField.setText(dataFile.getAbsolutePath());
     	mapFileNameField.setText(mapFile.getAbsolutePath());
 
@@ -345,11 +347,34 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			String dataFileName=dataFile.getName();
 			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION))
 			{//transfer CSV to HL7 V3
-
-		    	TransformationService ts=new TransformationService(mapFile, dataFile);
-				ts.addProgressWatch(progressor);
-		    	List<XMLElement> xmlElements =ts.process();
-				this.setV3MessageResultList(xmlElements);
+				//at first:watch data loading....progress
+				progressor.setMaximum(0);
+				progressor.setMaximum(TransformationObserver.TRANSFORMATION_DATA_LOADING_STEPS);
+				progressor.setNote(TransformationObserver.TRANSFORMATION_MESSAGE_GENERATING_STEP);
+				progressor.setProgress(1);
+				
+//				GeneralUtilities.setCursorWaiting(progressor.get);
+		    	final TransformationService ts=new TransformationService(mapFile, dataFile);
+		    	progressor.setProgress(100);
+		    	final HL7MessagePanel listnerPane=this;
+		    	ts.addProgressWatch(progressor);
+				Thread localThread=new Thread(
+					new Runnable()
+					{
+						public void run()
+						{
+							
+					    	try {
+								List<XMLElement> xmlElements =ts.process();
+								listnerPane.setV3MessageResultList(xmlElements);
+					    	} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}				
+				);
+				localThread.start();
 				return validatorResults;
 				
 			}
@@ -624,6 +649,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2007/09/04 17:36:35  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2007/08/28 13:57:29  wangeug
  * HISTORY      : remove schemas folder from caAdapter.jar and set it under root directory: xxxx.xsd use relative path as "include"
  * HISTORY      :
