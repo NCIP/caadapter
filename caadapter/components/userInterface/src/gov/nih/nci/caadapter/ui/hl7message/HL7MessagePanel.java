@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.10 2007-08-28 13:57:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.11 2007-09-04 17:36:35 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -75,8 +75,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-08-28 13:57:29 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-09-04 17:36:35 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -333,7 +333,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
      * @param mapFileName
      * @return if the process succeeded.
      */
-    public ValidatorResults generateMappingMessages(File dataFile, File mapFile)
+    public ValidatorResults generateMappingMessages(File dataFile, File mapFile, HL7TransformationProgressDialog progressor)
     {
     	System.out.println(this.getClass().getName()+"generateMappingMessages"+System.currentTimeMillis());
         ValidatorResults validatorResults = new ValidatorResults();
@@ -345,20 +345,11 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			String dataFileName=dataFile.getName();
 			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION))
 			{//transfer CSV to HL7 V3
-//				TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
-//				svc.process(null);
-//				this.setMessageText(svc.getMsgGenerated());
+
 		    	TransformationService ts=new TransformationService(mapFile, dataFile);
-				List<XMLElement> xmlElements =ts.process();
+				ts.addProgressWatch(progressor);
+		    	List<XMLElement> xmlElements =ts.process();
 				this.setV3MessageResultList(xmlElements);
-//				HL7MessageGenerationController controler = new HL7MessageGenerationController(this, dataFile,  mapFile);
-//				validatorResults=controler.process();
-//				if( !validatorResults.hasFatal() )
-//				{//normal proceeding
-//					dataFileNameField.setText(dataFile.getAbsolutePath());
-//					mapFileNameField.setText(mapFile.getAbsolutePath());
-//					setV3MessageResultList(controler.getMessageList());
-//				}
 				return validatorResults;
 				
 			}
@@ -633,6 +624,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/08/28 13:57:29  wangeug
+ * HISTORY      : remove schemas folder from caAdapter.jar and set it under root directory: xxxx.xsd use relative path as "include"
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/08/27 15:05:05  wangeug
  * HISTORY      : add hl7 transformation validation level 2:include xsd validation
  * HISTORY      :

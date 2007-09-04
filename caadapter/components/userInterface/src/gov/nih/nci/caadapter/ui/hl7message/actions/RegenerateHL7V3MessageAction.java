@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.2 2007-09-04 17:37:09 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,6 +43,7 @@ import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.hl7message.HL7MessagePanel;
+import gov.nih.nci.caadapter.ui.hl7message.HL7TransformationProgressDialog;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
 import javax.swing.*;
@@ -56,8 +57,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:33:17 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-04 17:37:09 $
  */
 public class RegenerateHL7V3MessageAction extends AbstractContextAction
 {
@@ -73,7 +74,7 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.2 2007-09-04 17:37:09 wangeug Exp $";
 
 	public static final String COMMAND_NAME = "Regenerate";
 	public static final Character COMMAND_MNEMONIC = new Character('R');
@@ -126,6 +127,8 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
+		final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog((Frame)hl7Panel.getRootPane().getParent(),true);
+		DefaultSettings.centerWindow(progressor);
 		SwingWorker worker = new SwingWorker()
 		{
 			private File dataFile;
@@ -175,7 +178,7 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 					ValidatorResults validatorResults = null;
 					if (dataFile!=null && mapFile!=null && dataFile.exists() && mapFile.exists())
 					{
-						validatorResults = hl7Panel.generateMappingMessages(dataFile, mapFile);
+						validatorResults = hl7Panel.generateMappingMessages(dataFile, mapFile,progressor);
 						everythingGood = handleValidatorResults(validatorResults);
 					}
 					else
@@ -239,6 +242,7 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 			}
 		};
 		worker.start();
+		progressor.setVisible(true);
 		return false;
 	}
 
@@ -254,6 +258,9 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
