@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.3 2007-08-07 20:50:39 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.4 2007-09-05 15:15:47 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,6 +38,7 @@ import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
 import gov.nih.nci.caadapter.ui.common.tree.MappingTargetTree;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
@@ -45,6 +46,7 @@ import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.LazyEagerAction;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.PrimaryKeyAction;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.TestAction;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
@@ -76,8 +78,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-07 20:50:39 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-09-05 15:15:47 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -93,7 +95,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.3 2007-08-07 20:50:39 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.4 2007-09-05 15:15:47 schroedn Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -517,7 +519,13 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			{
 				primaryKeyAction.setEnabled( true );
 			}
-		}		
+
+            //todo: check for (Many to 1), (Many to Many), (1 to Many) set to false
+            if ( mutNode.getUserObject() instanceof AssociationMetadata )
+            {
+                primaryKeyAction.setEnabled( false );
+            }
+        }
 		return popupMenu;
 	}
 	//
@@ -599,6 +607,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/07 20:50:39  schroedn
+ * HISTORY      : New Feature, Primary Key and Lazy/Eager functions added to MMS
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/07 15:51:25  schroedn
  * HISTORY      : New Feature, Primary Key and Lazy/Eager functions added to MMS
  * HISTORY      :

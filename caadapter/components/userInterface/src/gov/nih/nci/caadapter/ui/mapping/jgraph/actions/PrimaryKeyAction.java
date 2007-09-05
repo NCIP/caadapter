@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.4 2007-09-05 15:16:12 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 
@@ -45,19 +46,15 @@ import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
+import javax.swing.*;
+import javax.swing.tree.*;
 
 public class PrimaryKeyAction extends AbstractContextAction
 {
 	private static final String COMMAND_NAME = "Make Primary Key";
 	
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.4 2007-09-05 15:16:12 schroedn Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
@@ -147,15 +144,13 @@ public class PrimaryKeyAction extends AbstractContextAction
 						        if ( primaryKeys.contains( parseNode( treePath.toString() ) ) )
 						        {
 						        	//System.out.println( "FOUND IN PK LIST, removing..." );
-						        	primaryKeys.remove( parseNode( treePath.toString() ) );        	
-						        }
+						        	primaryKeys.remove( parseNode( treePath.toString() ) );
+                                    ((DefaultTreeModel) sourceTree.getModel()).nodeStructureChanged( n );
+                                }
 						    }
-						}
-							
+						}							
 						primaryKeys.add( node );
-					
-					//update graphics
-				}												
+                }
 		    	
 		    	if(primaryKeys != null ) {
 		    		System.out.println( "Current primary Keys = \n" + primaryKeys );
@@ -228,6 +223,24 @@ public class PrimaryKeyAction extends AbstractContextAction
 	protected Component getAssociatedUIComponent()
 	{
 		return middlePanel;	
+	}
+
+    	/**
+	 * Returns an ImageIcon, or null if the path was invalid.
+	 */
+	protected static ImageIcon createImageIcon(String path)
+	{
+	    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
+	    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
+	    if (imgURL != null)
+	    {
+	        //System.out.println("class.getResource is "+imgURL.toString());
+	        return new ImageIcon(imgURL);
+	    } else
+	    {
+	        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
+	        return null;
+	    }
 	}
 }
 

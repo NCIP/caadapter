@@ -97,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.11 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.12 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.11 2007-08-30 19:32:08 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.12 2007-09-05 15:16:33 schroedn Exp $";
 
 	// private File mappingXMIFile = null;
 	private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
@@ -527,8 +527,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
 		
 		 tTree.setCellRenderer(new MMSRenderer());
-		 
-		// instantiate the "DropTransferHandler"
+		 sTree.setCellRenderer(new MMSRendererPK());
+        
+        // instantiate the "DropTransferHandler"
 		mmsTargetTreeDropTransferHandler = new MmsTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
 	}
@@ -1124,16 +1125,131 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					false);
 		}
 	}
-	
-	private class MMSRenderer extends DefaultTreeCellRenderer
+
+    private class MMSRendererPK extends DefaultTreeCellRenderer
 	{
 	  // this control comes here
-	
 	    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
 	    {
 	        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-	        ImageIcon tutorialIcon;
-	        try
+            ImageIcon tutorialIcon;
+
+            ModelMetadata modelMetadata = ModelMetadata.getInstance();
+            List<String> primaryKeys = modelMetadata.getPrimaryKeys();
+
+            try
+            {
+                String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
+
+                if (_tmpStr.equalsIgnoreCase("Object Model"))
+                {
+                    tutorialIcon = createImageIcon("schema.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Data model");
+                }
+                return this;
+	        } catch (Exception e)
+	        {
+	        	//continue
+	        }
+            
+            try
+            {
+                if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AttributeMetadata )
+                {
+                    gov.nih.nci.caadapter.mms.metadata.AttributeMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AttributeMetadata) ((DefaultSourceTreeNode) value).getUserObject();
+                    System.out.println("attMeta" + attMeta );
+                    boolean primaryKeyFound = false;
+
+                    for( String key : primaryKeys )
+                    {
+                       if ( attMeta.getXPath().contains( key ))
+                       {
+                           System.out.println("Found a Primary Key " + key );
+                           primaryKeyFound = true;
+                       }
+
+                    }
+
+                    if ( primaryKeyFound ) {
+                        tutorialIcon = createImageIcon("bullet_key.png");
+                        setIcon(tutorialIcon);
+                        setToolTipText("Primary");
+                    }
+                }
+                if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AssociationMetadata )
+                {
+                    gov.nih.nci.caadapter.mms.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
+                    System.out.println("attMeta" + attMeta );
+                    boolean primaryKeyFound = false;
+
+                    for( String key : primaryKeys )
+                    {
+                       if ( attMeta.getXPath().contains( key ))
+                       {
+                           System.out.println("Found a Primary Key " + key );
+                           primaryKeyFound = true;
+                       }
+
+                    }
+                    if ( primaryKeyFound ) {
+                        tutorialIcon = createImageIcon("bullet_key.png");
+                        setIcon(tutorialIcon);
+                        setToolTipText("Primary");
+                    }
+                }
+                if( ((DefaultMutableTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AssociationMetadata )
+                {
+                    gov.nih.nci.caadapter.mms.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
+                    System.out.println("attMeta" + attMeta );
+                    boolean primaryKeyFound = false;
+
+                    for( String key : primaryKeys )
+                    {
+                       if ( attMeta.getXPath().contains( key ))
+                       {
+                           System.out.println("Found a Primary Key " + key );
+                           primaryKeyFound = true;
+                       }
+
+                    }
+                    if ( primaryKeyFound ) {
+                        tutorialIcon = createImageIcon("bullet_key.png");
+                        setIcon(tutorialIcon);
+                        setToolTipText("Primary");
+                    }
+                }
+            } catch (Exception eee )
+            {
+//                try
+//                {
+//                    //String queryBuilderMeta = (String) ((DefaultSourceTreeNode) value).getUserObject();
+//                    tutorialIcon = createImageIcon("load.gif");
+//                    setIcon(tutorialIcon);
+//                } catch (Exception e1)
+//                {
+//                    setToolTipText(null);
+//                }
+            }
+
+            return this;
+        }
+    }
+
+    private class MMSRenderer extends DefaultTreeCellRenderer
+	{
+	  // this control comes here	
+	    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
+	    {
+	        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            ImageIcon tutorialIcon;
+            String table = "";
+
+            ModelMetadata modelMetadata = ModelMetadata.getInstance();
+            List<String> lazyKeys = modelMetadata.getLazyKeys();
+//            System.out.println( "*** Current Lazy Keys = " + lazyKeys );
+
+            try
 	        {
 	            String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
                 if (_tmpStr.equalsIgnoreCase("Data Model"))
@@ -1141,7 +1257,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                     tutorialIcon = createImageIcon("database.png");
                     setIcon(tutorialIcon);
                     setToolTipText("Data model");
-                } else
+                }
+                else
                 {
                     tutorialIcon = createImageIcon("schema.png");
                     setIcon(tutorialIcon);
@@ -1156,6 +1273,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
             try
             {
                 gov.nih.nci.caadapter.mms.metadata.TableMetadata qbTableMetaData = (gov.nih.nci.caadapter.mms.metadata.TableMetadata) ((DefaultTargetTreeNode) value).getUserObject();
+                table = qbTableMetaData.getName();
+                //System.out.println("Tables " + table );
+
                 if (qbTableMetaData.getType().equalsIgnoreCase("normal"))
                 {
                     tutorialIcon = createImageIcon("table.png");
@@ -1171,10 +1291,32 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
             {
                 try
                 {
-                    gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();                    
-                    tutorialIcon = createImageIcon("column.png");
-                    setIcon(tutorialIcon);
-                    setToolTipText("Column");
+                    gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
+                    //System.out.println("Column " + queryBuilderMeta.getXPath() );
+                    boolean lazyKeyFound = false;
+
+                    for( String key : lazyKeys )
+                    {
+                       if ( queryBuilderMeta.getXPath().contains( key ))
+                       {
+                           System.out.println("Found a Lazy Key " + key );
+                           lazyKeyFound = true;
+                       }
+
+                    }
+
+                    if ( lazyKeyFound ) {
+                        tutorialIcon = createImageIcon("columnlazy.png");
+                        setIcon(tutorialIcon);
+                        setToolTipText("Lazy");
+                    }
+                    else {
+                           tutorialIcon = createImageIcon("columneager.png");
+                           setIcon(tutorialIcon);
+                           setToolTipText("Eager");
+                    }
+
+                   // }
                 } catch (Exception ee)
                 {
                     try
@@ -1214,6 +1356,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.11  2007/08/30 19:32:08  schroedn
+ * HISTORY : fixed bug with loading without preferences set
+ * HISTORY :
  * HISTORY : Revision 1.10  2007/08/28 18:36:08  schroedn
  * HISTORY : Added a NULL check for preferences
  * HISTORY :
