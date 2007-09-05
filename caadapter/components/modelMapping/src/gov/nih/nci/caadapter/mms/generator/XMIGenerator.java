@@ -473,7 +473,7 @@ public class XMIGenerator
 	 */
 	public boolean checkInverseOfTagValue(String pathToColumnName)
 	{
-		System.out.println( "Path to column: " + pathToColumnName );
+		//System.out.println( "Path to column: " + pathToColumnName );
 		boolean hasInverseOfTaggedValue = false;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, pathToColumnName);
 		for(UMLTaggedValue taggedValue : column.getTaggedValues()) 
@@ -491,7 +491,7 @@ public class XMIGenerator
         //String primaryKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "." + pKey;
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
 
-        System.out.println( "pKey=" + primaryKey );
+        //System.out.println( "pKey=" + primaryKey );
 		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
 		
 		if ( column != null )
@@ -505,14 +505,14 @@ public class XMIGenerator
 		//String lazyKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "." + lKey;
 		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
 
-        System.out.println( "lKey = " + lKey );
-		System.out.println( "lazyKey = " + lazyKey );
+        //System.out.println( "lKey = " + lKey );
+		//System.out.println( "lazyKey = " + lazyKey );
 		
 		UMLAttribute column = ModelUtil.findAttribute(this.model, lazyKey);
 			
 		if( column != null)
 		{
-			System.out.println( "added lKey to xmi");
+			//System.out.println( "added lKey to xmi");
 			column.addTaggedValue( "lazy-load", lKey );
 		}
 	}
