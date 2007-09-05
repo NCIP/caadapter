@@ -103,7 +103,7 @@
         </jar>
     	
     	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
-    	<delete file="caadapter4_0_Src_${DATE}.zip"></delete>
+    	<delete file="caadapter4_0_Src_*.zip"></delete>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
 		</zip>
