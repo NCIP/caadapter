@@ -12,12 +12,17 @@ import java.net.URL;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-08-17 20:12:04 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-09-05 13:25:43 $
  */
 public class QBAddButtons {
-    MainDataViewerFrame maindialog=null;
-    JButton saveButton = null;
+    MainDataViewerFrame maindialog = null;
+    private JButton saveButton = null;
+    private JButton panelSaveButton = null;
+
+    public JButton getPanelSaveButton() {
+        return panelSaveButton;
+    }
 
     public QBAddButtons(MainDataViewerFrame maindialog) {
         this.maindialog = maindialog;
@@ -29,8 +34,8 @@ public class QBAddButtons {
         //String imageName, String actionCommand, String toolTipText, String altText
         toolBar.add(saveButton);
         this.getSaveButton().setEnabled(false);
-        button = makeNavigationButton("Save", "Save", "Save", "Save SQL");
-        toolBar.add(button);
+        panelSaveButton = makeNavigationButton("save", "Save", "Save", "Save SQL");
+        toolBar.add(panelSaveButton);
         button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
         toolBar.add(button);
         button = makeNavigationButton("Check", "Validate", "Validate", "Validate");
@@ -72,6 +77,10 @@ public class QBAddButtons {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/08/17 20:12:04  jayannah
+ * added a new image for QBAddButtons
+ * Reduced the height for viewing the 3 buttons in the center panel
+ *
  * Revision 1.6  2007/08/16 18:53:55  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
