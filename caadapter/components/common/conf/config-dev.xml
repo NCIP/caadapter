@@ -18,6 +18,7 @@
 	<!-- feature controlling flag -->
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED" type="String" value="caadapter.hl7.specification.nullflavor.enabled"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED" type="String" value="caadapter.hl7.specification.complextype.enabled"/>
+	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED" type="String" value="caadapter.hl7.specification.odi.enabled"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED" type="String" value="caadapter.hl7.attribute.inlinetext.required"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_MANDATORY_SELECTED" type="String" value="caadapter.hl7.attribute.mandatory.selected"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL" type="String" value= "caadapter.hl7.transformation.validation.level"/>
