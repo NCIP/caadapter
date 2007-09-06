@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.3 2007-09-06 21:33:18 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.4 2007-09-06 21:49:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-09-06 21:33:18 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-09-06 21:49:49 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.3 2007-09-06 21:33:18 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.4 2007-09-06 21:49:49 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -265,7 +265,7 @@ public class AboutWindow extends JWindow //implements ActionListener
         { 
         	//fe.printStackTrace();
             normal = false;
-            return ERROR_MESSAGE_FILE_NOT_FOUND+":"+commonPath;
+            //return ERROR_MESSAGE_FILE_NOT_FOUND+":"+commonPath;
         }
 
         if (!normal)
@@ -457,6 +457,9 @@ public class AboutWindow extends JWindow //implements ActionListener
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/09/06 21:33:18  umkis
+ * HISTORY      : class loader as the finding method for aboutwin.html instead of file path
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/15 05:25:23  umkis
  * HISTORY      : License Information upgrade (using ClassLoaderUtil)
  * HISTORY      :
