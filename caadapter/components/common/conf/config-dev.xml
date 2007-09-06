@@ -22,10 +22,10 @@
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED" type="String" value="caadapter.hl7.attribute.inlinetext.required"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_MANDATORY_SELECTED" type="String" value="caadapter.hl7.attribute.mandatory.selected"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL" type="String" value= "caadapter.hl7.transformation.validation.level"/>
-	<constant name="CAADAPTER_VERSION" type="String" value="V3.2"/>
-    <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="caAdapter_3_2_Final"/>
+	<constant name="CAADAPTER_VERSION" type="String" value="V4.0"/>
+    <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="#401"/>
     <constant name="JDK_VERSION" type="String" value="1.5.0_06"/>
-    <constant name="COPYRIGHT_YEARS" type="String" value="2004-2006"/>
+    <constant name="COPYRIGHT_YEARS" type="String" value="2004-2007"/>
     <!-- constant name="RIM_FILE" type="String" value="../javaSIG/etc/Rim207.xml"/ -->
     <!-- constant name="HMD_LOCATION" type="String" value="../javaSIG/data/hmd207/"/ -->
     <!-- constant name="SCHEMA_LOCATION" type="String" value="../javaSIG/data/schemas207/multicacheschemas/"/ -->
