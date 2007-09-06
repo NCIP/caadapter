@@ -27,6 +27,8 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
 	private JDialog parent;
 	private JCheckBox nullFlavorCheck;
 	private JCheckBox complexDatatypeCheck;
+	private JCheckBox odiEnableCheck;
+	
 	private ButtonGroup validationLevelGroup;
 	public Hl7V3SpecificationPreferencePane(JDialog parentDialog)
 	{
@@ -63,6 +65,11 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         if (complexDatatypeValue!=null&&complexDatatypeValue.equalsIgnoreCase("true"))
         	complexDatatypeCheck.setSelected(true);
         
+        odiEnableCheck= new JCheckBox("Enable ODI");
+        String odiEnableValue=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
+        if (odiEnableValue!=null&&odiEnableValue.equalsIgnoreCase("true"))
+        	odiEnableCheck.setSelected(true);
+        
         GridBagConstraints ckx = new GridBagConstraints();
         ckx.gridy=0;
         ckx.weightx=1.0;
@@ -75,6 +82,12 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         ckx.gridx=1;
         ckxGridbag.setConstraints(complexDatatypeCheck, ckx);
         checkboxPanel.add(complexDatatypeCheck);
+        
+        ckx.gridwidth=2;//
+        ckx.gridy=1;
+        ckx.gridx=0;
+        ckxGridbag.setConstraints(odiEnableCheck, ckx);
+        checkboxPanel.add(odiEnableCheck);
         
         JPanel groupSelectPane=new JPanel();
         GridBagLayout gridbag = new GridBagLayout();
@@ -155,6 +168,8 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
        		PreferenceManager.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED, 
        				String.valueOf(complexDatatypeCheck.isSelected()));
        		
+       		PreferenceManager.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED, 
+       				String.valueOf(odiEnableCheck.isSelected()));
        		//read validation level from group selection
        		Enumeration grpButtons=validationLevelGroup.getElements();
        		String validationLevel=CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0;

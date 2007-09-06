@@ -21,12 +21,13 @@ import java.util.Hashtable;
 import java.util.List;
 
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2007-08-28 23:07:47 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-09-06 20:02:20 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -471,6 +472,10 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		String dmName=getDomainName();
 		if(dmName==null||dmName.equals(""))
 			return dmName;
+		String odiSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
+		if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
+			return dmName;
+		
 		long sTime=System.currentTimeMillis();
 		String oid="";
 		try {

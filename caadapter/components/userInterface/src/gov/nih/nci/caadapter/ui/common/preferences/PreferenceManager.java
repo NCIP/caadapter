@@ -15,10 +15,10 @@ import java.util.HashMap;
  * This class implements preferences in caAdapter
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-08-17 15:15:25 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-09-06 20:03:07 $
  */
 public class PreferenceManager extends JDialog implements ActionListener {
 
@@ -49,7 +49,7 @@ public class PreferenceManager extends JDialog implements ActionListener {
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setSize(500, 250);
+        setSize(500, 280);
         setLocation(400, 300);
         setVisible(true);
     }
@@ -67,7 +67,7 @@ public class PreferenceManager extends JDialog implements ActionListener {
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setSize(500, 250);
+        setSize(500, 280);
         setLocation(400, 300);
         setVisible(true);
     }
@@ -230,6 +230,9 @@ public class PreferenceManager extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/08/17 15:15:25  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  * Revision 1.8  2007/08/17 14:31:22  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
