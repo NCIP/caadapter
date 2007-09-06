@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.2 2007-07-15 05:25:23 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.3 2007-09-06 21:33:18 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-15 05:25:23 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-09-06 21:33:18 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.2 2007-07-15 05:25:23 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.3 2007-09-06 21:33:18 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -154,7 +154,7 @@ public class AboutWindow extends JWindow //implements ActionListener
         //JLabel jlb = new JLabel(" ");
         //jlb.setBounds(0, 0, 20, 30);
         //this.add(jlb);
-        setSize(width, height);
+        setSize(width, height);   
         String st = setVersionAndBuildNumber(commonPath + Config.DEFAULT_ABOUT_WINDOW_DATA_FILENAME);
 
         try
@@ -257,19 +257,55 @@ public class AboutWindow extends JWindow //implements ActionListener
     private String setVersionAndBuildNumber(String commonPath)
       {
         String tot = "";
+        boolean normal = true;
         FileReader fr = null;
+        BufferedReader br = null;
         try { fr = new FileReader(commonPath); }
         catch(FileNotFoundException fe) 
         { 
-        	fe.printStackTrace();
-        	return ERROR_MESSAGE_FILE_NOT_FOUND+":"+commonPath;
+        	//fe.printStackTrace();
+            normal = false;
+            return ERROR_MESSAGE_FILE_NOT_FOUND+":"+commonPath;
         }
 
-        BufferedReader br = new BufferedReader(fr);
+        if (!normal)
+        {
+            String aboutWinHTMLFileClassPath = "etc/aboutwin.html";
+            ClassLoaderUtil loader = null;
+            try
+            {
+                loader = new ClassLoaderUtil(aboutWinHTMLFileClassPath);
+            }
+            catch(IOException ie)
+            {
+                return ERROR_TAG + " : Class Loading failure with this path => " + aboutWinHTMLFileClassPath;
+            }
+
+            List<String> licenseFileNames = loader.getFileNames();
+
+            if (licenseFileNames.size() == 0) return ERROR_TAG + " : No File in this Class path => " + aboutWinHTMLFileClassPath;
+            for (int i=0;i<licenseFileNames.size();i++)
+            {
+                try
+                {
+                    fr = new FileReader(loader.getFileName(i));
+                    break;
+                }
+                catch(FileNotFoundException fe)
+                {
+                    fr = null;
+                }
+            }
+            if (fr == null) return ERROR_TAG + " : No File Reader Object in this Class path => " + aboutWinHTMLFileClassPath;
+        }
+
+        br = new BufferedReader(fr);
         String readLineOfFile = "";
 
         try { while((readLineOfFile=br.readLine())!=null) tot = tot + readLineOfFile + "\r\n"; }
         catch(IOException ie) { return ERROR_MESSAGE_FILE_READING_ERROR; } // "ERROR : File Reading Error"; }
+
+
         tot = replaceTaggedContent(tot, VERSION_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_VERSION, VERSION_MARKER_IN_SOURCE_HTML_FILE);
         tot = replaceTaggedContent(tot, BUILD_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_BUILD_NUMBER, BUILD_MARKER_IN_SOURCE_HTML_FILE);
         tot = replaceTaggedContent(tot, JDK_VERSION_TAG_IN_SOURCE_HTML_FILE, Config.JDK_VERSION, JDK_VERSION_MARKER_IN_SOURCE_HTML_FILE);
@@ -421,6 +457,9 @@ public class AboutWindow extends JWindow //implements ActionListener
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/15 05:25:23  umkis
+ * HISTORY      : License Information upgrade (using ClassLoaderUtil)
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
