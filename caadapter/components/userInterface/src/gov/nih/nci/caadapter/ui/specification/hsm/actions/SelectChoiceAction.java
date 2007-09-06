@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.8 2007-09-06 22:06:58 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-23 17:54:58 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-09-06 22:06:58 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -77,7 +77,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.7 2007-08-23 17:54:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.8 2007-09-06 22:06:58 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -161,6 +161,43 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     	while(choiceAllIt.hasNext())
                     	{
                     		DatatypeBaseObject oneChoice=(DatatypeBaseObject)choiceAllIt.next();
+                    		//clean the MIFAssociation Class
+                    		if (oneChoice.isChoiceSelected()&&!mifClass.getAssociations().isEmpty())
+                    		{
+                    			ArrayList<MIFAssociation> chosenList=new ArrayList<MIFAssociation>();
+                    			for(MIFAssociation ass:mifClass.getAssociations())
+                    			{
+                    				if (!ass.isMandatory()&&ass.isOptionChosen())
+                    				{
+                    					chosenList.add(ass);
+                    				}
+                    			}
+                    			//check if require user's confirmation
+                    			if (!chosenList.isEmpty())
+                    			{
+                    				String msgText="You will loss your pre-selected optional clone";
+                    				if (chosenList.size()>1)
+                    					msgText=msgText+"s";
+                    				
+                    				for(MIFAssociation ass:chosenList)
+                        			{
+                    					msgText=msgText+"\n" +ass.getName();
+                        			}
+                    				msgText=msgText+"\nDo you want continue ?";
+                					int reply =JOptionPane.showConfirmDialog(tree.getRootPane().getParent(), msgText,
+                                            "Confirm: Reset Choice", JOptionPane.YES_NO_OPTION);
+                					if (reply == JOptionPane.YES_OPTION)
+                				    {
+                						for(MIFAssociation ass:chosenList)
+                            			{
+	                    					ass.setOptionChosen(false);
+	                    					ass.setOptionForced(false);
+                            			}
+                				    }
+                					else
+                						return false;
+                    			}
+                    		}
                     		oneChoice.setChoiceSelected(false);
                     	}
                     	for (DatatypeBaseObject oneChoiceSelected:userSelectedMIFClass)
