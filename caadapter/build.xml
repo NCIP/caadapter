@@ -92,6 +92,8 @@
             </fileset>
             <fileset dir="${basedir}/etc" excludes="*.html, schemas/**"/>
         </copy>
+    	<copy todir="${build.dir}/etc" file="etc/aboutwin.html"/>
+    	<copy todir="${build.dir}/etc" file="etc/licenseinformation.html"/>
         
         <delete includeemptydirs="true">
             <fileset dir="${dist.dir}" includes="**/*"/>
@@ -228,7 +230,6 @@
 
         <delete file="${lib.dir}\delete.jar"/>
         <delete dir="${lib.dir}\deletethisfolder.jar"/>
-
     </target>
 
     <target name="demo.jar">
