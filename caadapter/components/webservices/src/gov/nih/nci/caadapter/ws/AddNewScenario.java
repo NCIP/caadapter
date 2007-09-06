@@ -38,9 +38,9 @@ import org.xml.sax.SAXParseException;
  * Add Web Service Mapping Secnario class
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-01-26 20:53:51 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-09-06 22:43:43 $
  * @since caadapter v1.3.1
  */
 
@@ -116,10 +116,10 @@ public class AddNewScenario extends HttpServlet {
 	    		  }
 	    	  }
 //	    	  out.println("Complete!");
-	    	  res.sendRedirect("/caadapterWS/success.do");
+	    	  res.sendRedirect("/caAdapterWS/success.do");
 		}catch(Exception e) {
 	            System.out.println("Error in doPost: " + e);
-		    	  res.sendRedirect("/caadapterWS/error.do");
+		    	  res.sendRedirect("/caAdapterWS/error.do");
 	        }
 	   }
 	    /**
@@ -137,7 +137,7 @@ public class AddNewScenario extends HttpServlet {
 		    		Attr locationAttr = component.getAttributeNode("location");
 		    		locationAttr.setValue(MSName+".scs");
 	    		}
-	    		if (attr.getValue().equals("HL7v3")) {
+	    		if (attr.getValue().equals("HL7v3")||attr.getValue().equals("h3s")) {
 		    		Attr locationAttr = component.getAttributeNode("location");
 		    		locationAttr.setValue(MSName+".h3s");
 	    		}

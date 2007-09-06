@@ -4,6 +4,8 @@
  */
 package gov.nih.nci.caadapter.ws;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
+import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 //import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
 
 import java.io.File;
@@ -15,9 +17,9 @@ import java.util.Properties;
  * caadapter Web Service to provide transformation service
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.3 $
- * @date $$Date: 2007-07-03 18:27:31 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2007-09-06 22:43:43 $
  * @since caadapter v1.3.1
  */
 
@@ -37,21 +39,31 @@ public class caAdapterTransformationService {
 		  String path = System.getProperty("gov.nih.nci.caadapter.path");
 		  ArrayList<String> result = new ArrayList<String>();
 
+		  try {
 		  boolean exists = (new File(path+mappingScenario)).exists();
-		    if (exists) {
-		    	
-		    	String mappingFileName = path+mappingScenario+"/"+mappingScenario + ".map";
-//				TransformationServiceCsvToHL7V3 transformationService = 
-//					new TransformationServiceCsvToHL7V3(mappingFileName,csvString,true);
-//				List<TransformationResult> mapGenerateResults = transformationService.process(null);
-//				for (int i = 0; i < mapGenerateResults.size(); i++)
-//				{
-//					TransformationResult mapGenerateResult = mapGenerateResults.get(i);
-//					result.add(mapGenerateResult.getHl7V3MessageText());
-//				}
-				return result;
-		    } else {
-		    	return null;
-		    }
+		  if (exists) {
+
+			  String mappingFileName = path+mappingScenario+"/"+mappingScenario + ".map";
+			  System.out.println(mappingFileName);
+			  System.out.println(csvString);
+			  TransformationService transformationService = 
+				  new TransformationService(mappingFileName,csvString,true);
+			  System.out.println("start process");
+			  List<XMLElement> mapGenerateResults = transformationService.process();
+			  System.out.println(mapGenerateResults);
+			  for (int i = 0; i < mapGenerateResults.size(); i++)
+			  {
+				  XMLElement mapGenerateResult = mapGenerateResults.get(i);
+				  result.add(mapGenerateResult.toXML().toString());
+			  }
+			  return result;
+		  } else {
+			  return null;
+		  }
+		  }catch(Exception e)
+		  {
+			  e.printStackTrace();
+		  }
+		  return null;
 	}
 }
