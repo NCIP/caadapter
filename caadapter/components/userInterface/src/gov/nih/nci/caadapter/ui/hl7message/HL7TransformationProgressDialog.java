@@ -1,29 +1,14 @@
 package gov.nih.nci.caadapter.ui.hl7message;
 
-import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
-
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.GraphicsConfiguration;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
 import javax.swing.ProgressMonitor;
 
 public class HL7TransformationProgressDialog extends ProgressMonitor implements TransformationObserver
 {
 	private int messageCount; 
-	private boolean requestCanceled=false;
-	private boolean tranformationComplete=false;
 
 	public static final String DEFAULT_OBSERVER_DIALOG_TITLE="";//"Transfomation Progress";
 
@@ -35,40 +20,46 @@ public class HL7TransformationProgressDialog extends ProgressMonitor implements 
 		setProgress(1);
 	}
 
-	
-
-
-	public boolean isRequestCancelled() {
+	public boolean isRequestCanceled() {
 		// TODO Auto-generated method stub
-		return requestCanceled;
-	}
-
-	public boolean isRequestValid() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	public boolean isServiceReady() {
-		// TODO Auto-generated method stub
-		return true;
+		return this.isCanceled();
 	}
 
 	public void progressUpdate(int completionPercent) {
 		// TODO Auto-generated method stub
 		//the completionPercent start from 0:the first message
 		int completionCnt=completionPercent+1;
-		if (completionCnt==this.messageCount)
-		{		
-			setTranformationComplete(true);
+		String msgTextStart="Generating message : ";
+		String msgTextEnd="";
+		if (messageCount>0)
+		{
+			msgTextEnd=completionCnt +" of "+ this.messageCount;
 		}
-			String msgText="Generating message : "+ completionCnt +" of "+ this.messageCount;
-			System.out.println("HL7TransformationProgressDialog.progressUpdate():"+msgText);
-			if (messageCount>0)
-				setNote(msgText);
-			
-			this.setProgress(completionCnt);
-			System.out
-					.println("HL7TransformationProgressDialog.progressUpdate()..getNote():"+getNote());
+		else
+		{
+			msgTextStart="Loading data ... ";
+			switch (completionPercent)
+			{
+				case TRANSFORMATION_DATA_LOADING_START:
+					msgTextEnd=" start";
+				case TRANSFORMATION_DATA_LOADING_READ_MAPPING:
+					msgTextEnd="read mapping";
+				case TRANSFORMATION_DATA_LOADING_PARSER_MAPPING:
+					msgTextEnd="parser mapping";
+				case TRANSFORMATION_DATA_LOADING_READ_SOURCE:
+					msgTextEnd="read source data";
+				case TRANSFORMATION_DATA_LOADING_PARSER_SOURCE:
+					msgTextEnd="parser source data";
+				case TRANSFORMATION_DATA_LOADING_READ_CVS_META:
+					msgTextEnd="parser source meta";
+				case TRANSFORMATION_DATA_LOADING_READ_H3S_FILE:
+					msgTextEnd="parser target meta";
+				case TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE:
+					msgTextEnd="count message(s)";
+			}
+		}
+		setNote(msgTextStart+msgTextEnd);
+		this.setProgress(completionCnt);
 	}
 
 	public void setMessageCount(int count) {
@@ -78,14 +69,5 @@ public class HL7TransformationProgressDialog extends ProgressMonitor implements 
 		this.setNote("Total number of message:"+count);
 		setMaximum(count);
 		
-	}
-
-	
-	public boolean isTranformationComplete() {
-		return tranformationComplete;
-	}
-
-	public void setTranformationComplete(boolean tranformationComplete) {
-		this.tranformationComplete = tranformationComplete;
 	}
 }

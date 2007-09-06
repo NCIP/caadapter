@@ -32,10 +32,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.35 $
- *          date        $Date: 2007-09-04 14:07:19 $
+ *          revision    $Revision: 1.36 $
+ *          date        $Date: 2007-09-06 15:08:58 $
  */
 
 public class MapProcessor {
@@ -96,7 +96,7 @@ public class MapProcessor {
             	for (TransformationObserver tObserver:transformationWatchList)
             	{
             		tObserver.progressUpdate(i);
-            		if (tObserver.isRequestCancelled()) break;
+            		if (tObserver.isRequestCanceled()) break;
             	}
             }
         }
@@ -614,6 +614,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.35  2007/09/04 14:07:19  wuye
+ * HISTORY      : Added progress bar
+ * HISTORY      :
  * HISTORY      : Revision 1.34  2007/08/31 17:01:54  wuye
  * HISTORY      : Added mapping scenario when a constant is mapped to a structural attribute
  * HISTORY      :

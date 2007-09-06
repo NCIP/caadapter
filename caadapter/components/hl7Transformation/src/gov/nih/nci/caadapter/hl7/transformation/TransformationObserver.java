@@ -6,11 +6,16 @@ package gov.nih.nci.caadapter.hl7.transformation;
  */
 public interface TransformationObserver {
 public static int TRANSFORMATION_DATA_LOADING_START=0;
-public static int TRANSFORMATION_DATA_LOADING_READ_DATA=3;
-public static int TRANSFORMATION_DATA_LOADING_PARSER_DATA=4;
 public static int TRANSFORMATION_DATA_LOADING_READ_MAPPING=1;
 public static int TRANSFORMATION_DATA_LOADING_PARSER_MAPPING=2;
-public static int TRANSFORMATION_DATA_LOADING_STEPS=5;
+public static int TRANSFORMATION_DATA_LOADING_READ_SOURCE=3;
+public static int TRANSFORMATION_DATA_LOADING_PARSER_SOURCE=4;
+public static int TRANSFORMATION_DATA_LOADING_READ_CVS_META=5;
+public static int TRANSFORMATION_DATA_LOADING_READ_H3S_FILE=6;
+
+public static int TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE=7;
+
+public static int TRANSFORMATION_DATA_LOADING_STEPS=8;
 public static String TRANSFORMATION_MESSAGE_GENERATING_STEP="Loading Data ...";
 
 /**
@@ -21,30 +26,16 @@ public static String TRANSFORMATION_MESSAGE_GENERATING_STEP="Loading Data ...";
 public void progressUpdate(int completionPercent);
 
 /**
- * Inform the transformation observer if the request is valid.
- * @return The status of a transformation request
- */
-public boolean isRequestValid();
-
-/**
  * Inform the HL7 transformation request is cancelled 
  * @return
  */
-public boolean isRequestCancelled();
+public boolean isRequestCanceled();
 
-
-/**
- * Inform the transformation observer if the transformation server is ready to process
- * a transformation request.
- * @return The status of a transformation server
- */
-public boolean isServiceReady();
 
 /*
  * Set the total number of HL7 message with a transformation service request
  * @param count The number of messages 
  */
 public void setMessageCount(int count);
-
 
 }

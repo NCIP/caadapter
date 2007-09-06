@@ -31,14 +31,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.11 $
- * @date $Date: 2007-09-04 20:42:14 $
+ * @version $Revision: 1.12 $
+ * @date $Date: 2007-09-06 15:09:27 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.11 2007-09-04 20:42:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.12 2007-09-06 15:09:27 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -163,7 +163,7 @@ public class TransformationService
         	for (TransformationObserver tObserver:transformationWatchList)
         	{
         		tObserver.progressUpdate(steps);
-        		if (tObserver.isRequestCancelled()) break;
+        		if (tObserver.isRequestCanceled()) break;
         	}
         }
     }
@@ -198,6 +198,7 @@ public class TransformationService
         	return null;
         }
         long csvbegintime = System.currentTimeMillis();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
         CSVDataResult csvDataResult = null;
         if (isInputStream) 
         {
@@ -211,12 +212,12 @@ public class TransformationService
         {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_DATA);
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
     	
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
         // parse the datafile, if there are errors.. return.
         final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_DATA);
+
 //        prepareValidatorResults.addValidatorResults(csvDataValidatorResults);
         /*
          * TODO consolidate validatorResults
@@ -227,10 +228,10 @@ public class TransformationService
         }
 
         csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
-        
+       
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
         String h3sFilename = mapParser.getH3SFilename();
         String fullh3sfilepath = FileUtil.filenameLocate(mapfile.getParent(), h3sFilename);
-
         
         long loadmifbegintime = System.currentTimeMillis();
         
@@ -247,6 +248,7 @@ public class TransformationService
         
     	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
 
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE);
     	MapProcessor mapProcess = new MapProcessor();
         
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
@@ -366,6 +368,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2007/09/04 20:42:14  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2007/09/04 14:07:19  wuye
  * HISTORY      : Added progress bar
  * HISTORY      :
