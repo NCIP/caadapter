@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.5 2007-09-07 14:25:53 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.6 2007-09-07 14:48:16 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-09-07 14:25:53 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-09-07 14:48:16 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.5 2007-09-07 14:25:53 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.6 2007-09-07 14:48:16 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -324,7 +324,7 @@ public class AboutWindow extends JWindow //implements ActionListener
         if (env.toUpperCase().indexOf(SYSTEM_PROPERTY_WINDOWS_OS_NAME) < 0) tot = tot.replace(WINDOWS_MARKER_IN_SOURCE_HTML_FILE, "<br><br>");
         FileWriter fw = null;
         //String displayFileName = commonPath.replace(Config.DEFAULT_ABOUT_WINDOW_DATA_FILENAME, Config.HELP_TEMPORARY_FILENAME_FIRST);
-        String displayFileName = FileUtil.getTemporaryFileName("html");
+        String displayFileName = FileUtil.getTemporaryFileName(".html");
                 try
         {
             fw = new FileWriter(displayFileName);
@@ -353,7 +353,8 @@ public class AboutWindow extends JWindow //implements ActionListener
 //        File licensePathFile = new File(FileUtil.getETCDirPath() + File.separator + licensePath);
 //        if (!licensePathFile.exists()) return ERROR_TAG + " : Not Exist";
 //        if (!licensePathFile.isDirectory()) return ERROR_TAG + " : Not Directory";
-        String displayFileName = commonPath + Config.HELP_TEMPORARY_FILENAME_SECOND;
+        //String displayFileName = commonPath + Config.HELP_TEMPORARY_FILENAME_SECOND;
+        String displayFileName = FileUtil.getTemporaryFileName(".html");
         String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> This " +
                 "license information is automatically merged and generated from the following license files in " +
                 licensePath + " directory.<br><br>%%XX<br><br><hr width=\"80%\"><br>";
@@ -417,7 +418,7 @@ public class AboutWindow extends JWindow //implements ActionListener
         catch(IOException ie)
           {
 
-            return ERROR_MESSAGE_FILE_WRITING_ERROR; //"ERROR : File Writing Error";
+            return ERROR_MESSAGE_FILE_WRITING_ERROR + " : " + displayFileName; //"ERROR : File Writing Error";
           }
         String achar = "";
         String cc = "";
@@ -427,6 +428,8 @@ public class AboutWindow extends JWindow //implements ActionListener
             if (achar.equals(File.separator)) cc = cc + "/";
             else cc = cc + achar;
         }
+        File aFile = new File(displayFileName);
+        aFile.deleteOnExit();
         return "file:///" + cc;
     }
     private String replaceTaggedContent(String tot, String tagOfContent, String replacingStr, String tagOfTail)
@@ -460,6 +463,9 @@ public class AboutWindow extends JWindow //implements ActionListener
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/09/07 14:25:53  umkis
+ * HISTORY      : caAdapter version => 4.0
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/09/06 21:49:49  umkis
  * HISTORY      : caAdapter version => 4.0
  * HISTORY      :
