@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.13 2007-08-29 18:49:30 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.14 2007-09-07 19:28:44 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2007-08-29 18:49:30 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2007-09-07 19:28:44 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -96,7 +96,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.13 2007-08-29 18:49:30 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.14 2007-09-07 19:28:44 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -113,7 +113,6 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	private JTextField cardinalityField;
 	private JTextField mandatoryField;
 	private JTextField conformanceField;
-//	private JTextField rimSourceField; not required
 	private JTextField abstractField;
 	private JComboBox dataTypeField;
 	private JTextField hl7DefaultValueField;
@@ -122,8 +121,6 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	private JTextField cmetField;
 	private JTextField userDefaultValueField;
 
-	//could be either HL7V3Meta, CloneMeta, CloneAttributeMeta, CloneDatatypeFieldMeta, etc.
-//	private MetaObject hl7V3Meta;
 	private DatatypeBaseObject seletedBaseObject;
 	private HSMPanel parentPanel;
 
