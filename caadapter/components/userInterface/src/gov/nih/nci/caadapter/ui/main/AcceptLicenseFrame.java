@@ -42,7 +42,6 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 	private JCheckBox acceptBox;
 	private JCheckBox denyBox;
 	public AcceptLicenseFrame() throws HeadlessException {
-		// TODO Auto-generated constructor stub
 		this("caAdapter License Agreement");
 	}
 
@@ -138,26 +137,25 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 	private JPanel setInputPanel()
 	{
 		JPanel rtnPanel=new JPanel();
-		rtnPanel.setLayout(new GridLayout(2,1));
+		rtnPanel.setLayout(new BorderLayout());
 
 		acceptBox=new JCheckBox(ACCEPT_AGREEMENT_STATEMENT);		
 		denyBox=new JCheckBox(NOT_ACCEPT_AGREEMENT_STATEMENT);
 		ButtonGroup group=new ButtonGroup();
 		group.add(acceptBox);
 		group.add(denyBox);
-		
-		
+			
 		
 		JPanel containPane=new JPanel();
 		containPane.setBorder(BorderFactory.createEmptyBorder(5,
 				20,
 				5, 
 				50));
-		containPane.setLayout(new GridLayout(2,1));
+		containPane.setLayout(new GridLayout(3,1));
 		containPane.add(acceptBox);
 		containPane.add(denyBox);
+		containPane.add(setCommandButtonPanel());
 		rtnPanel.add(containPane);
-		rtnPanel.add(setCommandButtonPanel());
 		rtnPanel.setBorder(BorderFactory.createRaisedBevelBorder());//.createEmptyBorder(10, 10, 10, 10));
 		return rtnPanel;
 	}
