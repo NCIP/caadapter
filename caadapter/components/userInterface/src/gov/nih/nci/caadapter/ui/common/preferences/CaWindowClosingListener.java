@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 import java.awt.event.WindowEvent;
@@ -29,7 +30,7 @@ public class CaWindowClosingListener implements WindowListener
 
     public void windowClosing(WindowEvent e)
     {
-        CaAdapterPref.setCaAdapterPreferences(MainMenuBar.getCaAdapterPreferences());
+        CaAdapterPref.setCaAdapterPreferences(CaadapterUtil.getCaAdapterPreferences());
     }
 
     public void windowDeactivated(WindowEvent e)

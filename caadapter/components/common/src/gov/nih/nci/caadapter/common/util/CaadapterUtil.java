@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.9 2007-08-28 21:44:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.10 2007-09-07 19:25:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,8 +36,11 @@ package gov.nih.nci.caadapter.common.util;
 
 import gov.nih.nci.caadapter.common.Log;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -49,8 +52,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.9 $
- * @date $$Date: 2007-08-28 21:44:25 $
+ * @version $Revision: 1.10 $
+ * @date $$Date: 2007-09-07 19:25:48 $
  * @since caAdapter v1.2
  */
 
@@ -58,6 +61,7 @@ public class CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
 	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
 	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
+    private static HashMap prefs;
 	static {
         Properties properties = new Properties();
         InputStream fi = null;
@@ -106,6 +110,7 @@ public class CaadapterUtil {
             } catch (IOException ignore) {
             }
         }
+        readPreferencesMap();
     }
 
 
@@ -163,10 +168,63 @@ public class CaadapterUtil {
              return sb.toString();
            }
          }
+         
+         private static void readPreferencesMap()
+         {   prefs=new HashMap();
+             try
+             {
+                 FileInputStream f_out = new FileInputStream(System.getProperty("user.home") + "\\.caadapter");
+                 ObjectInputStream obj_out = new ObjectInputStream(f_out);
+                 prefs = (HashMap) obj_out.readObject();
+                 //System.out.println(prefs);
+             } catch (Exception e)
+             {
+                 e.printStackTrace();
+             }
+         }
+         
+         public static HashMap getCaAdapterPreferences()
+         {
+             return prefs;
+         }
+
+         public static void setCaAdapterPreferences(HashMap _prefs){
+             prefs = _prefs;
+         }
+         
+         /**
+          * Read a preference value given its key as a string
+          *
+          * @param key -- The key value of a preference
+          * @return A preference value as a string
+          */
+         public static String readPrefParams(String key) {
+             HashMap prefs = CaadapterUtil.getCaAdapterPreferences();
+             if (prefs == null)
+                 return null;
+             return (String) prefs.get(key);
+         }
+
+         public static void savePrefParams(String key, String value) {
+             try {
+                 if (CaadapterUtil.getCaAdapterPreferences() != null) {
+                 	CaadapterUtil.getCaAdapterPreferences().put(key, value);
+                 } else {
+                     HashMap tempMap = new HashMap();
+                     tempMap.put(key, value);
+                     CaadapterUtil.setCaAdapterPreferences(tempMap);
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
+         }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2007/08/28 21:44:25  wangeug
+ * HISTORY      : enable address/name datatype with pre-set attributes
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/08/24 21:13:54  wangeug
  * HISTORY      : clean code
  * HISTORY      :

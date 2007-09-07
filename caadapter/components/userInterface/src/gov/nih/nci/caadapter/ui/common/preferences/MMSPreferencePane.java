@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,19 +48,19 @@ public class MMSPreferencePane extends JPanel
 
         mmsPrefixLabelObjectModel = new JLabel( "MMS Prefix 1 (Logical View.Logical Model) " );
         mmsPrefixObjectModel = new JTextField( 25 );
-        if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
+        if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
         {
             mmsPrefixObjectModel.setText( "Logical View.Logical Model" );
         }else {
-            mmsPrefixObjectModel.setText( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
+            mmsPrefixObjectModel.setText( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
         }
 
         mmsPrefixLabelDataModel = new JLabel( "MMS Prefix 2 (Logical View.Data Model) " );
         mmsPrefixDataModel = new JTextField( 25 );
-        if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null ){
+        if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null ){
           mmsPrefixDataModel.setText( "Logical View.Data Model" );
         } else {
-            mmsPrefixDataModel.setText( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) );
+            mmsPrefixDataModel.setText( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) );
         }
 
 
@@ -90,9 +91,9 @@ public class MMSPreferencePane extends JPanel
         if (arg0.getActionCommand().equalsIgnoreCase("ok"))
         {
          	//persistent preference as "true" or "false"
-        	PreferenceManager.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL, mmsPrefixObjectModel.getText() );
+        	CaadapterUtil.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL, mmsPrefixObjectModel.getText() );
 
-            PreferenceManager.savePrefParams( Config.MMS_PREFIX_DATAMODEL, mmsPrefixDataModel.getText() );
+        	CaadapterUtil.savePrefParams( Config.MMS_PREFIX_DATAMODEL, mmsPrefixDataModel.getText() );
 
             if (parent!=null)
         		parent.dispose();

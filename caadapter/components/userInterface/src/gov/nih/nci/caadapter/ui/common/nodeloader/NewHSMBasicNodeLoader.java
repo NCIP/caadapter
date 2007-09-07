@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.25 2007-08-30 17:24:09 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.26 2007-09-07 19:27:32 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.25 $
- *          date        $Date: 2007-08-30 17:24:09 $
+ *          revision    $Revision: 1.26 $
+ *          date        $Date: 2007-09-07 19:27:32 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -106,10 +106,10 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		treeEditable=editableFlag;
 		newSpecificationFlag=preferenceFlag;
-		String nullFlavorSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED);
+		String nullFlavorSetting=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED);
 		if (nullFlavorSetting!=null&&nullFlavorSetting.equalsIgnoreCase("true"))
 			nullFlavorEnabled=true;
-		String complexTypeSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED);
+		String complexTypeSetting=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED);
 		if (complexTypeSetting!=null&&complexTypeSetting.equalsIgnoreCase("true"))
 			complexTypeEnabled=true;
 	}

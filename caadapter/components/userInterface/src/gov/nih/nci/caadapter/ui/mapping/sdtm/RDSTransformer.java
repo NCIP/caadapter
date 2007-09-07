@@ -5,6 +5,7 @@ import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
@@ -21,10 +22,10 @@ import java.util.*;
  * This class implements the fixed length records
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-08-17 15:15:02 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-09-07 19:29:51 $
  */
 public class RDSTransformer {
     String directoryLocation=null;
@@ -43,7 +44,7 @@ public class RDSTransformer {
         directoryLocation = _directoryLocation;
         CSVMapFileReader csvMapFileReader = new CSVMapFileReader(mapFile);
         //check for fixed lenght
-        if (((String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
+        if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
             fixedLengthIndicator = true;
             //Prepare the list here and keep it ready so that number of blanks corresponding to the
             //value set by the user will be applied appropriately
@@ -320,6 +321,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/08/17 15:15:02  jayannah
+ * added wait window during transformation
+ *
  * Revision 1.3  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

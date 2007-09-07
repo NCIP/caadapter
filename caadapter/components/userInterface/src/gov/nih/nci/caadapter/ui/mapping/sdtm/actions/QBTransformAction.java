@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
 import gov.nih.nci.caadapter.dataviewer.util.GetConnectionSingleton;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
@@ -41,10 +42,10 @@ import java.util.Iterator;
  * The class helps as a helper during transformation
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.12 $
- *          $Date: 2007-08-31 21:10:28 $
+ *          $Revision: 1.13 $
+ *          $Date: 2007-09-07 19:29:34 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -64,7 +65,7 @@ public class QBTransformAction {
         directoryLoc.setDialogTitle("Transforming file " + mappingPanel.getSaveFile().getName() + ", please choose directory..");
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = directoryLoc.showOpenDialog(_mainFrame);
-        if (((String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
+        if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
             fixedLengthIndicator = true;
             CSVMapFileReader csvMapFileReader = new CSVMapFileReader(new File(mappingPanel.getSaveFile().getAbsolutePath()));
             //Prepare the list here and keep it ready so that number of blanks corresponding to the
@@ -129,7 +130,7 @@ public class QBTransformAction {
         directoryLoc.setDialogTitle("Transforming file " + mapFile + ", please choose directory..");
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = directoryLoc.showOpenDialog(_mainFrame);
-        if (((String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
+        if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
             fixedLengthIndicator = true;
             CSVMapFileReader csvMapFileReader = new CSVMapFileReader(new File(mapFile));
             //Prepare the list here and keep it ready so that number of blanks corresponding to the
@@ -356,6 +357,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/08/31 21:10:28  jayannah
+ * handled user cancel during the password input and transformation
+ *
  * Revision 1.11  2007/08/31 19:40:09  jayannah
  * Commented the system out statements
  *

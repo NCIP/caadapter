@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 import javax.swing.*;
@@ -17,8 +18,8 @@ import java.util.HashMap;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-09-06 20:03:07 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-09-07 19:30:38 $
  */
 public class PreferenceManager extends JDialog implements ActionListener {
 
@@ -29,7 +30,7 @@ public class PreferenceManager extends JDialog implements ActionListener {
         super(callingFrame, "Preference Menu", true);
         //get the value stored in the registry
         try {
-            regValue = (String) MainMenuBar.getCaAdapterPreferences().get("FIXED_LENGTH_VAR");
+            regValue = (String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR");
             if (regValue == null) {
                 regValue = "none";
             }
@@ -178,40 +179,13 @@ public class PreferenceManager extends JDialog implements ActionListener {
         //handle 'ok' and 'cancel'
         if (e.getActionCommand().equalsIgnoreCase("ok")) {
             if (prefListener.getValue() != null) {
-                savePrefParams("FIXED_LENGTH_VAR", prefListener.getValue());
+            	CaadapterUtil.savePrefParams("FIXED_LENGTH_VAR", prefListener.getValue());
             } else {
-                savePrefParams("FIXED_LENGTH_VAR", regValue);
+            	CaadapterUtil.savePrefParams("FIXED_LENGTH_VAR", regValue);
             }
             this.dispose();
         } else {
             this.dispose();
-        }
-    }
-
-    /**
-     * Read a preference value given its key as a string
-     *
-     * @param key -- The key value of a preference
-     * @return A preference value as a string
-     */
-    public static String readPrefParams(String key) {
-        HashMap prefs = MainMenuBar.getCaAdapterPreferences();
-        if (prefs == null)
-            return null;
-        return (String) prefs.get(key);
-    }
-
-    public static void savePrefParams(String key, String value) {
-        try {
-            if (MainMenuBar.getCaAdapterPreferences() != null) {
-                MainMenuBar.getCaAdapterPreferences().put(key, value);
-            } else {
-                HashMap tempMap = new HashMap();
-                tempMap.put(key, value);
-                MainMenuBar.setCaAdapterPreferences(tempMap);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -230,6 +204,9 @@ public class PreferenceManager extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/09/06 20:03:07  wangeug
+ * set ODI optional
+ *
  * Revision 1.9  2007/08/17 15:15:25  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

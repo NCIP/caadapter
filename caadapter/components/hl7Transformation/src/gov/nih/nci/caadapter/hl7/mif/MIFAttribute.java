@@ -5,6 +5,7 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
@@ -27,7 +28,7 @@ import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-09-06 20:02:20 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2007-09-07 19:26:37 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -472,7 +473,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		String dmName=getDomainName();
 		if(dmName==null||dmName.equals(""))
 			return dmName;
-		String odiSetting=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
+		String odiSetting=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
 		if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
 			return dmName;
 		

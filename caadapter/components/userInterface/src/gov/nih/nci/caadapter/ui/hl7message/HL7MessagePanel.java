@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.13 2007-09-04 20:45:04 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.14 2007-09-07 19:29:03 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.ui.hl7message;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
@@ -77,8 +78,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2007-09-04 20:45:04 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2007-09-07 19:29:03 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -409,7 +410,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		if(totalNumberOfMessages > 0)
 		{
 			Object generalMssg= messageList.get(currentCount - 1);
-			String messageValidationLevel=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
+			String messageValidationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
 			if (generalMssg instanceof XMLElement)
 			{
 				XMLElement xmlMsg =(XMLElement)generalMssg;
@@ -648,6 +649,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2007/09/04 20:45:04  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2007/09/04 20:41:28  wangeug
  * HISTORY      : add progressor
  * HISTORY      :

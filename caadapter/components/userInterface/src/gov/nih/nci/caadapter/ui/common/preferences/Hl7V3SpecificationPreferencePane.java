@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.common.preferences;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -56,17 +57,17 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         checkboxPanel.setBorder(BorderFactory.createTitledBorder(loweredetched, "HL7 Specification"));
         //Create the radio buttons.
         nullFlavorCheck=new JCheckBox("Enable NullFlavor");
-        String nullFlavorValue=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED);
+        String nullFlavorValue=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED);
         if (nullFlavorValue!=null&&nullFlavorValue.equalsIgnoreCase("true"))
         	nullFlavorCheck.setSelected(true);
         
         complexDatatypeCheck=new JCheckBox("Enable Complex Datatype");
-        String complexDatatypeValue=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED);
+        String complexDatatypeValue=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED);
         if (complexDatatypeValue!=null&&complexDatatypeValue.equalsIgnoreCase("true"))
         	complexDatatypeCheck.setSelected(true);
         
         odiEnableCheck= new JCheckBox("Enable ODI");
-        String odiEnableValue=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
+        String odiEnableValue=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
         if (odiEnableValue!=null&&odiEnableValue.equalsIgnoreCase("true"))
         	odiEnableCheck.setSelected(true);
         
@@ -94,7 +95,7 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         groupSelectPane.setLayout(gridbag);
        
         groupSelectPane.setBorder(BorderFactory.createTitledBorder(loweredetched, "Message Validation"));
-        String validationLevel=PreferenceManager.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
+        String validationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
         JRadioButton valid0= new JRadioButton("Structure");
         valid0.setActionCommand(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0);
         JRadioButton valid1= new JRadioButton("Structure & Vocabulary");
@@ -163,12 +164,12 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         if (arg0.getActionCommand().equalsIgnoreCase("ok"))
         {
          	//persistent preference as "true" or "false"
-        	PreferenceManager.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED,
+        	CaadapterUtil.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED,
         			String.valueOf(nullFlavorCheck.isSelected()));
-       		PreferenceManager.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED, 
+        	CaadapterUtil.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED, 
        				String.valueOf(complexDatatypeCheck.isSelected()));
        		
-       		PreferenceManager.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED, 
+        	CaadapterUtil.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED, 
        				String.valueOf(odiEnableCheck.isSelected()));
        		//read validation level from group selection
        		Enumeration grpButtons=validationLevelGroup.getElements();
@@ -182,7 +183,7 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
        				break;
        			}
        		}
-       		PreferenceManager.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL, 
+       		CaadapterUtil.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL, 
        				validationLevel);      		
        		
         	if (parent!=null)

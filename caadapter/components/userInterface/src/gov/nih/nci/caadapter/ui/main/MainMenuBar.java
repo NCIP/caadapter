@@ -79,8 +79,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.15 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.16 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -91,7 +91,7 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, AbstractContextAction> actionMap;
     private Map<String, JMenuItem> menuItemMap;
     private Map<String, JMenu> menuMap;
-    private static HashMap prefs;
+
 
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
@@ -99,21 +99,11 @@ public class MainMenuBar extends AbstractMenuBar
         initialize();
     }
 
-    public static HashMap getCaAdapterPreferences()
-    {
-        return prefs;
-    }
-
-    public static void setCaAdapterPreferences(HashMap _prefs){
-        prefs = _prefs;
-    }
-
     private void initialize()
     {
         actionMap = Collections.synchronizedMap(new HashMap<String, AbstractContextAction>());
         menuItemMap = Collections.synchronizedMap(new HashMap<String, JMenuItem>());
         menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
-        readPreferencesMap();
 
         add(constructFileMenu());
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
@@ -135,19 +125,6 @@ public class MainMenuBar extends AbstractMenuBar
         //		constructActionMap();
     }
 
-    private void readPreferencesMap()
-    {   prefs=new HashMap();
-        try
-        {
-            FileInputStream f_out = new FileInputStream(System.getProperty("user.home") + "\\.caadapter");
-            ObjectInputStream obj_out = new ObjectInputStream(f_out);
-            prefs = (HashMap) obj_out.readObject();
-            //System.out.println(prefs);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     /* (non-Javadoc)
       * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#enableAction(java.lang.String, boolean)
@@ -320,7 +297,7 @@ public class MainMenuBar extends AbstractMenuBar
 
     private JMenu constructPreferenceMenu()
     {
-        OpenPreferenceAction _preference = new OpenPreferenceAction(mainFrame, prefs);
+        OpenPreferenceAction _preference = new OpenPreferenceAction(mainFrame, CaadapterUtil.getCaAdapterPreferences());
         JMenu _qb = new JMenu("Tools");
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
@@ -571,6 +548,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.15  2007/08/30 19:56:09  jayannah
+ * HISTORY : changed the verbiage
+ * HISTORY :
  * HISTORY : Revision 1.14  2007/08/13 15:22:56  wangeug
  * HISTORY : add new menu:open H3S with "xml" format
  * HISTORY :
