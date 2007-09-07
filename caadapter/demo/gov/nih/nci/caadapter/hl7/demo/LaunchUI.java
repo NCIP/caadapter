@@ -1,5 +1,5 @@
 /**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.2 2007-07-17 16:29:39 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.3 2007-09-07 19:52:30 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,59 +53,25 @@
  * ********************************************************************
  */
 package gov.nih.nci.caadapter.hl7.demo;
-
-import java.io.IOException;
-import java.util.Enumeration;
-
-import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.ui.main.MainFrame;
-
+import gov.nih.nci.caadapter.ui.main.AcceptLicenseFrame;
 /**
  * A tiny driver which will launch the HL7SDK Swing Mapping Tool.
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @since caAdapter v1.2
  */
 public class LaunchUI {
     private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.2 2007-07-17 16:29:39 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.3 2007-09-07 19:52:30 wangeug Exp $";
 
     public static void main(String[] args)
     {
-
-//    	System.out.println("java.class.path:"+System.getProperty("java.class.path"));
-//  		java.net.URL url= Thread.currentThread().getClass().getResource("/mif/COCT_MT150003UV03.mif");
-//  		String urlSt=url.getFile();
-//  		urlSt=urlSt.substring(6,urlSt.indexOf(".zip")+4);
-//  		System.out.println("MyTest.main()..URL:"+urlSt);
-//  		try {
-//			java.util.zip.ZipFile zipFile=new java.util.zip.ZipFile(urlSt);
-//			Enumeration em = zipFile.entries();
-//			for (Enumeration em1 = zipFile.entries(); em1.hasMoreElements();){
-//				System.out.println(em1.nextElement());
-//			}
-//  		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-    	try
-        {
             DefaultSettings.installAll();
-            new MainFrame().launch();
-//            AbstractMainFrame mainFrame = new MainFrame();
-//            mainFrame.launch();
-            //DefaultSettings.centerWindow(mainFrame);    // defect# 255, for mainframe center aligning. inserted by umkis 01/30/06
-        }
-        catch (Throwable t)
-        {
-            Log.logException(new Object(), t);
-        }
-        //DefaultSettings.installAll();
-        //MainFrame m = new MainFrame();
-        //m.launch();
+        	//accept license as the first step
+        	new AcceptLicenseFrame();
+//            new MainFrame().launch();
     }
 }
