@@ -11,24 +11,20 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 
-import java.beans.Expression;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
+
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2007-09-07 19:26:37 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-09-07 19:44:09 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
