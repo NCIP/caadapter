@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.9 2007-09-06 17:10:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.10 2007-09-07 15:19:26 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,7 @@ package gov.nih.nci.caadapter.ui.main;
 
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.function.FunctionUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -62,10 +63,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-09-06 17:10:49 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-09-07 15:19:26 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -483,13 +484,16 @@ public class MainFrame extends AbstractMainFrame
     protected void exit(int errorLevel) {
 	this.setVisible(false);
 	this.dispose();
-	//FunctionUtil.deleteTemporaryFiles();
+	FunctionUtil.deleteTemporaryFiles();
 	Log.logInfo(this, "\r\n\r\nShutting down logging with exit code = " + errorLevel + "\r\n\r\n" + "===============================================================\r\n" + "===============================================================\r\n");
 	System.exit(errorLevel);
     }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2007/09/06 17:10:49  wangeug
+ * HISTORY      : check null to view help window
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/08/01 17:20:05  jayannah
  * HISTORY      : added untitled name to the panel name
  * HISTORY      :
