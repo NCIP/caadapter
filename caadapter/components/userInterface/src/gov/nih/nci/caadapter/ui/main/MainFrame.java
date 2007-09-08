@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.10 2007-09-07 15:19:26 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.11 2007-09-08 20:19:12 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,8 +65,8 @@ import java.util.HashMap;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-09-07 15:19:26 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-09-08 20:19:12 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -484,13 +484,16 @@ public class MainFrame extends AbstractMainFrame
     protected void exit(int errorLevel) {
 	this.setVisible(false);
 	this.dispose();
-	FunctionUtil.deleteTemporaryFiles();
+	FunctionUtil.deleteTemporaryFiles();   //Revision 1.10  2007/09/07 15:19:26  umkis
 	Log.logInfo(this, "\r\n\r\nShutting down logging with exit code = " + errorLevel + "\r\n\r\n" + "===============================================================\r\n" + "===============================================================\r\n");
 	System.exit(errorLevel);
     }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/09/07 15:19:26  umkis
+ * HISTORY      : Temporary files will be automatically deleted when system exit.
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/09/06 17:10:49  wangeug
  * HISTORY      : check null to view help window
  * HISTORY      :
