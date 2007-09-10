@@ -32,10 +32,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.36 $
- *          date        $Date: 2007-09-06 15:08:58 $
+ *          revision    $Revision: 1.37 $
+ *          date        $Date: 2007-09-10 13:35:46 $
  */
 
 public class MapProcessor {
@@ -190,16 +190,9 @@ public class MapProcessor {
         	    		{
         	    			hasUserdata.setHasUserMappedData(true);
         	    		}
-        	    		return choiceXMLElements;
-//        	    		if (choiceXMLElements.size()>0)
-//        	    		{
-//        	    			XMLElement xmlElementsChoice = choiceXMLElements.get(0);
-//        	    			xmlElement.setAttributes(xmlElementsChoice.getAttributes());
-//        	    			xmlElement.addChildren(xmlElementsChoice.getChildren()); 
-//        	    		}
+        	    		xmlElements.addAll(choiceXMLElements);
         	    	}
         		}
-        		return new ArrayList<XMLElement>();
         	}
 
         	TreeSet<MIFAttribute> attributes = mifClass.getSortedAttributes();
@@ -614,6 +607,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.36  2007/09/06 15:08:58  wangeug
+ * HISTORY      : refine codes
+ * HISTORY      :
  * HISTORY      : Revision 1.35  2007/09/04 14:07:19  wuye
  * HISTORY      : Added progress bar
  * HISTORY      :
