@@ -1,6 +1,6 @@
 package gov.nih.nci.caadapter.ui.hl7message;
 
-import java.awt.Frame;
+import java.awt.Component;
 import java.awt.HeadlessException;
 
 import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
@@ -12,7 +12,7 @@ public class HL7TransformationProgressDialog extends ProgressMonitor implements 
 
 	public static final String DEFAULT_OBSERVER_DIALOG_TITLE="";//"Transfomation Progress";
 
-	public HL7TransformationProgressDialog(Frame arg0, boolean dialogType)
+	public HL7TransformationProgressDialog(Component arg0, boolean dialogType)
 			throws HeadlessException {
 		super(arg0,DEFAULT_OBSERVER_DIALOG_TITLE,"Progress",0,1);
 		setMillisToDecideToPopup(0);
