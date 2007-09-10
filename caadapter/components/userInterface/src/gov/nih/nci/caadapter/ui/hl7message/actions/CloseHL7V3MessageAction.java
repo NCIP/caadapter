@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/CloseHL7V3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/CloseHL7V3MessageAction.java,v 1.2 2007-09-10 16:40:35 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,8 +48,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:33:17 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-10 16:40:35 $
  */
 public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 {
@@ -65,7 +65,7 @@ public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/CloseHL7V3MessageAction.java,v 1.1 2007-07-03 19:33:17 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/CloseHL7V3MessageAction.java,v 1.2 2007-09-10 16:40:35 wangeug Exp $";
 
 	private transient HL7MessagePanel hl7Panel;
 
@@ -94,12 +94,16 @@ public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 			cm.enableAction(ActionConstants.OPEN_HL7_V3_MESSAGE, true);
 			cm.enableAction(ActionConstants.NEW_HL7_V3_MESSAGE, true);
 		}
+		hl7Panel.clearDataFromUI();
 		return true;
 	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

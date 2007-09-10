@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.14 2007-09-07 19:29:03 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.15 2007-09-10 16:39:32 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -78,8 +78,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2007-09-07 19:29:03 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2007-09-10 16:39:32 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -103,7 +103,10 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	public HL7MessagePanel()
     {
 		initializeMessageList();
-		initialize();
+        setLayout(new BorderLayout());
+        add(contructNorthPanel(), BorderLayout.NORTH);
+		add(contructCenterPanel(), BorderLayout.CENTER);
+
 	}
 
 	private void initializeMessageList()
@@ -116,13 +119,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		{
 			messageList.clear();
 		}
-	}
-
-	private void initialize()
-    {
-        this.setLayout(new BorderLayout());
-        this.add(contructNorthPanel(), BorderLayout.NORTH);
-		this.add(contructCenterPanel(), BorderLayout.CENTER);
 	}
 
 	private JComponent contructNorthPanel()
@@ -255,19 +251,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		changeDisplay();
 	}
     
-    private void setCsvMessageResultList(java.util.List<TransformationResult> csvResultList)
-    {
-    	Collections.copy( messageList, csvResultList);
-        if (messageList == null || messageList.size() == 0)
-        {
-			initializeMessageList();
-			return;
-        }
-		currentCount = 1;
-		changeDisplay();
-	}
-    
-
     public boolean setSaveFile(File saveFile, boolean refresh) throws Exception
     {
     	System.out.println("HL7MessagePanel.setSaveFile()..refresh:"+refresh);
@@ -311,15 +294,13 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     {
         String command = e.getActionCommand();
         if (PREVIOUS_ITEM.equals(command))
-        {
             currentCount--;
-            changeDisplay();
-        }
         else if (NEXT_ITEM.equals(command))
-        {
             currentCount++;
-            changeDisplay();
-        }
+        else 
+        	return;
+        
+        changeDisplay();
     }
 
 	public void clearDataFromUI()
@@ -336,7 +317,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
      * @param mapFileName
      * @return if the process succeeded.
      */
-    public ValidatorResults generateMappingMessages(File dataFile, File mapFile, HL7TransformationProgressDialog progressor)
+    public ValidatorResults generateMappingMessages(File dataFile, File mapFile)
     {
     	System.out.println(this.getClass().getName()+"generateMappingMessages"+System.currentTimeMillis());
         final ValidatorResults validatorResults = new ValidatorResults();
@@ -349,6 +330,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION))
 			{//transfer CSV to HL7 V3
 				//at first:watch data loading....progress
+				HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog(this, false);
 				progressor.setMaximum(0);
 				progressor.setMaximum(TransformationObserver.TRANSFORMATION_DATA_LOADING_STEPS);
 				progressor.setNote(TransformationObserver.TRANSFORMATION_MESSAGE_GENERATING_STEP);
@@ -375,6 +357,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					}				
 				);
 				localThread.start();
+				
+				System.out.println("HL7MessagePanel.generateMappingMessages().. listnerPane messagSize:"+listnerPane.getV3MessageList().size());
+				System.out.println("HL7MessagePanel.generateMappingMessages().. hl7Panel messagSize:"+this.messageList);//.getV3MessageList().size());
 				return validatorResults;
 				
 			}
@@ -385,7 +370,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				List<TransformationResult> transResults=svc.process();
 				setMessageText(transResults.get(0).getMessageText());
 				validationMessagePane.setValidatorResults(transResults.get(0).getValidatorResults());
-				//				validatorResults.addValidatorResult(transResults.get(0).getValidatorResults());
 			}
 		}
 		catch (Exception e)
@@ -425,17 +409,12 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					if(messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2))
 					{	//add xsd validation
 						try {
-//							String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(xmlMsg.getMessageType());
-							
-//							String xsdFile="C:\\CVS\\caadapter\\etc\\schemas\\multicacheschemas\\COCT_MT010000UV01.xsd";
 							String xsdFile=FileUtil.searchMessageTypeSchemaFileName(xmlMsg.getMessageType(),"xsd");
-							System.out.println("HL7MessagePanel.changeDisplay()...:add schema validation xsd:"+xsdFile);
 							HL7V3MessageValidator h7v3Validator=new HL7V3MessageValidator();
 							validatorsToShow.addValidatorResults(h7v3Validator.validate(xmlMsg.toXML().toString(), xsdFile));//"C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-
 					}
 				}
 				validationMessagePane.setValidatorResults(validatorsToShow);
@@ -463,24 +442,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		outputMessageArea.repaint();
     }
 
-    private ValidatorResults processFiles(File dataFile, File mapFile) throws Exception
-	{
-    	ValidatorResults validatorResults = null;
-    	dataFileNameField.setText(dataFile.getAbsolutePath());
-    	mapFileNameField.setText(mapFile.getAbsolutePath());
-    	TransformationService ts=new TransformationService(mapFile, dataFile);
-		List<XMLElement> xmlElements =ts.process();
-		this.setV3MessageResultList(xmlElements);
-//		HL7MessageGenerationController controler = new HL7MessageGenerationController(this, dataFile,  mapFile);
-//		validatorResults=controler.process();
-//		if( !validatorResults.hasFatal() )
-//		{//normal proceeding
-//			dataFileNameField.setText(dataFile.getAbsolutePath());
-//			mapFileNameField.setText(mapFile.getAbsolutePath());
-//			setV3MessageResultList(controler.getMessageList());
-//		}
-		return validatorResults;
-	}
 
     public Map getMenuItems(String menu_name)
 	{
@@ -496,9 +457,13 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
                 contextManager.enableAction(ActionConstants.NEW_HL7_V3_MESSAGE, false);
 			}
 		}
-		
-		if (actionMap==null)
-		{
+		//since the action depends on the panel instance,
+		//the old action instance should be removed
+		if (actionMap!=null)
+			contextManager.removeClientMenuAction(MenuConstants.HL7_V3_MESSAGE, menu_name, "");
+//
+//		if (actionMap==null)
+//		{
 				action = new gov.nih.nci.caadapter.ui.hl7message.actions.SaveHL7V3MessageAction(this);
 				contextManager.addClientMenuAction(MenuConstants.HL7_V3_MESSAGE, MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
 				contextManager.addClientMenuAction(MenuConstants.HL7_V3_MESSAGE, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.SAVE, action);
@@ -514,7 +479,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				action.setEnabled(true);
 				
 				actionMap = contextManager.getClientMenuActions(MenuConstants.HL7_V3_MESSAGE, menu_name);
-		}		
+//		}		
 		return actionMap;
 	}
 	
@@ -649,6 +614,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2007/09/07 19:29:03  wangeug
+ * HISTORY      : relocate readPreference and savePreference methods
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2007/09/04 20:45:04  wangeug
  * HISTORY      : add progressor
  * HISTORY      :
