@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.15 2007-09-10 16:39:32 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.16 2007-09-10 19:13:01 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,11 +38,9 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
-import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
@@ -54,21 +52,34 @@ import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
 import gov.nih.nci.caadapter.ui.common.nodeloader.HL7V3MessageLoader;
 import gov.nih.nci.caadapter.ui.common.preferences.CaAdapterPref;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.hl7message.actions.RegenerateHL7V3MessageAction;
-import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.validation.HL7V3MessageValidator;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JSplitPane;
+import javax.swing.JLabel;
+import javax.swing.JComponent;
+import javax.swing.JRootPane;
+import javax.swing.JOptionPane;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -78,8 +89,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2007-09-10 16:39:32 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2007-09-10 19:13:01 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -89,15 +100,13 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private JButton previousButton = new JButton(PREVIOUS_ITEM);
 	private JTextField currentMessageField = new JTextField("");
 	private JTextField totalNumberOfMessageField = new JTextField();
-	private int currentCount = 0;
+	private int currentCount = 1;//count from 1...
 
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
 
     private java.util.List <Object> messageList;
-    private JTextArea outputMessageArea = null;
     private JScrollPane scrollPane = null;
-    private JSplitPane splitPane = null;
     private ValidationMessagePane validationMessagePane = null;
 
 	public HL7MessagePanel()
@@ -136,13 +145,11 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		previousButton.addActionListener(this);
 
 		currentMessageField.setPreferredSize(previousButton.getPreferredSize());
-		currentMessageField.setText(String.valueOf(currentCount));
 		currentMessageField.setEditable(false);
 		currentMessageField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
 		navigationPanel.add(currentMessageField);
 
 		navigationPanel.add(nextButton);
-		nextButton.setEnabled(false);
 		nextButton.addActionListener(this);
 
 		RegenerateHL7V3MessageAction regenerateAction = new RegenerateHL7V3MessageAction(this);
@@ -192,7 +199,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 	private JComponent contructCenterPanel()
 	{
-		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		DefaultSettings.setDefaultFeatureForJSplitPane(splitPane);
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 
@@ -205,14 +212,12 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		//turn off the display as popup dialog but display it at other location.
 		validationMessagePane.setDisplayPopupConfirmationMessage(false);
 		validationMessagePane.setValidatorResults(null);
-		//		validationMessagePane.setBorder(BorderFactory.createTitledBorder("Validation Messages"));
 		validationMessagePane.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 10)));
 
 		splitPane.setBottomComponent(validationMessagePane);
 
 		splitPane.setDividerLocation(0.8);
 		nextButton.setEnabled(messageList.size() > 1);
-		currentCount = 1;
 		currentMessageField.setText(String.valueOf(currentCount));
 		return splitPane;
 	}
@@ -239,7 +244,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
     private void setV3MessageResultList(java.util.List<XMLElement> newV3MessageList)
     {
-    	
     	if (newV3MessageList==null|newV3MessageList.isEmpty())
     		return;
     	initializeMessageList();
@@ -390,7 +394,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
         previousButton.setEnabled(currentCount > 1);
         currentMessageField.setText(String.valueOf(currentCount));
 		totalNumberOfMessageField.setText(String.valueOf(totalNumberOfMessages));
-        scrollPane.getViewport().remove(outputMessageArea);
 		if(totalNumberOfMessages > 0)
 		{
 			Object generalMssg= messageList.get(currentCount - 1);
@@ -399,18 +402,20 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			{
 				XMLElement xmlMsg =(XMLElement)generalMssg;
 				setMessageText(xmlMsg.toXML().toString());
-				System.out.println("HL7MessagePanel.changeDisplay()..validation level:"+messageValidationLevel);
-				ValidatorResults validatorsToShow=xmlMsg.getValidatorResults();
+				ValidatorResults validatorsToShow=new ValidatorResults();
+				//add structure validation ... level_0
+				validatorsToShow.addValidatorResults(xmlMsg.getValidatorResults());
 				if(messageValidationLevel!=null&&
 						!messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0))
 				{
-					//add vocabulary validation
+					//add vocabulary validation ... level_1
 					validatorsToShow.addValidatorResults(xmlMsg.validate());
 					if(messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2))
 					{	//add xsd validation
 						try {
 							String xsdFile=FileUtil.searchMessageTypeSchemaFileName(xmlMsg.getMessageType(),"xsd");
 							HL7V3MessageValidator h7v3Validator=new HL7V3MessageValidator();
+							//add xsd validation ... level_2
 							validatorsToShow.addValidatorResults(h7v3Validator.validate(xmlMsg.toXML().toString(), xsdFile));//"C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -435,13 +440,11 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
     private void setMessageText(String text)
     {
-        outputMessageArea = new JTextArea(text);
+    	JTextArea outputMessageArea = new JTextArea(text);
         outputMessageArea.setEditable(false);
         outputMessageArea.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
         scrollPane.getViewport().setView(outputMessageArea);
-		outputMessageArea.repaint();
     }
-
 
     public Map getMenuItems(String menu_name)
 	{
@@ -562,14 +565,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     {
     	ContextManager contextManager = ContextManager.getContextManager();
         Action openAction = null;
-
-        //do not support open action here.
-
-//		if (contextManager != null)
-//		{//contextManager is not null implies this panel is fully displayed;
-//			//on the flip side, if it is null, it implies it is under certain construction.
-//			openAction = contextManager.getDefinedAction(ActionConstants.OPEN_HL7_V3_MESSAGE);
-//		}
         return openAction;
     }
 
@@ -614,6 +609,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2007/09/10 16:39:32  wangeug
+ * HISTORY      : fix bug: create new actionItem with new Panel
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2007/09/07 19:29:03  wangeug
  * HISTORY      : relocate readPreference and savePreference methods
  * HISTORY      :
