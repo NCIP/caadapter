@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.5 2007-09-04 20:45:16 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.6 2007-09-10 16:42:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,7 +45,6 @@ import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.hl7message.HL7MessagePanel;
-import gov.nih.nci.caadapter.ui.hl7message.HL7TransformationProgressDialog;
 import gov.nih.nci.caadapter.ui.hl7message.OpenHL7MessageWizard;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
@@ -61,8 +60,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-09-04 20:45:16 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-09-10 16:42:21 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -78,7 +77,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.5 2007-09-04 20:45:16 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.6 2007-09-10 16:42:21 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -123,7 +122,6 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 		final String actionName=this.getName();
 		SwingWorker worker = new SwingWorker()
 		{
-			HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog((Frame)hl7Panel.getRootContainer(),false);
 			public Object construct()
 			{
 				try
@@ -141,8 +139,8 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 				{
 					//back to normal, in case exception occurred.
 					GeneralUtilities.setCursorDefault(mainFrame);
-					return null;
 				}
+				return null;
 			}
 
 			public void finished()
@@ -157,7 +155,8 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 					}
 					GeneralUtilities.setCursorWaiting(mainFrame);
 					System.out.println(".finished()..action Name:"+actionName);
-					validatorResults = hl7Panel.generateMappingMessages(dataFile, mapFile, progressor);
+					validatorResults = hl7Panel.generateMappingMessages(dataFile, mapFile);
+					System.out.println(".finished()..hl7Panel message:"+hl7Panel.getV3MessageList());
 					everythingGood = handleValidatorResults(validatorResults);
 				}
 				catch (Throwable e1)
@@ -203,14 +202,13 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 		boolean isOKClicked = openWizard.isOkButtonClicked();
 		if (isOKClicked)
 		{
-//			Log.logInfo(this, "Data file selected: '" + openWizard.getDataFile().getAbsolutePath());
-//			Log.logInfo(this, "Map specification selected: '" + openWizard.getMapFile().getAbsolutePath());
 			File dataFile = openWizard.getDataFile();
 			File mapFile = openWizard.getMapFile();
 			openWizard = null;
 			JComponent currentActivePanel = mainFrame.hasComponentOfGivenClass(HL7MessagePanel.class, true);//getMainContextManager().getCurrentPanel();
 			//release resource
 			HL7MessagePanel panel = null;
+			System.out.println("NewHL7V3MessageAction.doAction()..currentPanel:"+currentActivePanel);
 			if (currentActivePanel instanceof HL7MessagePanel)
 			{
 				panel = (HL7MessagePanel) currentActivePanel;
@@ -248,6 +246,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/09/04 20:45:16  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/09/04 18:30:30  wangeug
  * HISTORY      : add progressor
  * HISTORY      :
