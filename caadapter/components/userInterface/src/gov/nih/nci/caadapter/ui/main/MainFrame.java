@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.11 2007-09-08 20:19:12 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.12 2007-09-10 16:46:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,16 +57,14 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 
-//import nickyb.sqleonardo.environment.Preferences;
-
  /**
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2007-09-08 20:19:12 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2007-09-10 16:46:57 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -205,17 +203,13 @@ public class MainFrame extends AbstractMainFrame
 	}
 	//-----------------------------------------------------------------------------------------
 	String title = null;
-//	if (isContainedInTabPane(panel)) {//do nothing if tabbed pane already contains the given panel.
-//	    return;
-//	}
+
 	if (panel instanceof CSVPanel) {
 	    title = "Untitled_" + (++tabcount) + Config.CSV_METADATA_FILE_DEFAULT_EXTENTION;
 	} else if (panel instanceof HL7MappingPanel) {
 	    title = "Untitled_" + (++tabcount) + Config.MAP_FILE_DEFAULT_EXTENTION;
 	} else if (panel instanceof HSMPanel) {
 	    title = "Untitled_" + (++tabcount) + Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
-	} else if (panel instanceof HL7MessagePanel) {
-	    title = "HL7 v3 Message";
 	} else if (panel instanceof HL7MessagePanel) {
 	    title = panel.getName();//"HL7 v3 Message";
 	} else if (panel instanceof Database2SDTMMappingPanel) {
@@ -333,27 +327,6 @@ public class MainFrame extends AbstractMainFrame
 		        e1.printStackTrace();
 	        }
             new MainFrame().launch();
-//	        AbstractMainFrame mainFrame = new MainFrame();
-//	        mainFrame.launch();
-	        //	    InitialSplashWindow isw = new InitialSplashWindow();
-	        //		//isw.setAlwaysOnTop(true);
-	        //		//DefaultSettings.centerWindow(isw);
-	        //		isw.setVisible(true);
-	        //		MainFrame mainFrame = new MainFrame();
-	        //		mainFrame.launch();
-	        //		try{
-	        //		    Thread.sleep(100);
-	        //		}catch (Exception e) {
-	        //		    // TODO Auto-generated catch block
-	        //		    // e.printStackTrace();
-	        //
-	        //		    isw.dispose();
-	        //		}
-	        //isw.dispose();
-	        //	    DefaultSettings.installAll();
-	        //	    MainFrame mainFrame = new MainFrame();
-	        //	    mainFrame.launch();
-	        //	    DefaultSettings.centerWindow(mainFrame);
 	    }
         catch (Throwable t)
         {
@@ -403,48 +376,7 @@ public class MainFrame extends AbstractMainFrame
 	    centerPanel.updateUI();
     }
 
-    //	/**
-    //	 * Invoked when the target of the listener has changed its state.
-    //	 * @param e a ChangeEvent object
-    //	 */
-    //	public void stateChanged(ChangeEvent e)
-    //	{//listen to tab change event
-    //	}
-    //
-    //	public void windowOpened(WindowEvent e)
-    //	{
-    //		//To change body of implemented methods use File | Settings | File Templates.
-    //	}
-    //
-    //	public void windowClosing(WindowEvent event)
-    //	{
-    //		exit();
-    //	}
-    //
-    //	public void windowClosed(WindowEvent e)
-    //	{
-    //		//To change body of implemented methods use File | Settings | File Templates.
-    //	}
-    //
-    //	public void windowIconified(WindowEvent e)
-    //	{
-    //		//To change body of implemented methods use File | Settings | File Templates.
-    //	}
-    //
-    //	public void windowDeiconified(WindowEvent e)
-    //	{
-    //		//To change body of implemented methods use File | Settings | File Templates.
-    //	}
-    //
-    //	public void windowActivated(WindowEvent e)
-    //	{
-    //		//To change body of implemented methods use File | Settings | File Templates.
-    //	}
-    //
-    //	public void windowDeactivated(WindowEvent e)
-    //	{
-    //		//To change body of implemented methods use File | Settings | File Templates.
-    //	}
+  
     /* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMainFrame#processWindowEvent(java.awt.event.WindowEvent)
 	 */
@@ -491,6 +423,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2007/09/08 20:19:12  umkis
+ * HISTORY      : Temporary files will be automatically deleted when system exit.
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2007/09/07 15:19:26  umkis
  * HISTORY      : Temporary files will be automatically deleted when system exit.
  * HISTORY      :
