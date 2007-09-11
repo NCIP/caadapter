@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/Log.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/Log.java,v 1.2 2007-09-11 19:02:12 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,21 +49,14 @@ import java.util.logging.Logger;
  *
  * @author OWNER: Eric Chen, Scott Jiang Date: Jul 18, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2007-04-03 16:02:37 $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2007-09-11 19:02:12 $
  * @since caAdapter v1.2
  */
 
 public class Log
 {
-	public static final String DEFAULT_LOG = "default";
 	public static final String MAP_LOG = "map";
-	public static final String NODE_LOADER_LOG = "nodeloader";
-	public static final String CSV_METADATA_LOG = "csv";
-
-	private Log()
-	{//do nothing
-	}
 
 	/**
 	 * Call this function to log a serious exception.
@@ -460,6 +453,9 @@ class LogCallerFinder
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
