@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.10 2007-09-07 19:25:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.11 2007-09-11 18:54:25 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.common.util;
 
 import gov.nih.nci.caadapter.common.Log;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,8 +53,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.10 $
- * @date $$Date: 2007-09-07 19:25:48 $
+ * @version $Revision: 1.11 $
+ * @date $$Date: 2007-09-11 18:54:25 $
  * @since caAdapter v1.2
  */
 
@@ -63,15 +64,18 @@ public class CaadapterUtil {
 	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
     private static HashMap prefs;
 	static {
+		//mkdir for logging 
+		File logDir=new File("log");
+		if (!logDir.exists())
+			logDir.mkdir();
+		
         Properties properties = new Properties();
         InputStream fi = null;
         //load caadapter component types to run
         properties=new Properties();
-        
         try {
         	fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream(); 
         	properties.load(fi);
-
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
             	Enumeration propKeys=properties.keys();
@@ -222,6 +226,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/09/07 19:25:48  wangeug
+ * HISTORY      : relocate readPreference and savePreference methods
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/08/28 21:44:25  wangeug
  * HISTORY      : enable address/name datatype with pre-set attributes
  * HISTORY      :
