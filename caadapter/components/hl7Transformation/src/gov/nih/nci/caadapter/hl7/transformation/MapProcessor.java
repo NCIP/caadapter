@@ -34,8 +34,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.37 $
- *          date        $Date: 2007-09-10 13:35:46 $
+ *          revision    $Revision: 1.38 $
+ *          date        $Date: 2007-09-11 02:16:36 $
  */
 
 public class MapProcessor {
@@ -190,7 +190,16 @@ public class MapProcessor {
         	    		{
         	    			hasUserdata.setHasUserMappedData(true);
         	    		}
-        	    		xmlElements.addAll(choiceXMLElements);
+        	    		if (choiceXMLElements.size() > 0) //Should be 1
+        	    		{
+        	    			xmlElement = choiceXMLElements.get(0);
+        	        		xmlElement.setName(mifClass.getName());
+        	        		xmlElement.setMessageType(mifClass.getMessageType());
+        	        		if (choiceXMLElements.size() > 1)
+        	        		{
+        	        			//Warning
+        	        		}
+        	    		}
         	    	}
         		}
         	}
@@ -607,6 +616,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.37  2007/09/10 13:35:46  wuye
+ * HISTORY      : Fixed the issue with a mifclass has both choices and other associations
+ * HISTORY      :
  * HISTORY      : Revision 1.36  2007/09/06 15:08:58  wangeug
  * HISTORY      : refine codes
  * HISTORY      :
