@@ -7,7 +7,7 @@ import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.QBAddButtons;
 import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.dataviewer.util.SDTMDomainLookUp;
-import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
+//import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
@@ -26,8 +26,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.13 $
- *          $Date: 2007-09-11 15:33:25 $
+ *          $Revision: 1.14 $
+ *          $Date: 2007-09-11 16:48:52 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -47,7 +47,7 @@ public class MainDataViewerFrame {
     private boolean isSQLStmtSaved = false;
     private boolean isOpenMapAction = false;
     private HashMap changedPanels = null;
-    private Database2SDTMMappingPanel mainPanel = null;
+    //private Database2SDTMMappingPanel mainPanel = null;
     /*
      These variables are used by other classes
      */
@@ -55,9 +55,7 @@ public class MainDataViewerFrame {
     private ArrayList arrayList = new ArrayList();
     private java.util.HashMap sqlSaveHashMap = new HashMap();
 
-    public Database2SDTMMappingPanel getMainPanel() {
-        return mainPanel;
-    }
+
                                                                                     
     public boolean isOpenMapAction() {
         return isOpenMapAction;
@@ -154,10 +152,10 @@ public class MainDataViewerFrame {
         1. Called by the opendataviewer helper; during times times when the dataviewer needs to be opened after the mapping is complete;
         2. Called by saveassdtmaction;
      */
-    public MainDataViewerFrame(Database2SDTMMappingPanel panel, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) throws Exception {
+    public MainDataViewerFrame(boolean isOpenDBmap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) throws Exception {
         try {
-            mainPanel = panel;
-            this.isOpenMapAction = panel.isOpenDBmap();
+
+            this.isOpenMapAction = isOpenDBmap;
             this.columnsForTables = tableColums;
             this.saveFile = saveFile;
             this.xmlString = out;
@@ -270,6 +268,9 @@ public class MainDataViewerFrame {
 /**
  Change History
  $Log: not supported by cvs2svn $
+ Revision 1.13  2007/09/11 15:33:25  jayannah
+ made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
+
  Revision 1.12  2007/08/28 14:44:58  jayannah
  removed the system.outs
 

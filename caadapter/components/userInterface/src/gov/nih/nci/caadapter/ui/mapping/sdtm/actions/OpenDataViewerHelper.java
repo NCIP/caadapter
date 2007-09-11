@@ -32,8 +32,8 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-09-11 15:29:24 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-09-11 16:49:16 $
  */
 public class OpenDataViewerHelper extends JDialog implements ActionListener {
     private Frame _mainFrame = null;
@@ -167,14 +167,14 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
             public void run() {
                 try {
                     if (panel.getConnectionParameters() != null) {
-                        new MainDataViewerFrame(panel, d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
+                        new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
                     }
                 } catch (Exception e) {
                     try {
                         Hashtable collectParams = getConnectionParametersfromUI(_mainFrame, file);
                         if (collectParams != null)
                             //new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
-                            new MainDataViewerFrame(panel, d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
+                            new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -292,6 +292,9 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/09/11 15:29:24  jayannah
+ * removed the extra OK/cancel pop window before the data viewer is opened
+ *
  * Revision 1.6  2007/08/31 19:40:09  jayannah
  * Commented the system out statements
  *

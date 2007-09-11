@@ -33,8 +33,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-09-11 15:31:01 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-09-11 16:49:16 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private HashMap beforeSaveList;
@@ -51,7 +51,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.10 2007-09-11 15:31:01 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.11 2007-09-11 16:49:16 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -259,7 +259,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         (new Thread() {
             public void run() {
                 try {
-                    new MainDataViewerFrame((Database2SDTMMappingPanel)mappingPanel, d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut());
+                    new MainDataViewerFrame(((Database2SDTMMappingPanel)mappingPanel).isOpenDBmap(), d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut());
                 } catch (Exception e) {
                     d.dispose();
                     JOptionPane.showMessageDialog(mainFrame, e.getMessage().toString(), "Could not open the Querybuilder", JOptionPane.ERROR_MESSAGE);
@@ -341,6 +341,9 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/09/11 15:31:01  jayannah
+ * added code to hold the previous values and the condition when the user does not choose to go thro the data viewer
+ *
  * Revision 1.9  2007/08/22 15:01:24  jayannah
  * new changes to display that the sql jar is not available
  *
