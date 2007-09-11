@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.16 2007-09-10 19:13:01 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.17 2007-09-11 18:36:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -89,8 +89,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2007-09-10 19:13:01 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2007-09-11 18:36:54 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -244,8 +244,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
     private void setV3MessageResultList(java.util.List<XMLElement> newV3MessageList)
     {
-    	if (newV3MessageList==null|newV3MessageList.isEmpty())
-    		return;
+    	if (newV3MessageList==null||newV3MessageList.isEmpty())
+    		return;    		
     	initializeMessageList();
     	for(XMLElement hlv3Msg:newV3MessageList)
     	{
@@ -334,7 +334,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION))
 			{//transfer CSV to HL7 V3
 				//at first:watch data loading....progress
-				HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog(this, false);
+				final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog(this, false);
 				progressor.setMaximum(0);
 				progressor.setMaximum(TransformationObserver.TRANSFORMATION_DATA_LOADING_STEPS);
 				progressor.setNote(TransformationObserver.TRANSFORMATION_MESSAGE_GENERATING_STEP);
@@ -352,7 +352,14 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 							
 					    	try {
 								List<XMLElement> xmlElements =ts.process();
-								listnerPane.setV3MessageResultList(xmlElements);
+								if (xmlElements==null)
+								{
+									ValidatorResults rs=ts.getValidatorResults();
+									listnerPane.setMessageText(rs.getAllMessages().toString());
+									progressor.close();
+								}
+								else
+									listnerPane.setV3MessageResultList(xmlElements);
 					    	} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -361,9 +368,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					}				
 				);
 				localThread.start();
-				
-				System.out.println("HL7MessagePanel.generateMappingMessages().. listnerPane messagSize:"+listnerPane.getV3MessageList().size());
-				System.out.println("HL7MessagePanel.generateMappingMessages().. hl7Panel messagSize:"+this.messageList);//.getV3MessageList().size());
 				return validatorResults;
 				
 			}
@@ -609,6 +613,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16  2007/09/10 19:13:01  wangeug
+ * HISTORY      : fix bug:display validation result as traverse message list
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2007/09/10 16:39:32  wangeug
  * HISTORY      : fix bug: create new actionItem with new Panel
  * HISTORY      :
