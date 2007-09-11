@@ -1,9 +1,6 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 import edu.stanford.ejalbert.BrowserLauncher;
-import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
-import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
-import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
@@ -12,19 +9,22 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * This class saves the map file and passes the control over to the
@@ -33,10 +33,14 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-08-22 15:01:24 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-09-11 15:31:01 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
+    private HashMap beforeSaveList;
+    private HashMap afterSaveList;
+    private HashMap linksAddedList;
+    private HashMap linksDeletedList;
     /**
      * Logging constant used to identify source of log entry, that could be later used to create logging mechanism to uniquely identify the logged class.
      */
@@ -47,7 +51,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.9 2007-08-22 15:01:24 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.10 2007-09-11 15:31:01 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -102,10 +106,31 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         return isSuccessfullyPerformed();
     }
 
+    java.util.HashMap addedList, deletedList, updatedList;
+    ArrayList removeBeforeAfterList;
+
     protected boolean processSaveFile(File file) throws Exception {
+        updatedList = new HashMap();
+        addedList = new HashMap();
+        deletedList = new HashMap();
+        removeBeforeAfterList = new ArrayList();
         preActionPerformed(mappingPanel);
         BufferedOutputStream bw = null;
         boolean oldChangeValue = mappingPanel.isChanged();
+        /**
+         * Design Rationale to workaround not opening the dataviewer
+         * 1.) If the map file has sql statements in it make a backup
+         * 2.) The user now makes additional links and hit on save
+         * 3.) The user refuses to open dataviewer by clicking on no to the prompt
+         * 4.) Now, write a method to check if any links are added or deleted (Update is also taken care automatically)         *
+         */
+        try {
+            //if (checkIfSQLExists(file)) {
+                createBeforeSaveList(file);
+            //}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             StringBuffer out = new StringBuffer();
             out.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
@@ -139,8 +164,6 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
             mappingPanel.setChanged(false);
             // try to notify affected panels
             postActionPerformed(mappingPanel);
-            //JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
-            //Custom button text
             if (!alreadySaved) {
                 Object[] options = {"Yes", "No"};
                 int n;
@@ -152,8 +175,34 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                     if (n == 0) {
                         //parse the mapping file
                         OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), file, out.toString());
+                    } else {
+                        // the USER CHOSE NOT TO OPEN THE DATA VIEWER DARN!!!!!
+                        createAfterSaveList(file);
+                        // Now compare the two file and spit out a list for comparison purposes
+                        Set set = afterSaveList.keySet();
+                        for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+                            String afterKey = (String) iterator.next();
+                            if (beforeSaveList.containsKey(afterKey)) {
+                                String afterValue = (String) afterSaveList.get(afterKey);
+                                String beforeValue = (String) beforeSaveList.get(afterKey);
+                                if (afterValue.equals(beforeValue)) {
+                                    removeBeforeAfterList.add(afterKey);
+                                } else {
+                                    updatedList.put(afterKey, afterValue);
+                                }
+                            }
+                        }
+                        //remove the common keys in the before and after hashmap
+                        for (int i = 0; i < removeBeforeAfterList.size(); i++) {
+                            beforeSaveList.remove(removeBeforeAfterList.get(i));
+                            afterSaveList.remove(removeBeforeAfterList.get(i));
+                        }
+                        //left over keys in the before are deleted;left over keys in the after are added 
+                        System.out.println("deleted stuff are " + beforeSaveList);
+                        System.out.println("added stuff are " + afterSaveList);
+                        System.out.println("updated stuff are " + updatedList);
                     }
-                    alreadySaved = true;
+                    //alreadySaved = true;
                 }
             }
             return true;
@@ -186,7 +235,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         return retAry;
     }
 
-    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out) {        
+    public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out) {
         try {
             nickyb.sqleonardo.querybuilder.QueryBuilder.getDefaultLocale();
         } catch (Error e) {
@@ -198,12 +247,8 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                 try {
                     BrowserLauncher.openURL("https://cabig.nci.nih.gov/tools/caAdapter");
                     return;
-                } catch (UnsupportedOperatingSystemException e1) {
-                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (BrowserLaunchingExecutionException e1) {
-                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (BrowserLaunchingInitializingException e1) {
-                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (Exception e1) {
+                    System.out.println("Unable to launch browser due to " + e1.getMessage());
                 }
             } else {
                 return;
@@ -214,7 +259,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         (new Thread() {
             public void run() {
                 try {
-                    new MainDataViewerFrame(((Database2SDTMMappingPanel) mappingPanel).isOpenDBmap(), d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut());
+                    new MainDataViewerFrame((Database2SDTMMappingPanel)mappingPanel, d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut());
                 } catch (Exception e) {
                     d.dispose();
                     JOptionPane.showMessageDialog(mainFrame, e.getMessage().toString(), "Could not open the Querybuilder", JOptionPane.ERROR_MESSAGE);
@@ -234,10 +279,71 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         d.setSize(500, 130);
         d.setVisible(true);
     }
+
+    private boolean checkIfSQLExists(File mapFileName) throws Exception {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(mapFileName);
+        NodeList compLinkNodeList = doc.getElementsByTagName("sql");
+        System.out.println(compLinkNodeList.getLength());
+        if (compLinkNodeList.getLength() > 0)
+            return true;
+        else
+            return false;
+    }
+
+    private void createBeforeSaveList(File mapFileName) throws Exception {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(mapFileName);
+        NodeList linkNodeList = doc.getElementsByTagName("link");
+        beforeSaveList = new HashMap();
+        for (int s = 0; s < linkNodeList.getLength(); s++) {
+            Node node = linkNodeList.item(s);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element firstPersonElement = (Element) node;
+                NodeList targetNode = firstPersonElement.getElementsByTagName("target");
+                Element targetName = (Element) targetNode.item(0);
+                NodeList textLNList = targetName.getChildNodes();
+                String _targetName = ((Node) textLNList.item(0)).getNodeValue().trim();
+                NodeList sourceNode = firstPersonElement.getElementsByTagName("source");
+                Element sourceName = (Element) sourceNode.item(0);
+                NodeList textFNList = sourceName.getChildNodes();
+                String _srcNodeVal = ((Node) textFNList.item(0)).getNodeValue().trim();
+                beforeSaveList.put(_targetName, _srcNodeVal);
+            }// end of if clause
+        }// end of for loop with s var
+    }
+
+    private void createAfterSaveList(File mapFileName) throws Exception {
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(mapFileName);
+        NodeList linkNodeList = doc.getElementsByTagName("link");
+        afterSaveList = new HashMap();
+        for (int s = 0; s < linkNodeList.getLength(); s++) {
+            Node node = linkNodeList.item(s);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element firstPersonElement = (Element) node;
+                NodeList targetNode = firstPersonElement.getElementsByTagName("target");
+                Element targetName = (Element) targetNode.item(0);
+                NodeList textLNList = targetName.getChildNodes();
+                String _targetName = ((Node) textLNList.item(0)).getNodeValue().trim();
+                NodeList sourceNode = firstPersonElement.getElementsByTagName("source");
+                Element sourceName = (Element) sourceNode.item(0);
+                NodeList textFNList = sourceName.getChildNodes();
+                String _srcNodeVal = ((Node) textFNList.item(0)).getNodeValue().trim();
+                afterSaveList.put(_targetName, _srcNodeVal);
+            }// end of if clause
+        }// end of for loop with s var
+    }
 }
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/08/22 15:01:24  jayannah
+ * new changes to display that the sql jar is not available
+ *
  * Revision 1.8  2007/08/16 19:39:46  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
