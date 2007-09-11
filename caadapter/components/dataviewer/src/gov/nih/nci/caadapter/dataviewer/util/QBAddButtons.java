@@ -12,8 +12,8 @@ import java.net.URL;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-09-05 13:25:43 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-09-11 18:20:08 $
  */
 public class QBAddButtons {
     MainDataViewerFrame maindialog = null;
@@ -26,16 +26,18 @@ public class QBAddButtons {
 
     public QBAddButtons(MainDataViewerFrame maindialog) {
         this.maindialog = maindialog;
-        this.saveButton = makeNavigationButton("saveandexit", "exit", "Save & Exit", "Save & Exit");
+        this.saveButton = makeNavigationButton("saveandexit", "exit", "Save All & Exit", "Save All & Exit");
     }
 
     public void addButtons(JToolBar toolBar) {
         JButton button = null;
         //String imageName, String actionCommand, String toolTipText, String altText
         toolBar.add(saveButton);
-        this.getSaveButton().setEnabled(false);
-        panelSaveButton = makeNavigationButton("save", "Save", "Save", "Save SQL");
-        toolBar.add(panelSaveButton);
+        //this.getSaveButton().setEnabled(false);
+        //panelSaveButton = makeNavigationButton("save", "Save", "Save", "Save SQL");
+        //toolBar.add(panelSaveButton);
+        button = makeNavigationButton("Exit", "exitwithoutsave", "Exit w/o Save", "Exit w/o Save");
+        toolBar.add(button);
         button = makeNavigationButton("Run_sql", QBConstants.NEXT, "Run SQL", "Run SQL");
         toolBar.add(button);
         button = makeNavigationButton("Check", "Validate", "Validate", "Validate");
@@ -77,6 +79,9 @@ public class QBAddButtons {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/09/05 13:25:43  jayannah
+ * made changes to the upper lower case image file name
+ *
  * Revision 1.7  2007/08/17 20:12:04  jayannah
  * added a new image for QBAddButtons
  * Reduced the height for viewing the 3 buttons in the center panel
