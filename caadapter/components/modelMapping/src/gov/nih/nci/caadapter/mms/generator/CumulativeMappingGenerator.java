@@ -140,6 +140,10 @@ public static boolean map(String source, String target){
 	// The first thing that needs to be determined is what type of mapping is being attempted, i.e. Dependency, Attribute, Associatin, etc.
 	String sourceMappingType = determineSourceMappingType(source);
 	String targetMappingType = determineTargetMappingType(target);
+
+    System.out.println("source " + sourceMappingType + " target " + targetMappingType);
+    System.out.println("source " + source + " target " + target );
+    
     // Then the source and target mapping types are compared. They must be the same for the process to continue. For instance, if an attempt is made
 	// to map an Object (vs. attribute) to a column in a table the mapping attempt will fail.
 	if (sourceMappingType.equals("dependency")&& targetMappingType .equals("dependency")){
@@ -606,7 +610,7 @@ public static boolean isOneToManyAssociation(String element){
 	if (clazz!=null){
 		 for(UMLAssociation association : clazz.getAssociations()) {
 			 for(UMLAssociationEnd associationEnd : association.getAssociationEnds()) {
-				 if (associationEnd.getRoleName().equals(thisEndRoleName) && getOtherAssociationEnd(associationEnd).getHighMultiplicity()==1) {
+				 if (associationEnd.getRoleName().equals(thisEndRoleName) && getOtherAssociationEnd(associationEnd).getHighMultiplicity()>=0) {
 				  end = associationEnd;
 			  }
 		    }

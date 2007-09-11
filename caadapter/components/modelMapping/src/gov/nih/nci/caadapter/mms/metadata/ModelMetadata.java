@@ -59,8 +59,12 @@ public class ModelMetadata {
 	private static String xmiFileName;
 	private static List<String> primaryKeys = new ArrayList<String>();
 	private static List<String> lazyKeys = new ArrayList<String>();
-	private static String mmsPrefixObjectModel = "Logical View.Logical Model";
+    private static List<String> discriminatorKeys = new ArrayList<String>();
+    private static List<String> clobKeys = new ArrayList<String>();
+
+    private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
+
 
     public ModelMetadata(){}
 	
@@ -411,6 +415,22 @@ public class ModelMetadata {
 
         public static void setMmsPrefixDataModel(String mmsPrefixDataModel) {
             ModelMetadata.mmsPrefixDataModel = mmsPrefixDataModel;
+        }
+
+        public static List<String> getClobKeys() {
+            return clobKeys;
+        }
+
+        public static void setClobKeys(List<String> clobKeys) {
+            ModelMetadata.clobKeys = clobKeys;
+        }
+
+        public static List<String> getDiscriminatorKeys() {
+            return discriminatorKeys;
+        }
+
+        public static void setDiscriminatorKeys(List<String> discriminatorKeys) {
+            ModelMetadata.discriminatorKeys = discriminatorKeys;
         }
 
         private static int getReciprocalMultiplicity(UMLAssociationEnd assocEnd) {

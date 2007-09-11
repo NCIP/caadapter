@@ -51,10 +51,13 @@ public class XMIGenerator
     private HashMap dependencyMap = new HashMap();
 	private ModelMetadata modelMetadata = null;
 	private LinkedHashMap myMap = null;
-	private static List<String> primaryKeys = new ArrayList<String>();
+
+    private static List<String> primaryKeys = new ArrayList<String>();
 	private static List<String> lazyKeys = new ArrayList<String>();
-	
-	public XMIGenerator(){
+	private static List<String> clobKeys = new ArrayList<String>();
+    private static List<String> discriminatorKeys = new ArrayList<String>();
+
+    public XMIGenerator(){
 	}
 	
 	public XMIGenerator(String mappingFile, String xmiFile)
@@ -80,12 +83,14 @@ public class XMIGenerator
 		    //load all primaryKeys
 		    primaryKeys = modelMetadata.getPrimaryKeys();
 		    lazyKeys = modelMetadata.getLazyKeys();
-		    
-		    // Remove all dependencies from the Model
+		    clobKeys = modelMetadata.getClobKeys();
+            discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+
+            // Remove all dependencies from the Model
 		    for ( UMLDependency dep : model.getDependencies() )
 		    {		    	
 				model.removeDependency( dep );
-		    }
+            }
 		    
 		    model.emptyDependency();
 		    
@@ -107,7 +112,7 @@ public class XMIGenerator
 	{
 		for ( UMLClass clazz : pkg.getClasses() )
 		{
-			//System.out.println( "Class: " + clazz.getName() );
+			System.out.println( "Class: " + clazz.getName() );
 			
 			for( UMLAttribute att : clazz.getAttributes() ) 
 			{
@@ -180,8 +185,18 @@ public class XMIGenerator
 		{
 			addLazyKey( lKey );
 		}
-		
-		addDependencies(this.dependencies);
+
+        for( String cKey : clobKeys )
+        {
+            addClobKey( cKey );
+        }
+
+        for ( String dKey : discriminatorKeys )
+        {
+            addDiscriminatorKey( dKey );
+        }
+
+        addDependencies(this.dependencies);
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
 		addManyToManyTaggedValues(this.manytomanys);
@@ -488,13 +503,11 @@ public class XMIGenerator
 	
 	public void addPrimaryKey( String pKey )
 	{
-        //String primaryKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "." + pKey;
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
-
-        //System.out.println( "pKey=" + primaryKey );
 		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
-		
-		if ( column != null )
+        System.out.println("Looking for Attribute " + primaryKey);
+        
+        if ( column != null )
 		{			
 			column.addTaggedValue( "id-attribute", pKey );
 		}
@@ -502,22 +515,49 @@ public class XMIGenerator
 	
 	public void addLazyKey( String lKey )
 	{
-		//String lazyKey = PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "." + lKey;
 		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
-
-        //System.out.println( "lKey = " + lKey );
-		//System.out.println( "lazyKey = " + lazyKey );
-		
 		UMLAttribute column = ModelUtil.findAttribute(this.model, lazyKey);
-			
-		if( column != null)
+		//*** Association ??
+        // UMLAssociation umlAssoc = ModelUtil.findAttribute(this.model), lazyKey);
+        
+        if( column != null)
 		{
-			//System.out.println( "added lKey to xmi");
 			column.addTaggedValue( "lazy-load", lKey );
 		}
 	}
-	
-	/**
+
+    public void addClobKey( String cKey )
+	{
+		String clobKey = modelMetadata.getMmsPrefixDataModel() + "." + cKey;
+		//UMLAttribute column = ModelUtil.findAttribute(this.model, clobKey);
+        System.out.println("Looking for CLOBKEY "+ clobKey );
+        UMLClass umlClass = ModelUtil.findClass(this.model, clobKey);
+
+        if( umlClass != null)
+		{
+            System.out.println("Added a CLOB: " + cKey);
+            //column.addTaggedValue( "CLOB", cKey );
+            //umlClass.addTaggedValue( "type", cKey );
+            umlClass.addTaggedValue( "type", "CLOB" );
+        }
+	}
+
+    public void addDiscriminatorKey( String dKey )
+	{
+		String discriminatorKey = modelMetadata.getMmsPrefixDataModel() + "." + dKey;
+		//UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
+        System.out.println("Looking for Discriminator "+ discriminatorKey );
+        UMLClass umlClass = ModelUtil.findClass(this.model, discriminatorKey);
+
+        if( umlClass != null)
+		{
+            System.out.println("Added a discrimintor: " + dKey);
+            //column.addTaggedValue( "discriminator", dKey );
+            umlClass.addTaggedValue( "discriminator", dKey );
+        }
+	}
+    
+    /**
 	 * @param pathToThisEnd
 	 * @return pathToOtherEnd
 	 */

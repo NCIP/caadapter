@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.4 2007-09-05 15:15:47 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.5 2007-09-11 20:27:03 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,9 +42,7 @@ import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.LazyEagerAction;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.PrimaryKeyAction;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.TestAction;
+import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.*;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 
@@ -78,8 +76,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-05 15:15:47 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-09-11 20:27:03 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -95,16 +93,18 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.4 2007-09-05 15:15:47 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.5 2007-09-11 20:27:03 schroedn Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
 	private MappingMiddlePanel middlePanel;
 	
-    private TestAction testAction;
+    //private TestAction testAction;
     private LazyEagerAction lazyEagerAction;
     private PrimaryKeyAction primaryKeyAction;
-    private JPopupMenu popupMenu = null;	
+    private ClobAction clobAction;
+    private DiscriminatorAction discriminatorAction;
+    private JPopupMenu popupMenu = null;
     
 	private boolean graphInSelection = false;
 	private boolean graphInClearSelectionMode = false;
@@ -535,46 +535,75 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		String superText = "Set as Lazy";
-		
-		//Could change this depending on whether lazy/eager
+		String lazyText = "Set as Lazy";
+        String clobText = "Set as CLOB";
+        String discriminatorText = "Set as Discrimator";
+
+        //Could change this depending on whether lazy/eager
     	ModelMetadata modelMetadata = ModelMetadata.getInstance();    	
     	List<String> lazyKeys = modelMetadata.getLazyKeys();
-    	JTree targetTree = mappingPanel.getTargetTree();
+    	List<String> clobKeys = modelMetadata.getClobKeys();
+        List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+
+        JTree targetTree = mappingPanel.getTargetTree();
 		TreePath leadingPath = targetTree.getLeadSelectionPath();														
 		
 		System.out.println( "Lazy Keys: " + lazyKeys );
-		
         if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
         {
-        	superText = "Set as Eager";
+        	lazyText = "Set as Eager";
         }
         else {
-        	superText = "Set as Lazy";
+        	lazyText = "Set as Lazy";
         }
-        
-        //Test Function
-		testAction = new TestAction( mappingPanel, middlePanel, superText );
-		JMenuItem menuItem = new JMenuItem(testAction);
-		popupMenu.add(menuItem);
-			
-		//JTree sourceTree = mappingPanel.getSourceTree();			
-		//JTree targetTree = mappingPanel.getTargetTree();
+
+        System.out.println( "Clob Keys: " + clobKeys );
+        if ( clobKeys.contains( parseNode( leadingPath.toString() ) ) )
+        {
+        	clobText = "Unset Clob";
+        }
+        else {
+        	clobText = "Set as Clob";
+        }
+
+        System.out.println( "Discriminator Keys: " + discriminatorKeys );
+        if ( discriminatorKeys.contains( parseNode( leadingPath.toString() ) ) )
+        {
+        	discriminatorText = "Unset Discriminator";
+        }
+        else {
+        	discriminatorText = "Set as Discriminator";
+        }
+
+		lazyEagerAction = new LazyEagerAction( mappingPanel, middlePanel, lazyText );
+        clobAction = new ClobAction( mappingPanel, middlePanel, clobText );
+        discriminatorAction = new DiscriminatorAction( mappingPanel, middlePanel, discriminatorText );
+
+        JMenuItem lazyItem = new JMenuItem(lazyEagerAction);
+        JMenuItem clobItem = new JMenuItem(clobAction);
+        JMenuItem discriminatorItem = new JMenuItem(discriminatorAction);
+
+        popupMenu.add(lazyItem);
+        popupMenu.add(clobItem);
+        popupMenu.add(discriminatorItem);
 		
-		testAction.setEnabled( false );
-		//Check to see if anything is selected
+		lazyEagerAction.setEnabled( false );
+        clobAction.setEnabled( false );
+        discriminatorAction.setEnabled( false );
+
+        //Check to see if anything is selected
 		if( targetTree.getLeadSelectionPath() != null )
 		{
 			leadingPath = targetTree.getLeadSelectionPath();
-				
-			//TreePath paths[] = sourceTree.getSelectionPaths();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
 			
 			// Disable PK function if selected node has children		
 			if( mutNode.getChildCount() == 0 )
 			{
-				testAction.setEnabled( true );
-			}
+				lazyEagerAction.setEnabled( true );
+                clobAction.setEnabled( true );
+                discriminatorAction.setEnabled( true );
+            }
 		}		
 	
 		return popupMenu;
@@ -607,6 +636,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/09/05 15:15:47  schroedn
+ * HISTORY      : Added icons to PK and Lazy/Eager
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/08/07 20:50:39  schroedn
  * HISTORY      : New Feature, Primary Key and Lazy/Eager functions added to MMS
  * HISTORY      :
