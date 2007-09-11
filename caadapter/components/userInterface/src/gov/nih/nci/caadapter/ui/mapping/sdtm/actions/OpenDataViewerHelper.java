@@ -32,18 +32,30 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.6 $
- *          $Date: 2007-08-31 19:40:09 $
+ *          $Revision: 1.7 $
+ *          $Date: 2007-09-11 15:29:24 $
  */
 public class OpenDataViewerHelper extends JDialog implements ActionListener {
-    Frame _mainFrame=null;
-    JFileChooser mapLocation=null;
-    JTextField mapTextField=null;
-    File mapFileObj=null;
-    String mapFileStr=null;
-    File mapFile=null;
-    Database2SDTMMappingPanel panel=null;
-    JButton transformBut=null;
+    private Frame _mainFrame = null;
+    private JFileChooser mapLocation = null;
+    private JTextField mapTextField = null;
+    private File mapFileObj = null;
+    private String mapFileStr = null;
+    private File mapFile = null;
+    private Database2SDTMMappingPanel panel = null;
+    private JButton transformBut = null;
+    private boolean showUI=false;
+
+    public OpenDataViewerHelper(Frame owner, Database2SDTMMappingPanel _panel, File _mapFile, JButton _transformBut, boolean showUI){
+        super(owner, true);
+        this._mainFrame = owner;
+        this.panel = _panel;
+        this.transformBut = _transformBut;
+        this.showUI = showUI;
+        if (_mapFile != null)
+            this.mapFile = _mapFile;
+
+    }
 
     public OpenDataViewerHelper(Frame owner, Database2SDTMMappingPanel _panel, File _mapFile, JButton _transformBut) {
         super(owner, true);
@@ -54,7 +66,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
             this.mapFile = _mapFile;
         JPanel masterPanel = new JPanel();
         masterPanel.setLayout(new BorderLayout());
-        masterPanel.add(createRow(), BorderLayout.CENTER);
+        masterPanel.add(createPanel(), BorderLayout.CENTER);
         masterPanel.add(createButRow(), BorderLayout.SOUTH);
         add(masterPanel);
         // set dialog properties;
@@ -63,6 +75,21 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
         setSize(400, 110);
         setLocation(400, 400);
         setVisible(true);
+    }
+
+    private JPanel createPanel() {
+        JPanel pan = new JPanel();
+        JLabel label = null;
+        pan.setLayout(new FlowLayout());
+        if (mapFile != null) {
+            //mapTextField = new JTextField(mapFile.getAbsolutePath());
+            label = new JLabel("Open map File \"" + mapFile.getAbsolutePath() + "\"");
+        } else {
+            mapTextField = new JTextField();
+        }
+        pan.add(label);
+        pan.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), "Open Data Viewer"));
+        return pan;
     }
 
     private JPanel createRow() {
@@ -130,19 +157,24 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
         }
     }
 
+    public void launchQueryBuilder(){
+        OpenQueryBuilder((Hashtable) getMappingsFromMapFile(mapFile).get(0), (HashSet) getMappingsFromMapFile(mapFile).get(1), mapFile, readMapFile(mapFile.getAbsolutePath()), (Hashtable) getMappingsFromMapFile(mapFile).get(2));
+    }
+
     public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out, final Hashtable sqlHashtable) {
         final Dialog d = new Dialog(_mainFrame, "SQL Query", true);
         (new Thread() {
             public void run() {
                 try {
                     if (panel.getConnectionParameters() != null) {
-                        new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
+                        new MainDataViewerFrame(panel, d, list, cols, panel.getConnectionParameters(), file, out, sqlHashtable, transformBut);
                     }
                 } catch (Exception e) {
                     try {
                         Hashtable collectParams = getConnectionParametersfromUI(_mainFrame, file);
                         if (collectParams != null)
-                            new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
+                            //new MainDataViewerFrame(panel.isOpenDBmap(), d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
+                            new MainDataViewerFrame(panel, d, list, cols, collectParams, file, out, sqlHashtable, transformBut);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -154,7 +186,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
         TitledBorder _title = BorderFactory.createTitledBorder("Visual SQL Builder");
         pane.setBorder(_title);
         pane.setLayout(new GridLayout(0, 1));
-        JLabel _jl = new JLabel("SQL Query Builder Loading , please wait.....");
+        JLabel _jl = new JLabel("Data Viewer is Loading \""+mapFile.getName()+"\" please wait.....");
         pane.add(_jl);
         d.add(pane, BorderLayout.CENTER);
         d.setLocation(400, 400);
@@ -260,6 +292,9 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/08/31 19:40:09  jayannah
+ * Commented the system out statements
+ *
  * Revision 1.5  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
