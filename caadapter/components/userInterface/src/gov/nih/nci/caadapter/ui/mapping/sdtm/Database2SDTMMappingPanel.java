@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.17 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.18 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.17 2007-08-31 21:22:27 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.18 2007-09-11 15:31:42 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -217,7 +217,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         openTargetButton = new JButton(SELECT_TARGET);
         targetLocationPanel.add(openTargetButton, BorderLayout.EAST);
         openTargetButton.setMnemonic('T');
-        openTargetButton.setToolTipText("Open SDTM Structure file");
+        openTargetButton.setToolTipText("Open Target Structure file");
         openTargetButton.addActionListener(this);
         targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
         // targetScrollPane = DefaultSettings.createScrollPaneWithDefaultFeatures();
@@ -250,7 +250,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         JPanel westpanel = new JPanel(new FlowLayout());
         westpanel.add(_dbCon);
         westpanel.add(_commonBut);
-        westpanel.add(transformBut);
+        //westpanel.add(transformBut);
         _dbCon.setPreferredSize(new Dimension(135, 19));
         transformBut.setPreferredSize(new Dimension(100, 19));
         _commonBut.setPreferredSize(new Dimension(110, 19));
@@ -353,7 +353,10 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                     JOptionPane.showMessageDialog(this, e1.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else if (command.equalsIgnoreCase("dataview")) {
-                new OpenDataViewerHelper(_mainFrame, this, getSaveFile(), transformBut);
+                /**
+                 * open the helper to bypass another window
+                 */
+                new OpenDataViewerHelper(_mainFrame, this, getSaveFile(), transformBut, false).launchQueryBuilder();
             } else if (!everythingGood) {
                 Message msg = MessageResources.getMessage("GEN3", new Object[0]);
                 JOptionPane.showMessageDialog(this, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -600,11 +603,11 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
         action = new gov.nih.nci.caadapter.ui.mapping.sdtm.actions.SaveSdtmAction(this, sdtmMappingGenerator);
         contextManager.addClientMenuAction(MenuConstants.DB_TO_SDTM, MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE, action);
         contextManager.addClientMenuAction(MenuConstants.DB_TO_SDTM, MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.SAVE, action);
-        action.setEnabled(true);
+        action.setEnabled(false);
         action = new gov.nih.nci.caadapter.ui.mapping.sdtm.actions.SaveAsSdtmAction(this, sdtmMappingGenerator);
         contextManager.addClientMenuAction(MenuConstants.DB_TO_SDTM, MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE_AS, action);
         contextManager.addClientMenuAction(MenuConstants.DB_TO_SDTM, MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.SAVE_AS, action);
-        action.setEnabled(true);
+        action.setEnabled(false);
         action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.AnotateAction(this);
         contextManager.addClientMenuAction(MenuConstants.DB_TO_SDTM, MenuConstants.FILE_MENU_NAME, ActionConstants.ANOTATE, action);
         action.setEnabled(true);
@@ -821,6 +824,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/08/31 21:22:27  jayannah
+ * commented sysouts
+ *
  * Revision 1.16  2007/08/29 21:26:52  jayannah
  * fixed bugs to gracelfully cancel during times when database open is cancelled by the user and proper enabling and disabling of the buttons
  *
