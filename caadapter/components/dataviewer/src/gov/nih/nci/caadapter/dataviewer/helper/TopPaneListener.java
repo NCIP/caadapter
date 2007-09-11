@@ -19,8 +19,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-09-11 15:33:25 $
  */
 public class TopPaneListener implements ChangeListener {
     private MainDataViewerFrame mD;
@@ -40,7 +40,11 @@ public class TopPaneListener implements ChangeListener {
                     final QueryModel qm = SQLParser.toQueryModel(query);
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
-                            ((Querypanel) mD.get_tPane().getComponentAt(_int)).get_queryBuilder().setQueryModel(qm);
+                            try {
+                                ((Querypanel) mD.get_tPane().getComponentAt(_int)).get_queryBuilder().setQueryModel(qm);
+                            } catch (Exception e) {
+                                System.out.println("No worries!! "+e.getMessage());
+                            }
                         }
                     });
                     mD.get_jf().repaint();
@@ -70,10 +74,13 @@ public class TopPaneListener implements ChangeListener {
                 });
             }
         }
-        mD.get_alreadyFilled().add(new Integer(mD.get_tPane().getSelectedIndex()));     
+        mD.get_alreadyFilled().add(new Integer(mD.get_tPane().getSelectedIndex()));
     }
 }
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

@@ -15,19 +15,20 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
- * This class file handles the events generated from the data viewer frame 
+ * This class file handles the events generated from the data viewer frame
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-09-11 15:33:25 $
  */
-
 public class ToolBarAction implements ActionListener {
     MainDataViewerFrame _mD;
 
@@ -47,6 +48,8 @@ public class ToolBarAction implements ActionListener {
             if (_mD.getSqlSaveHashMap().size() == _mD.get_tPane().getTabCount()) {
                 _mD.getQbAddButtons().getSaveButton().setEnabled(true);
             }
+        } else if (cmd.equals("exitwithoutsave")) {
+            _mD.get_jf().dispose();
         } else if (cmd.equalsIgnoreCase("Exit")) {
             _mD.getDialog().removeAll();
             BufferedWriter out = null;
@@ -58,18 +61,54 @@ public class ToolBarAction implements ActionListener {
                 String tempStr = removeSQLElements(_mD.getXmlString());
                 //remove all sql elements
                 out.write(tempStr);
+                out.append("\n</mapping>");
+                //closing because the user clicked save and exit; so, LOADING and MARKING all columns
+                out.close();
+                /**
+                 *
+                 * Add code for going into each domain and calling a setselected JTabbedpane and getting all the sqls
+                 * right here
+                 */
+                int numberOfTabs = _mD.get_tPane().getTabCount();
+                for (int i = 0; i < numberOfTabs; i++) {
+                    if (!_mD.get_alreadyFilled().contains((Integer) i)) {
+                        _mD.get_tPane().setSelectedIndex(i);
+                        loadTablesQuietly();
+                        //generate the query because the user clicked on save all
+                        String _sqlSTR = (((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).get_queryBuilder()).getQueryModel().toString().toUpperCase();
+                        String domainName = _mD.get_tPane().getTitleAt(i).substring(0, 2);
+                        String saveSQLForMapFile = markSelectedColumns(domainName, _sqlSTR);
+                        try {
+                            _mD.getSqlSaveHashMap().put(domainName, saveSQLForMapFile);
+                        } catch (Exception e1) {
+                            e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
+                    } else {
+                        _mD.get_tPane().setSelectedIndex(i);
+                        String domainName = _mD.get_tPane().getTitleAt(i).substring(0, 2);
+                        String _sqlSTR = (((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).get_queryBuilder()).getQueryModel().toString().toUpperCase();
+                        _mD.getSqlSaveHashMap().put(domainName, _sqlSTR);
+                    }
+                }
+
+                /**
+                 * End code
+                 */
+                BufferedWriter out1 = new BufferedWriter(new FileWriter(_mD.getSaveFile()));
+                out1.write(tempStr);
                 Set set = _mD.getSqlSaveHashMap().keySet();
                 for (Iterator iterator = set.iterator(); iterator.hasNext();) {
                     String domainName = (String) iterator.next();
                     String sql4Domain = (String) _mD.getSqlSaveHashMap().get(domainName);
-                    out.write("\n<sql name=\"" + domainName + "\">");
-                    out.write("" + sql4Domain);
-                    out.write("</sql>");
+                    out1.write("\n<sql name=\"" + domainName + "\">");
+                    out1.write("" + sql4Domain);
+                    out1.write("</sql>");
                 }
-                out.append("\n</mapping>");
+                out1.append("\n</mapping>");
+                out1.close();
                 JOptionPane.showMessageDialog(_mD.get_jf(), "The file \"" + _mD.getSaveFile().getName() + "\" is saved successfully with the mapping and generated SQL information", "Mapping file is saved", JOptionPane.INFORMATION_MESSAGE);
                 _mD.getDialog().dispose();
-                _mD.getTransformBut().setEnabled(true);
+                //_mD.getTransformBut().setEnabled(true);
             } catch (IOException ee) {
                 ee.printStackTrace();
                 JOptionPane.showMessageDialog(_mD.get_jf(), "The file \"" + _mD.getSaveFile().getName() + "\" was not saved dure to " + ee.getLocalizedMessage(), "Mapping file is not saved", JOptionPane.ERROR_MESSAGE);
@@ -303,10 +342,33 @@ public class ToolBarAction implements ActionListener {
             return xmlStr;
         }
     }
+
+    private void loadTablesQuietly() {
+        ArrayList tableList = (ArrayList) _mD.getTabsForDomains().get(_mD.get_tPane().getTitleAt(0).substring(0, 2));
+        for (int i = 0; i < tableList.size(); i++) {
+            StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
+            String schema = temp.nextElement().toString();
+            String table1 = temp.nextElement().toString();
+            try {
+                ((Querypanel) _mD.get_aryList().get(0)).loadTables(schema, table1);
+            } catch (Exception e) {
+                //e.printStackTrace();
+                //throw e;
+            }
+        }
+    }
+
+    private String markSelectedColumns(String domainName, String queryFromQueryPanel) {
+        String returnedQuery = new CaDataViewHelper().processColumns(domainName, queryFromQueryPanel, _mD.getSaveFile());
+        return returnedQuery;
+    }
 }
 
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
 

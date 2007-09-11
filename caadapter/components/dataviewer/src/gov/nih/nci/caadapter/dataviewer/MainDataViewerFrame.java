@@ -7,6 +7,7 @@ import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.QBAddButtons;
 import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.dataviewer.util.SDTMDomainLookUp;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
@@ -25,8 +26,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.12 $
- *          $Date: 2007-08-28 14:44:58 $
+ *          $Revision: 1.13 $
+ *          $Date: 2007-09-11 15:33:25 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -45,6 +46,8 @@ public class MainDataViewerFrame {
     private HashSet columnsForTables = null;
     private boolean isSQLStmtSaved = false;
     private boolean isOpenMapAction = false;
+    private HashMap changedPanels = null;
+    private Database2SDTMMappingPanel mainPanel = null;
     /*
      These variables are used by other classes
      */
@@ -52,6 +55,10 @@ public class MainDataViewerFrame {
     private ArrayList arrayList = new ArrayList();
     private java.util.HashMap sqlSaveHashMap = new HashMap();
 
+    public Database2SDTMMappingPanel getMainPanel() {
+        return mainPanel;
+    }
+                                                                                    
     public boolean isOpenMapAction() {
         return isOpenMapAction;
     }
@@ -127,6 +134,10 @@ public class MainDataViewerFrame {
         return dataViewerFrame;
     }
 
+    public HashMap getChangedPanels() {
+        return changedPanels;
+    }
+
     public ArrayList get_aryList() {
         return arrayList;
     }
@@ -143,29 +154,27 @@ public class MainDataViewerFrame {
         1. Called by the opendataviewer helper; during times times when the dataviewer needs to be opened after the mapping is complete;
         2. Called by saveassdtmaction;
      */
-    public MainDataViewerFrame(boolean openDBMap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) throws Exception {
+    public MainDataViewerFrame(Database2SDTMMappingPanel panel, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) throws Exception {
         try {
-
+            mainPanel = panel;
+            this.isOpenMapAction = panel.isOpenDBmap();
             this.columnsForTables = tableColums;
             this.saveFile = saveFile;
             this.xmlString = out;
             this.sqls4Domain = sqlTables;
             this.transformBut = transFormBut;
             schema = connectionParams.get("SCHEMA").toString();
-
             dataViewerFrame = new JFrame();
             dataViewerFrame.setLayout(new BorderLayout());
             tabbedPane = new JTabbedPane();
-
+            changedPanels = new HashMap();
             TitledBorder titleTop = BorderFactory.createTitledBorder("SQL Data Panel(s)");
             tabbedPane.setBorder(titleTop);
             toolBar = new JToolBar("");
             qbAddButtons = new QBAddButtons(this);
-
             qbAddButtons.addButtons(toolBar);
             dataViewerFrame.add(toolBar, BorderLayout.PAGE_START);
             // Add the panes after here
-
             dataViewerFrame.addComponentListener(new DialogComponentListener(this));
             connection = (Connection) connectionParams.get("connection");
             this.tabsForDomains = table;
@@ -181,7 +190,6 @@ public class MainDataViewerFrame {
                     e.printStackTrace();
                     throw e;
                 }
-
                 arrayList.add(_qp);
                 tabbedPane.addTab(tmp + "-" + tmp1, _qp);
                 dataViewerFrame.add(tabbedPane, BorderLayout.CENTER);
@@ -243,7 +251,7 @@ public class MainDataViewerFrame {
                 }
             }
             this.get_alreadyFilled().add(new Integer(0));
-            if (openDBMap) {
+            if (isOpenMapAction) {
                 qbAddButtons.getSaveButton().setEnabled(true);
                 setSQLStmtSaved(true);
                 Enumeration en = sqlTables.keys();
@@ -262,11 +270,12 @@ public class MainDataViewerFrame {
 /**
  Change History
  $Log: not supported by cvs2svn $
+ Revision 1.12  2007/08/28 14:44:58  jayannah
+ removed the system.outs
+
  Revision 1.11  2007/08/16 18:53:55  jayannah
  Reformatted and added the Comments and the log tags for all the files
 
  Revision 1.10  2007/08/16 18:13:26  jayannah
  Change history log test
-
-
  */
