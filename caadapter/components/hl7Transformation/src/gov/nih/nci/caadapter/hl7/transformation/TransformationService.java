@@ -7,12 +7,14 @@
 package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaException;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -30,15 +32,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.12 $
- * @date $Date: 2007-09-06 15:09:27 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version $Revision: 1.13 $
+ * @date $Date: 2007-09-11 17:57:25 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.12 2007-09-06 15:09:27 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.13 2007-09-11 17:57:25 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -49,6 +51,7 @@ public class TransformationService
     private InputStream csvStream = null;
     private CSVSegmentedFile csvSegmentedFile = null;
     private ArrayList <TransformationObserver>transformationWatchList;
+    ValidatorResults theValidatorResults = new ValidatorResults();
 
 	/**
 	 * This method will create a transformer that loads csv data from a file 
@@ -195,6 +198,8 @@ public class TransformationService
         if (!mapParser.getValidatorResults().isValid())
         {	
         	System.out.println("Invalid .map file");
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         	return null;
         }
         long csvbegintime = System.currentTimeMillis();
@@ -212,6 +217,7 @@ public class TransformationService
         {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
+        
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
     	
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
@@ -224,6 +230,9 @@ public class TransformationService
          */
         if (!csvDataValidatorResults.isValid())
         {
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file!"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+        	System.out.println("Error parsing csv Data");
             return null;
         }
 
@@ -296,6 +305,9 @@ public class TransformationService
         CSVDataResult csvDataResult = parser.parse(csvStream, new File(fullscmfilepath));
         return csvDataResult;
     }
+	public ValidatorResults getValidatorResults() {
+		return theValidatorResults;
+	}
 	
 	
 /*    private TransformationResult handleException(Exception e) //List<TransformationResult> v3messageResults
@@ -356,8 +368,8 @@ public class TransformationService
         //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
 //		"C:/xmlpathSpec/NewEncounter_comp2.csv");
         
-   	TransformationService ts = new TransformationService("C:/xmlpathSpec/COCT_MT010000.map",
-		"C:/xmlpathSpec/COCT_MT010000.csv");
+   	TransformationService ts = new TransformationService("C:/xmlpathSpec/error/choice_basic.map",
+		"C:/xmlpathSpec/error/choice_basic_without_patient.csv");
 
 //           	TransformationService ts = new TransformationService("C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/test.map",
 //		"C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/COCT_MT150003.csv");
@@ -368,6 +380,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2007/09/06 15:09:27  wangeug
+ * HISTORY      : refine codes
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2007/09/04 20:42:14  wangeug
  * HISTORY      : add progressor
  * HISTORY      :
