@@ -146,6 +146,29 @@ public class XMIGenerator
 						//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
 						att.removeTaggedValue( "inverse-of" );
 					}
+					if( tagValue.getName().contains( "type" ))
+					{
+						//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
+						att.removeTaggedValue( "type" );
+					}
+					if( tagValue.getName().contains( "discriminator" ))
+					{
+						//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
+						att.removeTaggedValue( "discriminator" );
+					}
+				}
+			}				
+			for( UMLAssociation assc : clazz.getAssociations()) 
+			{
+				//System.out.println( "Attribute: " + att.getName() );
+				
+				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
+				{
+					if( tagValue.getName().contains( "lazy-load" ))
+					{
+						//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
+						assc.removeTaggedValue( "lazy-load" );
+					}
 				}
 			}				
 		}
@@ -516,13 +539,12 @@ public class XMIGenerator
 	public void addLazyKey( String lKey )
 	{
 		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
-		UMLAttribute column = ModelUtil.findAttribute(this.model, lazyKey);
-		//*** Association ??
-        // UMLAssociation umlAssoc = ModelUtil.findAttribute(this.model), lazyKey);
-        
-        if( column != null)
+		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
+		UMLAssociation umlAssociation = cumulativeMappingGenerator.getAssociationFromColumn(lazyKey);
+		
+		if (umlAssociation != null)
 		{
-			column.addTaggedValue( "lazy-load", lKey );
+			umlAssociation.addTaggedValue("lazy-load", "YES");
 		}
 	}
 

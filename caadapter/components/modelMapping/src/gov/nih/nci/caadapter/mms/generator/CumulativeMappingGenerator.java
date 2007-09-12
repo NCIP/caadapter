@@ -741,6 +741,35 @@ public static CumulativeMapping getCumulativeMapping() {
 public static void setCumulativeMapping(CumulativeMapping cumulativeMapping) {
 	cumulativeMapping = cumulativeMapping;
 }
+
+
+public static UMLAssociation getAssociationFromColumn(String column)
+{
+	List<SingleAssociationMapping> singleAssocs = cumulativeMapping.getSingleAssociationMappings();
+	for (SingleAssociationMapping singleAssoc : singleAssocs)
+	{
+		String name = singleAssoc.getColumnMetadata().getParentXPath() + "." + singleAssoc.getColumnMetadata().getName();
+		if (name.equals(column))
+		{
+			return singleAssoc.getAssociationEndMetadata().getUMLAssociation();
+		}
+	}
+	List <ManyToManyMapping> many2manys = cumulativeMapping.getManyToManyMappings();
+	for(ManyToManyMapping many2many : many2manys)
+	{
+		String name = many2many.getThisEndColumn().getParentXPath() + "." + many2many.getThisEndColumn().getName();
+		if (name.equals(column))
+		{
+			return many2many.getAssociationEndMetadata().getUMLAssociation();
+		}
+		name = many2many.getOtherEndColumn().getParentXPath() + "." + many2many.getOtherEndColumn().getName();
+		if (name.equals(column))
+		{
+			return many2many.getOtherAssociationEndMetadata().getUMLAssociation();
+		}
+	}
+	return null;
+}
 	/**
 	 * @param args
 	 */
