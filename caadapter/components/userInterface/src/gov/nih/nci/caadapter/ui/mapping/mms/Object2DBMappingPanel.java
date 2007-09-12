@@ -12,10 +12,10 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.SDKMetaData;
-import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
@@ -97,14 +97,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.15 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.16 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.15 2007-09-12 13:20:52 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.16 2007-09-12 14:56:46 schroedn Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -420,11 +420,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 //            System.out.println("Key " + key );
 //            System.out.println("Prefix " + PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
 
-            if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
+            if (key.contains( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
-					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
 				} else {
-					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false, true);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false, true);
 				}
 			}
 		}
@@ -475,22 +475,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		DefaultMutableTreeNode newTreeNode;
 		if (isSourceNode)
-			if (myMap.get(fullName) instanceof AssociationMetadata) {
-				if (!((AssociationMetadata) myMap.get(fullName))
-						.getNavigability()) {
-					newTreeNode = new DefaultMutableTreeNode(
-							((AssociationMetadata) myMap.get(fullName)));
-				} else {
-					newTreeNode = new DefaultSourceTreeNode(
-							myMap.get(fullName), true);
-				}
-			} else {
-				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),
-						true);
-			}
+				newTreeNode = new DefaultSourceTreeNode(myMap.get(fullName),true);
 		else
 			newTreeNode = new DefaultTargetTreeNode(myMap.get(fullName), true);
-		father.add(newTreeNode);
+	    
+        father.add(newTreeNode);
 		return;
 	}
 
@@ -504,12 +493,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
-			if (key.contains(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "."))
+			if (key.contains(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "."))
 			{
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
-					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
 				} else {
-					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
+					construct_node(nodes, key, (PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
 				}
 			}
 		}
@@ -543,13 +532,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	protected boolean processOpenSourceTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
 
-        if( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
+        if( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
         {
-        	CaadapterUtil.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View.Logical Model");
+              PreferenceManager.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View.Logical Model");
         }
-        if( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null )
+        if( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null )
         {
-        	CaadapterUtil.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View.Data Model");
+              PreferenceManager.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View.Data Model");
         }
 
         MetaObject metaInfo = null;
@@ -646,8 +635,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			Hashtable sourceNodes = new Hashtable();
 			Hashtable targetNodes = new Hashtable();
 
-			buildHash(sourceNodes, rootSTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-			buildHash(targetNodes, rootTTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
+			buildHash(sourceNodes, rootSTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+			buildHash(targetNodes, rootTTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
 
 			MappingImpl newMappingImpl = new MappingImpl();
 			newMappingImpl.setSourceComponent(null);
@@ -723,7 +712,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 									targetXpath = pathKey + "."
 											+ clazz.getName() + "."
 											+ att.getName();
-									sourceXpath = CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
+									sourceXpath = PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
 											+ tagValue.getValue();
 									// System.out.println( "targetXpath:" +
 									// targetXpath );
@@ -780,20 +769,20 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
             myModel.setClobKeys( clobKeys );
             myModel.setDiscriminatorKeys( discriminatorKeys );
 
-            if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
+            if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
             {
-                myModel.setMmsPrefixDataModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
+                myModel.setMmsPrefixDataModel(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
             } else {
                 myModel.setMmsPrefixDataModel( "Logical View.Data Model" );
             }
-            if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
+            if ( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
             {
-                myModel.setMmsPrefixObjectModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+                myModel.setMmsPrefixObjectModel(PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
             } else {
                 myModel.setMmsPrefixObjectModel( "Logical View.Logical Model" );
             }
-            System.out.println( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) );
-            System.out.println( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
+            System.out.println( PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) );
+            System.out.println( PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
 
         } else {
 			JOptionPane
@@ -895,8 +884,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 				.getRoot();
 		Hashtable sourceNodes = new Hashtable();
 		Hashtable targetNodes = new Hashtable();
-		buildHash(sourceNodes, rootSTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-		buildHash(targetNodes, rootTTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
+		buildHash(sourceNodes, rootSTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+		buildHash(targetNodes, rootTTree, PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
 
 		MappingImpl newMappingImpl = new MappingImpl();
 		newMappingImpl.setSourceComponent(null);
@@ -959,9 +948,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private void buildHash(Hashtable hashtable, DefaultMutableTreeNode root,
 			String parent) {
 		if ((root.getUserObject().toString().equals("Object Model") && parent
-				.equals(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL )))
+				.equals(PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL )))
 				|| (root.getUserObject().toString().equals("Data Model") && parent
-						.equals(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL )))) {
+						.equals(PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL )))) {
 			for (int i = 0; i < root.getChildCount(); i++) {
 				buildHash(hashtable, (DefaultMutableTreeNode) root
 						.getChildAt(i), parent);

@@ -270,11 +270,11 @@ public class SingleAssociationMappingValidator {
 
 	public boolean isValid(){
 		boolean isValidMapping = true;
-		if (!isAssociationEndObjectDependencyMapped()) {
-			this.validationErrorMessage = "The object associated with this association is not dependency mapped.";
-		    isValidMapping = false;
-		    return false;
-		}
+//		if (!isAssociationEndObjectDependencyMapped()) {
+//			this.validationErrorMessage = "The object associated with this association is not dependency mapped.";
+//		    isValidMapping = false;
+//		    return false;
+//		}
 		/* If you want to verify the other end of a relationship has been dependency mapped you would neet to make this section work.
 		if (isValidMapping && !isOtherAssociationEndObjectDependencyMapped()){
 			System.out.println("SA debug #3\n");
