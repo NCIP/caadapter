@@ -98,13 +98,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.17 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.18 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.17 2007-09-12 16:04:15 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.18 2007-09-12 17:57:55 schroedn Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -764,8 +764,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
             System.out.println( "DiscriminatorKeys = " + discriminatorKeys );
             System.out.println( "ClobKeys = " + clobKeys );
 
-            myModel.setPrimaryKeys(primaryKeys);
-			myModel.setLazyKeys(lazyKeys);
+            myModel.setPrimaryKeys( primaryKeys );
+			myModel.setLazyKeys( lazyKeys );
             myModel.setClobKeys( clobKeys );
             myModel.setDiscriminatorKeys( discriminatorKeys );
 
@@ -798,18 +798,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	{
 		for ( UMLClass clazz : pkg.getClasses() )
 		{
-            for( UMLTaggedValue clazzTagValue : clazz.getTaggedValues() )
-            {
-                    if( clazzTagValue.getName().contains( "discriminator" ) )
-                    {
-                        discriminatorKeys.add( clazzTagValue.getValue() );
-                    }
-                    if( clazzTagValue.getName().contains( "CLOB" ) )
-                    {
-                        clobKeys.add( clazzTagValue.getValue() );
-                    }                
-            }
-                        
             for( UMLAttribute att : clazz.getAttributes() )
 			{	
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
@@ -822,6 +810,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					{																												
 						lazyKeys.add( tagValue.getValue() );
 					}
+                    if( tagValue.getName().contains( "discriminator" ) )
+                    {
+                        discriminatorKeys.add( tagValue.getValue() );
+                    }
+                    if( tagValue.getName().contains( "type" ) )
+                    {
+                        clobKeys.add( tagValue.getValue() );
+                    }
                 }
 			}				
 		}
@@ -1362,6 +1358,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.17  2007/09/12 16:04:15  schroedn
+ * HISTORY : PreferenceManager -> CaadapterUtil
+ * HISTORY :
  * HISTORY : Revision 1.16  2007/09/12 14:56:46  schroedn
  * HISTORY : *** empty log message ***
  * HISTORY :

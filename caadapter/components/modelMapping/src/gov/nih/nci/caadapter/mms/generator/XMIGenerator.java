@@ -529,31 +529,28 @@ public class XMIGenerator
     public void addClobKey( String cKey )
 	{
 		String clobKey = modelMetadata.getMmsPrefixDataModel() + "." + cKey;
-		//UMLAttribute column = ModelUtil.findAttribute(this.model, clobKey);
+		UMLAttribute column = ModelUtil.findAttribute(this.model, clobKey);
         System.out.println("Looking for CLOBKEY "+ clobKey );
-        UMLClass umlClass = ModelUtil.findClass(this.model, clobKey);
 
-        if( umlClass != null)
+        if( column != null)
 		{
             System.out.println("Added a CLOB: " + cKey);
-            //column.addTaggedValue( "CLOB", cKey );
-            //umlClass.addTaggedValue( "type", cKey );
-            umlClass.addTaggedValue( "type", "CLOB" );
+            column.addTaggedValue( "type", cKey );
         }
 	}
 
     public void addDiscriminatorKey( String dKey )
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixDataModel() + "." + dKey;
-		//UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
+		UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
         System.out.println("Looking for Discriminator "+ discriminatorKey );
-        UMLClass umlClass = ModelUtil.findClass(this.model, discriminatorKey);
+        //UMLClass umlClass = ModelUtil.findClass(this.model, discriminatorKey);
 
-        if( umlClass != null)
+        if( column != null)
 		{
             System.out.println("Added a discrimintor: " + dKey);
-            //column.addTaggedValue( "discriminator", dKey );
-            umlClass.addTaggedValue( "discriminator", dKey );
+            column.addTaggedValue( "discriminator", dKey );
+            //umlClass.addTaggedValue( "discriminator", dKey );
         }
 	}
     
