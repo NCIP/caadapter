@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class DiscriminatorAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: DiscriminatorAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.1 2007-09-11 20:27:46 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.2 2007-09-12 16:04:36 schroedn Exp $";
 
 	private static final String COMMAND_NAME = "Set as Disciminator";
 	private static final Character COMMAND_MNEMONIC = new Character('D');
@@ -90,7 +90,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 				    		System.out.println( "No Discriminator Keys" );
 				    	}
 
-				    	modelMetadata.setLazyKeys( discriminatorKeys );
+				    	modelMetadata.setDiscriminatorKeys( discriminatorKeys );
 
 				    } catch (Exception exception){
 				    	exception.printStackTrace();
@@ -118,7 +118,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 			        	discriminatorKeys.remove( parseNode( leadingPath.toString() ) );
 			        }
 
-                    modelMetadata.setLazyKeys( discriminatorKeys );
+                    modelMetadata.setDiscriminatorKeys( discriminatorKeys );
 
                 } catch ( Exception exception ) {
 			    	exception.printStackTrace();
