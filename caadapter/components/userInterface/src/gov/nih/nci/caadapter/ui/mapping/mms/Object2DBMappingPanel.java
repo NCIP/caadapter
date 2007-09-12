@@ -43,6 +43,7 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.MmsTargetTreeDropTransferHandler;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
@@ -97,14 +98,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.18 $ date $Date:
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v3.2 revision $Revision: 1.19 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.18 2007-09-12 17:57:55 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.19 2007-09-12 20:56:00 wuye Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -819,6 +820,21 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                         clobKeys.add( tagValue.getValue() );
                     }
                 }
+			}		
+    		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
+
+			for( UMLAssociation assc : clazz.getAssociations()) 
+			{
+				//System.out.println( "Attribute: " + att.getName() );
+				
+				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
+				{
+					if( tagValue.getName().contains( "lazy-load" ))
+					{
+			    		String fieldName = cumulativeMappingGenerator.getColumnFromAssociation(assc);
+			    		lazyKeys.add(fieldName);
+					}
+				}
 			}				
 		}
 		
@@ -1358,6 +1374,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.18  2007/09/12 17:57:55  schroedn
+ * HISTORY : CLob, Discriminator, Lazy/Eager
+ * HISTORY :
  * HISTORY : Revision 1.17  2007/09/12 16:04:15  schroedn
  * HISTORY : PreferenceManager -> CaadapterUtil
  * HISTORY :

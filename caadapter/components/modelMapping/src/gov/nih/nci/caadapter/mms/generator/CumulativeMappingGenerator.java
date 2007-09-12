@@ -770,7 +770,35 @@ public static UMLAssociation getAssociationFromColumn(String column)
 	}
 	return null;
 }
-	/**
+
+public static String getColumnFromAssociation(UMLAssociation association)
+{
+	List<SingleAssociationMapping> singleAssocs = cumulativeMapping.getSingleAssociationMappings();
+	for (SingleAssociationMapping singleAssoc : singleAssocs)
+	{
+		if (singleAssoc.getAssociationEndMetadata().getUMLAssociation() == association)
+		{
+			return singleAssoc.getColumnMetadata().getParentXPath() + "." + singleAssoc.getColumnMetadata().getName();
+		}
+	}
+	List <ManyToManyMapping> many2manys = cumulativeMapping.getManyToManyMappings();
+	for(ManyToManyMapping many2many : many2manys)
+	{
+		if (many2many.getAssociationEndMetadata().getUMLAssociation()==association)
+		{
+			return many2many.getThisEndColumn().getParentXPath() + "." + many2many.getThisEndColumn().getName();
+		}
+
+		if (many2many.getOtherAssociationEndMetadata().getUMLAssociation() == association)
+		{
+			return many2many.getOtherEndColumn().getParentXPath() + "." + many2many.getOtherEndColumn().getName();
+		}
+	}
+	return "";
+}
+
+
+/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
