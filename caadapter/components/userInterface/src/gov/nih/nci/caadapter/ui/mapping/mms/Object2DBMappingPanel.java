@@ -98,14 +98,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.19 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.20 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.19 2007-09-12 20:56:00 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.20 2007-09-13 14:20:15 schroedn Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -1265,6 +1265,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
             ModelMetadata modelMetadata = ModelMetadata.getInstance();
             List<String> lazyKeys = modelMetadata.getLazyKeys();
+            List<String> clobKeys = modelMetadata.getClobKeys();
+            List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+
 //            System.out.println( "*** Current Lazy Keys = " + lazyKeys );
 
             try
@@ -1312,6 +1315,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                     gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
                     //System.out.println("Column " + queryBuilderMeta.getXPath() );
                     boolean lazyKeyFound = false;
+                    boolean clobKeyFound = false;
+                    boolean discriminatorKeyFound = false;
 
                     for( String key : lazyKeys )
                     {
@@ -1322,8 +1327,33 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                        }
 
                     }
+                    for( String key : clobKeys )
+                    {
+                       if ( queryBuilderMeta.getXPath().contains( key ))
+                       {
+                           System.out.println("Found a CLOB Key " + key );
+                           clobKeyFound = true;
+                       }
 
-                    if ( lazyKeyFound ) {
+                    }
+                    for( String key : discriminatorKeys )
+                    {
+                       if ( queryBuilderMeta.getXPath().contains( key ))
+                       {
+                           System.out.println("Found a Discriminator Key " + key );
+                           discriminatorKeyFound = true;
+                       }
+
+                    }
+                    if ( discriminatorKeyFound ) {
+                        tutorialIcon = createImageIcon("columnDiscriminator.png");
+                        setIcon(tutorialIcon);
+                        setToolTipText("Lazy");
+                    } else if ( clobKeyFound ) {
+                        tutorialIcon = createImageIcon("columnCLOB.png");
+                        setIcon(tutorialIcon);
+                        setToolTipText("Lazy");
+                    } else if ( lazyKeyFound ) {
                         tutorialIcon = createImageIcon("columnlazy.png");
                         setIcon(tutorialIcon);
                         setToolTipText("Lazy");
@@ -1374,6 +1404,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.19  2007/09/12 20:56:00  wuye
+ * HISTORY : Fixed the load from association "lazy-load"
+ * HISTORY :
  * HISTORY : Revision 1.18  2007/09/12 17:57:55  schroedn
  * HISTORY : CLob, Discriminator, Lazy/Eager
  * HISTORY :
