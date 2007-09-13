@@ -30,6 +30,9 @@ public class MMSRenderer extends DefaultTreeCellRenderer
 
         ModelMetadata modelMetadata = ModelMetadata.getInstance();
         List<String> lazyKeys = modelMetadata.getLazyKeys();
+        List<String> clobKeys = modelMetadata.getClobKeys();
+        List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+
 //        System.out.println( "*** Current Lazy Keys = " + lazyKeys );
 
         try
@@ -77,6 +80,8 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                 gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
                 //System.out.println("Column " + queryBuilderMeta.getXPath() );
                 boolean lazyKeyFound = false;
+                boolean clobKeyFound = false;
+                boolean discriminatorKeyFound = false;
 
                 for( String key : lazyKeys )
                 {
@@ -87,8 +92,33 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                    }
 
                 }
+                for( String key : clobKeys )
+                {
+                   if ( queryBuilderMeta.getXPath().contains( key ))
+                   {
+                       System.out.println("Found a CLOB Key " + key );
+                       clobKeyFound = true;
+                   }
 
-                if ( lazyKeyFound ) {
+                }
+                for( String key : discriminatorKeys )
+                {
+                   if ( queryBuilderMeta.getXPath().contains( key ))
+                   {
+                       System.out.println("Found a Discriminator Key " + key );
+                       discriminatorKeyFound = true;
+                   }
+
+                }
+                if ( discriminatorKeyFound ) {
+                    tutorialIcon = createImageIcon("columnDiscriminator.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Lazy");
+                } else if ( clobKeyFound ) {
+                    tutorialIcon = createImageIcon("columnCLOB.png");
+                    setIcon(tutorialIcon);
+                    setToolTipText("Lazy");
+                } else if ( lazyKeyFound ) {
                     tutorialIcon = createImageIcon("columnlazy.png");
                     setIcon(tutorialIcon);
                     setToolTipText("Lazy");
@@ -116,7 +146,8 @@ public class MMSRenderer extends DefaultTreeCellRenderer
         
         return this;
     }
-	protected static ImageIcon createImageIcon(String path)
+
+    protected static ImageIcon createImageIcon(String path)
 	{
 	    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
 	    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);

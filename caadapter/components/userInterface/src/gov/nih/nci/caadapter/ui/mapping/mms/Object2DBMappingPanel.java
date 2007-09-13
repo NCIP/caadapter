@@ -98,14 +98,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.20 $ date $Date:
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v3.2 revision $Revision: 1.21 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.20 2007-09-13 14:20:15 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.21 2007-09-13 18:53:40 wuye Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -1254,134 +1254,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
         }
     }
 
-    private class MMSRenderer extends DefaultTreeCellRenderer
-	{
-	  // this control comes here	
-	    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-	    {
-	        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-            ImageIcon tutorialIcon;
-            String table = "";
-
-            ModelMetadata modelMetadata = ModelMetadata.getInstance();
-            List<String> lazyKeys = modelMetadata.getLazyKeys();
-            List<String> clobKeys = modelMetadata.getClobKeys();
-            List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
-
-//            System.out.println( "*** Current Lazy Keys = " + lazyKeys );
-
-            try
-	        {
-	            String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
-                if (_tmpStr.equalsIgnoreCase("Data Model"))
-                {
-                    tutorialIcon = createImageIcon("database.png");
-                    setIcon(tutorialIcon);
-                    setToolTipText("Data model");
-                }
-                else
-                {
-                    tutorialIcon = createImageIcon("schema.png");
-                    setIcon(tutorialIcon);
-                    setToolTipText("Schema");
-                }
-                return this;
-	        } catch (Exception e) 
-	        { 
-	        	//continue 
-	        }
-
-            try
-            {
-                gov.nih.nci.caadapter.mms.metadata.TableMetadata qbTableMetaData = (gov.nih.nci.caadapter.mms.metadata.TableMetadata) ((DefaultTargetTreeNode) value).getUserObject();
-                table = qbTableMetaData.getName();
-                //System.out.println("Tables " + table );
-
-                if (qbTableMetaData.getType().equalsIgnoreCase("normal"))
-                {
-                    tutorialIcon = createImageIcon("table.png");
-                    setIcon(tutorialIcon);
-                    setToolTipText("Table");
-                } else if (qbTableMetaData.getType().equalsIgnoreCase("VIEW"))
-                {
-                    tutorialIcon = createImageIcon("view.png");
-                    setIcon(tutorialIcon);
-                    setToolTipText("View");
-                }
-            } catch (ClassCastException e)
-            {
-                try
-                {
-                    gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
-                    //System.out.println("Column " + queryBuilderMeta.getXPath() );
-                    boolean lazyKeyFound = false;
-                    boolean clobKeyFound = false;
-                    boolean discriminatorKeyFound = false;
-
-                    for( String key : lazyKeys )
-                    {
-                       if ( queryBuilderMeta.getXPath().contains( key ))
-                       {
-                           System.out.println("Found a Lazy Key " + key );
-                           lazyKeyFound = true;
-                       }
-
-                    }
-                    for( String key : clobKeys )
-                    {
-                       if ( queryBuilderMeta.getXPath().contains( key ))
-                       {
-                           System.out.println("Found a CLOB Key " + key );
-                           clobKeyFound = true;
-                       }
-
-                    }
-                    for( String key : discriminatorKeys )
-                    {
-                       if ( queryBuilderMeta.getXPath().contains( key ))
-                       {
-                           System.out.println("Found a Discriminator Key " + key );
-                           discriminatorKeyFound = true;
-                       }
-
-                    }
-                    if ( discriminatorKeyFound ) {
-                        tutorialIcon = createImageIcon("columnDiscriminator.png");
-                        setIcon(tutorialIcon);
-                        setToolTipText("Lazy");
-                    } else if ( clobKeyFound ) {
-                        tutorialIcon = createImageIcon("columnCLOB.png");
-                        setIcon(tutorialIcon);
-                        setToolTipText("Lazy");
-                    } else if ( lazyKeyFound ) {
-                        tutorialIcon = createImageIcon("columnlazy.png");
-                        setIcon(tutorialIcon);
-                        setToolTipText("Lazy");
-                    }
-                    else {
-                           tutorialIcon = createImageIcon("columneager.png");
-                           setIcon(tutorialIcon);
-                           setToolTipText("Eager");
-                    }
-
-                   // }
-                } catch (Exception ee)
-                {
-                    try
-                    {
-                        //String queryBuilderMeta = (String) ((DefaultSourceTreeNode) value).getUserObject();
-                        tutorialIcon = createImageIcon("load.gif");
-                        setIcon(tutorialIcon);
-                    } catch (Exception e1)
-                    {
-                        setToolTipText(null);
-                    }
-                }
-            }
-	        
-	        return this;
-	    }
-	}
 
 	/**
 	 * Returns an ImageIcon, or null if the path was invalid.
@@ -1404,6 +1276,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.20  2007/09/13 14:20:15  schroedn
+ * HISTORY : Changes the graphics for Clob/Lazy/Eager/Discriminator
+ * HISTORY :
  * HISTORY : Revision 1.19  2007/09/12 20:56:00  wuye
  * HISTORY : Fixed the load from association "lazy-load"
  * HISTORY :

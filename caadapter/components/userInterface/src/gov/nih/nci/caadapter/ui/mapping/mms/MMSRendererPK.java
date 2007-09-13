@@ -6,6 +6,7 @@ package gov.nih.nci.caadapter.ui.mapping.mms;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
 import java.awt.Component;
 import java.util.List;
@@ -127,7 +128,8 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
 
         return this;
     }
-	protected static ImageIcon createImageIcon(String path)
+
+    public ImageIcon createImageIcon(String path)
 	{
 	    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
 	    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
