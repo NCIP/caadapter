@@ -106,7 +106,7 @@
     	
     	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
     	<delete>
-    		<fileset dir="." includes="**/*.zip"/>
+    		<fileset dir="." includes="caadapter4_0_Src_${DATE}.zip"/>
     	</delete>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
@@ -268,7 +268,7 @@
                 <exclude name="delete.jar"/>
             </fileset>
             <fileset dir="${project.ref.lib.dir}" excludes="ant.jar,mif.zip"/>
- 
+
         </copy>
     </target>
     <target name="build.modules" depends="init">
