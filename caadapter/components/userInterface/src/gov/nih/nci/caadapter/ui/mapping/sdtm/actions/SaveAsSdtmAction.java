@@ -30,8 +30,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.13 $
- *          $Date: 2007-09-13 14:11:16 $
+ *          $Revision: 1.14 $
+ *          $Date: 2007-09-13 15:53:54 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -45,7 +45,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.13 2007-09-13 14:11:16 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.14 2007-09-13 15:53:54 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -177,7 +177,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                                 });
                                 JPanel labelPane = new JPanel();
                                 JLabel label = new JLabel("The file \"" + file.getAbsolutePath() + "\" has been successfully saved");
-                                label.setFont(new Font("SansSerif", Font.BOLD, 16));
+                                label.setFont(new Font("SansSerif", Font.BOLD, 14));
                                 labelPane.add(label);
                                 resPan.add(labelPane, BorderLayout.CENTER);
                                 JPanel butPan = new JPanel();
@@ -193,7 +193,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                         //pane.setLayout(new GridLayout(0, 1));
                         pane.setLayout(new BorderLayout());
                         JLabel _jl = new JLabel("SQL(s) are now being Generated, please wait.....");
-                        _jl.setFont(new Font("SansSerif", Font.BOLD, 16));
+                        _jl.setFont(new Font("SansSerif", Font.BOLD, 14));
                         JPanel labelPane = new JPanel();
                         labelPane.add(_jl, BorderLayout.CENTER);
                         pane.add(labelPane, BorderLayout.CENTER);
@@ -202,7 +202,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                         //d.setLocationRelativeTo(null);// this will cause the window to position centre of screen
                         d.setLocation(350, 420);
                         d.setAlwaysOnTop(true);
-                        d.setSize(550, 120);
+                        d.setSize(650, 160);
                         d.setVisible(true);
                     }
                 }
@@ -400,6 +400,9 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/09/13 14:11:16  jayannah
+ * Added a comment to the map file for the user not to change the sql statements
+ *
  * Revision 1.12  2007/09/13 13:51:41  jayannah
  * Changes made to ensure that flow is correct, the save , reopen etc
  *
