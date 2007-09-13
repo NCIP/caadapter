@@ -12,14 +12,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -32,8 +28,8 @@ import gov.nih.nci.caadapter.common.Log;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-08-27 17:34:44 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2007-09-13 14:14:06 $
  * @since caAdapter v4.0
  */
 public class MIFToXmlExporter {
@@ -204,10 +200,21 @@ public class MIFToXmlExporter {
 		Element rtnElm=new Element("attribute");
 		setPrimaryAttributes(tbBuilt, rtnElm);
 		Datatype dt=tbBuilt.getDatatype();
+		Element dtElm=null;
 		if (dt!=null)
-			rtnElm.addContent(buildDatatype(dt));
+		{
+			dtElm=buildDatatype(dt);
+			rtnElm.addContent(dtElm);
+			//there is a concrete data type for 
+			//the MIFAttribute with Abstract type
+			if (tbBuilt.getConcreteDatatype()!=null)
+			{
+				dtElm.addContent(buildDatatype(tbBuilt.getConcreteDatatype()));
+			}
+		}
 		else
 			Log.logInfo(this,"Datatype is not defined for MIFAttribute:"+tbBuilt.getXmlPath());
+		
 		return rtnElm;
 	}
 	/**

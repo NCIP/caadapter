@@ -26,8 +26,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.5 $
- * @date $Date: 2007-08-30 19:09:51 $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2007-09-13 14:13:07 $
  * @since caAdapter v4.0
  */
 
@@ -77,33 +77,33 @@ public class XmlToMIFImporter {
 			}
 			rtnMif.setPackageLocation(packageLocation);
 		}
-		List<Element> attrList=(List<Element> )elm.getChildren("attribute");
+		List attrList=elm.getChildren("attribute");
 		if (!attrList.isEmpty())
 		{
-			for(Element oneElmnt: attrList)
+			for(Object oneElmnt: attrList)
 			{
-				MIFAttribute childAttr=parserMIFAttribute(oneElmnt);
+				MIFAttribute childAttr=parserMIFAttribute((Element)oneElmnt);
 				rtnMif.addAttribute(childAttr);
 			}
 		}
-		List<Element> asscList=elm.getChildren("association");
+		List asscList=elm.getChildren("association");
 		if (!asscList.isEmpty())
 		{
-			for(Element oneElmnt: asscList)
+			for(Object oneElmnt: asscList)
 			{
-				MIFAssociation childAssc=parserMIFAssociation(oneElmnt);
+				MIFAssociation childAssc=parserMIFAssociation((Element)oneElmnt);
 				rtnMif.addAssociation(childAssc);
 			}
 		}
 		Element choiceElm=elm.getChild("choice");
 		if (choiceElm!=null)
 		{
-			List<Element> choiceList=choiceElm.getChildren("class");
+			List choiceList=choiceElm.getChildren("class");
 			if (!choiceList.isEmpty())
 			{
-				for(Element oneElmnt: choiceList)
+				for(Object oneElmnt: choiceList)
 				{
-					MIFClass childChoiceClass=parserMIFClass(oneElmnt);
+					MIFClass childChoiceClass=parserMIFClass((Element)oneElmnt);
 					rtnMif.addChoice(childChoiceClass);
 				}
 			}
@@ -118,15 +118,15 @@ public class XmlToMIFImporter {
 		Element mifClassElm=elm.getChild("class");
 		if (mifClassElm!=null)
 			rtnMif.setMifClass(parserMIFClass(mifClassElm));
-		List<Element> participantList=elm.getChildren("participantClassSpecialization");
+		List participantList=elm.getChildren("participantClassSpecialization");
 		if (!participantList.isEmpty())
 		{
 			Hashtable<String, String> participantHash=new Hashtable<String, String> ();
-			for (Element partEl:participantList)
+			for (Object partEl:participantList)
 			{
 				participantHash.put(
-						partEl.getAttribute("className").getValue(),
-						partEl.getAttribute("className").getValue()				
+						((Element)partEl).getAttribute("className").getValue(),
+						((Element)partEl).getAttribute("className").getValue()				
 				);
 				
 			}
@@ -141,19 +141,26 @@ public class XmlToMIFImporter {
 		setPrimaryAttributes(rtnMif, elm);
 		Element typeElm=elm.getChild("type");
 		if (typeElm!=null)
+		{
 			rtnMif.setDatatype(parserDatatype(typeElm));
+			//there is an element "type" within "type" 
+			//if the MIFAttribute has datatyp of Abstract
+			Element concreteTypeElm=typeElm.getChild("type");
+			if (concreteTypeElm!=null)
+				rtnMif.setConcreteDatatype(parserDatatype(concreteTypeElm));
+		}
 		return rtnMif;
 	}
 	private Datatype parserDatatype(Element elm)
 	{
 		Datatype rtnDt=new Datatype();
 		setPrimaryAttributes(rtnDt, elm);
-		List<Element> attrList=elm.getChildren("dataField");
+		List attrList=elm.getChildren("dataField");
 		if (!attrList.isEmpty())
 		{
-			for(Element oneElmnt: attrList)
+			for(Object oneElmnt:attrList)
 			{
-				Attribute childAttr=parserDatatypeAttribute(oneElmnt);
+				Attribute childAttr=parserDatatypeAttribute((Element)oneElmnt);
 				rtnDt.addAttribute(childAttr.getName(),childAttr);
 			}
 		}
