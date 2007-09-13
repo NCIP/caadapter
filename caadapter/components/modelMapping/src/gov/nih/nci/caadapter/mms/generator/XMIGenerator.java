@@ -52,10 +52,10 @@ public class XMIGenerator
 	private ModelMetadata modelMetadata = null;
 	private LinkedHashMap myMap = null;
 
-    private static List<String> primaryKeys = new ArrayList<String>();
-	private static List<String> lazyKeys = new ArrayList<String>();
-	private static List<String> clobKeys = new ArrayList<String>();
-    private static List<String> discriminatorKeys = new ArrayList<String>();
+    private static HashSet<String> primaryKeys = new HashSet<String>();
+	private static HashSet<String> lazyKeys = new HashSet<String>();
+	private static HashSet<String> clobKeys = new HashSet<String>();
+    private static HashSet<String> discriminatorKeys = new HashSet<String>();
 
     public XMIGenerator(){
 	}
@@ -209,6 +209,7 @@ public class XMIGenerator
 		}
 		
 		//Add the Lazy Keys
+		System.out.println("Lazy keys: " + lazyKeys);
 		for( String lKey : lazyKeys )
 		{
 			addLazyKey( lKey );

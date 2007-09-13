@@ -57,10 +57,10 @@ public class ModelMetadata {
 	private static HashMap inheritanceHashMap = new HashMap();
 	private static TreeSet sortedModel = new TreeSet(new XPathComparator());
 	private static String xmiFileName;
-	private static List<String> primaryKeys = new ArrayList<String>();
-	private static List<String> lazyKeys = new ArrayList<String>();
-    private static List<String> discriminatorKeys = new ArrayList<String>();
-    private static List<String> clobKeys = new ArrayList<String>();
+	private static HashSet<String> primaryKeys = new HashSet<String>();
+	private static HashSet<String> lazyKeys = new HashSet<String>();
+    private static HashSet<String> discriminatorKeys = new HashSet<String>();
+    private static HashSet<String> clobKeys = new HashSet<String>();
 
     private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
@@ -367,22 +367,22 @@ public class ModelMetadata {
 			this.xmiFileName = xmiFileName;
 		}
 		
-		public List getPrimaryKeys()
+		public HashSet getPrimaryKeys()
 		{
 			return primaryKeys;
 		}
 		
-		public void setPrimaryKeys( List keyList )		
+		public void setPrimaryKeys( HashSet keyList )		
 		{
 			primaryKeys = keyList;	
 		}
 		
-		public List getLazyKeys()
+		public HashSet getLazyKeys()
 		{
 			return lazyKeys;
 		}
 		
-		public void setLazyKeys( List lazyKeyList )		
+		public void setLazyKeys( HashSet lazyKeyList )		
 		{
 			lazyKeys = lazyKeyList;
 		}
@@ -417,19 +417,19 @@ public class ModelMetadata {
             ModelMetadata.mmsPrefixDataModel = mmsPrefixDataModel;
         }
 
-        public static List<String> getClobKeys() {
+        public static HashSet<String> getClobKeys() {
             return clobKeys;
         }
 
-        public static void setClobKeys(List<String> clobKeys) {
+        public static void setClobKeys(HashSet<String> clobKeys) {
             ModelMetadata.clobKeys = clobKeys;
         }
 
-        public static List<String> getDiscriminatorKeys() {
+        public static HashSet<String> getDiscriminatorKeys() {
             return discriminatorKeys;
         }
 
-        public static void setDiscriminatorKeys(List<String> discriminatorKeys) {
+        public static void setDiscriminatorKeys(HashSet<String> discriminatorKeys) {
             ModelMetadata.discriminatorKeys = discriminatorKeys;
         }
 

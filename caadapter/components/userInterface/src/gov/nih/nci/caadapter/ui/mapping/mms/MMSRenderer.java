@@ -8,6 +8,7 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
 import java.awt.Component;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -29,9 +30,9 @@ public class MMSRenderer extends DefaultTreeCellRenderer
         String table = "";
 
         ModelMetadata modelMetadata = ModelMetadata.getInstance();
-        List<String> lazyKeys = modelMetadata.getLazyKeys();
-        List<String> clobKeys = modelMetadata.getClobKeys();
-        List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+        HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
+        HashSet<String> clobKeys = modelMetadata.getClobKeys();
+        HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
 //        System.out.println( "*** Current Lazy Keys = " + lazyKeys );
 

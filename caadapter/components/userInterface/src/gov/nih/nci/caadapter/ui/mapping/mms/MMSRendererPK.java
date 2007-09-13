@@ -9,6 +9,7 @@ import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
 import java.awt.Component;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -29,7 +30,7 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
         ImageIcon tutorialIcon;
 
         ModelMetadata modelMetadata = ModelMetadata.getInstance();
-        List<String> primaryKeys = modelMetadata.getPrimaryKeys();
+        HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
         try
         {
