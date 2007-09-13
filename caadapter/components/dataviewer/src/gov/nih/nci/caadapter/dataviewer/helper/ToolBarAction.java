@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-09-11 15:33:25 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-09-13 13:53:56 $
  */
 public class ToolBarAction implements ActionListener {
     MainDataViewerFrame _mD;
@@ -49,6 +49,11 @@ public class ToolBarAction implements ActionListener {
                 _mD.getQbAddButtons().getSaveButton().setEnabled(true);
             }
         } else if (cmd.equals("exitwithoutsave")) {
+             Object[] options = {"OK", "Cancel"};
+             int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue.?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (n == 0) {
+
+                    }
             _mD.get_jf().dispose();
         } else if (cmd.equalsIgnoreCase("Exit")) {
             _mD.getDialog().removeAll();
@@ -77,7 +82,7 @@ public class ToolBarAction implements ActionListener {
                         //generate the query because the user clicked on save all
                         String _sqlSTR = (((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).get_queryBuilder()).getQueryModel().toString().toUpperCase();
                         String domainName = _mD.get_tPane().getTitleAt(i).substring(0, 2);
-                        String saveSQLForMapFile = markSelectedColumns(domainName, _sqlSTR);
+                        String saveSQLForMapFile = saveSQLForMapFile = markSelectedColumns(domainName, _sqlSTR);
                         try {
                             _mD.getSqlSaveHashMap().put(domainName, saveSQLForMapFile);
                         } catch (Exception e1) {
@@ -135,7 +140,7 @@ public class ToolBarAction implements ActionListener {
                         final JDialog _tmpDialog = new JDialog(_mD.get_jf(), true);
                         _tmpDialog.setTitle("Query Results");
                         _tmpDialog.setSize(600, 200);
-                        _tmpDialog.setLocation(300, 300);
+                        _tmpDialog.setLocationRelativeTo(null);
                         _tmpDialog.setLayout(new BorderLayout());
                         TitledBorder titleTop = BorderFactory.createTitledBorder("Query Results");
                         _jp4RunSQL.setBorder(titleTop);
@@ -168,7 +173,7 @@ public class ToolBarAction implements ActionListener {
                         // getContentPane().add(scrollpane, BorderLayout.CENTER);
                     } catch (Exception e1) {
                         final JDialog _tmpDialog = new JDialog(_mD.get_jf(), true);
-                        _tmpDialog.setLocation(400, 300);
+                        _tmpDialog.setLocationRelativeTo(null);
                         _tmpDialog.setTitle("Bad Query");
                         _tmpDialog.setLayout(new BorderLayout());
                         LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
@@ -197,7 +202,7 @@ public class ToolBarAction implements ActionListener {
             }).start();
             _queryWaitDialog.setTitle("Query in Progress");
             _queryWaitDialog.setSize(350, 100);
-            _queryWaitDialog.setLocation(450, 300);
+            _queryWaitDialog.setLocationRelativeTo(null);
             _queryWaitDialog.setLayout(new BorderLayout());
             LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
             JPanel _waitLabel = new JPanel();
@@ -226,7 +231,7 @@ public class ToolBarAction implements ActionListener {
                 System.out.println(" the query is " + ((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).get_queryBuilder().getQueryModel().toString().toUpperCase());
                 String query = ((Querypanel) _mD.get_aryList().get(_mD.get_tPane().getSelectedIndex())).get_queryBuilder().getQueryModel().toString().toUpperCase();
                 String domainName = _mD.get_tPane().getTitleAt(selectedIndex).substring(0, 2);
-                String returnedQuery = new CaDataViewHelper().processColumns(domainName, query, _mD.getSaveFile());
+                String returnedQuery = new CaDataViewHelper(_mD, domainName).processColumns(query, _mD.getSaveFile());
                 System.out.println("returned query is " + returnedQuery);
                 final QueryModel qm = SQLParser.toQueryModel(returnedQuery.toString());
                 SwingUtilities.invokeLater(new Runnable() {
@@ -253,7 +258,7 @@ public class ToolBarAction implements ActionListener {
                             final JDialog _tmpDialog = new JDialog(_mD.get_jf(), true);
                             _tmpDialog.setTitle("Validate Query Result");
                             _tmpDialog.setSize(400, 200);
-                            _tmpDialog.setLocation(300, 300);
+                            _tmpDialog.setLocationRelativeTo(null);
                             _tmpDialog.setLayout(new BorderLayout());
                             TitledBorder titleTop = BorderFactory.createTitledBorder("Query Result");
                             JPanel labelPan = new JPanel();
@@ -291,7 +296,7 @@ public class ToolBarAction implements ActionListener {
                             //  getContentPane().add(, BorderLayout.CENTER);
                         } catch (Exception e1) {
                             final JDialog _tmpDialog = new JDialog(_mD.get_jf(), true);
-                            _tmpDialog.setLocation(400, 300);
+                            _tmpDialog.setLocationRelativeTo(null);
                             _tmpDialog.setTitle("Bad Query");
                             _tmpDialog.setLayout(new BorderLayout());
                             LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
@@ -320,7 +325,7 @@ public class ToolBarAction implements ActionListener {
                 }).start();
                 _queryWaitDialog.setTitle("Query in Progress");
                 _queryWaitDialog.setSize(350, 100);
-                _queryWaitDialog.setLocation(450, 300);
+                _queryWaitDialog.setLocationRelativeTo(null);
                 _queryWaitDialog.setLayout(new BorderLayout());
                 LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
                 JPanel _waitLabel = new JPanel();
@@ -358,8 +363,23 @@ public class ToolBarAction implements ActionListener {
         }
     }
 
+    private void loadTablesQuietly(int pos) {
+        ArrayList tableList = (ArrayList) _mD.getTabsForDomains().get(_mD.get_tPane().getTitleAt(pos).substring(0, 2));
+        for (int i = 0; i < tableList.size(); i++) {
+            StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
+            String schema = temp.nextElement().toString();
+            String table1 = temp.nextElement().toString();
+            try {
+                ((Querypanel) _mD.get_aryList().get(pos)).loadTables(schema, table1);
+            } catch (Exception e) {
+                //e.printStackTrace();
+                //throw e;
+            }
+        }
+    }
+
     private String markSelectedColumns(String domainName, String queryFromQueryPanel) {
-        String returnedQuery = new CaDataViewHelper().processColumns(domainName, queryFromQueryPanel, _mD.getSaveFile());
+        String returnedQuery = new CaDataViewHelper(_mD, domainName).processColumns(queryFromQueryPanel, _mD.getSaveFile());
         return returnedQuery;
     }
 }
@@ -367,6 +387,9 @@ public class ToolBarAction implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/09/11 15:33:25  jayannah
+ * made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
+ *
  * Revision 1.4  2007/08/16 18:53:55  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

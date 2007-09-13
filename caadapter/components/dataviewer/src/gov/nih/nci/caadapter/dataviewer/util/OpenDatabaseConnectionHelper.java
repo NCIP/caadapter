@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-09-13 02:48:19 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-09-13 13:53:56 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -569,7 +569,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         conInfo.setBorder(new TitledBorder(new LineBorder(Color.black, 1), "Enter Connection Information"));
         conDialog.add(conPan);
         conDialog.setSize(500, 250);
-        conDialog.setLocation(400, 335);
+        conDialog.setLocationRelativeTo(null);
         conDialog.setVisible(true);
     }
 
@@ -667,6 +667,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/09/13 02:48:19  jayannah
+ * Made a fix to position the window at the centre of the screen
+ *
  * Revision 1.6  2007/08/28 14:47:18  jayannah
  * added a todo comment
  *

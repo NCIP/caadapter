@@ -1,13 +1,15 @@
 package gov.nih.nci.caadapter.dataviewer.util;
 
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 
-import java.util.Hashtable;
-import java.util.ArrayList;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Collection;
 
 /**
- *
  * This class is an intermediary class which is called to process the
  * MAP file, with the SQL query which results in checking the right
  * check boxes in the data viewer frame
@@ -15,12 +17,19 @@ import java.io.File;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.2 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.3 $
+ *          $Date: 2007-09-13 13:53:56 $
  */
 public class CaDataViewHelper {
+    private MainDataViewerFrame viewerFrame = null;
+    private String domainName = null;
 
-   public String processColumns(String domainName, String SQLString, File mapFile ) {
+    public CaDataViewHelper(MainDataViewerFrame viewerFrame, String domainName) {
+        this.viewerFrame = viewerFrame;
+        this.domainName = domainName;
+    }
+
+    public String processColumns(String SQLString, File mapFile) {
         QBParseMappingFile qb = new QBParseMappingFile(mapFile);
         return replaceNonMappedColumns(SQLString, getColumnsForDomain(domainName, qb.getHashTableTransform()));
     }
@@ -43,6 +52,13 @@ public class CaDataViewHelper {
     }
 
     private String replaceNonMappedColumns(String SQLString, Hashtable mappedColumns) {
+        //System.out.println("whio me "+SQLString);
+       // System.out.println("mapped columns "+mappedColumns);
+        if (!SQLString.equals("SELECT")) {
+            String domain = getDomainName(mappedColumns);
+            //System.out.println("daomin is "+domain);
+            viewerFrame.getSqlListWODataViewer().put(domain, SQLString);
+        }
         String append = SQLString.substring(SQLString.indexOf("FROM"));
         String chopSql = SQLString.substring(0, SQLString.indexOf("FROM"));
         String removeSelect = chopSql.substring(6);
@@ -61,7 +77,7 @@ public class CaDataViewHelper {
                 createSQLString.append(",");
             }
         }
-        returnString.append("Select ");      
+        returnString.append("SELECT ");
         String formatReturnSQL = createSQLString.toString();
         int remove = formatReturnSQL.lastIndexOf(",");
         formatReturnSQL = formatReturnSQL.substring(0, remove);
@@ -69,8 +85,22 @@ public class CaDataViewHelper {
         returnString.append(" " + append);
         return returnString.toString();
     }
+
+    private String getDomainName(Hashtable table){
+        Collection collection = table.values();
+        for (Iterator iterator = collection.iterator(); iterator.hasNext();) {
+            Object o =  iterator.next();
+            EmptyStringTokenizer emp = new EmptyStringTokenizer((String)o, "~");
+            emp.nextToken();
+            return emp.nextToken().toString().substring(0,2);
+        }
+        return null;
+    }
 }
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

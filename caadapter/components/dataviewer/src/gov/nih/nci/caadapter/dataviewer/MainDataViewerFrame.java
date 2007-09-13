@@ -7,7 +7,6 @@ import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.QBAddButtons;
 import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.dataviewer.util.SDTMDomainLookUp;
-//import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import nickyb.sqleonardo.querybuilder.QueryModel;
 import nickyb.sqleonardo.querybuilder.syntax.SQLParser;
 
@@ -26,8 +25,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.14 $
- *          $Date: 2007-09-11 16:48:52 $
+ *          $Revision: 1.15 $
+ *          $Date: 2007-09-13 13:53:56 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -47,6 +46,7 @@ public class MainDataViewerFrame {
     private boolean isSQLStmtSaved = false;
     private boolean isOpenMapAction = false;
     private HashMap changedPanels = null;
+    private HashMap sqlListWODataViewer = null;
     //private Database2SDTMMappingPanel mainPanel = null;
     /*
      These variables are used by other classes
@@ -55,8 +55,6 @@ public class MainDataViewerFrame {
     private ArrayList arrayList = new ArrayList();
     private java.util.HashMap sqlSaveHashMap = new HashMap();
 
-
-                                                                                    
     public boolean isOpenMapAction() {
         return isOpenMapAction;
     }
@@ -148,13 +146,17 @@ public class MainDataViewerFrame {
         return openActionQueriesList;
     }
 
-    /*
-        1. Called by the opendataviewer helper; during times times when the dataviewer needs to be opened after the mapping is complete;
-        2. Called by saveassdtmaction;
-     */
-    public MainDataViewerFrame(boolean isOpenDBmap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut) throws Exception {
-        try {
+    public HashMap getSqlListWODataViewer() {
+        return sqlListWODataViewer;
+    }
 
+    /*
+       1. Called by the opendataviewer helper; during times times when the dataviewer needs to be opened after the mapping is complete;
+       2. Called by saveassdtmaction;
+    */
+    public MainDataViewerFrame(boolean isOpenDBmap, Dialog _ref, Hashtable table, HashSet tableColums, Hashtable connectionParams, File saveFile, String out, Hashtable sqlTables, JButton transFormBut, boolean quiet) throws Exception {
+        try {
+            this.sqlListWODataViewer = new HashMap();
             this.isOpenMapAction = isOpenDBmap;
             this.columnsForTables = tableColums;
             this.saveFile = saveFile;
@@ -195,7 +197,7 @@ public class MainDataViewerFrame {
             tabbedPane.addChangeListener(new TopPaneListener(this));
             dataViewerFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
             dataViewerFrame.setSize(1100, 950);
-            dataViewerFrame.setLocation(85, 30);
+            dataViewerFrame.setLocationRelativeTo(null);
             JPanel jp_status = new JPanel();
             jp_status.setLayout(new BorderLayout());
             jp_status.add(new JLabel(connectionParams.get("UserID").toString() + "@" + connectionParams.get("URL").toString()), BorderLayout.CENTER);
@@ -204,9 +206,12 @@ public class MainDataViewerFrame {
             _showDefaultValues.setEditable(false);
             dataViewerFrame.add(jp_status, BorderLayout.SOUTH);
             dataViewerFrame.setTitle("Data Viewer for caAdapter");
-            dataViewerFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             dataViewerFrame.addWindowListener(new DialogClosingListener(this));
-            dataViewerFrame.setVisible(true);
+            dataViewerFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            if (quiet)
+                dataViewerFrame.setVisible(false);
+            else
+                dataViewerFrame.setVisible(true);
             try {
                 _ref.dispose();
             } catch (Exception e) {
@@ -236,7 +241,7 @@ public class MainDataViewerFrame {
                 }
                 try {
                     String query = ((Querypanel) tabbedPane.getComponentAt(0)).get_queryBuilder().getQueryModel().toString().toUpperCase();
-                    String returnedQuery = new CaDataViewHelper().processColumns(tabbedPane.getTitleAt(0).substring(0, 2), query, this.getSaveFile());
+                    String returnedQuery = new CaDataViewHelper(this, tabbedPane.getTitleAt(0).substring(0, 2)).processColumns(query, this.getSaveFile());
                     final QueryModel qm2 = SQLParser.toQueryModel(returnedQuery);
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
@@ -252,7 +257,11 @@ public class MainDataViewerFrame {
             if (isOpenMapAction) {
                 qbAddButtons.getSaveButton().setEnabled(true);
                 setSQLStmtSaved(true);
-                Enumeration en = sqlTables.keys();
+                Enumeration en = null;
+                try {
+                    en = sqlTables.keys();
+                } catch (Exception e) {
+                }
                 while (en.hasMoreElements()) {
                     String domainName = (String) en.nextElement();
                     sqlSaveHashMap.put(domainName, sqlTables.get(domainName));
@@ -268,6 +277,9 @@ public class MainDataViewerFrame {
 /**
  Change History
  $Log: not supported by cvs2svn $
+ Revision 1.14  2007/09/11 16:48:52  jayannah
+ to over come build issues
+
  Revision 1.13  2007/09/11 15:33:25  jayannah
  made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
 

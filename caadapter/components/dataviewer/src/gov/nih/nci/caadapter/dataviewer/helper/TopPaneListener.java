@@ -19,8 +19,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-09-11 15:33:25 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-09-13 13:53:56 $
  */
 public class TopPaneListener implements ChangeListener {
     private MainDataViewerFrame mD;
@@ -43,7 +43,7 @@ public class TopPaneListener implements ChangeListener {
                             try {
                                 ((Querypanel) mD.get_tPane().getComponentAt(_int)).get_queryBuilder().setQueryModel(qm);
                             } catch (Exception e) {
-                                System.out.println("No worries!! "+e.getMessage());
+                                System.out.println("No worries!! " + e.getMessage());
                             }
                         }
                     });
@@ -64,7 +64,7 @@ public class TopPaneListener implements ChangeListener {
                         // So, Mr.Thread finished loading; now go and check-mark the columns
                         try {
                             String query = ((Querypanel) mD.get_tPane().getComponentAt(sel)).get_queryBuilder().getQueryModel().toString().toUpperCase();
-                            String returnedQuery = new CaDataViewHelper().processColumns(mD.get_tPane().getTitleAt(sel).substring(0, 2), query, mD.getSaveFile());
+                            String returnedQuery = new CaDataViewHelper(mD, mD.get_tPane().getTitleAt(sel).substring(0, 2)).processColumns( query, mD.getSaveFile());
                             final QueryModel qm2 = SQLParser.toQueryModel(returnedQuery);
                             ((Querypanel) mD.get_tPane().getComponentAt(sel)).get_queryBuilder().setQueryModel(qm2);
                         } catch (IOException e) {
@@ -80,6 +80,9 @@ public class TopPaneListener implements ChangeListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/09/11 15:33:25  jayannah
+ * made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
+ *
  * Revision 1.4  2007/08/16 18:53:55  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

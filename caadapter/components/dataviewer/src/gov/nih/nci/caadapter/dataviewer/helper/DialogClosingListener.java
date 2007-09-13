@@ -17,8 +17,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-09-11 15:33:25 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-09-13 13:53:56 $
  */
 public class DialogClosingListener implements WindowListener {
     private MainDataViewerFrame mainDataViewerFrame = null;
@@ -28,6 +28,7 @@ public class DialogClosingListener implements WindowListener {
     }
 
     public void windowClosing(java.awt.event.WindowEvent evt) {
+
         JOptionPane.showMessageDialog(mainDataViewerFrame.get_jf(), "Please use \"Save & Exit\" button to exit Data Viewer", "Close Data Viewer...", JOptionPane.INFORMATION_MESSAGE);
 //        //check if the sql is modified
 //        boolean needsSave = false;
@@ -191,6 +192,9 @@ public class DialogClosingListener implements WindowListener {
 /*
     Change History
     $Log: not supported by cvs2svn $
+    Revision 1.7  2007/09/11 15:33:25  jayannah
+    made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
+
     Revision 1.6  2007/08/17 15:53:23  jayannah
     cosmetic changes for dialog closing listener
     handled the cancel request from the user., previously it was going back and loading the defing xml which is not required
