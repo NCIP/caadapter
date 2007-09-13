@@ -462,26 +462,28 @@ public class DatatypeProcessor {
     {
     	if (forceGenerate) {
     		if (attr == null) {
-    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attributeName + ", and no default value is defined"});
     			ValidatorResults validatorResults = new ValidatorResults();
     			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     			xmlElement.setValidatorResults(validatorResults);
     			hasDefaultData.setHasUserMappedData(false);
-    		}
-    		if (attr.getDefaultValue()!= null && !attr.getDefaultValue().equals(""))
-    		{
-    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", default data is used instead"});
-    			ValidatorResults validatorResults = new ValidatorResults();
-    			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
-    			xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(),domainName,codingStrength);
-    			xmlElement.setValidatorResults(validatorResults);
     		}
     		else {
-    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
-    			ValidatorResults validatorResults = new ValidatorResults();
-    			validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-    			xmlElement.setValidatorResults(validatorResults);
-    			hasDefaultData.setHasUserMappedData(false);
+    			if (attr.getDefaultValue()!= null && !attr.getDefaultValue().equals(""))
+    			{
+    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", default data is used instead"});
+    				ValidatorResults validatorResults = new ValidatorResults();
+    				validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+    				xmlElement.addAttribute(attributeName, attr.getDefaultValue(), attr.getType(),domainName,codingStrength);
+    				xmlElement.setValidatorResults(validatorResults);
+    			}
+    			else {
+    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No user data is available for the mapping to " + attr.getXmlPath() + ", and no default value is defined"});
+    				ValidatorResults validatorResults = new ValidatorResults();
+    				validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    				xmlElement.setValidatorResults(validatorResults);
+    				hasDefaultData.setHasUserMappedData(false);
+    			}
     		}
     	}
     	else {
