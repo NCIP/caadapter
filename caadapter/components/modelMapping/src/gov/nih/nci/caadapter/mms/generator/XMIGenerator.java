@@ -169,6 +169,11 @@ public class XMIGenerator
 						//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
 						assc.removeTaggedValue( "lazy-load" );
 					}
+					if( tagValue.getName().contains( "correlation-table" ))
+					{
+						//System.out.println( "deleted corr-t" );
+						assc.removeTaggedValue( "correlation-table" );
+					}												
 				}
 			}				
 		}
@@ -376,21 +381,40 @@ public class XMIGenerator
 	    
 	    //Check for dependency, if dependency does not exist, do not save attribute    
 	    UMLClass supplier = null;
-	    for ( UMLDependency dep : model.getDependencies() )
-	    {
-	    	supplier = (UMLClass) dep.getSupplier();
-			StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(supplier));			
-			int lastDot = attribute.getChildText("source").lastIndexOf( "." );								
-			String attr = attribute.getChildText("source").substring( 0, lastDot );	
-			
-			if( attr.equals( pathKey + "." +  supplier.getName() ))
-			{		
-				target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
-			}						
-	    }	
 	    
-	    // Write Tag value
-	    //target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
+	    String sourceAttr = attribute.getChildText("source");
+		int sourceLastDot = attribute.getChildText("source").lastIndexOf( "." );								
+		String sourceClassName = attribute.getChildText("source").substring( 0, sourceLastDot );	
+	    
+	    
+	    supplier = ModelUtil.findClass(model, sourceClassName);
+	    
+	    if (supplier == null) return;
+		target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
+		
+		
+		
+		//Determine corraltionTable
+	    String targetAttr = attribute.getChildText("target");
+	    targetAttr = targetAttr.substring(0, targetAttr.lastIndexOf("."));
+	    
+	    UMLClass targetTable = ModelUtil.findClass(model, targetAttr);
+	    
+	    if (targetTable.getAttributes().size() != 2) return;
+	    String columnName1 = targetAttr + "." + targetTable.getAttributes().get(0).getName();
+		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
+		UMLAssociation umlAssociation = cumulativeMappingGenerator.getAssociationFromColumn(columnName1);
+		if (umlAssociation == null) return;
+		
+	    String columnName2 = targetAttr + "." + targetTable.getAttributes().get(1).getName();
+		umlAssociation = cumulativeMappingGenerator.getAssociationFromColumn(columnName2);
+		if (umlAssociation == null) return;
+	    
+		if (umlAssociation.getTaggedValue("correlation-table")== null) 
+		{
+		    targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());	   
+			umlAssociation.addTaggedValue("correlation-table", targetAttr);
+		}
 	}
 	
 	/**
