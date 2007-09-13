@@ -25,8 +25,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.15 $
- *          $Date: 2007-09-13 13:53:56 $
+ *          $Revision: 1.16 $
+ *          $Date: 2007-09-13 14:07:59 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -260,11 +260,11 @@ public class MainDataViewerFrame {
                 Enumeration en = null;
                 try {
                     en = sqlTables.keys();
+                    while (en.hasMoreElements()) {
+                        String domainName = (String) en.nextElement();
+                        sqlSaveHashMap.put(domainName, sqlTables.get(domainName));
+                    }
                 } catch (Exception e) {
-                }
-                while (en.hasMoreElements()) {
-                    String domainName = (String) en.nextElement();
-                    sqlSaveHashMap.put(domainName, sqlTables.get(domainName));
                 }
             }
         }
@@ -277,6 +277,9 @@ public class MainDataViewerFrame {
 /**
  Change History
  $Log: not supported by cvs2svn $
+ Revision 1.15  2007/09/13 13:53:56  jayannah
+ Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
+
  Revision 1.14  2007/09/11 16:48:52  jayannah
  to over come build issues
 
