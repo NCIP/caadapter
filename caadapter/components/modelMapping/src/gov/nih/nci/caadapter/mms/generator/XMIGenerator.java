@@ -581,7 +581,7 @@ public class XMIGenerator
         if( column != null)
 		{
             System.out.println("Added a CLOB: " + cKey);
-            column.addTaggedValue( "type", cKey );
+            column.addTaggedValue( "type", "CLOB" );
         }
 	}
 

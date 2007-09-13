@@ -98,14 +98,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.21 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.22 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.21 2007-09-13 18:53:40 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.22 2007-09-13 20:48:31 schroedn Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -817,7 +817,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                     }
                     if( tagValue.getName().contains( "type" ) )
                     {
-                        clobKeys.add( tagValue.getValue() );
+                        if( tagValue.getValue().equals( "CLOB") )
+                        {
+                            String fieldName = clazz.getName() + "." + att.getName();
+                            System.out.println("fieldName " + fieldName );
+                            clobKeys.add( fieldName );                            
+                        }
                     }
                 }
 			}		
@@ -1276,6 +1281,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.21  2007/09/13 18:53:40  wuye
+ * HISTORY : Code re-org
+ * HISTORY :
  * HISTORY : Revision 1.20  2007/09/13 14:20:15  schroedn
  * HISTORY : Changes the graphics for Clob/Lazy/Eager/Discriminator
  * HISTORY :
