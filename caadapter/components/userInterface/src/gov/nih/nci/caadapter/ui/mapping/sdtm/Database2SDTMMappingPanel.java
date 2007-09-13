@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.18 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.19 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.18 2007-09-11 15:31:42 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.19 2007-09-13 13:51:41 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -308,8 +308,11 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                 File file = DefaultSettings.getUserInputOfFileFromGUI(this, ".xml", "Open SDTM Structure file ...", false, false);
                 if (file != null) {
                     buildTargetTree(null, file, true);
+                    openTargetButton.setEnabled(false);
+                } else {
+                    openTargetButton.setEnabled(true);                    
                 }
-                openTargetButton.setEnabled(false);
+
             } else if (OPENDB.equalsIgnoreCase(command)) {
                 isDataBase = true;
                 final Dialog _queryWaitDialog = new Dialog(_mainFrame);
@@ -336,7 +339,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                 }).start();
                 _queryWaitDialog.setTitle("Connection in Progress");
                 _queryWaitDialog.setSize(350, 100);
-                _queryWaitDialog.setLocation(450, 450);
+                _queryWaitDialog.setLocationRelativeTo(null);
                 _queryWaitDialog.setLayout(new BorderLayout());
                 LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
                 JPanel _waitLabel = new JPanel();
@@ -824,6 +827,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/09/11 15:31:42  jayannah
+ * made changes to pass the instance of the entire panel when the data viewer is opened
+ *
  * Revision 1.17  2007/08/31 21:22:27  jayannah
  * commented sysouts
  *

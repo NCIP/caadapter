@@ -2,28 +2,25 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
+import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
+import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -33,14 +30,11 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-09-11 16:49:16 $
+ *          $Revision: 1.12 $
+ *          $Date: 2007-09-13 13:51:41 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
-    private HashMap beforeSaveList;
-    private HashMap afterSaveList;
-    private HashMap linksAddedList;
-    private HashMap linksDeletedList;
+    private MainDataViewerFrame _mD = null;
     /**
      * Logging constant used to identify source of log entry, that could be later used to create logging mechanism to uniquely identify the logged class.
      */
@@ -51,7 +45,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.11 2007-09-11 16:49:16 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.12 2007-09-13 13:51:41 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -109,30 +103,12 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
     java.util.HashMap addedList, deletedList, updatedList;
     ArrayList removeBeforeAfterList;
 
-    protected boolean processSaveFile(File file) throws Exception {
-        updatedList = new HashMap();
-        addedList = new HashMap();
-        deletedList = new HashMap();
-        removeBeforeAfterList = new ArrayList();
+    protected boolean processSaveFile(final File file) throws Exception {
         preActionPerformed(mappingPanel);
         BufferedOutputStream bw = null;
         boolean oldChangeValue = mappingPanel.isChanged();
-        /**
-         * Design Rationale to workaround not opening the dataviewer
-         * 1.) If the map file has sql statements in it make a backup
-         * 2.) The user now makes additional links and hit on save
-         * 3.) The user refuses to open dataviewer by clicking on no to the prompt
-         * 4.) Now, write a method to check if any links are added or deleted (Update is also taken care automatically)         *
-         */
         try {
-            //if (checkIfSQLExists(file)) {
-                createBeforeSaveList(file);
-            //}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            StringBuffer out = new StringBuffer();
+            final StringBuffer out = new StringBuffer();
             out.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
             out.append("<mapping>\n");
             out.append("  <components>\n");
@@ -164,6 +140,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
             mappingPanel.setChanged(false);
             // try to notify affected panels
             postActionPerformed(mappingPanel);
+            final TitledBorder _title = BorderFactory.createTitledBorder("Generating SQL");
             if (!alreadySaved) {
                 Object[] options = {"Yes", "No"};
                 int n;
@@ -171,38 +148,63 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                     //so the map file is saved successfully; now go enable the transform and dataviewer button just because a save file exists(*.map)
                     ((Database2SDTMMappingPanel) mappingPanel).get_commonBut().setEnabled(true);
                     //
-                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getAbsolutePath() + " is saved successfully \n Do you want to open the SQL Query builder using the \" " + file.getName() + " \" file", "Open query builder", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getAbsolutePath() + " is saved successfully \n Do you want to open the SQL Query builder using the \" " + file.getName() + " \" file", "Open query builder", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (n == 0) {
                         //parse the mapping file
                         OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), file, out.toString());
                     } else {
                         // the USER CHOSE NOT TO OPEN THE DATA VIEWER DARN!!!!!
-                        createAfterSaveList(file);
-                        // Now compare the two file and spit out a list for comparison purposes
-                        Set set = afterSaveList.keySet();
-                        for (Iterator iterator = set.iterator(); iterator.hasNext();) {
-                            String afterKey = (String) iterator.next();
-                            if (beforeSaveList.containsKey(afterKey)) {
-                                String afterValue = (String) afterSaveList.get(afterKey);
-                                String beforeValue = (String) beforeSaveList.get(afterKey);
-                                if (afterValue.equals(beforeValue)) {
-                                    removeBeforeAfterList.add(afterKey);
-                                } else {
-                                    updatedList.put(afterKey, afterValue);
+                        final Dialog d = new Dialog(mainFrame, "SQL Query", true);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                try {
+                                    _mD = new MainDataViewerFrame(((Database2SDTMMappingPanel) mappingPanel).isOpenDBmap(), null, (Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out.toString(), null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut(), true);
+                                    saveAndCloseDataViewer();
+                                    _mD.get_jf().dispose();
+                                    Thread.sleep(1000);
+                                } catch (Exception e) {
+                                    d.dispose();
+                                    JOptionPane.showMessageDialog(mainFrame, e.getMessage().toString(), "Unknown Problem...", JOptionPane.ERROR_MESSAGE);
                                 }
+                                JPanel resPan = new JPanel();
+                                resPan.setLayout(new BorderLayout());
+                                resPan.setBorder(new TitledBorder(new LineBorder(Color.black, 1), "Generating SQL"));
+                                JButton okBut = new JButton("OK");
+                                okBut.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                        d.dispose();
+                                    }
+                                });
+                                JPanel labelPane = new JPanel();
+                                JLabel label = new JLabel("The file \"" + file.getAbsolutePath() + "\" has been successfully saved");
+                                label.setFont(new Font("SansSerif", Font.BOLD, 16));
+                                labelPane.add(label);
+                                resPan.add(labelPane, BorderLayout.CENTER);
+                                JPanel butPan = new JPanel();
+                                butPan.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+                                butPan.add(okBut);
+                                resPan.add(butPan, BorderLayout.SOUTH);
+                                d.add(resPan);
+                                d.validate();
                             }
-                        }
-                        //remove the common keys in the before and after hashmap
-                        for (int i = 0; i < removeBeforeAfterList.size(); i++) {
-                            beforeSaveList.remove(removeBeforeAfterList.get(i));
-                            afterSaveList.remove(removeBeforeAfterList.get(i));
-                        }
-                        //left over keys in the before are deleted;left over keys in the after are added 
-                        System.out.println("deleted stuff are " + beforeSaveList);
-                        System.out.println("added stuff are " + afterSaveList);
-                        System.out.println("updated stuff are " + updatedList);
+                        });
+                        JPanel pane = new JPanel();
+                        pane.setBorder(new TitledBorder(new LineBorder(Color.black, 1), "Generating SQL"));
+                        //pane.setLayout(new GridLayout(0, 1));
+                        pane.setLayout(new BorderLayout());
+                        JLabel _jl = new JLabel("SQL(s) are now being Generated, please wait.....");
+                        _jl.setFont(new Font("SansSerif", Font.BOLD, 16));
+                        JPanel labelPane = new JPanel();
+                        labelPane.add(_jl, BorderLayout.CENTER);
+                        pane.add(labelPane, BorderLayout.CENTER);
+                        d.add(pane, BorderLayout.CENTER);
+                        d.setUndecorated(true);
+                        //d.setLocationRelativeTo(null);// this will cause the window to position centre of screen
+                        d.setLocation(350, 420);
+                        d.setAlwaysOnTop(true);
+                        d.setSize(550, 120);
+                        d.setVisible(true);
                     }
-                    //alreadySaved = true;
                 }
             }
             return true;
@@ -259,7 +261,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         (new Thread() {
             public void run() {
                 try {
-                    new MainDataViewerFrame(((Database2SDTMMappingPanel)mappingPanel).isOpenDBmap(), d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut());
+                    new MainDataViewerFrame(((Database2SDTMMappingPanel) mappingPanel).isOpenDBmap(), d, list, cols, ((Database2SDTMMappingPanel) mappingPanel).getConnectionParameters(), file, out, null, ((Database2SDTMMappingPanel) mappingPanel).getTransFormBut(), false);
                 } catch (Exception e) {
                     d.dispose();
                     JOptionPane.showMessageDialog(mainFrame, e.getMessage().toString(), "Could not open the Querybuilder", JOptionPane.ERROR_MESSAGE);
@@ -280,67 +282,126 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         d.setVisible(true);
     }
 
-    private boolean checkIfSQLExists(File mapFileName) throws Exception {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse(mapFileName);
-        NodeList compLinkNodeList = doc.getElementsByTagName("sql");
-        System.out.println(compLinkNodeList.getLength());
-        if (compLinkNodeList.getLength() > 0)
-            return true;
-        else
-            return false;
+    private void saveAndCloseDataViewer() {
+        _mD.getDialog().removeAll();
+        BufferedWriter out = null;
+        try {
+            if (_mD.getSaveFile().exists())
+                _mD.getSaveFile().delete();
+            out = new BufferedWriter(new FileWriter(_mD.getSaveFile()));
+            //remove the all sql elements
+            String tempStr = removeSQLElements(_mD.getXmlString());
+            //remove all sql elements
+            out.write(tempStr);
+            out.append("\n</mapping>");
+            //closing because the user clicked save and exit; so, LOADING and MARKING all columns
+            out.close();
+            try {
+                int numberOfTabs = _mD.get_tPane().getTabCount();
+                for (int i = 0; i < numberOfTabs; i++) {
+                    _mD.get_tPane().setSelectedIndex(i);
+                    Thread.sleep(2000);  // 2 secs
+                    loadTablesQuietly();
+                    Thread.sleep(3000);  // 3 secs
+                    String _sqlSTR = (((Querypanel) _mD.get_aryList().get(i)).get_queryBuilder()).getQueryModel().toString().toUpperCase();
+                    String domainName = _mD.get_tPane().getTitleAt(i).substring(0, 2);
+                    String saveSQLForMapFile = markSelectedColumns(domainName, _sqlSTR);
+                    _mD.getSqlSaveHashMap().put(domainName, saveSQLForMapFile);
+                }
+            } catch (Exception e) {
+            }
+            BufferedWriter out1 = new BufferedWriter(new FileWriter(_mD.getSaveFile()));
+            out1.write(tempStr);
+            Set set = _mD.getSqlSaveHashMap().keySet();
+            for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+                String domainName = (String) iterator.next();
+                //String sql4Domain = (String) _mD.getSqlSaveHashMap().get(domainName);
+                String sql4Domain = (String) _mD.getSqlListWODataViewer().get(domainName);
+                out1.write("\n<sql name=\"" + domainName + "\">");
+                out1.write("" + sql4Domain);
+                out1.write("</sql>");
+            }
+            out1.append("\n</mapping>");
+            out1.close();
+        } catch (
+                IOException ee) {
+            ee.printStackTrace();
+            JOptionPane.showMessageDialog(_mD.get_jf(), "The file \"" + _mD.getSaveFile().getName() + "\" was not saved dure to " + ee.getLocalizedMessage(), "Mapping file is not saved", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    private void createBeforeSaveList(File mapFileName) throws Exception {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse(mapFileName);
-        NodeList linkNodeList = doc.getElementsByTagName("link");
-        beforeSaveList = new HashMap();
-        for (int s = 0; s < linkNodeList.getLength(); s++) {
-            Node node = linkNodeList.item(s);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element firstPersonElement = (Element) node;
-                NodeList targetNode = firstPersonElement.getElementsByTagName("target");
-                Element targetName = (Element) targetNode.item(0);
-                NodeList textLNList = targetName.getChildNodes();
-                String _targetName = ((Node) textLNList.item(0)).getNodeValue().trim();
-                NodeList sourceNode = firstPersonElement.getElementsByTagName("source");
-                Element sourceName = (Element) sourceNode.item(0);
-                NodeList textFNList = sourceName.getChildNodes();
-                String _srcNodeVal = ((Node) textFNList.item(0)).getNodeValue().trim();
-                beforeSaveList.put(_targetName, _srcNodeVal);
-            }// end of if clause
-        }// end of for loop with s var
+    private String removeSQLElements(String xmlStr) {
+        if (xmlStr.indexOf("<sql") > 0) {
+            int beginSQL = xmlStr.indexOf("<sql");
+            xmlStr = xmlStr.substring(0, beginSQL);
+            return xmlStr;
+        } else {
+            return xmlStr;
+        }
     }
 
-    private void createAfterSaveList(File mapFileName) throws Exception {
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = docBuilder.parse(mapFileName);
-        NodeList linkNodeList = doc.getElementsByTagName("link");
-        afterSaveList = new HashMap();
-        for (int s = 0; s < linkNodeList.getLength(); s++) {
-            Node node = linkNodeList.item(s);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element firstPersonElement = (Element) node;
-                NodeList targetNode = firstPersonElement.getElementsByTagName("target");
-                Element targetName = (Element) targetNode.item(0);
-                NodeList textLNList = targetName.getChildNodes();
-                String _targetName = ((Node) textLNList.item(0)).getNodeValue().trim();
-                NodeList sourceNode = firstPersonElement.getElementsByTagName("source");
-                Element sourceName = (Element) sourceNode.item(0);
-                NodeList textFNList = sourceName.getChildNodes();
-                String _srcNodeVal = ((Node) textFNList.item(0)).getNodeValue().trim();
-                afterSaveList.put(_targetName, _srcNodeVal);
-            }// end of if clause
-        }// end of for loop with s var
+    private void loadTablesQuietly() {
+        HashSet tableLoad = new HashSet();
+        ArrayList tableList = (ArrayList) _mD.getTabsForDomains().get(_mD.get_tPane().getTitleAt(0).substring(0, 2));
+        for (int i = 0; i < tableList.size(); i++) {
+            StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
+            String schema = temp.nextElement().toString();
+            String table1 = temp.nextElement().toString();
+            try {
+                if (tableLoad.add(table1))
+                    ((Querypanel) _mD.get_aryList().get(0)).loadTables(schema, table1);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //throw e;
+            }
+        }
+    }
+
+    private void loadTablesQuietly(int position) {
+        HashSet tableLoad = new HashSet();
+        ArrayList tableList = (ArrayList) _mD.getTabsForDomains().get(_mD.get_tPane().getTitleAt(position).substring(0, 2));
+        for (int i = 0; i < tableList.size(); i++) {
+            StringTokenizer temp = new StringTokenizer(tableList.get(i).toString(), ".");
+            String schema = temp.nextElement().toString();
+            String table1 = temp.nextElement().toString();
+            try {
+                if (tableLoad.add(table1))
+                    ((Querypanel) _mD.get_aryList().get(position)).loadTables(schema, table1);
+            } catch (Exception e) {
+                e.printStackTrace();
+                //throw e;
+            }
+        }
+    }
+
+    private String markSelectedColumns(String domainName, String queryFromQueryPanel) {
+        String returnedQuery = new CaDataViewHelper(_mD, domainName).processColumns(queryFromQueryPanel, _mD.getSaveFile());
+        return returnedQuery;
+    }
+
+    public static void centerWindow(Window frame) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = frame.getSize();
+        frame.setLocation(screenSize.width / 2 - (frameSize.width / 2), screenSize.height / 2 - (frameSize.height / 2));
+    }
+
+    private String trimExtraTables(String SQLStmt) {
+        HashSet _set = new HashSet();
+        String subStr = SQLStmt.substring(SQLStmt.indexOf("FROM"));
+        EmptyStringTokenizer empt = new EmptyStringTokenizer(subStr, ",");
+        while (empt.hasMoreTokens()) {
+            _set.add(empt.nextToken());
+        }
+        int last = _set.toString().indexOf("]");
+        return _set.toString().substring(1, last);
     }
 }
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/09/11 16:49:16  jayannah
+ * to over come build issues
+ *
  * Revision 1.10  2007/09/11 15:31:01  jayannah
  * added code to hold the previous values and the condition when the user does not choose to go thro the data viewer
  *
