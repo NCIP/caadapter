@@ -33,14 +33,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.13 $
- * @date $Date: 2007-09-11 17:57:25 $
+ * @version $Revision: 1.14 $
+ * @date $Date: 2007-09-13 14:01:19 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.13 2007-09-11 17:57:25 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.14 2007-09-13 14:01:19 wuye Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -232,7 +232,7 @@ public class TransformationService
         {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file!"});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-        	System.out.println("Error parsing csv Data");
+        	System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
             return null;
         }
 
@@ -262,7 +262,7 @@ public class TransformationService
         
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
 //    	HL7V3MessageValidator validator = new HL7V3MessageValidator();
-        for(XMLElement xmlElement:xmlElements) 
+/*        for(XMLElement xmlElement:xmlElements) 
         {
         	System.out.println("Message:"+xmlElement.toXML());
 //        	xmlElement.validate();
@@ -276,7 +276,7 @@ public class TransformationService
         	System.out.println("XML validation results:");
 //        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
 //        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
-        }
+        }*/
         System.out.println("total message" + xmlElements.size());
         return xmlElements;
    }
@@ -380,6 +380,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2007/09/11 17:57:25  wuye
+ * HISTORY      : Added error message when map or csv file is wrong
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2007/09/06 15:09:27  wangeug
  * HISTORY      : refine codes
  * HISTORY      :
