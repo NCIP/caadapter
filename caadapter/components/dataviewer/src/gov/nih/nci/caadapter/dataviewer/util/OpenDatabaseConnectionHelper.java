@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.6 $
- *          $Date: 2007-08-28 14:47:18 $
+ *          $Revision: 1.7 $
+ *          $Date: 2007-09-13 02:48:19 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -78,7 +78,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         dialog.setUndecorated(true);
         Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         dialog.setSize(700, 330);
-        dialog.setLocation(290, 300);
+        dialog.setLocationRelativeTo(null);
         JPanel superpanel = new JPanel();
         JPanel p1 = new JPanel();
         p1.setLayout(new GridLayout(7, 2));
@@ -667,6 +667,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/08/28 14:47:18  jayannah
+ * added a todo comment
+ *
  * Revision 1.5  2007/08/17 15:53:24  jayannah
  * cosmetic changes for dialog closing listener
  * handled the cancel request from the user., previously it was going back and loading the defing xml which is not required
