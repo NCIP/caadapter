@@ -42,10 +42,10 @@ import java.util.Iterator;
  * The class helps as a helper during transformation
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.13 $
- *          $Date: 2007-09-07 19:29:34 $
+ *          $Revision: 1.14 $
+ *          $Date: 2007-09-13 15:37:42 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -130,13 +130,18 @@ public class QBTransformAction {
         directoryLoc.setDialogTitle("Transforming file " + mapFile + ", please choose directory..");
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = directoryLoc.showOpenDialog(_mainFrame);
-        if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
-            fixedLengthIndicator = true;
-            CSVMapFileReader csvMapFileReader = new CSVMapFileReader(new File(mapFile));
-            //Prepare the list here and keep it ready so that number of blanks corresponding to the
-            //value set by the user will be applied appropriately
-            RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(_mainFrame, csvMapFileReader.getTargetKeyList());
-            fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
+        try {
+            if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
+                fixedLengthIndicator = true;
+                CSVMapFileReader csvMapFileReader = new CSVMapFileReader(new File(mapFile));
+                //Prepare the list here and keep it ready so that number of blanks corresponding to the
+                //value set by the user will be applied appropriately
+                RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(_mainFrame, csvMapFileReader.getTargetKeyList());
+                fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
+            }
+        } catch (Exception e) {
+            // the .preferences file was not found
+            
         }
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             directory = directoryLoc.getSelectedFile();
@@ -357,6 +362,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/09/07 19:29:34  wangeug
+ * relocate readPreference and savePreference methods
+ *
  * Revision 1.12  2007/08/31 21:10:28  jayannah
  * handled user cancel during the password input and transformation
  *
