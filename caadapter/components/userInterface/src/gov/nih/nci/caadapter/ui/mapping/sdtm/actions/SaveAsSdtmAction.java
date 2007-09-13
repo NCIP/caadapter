@@ -30,8 +30,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.12 $
- *          $Date: 2007-09-13 13:51:41 $
+ *          $Revision: 1.13 $
+ *          $Date: 2007-09-13 14:11:16 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -45,7 +45,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.12 2007-09-13 13:51:41 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.13 2007-09-13 14:11:16 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -313,6 +313,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
             BufferedWriter out1 = new BufferedWriter(new FileWriter(_mD.getSaveFile()));
             out1.write(tempStr);
             Set set = _mD.getSqlSaveHashMap().keySet();
+            out1.write("<!-- PLEASE DO NOT MODIFY THE SQL STATEMENTS BELOW-->");
             for (Iterator iterator = set.iterator(); iterator.hasNext();) {
                 String domainName = (String) iterator.next();
                 //String sql4Domain = (String) _mD.getSqlSaveHashMap().get(domainName);
@@ -399,6 +400,9 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/09/13 13:51:41  jayannah
+ * Changes made to ensure that flow is correct, the save , reopen etc
+ *
  * Revision 1.11  2007/09/11 16:49:16  jayannah
  * to over come build issues
  *

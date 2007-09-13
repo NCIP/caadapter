@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.6 $
- *          $Date: 2007-09-13 13:53:56 $
+ *          $Revision: 1.7 $
+ *          $Date: 2007-09-13 14:11:15 $
  */
 public class ToolBarAction implements ActionListener {
     MainDataViewerFrame _mD;
@@ -49,11 +49,10 @@ public class ToolBarAction implements ActionListener {
                 _mD.getQbAddButtons().getSaveButton().setEnabled(true);
             }
         } else if (cmd.equals("exitwithoutsave")) {
-             Object[] options = {"OK", "Cancel"};
-             int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue.?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    if (n == 0) {
-
-                    }
+            Object[] options = {"OK", "Cancel"};
+            int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue.?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (n == 0) {
+            }
             _mD.get_jf().dispose();
         } else if (cmd.equalsIgnoreCase("Exit")) {
             _mD.getDialog().removeAll();
@@ -102,6 +101,7 @@ public class ToolBarAction implements ActionListener {
                 BufferedWriter out1 = new BufferedWriter(new FileWriter(_mD.getSaveFile()));
                 out1.write(tempStr);
                 Set set = _mD.getSqlSaveHashMap().keySet();
+                out1.write("<!-- PLEASE DO NOT MODIFY THE SQL STATEMENTS BELOW-->");
                 for (Iterator iterator = set.iterator(); iterator.hasNext();) {
                     String domainName = (String) iterator.next();
                     String sql4Domain = (String) _mD.getSqlSaveHashMap().get(domainName);
@@ -387,6 +387,9 @@ public class ToolBarAction implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/09/13 13:53:56  jayannah
+ * Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
+ *
  * Revision 1.5  2007/09/11 15:33:25  jayannah
  * made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
  *
