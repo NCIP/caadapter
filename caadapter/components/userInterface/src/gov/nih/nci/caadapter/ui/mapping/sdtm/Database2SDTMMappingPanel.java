@@ -59,11 +59,11 @@ import java.util.Map;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.19 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.20 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.19 2007-09-13 13:51:41 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.20 2007-09-13 14:41:38 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -82,6 +82,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
     private JButton transformBut = null;
     private JButton _commonBut = null;
     private boolean isDataBase = false;
+    private boolean connectException = false;
 
     public JButton get_dbCon() {
         return _dbCon;
@@ -310,9 +311,8 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                     buildTargetTree(null, file, true);
                     openTargetButton.setEnabled(false);
                 } else {
-                    openTargetButton.setEnabled(true);                    
+                    openTargetButton.setEnabled(true);
                 }
-
             } else if (OPENDB.equalsIgnoreCase(command)) {
                 isDataBase = true;
                 final Dialog _queryWaitDialog = new Dialog(_mainFrame);
@@ -325,7 +325,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
                             if (!_openDatabaseConnectionHelper.isCancelled()) {
                                 connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
                                 processOpenSourceTree(null, true, true);
-                                _dbCon.setEnabled(false);
+                                _dbCon.setEnabled(connectException);
                             } else {
                                 _dbCon.setEnabled(true);
                                 openSCSButton.setEnabled(true);
@@ -458,6 +458,8 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
             ary = DBConnector.getSchemaCollection(connectionParameters);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(_mainFrame, "         " + e.getMessage().toString() + "                 ", "Could not connect to Database : " + connectionParameters.get("URL").toString(), JOptionPane.ERROR_MESSAGE);
+            connectException = true;
+            openSCSButton.setEnabled(true);
         }
         DefaultMutableTreeNode pNode = null;
         DefaultSourceTreeNode tableNode = null;
@@ -827,6 +829,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2007/09/13 13:51:41  jayannah
+ * Changes made to ensure that flow is correct, the save , reopen etc
+ *
  * Revision 1.18  2007/09/11 15:31:42  jayannah
  * made changes to pass the instance of the entire panel when the data viewer is opened
  *
