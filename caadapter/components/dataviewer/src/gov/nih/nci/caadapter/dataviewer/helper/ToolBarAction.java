@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-09-13 14:11:15 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-09-13 14:26:28 $
  */
 public class ToolBarAction implements ActionListener {
     MainDataViewerFrame _mD;
@@ -50,10 +50,11 @@ public class ToolBarAction implements ActionListener {
             }
         } else if (cmd.equals("exitwithoutsave")) {
             Object[] options = {"OK", "Cancel"};
-            int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue.?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue.?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
             if (n == 0) {
+                  _mD.get_jf().dispose();
             }
-            _mD.get_jf().dispose();
+
         } else if (cmd.equalsIgnoreCase("Exit")) {
             _mD.getDialog().removeAll();
             BufferedWriter out = null;
@@ -387,6 +388,9 @@ public class ToolBarAction implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/09/13 14:11:15  jayannah
+ * Added a comment to the map file for the user not to change the sql statements
+ *
  * Revision 1.6  2007/09/13 13:53:56  jayannah
  * Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
  *
