@@ -340,6 +340,7 @@ public class ModelMetadata {
 	        colPathKey.append(".");
 	        colPathKey.append(att.getName());
 	        attMetadata.setXPath(colPathKey.toString());
+	        attMetadata.setTableMetadata(object);
 	        sortedModel.add(attMetadata);
 //	        System.out.println("xxxxxxxxxxxxxxx COLUMN: " + colPathKey);
 	  }

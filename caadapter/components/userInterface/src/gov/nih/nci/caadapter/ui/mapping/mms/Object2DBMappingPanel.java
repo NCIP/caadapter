@@ -101,13 +101,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.23 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.24 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.23 2007-09-13 21:39:32 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.24 2007-09-14 15:06:25 wuye Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -1152,115 +1152,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 	}
 
-    private class MMSRendererPK extends DefaultTreeCellRenderer
-	{
-	  // this control comes here
-	    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
-	    {
-	        super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-            ImageIcon tutorialIcon;
-
-            ModelMetadata modelMetadata = ModelMetadata.getInstance();
-            HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
-
-            try
-            {
-                String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
-
-                if (_tmpStr.equalsIgnoreCase("Object Model"))
-                {
-                    tutorialIcon = createImageIcon("schema.png");
-                    setIcon(tutorialIcon);
-                    setToolTipText("Data model");
-                }
-                return this;
-	        } catch (Exception e)
-	        {
-	        	//continue
-	        }
-            
-            try
-            {
-                if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AttributeMetadata )
-                {
-                    gov.nih.nci.caadapter.mms.metadata.AttributeMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AttributeMetadata) ((DefaultSourceTreeNode) value).getUserObject();
-                    System.out.println("attMeta" + attMeta );
-                    boolean primaryKeyFound = false;
-
-                    for( String key : primaryKeys )
-                    {
-                       if ( attMeta.getXPath().contains( key ))
-                       {
-                           System.out.println("Found a Primary Key " + key );
-                           primaryKeyFound = true;
-                       }
-
-                    }
-
-                    if ( primaryKeyFound ) {
-                        tutorialIcon = createImageIcon("bullet_key.png");
-                        setIcon(tutorialIcon);
-                        setToolTipText("Primary");
-                    }
-                }
-                if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AssociationMetadata )
-                {
-                    gov.nih.nci.caadapter.mms.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
-                    System.out.println("attMeta" + attMeta );
-                    boolean primaryKeyFound = false;
-
-                    for( String key : primaryKeys )
-                    {
-                       if ( attMeta.getXPath().contains( key ))
-                       {
-                           System.out.println("Found a Primary Key " + key );
-                           primaryKeyFound = true;
-                       }
-
-                    }
-                    if ( primaryKeyFound ) {
-                        tutorialIcon = createImageIcon("bullet_key.png");
-                        setIcon(tutorialIcon);
-                        setToolTipText("Primary");
-                    }
-                }
-                if( ((DefaultMutableTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AssociationMetadata )
-                {
-                    gov.nih.nci.caadapter.mms.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
-                    System.out.println("attMeta" + attMeta );
-                    boolean primaryKeyFound = false;
-
-                    for( String key : primaryKeys )
-                    {
-                       if ( attMeta.getXPath().contains( key ))
-                       {
-                           System.out.println("Found a Primary Key " + key );
-                           primaryKeyFound = true;
-                       }
-
-                    }
-                    if ( primaryKeyFound ) {
-                        tutorialIcon = createImageIcon("bullet_key.png");
-                        setIcon(tutorialIcon);
-                        setToolTipText("Primary");
-                    }
-                }
-            } catch (Exception eee )
-            {
-//                try
-//                {
-//                    //String queryBuilderMeta = (String) ((DefaultSourceTreeNode) value).getUserObject();
-//                    tutorialIcon = createImageIcon("load.gif");
-//                    setIcon(tutorialIcon);
-//                } catch (Exception e1)
-//                {
-//                    setToolTipText(null);
-//                }
-            }
-
-            return this;
-        }
-    }
 
 
 	/**
@@ -1284,6 +1175,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.23  2007/09/13 21:39:32  wuye
+ * HISTORY : change arraylist to hashmap
+ * HISTORY :
  * HISTORY : Revision 1.22  2007/09/13 20:48:31  schroedn
  * HISTORY : CLob, Discriminator, Lazy/Eager
  * HISTORY :

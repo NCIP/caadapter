@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.5 2007-09-11 20:27:03 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.6 2007-09-14 15:06:57 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,6 +50,7 @@ import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -74,10 +75,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-09-11 20:27:03 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-09-14 15:06:57 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -93,7 +94,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.5 2007-09-11 20:27:03 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.6 2007-09-14 15:06:57 wuye Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -541,9 +542,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 
         //Could change this depending on whether lazy/eager
     	ModelMetadata modelMetadata = ModelMetadata.getInstance();    	
-    	List<String> lazyKeys = modelMetadata.getLazyKeys();
-    	List<String> clobKeys = modelMetadata.getClobKeys();
-        List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
+    	HashSet<String> clobKeys = modelMetadata.getClobKeys();
+    	HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
         JTree targetTree = mappingPanel.getTargetTree();
 		TreePath leadingPath = targetTree.getLeadSelectionPath();														
@@ -636,6 +637,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/09/11 20:27:03  schroedn
+ * HISTORY      : CLob, Discriminator, Lazy/Eager
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/09/05 15:15:47  schroedn
  * HISTORY      : Added icons to PK and Lazy/Eager
  * HISTORY      :

@@ -4,6 +4,7 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class DiscriminatorAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: DiscriminatorAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.3 2007-09-14 14:06:40 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.4 2007-09-14 15:07:37 wuye Exp $";
 
 	private static final String COMMAND_NAME = "Set as Disciminator";
 	private static final Character COMMAND_MNEMONIC = new Character('D');
@@ -80,9 +81,11 @@ public class DiscriminatorAction extends AbstractContextAction {
 
 								TreePath paths[] = targetTree.getSelectionPaths();
 								DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
-								DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
-                            
-                                discriminatorKeys.add( node );
+//								DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
+//                            
+//                                discriminatorKeys.add( node );
+//                                ((TableMetadata)parent.getUserObject()).setHasDiscriminator(true);
+//								This is done in MMSRender
 						}
 
 				    	if(discriminatorKeys != null ) {
@@ -117,6 +120,25 @@ public class DiscriminatorAction extends AbstractContextAction {
 			        {
 			        	System.out.println( "Removing Discriminator..." );
 			        	discriminatorKeys.remove( parseNode( leadingPath.toString() ) );
+
+			        	DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
+						DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
+						
+						boolean hasD = false;
+						for (String name: discriminatorKeys)
+						{
+							if (name.startsWith(((TableMetadata)parent.getUserObject()).getName()+ "."))
+							{
+								hasD = true;
+								break;
+							}
+						}
+						
+						if (!hasD)
+						{
+                            ((TableMetadata)parent.getUserObject()).setHasDiscriminator(false);
+
+						}
 			        }
 
                     modelMetadata.setDiscriminatorKeys( discriminatorKeys );

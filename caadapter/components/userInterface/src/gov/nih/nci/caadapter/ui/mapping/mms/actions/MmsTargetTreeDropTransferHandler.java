@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/MmsTargetTreeDropTransferHandler.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/MmsTargetTreeDropTransferHandler.java,v 1.2 2007-09-14 15:06:13 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,8 @@ package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
+import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -63,10 +65,10 @@ import java.util.ArrayList;
  * This class handles drop-related data manipulation for target tree on the mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:57 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-14 15:06:13 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -172,6 +174,17 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 			MappableNode mappableNode = (MappableNode) targetNode;
 			if(mappableNode.isMapped())
 			{
+				if (targetNode.getUserObject() instanceof TableMetadata) 
+				{
+					TableMetadata tm = (TableMetadata)(targetNode.getUserObject());
+					if (tm.hasDiscriminator()) return true;
+					else return false;
+				}
+				if (targetNode.getUserObject() instanceof ColumnMetadata)
+				{
+					if (((ColumnMetadata)(targetNode.getUserObject())).getTableMetadata().hasDiscriminator()) return true;
+					else return false;
+				}
 				return false;
 			}
 		}
@@ -339,6 +352,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2006/11/14 15:24:35  wuye
  * HISTORY      : Added validation funcationality
  * HISTORY      :

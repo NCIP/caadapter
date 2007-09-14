@@ -19,6 +19,7 @@ public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 	private String name;
 	private String type = "normal";
 	private String xPath;
+	private boolean hasDiscriminator = false;
 
 	public TableMetadata(){
 	}
@@ -167,5 +168,19 @@ public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 			}
 		}
 		return columnMetadata;
+	}
+
+	/**
+	 * @return the hasDiscriminator
+	 */
+	public boolean hasDiscriminator() {
+		return hasDiscriminator;
+	}
+
+	/**
+	 * @param hasDiscriminator the hasDiscriminator to set
+	 */
+	public void setHasDiscriminator(boolean hasDiscriminator) {
+		this.hasDiscriminator = hasDiscriminator;
 	}
 }

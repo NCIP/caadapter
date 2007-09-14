@@ -78,7 +78,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
         {
             try
             {
-                gov.nih.nci.caadapter.mms.metadata.ColumnMetadata queryBuilderMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
+                gov.nih.nci.caadapter.mms.metadata.ColumnMetadata discriminatorColumnMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
                 //System.out.println("Column " + queryBuilderMeta.getXPath() );
                 boolean lazyKeyFound = false;
                 boolean clobKeyFound = false;
@@ -86,7 +86,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
 
                 for( String key : lazyKeys )
                 {
-                   if ( queryBuilderMeta.getXPath().contains( key ))
+                   if ( discriminatorColumnMeta.getXPath().contains( key ))
                    {
                        System.out.println("Found a Lazy Key " + key );
                        lazyKeyFound = true;
@@ -95,7 +95,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                 }
                 for( String key : clobKeys )
                 {
-                   if ( queryBuilderMeta.getXPath().contains( key ))
+                   if ( discriminatorColumnMeta.getXPath().contains( key ))
                    {
                        System.out.println("Found a CLOB Key " + key );
                        clobKeyFound = true;
@@ -104,8 +104,9 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                 }
                 for( String key : discriminatorKeys )
                 {
-                   if ( queryBuilderMeta.getXPath().contains( key ))
+                   if ( discriminatorColumnMeta.getXPath().contains( key ))
                    {
+                	   discriminatorColumnMeta.getTableMetadata().setHasDiscriminator(true);
                        System.out.println("Found a Discriminator Key " + key );
                        discriminatorKeyFound = true;
                    }
