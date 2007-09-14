@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class DiscriminatorAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: DiscriminatorAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.4 2007-09-14 15:07:37 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.5 2007-09-14 22:39:54 wuye Exp $";
 
 	private static final String COMMAND_NAME = "Set as Disciminator";
 	private static final Character COMMAND_MNEMONIC = new Character('D');
@@ -83,7 +83,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 								DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
 //								DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
 //                            
-//                                discriminatorKeys.add( node );
+                                discriminatorKeys.add( node );
 //                                ((TableMetadata)parent.getUserObject()).setHasDiscriminator(true);
 //								This is done in MMSRender
 						}

@@ -2,6 +2,8 @@ package gov.nih.nci.caadapter.mms.metadata;
 
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.SDKMetaData;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -261,4 +263,21 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 		return (String)objectMap.get(root);
 		}
 	}
+	
+	private UMLClass umlClass;
+
+	/**
+	 * @return the umlClass
+	 */
+	public UMLClass getUmlClass() {
+		return umlClass;
+	}
+
+	/**
+	 * @param umlClass the umlClass to set
+	 */
+	public void setUmlClass(UMLClass umlClass) {
+		this.umlClass = umlClass;
+	}
+	
 }

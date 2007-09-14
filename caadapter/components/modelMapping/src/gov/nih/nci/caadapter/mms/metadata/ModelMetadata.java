@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,7 +62,8 @@ public class ModelMetadata {
 	private static HashSet<String> lazyKeys = new HashSet<String>();
     private static HashSet<String> discriminatorKeys = new HashSet<String>();
     private static HashSet<String> clobKeys = new HashSet<String>();
-
+    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
+    
     private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
 
@@ -208,6 +210,7 @@ public class ModelMetadata {
             } else if (pathKey.toString().contains( modelMetadata.getMmsPrefixObjectModel() ) && !pathKey.toString().contains("java")) {
 
                 ObjectMetadata object = new ObjectMetadata();
+                object.setUmlClass(clazz);
                 object.setName(clazz.getName());
 //  	    	  System.out.println(clazz);
                 pathKey.append(".");
@@ -470,6 +473,21 @@ public class ModelMetadata {
 		   Object x = myMap.get(key);
 		   //System.out.println(x);
 		}
+	}
+
+	/**
+	 * @return the discriminatorValues
+	 */
+	public static Hashtable<String, String> getDiscriminatorValues() {
+		return discriminatorValues;
+	}
+
+	/**
+	 * @param discriminatorValues the discriminatorValues to set
+	 */
+	public static void setDiscriminatorValues(
+			Hashtable<String, String> discriminatorValues) {
+		ModelMetadata.discriminatorValues = discriminatorValues;
 	}
 }
 

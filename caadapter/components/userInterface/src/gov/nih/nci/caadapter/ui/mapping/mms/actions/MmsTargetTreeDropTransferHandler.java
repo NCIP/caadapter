@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/MmsTargetTreeDropTransferHandler.java,v 1.2 2007-09-14 15:06:13 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/MmsTargetTreeDropTransferHandler.java,v 1.3 2007-09-14 22:40:24 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,12 +38,16 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.UIHelper;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
+import gov.nih.nci.caadapter.ui.mapping.mms.AddDiscriminatorValue;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
@@ -60,6 +64,7 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class handles drop-related data manipulation for target tree on the mapping panel.
@@ -67,8 +72,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-09-14 15:06:13 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-09-14 22:40:24 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -180,11 +185,6 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 					if (tm.hasDiscriminator()) return true;
 					else return false;
 				}
-				if (targetNode.getUserObject() instanceof ColumnMetadata)
-				{
-					if (((ColumnMetadata)(targetNode.getUserObject())).getTableMetadata().hasDiscriminator()) return true;
-					else return false;
-				}
 				return false;
 			}
 		}
@@ -280,6 +280,22 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 
 				if (isSuccess)
 				{
+
+					boolean isRoot = true;
+					
+					UMLClass clazz = ((ObjectMetadata)sourceNode.getUserObject()).getUmlClass();
+					
+					List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
+
+	                for (UMLGeneralization clazzG : clazzGs) {
+	                    UMLClass parent = clazzG.getSupertype();
+	                    if (parent != clazz) {
+	                    	isRoot = false;
+	                        break;
+	                    }
+	                }
+	                if (!isRoot)
+	                	new AddDiscriminatorValue(new JFrame(),(ObjectMetadata)sourceNode.getUserObject());
 				}
 			}//end of for
 		}
@@ -352,6 +368,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/09/14 15:06:13  wuye
+ * HISTORY      : Added support for table per inheritence structure
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

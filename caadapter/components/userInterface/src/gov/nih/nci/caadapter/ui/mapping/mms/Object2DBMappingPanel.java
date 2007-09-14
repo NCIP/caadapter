@@ -101,13 +101,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.24 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.25 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.24 2007-09-14 15:06:25 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.25 2007-09-14 22:40:08 wuye Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -815,7 +815,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					}
                     if( tagValue.getName().contains( "discriminator" ) )
                     {
-                        discriminatorKeys.add( tagValue.getValue() );
+                        discriminatorKeys.add(clazz.getName()+"." + att.getName());
                     }
                     if( tagValue.getName().contains( "type" ) )
                     {
@@ -839,8 +839,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					if( tagValue.getName().contains( "lazy-load" ))
 					{
 			    		String fieldName = cumulativeMappingGenerator.getColumnFromAssociation(assc);
-			    		int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_DATAMODEL).length();
-			    		lazyKeys.add(fieldName.substring(preLen+1));
+			    		System.out.println("--------"+fieldName + " ----" + assc.getRoleName());
+			    		
+			    		if (fieldName!=null)
+			    		{
+			    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_DATAMODEL).length();
+			    			lazyKeys.add(fieldName.substring(preLen+1));
+			    		}
 					}
 				}
 			}				
@@ -1175,6 +1180,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.24  2007/09/14 15:06:25  wuye
+ * HISTORY : Added support for table per inheritence structure
+ * HISTORY :
  * HISTORY : Revision 1.23  2007/09/13 21:39:32  wuye
  * HISTORY : change arraylist to hashmap
  * HISTORY :

@@ -762,6 +762,7 @@ public static UMLAssociation getAssociationFromColumn(String column)
 		{
 			return many2many.getAssociationEndMetadata().getUMLAssociation();
 		}
+		if ( many2many.getOtherEndColumn() == null ) continue;
 		name = many2many.getOtherEndColumn().getParentXPath() + "." + many2many.getOtherEndColumn().getName();
 		if (name.equals(column))
 		{
@@ -794,7 +795,7 @@ public static String getColumnFromAssociation(UMLAssociation association)
 			return many2many.getOtherEndColumn().getParentXPath() + "." + many2many.getOtherEndColumn().getName();
 		}
 	}
-	return "";
+	return null;
 }
 
 

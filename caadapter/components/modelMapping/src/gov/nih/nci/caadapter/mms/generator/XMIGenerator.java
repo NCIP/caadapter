@@ -1,6 +1,7 @@
 package gov.nih.nci.caadapter.mms.generator;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
@@ -10,6 +11,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependencyEnd;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
@@ -56,6 +58,7 @@ public class XMIGenerator
 	private static HashSet<String> lazyKeys = new HashSet<String>();
 	private static HashSet<String> clobKeys = new HashSet<String>();
     private static HashSet<String> discriminatorKeys = new HashSet<String>();
+    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
 
     public XMIGenerator(){
 	}
@@ -85,7 +88,8 @@ public class XMIGenerator
 		    lazyKeys = modelMetadata.getLazyKeys();
 		    clobKeys = modelMetadata.getClobKeys();
             discriminatorKeys = modelMetadata.getDiscriminatorKeys();
-
+            discriminatorValues = modelMetadata.getDiscriminatorValues();
+            
             // Remove all dependencies from the Model
 		    for ( UMLDependency dep : model.getDependencies() )
 		    {		    	
@@ -113,6 +117,16 @@ public class XMIGenerator
 		for ( UMLClass clazz : pkg.getClasses() )
 		{
 			System.out.println( "Class: " + clazz.getName() );
+			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
+			{
+				if( tagValue.getName().contains( "discriminator" ))
+				{
+					//System.out.println( "Removing: " + tagValue.getName() + " " + tagValue.getValue() );
+					clazz.removeTaggedValue( "discriminator" );
+				}
+			}
+			
+			
 			
 			for( UMLAttribute att : clazz.getAttributes() ) 
 			{
@@ -225,6 +239,11 @@ public class XMIGenerator
             addDiscriminatorKey( dKey );
         }
 
+        for ( String dKey : discriminatorValues.keySet() )
+        {
+            addDiscriminatorValues( dKey );
+        }
+
         addDependencies(this.dependencies);
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
@@ -295,6 +314,9 @@ public class XMIGenerator
 		}
 	}
 		
+	public void addObjectClass(UMLModel model, Element dependency)
+	{
+	}
 	/**
 	 * @param model
 	 * @param dependency
@@ -590,16 +612,79 @@ public class XMIGenerator
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixDataModel() + "." + dKey;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
+		String tableName = "."+dKey.substring(0, dKey.lastIndexOf('.'));
+		
+		String objectName = null;
+		for (int i = 0; i < this.dependencies.size(); i++)
+		{
+			Element dependency = (Element)this.dependencies.get(i);
+	        String target = dependency.getChildText("target");
+		    String source = dependency.getChildText("source");
+		    
+		    if (target.endsWith(tableName)) {
+		    	objectName = source;
+		    }
+		}	
+		
         System.out.println("Looking for Discriminator "+ discriminatorKey );
         //UMLClass umlClass = ModelUtil.findClass(this.model, discriminatorKey);
 
-        if( column != null)
-		{
-            System.out.println("Added a discrimintor: " + dKey);
-            column.addTaggedValue( "discriminator", dKey );
+        if (objectName!=null && column != null) {
+
+			UMLClass clazz = ModelUtil.findClass(this.model, objectName);
+			
+			if (clazz == null) return;
+ 			
+			UMLClass oldclazz = null;
+			while (!(clazz == oldclazz))
+			{
+				oldclazz = clazz;
+				List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
+
+				for (UMLGeneralization clazzG : clazzGs) {
+					UMLClass parent = clazzG.getSupertype();
+					if (parent != clazz) {
+						clazz = parent;
+						break;
+					}
+					else {
+						oldclazz = clazz;
+						break;
+					}
+				}
+			}
+			
+			String packageName = "";
+			UMLPackage umlPackage = clazz.getPackage();
+			while (umlPackage != null)
+			{
+				packageName = umlPackage.getName() + "." + packageName;
+				umlPackage = umlPackage.getParent();
+			}
+			
+            packageName =  packageName + clazz.getName();
+            
+            System.out.println("Write --:" + packageName.substring(modelMetadata.getMmsPrefixObjectModel().length()+1));
+            column.addTaggedValue( "discriminator",  packageName.substring(modelMetadata.getMmsPrefixObjectModel().length()+1));
             //umlClass.addTaggedValue( "discriminator", dKey );
         }
 	}
+    
+    public void addDiscriminatorValues( String dKey )
+	{
+		String discriminatorKey = modelMetadata.getMmsPrefixObjectModel() + "." + dKey;
+		UMLClass clazz = ModelUtil.findClass(this.model, discriminatorKey);
+        System.out.println("Looking for Discriminator -- class "+ discriminatorKey );
+        //UMLClass umlClass = ModelUtil.findClass(this.model, discriminatorKey);
+
+        if( clazz != null)
+		{
+            System.out.println("Added a discrimintor: " + dKey);
+            clazz.addTaggedValue( "discriminator", discriminatorValues.get(dKey) );
+            //umlClass.addTaggedValue( "discriminator", dKey );
+        }
+	}
+
     
     /**
 	 * @param pathToThisEnd
