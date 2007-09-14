@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.4 2007-09-14 14:06:40 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,6 +45,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -57,15 +58,15 @@ import javax.swing.tree.TreePath;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-07 20:50:27 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-09-14 14:06:40 $
  */
 public class TestAction extends AbstractContextAction
 {
 	private static final String LOGID = "$RCSfile: TestAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.3 2007-08-07 20:50:27 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.4 2007-09-14 14:06:40 wuye Exp $";
 
 	private static final String COMMAND_NAME = "Set as Lazy";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
@@ -112,7 +113,7 @@ public class TestAction extends AbstractContextAction
 						JTree targetTree = absMappingPanel.getTargetTree();
 										
 				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();				    	
-				    	List<String> lazyKeys = modelMetadata.getLazyKeys();
+				    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 				    	
 						System.out.println( "targetTree: " + targetTree.getSelectionPath() );
 		
@@ -161,7 +162,7 @@ public class TestAction extends AbstractContextAction
 			    	JTree targetTree = absMappingPanel.getTargetTree();
 			    	TreePath leadingPath = targetTree.getLeadSelectionPath();
 			    	ModelMetadata modelMetadata = ModelMetadata.getInstance();				    	
-			    	List<String> lazyKeys = modelMetadata.getLazyKeys();
+			    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 			    	
 			        if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
 			        {

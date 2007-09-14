@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.4 2007-09-05 15:16:12 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,6 +44,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.*;
@@ -54,7 +55,7 @@ public class PrimaryKeyAction extends AbstractContextAction
 	private static final String COMMAND_NAME = "Make Primary Key";
 	
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.4 2007-09-05 15:16:12 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
@@ -108,7 +109,7 @@ public class PrimaryKeyAction extends AbstractContextAction
 				JTree targetTree = absMappingPanel.getTargetTree();
 								
 		    	ModelMetadata modelMetadata = ModelMetadata.getInstance();				    	
-		    	List<String> primaryKeys = modelMetadata.getPrimaryKeys();
+		    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 		    	
 				//System.out.println( "targetTree: " + targetTree.getSelectionPath() );
 				//System.out.println( "sourceTree: " + sourceTree.getSelectionPath() );

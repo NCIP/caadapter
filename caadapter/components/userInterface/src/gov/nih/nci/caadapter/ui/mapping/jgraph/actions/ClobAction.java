@@ -12,6 +12,7 @@ import javax.swing.tree.TreeModel;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class ClobAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: ClobAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.1 2007-09-11 20:27:46 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.2 2007-09-14 14:06:40 wuye Exp $";
 
 	private static final String COMMAND_NAME = "Set as Clob";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -66,7 +67,7 @@ public class ClobAction extends AbstractContextAction {
 						JTree targetTree = absMappingPanel.getTargetTree();
 
 				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
-				    	List<String> clobKeys = modelMetadata.getClobKeys();
+				    	HashSet<String> clobKeys = modelMetadata.getClobKeys();
 
 						if ( targetTree.getSelectionRows() != null )
 						{
@@ -106,7 +107,7 @@ public class ClobAction extends AbstractContextAction {
 			    	TreePath leadingPath = targetTree.getLeadSelectionPath();
 
 			    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
-			    	List<String> clobKeys = modelMetadata.getClobKeys();
+			    	HashSet<String> clobKeys = modelMetadata.getClobKeys();
 
 			        if ( clobKeys.contains( parseNode( leadingPath.toString() ) ) )
 			        {

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.4 2007-09-11 20:27:46 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,14 +55,14 @@ import java.util.*;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-11 20:27:46 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-09-14 14:06:40 $
  */
 public class LazyEagerAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: LazyEagerAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.4 2007-09-11 20:27:46 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $";
 
 	private static final String COMMAND_NAME = "Set as Lazy";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
@@ -109,7 +109,7 @@ public class LazyEagerAction extends AbstractContextAction {
 						JTree targetTree = absMappingPanel.getTargetTree();
 
 				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
-				    	java.util.List<String> lazyKeys = modelMetadata.getLazyKeys();
+				    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 
 						System.out.println( "targetTree: " + targetTree.getSelectionPath() );
 
@@ -158,7 +158,7 @@ public class LazyEagerAction extends AbstractContextAction {
 			    	JTree targetTree = absMappingPanel.getTargetTree();
 			    	TreePath leadingPath = targetTree.getLeadSelectionPath();
 			    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
-			    	java.util.List<String> lazyKeys = modelMetadata.getLazyKeys();
+			    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 
 			        if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
 			        {

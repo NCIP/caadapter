@@ -12,6 +12,7 @@ import javax.swing.tree.TreeModel;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class DiscriminatorAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: DiscriminatorAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.2 2007-09-12 16:04:36 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.3 2007-09-14 14:06:40 wuye Exp $";
 
 	private static final String COMMAND_NAME = "Set as Disciminator";
 	private static final Character COMMAND_MNEMONIC = new Character('D');
@@ -69,7 +70,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 						JTree targetTree = absMappingPanel.getTargetTree();
 
 				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
-				    	List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+				    	HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
 						if ( targetTree.getSelectionRows() != null )
 						{
@@ -110,7 +111,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 			    	TreePath leadingPath = targetTree.getLeadSelectionPath();
 
                     ModelMetadata modelMetadata = ModelMetadata.getInstance();
-			    	List<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+                    HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
 			        if ( discriminatorKeys.contains( parseNode( leadingPath.toString() ) ) )
 			        {
