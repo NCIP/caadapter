@@ -28,7 +28,7 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	/**
 	 * @author OWNER: Ye Wu
 	 * @author LAST UPDATE $Author: wuye $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.2 $
 	 */
 	    String curDir;
 	    String sourceName1 = "";
@@ -89,6 +89,14 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	        centerPan.setBorder(new TitledBorder("Please Define Discriminator Value...."));
 	        centerPan.add(new JLabel("Discriminator Value:"));
 	        final JTextField textField = new JTextField();
+	    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+	    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
+	    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
+
+	    	if (discriminatorValues.get(objectMetadata.getXPath().substring(startpos+1))!= null)
+	    	{
+	    		textField.setText(discriminatorValues.get(objectMetadata.getXPath().substring(startpos+1)));
+	    	}
 	        textField.setEnabled(true);
 	        centerPan.add(textField);
 	        //

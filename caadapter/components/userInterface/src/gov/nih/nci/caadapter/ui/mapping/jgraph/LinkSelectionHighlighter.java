@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.6 2007-09-14 15:06:57 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.7 2007-09-17 15:08:05 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,12 +45,14 @@ import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.*;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -77,8 +79,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-09-14 15:06:57 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-09-17 15:08:05 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -94,7 +96,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.6 2007-09-14 15:06:57 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.7 2007-09-17 15:08:05 wuye Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -103,6 +105,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
     //private TestAction testAction;
     private LazyEagerAction lazyEagerAction;
     private PrimaryKeyAction primaryKeyAction;
+    private DiscriminatorValueAction discriminatorValueAction;
     private ClobAction clobAction;
     private DiscriminatorAction discriminatorAction;
     private JPopupMenu popupMenu = null;
@@ -498,8 +501,12 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		       
         //Primary Key Function
 		primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel );
+		discriminatorValueAction = new DiscriminatorValueAction(mappingPanel, middlePanel);
 		JMenuItem menuItem = new JMenuItem(primaryKeyAction);
+		JMenuItem menuItemDiscriminator = new JMenuItem(discriminatorValueAction);
+
 		popupMenu.add(menuItem);
+		popupMenu.add(menuItemDiscriminator);
 		
 		JTree sourceTree = mappingPanel.getSourceTree();			
 		//JTree targetTree = mappingPanel.getTargetTree();
@@ -508,6 +515,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		
 		// Disable PK function if selected node has children
 		primaryKeyAction.setEnabled( false );
+		discriminatorValueAction.setEnabled(false);
 		//Check to see if anything is selected		
 		if( sourceTree.getLeadSelectionPath() != null )
 		{
@@ -525,6 +533,18 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             if ( mutNode.getUserObject() instanceof AssociationMetadata )
             {
                 primaryKeyAction.setEnabled( false );
+            }
+            
+            if (mutNode.getUserObject() instanceof ObjectMetadata) {
+            	
+            	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
+
+            	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+		    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
+		    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
+		    	
+		    	if (discriminatorValues.get(objectMetadata.getXPath().substring(startpos+1))!= null)
+		    		discriminatorValueAction.setEnabled(true);
             }
         }
 		return popupMenu;
@@ -637,6 +657,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/09/14 15:06:57  wuye
+ * HISTORY      : Added support for table per inheritence structure
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/09/11 20:27:03  schroedn
  * HISTORY      : CLob, Discriminator, Lazy/Eager
  * HISTORY      :

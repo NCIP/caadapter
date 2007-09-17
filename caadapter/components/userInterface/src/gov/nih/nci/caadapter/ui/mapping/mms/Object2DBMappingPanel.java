@@ -101,13 +101,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.25 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.26 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.25 2007-09-14 22:40:08 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.26 2007-09-17 15:08:14 wuye Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -120,7 +120,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static HashSet<String> lazyKeys = new HashSet<String>();
     private static HashSet<String> clobKeys = new HashSet<String>();
     private static HashSet<String> discriminatorKeys = new HashSet<String>();
-    
+    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
+
 	public Object2DBMappingPanel() {
 		this("defaultObjectToDatabaseMapping");
 	}
@@ -771,6 +772,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			myModel.setLazyKeys( lazyKeys );
             myModel.setClobKeys( clobKeys );
             myModel.setDiscriminatorKeys( discriminatorKeys );
+            myModel.setDiscriminatorValues(discriminatorValues);
 
             if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
             {
@@ -801,6 +803,27 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	{
 		for ( UMLClass clazz : pkg.getClasses() )
 		{
+			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
+			{
+				if( tagValue.getName().contains( "discriminator" ))
+				{	
+					String packageName = "";
+					UMLPackage umlPackage = clazz.getPackage();
+					while (umlPackage != null)
+					{
+						packageName = umlPackage.getName() + "." + packageName;
+						umlPackage = umlPackage.getParent();
+					}
+					
+		            packageName =  packageName + clazz.getName();
+		            
+	    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_OBJECTMODEL).length();
+	    			String dvalue = (packageName).substring(preLen+1);
+
+	    			discriminatorValues.put(dvalue, tagValue.getValue() );
+	    			System.out.println("dvalue:"+dvalue);
+				}
+			}			
             for( UMLAttribute att : clazz.getAttributes() )
 			{	
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
@@ -1180,6 +1203,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.25  2007/09/14 22:40:08  wuye
+ * HISTORY : Fixed discriminator issue
+ * HISTORY :
  * HISTORY : Revision 1.24  2007/09/14 15:06:25  wuye
  * HISTORY : Added support for table per inheritence structure
  * HISTORY :
