@@ -115,6 +115,8 @@
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
 		</zip>
     	<antcall target="dist.prepare" />
+    	<antcall target="mmswebstart"/>
+    	<antcall target="hl7webstart"/>
     </target>
 
     <target name="mmswebstart">
