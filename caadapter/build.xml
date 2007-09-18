@@ -15,14 +15,17 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="lib.dir" value="${basedir}/lib"/>
+	<property name="reference.dir" value = "${basedir}/referenceLib"/>
     <property name="config.dir" value="${basedir}/conf"/>
     <property name="docs.dir" value="${basedir}/docs"/>
     <property name="project.jar.name" value="caAdapter.jar"/>
     <property name="project.deploy.root1" value="L:\caAdapter\releases\caAdapter v4.0\${DATE}"/>
     <property name="project.deploy.root" value="c:\distBin\test_${DATE}"/>
-    <property name="webstart.deploy.dir" value="${basedir}/dist/webstart"/>
+    <property name="webstart.deploy.dir" value="${basedir}/dist/mmswebstart"/>
+    <property name="hl7.webstart.deploy.dir" value="${basedir}/dist/hl7webstart"/>
     <property name="webstart.config.files" value="${basedir}/etc/webstart"/>
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
+    <property name="hl7.webstart.warfile.name" value="caadapter-hl7.war"/>
     <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
     <property name="webserver" value="http://localhost:8080/caadapter-mms/"/>
 
@@ -106,7 +109,7 @@
     	
     	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
     	<delete>
-    		<fileset dir="." includes="caadapter4_0_Src_${DATE}.zip"/>
+    		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
     	</delete>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
@@ -114,40 +117,62 @@
     	<antcall target="dist.prepare" />
     </target>
 
-    <target name="webstart" depends="jar.all">
+    <target name="mmswebstart">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${webstart.warfile.name}"/>
         <delete file="NCICBkey"/>
-        <delete file="${lib.dir}/${project.jar.name}"/>
 
-        <echo message=""/>
-        <echo message="------- creating new caAdapter.jar with webstart configuation files ------"/>
-        <jar destfile="${lib.dir}/${project.jar.name}">
-            <fileset dir="${build.dir}"/>
-            <fileset dir="${webstart.config.dir}"/>
-        </jar>
+    	<mkdir dir="${webstart.deploy.dir}/tmp"/>
+		<unzip dest="${webstart.deploy.dir}/tmp">
+        	<fileset dir="${dist.dir}/lib">
+            	<include name="caAdapter.jar"/>
+        	</fileset>
+		</unzip>
+
+    	<copy file="${webstart.config.dir}/caadapter-components.mms.properties" tofile="${webstart.deploy.dir}/tmp/caadapter-components.properties"/>
+
+		<zip destfile="${webstart.deploy.dir}/caAdapter.jar">
+			<fileset dir="${webstart.deploy.dir}/tmp"/>
+		</zip>
+
+        <delete dir="${webstart.deploy.dir}/tmp"/>
 
         <echo message=""/>
         <echo message="------- copying jar files to webstart deploy directory ------"/>
         <copy todir="${webstart.deploy.dir}">
             <fileset dir="${lib.dir}">
-                <include name="caAdapter.jar"/>
-                <include name="castor-0.9.9.jar"/>
-                <include name="BrowserLauncher2-all-10rc4.jar"/>
-                <include name="caadapterHl7.jar"/>
-                <include name="hl7message.jar"/>
-                <include name="commons-collections-3.2.jar"/>
-                <include name="commons-logging-1.0.4.jar"/>
                 <include name="dom4j-1.4.jar"/>
-                <include name="jaxen-jdom.jar"/>
-                <include name="jdom.jar"/>
-                <include name="jgraph.jar"/>
-                <include name="log4j-1.2.8.jar"/>
+            </fileset>
+            <fileset dir="${lib.dir}">
+                <include name="dom4j-1.4.jar"/>
                 <include name="xercesImpl.jar"/>
-                <include name="xmi.in.out.jar"/>
                 <include name="xml-apis.jar"/>
             </fileset>
+        	<fileset dir="${reference.dir}">
+                <include name="jgraph.jar"/>
+                <include name="castor-0.9.9.jar"/>
+        	</fileset>
+        	<fileset dir="${dist.dir}/lib">
+            	<include name="caAdapter.jar"/>
+                <include name="jaxen-jdom.jar"/>
+        	</fileset>
+        	<fileset dir="${ui.module.home}/lib">
+            	<include name="BrowserLauncher2-all-10rc4.jar"/>
+                <include name="commons-collections-3.2.jar"/>
+                <include name="jdom.jar"/>
+        	</fileset>
+        	<fileset dir="${common.module.home}/lib">
+                <include name="xercesImpl.jar"/>
+                <include name="commons-logging-1.0.4.jar"/>
+                <include name="log4j-1.2.8.jar"/>
+        	</fileset>
+        	<fileset dir="${dist.dir}">
+                <include name="xml-apis.jar"/>
+        	</fileset>
+        	<fileset dir="${mms.module.home}/lib">
+                <include name="xmi.in.out.jar"/>
+        	</fileset>
         </copy>
 
         <echo message=""/>
@@ -164,7 +189,7 @@
 
         <echo message=""/>
         <echo message="-------- Create a keyStore *disabled--------"/>
-        <!--<genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>-->
+        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -185,6 +210,91 @@
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
 
+    <target name="hl7webstart">
+        <echo message="------- cleaning webstart deploy directory ------"/>
+        <delete dir="${hl7.webstart.deploy.dir}"/>
+        <delete file="${dist.dir}/${hl7.webstart.warfile.name}"/>
+        <delete file="NCICBkey"/>
+        <!--delete file="${lib.dir}/${project.jar.name}"/-->
+		<mkdir dir="${hl7.webstart.deploy.dir}/tmp"/>
+		<unzip dest="${hl7.webstart.deploy.dir}/tmp">
+        	<fileset dir="${dist.dir}/lib">
+            	<include name="caAdapter.jar"/>
+        	</fileset>
+		</unzip>
+
+    	<copy file="${webstart.config.dir}/caadapter-components.hl7.properties" tofile="${hl7.webstart.deploy.dir}/tmp/caadapter-components.properties"/>
+
+		<zip destfile="${hl7.webstart.deploy.dir}/caAdapter.jar">
+			<fileset dir="${hl7.webstart.deploy.dir}/tmp"/>
+		</zip>
+
+        <delete dir="${hl7.webstart.deploy.dir}/tmp"/>
+    	
+        <echo message=""/>
+        <echo message="------- copying jar files to webstart deploy directory ------"/>
+        <copy todir="${hl7.webstart.deploy.dir}">
+            <fileset dir="${lib.dir}">
+                <include name="dom4j-1.4.jar"/>
+                <include name="xercesImpl.jar"/>
+                <include name="xml-apis.jar"/>
+            </fileset>
+        	<fileset dir="${reference.dir}">
+            	<include name="resource.zip"/>
+                <include name="jgraph.jar"/>
+                <include name="castor-0.9.9.jar"/>
+        	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+        		<include name="poi-2.5.1-final-20040804.jar"/>
+        	</fileset>
+        	<fileset dir="${ui.module.home}/lib">
+            	<include name="BrowserLauncher2-all-10rc4.jar"/>
+                <include name="commons-collections-3.2.jar"/>
+                <include name="jdom.jar"/>
+        	</fileset>
+        	<fileset dir="${common.module.home}/lib">
+                <include name="xercesImpl.jar"/>
+                <include name="commons-logging-1.0.4.jar"/>
+                <include name="log4j-1.2.8.jar"/>
+        	</fileset>
+        	<fileset dir="${dist.dir}">
+                <include name="xml-apis.jar"/>
+        	</fileset>
+        </copy>
+
+        <echo message=""/>
+        <echo message="------ copying webstart files to webstart deploy directory ------"/>
+        <copy todir="${hl7.webstart.deploy.dir}">
+            <fileset dir="${webstart.config.files}">
+                <exclude name="*.zip, *.jar"/>
+            </fileset>
+        </copy>
+
+        <echo message=""/>
+        <echo message="-------- Applying Webserver replacement --------"/>
+        <replace file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp" token="$WEBSERVER" value="${webserver}"/>
+
+        <echo message=""/>
+        <echo message="-------- Create a keyStore *disabled--------"/>
+        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
+
+        <echo message=""/>
+        <echo message="-------- Signing all jar files --------"/>
+        <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
+            <fileset dir="${hl7.webstart.deploy.dir}" includes="*.jar, *.zip"/>
+        </signjar>
+
+        <echo message=""/>
+        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+        <war destfile="${dist.dir}/${hl7.webstart.warfile.name}" webxml="">
+            <fileset dir="${hl7.webstart.deploy.dir}">
+                <exclude name="myKeyStore"/>
+            </fileset>
+        </war>
+
+        <echo message=""/>
+        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
+        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+    </target>
     <!-- target name="demo.dist"  -->
     <target name="demo.dist">
         <!-- ant antfile="build_demo.xml" target="demo.ui.jar"/ -->
@@ -281,7 +391,7 @@
         <ant antfile="${dataview.module.build}"/>
         <ant antfile="${sdtm.module.build}"/>
         <ant antfile="${ui.module.build}"/>
-        <!-- ant antfile="${ws.module.build}"/ -->
+        <ant antfile="${ws.module.build}"/>
     </target>
 
     <target name="mms.update">
@@ -330,7 +440,10 @@
         <ant antfile="${dataview.module.build}" target="init"/>
         <ant antfile="${sdtm.module.build}" target="init"/>
         <ant antfile="${ui.module.build}" target="init"/>
-        <ant antfile="${ws.module.build}" target="init"/>
+        <!--ant antfile="${ws.module.build}" target="init"/-->
+    	<delete>
+    		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
+    	</delete>
     </target>
 
 	<target name="copyRef" if="ref.sqleonardo">

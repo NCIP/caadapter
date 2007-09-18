@@ -15,8 +15,6 @@
 	<j2se version="1.3+" />		
 	<jar href="caAdapter.jar"/>   
 	<jar href="BrowserLauncher2-all-10rc4.jar"/>   
-	<jar href="caadapterHl7.jar"/>
-	<jar href="hl7message.jar"/>
 	<jar href="commons-collections-3.2.jar"/>
 	<jar href="commons-logging-1.0.4.jar"/>
 	<jar href="dom4j-1.4.jar"/>

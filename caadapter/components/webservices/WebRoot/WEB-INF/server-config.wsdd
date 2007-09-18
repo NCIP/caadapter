@@ -4,7 +4,7 @@
   <parameter name="sendMultiRefs" value="true"/>
   <parameter name="disablePrettyXML" value="true"/>
   <parameter name="adminPassword" value="admin"/>
-  <parameter name="attachments.Directory" value="c:/temp//attachments"/>
+  <parameter name="attachments.Directory" value="${data_dir}/attachments"/>
   <parameter name="dotNetSoapEncFix" value="true"/>
   <parameter name="enableNamespacePrefixOptimization" value="false"/>
   <parameter name="sendXMLDeclaration" value="true"/>

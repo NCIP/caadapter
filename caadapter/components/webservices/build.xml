@@ -19,7 +19,7 @@
   <property name="module.conf.dir" value="${ws.module.home}/conf"/>
   <property name="module.etc.dir" value="${ws.module.home}/etc"/>
   <property name="module.src.dir" value="${ws.module.home}/src"/>
-  <property name="root" value="../../"/>
+  <property name="root" value="${ws.module.home}/../../"/>
 
   
   <path id="module.class.path">
@@ -64,7 +64,7 @@
 	<property name="dist_ws_file_name" value="${dist_ws_dir}/caAdapterWS.war"/>
 
 
-	<zipfileset dir="WebRoot" id="dist.ws.WEB">
+	<zipfileset dir="${ws.module.home}/WebRoot" id="dist.ws.WEB">
 		<include name="**/*.*"/>
 		<exclude name="**/*data.zip"/>
 		<exclude name="**/*server-config.wsdd.template"/>
@@ -120,7 +120,7 @@
 				<patternset includes="$*.war"/>
 			</fileset>
 		</delete>
-		<copy overwrite="true" file="WebRoot/WEB-INF/server-config.wsdd.template" tofile="WebRoot/WEB-INF/server-config.wsdd">
+		<copy overwrite="true" file="${ws.module.home}/WebRoot/WEB-INF/server-config.wsdd.template" tofile="${ws.module.home}/WebRoot/WEB-INF/server-config.wsdd">
 			<filterset>
 				<filter token="DATA_DIR" value="${data_dir}"/>
 			</filterset>
@@ -133,7 +133,7 @@
 			description="Zipup the binary distribution (see 'dist_init', this is not called explicitly)."
 			>
 		<echo message="** Generating the Binary Distribution w/o MIFs."/>
-		<zip destfile="dist/function.jar">
+		<zip destfile="${ws.module.home}/dist/function.jar">
 			<zipfileset refid="dist.functionsfile"/>
 		</zip>
 		
