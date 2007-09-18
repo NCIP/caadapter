@@ -31,7 +31,7 @@
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
             <zipfileset dir="." excludes="build.xml, *.war, hl7webstart/**, mmswebstart/**, schemas/**,
             	lib/*.zip, lib/ant.jar,	lib/sqleonardo.jar,lib/lib/deletethisfolder.jar,
-            	lib/castor*, lib/ostermill*, lib/jgraph.jar,lib/junit*.jar" />
+            	lib/ostermill*, lib/jgraph.jar,lib/junit*.jar" />
         	<zipfileset dir=".." includes="docs/**"/>
 		</zip>
     </target>
