@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.5 2007-08-10 16:48:24 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.6 2007-09-18 15:25:52 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-10 16:48:24 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-09-18 15:25:52 $
  */
 public class DefaultSettings
 {
@@ -270,17 +270,26 @@ public class DefaultSettings
 		
 		JFileChooser fileChooser = getJFileChooser(true);
 		fileChooser.setCurrentDirectory(new File(workingDirectoryPath));
-		StringTokenizer stk=new StringTokenizer(fileExtension,";");
+		boolean toSelectedDir=false;
 		ArrayList<FileFilter> fileFilters=new ArrayList<FileFilter>();
-		while (stk.hasMoreElements())
+		if (fileExtension==null||fileExtension.equals(""))
 		{
-			String nxtExt=(String)stk.nextElement();
-			FileFilter singleFileFilter = new SingleFileFilter(nxtExt);
-			fileFilters.add(singleFileFilter);
-			fileChooser.addChoosableFileFilter(singleFileFilter);
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			toSelectedDir=true;
 		}
-		
+		else
+		{	
+			StringTokenizer stk=new StringTokenizer(fileExtension,";");
+			while (stk.hasMoreElements())
+			{
+				String nxtExt=(String)stk.nextElement();
+				FileFilter singleFileFilter = new SingleFileFilter(nxtExt);
+				fileFilters.add(singleFileFilter);
+				fileChooser.addChoosableFileFilter(singleFileFilter);
+			}
+		}
 		fileChooser.setDialogTitle(title);
+		
 		do
 		{
 			int returnVal = -1;
@@ -289,6 +298,8 @@ public class DefaultSettings
 			{
 				returnVal = fileChooser.showSaveDialog(parentComponent);
 			}
+			else if (toSelectedDir)
+				returnVal = fileChooser.showDialog(parentComponent, "Select");
 			else
 			{
 				returnVal = fileChooser.showOpenDialog(parentComponent);
@@ -365,6 +376,8 @@ public class DefaultSettings
 		//		{
 		//			((BasicFileChooserUI) fileChooserUI).setFileName("");
 		//		}
+		System.out
+		.println("DefaultSettings.getUserInputOfFileFromGUI()..currentDir:"+fileChooser.getCurrentDirectory());
 
 		return file;
 	}
@@ -530,6 +543,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/08/10 16:48:24  wangeug
+ * HISTORY      : make File choose work with multiple extensions
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/14 20:26:18  umkis
  * HISTORY      : add a comment about 'imageFileName'
  * HISTORY      :
