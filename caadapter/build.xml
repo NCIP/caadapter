@@ -481,5 +481,35 @@
         <echo message="-------- clean ${project.name}  --------"/>        
     </target>
 
+	<!-- ************************************************************************************************-->
+	<!--                                             Add License  			                       -->
+	<!-- ************************************************************************************************-->
+
+	<path id="development.class.path">
+		<fileset dir="${reference.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
+    	<fileset dir="${common.module.home}/lib">
+            <include name="xercesImpl.jar"/>
+            <include name="commons-logging-1.0.4.jar"/>
+            <include name="log4j-1.2.8.jar"/>
+    	</fileset>
+	</path>
+
+	<target name="add-license">
+		<echo message="*****************************************************"/>
+		<echo message="**   Adding licenses ... ...                       **"/>
+		<echo message="*****************************************************"/>
+		<taskdef name="update-license" classname="gov.nih.nci.codegen.core.ant.LicenseUpdaterTask">
+			<classpath refid="development.class.path"/>
+		</taskdef>
+		<!--echo message="${properties.dir}/license.txt"/-->
+		<update-license logFile="log/addlicense.log" beginPattern="LICENSE_TEXT_START" endPattern="LICENSE_TEXT_END" licenseFile="${basedir}/etc/license/caAdapter_license.txt">
+			<fileset dir="${basedir}">
+				<include name="**/**.java"/>
+			</fileset>
+		</update-license>
+	</target>
 
 </project>
