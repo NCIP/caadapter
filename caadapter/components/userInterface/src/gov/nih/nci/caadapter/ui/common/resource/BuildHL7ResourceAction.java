@@ -59,7 +59,12 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     	boolean toContinue=false;
     	
     	if (resorcePath==null||resorcePath.equals(""))
+    	{
     		toContinue=true;
+    		resorcePath=System.getProperty("user.dir")+java.io.File.separator
+    		+"lib"+java.io.File.separator
+    		+resourceName;
+    	}
     	else
     	{
     		String msgConfirm="Your resource is found :"+resorcePath+".\nIt will replaced if you continue ?";
