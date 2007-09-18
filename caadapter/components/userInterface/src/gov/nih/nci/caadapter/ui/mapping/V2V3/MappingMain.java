@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.4 2007-09-18 00:03:41 umkis Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.5 2007-09-18 00:04:34 umkis Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -50,7 +50,7 @@ import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
  * 
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
  *          2006/11/27 22:00:07 $
  */
 public class MappingMain extends JFrame {
@@ -104,7 +104,7 @@ public class MappingMain extends JFrame {
         {
             throw new Exception(he.getMessage());
         }
-        catch(Exception he)
+        catch(NullPointerException he)
         {
             throw new Exception(he.getMessage());
         }
@@ -567,6 +567,9 @@ public class MappingMain extends JFrame {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.4  2007/09/18 00:03:41  umkis
+ * HISTORY : Temporary files will be automatically deleted when system exit.
+ * HISTORY :
  * HISTORY : Revision 1.3  2007/08/17 01:13:28  umkis
  * HISTORY : generated SCS file using xml path
  * HISTORY :
