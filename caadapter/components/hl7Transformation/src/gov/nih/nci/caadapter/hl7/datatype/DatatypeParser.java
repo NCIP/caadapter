@@ -5,6 +5,7 @@
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,20 +23,22 @@ import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 
 /**
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-08-29 00:01:54 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-09-18 15:23:56 $
  */
 
 public class DatatypeParser {
@@ -291,7 +294,36 @@ public class DatatypeParser {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+//		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//  		DocumentBuilder db;
+//		try {
+//			db = dbf.newDocumentBuilder();	
+//			InputStream isVoc =getClass().getResourceAsStream("/schemas/coreschemas/voc.xsd");
+//			InputStream isDatatypeBase =getClass().getResourceAsStream("/schemas/coreschemas/datatypes-base.xsd");
+//			InputStream isDatatype =getClass().getResourceAsStream("/schemas/coreschemas/datatypes.xsd");
+//			
+//			Document vocDoc = db.parse(isVoc);
+//			Document baseDoc = db.parse(isDatatypeBase);
+//			Document allDoc = db.parse(isDatatype);	
+//			handleGTS();
+//			parse(vocDoc);
+//			parse(baseDoc);
+//			parse(allDoc);
+//			populateDatatypes();
+//			populateSubclasses();
+//			
+//		} catch (ParserConfigurationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (SAXException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
+	
 	public List<String> findSubclassList(String typeName)
 	{
 		return datatypeSubclass.get(typeName);
