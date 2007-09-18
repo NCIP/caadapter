@@ -26,7 +26,7 @@ import java.util.ArrayList;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $
  */
 public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -206,7 +206,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
                 try
                 {
                     int sizeNow = _tmp.size() - l;
-                    _sourceDataAsXPath.append("\\" + _tmp.get(sizeNow));
+                    _sourceDataAsXPath.append("\\" + _tmp.get(sizeNow).trim());
                 } catch (Exception ed)
                 {
                     // ed.printStackTrace();
