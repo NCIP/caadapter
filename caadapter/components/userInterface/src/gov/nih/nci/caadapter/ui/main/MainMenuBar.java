@@ -47,6 +47,7 @@ import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
+import gov.nih.nci.caadapter.ui.common.resource.BuildHL7ResourceAction;
 import gov.nih.nci.caadapter.ui.common.preferences.OpenPreferenceAction;
 import gov.nih.nci.caadapter.ui.help.actions.AboutAction;
 import gov.nih.nci.caadapter.ui.help.actions.HelpTopicAction;
@@ -80,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.16 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.17 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -301,6 +302,14 @@ public class MainMenuBar extends AbstractMenuBar
         JMenu _qb = new JMenu("Tools");
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
+        
+        BuildHL7ResourceAction buildV3=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V3, mainFrame);
+        JMenuItem _buildV3Item = new JMenuItem(buildV3);
+        _qb.add(_buildV3Item);
+        BuildHL7ResourceAction buildV2=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2, mainFrame);
+        JMenuItem _buildV2Item = new JMenuItem(buildV2);
+        _qb.add(_buildV2Item);
+        
         return _qb;
     }
 
@@ -548,6 +557,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.16  2007/09/07 19:28:08  wangeug
+ * HISTORY : relocate readPreference and savePreference methods
+ * HISTORY :
  * HISTORY : Revision 1.15  2007/08/30 19:56:09  jayannah
  * HISTORY : changed the verbiage
  * HISTORY :
