@@ -22,10 +22,10 @@ import java.util.*;
  * This class implements the fixed length records
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-09-07 19:29:51 $
+ *          $Revision: 1.6 $
+ *          $Date: 2007-09-18 02:39:29 $
  */
 public class RDSTransformer {
     String directoryLocation=null;
@@ -44,12 +44,18 @@ public class RDSTransformer {
         directoryLocation = _directoryLocation;
         CSVMapFileReader csvMapFileReader = new CSVMapFileReader(mapFile);
         //check for fixed lenght
-        if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
-            fixedLengthIndicator = true;
-            //Prepare the list here and keep it ready so that number of blanks corresponding to the
-            //value set by the user will be applied appropriately
-            RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(callingFrame, csvMapFileReader.getTargetKeyList());
-            fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
+        try
+        {
+            if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
+                fixedLengthIndicator = true;
+                //Prepare the list here and keep it ready so that number of blanks corresponding to the
+                //value set by the user will be applied appropriately
+                RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(callingFrame, csvMapFileReader.getTargetKeyList());
+                fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
+            }
+        } catch (Exception e)
+        {
+            System.out.println("the application could not find preference variable for SCS-transformation (RDS module)");
         }
         globaldomainList = RDSHelper.getAllFieldsForDomains(new File(RDSHelper.getDefineXMLNameFromMapFile(mapFile.getAbsolutePath())));
         hashTableTransform = csvMapFileReader.getHashTableTransform();
@@ -64,8 +70,8 @@ public class RDSTransformer {
         CSVMeta rootMeta = csvPanel.getCSVMeta(false);
         SDTMMany2ManyMapping segmentedCSVParser = new SDTMMany2ManyMapping();
         csvDataResult = segmentedCSVParser.parse(csvFile, rootMeta);
-        List csvDATA = segmentedCSVParser.returnCsvMapData1;
-        csvDATA.add(csvDATA.get(0));
+        //List csvDATA = segmentedCSVParser.returnCsvMapData1;
+        //csvDATA.add(csvDATA.get(0));
         processDataRecords();
     }
 
@@ -321,6 +327,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/09/07 19:29:51  wangeug
+ * relocate readPreference and savePreference methods
+ *
  * Revision 1.4  2007/08/17 15:15:02  jayannah
  * added wait window during transformation
  *
