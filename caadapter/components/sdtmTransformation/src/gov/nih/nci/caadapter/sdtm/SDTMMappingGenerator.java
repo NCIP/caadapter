@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v3.2 revision
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  */
 public class SDTMMappingGenerator
@@ -32,8 +32,10 @@ public class SDTMMappingGenerator
 	}
 	public boolean put(String source, String target) throws Exception
 	{
-		
-		try {
+        //add a filter to remove the <choice> this causes parsing issues
+       source = source.replaceAll("<","[");
+       source = source.replaceAll(">","]");
+        try {
 			results.add(counter++, source + "~" + target);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
