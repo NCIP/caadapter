@@ -1,12 +1,14 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
+import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
+import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
@@ -24,8 +26,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.6 $
- *          $Date: 2007-09-18 02:39:29 $
+ *          $Revision: 1.7 $
+ *          $Date: 2007-09-18 02:52:39 $
  */
 public class RDSTransformer {
     String directoryLocation=null;
@@ -63,12 +65,14 @@ public class RDSTransformer {
         prepareCSVDataFromCSVDataFile(_csvFileName, scsFileName);
     }
 
-    private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) {
+    private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) throws ApplicationException
+    {
         CSVPanel csvPanel = new CSVPanel();
         File csvFile = new File(_csvFileName);
         csvPanel.setSaveFile(new File(_scsFileName), true);
         CSVMeta rootMeta = csvPanel.getCSVMeta(false);
-        SDTMMany2ManyMapping segmentedCSVParser = new SDTMMany2ManyMapping();
+        //SDTMMany2ManyMapping segmentedCSVParser = new SDTMMany2ManyMapping();
+        SegmentedCSVParserImpl segmentedCSVParser = new SegmentedCSVParserImpl();
         csvDataResult = segmentedCSVParser.parse(csvFile, rootMeta);
         //List csvDATA = segmentedCSVParser.returnCsvMapData1;
         //csvDATA.add(csvDATA.get(0));
@@ -327,6 +331,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/09/18 02:39:29  jayannah
+ * Modified the code so that an exception is caught when the preference variable is not found, the other change is for the construction of RDS transformer
+ *
  * Revision 1.5  2007/09/07 19:29:51  wangeug
  * relocate readPreference and savePreference methods
  *
