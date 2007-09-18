@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.3 2007-08-17 01:13:28 umkis Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/MappingMain.java,v 1.4 2007-09-18 00:03:41 umkis Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -41,6 +41,8 @@ import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
+
 /**
  * This class takes in a HL7 message and creates a csv file and scs file. The
  * structure information is read from the V2.4 directory structure defined by
@@ -48,7 +50,7 @@ import javax.swing.JOptionPane;
  * 
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
  *          2006/11/27 22:00:07 $
  */
 public class MappingMain extends JFrame {
@@ -93,9 +95,19 @@ public class MappingMain extends JFrame {
         if (dataDir.getName().equals(temp)) dataDirAbsolutePath = dataDir.getAbsolutePath();
         else if (dirFile.getName().equals(temp)) dataDirAbsolutePath = dirFile.getAbsolutePath();
         else throw new Exception("This is not a HL7 V2 Data directory. : " + dir);
-
-        V2Converter converter = new V2Converter(filename, dataDirAbsolutePath);
-        converter.process(scsLocation, csvLocation, false, true, null, "", xmlPathAsID);
+        try
+        {
+            V2Converter converter = new V2Converter(filename, dataDirAbsolutePath);
+            converter.process(scsLocation, csvLocation, false, true, null, "", xmlPathAsID);
+        }
+        catch(HL7MessageTreeException he)
+        {
+            throw new Exception(he.getMessage());
+        }
+        catch(Exception he)
+        {
+            throw new Exception(he.getMessage());
+        }
 
         return resBoolean;
     }
@@ -555,6 +567,9 @@ public class MappingMain extends JFrame {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.3  2007/08/17 01:13:28  umkis
+ * HISTORY : generated SCS file using xml path
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/07/12 16:44:39  umkis
  * HISTORY : no message
  * HISTORY :
