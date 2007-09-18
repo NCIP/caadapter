@@ -27,8 +27,8 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-23 17:57:40 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-09-18 15:16:56 $
  */
 
 public class CMETInfoParser {
@@ -37,11 +37,12 @@ public class CMETInfoParser {
 	public HashSet<CMETRef> getCMETRefs() {
 		return cmetInfos;
 	}
-	public void parseCMETInfo(String fileName) throws Exception {
+	public void parserCMETInfoWithStream (InputStream is)throws Exception
+	{
   		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db = dbf.newDocumentBuilder();
-
-		Document doc = db.parse(fileName);
+		
+		Document doc = db.parse(is);
 		Node node = doc.getDocumentElement(); //This is the root element of the document
 		
 		Node child = node.getFirstChild();
@@ -50,6 +51,21 @@ public class CMETInfoParser {
 				parseOwnedCommonModelElement(child);
 			child = child.getNextSibling();
 		}
+	}
+	public void parseCMETInfo(String fileName) throws Exception {
+//  		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//  		DocumentBuilder db = dbf.newDocumentBuilder();
+		InputStream is =getClass().getResourceAsStream("/"+fileName);
+		parserCMETInfoWithStream(is);
+//		Document doc = db.parse(is);
+//		Node node = doc.getDocumentElement(); //This is the root element of the document
+//		
+//		Node child = node.getFirstChild();
+//		while (child != null) {
+//			if (child.getNodeName().contains("ownedCommonModelElement"))
+//				parseOwnedCommonModelElement(child);
+//			child = child.getNextSibling();
+//		}
 	}
 	public void parseOwnedCommonModelElement(Node ownedCommonModelElementNode) {
 		CMETRef cmetRef = new CMETRef();
@@ -106,7 +122,9 @@ public class CMETInfoParser {
 		cmetInfos = (HashSet)ois.readObject();
 		ois.close();
 		is.close();
-		
+//		//always load from mif.zip/
+//		String cmetFileName="cmetinfo.coremif";
+//		parseCMETInfo(cmetFileName);
 	}
 
 	public static void main(String[] args) throws Exception {
