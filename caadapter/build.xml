@@ -112,7 +112,8 @@
     		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
     	</delete>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, referenceLib/**">
+			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
+			etc/schemas/**, referenceLib/**">
 		</zip>
     	<antcall target="dist.prepare" />
     	<antcall target="mmswebstart"/>
@@ -411,7 +412,16 @@
             </fileset>
         </copy>
     </target>
-
+	<target name="mif.resource.build" description="Parser MIF and datatype files to build the resource.zip file">
+		<java classname="gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil">
+			<arg value="T:/YeWu/Edition2006"/>
+			<arg value="targetDir"/>
+			<classpath>
+				<pathelement location="${project.ref.lib.dir}/${project.jar.name}"/>
+				<pathelement location="${hl7.module.home}/lib/xercesImpl.jar"/>
+			</classpath>
+		</java>
+	</target>
     <target name="build.test">
         <echo message="-------- test ${project.name}  --------"/>
         <ant antfile="${mms.module.build}" target="init"/>
