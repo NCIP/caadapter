@@ -14,8 +14,8 @@ import org.w3c.dom.Node;
  * The class will parse a simple HL7 Datatype from the xsd file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-09-14 13:47:44 $
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-08-28 22:30:20 $
  */
 
 public class SimpleTypeParser {
@@ -73,7 +73,7 @@ public class SimpleTypeParser {
         	if (child.getNodeName().equals(prefix+"annotation")); //ignore for now
         	if (child.getNodeName().equals(prefix+"union"))
         	{
-//        		System.out.println("Datatype:" + datatype.getName() + " " + XSDParserUtil.getAttribute(child, "memberTypes"));
+        		System.out.println("Datatype:" + datatype.getName() + " " + XSDParserUtil.getAttribute(child, "memberTypes"));
         		datatype.setUnions(XSDParserUtil.getAttribute(child, "memberTypes"));
         		parseSimpleWithinUnion(child, prefix, datatype);
         	}

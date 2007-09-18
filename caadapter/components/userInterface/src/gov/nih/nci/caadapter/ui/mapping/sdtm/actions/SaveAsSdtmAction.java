@@ -30,8 +30,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.15 $
- *          $Date: 2007-09-14 15:38:54 $
+ *          $Revision: 1.14 $
+ *          $Date: 2007-09-13 15:53:54 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -45,7 +45,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.15 2007-09-14 15:38:54 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.14 2007-09-13 15:53:54 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -148,7 +148,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                     //so the map file is saved successfully; now go enable the transform and dataviewer button just because a save file exists(*.map)
                     ((Database2SDTMMappingPanel) mappingPanel).get_commonBut().setEnabled(true);
                     //
-                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getAbsolutePath() + " is saved successfully \n Do you want to open the Data Viewer using the \" " + file.getName() + " \" file", "Open Data Viewer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getAbsolutePath() + " is saved successfully \n Do you want to open the SQL Query builder using the \" " + file.getName() + " \" file", "Open query builder", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (n == 0) {
                         //parse the mapping file
                         OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), file, out.toString());
@@ -274,7 +274,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         TitledBorder _title = BorderFactory.createTitledBorder("Visual SQL Builder");
         pane.setBorder(_title);
         pane.setLayout(new GridLayout(0, 1));
-        JLabel _jl = new JLabel("Data Viewer loading , please wait.....");
+        JLabel _jl = new JLabel("SQL Query Builder Loading , please wait.....");
         pane.add(_jl);
         d.add(pane, BorderLayout.CENTER);
         d.setLocation(400, 400);
@@ -400,9 +400,6 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
- * Revision 1.14  2007/09/13 15:53:54  jayannah
- * decreased the size of the font and increased the window length
- *
  * Revision 1.13  2007/09/13 14:11:16  jayannah
  * Added a comment to the map file for the user not to change the sql statements
  *

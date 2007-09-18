@@ -43,7 +43,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.10 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.9 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -378,8 +378,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
                 }
                 try {
                     this.dispose();
-                   // new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV);
-                    new RDSTransformer(callingFrame, selFile, directory.getAbsolutePath().toString(), _saveCSV);
+                    new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV);
                 } catch (RuntimeException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();

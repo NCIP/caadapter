@@ -1,14 +1,12 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
-import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
-import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
@@ -24,10 +22,10 @@ import java.util.*;
  * This class implements the fixed length records
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-09-18 02:52:39 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-09-07 19:29:51 $
  */
 public class RDSTransformer {
     String directoryLocation=null;
@@ -46,18 +44,12 @@ public class RDSTransformer {
         directoryLocation = _directoryLocation;
         CSVMapFileReader csvMapFileReader = new CSVMapFileReader(mapFile);
         //check for fixed lenght
-        try
-        {
-            if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
-                fixedLengthIndicator = true;
-                //Prepare the list here and keep it ready so that number of blanks corresponding to the
-                //value set by the user will be applied appropriately
-                RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(callingFrame, csvMapFileReader.getTargetKeyList());
-                fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
-            }
-        } catch (Exception e)
-        {
-            System.out.println("the application could not find preference variable for SCS-transformation (RDS module)");
+        if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
+            fixedLengthIndicator = true;
+            //Prepare the list here and keep it ready so that number of blanks corresponding to the
+            //value set by the user will be applied appropriately
+            RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(callingFrame, csvMapFileReader.getTargetKeyList());
+            fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
         }
         globaldomainList = RDSHelper.getAllFieldsForDomains(new File(RDSHelper.getDefineXMLNameFromMapFile(mapFile.getAbsolutePath())));
         hashTableTransform = csvMapFileReader.getHashTableTransform();
@@ -65,17 +57,15 @@ public class RDSTransformer {
         prepareCSVDataFromCSVDataFile(_csvFileName, scsFileName);
     }
 
-    private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) throws ApplicationException
-    {
+    private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) {
         CSVPanel csvPanel = new CSVPanel();
         File csvFile = new File(_csvFileName);
         csvPanel.setSaveFile(new File(_scsFileName), true);
         CSVMeta rootMeta = csvPanel.getCSVMeta(false);
-        //SDTMMany2ManyMapping segmentedCSVParser = new SDTMMany2ManyMapping();
-        SegmentedCSVParserImpl segmentedCSVParser = new SegmentedCSVParserImpl();
+        SDTMMany2ManyMapping segmentedCSVParser = new SDTMMany2ManyMapping();
         csvDataResult = segmentedCSVParser.parse(csvFile, rootMeta);
-        //List csvDATA = segmentedCSVParser.returnCsvMapData1;
-        //csvDATA.add(csvDATA.get(0));
+        List csvDATA = segmentedCSVParser.returnCsvMapData1;
+        csvDATA.add(csvDATA.get(0));
         processDataRecords();
     }
 
@@ -331,12 +321,6 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
- * Revision 1.6  2007/09/18 02:39:29  jayannah
- * Modified the code so that an exception is caught when the preference variable is not found, the other change is for the construction of RDS transformer
- *
- * Revision 1.5  2007/09/07 19:29:51  wangeug
- * relocate readPreference and savePreference methods
- *
  * Revision 1.4  2007/08/17 15:15:02  jayannah
  * added wait window during transformation
  *
