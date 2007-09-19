@@ -104,7 +104,7 @@
 
         <jar destfile="${project.ref.lib.dir}/${project.jar.name}">
             <fileset dir="${build.dir}"/>
-            <fileset dir="${config.dir}"/>
+            <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
         </jar>
     	
     	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
