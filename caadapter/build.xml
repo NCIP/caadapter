@@ -339,7 +339,7 @@
         <mkdir dir="dist/conf"/>
         <copy todir="${dist.dir}/conf">
             <fileset dir="${config.dir}">
-                <include name="*.properties"/>
+                <include name="caadapter-components.properties,logging.properties"/>
             </fileset>
         </copy>
 
