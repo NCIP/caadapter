@@ -23,11 +23,13 @@
     <property name="project.deploy.root" value="c:\distBin\test_${DATE}"/>
     <property name="webstart.deploy.dir" value="${basedir}/dist/mmswebstart"/>
     <property name="hl7.webstart.deploy.dir" value="${basedir}/dist/hl7webstart"/>
+    <property name="rds.webstart.deploy.dir" value="${basedir}/dist/rdswebstart"/>
     <property name="webstart.config.files" value="${basedir}/etc/webstart"/>
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
     <property name="hl7.webstart.warfile.name" value="caadapter-hl7.war"/>
+    <property name="rds.webstart.warfile.name" value="caadapter-rds.war"/>
     <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
-    <property name="webserver" value="http://localhost:8080/caadapter-mms/"/>
+    <property name="webserver" value="http://localhost/"/>
 
     <!-- Mailer properties begin-->
     <property name="MailLogger.from" value="caAdapter.build.notifier"/>
@@ -298,7 +300,94 @@
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
-    <!-- target name="demo.dist"  -->
+
+    <target name="rdswebstart">
+        <echo message="------- cleaning webstart deploy directory ------"/>
+        <delete dir="${rds.webstart.deploy.dir}"/>
+        <delete file="${dist.dir}/${rds.webstart.warfile.name}"/>
+        <delete file="NCICBkey"/>
+        <!--delete file="${lib.dir}/${project.jar.name}"/-->
+		<mkdir dir="${rds.webstart.deploy.dir}/tmp"/>
+		<unzip dest="${rds.webstart.deploy.dir}/tmp">
+        	<fileset dir="${dist.dir}/lib">
+            	<include name="caAdapter.jar"/>
+        	</fileset>
+		</unzip>
+
+    	<copy file="${webstart.config.dir}/caadapter-components.rds.properties" tofile="${rds.webstart.deploy.dir}/tmp/caadapter-components.properties"/>
+
+		<zip destfile="${rds.webstart.deploy.dir}/caAdapter.jar">
+			<fileset dir="${rds.webstart.deploy.dir}/tmp"/>
+		</zip>
+
+        <delete dir="${rds.webstart.deploy.dir}/tmp"/>
+    	
+        <echo message=""/>
+        <echo message="------- copying jar files to webstart deploy directory ------"/>
+        <copy todir="${rds.webstart.deploy.dir}">
+            <fileset dir="${lib.dir}">
+                <include name="dom4j-1.4.jar"/>
+                <include name="xercesImpl.jar"/>
+                <include name="xml-apis.jar"/>
+            </fileset>
+        	<fileset dir="${reference.dir}">
+                <include name="jgraph.jar"/>
+                <include name="castor-0.9.9.jar"/>
+        	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+        		<include name="sqleonardo.jar"/>
+        	</fileset>
+        	<fileset dir="${ui.module.home}/lib">
+            	<include name="BrowserLauncher2-all-10rc4.jar"/>
+                <include name="commons-collections-3.2.jar"/>
+                <include name="jdom.jar"/>
+        	</fileset>
+        	<fileset dir="${common.module.home}/lib">
+                <include name="xercesImpl.jar"/>
+                <include name="commons-logging-1.0.4.jar"/>
+                <include name="log4j-1.2.8.jar"/>
+        	</fileset>
+        	<fileset dir="${dist.dir}">
+                <include name="xml-apis.jar"/>
+        	</fileset>
+        </copy>
+
+        <echo message=""/>
+        <echo message="------ copying webstart files to webstart deploy directory ------"/>
+        <copy todir="${rds.webstart.deploy.dir}">
+            <fileset dir="${webstart.config.files}">
+                <exclude name="*.zip, *.jar"/>
+            </fileset>
+        </copy>
+
+        <echo message=""/>
+        <echo message="-------- Applying Webserver replacement --------"/>
+        <replace file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp" token="$WEBSERVER" value="${webserver}"/>
+
+        <echo message=""/>
+        <echo message="-------- Create a keyStore *disabled--------"/>
+        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
+
+        <echo message=""/>
+        <echo message="-------- Signing all jar files --------"/>
+        <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
+            <fileset dir="${rds.webstart.deploy.dir}" includes="*.jar, *.zip"/>
+        </signjar>
+
+        <echo message=""/>
+        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+        <war destfile="${dist.dir}/${rds.webstart.warfile.name}" webxml="">
+            <fileset dir="${rds.webstart.deploy.dir}">
+                <exclude name="myKeyStore"/>
+            </fileset>
+        </war>
+
+        <echo message=""/>
+        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
+        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+    </target>
+
+	
+	<!-- target name="demo.dist"  -->
     <target name="demo.dist">
         <!-- ant antfile="build_demo.xml" target="demo.ui.jar"/ -->
 

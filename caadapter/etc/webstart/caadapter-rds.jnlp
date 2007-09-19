@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<jnlp spec="1.0+" codebase="$WEBSERVER/caadapter-hl7" href="caadapter-hl7.jnlp">
+<jnlp spec="1.0+" codebase="$WEBSERVER/caadapter-rds" href="caadapter-rds.jnlp">
 
    <information>
       <title>caAdapter Webstart</title>
@@ -24,9 +24,8 @@
 	<jar href="xercesImpl.jar"/>
 	<jar href="xml-apis.jar"/> 
 	<jar href="castor-0.9.9.jar"/>
-   	<jar href="resource.zip"/>
    	<jar href="ostermillerutils_1_04_03_for_java_1_4.jar"/>
-   	<jar href="poi-2.5.1-final-20040804.jar"/>
+   	<jar href="sqleonardo.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.ui.main.MainFrame" />
