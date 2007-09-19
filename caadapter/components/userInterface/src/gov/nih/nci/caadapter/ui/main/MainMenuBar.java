@@ -81,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.17 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.18 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -303,6 +303,10 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
         
+        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
+        	return _qb;
+        
+        //add the build resource menu for standalone application
         BuildHL7ResourceAction buildV3=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V3, mainFrame);
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
@@ -557,6 +561,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.17  2007/09/18 15:26:33  wangeug
+ * HISTORY : add tool>build resource menu
+ * HISTORY :
  * HISTORY : Revision 1.16  2007/09/07 19:28:08  wangeug
  * HISTORY : relocate readPreference and savePreference methods
  * HISTORY :
