@@ -333,9 +333,9 @@
         <copy todir="${dist.dir}" flatten="true">
             <fileset file="run.bat"></fileset>
         </copy>
-    	<copy todir="${dist.dir}/schemas" >
+    	<!-- copy todir="${dist.dir}/schemas" >
         	<fileset dir="etc/schemas"/>
-        </copy>
+        </copy -->
         <mkdir dir="dist/conf"/>
     	<copy todir="${dist.dir}/conf">
     	            <fileset file="${config.dir}/caadapter-components.properties" />
