@@ -342,7 +342,7 @@
     				<fileset file="${config.dir}/logging.properties" />
     	 </copy>
 
-        <delete file="${lib.dir}\delete.jar"/>
+        <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\deletethisfolder.jar"/>
     </target>
 
