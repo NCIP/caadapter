@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.13 2007-09-19 16:40:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.14 2007-09-19 20:30:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,8 +54,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.13 $
- * @date $$Date: 2007-09-19 16:40:14 $
+ * @version $Revision: 1.14 $
+ * @date $$Date: 2007-09-19 20:30:59 $
  * @since caAdapter v1.2
  */
 
@@ -76,8 +76,14 @@ public class CaadapterUtil {
         //load caadapter component types to run
         Properties properties=new Properties();
         try {
-//        	fi = CaadapterUtil.class.getClassLoader().getResource("conf/caadapter-components.properties").openStream(); 
-        	fi =new FileInputStream(new File("conf/caadapter-components.properties"));
+        	 
+        	File srcFile=new  File("conf/caadapter-components.properties");
+        	if (srcFile.exists())
+        	{
+        		fi =new FileInputStream(srcFile);
+        	}
+        	else
+        		fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();	
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -288,6 +294,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2007/09/19 16:40:14  wangeug
+ * HISTORY      : load property file from conf folder
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2007/09/19 13:54:29  wangeug
  * HISTORY      : show missing resources
  * HISTORY      :
