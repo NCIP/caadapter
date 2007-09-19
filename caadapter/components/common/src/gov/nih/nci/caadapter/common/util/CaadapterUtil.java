@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.11 2007-09-11 18:54:25 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.12 2007-09-19 13:54:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -53,8 +54,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.11 $
- * @date $$Date: 2007-09-11 18:54:25 $
+ * @version $Revision: 1.12 $
+ * @date $$Date: 2007-09-19 13:54:29 $
  * @since caAdapter v1.2
  */
 
@@ -62,17 +63,17 @@ public class CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
 	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
 	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
-    private static HashMap prefs;
+	private static ArrayList<String> RESOURCE_REQUIRED =new ArrayList<String>();
+	private static HashMap prefs;
 	static {
 		//mkdir for logging 
 		File logDir=new File("log");
 		if (!logDir.exists())
 			logDir.mkdir();
-		
-        Properties properties = new Properties();
+
         InputStream fi = null;
         //load caadapter component types to run
-        properties=new Properties();
+        Properties properties=new Properties();
         try {
         	fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream(); 
         	properties.load(fi);
@@ -105,7 +106,12 @@ public class CaadapterUtil {
             	while(tk.hasMoreElements())
             		MANDATORY_SELECTED_ATTRIBUTES.add((String)tk.nextElement());
             }
-                        
+            fi.close();
+            Properties rsrcProp=new Properties();
+            fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-resources.properties").openStream();
+            rsrcProp.load(fi);
+            readResourceRequired(rsrcProp);
+                  
         } catch (Exception ex) {
             Log.logException(CaadapterUtil.class, "caadapter-components.properties is not found", ex);
         } finally {
@@ -118,6 +124,37 @@ public class CaadapterUtil {
     }
 
 
+	private static void readResourceRequired(Properties prop)
+	{
+		//it is not required for webstart installation
+		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
+			return;
+		//always add common required
+		addRequiredResource(prop.getProperty(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED));
+		
+		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
+			addRequiredResource(prop.getProperty(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED));
+		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
+			addRequiredResource(prop.getProperty(Config.CAADAPTER_HL7_V2V3_CONVERSION_RESOURCE_REQUIRED));
+		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
+			addRequiredResource(prop.getProperty(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED));
+	
+	}
+	
+	private static void addRequiredResource(String rsrcList)
+	{
+		if (rsrcList==null||rsrcList.equals(""))
+			return;
+		
+    	StringTokenizer tk=new StringTokenizer(rsrcList, ",");
+    	while(tk.hasMoreElements())
+    	{
+    		String nxtRsc=(String)tk.nextElement();
+    		if (!RESOURCE_REQUIRED.contains(nxtRsc))
+    			RESOURCE_REQUIRED.add(nxtRsc);
+    	}
+
+	}
 
     // getters.
     public static final ArrayList getInlineTextAttributes() {
@@ -129,6 +166,21 @@ public class CaadapterUtil {
 
     public static final ArrayList getMandatorySelectedAttributes() {
         return MANDATORY_SELECTED_ATTRIBUTES;
+    }
+    public static ArrayList<String> getResourceMissed()
+    {
+    	ArrayList <String> missRsrc=new ArrayList<String>();
+    	File libFile=new File("lib");
+    	if (!libFile.exists()||!libFile.isDirectory())
+    		return missRsrc;
+    	String[] libRsrc=libFile.list();
+    	List<String>  foundRsrc=Arrays.asList(libRsrc);
+    	for (String rsrc:RESOURCE_REQUIRED)
+    	{
+    		if (!foundRsrc.contains(rsrc))
+    			missRsrc.add(rsrc);
+    	}
+    	return missRsrc;
     }
      
      /**
@@ -226,6 +278,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2007/09/11 18:54:25  wangeug
+ * HISTORY      : create log file if not exist
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2007/09/07 19:25:48  wangeug
  * HISTORY      : relocate readPreference and savePreference methods
  * HISTORY      :

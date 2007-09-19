@@ -10,6 +10,7 @@
 	<constant name="CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED" type="String" value="caadapter.model.mapping.activated"/>
 	<constant name="CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED" type="String" value="caadapter.sdtm.transformation.activated"/>
 	<constant name="CAADAPTER_COMPONENT_WEB_SERVICE_ACTIVATED" type="String" value="caadapter.web.service.activated"/>	
+	<constant name="CAADAPTER_COMPONENT_WEBSTART_ACTIVATED" type="String" value="webstart.activated"/>
 	<constant name="CAADAPTER_HELP_MENU_ACTIVATED" type="String" value="caadapter.help.menu.activated"/>	
 	<constant name="CAADAPTER_QUERYBUILDER_MENU_ACTIVATED" type="String" value="caadapter.querybuilder.menu.activated"/>	
 	<constant name="MMS_PREFIX_DATAMODEL" type="String" value="cadapter.mms.prefix.datamodel"/>
@@ -26,14 +27,14 @@
     <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="#401"/>
     <constant name="JDK_VERSION" type="String" value="1.5.0_06"/>
     <constant name="COPYRIGHT_YEARS" type="String" value="2004-2007"/>
-    <!-- constant name="RIM_FILE" type="String" value="../javaSIG/etc/Rim207.xml"/ -->
-    <!-- constant name="HMD_LOCATION" type="String" value="../javaSIG/data/hmd207/"/ -->
-    <!-- constant name="SCHEMA_LOCATION" type="String" value="../javaSIG/data/schemas207/multicacheschemas/"/ -->
-    <!-- constant name="PORR_MT040001_XML_File" type="String" value="../javaSIG/etc/PORR_MT040001.xml"/ -->
- 
+    <!-- required resource for each module -->
+    <constant name="CAADAPTER_COMMON_RESOURCE_REQUIRED" type="String" value="caadapter.common.resource.required"/>
+    <constant name="CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED" type="String" value="caadapter.hl7.transformation.resource.required"/>
+    <constant name="CAADAPTER_HL7_V2V3_CONVERSION_RESOURCE_REQUIRED" type="String" value="caadapter.hl7.v2v3.conversion.resource.required"/>
+    <constant name="CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED" type="String" value="caadapter.querybuilder.resource.required"/>
+                    
     <constant name="SCHEMA_LOCATION" type="String" value="schemas/multicacheschemas/"/>    
-    
-    
+        
     <constant name="FUNCTION_DEFINITION_FILE_LOCATION" type="String" value="map/functions/core.fls"/>
     <constant name="VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION" type="String" value="map/functions/vom.xsd"/>
     <constant name="MAP_COMPONENT_SOURCE_TYPE" type="String" value="source"/>
