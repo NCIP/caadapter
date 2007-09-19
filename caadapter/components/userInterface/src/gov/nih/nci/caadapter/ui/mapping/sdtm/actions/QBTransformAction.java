@@ -10,7 +10,7 @@ import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
-import gov.nih.nci.caadapter.ui.main.MainMenuBar;
+import gov.nih.nci.caadapter.ui.main.MainFrame;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.DBConnector;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSFixedLenghtInput;
@@ -31,6 +31,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.14 $
- *          $Date: 2007-09-13 15:37:42 $
+ *          $Revision: 1.15 $
+ *          $Date: 2007-09-19 16:52:12 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -56,7 +57,9 @@ public class QBTransformAction {
     Hashtable sqlAsColumnMap = null;
 
     /*
+
         This constructor is used by the mapping panel
+
      */
     public QBTransformAction(AbstractMainFrame _mainFrame, final Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception {
         //this(_mainFrame, mappingPanel, "");
@@ -95,21 +98,38 @@ public class QBTransformAction {
                     }
                 }).start();
                 queryWaitDialog.setTitle("Transforming file " + mappingPanel.getSaveFile().getAbsolutePath() + "in Progress");
-                queryWaitDialog.setSize(350, 100);
+                queryWaitDialog.setSize(450, 300);
                 queryWaitDialog.setLocation(450, 450);
+                queryWaitDialog.setLocationRelativeTo(null);
                 queryWaitDialog.setLayout(new BorderLayout());
                 LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
                 JPanel waitLabel = new JPanel();
                 waitLabel.setBorder(lineBorder);
-                waitLabel.add(new JLabel("      Transformation in progress, Please wait ..."));
-                queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
+                waitLabel.add(new JLabel("      Transformation in progress, Please waitdd ..."));
+                //
+                JLabel imageIcon = new JLabel(getWaitButton("animated"));
+                queryWaitDialog.add(imageIcon, BorderLayout.NORTH);
                 queryWaitDialog.add(waitLabel, BorderLayout.CENTER);
+                ///queryWaitDialog.pack();
                 queryWaitDialog.setVisible(true);
                 //wait dialog window needs to be destroyed
             } catch (Exception e) {
                 throw e;
             }
         }
+    }
+
+    public static ImageIcon getWaitButton(String imageName) {
+        String imgLocation = "/images/_" + imageName + ".gif";
+        URL imageURL = null;
+        try {
+            imageURL = MainFrame.class.getResource(imgLocation);
+            return new ImageIcon(imageURL);
+        } catch (Exception e) {
+            System.out.println("Unable to find image _" + imageName);
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /*
@@ -121,7 +141,7 @@ public class QBTransformAction {
             String params = getDBParams(mapFile);
             _con = getConnection(_mainFrame, params, mapFile);
             // the user really Cancelled! BAH!
-            if(_con == null){
+            if (_con == null) {
                 return;
             }
         }
@@ -141,7 +161,6 @@ public class QBTransformAction {
             }
         } catch (Exception e) {
             // the .preferences file was not found
-            
         }
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             directory = directoryLoc.getSelectedFile();
@@ -163,15 +182,27 @@ public class QBTransformAction {
                     }
                 }).start();
                 queryWaitDialog.setTitle("Transforming file " + mapFile + "in Progress");
-                queryWaitDialog.setSize(350, 100);
-                queryWaitDialog.setLocation(450, 450);
+                queryWaitDialog.setSize(400, 150);
+                queryWaitDialog.setLocation(450, 300);
                 queryWaitDialog.setLayout(new BorderLayout());
                 LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                JPanel masterPane = new JPanel();
+                masterPane.setLayout(new BorderLayout());
+                //
                 JPanel waitLabel = new JPanel();
-                waitLabel.setBorder(lineBorder);
-                waitLabel.add(new JLabel("      Transformation in progress, Please wait ..."));
+                //waitLabel.setBorder(lineBorder);
+                JLabel _jl = new JLabel("      Transformation in progress, Please wait ...");
+                waitLabel.add(_jl);
+                _jl.setFont(new Font("SansSerif", Font.BOLD, 12));
                 queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
-                queryWaitDialog.add(waitLabel, BorderLayout.CENTER);
+                //
+                JLabel imageIcon = new JLabel(getWaitButton("animated"));                
+                //
+                masterPane.add(imageIcon, BorderLayout.NORTH);
+                masterPane.add(waitLabel, BorderLayout.CENTER);
+                masterPane.setBorder(lineBorder);
+                //
+                queryWaitDialog.add(masterPane);
                 queryWaitDialog.setVisible(true);
                 //wait dialog window needs to be destroyed
             } catch (Exception e) {
@@ -229,7 +260,7 @@ public class QBTransformAction {
                 ResultSet rs = con.createStatement().executeQuery(query);
                 //get all the columns for the 'domainName'
                 ArrayList columns = qb.getHashTableTransform().get(domainName);
-                int sizeOfDomain = ((ArrayList)tempTable.get(domainName)).size();
+                int sizeOfDomain = ((ArrayList) tempTable.get(domainName)).size();
                 out.write(tempTable.get(domainName).toString().substring(1, tempTable.get(domainName).toString().indexOf(']')));
                 ArrayList domainHeader = (ArrayList) tempTable.get(domainName);
                 //compute the number of commas for each mapped columnvalue and set if the retrieved value is
@@ -296,12 +327,12 @@ public class QBTransformAction {
                 _setSize.append(" ");
             }
             _tempArray.add(position, _setSize.toString());
-            _tempArray.remove(position+1);
+            _tempArray.remove(position + 1);
         } else {
             _tempArray.add(position, srcData.substring(0, fixedsize));
-            _tempArray.remove(position+1);
+            _tempArray.remove(position + 1);
         }
-         return _tempArray;
+        return _tempArray;
     }
 
     private String fetchCustColNameFromSQLMap(String domainName, String colName) {
@@ -362,6 +393,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/09/13 15:37:42  jayannah
+ * handled null pointer exception when the preference value doe not exist
+ *
  * Revision 1.13  2007/09/07 19:29:34  wangeug
  * relocate readPreference and savePreference methods
  *

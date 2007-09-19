@@ -10,6 +10,7 @@ import gov.nih.nci.caadapter.dataviewer.util.Querypanel;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
+import gov.nih.nci.caadapter.ui.main.MainFrame;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 
@@ -21,6 +22,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -30,8 +32,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.15 $
- *          $Date: 2007-09-14 15:38:54 $
+ *          $Revision: 1.16 $
+ *          $Date: 2007-09-19 16:52:12 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -45,7 +47,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.15 2007-09-14 15:38:54 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.16 2007-09-19 16:52:12 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -184,6 +186,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                                 butPan.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
                                 butPan.add(okBut);
                                 resPan.add(butPan, BorderLayout.SOUTH);
+                                d.removeAll();
                                 d.add(resPan);
                                 d.validate();
                             }
@@ -194,12 +197,18 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                         pane.setLayout(new BorderLayout());
                         JLabel _jl = new JLabel("SQL(s) are now being Generated, please wait.....");
                         _jl.setFont(new Font("SansSerif", Font.BOLD, 14));
+                        //
+                        JLabel imageIcon = new JLabel(getWaitButton("animated"));
+
+                        //
                         JPanel labelPane = new JPanel();
                         labelPane.add(_jl, BorderLayout.CENTER);
-                        pane.add(labelPane, BorderLayout.CENTER);
+                        //
+                        pane.add(imageIcon, BorderLayout.CENTER);
+                        pane.add(labelPane, BorderLayout.NORTH);
+                        //
                         d.add(pane, BorderLayout.CENTER);
                         d.setUndecorated(true);
-                        //d.setLocationRelativeTo(null);// this will cause the window to position centre of screen
                         d.setLocation(350, 420);
                         d.setAlwaysOnTop(true);
                         d.setSize(650, 160);
@@ -235,6 +244,19 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         retAry.add(_qbparse.getHashTable());
         retAry.add(_qbparse.getHashTblColumns());
         return retAry;
+    }
+
+    public static ImageIcon getWaitButton(String imageName) {
+        String imgLocation = "/images/_" + imageName + ".gif";
+        URL imageURL = null;
+        try {
+            imageURL = MainFrame.class.getResource(imgLocation);
+            return new ImageIcon(imageURL);
+        } catch (Exception e) {
+            System.out.println("Unable to find image _" + imageName);
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void OpenQueryBuilder(final Hashtable list, final HashSet cols, final File file, final String out) {
@@ -307,6 +329,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                     String domainName = _mD.get_tPane().getTitleAt(i).substring(0, 2);
                     String saveSQLForMapFile = markSelectedColumns(domainName, _sqlSTR);
                     _mD.getSqlSaveHashMap().put(domainName, saveSQLForMapFile);
+                    System.gc();
                 }
             } catch (Exception e) {
             }
@@ -327,7 +350,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
         } catch (
                 IOException ee) {
             ee.printStackTrace();
-            JOptionPane.showMessageDialog(_mD.get_jf(), "The file \"" + _mD.getSaveFile().getName() + "\" was not saved dure to " + ee.getLocalizedMessage(), "Mapping file is not saved", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(_mD.get_jf(), "The file \"" + _mD.getSaveFile().getName() + "\" was not saved due to " + ee.getLocalizedMessage(), "Mapping file is not saved", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -400,6 +423,9 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/09/14 15:38:54  jayannah
+ * Changed the name from Query builder to data viewer
+ *
  * Revision 1.14  2007/09/13 15:53:54  jayannah
  * decreased the size of the font and increased the window length
  *
