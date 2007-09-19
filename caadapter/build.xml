@@ -337,11 +337,10 @@
         	<fileset dir="etc/schemas"/>
         </copy>
         <mkdir dir="dist/conf"/>
-        <copy todir="${dist.dir}/conf">
-            <fileset dir="${config.dir}">
-                <include name="caadapter-components.properties,logging.properties"/>
-            </fileset>
-        </copy>
+    	<copy todir="${dist.dir}/conf">
+    	            <fileset file="${config.dir}/caadapter-components.properties" />
+    				<fileset file="${config.dir}/logging.properties" />
+    	 </copy>
 
         <delete file="${lib.dir}\delete.jar"/>
         <delete dir="${lib.dir}\deletethisfolder.jar"/>
