@@ -13,8 +13,8 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
      *
      */
     private static final long serialVersionUID = 1L;
-    public static final String COMMAND_BUILD_V3 = "Build HL7 V3 Resource";
-    public static final String COMMAND_BUILD_V2 = "Build HL7 V2 Resource";
+    public static final String COMMAND_BUILD_V3 = "Load HL7 v3 Normative Edition Processable Artifacts";
+    public static final String COMMAND_BUILD_V2 = "Load HL7 v2 Processable Artifacts";
     private AbstractMainFrame mainFrame;
    
     private static final String RESOURCE_NAME_V3="resource.zip";
