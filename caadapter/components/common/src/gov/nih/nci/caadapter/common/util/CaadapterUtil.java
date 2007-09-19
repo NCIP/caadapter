@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.12 2007-09-19 13:54:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.13 2007-09-19 16:40:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,8 +54,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.12 $
- * @date $$Date: 2007-09-19 13:54:29 $
+ * @version $Revision: 1.13 $
+ * @date $$Date: 2007-09-19 16:40:14 $
  * @since caAdapter v1.2
  */
 
@@ -65,6 +65,7 @@ public class CaadapterUtil {
 	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
 	private static ArrayList<String> RESOURCE_REQUIRED =new ArrayList<String>();
 	private static HashMap prefs;
+	private static boolean authorizedUser=false;
 	static {
 		//mkdir for logging 
 		File logDir=new File("log");
@@ -75,7 +76,8 @@ public class CaadapterUtil {
         //load caadapter component types to run
         Properties properties=new Properties();
         try {
-        	fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream(); 
+//        	fi = CaadapterUtil.class.getClassLoader().getResource("conf/caadapter-components.properties").openStream(); 
+        	fi =new FileInputStream(new File("conf/caadapter-components.properties"));
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -274,10 +276,21 @@ public class CaadapterUtil {
                  e.printStackTrace();
              }
          }
+
+		public static boolean isAuthorizedUser() {
+			return authorizedUser;
+		}
+
+		public static void setAuthorizedUser(boolean authorizedUser) {
+			CaadapterUtil.authorizedUser = authorizedUser;
+		}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2007/09/19 13:54:29  wangeug
+ * HISTORY      : show missing resources
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2007/09/11 18:54:25  wangeug
  * HISTORY      : create log file if not exist
  * HISTORY      :
