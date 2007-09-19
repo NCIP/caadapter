@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.12 2007-09-10 16:46:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.13 2007-09-19 16:43:56 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,11 +50,12 @@ import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.preferences.CaWindowClosingListener;
-
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 
  /**
@@ -63,8 +64,8 @@ import java.util.HashMap;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-09-10 16:46:57 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-09-19 16:43:56 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -127,13 +128,15 @@ public class MainFrame extends AbstractMainFrame
 		//isw.setAlwaysOnTop(true);
 		DefaultSettings.centerWindow(isw);
 		isw.setVisible(true);
+		ArrayList missingList=CaadapterUtil.getResourceMissed();
+		if (!missingList.isEmpty())
+			new VerifyResourceDialog(this, "Warning: Resources Missing ", missingList);
 
 	    try {
 		    Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
 		isw.dispose();
     }
 
@@ -423,6 +426,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2007/09/10 16:46:57  wangeug
+ * HISTORY      : set name for hlv3 panel
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2007/09/08 20:19:12  umkis
  * HISTORY      : Temporary files will be automatically deleted when system exit.
  * HISTORY      :
