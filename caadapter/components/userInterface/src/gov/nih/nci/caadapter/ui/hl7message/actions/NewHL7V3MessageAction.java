@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.6 2007-09-10 16:42:21 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.7 2007-09-19 16:42:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -60,8 +60,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-09-10 16:42:21 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-09-19 16:42:05 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -77,7 +77,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.6 2007-09-10 16:42:21 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.7 2007-09-19 16:42:05 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -195,6 +195,11 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
+		if (!super.isRequestAuthorized(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 //		OpenHL7MessageWizard openWizard = new OpenHL7MessageWizard(mainFrame, COMMAND_NAME, true);
 		OpenHL7MessageWizard openWizard = new OpenHL7MessageWizard(mainFrame, this.getName(), true);
 		DefaultSettings.centerWindow(openWizard);
@@ -246,6 +251,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/09/10 16:42:21  wangeug
+ * HISTORY      : use a local Progressor instance
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/09/04 20:45:16  wangeug
  * HISTORY      : add progressor
  * HISTORY      :

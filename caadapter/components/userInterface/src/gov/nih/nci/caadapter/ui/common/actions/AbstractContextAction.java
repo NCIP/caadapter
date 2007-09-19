@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/AbstractContextAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/AbstractContextAction.java,v 1.2 2007-09-19 16:41:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,12 +35,14 @@
 package gov.nih.nci.caadapter.ui.common.actions;
 
 import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessageDialog;
+import gov.nih.nci.caadapter.ui.main.HL7AuthorizationDialog;
 
 import javax.swing.JFrame;
 import javax.swing.Action;
@@ -61,8 +63,8 @@ import java.awt.Dialog;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-19 16:41:21 $
  */
 public abstract class AbstractContextAction extends AbstractAction
 {
@@ -91,6 +93,11 @@ public abstract class AbstractContextAction extends AbstractAction
 	 */
 	private boolean successfullyPerformed = false;
 
+	/**
+	 * The flag indicate whether this action is only for authorized user
+	 */
+	private boolean authorizationRequired=false;
+	
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
@@ -289,6 +296,20 @@ public abstract class AbstractContextAction extends AbstractAction
 	}
 
 	/**
+	 * 
+	 */
+	protected boolean isRequestAuthorized(JFrame owner)
+	{
+		if (isAuthorizationRequired())
+		{
+			if (!CaadapterUtil.isAuthorizedUser())
+				new HL7AuthorizationDialog (owner,"Notice: Use HL7 Artifacts");
+			System.out.println("AbstractContextAction.isRequestAuthorized()..waiting:"+CaadapterUtil.isAuthorizedUser());
+			return CaadapterUtil.isAuthorizedUser();
+		}
+		return true;
+	}
+	/**
 	 * The abstract function that descendant classes must be overridden to provide customsized handling.
 	 * @param e
 	 * @return true if the action is finished successfully; otherwise, return false.
@@ -361,9 +382,20 @@ public abstract class AbstractContextAction extends AbstractAction
 		}
 		return container;
 	}
+
+	public boolean isAuthorizationRequired() {
+		return authorizationRequired;
+	}
+
+	public void setAuthorizationRequired(boolean authorizationRequired) {
+		this.authorizationRequired = authorizationRequired;
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.21  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

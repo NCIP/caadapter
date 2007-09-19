@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/V2V3MapAction.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/V2V3MapAction.java,v 1.2 2007-09-19 16:42:37 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,8 +49,8 @@ import javax.swing.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:32:58 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-19 16:42:37 $
  */
 public class V2V3MapAction extends AbstractContextAction  {
     /**
@@ -106,6 +106,11 @@ public class V2V3MapAction extends AbstractContextAction  {
          *         return false.
          */
     protected boolean doAction(ActionEvent e) throws Exception {
+		if (!super.isRequestAuthorized(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
         new MapV2V3(mainFrame);
 
 //        V2ConverterToSCSPanel v2ConverterPanel = new V2ConverterToSCSPanel(FileUtil.getV2DataDirPath());
@@ -130,6 +135,9 @@ public class V2V3MapAction extends AbstractContextAction  {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2006/11/28 15:13:59  jayannah
  * HISTORY      : Changed the order and names of the menuitems
  * HISTORY      :

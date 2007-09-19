@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/NewMapFileAction.java,v 1.1 2007-04-03 16:17:36 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/NewMapFileAction.java,v 1.2 2007-09-19 16:42:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,8 +50,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:36 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-19 16:42:23 $
  */
 public class NewMapFileAction extends AbstractContextAction
 		{
@@ -102,8 +102,14 @@ public class NewMapFileAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
+		if (!super.isRequestAuthorized(mainFrame))
+		{
+			System.out.println("NewMapFileAction.doAction()...:user is not authorized..");
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
+		
 		HL7MappingPanel mp = new HL7MappingPanel();
-//		gov.nih.nci.caadapter.ui.mapping.hl7.NewHL7MappingPanel mp=new gov.nih.nci.caadapter.ui.mapping.hl7.NewHL7MappingPanel();
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
@@ -122,6 +128,9 @@ public class NewMapFileAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:36  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2006/11/15 19:57:38  wuye
  * HISTORY      : reorgnize menu items
  * HISTORY      :

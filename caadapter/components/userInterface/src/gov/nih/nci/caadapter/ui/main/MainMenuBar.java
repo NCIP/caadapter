@@ -81,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.18 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.19 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -304,8 +304,11 @@ public class MainMenuBar extends AbstractMenuBar
         _qb.add(_menuItem);
         
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
+        {
+        	//webstart user is always authorized
+        	CaadapterUtil.setAuthorizedUser(true);
         	return _qb;
-        
+        }
         //add the build resource menu for standalone application
         BuildHL7ResourceAction buildV3=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V3, mainFrame);
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
@@ -319,8 +322,10 @@ public class MainMenuBar extends AbstractMenuBar
 
     private JMenu constructNewCSVTOV3Menu()
     {
+    	//user should be authorized to use HL7 artifacts
         JMenu newGroup = new JMenu("CSV To HL7 v3 Mapping and Transformation Service");
         NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
+        newMapAction.setAuthorizationRequired(true);
         JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction);
         actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
         menuItemMap.put(ActionConstants.NEW_MAP_FILE, newCsvToV3MapItem);
@@ -329,10 +334,12 @@ public class MainMenuBar extends AbstractMenuBar
         actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
         menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
         NewHSMAction newHSMAction = new NewHSMAction(mainFrame);
+        newHSMAction.setAuthorizationRequired(true);
         JMenuItem newHSMFileItem = new JMenuItem(newHSMAction);
         actionMap.put(ActionConstants.NEW_HSM_FILE, newHSMAction);
         menuItemMap.put(ActionConstants.NEW_HSM_FILE, newHSMFileItem);
         NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(mainFrame);
+        newHL7V3MessageAction.setAuthorizationRequired(true);
         JMenuItem newHL7V3MessageItem = new JMenuItem(newHL7V3MessageAction);
         actionMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageAction);
         menuItemMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageItem);
@@ -347,12 +354,16 @@ public class MainMenuBar extends AbstractMenuBar
     private JMenu constructNewV2TOV3Menu()
     {
         NewMapFileAction newMapAction1 = new NewMapFileAction(mainFrame);
+        newMapAction1.setAuthorizationRequired(true);
         JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction1);
         JMenu newGroup = new JMenu("HL7 v2 to HL7 v3 Conversion Service");
         V2V3MapAction newV2ToV3MapAction = new V2V3MapAction(mainFrame);
+        newV2ToV3MapAction.setAuthorizationRequired(true);
         NewHSMAction newHSMAction_1 = new NewHSMAction(mainFrame);
+        newV2ToV3MapAction.setAuthorizationRequired(true);
         JMenuItem newHSMFileItem_1 = new JMenuItem(newHSMAction_1);
         NewHL7V3MessageAction newHL7V3MessageAction_1 = new NewHL7V3MessageAction(mainFrame);
+        newHL7V3MessageAction_1.setAuthorizationRequired(true);
         JMenuItem newHL7V3MessageItem_1 = new JMenuItem(newHL7V3MessageAction_1);
         newGroup.add(new JMenuItem(newV2ToV3MapAction));
         newGroup.add(newHSMFileItem_1);
@@ -365,6 +376,7 @@ public class MainMenuBar extends AbstractMenuBar
     {
         JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
         NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
+        newHL7V3MessageAction.setAuthorizationRequired(true);
         JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
         actionMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3MessageAction);
         menuItemMap.put(ActionConstants.NEW_HL7_V3_TO_CSV, newHL7V3ToCSVItem);
@@ -561,6 +573,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.18  2007/09/19 13:42:11  wangeug
+ * HISTORY : do not show "build resource" menu item for webstart version
+ * HISTORY :
  * HISTORY : Revision 1.17  2007/09/18 15:26:33  wangeug
  * HISTORY : add tool>build resource menu
  * HISTORY :
