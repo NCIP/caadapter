@@ -30,7 +30,7 @@ import junit.framework.*;
  * 
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-08-22 15:06:15 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-09-19 13:56:10 $
  */
 
 public class MIFLoadingTests extends TestCase {
@@ -39,7 +39,8 @@ public class MIFLoadingTests extends TestCase {
 	 public void testExportHL7V3Specification () {
 		 String outFileName="mifClass.xml";
 //		 String specFileName="C:\\CVS\\caadapter\\workingspace\\examples\\xmlpathSpec\\coct_mt010000.h3s";
-		 String specFileName="mifClassImportReExport.h3s";
+//		 String specFileName="mifClassImportReExport.h3s";
+		 String specFileName="C:/Documents and Settings/wangeug/My Documents/caAdapter/test0822/COCT_MT010000_Simple.h3s";
 		 FileInputStream fis;
 		 MIFClass rootMif = null;
 		try {

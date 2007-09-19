@@ -35,12 +35,12 @@ public class MIFReferenceResolverTests extends TestCase {
 	{
   		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db;
-  		String mifFileName="COCT_MT030000UV01.mif";
+  		String mifFileName="COCT_MT010000UV01.mif";
   		String outFileName="resolved"+mifFileName;
   		outFileName.replace(".mif", ".xml");
 		try {
 			db = dbf.newDocumentBuilder();
-			Document mifDoc = db.parse("T:/YeWu/Edition2006/mif/COCT_MT030000UV01.mif");
+			Document mifDoc = db.parse("T:/YeWu/Edition2006/mif/"+mifFileName);
 	   	  	MIFParser mifParser = new MIFParser();
 	        mifParser.parse(mifDoc);
 	        MIFClass parseredMif= mifParser.getMIFClass();
