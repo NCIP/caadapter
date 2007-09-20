@@ -1,8 +1,7 @@
 /**
  * <!-- LICENSE_TEXT_START -->
-  * <!-- LICENSE_TEXT_END -->
+ * <!-- LICENSE_TEXT_END -->
  */
-
 
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
@@ -22,8 +21,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-18 15:22:38 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-09-20 16:40:14 $
  */
 public class NewObject2DBMapAction extends AbstractContextAction
 		{
@@ -94,6 +93,9 @@ public class NewObject2DBMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/18 15:22:38  schroedn
+ * HISTORY      : added setChanged(false) flag to fix save on close bug
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

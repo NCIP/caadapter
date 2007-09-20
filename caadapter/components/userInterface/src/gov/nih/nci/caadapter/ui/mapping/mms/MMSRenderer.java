@@ -1,6 +1,8 @@
 /**
- * 
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
  */
+
 package gov.nih.nci.caadapter.ui.mapping.mms;
 
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;

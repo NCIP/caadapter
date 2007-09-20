@@ -1,6 +1,8 @@
 /**
- * 
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
  */
+
 package gov.nih.nci.caadapter.mms.generator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
@@ -48,7 +50,7 @@ private static String xmiFileName;
 private static String errorMessage;
 
 /**
- * @param xmiFileName
+ * @param xmiFileName_local
  */
 public CumulativeMappingGenerator(String xmiFileName_local)
 {
@@ -60,7 +62,7 @@ public CumulativeMappingGenerator(){
 }
 
 /**
- * @param xmiFileName
+ * @param xmiFileName_local
  */
 public static boolean init(String xmiFileName_local) 
 {
@@ -361,9 +363,7 @@ public static boolean unmapDependency(UMLClass source, String sourceXPath, UMLCl
 }
 
 /**
- * @param source
  * @param sourcePath
- * @param target
  * @param targetPath
  * @return boolean
  */
@@ -390,9 +390,9 @@ public static boolean mapAttribute(String sourcePath, String targetPath){
 	return successfullyMapped;
 }
 /**
- * @param source
  * @param sourcePath
- * @param target
+ * @param sourcePath
+ * @param targetPath
  * @param targetPath
  * @return boolean
  */
@@ -410,9 +410,7 @@ public static boolean unmapAttribute(String sourcePath, String targetPath){
 
 
 /**
- * @param source
  * @param sourceXPath
- * @param target
  * @param targetXPath
  * @return boolean
  */
@@ -439,9 +437,7 @@ public static boolean mapSingleAssociation(String sourceXPath, String targetXPat
 	return successfullyMapped;
 }
 /**
- * @param source UMLAssociationEnd
  * @param sourceXPath String
- * @param target UMLAttribute
  * @param targetXPath String
  * @return boolean
  */
@@ -459,7 +455,6 @@ public static boolean unmapSingleAssociation(String sourceXPath, String targetXP
 /**
  * @param source UMLAssociationEnd
  * @param sourceXPath String
- * @param target UMLAttribute
  * @param targetXPath String
  * @return boolean
  */
@@ -498,9 +493,7 @@ public static boolean mapManyToManyAssociation(UMLAssociationEnd source, String 
 	return successfullyMapped;
 }
 /**
- * @param source UMLAssociationEnd
- * @param sourceXPath String	
- * @param target UMLAttribute target
+ * @param sourceXPath String
  * @param targetXPath String
  * @return boolean 
  */

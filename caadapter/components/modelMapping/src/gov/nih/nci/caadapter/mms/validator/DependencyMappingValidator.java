@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.validator;
 import java.util.Iterator;
 import java.util.List;
@@ -36,8 +41,6 @@ public class DependencyMappingValidator {
 	 * 1. These two objects are already mapped to each other
 	 * 2. These two objects have been mapped to some other objects.
 	 *
-	 * @param sourceElement
-	 * @param targetElement
 	 */
 	public boolean areAlreadyMapped(){
 		boolean hasBeenMapped = false;
@@ -82,8 +85,6 @@ public class DependencyMappingValidator {
 	 * already been mapped and then checking if the target database table is
 	 * not a correlation table.
 	 *
-	 * @param target
-	 * @param source
 	 */
 
 	public boolean isValid(){

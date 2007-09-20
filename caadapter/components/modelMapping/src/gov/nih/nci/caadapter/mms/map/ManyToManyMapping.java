@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.map;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
@@ -22,9 +27,8 @@ public class ManyToManyMapping {
 
 	/**
 	 *
-	 * @param tableMetadata
-	 * @param otherAssociationEndRoleName
-	 * @param associationEndRoleName
+	 * @param thisEndColumn
+	 * @param associationEndMetadata
 	 */
 	public ManyToManyMapping(ColumnMetadata thisEndColumn, AssociationMetadata associationEndMetadata){
 		this.associationEndMetadata = associationEndMetadata;

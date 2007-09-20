@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.map;
 import java.util.ArrayList;
 import java.util.Iterator;

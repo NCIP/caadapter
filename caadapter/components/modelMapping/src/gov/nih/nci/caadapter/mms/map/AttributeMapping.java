@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.map;
 import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
@@ -35,8 +40,8 @@ public class AttributeMapping {
 
 	/**
 	 *
-	 * @param attribute
-	 * @param value
+	 * @param attributeMetadata
+	 * @param columnMetadata
 	 */
 	public AttributeMapping(AttributeMetadata attributeMetadata, ColumnMetadata columnMetadata){
 	      this.attributeMetadata = attributeMetadata;
@@ -45,7 +50,6 @@ public class AttributeMapping {
 
 	/**
 	 *
-	 * @param attribute
 	 */
 	public AttributeMetadata getAttributeMetadata(){
 		return attributeMetadata;
@@ -57,7 +61,7 @@ public class AttributeMapping {
 
 	/**
 	 *
-	 * @param attributeName
+	 * @param attributeMetadata
 	 */
 	public void setAttributeMetadata(AttributeMetadata attributeMetadata){
          this.attributeMetadata = attributeMetadata;
@@ -65,7 +69,7 @@ public class AttributeMapping {
 
 	/**
 	 *
-	 * @param value
+	 * @param columnMetadata
 	 */
 	public void setColumnMetadata(ColumnMetadata columnMetadata){
          this.columnMetadata = columnMetadata;

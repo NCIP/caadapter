@@ -1,9 +1,8 @@
-/*
- * Created on Aug 29, 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
  */
+
 package gov.nih.nci.caadapter.mms.util;
 
 import java.util.Properties;

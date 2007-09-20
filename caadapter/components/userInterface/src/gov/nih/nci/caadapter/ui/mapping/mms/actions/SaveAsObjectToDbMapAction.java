@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.2 2007-06-07 19:02:24 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.3 2007-09-20 16:40:14 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,12 +43,12 @@ import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 
 import java.awt.event.ActionEvent;
+import java.awt.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import javax.swing.Icon;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -59,8 +59,8 @@ import org.jdom.output.XMLOutputter;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-06-07 19:02:24 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-09-20 16:40:14 $
  */
 public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 {
@@ -76,7 +76,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.2 2007-06-07 19:02:24 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.3 2007-09-20 16:40:14 schroedn Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -142,8 +142,22 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	{		
 		boolean success = false;
 		try 
-		{						
-			String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
+		{
+            String savingMessage = "Saving file please wait...";
+
+            JFrame frame = new JFrame(savingMessage);
+
+            JTextArea comp = new JTextArea();
+            comp.setText( "Saving file please wait...");
+            frame.getContentPane().add( comp );
+
+            int width = 250;
+            int height = 75;
+            frame.setSize(width, height);
+            DefaultSettings.centerWindow(frame);
+            frame.setVisible(true);
+
+            String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
 			File mappingFile = new File( mappingFileName );
 			
 			// Create .MAP file with Mapping attribute tagged values			
@@ -155,9 +169,12 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 			generator.annotateXMI();
 
 			mappingPanel.setSaveFile(file);
-			
-			JOptionPane.showMessageDialog( mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE );			
-		}
+
+            frame.setVisible( false );
+            frame.dispose();
+
+            JOptionPane.showMessageDialog( mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE );
+        }
 		catch (Exception ex) 
 		{
 			ex.printStackTrace();
@@ -229,6 +246,9 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/06/07 19:02:24  schroedn
+ * HISTORY      : Edits to sync with new codebase and java webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,14 +55,14 @@ import java.util.*;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-09-14 14:06:40 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-09-20 16:40:14 $
  */
 public class LazyEagerAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: LazyEagerAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $";
 
 	private static final String COMMAND_NAME = "Set as Lazy";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
@@ -76,7 +76,8 @@ public class LazyEagerAction extends AbstractContextAction {
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public LazyEagerAction( AbstractMappingPanel abstractPanel, MappingMiddlePanel midPanel, String superText ) {					
+	public LazyEagerAction( AbstractMappingPanel abstractPanel, MappingMiddlePanel midPanel, String superText )
+    {					
         super(superText, null);
         contextText = superText;
         this.absMappingPanel = abstractPanel;
@@ -93,8 +94,6 @@ public class LazyEagerAction extends AbstractContextAction {
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
-		//TODO: if lazy/eager
-
 		//Set node to lazy, add to lazyKey list
 		if( contextText.equals("Set as Lazy") )
 		{
@@ -111,7 +110,7 @@ public class LazyEagerAction extends AbstractContextAction {
 				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
 				    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 
-						System.out.println( "targetTree: " + targetTree.getSelectionPath() );
+						//System.out.println( "targetTree: " + targetTree.getSelectionPath() );
 
 						if ( targetTree.getSelectionRows() != null )
 						{
@@ -119,13 +118,13 @@ public class LazyEagerAction extends AbstractContextAction {
 								String node = leadingPath.toString();
 								node = parseNode( node );
 
-								System.out.println( "IN LazyKeyAction > " + node );
+								//System.out.println( "IN LazyKeyAction > " + node );
 
 								TreePath paths[] = targetTree.getSelectionPaths();
 								DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
 
-								System.out.println( "Sibling count:" + mutNode.getSiblingCount() );
-								System.out.println( "Child count: " + mutNode.getChildCount() );
+								//System.out.println( "Sibling count:" + mutNode.getSiblingCount() );
+								//System.out.println( "Child count: " + mutNode.getChildCount() );
 
 								DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
 								lazyKeys.add( node );
@@ -151,7 +150,8 @@ public class LazyEagerAction extends AbstractContextAction {
 			int userChoice = JOptionPane.showConfirmDialog(middlePanel,
 					"Set this as Eager?", "Question",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if ( userChoice == JOptionPane.YES_OPTION )
+
+            if ( userChoice == JOptionPane.YES_OPTION )
 			{
 			    try {
 

@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.metadata;
 
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
@@ -146,7 +151,7 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 
 	/**
 	 *
-	 * @param datatype
+	 * @param name
 	 */
 	public void setName(String name){
 		this.name = name;

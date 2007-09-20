@@ -100,14 +100,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.26 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.27 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.26 2007-09-17 15:08:14 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.27 2007-09-20 16:40:14 schroedn Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -131,8 +131,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		this.setLayout(new BorderLayout());
 		this.add(getCenterPanel(false), BorderLayout.CENTER);
 		fileSynchronizer = new MappingFileSynchronizer(this);
-		//System.out.println("open object to db mapping:" + name);
-	}
+    }
 
 	protected JPanel getTopLevelLeftPanel() {
 		JPanel topCenterPanel = new JPanel(new BorderLayout());
@@ -214,10 +213,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		middlePanel.setSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3),
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-		//JButton annotateXMIButton = new JButton("Tag XMI File");
-		//centerFuncationPanel.add(annotateXMIButton, BorderLayout.WEST);
-		// annotateXMIButton.addActionListener(this);
-
         JButton generateHMBButton = new JButton("Generate HBM Files");
 		centerFuncationPanel.add(generateHMBButton, BorderLayout.CENTER);
 
@@ -261,33 +256,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					}
 				}
 			}
-			// else if (ANNOTATE_XMI.equals(command)) {
-			//				
-			// File fileFromPanel = getSaveFile();
-			//
-			// if(fileFromPanel==null) {
-			// if(!isSourceTreePopulated() || !isTargetTreePopulated())
-			// {
-			// String msg = "Conduct object to database mapping before saving
-			// the map specification.";
-			// JOptionPane.showMessageDialog(this, msg, "Error",
-			// JOptionPane.ERROR_MESSAGE);
-			// return;
-			// }
-			// }
-			// try {
-			// saveMappingFile();
-			// fileFromPanel = getSaveFile();
-			// String xmiFile = CumulativeMappingGenerator.getXmiFileName();
-			// XMIGenerator generator = new
-			// XMIGenerator(fileFromPanel.getAbsolutePath(),xmiFile);
-			// generator.annotateXMI();
-			// JOptionPane.showMessageDialog(getParent(), "Tagging Complete.",
-			// "Tagging Complete", JOptionPane.INFORMATION_MESSAGE);
-			// }catch (Exception ex) {
-			// ex.printStackTrace();
-			// }
-			// }
 			else if (GENERATE_HBM.equals(command)) {
 				File fileFromPanel = getSaveFile();
 
@@ -328,10 +296,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					}
 										
 					saveMappingFile();
-					
-//					String xmiFile = CumulativeMappingGenerator.getXmiFileName().replaceAll(".xmi", ".map");		
-//					System.out.println( "xmifile (hbm) = " + xmiFile );
-					
 					HBMGenerator myGenerator = new HBMGenerator(getSaveFile().getAbsolutePath());
 
 					myGenerator.setOutputDirectory(fileChooser
@@ -377,17 +341,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			}
 		}
 
-//		FileOutputStream fw = null;
-//		BufferedOutputStream bw = null;
-
 		try {
 			CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
 			myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName().replaceAll(".xmi", ".map"));
-
-//			System.out.println( "xmifilename="  + CumulativeMappingGenerator.getXmiFileName().replaceAll(".xmi", ".map") );
-//			System.out.println( "file="  + file.getAbsolutePath().replaceAll(".xmi", ".map") );
-//			System.out.println( "mapFile="  + mapFile.getAbsolutePath() );
-			
 			// Creating mapping file		
 			myGenerator.createLocalMappingFile();
 			XMLOutputter outp = new XMLOutputter();
@@ -420,10 +376,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
-
-//            System.out.println("Key " + key );
-//            System.out.println("Prefix " + PreferenceManager.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
-
             if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
 					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
@@ -435,9 +387,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		return nodes;
 	}
 
-	private void construct_node(TreeNode node, String fullName, int prefixLen,
-			boolean isTable, boolean isSourceNode) {
-
+	private void construct_node(TreeNode node, String fullName, int prefixLen, boolean isTable, boolean isSourceNode)
+    {
 		String name = fullName.substring(prefixLen, fullName.length());
 		String[] pks = name.split("\\.");
 
@@ -497,8 +448,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
-			if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + "."))
-			{
+			if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
 					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
 				} else {
@@ -508,12 +458,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		return nodes;
 	}
-	
-//	protected void buildSourceTree(Object, File, boolean){
-//		
-//		super.buildSourceTree(metaInfo, file, isToResetGraph);
-//		sTree.setCellRenderer(new MMSRenderer());
-//	}
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile,
 			boolean isToResetGraph) throws Exception {
@@ -563,21 +507,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 */
 	protected boolean processOpenTargetTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
-		// System.out.println("Opening: " + file.getName());
 		String fileExtension = FileUtil.getFileExtension(file, true);
 		// parse the file into a meta object graph.
 		MetaParser parser = null;
 		MetaObject metaInfo = null;
 		BaseResult returnResult = null;
-
-		// parse the file into a meta object graph.
-		//comment out :07/03/2007 to remove HL7V3MetaFileParser.java
-//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension)) {
-//			parser = new DatabaseMetaParserImpl();
-//		} 
-//		else {// default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-//			parser = HL7V3MetaFileParser.instance();
-//		}
 		returnResult = parser.parse(new FileReader(file));
 		ValidatorResults validatorResults = returnResult.getValidatorResults();
 		if (validatorResults != null && validatorResults.hasFatal()) {
@@ -588,14 +522,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			return false;
 		}
 
-//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension)) {
-//			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
-//		} else {// default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-//			metaInfo = ((HL7V3MetaResult) returnResult).getHl7V3Meta();
-//		}
 		buildTargetTree(metaInfo, file, isToResetGraph);
-		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo,
-				file);
+		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
 		return true;
 	}
 
@@ -607,8 +535,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 *             changed from protected to pulic by sean
 	 */
 	public ValidatorResults processOpenMapFile(File file) throws Exception {
-		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator
-				.getInstance();
+		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
 
 		// Read the XMI Mapping attributes
 		String fileName = file.getAbsolutePath();
@@ -665,14 +592,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 				StringBuffer pathKey = new StringBuffer(ModelUtil
 						.getFullPackageName(client));
-				// System.out.println( "Client target: \n" + pathKey + "." +
-				// client.getName() );
 				targetXpath = pathKey + "." + client.getName();
 
 				pathKey = new StringBuffer(ModelUtil
 						.getFullPackageName(supplier));
-				// System.out.println( "Supplier source: \n" + pathKey + "." +
-				// supplier.getName() + "\n" );
 				sourceXpath = pathKey + "." + supplier.getName();
 
 				DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
@@ -718,11 +641,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 											+ att.getName();
 									sourceXpath = CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
 											+ tagValue.getValue();
-									// System.out.println( "targetXpath:" +
-									// targetXpath );
-									// System.out.println( "sourceXpath:" +
-									// sourceXpath );
-
 									DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
 											.get(sourceXpath);
 									DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
@@ -762,11 +680,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			{
 				getPackages( pkg );
 			}				
-			
-			System.out.println( "PrimaryKeys = " + primaryKeys );
-			System.out.println( "LazyKeys = " + lazyKeys );
-            System.out.println( "DiscriminatorKeys = " + discriminatorKeys );
-            System.out.println( "ClobKeys = " + clobKeys );
 
             myModel.setPrimaryKeys( primaryKeys );
 			myModel.setLazyKeys( lazyKeys );
@@ -786,14 +699,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
             } else {
                 myModel.setMmsPrefixObjectModel( "Logical View.Logical Model" );
             }
-            System.out.println( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) );
-            System.out.println( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) );
 
         } else {
 			JOptionPane
-					.showMessageDialog(
-							null,
-							"The .map or .xmi file selected is not valid. Please check the export settings in EA and try again.");
+					.showMessageDialog(	null, "The .map or .xmi file selected is not valid. Please check the export settings in EA and try again.");
 		}
 		return null;
 	}
@@ -814,14 +723,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 						packageName = umlPackage.getName() + "." + packageName;
 						umlPackage = umlPackage.getParent();
 					}
-					
 		            packageName =  packageName + clazz.getName();
 		            
 	    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_OBJECTMODEL).length();
 	    			String dvalue = (packageName).substring(preLen+1);
 
 	    			discriminatorValues.put(dvalue, tagValue.getValue() );
-	    			System.out.println("dvalue:"+dvalue);
 				}
 			}			
             for( UMLAttribute att : clazz.getAttributes() )
@@ -845,7 +752,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
                         if( tagValue.getValue().equals( "CLOB") )
                         {
                             String fieldName = clazz.getName() + "." + att.getName();
-                            System.out.println("fieldName " + fieldName );
                             clobKeys.add( fieldName );                            
                         }
                     }
@@ -855,15 +761,11 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 			for( UMLAssociation assc : clazz.getAssociations()) 
 			{
-				//System.out.println( "Attribute: " + att.getName() );
-				
 				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
 				{
 					if( tagValue.getName().contains( "lazy-load" ))
 					{
 			    		String fieldName = cumulativeMappingGenerator.getColumnFromAssociation(assc);
-			    		System.out.println("--------"+fieldName + " ----" + assc.getRoleName());
-			    		
 			    		if (fieldName!=null)
 			    		{
 			    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_DATAMODEL).length();
@@ -888,8 +790,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 *             changed from protected to pulic by sean
 	 */
 	public ValidatorResults processOpenOldMapFile(File file) throws Exception {
-		//System.out.println("Opening .map file");
-
 		String xmiFileName = "";
 		SAXBuilder builder = new SAXBuilder(false);
 		Document doc = builder.build(new File(file.getAbsolutePath()));
@@ -955,19 +855,15 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			Element link = (Element) i.next();
 			Element sourceElement = link.getChild("source");
 			if (sourceElement == null) {
-				/*
-				 * TODO
-				 * 
-				 */
+				/* TODO
+				* */
 			}
 			sourceXpath = sourceElement.getValue();
 
 			Element targetElement = link.getChild("target");
 			if (targetElement == null) {
-				/*
-				 * TODO
-				 * 
-				 */
+				/* TODO
+				* */
 			}
 			targetXpath = targetElement.getValue();
 			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
@@ -976,8 +872,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					.get(targetXpath);
 			if (sourceNode == null || targetNode == null)
 				continue;
-			// System.out.println("Source="+sourceXpath + " target" +
-			// targetXpath);
 			SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
 					.getUserObject();
 			SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
@@ -1043,9 +937,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			contextManager.removeClientMenuAction(MenuConstants.CSV_SPEC,
 					menu_name, "");
 
-		// if (actionMap==null)
-		// {
-		action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.SaveObjectToDbMapAction(
+        action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.SaveObjectToDbMapAction(
 				this);
 		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE, action);
@@ -1165,11 +1057,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					MappingFileSynchronizer.FILE_TYPE key = (MappingFileSynchronizer.FILE_TYPE) it
 							.next();
 					File file = changedFileMap.get(key);
-					if (GeneralUtilities.areEqual(
-							MappingFileSynchronizer.FILE_TYPE.Source_File, key)) {
+					if (GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Source_File, key)) {
 						processOpenSourceTree(file, true, true);
-					} else if (GeneralUtilities.areEqual(
-							MappingFileSynchronizer.FILE_TYPE.Target_File, key)) {
+					} else if (GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Target_File, key)) {
 						processOpenTargetTree(file, true, true);
 					}
 				}// end of while
@@ -1180,18 +1070,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 	}
 
-
-
 	/**
 	 * Returns an ImageIcon, or null if the path was invalid.
 	 */
 	protected static ImageIcon createImageIcon(String path)
 	{
-	    //java.net.URL imgURL = Database2SDTMMappingPanel.class.getResource(path);
 	    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
 	    if (imgURL != null)
 	    {
-	        //System.out.println("class.getResource is "+imgURL.toString());
 	        return new ImageIcon(imgURL);
 	    } else
 	    {
@@ -1203,6 +1089,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.26  2007/09/17 15:08:14  wuye
+ * HISTORY : added modify discriminator value capability
+ * HISTORY :
  * HISTORY : Revision 1.25  2007/09/14 22:40:08  wuye
  * HISTORY : Fixed discriminator issue
  * HISTORY :

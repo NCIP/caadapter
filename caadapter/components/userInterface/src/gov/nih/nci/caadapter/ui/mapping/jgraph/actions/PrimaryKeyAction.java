@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,21 +55,24 @@ public class PrimaryKeyAction extends AbstractContextAction
 	private static final String COMMAND_NAME = "Make Primary Key";
 	
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.5 2007-09-14 14:06:40 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
-	private AbstractMappingPanel absMappingPanel;
+
+    public String contextText = "Set as Primary Key";
+    private AbstractMappingPanel absMappingPanel;
 	private MappingMiddlePanel middlePanel;
 	
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public PrimaryKeyAction(AbstractMappingPanel abstractPanel, MappingMiddlePanel midPanel)
+	public PrimaryKeyAction(AbstractMappingPanel abstractPanel, MappingMiddlePanel midPanel, String superText)
 	{	
-		super(COMMAND_NAME, null);
-		this.absMappingPanel = abstractPanel;
+		super(superText, null);
+        contextText = superText;
+        this.absMappingPanel = abstractPanel;
 		this.middlePanel = midPanel;
 		setMnemonic(COMMAND_MNEMONIC);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
@@ -97,75 +100,91 @@ public class PrimaryKeyAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
-		int userChoice = JOptionPane.showConfirmDialog(middlePanel,
-			"Make this a Primary Key?", "Question",
-			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);		
+        if( contextText.equals("Set as Primary Key") )
+        {
+            int userChoice = JOptionPane.showConfirmDialog(middlePanel,
+                    "Make this a Primary Key?", "Question",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		
-		if (userChoice == JOptionPane.YES_OPTION)
-		{				
-		    try {
-		    			    	
-				JTree sourceTree = absMappingPanel.getSourceTree();			
-				JTree targetTree = absMappingPanel.getTargetTree();
-								
-		    	ModelMetadata modelMetadata = ModelMetadata.getInstance();				    	
-		    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
-		    	
-				//System.out.println( "targetTree: " + targetTree.getSelectionPath() );
-				//System.out.println( "sourceTree: " + sourceTree.getSelectionPath() );
-				
-				if ( sourceTree.getSelectionRows() != null )
-				{						
-						TreePath leadingPath = sourceTree.getLeadSelectionPath();						
-						String node = leadingPath.toString();						
-						node = parseNode( node );
-				        
-						//System.out.println( "IN PrimaryKeyAction > " + node );												
-						//check if parent/root						
-						//check for multiple primary keys among children, if found then remove and add new
+            if (userChoice == JOptionPane.YES_OPTION)
+            {
+                try {
+                    JTree sourceTree = absMappingPanel.getSourceTree();
 
-						TreePath paths[] = sourceTree.getSelectionPaths();
-						DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
-						
-						//System.out.println( "Sibling count:" + mutNode.getSiblingCount() );
-						//System.out.println( "Child count: " + mutNode.getChildCount() );
-						
-						DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
-						
-						//Get the list of all siblings for the node, only one PK allowed among siblings
-						if (parent.getChildCount() >= 0) 
-						{
-						    for (Enumeration enu = parent.children(); enu.hasMoreElements(); ) 
-						    {
-						    	DefaultMutableTreeNode n = (DefaultMutableTreeNode)enu.nextElement();
-						    	TreePath treePath = new TreePath(n.getPath());
-						        //System.out.println( "sibling : " + treePath.toString() );
-						        
-						        // remove any PK among siblings
-						        if ( primaryKeys.contains( parseNode( treePath.toString() ) ) )
-						        {
-						        	//System.out.println( "FOUND IN PK LIST, removing..." );
-						        	primaryKeys.remove( parseNode( treePath.toString() ) );
+                    ModelMetadata modelMetadata = ModelMetadata.getInstance();
+                    HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
+
+                    if ( sourceTree.getSelectionRows() != null )
+                    {
+                        TreePath leadingPath = sourceTree.getLeadSelectionPath();
+                        String node = leadingPath.toString();
+                        node = parseNode( node );
+
+                        TreePath paths[] = sourceTree.getSelectionPaths();
+                        DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
+                        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)mutNode.getParent();
+
+                        //Get the list of all siblings for the node, only one PK allowed among siblings
+                        if (parent.getChildCount() >= 0)
+                        {
+                            for (Enumeration enu = parent.children(); enu.hasMoreElements(); )
+                            {
+                                DefaultMutableTreeNode n = (DefaultMutableTreeNode)enu.nextElement();
+                                TreePath treePath = new TreePath(n.getPath());
+
+                                // remove any PK among siblings
+                                if ( primaryKeys.contains( parseNode( treePath.toString() ) ) )
+                                {
+                                    primaryKeys.remove( parseNode( treePath.toString() ) );
                                     ((DefaultTreeModel) sourceTree.getModel()).nodeStructureChanged( n );
                                 }
-						    }
-						}							
-						primaryKeys.add( node );
+                            }
+                        }
+                        primaryKeys.add( node );
+                    }
+
+                    if( primaryKeys != null ) {
+                        System.out.println( "Current primary Keys = \n" + primaryKeys );
+                    } else {
+                        System.out.println( "No primary Keys" );
+                    }
+
+                    modelMetadata.setPrimaryKeys( primaryKeys );
+
+                } catch (Exception exception){
+                    exception.printStackTrace();
                 }
-		    	
-		    	if(primaryKeys != null ) {
-		    		System.out.println( "Current primary Keys = \n" + primaryKeys );
-		    	} else {
-		    		System.out.println( "No primary Keys" );
-		    	}
-		    	
-		    	modelMetadata.setPrimaryKeys( primaryKeys );
-		    	
-		    } catch (Exception exception){
-		    	exception.printStackTrace();
-		    }
-		}
-		return isSuccessfullyPerformed();
+            }
+        } else {
+
+            int userChoice = JOptionPane.showConfirmDialog(middlePanel,
+                    "Unset this Primary Key?", "Question",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+            if ( userChoice == JOptionPane.YES_OPTION )
+            {
+  			    try {
+			    	JTree sourceTree = absMappingPanel.getSourceTree();
+			    	TreePath leadingPath = sourceTree.getLeadSelectionPath();
+                      
+                    ModelMetadata modelMetadata = ModelMetadata.getInstance();
+			    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
+
+			        if ( primaryKeys.contains( parseNode( leadingPath.toString() ) ) )
+			        {
+			        	System.out.println( "Removing primary Key... " );
+			        	primaryKeys.remove( parseNode( leadingPath.toString() ) );
+			        }
+
+			        modelMetadata.setPrimaryKeys( primaryKeys );
+
+			    } catch ( Exception exception ) {
+			    	exception.printStackTrace();
+			    }
+            }
+        }
+        
+        return isSuccessfullyPerformed();
 	}
 	
 	public String parseNode( String node )
@@ -173,13 +192,14 @@ public class PrimaryKeyAction extends AbstractContextAction
 		node = replace( node, ", ", "." );
 		node = replace( node, "[", " " );
 		node = replace( node, "]", " " );
-        
-        int start = node.indexOf('(');				   				        
-        int end = node.lastIndexOf(')');
-        
-        //index of out range problem!
-        String substr = node.substring( start, end + 1 );
-        node = replace( node, substr, " " );
+        node = replace( node, "(A)", " " );
+
+//        int start = node.indexOf('(');
+//        int end = node.lastIndexOf(')');
+//
+//        //index of out range problem!
+//        String substr = node.substring( start, end + 1 );
+//        node = replace( node, substr, " " );
         
         node = replace( node, "Object Model.", "" ); 
         

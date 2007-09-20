@@ -1,6 +1,8 @@
 /**
- * 
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
  */
+
 package gov.nih.nci.caadapter.mms.metadata;
 
 import java.io.IOException;

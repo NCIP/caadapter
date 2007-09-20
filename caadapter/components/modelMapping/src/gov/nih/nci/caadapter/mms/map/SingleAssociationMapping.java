@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.map;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
@@ -20,7 +25,6 @@ public class SingleAssociationMapping {
 	/**
 	 *
 	 * @param columnMetadata
-	 * @param associationMetadata
 	 */
 	public SingleAssociationMapping(ColumnMetadata columnMetadata, AssociationMetadata associationEndMetadata, AssociationMetadata otherAssociationEndMetadata){
 		this.associationEndMetadata = associationEndMetadata;

@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.metadata;
 
 import java.util.HashMap;
@@ -64,7 +69,7 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 
 	/**
 	 *
-	 * @param xpath
+	 * @param xPath
 	 * @param roleName
 	 * @param navigability
 	 * @param multiplicity
@@ -130,7 +135,7 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 
 	/**
 	 *
-	 * @param roleName
+	 * @param reciprocolRoleName
 	 */
 	public void setReciprocolRoleName(String reciprocolRoleName){
 		this.recipricolRoleName = reciprocolRoleName;
@@ -146,7 +151,7 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 
 	/**
 	 *
-	 * @param parent
+	 * @param returnTypeXpath
 	 */
 	public void setReturnTypeXPath(String returnTypeXpath){
 		this.returnTypeXpath = returnTypeXpath;

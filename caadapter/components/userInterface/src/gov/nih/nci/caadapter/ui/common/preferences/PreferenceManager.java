@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.ui.common.preferences;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -16,10 +21,10 @@ import java.util.HashMap;
  * This class implements preferences in caAdapter
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-09-07 19:30:38 $
+ *          $Revision: 1.12 $
+ *          $Date: 2007-09-20 16:38:34 $
  */
 public class PreferenceManager extends JDialog implements ActionListener {
 
@@ -47,6 +52,8 @@ public class PreferenceManager extends JDialog implements ActionListener {
         tabbedPane.addTab("HL7 V3 Transformation", null, panel2, "");
         JComponent panel3 = new MMSPreferencePane(this);
         tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
+        //JComponent panel4 = new NamespacePreferencePane(this);
+        //tabbedPane.addTab("Namespace Preference Pane", null, panel4, "");
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -65,6 +72,9 @@ public class PreferenceManager extends JDialog implements ActionListener {
         //
         JComponent panel3 = new MMSPreferencePane(this);
         tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
+        //
+        //JComponent panel4 = new NamespacePreferencePane(this);
+        //tabbedPane.addTab("Namespace Preference Pane", null, panel4, "");
         //
         add(tabbedPane);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -204,6 +214,9 @@ public class PreferenceManager extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/09/07 19:30:38  wangeug
+ * relocate readPreference and savePreference methods
+ *
  * Revision 1.10  2007/09/06 20:03:07  wangeug
  * set ODI optional
  *

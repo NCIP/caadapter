@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.ui.common.preferences;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;

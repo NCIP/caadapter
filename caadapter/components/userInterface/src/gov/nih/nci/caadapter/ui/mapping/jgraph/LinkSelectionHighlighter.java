@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.7 2007-09-17 15:08:05 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.8 2007-09-20 16:39:13 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,10 +77,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-09-17 15:08:05 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-09-20 16:39:13 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -96,7 +96,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.7 2007-09-17 15:08:05 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.8 2007-09-20 16:39:13 schroedn Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -497,29 +497,44 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	//
 	protected JPopupMenu createSourcePopupMenu()
 	{
-		JPopupMenu popupMenu = new JPopupMenu();
-		       
+        JTree sourceTree = mappingPanel.getSourceTree();
+        JPopupMenu popupMenu = new JPopupMenu();
+
         //Primary Key Function
-		primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel );
+        String primaryKeyText = "Set as Primary Key";
+
+        ModelMetadata modelMetadata = ModelMetadata.getInstance();
+    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
+
+		TreePath leadingPath = sourceTree.getLeadSelectionPath();
+
+		System.out.println( "primaryKeys: " + primaryKeys + "  " + parseNode(leadingPath.toString()) );
+        if ( primaryKeys.contains( parseNode( leadingPath.toString() ) ) )
+        {
+        	primaryKeyText = "Unset Primary Key";
+        }
+        else
+        {
+        	primaryKeyText = "Set as Primary Key";
+        }
+
+        primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel, primaryKeyText );
 		discriminatorValueAction = new DiscriminatorValueAction(mappingPanel, middlePanel);
-		JMenuItem menuItem = new JMenuItem(primaryKeyAction);
+        
+        JMenuItem menuItem = new JMenuItem(primaryKeyAction);
 		JMenuItem menuItemDiscriminator = new JMenuItem(discriminatorValueAction);
 
 		popupMenu.add(menuItem);
 		popupMenu.add(menuItemDiscriminator);
-		
-		JTree sourceTree = mappingPanel.getSourceTree();			
-		//JTree targetTree = mappingPanel.getTargetTree();
-		
-		//System.out.println( "Primary Keys: " + primaryKeys );
-		
+
 		// Disable PK function if selected node has children
 		primaryKeyAction.setEnabled( false );
 		discriminatorValueAction.setEnabled(false);
-		//Check to see if anything is selected		
+        
+        //Check to see if anything is selected
 		if( sourceTree.getLeadSelectionPath() != null )
 		{
-			TreePath leadingPath = sourceTree.getLeadSelectionPath();
+			leadingPath = sourceTree.getLeadSelectionPath();
 			
 			//TreePath paths[] = sourceTree.getSelectionPaths();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();			
@@ -539,7 +554,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             	
             	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
 
-            	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+            	modelMetadata = ModelMetadata.getInstance();
 		    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
 		    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
 		    	
@@ -596,7 +611,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         	discriminatorText = "Set as Discriminator";
         }
 
-		lazyEagerAction = new LazyEagerAction( mappingPanel, middlePanel, lazyText );
+        lazyEagerAction = new LazyEagerAction( mappingPanel, middlePanel, lazyText );
         clobAction = new ClobAction( mappingPanel, middlePanel, clobText );
         discriminatorAction = new DiscriminatorAction( mappingPanel, middlePanel, discriminatorText );
 
@@ -634,8 +649,11 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		node = replace( node, ", ", "." );
 		node = replace( node, "[", " " );
-		node = replace( node, "]", " " );     
-        node = replace( node, "Data Model.", "" );         
+		node = replace( node, "]", " " );
+        node = replace( node, "(A)", " " );
+        //node = replace( node, ")", " " );
+        node = replace( node, "Data Model.", "" );
+        node = replace( node, "Object Model.", "" );
         node = node.trim();        
 		return node; 
 	}
@@ -657,6 +675,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/09/17 15:08:05  wuye
+ * HISTORY      : added modify discriminator value capability
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/09/14 15:06:57  wuye
  * HISTORY      : Added support for table per inheritence structure
  * HISTORY      :

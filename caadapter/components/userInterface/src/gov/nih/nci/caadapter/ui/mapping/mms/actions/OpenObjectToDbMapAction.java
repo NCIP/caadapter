@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.3 2007-06-18 15:22:52 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.4 2007-09-20 16:40:14 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,6 +54,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.FileReader;
 
 /**
  * This class defines the open Map panel action.
@@ -61,8 +64,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-06-18 15:22:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-09-20 16:40:14 $
  */
 public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 {
@@ -167,12 +170,12 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 					return;
 				}
 				//this variable will help determine whether or not to close the created panel in the event of validation errors or exceptions.
-				
-				boolean everythingGood = true;
+
+                boolean everythingGood = true;
 				ValidatorResults validatorResults = null;
 				try
 				{
-					GeneralUtilities.setCursorWaiting(mainFrame);
+                    GeneralUtilities.setCursorWaiting(mainFrame);
 					if( file.getAbsolutePath().contains(".map") || file.getAbsolutePath().contains(".MAP"))
 					{
 						validatorResults = mappingPanel.processOpenOldMapFile(file);
@@ -250,6 +253,9 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/06/18 15:22:52  schroedn
+ * HISTORY      : added setChanged(false) flag to fix save on close bug
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/06/07 18:31:19  schroedn
  * HISTORY      : Edits to sync with new codebase and java webstart
  * HISTORY      :

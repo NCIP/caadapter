@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+ 
 package gov.nih.nci.caadapter.ui.mapping;
 
 import gov.nih.nci.caadapter.common.util.Config;
@@ -149,7 +154,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 			this.getRootPane().repaint();
 		}
 		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, absoluteFile);
-	}
+    }
 	
 	protected void resetMiddlePanel()
 	{

@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.validator;
 import com.sun.org.apache.xerces.internal.impl.dv.DatatypeValidator;
 

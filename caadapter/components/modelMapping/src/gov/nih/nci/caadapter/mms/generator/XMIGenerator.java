@@ -1,3 +1,8 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+ * <!-- LICENSE_TEXT_END -->
+ */
+
 package gov.nih.nci.caadapter.mms.generator;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
@@ -24,8 +29,11 @@ import gov.nih.nci.caadapter.common.util.Config;
 
 import java.io.*;
 import java.util.*;
+import java.util.List;
+import java.awt.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.*;
 
 import org.jdom.*;
 import org.jdom.filter.ElementFilter;
@@ -204,10 +212,10 @@ public class XMIGenerator
 	 */
 	public void annotateXMI()
 	{
-		init();
+        init();
 		annotateXMIFile();
-		saveModel();	
-	}
+		saveModel();
+    }
 	
 	/**
 	 * 
