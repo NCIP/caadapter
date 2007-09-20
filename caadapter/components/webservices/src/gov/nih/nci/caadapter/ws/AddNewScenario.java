@@ -39,8 +39,8 @@ import org.xml.sax.SAXParseException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-09-06 22:43:43 $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-09-20 18:31:21 $
  * @since caadapter v1.3.1
  */
 
@@ -105,8 +105,15 @@ public class AddNewScenario extends HttpServlet {
 	    				  item.write(uploadedFile);
 	    			  }
 	    			  if (name.equals("h3sFileName")) {
-	    				  File uploadedFile = new File(path + MSName+ "/" + MSName + ".h3s");
-	    				  item.write(uploadedFile);
+	    				  if (item.getName().endsWith("h3s"))
+	    				  {
+	    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".h3s");
+	    					  item.write(uploadedFile);
+	    				  }
+	    				  else {
+	    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".xml");
+	    					  item.write(uploadedFile);
+	    				  }
 	    			  }
 	    			  if (name.equals("mappingFileName")) {
 	    				  File uploadedFile = new File(path + MSName+ "/" + MSName + ".bak");
@@ -139,7 +146,10 @@ public class AddNewScenario extends HttpServlet {
 	    		}
 	    		if (attr.getValue().equals("HL7v3")||attr.getValue().equals("h3s")) {
 		    		Attr locationAttr = component.getAttributeNode("location");
-		    		locationAttr.setValue(MSName+".h3s");
+		    		if (locationAttr.getValue().endsWith("h3s"))
+		    			locationAttr.setValue(MSName+".h3s");
+		    		else 
+		    			locationAttr.setValue(MSName+".xml");
 	    		}
 	    	}
 	    	outputXML(xmlDOM,path + MSName+ "/" + MSName + ".map");
