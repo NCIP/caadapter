@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.8 2007-08-28 14:24:04 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.9 2007-09-20 22:41:01 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,16 +53,20 @@ import java.util.Random;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.FileHandler;
+import java.awt.*;
+
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.function.DateFunction;
+
+import javax.swing.*;
 
 /**
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.8 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.9 $
  */
 
 public class FileUtil
@@ -153,12 +157,26 @@ public class FileUtil
         File f = new File("./workingspace/examples");
         return f.getAbsolutePath();
     }
-
     public static String getV2DataDirPath()
+    {
+        return getV2DataDirPath(null);
+    }
+    public static String getV2DataDirPath(Component parent)
     {
         File f = new File(getWorkingDirPath() + File.separator + "data" + File.separator + "v2Meta");
         if ((!f.exists())||(!f.isDirectory()))
         {
+            if (parent == null) return null;
+
+
+
+            String display = "HL7 v2 meta Directory isn't created yet.\nPress 'Yes' button if you want to create directory.\nIt may takes some minutes.";
+            //JOptionPane.showMessageDialog(parent, "Making V2 Meta Directory", display, JOptionPane.WARNING_MESSAGE);
+            System.out.println("CCCCV : " + display);
+            int res = JOptionPane.showConfirmDialog(parent, display, "Create v2 Meta Directory", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+
+            if (res != JOptionPane.YES_OPTION) return "";
+
             ClassLoaderUtil loaderUtil = null;
             try
             {
@@ -166,9 +184,11 @@ public class FileUtil
             }
             catch(IOException ie)
             {
-                System.err.println("Make V2 Meta Drectory : " + ie.getMessage());
+                JOptionPane.showMessageDialog(parent, ie.getMessage() + ".\n Check the resourceV2.zip file in the library.", "Creating V2 Meta Directory failure", JOptionPane.WARNING_MESSAGE);
+                //System.err.println("Make V2 Meta Directory : " + ie.getMessage());
                 return null;
             }
+
             for(int i=0;i<loaderUtil.getSizeOfFiles();i++)
             {
                 String path = loaderUtil.getPath(i);
@@ -188,7 +208,9 @@ public class FileUtil
                 //System.out.println("V2 Meta : " + path);
                 if (index <= 0)
                 {
-                    System.err.println("V2 Meta file is invalid : " + path);
+                    JOptionPane.showMessageDialog(parent, "V2 Meta file is invalid : " + path, "Creating V2 Meta Directory failure", JOptionPane.WARNING_MESSAGE);
+
+                    //System.err.println("V2 Meta file is invalid : " + path);
                     return null;
                 }
                 File dir = new File(path.substring(0,(index-1)));
@@ -196,14 +218,18 @@ public class FileUtil
                 {
                     if (!dir.mkdirs())
                     {
-                        System.err.println("V2 Meta directory making failure : " + dir);
+                        JOptionPane.showMessageDialog(parent, "V2 Meta directory making failure : " + dir, "Creating V2 Meta Directory failure", JOptionPane.WARNING_MESSAGE);
+
+                        //System.err.println("V2 Meta directory making failure : " + dir);
                         return null;
                     }
                 }
                 File datFile = new File(loaderUtil.getFileName(i));
                 if ((!datFile.exists())||(!datFile.isFile()))
                 {
-                    System.err.println("Not Found This V2 Meta temporary file : " + path);
+                    JOptionPane.showMessageDialog(parent, "Not Found This V2 Meta temporary file : " + path, "Creating V2 Meta Directory failure", JOptionPane.WARNING_MESSAGE);
+
+
                     continue;
                 }
                 if (!datFile.renameTo(new File(path))) System.err.println("V2 Meta rename failure : " + path);
@@ -891,6 +917,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/08/28 14:24:04  wangeug
+ * clean code
+ *
  * Revision 1.7  2007/08/28 13:58:51  wangeug
  * remove schemas folder from caAdapter.jar and set it under root directory: xxxx.xsd use relative path as "include"
  *
