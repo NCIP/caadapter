@@ -120,6 +120,7 @@
     	<antcall target="dist.prepare" />
     	<antcall target="mmswebstart"/>
     	<antcall target="hl7webstart"/>
+    	<antcall target="rdswebstart"/>
     </target>
 
     <target name="mmswebstart">
@@ -147,16 +148,11 @@
         <echo message="------- copying jar files to webstart deploy directory ------"/>
         <copy todir="${webstart.deploy.dir}">
             <fileset dir="${lib.dir}">
-                <include name="dom4j-1.4.jar"/>
-            </fileset>
-            <fileset dir="${lib.dir}">
-                <include name="dom4j-1.4.jar"/>
-                <include name="xercesImpl.jar"/>
-                <include name="xml-apis.jar"/>
+                <include name="castor-0.9.9.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
+            	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
-                <include name="castor-0.9.9.jar"/>
         	</fileset>
         	<fileset dir="${dist.dir}/lib">
             	<include name="caAdapter.jar"/>
@@ -172,11 +168,9 @@
                 <include name="commons-logging-1.0.4.jar"/>
                 <include name="log4j-1.2.8.jar"/>
         	</fileset>
-        	<fileset dir="${dist.dir}">
-                <include name="xml-apis.jar"/>
-        	</fileset>
         	<fileset dir="${mms.module.home}/lib">
                 <include name="xmi.in.out.jar"/>
+                <include name="dom4j-1.4.jar"/>
         	</fileset>
         </copy>
 
@@ -240,16 +234,13 @@
         <echo message="------- copying jar files to webstart deploy directory ------"/>
         <copy todir="${hl7.webstart.deploy.dir}">
             <fileset dir="${lib.dir}">
-                <include name="dom4j-1.4.jar"/>
-                <include name="xercesImpl.jar"/>
-                <include name="xml-apis.jar"/>
+                <include name="castor-0.9.9.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
+            	<include name="caAdapter_ui.jar"/>
             	<include name="resource.zip"/>
                 <include name="jgraph.jar"/>
-                <include name="castor-0.9.9.jar"/>
         	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
-        		<include name="poi-2.5.1-final-20040804.jar"/>
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
             	<include name="BrowserLauncher2-all-10rc4.jar"/>
@@ -260,6 +251,7 @@
                 <include name="xercesImpl.jar"/>
                 <include name="commons-logging-1.0.4.jar"/>
                 <include name="log4j-1.2.8.jar"/>
+        		<include name="poi-2.5.1-final-20040804.jar"/>
         	</fileset>
         	<fileset dir="${dist.dir}">
                 <include name="xml-apis.jar"/>
@@ -326,11 +318,11 @@
         <echo message="------- copying jar files to webstart deploy directory ------"/>
         <copy todir="${rds.webstart.deploy.dir}">
             <fileset dir="${lib.dir}">
-                <include name="dom4j-1.4.jar"/>
                 <include name="xercesImpl.jar"/>
                 <include name="xml-apis.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
+            	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
                 <include name="castor-0.9.9.jar"/>
         	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
