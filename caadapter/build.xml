@@ -186,6 +186,8 @@
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}"/>
+		<delete file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
+		<delete file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp"/>
 
     	<antcall target="generate-keys"/>
         <echo message=""/>
@@ -267,6 +269,8 @@
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp" token="$WEBSERVER" value="${webserver}"/>
+		<delete file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp"/>
+		<delete file="${webstart.deploy.dir}/caadapter-mms.jnlp"/>
 
     	<antcall target="generate-keys"/>
 
@@ -350,6 +354,8 @@
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp" token="$WEBSERVER" value="${webserver}"/>
+		<delete file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
+		<delete file="${webstart.deploy.dir}/caadapter-mms.jnlp"/>
 
     	<antcall target="generate-keys"/>
 
