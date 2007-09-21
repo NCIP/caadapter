@@ -113,6 +113,7 @@
     	<delete>
     		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
     	</delete>
+    	<antcall target="add-license"/>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
 			etc/schemas/**, referenceLib/**">
@@ -123,7 +124,7 @@
     	<antcall target="rdswebstart"/>
     </target>
 
-    <target name="mmswebstart">
+    <target name="mmswebstart" depends="generate-keys">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${webstart.warfile.name}"/>
@@ -209,7 +210,7 @@
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
 
-    <target name="hl7webstart">
+    <target name="hl7webstart" depends="generate-keys">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${hl7.webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${hl7.webstart.warfile.name}"/>
@@ -293,7 +294,7 @@
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
 
-    <target name="rdswebstart">
+    <target name="rdswebstart" depends="generate-keys">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${rds.webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${rds.webstart.warfile.name}"/>
@@ -354,10 +355,6 @@
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp" token="$WEBSERVER" value="${webserver}"/>
-
-        <echo message=""/>
-        <echo message="-------- Create a keyStore *disabled--------"/>
-        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -577,7 +574,7 @@
     	</fileset>
 	</path>
 
-	<target name="add-license">
+	<target name="add-license" if="add-license">
 		<echo message="*****************************************************"/>
 		<echo message="**   Adding licenses ... ...                       **"/>
 		<echo message="*****************************************************"/>
@@ -591,5 +588,15 @@
 			</fileset>
 		</update-license>
 	</target>
+	<!-- ================================= 
+          target: generate keys              
+         ================================= -->
+    <target name="generate-keys"  description="generate sign keys" if="generate-keys">
+        <echo message=""/>
+        <echo message="-------- Create a keyStore *disabled--------"/>
+    	<delete file="${signjar.alias}"/>
+    	<delete file="${signjar.keystore}"/>
+        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
+    </target>
 
 </project>
