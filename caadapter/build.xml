@@ -124,7 +124,7 @@
     	<antcall target="rdswebstart"/>
     </target>
 
-    <target name="mmswebstart" depends="generate-keys">
+    <target name="mmswebstart">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${webstart.warfile.name}"/>
@@ -187,6 +187,7 @@
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}"/>
 
+    	<antcall target="generate-keys"/>
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
         <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
@@ -206,7 +207,7 @@
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
 
-    <target name="hl7webstart" depends="generate-keys">
+    <target name="hl7webstart">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${hl7.webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${hl7.webstart.warfile.name}"/>
@@ -267,7 +268,9 @@
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp" token="$WEBSERVER" value="${webserver}"/>
 
-        <echo message=""/>
+    	<antcall target="generate-keys"/>
+
+    	<echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
         <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
             <fileset dir="${hl7.webstart.deploy.dir}" includes="*.jar, *.zip"/>
@@ -286,7 +289,7 @@
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
 
-    <target name="rdswebstart" depends="generate-keys">
+    <target name="rdswebstart">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${rds.webstart.deploy.dir}"/>
         <delete file="${dist.dir}/${rds.webstart.warfile.name}"/>
@@ -347,6 +350,8 @@
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp" token="$WEBSERVER" value="${webserver}"/>
+
+    	<antcall target="generate-keys"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -586,7 +591,6 @@
     <target name="generate-keys"  description="generate sign keys" if="generate-keys">
         <echo message=""/>
         <echo message="-------- Create a keyStore *disabled--------"/>
-    	<delete file="${signjar.alias}"/>
     	<delete file="${signjar.keystore}"/>
         <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
     </target>
