@@ -100,14 +100,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.27 $ date $Date:
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v3.2 revision $Revision: 1.28 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.27 2007-09-20 16:40:14 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.28 2007-09-21 04:41:08 wuye Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -739,10 +739,6 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					{																						
 						primaryKeys.add( tagValue.getValue() );
 					}
-					if( tagValue.getName().contains( "lazy-load" ))
-					{																												
-						lazyKeys.add( tagValue.getValue() );
-					}
                     if( tagValue.getName().contains( "discriminator" ) )
                     {
                         discriminatorKeys.add(clazz.getName()+"." + att.getName());
@@ -763,7 +759,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			{
 				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
 				{
-					if( tagValue.getName().contains( "lazy-load" ))
+					if( tagValue.getName().contains( "lazy-load" ) && tagValue.getValue().equalsIgnoreCase("no"))
 					{
 			    		String fieldName = cumulativeMappingGenerator.getColumnFromAssociation(assc);
 			    		if (fieldName!=null)
@@ -1089,6 +1085,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.27  2007/09/20 16:40:14  schroedn
+ * HISTORY : License text
+ * HISTORY :
  * HISTORY : Revision 1.26  2007/09/17 15:08:14  wuye
  * HISTORY : added modify discriminator value capability
  * HISTORY :

@@ -143,9 +143,6 @@ public static boolean map(String source, String target){
 	String sourceMappingType = determineSourceMappingType(source);
 	String targetMappingType = determineTargetMappingType(target);
 
-    System.out.println("source " + sourceMappingType + " target " + targetMappingType);
-    System.out.println("source " + source + " target " + target );
-    
     // Then the source and target mapping types are compared. They must be the same for the process to continue. For instance, if an attempt is made
 	// to map an Object (vs. attribute) to a column in a table the mapping attempt will fail.
 	if (sourceMappingType.equals("dependency")&& targetMappingType .equals("dependency")){
@@ -171,8 +168,6 @@ public static boolean map(String source, String target){
 
 public static boolean setPrimaryKey( String source )
 {
-	System.out.println( "<CumulativeMappingGenerator> Setting Primary Key -> " + source );
-	
 	return true;
 }
 

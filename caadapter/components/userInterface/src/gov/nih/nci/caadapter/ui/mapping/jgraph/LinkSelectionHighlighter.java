@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.8 2007-09-20 16:39:13 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.9 2007-09-21 04:41:21 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,10 +77,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-09-20 16:39:13 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-09-21 04:41:21 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -96,7 +96,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.8 2007-09-20 16:39:13 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.9 2007-09-21 04:41:21 wuye Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -571,7 +571,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		String lazyText = "Set as Lazy";
+		String lazyText = "Set as Eager";
         String clobText = "Set as CLOB";
         String discriminatorText = "Set as Discrimator";
 
@@ -587,10 +587,10 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		System.out.println( "Lazy Keys: " + lazyKeys );
         if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
         {
-        	lazyText = "Set as Eager";
+        	lazyText = "Set as Lazy";
         }
         else {
-        	lazyText = "Set as Lazy";
+        	lazyText = "Set as Eager";
         }
 
         System.out.println( "Clob Keys: " + clobKeys );
@@ -675,6 +675,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/09/20 16:39:13  schroedn
+ * HISTORY      : License text
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/09/17 15:08:05  wuye
  * HISTORY      : added modify discriminator value capability
  * HISTORY      :

@@ -90,7 +90,6 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                 {
                    if ( discriminatorColumnMeta.getXPath().contains( key ))
                    {
-                       System.out.println("Found a Lazy Key " + key );
                        lazyKeyFound = true;
                    }
 
@@ -99,7 +98,6 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                 {
                    if ( discriminatorColumnMeta.getXPath().contains( key ))
                    {
-                       System.out.println("Found a CLOB Key " + key );
                        clobKeyFound = true;
                    }
 
@@ -109,7 +107,6 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                    if ( discriminatorColumnMeta.getXPath().contains( key ))
                    {
                 	   discriminatorColumnMeta.getTableMetadata().setHasDiscriminator(true);
-                       System.out.println("Found a Discriminator Key " + key );
                        discriminatorKeyFound = true;
                    }
 
@@ -117,20 +114,20 @@ public class MMSRenderer extends DefaultTreeCellRenderer
                 if ( discriminatorKeyFound ) {
                     tutorialIcon = createImageIcon("columnDiscriminator.png");
                     setIcon(tutorialIcon);
-                    setToolTipText("Lazy");
+                    setToolTipText("Discriminator");
                 } else if ( clobKeyFound ) {
                     tutorialIcon = createImageIcon("columnCLOB.png");
                     setIcon(tutorialIcon);
-                    setToolTipText("Lazy");
+                    setToolTipText("CLOB");
                 } else if ( lazyKeyFound ) {
-                    tutorialIcon = createImageIcon("columnlazy.png");
+                    tutorialIcon = createImageIcon("columneager.png");
                     setIcon(tutorialIcon);
-                    setToolTipText("Lazy");
+                    setToolTipText("Eager");
                 }
                 else {
-                       tutorialIcon = createImageIcon("columneager.png");
+                       tutorialIcon = createImageIcon("columnlazy.png");
                        setIcon(tutorialIcon);
-                       setToolTipText("Eager");
+                       setToolTipText("Lazy");
                 }
 
                // }

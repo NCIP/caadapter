@@ -85,7 +85,6 @@ public class ModelMetadata {
             try {
                 BufferedReader in = new BufferedReader(new FileReader( xmiFileName ));
                 String str;
-                System.out.println("Checking for exporter type");
 
                 while ((str = in.readLine()) != null)
                 {
@@ -202,9 +201,6 @@ public class ModelMetadata {
                 pathKey.append(clazz.getName());
                 table.setXPath(pathKey.toString());
 
-//                System.out.println("DAT clazz.getName : " + clazz.getName() );
-//                System.out.println("DAT pathKey.toString() : "+ pathKey.toString() );
-
                 sortedModel.add(table);
                 for(UMLAttribute att : clazz.getAttributes()) {
                     printColumnAttribute(att, table, pathKey);
@@ -214,15 +210,11 @@ public class ModelMetadata {
                 ObjectMetadata object = new ObjectMetadata();
                 object.setUmlClass(clazz);
                 object.setName(clazz.getName());
-//  	    	  System.out.println(clazz);
                 pathKey.append(".");
                 pathKey.append(clazz.getName());
                 object.setXPath(pathKey.toString());
                 object.setId(clazz.toString());
                 objectHashMap.put(clazz.toString(), pathKey.toString());
-                //System.out.println("Class: "+ pathKey.toString() + "\n");
-                //System.out.println("OBJ clazz.getName : " + clazz.getName() );
-                //System.out.println("OBJ pathKey.toString() : "+ pathKey.toString() );
 
                 sortedModel.add(object);
 

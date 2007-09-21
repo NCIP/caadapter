@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.7 2007-09-21 04:41:38 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,20 +55,20 @@ import java.util.*;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-09-20 16:40:14 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-09-21 04:41:38 $
  */
 public class LazyEagerAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: LazyEagerAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.7 2007-09-21 04:41:38 wuye Exp $";
 
-	private static final String COMMAND_NAME = "Set as Lazy";
+	private static final String COMMAND_NAME = "Set as Eager";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
 
-	public String contextText = "Set as Lazy";
+	public String contextText = "Set as Eager";
 	private AbstractMappingPanel absMappingPanel;
 	private MappingMiddlePanel middlePanel;
 
@@ -95,10 +95,10 @@ public class LazyEagerAction extends AbstractContextAction {
 	protected boolean doAction(ActionEvent e)
 	{
 		//Set node to lazy, add to lazyKey list
-		if( contextText.equals("Set as Lazy") )
+		if( contextText.equals("Set as Eager") )
 		{
 			int userChoice = JOptionPane.showConfirmDialog(middlePanel,
-					"Set this as Lazy?", "Question",
+					"Set this as Eager?", "Question",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (userChoice == JOptionPane.YES_OPTION)
@@ -132,12 +132,6 @@ public class LazyEagerAction extends AbstractContextAction {
 							//update graphics
 						}
 
-				    	if(lazyKeys != null ) {
-				    		System.out.println( "Current lazy Keys = \n" + lazyKeys );
-				    	} else {
-				    		System.out.println( "No lazy Keys" );
-				    	}
-
 				    	modelMetadata.setLazyKeys( lazyKeys );
 
 				    } catch (Exception exception){
@@ -148,7 +142,7 @@ public class LazyEagerAction extends AbstractContextAction {
 		else {
 			//Remove node from lazyKey list (set as Eager)
 			int userChoice = JOptionPane.showConfirmDialog(middlePanel,
-					"Set this as Eager?", "Question",
+					"Set this as Lazy?", "Question",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
             if ( userChoice == JOptionPane.YES_OPTION )
@@ -162,7 +156,6 @@ public class LazyEagerAction extends AbstractContextAction {
 
 			        if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
 			        {
-			        	System.out.println( "Removing lazyKey... (setting as eager)" );
 			        	lazyKeys.remove( parseNode( leadingPath.toString() ) );
 			        }
 
