@@ -188,10 +188,6 @@
         <replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}"/>
 
         <echo message=""/>
-        <echo message="-------- Create a keyStore *disabled--------"/>
-        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
-
-        <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
         <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
             <fileset dir="${webstart.deploy.dir}" includes="*.jar, *.zip"/>
@@ -270,10 +266,6 @@
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp" token="$WEBSERVER" value="${webserver}"/>
-
-        <echo message=""/>
-        <echo message="-------- Create a keyStore *disabled--------"/>
-        <genkey alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" dname="CN=ncicb, OU=caadapter, O=nih.gov, C=US"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
