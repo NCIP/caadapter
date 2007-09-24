@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.9 2007-09-20 22:41:01 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.10 2007-09-24 20:05:28 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -66,7 +66,7 @@ import javax.swing.*;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 
 public class FileUtil
@@ -159,7 +159,11 @@ public class FileUtil
     }
     public static String getV2DataDirPath()
     {
-        return getV2DataDirPath(null);
+        File f = new File(getWorkingDirPath() + File.separator + "data" + File.separator + "v2Meta");
+        if ((!f.exists())||(!f.isDirectory()))
+        f.mkdirs();
+        return f.getAbsolutePath();
+        //return getV2DataDirPath(null);
     }
     public static String getV2DataDirPath(Component parent)
     {
@@ -917,6 +921,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/09/20 22:41:01  umkis
+ * no message
+ *
  * Revision 1.8  2007/08/28 14:24:04  wangeug
  * clean code
  *

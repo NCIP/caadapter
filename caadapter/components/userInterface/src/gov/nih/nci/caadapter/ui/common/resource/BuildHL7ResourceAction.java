@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.ui.common.resource;
 import gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
+import gov.nih.nci.caadapter.ui.mapping.V2V3.V2MetaCollectorDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +49,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
      *         return false.
      */
     protected boolean doAction(ActionEvent e) throws Exception {
-    	
+    	/*
     	String resourceName="";
     	if (getName().equals(COMMAND_BUILD_V2))
     		resourceName=RESOURCE_NAME_V2;
@@ -75,7 +76,9 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     	}
     	if (toContinue)
     		new BuildHL7ResourceDialog(mainFrame,getName(),true, resorcePath).show();
-
+        */
+        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
+        dialog.setVisible(true);
         return true;
     }
 
