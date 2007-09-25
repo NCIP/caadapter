@@ -189,7 +189,7 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	 */
 	private boolean setNewFieldValue(CSVSegment parentSeg, String fieldName, String fieldValue)
 	{
-		System.out.println("CSVSegmentedFileExtension.setNewFieldValue()..parent:"+parentSeg +"..field:"+fieldName+"..value:"+fieldValue);
+//		System.out.println("CSVSegmentedFileExtension.setNewFieldValue()..parent:"+parentSeg +"..field:"+fieldName+"..value:"+fieldValue);
 		boolean rtnValue=false;
 		CSVSegmentExtension segExt=(CSVSegmentExtension)parentSeg;
 		if (parentSeg==null)
