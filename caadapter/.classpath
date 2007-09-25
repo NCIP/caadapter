@@ -14,7 +14,7 @@
 	<classpathentry kind="src" path="components/userInterface/resources"/>
 	<classpathentry kind="src" path="demo"/>
 	<classpathentry kind="src" path="etc"/>
-	<classpathentry kind="src" path="conf"/>
+	<classpathentry including="caadapter-resources.properties|castorbinding.xml|java.policy" kind="src" path="conf"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commonModuleLib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/mmsModuleLib"/>
