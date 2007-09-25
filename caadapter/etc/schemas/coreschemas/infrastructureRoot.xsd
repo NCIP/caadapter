@@ -2,14 +2,14 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:hl7-org:v3" elementFormDefault="qualified" xmlns:mif="urn:hl7-org:v3/mif">
    <xs:annotation xmlns="urn:hl7-org:v3">
       <xs:documentation>Source Information
-     Rendered by: RoseTree 3.0.8
-     Rendered on: 7/30/2005 T24:53:20
+     Rendered by: RoseTree 3.0.9
+     Rendered on: 11/6/2005 T16:34:54
 This model was rendered into XML using software provided to HL7 by Beeler Consulting LLC.
- Transform: $RCSfile: infrastructureRoot.xsd,v $ $Revision: 1.1 $ $Date: 2007-04-03 16:10:43 $
+ Transform: $RCSfile: infrastructureRoot.xsd,v $ $Revision: 1.2 $ $Date: 2007-09-25 14:09:01 $
  Generated using schema builder version: 2.0
- RIM MIF Infrastructure Root to Schema Transform: $Id: infrastructureRoot.xsd,v 1.1 2007-04-03 16:10:43 wangeug Exp $
-  Static MIF to Schema Transform: $Id: infrastructureRoot.xsd,v 1.1 2007-04-03 16:10:43 wangeug Exp $
-  Package Id Conversion: $Id: infrastructureRoot.xsd,v 1.1 2007-04-03 16:10:43 wangeug Exp $</xs:documentation>
+ RIM MIF Infrastructure Root to Schema Transform: $Id: infrastructureRoot.xsd,v 1.2 2007-09-25 14:09:01 wangeug Exp $
+  Static MIF to Schema Transform: $Id: infrastructureRoot.xsd,v 1.2 2007-09-25 14:09:01 wangeug Exp $
+  Package Id Conversion: $Id: infrastructureRoot.xsd,v 1.2 2007-09-25 14:09:01 wangeug Exp $</xs:documentation>
    </xs:annotation>
    <xs:include schemaLocation="../coreschemas/datatypes.xsd"/>
    <xs:include schemaLocation="../coreschemas/voc.xsd"/>
