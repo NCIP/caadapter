@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.1 2007-09-24 20:05:28 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.2 2007-09-25 15:22:58 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Sep 23, 2007
  *          Time:       6:57:06 PM $
  */
@@ -93,7 +93,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.1 2007-09-24 20:05:28 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.2 2007-09-25 15:22:58 umkis Exp $";
 
     private String title = "V2 Meta Data Collector";
 
@@ -537,15 +537,24 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
                 String str = "This may be the first time meta installing.\nSome minutes may be taken. Please wait.";
                 JOptionPane.showMessageDialog(this, str, "First time Install", JOptionPane.INFORMATION_MESSAGE);
             }
+            System.out.println("CCC : 10");
             compare.doInstall();
             if (substructure)
             {
+                System.out.println("CCC : 11-1");
                 check = new CheckVersionAndItem((String) jcVersion.getSelectedItem(), substructureLevel);
+                if (substructureLevel.equals(check.getItemTo()[3]))
+                {
+                    //String pathD = jtPath.getText().trim() + spr + check.getVersion()[0] + spr + check.getItems()[3];
+                    substructureTableList = compare.gatheringDefinitionTable(path, substructureTableList, substructureName);
+                }
             }
             else
             {
+                System.out.println("CCC : 11-2");
                 check = new CheckVersionAndItem((String) jcVersion.getSelectedItem(), (String) jcItem.getSelectedItem());
             }
+            System.out.println("CCC : 12");
         }
         catch(HL7MessageTreeException he)
         {
@@ -651,4 +660,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/09/24 20:05:28  umkis
+ * HISTORY      : Add v2 Meta data collector
+ * HISTORY      :
  */

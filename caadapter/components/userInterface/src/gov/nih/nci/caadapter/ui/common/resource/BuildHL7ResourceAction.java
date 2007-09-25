@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.ui.common.resource;
 
 import gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.V2MetaCollectorDialog;
 
@@ -79,6 +80,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
         */
         V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
         dialog.setVisible(true);
+        DefaultSettings.centerWindow(dialog);
         return true;
     }
 
