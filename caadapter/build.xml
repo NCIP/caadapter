@@ -125,13 +125,16 @@
                 <include name="**/caAdapterWS.war"/>
             </fileset>
         </copy>
+    </target>
+
+	<target name="build-all" depends="jar.all">
     	<antcall target="dist.prepare" />
     	<antcall target="mmswebstart"/>
     	<antcall target="hl7webstart"/>
     	<antcall target="rdswebstart"/>
     	<antcall target="caadapter-webstart"/>
     </target>
-
+    	
     <target name="mmswebstart">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${webstart.deploy.dir}"/>
