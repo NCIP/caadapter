@@ -81,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.19 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.20 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -304,16 +304,25 @@ public class MainMenuBar extends AbstractMenuBar
         _qb.add(_menuItem);
         
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
-        {
-        	//webstart user is always authorized
-        	CaadapterUtil.setAuthorizedUser(true);
+        {       	
+//        	CaadapterUtil.setAuthorizedUser(true);
         	return _qb;
         }
+        else 
+        {
+//        	webstart user is always authorized
+        	CaadapterUtil.setAuthorizedUser(true);
+        }
+        
         //add the build resource menu for standalone application
         BuildHL7ResourceAction buildV3=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V3, mainFrame);
+        if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
+        	buildV3.setEnabled(false);
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
         BuildHL7ResourceAction buildV2=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2, mainFrame);
+        if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
+        	buildV2.setEnabled(false);
         JMenuItem _buildV2Item = new JMenuItem(buildV2);
         _qb.add(_buildV2Item);
         
@@ -573,6 +582,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.19  2007/09/19 16:44:25  wangeug
+ * HISTORY : authorized user request
+ * HISTORY :
  * HISTORY : Revision 1.18  2007/09/19 13:42:11  wangeug
  * HISTORY : do not show "build resource" menu item for webstart version
  * HISTORY :
