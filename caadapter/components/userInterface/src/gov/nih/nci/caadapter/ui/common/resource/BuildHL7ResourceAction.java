@@ -50,7 +50,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
      *         return false.
      */
     protected boolean doAction(ActionEvent e) throws Exception {
-    	/*
+ 
     	String resourceName="";
     	if (getName().equals(COMMAND_BUILD_V2))
     		resourceName=RESOURCE_NAME_V2;
@@ -76,11 +76,16 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     			toContinue=true;
     	}
     	if (toContinue)
-    		new BuildHL7ResourceDialog(mainFrame,getName(),true, resorcePath).show();
-        */
-        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
-        dialog.setVisible(true);
-        DefaultSettings.centerWindow(dialog);
+    	{
+    		if (getName().equals( COMMAND_BUILD_V3))
+    			new BuildHL7ResourceDialog(mainFrame,getName(),true, resorcePath).setVisible(true);
+    		else
+    		{
+		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
+		        DefaultSettings.centerWindow(dialog);
+		        dialog.setVisible(true);
+    		}
+    	}
         return true;
     }
 
