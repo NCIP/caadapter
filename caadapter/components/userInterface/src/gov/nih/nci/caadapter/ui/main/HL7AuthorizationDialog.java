@@ -46,7 +46,7 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 		else
 			contextFilePath=filePath;
 
-		setSize(600, 400);
+		setSize(600, 250);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);		
 		initUI();
 		this.setResizable(false);
@@ -77,7 +77,7 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	{
 		JPanel rtnPanel=new JPanel();
 		StringBuffer licenseBf=new StringBuffer();
-		String titleMessage="\n\n\n";
+		String titleMessage="\n";
 		licenseBf.append(titleMessage);	
 		
 		try {
