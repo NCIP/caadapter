@@ -1,5 +1,5 @@
 /**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.4 2007-09-19 17:18:28 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.5 2007-09-26 15:14:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -63,20 +63,20 @@ import gov.nih.nci.caadapter.ui.main.MainFrame;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * @since caAdapter v1.2
  */
 public class LaunchUI {
     private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.4 2007-09-19 17:18:28 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.5 2007-09-26 15:14:54 wangeug Exp $";
 
     public static void main(String[] args)
     {
             DefaultSettings.installAll();
         	//accept license as the first step
-            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
-            	new AcceptLicenseFrame();
-            else
+//            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
+//            	new AcceptLicenseFrame();
+//            else
             	new MainFrame().launch();
     }
 }
