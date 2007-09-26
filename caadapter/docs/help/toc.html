@@ -1,0 +1,160 @@
+<html>
+
+<head>
+	<title>Destroydrop &raquo; Javascripts &raquo; Tree</title>
+
+	<link rel="StyleSheet" href="dtree.css" type="text/css" />
+	<script type="text/javascript" src="dtree.js"></script>
+
+</head>
+<body>
+<p><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></p>
+
+<div class="item">
+				<script type="text/javascript">
+				<!--
+				d = new dTree('d');
+				d.add(0,-1,'caAdapter Table of Content');
+
+				d.add(1,0,'Chapter 1. Using the caAdapter Users Guide','Chapter1.html','Chapter 1','frame2');
+				d.add(12,1,'Audience for the caAdapter Users Guide','Chapter1.html#Audience_for_the_caAdapter_Users_Guide','Chapter 1','frame2');
+				d.add(13,1,'Recommended Reading','Chapter1.html#Recommended_Reading','Chapter 1','frame2');
+				d.add(14,1,'Document Text Conventions','Chapter1.html#Document_Text_Conventions','Chapter 1','frame2');
+				d.add(15,1,'Organization of this Guide','Chapter1.html#Organization_of_this_Guide','Chapter 1','frame2');
+
+				d.add(2,0,'Chapter 2. Overview of caAdapter','Chapter2.html','Chapter 2','frame2');
+				d.add(21,2,'caAdapter Overview','Chapter2.html#caAdapter_Overview','Chapter 2','frame2');
+				d.add(22,2,'caAdapter Core Engine Architecture','Chapter2.html#caAdapter_Core_Engine_Architecture','Chapter 2','frame2');
+				d.add(23,2,'caAdapter Mapping Tool Architecture','Chapter2.html#caAdapter_Mapping_Tool_Architecture','Chapter 2','frame2');
+				d.add(24,2,'HL7 Overview','Chapter2.html#HL7_Overview','Chapter 2','frame2');
+				d.add(25,2,'SDTM Overview','Chapter2.html#SDTM_Overview','Chapter 2','frame2');
+				d.add(26,2,'Object and Data Model Overview','Chapter2.html#Object_and_Data_Model_Overview','Chapter 2','frame2');
+				d.add(27,2,'Prerequisites for Using the caAdapter Mapping Tool','Chapter2.html#Prerequisites_for_Using_the_caAdapter_Mapping_Tool','Chapter 2','frame2');
+				d.add(28,2,'caAdapter Installation','Chapter2.html#caAdapter_Installation','Chapter 2','frame2');
+				d.add(29,2,'Starting the caAdapter Mapping Tool','Chapter2.html#Starting_the_caAdapter_Mapping_Tool','Chapter 2','frame2');
+				d.add(210,2,'Starting the Mapping Tool from the Binary Distribution','Chapter2.html#Starting_the_Mapping_Tool_from_the_Binary_Distribution','Chapter 2','frame2');
+				d.add(211,2,'Starting the Mapping Tool from the Source Distribution','Chapter2.html#Starting_the_Mapping_Tool_from_the_Source_Distribution','Chapter 2','frame2');
+				d.add(212,2,'Starting the Mapping Tool from the Windows Distribution','Chapter2.html#Starting_the_Mapping_Tool_from_the_Windows_Distribution','Chapter 2','frame2');
+
+				d.add(3,0,'Chapter 3. Using caAdapter','Chapter3.html','Chapter 3','frame2');
+				d.add(31,3,'API Process Flow for CSV to HL7 v3 Transformation','Chapter3.html#API Process_Flow_for_CSV_to_HL7_v3_Transformation','Chapter 3','frame2');				
+				d.add(32,3,'Mapping Tool Operational Scenario for CSV to HL7 v3','Chapter3.html#Mapping_Tool_Operational_Scenario_for_CSV_to_HL7_v3','Chapter 3','frame2');
+				d.add(33,3,'Mapping Tool Operational Scenario for HL7 v2 to HL7 v3 Transformation','Chapter3.html#Mapping_Tool_Operational_Scenario_for_HL7_v2_to_HL7_v3_Transformation','Chapter 3','frame2');
+				d.add(34,3,'Mapping Tool Operational Scenario for CSV to SDTM Transformation Service','Chapter3.html#Mapping_Tool_Operational_Scenario_for_CSV_to_SDTM_Transformation_Service','Chapter 3','frame2');
+				d.add(35,3,'Mapping Tool Operational Scenario for Model Mapping Service','Chapter3.html#Mapping_Tool_Operational_Scenario_for_Model_Mapping_Service','Chapter 3','frame2');
+
+				d.add(4,0,'Chapter 4. CSV TO HL7 v3 Mapping AND Transformation','Chapter4.html','Chapter 4','frame2');
+				d.add(41,4,'caAdapter Mapping Tool Process Flow','Chapter4.html#caAdapter_Mapping_Tool_Process_Flow','Chapter 4','frame2');
+				d.add(42,4,'caAdapter Mapping Tool Common Features','Chapter4.html#caAdapter_Mapping_Tool_Common_Features','Chapter 4','frame2');
+				d.add(43,4,'caAdapter Mapping Tool Interface','Chapter4.html#caAdapter_Mapping_Tool_Interface','Chapter 4','frame2');
+				d.add(44,4,'caAdapter Mapping Tool Validation','Chapter4.html#caAdapter_Mapping_Tool_Validation','Chapter 4','frame2');
+				d.add(45,4,'Source Specification','Chapter4.html#Source_Specification','Chapter 4','frame2');
+				d.add(46,4,'Segmented CSV Specification','Chapter4.html#Segmented_CSV_Specification','Chapter 4','frame2');
+				d.add(47,4,'Overview of CSV Specification Tab','Chapter4.html#Overview_of_CSV_Specification_Tab','Chapter 4','frame2');
+				d.add(48,4,'Updating the CSV Specification','Chapter4.html#Updating_the_CSV_Specification','Chapter 4','frame2');
+				d.add(49,4,'Validating the CSV Specification','Chapter4.html#Validating_the_CSV_Specification','Chapter 4','frame2');
+				d.add(410,4,'Saving a CSV Specification','Chapter4.html#Saving_a_CSV_Specification','Chapter 4','frame2');
+				d.add(411,4,'Generating a Report','Chapter4.html#Generating_a_Report','Chapter 4','frame2');
+				d.add(412,4,'Target Specification','Chapter4.html#Target_Specification','Chapter 4','frame2');
+				d.add(413,4,'Overview of HL7 v3 Specification Tab','Chapter4.html#Overview_of_HL7_v3_Specification_Tab','Chapter 4','frame2');
+				d.add(414,4,'Extending caAdapter to Include New HL7 Message Types','Chapter4.html#Extending_caAdapter_to_Include_New_HL7_Message_Types','Chapter 4','frame2');
+				d.add(415,4,'Updating the Properties of an HL7 v3 Specification','Chapter4.html#Updating_the_Properties_of_an_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(416,4,'Defining inlineText','Chapter4.html#Defining_inlineText','Chapter 4','frame2');
+				d.add(417,4,'Defining Units of Measure','Chapter4.html#Defining_Units_of_Measure','Chapter 4','frame2');
+				d.add(418,4,'Defining Default Data','Chapter4.html#Defining_Default_Data','Chapter 4','frame2');
+				d.add(419,4,'Defining Object Identifiers (OIDs)','Chapter4.html#Defining_Object_Identifiers_(OIDs)','Chapter 4','frame2');
+				d.add(420,4,'Using Structural Attributes of the HL7 RIM Classes','Chapter4.html#Using_Structural_Attributes_of_the_HL7_RIM_Classes','Chapter 4','frame2');
+				d.add(421,4,'Adding Clones to the HL7 v3 Specification','Chapter4.html#Adding_Clones_to_the_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(422,4,'Adding and Deleting Multiples to the HL7 v3 Specification','Chapter4.html#Adding_and_Deleting_Multiples_to_the_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(423,4,'Updating Abstract Data Types in the HL7 v3 Specification','Chapter4.html#Updating_Abstract_Data_Types_in_the_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(424,4,'Using Choice Boxes in the HL7 v3 Specification','Chapter4.html#Using_Choice_Boxes_in_the_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(425,4,'Validating the HL7 v3 Specification','Chapter4.html#Validating_the_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(426,4,'Saving an HL7 v3 Specification','Chapter4.html#Saving_an_HL7_v3_Specification','Chapter 4','frame2');
+				d.add(427,4,'Map Specification','Chapter4.html#Map_Specification','Chapter 4','frame2');
+				d.add(428,4,'Business Rules','Chapter4.html#Business_Rules','Chapter 4','frame2');
+				d.add(429,4,'Step-by-Step Instructions','Chapter4.html#Step-by-Step_Instructions','Chapter 4','frame2');
+				d.add(430,4,'HL7 v3 Message','Chapter4.html#HL7_v3_Message','Chapter 4','frame2');
+				d.add(431,4,'Business Rules','Chapter4.html#Business_Rules','Chapter 4','frame2');
+				d.add(432,4,'Step-by-Step Instructions','Chapter4.html#Step-by-Step_Instructions','Chapter 4','frame2');
+
+
+				d.add(5,0,'Chapter 5. HL7 v2 to HL7 v3 Conversion','Chapter5.html','Chapter 5','frame2');
+				d.add(51,5,'Understanding the Mapping and Transformation Processes','Chapter5.html#Understanding_the_Mapping_and_Transformation_Processes','Chapter 5','frame2');
+				d.add(52,5,'STEP 1  Map and Convert HL7 v2 to CSV Format','Chapter5.html#STEP_1__Map_and_Convert_HL7_v2_to_CSV_Format','Chapter 5','frame2');
+				d.add(53,5,'STEP 2  Map and Convert CSV File to HL7 v3 Format','Chapter5.html#STEP_2__Map_and_Convert_CSV_File_to_HL7_v3_Format','Chapter 5','frame2');
+				d.add(54,5,'Using the HL7 v2 to HL7 v3 Module','Chapter5.html#Using_the_HL7_v2_to_HL7_v3_Module','Chapter 5','frame2');
+				d.add(55,5,'Advanced HL7 v2 to HL7 v3 Mapping','Chapter5.html#Advanced_HL7_v2_to_HL7_v3_Mapping','Chapter 5','frame2');
+
+
+				d.add(6,0,'Chapter 6. CSV to SDTM Mapping and Transformation','Chapter6.html','Chapter 6','frame2');
+				d.add(61,6,'Understanding the Mapping and Transformation Processes','Chapter6.html#Understanding_the_Mapping_and_Transformation_Processes','Chapter 6','frame2');
+				d.add(62,6,'Mapping a CSV File to an SDTM Domain Structure','Chapter6.html#Mapping_a_CSV_File_to_an_SDTM_Domain_Structure','Chapter 6','frame2');
+				d.add(63,6,'Generating the SDTM Dataset','Chapter6.html#Generating_the_SDTM_Dataset','Chapter 6','frame2');
+				d.add(64,6,'Editing an Existing Map File','Chapter6.html#Editing_an_Existing_Map_File','Chapter 6','frame2');
+				d.add(65,6,'Editing and Printing an Existing Map File','Chapter6.html#Editing_and_Printing_an_Existing_Map_File','Chapter 6','frame2');
+
+
+				d.add(7,0,'Chapter 7. caAdapter Model Mapping Service','Chapter7.html','Chapter 7','frame2');
+				d.add(71,7,'Overview','Chapter7.html#Overview','Chapter 7','frame2');
+				d.add(72,7,'Using caAdapter Model Mapping Service','Chapter7.html#Using_caAdapter_Model_Mapping_Service','Chapter 7','frame2');
+				d.add(73,7,'Exporting xmi file from EA','Chapter7.html#Exporting_xmi_file_from_EA','Chapter 7','frame2');
+				d.add(74,7,'Creating an Object Model to Data Model Map Specification','Chapter7.html#Creating_an_Object_Model_to_Data_Model_Map_Specification','Chapter 7','frame2');
+				d.add(75,7,'Basic Mapping','Chapter7.html#Basic_Mapping','Chapter 7','frame2');
+				d.add(76,7,'The Seven Mapping Scenarios','Chapter7.html#The_Seven_Mapping_Scenarios','Chapter 7','frame2');
+				d.add(77,7,'User Interface Legend','Chapter7.html#User_Interface_Legend','Chapter 7','frame2');
+				d.add(78,7,'Color Changes (Figure 7.27)','Chapter7.html#Color_Changes_(Figure_7.27)','Chapter 7','frame2');
+				d.add(79,7,'Node Details','Chapter7.html#Node_Details','Chapter 7','frame2');
+				d.add(710, 7,'Opening an Existing Object to Database Mapping Specification', 'Chapter7.html#Opening_an_Existing_Object_to_Database_Mapping_Specification', 'Chapter 7', 'frame2');
+				d.add(711, 7,'Basic Mapping', 'Chapter7.html#Basic_Mapping', 'Chapter 7', 'frame2');
+				d.add(712, 7,'Dependency Mapping', 'Chapter7.html#Dependency_Mapping', 'Chapter 7', 'frame2');
+				d.add(713, 7,'Atribute Mapping', 'Chapter7.html#Attribute_Mapping', 'Chapter 7', 'frame2');
+				d.add(714, 7,'Association Mapping', 'Chapter7.html#Association_Mapping', 'Chapter 7', 'frame2');
+				d.add(715, 7,'Deleting Mapping Lines', 'Chapter7.html#Deleting_Mapping_Lines', 'Chapter 7', 'frame2');
+				d.add(716, 7,'Validating Mapping Specifications', 'Chapter7.html#Validating_Mapping_Specifications', 'Chapter 7', 'frame2');
+				d.add(717, 7,'Saving Mapping Specification', 'Chapter7.html#Saving_Mapping_Specification', 'Chapter 7', 'frame2');
+				d.add(718, 7,'Generating Hibernate Mappings', 'Chapter7.html#Generating_Hibernate_Mappings', 'Chapter 7', 'frame2');
+				d.add(719,7,'Node Details','Chapter7.html#Node_Details','Chapter 7','frame2');
+				d.add(720,7,'Mapping Line Colors','Chapter7.html#Mapping_Line_Colors','Chapter 7','frame2');
+				
+				d.add(8,0,'Chapter 8. Using Functions in Mapping','Chapter8.html','Chapter 8','frame2');
+				d.add(81,8,'Functions Provided by caAdapter','Chapter8.html#Functions_Provided_by_caAdapter','Chapter 8','frame2');
+				d.add(82,8,'Function Specifications','Chapter8.html#Function_Specifications','Chapter 8','frame2');
+
+
+				d.add(9,0,'Chapter 9. Using the caAdapter APIs','Chapter9.html','Chapter 9','frame2');
+				d.add(91,9,'caAdapter Directory Structure','Chapter9.html#caAdapter_Directory_Structure','Chapter 9','frame2');
+				d.add(92,9,'caAdapter APIs','Chapter9.html#caAdapter_APIs','Chapter 9','frame2');
+				d.add(93,9,'caAdapter API Error Logs','Chapter9.html#caAdapter_API_Error_Logs','Chapter 9','frame2');
+				
+				d.add(10,0,'Chapter 10. caAdapter Web Services Transformation Module','Chapter10.html','Chapter 10','frame2');
+				d.add(101,10,'Introduction','Chapter10.html#Introduction','Chapter 10','frame2');
+				d.add(102,10,'Setup Mapping Scenarios Through the Web Portal','Chapter10.html#Setup_Mapping_Scenarios_Through_the_Web_Portal','Chapter 10','frame2');
+				d.add(103,10,'Programmatic access to the caAdapter Web Services','Chapter10.html#Programmatic_access_to_the_caAdapter_Web_Services','Chapter 10','frame2');
+				d.add(104,10,'Axis 1.x RPC Style Access to caAdapter Web Services','Chapter10.html#Axis_1.x_RPC_Style_Access_to_caAdapter_Web_Services','Chapter 10','frame2');
+				d.add(105,10,'Axis 1.x DII Style Access to caAdapter Web Services','Chapter10.html#Axis_1.x_DII_Style_Access_to_caAdapter_Web_Services','Chapter 10','frame2');
+				d.add(106,10,'Axis 2.0 RPC Style Access to caAdapter Web Services','Chapter10.html#Axis_2.0_RPC_Style_Access_to_caAdapter_Web_Services','Chapter 10','frame2');
+
+				d.add(11,0,'Chapter 11. caAdapter File Types','Chapter11.html','Chapter 11','frame2');
+				d.add(111,11,'caAdapter File Formats and Locations','Chapter11.html#caAdapter_File_Formats_and_Locations','Chapter 11','frame2');
+				d.add(112,11,'CSV Data File','Chapter11.html#CSV_Data_File','Chapter 11','frame2');
+				d.add(113,11,'CSV Specification','Chapter11.html#CSV_Specification','Chapter 11','frame2');
+				d.add(114,11,'HL7 v3 Specification','Chapter11.html#HL7_v3_Specification','Chapter 11','frame2');
+				d.add(115,11,'HL7 v2 Specifications','Chapter11.html#HL7_v2_Specifications','Chapter 11','frame2');
+				d.add(116,11,'Message Structure:','Chapter11.html#Message_Structure:','Chapter 11','frame2');
+				d.add(117,11,'DataTypeSpec:','Chapter11.html#DataTypeSpec:','Chapter 11','frame2');
+				d.add(118,11,'Segment Attribute Table','Chapter11.html#Segment_Attribute_Table','Chapter 11','frame2');
+				d.add(119,11,'Definition Table','Chapter11.html#Definition_Table','Chapter 11','frame2');
+				d.add(120,11,'SDTM Data Files','Chapter11.html#SDTM_Data_Files','Chapter 11','frame2');
+				d.add(121,11,'SDTM Meta Data Files','Chapter11.html#SDTM_Meta_Data_Files','Chapter 11','frame2');
+				d.add(122,11,'Function Specification','Chapter11.html#Function_Specification','Chapter 11','frame2');
+				d.add(123,11,'HL7 v3 Message','Chapter11.html#HL7_v3_Message','Chapter 11','frame2');
+				d.add(124,11,'CSV to HL7 v3 Map Specification','Chapter11.html#CSV_to_HL7_v3_Map_Specification','Chapter 11','frame2');
+				d.add(125,11,'Object to Database Map Specification','Chapter11.html#Object_to_Database_Map_Specification','Chapter 11','frame2');
+
+				document.write(d);
+				//-->
+				</script>
+			</div>
+
+			<a href="AllChapters.html" target="frame2">All chapters</a>
+</body>

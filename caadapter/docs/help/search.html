@@ -1,0 +1,81 @@
+<html>
+<head>
+<SCRIPT language="JavaScript" SRC="js/data.js"></SCRIPT>
+<SCRIPT language="JavaScript">
+function search() {
+ var textInit = document.getElementById("searchText").value
+ var textArray = textInit.toLowerCase().split(" ");
+ var topicv;
+ var searchResult = new Array;
+ var searchIndex = 0;
+ var i = 0;
+ for(j=0;j<textArray.length;j++) {
+	var text = textArray[j];
+    for (i=0;i< data.length;i++) {
+   	   var match = 0;
+ 	   for(match =0; match<data[i].length;match++) {
+ 		  if (data[i][match].toLowerCase().indexOf(text) >= 0) {
+ 			 searchResult[searchIndex] = i;
+ 			 searchIndex ++;
+ 			 break;
+ 		  }
+ 	   }
+    }
+ }
+ var startNode = document.getElementById("result")
+ clearResult();
+ for(i = 0;i< searchResult.length;i++) {
+    var link;
+    link = document.getElementById("result"+i)
+    if (link == null) {
+	    link = document.createElement('a');
+	}
+    link.setAttribute('href', topicData[searchResult[i]][1]);
+    link.setAttribute('target', "frame2");
+    link.setAttribute('id','result'+i);
+    link.setAttribute('name','result'+i);
+    link.innerHTML = topicData[searchResult[i]][0]+"<br>";
+    startNode.appendChild(link);
+
+ }
+}
+
+function clearResult() {
+	var i = 0;
+	while(true) {
+	  var node = document.getElementById("result"+i);
+	  if (node==null) { break;}
+	  node.innerHTML="";
+	  i ++;
+	}
+}
+</SCRIPT>
+<style>
+a {text-decoration: none; color:black}
+a:hover {
+  text-decoration: underline;
+  color:blue;
+}
+a:link {
+  text-decoration: none;
+}
+
+</style>
+</head>
+<body>
+<table>
+  <tr>
+     <td colspan=2>Type in the word(s) to search for:</td>
+  </tr>
+  <tr>
+     <td valign=center>
+	        <input type=text name=searchText id=searchText size=20>
+	 </td>
+	 <td valign=center>
+        <input type=image src="img/go.gif" onclick="search()">
+     </td>
+  </tr>
+ </table>
+    <p id="result"></p>
+</body>
+</html>
