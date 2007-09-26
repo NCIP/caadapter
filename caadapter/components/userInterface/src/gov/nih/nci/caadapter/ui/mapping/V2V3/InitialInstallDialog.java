@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.1 2007-09-26 16:24:16 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.2 2007-09-26 20:14:57 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Sep 26, 2007
  *          Time:       12:46:19 AM $
  */
@@ -93,7 +93,7 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.1 2007-09-26 16:24:16 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.2 2007-09-26 20:14:57 umkis Exp $";
 
     private JTextField jtPath;
     private JButton jbBrowse;
@@ -103,12 +103,57 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
 
     private String path;
 
-    public InitialInstallDialog(JDialog dialog)
+    private String title = "";
+    private String message1 = "";
+    private String message2 = "";
+    private String message3 = "";
+    private String extension = "";
+    private boolean addMessage = false;
+
+    public InitialInstallDialog(JDialog dialog, String title, String msg1, String msg2, String msg3, String exten)
     {
-        super(dialog, "Input Appendix A file name", true);
+        super(dialog, title, true);
+        message1 = msg1;
+        message2 = msg2;
+        message3 = msg3;
+        addMessage = false;
+        extension = exten;
+        this.title = title;
         initialize();
     }
-
+    public InitialInstallDialog(JDialog dialog, String title, String msg1, String msg2, String msg3, String exten, boolean addMsg)
+    {
+        super(dialog, title, true);
+        message1 = msg1;
+        message2 = msg2;
+        message3 = msg3;
+        extension = exten;
+        addMessage = addMsg;
+        this.title = title;
+        initialize();
+    }
+    public InitialInstallDialog(JFrame dialog, String title, String msg1, String msg2, String msg3, String exten)
+    {
+        super(dialog, title, true);
+        message1 = msg1;
+        message2 = msg2;
+        message3 = msg3;
+        addMessage = false;
+        extension = exten;
+        this.title = title;
+        initialize();
+    }
+    public InitialInstallDialog(JFrame dialog, String title, String msg1, String msg2, String msg3, String exten, boolean addMsg)
+    {
+        super(dialog, title, true);
+        message1 = msg1;
+        message2 = msg2;
+        message3 = msg3;
+        addMessage = addMsg;
+        extension = exten;
+        this.title = title;
+        initialize();
+    }
     private void initialize()
     {
         Object[] ob = inputFileNameCommon(" File Name : ", jtPath, jbBrowse, "Browse", "Browse");
@@ -119,12 +164,24 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
         jtPath.setText(FileUtil.getV2DataDirPath());
         jtPath.setEditable(false);
 
-        String str = "For initial install, \r\nAppendix A chapter file among the v2 manual .doc files is needed.\r\n" +
-                     "Please, input the absolute file path.";
-
+        JLabel label1 = new JLabel(message1);
+        JLabel label2 = new JLabel(message2);
+        JLabel label3 = new JLabel(message3);
         JPanel norhtPanel = new JPanel(new BorderLayout());
+        JPanel norhtPanel0 = new JPanel(new BorderLayout());
+        JPanel norhtPanel1 = new JPanel(new BorderLayout());
+        JPanel norhtPanel2 = new JPanel(new BorderLayout());
+        JPanel norhtPanel3 = new JPanel(new BorderLayout());
 
-        norhtPanel.add(new JLabel(str), BorderLayout.CENTER);
+        norhtPanel3.add(label3, BorderLayout.NORTH);
+        norhtPanel2.add(label2, BorderLayout.NORTH);
+        norhtPanel2.add(norhtPanel3, BorderLayout.CENTER);
+        norhtPanel1.add(label1, BorderLayout.NORTH);
+        norhtPanel1.add(norhtPanel2, BorderLayout.CENTER);
+
+        norhtPanel0.add(norhtPanel1, BorderLayout.NORTH);
+
+        norhtPanel.add(norhtPanel0, BorderLayout.CENTER);
         norhtPanel.add(pathPanel, BorderLayout.SOUTH);
 
         JPanel buttonPanel = generateButtonPanel();
@@ -145,9 +202,10 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
             }
         );
 
-        setSize(550, 200);
-        setVisible(true);
+        setSize(420, 160);
+
         DefaultSettings.centerWindow(this);
+        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -161,7 +219,7 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
         {
             //File file = DefaultSettings.getUserInputOfFileFromGUI(this, FileUtil.getV2DataDirPath(), null, "V2 Meta Base Directory", false, false);
             File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-			            ".doc", "Input Appendix A chapter file", false, false);
+			            extension, title, false, false);
 
             jtPath.setText(file.getAbsolutePath());
 
@@ -173,6 +231,11 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
             {
                 JOptionPane.showMessageDialog(this, "Null Path name", "Null path", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+            if (addMessage)
+            {
+                String str = "This prcess may takes some minute. Please, wait for a while.";
+                JOptionPane.showMessageDialog(this, str, "Long Processing", JOptionPane.INFORMATION_MESSAGE);
             }
             path = pth;
             this.dispose();
@@ -232,4 +295,7 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/09/26 16:24:16  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  */

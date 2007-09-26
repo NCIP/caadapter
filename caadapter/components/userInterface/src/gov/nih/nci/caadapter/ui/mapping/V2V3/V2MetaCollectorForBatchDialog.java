@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.4 2007-09-26 20:14:57 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorForBatchDialog.java,v 1.1 2007-09-26 20:14:57 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -53,20 +53,19 @@
 
 package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.common.util.FileUtil;
+import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CompareInstance;
+import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CheckVersionAndItem;
+import edu.knu.medinfo.hl7.v2tree.images.source.mapping.GroupingMetaInstance;
+import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
-import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CheckVersionAndItem;
-import edu.knu.medinfo.hl7.v2tree.images.source.mapping.GroupingMetaInstance;
-import edu.knu.medinfo.hl7.v2tree.images.source.mapping.CompareInstance;
-import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 /**
  * This class defines ...
@@ -74,18 +73,18 @@ import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
- *          date        Sep 23, 2007
- *          Time:       6:57:06 PM $
+ *          revision    $Revision: 1.1 $
+ *          date        Sep 26, 2007
+ *          Time:       1:41:35 PM $
  */
-public class V2MetaCollectorDialog extends JDialog implements ActionListener
+public class V2MetaCollectorForBatchDialog extends JDialog implements ActionListener
 {
 
     /**
      * Logging constant used to identify source of log entry, that could be later used to create
      * logging mechanism to uniquely identify the logged class.
      */
-    private static final String LOGID = "$RCSfile: V2MetaCollectorDialog.java,v $";
+    private static final String LOGID = "$RCSfile: V2MetaCollectorForBatchDialog.java,v $";
 
     /**
      * String that identifies the class version and solves the serial version UID problem.
@@ -93,7 +92,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.4 2007-09-26 20:14:57 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorForBatchDialog.java,v 1.1 2007-09-26 20:14:57 umkis Exp $";
 
     private String title = "V2 Meta Data Collector";
 
@@ -130,12 +129,18 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
     private java.util.List<String> substructureSegmentList = null;
     private java.util.List<String> substructureTableList = null;
 
-    public V2MetaCollectorDialog(JDialog dialog)
+    private boolean finished = false;
+    private String messageTypeMetaFilePath;
+    private String nameOfSubdirctory = "tempSegment";
+
+    private String extension = ".tmc";
+
+    public V2MetaCollectorForBatchDialog(JDialog dialog)
     {
         super(dialog, "V2 Meta Data Collector", true);
         initialize();
     }
-    public V2MetaCollectorDialog(JFrame frame)
+    public V2MetaCollectorForBatchDialog(JFrame frame)
     {
         super(frame, "V2 Meta Data Collector", true);
         initialize();
@@ -300,7 +305,8 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
         jcItem = new JComboBox();
         String itemT = "Select Item.";
         jcItem.addItem(itemT);
-        for(String item:check.getItemTo()) jcItem.addItem(item);
+        //for(String item:check.getItemTo()) jcItem.addItem(item);
+        jcItem.addItem(check.getItemTo()[2]);
         jcItem.setEditable(false);
 
         jcName = new JComboBox();
@@ -324,7 +330,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
                         jcName.setEnabled(true);
                         jcName.removeAllItems();
                         jcName.addItem("Select Name");
-                        
+
                         for(String name:group.getOutList()) //jcName.addItem(name);
                         {
 
@@ -528,7 +534,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
         {
             //System.out.println("CCC : 9");
             check = new CheckVersionAndItem((String) jcVersion.getSelectedItem(), (String) jcItem.getSelectedItem());
-                       
+
             String spr = File.separator;
             String pathN = path + spr + check.getVersion()[0] + spr + check.getItems()[1] + spr + "9901" + ".dat";
 
@@ -542,13 +548,11 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
                     this.dispose();
                     return;
                 }
-
                 String title = "Input Appendix A file name";
                 String msg1 = "For initial install,";
                 String msg2 = "Appendix A chapter file among the v2 manual .doc files is needed.";
                 String msg3 = "Please, input the absolute file path.";
                 InitialInstallDialog dial = new InitialInstallDialog(this, title, msg1, msg2, msg3, ".doc", true);
-
                 String pathF = dial.getPath();
                 if ((pathF==null)||(pathF.trim()).equals(""))
                 {
@@ -558,7 +562,40 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
                 compare.initialInstall(pathF, false);
             }
             //System.out.println("CCC : 10");
-            compare.doInstall();
+            //compare.doInstall();
+            try
+            {
+                String pPath = jtPath.getText().trim();
+                if (!pPath.endsWith(spr)) pPath = pPath + spr;
+                String pData = jaData.getText();
+                extension = ((String)jcVersion.getSelectedItem()).trim();
+                nameOfSubdirctory = ((String)jcName.getSelectedItem()).trim();
+                if (substructure)
+                {
+
+                    String sPath = pPath + nameOfSubdirctory;
+                    File dir = new File(sPath);
+                    if ((!dir.exists())||(!dir.isDirectory()))
+                    {
+                        if (!dir.mkdirs())
+                        {
+                            JOptionPane.showMessageDialog(this, "Creating Directory Failure : " + sPath, "Directory Creation error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.saveStringIntoTemporaryFile(sPath + spr + substructureName + extension, pData, false);
+                }
+                else
+                {
+                    messageTypeMetaFilePath = pPath + (String)jcName.getSelectedItem() + extension;
+                    edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.saveStringIntoTemporaryFile(messageTypeMetaFilePath, pData, false);
+                }
+            }
+            catch(IOException ie)
+            {
+                JOptionPane.showMessageDialog(this, ie.getMessage(), "File writing error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             if (substructure)
             {
                 //System.out.println("CCC : 11-1");
@@ -671,22 +708,30 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
         substructureLevel = null;
         substructureName = null;
         jtMessage.setText("");
-        
+        finished = true;
+        JOptionPane.showMessageDialog(this, "Collecting the meta data of '" + ((String) jcName.getSelectedItem()) + "' message type is finished.", "Finish Meta Collecting", JOptionPane.INFORMATION_MESSAGE);
+        this.dispose();
     }
 
+    public boolean wasFinished()
+    {
+        return finished;
+    }
+    public String getMessageTypeMetaFilePath()
+    {
+        return messageTypeMetaFilePath;
+    }
+    public String getNameOfSubdirctory()
+    {
+        return nameOfSubdirctory;
+    }
+    public String getExtension()
+    {
+        return extension;
+    }
 }
-
 
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.3  2007/09/26 16:24:16  umkis
- * HISTORY      : Upgrade v2 meta collector
- * HISTORY      :
- * HISTORY      : Revision 1.2  2007/09/25 15:22:58  umkis
- * HISTORY      : update V2 meta data collector
- * HISTORY      :
- * HISTORY      : Revision 1.1  2007/09/24 20:05:28  umkis
- * HISTORY      : Add v2 Meta data collector
- * HISTORY      :
  */
