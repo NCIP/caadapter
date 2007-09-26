@@ -18,6 +18,7 @@
 	<jar href="BrowserLauncher2-all-10rc4.jar"/>   
 	<jar href="commons-collections-3.2.jar"/>
 	<jar href="commons-logging-1.0.4.jar"/>
+	<jar href="dom4j-1.4.jar"/>
 	<jar href="jdom.jar"/>
 	<jar href="jgraph.jar"/>
 	<jar href="log4j-1.2.8.jar"/>
@@ -25,8 +26,10 @@
 	<jar href="castor-0.9.9.jar"/>
    	<jar href="ostermillerutils_1_04_03_for_java_1_4.jar"/>
    	<jar href="sqleonardo.jar"/>
-   	<jar href="mysql-connector-java-3.1.13-bin.jar"/>
-   	<jar href="ojdbc14.jar"/>
+   	<jar href="resource.zip"/>
+   	<jar href="poi-2.5.1-final-20040804.jar"/>
+	<jar href="xmi.in.out.jar"/>
+	<jar href="jaxen-jdom.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />

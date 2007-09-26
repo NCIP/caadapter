@@ -24,10 +24,12 @@
     <property name="webstart.deploy.dir" value="${basedir}/dist/mmswebstart"/>
     <property name="hl7.webstart.deploy.dir" value="${basedir}/dist/hl7webstart"/>
     <property name="rds.webstart.deploy.dir" value="${basedir}/dist/rdswebstart"/>
+    <property name="caadapter.webstart.deploy.dir" value="${basedir}/dist/caadapter-webstart"/>
     <property name="webstart.config.files" value="${basedir}/etc/webstart"/>
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
     <property name="hl7.webstart.warfile.name" value="caadapter-hl7.war"/>
     <property name="rds.webstart.warfile.name" value="caadapter-rds.war"/>
+    <property name="caadapter.webstart.warfile.name" value="caadapter-webstart.war"/>
     <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
     <property name="webserver" value="http://localhost/"/>
 
@@ -118,10 +120,16 @@
 			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
 			etc/schemas/**, referenceLib/**">
 		</zip>
+        <copy todir="${dist.dir}">
+            <fileset dir="${ws.module.home}/dist">
+                <include name="**/caAdapterWS.war"/>
+            </fileset>
+        </copy>
     	<antcall target="dist.prepare" />
     	<antcall target="mmswebstart"/>
     	<antcall target="hl7webstart"/>
     	<antcall target="rdswebstart"/>
+    	<antcall target="caadapter-webstart"/>
     </target>
 
     <target name="mmswebstart">
@@ -188,6 +196,7 @@
         <replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}"/>
 		<delete file="${webstart.deploy.dir}/caadapter-hl7.jnlp"/>
 		<delete file="${webstart.deploy.dir}/caadapter-rds.jnlp"/>
+		<delete file="${webstart.deploy.dir}/caadapter.jnlp"/>
 
     	<antcall target="generate-keys"/>
         <echo message=""/>
@@ -271,6 +280,7 @@
         <replace file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp" token="$WEBSERVER" value="${webserver}"/>
 		<delete file="${hl7.webstart.deploy.dir}/caadapter-rds.jnlp"/>
 		<delete file="${hl7.webstart.deploy.dir}/caadapter-mms.jnlp"/>
+		<delete file="${hl7.webstart.deploy.dir}/caadapter.jnlp"/>
 
     	<antcall target="generate-keys"/>
 
@@ -318,13 +328,13 @@
         <echo message="------- copying jar files to webstart deploy directory ------"/>
         <copy todir="${rds.webstart.deploy.dir}">
             <fileset dir="${lib.dir}">
-                <include name="xercesImpl.jar"/>
-                <include name="xml-apis.jar"/>
+                <include name="castor-0.9.9.jar"/>
+                <include name="mysql-connector-java-3.1.13-bin.jar"/>
+                <include name="ojdbc14.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
-                <include name="castor-0.9.9.jar"/>
         	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
         		<include name="sqleonardo.jar"/>
         	</fileset>
@@ -337,9 +347,6 @@
                 <include name="xercesImpl.jar"/>
                 <include name="commons-logging-1.0.4.jar"/>
                 <include name="log4j-1.2.8.jar"/>
-        	</fileset>
-        	<fileset dir="${dist.dir}">
-                <include name="xml-apis.jar"/>
         	</fileset>
         </copy>
 
@@ -356,6 +363,7 @@
         <replace file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp" token="$WEBSERVER" value="${webserver}"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter-mms.jnlp"/>
+		<delete file="${rds.webstart.deploy.dir}/caadapter.jnlp"/>
 
     	<antcall target="generate-keys"/>
 
@@ -378,6 +386,97 @@
         <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
     </target>
 
+    <target name="caadapter-webstart">
+        <echo message="------- cleaning webstart deploy directory ------"/>
+        <delete dir="${caadapter.webstart.deploy.dir}"/>
+        <delete file="${dist.dir}/${caadapter.webstart.warfile.name}"/>
+        <delete file="NCICBkey"/>
+        <!--delete file="${lib.dir}/${project.jar.name}"/-->
+		<mkdir dir="${caadapter.webstart.deploy.dir}/tmp"/>
+		<unzip dest="${caadapter.webstart.deploy.dir}/tmp">
+        	<fileset dir="${dist.dir}/lib">
+            	<include name="caAdapter.jar"/>
+        	</fileset>
+		</unzip>
+
+    	<copy file="${webstart.config.dir}/caadapter-components.caadapter.properties" tofile="${caadapter.webstart.deploy.dir}/tmp/caadapter-components.properties"/>
+
+		<zip destfile="${caadapter.webstart.deploy.dir}/caAdapter.jar">
+			<fileset dir="${caadapter.webstart.deploy.dir}/tmp"/>
+		</zip>
+
+        <delete dir="${caadapter.webstart.deploy.dir}/tmp"/>
+    	
+        <echo message=""/>
+        <echo message="------- copying jar files to webstart deploy directory ------"/>
+        <copy todir="${caadapter.webstart.deploy.dir}">
+            <fileset dir="${lib.dir}">
+                <include name="castor-0.9.9.jar"/>
+                <include name="mysql-connector-java-3.1.13-bin.jar"/>
+                <include name="ojdbc14.jar"/>
+            </fileset>
+        	<fileset dir="${reference.dir}">
+            	<include name="caAdapter_ui.jar"/>
+                <include name="jgraph.jar"/>
+        	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+        		<include name="sqleonardo.jar"/>
+            	<include name="resource.zip"/>
+        	</fileset>
+        	<fileset dir="${ui.module.home}/lib">
+            	<include name="BrowserLauncher2-all-10rc4.jar"/>
+                <include name="commons-collections-3.2.jar"/>
+                <include name="jdom.jar"/>
+        	</fileset>
+        	<fileset dir="${common.module.home}/lib">
+                <include name="xercesImpl.jar"/>
+                <include name="commons-logging-1.0.4.jar"/>
+                <include name="log4j-1.2.8.jar"/>
+        		<include name="poi-2.5.1-final-20040804.jar"/>
+        	</fileset>
+        	<fileset dir="${dist.dir}">
+                <include name="jaxen-jdom.jar"/>
+        	</fileset>
+        	<fileset dir="${mms.module.home}/lib">
+                <include name="xmi.in.out.jar"/>
+                <include name="dom4j-1.4.jar"/>
+        	</fileset>
+        </copy>
+
+        <echo message=""/>
+        <echo message="------ copying webstart files to webstart deploy directory ------"/>
+        <copy todir="${caadapter.webstart.deploy.dir}">
+            <fileset dir="${webstart.config.files}">
+                <exclude name="*.zip, *.jar"/>
+            </fileset>
+        </copy>
+
+        <echo message=""/>
+        <echo message="-------- Applying Webserver replacement --------"/>
+        <replace file="${caadapter.webstart.deploy.dir}/caadapter.jnlp" token="$WEBSERVER" value="${webserver}"/>
+		<delete file="${caadapter.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
+		<delete file="${caadapter.webstart.deploy.dir}/caadapter-mms.jnlp"/>
+		<delete file="${caadapter.webstart.deploy.dir}/caadapter-rds.jnlp"/>
+
+    	<antcall target="generate-keys"/>
+
+        <echo message=""/>
+        <echo message="-------- Signing all jar files --------"/>
+        <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
+            <fileset dir="${caadapter.webstart.deploy.dir}" includes="*.jar, *.zip"/>
+        </signjar>
+
+        <echo message=""/>
+        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+        <war destfile="${dist.dir}/${caadapter.webstart.warfile.name}" webxml="">
+            <fileset dir="${caadapter.webstart.deploy.dir}">
+                <exclude name="myKeyStore"/>
+            </fileset>
+        </war>
+
+        <echo message=""/>
+        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
+        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+    </target>
 	
 	<!-- target name="demo.dist"  -->
     <target name="demo.dist">
