@@ -125,9 +125,9 @@
                 <include name="**/caAdapterWS.war"/>
             </fileset>
         </copy>
+	<antcall target="dist.prepare" />
     </target>
 	<target name="build-all" depends="jar.all">
-    	<antcall target="dist.prepare" />
     	<antcall target="mmswebstart"/>
     	<antcall target="hl7webstart"/>
     	<antcall target="rdswebstart"/>
