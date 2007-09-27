@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.4 2007-09-26 20:14:57 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.5 2007-09-27 19:39:34 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Sep 23, 2007
  *          Time:       6:57:06 PM $
  */
@@ -93,7 +93,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.4 2007-09-26 20:14:57 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.5 2007-09-27 19:39:34 umkis Exp $";
 
     private String title = "V2 Meta Data Collector";
 
@@ -318,18 +318,14 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
                         GroupingMetaInstance group = null;
                         try
                         {
-                            group = new GroupingMetaInstance(check.getVersionTo()[jcVersion.getSelectedIndex()], check.getItemTo()[jcItem.getSelectedIndex()]);
+                            group = new GroupingMetaInstance(check.getVersionTo()[jcVersion.getSelectedIndex()-1], check.getItemTo()[jcItem.getSelectedIndex()-1]);
                         }
                         catch(HL7MessageTreeException he) { return; }
                         jcName.setEnabled(true);
                         jcName.removeAllItems();
                         jcName.addItem("Select Name");
                         
-                        for(String name:group.getOutList()) //jcName.addItem(name);
-                        {
-
-                            jcName.addItem(name);
-                        }
+                        for(String name:group.getOutList()) jcName.addItem(name);
                     }
                 }
             }
@@ -349,16 +345,11 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
                         }
                         catch(HL7MessageTreeException he) { return; }
 
-
                         jcName.setEnabled(true);
                         jcName.removeAllItems();
                         jcName.addItem("Select Name");
 
-                        for(String name:group.getOutList())
-                        {
-
-                            jcName.addItem(name);
-                        }
+                        for(String name:group.getOutList()) jcName.addItem(name);
                     }
                 }
             }
@@ -680,6 +671,9 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/09/26 20:14:57  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/09/26 16:24:16  umkis
  * HISTORY      : Upgrade v2 meta collector
  * HISTORY      :

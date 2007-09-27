@@ -86,7 +86,95 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
 		        dialog.setVisible(true);
     		}
     	}
+
+        /*
+        SelectionCollectingMethodDialog selectDialog = new SelectionCollectingMethodDialog(mainFrame);
+
+        DefaultSettings.centerWindow(selectDialog);
+        selectDialog.setVisible(true);
+
+        int selected = selectDialog.getSelected();
+
+        if (selected == 0)
+        {
+            V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
+            DefaultSettings.centerWindow(dialog);
+            dialog.setVisible(true);
+            return true;
+        }
+        else if (selected == 1) {}
+        else if (selected == 2) {}
+        else return false;
+
+        String mtFile = "";
+
+        dialog = new V2MetaCollectorForBatchDialog(mainFrame);
+
+        DefaultSettings.centerWindow(dialog);
+        dialog.setVisible(true);
+
+        if (!dialog.wasFinished()) return true;
+
+        int res = JOptionPane.showConfirmDialog(mainFrame, "Do you want to install the collected meta data?", "Install Meta data?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (res != JOptionPane.YES_OPTION)
+        {
+            return true;
+        }
+
+        mtFile = dialog.getMessageTypeMetaFilePath();
+
+
+        File file = new File(mtFile);
+        if ((!file.exists())||(!file.isFile()))
+        {
+            JOptionPane.showMessageDialog(mainFrame, "Invalid Message Type File : " + mtFile, "Invalid Message Type File", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        String mtData = FileUtil.readFileIntoString(mtFile);
+        String fName = file.getName();
+        int idx = fName.indexOf(".");
+        if (idx <= 0)
+        {
+            JOptionPane.showMessageDialog(mainFrame, "Invalid File Name (1) : " + fName, "Invalid File Name", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String parDir = file.getParentFile().getAbsolutePath();
+        if (!parDir.endsWith(File.separator)) parDir = parDir + File.separator;
+
+        String mtName = fName.substring(0, idx);
+        String mtVersion = fName.substring(idx+1);
+
+        boolean cTag = false;
+
+        CheckVersionAndItem check = new  CheckVersionAndItem();
+        for(String ver:check.getVersionTo()) if (mtVersion.equals(ver)) cTag = true;
+        if (!cTag)
+        {
+            JOptionPane.showMessageDialog(mainFrame, "Invalid File Name (2) : " + fName, "Invalid File Name", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        cTag = false;
+        GroupingMetaInstance group = new GroupingMetaInstance(mtVersion, check.getItemTo()[2]);
+        for (String nam:group.getOutList()) if (mtName.equals(nam)) cTag = true;
+        if (!cTag)
+        {
+            JOptionPane.showMessageDialog(mainFrame, "Invalid File Name (3) : " + fName, "Invalid File Name", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        File segDir = new File(parDir + mtName);
+        if ((!segDir.exists())||(!segDir.isDirectory()))
+        {
+            JOptionPane.showMessageDialog(mainFrame, "Segment directory is not exist : " + parDir + mtName, "No Segment directory", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        CompareInstance compare = new CompareInstance(path, mtVersion, check.getItemTo()[2]);
+        */
+
         return true;
+        
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorForBatchDialog.java,v 1.1 2007-09-26 20:14:57 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorForBatchDialog.java,v 1.2 2007-09-27 19:39:34 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -73,7 +73,7 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Sep 26, 2007
  *          Time:       1:41:35 PM $
  */
@@ -92,7 +92,7 @@ public class V2MetaCollectorForBatchDialog extends JDialog implements ActionList
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorForBatchDialog.java,v 1.1 2007-09-26 20:14:57 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorForBatchDialog.java,v 1.2 2007-09-27 19:39:34 umkis Exp $";
 
     private String title = "V2 Meta Data Collector";
 
@@ -324,18 +324,14 @@ public class V2MetaCollectorForBatchDialog extends JDialog implements ActionList
                         GroupingMetaInstance group = null;
                         try
                         {
-                            group = new GroupingMetaInstance(check.getVersionTo()[jcVersion.getSelectedIndex()], check.getItemTo()[jcItem.getSelectedIndex()]);
+                            group = new GroupingMetaInstance(check.getVersionTo()[jcVersion.getSelectedIndex()-1], check.getItemTo()[2]);
                         }
                         catch(HL7MessageTreeException he) { return; }
                         jcName.setEnabled(true);
                         jcName.removeAllItems();
                         jcName.addItem("Select Name");
 
-                        for(String name:group.getOutList()) //jcName.addItem(name);
-                        {
-
-                            jcName.addItem(name);
-                        }
+                        for(String name:group.getOutList()) jcName.addItem(name);
                     }
                 }
             }
@@ -351,20 +347,15 @@ public class V2MetaCollectorForBatchDialog extends JDialog implements ActionList
                         GroupingMetaInstance group = null;
                         try
                         {
-                            group = new GroupingMetaInstance(check.getVersionTo()[jcVersion.getSelectedIndex()-1], check.getItemTo()[jcItem.getSelectedIndex()-1]);
+                            group = new GroupingMetaInstance(check.getVersionTo()[jcVersion.getSelectedIndex()-1], check.getItemTo()[2]);
                         }
                         catch(HL7MessageTreeException he) { return; }
-
 
                         jcName.setEnabled(true);
                         jcName.removeAllItems();
                         jcName.addItem("Select Name");
 
-                        for(String name:group.getOutList())
-                        {
-
-                            jcName.addItem(name);
-                        }
+                        for(String name:group.getOutList()) jcName.addItem(name);
                     }
                 }
             }
@@ -734,4 +725,7 @@ public class V2MetaCollectorForBatchDialog extends JDialog implements ActionList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/09/26 20:14:57  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  */
