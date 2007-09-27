@@ -57,4 +57,11 @@
 			<exclude name="test/**"/>
 		</javac>
 	</target>
+	<target name="deploy.webstart"  description="deploy webstart components">
+		 <copy todir="C:/devWeb/jboss-4.0.5.GA/server/default/deploy">
+		      <fileset dir=".">
+		           <include name="*.war"/>
+		       </fileset>
+        </copy>
+	</target>
 </project>
