@@ -19,7 +19,7 @@ public class MIFIndexParser {
 	 * Read MIF names from MIF file directory
 	 * @throws Exception
 	 */
-	public MIFIndex readMIFIndexInfo(String mifDirPath)throws Exception 
+	public MIFIndex readMIFIndexInfo(String mifDirPath)throws Exception
 	{
 		MIFIndex mifIndexInfos = new MIFIndex();
 		File fileDir=new File(mifDirPath);
@@ -49,7 +49,7 @@ public class MIFIndexParser {
 				if(zipFileName.indexOf(".mif")>-1)
 				{
 					mifIndexInfos.addMessageType(zipFileName.substring(zipFileName.indexOf("/")+1));
-				}					
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -64,7 +64,7 @@ public class MIFIndexParser {
 	 */
 	public void printMIFIndex(MIFIndex mifIndexInfos)
 	{
-		
+
 		for(Object msgCat:mifIndexInfos.getMessageCategory()) {
 			System.out.println("message category: "+msgCat);
 			Set msgTypeSet=mifIndexInfos.fingMessageTypesWithCategory((String)msgCat);
@@ -84,7 +84,7 @@ public class MIFIndexParser {
 	 */
 	public void saveMIFIndex(String fileName, MIFIndex mifIndexInfos ) throws Exception {
 		OutputStream os = new FileOutputStream(fileName);
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		ObjectOutputStream oos = new ObjectOutputStream(os);
 		oos.writeObject(mifIndexInfos);
 		oos.close();
 		os.close();
@@ -94,7 +94,8 @@ public class MIFIndexParser {
 		InputStream is = Thread.currentThread().getClass().getResourceAsStream("/mifIndexInfos");
 		if (is == null)
 		{
-			is = Thread.currentThread().getClass().getClassLoader().getResource("/mifIndexInfos").openStream();
+			//is = Thread.currentThread().getClass().getClassLoader().getResource("mifIndexInfos").openStream();
+			is = MIFIndexParser.class.getClassLoader().getResource("mifIndexInfos").openStream();
 			if (is == null)
 				throw new Exception("Loading MIF information failure : ");
 		}
@@ -112,7 +113,7 @@ public class MIFIndexParser {
 //		mifInfoParser.saveMIFIndex("c:/temp/mifIndexInfos",mifIndexInfos);
 
 		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfos();
-		
+
 		mifInfoParser.printMIFIndex(mifIndexInfos);
 	}
 }
