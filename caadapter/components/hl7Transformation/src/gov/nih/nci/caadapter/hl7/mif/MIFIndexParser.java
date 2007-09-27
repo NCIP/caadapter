@@ -1,5 +1,7 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -90,8 +92,13 @@ public class MIFIndexParser {
 
 	public  static MIFIndex loadMIFInfos() throws Exception {
 		InputStream is = Thread.currentThread().getClass().getResourceAsStream("/mifIndexInfos");
-        if (is == null) throw new Exception("Loading MIF information failure : ");
-        ObjectInputStream ois = new ObjectInputStream(is);
+		if (is == null)
+		{
+			is = Thread.currentThread().getClass().getClassLoader().getResource("/mifIndexInfos").openStream();
+			if (is == null)
+				throw new Exception("Loading MIF information failure : ");
+		}
+		ObjectInputStream ois = new ObjectInputStream(is);
 		MIFIndex mifIndex = (MIFIndex)ois.readObject();
 		ois.close();
 		is.close();
