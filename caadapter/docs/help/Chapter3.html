@@ -5636,13 +5636,13 @@ style='mso-bookmark:Process_Flow_For_CSV_to_HL7_v3_transform'></span></p>
 
 <p class=caBodyText>This section describes the process for creating a validated
 HL7 v3 adverse event (AE) message, also known in HL7 as an ICSR, based on a
-give CSV file, or set of files, and corresponding mapping specification.
-caAdapter uses the Transformation and Validation engine to do different
+given CSV file, or set of files, and a corresponding mapping specification.
+caAdapter uses the Transformation and Validation engine to perform different
 validations levels based on user’s selection: structural only; structural and
 vocabulary; or structural, vocabulary and schema.</p>
 
 <p class=caBodyText style='text-align:justify'>The basic steps to accomplish
-this using caAdapter are:</p>
+this workflow using caAdapter are:</p>
 
 <p class=caBodyText style='margin-left:1.5in;text-align:justify;text-indent:
 -.25in;mso-list:l58 level1 lfo156;tab-stops:list 1.5in'><![if !supportLists]><span
@@ -5664,7 +5664,7 @@ through the validation process.</p>
 font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
 Wingdings'><span style='mso-list:Ignore'>l	<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </span></span></span><![endif]>The validation process uses the internal
-instance of the message to perform the following validations sub-processes, (1)
+instance of the message to perform the following validation sub-processes, (1)
 validation against the MIF specifications. (2) validation against HL7 v3
 published vocabulary, and, (3) validation against the schema of that HL7 v3
 message type. </p>
@@ -5672,17 +5672,16 @@ message type. </p>
 <p class=caBulletts><![if !supportLists]><span style='font-size:7.0pt;
 font-family:Wingdings;mso-fareast-font-family:Wingdings;mso-bidi-font-family:
 Wingdings'><span style='mso-list:Ignore'>l	<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span></span><![endif]>caAdapter then create the final HL7 v3 message
+</span></span></span><![endif]>caAdapter then creates the final HL7 v3 message
 that corresponds to the source csv file.</p>
 
-<p class=caBulletts style='margin-left:1.25in;text-indent:0in;mso-list:none'>Please
-reference Figure 3.1 below for an illustration of the transformation and
+<p class=caBulletts style='margin-left:1.25in;text-indent:0in;mso-list:none'>Figure 3.1 illustrates the transformation and
 validation processes.</p>
 
 <p class=caBulletts style='margin-left:1.25in;text-indent:0in;mso-list:none'><o:p>&nbsp;</o:p></p>
 
 <p class=caBulletts align=center style='margin-left:0in;text-align:center;
-text-indent:0in;mso-list:none'><span style='mso-spacerun:yes'>          
+text-indent:0in;mso-list:none'><span style='mso-spacerun:yes'>
 </span><span style='mso-spacerun:yes'>   </span><!--[if gte vml 1]><v:shapetype
  id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
  path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
@@ -5883,7 +5882,7 @@ electronic AE data to a clinical trials coordinating center which in turn
 consolidates and submits to the FDA. The data is being submitted in HL7 v2.5
 format. The coordination center anticipates a new FDA requirement which
 mandates that all AE submissions be in HL7 v3 format. The coordination center
-decided that the best way to meet this requirement is to add an HL7 v2.5 to v3 data
+decides that the best way to meet this requirement is to add an HL7 v2.5 to v3 data
 conversion step to its current FDA submission process. </p>
 
 <p class=caBodyText>Instead of manually implementing the conversion process,
