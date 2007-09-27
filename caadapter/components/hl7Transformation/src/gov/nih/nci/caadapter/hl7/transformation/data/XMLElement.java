@@ -29,8 +29,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2007-09-27 15:27:06 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2007-09-27 15:53:07 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -240,7 +240,7 @@ public class XMLElement implements Cloneable{
 			Hashtable datatypes = new Hashtable();
 			InputStream is = this.getClass().getResourceAsStream("/datatypes");
 			if (is == null) {
-				is = Thread.currentThread().getClass().getClassLoader().getResource("/datatypes").openStream();
+				is = this.getClass().getClassLoader().getResource("datatypes").openStream();
 			}
 			ObjectInputStream ois = new ObjectInputStream(is);
 			datatypes = (Hashtable)ois.readObject();
