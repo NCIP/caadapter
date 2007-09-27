@@ -95,14 +95,8 @@
             </not>
         </condition>
     </target>
-
-    <target name="isSQLjar.available">
-        <available file="${ref_sqleonardo.jar}" property="sql.jar.exist"/>
-    </target>
-
-    <target name="check.refLib" depends="isSQLjar.available" if="sql.jar.exist">
-
-        <echo message="${sql.jar.exist}"/>
+    <target name="check.refLib" depends="check.sql.jar" unless="sql.jar.notexist">
+        <echo message="${sql.jar.notexist}"/>
         <copy file="${ref_sqleonardo.jar}" tofile="${download.jar.location}\delete.jar"/>
     </target>
 
