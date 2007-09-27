@@ -80,8 +80,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.20 $ date $Date:
+ * @author LAST UPDATE $Author: wuye $
+ * @version Since caAdapter v1.2 revision $Revision: 1.21 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -107,9 +107,9 @@ public class MainMenuBar extends AbstractMenuBar
         menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
 
         add(constructFileMenu());
+        add(constructPreferenceMenu());
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
         {
-            add(constructPreferenceMenu());
         } else
         {
             System.out.println("query builder de-activated");
@@ -582,6 +582,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.20  2007/09/26 20:18:25  wangeug
+ * HISTORY : view license
+ * HISTORY :
  * HISTORY : Revision 1.19  2007/09/19 16:44:25  wangeug
  * HISTORY : authorized user request
  * HISTORY :

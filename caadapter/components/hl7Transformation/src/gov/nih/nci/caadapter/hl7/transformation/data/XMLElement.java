@@ -11,6 +11,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -28,8 +29,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2007-08-29 17:37:09 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2007-09-27 15:27:06 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -238,6 +239,9 @@ public class XMLElement implements Cloneable{
 		try {
 			Hashtable datatypes = new Hashtable();
 			InputStream is = this.getClass().getResourceAsStream("/datatypes");
+			if (is == null) {
+				is = Thread.currentThread().getClass().getClassLoader().getResource("/datatypes").openStream();
+			}
 			ObjectInputStream ois = new ObjectInputStream(is);
 			datatypes = (Hashtable)ois.readObject();
 			ois.close();
