@@ -25,8 +25,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.16 $
- *          $Date: 2007-09-13 14:07:59 $
+ *          $Revision: 1.17 $
+ *          $Date: 2007-09-27 20:45:43 $
  */
 public class MainDataViewerFrame {
     private JFrame dataViewerFrame = null;
@@ -197,7 +197,7 @@ public class MainDataViewerFrame {
             tabbedPane.addChangeListener(new TopPaneListener(this));
             dataViewerFrame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
             dataViewerFrame.setSize(1100, 950);
-            dataViewerFrame.setLocationRelativeTo(null);
+            //dataViewerFrame.setLocationRelativeTo(null);
             JPanel jp_status = new JPanel();
             jp_status.setLayout(new BorderLayout());
             jp_status.add(new JLabel(connectionParams.get("UserID").toString() + "@" + connectionParams.get("URL").toString()), BorderLayout.CENTER);
@@ -277,6 +277,9 @@ public class MainDataViewerFrame {
 /**
  Change History
  $Log: not supported by cvs2svn $
+ Revision 1.16  2007/09/13 14:07:59  jayannah
+ swallowed an exception
+
  Revision 1.15  2007/09/13 13:53:56  jayannah
  Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
 
