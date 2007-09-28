@@ -29,7 +29,7 @@ import javax.swing.JScrollPane;
 
 public class VerifyResourceDialog extends JDialog implements ActionListener {
 	private String contextFilePath="";
-	public static String DEFAULT_CONTEXT_FILE_PATH="/license/hl7-resource-warning.txt";
+	public static String DEFAULT_CONTEXT_FILE_PATH="/warning/hl7-resource-warning.txt";
 	private JButton nextButton;
 
 	public VerifyResourceDialog(JFrame owner, String arg0, ArrayList rsrc) throws HeadlessException {
