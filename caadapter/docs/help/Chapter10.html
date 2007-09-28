@@ -5598,7 +5598,7 @@ time effort, <o:p></o:p></span></p>
 ZH-CN'><o:p>&nbsp;</o:p></span></p>
 
 <p class=caBodyText style='text-align:justify'><span style='mso-fareast-language:
-ZH-CN'>Figure XXX below illustrates the Web Service Module architecture.<o:p></o:p></span></p>
+ZH-CN'>Figure 10-1 below illustrates the Web Service Module architecture.<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:.25in'><!--[if mso & !supportInlineShapes & supportFields]><span
 style='mso-fareast-language:ZH-CN'><span style='mso-element:field-begin;
@@ -6548,15 +6548,15 @@ font-family:"Courier New"'><span style='mso-spacerun:yes'>      </span>Call
 call = (Call)service.createCall();<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>     
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>call.setTargetEndpointAddress(new java.net.URL(endpointURL));<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>     
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>call.setOperationName(methodName);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>     
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>call.addParameter(&quot;parameter_name&quot;, <o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:2.5in;text-indent:.5in'><span
@@ -6567,7 +6567,7 @@ style='font-size:10.0pt;font-family:"Courier New"'>ParameterMode.IN );<o:p></o:p
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
 font-family:"Courier New"'><span style='mso-spacerun:yes'> </span><span
-style='mso-spacerun:yes'>    
+style='mso-spacerun:yes'>
 </span>call.addParameter(&quot;csvstringname&quot;, <o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
@@ -6581,22 +6581,22 @@ style='font-size:10.0pt;font-family:"Courier New"'><span
 style='mso-spacerun:yes'> </span>ParameterMode.IN );<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>     
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>call.setReturnClass(java.util.ArrayList.class);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>     
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>ArrayList res = (ArrayList)call.invoke(<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:2.5in;text-indent:.5in'><span
 style='font-size:10.0pt;font-family:"Courier New"'>new Object[]{&quot;My_WS_Scenario&quot;,csvString});<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>     
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>System.out.println(res);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>   
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>}catch(Exception e) {<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
@@ -6764,16 +6764,16 @@ style='mso-spacerun:yes'>  </span>RPCServiceClient serviceClient = new
 RPCServiceClient();<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>       
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>Options options = serviceClient.getOptions();<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>       
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>EndpointReference targetEPR = new EndpointReference(&quot;</span> <span
 style='font-size:10.0pt;font-family:"Courier New"'>http://caadapter.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService&quot;);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>       
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>options.setTo(targetEPR);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
@@ -6787,7 +6787,7 @@ opAddEntry = new QName(&quot;caAdapter&quot;,
 &quot;transformationService&quot;);<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>       
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>Object[] opAddEntryArgs = new Object[] { <o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:2.5in;text-indent:.5in'><span
@@ -6806,7 +6806,7 @@ font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span>//
 Invoking the method<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>       
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>Object[] res = serviceClient.invokeBlocking(opAddEntry,<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
@@ -6817,7 +6817,7 @@ style='mso-tab-count:2'>          </span>opAddEntryArgs, returnTypes);<o:p></o:p
 font-family:"Courier New"'><span style='mso-spacerun:yes'>        </span><o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
-font-family:"Courier New"'><span style='mso-spacerun:yes'>       
+font-family:"Courier New"'><span style='mso-spacerun:yes'>
 </span>ArrayList resultArrayList = (ArrayList) res[0];<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-left:1.0in'><span style='font-size:10.0pt;
