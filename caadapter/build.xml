@@ -120,14 +120,14 @@
 				excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
 				etc/schemas/**, docs/GME/**, docs/v3.3-4.0/*.mpp,  docs/v3.3-4.0/*Scope*.doc, referenceLib/**">
 		</zip>
+	<antcall target="dist.prepare" />
+    </target>
+	<target name="build-all" depends="jar.all">
         <copy todir="${dist.dir}">
             <fileset dir="${ws.module.home}/dist">
                 <include name="**/caAdapterWS.war"/>
             </fileset>
         </copy>
-	<antcall target="dist.prepare" />
-    </target>
-	<target name="build-all" depends="jar.all">
     	<antcall target="mmswebstart"/>
     	<antcall target="hl7webstart"/>
     	<antcall target="rdswebstart"/>

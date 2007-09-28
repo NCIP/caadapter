@@ -61,7 +61,7 @@
 	<property name="dist_root" location="dist"/>
 	<property name="dist_ws_dir" location="${dist_root}"/>
 	<property name="deploy_dir" value="${dist_root}/deploy"/>
-	<property name="dist_ws_file_name" value="${dist_ws_dir}/caAdapterWS.war"/>
+	<property name="dist_ws_file_name" value="${root}/components/webservices/dist/caAdapterWS.war"/>
 
 
 	<zipfileset dir="${ws.module.home}/WebRoot" id="dist.ws.WEB">
