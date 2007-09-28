@@ -530,6 +530,13 @@
     	            	<include name="**/*.*"/>
     				</fileset>
     	 </copy>
+    	 <mkdir dir="${dist.dir}/workingspace"/>
+    	 <copy todir="${dist.dir}/workingspace">
+			<fileset dir="${basedir}/workingspace" >
+				  <include name="**/*.*"/>
+			</fileset>
+    	 </copy>
+    	 
         <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\deletethisfolder.jar"/>
     </target>
