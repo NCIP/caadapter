@@ -4,6 +4,7 @@ import gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
+import gov.nih.nci.caadapter.ui.main.HL7AuthorizationDialog;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.V2MetaCollectorDialog;
 
 import javax.swing.*;
@@ -17,6 +18,9 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     private static final long serialVersionUID = 1L;
     public static final String COMMAND_BUILD_V3 = "Load HL7 v3 Normative Edition Processable Artifacts";
     public static final String COMMAND_BUILD_V2 = "Load HL7 v2 Processable Artifacts";
+    public static final String COMMAND_BUILD_V2_CORE ="Load HL7 v2 Core Artifacts";
+    public static final String COMMAND_BUILD_V_MESSAGE = "Load HL7 v2 Message Artifacts";
+ 
     private AbstractMainFrame mainFrame;
    
     private static final String RESOURCE_NAME_V3="resource.zip";
@@ -81,9 +85,13 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     			new BuildHL7ResourceDialog(mainFrame,getName(),true, resorcePath).setVisible(true);
     		else
     		{
-		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
-		        DefaultSettings.centerWindow(dialog);
+//		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
+    			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V3 Specification"
+    					,HL7AuthorizationDialog.HL7_V2_WARNING_CONTEXT_FILE_PATH);
+    			DefaultSettings.centerWindow(dialog);
+    			dialog.setViewOnly(true);
 		        dialog.setVisible(true);
+ 
     		}
     	}
 
