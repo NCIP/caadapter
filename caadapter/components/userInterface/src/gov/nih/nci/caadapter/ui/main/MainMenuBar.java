@@ -80,8 +80,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v1.2 revision $Revision: 1.21 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.22 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -320,12 +320,21 @@ public class MainMenuBar extends AbstractMenuBar
         	buildV3.setEnabled(false);
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
+        //the following section setup V2 meta
+      
         BuildHL7ResourceAction buildV2=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2, mainFrame);
         if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
         	buildV2.setEnabled(false);
         JMenuItem _buildV2Item = new JMenuItem(buildV2);
         _qb.add(_buildV2Item);
         
+//        JMenu v2Menu=new JMenu(BuildHL7ResourceAction.COMMAND_BUILD_V2);
+//        BuildHL7ResourceAction buildV2Core=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2_CORE, mainFrame);
+//        v2Menu.add(buildV2Core);
+//        BuildHL7ResourceAction buildV2Msg=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V_MESSAGE, mainFrame);
+//        v2Menu.add(buildV2Msg);
+//        _qb.add(v2Menu);
+
         return _qb;
     }
 
@@ -582,6 +591,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.21  2007/09/27 15:23:49  wuye
+ * HISTORY : fixed for web start version
+ * HISTORY :
  * HISTORY : Revision 1.20  2007/09/26 20:18:25  wangeug
  * HISTORY : view license
  * HISTORY :

@@ -31,8 +31,9 @@ import javax.swing.JScrollPane;
 public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	private String contextFilePath="";
 	public static String DEFAULT_CONTEXT_FILE_PATH="/license/hl7-authorization.txt";
+	public static String HL7_V2_WARNING_CONTEXT_FILE_PATH="/license/h7-resource-warning.txt";
 	private JButton nextButton;
-
+	private boolean viewOnly=false;
 	public HL7AuthorizationDialog(JFrame owner, String arg0) throws HeadlessException {
 		this(owner, arg0, null);
 	}
@@ -77,7 +78,7 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	{
 		JPanel rtnPanel=new JPanel();
 		StringBuffer licenseBf=new StringBuffer();
-		String titleMessage="\n";
+		String titleMessage="";
 		licenseBf.append(titleMessage);	
 		
 		try {
@@ -124,6 +125,8 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 		JButton cancelButton=new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		rtnPanel.add(cancelButton);
+		if (contextFilePath !=null
+				&&!contextFilePath.equalsIgnoreCase(HL7_V2_WARNING_CONTEXT_FILE_PATH))
 		rtnPanel.add(nextButton);
 		return rtnPanel;
 	}
@@ -131,8 +134,15 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		Object evtObj=arg0.getSource();
+		System.out.println("HL7AuthorizationDialog.actionPerformed()..action:"+evtObj);
 		if (evtObj instanceof JButton)
 		{
+			if (isViewOnly())
+			{
+				System.out.println("HL7AuthorizationDialog.actionPerformed()...viewOnly:"+isViewOnly());
+				dispose();
+				return;
+			}
 			JButton evtButton=(JButton)evtObj;
 			if (evtButton==nextButton)
 			{
@@ -154,8 +164,17 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 //				System.out.println("AcceptLicenseFrame.actionPerformed()..action source:"+evtButton);
 //				licenseAccepted(false);
 //			}
-			dispose();
 		}
+		dispose();
+		return;
+	}
+
+	public boolean isViewOnly() {
+		return viewOnly;
+	}
+
+	public void setViewOnly(boolean viewOnly) {
+		this.viewOnly = viewOnly;
 	}
 
 }
