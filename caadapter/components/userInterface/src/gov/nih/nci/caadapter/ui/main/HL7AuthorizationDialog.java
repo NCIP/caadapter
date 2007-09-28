@@ -30,8 +30,8 @@ import javax.swing.JScrollPane;
 
 public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	private String contextFilePath="";
-	public static String DEFAULT_CONTEXT_FILE_PATH="/license/hl7-authorization.txt";
-	public static String HL7_V2_WARNING_CONTEXT_FILE_PATH="/license/h7-resource-warning.txt";
+	public static String DEFAULT_CONTEXT_FILE_PATH="/warning/hl7-authorization.txt";
+	public static String HL7_V2_WARNING_CONTEXT_FILE_PATH="/warning/h7-resource-warning.txt";
 	private JButton nextButton;
 	private boolean viewOnly=false;
 	public HL7AuthorizationDialog(JFrame owner, String arg0) throws HeadlessException {
