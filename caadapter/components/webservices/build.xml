@@ -80,8 +80,8 @@
 		<include name="**/*.jar"/>
 		<include name="**/*.zip"/>
 	</zipfileset>
-	<zipfileset dir="${root}/components/hl7Transformation/lib/" prefix="WEB-INF/lib" id="dist.ws.mif.libs">
-		<include name="resource.zip"/>
+	<zipfileset dir="${root}/lib/" prefix="WEB-INF/lib" id="dist.ws.mif.libs">
+		<include name="castor-0.9.9.jar"/>
 	</zipfileset>
 	<zipfileset dir="${ws.module.home}/WebRoot/WEB-INF/lib/axis/lib" prefix="WEB-INF/lib" id="dist.ws.axis.libs">
 		<include name="**/*.jar"/>
@@ -96,6 +96,7 @@
 		<exclude name="jgraph.jar"/>
 		<exclude name="mif.zip"/>
 		<exclude name="sqleonardo.jar"/>
+		<include name="resource.zip"/>
 	</zipfileset>
 	<zipfileset dir="${root}/components/common/dist/" prefix="WEB-INF/lib" id="dist.ws.common.libs">
 		<include name="**/*.jar"/>
