@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.6 2007-09-07 14:48:16 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.7 2007-09-28 19:38:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-09-07 14:48:16 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-09-28 19:38:30 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.6 2007-09-07 14:48:16 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.7 2007-09-28 19:38:30 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -99,7 +99,7 @@ public class AboutWindow extends JWindow //implements ActionListener
       private String SYSTEM_PROPERTY_WINDOWS_OS_NAME = "WINDOWS";
       private String RUNNING_DIRECTORY_NAME = "etc";
       //private String IMAGE_DIRECTORY_PATH = "../images/";
-      private String LICENSE_DIRECTORY_PATH = "license";
+      private String LICENSE_DIRECTORY_PATH = "license/caAdapter_license.txt";
       private int DEFAULT_SCREEN_WIDTH = 557;
       private int DEFAULT_SCREEN_HEIGHT = 409;
       private int DEFAULT_SCREEN_WIDTH_DEFFER = 6;
@@ -364,6 +364,7 @@ public class AboutWindow extends JWindow //implements ActionListener
         BufferedReader br = null;
         int count = 0;
         if (licenseFileNames.size() == 0) return ERROR_TAG + " : No File";
+        if (licenseFileNames.size() == 1) mainContent = "";
         for (int i=0;i<licenseFileNames.size();i++)
         {
 
@@ -381,7 +382,7 @@ public class AboutWindow extends JWindow //implements ActionListener
             String buffer = "";
             try
             {
-                mainContent = mainContent + "<a name='a" + i + "'><b>Source File</b></a> : " + licensePath + File.separator + loader.getName(i) + "<br><br>";
+                if (licenseFileNames.size() > 1) mainContent = mainContent + "<a name='a" + i + "'><b>Source File</b></a> : " + licensePath + File.separator + loader.getName(i) + "<br><br>";
                 while(true)
                 {
                     readLineOfFile=br.readLine();
@@ -390,10 +391,13 @@ public class AboutWindow extends JWindow //implements ActionListener
 
                     String c = readLineOfFile.trim();
                     if (c.equals("")) mainContent = mainContent + "<br><br>";
-                    else mainContent = mainContent + " " + c;
+                    else mainContent = mainContent + "<br>" + c;
                 }
-                mainContent = mainContent + "<br><br><a href='#top'>go to top</a><br><hr width=\"80%\"><br><br>";
-                fileList = fileList + "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#a"+i+"'>" + licensePath + File.separator + loader.getName(i) + "</a><br>";
+                if (licenseFileNames.size() > 1)
+                {
+                    mainContent = mainContent + "<br><br><a href='#top'>go to top</a><br><hr width=\"80%\"><br><br>";
+                    fileList = fileList + "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#a"+i+"'>" + licensePath + File.separator + loader.getName(i) + "</a><br>";
+                }
             }
             catch(IOException ie)
             {
@@ -412,7 +416,13 @@ public class AboutWindow extends JWindow //implements ActionListener
         try
           {
             fw = new FileWriter(displayFileName);
-            fw.write("<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent.replace("%%XX", fileList) + "<br></body></html>");
+
+            if (licenseFileNames.size() > 1)
+            {
+                fw.write("<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent.replace("%%XX", fileList) + "<br></body></html>");
+            }
+            else fw.write("<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent + "<br></body></html>");
+
             fw.close();
           }
         catch(IOException ie)
@@ -463,6 +473,9 @@ public class AboutWindow extends JWindow //implements ActionListener
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/09/07 14:48:16  umkis
+ * HISTORY      : Temporary files will be automatically deleted when system exit.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/09/07 14:25:53  umkis
  * HISTORY      : caAdapter version => 4.0
  * HISTORY      :
