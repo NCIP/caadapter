@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/HelpTopicAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/HelpTopicAction.java,v 1.2 2007-09-28 06:41:27 wuye Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,10 +49,10 @@ import java.awt.event.KeyEvent;
  * The class defines the about action for the whole HL7SDK application.
  *
  * @author OWNER: Ki Sung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: wuye $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-09-28 06:41:27 $
  */
 public class HelpTopicAction extends AbstractContextAction
 {
@@ -99,13 +99,13 @@ public class HelpTopicAction extends AbstractContextAction
         try
         {
             ((AbstractMainFrame)mainFrame).showHelpContentViewer();
-            /*
+            
 //        	gov.nih.nci.caadapter.common.BrowserLaunch.openURL("file:///"+System.getProperty("user.dir") + "/docs/help/caAdapter-Help.html");
         	edu.stanford.ejalbert.BrowserLauncher brLauncher = new edu.stanford.ejalbert.BrowserLauncher(null);
 //        	System.out.println(System.getProperty("user.dir"));
 
         	brLauncher.openURLinBrowser("file:///"+System.getProperty("user.dir") + "/docs/help/index.html");
-        	*/
+        	
         }
         catch(NullPointerException ne)
         {
@@ -129,6 +129,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2007/01/04 00:31:11  umkis
  * HISTORY      : change back the execution module to HelpContentViewer
  * HISTORY      :
