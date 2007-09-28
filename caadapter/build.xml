@@ -505,7 +505,7 @@
         <copy file="dist/demo_ui.jar" todir="${project.deploy.root}"/>
         <copy file="run.bat" todir="${project.deploy.root}"/>
     </target>
-
+	
     <target name="dist.prepare" depends="copy.modules.lib">
 
         <echo message="build demo_ui.jar...."/>
@@ -524,6 +524,12 @@
     				<fileset file="${config.dir}/logging.properties" />
     	 </copy>
 
+        <mkdir dir="dist/docs/help"/>
+    	<copy todir="${dist.dir}/docs/help">
+    	            <fileset dir="${basedir}/docs/help" >
+    	            	<include name="**/*.*"/>
+    				</fileset>
+    	 </copy>
         <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\deletethisfolder.jar"/>
     </target>
