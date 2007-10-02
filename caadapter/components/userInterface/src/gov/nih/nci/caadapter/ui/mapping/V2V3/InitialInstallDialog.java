@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.3 2007-09-27 19:39:34 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.4 2007-10-02 15:08:03 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Sep 26, 2007
  *          Time:       12:46:19 AM $
  */
@@ -93,7 +93,7 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.3 2007-09-27 19:39:34 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/InitialInstallDialog.java,v 1.4 2007-10-02 15:08:03 umkis Exp $";
 
     private JTextField jtPath;
     private JButton jbBrowse;
@@ -223,7 +223,7 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
             File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
 			            extension, title, false, false);
 
-            jtPath.setText(file.getAbsolutePath());
+            if (file != null) jtPath.setText(file.getAbsolutePath());
 
         }
         if (e.getSource() == jbOK)
@@ -297,6 +297,9 @@ public class InitialInstallDialog  extends JDialog implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/09/27 19:39:34  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/09/26 20:14:57  umkis
  * HISTORY      : Upgrade v2 meta collector
  * HISTORY      :

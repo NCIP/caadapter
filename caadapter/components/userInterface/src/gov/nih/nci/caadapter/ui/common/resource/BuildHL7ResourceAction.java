@@ -6,6 +6,7 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.main.HL7AuthorizationDialog;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.V2MetaCollectorDialog;
+import gov.nih.nci.caadapter.ui.mapping.V2V3.V2MetaBasicInstallDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,7 +84,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     	{
     		if (getName().equals( COMMAND_BUILD_V3))
     			new BuildHL7ResourceDialog(mainFrame,getName(),true, resorcePath).setVisible(true);
-    		else
+    		else if (getName().equals( COMMAND_BUILD_V2))
     		{
 //		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
     			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V3 Specification"
@@ -93,7 +94,25 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
 		        dialog.setVisible(true);
  
     		}
-    	}
+            else if (getName().equals( COMMAND_BUILD_V2_CORE))
+    		{
+    			V2MetaBasicInstallDialog dialog = new V2MetaBasicInstallDialog(mainFrame); 
+    			DefaultSettings.centerWindow(dialog);
+    			//dialog.setViewOnly(true);
+		        dialog.setVisible(true);
+
+    		}
+            else if (getName().equals( COMMAND_BUILD_V_MESSAGE))
+    		{
+                V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
+//    			    			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V3 Specification"
+//    					,HL7AuthorizationDialog.HL7_V2_WARNING_CONTEXT_FILE_PATH);
+    			DefaultSettings.centerWindow(dialog);
+    			//dialog.setViewOnly(true);
+		        dialog.setVisible(true);
+
+    		}
+        }
 
         /*
         SelectionCollectingMethodDialog selectDialog = new SelectionCollectingMethodDialog(mainFrame);
