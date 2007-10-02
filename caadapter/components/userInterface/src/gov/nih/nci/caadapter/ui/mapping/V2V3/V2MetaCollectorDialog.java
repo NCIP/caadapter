@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.7 2007-10-02 15:08:04 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.8 2007-10-02 18:23:15 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.7 $
+ *          revision    $Revision: 1.8 $
  *          date        Sep 23, 2007
  *          Time:       6:57:06 PM $
  */
@@ -93,7 +93,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.7 2007-10-02 15:08:04 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaCollectorDialog.java,v 1.8 2007-10-02 18:23:15 umkis Exp $";
 
     private String title = "V2 Meta Data Collector";
 
@@ -481,10 +481,23 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
             }
         }
 
-        //System.out.println("CCC : 2");
+
 
         try
         {
+            CheckVersionAndItem check = new CheckVersionAndItem((String) jcVersion.getSelectedItem(), (String) jcItem.getSelectedItem());
+
+            String spr = File.separator;
+            String pathN = path + spr + check.getVersion()[0] + spr + check.getItems()[1] + spr + "9901" + ".dat";
+
+            //System.out.println(" VVVV : " + pathN + " : " + edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.checkFileExists(pathN));
+            if (!edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.checkFileExists(pathN))
+            {
+                JOptionPane.showMessageDialog(this, "Data type and definition table are not installed yet.\nPlease install them first.", "Not installed basic items", JOptionPane.ERROR_MESSAGE);
+                this.dispose();
+                return;
+            }
+
             if (substructure)
             {
                 //System.out.println("CCC : 3");
@@ -532,6 +545,7 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
             String spr = File.separator;
             String pathN = path + spr + check.getVersion()[0] + spr + check.getItems()[1] + spr + "9901" + ".dat";
 
+            //System.out.println(" VVVV : " + pathN + " : " + edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.checkFileExists(pathN));
             if (!edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.checkFileExists(pathN))
             {
                 JOptionPane.showMessageDialog(this, "Data type and definition table are not installed yet.\nPlease install them first.", "Not installed basic items", JOptionPane.ERROR_MESSAGE);
@@ -692,6 +706,9 @@ public class V2MetaCollectorDialog extends JDialog implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/10/02 15:08:04  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/09/28 00:19:04  umkis
  * HISTORY      : Upgrade v2 meta collector
  * HISTORY      :

@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaBasicInstallDialog.java,v 1.1 2007-10-02 15:08:04 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaBasicInstallDialog.java,v 1.2 2007-10-02 18:23:15 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -73,7 +73,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Sep 29, 2007
  *          Time:       7:19:35 PM $
  */
@@ -92,7 +92,7 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaBasicInstallDialog.java,v 1.1 2007-10-02 15:08:04 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2MetaBasicInstallDialog.java,v 1.2 2007-10-02 18:23:15 umkis Exp $";
 
 
     private String title = "V2 Meta Data Collector";
@@ -138,7 +138,7 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
 
     private void initialize()
     {
-        Object[] ob1 = inputFileNameCommon(" Meta Data Base Dir ", jtPathTargetDir, jbBrowseTargetDir, "Browse", "Browse");
+        Object[] ob1 = inputFileNameCommon(" Target Meta Data Base Directory ", jtPathTargetDir, jbBrowseTargetDir, "Browse", "Browse");
         JPanel pathPanelTargetDir = (JPanel) ob1[0];
         //jlPathTargetDir = (JLabel) ob1[1];
         jtPathTargetDir = (JTextField) ob1[2];
@@ -146,7 +146,7 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
         jtPathTargetDir.setText(FileUtil.getV2DataDirPath());
         jtPathTargetDir.setEditable(false);
 
-        Object[] ob2 = inputFileNameCommon(" Appendix A Chapter File ", jtPathSourceFile, jbBrowseSourceFile, "Browse", "Browse");
+        Object[] ob2 = inputFileNameCommon(" v2 Manual Appendix A Chapter File ", jtPathSourceFile, jbBrowseSourceFile, "Browse", "Browse");
         JPanel pathPanelSourceFile = (JPanel) ob2[0];
         //jlPathSourceFile = (JLabel) ob2[1];
         jtPathSourceFile = (JTextField) ob2[2];
@@ -158,25 +158,48 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
 
         JPanel comboPanel = generateVersionAndItemPanel();
 
+
+        String msg1 = "For initial install,";
+        String msg2 = "Appendix A chapter file among the v2 manual .doc files is needed.";
+        String msg3 = "Please, input the absolute file path.";
+
+        JLabel label1 = new JLabel(msg1);
+        JLabel label2 = new JLabel(msg2);
+        JLabel label3 = new JLabel(msg3);
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        JPanel centerPanel0 = new JPanel(new BorderLayout());
+        JPanel centerPanel1 = new JPanel(new BorderLayout());
+        JPanel centerPanel2 = new JPanel(new BorderLayout());
+        JPanel centerPanel3 = new JPanel(new BorderLayout());
+
+        centerPanel3.add(label3, BorderLayout.NORTH);
+        centerPanel2.add(label2, BorderLayout.NORTH);
+        centerPanel2.add(centerPanel3, BorderLayout.CENTER);
+        centerPanel1.add(label1, BorderLayout.NORTH);
+        centerPanel1.add(centerPanel2, BorderLayout.CENTER);
+
+        centerPanel0.add(centerPanel1, BorderLayout.NORTH);
+
+        centerPanel.add(new JLabel(" "), BorderLayout.NORTH);
+        centerPanel.add(centerPanel0, BorderLayout.CENTER);
+        centerPanel.add(pathPanelSourceFile, BorderLayout.SOUTH);
+
         JPanel level1 = new JPanel(new BorderLayout());
-        level1.add(new JLabel(" "), BorderLayout.CENTER);
-        level1.add(pathPanelSourceFile, BorderLayout.NORTH);
+        level1.add(pathPanelTargetDir, BorderLayout.NORTH);
+        level1.add(centerPanel, BorderLayout.CENTER);
         level1.add(new JLabel(" "), BorderLayout.SOUTH);
 
         JPanel level2 = new JPanel(new BorderLayout());
-        level2.add(level1, BorderLayout.CENTER);
         level2.add(comboPanel, BorderLayout.NORTH);
+        level2.add(level1, BorderLayout.CENTER);
         level2.add(buttonPanel, BorderLayout.SOUTH);
 
-        JPanel level3 = new JPanel(new BorderLayout());
-        level3.add(level2,BorderLayout.CENTER);
-        level3.add(pathPanelTargetDir,BorderLayout.NORTH);
-        level3.add(new JLabel(" "),BorderLayout.SOUTH);
-
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(level3, BorderLayout.CENTER);
+        getContentPane().add(level2, BorderLayout.CENTER);
         getContentPane().add(new JLabel(" "), BorderLayout.WEST);
         getContentPane().add(new JLabel(" "), BorderLayout.EAST);
+        getContentPane().add(new JLabel(" "), BorderLayout.NORTH);
+        getContentPane().add(new JLabel(" "), BorderLayout.SOUTH);
 
         dialog = this;
         addWindowListener(new WindowAdapter()
@@ -188,7 +211,7 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
             }
         );
 
-        setSize(550, 220);
+        setSize(550, 250);
         //setVisible(true);
     }
 
@@ -250,7 +273,11 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
         jcVersion = new JComboBox();
         String versionT = "Select Version.";
         jcVersion.addItem(versionT);
-        for(String version:check.getVersion()) jcVersion.addItem(version);
+        for(String version:check.getVersionTo())
+        {
+
+            jcVersion.addItem(version);
+        }
         jcVersion.setEditable(false);
 
        JPanel west = new JPanel(new BorderLayout());
@@ -263,7 +290,7 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
         JPanel south = new JPanel(new BorderLayout());
         south.add(new JLabel(" "), BorderLayout.CENTER);
 
-        south.add(new JLabel(" Item "), BorderLayout.EAST);
+        south.add(new JLabel(" "), BorderLayout.EAST);
         south.add(west, BorderLayout.WEST);
 
         return south;
@@ -355,36 +382,37 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
         try
         {
             //System.out.println("CCC : 9");
-            check = new CheckVersionAndItem((String) jcVersion.getSelectedItem(), check.getItems()[2]);
+            check = new CheckVersionAndItem((String) jcVersion.getSelectedItem(), (new CheckVersionAndItem()).getItems()[2]);
 
             String spr = File.separator;
             String pathN = path + spr + check.getVersion()[0] + spr + check.getItems()[1] + spr + "9901" + ".dat";
 
-            if (!edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.checkFileExists(pathN))
+            boolean force = false;
+            if (edu.knu.medinfo.hl7.v2tree.images.source.mapping.FileUtil.checkFileExists(pathN))
             {
                 String str = "Data type and defintion table look already installed.\nDo you want to overwrite them?";
 
                 int res = JOptionPane.showConfirmDialog(this, str, "Overwrite Initial Meta?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
-                boolean force = false;
+                                
                 if (res != JOptionPane.YES_OPTION)
                 {
                     force = true;
                 }
-
-                String pathF = jtPathSourceFile.getText();
-                if ((pathF==null)||(pathF.trim()).equals(""))
-                {
-                    this.dispose();
-                    return;
-                }
-
-                JOptionPane.showMessageDialog(this, "This installing may take some minutes. Please, wait till next message.", "Please, wait foe s while.", JOptionPane.INFORMATION_MESSAGE);
-
-                CompareInstance compare = new CompareInstance(path, (String)jcVersion.getSelectedItem(), "segment");
-
-                compare.initialInstall(pathF, force);
+                else this.dispose();
             }
+
+            String pathF = jtPathSourceFile.getText();
+            if ((pathF==null)||(pathF.trim()).equals(""))
+            {
+                this.dispose();
+                return;
+            }
+
+            JOptionPane.showMessageDialog(this, "This installing may take some minutes. Please, wait till next message.", "Please, wait foe s while.", JOptionPane.INFORMATION_MESSAGE);
+
+            CompareInstance compare = new CompareInstance(path, (String)jcVersion.getSelectedItem(), check.getItems()[2]);
+
+            compare.initialInstall(pathF, force);
 
         }
         catch(HL7MessageTreeException he)
@@ -401,4 +429,7 @@ public class V2MetaBasicInstallDialog extends JDialog implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/10/02 15:08:04  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  */
