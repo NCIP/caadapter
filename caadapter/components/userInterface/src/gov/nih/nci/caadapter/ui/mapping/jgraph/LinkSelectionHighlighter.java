@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.9 2007-09-21 04:41:21 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.10 2007-10-02 14:52:25 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -77,10 +77,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-09-21 04:41:21 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-10-02 14:52:25 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -96,7 +96,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.9 2007-09-21 04:41:21 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.10 2007-10-02 14:52:25 schroedn Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -452,7 +452,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         }
         catch(NullPointerException ne)
         {
-            JOptionPane.showMessageDialog(mappingPanel, "You should input the source and target file names first.", "No Source or Target file", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(mappingPanel, "You should input the source and target file names first.", "No Source or Target file", JOptionPane.WARNING_MESSAGE);
             return;
         }
         mappingPanel.setInDragDropMode(false);
@@ -675,6 +675,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2007/09/21 04:41:21  wuye
+ * HISTORY      : removed system.out
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/09/20 16:39:13  schroedn
  * HISTORY      : License text
  * HISTORY      :
