@@ -30,7 +30,7 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	/**
 	 * @author OWNER: Ye Wu
 	 * @author LAST UPDATE $Author: schroedn $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.4 $
 	 */
 	    String curDir;
 	    String sourceName1 = "";
@@ -84,7 +84,9 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	        preFrame.setLocation(400, 300);
 	        preFrame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	        preFrame.setTitle("Specifing Discriminator Value....");
-	        JPanel mainPanel = new JPanel();
+            preFrame.setAlwaysOnTop(true);
+            preFrame.setResizable(false);        
+            JPanel mainPanel = new JPanel();
 	        mainPanel.setLayout(new BorderLayout());
 	        //
 	        JPanel centerPan = new JPanel(new GridLayout(1, 3));
