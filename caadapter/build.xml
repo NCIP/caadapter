@@ -451,7 +451,7 @@
                 <include name="log4j-1.2.8.jar"/>
         		<include name="poi-2.5.1-final-20040804.jar"/>
         	</fileset>
-        	<fileset dir="${dist.dir}">
+        	<fileset dir="${dist.dir}/lib">
                 <include name="jaxen-jdom.jar"/>
         	</fileset>
         	<fileset dir="${mms.module.home}/lib">
