@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.7 2007-08-27 20:44:26 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.8 2007-10-03 16:40:52 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -96,15 +96,15 @@ import org.jgraph.graph.GraphModel;
  * facilitate mapping functions.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-27 20:44:26 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-10-03 16:40:52 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.7 2007-08-27 20:44:26 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.8 2007-10-03 16:40:52 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -246,7 +246,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this,
 //						Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 						//FileUtil.getUIWorkingDirectoryPath(),
-					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+//					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+					//last added fileExtension :.h3s will be set as default
+					Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 				if (file != null)
 				{
 					everythingGood = processOpenTargetTree(file, true, true);
@@ -622,6 +624,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/08/27 20:44:26  umkis
+ * HISTORY      : fix the Bug of infinite looping when choice included HL7 transformation
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/08/13 15:53:39  wangeug
  * HISTORY      : Export MIF class as xml file or read a MIF class from an xml file
  * HISTORY      :
