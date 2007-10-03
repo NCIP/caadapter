@@ -203,7 +203,7 @@
         <delete file="${webstart.deploy.dir}/index-hl7.html"/>
         <delete file="${webstart.deploy.dir}/index-rds.html"/>
         <delete file="${webstart.deploy.dir}/index-ws.html"/>
-        <rename src="${webstart.deploy.dir}/index-mms.html" dest="${webstart.deploy.dir}/index.html" />
+        <move file="${webstart.deploy.dir}/index-mms.html" tofile="${webstart.deploy.dir}/index.html" />
 
         <antcall target="generate-keys"/>
         <echo message=""/>
@@ -289,10 +289,10 @@
 		<delete file="${hl7.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${hl7.webstart.deploy.dir}/caadapter.jnlp"/>
 
-        <delete file="${webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${webstart.deploy.dir}/index-ws.html"/>
-        <rename src="${webstart.deploy.dir}/index-hl7.html" dest="${webstart.deploy.dir}/index.html" />
+        <delete file="${hl7.webstart.deploy.dir}/index-mms.html"/>
+        <delete file="${hl7.webstart.deploy.dir}/index-rds.html"/>
+        <delete file="${hl7.webstart.deploy.dir}/index-ws.html"/>
+        <move file="${hl7.webstart.deploy.dir}/index-hl7.html" tofile="${hl7.webstart.deploy.dir}/index.html" />
 
         <antcall target="generate-keys"/>
 
@@ -376,11 +376,12 @@
 		<delete file="${rds.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter.jnlp"/>
-
-        <delete file="${webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
-        <delete file="${webstart.deploy.dir}/index-ws.html"/>
-        <rename src="${webstart.deploy.dir}/index-rds.html" dest="${webstart.deploy.dir}/index.html" />
+        <delete file="${rds.webstart.deploy.dir}/hl7sdk.jnlp"/>
+        
+        <delete file="${rds.webstart.deploy.dir}/index-mms.html"/>
+        <delete file="${rds.webstart.deploy.dir}/index-hl7.html"/>
+        <delete file="${rds.webstart.deploy.dir}/index-ws.html"/>
+        <move file="${rds.webstart.deploy.dir}/index-rds.html" tofile="${rds.webstart.deploy.dir}/index.html" />
 
         <antcall target="generate-keys"/>
 
@@ -474,10 +475,10 @@
 		<delete file="${caadapter.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${caadapter.webstart.deploy.dir}/caadapter-rds.jnlp"/>
 
-        <delete file="${webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
-        <rename src="${webstart.deploy.dir}/index-ws.html" dest="${webstart.deploy.dir}/index.html" />
+        <delete file="${caadapter.webstart.deploy.dir}/index-mms.html"/>
+        <delete file="${caadapter.webstart.deploy.dir}/index-rds.html"/>
+        <delete file="${caadapter.webstart.deploy.dir}/index-hl7.html"/>
+        <move file="${caadapter.webstart.deploy.dir}/index-ws.html" tofile="${caadapter.webstart.deploy.dir}/index.html" />
 
         <antcall target="generate-keys"/>
 
