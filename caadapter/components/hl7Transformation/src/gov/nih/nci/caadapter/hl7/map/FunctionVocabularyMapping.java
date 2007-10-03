@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.2 2007-10-03 21:54:31 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,6 +61,7 @@ import gov.nih.nci.caadapter.common.function.FunctionVocabularyMappingEventHandl
 import gov.nih.nci.caadapter.common.function.FunctionVocabularyXMLMappingEventHandler;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 
@@ -81,10 +82,10 @@ import org.xml.sax.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 18:26:25 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-03 21:54:31 $
  */
 public class FunctionVocabularyMapping
 {
@@ -101,7 +102,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.1 2007-07-03 18:26:25 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.2 2007-10-03 21:54:31 umkis Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -607,23 +608,69 @@ public class FunctionVocabularyMapping
                 throw new FunctionException("Invalid URL address of vom file ("+pathName+"). : " + ie.getMessage());
             }
         }
+        String xsdFilePath = "";
         File aFile = null;
 
-//        try
-//        {
+
+
+
+        String xsdFileClassPath = Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION;
+        ClassLoaderUtil loader = null;
+        try
+        {
+            loader = new ClassLoaderUtil(xsdFileClassPath);
+        }
+        catch(IOException ie)
+        {
+            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage());
+        }
+        if (loader.getFileNames().size() == 0)
+        {
+            throw new FunctionException("Not Found xml schema file () " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")");
+        }
+        aFile = new File(loader.getFileNames().get(0));
+        xsdFilePath = aFile.getAbsolutePath();
+
+
+        /*
+        try
+        {
         	URL fileURL= ClassLoader.getSystemResource(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
         	String filePath=fileURL.getFile();
-        	System.out.println("function spec file Path:"+filePath);
+        	System.out.println("function spec file Path:"+filePath + " : " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
             
             aFile = new File(filePath);
 //            new FileReader(aFile);
-//        }
-//        catch (FileNotFoundException eFileNotFound)
-//        {
-//            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")");
-//        }
-        String xsdFilePath = aFile.getAbsolutePath();
+        }
+        catch (Exception e)
+        {
+            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + e.getMessage());
+        }
+        xsdFilePath = aFile.getAbsolutePath();
         System.out.println("xsd absoultePath:"+xsdFilePath);
+        System.out.println(" File exists :"+ aFile.exists());
+
+        try
+        {
+            FileReader reader = new FileReader(aFile);
+            BufferedReader br = new BufferedReader(reader);
+            while(true)
+            {
+                String str = br.readLine();
+                if (str == null) break;
+                System.out.println("   %%% : " + str);
+            }
+
+        }
+        catch(FileNotFoundException fe)
+        {
+            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + fe.getMessage());
+        }
+        catch(IOException fe)
+        {
+            throw new FunctionException("IO Exception " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + fe.getMessage());
+        }
+        */
         XMLValidator xmlValidator = new XMLValidator(targetPath, xsdFilePath);
         ValidatorResults result = xmlValidator.validate();
         if (!result.isValid())
@@ -828,6 +875,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 18:26:25  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2006/11/15 05:47:57  umkis
  * HISTORY      : Fixing Bugs item #3420
  * HISTORY      :
