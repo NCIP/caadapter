@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.2 2007-09-18 18:07:26 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.3 2007-10-03 16:21:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,8 +48,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-09-18 18:07:26 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-03 16:21:49 $
  */
 public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 {
@@ -65,7 +65,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.2 2007-09-18 18:07:26 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.3 2007-10-03 16:21:49 wangeug Exp $";
 
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
@@ -160,15 +160,13 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 						BuildResourceUtil.copyFiles(mifSchemaSrcHome, schemaHome+File.separator+"multicacheschemas", "xsd");
 						monitor.close();
 						String confirmMsg="HL7 V3 resource being successfully built at: "+targetSite;
-						int userReply=JOptionPane.showConfirmDialog(owner, confirmMsg,"Confirm",JOptionPane.YES_NO_OPTION);
-//						if (userReply==JOptionPane.YES_OPTION)
-//							toClose=true;
+						JOptionPane.showMessageDialog(owner, confirmMsg,"Success",JOptionPane.DEFAULT_OPTION);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 			//			rtnMsg=
 						String confirmMsg="Failed to build HL7 V3 resource"+":"+e.getMessage();
-						int userReply=JOptionPane.showConfirmDialog(owner, confirmMsg,"Confirm",JOptionPane.YES_NO_OPTION);
+						JOptionPane.showMessageDialog(owner, confirmMsg,"Failed",JOptionPane.DEFAULT_OPTION);
 						monitor.close();
 					}
     			}
