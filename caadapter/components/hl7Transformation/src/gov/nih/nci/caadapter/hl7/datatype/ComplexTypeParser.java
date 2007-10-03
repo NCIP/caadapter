@@ -16,7 +16,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-05-16 20:20:59 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-10-03 18:00:22 $
  */
 
 public class ComplexTypeParser {
@@ -153,6 +153,7 @@ public class ComplexTypeParser {
 		lowAttribute.setName("low");
 		lowAttribute.setAttribute(false);
 		lowAttribute.setType(XSDParserUtil.getAttribute(XSDParserUtil.getFirstChildElement(lowNode), "type"));
+		lowAttribute.setMax(-1);
 		datatype.addAttribute("low", lowAttribute);
 		
 		if (lowNode == null) return;
@@ -162,6 +163,7 @@ public class ComplexTypeParser {
 		highAttribute.setName("high");
 		highAttribute.setAttribute(false);
 		highAttribute.setType(XSDParserUtil.getAttribute(highNode, "type"));
+		highAttribute.setMax(-1);
 		datatype.addAttribute("high", highAttribute);
 
 		if (highNode == null) return;
@@ -171,6 +173,7 @@ public class ComplexTypeParser {
 		widthAttribute.setName("width");
 		widthAttribute.setAttribute(false);
 		widthAttribute.setType(XSDParserUtil.getAttribute(XSDParserUtil.getFirstChildElement(widthNode), "type"));
+		widthAttribute.setMax(-1);
 		datatype.addAttribute("width", widthAttribute);
 		
 		if (widthNode == null) return;
@@ -180,6 +183,7 @@ public class ComplexTypeParser {
 		centerAttribute.setName("center");
 		centerAttribute.setAttribute(false);
 		centerAttribute.setType(XSDParserUtil.getAttribute(XSDParserUtil.getFirstChildElement(centerNode), "type"));
+		centerAttribute.setMax(-1);
 		datatype.addAttribute("center", centerAttribute);
 	}
 
