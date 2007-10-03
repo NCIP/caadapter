@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.4 2007-08-30 16:09:21 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.5 2007-10-03 18:47:03 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,10 +44,10 @@ import java.awt.event.ActionListener;
  * Handles the selection of HL7 V3 type and file source.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.4 $
- * date        $Date: 2007-08-30 16:09:21 $
+ * revision    $Revision: 1.5 $
+ * date        $Date: 2007-10-03 18:47:03 $
  */
 public class NewHSMWizard extends JDialog implements ActionListener
 {
@@ -62,13 +62,16 @@ public class NewHSMWizard extends JDialog implements ActionListener
      * This String is for informational purposes only and MUST not be made final.
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.4 2007-08-30 16:09:21 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.5 2007-10-03 18:47:03 umkis Exp $";
 
     private static final String OK_COMMAND = "OK";
     private static final String CANCEL_COMMAND = "Cancel";
     private boolean okButtonClicked = false;
     private NewHSMFrontPage frontPage;
     private String userSelectedMessageType;
+
+    //private boolean success = false;
+    private String errorMessage = "";
 
     public NewHSMWizard(Frame owner, String title, boolean modal) throws HeadlessException
     {
@@ -90,12 +93,22 @@ public class NewHSMWizard extends JDialog implements ActionListener
         contentPane.setLayout(new BorderLayout());
 
         frontPage = new NewHSMFrontPage(this);
+
+        errorMessage = "";
+        if (!frontPage.wasSuccess())
+        {
+            errorMessage = ".. " + frontPage.getErrorMessage();
+            return;
+        }
         JScrollPane scrollPane = new JScrollPane(frontPage);
         contentPane.add(scrollPane, BorderLayout.CENTER);
         JPanel btnPane=setButtonPane();
         contentPane.add(btnPane, BorderLayout.SOUTH);
     }
-
+    public String getErrorMessage()
+    {
+        return errorMessage;
+    }
     private JPanel setButtonPane()
     {
     	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));//.TRAILING));//new BorderLayout());
@@ -194,6 +207,9 @@ public class NewHSMWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/08/30 16:09:21  wangeug
+ * HISTORY      : set dialog size
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/08/30 14:21:19  wangeug
  * HISTORY      : remove "How to add new message button"
  * HISTORY      :

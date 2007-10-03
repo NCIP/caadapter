@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.4 2007-09-19 16:42:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.5 2007-10-03 18:47:03 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,10 +55,10 @@ import java.awt.event.KeyEvent;
  * This class defines the new HSM panel action
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-19 16:42:48 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-10-03 18:47:03 $
  */
 public class NewHSMAction extends AbstractContextAction
 {
@@ -73,7 +73,7 @@ public class NewHSMAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.4 2007-09-19 16:42:48 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.5 2007-10-03 18:47:03 umkis Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HSM_FILE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -205,9 +205,17 @@ public class NewHSMAction extends AbstractContextAction
 			return isSuccessfullyPerformed();
 		}
 		NewHSMWizard wizard = new NewHSMWizard(mainFrame, ActionConstants.NEW_HSM_FILE_TXT, true);
-		DefaultSettings.centerWindow(wizard);
+
+        if (!((wizard.getErrorMessage() == null)||(wizard.getErrorMessage().trim().equals(""))))
+        {
+            JOptionPane.showMessageDialog(mainFrame, wizard.getErrorMessage(), "New H3S creation failure", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        DefaultSettings.centerWindow(wizard);
 		wizard.setVisible(true);
-		if (wizard.isOkButtonClicked())
+
+        if (wizard.isOkButtonClicked())
 		{
 			String messageType = wizard.getUserSelectedMessageType();
 			launchPanel(messageType, e);
@@ -228,6 +236,9 @@ public class NewHSMAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/09/19 16:42:48  wangeug
+ * HISTORY      : authorized user request
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/16 19:31:13  wangeug
  * HISTORY      : change UIUID to xmlPath
  * HISTORY      :

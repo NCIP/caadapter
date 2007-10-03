@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.3 2007-07-24 16:40:30 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.4 2007-10-03 18:47:03 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,8 +52,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.3 $
- * date        $Date: 2007-07-24 16:40:30 $
+ * revision    $Revision: 1.4 $
+ * date        $Date: 2007-10-03 18:47:03 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -68,7 +68,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.3 2007-07-24 16:40:30 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.4 2007-10-03 18:47:03 umkis Exp $";
 
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
@@ -79,7 +79,10 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	private JTextField userInputField;
 	private MIFIndex mifIndex;
 	private JComboBox hl7MessageCategoryComboBox;
-	/**
+
+    private boolean success = false;
+    private String errorMessage = "";
+    /**
 	 * Creates a new <code>JPanel</code> with a double buffer
 	 * and a flow layout.
 	 */
@@ -110,8 +113,11 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//e.printStackTrace();
+            success = false;
+            errorMessage = e.getMessage();
+            return;
+        }
 		
 		centerPanel.add(hl7MessageCategoryComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
@@ -119,9 +125,19 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		
 		this.add(centerPanel);
-	}
+        success = true;
+        errorMessage = "";
+    }
 
- 	private String getUserInputFromEnabledField()
+    public boolean wasSuccess()
+    {
+        return success;
+    }
+    public String getErrorMessage()
+    {
+        return errorMessage;
+    }
+    private String getUserInputFromEnabledField()
 	{
 		return userInputField.getText();
 	}
