@@ -200,7 +200,12 @@
 		<delete file="${webstart.deploy.dir}/caadapter-rds.jnlp"/>
 		<delete file="${webstart.deploy.dir}/caadapter.jnlp"/>
 
-    	<antcall target="generate-keys"/>
+        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
+        <delete file="${webstart.deploy.dir}/index-rds.html"/>
+        <delete file="${webstart.deploy.dir}/index-ws.html"/>
+        <rename src="${webstart.deploy.dir}/index-mms.html" dest="${webstart.deploy.dir}/index.html" />
+
+        <antcall target="generate-keys"/>
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
         <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
@@ -284,7 +289,12 @@
 		<delete file="${hl7.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${hl7.webstart.deploy.dir}/caadapter.jnlp"/>
 
-    	<antcall target="generate-keys"/>
+        <delete file="${webstart.deploy.dir}/index-mms.html"/>
+        <delete file="${webstart.deploy.dir}/index-rds.html"/>
+        <delete file="${webstart.deploy.dir}/index-ws.html"/>
+        <rename src="${webstart.deploy.dir}/index-hl7.html" dest="${webstart.deploy.dir}/index.html" />
+
+        <antcall target="generate-keys"/>
 
     	<echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -367,7 +377,12 @@
 		<delete file="${rds.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter.jnlp"/>
 
-    	<antcall target="generate-keys"/>
+        <delete file="${webstart.deploy.dir}/index-mms.html"/>
+        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
+        <delete file="${webstart.deploy.dir}/index-ws.html"/>
+        <rename src="${webstart.deploy.dir}/index-rds.html" dest="${webstart.deploy.dir}/index.html" />
+
+        <antcall target="generate-keys"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -459,7 +474,12 @@
 		<delete file="${caadapter.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${caadapter.webstart.deploy.dir}/caadapter-rds.jnlp"/>
 
-    	<antcall target="generate-keys"/>
+        <delete file="${webstart.deploy.dir}/index-mms.html"/>
+        <delete file="${webstart.deploy.dir}/index-rds.html"/>
+        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
+        <rename src="${webstart.deploy.dir}/index-ws.html" dest="${webstart.deploy.dir}/index.html" />
+
+        <antcall target="generate-keys"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
