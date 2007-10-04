@@ -29,7 +29,6 @@
    	<jar href="resource.zip"/>
    	<jar href="poi-2.5.1-final-20040804.jar"/>
 	<jar href="xmi.in.out.jar"/>
-	<jar href="jaxen-jdom.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />
