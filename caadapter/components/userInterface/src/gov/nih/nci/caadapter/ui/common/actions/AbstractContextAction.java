@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/AbstractContextAction.java,v 1.2 2007-09-19 16:41:21 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/AbstractContextAction.java,v 1.3 2007-10-04 18:08:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,11 +43,13 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessageDialog;
 import gov.nih.nci.caadapter.ui.main.HL7AuthorizationDialog;
+import gov.nih.nci.caadapter.ui.main.VerifyResourceDialog;
 
 import javax.swing.JFrame;
 import javax.swing.Action;
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 
@@ -56,6 +58,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Dialog;
+import java.util.ArrayList;
 
 /**
  * This class provides generic data structure for actions in a context-based application.
@@ -63,8 +66,8 @@ import java.awt.Dialog;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-09-19 16:41:21 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-04 18:08:38 $
  */
 public abstract class AbstractContextAction extends AbstractAction
 {
@@ -294,9 +297,35 @@ public abstract class AbstractContextAction extends AbstractAction
 		{
 		}
 	}
+	/**
+	 * Find the missed system resource in performing the defined action, the missed resource may
+	 * include library jar file, zip file, image, property file, etc
+	 * @return List of missed resourc or null as default if this method is not overridden by subclass
+	 */
+	protected ArrayList getMissedResources()
+	{
+		return null;
+	}
 
 	/**
-	 * 
+	 * Verify if system resources are ready in performing the defined actioin
+	 * @return true if all resource are ready
+	 */
+	protected boolean isResourceReady(JFrame owner)
+	{
+		ArrayList rscMissed=getMissedResources();
+		if (rscMissed==null|rscMissed.isEmpty())
+			return true;
+		//some resource is missing
+		String warningMsg=VerifyResourceDialog.setWarningContext(rscMissed, VerifyResourceDialog.DEFAULT_CONTEXT_FILE_PATH);
+		JOptionPane.showMessageDialog(owner, warningMsg, "Warning: Resources Missing - "+this.getName(), JOptionPane.DEFAULT_OPTION);
+//	
+//		new VerifyResourceDialog(owner, "Warning: Resources Missing ", rscMissed);
+		return false;
+	}
+	
+	/**
+	 * Authorized request in performing the defined action
 	 */
 	protected boolean isRequestAuthorized(JFrame owner)
 	{
@@ -393,6 +422,9 @@ public abstract class AbstractContextAction extends AbstractAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/09/19 16:41:21  wangeug
+ * HISTORY      : authorized user request
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

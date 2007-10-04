@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
@@ -20,13 +21,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class defines the open Map panel action.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.6 $ date $Date: 2007-08-15 21:16:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.7 $ date $Date: 2007-10-04 18:09:34 $
  */
 public class OpenSDTMMapAction extends DefaultContextOpenAction
 {
@@ -172,6 +174,12 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, // getUIWorkingDirectoryPath(),
 				Config.MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
 		if (file != null) {
@@ -184,4 +192,11 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 		// }
 		return isSuccessfullyPerformed();
 	}
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED);
+	}
+	
 }

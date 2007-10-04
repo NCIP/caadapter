@@ -5,6 +5,8 @@
 
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
@@ -14,15 +16,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * This class defines the new Map panel action.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-09-20 16:40:14 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-10-04 18:09:23 $
  */
 public class NewObject2DBMapAction extends AbstractContextAction
 		{
@@ -73,6 +76,12 @@ public class NewObject2DBMapAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		Object2DBMappingPanel mp = new Object2DBMappingPanel("Test");
 		mp.setChanged(false);
 		mainFrame.addNewTab(mp);
@@ -89,10 +98,19 @@ public class NewObject2DBMapAction extends AbstractContextAction
 	{
 		return mainFrame;
 	}
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED);
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/09/20 16:40:14  schroedn
+ * HISTORY      : License text
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/06/18 15:22:38  schroedn
  * HISTORY      : added setChanged(false) flag to fix save on close bug
  * HISTORY      :

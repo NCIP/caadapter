@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -52,7 +53,7 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 		this.setResizable(false);
 		DefaultSettings.centerWindow(this);
 		this.setVisible(true);
-	}
+}
 	
 	public void licenseAccepted(boolean isAccepted)
 	{
@@ -85,9 +86,8 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 	        });
 	}
 	
-	private JPanel setContextTextPanel(ArrayList list)  
+	public static String setWarningContext(ArrayList list, String txtFilePath)
 	{
-		JPanel rtnPanel=new JPanel();
 		StringBuffer licenseBf=new StringBuffer();
 		String titleMessage="The following resource/library files are not found :\n\n";
 		licenseBf.append(titleMessage);
@@ -98,7 +98,7 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 		
 		
 		try {
-			InputStream input=this.getClass().getResourceAsStream(contextFilePath);
+			InputStream input=VerifyResourceDialog.class.getClass().getResourceAsStream(txtFilePath);
 			InputStreamReader reader=new InputStreamReader(input);
 			BufferedReader bfReader=new BufferedReader(reader);
 			String lineSt;
@@ -113,13 +113,46 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		return licenseBf.toString();
+	}
+	private JPanel setContextTextPanel(ArrayList list)  
+	{
+		JPanel rtnPanel=new JPanel();
+//		StringBuffer licenseBf=new StringBuffer();
+//		String titleMessage="The following resource/library files are not found :\n\n";
+//		licenseBf.append(titleMessage);
+//		
+//		for(String missingFileNme:(ArrayList<String>)list)
+//			licenseBf.append("\t"+missingFileNme+"\n");
+//		licenseBf.append("\n\n");
+//		
+//		
+//		try {
+//			InputStream input=this.getClass().getResourceAsStream(contextFilePath);
+//			InputStreamReader reader=new InputStreamReader(input);
+//			BufferedReader bfReader=new BufferedReader(reader);
+//			String lineSt;
+//			lineSt = bfReader.readLine();
+//			while (lineSt!=null)
+//			{
+//				licenseBf.append(lineSt+"\n");
+//				lineSt = bfReader.readLine();
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.exit(0);
+//		}
 		JEditorPane mainView=new JEditorPane();
-		mainView.setText(licenseBf.toString());
+		mainView.setText(setWarningContext(list,contextFilePath));
 		JScrollPane js2 = new JScrollPane(mainView);
 		js2.setPreferredSize(new Dimension(this.getWidth()-40, getHeight()-60));
         mainView.setEditable(false);
         		 
 		rtnPanel.add(js2);
+//		JLabel txtLabel=new JLabel();
+//		txtLabel.setText(licenseBf.toString());
+//		rtnPanel.add(txtLabel);
 		rtnPanel.setBorder(BorderFactory.createEtchedBorder());
 		return rtnPanel;
 	}

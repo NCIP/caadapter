@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.7 2007-09-19 16:42:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.8 2007-10-04 18:08:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.hl7message.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
@@ -53,6 +54,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class defines the new HL7V3 message panel action.
@@ -60,8 +62,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-09-19 16:42:05 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-10-04 18:08:48 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -77,7 +79,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.7 2007-09-19 16:42:05 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.8 2007-10-04 18:08:48 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -200,6 +202,12 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 //		OpenHL7MessageWizard openWizard = new OpenHL7MessageWizard(mainFrame, COMMAND_NAME, true);
 		OpenHL7MessageWizard openWizard = new OpenHL7MessageWizard(mainFrame, this.getName(), true);
 		DefaultSettings.centerWindow(openWizard);
@@ -247,10 +255,19 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	{
 		return this.mainFrame;
 	}
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED);
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/09/19 16:42:05  wangeug
+ * HISTORY      : authorized user request
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/09/10 16:42:21  wangeug
  * HISTORY      : use a local Progressor instance
  * HISTORY      :

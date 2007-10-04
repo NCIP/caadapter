@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.5 2007-10-03 18:47:03 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.6 2007-10-04 18:10:06 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,8 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -50,15 +52,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * This class defines the new HSM panel action
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-10-03 18:47:03 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-10-04 18:10:06 $
  */
 public class NewHSMAction extends AbstractContextAction
 {
@@ -73,7 +76,7 @@ public class NewHSMAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.5 2007-10-03 18:47:03 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.6 2007-10-04 18:10:06 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HSM_FILE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -204,6 +207,12 @@ public class NewHSMAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		NewHSMWizard wizard = new NewHSMWizard(mainFrame, ActionConstants.NEW_HSM_FILE_TXT, true);
 
         if (!((wizard.getErrorMessage() == null)||(wizard.getErrorMessage().trim().equals(""))))
@@ -232,10 +241,19 @@ public class NewHSMAction extends AbstractContextAction
 	{
 		return this.mainFrame;
 	}
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED);
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/10/03 18:47:03  umkis
+ * HISTORY      : Protect from crashing and display a fit message when resouce.zip is absent.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/09/19 16:42:48  wangeug
  * HISTORY      : authorized user request
  * HISTORY      :

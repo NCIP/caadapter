@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/OpenCsvSpecificationAction.java,v 1.2 2007-08-13 15:23:45 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/OpenCsvSpecificationAction.java,v 1.3 2007-10-04 18:09:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.specification.csv.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
@@ -53,6 +54,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class defines the open CSV specification panel action.
@@ -60,8 +62,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-13 15:23:45 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-04 18:09:57 $
  */
 public class OpenCsvSpecificationAction extends DefaultContextOpenAction//AbstractContextAction
 {
@@ -207,6 +209,12 @@ public class OpenCsvSpecificationAction extends DefaultContextOpenAction//Abstra
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
 				Config.CSV_METADATA_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_CSV_METADATA_FILE, false, false);
 		if (file != null)
@@ -216,10 +224,19 @@ public class OpenCsvSpecificationAction extends DefaultContextOpenAction//Abstra
 		}
 		return isSuccessfullyPerformed();
 	}
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED);
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/13 15:23:45  wangeug
+ * HISTORY      : add new menu:open H3S with "xml" format:rest keystroke order
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

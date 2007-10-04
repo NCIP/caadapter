@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/NewCsvSpecificationAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/NewCsvSpecificationAction.java,v 1.2 2007-10-04 18:09:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,8 @@
 
 package gov.nih.nci.caadapter.ui.specification.csv.actions;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
@@ -45,6 +47,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * This class defines the New CSV Specification panel Action.
@@ -52,8 +55,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-04 18:09:57 $
  */
 public class NewCsvSpecificationAction extends AbstractContextAction
 {
@@ -103,6 +106,13 @@ public class NewCsvSpecificationAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e)// throws Exception
 	{
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
+		
 		NewCSVPanelWizard wizard = new NewCSVPanelWizard(mainFrame, ActionConstants.NEW_CSV_SPEC, true);
 		DefaultSettings.centerWindow(wizard);
 		wizard.setVisible(true);
@@ -127,10 +137,18 @@ public class NewCsvSpecificationAction extends AbstractContextAction
 	{
 		return this.mainFrame;
 	}
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED);
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/11/15 19:57:38  wuye
  * HISTORY      : reorgnize menu items
  * HISTORY      :

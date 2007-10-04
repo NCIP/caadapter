@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/DefaultContextOpenAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/DefaultContextOpenAction.java,v 1.2 2007-10-04 18:08:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-04 18:08:38 $
  */
 public abstract class DefaultContextOpenAction extends AbstractContextAction
 {
@@ -74,7 +74,7 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/DefaultContextOpenAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/DefaultContextOpenAction.java,v 1.2 2007-10-04 18:08:38 wangeug Exp $";
 
 	protected static final String COMMAND_NAME = ActionConstants.OPEN;
 	protected static final Character COMMAND_MNEMONIC = new Character('O');
@@ -211,6 +211,11 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return false;
+		}
 		try
 		{
 			this.actionEvent = e;
@@ -249,6 +254,9 @@ public abstract class DefaultContextOpenAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/10/19 21:15:34  wuye
  * HISTORY      : Added a new code to initiate a object2db mapping window.
  * HISTORY      :

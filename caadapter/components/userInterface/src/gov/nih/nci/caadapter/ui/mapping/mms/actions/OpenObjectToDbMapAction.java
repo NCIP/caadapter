@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.4 2007-09-20 16:40:14 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/OpenObjectToDbMapAction.java,v 1.5 2007-10-04 18:09:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
@@ -57,15 +58,16 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  * This class defines the open Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-20 16:40:14 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-10-04 18:09:23 $
  */
 public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 {
@@ -235,6 +237,12 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
 				Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
 		if (file != null)
@@ -249,10 +257,19 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 		return isSuccessfullyPerformed();
 	}
 
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED);
+	}
+
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/09/20 16:40:14  schroedn
+ * HISTORY      : License text
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/06/18 15:22:52  schroedn
  * HISTORY      : added setChanged(false) flag to fix save on close bug
  * HISTORY      :

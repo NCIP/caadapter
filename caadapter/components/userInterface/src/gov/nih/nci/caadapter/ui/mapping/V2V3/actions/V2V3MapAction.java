@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/V2V3MapAction.java,v 1.2 2007-09-19 16:42:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/V2V3MapAction.java,v 1.3 2007-10-04 18:09:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -32,6 +32,8 @@
  */
 package gov.nih.nci.caadapter.ui.mapping.V2V3.actions;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
@@ -39,6 +41,7 @@ import java.awt.Component;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -49,8 +52,8 @@ import javax.swing.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-09-19 16:42:37 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-04 18:09:48 $
  */
 public class V2V3MapAction extends AbstractContextAction  {
     /**
@@ -111,6 +114,12 @@ public class V2V3MapAction extends AbstractContextAction  {
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
         new MapV2V3(mainFrame);
 
 //        V2ConverterToSCSPanel v2ConverterPanel = new V2ConverterToSCSPanel(FileUtil.getV2DataDirPath());
@@ -132,9 +141,18 @@ public class V2V3MapAction extends AbstractContextAction  {
     protected Component getAssociatedUIComponent() {
 	return mainFrame;
     }
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_HL7_V2V3_CONVERSION_RESOURCE_REQUIRED);
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/09/19 16:42:37  wangeug
+ * HISTORY      : authorized user request
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

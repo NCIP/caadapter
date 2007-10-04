@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.3 2007-08-13 15:24:02 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.4 2007-10-04 18:10:06 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.SwingWorker;
@@ -54,6 +55,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class defines the open HSM panel action.
@@ -61,11 +63,17 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-13 15:24:02 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-10-04 18:10:06 $
  */
 public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextAction
 {
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED);
+	}
+
 	/**
 	 * Logging constant used to identify source of log entry, that could be later used to create
 	 * logging mechanism to uniquely identify the logged class.
@@ -78,7 +86,7 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.3 2007-08-13 15:24:02 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.4 2007-10-04 18:10:06 wangeug Exp $";
 
 	private static final String COMMAND_NAME_H3S = ActionConstants.OPEN_HSM_FILE_TXT +"(.h3s)";
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -233,6 +241,12 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		//invoke openFile dialog based on Hl7 V3 specification file type
 		String specExtension=Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
 		String dialogTitle=Config.OPEN_DIALOG_TITLE_FOR_H3S_HSM_FILE;
@@ -259,6 +273,9 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/13 15:24:02  wangeug
+ * HISTORY      : add new menu:open H3S with "xml" format
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/10 16:57:57  wangeug
  * HISTORY      : Export MIF class as xml file or read a MIF class from an xml file
  * HISTORY      :

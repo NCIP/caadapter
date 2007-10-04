@@ -2,7 +2,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.6 2007-08-08 20:54:52 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/NewSDTMStructureAction.java,v 1.7 2007-10-04 18:09:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -33,6 +33,8 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
  * <!-- LICENSE_TEXT_END -->
  */
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.NewSDTMWizard;
@@ -42,17 +44,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.prefs.Preferences;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $
  */
 public class NewSDTMStructureAction extends AbstractContextAction
 {
 
-    /**
+	/**
      *
      */
     private static final long serialVersionUID = 1L;
@@ -112,6 +115,12 @@ public class NewSDTMStructureAction extends AbstractContextAction
      */
     protected boolean doAction(ActionEvent e) throws Exception
     {
+//    	verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
         new NewSDTMWizard(mainFrame);
         setSuccessfullyPerformed(true);
         return isSuccessfullyPerformed();
@@ -126,6 +135,12 @@ public class NewSDTMStructureAction extends AbstractContextAction
     {
         return mainFrame;
     }
+    
+    @Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+    	return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED);
+	}
 }
 
 

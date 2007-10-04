@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.7 2007-08-08 20:54:35 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/Database2SDTMAction.java,v 1.8 2007-10-04 18:09:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -32,6 +32,8 @@
  */
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
@@ -41,6 +43,7 @@ import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.prefs.Preferences;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.Icon;
@@ -51,8 +54,8 @@ import javax.swing.KeyStroke;
  * it.
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $ date $Date:
  *          2006/10/03 13:50:47 $
  */
 public class Database2SDTMAction extends AbstractContextAction {
@@ -113,6 +116,12 @@ public class Database2SDTMAction extends AbstractContextAction {
 	 *         false.
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception {
+//		verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		Database2SDTMMappingPanel mp = new Database2SDTMMappingPanel(mainFrame,"Test");
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
@@ -127,9 +136,17 @@ public class Database2SDTMAction extends AbstractContextAction {
 	protected Component getAssociatedUIComponent() {
 		return mainFrame;
 	}
+    @Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+    	return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED);
+	}
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.7  2007/08/08 20:54:35  jayannah
+ * HISTORY : Changed the verbage from SDTM to RDS
+ * HISTORY :
  * HISTORY : Revision 1.6  2007/07/26 19:57:50  jayannah
  * HISTORY : Changes for preferences menu
  * HISTORY :

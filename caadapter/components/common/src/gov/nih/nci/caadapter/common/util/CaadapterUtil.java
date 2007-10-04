@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.14 2007-09-19 20:30:59 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.15 2007-10-04 18:08:27 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,6 +47,7 @@ import java.util.Properties;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
@@ -54,8 +55,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.14 $
- * @date $$Date: 2007-09-19 20:30:59 $
+ * @version $Revision: 1.15 $
+ * @date $$Date: 2007-10-04 18:08:27 $
  * @since caAdapter v1.2
  */
 
@@ -63,7 +64,8 @@ public class CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
 	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
 	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
-	private static ArrayList<String> RESOURCE_REQUIRED =new ArrayList<String>();
+//	private static ArrayList<String> RESOURCE_REQUIRED =new ArrayList<String>();
+	private static HashMap<String, ArrayList<String>> RESOURCE_MODULE_REQUIRED =new HashMap<String, ArrayList<String>>();
 	private static HashMap prefs;
 	private static boolean authorizedUser=false;
 	static {
@@ -138,31 +140,32 @@ public class CaadapterUtil {
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
 			return;
 		//always add common required
-		addRequiredResource(prop.getProperty(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED));
-		
+		addModuleResource(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED,prop);
+	
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
-			addRequiredResource(prop.getProperty(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED));
+			addModuleResource(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED,prop);
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
-			addRequiredResource(prop.getProperty(Config.CAADAPTER_HL7_V2V3_CONVERSION_RESOURCE_REQUIRED));
+			addModuleResource(Config.CAADAPTER_HL7_V2V3_CONVERSION_RESOURCE_REQUIRED,prop);
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
-			addRequiredResource(prop.getProperty(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED));
+			addModuleResource(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED,prop);
 	
 	}
-	
-	private static void addRequiredResource(String rsrcList)
+	private static void addModuleResource(String moduleName, Properties prop)
 	{
-		if (rsrcList==null||rsrcList.equals(""))
-			return;
-		
-    	StringTokenizer tk=new StringTokenizer(rsrcList, ",");
+		ArrayList moduleRsc=RESOURCE_MODULE_REQUIRED.get(moduleName);
+		if (moduleRsc==null)
+			moduleRsc=new ArrayList<String>();
+		String rsrcList=prop.getProperty(moduleName);
+		StringTokenizer tk=new StringTokenizer(rsrcList, ",");
     	while(tk.hasMoreElements())
     	{
     		String nxtRsc=(String)tk.nextElement();
-    		if (!RESOURCE_REQUIRED.contains(nxtRsc))
-    			RESOURCE_REQUIRED.add(nxtRsc);
+    		if (!moduleRsc.contains(nxtRsc))
+    			moduleRsc.add(nxtRsc);
     	}
-
+    	RESOURCE_MODULE_REQUIRED.put(moduleName, moduleRsc);
 	}
+	
 
     // getters.
     public static final ArrayList getInlineTextAttributes() {
@@ -175,7 +178,23 @@ public class CaadapterUtil {
     public static final ArrayList getMandatorySelectedAttributes() {
         return MANDATORY_SELECTED_ATTRIBUTES;
     }
-    public static ArrayList<String> getResourceMissed()
+    public static ArrayList getAllResourceRequired()
+    {
+    	ArrayList<String>rtnList=new ArrayList<String>();
+    	Set<String> keySet=RESOURCE_MODULE_REQUIRED.keySet();
+    	for(String keyValue:keySet)
+    	{
+    		ArrayList<String> modRsc=RESOURCE_MODULE_REQUIRED.get(keyValue);
+    		for (String rsrc:modRsc)
+        	{
+        		if (!rtnList.contains(rsrc))
+        			rtnList.add(rsrc);
+        	}
+    	}
+    	return rtnList;
+    }
+    
+    public static ArrayList<String> getModuleResourceMissed(String moduleName)
     {
     	ArrayList <String> missRsrc=new ArrayList<String>();
     	File libFile=new File("lib");
@@ -183,10 +202,28 @@ public class CaadapterUtil {
     		return missRsrc;
     	String[] libRsrc=libFile.list();
     	List<String>  foundRsrc=Arrays.asList(libRsrc);
-    	for (String rsrc:RESOURCE_REQUIRED)
+    	ArrayList<String> requiredRsc;
+    	if (moduleName==null|moduleName.equals(""))
+    		requiredRsc=getAllResourceRequired();
+    	else
+    		requiredRsc=RESOURCE_MODULE_REQUIRED.get(moduleName);
+    	
+    	if (requiredRsc!=null)
+	    	for (String rsrc:requiredRsc)
+	    	{
+	    		if (!foundRsrc.contains(rsrc))
+	    			missRsrc.add(rsrc);
+	    	}
+    	//always include the common resource list
+    	if (!moduleName.equals(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED))
     	{
-    		if (!foundRsrc.contains(rsrc))
-    			missRsrc.add(rsrc);
+    		requiredRsc=RESOURCE_MODULE_REQUIRED.get(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED);
+    		if (requiredRsc!=null)
+	    		for (String rsrc:requiredRsc)
+	        	{
+	        		if (!foundRsrc.contains(rsrc))
+	        			missRsrc.add(rsrc);
+	        	}
     	}
     	return missRsrc;
     }
@@ -294,6 +331,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2007/09/19 20:30:59  wangeug
+ * HISTORY      : read caadapter-commponts.properties
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2007/09/19 16:40:14  wangeug
  * HISTORY      : load property file from conf folder
  * HISTORY      :

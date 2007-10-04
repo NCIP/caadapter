@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.13 2007-09-19 16:43:56 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.14 2007-10-04 18:09:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,8 +64,8 @@ import java.util.HashMap;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2007-09-19 16:43:56 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2007-10-04 18:09:14 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -128,9 +128,13 @@ public class MainFrame extends AbstractMainFrame
 		//isw.setAlwaysOnTop(true);
 		DefaultSettings.centerWindow(isw);
 		isw.setVisible(true);
-		ArrayList missingList=CaadapterUtil.getResourceMissed();
+		ArrayList missingList=CaadapterUtil.getModuleResourceMissed("");
 		if (!missingList.isEmpty())
-			new VerifyResourceDialog(this, "Warning: Resources Missing ", missingList);
+		{
+			String warningMsg=VerifyResourceDialog.setWarningContext(missingList, VerifyResourceDialog.DEFAULT_CONTEXT_FILE_PATH);
+			JOptionPane.showMessageDialog(this, warningMsg, "Warning: Resources Missing ", JOptionPane.DEFAULT_OPTION);
+		}
+//			new VerifyResourceDialog(this, "Warning: Resources Missing ", missingList);
 
 	    try {
 		    Thread.sleep(2000);
@@ -426,6 +430,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2007/09/19 16:43:56  wangeug
+ * HISTORY      : show missing resources
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2007/09/10 16:46:57  wangeug
  * HISTORY      : set name for hlv3 panel
  * HISTORY      :

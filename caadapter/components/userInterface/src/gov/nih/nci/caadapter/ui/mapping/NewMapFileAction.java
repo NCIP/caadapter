@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/NewMapFileAction.java,v 1.2 2007-09-19 16:42:23 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/NewMapFileAction.java,v 1.3 2007-10-04 18:08:59 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,8 @@
 
 package gov.nih.nci.caadapter.ui.mapping;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
@@ -43,6 +45,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * This class defines the new Map panel action.
@@ -50,8 +53,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-09-19 16:42:23 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-04 18:08:59 $
  */
 public class NewMapFileAction extends AbstractContextAction
 		{
@@ -108,6 +111,12 @@ public class NewMapFileAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
+		//verify resource
+		if (!isResourceReady(mainFrame))
+		{
+			setSuccessfullyPerformed(false);
+			return isSuccessfullyPerformed();
+		}
 		
 		HL7MappingPanel mp = new HL7MappingPanel();
 		mainFrame.addNewTab(mp);
@@ -124,10 +133,19 @@ public class NewMapFileAction extends AbstractContextAction
 	{
 		return mainFrame;
 	}
+
+	@Override
+	protected ArrayList getMissedResources() {
+		// TODO Auto-generated method stub
+		return CaadapterUtil.getModuleResourceMissed(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED);
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/09/19 16:42:23  wangeug
+ * HISTORY      : authorized user request
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:36  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
