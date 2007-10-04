@@ -32,10 +32,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.38 $
- *          date        $Date: 2007-09-11 02:16:36 $
+ *          revision    $Revision: 1.39 $
+ *          date        $Date: 2007-10-04 04:32:55 $
  */
 
 public class MapProcessor {
@@ -339,8 +339,19 @@ public class MapProcessor {
 	    					String datavalue = datatypeProcessor.getFunctionValue(csvSegment,scsPath,data, mutableFlag, mutableFlagDefault);
 	    					if (mutableFlag.hasUserMappedData()) 
 	    					{
-	    						xmlElement.addAttribute(mifAttribute.getName(), datavalue, mifAttribute.getDatatype().getName().toLowerCase(), mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
-	        					hasUserdata.setHasUserMappedData(true);
+//                                System.out.println("   A : " + mifAttribute.getName());
+//                                System.out.println("   B : " + datavalue);
+//                                System.out.println("   C : " + mifAttribute);
+//                                System.out.println("   D : " + mifAttribute.getDatatype());
+//                                System.out.println("   F : " + mifAttribute.getDomainName());
+//                                System.out.println("   G : " + mifAttribute.getCodingStrength());
+//                                System.out.println("   E : " + mifAttribute.getDatatype().getName().toLowerCase());
+
+                                if (mifAttribute.getDatatype() == null)
+                                    xmlElement.addAttribute(mifAttribute.getName(), datavalue, null, mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
+	        					else xmlElement.addAttribute(mifAttribute.getName(), datavalue, mifAttribute.getDatatype().getName().toLowerCase(), mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
+
+                                hasUserdata.setHasUserMappedData(true);
 	    					}
 	    					else 
 	    					{
@@ -616,6 +627,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.38  2007/09/11 02:16:36  wuye
+ * HISTORY      : Remove extra tag
+ * HISTORY      :
  * HISTORY      : Revision 1.37  2007/09/10 13:35:46  wuye
  * HISTORY      : Fixed the issue with a mifclass has both choices and other associations
  * HISTORY      :
