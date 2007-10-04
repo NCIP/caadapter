@@ -200,12 +200,7 @@
 		<delete file="${webstart.deploy.dir}/caadapter-rds.jnlp"/>
 		<delete file="${webstart.deploy.dir}/caadapter.jnlp"/>
 
-        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
-        <delete file="${webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${webstart.deploy.dir}/index-ws.html"/>
-        <move file="${webstart.deploy.dir}/index-mms.html" tofile="${webstart.deploy.dir}/index.html" />
-
-        <antcall target="generate-keys"/>
+    	<antcall target="generate-keys"/>
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
         <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
@@ -289,12 +284,7 @@
 		<delete file="${hl7.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${hl7.webstart.deploy.dir}/caadapter.jnlp"/>
 
-        <delete file="${hl7.webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${hl7.webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${hl7.webstart.deploy.dir}/index-ws.html"/>
-        <move file="${hl7.webstart.deploy.dir}/index-hl7.html" tofile="${hl7.webstart.deploy.dir}/index.html" />
-
-        <antcall target="generate-keys"/>
+    	<antcall target="generate-keys"/>
 
     	<echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -376,14 +366,8 @@
 		<delete file="${rds.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${rds.webstart.deploy.dir}/caadapter.jnlp"/>
-        <delete file="${rds.webstart.deploy.dir}/hl7sdk.jnlp"/>
-        
-        <delete file="${rds.webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${rds.webstart.deploy.dir}/index-hl7.html"/>
-        <delete file="${rds.webstart.deploy.dir}/index-ws.html"/>
-        <move file="${rds.webstart.deploy.dir}/index-rds.html" tofile="${rds.webstart.deploy.dir}/index.html" />
 
-        <antcall target="generate-keys"/>
+    	<antcall target="generate-keys"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>
@@ -451,7 +435,7 @@
                 <include name="log4j-1.2.8.jar"/>
         		<include name="poi-2.5.1-final-20040804.jar"/>
         	</fileset>
-        	<fileset dir="${dist.dir}/lib">
+        	<fileset dir="${dist.dir}">
                 <include name="jaxen-jdom.jar"/>
         	</fileset>
         	<fileset dir="${mms.module.home}/lib">
@@ -475,12 +459,7 @@
 		<delete file="${caadapter.webstart.deploy.dir}/caadapter-mms.jnlp"/>
 		<delete file="${caadapter.webstart.deploy.dir}/caadapter-rds.jnlp"/>
 
-        <delete file="${caadapter.webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${caadapter.webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${caadapter.webstart.deploy.dir}/index-hl7.html"/>
-        <move file="${caadapter.webstart.deploy.dir}/index-ws.html" tofile="${caadapter.webstart.deploy.dir}/index.html" />
-
-        <antcall target="generate-keys"/>
+    	<antcall target="generate-keys"/>
 
         <echo message=""/>
         <echo message="-------- Signing all jar files --------"/>

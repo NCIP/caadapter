@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.5 2007-10-03 18:47:03 umkis Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.4 2007-08-17 01:13:28 umkis Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -38,7 +38,7 @@ import java.io.File;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date: 2007-10-03 18:47:03 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date: 2007-08-17 01:13:28 $
  */
 @SuppressWarnings("serial")
 public class MapV2V3 extends JDialog implements ActionListener
@@ -441,7 +441,6 @@ public class MapV2V3 extends JDialog implements ActionListener
             }
         } else if (e.getSource() == advanced)
         {
-            
             try
             {
                 this.dispose();
@@ -474,9 +473,6 @@ public class MapV2V3 extends JDialog implements ActionListener
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
- * HISTORY : Revision 1.4  2007/08/17 01:13:28  umkis
- * HISTORY : generated SCS file using xml path
- * HISTORY :
  * HISTORY : Revision 1.3  2007/08/01 16:02:25  jayannah
  * HISTORY : further modifications for the GUI and resize
  * HISTORY :
