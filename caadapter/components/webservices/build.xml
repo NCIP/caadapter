@@ -69,7 +69,7 @@
 		<exclude name="**/*data.zip"/>
 		<exclude name="**/*server-config.wsdd.template"/>
 	</zipfileset>
-	<zipfileset dir="build/" prefix="WEB-INF/classes" id="dist.ws.webclasses">
+	<zipfileset dir="${ws.module.home}/build/" prefix="WEB-INF/classes" id="dist.ws.webclasses">
 		<include name="**/ws/*.class"/>
 	</zipfileset>
 	<zipfileset dir="${module.lib.dir}" prefix="WEB-INF/lib" id="dist.ws.caAdapter.libs">
