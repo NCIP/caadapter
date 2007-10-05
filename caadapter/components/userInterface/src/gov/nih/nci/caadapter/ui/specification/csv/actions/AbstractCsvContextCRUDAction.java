@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AbstractCsvContextCRUDAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AbstractCsvContextCRUDAction.java,v 1.2 2007-10-05 19:10:47 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-05 19:10:47 $
  */
 public class AbstractCsvContextCRUDAction extends AbstractContextAction
 {
@@ -72,7 +72,7 @@ public class AbstractCsvContextCRUDAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AbstractCsvContextCRUDAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/AbstractCsvContextCRUDAction.java,v 1.2 2007-10-05 19:10:47 wangeug Exp $";
 
 	protected transient CSVPanel parentPanel;
 
@@ -172,10 +172,16 @@ public class AbstractCsvContextCRUDAction extends AbstractContextAction
         return scmNodeLoader.constructTreeNode(userObject, allowsChildren);
     }
 
+	public CSVPanel getParentPanel() {
+		return parentPanel;
+	}
 
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
