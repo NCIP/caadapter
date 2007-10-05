@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.2 2007-07-12 15:48:46 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.3 2007-10-05 17:50:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,8 @@
 
 package gov.nih.nci.caadapter.ui.specification.csv;
 
+import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
+import gov.nih.nci.caadapter.common.Cardinality;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
@@ -54,10 +56,10 @@ import java.util.Enumeration;
 /**
  * This class defines the layout of segment metadata property pane.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-12 15:48:46 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-05 17:50:08 $
  */
 public class CSVSegmentMetadataPropertyPane extends JPanel
 {
@@ -69,7 +71,7 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 	private JLabel parentSegmentNameLabel;
 	private JTextField parentSegmentNameTextField;
     private JLabel cardinalityLabel;
-	private JTextField cardinalityField;
+	private JComboBox cardinalityField;
 
     private CSVFieldOrderReshufflePane fieldOrderPane;
 
@@ -136,20 +138,17 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 		parentSegmentNameLabel = new JLabel(PARENT_SEGMENT_NAME_LABEL);
 		parentSegmentNameTextField = new JTextField();
         cardinalityLabel = new JLabel(CARDINALITY_LABEL);
-		cardinalityField = new JTextField();
-        cardinalityField.setEditable(false);
+		cardinalityField = new JComboBox();
+		//add all choicable value
+		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_0));
+		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_1));
+		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_2));
+		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_3));
+//        cardinalityField.setEditable(false);
 
         Dimension segmentSize = segmentNameLabel.getPreferredSize();
 		Dimension parentSegmentSize = parentSegmentNameLabel.getPreferredSize();
         Dimension cardinalitySize = cardinalityLabel.getPreferredSize();
-//		Log.logInfo(this, "segmentSize: " + segmentSize);
-//		Log.logInfo(this, "parentSegmentSize: " + parentSegmentSize);
-//		Log.logInfo(this, "segmentSize: " + segmentNameLabel.getPreferredSize());
-//		Log.logInfo(this, "parentSegmentSize: " + parentSegmentNameLabel.getPreferredSize());
-//		Log.logInfo(this, "segmentSize: " + segmentNameLabel.getMaximumSize());
-//		Log.logInfo(this, "parentSegmentSize: " + parentSegmentNameLabel.getMaximumSize());
-//		Log.logInfo(this, "segmentSize: " + segmentNameLabel.getMinimumSize());
-//		Log.logInfo(this, "parentSegmentSize: " + parentSegmentNameLabel.getMinimumSize());
 
 		int textFieldWidth = Math.max(segmentSize.width, Math.max(cardinalitySize.width, parentSegmentSize.width)) + 6;
 		int textFieldHeight = Math.max(segmentSize.height, Math.max(cardinalitySize.height, parentSegmentSize.height)) + 6;
@@ -212,12 +211,16 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 
     protected String getCardinality()
 	{
-		return cardinalityField.getText();
+		return cardinalityField.getSelectedItem().toString();//.getText();
 	}
 
 	protected void setCardinality(String newValue)
 	{
-		cardinalityField.setText(newValue);
+		for (int carIndex=0;carIndex<cardinalityField.getItemCount();carIndex++)
+		{
+			if (cardinalityField.getItemAt(carIndex).toString().equals(newValue))
+				cardinalityField.setSelectedIndex(carIndex);
+		}
 	}
 
     public void setDisplayData(DefaultMutableTreeNode treeNode, boolean refresh)
@@ -277,6 +280,7 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 //			}
 			CSVSegmentMetaImpl userData = (CSVSegmentMetaImpl) this.treeNode.getUserObject();
 			userData.setName(getValidatedUserInputOnName());
+			userData.setCardinalityWithString(cardinalityField.getSelectedItem().toString());
 			if(fieldOrderPane.isDataChanged())
 			{
 				userData.setFields(fieldOrderPane.getCSVFieldMetaList(true));
@@ -284,19 +288,6 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 				{
 					((DefaultSCMTreeMutableTreeNode)treeNode).resortChildren(new DefaultSCMTreeMutableTreeNodeComparator());
 				}
-//				DefaultMutableTreeNode newTreeNode = null;
-//				try
-//				{
-//					newTreeNode = (DefaultMutableTreeNode) parentController.getNodeLoader().loadData(userData);
-//				}
-//				catch(Throwable e)
-//				{
-//					Log.logException(getClass(), e);
-//				}
-//				if(newTreeNode!=null)
-//				{
-//					treeNode.removeAllChildren();
-//				}
 			}
 		}
 		return this.treeNode;
@@ -310,6 +301,8 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 		}
 		CSVSegmentMeta data = (CSVSegmentMeta) this.treeNode.getUserObject();
 		boolean result = !GeneralUtilities.areEqual(getSegmentName(), data.getName());
+		if (!result)
+			result = !GeneralUtilities.areEqual(this.cardinalityField.getSelectedItem().toString(), data.getCardinalityWithString());
 		result = result || fieldOrderPane.isDataChanged();
 		return result;
 	}
@@ -396,6 +389,9 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/12 15:48:46  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
