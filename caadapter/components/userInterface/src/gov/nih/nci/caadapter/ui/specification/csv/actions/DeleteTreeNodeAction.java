@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/DeleteTreeNodeAction.java,v 1.2 2007-07-12 15:48:49 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/DeleteTreeNodeAction.java,v 1.3 2007-10-05 19:12:18 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -37,6 +37,7 @@ package gov.nih.nci.caadapter.ui.specification.csv.actions;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -46,10 +47,10 @@ import java.awt.event.KeyEvent;
 /**
  * This class defines the delete tree node action.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-12 15:48:49 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-05 19:12:18 $
  */
 public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 {
@@ -70,15 +71,6 @@ public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 	{
 		this(COMMAND_NAME, null, parentPanel, toShowDeleteWarning);
 	}
-
-//	/**
-//	 * Defines an <code>Action</code> object with the specified
-//	 * description string and a default icon.
-//	 */
-//	public DeleteTreeNodeAction(String name, CSVPanel parentPanel, boolean toShowDeleteWarning)
-//	{
-//		this(name, null, parentPanel, toShowDeleteWarning);
-//	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
@@ -159,11 +151,14 @@ public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 			{
 				if(treeNode.getParent()!=null)
 				{
+					DefaultMutableTreeNode parentTreeNode=(DefaultMutableTreeNode)treeNode.getParent();
 					treeModel.removeNodeFromParent(treeNode);
+					getParentPanel().getPropertiesPane().setDisplayData(parentTreeNode);
 				}
 				else
 				{
 					treeModel.setRoot(null);
+					getParentPanel().setPropertiesPaneVisible(false);
 				}
 			}
 		}
@@ -185,6 +180,9 @@ public class DeleteTreeNodeAction extends AbstractCsvContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/12 15:48:49  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
