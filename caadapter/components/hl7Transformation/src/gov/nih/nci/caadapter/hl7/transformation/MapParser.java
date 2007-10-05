@@ -36,9 +36,9 @@ import org.jdom.output.XMLOutputter;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-07-24 17:23:48 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2007-10-05 20:10:47 $
  * @since caAdapter v4.0
  */
 
@@ -79,6 +79,13 @@ public class MapParser {
 		    }
 		    for(int i = 0; i< componentList.size();i++)  {
 		    	Element component = componentList.get(i);
+		    	if (component.getAttribute("type")==null)
+		    	{
+		    		Message msg = MessageResources.getMessage("MAP10", new Object[]{"Component type is wrong"});
+		            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
+		            continue;
+		    	}
+		    		
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("source")) {
 		    		scsFilename = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
 		    	}
@@ -87,10 +94,18 @@ public class MapParser {
 		    	}
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("function")) {
 		    		if (component.getAttribute("name")!=null) {
-		    			String kind = component.getAttribute("kind").getValue();
-		    			String group =component.getAttribute("group").getValue();
-		    			String name = component.getAttribute("name").getValue();
-		    			String id = component.getAttribute("id").getValue();
+		    			String kind = null;
+		    			if (component.getAttribute("kind")!=null)
+		    				component.getAttribute("kind").getValue();
+		    			String group =null;
+		    			if (component.getAttribute("group")!=null)
+		    				component.getAttribute("group").getValue();
+		    			String name =null;
+		    			if (component.getAttribute("name")!=null)
+		    				component.getAttribute("name").getValue();
+		    			String id =null;
+		    			if (component.getAttribute("id")!=null)
+		    				component.getAttribute("id").getValue();
 		    			
 		    			if (kind == null || group == null || name==null) {
 		    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file"});
