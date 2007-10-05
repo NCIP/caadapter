@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentDefinitionDialog.java,v 1.1 2007-07-12 15:48:37 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentDefinitionDialog.java,v 1.2 2007-10-05 20:27:39 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -60,21 +60,19 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 11, 2007
  *          Time:       12:31:44 PM $
  */
-public class CSVSegmentDefinitionDialog extends JDialog implements ActionListener
-{
+public class CSVSegmentDefinitionDialog extends JDialog implements ActionListener, KeyListener {
 
     /**
      * Logging constant used to identify source of log entry, that could be later used to create
@@ -88,7 +86,7 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentDefinitionDialog.java,v 1.1 2007-07-12 15:48:37 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentDefinitionDialog.java,v 1.2 2007-10-05 20:27:39 schroedn Exp $";
 
     private static final String SEGMENT_NAME_LABEL = "Segment Name:";
 	private static final String CARDINALITY_TYPE_LABEL = "Cardinalty Type:";
@@ -157,9 +155,7 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
         //initialize();
     }
 
-
-
-	private void constructCardinalityTypeComboBox()
+    private void constructCardinalityTypeComboBox()
 	{
 		cardinalityTypeField.removeAllItems();
         java.util.Enumeration enumer = CardinalityType.enumerate();
@@ -186,7 +182,6 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
             }
             //cardinalityTypeField.setSelectedItem(defaultChoiceCardinalityString);
         }
-
     }
 
 	private void initialize()
@@ -212,8 +207,9 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
         }
 
         segmentNameTextField = new JTextField();
-
-		cardinalityTypeField = new JComboBox();
+        segmentNameTextField.addKeyListener(this);
+        
+        cardinalityTypeField = new JComboBox();
         constructCardinalityTypeComboBox();
         if (!cardinalityEditable)
         {
@@ -250,6 +246,8 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 
         okButton = new JButton("  OK  ");
+        //okButton.setMnemonic(KeyEvent.VK_ENTER);
+        okButton.addKeyListener(this);
         okButton.addActionListener(this);
 
         cancelButton = new JButton("Cancel");
@@ -261,8 +259,47 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
         this.add(buttonPanel, BorderLayout.SOUTH);
 
         this.setSize(300, 150);
-
     }
+
+   public void keyPressed(KeyEvent evt)
+   {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            cardinality = (String)cardinalityTypeField.getSelectedItem();
+            segmentName = segmentNameTextField.getText();
+
+            if ((segmentName == null)||(segmentName.trim().equals("")))
+            {
+                JOptionPane.showMessageDialog(this, "Segment Name is not input.", "Empty Segment Name", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if ((cardinality == null)||(cardinality.trim().equals("")))
+            {
+                JOptionPane.showMessageDialog(this, "Cardinality is not input.", "Empty Cardinality", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            boolean c_Check = false;
+            java.util.Enumeration enumer = CardinalityType.enumerate();
+
+            while(enumer.hasMoreElements())
+            {
+                CardinalityType cardinalityA = (CardinalityType) enumer.nextElement();
+                if (cardinality.equals(cardinalityA.toString())) c_Check = true;
+            }
+            if (!c_Check)
+            {
+                JOptionPane.showMessageDialog(this, "Cardinality value is invalid : " + cardinality, "Invalid Cardinality", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            cardinality = cardinality.trim();
+            segmentName = segmentName.trim();
+            okButtonClicked = true;
+
+            this.dispose();
+        }
+   }
+   public void keyReleased(KeyEvent evt) { }
+   public void keyTyped(KeyEvent evt) { }
 
     public void actionPerformed(ActionEvent e)
     {
@@ -376,4 +413,7 @@ public class CSVSegmentDefinitionDialog extends JDialog implements ActionListene
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/12 15:48:37  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  */
