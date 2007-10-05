@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.2 2007-10-05 20:27:11 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,10 +49,10 @@ import java.util.List;
  * This class defines a panel handles the shuffling field sequence under the same segment.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-05 20:27:11 $
  */
 public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
 {
@@ -68,7 +68,7 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.2 2007-10-05 20:27:11 schroedn Exp $";
 
 	private static final String MOVE_UP_COMMAND = "Move Up";
 	private static final String MOVE_UP_COMMAND_MNEMONIC = "U";
@@ -119,13 +119,29 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
         {
                 public void mouseClicked(MouseEvent e)
                 {
+                    setButtonsEnabled();
                     int[] selectedRows = fieldTable.getSelectedRows();
-                    if(selectedRows==null || selectedRows.length==0) setButtonsDisabled();
-		            else
+                    
+                    if (selectedRows[0] == 0)
                     {
-                        if (tableModel.getRowCount() <= 1) setButtonsDisabled();
-                        else setButtonsEnabled();
+                        moveUpButton.setEnabled(false);
+                        return;
                     }
+                    else setButtonsEnabled();
+
+                    if (selectedRows[selectedRows.length-1] == (fieldTable.getRowCount()-1))
+                    {
+                        moveDownButton.setEnabled(false);
+                        return;
+                    }
+                    else setButtonsEnabled();
+
+//                    if(selectedRows==null || selectedRows.length==0) setButtonsDisabled();
+//		            else
+//                    {
+//                        if (tableModel.getRowCount() <= 1) setButtonsDisabled();
+//                        else setButtonsEnabled();
+//                    }
                 }
             });
     }
@@ -267,6 +283,9 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
