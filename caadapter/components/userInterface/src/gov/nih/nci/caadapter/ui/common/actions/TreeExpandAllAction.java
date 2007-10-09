@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/TreeExpandAllAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/TreeExpandAllAction.java,v 1.2 2007-10-09 18:32:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,8 +50,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-09 18:32:14 $
  */
 public class TreeExpandAllAction extends AbstractContextAction
 {
@@ -67,7 +67,7 @@ public class TreeExpandAllAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/TreeExpandAllAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/actions/TreeExpandAllAction.java,v 1.2 2007-10-09 18:32:14 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Expand All";
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("treeExpandAll.gif"));
@@ -190,7 +190,7 @@ public class TreeExpandAllAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-		if (tree != null)
+		if (tree != null&&tree.getModel().getRoot()!=null)
 		{
 			/**
 			 * Impelementation:
@@ -236,6 +236,9 @@ public class TreeExpandAllAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
