@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/MetaObjectImpl.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/MetaObjectImpl.java,v 1.2 2007-10-09 20:14:56 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,9 +46,9 @@ import java.util.List;
  * Base class for all meta objects (CVS meta, HL7 V3 meta, etc).
  *
  * @author OWNER: Eric Chen
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-04-03 16:02:37 $
+ * @author LAST UPDATE: $Author: jayannah $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-10-09 20:14:56 $
  * @since caAdapter v1.2
  */
 
@@ -84,7 +84,7 @@ public class MetaObjectImpl extends BaseObjectImpl implements MetaObject, Proper
 	 * @param o
 	 * @return if this equals to the given objec.t
 	 */
-	public boolean equals(Object o)
+	public boolean equals_donotoverride(Object o)
 	{
 		/**
 		 * Implementation Rationale:
@@ -104,7 +104,7 @@ public class MetaObjectImpl extends BaseObjectImpl implements MetaObject, Proper
 	 *
 	 * @return hash code value.
 	 */
-	public int hashCode()
+	public int hashCode_donotoverride()
 	{
 		/**
 		 * Implementation Rationale:
@@ -197,6 +197,9 @@ public class MetaObjectImpl extends BaseObjectImpl implements MetaObject, Proper
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2006/11/14 15:27:31  wuye
  * HISTORY      : added is mapped funcation for validation
  * HISTORY      :

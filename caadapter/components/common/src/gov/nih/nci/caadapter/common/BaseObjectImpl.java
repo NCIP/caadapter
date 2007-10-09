@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.4 2007-08-07 20:49:57 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/BaseObjectImpl.java,v 1.5 2007-10-09 20:14:55 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,9 +40,9 @@ import gov.nih.nci.caadapter.common.util.UUIDGenerator;
  * The default implementation for the base class for all meta and data objects.
  *
  * @author OWNER: Eric Chen  Date: Jun 3, 2005
- * @author LAST UPDATE: $Author: schroedn $
- * @version $Revision: 1.4 $
- * @date $$Date: 2007-08-07 20:49:57 $
+ * @author LAST UPDATE: $Author: jayannah $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2007-10-09 20:14:55 $
  * @since caAdapter v1.2
  */
 
@@ -57,7 +57,7 @@ public class BaseObjectImpl implements BaseObject
 	 * @param o
 	 * @return
 	 */
-	public boolean equals(Object o)
+	public boolean equals_donotoverride(Object o)
 	{
 		/**
 		 * Implementation Rationale:
@@ -83,7 +83,7 @@ public class BaseObjectImpl implements BaseObject
 	 *
 	 * @return
 	 */
-	public int hashCode()
+	public int hashCode_donotoverride()
 	{
 		/**
 		 * Implementation Rationale:
@@ -152,6 +152,9 @@ public class BaseObjectImpl implements BaseObject
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/08/07 20:49:57  schroedn
+ * HISTORY      : New Feature, Primary Key and Lazy/Eager functions added to MMS
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/16 18:03:46  wangeug
  * HISTORY      : change UIUID to xmlPath
  * HISTORY      :
