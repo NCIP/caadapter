@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.8 2007-10-04 18:08:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.9 2007-10-09 21:00:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-10-04 18:08:48 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-10-09 21:00:13 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -79,7 +79,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.8 2007-10-04 18:08:48 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.9 2007-10-09 21:00:13 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -158,7 +158,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 					GeneralUtilities.setCursorWaiting(mainFrame);
 					System.out.println(".finished()..action Name:"+actionName);
 					validatorResults = hl7Panel.generateMappingMessages(dataFile, mapFile);
-					System.out.println(".finished()..hl7Panel message:"+hl7Panel.getV3MessageList());
+					System.out.println(".finished()..hl7Panel message:"+hl7Panel.getMessageList());
 					everythingGood = handleValidatorResults(validatorResults);
 				}
 				catch (Throwable e1)
@@ -265,6 +265,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/10/04 18:08:48  wangeug
+ * HISTORY      : verify resource based on module
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/09/19 16:42:05  wangeug
  * HISTORY      : authorized user request
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.2 2007-07-26 13:38:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.3 2007-10-09 21:00:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,8 +58,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-26 13:38:49 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-09 21:00:13 $
  */
 public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 {
@@ -75,7 +75,7 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.2 2007-07-26 13:38:49 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.3 2007-10-09 21:00:13 wangeug Exp $";
 
 	protected transient HL7MessagePanel hl7Panel;
 
@@ -115,8 +115,14 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 	 */
 	public boolean doAction(ActionEvent e) throws Exception
 	{
-		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hl7Panel, //getUIWorkingDirectoryPath(),
+		File file =null;
+		if (hl7Panel.getMessageFileType()==HL7MessagePanel.MESSAGE_PANEL_CSV)
+			file=DefaultSettings.getUserInputOfFileFromGUI(this.hl7Panel, //getUIWorkingDirectoryPath(),
+					Config.CSV_DATA_FILE_DEFAULT_EXTENSTION, "Save As...", true, true);
+		else
+			file=DefaultSettings.getUserInputOfFileFromGUI(this.hl7Panel, //getUIWorkingDirectoryPath(),
 				Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
+			
 		if (file != null)
 		{
 			setSuccessfullyPerformed(processSaveFile(file));
@@ -140,20 +146,28 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 		boolean oldChangeValue = hl7Panel.isChanged();
 		try
 		{
-			List<XMLElement> messageList = hl7Panel.getV3MessageList();
+			List messageList = hl7Panel.getMessageList();
 			int size = messageList==null ? 0 : messageList.size();
+			String saveFileExt=Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION;
+			if (hl7Panel.getMessageFileType()==HL7MessagePanel.MESSAGE_PANEL_CSV)
+				saveFileExt=Config.CSV_DATA_FILE_DEFAULT_EXTENSTION;
 			java.util.List<java.io.File> fileList = FileUtil.constructHL7V3MessageFileNames(file, size,
-					Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, true);
+					saveFileExt, true);
 			for(int i=0; i<size; i++)
 			{
-//				TransformationResult transformationResult = (TransformationResult) messageList.get(i);
-				XMLElement transformationResult =  messageList.get(i);
-				String message = transformationResult.toXML().toString();//.getHl7V3MessageText();
+				Object messageResult =  messageList.get(i);
+				String message =null;
+				if (messageResult instanceof XMLElement)
+					message=((XMLElement)messageResult).toXML().toString();//.getHl7V3MessageText();
+				else if (messageResult instanceof TransformationResult)
+					message=((TransformationResult)messageResult).getMessageText();
+				if (messageResult==null)
+					continue;
+				
 				File messageFile = fileList.get(i);
 				fw = new FileWriter(messageFile);
 				bw = new BufferedWriter(fw);
-//				HL7V3MessageLoader loader = new HL7V3MessageLoader();
-//				loader.unLoadData(bw, messageList);
+
 				bw.write(message);
 				bw.newLine();
 				bw.flush();
@@ -174,12 +188,9 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 		}
 		catch(Throwable e)
 		{
-//			reportThrowableToUI(e, hl7Panel);
-			//restore the change value since something occurred and believe the save process is aborted.
 			hl7Panel.setChanged(oldChangeValue);
 			//rethrow the exeception
 			throw new Exception(e);
-//			return false;
 		}
 		finally
 		{
@@ -197,6 +208,9 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/26 13:38:49  wangeug
+ * HISTORY      : display a list of HL7 message with the HL7 message panel
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

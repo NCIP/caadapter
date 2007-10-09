@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.18 2007-10-09 18:20:00 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.19 2007-10-09 21:00:32 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -89,8 +89,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2007-10-09 18:20:00 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2007-10-09 21:00:32 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -109,6 +109,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private JScrollPane scrollPane = null;
     private ValidationMessagePane validationMessagePane = null;
     private boolean dataChanged=false;
+    private int messageFileType=0;
+    public static int MESSAGE_PANEL_HL7=0;
+    public static int MESSAGE_PANEL_CSV=1;
 	public HL7MessagePanel()
     {
 		initializeMessageList();
@@ -230,26 +233,29 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		initializeMessageList();
 		changeDisplay();
 	}
-
-    public java.util.List <XMLElement> getV3MessageList()
+	/**
+	 * The messageList may contain a list of HL7 V3 message or a list of CSV data set
+	 * @return
+	 */
+    public java.util.List  getMessageList()
     {
-    	List<XMLElement> v3MessageList=new ArrayList<XMLElement>();
+    	List<Object> v3MessageList=new ArrayList<Object>();
     	for (Object message:messageList)
     	{
-    		if (message instanceof XMLElement )
-    			v3MessageList.add((XMLElement)message);
+//    		if (message instanceof XMLElement )
+    			v3MessageList.add(message);
     	}
         return v3MessageList;
     }
 
-    private void setV3MessageResultList(java.util.List<XMLElement> newV3MessageList)
+    private void setMessageResultList(java.util.List newMessageList)
     {
-    	if (newV3MessageList==null||newV3MessageList.isEmpty())
+    	if (newMessageList==null||newMessageList.isEmpty())
     		return;    		
     	initializeMessageList();
-    	for(XMLElement hlv3Msg:newV3MessageList)
+    	for(Object oneMsg:newMessageList)
     	{
-    		messageList.add(hlv3Msg);
+    		messageList.add(oneMsg);
     	}
     	currentCount = 1;
 		changeDisplay();
@@ -359,7 +365,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 									progressor.close();
 								}
 								else
-									listnerPane.setV3MessageResultList(xmlElements);
+									listnerPane.setMessageResultList(xmlElements);
 					    	} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -369,17 +375,19 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				);
 				localThread.start();
 				this.setChanged(true);
+				setMessageFileType(MESSAGE_PANEL_HL7);
 				return validatorResults;
-				
 			}
 			else
 			{
 				//Hl7 V3 to CSV
 				TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(dataFile,mapFile);
 				List<TransformationResult> transResults=svc.process();
-				setMessageText(transResults.get(0).getMessageText());
+//				setMessageText(transResults.get(0).getMessageText());
+				this.setMessageResultList(transResults);
 				validationMessagePane.setValidatorResults(transResults.get(0).getValidatorResults());
 				this.setChanged(true);
+				setMessageFileType(MESSAGE_PANEL_CSV);
 			}
 		}
 		catch (Exception e)
@@ -613,10 +621,21 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		}
 		return result;
 	}
+
+	public int getMessageFileType() {
+		return messageFileType;
+	}
+
+	public void setMessageFileType(int messageFileType) {
+		this.messageFileType = messageFileType;
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2007/10/09 18:20:00  wangeug
+ * HISTORY      : warning to save HL7 message before close panel
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2007/09/11 18:36:54  wangeug
  * HISTORY      : handle null in generating xml hl7 message
  * HISTORY      :
