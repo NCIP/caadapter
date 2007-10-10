@@ -58,7 +58,7 @@
     <target name="compile" depends="init,download,check.refLib" description="compile the source">
         <javac destdir="${module.build.dir}"
                classpathref="module.class.path"
-               fork="yes" debug="on" target="1.5" listfiles="true">
+               fork="yes" debug="on" target="1.5">
             <src path="${module.src.dir}"/>
             <exclude name="test/**"/>
         </javac>
