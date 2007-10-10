@@ -44,7 +44,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.11 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.12 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -52,7 +52,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     private JTextField dataFileInputField = null;
     private JTextField csvDirInoutField = null;
     public static final String DATA_FILE_BROWSE_MODE = "Data File";
-    public static final String MAP_FILE_BROWSE_MODE = "Map Specification";
+    public static final String MAP_FILE_BROWSE_MODE = "Choose save directoy";
     private static final String OK_COMMAND = "Process";
     private static final String CANCEL_COMMAND = "Cancel";
     private File selFile = null;
