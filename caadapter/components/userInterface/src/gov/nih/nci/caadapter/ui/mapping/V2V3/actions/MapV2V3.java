@@ -1,5 +1,5 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.6 2007-10-10 18:45:30 jayannah Exp $
+ * <!-- LICENSE_TEXT_START --> $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/MapV2V3.java,v 1.7 2007-10-10 18:47:51 jayannah Exp $
  * ****************************************************************** COPYRIGHT NOTICE ****************************************************************** The
  * caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute.
  * To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. Redistribution
@@ -37,7 +37,7 @@ import java.io.File;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date: 2007-10-10 18:45:30 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date: 2007-10-10 18:47:51 $
  */
 @SuppressWarnings("serial")
 public class MapV2V3 extends JDialog implements ActionListener {
@@ -85,7 +85,7 @@ public class MapV2V3 extends JDialog implements ActionListener {
     AbstractMainFrame callingFrame;
 
     public MapV2V3(AbstractMainFrame _callingFrame) {
-        new TestWindow(_callingFrame);        
+        new NewV2V3GUI(_callingFrame);        
     }
     public MapV2V3(AbstractMainFrame _callingFrame, String deprected) {
         callingFrame = _callingFrame;
@@ -365,6 +365,9 @@ public class MapV2V3 extends JDialog implements ActionListener {
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.6  2007/10/10 18:45:30  jayannah
+ * HISTORY : Addressed the GUI item changes only
+ * HISTORY :
  * HISTORY : Revision 1.5  2007/10/03 18:47:03  umkis
  * HISTORY : Protect from crashing and display a fit message when resouce.zip is absent.
  * HISTORY :
