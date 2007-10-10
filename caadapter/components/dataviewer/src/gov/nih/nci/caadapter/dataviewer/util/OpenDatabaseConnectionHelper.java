@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-09-13 13:53:56 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-10-10 19:50:02 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -58,13 +58,13 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
     public OpenDatabaseConnectionHelper(JFrame owner) throws Exception {
         try {
             if (System.getProperty("debug").equalsIgnoreCase("true")) {
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++ debugging");
+                //System.out.println("+++++++++++++++++++++++++++++++++++++++++ debugging");
                 String temp = System.getProperty("java.library.path");
                 EmptyStringTokenizer emt = new EmptyStringTokenizer(temp, ";");
                 while (emt.hasMoreTokens()) {
                     System.out.println("path is : " + emt.nextToken());
                 }
-                System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+               // System.out.println("+++++++++++++++++++++++++++++++++++++++++");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -312,7 +312,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 
     public void focusGained(FocusEvent e) {
         //To change body of implemented methods use File | Settings | File Templates.
-        System.out.println("kjsdhfkjhsdfdsf");
+        //System.out.println("kjsdhfkjhsdfdsf");
     }
 
     public void focusLost(FocusEvent e) {
@@ -667,6 +667,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/09/13 13:53:56  jayannah
+ * Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
+ *
  * Revision 1.7  2007/09/13 02:48:19  jayannah
  * Made a fix to position the window at the centre of the screen
  *
