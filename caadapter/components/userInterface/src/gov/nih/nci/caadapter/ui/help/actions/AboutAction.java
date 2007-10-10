@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.2 2007-10-10 19:58:17 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,10 +48,10 @@ import java.awt.event.ActionEvent;
  * The class defines the about action for the whole HL7SDK application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-10 19:58:17 $
  */
 public class AboutAction extends AbstractContextAction
 {
@@ -73,7 +73,7 @@ public class AboutAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.1 2007-04-03 16:17:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.2 2007-10-10 19:58:17 umkis Exp $";
 
 	private JFrame mainFrame = null;
 
@@ -109,7 +109,8 @@ public class AboutAction extends AbstractContextAction
 		AboutWindow cc = new AboutWindow();
 		DefaultSettings.centerWindow(cc);
 		cc.setVisible(true);
-		setSuccessfullyPerformed(true);
+        cc.setAlwaysOnTop(true);
+        setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
 	}
 
@@ -126,6 +127,9 @@ public class AboutAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2006/08/02 18:44:20  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.7 2007-09-28 19:38:30 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.8 2007-10-10 19:58:17 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-09-28 19:38:30 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-10-10 19:58:17 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.7 2007-09-28 19:38:30 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.8 2007-10-10 19:58:17 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -175,11 +175,11 @@ public class AboutWindow extends JWindow //implements ActionListener
           (
             new MouseListener()
               {
-                public void mouseExited(MouseEvent e) { }
-                public void mouseReleased(MouseEvent e) {}
-                public void mouseEntered(MouseEvent e) { }
-                public void mousePressed(MouseEvent e) {}
-                public void mouseClicked(MouseEvent e) {thisWindow.dispose();}
+                public void mouseExited(MouseEvent e) {}//System.out.println(" URL -- F1 : mouseExited"); }
+                public void mouseReleased(MouseEvent e) {}//System.out.println(" URL -- F2 : mouseReleased");}
+                public void mouseEntered(MouseEvent e) {}//System.out.println(" URL -- F3 : mouseEntered"); }
+                public void mousePressed(MouseEvent e) {}//System.out.println(" URL -- F4 : mousePressed");}
+                public void mouseClicked(MouseEvent e) {}//System.out.println(" URL -- F5 : mouseClicked");}//thisWindow.dispose();}
               }
           );
 
@@ -192,24 +192,36 @@ public class AboutWindow extends JWindow //implements ActionListener
                     if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
                       {
                         JEditorPane pane = (JEditorPane) e.getSource();
+                          //System.out.println(" URL -- Y");
                         if (e instanceof HTMLFrameHyperlinkEvent)
                           {
                             HTMLFrameHyperlinkEvent  evt = (HTMLFrameHyperlinkEvent)e;
                             HTMLDocument doc = (HTMLDocument)pane.getDocument();
                             doc.processHTMLFrameHyperlinkEvent(evt);
+                              //System.out.println(" URL -- Z");
                           }
                         else
                           {
                             String sURL = (e.getURL()).toString();
-                            if ((sURL.toUpperCase()).indexOf(EXIT_HYPERLINK_IN_SOURCE_HTML_FILE) > 0) thisWindow.dispose();
+                              //System.out.println(" URL : " + sURL);
+                            if ((sURL.toUpperCase()).indexOf(EXIT_HYPERLINK_IN_SOURCE_HTML_FILE) > 0)
+                            {
+                                //System.out.println(" URL -- A");
+                                thisWindow.dispose();
+                            }
                             else if ((sURL.toUpperCase()).indexOf(LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE.toUpperCase()) > 0)
                             {
+
+                                //System.out.println(" URL -- B");
+                                thisWindow.dispose();
                                 String licenseHTML_URL = generateLicenseInformationHTML(LICENSE_DIRECTORY_PATH);
                                 if (licenseHTML_URL.startsWith(ERROR_TAG)) new HTMLViewer(commonURIPath + LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE + ".html", 700, 500, "caadapter License Information");
                                 else new HTMLViewer(licenseHTML_URL, 700, 500, "caAdapter License Information");
                             }
                             else
                               {
+                                  //System.out.println(" URL -- C");
+                                  thisWindow.dispose();
                                   edu.stanford.ejalbert.BrowserLauncher brLauncher = null;
                                   try
                                   {
@@ -460,19 +472,24 @@ public class AboutWindow extends JWindow //implements ActionListener
         AboutWindow tt;
         WinCloseExit(AboutWindow st) { tt = st; }
 //        public void windowClosing(WindowEvent e)  {}
-        public void windowClosing(WindowEvent e)  {tt.dispose();}
-        public void windowClosed(WindowEvent e)  {}
-        public void windowOpened(WindowEvent e) {}
-        public void windowDeiconified(WindowEvent e) {}
-        public void windowIconified(WindowEvent e) {}
-        public void windowActivated(WindowEvent e) {}
-        public void windowDeactivated(WindowEvent e) {}
+        public void windowClosing(WindowEvent e)  {}//System.out.println(" URL -- A1 : windowClosing");}//tt.dispose();}
+        public void windowClosed(WindowEvent e)  {}//System.out.println(" URL -- A2 : windowClosed");}
+        public void windowOpened(WindowEvent e) {}//System.out.println(" URL -- A3 : windowOpened");}
+        public void windowDeiconified(WindowEvent e) {}//System.out.println(" URL -- A4 : windowDeiconified");}
+        public void windowIconified(WindowEvent e) {}//System.out.println(" URL -- A5 : windowIconified");}
+        public void windowActivated(WindowEvent e) {}//System.out.println(" URL -- A6 : windowActivated");}
+        public void windowDeactivated(WindowEvent e) {}//System.out.println(" URL -- A7 : windowDeactivated");}
+        public void windowLostFocus(WindowEvent e) {}//System.out.println(" URL -- A7 : windowLostFocus");}
+        public void windowGainedFocus(WindowEvent e) {}//System.out.println(" URL -- A7 : windowGainedFocus(");}
 //        public void windowDeactivated(WindowEvent e) {tt.dispose();  	}
       
       }
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/09/28 19:38:30  umkis
+ * HISTORY      : Upgrade v2 meta collector
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/09/07 14:48:16  umkis
  * HISTORY      : Temporary files will be automatically deleted when system exit.
  * HISTORY      :
