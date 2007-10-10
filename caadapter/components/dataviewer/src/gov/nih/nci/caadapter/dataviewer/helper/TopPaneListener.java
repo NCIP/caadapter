@@ -19,8 +19,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.6 $
- *          $Date: 2007-09-13 13:53:56 $
+ *          $Revision: 1.7 $
+ *          $Date: 2007-10-10 19:48:18 $
  */
 public class TopPaneListener implements ChangeListener {
     private MainDataViewerFrame mD;
@@ -43,7 +43,7 @@ public class TopPaneListener implements ChangeListener {
                             try {
                                 ((Querypanel) mD.get_tPane().getComponentAt(_int)).get_queryBuilder().setQueryModel(qm);
                             } catch (Exception e) {
-                                System.out.println("No worries!! " + e.getMessage());
+                                //System.out.println("No worries!! " + e.getMessage());
                             }
                         }
                     });
@@ -80,6 +80,9 @@ public class TopPaneListener implements ChangeListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.6  2007/09/13 13:53:56  jayannah
+ * Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
+ *
  * Revision 1.5  2007/09/11 15:33:25  jayannah
  * made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
  *

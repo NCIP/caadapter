@@ -28,7 +28,7 @@ import java.util.ArrayList;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date: 2007-07-19 18:33:32 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date: 2007-10-10 19:47:04 $
  */
 public class EmptyStringTokenizer
 {
@@ -179,13 +179,16 @@ public class EmptyStringTokenizer
         while (t.hasMoreTokens())
         {
             String token = t.nextToken();
-            System.out.println("times" + i + " - " + token);
+            //System.out.println("times" + i + " - " + token);
             i++;
         }
     }
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.3  2007/07/19 18:33:32  jayannah
+ * HISTORY : Changes for 4.0 release
+ * HISTORY :
  * HISTORY : Revision 1.2  2007/05/09 19:44:17  jayannah
  * HISTORY : added update method
  * HISTORY :

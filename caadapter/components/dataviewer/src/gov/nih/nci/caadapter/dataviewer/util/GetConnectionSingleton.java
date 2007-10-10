@@ -12,8 +12,8 @@ import java.sql.SQLException;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.5 $
+ *          $Date: 2007-10-10 19:48:49 $
  */
 public class GetConnectionSingleton {
     private static GetConnectionSingleton singletonObject=null;
@@ -64,7 +64,7 @@ public class GetConnectionSingleton {
     }
 
     public static synchronized void closeConnection() {
-        System.out.println("close connection called");
+        //System.out.println("close connection called");
         try {
             if ((connection != null) && (!connection.isClosed())) {
                 connection.close();
@@ -93,4 +93,7 @@ public class GetConnectionSingleton {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */
