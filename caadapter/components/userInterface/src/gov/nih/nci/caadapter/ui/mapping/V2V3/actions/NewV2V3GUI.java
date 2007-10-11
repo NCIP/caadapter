@@ -19,8 +19,8 @@ import java.io.File;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.1 $
- *          $Date: 2007-10-10 18:48:42 $
+ *          $Revision: 1.2 $
+ *          $Date: 2007-10-11 18:04:31 $
  */
 public class NewV2V3GUI extends JDialog implements ActionListener {
     //
@@ -48,22 +48,23 @@ public class NewV2V3GUI extends JDialog implements ActionListener {
     private File scsSaveFile = null;
     private String _saveCSV = null;
     private String _saveSCS = null;
-    AbstractMainFrame callingFrame;
+    private AbstractMainFrame callingFrame = null;
+    String directoryPath = null;
 
     //
-    public NewV2V3GUI( AbstractMainFrame _callingFrame) {
+    public NewV2V3GUI(AbstractMainFrame _callingFrame) {
         super(_callingFrame, true);
-        callingFrame = _callingFrame;        
+        directoryPath = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"v2v3Mapping";
+        System.out.println(FileUtil.getWorkingDirPath());
+        callingFrame = _callingFrame;
         this.setLayout(new BorderLayout());
         this.setTitle("Generate SCS & CSV Files");
         initialize();
-        //
-        HL7directoryLoc = new JFileChooser();
+        HL7directoryLoc = new JFileChooser(FileUtil.getV2DataDirPath());
         HL7directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        //
-        HL7V24Message = new JFileChooser();
-        saveCSVLocation = new JFileChooser();
-        scsSaveFileLocation = new JFileChooser();
+        HL7V24Message = new JFileChooser(directoryPath);
+        saveCSVLocation = new JFileChooser(directoryPath);
+        scsSaveFileLocation = new JFileChooser(directoryPath);
         //
         pack();
         setVisible(true);
@@ -134,6 +135,7 @@ public class NewV2V3GUI extends JDialog implements ActionListener {
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(southPanel, BorderLayout.SOUTH);
         this.setLocation(300, 300);
+        HL7ResourceDirInputField.setText(FileUtil.getV2DataDirPath());
     }
 
     public static void main(String[] args) {
@@ -145,7 +147,7 @@ public class NewV2V3GUI extends JDialog implements ActionListener {
         int returnVal = -1;
         CaadapterFileFilter filter;
         switch (command) {
-            case 1:
+            case 1:                
                 returnVal = HL7directoryLoc.showOpenDialog(this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     HL7directory = HL7directoryLoc.getSelectedFile();
@@ -214,7 +216,6 @@ public class NewV2V3GUI extends JDialog implements ActionListener {
                 doProcess();
                 break;
             case 7:
-                System.out.println("cancel");
                 this.dispose();
                 break;
             default:
