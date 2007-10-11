@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVTreeChangeAdapter.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVTreeChangeAdapter.java,v 1.2 2007-10-11 20:18:51 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,10 +59,10 @@ import java.awt.event.MouseEvent;
  * so as to change property display accordingly.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-10-11 20:18:51 $
  */
 public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionListener, TreeModelListener, FocusListener
 {
@@ -240,7 +240,8 @@ public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionL
 		//Log.logInfo(this, "CSVTreeChangeAdapter.treeStructureChanged() is called");
 		parentPanel.setPropertiesPaneVisible(false);
 		parentPanel.setMessagePaneVisible(false);
-		this.treeModelChanged = true;
+        parentPanel.getPropertiesPane().setDisplayData((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());      
+        this.treeModelChanged = true;
 	}
 
 	/**
@@ -315,6 +316,9 @@ public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.29  2006/10/19 21:01:18  wuye
  * HISTORY      : Fixed the lose focus bug when delete an segment or attribute from scs tree
  * HISTORY      :
