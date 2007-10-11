@@ -36,9 +36,9 @@ import org.jdom.output.XMLOutputter;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.5 $
- * @date $Date: 2007-10-05 20:10:47 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2007-10-11 04:23:51 $
  * @since caAdapter v4.0
  */
 
@@ -79,7 +79,8 @@ public class MapParser {
 		    }
 		    for(int i = 0; i< componentList.size();i++)  {
 		    	Element component = componentList.get(i);
-		    	if (component.getAttribute("type")==null)
+                //System.out.println("  &&&& : " + component.getAttribute("type"));
+                if (component.getAttribute("type")==null)
 		    	{
 		    		Message msg = MessageResources.getMessage("MAP10", new Object[]{"Component type is wrong"});
 		            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -93,19 +94,20 @@ public class MapParser {
 		    		h3sFilename = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
 		    	}
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("function")) {
-		    		if (component.getAttribute("name")!=null) {
+
+                    if (component.getAttribute("name")!=null) {
 		    			String kind = null;
 		    			if (component.getAttribute("kind")!=null)
-		    				component.getAttribute("kind").getValue();
+		    				kind = component.getAttribute("kind").getValue();
 		    			String group =null;
 		    			if (component.getAttribute("group")!=null)
-		    				component.getAttribute("group").getValue();
+		    				group = component.getAttribute("group").getValue();
 		    			String name =null;
 		    			if (component.getAttribute("name")!=null)
-		    				component.getAttribute("name").getValue();
+		    				name = component.getAttribute("name").getValue();
 		    			String id =null;
 		    			if (component.getAttribute("id")!=null)
-		    				component.getAttribute("id").getValue();
+		    				id = component.getAttribute("id").getValue();
 		    			
 		    			if (kind == null || group == null || name==null) {
 		    	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file"});
@@ -215,7 +217,8 @@ public class MapParser {
             FunctionMeta functionMeta = f.getFunctionMeta(kind, group, name);
             functionComponent.setMeta(functionMeta);
 
-            if ("constant".equalsIgnoreCase(functionMeta.getFunctionName())) {
+            if ("constant".equalsIgnoreCase(functionMeta.getFunctionName()))
+            {
             	if (datatype == null || datavalue== null) {
     	            Message msg = MessageResources.getMessage("MAP16", new Object[]{"Invalid value for function component in the .map file"});
     	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
@@ -244,8 +247,9 @@ public class MapParser {
 //            metaLookupTable.put(cComponent.getId(), new FunctionMetaLookup(functionMeta));
 //            componentLookupTable.put(cComponent.getId(), functionComponent);
             functions.put("function."+id, functionComponent);
-//            System.out.println("function."+id);
+            //System.out.println(" ***** function. (1) : "+id);
         } catch (Exception e) {
+            //System.out.println(" ***** function. (2) : "+id);
             throw new MappingException(e.getMessage(), e);
         }
     }
