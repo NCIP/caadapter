@@ -49,12 +49,24 @@
 		</jar>
 	</target>
 
+	<target name="ws.client.jar">
+		<javac destdir="../build" 
+			classpath="../referenceLib/axis.jar;../referenceLib/jaxrpc.jar"
+			fork="yes" debug="on">
+			<src path="../demo" />
+			<include name="**/TestCaadapterWebservice.java"/>
+		</javac>
+		<jar destfile="caAdapter_ws_client.jar">
+			<fileset dir="../build" includes="**/TestCaadapterWebservice.class"/>
+		</jar>
+	</target>
+	
 	<target name="compile.demo"  description="compile the source">
 		<javac destdir="../build" 
 				classpathref="execution.class.path"
 				fork="yes" debug="on">
 			<src path="../demo" />
-			<exclude name="test/**"/>
+			<exclude name="**/TestCaadapterWebservice.java"/>
 		</javac>
 	</target>
 	<target name="deploy.webstart"  description="deploy webstart components">
