@@ -45,8 +45,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.16 $
- *          $Date: 2007-10-11 18:51:38 $
+ *          $Revision: 1.17 $
+ *          $Date: 2007-10-11 19:45:43 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -65,7 +65,7 @@ public class QBTransformAction {
         //this(_mainFrame, mappingPanel, "");
         this.con = _con;
         directoryLoc = new JFileChooser(System.getProperty("user.dir"));
-        directoryLoc.setDialogTitle("Transforming file " + mappingPanel.getSaveFile().getName() + ", please choose directory..");
+        //directoryLoc.setDialogTitle("Transforming file " + mappingPanel.getSaveFile().getName() + ", please choose directory..");
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = directoryLoc.showOpenDialog(_mainFrame);
         if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
@@ -76,6 +76,7 @@ public class QBTransformAction {
             RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(_mainFrame, csvMapFileReader.getTargetKeyList());
             fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
         }
+        directoryLoc.setDialogTitle("Please choose the directory to save text files…");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             directory = directoryLoc.getSelectedFile();
             try {
@@ -394,6 +395,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/10/11 18:51:38  jayannah
+ * Added a transformation confirmation message
+ *
  * Revision 1.15  2007/09/19 16:52:12  jayannah
  * added the animated icon to the process so that the user has the sense of a background process
  *
