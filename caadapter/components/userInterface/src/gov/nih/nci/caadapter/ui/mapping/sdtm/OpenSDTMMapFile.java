@@ -5,6 +5,7 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import org.w3c.dom.*;
 
@@ -23,8 +24,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-10-11 18:16:33 $
+ *          $Revision: 1.12 $
+ *          $Date: 2007-10-11 19:43:28 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -122,11 +123,13 @@ public class OpenSDTMMapFile extends JDialog {
                 //directoryLoc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
                 String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
                 directoryLoc = new JFileChooser(_defaultLoc);
+                //directoryLoc.setDialogTitle("Could not find the SCS file, Please choose the location...");
                 this.setTitle(_scsFileName + " not found! Please choose a different file");
                 //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
                 scsFile = new JFileChooser(_defaultLoc);
                 // filter.setDescription("map");
                 scsFile.setFileFilter(filter);
+                scsFile.setDialogTitle("Could not find the SCS file, Please choose the location...");
                 int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     scsFileChosen = scsFile.getSelectedFile();
@@ -152,11 +155,13 @@ public class OpenSDTMMapFile extends JDialog {
             filter.addExtension("xml");
             String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
             directoryLoc = new JFileChooser(_defaultLoc);
+            //directoryLoc.setDialogTitle("Please select the define.xml file …");
             this.setTitle(_xmlFileName + " not found! Please choose a different file");
             //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
             scsFile = new JFileChooser(_defaultLoc);
             // filter.setDescription("map");
             scsFile.setFileFilter(filter);
+            scsFile.setDialogTitle("Please select the define.xml file …");
             int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 scsFileChosen = scsFile.getSelectedFile();
@@ -364,6 +369,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/10/11 18:16:33  jayannah
+ * Changed the directory of the browse action
+ *
  * Revision 1.10  2007/08/31 21:23:33  jayannah
  * commented out the system outs
  *
