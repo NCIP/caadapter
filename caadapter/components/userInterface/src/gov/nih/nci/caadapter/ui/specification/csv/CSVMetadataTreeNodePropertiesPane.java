@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.2 2007-07-10 17:33:10 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.3 2007-10-11 17:24:54 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,10 +54,10 @@ import java.awt.event.ActionListener;
  * Further this panel will provide navigation support through buttons.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-10 17:33:10 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-11 17:24:54 $
  */
 public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -215,7 +215,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 	{
         if(isDataChanged())
 		{
-			int userChoice = JOptionPane.showConfirmDialog(parentController, "This CSV specification has been changed. Would you like to save it before moving to another one?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int userChoice = JOptionPane.showConfirmDialog(parentController, "Some properties of this CSV node has been changed. \nWould you like to APPLY this change before leaving this node or doing another action?", "Not Applied Change", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+            //int userChoice = JOptionPane.showConfirmDialog(parentController, "This CSV specification has been changed. Would you like to save it before moving to another one?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (userChoice == JOptionPane.YES_OPTION)
 			{
 				applyUserChanges();
@@ -353,6 +355,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/10 17:33:10  wangeug
+ * HISTORY      : update code:reset propertyPane/validationPane with JTabbedPane
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
