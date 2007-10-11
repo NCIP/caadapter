@@ -19,8 +19,8 @@ import java.io.File;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.2 $
- *          $Date: 2007-10-11 18:04:31 $
+ *          $Revision: 1.3 $
+ *          $Date: 2007-10-11 19:29:12 $
  */
 public class NewV2V3GUI extends JDialog implements ActionListener {
     //
@@ -263,8 +263,11 @@ public class NewV2V3GUI extends JDialog implements ActionListener {
                 SCSSaveFileName = SCSSaveFileName + ".scs";
             }
         }
+        System.out.println(HL7ResourceDirInputField.getText());
+        System.out.println(HL7MessageFileInputField.getText());
+        System.out.println();       
         try {
-            if (new gov.nih.nci.caadapter.ui.mapping.V2V3.MappingMain().execute(HL7directory.getAbsolutePath(), hl7MessageFile.getAbsolutePath(), CSVSaveFileName, SCSSaveFileName)) {
+            if (new gov.nih.nci.caadapter.ui.mapping.V2V3.MappingMain().execute(HL7ResourceDirInputField.getText(), hl7MessageFile.getAbsolutePath(), CSVSaveFileName, SCSSaveFileName)) {
                 this.dispose();
                 JOptionPane.showMessageDialog(callingFrame, "Created the file \"" + CSVSaveFileName + "\" successfully" + newline + "Created the file \"" + SCSSaveFileName + "\" successfully");
             } else {
