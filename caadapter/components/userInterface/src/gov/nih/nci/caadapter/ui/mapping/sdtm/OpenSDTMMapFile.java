@@ -1,6 +1,7 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
@@ -22,8 +23,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-08-31 21:23:33 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-10-11 18:16:33 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -118,14 +119,15 @@ public class OpenSDTMMapFile extends JDialog {
             if (!new File(_scsFileName).exists()) {
                 CaadapterFileFilter filter = new CaadapterFileFilter();
                 filter.addExtension("scs");
-                String _defaultLoc = System.getProperty("user.dir") + "\\workingspace\\examples";
+                //directoryLoc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
+                String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
                 directoryLoc = new JFileChooser(_defaultLoc);
                 this.setTitle(_scsFileName + " not found! Please choose a different file");
                 //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
                 scsFile = new JFileChooser(_defaultLoc);
                 // filter.setDescription("map");
                 scsFile.setFileFilter(filter);
-                int returnVal = scsFile.showOpenDialog(OpenSDTMMapFile.this);
+                int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     scsFileChosen = scsFile.getSelectedFile();
                     _scsFileName = scsFileChosen.toString();
@@ -148,14 +150,14 @@ public class OpenSDTMMapFile extends JDialog {
         if (!new File(_xmlFileName).exists()) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("xml");
-            String _defaultLoc = System.getProperty("user.dir") + "\\workingspace\\examples";
+            String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
             directoryLoc = new JFileChooser(_defaultLoc);
             this.setTitle(_xmlFileName + " not found! Please choose a different file");
             //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
             scsFile = new JFileChooser(_defaultLoc);
             // filter.setDescription("map");
             scsFile.setFileFilter(filter);
-            int returnVal = scsFile.showOpenDialog(OpenSDTMMapFile.this);
+            int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 scsFileChosen = scsFile.getSelectedFile();
                 _xmlFileName = scsFileChosen.toString();
@@ -362,6 +364,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/08/31 21:23:33  jayannah
+ * commented out the system outs
+ *
  * Revision 1.9  2007/08/31 21:10:28  jayannah
  * handled user cancel during the password input and transformation
  *
