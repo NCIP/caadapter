@@ -22,6 +22,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm;
  */
 
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -44,7 +45,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.12 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.13 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -130,7 +131,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 
     private void handleButtonAction(AbstractMainFrame _callingFrame) {
         try {
-            JFileChooser fc = new JFileChooser(Config.CAADAPTER_HOME_DIR_TAG);
+            JFileChooser fc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("map");
             filter.setDescription("map");
