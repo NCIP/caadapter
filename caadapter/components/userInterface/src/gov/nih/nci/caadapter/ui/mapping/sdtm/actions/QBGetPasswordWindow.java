@@ -41,12 +41,12 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener {
         //
         JPanel centerPan = new JPanel();
         centerPan.setLayout(new GridLayout(5, 2));
-        centerPan.add(new JLabel("Host Name :"));
+        centerPan.add(new JLabel("Host URL :"));
         String url = empt.getTokenAt(0);
         JTextField one = new JTextField(url);
         one.setEditable(false);
         centerPan.add(one);
-        centerPan.add(new JLabel("User :"));
+        centerPan.add(new JLabel("User ID:"));
         String user = empt.getTokenAt(2);
         JTextField two = new JTextField(user);
         two.setEditable(false);
@@ -64,11 +64,11 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener {
                 return;
             }
         }
-        centerPan.add(new JLabel("Driver :"));
+        centerPan.add(new JLabel("Database Driver :"));
         JTextField three = new JTextField(empt.getTokenAt(1));
         three.setEditable(false);
         centerPan.add(three);
-        centerPan.add(new JLabel("Schema :"));
+        centerPan.add(new JLabel("Schema Name:"));
         JTextField four = new JTextField(empt.getTokenAt(3));
         four.setEditable(false);
         centerPan.add(four);

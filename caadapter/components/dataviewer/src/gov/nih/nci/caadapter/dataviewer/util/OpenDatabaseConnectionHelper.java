@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-10-10 19:50:02 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-10-11 20:01:31 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -95,10 +95,10 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         p1.add(new JLabel("User ID: "));
         p1.add(_userIdField = new JTextField());
         //
-        p1.add(new JLabel("Enter password"));
+        p1.add(new JLabel("Password"));
         p1.add(_pwdField = new JPasswordField());
         //
-        p1.add(new JLabel("Enter your Schema"));
+        p1.add(new JLabel("Schema Name"));
         p1.add(_schemaField = new JTextField());
         //
         /*
@@ -667,6 +667,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/10/10 19:50:02  jayannah
+ * Commented System outs
+ *
  * Revision 1.8  2007/09/13 13:53:56  jayannah
  * Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
  *
