@@ -118,7 +118,7 @@
     	<antcall target="add-license"/>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 				excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
-				etc/schemas/**, docs/GME/**, docs/v3.3-4.0/*.mpp,  docs/v3.3-4.0/*Scope*.doc, referenceLib/**">
+				etc/schemas/**, docs/GME/**, docs/v4.0/*.mpp,  docs/v4.0/*Scope*.doc, referenceLib/**">
 		</zip>
 	<antcall target="dist.prepare" />
     </target>
