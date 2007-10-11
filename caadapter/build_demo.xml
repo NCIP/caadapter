@@ -32,8 +32,8 @@
 			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
 				lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,
 				lib/sqleonardo.jar, lib/ostermill*, lib/jgraph.jar,lib/junit*.jar" />
-			<zipfileset dir=".." includes="docs/help/**, docs/v3.3-4.0/*.doc"
-				excludes="docs/v3.3-4.0/*Scope*.doc"/>
+			<zipfileset dir=".." includes="docs/help/**, docs/v4.0/*.doc"
+				excludes="docs/v4.0/*Scope*.doc"/>
 		</zip>
     </target>
 
