@@ -45,8 +45,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.15 $
- *          $Date: 2007-09-19 16:52:12 $
+ *          $Revision: 1.16 $
+ *          $Date: 2007-10-11 18:51:38 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -61,7 +61,7 @@ public class QBTransformAction {
         This constructor is used by the mapping panel
 
      */
-    public QBTransformAction(AbstractMainFrame _mainFrame, final Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception {
+    public QBTransformAction(final AbstractMainFrame _mainFrame, final Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception {
         //this(_mainFrame, mappingPanel, "");
         this.con = _con;
         directoryLoc = new JFileChooser(System.getProperty("user.dir"));
@@ -86,6 +86,7 @@ public class QBTransformAction {
                         try {
                             processTransform4SQLStatments(mappingPanel.getSaveFile().getAbsolutePath(), mappingPanel.getDefineXMLLocation(), directory.getAbsolutePath().toString());
                             queryWaitDialog.dispose();
+                            JOptionPane.showMessageDialog(_mainFrame, "Transformation was successful", "Transfomation...", JOptionPane.INFORMATION_MESSAGE);
                         } catch (Exception e) {
                             if (queryWaitDialog != null)
                                 queryWaitDialog.dispose();
@@ -393,6 +394,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/09/19 16:52:12  jayannah
+ * added the animated icon to the process so that the user has the sense of a background process
+ *
  * Revision 1.14  2007/09/13 15:37:42  jayannah
  * handled null pointer exception when the preference value doe not exist
  *
