@@ -100,14 +100,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v3.2 revision $Revision: 1.28 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.29 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.28 2007-09-21 04:41:08 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.29 2007-10-11 19:06:26 schroedn Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -300,8 +300,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 					myGenerator.setOutputDirectory(fileChooser
 							.getSelectedFile().getAbsolutePath());
-					myGenerator.generateHBMFiles(fileFromPanel
-							.getAbsolutePath());
+					myGenerator.generateHBMFiles(fileFromPanel.getAbsolutePath().replaceAll(".xmi", ".map"));
 					JOptionPane.showMessageDialog(getParent(),
 							"HBM files are generated at "
 									+ fileChooser.getSelectedFile()
@@ -1085,6 +1084,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.28  2007/09/21 04:41:08  wuye
+ * HISTORY : removed system.out
+ * HISTORY :
  * HISTORY : Revision 1.27  2007/09/20 16:40:14  schroedn
  * HISTORY : License text
  * HISTORY :
