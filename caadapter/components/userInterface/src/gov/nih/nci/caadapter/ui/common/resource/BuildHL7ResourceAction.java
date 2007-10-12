@@ -87,11 +87,8 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     		else if (getName().equals( COMMAND_BUILD_V2))
     		{
 //		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
-    			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V3 Specification"
+    			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V2 Specification"
     					,HL7AuthorizationDialog.HL7_V2_WARNING_CONTEXT_FILE_PATH);
-    			DefaultSettings.centerWindow(dialog);
-    			dialog.setViewOnly(true);
-		        dialog.setVisible(true);
  
     		}
             else if (getName().equals( COMMAND_BUILD_V2_CORE))
