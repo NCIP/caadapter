@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.15 2007-10-04 18:08:27 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.16 2007-10-12 16:12:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.15 $
- * @date $$Date: 2007-10-04 18:08:27 $
+ * @version $Revision: 1.16 $
+ * @date $$Date: 2007-10-12 16:12:16 $
  * @since caAdapter v1.2
  */
 
@@ -221,7 +221,8 @@ public class CaadapterUtil {
     		if (requiredRsc!=null)
 	    		for (String rsrc:requiredRsc)
 	        	{
-	        		if (!foundRsrc.contains(rsrc))
+	        		if (!foundRsrc.contains(rsrc)
+	        				&&!missRsrc.contains(rsrc))
 	        			missRsrc.add(rsrc);
 	        	}
     	}
@@ -331,6 +332,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2007/10/04 18:08:27  wangeug
+ * HISTORY      : verify resource based on module
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2007/09/19 20:30:59  wangeug
  * HISTORY      : read caadapter-commponts.properties
  * HISTORY      :
