@@ -46,7 +46,8 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 			contextFilePath=DEFAULT_CONTEXT_FILE_PATH;
 		else
 			contextFilePath=filePath;
-
+		if (contextFilePath.equals(HL7_V2_WARNING_CONTEXT_FILE_PATH))
+			setViewOnly(true);
 		setSize(600, 250);
 		enableEvents(AWTEvent.WINDOW_EVENT_MASK);		
 		initUI();
@@ -127,19 +128,19 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 		rtnPanel.add(cancelButton);
 		if (contextFilePath !=null
 				&&!contextFilePath.equalsIgnoreCase(HL7_V2_WARNING_CONTEXT_FILE_PATH))
-		rtnPanel.add(nextButton);
+			rtnPanel.add(nextButton);
+		else
+			cancelButton.setText("OK");
 		return rtnPanel;
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		Object evtObj=arg0.getSource();
-		System.out.println("HL7AuthorizationDialog.actionPerformed()..action:"+evtObj);
 		if (evtObj instanceof JButton)
 		{
 			if (isViewOnly())
 			{
-				System.out.println("HL7AuthorizationDialog.actionPerformed()...viewOnly:"+isViewOnly());
 				dispose();
 				return;
 			}
@@ -161,7 +162,7 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 			}
 //			else
 //			{
-//				System.out.println("AcceptLicenseFrame.actionPerformed()..action source:"+evtButton);
+//				System.out.println("AcceptLicenseFrame.actionPerformed()..not next button:"+evtButton);
 //				licenseAccepted(false);
 //			}
 		}
