@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.4 2007-10-13 03:07:00 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.5 2007-10-13 03:14:07 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-10-13 03:07:00 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-10-13 03:14:07 $
  */
 public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener {
     private static final String PROPERTIES_NAME_ON_TITLE = "Properties";
@@ -145,7 +145,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         resetButton.setMnemonic(RESET_COMMAND_MNEMONIC.charAt(0));
         resetButton.addActionListener(this);
         DeleteTreeNodeAction deleteAction = new DeleteTreeNodeAction(parentController, true);
-        JButton deleteButton = new JButton(deleteAction);
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.setActionCommand(DELETE_COMMAND_NAME);
+        deleteButton.addActionListener(this);
         eastPanel.add(applyButton);
         eastPanel.add(resetButton);
         eastPanel.add(deleteButton);
@@ -373,6 +375,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/10/13 03:07:00  jayannah
+ * HISTORY      : Changes to enable delete action from the properties pane and refresh the tree as well as the property pane, And show a confirmation window for the delete
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/10/11 17:24:54  umkis
  * HISTORY      : Bug trackung item #15,17,18
  * HISTORY      :
