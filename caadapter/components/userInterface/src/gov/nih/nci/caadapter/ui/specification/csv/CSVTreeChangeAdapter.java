@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVTreeChangeAdapter.java,v 1.2 2007-10-11 20:18:51 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVTreeChangeAdapter.java,v 1.3 2007-10-13 03:07:00 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.awt.event.MouseEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-10-11 20:18:51 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-13 03:07:00 $
  */
 public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionListener, TreeModelListener, FocusListener
 {
@@ -221,7 +221,10 @@ public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionL
 //		Log.logInfo(this, "CSVTreeChangeAdapter.treeNodesRemoved() is called");
 		parentPanel.setPropertiesPaneVisible(false);
 		parentPanel.setMessagePaneVisible(false);
-		this.treeModelChanged = true;
+//        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getTreePath().getLastPathComponent();
+//        parentPanel.getPropertiesPane().setDisplayData(node);
+        parentPanel.getPropertiesPane().reloadData();
+        this.treeModelChanged = true;
 	}
 
 	/**
@@ -240,7 +243,8 @@ public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionL
 		//Log.logInfo(this, "CSVTreeChangeAdapter.treeStructureChanged() is called");
 		parentPanel.setPropertiesPaneVisible(false);
 		parentPanel.setMessagePaneVisible(false);
-        parentPanel.getPropertiesPane().setDisplayData((DefaultMutableTreeNode) e.getTreePath().getLastPathComponent());      
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getTreePath().getLastPathComponent();
+        parentPanel.getPropertiesPane().setDisplayData(node);
         this.treeModelChanged = true;
 	}
 
@@ -316,6 +320,9 @@ public class CSVTreeChangeAdapter extends MouseAdapter implements TreeSelectionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/10/11 20:18:51  jayannah
+ * HISTORY      : added a properties update listener
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

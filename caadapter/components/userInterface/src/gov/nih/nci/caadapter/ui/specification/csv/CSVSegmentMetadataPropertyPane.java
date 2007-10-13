@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.3 2007-10-05 17:50:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.4 2007-10-13 03:07:00 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,10 +56,10 @@ import java.util.Enumeration;
 /**
  * This class defines the layout of segment metadata property pane.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-10-05 17:50:08 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-10-13 03:07:00 $
  */
 public class CSVSegmentMetadataPropertyPane extends JPanel
 {
@@ -386,9 +386,16 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 		return resultValue;
 	}
 
+    public CSVFieldOrderReshufflePane getTableFields(){
+                   return fieldOrderPane; 
+    }
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/10/05 17:50:08  wangeug
+ * HISTORY      : fixbug item 44 of list on 10-05-2007
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/12 15:48:46  umkis
  * HISTORY      : csv cardinality
  * HISTORY      :
