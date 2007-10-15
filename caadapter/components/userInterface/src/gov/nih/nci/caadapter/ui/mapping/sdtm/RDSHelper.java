@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.sdtm.ParseSDTMXMLFile;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -14,6 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -23,8 +25,8 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.2 $
- *          $Date: 2007-08-16 19:39:45 $
+ *          $Revision: 1.3 $
+ *          $Date: 2007-10-15 21:01:14 $
  */
 public class RDSHelper {
     public static String getDefineXMLNameFromMapFile(String mapFile) throws Exception {
@@ -72,7 +74,15 @@ public class RDSHelper {
     }
 
     public static Hashtable getAllFieldsForDomains(File SDTMXmlFile) {
-        ParseSDTMXMLFile _parseSDTMFile = new ParseSDTMXMLFile(SDTMXmlFile.getAbsolutePath().toString());
+        // _xmlFileName = FileUtil.fileLocateOnClasspath(_xmlFileName);
+        String xmlFilePath;
+        try {
+            String test = SDTMXmlFile.toString();
+            xmlFilePath = FileUtil.fileLocateOnClasspath(test);
+        } catch (FileNotFoundException e) {
+            xmlFilePath = SDTMXmlFile.getAbsolutePath();
+        }
+        ParseSDTMXMLFile _parseSDTMFile = new ParseSDTMXMLFile(xmlFilePath);
         ArrayList _retArray = _parseSDTMFile.getSDTMStructure();
         Hashtable domainFieldsList = new Hashtable();
         DefaultMutableTreeNode pNode = null;
@@ -128,4 +138,7 @@ public class RDSHelper {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

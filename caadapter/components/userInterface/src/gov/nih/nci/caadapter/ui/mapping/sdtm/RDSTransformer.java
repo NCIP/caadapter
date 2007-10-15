@@ -9,15 +9,13 @@ import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 
 import javax.swing.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -26,8 +24,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-10-15 19:49:32 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-10-15 21:01:14 $
  */
 public class RDSTransformer {
     String directoryLocation = null;
@@ -80,7 +78,13 @@ public class RDSTransformer {
     private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) throws ApplicationException {
         CSVPanel csvPanel = new CSVPanel();
         File csvFile = new File(_csvFileName);
-        csvPanel.setSaveFile(new File(_scsFileName), true);
+        String tempFileName=null;
+        try {
+           tempFileName  = FileUtil.fileLocateOnClasspath(_scsFileName);
+        } catch (FileNotFoundException e) {
+           tempFileName = _scsFileName; 
+        }
+        csvPanel.setSaveFile(new File(tempFileName), true);
         CSVMeta rootMeta = csvPanel.getCSVMeta(false);
         //SDTMMany2ManyMapping segmentedCSVParser = new SDTMMany2ManyMapping();
         SegmentedCSVParserImpl segmentedCSVParser = new SegmentedCSVParserImpl();
@@ -342,6 +346,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/10/15 19:49:32  jayannah
+ * Added a public API for the transformation of the CSV and DB in order to be compliant with the caCore.
+ *
  * Revision 1.7  2007/09/18 02:52:39  jayannah
  * removed SDTMMany2Many mappings object and changed to use the CVSDataResult instead
  *
