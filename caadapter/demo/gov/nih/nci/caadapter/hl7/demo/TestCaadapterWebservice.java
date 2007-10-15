@@ -49,24 +49,29 @@ public class TestCaadapterWebservice {
   public static void main(String[] args) {
     try {
 //      String endpointURL = " http://cbioqa101.nci.nih.gov:49080/caAdapterWS/ws/caAdapterTransformationService";
-      String endpointURL = " http://cbiovdev5054.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
+//      String endpointURL = " http://cbiovdev5054.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
 //        String endpointURL = " http://caadapter-stage.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
 //        String endpointURL = " http://caadapter.nci.nih.gov/caAdapterWS/ws/caAdapterTransformationService";
-      if (args.length<2)
+      if (args.length<3)
       {
-    	  System.out.println("TestCaadapterWebservice Usage:[scenarioName][cvsString]");
+    	  System.out.println("TestCaadapterWebservice Usage:[scenarioName][cvsString]|[endURL]");
     	  return;
       }
-      System.out.println("TestCaadapterWebservice.main()..scenarioName:"+args[0]);
-      System.out.println("TestCaadapterWebservice.main()..cvsString:"+args[1]);
-      String methodName = "transformationService";
+      System.out.println("TestCaadapterWebservice...scenarioName:"+args[0]);
+      System.out.println("TestCaadapterWebservice...cvsString:"+args[1]);
+      System.out.println("TestCaadapterWebservice...endURL:"+args[2]);
+      
+      //read WS paramters
+      String scenarioName= args[0];
       String cvsFileName=args[1];
-      String csvString =TestCaadapterWebservice.buildCsvString(cvsFileName);
-      String scenarioName= "test2";
-
+      String csvString =TestCaadapterWebservice.buildCsvString(cvsFileName);      
+      String endpointURL =args[2];
+      
+      //build service call
       Service service = new Service();
       Call call = (Call)service.createCall();
       call.setTargetEndpointAddress(new java.net.URL(endpointURL));
+      String methodName = "transformationService";
       call.setOperationName(methodName);
       call.addParameter("parameter_name", XMLType.XSD_STRING,ParameterMode.IN );
       call.addParameter("csvstringname",  XMLType.XSD_STRING, ParameterMode.IN );
