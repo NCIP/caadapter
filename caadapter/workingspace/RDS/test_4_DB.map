@@ -2,7 +2,7 @@
 <mapping>
   <components>
   	<component kind="Database" param="jdbc:oracle:thin:@cbiodb2-d:1521:cadev~oracle.jdbc.OracleDriver~caadapter~caadapter"/>
-  	<component kind="XML" location="D:\Projects\caadapter\workingspace\RDS\define.xml"/>
+  	<component kind="XML" location="{caAdapter_Home}\workingspace\RDS\define.xml"/>
   </components>
   <link>
   	<source>\Data Model\CAADAPTER\TEST_SITE\SITE_ID</source>
