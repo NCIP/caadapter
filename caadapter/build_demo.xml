@@ -56,7 +56,7 @@
 			<src path="../demo" />
 			<include name="**/TestCaadapterWebservice.java"/>
 		</javac>
-		<jar destfile="caAdapter_ws_client.jar">
+		<jar destfile="../demo/webServiceClient/caAdapter_ws_client.jar">
 			<fileset dir="../build" includes="**/TestCaadapterWebservice.class"/>
 		</jar>
 	</target>
