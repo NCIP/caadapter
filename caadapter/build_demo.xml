@@ -48,7 +48,20 @@
 			</manifest>
 		</jar>
 	</target>
-
+	
+	<target name="test.jar">
+			<mkdir dir="../test"/>
+			<javac destdir="../test" 
+				classpath="lib/caAdapter.jar;../lib/junit-4.3.1.jar"
+				fork="yes" debug="on">
+				<src path="../components/hl7Transformation/test/src" />
+				<include name="**/DemoCSV2HL7v3TransformationTests.java"/>
+			</javac>
+			<jar destfile="demoTest.jar">
+				<fileset dir="../test" />
+			</jar>
+	</target>
+		
 	<target name="ws.client.jar">
 		<javac destdir="../build" 
 			classpath="../demo/webServiceClient/axis.jar;../demo/webServiceClient/jaxrpc.jar"
