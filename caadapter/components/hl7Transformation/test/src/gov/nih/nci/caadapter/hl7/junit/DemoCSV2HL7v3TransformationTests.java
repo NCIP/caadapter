@@ -21,7 +21,7 @@ import org.junit.Test;
  * 
  * @author OWNER: Wang, Eugene
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-10-15 18:20:42 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-10-15 20:34:15 $
  */
 
 public class DemoCSV2HL7v3TransformationTests extends TestCase {
@@ -57,6 +57,6 @@ public class DemoCSV2HL7v3TransformationTests extends TestCase {
 	 }
 
 	 public static junit.framework.Test suite() {
-		  return new JUnit4TestAdapter(CSV2HL7v3TransformationTests.class);    
+		  return new JUnit4TestAdapter(DemoCSV2HL7v3TransformationTests.class);    
 	}
 }
