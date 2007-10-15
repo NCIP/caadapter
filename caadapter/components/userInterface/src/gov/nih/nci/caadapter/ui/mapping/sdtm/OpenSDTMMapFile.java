@@ -24,8 +24,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.12 $
- *          $Date: 2007-10-11 19:43:28 $
+ *          $Revision: 1.13 $
+ *          $Date: 2007-10-15 20:30:55 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -117,7 +117,8 @@ public class OpenSDTMMapFile extends JDialog {
             }
         }
         if (_scsFileName != null) {
-            if (!new File(_scsFileName).exists()) {
+            _scsFileName = FileUtil.fileLocateOnClasspath(_scsFileName);
+            if (_scsFileName==null && !new File(_scsFileName).exists()) {
                 CaadapterFileFilter filter = new CaadapterFileFilter();
                 filter.addExtension("scs");
                 //directoryLoc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
@@ -137,6 +138,8 @@ public class OpenSDTMMapFile extends JDialog {
                 } else {
                     return;
                 }
+            } else {
+
             }
         }
         if (_dbParams != null) {
@@ -150,7 +153,8 @@ public class OpenSDTMMapFile extends JDialog {
             }
 
         }
-        if (!new File(_xmlFileName).exists()) {
+        _xmlFileName = FileUtil.fileLocateOnClasspath(_xmlFileName);
+        if (_xmlFileName==null && !new File(_xmlFileName).exists()) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("xml");
             String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
@@ -369,6 +373,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/10/11 19:43:28  jayannah
+ * Changed the title of the JFilechoosers
+ *
  * Revision 1.11  2007/10/11 18:16:33  jayannah
  * Changed the directory of the browse action
  *
