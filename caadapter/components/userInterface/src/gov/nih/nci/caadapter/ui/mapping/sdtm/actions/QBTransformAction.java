@@ -45,22 +45,39 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.17 $
- *          $Date: 2007-10-11 19:45:43 $
+ *          $Revision: 1.18 $
+ *          $Date: 2007-10-15 19:49:32 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
     File directory = null;
     private Connection con = null;
     HashMap fixedLengthRecords = null;
+
     boolean fixedLengthIndicator = false;
     Hashtable sqlAsColumnMap = null;
 
+    public QBTransformAction() {
+    }
+
+    public void transformDB(String mapFile, String defineXMLocation, Connection con, String dirLocation) {
+        if (con == null) {
+            return;
+        }
+        try {
+            this.con = con;
+            processTransform4SQLStatments(mapFile, defineXMLocation, dirLocation);
+            System.out.println("created the txt files at " + dirLocation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /*
 
-        This constructor is used by the mapping panel
+       This constructor is used by the mapping panel
 
-     */
+    */
     public QBTransformAction(final AbstractMainFrame _mainFrame, final Database2SDTMMappingPanel mappingPanel, Connection _con) throws Exception {
         //this(_mainFrame, mappingPanel, "");
         this.con = _con;
@@ -87,7 +104,7 @@ public class QBTransformAction {
                         try {
                             processTransform4SQLStatments(mappingPanel.getSaveFile().getAbsolutePath(), mappingPanel.getDefineXMLLocation(), directory.getAbsolutePath().toString());
                             queryWaitDialog.dispose();
-                            JOptionPane.showMessageDialog(_mainFrame, "Transformation was successful", "Transfomation...", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(_mainFrame, "Transformation was successful, TXT files were created in  \"" + directory + "\" directory", "Transfomation...", JOptionPane.INFORMATION_MESSAGE);
                         } catch (Exception e) {
                             if (queryWaitDialog != null)
                                 queryWaitDialog.dispose();
@@ -135,8 +152,8 @@ public class QBTransformAction {
     }
 
     /*
-        This constructor is used by the menu
-     */
+       This constructor is used by the menu
+    */
     public QBTransformAction(final AbstractMainFrame _mainFrame, final String mapFile, final String defineXMLocation, Connection _con) throws Exception {
         //process _con since it is always null
         if (_con == null) {
@@ -198,7 +215,7 @@ public class QBTransformAction {
                 _jl.setFont(new Font("SansSerif", Font.BOLD, 12));
                 queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
                 //
-                JLabel imageIcon = new JLabel(getWaitButton("animated"));                
+                JLabel imageIcon = new JLabel(getWaitButton("animated"));
                 //
                 masterPane.add(imageIcon, BorderLayout.NORTH);
                 masterPane.add(waitLabel, BorderLayout.CENTER);
@@ -395,6 +412,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/10/11 19:45:43  jayannah
+ * Changed the title of the window seeking the folder request during transformation
+ *
  * Revision 1.16  2007/10/11 18:51:38  jayannah
  * Added a transformation confirmation message
  *

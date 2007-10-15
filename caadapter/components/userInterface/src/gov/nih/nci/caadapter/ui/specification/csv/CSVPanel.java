@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVPanel.java,v 1.3 2007-07-10 17:43:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVPanel.java,v 1.4 2007-10-15 19:49:36 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -8,30 +8,28 @@
  *
  * The caAdapter Software License, Version 1.3
  * Copyright Notice.
- * 
+ *
  * Copyright 2006 SAIC. This software was developed in conjunction with the National Cancer Institute. To the extent government employees are co-authors, any rights in such works are subject to Title 17 of the United States Code, section 105. 
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: 
- * 
+ *
  * 1. Redistributions of source code must retain the Copyright Notice above, this list of conditions, and the disclaimer of Article 3, below. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. 
- * 
+ *
  * 2. The end-user documentation included with the redistribution, if any, must include the following acknowledgment:
- * 
- * 
+ *
+ *
  * "This product includes software developed by the SAIC and the National Cancer Institute."
- * 
- * 
+ *
+ *
  * If no such end-user documentation is to be included, this acknowledgment shall appear in the software itself, wherever such third-party acknowledgments normally appear. 
- * 
+ *
  * 3. The names "The National Cancer Institute", "NCI" and "SAIC" must not be used to endorse or promote products derived from this software. 
- * 
+ *
  * 4. This license does not authorize the incorporation of this software into any third party proprietary programs. This license does not authorize the recipient to use any trademarks owned by either NCI or SAIC-Frederick. 
- * 
+ *
  * 5. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED WARRANTIES, (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO EVENT SHALL THE UNITED STATES GOVERNMENT, THE NATIONAL CANCER INSTITUTE, SAIC, OR THEIR AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * <!-- LICENSE_TEXT_END -->
  */
-
-
 package gov.nih.nci.caadapter.ui.specification.csv;
 
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
@@ -46,31 +44,17 @@ import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
-import gov.nih.nci.caadapter.ui.common.context.DefaultContextManagerClientPanel;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
+import gov.nih.nci.caadapter.ui.common.context.DefaultContextManagerClientPanel;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
 import gov.nih.nci.caadapter.ui.common.nodeloader.SCMTreeNodeLoader;
-import gov.nih.nci.caadapter.ui.common.tree.AutoscrollableTree;
-import gov.nih.nci.caadapter.ui.common.tree.CSVMetadataTreeModel;
-import gov.nih.nci.caadapter.ui.common.tree.CSVTreeDropTransferHandler;
-import gov.nih.nci.caadapter.ui.common.tree.DropCompatibleComponent;
-import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDragTransferHandler;
+import gov.nih.nci.caadapter.ui.common.tree.*;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JRootPane;
-import javax.swing.JTree;
-import javax.swing.Action;
-import javax.swing.JToolBar;
-import javax.swing.BorderFactory;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.*;
 import javax.swing.tree.TreeNode;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.io.File;
 import java.io.FileReader;
@@ -80,10 +64,10 @@ import java.util.Map;
  * This class is the main entry point of CSV specification panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-10 17:43:17 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-10-15 19:49:36 $
  */
 public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implements ContextManagerClient
 {
@@ -93,49 +77,38 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
     private JScrollPane treeScrollPane;
     // the display.
     private AutoscrollableTree tree = null;
-
     private CSVMetadataTreeNodePropertiesPane propertiesPane = null;
     private boolean propertiesPaneVisible = false;
     private CSVTreeChangeAdapter navigationController;
-
     private CSVMeta csvMeta = null;
-
     private DropCompatibleComponent dropTransferHandler = null;
-
     private ValidationMessagePane validationMessagePane;
     private boolean messagePaneVisible;
 
-    public CSVPanel()
-    {
+    public CSVPanel() {
         initialize();
     }
 
-    public CSVMetadataTreeNodePropertiesPane getPropertiesPane()
-    {
-        if (propertiesPane == null)
-        {
+    public CSVMetadataTreeNodePropertiesPane getPropertiesPane() {
+        if (propertiesPane == null) {
             propertiesPane = new CSVMetadataTreeNodePropertiesPane(this);
         }
         return this.propertiesPane;
     }
 
-    public ValidationMessagePane getMessagePane()
-    {
-        if (validationMessagePane == null)
-        {
+    public ValidationMessagePane getMessagePane() {
+        if (validationMessagePane == null) {
             validationMessagePane = new ValidationMessagePane();
         }
         validationMessagePane.setMinimumSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 4)));
         return validationMessagePane;
     }
 
-    private void initialize()
-    {
+    private void initialize() {
         this.setLayout(new BorderLayout());
         treeScrollPane = new JScrollPane();
         treeScrollPane.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT / 2));
         initializeTree(getCSVMeta(true));
-
         JPanel treePanel = new JPanel(new BorderLayout());
         JPanel treeNorthPanel = new JPanel(new BorderLayout());
         treeExpandAllAction = new TreeExpandAllAction(tree);
@@ -147,104 +120,84 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
         treeNorthPanel.add(treeToolBar, BorderLayout.WEST);
         treePanel.add(treeNorthPanel, BorderLayout.NORTH);
         treePanel.add(treeScrollPane, BorderLayout.CENTER);
-        rightTabbedPane=new JTabbedPane();
+        rightTabbedPane = new JTabbedPane();
 
         //for place holding
         JLabel dummyHolderForPropertiesDisplay = new JLabel("For Properties Display...");
         JLabel dummyHolderForValidationMessageDisplay = new JLabel("For Validation Message Display...");
-
         JPanel placeHolderForValidationMessageDisplay = new JPanel(new BorderLayout());
         dummyHolderForValidationMessageDisplay.setEnabled(false);
         placeHolderForValidationMessageDisplay.add(dummyHolderForValidationMessageDisplay, BorderLayout.NORTH);
         placeHolderForValidationMessageDisplay.setPreferredSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 3), (int) (Config.FRAME_DEFAULT_HEIGHT / 4)));
-        
         JPanel placeHolderForPropertiesDisplay = new JPanel(new BorderLayout());
         placeHolderForPropertiesDisplay.add(dummyHolderForPropertiesDisplay, BorderLayout.NORTH);
         dummyHolderForPropertiesDisplay.setEnabled(false);
         placeHolderForPropertiesDisplay.setPreferredSize(new Dimension(Config.FRAME_DEFAULT_WIDTH / 3, Config.FRAME_DEFAULT_HEIGHT / 3));
-        
-        rightTabbedPane.add("Properties",placeHolderForPropertiesDisplay);
-        rightTabbedPane.add("Validation Message",placeHolderForValidationMessageDisplay);//.setTopComponent(placeHolderForValidationMessageDisplay);
+        rightTabbedPane.add("Properties", placeHolderForPropertiesDisplay);
+        rightTabbedPane.add("Validation Message", placeHolderForValidationMessageDisplay);//.setTopComponent(placeHolderForValidationMessageDisplay);
         //end of temporary place takers.
-
         JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         DefaultSettings.setDefaultFeatureForJSplitPane(centerSplitPane);
         centerSplitPane.setBorder(BorderFactory.createEmptyBorder());
         centerSplitPane.setDividerLocation(0.4);
-
         centerSplitPane.setLeftComponent(treePanel);
         centerSplitPane.setRightComponent(rightTabbedPane);
         this.add(centerSplitPane, BorderLayout.CENTER);
     }
 
-    public CSVTreeChangeAdapter getController()
-    {
-        if (this.navigationController == null)
-        {
+    public CSVTreeChangeAdapter getController() {
+        if (this.navigationController == null) {
             this.navigationController = new CSVTreeChangeAdapter(this);
         }
         return this.navigationController;
     }
 
-    private ValidatorResults initializeTree(File file)
-    {
+    private ValidatorResults initializeTree(File file) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVMetaParserImpl parser = new CSVMetaParserImpl();
-        try
-        {
+        try {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(file));
             csvMeta = csvMetaResult.getCsvMeta();
             validatorResults.addValidatorResults(csvMetaResult.getValidatorResults());
-            if (validatorResults.hasFatal())
-            {//return immediately
+            if (validatorResults.hasFatal()) {//return immediately
                 return validatorResults;
             }
             initializeTree(csvMeta);
         }
-        catch (Exception e1)
-        {
+        catch (Exception e1) {
             DefaultSettings.reportThrowableToLogAndUI(this, e1, null, this, false, true);
             return null;
         }
         return validatorResults;
     }
-    private JTree initializeTree(CSVMeta csvMeta)
-    {
+
+    private JTree initializeTree(CSVMeta csvMeta) {
         TreeNode nodes = null;
-        CSVMetadataTreeModel treeModel =null;
-        try
-        {
-        	SCMTreeNodeLoader nodeLoader = new SCMTreeNodeLoader();
+        CSVMetadataTreeModel treeModel = null;
+        try {
+            SCMTreeNodeLoader nodeLoader = new SCMTreeNodeLoader();
             nodes = nodeLoader.loadData(csvMeta);
         }
-        catch (Throwable e)
-        {
+        catch (Throwable e) {
             DefaultSettings.reportThrowableToLogAndUI(this, e, "Error occurred during tree initialitation", this, true, true);
         }
-        if (nodes!= null)
-        {
+        if (nodes != null) {
             treeModel = new CSVMetadataTreeModel(nodes);
-        }
-        else
-        {
+        } else {
             treeModel = new CSVMetadataTreeModel();
         }
-
         tree = new AutoscrollableTree(treeModel);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         navigationController = new CSVTreeChangeAdapter(this);
-		//register the mouse listener to clean up drag-and-drop flag
-		tree.addMouseListener(navigationController);
-
-		tree.getSelectionModel().addTreeSelectionListener(navigationController);
+        //register the mouse listener to clean up drag-and-drop flag
+        tree.addMouseListener(navigationController);
+        tree.getSelectionModel().addTreeSelectionListener(navigationController);
         tree.getModel().addTreeModelListener(navigationController);
         new TreeDefaultDragTransferHandler(tree, DnDConstants.ACTION_COPY_OR_MOVE);
         this.dropTransferHandler = new CSVTreeDropTransferHandler(tree, DnDConstants.ACTION_COPY_OR_MOVE);
         tree.addMouseListener(new CSVMetadataTreeMouseAdapter(this));
         treeScrollPane.getViewport().setView(tree);
-
-        if(treeExpandAllAction!=null)
-        {//will skip the first initialization of just the tree.
+        if (treeExpandAllAction != null) {//will skip the first initialization of just the tree.
             treeExpandAllAction.setTree(tree);
             treeCollapseAllAction.setTree(tree);
             tree.getInputMap().put(treeCollapseAllAction.getAcceleratorKey(), treeCollapseAllAction.getName());
@@ -252,117 +205,94 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
             tree.getInputMap().put(treeExpandAllAction.getAcceleratorKey(), treeExpandAllAction.getName());
             tree.getActionMap().put(treeExpandAllAction.getName(), treeExpandAllAction);
         }
-
         return tree;
     }
 
-    public JTree getTree()
-    {
+    public JTree getTree() {
         return tree;
     }
 
-    public DropCompatibleComponent getDropTransferHandler()
-    {
+    public DropCompatibleComponent getDropTransferHandler() {
         return this.dropTransferHandler;
     }
 
-    public CSVMeta getCSVMeta(boolean createIfNull)
-    {
-        if(this.csvMeta==null && createIfNull)
-        {
+    public CSVMeta getCSVMeta(boolean createIfNull) {
+        if (this.csvMeta == null && createIfNull) {
             CSVSegmentMeta rootUserObject = new CSVSegmentMetaImpl("ROOT", null);
             csvMeta = new CSVMetaImpl(rootUserObject);
         }
         return csvMeta;
     }
 
-    public void setCsvMeta(CSVMeta csvMeta)
-    {
+    public void setCsvMeta(CSVMeta csvMeta) {
         this.csvMeta = csvMeta;
         initializeTree(csvMeta);
     }
 
-    public ValidatorResults setSaveFile(File saveFile, boolean refreshTree)
-    {
+    public ValidatorResults setSaveFile(File saveFile, boolean refreshTree) {
         ValidatorResults validatorResults = new ValidatorResults();
+        if(ContextManager.getContextManager().getContextFileManager() == null)
+                  this.saveFile = saveFile;
         if (super.setSaveFile(saveFile))//!GeneralUtilities.areEqual(this.saveFile, saveFile))
         {
-//			this.saveFile = saveFile;
-            if (refreshTree)
-            {
+            //			this.saveFile = saveFile;
+            if (refreshTree) {
                 validatorResults.addValidatorResults(initializeTree(this.saveFile));
             }
         }
         return validatorResults;
     }
 
-    public boolean isPropertiesPaneVisible()
-    {
+    public boolean isPropertiesPaneVisible() {
         return propertiesPaneVisible;
     }
 
-    public void setPropertiesPaneVisible(boolean newValue)
-    {
-        if (propertiesPaneVisible != newValue)
-        {
+    public void setPropertiesPaneVisible(boolean newValue) {
+        if (propertiesPaneVisible != newValue) {
             propertiesPaneVisible = newValue;
-            if (propertiesPaneVisible)
-            {
-                rightTabbedPane.setComponentAt(0,getPropertiesPane());
+            if (propertiesPaneVisible) {
+                rightTabbedPane.setComponentAt(0, getPropertiesPane());
             }
         }
     }
 
-
-
-    CSVTreeChangeAdapter getDefaultNavigationAdapter()
-    {
+    CSVTreeChangeAdapter getDefaultNavigationAdapter() {
         return navigationController;
     }
 
-	/**
-	 * Return whether the mapping module is in drag-and-drop mode.
-	 *
-	 * @return whether the mapping module is in drag-and-drop mode.
-	 */
-	public boolean isInDragDropMode()
-	{
-		if (this.dropTransferHandler != null)
-		{
-			return dropTransferHandler.isInDragDropMode();
-		}
-		else
-		{
-			return false;
-		}
-	}
+    /**
+     * Return whether the mapping module is in drag-and-drop mode.
+     *
+     * @return whether the mapping module is in drag-and-drop mode.
+     */
+    public boolean isInDragDropMode() {
+        if (this.dropTransferHandler != null) {
+            return dropTransferHandler.isInDragDropMode();
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * Set a new value for the mode.
-	 *
-	 * @param newValue
-	 */
-	public void setInDragDropMode(boolean newValue)
-	{
-		if (this.dropTransferHandler != null)
-		{
-			dropTransferHandler.setInDragDropMode(newValue);
-		}
-	}
+    /**
+     * Set a new value for the mode.
+     *
+     * @param newValue
+     */
+    public void setInDragDropMode(boolean newValue) {
+        if (this.dropTransferHandler != null) {
+            dropTransferHandler.setInDragDropMode(newValue);
+        }
+    }
 
-    public boolean isMessagePaneVisible()
-    {
+    public boolean isMessagePaneVisible() {
         return messagePaneVisible;
     }
 
-    public void setMessagePaneVisible(boolean newValue)
-    {
-        if (this.messagePaneVisible != newValue)
-        {
+    public void setMessagePaneVisible(boolean newValue) {
+        if (this.messagePaneVisible != newValue) {
             this.messagePaneVisible = newValue;
-            if (this.messagePaneVisible)
-            {
-                rightTabbedPane.setComponentAt(1,getMessagePane());
+            if (this.messagePaneVisible) {
+                rightTabbedPane.setComponentAt(1, getMessagePane());
             }
         }
     }
@@ -370,8 +300,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
     /**
      * Indicate whether or not it is changed.
      */
-    public boolean isChanged()
-    {
+    public boolean isChanged() {
         return this.navigationController.isDataChanged();
     }
 
@@ -380,8 +309,7 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
      *
      * @param newValue
      */
-    public void setChanged(boolean newValue)
-    {
+    public void setChanged(boolean newValue) {
         this.navigationController.setDataChanged(newValue);
     }
 
@@ -391,66 +319,56 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
      * @param menu_name
      * @return the map contains the action information.
      */
-	public Map getMenuItems(String menu_name)
-	{
-		Action action = null;
-		ContextManager contextManager = ContextManager.getContextManager();
-		Map <String, Action>actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_SPEC, menu_name);
-		if (MenuConstants.FILE_MENU_NAME.equals(menu_name))
-		{
-			JRootPane rootPane = this.getRootPane();
-			if (rootPane != null)
-			{//rootpane is not null implies this panel is fully displayed;
-				//on the flip side, if it is null, it implies it is under certain construction.
-				contextManager.enableAction(ActionConstants.NEW_CSV_SPEC, false);
+    public Map getMenuItems(String menu_name) {
+        Action action = null;
+        ContextManager contextManager = ContextManager.getContextManager();
+        Map<String, Action> actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_SPEC, menu_name);
+        if (MenuConstants.FILE_MENU_NAME.equals(menu_name)) {
+            JRootPane rootPane = this.getRootPane();
+            if (rootPane != null) {//rootpane is not null implies this panel is fully displayed;
+                //on the flip side, if it is null, it implies it is under certain construction.
+                contextManager.enableAction(ActionConstants.NEW_CSV_SPEC, false);
                 contextManager.enableAction(ActionConstants.OPEN_CSV_SPEC, true);
-			}
-		}
-		//since the action depends on the panel instance,
-		//the old action instance should be removed
-		if (actionMap!=null)
-			contextManager.removeClientMenuAction(MenuConstants.CSV_SPEC, menu_name, "");
+            }
+        }
+        //since the action depends on the panel instance,
+        //the old action instance should be removed
+        if (actionMap != null)
+            contextManager.removeClientMenuAction(MenuConstants.CSV_SPEC, menu_name, "");
 
 //		if (actionMap==null)
 //		{
-				action = new gov.nih.nci.caadapter.ui.specification.csv.actions.SaveCsvAction(this);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.SAVE, action);
-				action.setEnabled(true);
-
-				action = new gov.nih.nci.caadapter.ui.specification.csv.actions.SaveAsCsvAction(this);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.SAVE_AS, action);
-				action.setEnabled(true);
-
-				action = new gov.nih.nci.caadapter.ui.specification.csv.actions.ValidateCsvAction(this);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME,ActionConstants.VALIDATE, action);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.VALIDATE, action);
-				action.setEnabled(true);
-
-				action = new gov.nih.nci.caadapter.ui.specification.csv.actions.CloseCsvAction(this);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
-				action.setEnabled(true);
-				
-				action = new gov.nih.nci.caadapter.ui.specification.csv.actions.GenerateReportAction(this);
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.REPORT_MENU_NAME,ActionConstants.GENERATE_REPORT, action);			
-				contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.GENERATE_REPORT, action);
-				action.setEnabled(true);
-				
-				actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_SPEC, menu_name);
+        action = new gov.nih.nci.caadapter.ui.specification.csv.actions.SaveCsvAction(this);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE, action);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.SAVE, action);
+        action.setEnabled(true);
+        action = new gov.nih.nci.caadapter.ui.specification.csv.actions.SaveAsCsvAction(this);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE_AS, action);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.SAVE_AS, action);
+        action.setEnabled(true);
+        action = new gov.nih.nci.caadapter.ui.specification.csv.actions.ValidateCsvAction(this);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME, ActionConstants.VALIDATE, action);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.VALIDATE, action);
+        action.setEnabled(true);
+        action = new gov.nih.nci.caadapter.ui.specification.csv.actions.CloseCsvAction(this);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.FILE_MENU_NAME, ActionConstants.CLOSE, action);
+        action.setEnabled(true);
+        action = new gov.nih.nci.caadapter.ui.specification.csv.actions.GenerateReportAction(this);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.REPORT_MENU_NAME, ActionConstants.GENERATE_REPORT, action);
+        contextManager.addClientMenuAction(MenuConstants.CSV_SPEC, MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.GENERATE_REPORT, action);
+        action.setEnabled(true);
+        actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_SPEC, menu_name);
 //		}		
-		return actionMap;
-	}
-	
+        return actionMap;
+    }
+
     /**
      * return the open action inherited with this client.
      */
-    public Action getDefaultOpenAction()
-    {
-    	ContextManager contextManager = ContextManager.getContextManager();
+    public Action getDefaultOpenAction() {
+        ContextManager contextManager = ContextManager.getContextManager();
         Action openAction = null;
-         if (contextManager!= null)
-        {//contextManager is not null implies this panel is fully displayed;
+        if (contextManager != null) {//contextManager is not null implies this panel is fully displayed;
             //on the flip side, if it is null, it implies it is under certain construction.
             openAction = contextManager.getDefinedAction(ActionConstants.OPEN_CSV_SPEC);
         }
@@ -459,17 +377,19 @@ public class CSVPanel extends DefaultContextManagerClientPanel //JPanel implemen
 
     /**
      * Explicitly reload information from the internal given file.
+     *
      * @throws Exception
      */
-    public void reload() throws Exception
-    {
+    public void reload() throws Exception {
         setSaveFile(getSaveFile(), true);
     }
-
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/10 17:43:17  wangeug
+ * HISTORY      : update code:reset propertyPane/validationPane with JTabbedPane
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/04/19 13:59:51  wangeug
  * HISTORY      : clean code
  * HISTORY      :

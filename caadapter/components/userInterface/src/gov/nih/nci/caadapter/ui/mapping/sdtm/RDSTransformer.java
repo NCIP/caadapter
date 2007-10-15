@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
+import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
@@ -8,12 +9,11 @@ import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.UUIDGenerator;
-import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
-import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 
+import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -26,28 +26,40 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.7 $
- *          $Date: 2007-09-18 02:52:39 $
+ *          $Revision: 1.8 $
+ *          $Date: 2007-10-15 19:49:32 $
  */
 public class RDSTransformer {
-    String directoryLocation=null;
-    Hashtable globaldomainList=null;
-    Hashtable hashTableTransform=null;
-    CSVDataResult csvDataResult=null;
-    LinkedHashMap mappedSegmentRecords=null;
+    String directoryLocation = null;
+    Hashtable globaldomainList = null;
+    Hashtable hashTableTransform = null;
+    CSVDataResult csvDataResult = null;
+    LinkedHashMap mappedSegmentRecords = null;
     Hashtable finalResultList = new Hashtable();
-    ArrayList removeList=null;
-    HashMap fixedLengthRecords=null;
-
+    ArrayList removeList = null;
+    HashMap fixedLengthRecords = null;
     //HashMap prefs;
     boolean fixedLengthIndicator = false;
+
+    public RDSTransformer(){
+
+    }
+
+    public void transformCSV(File mapFile, String _csvFileName, String directoryLoc) throws Exception {
+        directoryLocation = directoryLoc;
+        CSVMapFileReader csvMapFileReader = new CSVMapFileReader(mapFile);     
+        globaldomainList = RDSHelper.getAllFieldsForDomains(new File(RDSHelper.getDefineXMLNameFromMapFile(mapFile.getAbsolutePath())));
+        hashTableTransform = csvMapFileReader.getHashTableTransform();
+        String scsFileName = RDSHelper.getSCSFileFromMapFile(mapFile);
+        prepareCSVDataFromCSVDataFile(_csvFileName, scsFileName);
+
+    }
 
     public RDSTransformer(AbstractMainFrame callingFrame, File mapFile, String _csvFileName, String _directoryLocation) throws Exception {
         directoryLocation = _directoryLocation;
         CSVMapFileReader csvMapFileReader = new CSVMapFileReader(mapFile);
         //check for fixed lenght
-        try
-        {
+        try {
             if (((String) CaadapterUtil.getCaAdapterPreferences().get("FIXED_LENGTH_VAR")).equalsIgnoreCase("Fixed")) {
                 fixedLengthIndicator = true;
                 //Prepare the list here and keep it ready so that number of blanks corresponding to the
@@ -55,18 +67,17 @@ public class RDSTransformer {
                 RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(callingFrame, csvMapFileReader.getTargetKeyList());
                 fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("the application could not find preference variable for SCS-transformation (RDS module)");
         }
         globaldomainList = RDSHelper.getAllFieldsForDomains(new File(RDSHelper.getDefineXMLNameFromMapFile(mapFile.getAbsolutePath())));
         hashTableTransform = csvMapFileReader.getHashTableTransform();
         String scsFileName = RDSHelper.getSCSFileFromMapFile(mapFile);
         prepareCSVDataFromCSVDataFile(_csvFileName, scsFileName);
+        JOptionPane.showMessageDialog(callingFrame, "Transformation was successful, TXT files were created in  \""+directoryLocation+"\" directory", "Transfomation...", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) throws ApplicationException
-    {
+    private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) throws ApplicationException {
         CSVPanel csvPanel = new CSVPanel();
         File csvFile = new File(_csvFileName);
         csvPanel.setSaveFile(new File(_scsFileName), true);
@@ -331,6 +342,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.7  2007/09/18 02:52:39  jayannah
+ * removed SDTMMany2Many mappings object and changed to use the CVSDataResult instead
+ *
  * Revision 1.6  2007/09/18 02:39:29  jayannah
  * Modified the code so that an exception is caught when the preference variable is not found, the other change is for the construction of RDS transformer
  *

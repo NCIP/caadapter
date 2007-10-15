@@ -45,7 +45,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.13 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.14 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -65,6 +65,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
     private JFileChooser csvUserDirectoryLoc = null;
 
     public NewSDTMWizard(final AbstractMainFrame _callingFrame) {
+        super(_callingFrame);
         final JDialog preFrame = new JDialog(_callingFrame, true);
         callingFrame = _callingFrame;
         //final JDialog preFrame = new JDialog();
@@ -209,8 +210,19 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
         if (command.equalsIgnoreCase(OK_COMMAND)) {
             try {
                 this.dispose();
+                String dataFileInput, directoryInput;
                 // new RDSTransformer(callingFrame, new File(hl7MessageFile.getAbsolutePath().toString()), directory.getAbsolutePath().toString(), _saveCSV);
-                new RDSTransformer(callingFrame, selFile,  dataFile.getAbsolutePath(), dirLoc.getAbsolutePath());
+                try {
+                    dataFileInput=dataFile.getAbsolutePath();
+                } catch (Exception e1) {
+                    dataFileInput=dataFileInputField.getText();
+                }
+                try {
+                    directoryInput=dirLoc.getAbsolutePath();
+                } catch (Exception e1) {
+                    directoryInput=csvDirInoutField.getText();
+                }
+                new RDSTransformer(callingFrame, selFile, dataFileInput, directoryInput);
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
