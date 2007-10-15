@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <mapping>
   <components>
-  	<component kind="SCS" location="{caAdapter_Home}\test.scs"/>
-  	<component kind="XML" location="{caAdapter_Home}\define.xml"/>
+  	<component kind="SCS" location="{caAdapter_Home}\workingspace\RDS\test.scs"/>
+  	<component kind="XML" location="{caAdapter_Home}\workingspace\RDS\define.xml"/>
   </components>
   <link>
   	<source>\Source Tree\ORGS  [1..1]\ORGID\1 : Root</source>
