@@ -45,7 +45,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.14 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.15 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -132,7 +132,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 
     private void handleButtonAction(AbstractMainFrame _callingFrame) {
         try {
-            JFileChooser fc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
+            JFileChooser fc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example");
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("map");
             filter.setDescription("map");

@@ -24,8 +24,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.14 $
- *          $Date: 2007-10-16 14:10:26 $
+ *          $Revision: 1.15 $
+ *          $Date: 2007-10-16 15:38:15 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -122,7 +122,7 @@ public class OpenSDTMMapFile extends JDialog {
                 CaadapterFileFilter filter = new CaadapterFileFilter();
                 filter.addExtension("scs");
                 //directoryLoc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
-                String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
+                String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example";
                 directoryLoc = new JFileChooser(_defaultLoc);
                 //directoryLoc.setDialogTitle("Could not find the SCS file, Please choose the location...");
                 this.setTitle(_scsFileName + " not found! Please choose a different file");
@@ -157,7 +157,7 @@ public class OpenSDTMMapFile extends JDialog {
         if (_xmlFileName==null && !new File(_xmlFileName).exists()) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("xml");
-            String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS";
+            String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example";
             directoryLoc = new JFileChooser(_defaultLoc);
             //directoryLoc.setDialogTitle("Please select the define.xml file …");
             this.setTitle(_xmlFileName + " not found! Please choose a different file");
@@ -373,6 +373,10 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/10/16 14:10:26  jayannah
+ * Changed the absolute path to getName during times when the pop up is displayed to the world;
+ * made changes so that the Tables cannot be mapped
+ *
  * Revision 1.13  2007/10/15 20:30:55  jayannah
  * changed code so that the relative path are honored
  *

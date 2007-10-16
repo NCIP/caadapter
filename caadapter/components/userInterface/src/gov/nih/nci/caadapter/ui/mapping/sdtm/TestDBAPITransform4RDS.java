@@ -11,13 +11,13 @@ import java.sql.DriverManager;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.1 $
- *          $Date: 2007-10-15 21:15:14 $
+ *          $Revision: 1.2 $
+ *          $Date: 2007-10-16 15:38:15 $
  */
 public class TestDBAPITransform4RDS {
     public static void main(String[] args) throws Exception {
-        String mapFile = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS" + File.separator + "test_4_DB.map";
-        String defineXML = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS" + File.separator + "define.xml";
+        String mapFile = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example" + File.separator + "test_4_DB.map";
+        String defineXML = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example" + File.separator + "define.xml";
         String driver = System.getProperty("driver");
         String url = System.getProperty("url");
         String user = System.getProperty("user");
