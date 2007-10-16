@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-10-16 12:28:05 $
+ *          $Revision: 1.12 $
+ *          $Date: 2007-10-16 12:34:18 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -552,6 +552,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                     _pwdField.setEditable(true);
                     tree.setSelectionRow(1);
                     tree.expandPath(tree.getPathForRow(0));
+                    tree.setSelectionPath(tree.getPathForRow(1));
                     conDialog.dispose();
                 } else {
                     JOptionPane.showMessageDialog(dialog, "All the fields are required");
@@ -673,6 +674,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/10/16 12:28:05  jayannah
+ * The right click on the root node will not do anything, when a new profile is entered, the window automatically shows the first node
+ *
  * Revision 1.10  2007/10/11 20:01:31  jayannah
  * Changed the input screen label during collection of database information
  *
