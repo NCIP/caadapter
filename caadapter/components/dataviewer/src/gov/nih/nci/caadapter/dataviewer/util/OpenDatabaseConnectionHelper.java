@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-10-11 20:01:31 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-10-16 12:28:05 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree=null;
@@ -146,9 +146,11 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
         JLabel label01 = new JLabel("Enter the Connection Parameters");
         label01.setBorder(lineBorder);
-        label01.setBackground(Color.BLACK);
+        label01.setOpaque(true);
+        Color blue = new Color(0,0,153);
+        label01.setBackground(blue);
         label01.setFont(new Font("Arial", Font.BOLD, 13));
-        label01.setForeground(Color.BLACK);
+        label01.setForeground(Color.WHITE);
         label01.setHorizontalAlignment(SwingConstants.CENTER);
         JScrollPane treeView = new JScrollPane(createTrees());
         TitledBorder title1 = BorderFactory.createTitledBorder("Connection Profiles");
@@ -180,6 +182,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         dialog.addWindowListener(this);
         setSelected(firstNode);
         dialog.setVisible(true);
+        //tree.expandPath( );
         //tree.setSelectionRow(((DefaultMutableTreeNode)tree.getModel().getChild(tree, 0)));
         //treePane.transferFocus();
         //_profileField.transferFocus(); _hostField.transferFocus(); _userIdField.transferFocus(); _dataBaseDriver.transferFocus();;
@@ -395,7 +398,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         //this method exists
         public void mousePressed(MouseEvent e) {
             if (e.getModifiers() == 4) {// right click
-                popedit.show(_tree, e.getX(), e.getY());
+                DefaultMutableTreeNode tempString = (DefaultMutableTreeNode)(((JTree)e.getSource()).getAnchorSelectionPath().getLastPathComponent());
+                if(!tempString.toString().equals("Profiles"))
+                    popedit.show(_tree, e.getX(), e.getY());
             }
         }
 
@@ -546,6 +551,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                     _pwdField.setText("");
                     _pwdField.setEditable(true);
                     tree.setSelectionRow(1);
+                    tree.expandPath(tree.getPathForRow(0));
                     conDialog.dispose();
                 } else {
                     JOptionPane.showMessageDialog(dialog, "All the fields are required");
@@ -667,6 +673,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/10/11 20:01:31  jayannah
+ * Changed the input screen label during collection of database information
+ *
  * Revision 1.9  2007/10/10 19:50:02  jayannah
  * Commented System outs
  *
