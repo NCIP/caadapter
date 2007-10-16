@@ -31,3 +31,4 @@ cgems_family &cgems &caintegrator-spec &caintegrator-analysis-commons
 ispy_family &ispyportal &caintegrator-spec &caintegrator-analysis-commons
 analysis_family &caintegrator-analysis-server &caintegrator-analysis-commons
 TARGET &target &caintegrator-analysis-commons &caintegrator-application-commons &caintegrator-spec
+evs-api &evsapi &cacoresdk
