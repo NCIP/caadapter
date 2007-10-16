@@ -17,8 +17,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-09-13 13:53:56 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-10-16 14:10:18 $
  */
 public class DialogClosingListener implements WindowListener {
     private MainDataViewerFrame mainDataViewerFrame = null;
@@ -29,7 +29,7 @@ public class DialogClosingListener implements WindowListener {
 
     public void windowClosing(java.awt.event.WindowEvent evt) {
 
-        JOptionPane.showMessageDialog(mainDataViewerFrame.get_jf(), "Please use \"Save & Exit\" button to exit Data Viewer", "Close Data Viewer...", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(mainDataViewerFrame.get_jf(), "Please use \"Save & Exit or Exit w/o Save\" button to exit Data Viewer", "Close Data Viewer...", JOptionPane.INFORMATION_MESSAGE);
 //        //check if the sql is modified
 //        boolean needsSave = false;
 //        HashMap sqlHashMap = mainDataViewerFrame.getSqlSaveHashMap();
@@ -192,6 +192,9 @@ public class DialogClosingListener implements WindowListener {
 /*
     Change History
     $Log: not supported by cvs2svn $
+    Revision 1.8  2007/09/13 13:53:56  jayannah
+    Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
+
     Revision 1.7  2007/09/11 15:33:25  jayannah
     made changes for the window so that when the user clicks on x the control is passed to save all and exit button and panel reload does not cause map file corruption
 

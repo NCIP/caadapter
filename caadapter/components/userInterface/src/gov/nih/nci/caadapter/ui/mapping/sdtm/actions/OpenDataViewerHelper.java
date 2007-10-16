@@ -32,8 +32,8 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-09-13 13:51:41 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-10-16 14:10:27 $
  */
 public class OpenDataViewerHelper extends JDialog implements ActionListener {
     private Frame _mainFrame = null;
@@ -83,7 +83,7 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
         pan.setLayout(new FlowLayout());
         if (mapFile != null) {
             //mapTextField = new JTextField(mapFile.getAbsolutePath());
-            label = new JLabel("Open map File \"" + mapFile.getAbsolutePath() + "\"");
+            label = new JLabel("Open map File \"" + mapFile.getName()+ "\"");
         } else {
             mapTextField = new JTextField();
         }
@@ -292,6 +292,9 @@ public class OpenDataViewerHelper extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/09/13 13:51:41  jayannah
+ * Changes made to ensure that flow is correct, the save , reopen etc
+ *
  * Revision 1.8  2007/09/11 16:49:16  jayannah
  * to over come build issues
  *

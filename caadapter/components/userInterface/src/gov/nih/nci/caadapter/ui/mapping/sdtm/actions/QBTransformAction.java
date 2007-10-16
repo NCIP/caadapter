@@ -45,8 +45,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.18 $
- *          $Date: 2007-10-15 19:49:32 $
+ *          $Revision: 1.19 $
+ *          $Date: 2007-10-16 14:10:27 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -116,7 +116,7 @@ public class QBTransformAction {
                         }
                     }
                 }).start();
-                queryWaitDialog.setTitle("Transforming file " + mappingPanel.getSaveFile().getAbsolutePath() + "in Progress");
+                queryWaitDialog.setTitle("Transforming file " + mappingPanel.getSaveFile().getName() + "in Progress");
                 queryWaitDialog.setSize(450, 300);
                 queryWaitDialog.setLocation(450, 450);
                 queryWaitDialog.setLocationRelativeTo(null);
@@ -412,6 +412,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/10/15 19:49:32  jayannah
+ * Added a public API for the transformation of the CSV and DB in order to be compliant with the caCore.
+ *
  * Revision 1.17  2007/10/11 19:45:43  jayannah
  * Changed the title of the window seeking the folder request during transformation
  *

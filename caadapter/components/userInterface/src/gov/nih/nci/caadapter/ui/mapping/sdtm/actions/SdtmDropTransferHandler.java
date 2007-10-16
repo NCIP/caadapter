@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
+import gov.nih.nci.caadapter.sdtm.meta.QBTableMetaData;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
  */
 public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -242,6 +243,10 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
                         // SDKMetaData sourceSDKMetaData = (SDKMetaData)sourceNode.getUserObject();
                         // SDKMetaData targetSDKMetaData = (SDKMetaData)targetNode.getUserObject();
                         // isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
+                        if (sourceNode.getUserObject() instanceof QBTableMetaData){
+                            JOptionPane.showMessageDialog(getTree().getRootPane().getParent(), "The selected source cannot be mapped because it is a table, please choose columns to map.", "Mapping Error", JOptionPane.ERROR_MESSAGE);
+                            return false;
+                        }
                         isSuccess = mappingDataMananger.createMapping((MappableNode) sourceNode, (MappableNode) targetNode);
                         //System.out.println("SdtmDropTransferHandler ------ " + mappingDataMananger.hashCode());
                         if (isSuccess)
@@ -252,7 +257,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
                         // mappingDataMananger.createMapping((MappableNode)sourceNode,(MappableNode)targetNode);
                     } else
                     {
-                        JOptionPane.showMessageDialog(getTree().getRootPane().getParent(), "The target or source you selected is not right data type. he he eheheheh", "Mapping Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(getTree().getRootPane().getParent(), "The target or source you selected is not right data type.", "Mapping Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 if (isSuccess)

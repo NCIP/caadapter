@@ -24,8 +24,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.13 $
- *          $Date: 2007-10-15 20:30:55 $
+ *          $Revision: 1.14 $
+ *          $Date: 2007-10-16 14:10:26 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger=null;
@@ -69,7 +69,7 @@ public class OpenSDTMMapFile extends JDialog {
         LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
         JPanel _waitLabel = new JPanel();
         _waitLabel.setBorder(lineBorder);
-        _waitLabel.add(new JLabel("      Opening the file, " + mapFile + " ..."));
+        _waitLabel.add(new JLabel("      Opening the file \"" + new File(mapFile).getName() + "\"..."));
         _openMapfileWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
         _openMapfileWaitDialog.add(_waitLabel, BorderLayout.CENTER);
         _openMapfileWaitDialog.setVisible(true);
@@ -373,6 +373,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/10/15 20:30:55  jayannah
+ * changed code so that the relative path are honored
+ *
  * Revision 1.12  2007/10/11 19:43:28  jayannah
  * Changed the title of the JFilechoosers
  *
