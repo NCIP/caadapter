@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.5 2007-10-13 03:14:07 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.6 2007-10-16 12:06:42 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-10-13 03:14:07 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-10-16 12:06:42 $
  */
 public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener {
     private static final String PROPERTIES_NAME_ON_TITLE = "Properties";
@@ -176,6 +176,8 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
                     for (int i = 0; i < selectedNodesArrayList.size(); i++) {
                         visitAllNodes(rootNode, (CSVFieldMetaImpl) selectedNodesArrayList.get(i));
                     }
+                } else {
+                        resetToPreviousValue();
                 }
                 segmentPane.getTableFields().clearSelectedNodes();
             } else {
@@ -375,6 +377,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/10/13 03:14:07  jayannah
+ * HISTORY      : changed the delete button action
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/10/13 03:07:00  jayannah
  * HISTORY      : Changes to enable delete action from the properties pane and refresh the tree as well as the property pane, And show a confirmation window for the delete
  * HISTORY      :
