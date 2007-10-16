@@ -97,9 +97,11 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener {
         //title begin
         JLabel label01 = new JLabel("Enter Password...");
         label01.setBorder(BorderFactory.createLineBorder(Color.black));
-        label01.setBackground(Color.BLACK);
+        label01.setOpaque(true);
+        Color blue = new Color(0,0,153);
+        label01.setBackground(blue);
         label01.setFont(new Font("Arial", Font.BOLD, 13));
-        label01.setForeground(Color.BLACK);
+        label01.setForeground(Color.WHITE);
         label01.setHorizontalAlignment(SwingConstants.CENTER);
         //title end
         Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
