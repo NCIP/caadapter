@@ -26,8 +26,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.16 $
- *          $Date: 2007-10-17 20:03:39 $
+ *          $Revision: 1.17 $
+ *          $Date: 2007-10-17 20:09:00 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger = null;
@@ -119,7 +119,31 @@ public class OpenSDTMMapFile extends JDialog {
             }
         }
         if (_scsFileName != null) {
-            _scsFileName = FileUtil.fileLocateOnClasspath(_scsFileName);
+            try {
+                _scsFileName = FileUtil.fileLocateOnClasspath(_scsFileName);
+            } catch (FileNotFoundException e) {
+                CaadapterFileFilter filter = new CaadapterFileFilter();
+                filter.addExtension("scs");
+                //directoryLoc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
+                String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
+                directoryLoc = new JFileChooser(_defaultLoc);
+                //directoryLoc.setDialogTitle("Could not find the SCS file, Please choose the location...");
+                this.setTitle(_scsFileName + " not found! Please choose a different file");
+                //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
+                scsFile = new JFileChooser(_defaultLoc);
+                // filter.setDescription("map");
+                scsFile.setFileFilter(filter);
+                scsFile.setDialogTitle("Could not find the SCS file, Please choose the location...");
+                int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    scsFileChosen = scsFile.getSelectedFile();
+                    _scsFileName = scsFileChosen.toString();
+                } else {
+                    return;
+                }
+            }
+
+
             if (_scsFileName == null && !new File(_scsFileName).exists()) {
                 CaadapterFileFilter filter = new CaadapterFileFilter();
                 filter.addExtension("scs");
@@ -403,6 +427,10 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.16  2007/10/17 20:03:39  jayannah
+ * -Changed the behavior of the jtree. enables a create new profile action upon right clicking the root
+ * -In the event of the file not found a pop box shows up to collect the values
+ *
  * Revision 1.15  2007/10/16 15:38:15  jayannah
  * Changed the references from RDS to RDS_Example; Some one changed the working space directory and did not inform
  *
