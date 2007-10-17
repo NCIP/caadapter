@@ -131,8 +131,6 @@ public class XMIGenerator
 				}
 			}
 			
-			
-			
 			for( UMLAttribute att : clazz.getAttributes() ) 
 			{
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
@@ -160,7 +158,10 @@ public class XMIGenerator
 					}
 					if( tagValue.getName().contains( "type" ))
 					{
-						att.removeTaggedValue( "type" );
+                        if( tagValue.getValue().equalsIgnoreCase("CLOB"))
+                        {
+                           att.removeTaggedValue( "type" );
+                        }                        
 					}
 					if( tagValue.getName().contains( "discriminator" ))
 					{
