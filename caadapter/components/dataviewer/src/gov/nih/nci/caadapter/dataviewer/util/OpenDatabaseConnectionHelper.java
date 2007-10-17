@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.13 $
- *          $Date: 2007-10-17 15:55:12 $
+ *          $Revision: 1.14 $
+ *          $Date: 2007-10-17 20:03:37 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree = null;
@@ -371,6 +371,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         private JTextField textField;
         private JTree _tree;
         private JPopupMenu popedit;
+        JMenuItem copy;
+        JMenuItem cut;
+        JMenuItem new_;
 
         RightClickHelper(JTextField fld) {
             this.textField = fld;
@@ -385,22 +388,37 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         }
 
         private void init() {
-            JMenuItem copy = new JMenuItem("Edit Profile");
+            copy = new JMenuItem("Edit Profile");
             copy.addActionListener(this);
             copy.setActionCommand("edit");
-            JMenuItem cut = new JMenuItem("Delete Profile");
+            cut = new JMenuItem("Delete Profile");
             cut.addActionListener(this);
             cut.setActionCommand("delete");
+            new_ = new JMenuItem("New Profile");
+            new_.addActionListener(this);
+            new_.setActionCommand("new");
+            popedit.add(new_);
             popedit.add(copy);
             popedit.add(cut);
+
+
         }
 
         //this method exists
         public void mousePressed(MouseEvent e) {
             if (e.getModifiers() == 4) {// right click
                 DefaultMutableTreeNode tempString = (DefaultMutableTreeNode) (((JTree) e.getSource()).getAnchorSelectionPath().getLastPathComponent());
-                if (!tempString.toString().equals("Profiles"))
-                    popedit.show(_tree, e.getX(), e.getY());
+
+                if (!tempString.toString().equals("Profiles")) {
+                    new_.setEnabled(false);
+                    copy.setEnabled(true);
+                    cut.setEnabled(true);
+                } else {
+                    copy.setEnabled(false);
+                    cut.setEnabled(false);
+                    new_.setEnabled(true);
+                }
+                popedit.show(_tree, e.getX(), e.getY());
             }
         }
 
@@ -442,7 +460,10 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                 } else if (response == JOptionPane.CLOSED_OPTION) {
                     System.out.println("JOptionPane closed");
                 }
+            } else if (command.equals("new")) {
+                showConnectionWindow(dialog, "New Profile", null, null);
             }
+            //popedit.removeAll();
         }
 
         private DefaultMutableTreeNode getSelectedNode() {
@@ -684,6 +705,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2007/10/17 15:55:12  jayannah
+ * set the fields to blank when a profile is deleted
+ *
  * Revision 1.12  2007/10/16 12:34:18  jayannah
  * Highlighted the first node when a profile is added
  *

@@ -17,23 +17,25 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
+
 /**
  * The class helps in opening a MAP file(both SCS and Database)
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.15 $
- *          $Date: 2007-10-16 15:38:15 $
+ *          $Revision: 1.16 $
+ *          $Date: 2007-10-17 20:03:39 $
  */
 public class OpenSDTMMapFile extends JDialog {
-    private MappingDataManager _mappingDataMananger=null;
-    private HashMap _mappedData=null;
-    private Database2SDTMMappingPanel _database2SDTMMappingPanel=null;
-    public String _xmlFile=null;
-    JFileChooser directoryLoc, scsFile=null;
-    File directory, scsFileChosen=null;
+    private MappingDataManager _mappingDataMananger = null;
+    private HashMap _mappedData = null;
+    private Database2SDTMMappingPanel _database2SDTMMappingPanel = null;
+    public String _xmlFile = null;
+    JFileChooser directoryLoc, scsFile = null;
+    File directory, scsFileChosen = null;
     String _scsFileName = null, _dbParams = null;
     private Hashtable xPathNodeSet = null;
 
@@ -106,7 +108,7 @@ public class OpenSDTMMapFile extends JDialog {
                 targetName1.getAttribute("location").toString();
                 if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
                     _scsFileName = targetName1.getAttribute("location").toString();
-                    
+
                 } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
                     _dbParams = targetName1.getAttribute("param").toString();
                 }
@@ -118,11 +120,11 @@ public class OpenSDTMMapFile extends JDialog {
         }
         if (_scsFileName != null) {
             _scsFileName = FileUtil.fileLocateOnClasspath(_scsFileName);
-            if (_scsFileName==null && !new File(_scsFileName).exists()) {
+            if (_scsFileName == null && !new File(_scsFileName).exists()) {
                 CaadapterFileFilter filter = new CaadapterFileFilter();
                 filter.addExtension("scs");
                 //directoryLoc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS");
-                String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example";
+                String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
                 directoryLoc = new JFileChooser(_defaultLoc);
                 //directoryLoc.setDialogTitle("Could not find the SCS file, Please choose the location...");
                 this.setTitle(_scsFileName + " not found! Please choose a different file");
@@ -143,7 +145,7 @@ public class OpenSDTMMapFile extends JDialog {
             }
         }
         if (_dbParams != null) {
-            if(!_database2SDTMMappingPanel.openDataBaseMapFileFromOpenMapFile(_dbParams)){
+            if (!_database2SDTMMappingPanel.openDataBaseMapFileFromOpenMapFile(_dbParams)) {
                 _database2SDTMMappingPanel.getOpenSCSButton().setEnabled(true);
                 _database2SDTMMappingPanel.get_dbCon().setEnabled(true);
                 _database2SDTMMappingPanel.get_commonBut().setEnabled(false);
@@ -153,11 +155,15 @@ public class OpenSDTMMapFile extends JDialog {
             }
 
         }
-        _xmlFileName = FileUtil.fileLocateOnClasspath(_xmlFileName);
-        if (_xmlFileName==null && !new File(_xmlFileName).exists()) {
+        try {
+            _xmlFileName = FileUtil.fileLocateOnClasspath(_xmlFileName);
+        } catch (FileNotFoundException e) {
+            _xmlFileName = getAltDefineXMLFile(_xmlFileName);
+        }
+        if (_xmlFileName == null && !new File(_xmlFileName).exists()) {
             CaadapterFileFilter filter = new CaadapterFileFilter();
             filter.addExtension("xml");
-            String _defaultLoc = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example";
+            String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
             directoryLoc = new JFileChooser(_defaultLoc);
             //directoryLoc.setDialogTitle("Please select the define.xml file …");
             this.setTitle(_xmlFileName + " not found! Please choose a different file");
@@ -313,7 +319,7 @@ public class OpenSDTMMapFile extends JDialog {
         return null;
     }
 
-   public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
+    public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
         DefaultMutableTreeNode node = null;
         java.util.Enumeration enum1 = rootNode.depthFirstEnumeration();
         while (enum1.hasMoreElements()) {
@@ -370,9 +376,36 @@ public class OpenSDTMMapFile extends JDialog {
         n.getMappingInfo("C:\\Documents and Settings\\Hjayanna\\My Documents\\SDTM.stuff\\map.files\\10302.map");
         System.out.print("The values are" + n._mappedData);
     }
+
+    private String getAltDefineXMLFile(String _xmlFileName) {
+        CaadapterFileFilter filter = new CaadapterFileFilter();
+        filter.addExtension("xml");
+        String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
+        directoryLoc = new JFileChooser(_defaultLoc);
+        //directoryLoc.setDialogTitle("Please select the define.xml file …");
+        this.setTitle(_xmlFileName + " not found! Please choose a different file");
+        //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
+        scsFile = new JFileChooser(_defaultLoc);
+        // filter.setDescription("map");
+        scsFile.setFileFilter(filter);
+        scsFile.setDialogTitle("Please select the define.xml file …");
+        int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            scsFileChosen = scsFile.getSelectedFile();
+            _xmlFileName = scsFileChosen.toString();
+            return _xmlFileName;
+        } else {
+            return null;
+        }
+
+    }
+
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2007/10/16 15:38:15  jayannah
+ * Changed the references from RDS to RDS_Example; Some one changed the working space directory and did not inform
+ *
  * Revision 1.14  2007/10/16 14:10:26  jayannah
  * Changed the absolute path to getName during times when the pop up is displayed to the world;
  * made changes so that the Tables cannot be mapped
