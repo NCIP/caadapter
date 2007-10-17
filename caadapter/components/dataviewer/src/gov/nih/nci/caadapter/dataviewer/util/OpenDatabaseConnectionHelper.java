@@ -25,27 +25,27 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.12 $
- *          $Date: 2007-10-16 12:34:18 $
+ *          $Revision: 1.13 $
+ *          $Date: 2007-10-17 15:55:12 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
-    private JTree tree=null;
-    private JDialog dialog=null;
-    private JTextField _profileField=null;
-    private JTextField _hostField=null;
-    private JTextField _userIdField=null;
-    private JTextField _dataBaseDriver=null;
-    private JPasswordField _pwdField=null;
-    private JTextField _schemaField=null;
-    private Hashtable _profileConnections=null;
-    private String _nodeName=null;//this is to disable right click for the root
-    private DefaultMutableTreeNode top=null;
-    private DefaultTreeModel model=null;
-    private JCheckBox _def=null;
-    private JButton _ok=null;
+    private JTree tree = null;
+    private JDialog dialog = null;
+    private JTextField _profileField = null;
+    private JTextField _hostField = null;
+    private JTextField _userIdField = null;
+    private JTextField _dataBaseDriver = null;
+    private JPasswordField _pwdField = null;
+    private JTextField _schemaField = null;
+    private Hashtable _profileConnections = null;
+    private String _nodeName = null;//this is to disable right click for the root
+    private DefaultMutableTreeNode top = null;
+    private DefaultTreeModel model = null;
+    private JCheckBox _def = null;
+    private JButton _ok = null;
     private Hashtable driverInfo = new Hashtable();
     private DefaultMutableTreeNode firstNode = null;
-    private boolean isCancelled=false;
+    private boolean isCancelled = false;
 
     public JTextField getPwdFld() {
         return _pwdField;
@@ -64,7 +64,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                 while (emt.hasMoreTokens()) {
                     System.out.println("path is : " + emt.nextToken());
                 }
-               // System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+                // System.out.println("+++++++++++++++++++++++++++++++++++++++++");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -108,7 +108,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         bottomPanel.setLayout(new BorderLayout());
         JPanel statpan = new JPanel();
         statpan.setLayout(new BorderLayout());
-       /*
+        /*
            If already connected panel
         */
         JPanel _butPan = new JPanel();
@@ -147,7 +147,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         JLabel label01 = new JLabel("Enter the Connection Parameters");
         label01.setBorder(lineBorder);
         label01.setOpaque(true);
-        Color blue = new Color(0,0,153);
+        Color blue = new Color(0, 0, 153);
         label01.setBackground(blue);
         label01.setFont(new Font("Arial", Font.BOLD, 13));
         label01.setForeground(Color.WHITE);
@@ -398,8 +398,8 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         //this method exists
         public void mousePressed(MouseEvent e) {
             if (e.getModifiers() == 4) {// right click
-                DefaultMutableTreeNode tempString = (DefaultMutableTreeNode)(((JTree)e.getSource()).getAnchorSelectionPath().getLastPathComponent());
-                if(!tempString.toString().equals("Profiles"))
+                DefaultMutableTreeNode tempString = (DefaultMutableTreeNode) (((JTree) e.getSource()).getAnchorSelectionPath().getLastPathComponent());
+                if (!tempString.toString().equals("Profiles"))
                     popedit.show(_tree, e.getX(), e.getY());
             }
         }
@@ -428,7 +428,17 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
                 } else if (response == JOptionPane.YES_OPTION) {
                     model.removeNodeFromParent(getSelectedNode());
                     _profileConnections.remove(_nodeName);
-                    tree.setSelectionRow(1);
+                    //check if at least one profile exists
+                    if (_profileConnections.size() > 0) {
+                        tree.setSelectionRow(1);
+                    } else {
+                        _profileField.setText("");
+                        _hostField.setText("");
+                        _userIdField.setText("");
+                        _dataBaseDriver.setText("");
+                        _pwdField.setText("");
+                        _schemaField.setText("");
+                    }
                 } else if (response == JOptionPane.CLOSED_OPTION) {
                     System.out.println("JOptionPane closed");
                 }
@@ -674,6 +684,9 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2007/10/16 12:34:18  jayannah
+ * Highlighted the first node when a profile is added
+ *
  * Revision 1.11  2007/10/16 12:28:05  jayannah
  * The right click on the root node will not do anything, when a new profile is entered, the window automatically shows the first node
  *
