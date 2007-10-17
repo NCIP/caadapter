@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.dataviewer.util.GetConnectionSingleton;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
 import gov.nih.nci.caadapter.dataviewer.util.QBTransformHelper;
@@ -9,6 +10,7 @@ import gov.nih.nci.caadapter.sdtm.ParseSDTMXMLFile;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.sdtm.util.CSVMapFileReader;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
+import gov.nih.nci.caadapter.ui.common.CaadapterFileFilter;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.main.MainFrame;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.DBConnector;
@@ -27,10 +29,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -45,14 +44,16 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.19 $
- *          $Date: 2007-10-16 14:10:27 $
+ *          $Revision: 1.20 $
+ *          $Date: 2007-10-17 20:52:38 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
+    private AbstractMainFrame frame = null;
     File directory = null;
     private Connection con = null;
     HashMap fixedLengthRecords = null;
+    JFileChooser scsFile = null;
 
     boolean fixedLengthIndicator = false;
     Hashtable sqlAsColumnMap = null;
@@ -165,6 +166,7 @@ public class QBTransformAction {
             }
         }
         this.con = _con;
+        this.frame = _mainFrame;
         directoryLoc = new JFileChooser(System.getProperty("user.dir"));
         directoryLoc.setDialogTitle("Transforming file " + mapFile + ", please choose directory..");
         directoryLoc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -262,10 +264,26 @@ public class QBTransformAction {
     public void processTransform4SQLStatments(String savedMapFile, String defineXML, String xlsFile) throws Exception {
         try {
             QBParseMappingFile qb = new QBParseMappingFile(new File(savedMapFile));
+            try {
+                defineXML = FileUtil.fileLocateOnClasspath(defineXML);
+            } catch (FileNotFoundException e) {
+                if(frame !=null)
+                    defineXML = getAltDefineXMLFile(defineXML);
+                else
+                    System.out.println(defineXML +" is not found, please check and try again");
+            }
             Hashtable tempTable = getAllFieldsForDomains(new File(defineXML));
+            if (qb.getHashSQLfromMappings().size() == 0) {
+                if (frame != null)
+                    throw new Exception("The "+defineXML+" is missing SQL statements; please save the SQL's and try again!!");
+                    //JOptionPane.showMessageDialog(frame, "The "+defineXML+" not found, Please save the SQL statements and try again", "File not found", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    System.out.println("The map file is missing SQL statments; please save the map with SQL and run again");
+            }
             //prepare the column AS columnname list
             QBTransformHelper qbTransformHelper = new QBTransformHelper(qb.getHashSQLfromMappings());
             this.sqlAsColumnMap = qbTransformHelper.getSqlColumnNames();
+
             Iterator _iter = qb.getHashSQLfromMappings().keySet().iterator();
             while (_iter.hasNext()) {
                 //get the domain name
@@ -408,10 +426,36 @@ public class QBTransformAction {
         }
         return null;
     }
+
+    private String getAltDefineXMLFile(String _xmlFileName) {
+        CaadapterFileFilter filter = new CaadapterFileFilter();
+        filter.addExtension("xml");
+        String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
+        directoryLoc = new JFileChooser(_defaultLoc);
+        //directoryLoc.setDialogTitle("Please select the define.xml file …");
+        //this.setTitle(_xmlFileName + " not found! Please choose a different file");
+        //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
+        scsFile = new JFileChooser(_defaultLoc);
+        // filter.setDescription("map");
+        scsFile.setFileFilter(filter);
+        scsFile.setDialogTitle("Please select the define.xml file …");
+        int returnVal = scsFile.showOpenDialog(frame);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return scsFile.getSelectedFile().getAbsolutePath();
+
+        } else {
+            return null;
+        }
+
+    }
 }
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2007/10/16 14:10:27  jayannah
+ * Changed the absolute path to getName during times when the pop up is displayed to the world;
+ * made changes so that the Tables cannot be mapped
+ *
  * Revision 1.18  2007/10/15 19:49:32  jayannah
  * Added a public API for the transformation of the CSV and DB in order to be compliant with the caCore.
  *
