@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $
  */
 public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -150,6 +150,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
      */
     public boolean setDropData(Object transferredData, DropTargetDropEvent e, DataFlavor chosen)
     {
+        
         boolean isSuccess = false;
         StringBuffer _sourceDataAsXPath;
         Point p = e.getLocation();
@@ -248,10 +249,12 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
                             return false;
                         }
                         isSuccess = mappingDataMananger.createMapping((MappableNode) sourceNode, (MappableNode) targetNode);
+                        sdtmMappingGenerator.putNodes((MappableNode) sourceNode, (MappableNode) targetNode);
                         //System.out.println("SdtmDropTransferHandler ------ " + mappingDataMananger.hashCode());
                         if (isSuccess)
                         {
                             sdtmMappingGenerator.put(_sourceDataAsXPath.toString(), _targetDataAsXpath.toString());
+
                         }
                         // isSuccess = isSuccess &&
                         // mappingDataMananger.createMapping((MappableNode)sourceNode,(MappableNode)targetNode);
@@ -294,7 +297,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
         if (functionOutputPortList.size() == 1)
         {// no need to ask users to
             // select.
-            this.mappingDataMananger.createMapping((MappableNode) functionOutputPortList.get(0), targetNode);
+            this.mappingDataMananger.createMapping((MappableNode) functionOutputPortList.get(0), targetNode);            
         } else if (functionOutputPortList.size() > 1)
         {
             Object choice = JOptionPane.showInputDialog(getParentComponent(), "Select one output paramater of the function to be mapped.", "Select Function Output Parameter", JOptionPane.QUESTION_MESSAGE, null, functionOutputPortList.toArray(), functionOutputPortList.get(0));

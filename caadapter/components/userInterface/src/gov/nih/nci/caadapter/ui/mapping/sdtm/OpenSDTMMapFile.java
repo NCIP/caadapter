@@ -26,8 +26,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.17 $
- *          $Date: 2007-10-17 20:09:00 $
+ *          $Revision: 1.18 $
+ *          $Date: 2007-10-18 19:13:39 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger = null;
@@ -269,6 +269,7 @@ public class OpenSDTMMapFile extends JDialog {
              ******************************************************************/
             if (resSourceNode != null && resTargetNode != null) {
                 _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);
+                _database2SDTMMappingPanel.getSDTMappingGenerator().putNodes((MappableNode) resSourceNode, (MappableNode) resTargetNode);
             }
         }
     }
@@ -293,6 +294,7 @@ public class OpenSDTMMapFile extends JDialog {
             if (resSourceNode != null && resTargetNode != null) {
                 // new DefaultMutableTreeNode()
                 _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);
+                 _database2SDTMMappingPanel.getSDTMappingGenerator().putNodes((MappableNode) resSourceNode, (MappableNode) resTargetNode);
             }
         }
     }
@@ -427,6 +429,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/10/17 20:09:00  jayannah
+ * handled the condition when the scs files is not in the right path
+ *
  * Revision 1.16  2007/10/17 20:03:39  jayannah
  * -Changed the behavior of the jtree. enables a create new profile action upon right clicking the root
  * -In the event of the file not found a pop box shows up to collect the values
