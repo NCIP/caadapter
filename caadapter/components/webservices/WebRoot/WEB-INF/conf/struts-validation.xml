@@ -2,7 +2,7 @@
 <!DOCTYPE form-validation PUBLIC
 	"-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.0//EN"
 	"http://jakarta.apache.org/commons/dtds/validator_1_2_0.dtd">
-
+<!-- !DOCTYPE form-validation SYSTEM "localDtds/validator_1_1_3.dtd" -->
 
 <form-validation>
     <global>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE tiles-definitions PUBLIC
-       "-//Apache Software Foundation//DTD tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
-
+       "-//Apache Software Foundation//DTD tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd" -->
+<!-- !DOCTYPE tiles-definitions SYSTEM "localDtds/tiles-config_1_1.dtd" -->
 <tiles-definitions>   
 	<!-- Base layouts -->
 	<definition name="Base" page="/WEB-INF/jsps/layouts/defaultLayout.jsp">
