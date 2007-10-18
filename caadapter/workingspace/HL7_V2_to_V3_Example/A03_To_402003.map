@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping version="1.2">
    <components>
-      <component kind="scs" location="{caAdapter_Home}\workingspace\v2v3Mapping\ADT_A03.scs" type="source"/>
-      <component kind="h3s" location="{caAdapter_Home}\workingspace\v2v3Mapping\PRPA_MT402003.h3s" type="target"/>
+      <component kind="scs" location="ADT_A03.scs" type="source"/>
+      <component kind="h3s" location="PRPA_MT402003.h3s" type="target"/>
       <component group="constant" kind="core" name="constant" type="function" id="0">
          <data type="String" value="completed"/>
       </component>
@@ -31,7 +31,7 @@
          <data type="String" value="false"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="11">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\v2v3Mapping\A03_TO_402003.vom?@AdmissionType"/>
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@AdmissionType"/>
       </component>
       <component group="constant" kind="core" name="constant" type="function" id="13">
          <data type="String" value="Discharge disposition"/>
@@ -40,7 +40,7 @@
          <data type="String" value="x_EncounterAdmissionUrgency"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="10">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\v2v3Mapping\A03_TO_402003.vom?@DiagnosisType"/>
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiagnosisType"/>
       </component>
       <component group="constant" kind="core" name="constant" type="function" id="8">
          <data type="String" value="completed"/>
@@ -55,13 +55,13 @@
          <data type="String" value="2.16.840.1.113883.13.1637"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="16">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\v2v3Mapping\A03_TO_402003.vom?@DiseaseCodingSystemCodeName"/>
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemCodeName"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="24">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\v2v3Mapping\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="18">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\v2v3Mapping\A03_TO_402003.vom?@DiseaseCodingSystemCodeName"/>
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemCodeName"/>
       </component>
       <component group="constant" kind="core" name="constant" type="function" id="23">
          <data type="String" value="2.16.840.1.113883.13.1546"/>
@@ -79,7 +79,7 @@
          <data type="String" value="2.16.840.1.113883.11.16228"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="20">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\v2v3Mapping\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
       </component>
    </components>
    <links>
