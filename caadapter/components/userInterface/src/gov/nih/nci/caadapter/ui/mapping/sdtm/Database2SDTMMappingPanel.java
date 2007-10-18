@@ -59,12 +59,12 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.21 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.22 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
 {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.21 2007-10-18 19:13:39 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.22 2007-10-18 20:16:22 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -468,6 +468,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
             sTree.setCellRenderer(new SourceRenderer());
             ToolTipManager.sharedInstance().registerComponent(sTree);
         }
+        sTree.addTreeSelectionListener(middlePanel.getGraphController().getHighLighter());
         sTree.addTreeSelectionListener(new TreeSelectionListener()
         {
             public void valueChanged(TreeSelectionEvent e)
@@ -574,6 +575,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
         //instantiate the "DropTransferHandler"
         tTree.setCellRenderer(new TargetRenderer());
+        tTree.addTreeSelectionListener(middlePanel.getGraphController().getHighLighter());
         ToolTipManager.sharedInstance().registerComponent(tTree);
         // insert code
         tTree.addTreeSelectionListener(new TreeSelectionListener()
@@ -920,6 +922,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2007/10/18 19:13:39  jayannah
+ * Changes to highlist the target node when the source is selected and vice versa
+ *
  * Revision 1.20  2007/09/13 14:41:38  jayannah
  * took care of enabling the connect database button when there is a connect exception
  *

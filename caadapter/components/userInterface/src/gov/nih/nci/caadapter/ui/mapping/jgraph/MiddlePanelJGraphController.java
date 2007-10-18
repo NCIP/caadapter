@@ -90,8 +90,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.13 $ date $Date: 2007-10-02 14:51:39 $
+ * @author LAST UPDATE $Author: jayannah $
+ * @version Since caAdapter v1.2 revision $Revision: 1.14 $ date $Date: 2007-10-18 20:16:22 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -106,7 +106,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.13 2007-10-02 14:51:39 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.14 2007-10-18 20:16:22 jayannah Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -133,7 +133,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	private LinkSelectionHighlighter linkSelectionHighlighter;
 	
 	
-
+    public LinkSelectionHighlighter getHighLighter(){
+            return linkSelectionHighlighter;
+    }
 	// 
 	// Construct the Graph using the Model as its Data Source
 	public MiddlePanelJGraphController(MiddlePanelJGraph graph, MappingMiddlePanel middlePanel, AbstractMappingPanel mappingPanel) {
@@ -1467,6 +1469,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.13  2007/10/02 14:51:39  schroedn
+ * HISTORY : Removed green dotted lines
+ * HISTORY :
  * HISTORY : Revision 1.12  2007/08/31 13:10:43  wangeug
  * HISTORY : parsemapping
  * HISTORY :
