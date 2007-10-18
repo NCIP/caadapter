@@ -19,8 +19,8 @@ import java.io.File;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.3 $
- *          $Date: 2007-10-11 19:29:12 $
+ *          $Revision: 1.4 $
+ *          $Date: 2007-10-18 14:44:08 $
  */
 public class NewV2V3GUI extends JDialog implements ActionListener {
     //
@@ -54,7 +54,7 @@ public class NewV2V3GUI extends JDialog implements ActionListener {
     //
     public NewV2V3GUI(AbstractMainFrame _callingFrame) {
         super(_callingFrame, true);
-        directoryPath = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"v2v3Mapping";
+        directoryPath = FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"HL7_V2_to_V3_Example";
         System.out.println(FileUtil.getWorkingDirPath());
         callingFrame = _callingFrame;
         this.setLayout(new BorderLayout());
