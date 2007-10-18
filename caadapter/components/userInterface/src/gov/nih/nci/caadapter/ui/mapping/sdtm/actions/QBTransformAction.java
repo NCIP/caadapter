@@ -44,8 +44,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.20 $
- *          $Date: 2007-10-17 20:52:38 $
+ *          $Revision: 1.21 $
+ *          $Date: 2007-10-18 21:08:17 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -193,6 +193,7 @@ public class QBTransformAction {
                         try {
                             processTransform4SQLStatments(mapFile, defineXMLocation, directory.getAbsolutePath().toString());
                             queryWaitDialog.dispose();
+                            JOptionPane.showMessageDialog(_mainFrame, "Transformation is successful, Please check the text files at "+directory.getAbsolutePath(), "Transformation", JOptionPane.INFORMATION_MESSAGE);
                         } catch (Exception e) {
                             queryWaitDialog.dispose();
                             JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -452,6 +453,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2007/10/17 20:52:38  jayannah
+ * Added a message dialog when the SQLs are not saved
+ *
  * Revision 1.19  2007/10/16 14:10:27  jayannah
  * Changed the absolute path to getName during times when the pop up is displayed to the world;
  * made changes so that the Tables cannot be mapped
