@@ -2,7 +2,7 @@
 <mapping>
   <components>
   	<component kind="Database" param="jdbc:oracle:thin:@cbiodb2-d:1521:cadev~oracle.jdbc.OracleDriver~caadapter~caadapter"/>
-  	<component kind="XML" location="{caAdapter_Home}\workingspace\RDS_Example\define.xml"/>
+  	<component kind="XML" location="D:\Projects\caadapter\workingspace\RDS_Example\define.xml"/>
   </components>
   <link>
   	<source>\Data Model\CAADAPTER\TEST_SITE\SITE_ID</source>
@@ -20,6 +20,12 @@
   	<source>\Data Model\CAADAPTER\C150003_ORG_CP_PERS_NAME\FAMILY</source>
   	<target>\#document\ODM\Study\MetaDataVersion\ItemGroupDef\DM.AGE</target>
   </link>
-<!-- PLEASE DO NOT MODIFY THE SQL STATEMENTS BELOW-->
-<sql name="DM">SELECT TEST_SITE."SITE_ID" AS TEST_SITE_SITE_ID, TEST_STUDY."STUDY_ID" AS TEST_STUDY_STUDY_ID, CAHL7_MESSAGE_TYPE."CREATION_DATE" AS CAHL7_MESSAGE_TYPE_CREATION_DA, C150003_ORG_CP_PERS_NAME."FAMILY" AS C150003_ORG_CP_PERS_NAME_FAMIL FROM "CAADAPTER"."TEST_SITE" TEST_SITE, "CAADAPTER"."TEST_STUDY" TEST_STUDY, "CAADAPTER"."CAHL7_MESSAGE_TYPE" CAHL7_MESSAGE_TYPE, "CAADAPTER"."C150003_ORG_CP_PERS_NAME" C150003_ORG_CP_PERS_NAME</sql>
+  <link>
+  	<source>\Data Model\CAADAPTER\CAHL7_SITE\SITE_ID</source>
+  	<target>\#document\ODM\Study\MetaDataVersion\ItemGroupDef\DM.USUBJID</target>
+  </link>
+  <link>
+  	<source>\Data Model\CAADAPTER\CAHL7_MESSAGE_DATA\PARENT_RECORD_ID</source>
+  	<target>\#document\ODM\Study\MetaDataVersion\ItemGroupDef\DM.RFSTDTC</target>
+  </link>
 </mapping>
