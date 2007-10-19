@@ -1,6 +1,6 @@
 package gov.nih.nci.caadapter.sdtm;
 
-import gov.nih.nci.caadapter.ui.common.MappableNode;
+//import gov.nih.nci.caadapter.ui.common.MappableNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v3.2 revision
- *          $Revision: 1.5 $
+ *          $Revision: 1.6 $
  */
 public class SDTMMappingGenerator
 {
