@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingDataManager.java,v 1.2 2007-07-03 19:05:40 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/MappingDataManager.java,v 1.3 2007-10-19 17:49:02 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,10 +54,10 @@ import java.util.List;
  * mapping handling.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 19:05:40 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-10-19 17:49:02 $
  */
 public interface MappingDataManager
 {
@@ -79,7 +79,9 @@ public interface MappingDataManager
 
 	void setMappingData(Mapping mappingData);
 
-	/**
+    void setMappingData(Mapping mappingData, boolean flag);
+
+    /**
 	 * Get mapping relation consolidated.
 	 * @param refresh if true, the underline implementation will refresh data from user's input; otherwise, it
 	 * will return what it has now, which may not be up-to-date;
@@ -125,6 +127,9 @@ public interface MappingDataManager
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 19:05:40  wangeug
+ * HISTORY      : relocate "BaseMappingCompoent" object from  other package
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

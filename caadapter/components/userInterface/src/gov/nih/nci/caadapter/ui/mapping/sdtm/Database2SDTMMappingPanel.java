@@ -45,6 +45,7 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileReader;
 import java.sql.Connection;
@@ -59,12 +60,12 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.22 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.23 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
 {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.22 2007-10-18 20:16:22 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.23 2007-10-19 17:49:04 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -469,23 +470,6 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
             ToolTipManager.sharedInstance().registerComponent(sTree);
         }
         sTree.addTreeSelectionListener(middlePanel.getGraphController().getHighLighter());
-        sTree.addTreeSelectionListener(new TreeSelectionListener()
-        {
-            public void valueChanged(TreeSelectionEvent e)
-            {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) sTree.getLastSelectedPathComponent();
-                HashMap temphash = sdtmMappingGenerator.getLinkSelectionHelper();
-                if (temphash.containsKey(node)) {
-                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) temphash.get(node);
-                    final TreePath treePath = new TreePath(treeNode.getPath());
-                    tTree.setSelectionPath(treePath);
-                } else {
-                    tTree.setSelectionPath(null);
-                }
-                if (node == null)
-                    return;
-            }
-        });
     }
 
     public TreeNode createSourceNodes(TreeNode nodes, String flavor)
@@ -576,36 +560,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         //instantiate the "DropTransferHandler"
         tTree.setCellRenderer(new TargetRenderer());
         tTree.addTreeSelectionListener(middlePanel.getGraphController().getHighLighter());
-        ToolTipManager.sharedInstance().registerComponent(tTree);
-        // insert code
-        tTree.addTreeSelectionListener(new TreeSelectionListener()
-        {
-            public void valueChanged(TreeSelectionEvent e)
-            {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) tTree.getLastSelectedPathComponent();
-                HashMap temphash = sdtmMappingGenerator.getLinkSelectionHelper();
-                if (temphash.containsValue(node)) {
-                    // get the key for this value                    
-                    Iterator iterator = (temphash.keySet()).iterator();
-                    while (iterator.hasNext()) {
-                        DefaultMutableTreeNode key = (DefaultMutableTreeNode)iterator.next();
-                        DefaultMutableTreeNode value = (DefaultMutableTreeNode)temphash.get(key);
-                        if (value.equals(node)) {
-                            //if value exists in the map then print
-                            TreePath treePath = new TreePath(key.getPath());
-                            sTree.setSelectionPath(treePath);
-                        }
-                    }
-
-                    // get the key for this value
-                } else {
-                    sTree.setSelectionPath(null);
-                }
-                if (node == null)
-                    return;
-            }
-        });
-        // insert code end        
+        ToolTipManager.sharedInstance().registerComponent(tTree);    
         sdtmTargetTreeDropTransferHandler = new SdtmDropTransferHandler(tTree, getMappingDataManager(), DnDConstants.ACTION_LINK, sdtmMappingGenerator);
     }
 
@@ -922,6 +877,11 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2007/10/18 20:16:22  jayannah
+ * -Added a new method in MappingMiddlePanel to get the reference to MiddlePanelJGraphController
+ * -Added a new method in MiddlePanelJGraphController to get the reference to linkselectionhighlighter
+ * -Added linkselectionhighlighter to source and targe trees as tree selection listener
+ *
  * Revision 1.21  2007/10/18 19:13:39  jayannah
  * Changes to highlist the target node when the source is selected and vice versa
  *

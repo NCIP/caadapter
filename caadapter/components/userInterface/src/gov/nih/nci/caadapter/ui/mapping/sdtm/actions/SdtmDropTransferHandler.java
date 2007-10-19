@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.6 $
  */
 public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -248,8 +248,7 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
                             JOptionPane.showMessageDialog(getTree().getRootPane().getParent(), "The selected source cannot be mapped because it is a table, please choose columns to map.", "Mapping Error", JOptionPane.ERROR_MESSAGE);
                             return false;
                         }
-                        isSuccess = mappingDataMananger.createMapping((MappableNode) sourceNode, (MappableNode) targetNode);
-                        sdtmMappingGenerator.putNodes((MappableNode) sourceNode, (MappableNode) targetNode);
+                        isSuccess = mappingDataMananger.createMapping((MappableNode) sourceNode, (MappableNode) targetNode);                        
                         //System.out.println("SdtmDropTransferHandler ------ " + mappingDataMananger.hashCode());
                         if (isSuccess)
                         {

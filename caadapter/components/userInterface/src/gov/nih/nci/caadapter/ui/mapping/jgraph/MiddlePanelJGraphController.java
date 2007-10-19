@@ -91,7 +91,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.14 $ date $Date: 2007-10-18 20:16:22 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.15 $ date $Date: 2007-10-19 17:49:04 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -106,7 +106,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.14 2007-10-18 20:16:22 jayannah Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.15 2007-10-19 17:49:04 jayannah Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -344,7 +344,15 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		}
 	}
 
-	/**
+    public void setMappingData(Mapping mappingData, boolean flag)
+     {
+         constructMappingGraph();
+         setGraphChanged(false);
+         registerLinkHighlighter();
+     }
+    
+
+    /**
 	 * Called by MiddlePanelMarqueeHandler Insert a new Edge between source and target
 	 */
 	public boolean handleConnect(DefaultPort source, DefaultPort target)
@@ -1469,6 +1477,11 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.14  2007/10/18 20:16:22  jayannah
+ * HISTORY : -Added a new method in MappingMiddlePanel to get the reference to MiddlePanelJGraphController
+ * HISTORY : -Added a new method in MiddlePanelJGraphController to get the reference to linkselectionhighlighter
+ * HISTORY : -Added linkselectionhighlighter to source and targe trees as tree selection listener
+ * HISTORY :
  * HISTORY : Revision 1.13  2007/10/02 14:51:39  schroedn
  * HISTORY : Removed green dotted lines
  * HISTORY :

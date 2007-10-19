@@ -26,8 +26,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.18 $
- *          $Date: 2007-10-18 19:13:39 $
+ *          $Revision: 1.19 $
+ *          $Date: 2007-10-19 17:49:04 $
  */
 public class OpenSDTMMapFile extends JDialog {
     private MappingDataManager _mappingDataMananger = null;
@@ -269,7 +269,7 @@ public class OpenSDTMMapFile extends JDialog {
              ******************************************************************/
             if (resSourceNode != null && resTargetNode != null) {
                 _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);
-                _database2SDTMMappingPanel.getSDTMappingGenerator().putNodes((MappableNode) resSourceNode, (MappableNode) resTargetNode);
+                _database2SDTMMappingPanel.getMappingDataManager().setMappingData(null, true);
             }
         }
     }
@@ -293,8 +293,8 @@ public class OpenSDTMMapFile extends JDialog {
              ******************************************************************/
             if (resSourceNode != null && resTargetNode != null) {
                 // new DefaultMutableTreeNode()
-                _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);
-                 _database2SDTMMappingPanel.getSDTMappingGenerator().putNodes((MappableNode) resSourceNode, (MappableNode) resTargetNode);
+                _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);                
+                _database2SDTMMappingPanel.getMappingDataManager().setMappingData(null, true);
             }
         }
     }
@@ -386,7 +386,7 @@ public class OpenSDTMMapFile extends JDialog {
             s = (SDTMMetadata) node.getUserObject();
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
-            System.out.println("+======================================= " + node.toString());
+            //System.out.println("+======================================= " + node.toString());
             return null;
         }
         return s.getXPath();
@@ -429,6 +429,9 @@ public class OpenSDTMMapFile extends JDialog {
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/10/18 19:13:39  jayannah
+ * Changes to highlist the target node when the source is selected and vice versa
+ *
  * Revision 1.17  2007/10/17 20:09:00  jayannah
  * handled the condition when the scs files is not in the right path
  *
