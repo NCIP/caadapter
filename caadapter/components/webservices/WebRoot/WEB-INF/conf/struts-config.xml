@@ -1,4 +1,6 @@
-<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd" -->
+<!DOCTYPE struts-config PUBLIC 
+	"-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" 
+	"http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 <!-- !DOCTYPE struts-config SYSTEM  "struts-config_1_2.dtd" -->
 <struts-config>
 
