@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.11 2007-09-06 22:06:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.12 2007-10-22 19:34:41 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2007-09-06 22:06:48 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2007-10-22 19:34:41 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -226,18 +226,35 @@ public class HSMTreeMouseAdapter extends MouseAdapter
  
                     //check if add/remove clone Item is required
                     MIFClass asscMifClass=mifAssc.getMifClass();
-                    if(asscMifClass.getChoices().isEmpty()
-                     		||mifAssc.isChoiceSelected())
-                     {
+                    if (asscMifClass.getChoices().isEmpty()
+                    		||mifAssc.isChoiceSelected())
+                    {
 		                final List<MIFAssociation> asscToAdd= MIFUtil.findAddableAssociation(asscMifClass);
 		                if (asscToAdd.size() > 0)
 		                        addCloneAction.setEnabled(true);
+                    }
+	                if (mifAssc.isChoiceSelected())
+                    {
+                    	 //check Assc to added from the choiceSelected class
+                    	final List<MIFAssociation> asscToAddFromChoice= MIFUtil.findAddableAssociation(mifAssc.findChoiceSelectedMifClass());
+ 		                if (asscToAddFromChoice.size() > 0)
+ 		                        addCloneAction.setEnabled(true);
                      }
-	                final List<MIFAssociation> asscToRemove = MIFUtil.findRemovableAssociation(asscMifClass);	
-	                if (asscToRemove.size() > 0)
-	                	removeCloneAction.setEnabled(true);
-                  
-                    
+	                if (asscMifClass.getChoices().isEmpty()
+                    		||mifAssc.isChoiceSelected())
+                    {
+		                final List<MIFAssociation> asscToRemove = MIFUtil.findRemovableAssociation(asscMifClass);	
+		                if (asscToRemove.size() > 0)
+		                	removeCloneAction.setEnabled(true);
+                    }
+	                if (mifAssc.isChoiceSelected())
+                    {
+	                   	 //check Assc to added from the choiceSelected class
+	                   	final List<MIFAssociation> asscToRemoveFromChoice= MIFUtil.findRemovableAssociation(mifAssc.findChoiceSelectedMifClass());
+			            if (asscToRemoveFromChoice.size() > 0)
+			                	removeCloneAction.setEnabled(true);
+                    }
+	                
                     if (mifAssc.isOptionChosen())
                     {
                     	forceOptionCloneAction.setEnabled(true);
