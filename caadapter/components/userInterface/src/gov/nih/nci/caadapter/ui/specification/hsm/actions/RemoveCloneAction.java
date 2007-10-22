@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.4 2007-08-01 13:27:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.5 2007-10-22 19:35:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.util.ArrayList;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-08-01 13:27:43 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-10-22 19:35:21 $
  */
 public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -74,7 +74,7 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.4 2007-08-01 13:27:43 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.5 2007-10-22 19:35:21 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Remove Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -128,6 +128,7 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
 		MIFClass mifClass =null;
+		MIFClass choiceSelected=null;
 		if(obj instanceof MIFClass)
 		{
 			mifClass = (MIFClass) obj;
@@ -136,6 +137,8 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 		{
 			MIFAssociation mifAssc=(MIFAssociation)obj;	
 			mifClass=mifAssc.getMifClass();
+			if (mifAssc.isChoiceSelected())
+				choiceSelected=mifAssc.findChoiceSelectedMifClass();
 		}
 		
 		try
@@ -145,6 +148,13 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
             
             for(MIFAssociation removeableAssc:removeableAsscs)
             	baseList.add((DatatypeBaseObject)removeableAssc);
+            
+            if (choiceSelected!=null)
+            {
+            	final List<MIFAssociation> choiceClassRemovableAsscs = MIFUtil.findRemovableAssociation(choiceSelected);
+            	for(MIFAssociation removableAssc:choiceClassRemovableAsscs)
+                	baseList.add((DatatypeBaseObject)removableAssc);
+            }
             
             AssociationListWizard cloneListWizard =
                 new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Reomved", true);

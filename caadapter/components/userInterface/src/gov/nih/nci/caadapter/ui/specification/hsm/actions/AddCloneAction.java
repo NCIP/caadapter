@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.6 2007-08-23 17:54:58 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.7 2007-10-22 19:35:21 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import java.util.List;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-08-23 17:54:58 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-10-22 19:35:21 $
  */
 public class AddCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -79,7 +79,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.6 2007-08-23 17:54:58 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.7 2007-10-22 19:35:21 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Add Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -133,19 +133,29 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		Object obj = targetNode.getUserObject();
 		MIFClass mifClass =null;
+		MIFClass choiceSelected=null;
 		if(obj instanceof MIFClass)
 			mifClass=(MIFClass) obj;
 		else if (obj instanceof MIFAssociation )
 		{
 			MIFAssociation mifAssc=(MIFAssociation)obj;		
 			mifClass=mifAssc.getMifClass();
+			if (mifAssc.isChoiceSelected())
+				choiceSelected=mifAssc.findChoiceSelectedMifClass();
 		}
 		try
 		{
             final List<MIFAssociation> addableAsscs = MIFUtil.findAddableAssociation(mifClass);
+            
             List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
             for(MIFAssociation addableAssc:addableAsscs)
             	baseList.add((DatatypeBaseObject)addableAssc);
+            if (choiceSelected!=null)
+            {
+            	final List<MIFAssociation> choiceClassAsscs = MIFUtil.findAddableAssociation(choiceSelected);
+            	for(MIFAssociation addableAssc:choiceClassAsscs)
+                	baseList.add((DatatypeBaseObject)addableAssc);
+            }
             AssociationListWizard cloneListWizard =
                 new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Added", true);
             DefaultSettings.centerWindow(cloneListWizard);
