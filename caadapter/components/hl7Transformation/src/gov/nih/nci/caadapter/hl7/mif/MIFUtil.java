@@ -61,6 +61,9 @@ public class MIFUtil {
 	public static List<MIFAssociation> findRemovableAssociation(MIFClass mifClass)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
+		if (mifClass==null)
+			return rtnList;
+		
 		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
 		Iterator mifAsscIt=mifAsscs.iterator();
 		while(mifAsscIt.hasNext())
@@ -74,6 +77,8 @@ public class MIFUtil {
 	public static List<MIFAssociation> findMIFAssociationWithName(MIFClass mifClass, String asscName)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
+		if (mifClass==null)
+			return rtnList;
 		HashSet mifAsscs=mifClass.getAssociations();
 		Iterator mifAttrIt=mifAsscs.iterator();
 		while(mifAttrIt.hasNext())
