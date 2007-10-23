@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.3 2007-08-29 18:49:09 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.4 2007-10-23 18:18:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,6 +44,8 @@ import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 //import gov.nih.nci.caadapter.ui.common.nodeloader.HSMBasicNodeLoader;
 //import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
@@ -62,8 +64,8 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-29 18:49:09 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-10-23 18:18:43 $
  */
 public class HSMPanelController implements TreeSelectionListener, TreeModelListener
 {
@@ -79,7 +81,7 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.3 2007-08-29 18:49:09 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.4 2007-10-23 18:18:43 wangeug Exp $";
 
 	private transient HSMPanel parentPanel;
 	private DefaultMutableTreeNode currentNode;
@@ -120,7 +122,18 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 		    	NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newAddressNode, parentPanel.getTree());
 			}
 		}
-		
+		else if (userObject instanceof Attribute)
+		{
+			Attribute dtAttr=(Attribute )userObject;
+			Datatype refDt=dtAttr.getReferenceDatatype();
+			if (refDt!=null)//&&refDt.isAbstract())
+			{
+		        NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
+		        DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
+		        DefaultMutableTreeNode  newAddressNode =mifTreeLoader.buildObjectNode(dtAttr,hsmNode.getRootMif());
+		    	NewHSMBasicNodeLoader.refreshSubTreeByGivenMifObject(targetNode, newAddressNode, parentPanel.getTree());
+			}
+		}
 		TreeModel treeModel = parentPanel.getTree().getModel();
 		if (treeModel instanceof DefaultTreeModel)
 		{//notify change.

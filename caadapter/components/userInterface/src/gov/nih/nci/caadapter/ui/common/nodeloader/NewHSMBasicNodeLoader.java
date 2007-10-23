@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.27 2007-09-11 03:42:05 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.28 2007-10-23 18:18:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -78,10 +78,10 @@ import java.util.Hashtable;
  * while leaving the algorithm of traversing HSM meta data tree defined here intact.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.27 $
- *          date        $Date: 2007-09-11 03:42:05 $
+ *          revision    $Revision: 1.28 $
+ *          date        $Date: 2007-10-23 18:18:19 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -469,6 +469,15 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				if (childAttr.isOptionChosen()||CaadapterUtil.getMandatorySelectedAttributes().contains(childDataType.getName()))
 				{	childAttr.setEnabled(true);
 					childAttr.setOptionChosen(true);
+				}
+				
+				if (!childAttr.isEnabled())
+				{
+					//enable all complex Abstract datatype
+					if (childDataType.isAbstract())
+						childAttr.setEnabled(true);
+					else if (!childDataType.getName().equals(childAttr.getType()))
+						childAttr.setEnabled(true);
 				}
 				childAttr.setSimple(false);
 			}
