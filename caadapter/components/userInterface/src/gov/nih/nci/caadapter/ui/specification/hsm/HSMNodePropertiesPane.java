@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.15 2007-10-15 21:37:38 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.16 2007-10-23 18:20:10 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,8 +80,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2007-10-15 21:37:38 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2007-10-23 18:20:10 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -96,7 +96,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.15 2007-10-15 21:37:38 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.16 2007-10-23 18:20:10 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -329,6 +329,15 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				//set default value
 				Attribute updtdDatatypeAttr=(Attribute)seletedBaseObject;
 				updtdDatatypeAttr.setDefaultValue(userDefaultValueField.getText());
+				//update the concrete datatype if it is an abstract
+				Datatype dtType=updtdDatatypeAttr.getReferenceDatatype();
+				String slctdTypeName=(String)dataTypeField.getSelectedItem();
+				if (dtType!=null&&!slctdTypeName.equalsIgnoreCase(""))
+				{	
+					if (dtType.isAbstract()
+							||(!dtType.getName().equals(slctdTypeName)))
+						updtdDatatypeAttr.setReferenceDatatype(DatatypeParserUtil.getDatatype(slctdTypeName));
+				}
 			}
 		}
 		return seletedBaseObject;
@@ -404,15 +413,13 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				else
 					mandatoryField.setText("Y");
 				//conformance is not present
-				
 				if (dtAttr.getType()!=null&&DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
 				{					
 					abstractField.setText("Y"); 
+					Datatype dtRefClass=dtAttr.getReferenceDatatype();
 //					if (dtAttr.isEnabled())
 //					{
 						dataTypeField.setEditable(true);
-
-						Datatype subClass=dtAttr.getReferenceDatatype();//.getConcreteDatatype();
 						List<String> subClassList=DatatypeParserUtil.findSubclassListWithTypeName(dtAttr.getType());
 						if (subClassList!=null)
 						{
@@ -421,7 +428,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 							{
 								if (!subName.equals(dtAttr.getType()))
 									dataTypeField.addItem(subName);
-								if(subClass!=null&&subName.equals(subClass.getName()))
+								if(dtRefClass!=null&&subName.equals(dtRefClass.getName()))
 									dataTypeField.setSelectedItem(subName);
 							}
 						}
@@ -634,6 +641,16 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			//check the default value
 			Attribute mifDatatypeAttr=(Attribute)seletedBaseObject;
 			result=!GeneralUtilities.areEqual(mifDatatypeAttr.getDefaultValue(), userDefaultValueField.getText(), true);
+			Datatype attrDataType=mifDatatypeAttr.getReferenceDatatype();
+			String slectdDt=(String)dataTypeField.getSelectedItem();
+			if (slectdDt==null||slectdDt.equalsIgnoreCase(""))
+				return result;
+			
+			if (attrDataType!=null&&attrDataType.isAbstract())
+			{
+				//compare the selected concrete class
+				result = !GeneralUtilities.areEqual(attrDataType.getName(), dataTypeField.getSelectedItem(), true);
+			}
 		}
 
 		return result;
@@ -656,7 +673,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 */
 	public void reloadData()
 	{
-		Object targetNode = getDatatypeObject(false);
+//		Object targetNode = getDatatypeObject(false);
 		TreePath treePath=parentPanel.getTree().getSelectionPath();
 		DefaultMutableTreeNode slctdNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		this.setDisplayData(slctdNode,true);
