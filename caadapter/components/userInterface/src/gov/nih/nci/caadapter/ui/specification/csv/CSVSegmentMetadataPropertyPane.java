@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.4 2007-10-13 03:07:00 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.5 2007-10-23 14:35:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,6 +40,7 @@ import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -56,10 +57,10 @@ import java.util.Enumeration;
 /**
  * This class defines the layout of segment metadata property pane.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-10-13 03:07:00 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-10-23 14:35:49 $
  */
 public class CSVSegmentMetadataPropertyPane extends JPanel
 {
@@ -140,7 +141,9 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
         cardinalityLabel = new JLabel(CARDINALITY_LABEL);
 		cardinalityField = new JComboBox();
 		//add all choicable value
-		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_0));
+
+        // CSVSegmentMeta data = (CSVSegmentMeta) this.treeNode.getUserObject();
+        cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_0));
 		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_1));
 		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_2));
 		cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_3));
@@ -216,12 +219,44 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 
 	protected void setCardinality(String newValue)
 	{
-		for (int carIndex=0;carIndex<cardinalityField.getItemCount();carIndex++)
+        boolean cTag = false;
+        for (int carIndex=0;carIndex<cardinalityField.getItemCount();carIndex++)
 		{
 			if (cardinalityField.getItemAt(carIndex).toString().equals(newValue))
-				cardinalityField.setSelectedIndex(carIndex);
-		}
-	}
+            {
+                cardinalityField.setSelectedIndex(carIndex);
+                cTag = true;
+            }
+        }
+        if (cTag) return;
+        int idx = cardinalityField.getItemAt(0).toString().indexOf(Config.SUFFIX_OF_CHOICE_CARDINALITY);
+        cardinalityField.removeAllItems();
+        if (idx < 0)
+        {
+            cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_4));
+		    cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_5));
+		    cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_6));
+		    cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_7));
+        }
+        else
+        {
+            cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_0));
+		    cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_1));
+		    cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_2));
+		    cardinalityField.addItem(new Cardinality(CardinalityType.VALUE_3));
+        }
+
+        cTag = false;
+        for (int carIndex=0;carIndex<cardinalityField.getItemCount();carIndex++)
+		{
+			if (cardinalityField.getItemAt(carIndex).toString().equals(newValue))
+            {
+                cardinalityField.setSelectedIndex(carIndex);
+                cTag = true;
+            }
+        }
+        if (!cTag) JOptionPane.showMessageDialog(this, "Invalid cardinality type : " + newValue, "Invalid Cardinality", JOptionPane.ERROR_MESSAGE);
+    }
 
     public void setDisplayData(DefaultMutableTreeNode treeNode, boolean refresh)
 	{
@@ -300,11 +335,14 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 			return false;
 		}
 		CSVSegmentMeta data = (CSVSegmentMeta) this.treeNode.getUserObject();
-		boolean result = !GeneralUtilities.areEqual(getSegmentName(), data.getName());
-		if (!result)
-			result = !GeneralUtilities.areEqual(this.cardinalityField.getSelectedItem().toString(), data.getCardinalityWithString());
-		result = result || fieldOrderPane.isDataChanged();
-		return result;
+
+        boolean result = !GeneralUtilities.areEqual(getSegmentName(), data.getName());
+        if (!result)
+                result = !GeneralUtilities.areEqual(this.cardinalityField.getSelectedItem().toString(), data.getCardinalityType().toString());
+
+        result = result || fieldOrderPane.isDataChanged();
+
+        return result;
 	}
 
 	/**
@@ -393,6 +431,9 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/10/13 03:07:00  jayannah
+ * HISTORY      : Changes to enable delete action from the properties pane and refresh the tree as well as the property pane, And show a confirmation window for the delete
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/10/05 17:50:08  wangeug
  * HISTORY      : fixbug item 44 of list on 10-05-2007
  * HISTORY      :
