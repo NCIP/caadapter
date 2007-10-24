@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.28 2007-10-23 18:18:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.29 2007-10-24 18:38:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,6 +64,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -80,8 +82,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.28 $
- *          date        $Date: 2007-10-23 18:18:19 $
+ *          revision    $Revision: 1.29 $
+ *          date        $Date: 2007-10-24 18:38:34 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -393,11 +395,15 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					dtTypeName=concretDt.getName();
 				}
 			}
-			Enumeration childAttrsEnum=dtAttrs.elements();
-			
-			while (childAttrsEnum.hasMoreElements())
+
+			ArrayList<String> keyList=new ArrayList<String>();
+ 			Enumeration keyEnums=dtAttrs.keys();
+			while (keyEnums.hasMoreElements())
+				keyList.add((String)keyEnums.nextElement());
+			Collections.sort(keyList);
+			for(String attrName:keyList)
 			{
-				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
+				Attribute childAttr=(Attribute)dtAttrs.get(attrName);
 				if (!childAttr.isProhibited()&&childAttr.isValid())
 				{
 					//and only the the chosen Datatype field for "AD" attributes
@@ -409,6 +415,22 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					}
 				}
 			}
+//			Enumeration childAttrsEnum=dtAttrs.elements();
+//			
+//			while (childAttrsEnum.hasMoreElements())
+//			{
+//				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
+//				if (!childAttr.isProhibited()&&childAttr.isValid())
+//				{
+//					//and only the the chosen Datatype field for "AD" attributes
+//					if (childAttr.isOptionChosen()
+//							||!dtTypeName.equals("AD"))
+//					{		
+//						DefaultMutableTreeNode childNode=buildDatatypeAttributeNode(childAttr);
+//						rtnNode.add(childNode);
+//					}
+//				}
+//			}
 		return rtnNode;
 	}
  
@@ -429,16 +451,30 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				dtAttr.setReferenceDatatype(attrDataType);
 			}
 			Hashtable childAttrHash=dtAttr.getReferenceDatatype().getAttributes();
-			Enumeration childAttrsEnum=childAttrHash.elements();
-			while (childAttrsEnum.hasMoreElements())
+			ArrayList<String> keyList=new ArrayList<String>();
+			Enumeration keyEnums=childAttrHash.keys();
+			while (keyEnums.hasMoreElements())
+				keyList.add((String)keyEnums.nextElement());
+			Collections.sort(keyList);
+			for(String attrName:keyList)
 			{
-				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
+				Attribute childAttr=(Attribute)childAttrHash.get(attrName);
 				if (!childAttr.isProhibited()&&childAttr.isValid())
 				{
 					DefaultMutableTreeNode childNode=buildDatatypeAttributeNode(childAttr); 
 					rtnNode.add(childNode);
 				}
 			}
+//			Enumeration childAttrsEnum=childAttrHash.elements();
+//			while (childAttrsEnum.hasMoreElements())
+//			{
+//				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
+//				if (!childAttr.isProhibited()&&childAttr.isValid())
+//				{
+//					DefaultMutableTreeNode childNode=buildDatatypeAttributeNode(childAttr); 
+//					rtnNode.add(childNode);
+//				}
+//			}
 		}
 		return rtnNode;		
 	}

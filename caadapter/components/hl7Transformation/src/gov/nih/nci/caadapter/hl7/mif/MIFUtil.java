@@ -1,13 +1,16 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
-
 
 public class MIFUtil {
 	
@@ -117,6 +120,19 @@ public class MIFUtil {
 		return rtnList;
 	}
 	
+	public static List<Attribute> findDatatypeAttributeWithName(Datatype mifDatatype, String attrName)
+	{
+		List<Attribute> rtnList=new ArrayList<Attribute>();
+		Hashtable attrHash=mifDatatype.getAttributes();
+		Enumeration enumAttrKeys=mifDatatype.getAttributes().keys();
+		while (enumAttrKeys.hasMoreElements())
+		{
+			String nameKey=(String)enumAttrKeys.nextElement();
+			if (nameKey.startsWith(attrName))
+				rtnList.add((Attribute)attrHash.get(nameKey));
+		}
+		return rtnList;
+	}
 	public static int getMaximumMIFAttributeMultiplicityIndexWithName(MIFClass mifClass, String attrName)
 	{
 		int rtnNum=0;
@@ -127,6 +143,51 @@ public class MIFUtil {
 			MIFAttribute mifAttr=(MIFAttribute)mifAttrIt.next();
 			if (mifAttr.getMultiplicityIndex()>rtnNum)
 				rtnNum=mifAttr.getMultiplicityIndex();
+		}
+		return rtnNum;
+	}
+	/**
+	 * Remove one Attribute from a Datatype and reset multiplicityIndex for the other
+	 * Attributes with the same name
+	 * @param dt
+	 * @param xmlName
+	 */
+	public static void removeDatatypeAttributeWithXmlName(Datatype dt, String xmlName)
+	{
+		Attribute attr=(Attribute)dt.getAttributes().get(xmlName);
+		if(attr==null)
+			return;
+		int indxRmv=attr.getMultiplicityIndex();
+		//	remove the attribute from Datatype
+		dt.getAttributes().remove(xmlName);
+		List<Attribute> allAttr=findDatatypeAttributeWithName(dt, attr.getName());
+		if (allAttr.size()>1)
+		{
+			//reset index for all attribute
+			for (Attribute oneAttr:allAttr)
+			{
+				if (oneAttr.getMultiplicityIndex()>indxRmv)
+					oneAttr.setMultiplicityIndex(oneAttr.getMultiplicityIndex()-1);
+			}
+		}
+		
+	}
+	/**
+	 * Count the Attribute with the same name
+	 * @param Datatype parent Datatype object carrying the target Attribute
+	 * @param attrName
+	 * @return
+	 */
+	public static int getMaximumAttributeMultiplicityIndexWithName(Datatype mifDatatype, String attrName)
+	{
+		int rtnNum=0;
+		List mifAsscs=findDatatypeAttributeWithName(mifDatatype,attrName);
+		Iterator mifAttrIt=mifAsscs.iterator();
+		while(mifAttrIt.hasNext())
+		{
+			Attribute dtAttr=(Attribute)mifAttrIt.next();
+			if (dtAttr.getMultiplicityIndex()>rtnNum)
+				rtnNum=dtAttr.getMultiplicityIndex();
 		}
 		return rtnNum;
 	}
