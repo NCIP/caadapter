@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.9 2007-08-30 19:09:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.10 2007-10-24 18:39:06 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-08-30 19:09:19 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-10-24 18:39:06 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -74,7 +74,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.9 2007-08-30 19:09:19 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.10 2007-10-24 18:39:06 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -127,11 +127,75 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			}
 			else if(userObj instanceof Attribute)
 			{
-				setIcon(CLONE_DATATYPE_FIELD_IMAGE_ICON);	
+				DefaultMutableTreeNode crntNode=(DefaultMutableTreeNode)value;
+				setText(this.setViewNameForDatatypeAttribute((Attribute)userObj, (DefaultMutableTreeNode)value));
+				if(crntNode.getChildCount()>0)
+					setIcon(CLONE_ATTRIBUTE_IMAGE_ICON);
+				else
+					setIcon(CLONE_DATATYPE_FIELD_IMAGE_ICON);	
 			}
 		}		
 		return rtnComp;
 	}
+	
+	/**
+	 * Set display name for a MIFAttribute tree node
+	 * @param mifAttr
+	 * @param currentNode
+	 * @return
+	 */
+	private String setViewNameForDatatypeAttribute(Attribute dtAttr, DefaultMutableTreeNode currentNode)
+	{
+		String treeCellText=dtAttr.getName();
+		//set any type
+		Datatype dtDatatype=dtAttr.getReferenceDatatype();
+		if (dtDatatype==null)
+			return treeCellText;
+		if (dtDatatype.isAbstract()||!dtDatatype.getName().equalsIgnoreCase(dtAttr.getType()))
+		{
+			treeCellText=treeCellText +"  [Abstract - "+dtAttr.getType();
+			if (!dtDatatype.getName().equalsIgnoreCase(dtAttr.getType()))
+			{
+				treeCellText=treeCellText +":"+dtDatatype.getName();
+			}
+			treeCellText=treeCellText +"]";
+		}
+		//set cardinality
+		if (dtAttr.getMax()==1)
+			return treeCellText;
+		else
+		{
+			if (dtAttr.getMultiplicityIndex()>0)
+				treeCellText=treeCellText+"  ["+(dtAttr.getMultiplicityIndex()+1)+"]";
+			else
+			{
+				//count the number of duplicate Attribute with the same parent
+				DefaultMutableTreeNode parentNode=	(DefaultMutableTreeNode)currentNode.getParent();
+				Object parentObj=parentNode.getUserObject();
+				Datatype parentDt=null;
+				if (parentObj instanceof Attribute)
+					parentDt=((Attribute)parentObj).getReferenceDatatype();
+				else if  (parentObj instanceof MIFAttribute)
+				{
+					MIFAttribute parentMifAttr=(MIFAttribute)parentObj;
+					parentDt=parentMifAttr.getConcreteDatatype();
+					if (parentDt==null)
+						parentDt=parentMifAttr.getDatatype();
+					int attrCnt=0;
+					if (parentDt!=null)
+						attrCnt=MIFUtil.findDatatypeAttributeWithName(parentDt, dtAttr.getName()).size();
+					if (attrCnt>1)
+						treeCellText=treeCellText+"  [1]";
+					else
+						treeCellText=treeCellText+"  [Multiple]";
+				}
+				
+			}
+		}
+			
+		return treeCellText;
+	}
+	
 	
 	/**
 	 * Set display name for a MIFAttribute tree node

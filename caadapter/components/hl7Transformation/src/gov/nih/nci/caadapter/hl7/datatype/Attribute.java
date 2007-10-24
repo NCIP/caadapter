@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2007-08-06 18:28:04 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-10-24 18:34:55 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
@@ -31,7 +31,7 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	private int min;
 
 	private int max;
-
+	private int multiplicityIndex=0;
 	private String defaultValue;
 
 	private boolean optional;
@@ -44,8 +44,20 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	private boolean enabled = true;
 	private boolean simple=true;
 	private Datatype referenceDatatype;
+	
+	/**
+	  * Build nodeXmlName with node name and multiplicityIndex 
+	 * @return nodeXmlName as part of the element XML patth
+	 */
 	public String getNodeXmlName() {
-		return this.getName();
+		if (getMax()==1)
+			return getName();
+		
+		String stB="";
+		if (getMultiplicityIndex()<10)
+			stB="0";
+		stB=stB+getMultiplicityIndex();
+		return getName()+stB;
 	}
 
 	public String getParentXmlPath() {
@@ -261,5 +273,13 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	public String findTypeProperty() {
 		// TODO Auto-generated method stub
 		return "Data Type Field";
+	}
+
+	public int getMultiplicityIndex() {
+		return multiplicityIndex;
+	}
+
+	public void setMultiplicityIndex(int multiplicityIndex) {
+		this.multiplicityIndex = multiplicityIndex;
 	}
 }

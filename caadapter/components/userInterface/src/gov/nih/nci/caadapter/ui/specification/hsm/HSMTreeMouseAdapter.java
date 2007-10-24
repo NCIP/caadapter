@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.12 2007-10-22 19:34:41 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMTreeMouseAdapter.java,v 1.13 2007-10-24 18:37:31 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,8 +59,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2007-10-22 19:34:41 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2007-10-24 18:37:31 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -75,6 +75,9 @@ public class HSMTreeMouseAdapter extends MouseAdapter
     private RemoveMultipleCloneAction removeMultipleCloneAction;
     private AddMultipleAttributeAction addMultipleAttributeAction;
     private RemoveMultipleAttributeAction removeMultipleAttributeAction;
+    private AddMultipleComplexDatatypeAction addMultipleComplexDatatypeAction;
+    private RemoveMultipleComplexDatatypeAction removeMultipleComplexDatatypeAction;
+ 
     private SelectChoiceAction selectChoiceAction;
     private ValidateHSMAction validateHSMAction;
     private SelectAddressPartsAction addAddressPartsAction;
@@ -92,6 +95,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         removeMultipleCloneAction = new RemoveMultipleCloneAction(this.parentPanel);
         addMultipleAttributeAction = new AddMultipleAttributeAction(this.parentPanel);
         removeMultipleAttributeAction = new RemoveMultipleAttributeAction(this.parentPanel);
+        addMultipleComplexDatatypeAction=new AddMultipleComplexDatatypeAction(this.parentPanel);
+        removeMultipleComplexDatatypeAction=new RemoveMultipleComplexDatatypeAction(this.parentPanel);
         selectChoiceAction = new SelectChoiceAction(this.parentPanel);
         validateHSMAction = new ValidateHSMAction(this.parentPanel);
         addAddressPartsAction=new SelectAddressPartsAction(SelectAddressPartsAction.ADD_PART_COMMAND_NAME,this.parentPanel);
@@ -115,10 +120,13 @@ public class HSMTreeMouseAdapter extends MouseAdapter
     {
     	if (enablePopupMenu == null)
         {
-        	enablePopupMenu = new JPopupMenu("Datafield Manipulation");
+        	enablePopupMenu = new JPopupMenu("Attribute Manipulation");
             //already initiated in constructor.
         	enablePopupMenu.add(enableDatafield);
         	enablePopupMenu.add(disableDatafield);
+        	enablePopupMenu.addSeparator();
+        	enablePopupMenu.add(addMultipleComplexDatatypeAction);
+        	enablePopupMenu.add(removeMultipleComplexDatatypeAction);
         }
     	
         if (popupMenu == null)
@@ -152,6 +160,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 	    removeMultipleCloneAction.setEnabled(value);
 	    addMultipleAttributeAction.setEnabled(value);
 	    removeMultipleAttributeAction.setEnabled(value);
+	    addMultipleComplexDatatypeAction.setEnabled(value);
+	    removeMultipleComplexDatatypeAction.setEnabled(value);
 	    selectChoiceAction.setEnabled(value);
 	    validateHSMAction.setEnabled(value);
 	    addAddressPartsAction.setEnabled(value);
@@ -284,7 +294,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 	if (mifDt.isAbstract())
             			mifDt=mifAttr.getConcreteDatatype();
             		
-                	if (mifDt.getName().equals("AD")                			)
+                	if (mifDt!=null&&mifDt.getName().equals("AD")                			)
                 	{
                 		int toAddCnt=0;
                 		int toRemoveCnt=0;
@@ -316,9 +326,21 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 		return;
                 	
                 	if (dtAttr.isEnabled())
+                	{
                 		disableDatafield.setEnabled(true);
+                		if (dtAttr.getMax()!=1)
+                    	{
+                    		if (dtAttr.getMultiplicityIndex()==0)
+                    			addMultipleComplexDatatypeAction.setEnabled(true);
+                    		else
+                    			removeMultipleComplexDatatypeAction.setEnabled(true);
+                    	}
+                	}
                 	else
                 		enableDatafield.setEnabled(true);
+                	System.out
+							.println("HSMTreeMouseAdapter.showIfPopupTrigger()..dtAttr.getMax():"+dtAttr.getMax());
+                	
                 	enablePopupMenu.show(mouseEvent.getComponent(),
     	                    mouseEvent.getX(), mouseEvent.getY());
                 	return;
