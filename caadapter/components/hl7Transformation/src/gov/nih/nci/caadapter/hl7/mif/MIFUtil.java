@@ -22,7 +22,45 @@ public class MIFUtil {
 		treatedSimpleType.add("bl");
 		treatedSimpleType.add("BL");
 	}
+	/**
+	 * Determine if the MIFAttribute is allowed to edit if default value
+	 * @param mifAttr
+	 * @return
+	 */
+	public static boolean isEditableMIFAttributeDefault(MIFAttribute mifAttr)
+	{
+ 
+		Datatype mifDt=mifAttr.getDatatype();
+		if (mifAttr.getConcreteDatatype()!=null)
+			mifDt=mifAttr.getConcreteDatatype();
+		//not editable if complex datatype		
+		if (mifDt==null)
+		{
+			//verify if it is treated for SimpleType with typeName
+			if (!MIFUtil.isTreatedAsSimpleType(mifAttr.getType()))
+				return false;
+		}
+		else if (!mifDt.isSimple())
+			return false;
 	
+		//verify with FixValue
+		String fixedText=mifAttr.getFixedValue();
+		if (fixedText==null)
+			return true;
+
+		if(fixedText.equalsIgnoreCase(""))
+			return true;
+		
+		//check if domainName is INSTNACE+KIND
+		String domainName=mifAttr.getDomainName().toUpperCase();
+		System.out.println("MIFUtil.isEditableMIFAttributeDefault()...domainName:"+domainName);
+		if ((domainName.indexOf("INSTANCE")>-1)
+			&&(domainName.indexOf("KIND")>-1))
+			return true;
+		
+		return false;
+		
+	}
 	public static boolean isTreatedAsSimpleType(String typeName)
 	{
 		if (treatedSimpleType.contains(typeName.trim()))

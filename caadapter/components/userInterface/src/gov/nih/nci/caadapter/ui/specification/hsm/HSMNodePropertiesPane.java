@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.16 2007-10-23 18:20:10 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.17 2007-10-25 20:17:02 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,6 +47,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFCardinality;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
@@ -80,8 +82,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2007-10-23 18:20:10 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2007-10-25 20:17:02 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -96,7 +98,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.16 2007-10-23 18:20:10 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.17 2007-10-25 20:17:02 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -439,7 +441,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				else 
 					abstractField.setText("N"); 
 				dataTypeField.addItem(dtAttr.getType());
-				setEditableField(userDefaultValueField, dtAttr.isEnabled());
+				if (dtAttr.getReferenceDatatype()==null)
+					setEditableField(userDefaultValueField, dtAttr.isEnabled());
+				else if (dtAttr.getReferenceDatatype().isSimple())
+					setEditableField(userDefaultValueField, dtAttr.isEnabled());
 				//HL7 default is not present
 				//HL7 Domain is not present
 				//code strength is not present
@@ -487,11 +492,13 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				}
 				
 				//use fixedValue as default value if available
-				hl7DefaultValueField.setText(mifAttr.findDefaultValueProperty());
+				hl7DefaultValueField.setText(mifAttr.findHL7DefaultValueProperty());
 				hl7DomainField.setText(mifAttr.findDomainNameOidProperty());//.getDomainName());
 				codingStrengthField.setText(mifAttr.getCodingStrength());
-				//cmetField.setText("");//not set
-				// userDefault is not present
+				userDefaultValueField.setText(mifAttr.getDefaultValue());
+				
+				if (MIFUtil.isEditableMIFAttributeDefault(mifAttr))
+					setEditableField(userDefaultValueField,true);
 			}
 			else if (userDatatypeObj instanceof MIFClass )
 			{
