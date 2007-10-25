@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2007-10-24 18:34:55 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2007-10-25 20:19:01 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
@@ -51,6 +51,10 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	 */
 	public String getNodeXmlName() {
 		if (getMax()==1)
+			return getName();
+		
+		//backward compitable
+		if (getMultiplicityIndex()==0)
 			return getName();
 		
 		String stB="";
