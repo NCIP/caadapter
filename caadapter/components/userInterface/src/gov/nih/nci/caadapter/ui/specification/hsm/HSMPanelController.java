@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.4 2007-10-23 18:18:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.5 2007-10-25 20:16:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,8 +64,8 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-10-23 18:18:43 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-10-25 20:16:13 $
  */
 public class HSMPanelController implements TreeSelectionListener, TreeModelListener
 {
@@ -81,7 +81,7 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.4 2007-10-23 18:18:43 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.5 2007-10-25 20:16:13 wangeug Exp $";
 
 	private transient HSMPanel parentPanel;
 	private DefaultMutableTreeNode currentNode;
@@ -114,7 +114,7 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 		if (userObject instanceof MIFAttribute)
 		{
 			MIFAttribute mifAttr=(MIFAttribute )userObject;
-			if (mifAttr.getDatatype().isAbstract())
+			if (mifAttr.getDatatype()!=null&&mifAttr.getDatatype().isAbstract())
 			{
 		        NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
 		        DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
