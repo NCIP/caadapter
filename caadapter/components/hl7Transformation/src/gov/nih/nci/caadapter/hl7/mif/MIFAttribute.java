@@ -24,7 +24,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-09-07 19:44:09 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.16 $ date $Date: 2007-10-25 20:20:39 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -490,11 +490,11 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	 * Use fixedValue as default value if available
 	 * @return
 	 */
-	public String findDefaultValueProperty()
+	public String findHL7DefaultValueProperty()
 	{
 		if (getFixedValue()!=null
 				&&!getFixedValue().equals(""))
 			return getFixedValue();
-		return getDefaultValue();
+		return getMnemonic();
 	}
 }
