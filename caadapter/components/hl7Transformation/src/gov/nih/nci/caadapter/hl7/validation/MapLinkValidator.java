@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.3 2007-10-25 14:54:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.4 2007-10-25 20:18:13 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -44,6 +44,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
 /**
  * This class defines a basic validator to check if two objects are valid to participate in mapping.
@@ -53,8 +54,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-10-25 14:54:19 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-10-25 20:18:13 $
  */
 public class MapLinkValidator extends Validator {
 	/**
@@ -69,7 +70,7 @@ public class MapLinkValidator extends Validator {
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.3 2007-10-25 14:54:19 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.4 2007-10-25 20:18:13 wangeug Exp $";
 
 	private transient Object source;
 	private transient Object target;
@@ -94,6 +95,8 @@ public class MapLinkValidator extends Validator {
 		{
 			MIFAttribute mifAttr=(MIFAttribute)target;
 			if (!mifAttr.isStrutural())
+				foundError=true;
+			else if (!MIFUtil.isEditableMIFAttributeDefault(mifAttr))
 				foundError=true;
 		}
 		else if((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
@@ -169,6 +172,9 @@ public class MapLinkValidator extends Validator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/10/25 14:54:19  wangeug
+ * HISTORY      : allow mapping from a CSVSegment to Complex datatype;
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/31 16:26:00  wangeug
  * HISTORY      : allow mapping from CSVSegment to MIFAssociation
  * HISTORY      :
