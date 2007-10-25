@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.7 2007-08-30 21:52:56 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TargetTreeDropTransferHandler.java,v 1.8 2007-10-25 14:54:54 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -71,8 +71,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-08-30 21:52:56 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-10-25 14:54:54 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -271,10 +271,11 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 					    else if (srcObj instanceof CSVSegmentMeta)
 						{
 					    	if ((trgtObj instanceof MIFClass)
-									||(trgtObj instanceof MIFAssociation))
+									||(trgtObj instanceof MIFAssociation)
+									||(trgtObj instanceof Attribute))
 					    		isAllowedMapping=true;
 					    	else
-					    		errMsg="A CSVSegment can only be mapped to a Clone object";
+					    		errMsg="A CSVSegment can only be mapped to a Clone|MIFAssociation|Complex Datatype";
 						}
 						else
 						{
@@ -367,6 +368,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/08/30 21:52:56  wangeug
+ * HISTORY      : allow composite mapping
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/08/06 20:02:22  wangeug
  * HISTORY      : all attriubute node is  mappable, but the system will take default value if it is avaliable
  * HISTORY      :
