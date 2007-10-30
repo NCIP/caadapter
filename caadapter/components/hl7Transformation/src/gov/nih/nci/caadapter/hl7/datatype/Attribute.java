@@ -18,7 +18,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-10-26 16:38:43 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-10-30 15:56:45 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
@@ -54,9 +54,9 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 			return getName();
 		
 		//backward compitable
-//		if (getMultiplicityIndex()==0)
-//			return getName();
-//		
+		if (getMultiplicityIndex()==0)
+			return getName();
+		
 		String stB="";
 		if (getMultiplicityIndex()<10)
 			stB="0";
