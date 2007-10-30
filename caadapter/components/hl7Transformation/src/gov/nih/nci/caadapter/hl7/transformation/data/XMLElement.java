@@ -27,10 +27,10 @@ import java.util.Vector;
  * The class contains final xml tree for the v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2007-09-27 15:53:07 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2007-10-30 15:58:35 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -63,7 +63,16 @@ public class XMLElement implements Cloneable{
 	 * @param child the child XMLElement to be added
 	 */
 	public void addChild(XMLElement child) {
-		children.add(child);
+		int existingLastIndx=-1;
+		for(int i=0;i<children.size();i++)
+			if (children.get(i).getName().equalsIgnoreCase(child.getName()))
+			{
+				existingLastIndx=i;
+			}
+		if (existingLastIndx>-1)
+			children.add(existingLastIndx+1, child);
+		else
+			children.add(child);
 	}
 
 	/**
@@ -71,7 +80,8 @@ public class XMLElement implements Cloneable{
 	 */
 	public void addChildren(List<XMLElement> children) {
 		for(XMLElement child:children)
-			this.children.add(child);
+			addChild(child);
+//			this.children.add(child);
 	}
 	/**
 	 * @param name the name of the attribute
