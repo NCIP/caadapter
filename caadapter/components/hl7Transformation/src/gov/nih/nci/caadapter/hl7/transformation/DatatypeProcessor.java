@@ -22,6 +22,8 @@ import gov.nih.nci.caadapter.hl7.transformation.data.NullXMLElement;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
@@ -76,8 +78,9 @@ public class DatatypeProcessor {
     		}
     		else { //complexdatatype
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
-    			XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getName(), attr.getName(), mutableFlag);
-    			if (attrsXMLElement != null)
+//    			XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getName(), attr.getName(), mutableFlag);
+	    	    XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getNodeXmlName(), attr.getName(), mutableFlag);
+	    	    if (attrsXMLElement != null)
     				xmlElement.addChild(attrsXMLElement);
     		}
     	}
@@ -218,7 +221,8 @@ public class DatatypeProcessor {
     		for(String attributeName:(Set<String>)(attrs.keySet())) {
         		Attribute attr = attrs.get(attributeName);
         		boolean isSimple = false;
-        		
+        		if(!attr.isEnabled())
+        			continue;
         		if (attr.getReferenceDatatype() == null) {
         			isSimple = true;
         		}
@@ -273,8 +277,9 @@ public class DatatypeProcessor {
     			else { //complexdatatype
     	    	    MutableFlag mutableFlag = new MutableFlag(false);
     	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment, parentXPath+"."+attr.getName(), attr.getName(),forceGenerate, mutableFlag, mutableFlagDefault);
-    				if (mutableFlag.hasUserMappedData())
+//    				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment, parentXPath+"."+attr.getName(), attr.getName(),forceGenerate, mutableFlag, mutableFlagDefault);
+    	    	    List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegment, parentXPath+"."+attr.getNodeXmlName(), attr.getName(),forceGenerate, mutableFlag, mutableFlagDefault);
+    	    	    if (mutableFlag.hasUserMappedData())
     				{
     					hasUserdata.setHasUserMappedData(true);
     				}
@@ -360,8 +365,9 @@ public class DatatypeProcessor {
 			else { //complexdatatype
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
 	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments, parentXPath+"."+attr.getName(), attr.getName(),forceGenerate, mutableFlag, mutableFlagDefault);
-				if (mutableFlag.hasUserMappedData())
+//				List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments, parentXPath+"."+attr.getName(), attr.getName(),forceGenerate, mutableFlag, mutableFlagDefault);
+	    	    List<XMLElement> attrsXMLElement = process_datatype(attr.getReferenceDatatype(), csvSegments, parentXPath+"."+attr.getNodeXmlName(), attr.getName(),forceGenerate, mutableFlag, mutableFlagDefault);
+	    	    if (mutableFlag.hasUserMappedData())
 				{
 					hasUserdata.setHasUserMappedData(true);
 				}
