@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.8 2007-08-30 19:08:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.9 2007-10-30 16:00:27 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,10 +34,13 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
@@ -55,8 +58,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-30 19:08:57 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-10-30 16:00:27 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -96,7 +99,39 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 				returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
 			}
 			String treeCellText=nodeBase.getName();	
-			if(nodeBase instanceof MIFClass)
+			if (nodeBase instanceof Attribute)
+			{
+				Attribute dtAttr=(Attribute)nodeBase;
+				if (dtAttr.getMultiplicityIndex()>0)
+					treeCellText=treeCellText+"  ["+(dtAttr.getMultiplicityIndex()+1) +"]";
+				else if(dtAttr.getReferenceDatatype()!=null&&!MIFUtil.isTreatedAsSimpleType(dtAttr.getType()))
+				{
+//					count the number of duplicate Attribute with the same parent
+					DefaultMutableTreeNode currentNode=(DefaultMutableTreeNode)value;
+					DefaultMutableTreeNode parentNode=	(DefaultMutableTreeNode)currentNode.getParent();
+					Object parentObj=parentNode.getUserObject();
+					Datatype parentDt=null;
+					if (parentObj instanceof Attribute)
+						parentDt=((Attribute)parentObj).getReferenceDatatype();
+					else if  (parentObj instanceof MIFAttribute)
+					{
+						MIFAttribute parentMifAttr=(MIFAttribute)parentObj;
+						parentDt=parentMifAttr.getConcreteDatatype();
+						if (parentDt==null)
+							parentDt=parentMifAttr.getDatatype();
+						
+					}
+					int attrCnt=0;
+					if (parentDt!=null)
+						attrCnt=MIFUtil.findDatatypeAttributeWithName(parentDt, dtAttr.getName()).size();
+					if (attrCnt>1)
+						treeCellText=treeCellText+"  [1]";
+//					else
+//						treeCellText=treeCellText+"  [Multiple]";
+
+				}
+			}
+			else if(nodeBase instanceof MIFClass)
 			{
 				setText(((MIFClass)nodeBase).getMessageType()+":"+((MIFClass)nodeBase).getNodeXmlName());
 			}
