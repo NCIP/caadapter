@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.17 2007-10-25 20:17:02 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.18 2007-10-31 20:38:17 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -82,8 +82,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2007-10-25 20:17:02 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2007-10-31 20:38:17 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -98,7 +98,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.17 2007-10-25 20:17:02 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.18 2007-10-31 20:38:17 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -324,7 +324,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			{
 				//set selected concrete class
 				MIFAttribute mifAttr=(MIFAttribute)seletedBaseObject;
-				mifAttr.setConcreteDatatype(DatatypeParserUtil.getDatatype((String)dataTypeField.getSelectedItem()));
+				if (mifAttr.getDatatype()!=null&&mifAttr.getDatatype().isAbstract())
+					mifAttr.setConcreteDatatype(DatatypeParserUtil.getDatatype((String)dataTypeField.getSelectedItem()));
+				if (userDefaultValueField.isEditable())
+					mifAttr.setDefaultValue(userDefaultValueField.getText());
 			}
 			else if (seletedBaseObject instanceof Attribute)
 			{
@@ -641,6 +644,11 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					result=!GeneralUtilities.areEqual(subClass, dataTypeField.getSelectedItem(), true);
 				else 
 					result = !GeneralUtilities.areEqual(subClass.getName(), dataTypeField.getSelectedItem(), true);
+			}
+			else if (userDefaultValueField.isEditable())
+			{
+				//check the default value
+				result=!GeneralUtilities.areEqual(mifAttr.getDefaultValue(), userDefaultValueField.getText().trim(), true);
 			}
 		}
 		else if (seletedBaseObject instanceof Attribute)
