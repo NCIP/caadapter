@@ -32,10 +32,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.39 $
- *          date        $Date: 2007-10-04 04:32:55 $
+ *          revision    $Revision: 1.40 $
+ *          date        $Date: 2007-10-31 20:37:08 $
  */
 
 public class MapProcessor {
@@ -388,11 +388,19 @@ public class MapProcessor {
 	    				}
 					}
 					else {
+						
 						if (mifAttribute.getDefaultValue()!=null&&!mifAttribute.getDefaultValue().equals(""))
 						{
+							//if the MIFAttribute is user editable, its value may have been set by user
+							//otherwise, it should always be same with mnemonicValue from MIF spec
 							xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getDefaultValue(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
 						}
-						else 
+						else if(mifAttribute.getMnemonic()!=null&&!mifAttribute.getMnemonic().equals(""))
+						{
+							//use HL7 default value
+							xmlElement.addAttribute(mifAttribute.getName(), mifAttribute.getMnemonic(),null,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
+						}
+						else
 						{
 							if (mifAttribute.getFixedValue()!=null && !mifAttribute.getFixedValue().equals(""))
 							{
@@ -627,6 +635,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.39  2007/10/04 04:32:55  umkis
+ * HISTORY      : Removed the problem when mifAttribute.getDatatype() is null.
+ * HISTORY      :
  * HISTORY      : Revision 1.38  2007/09/11 02:16:36  wuye
  * HISTORY      : Remove extra tag
  * HISTORY      :
