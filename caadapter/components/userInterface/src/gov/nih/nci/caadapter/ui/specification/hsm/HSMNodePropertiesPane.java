@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.18 2007-10-31 20:38:17 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.19 2007-11-01 16:53:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -82,8 +82,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2007-10-31 20:38:17 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2007-11-01 16:53:43 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -98,7 +98,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.18 2007-10-31 20:38:17 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.19 2007-11-01 16:53:43 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -341,7 +341,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				{	
 					if (dtType.isAbstract()
 							||(!dtType.getName().equals(slctdTypeName)))
-						updtdDatatypeAttr.setReferenceDatatype(DatatypeParserUtil.getDatatype(slctdTypeName));
+						updtdDatatypeAttr.setReferenceDatatype((Datatype)DatatypeParserUtil.getDatatype(slctdTypeName).clone());
 				}
 			}
 		}
