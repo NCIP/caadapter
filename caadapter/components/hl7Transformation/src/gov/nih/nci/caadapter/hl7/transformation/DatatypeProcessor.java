@@ -231,7 +231,12 @@ public class DatatypeProcessor {
         		}
         		if (isSimple) {
     				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
-    				if (scsXmlPath==null) continue;
+    				if (scsXmlPath==null) 
+    				{
+    					//use user's default,not"forceGenerate"
+    					processAttributeDefaultValue(false, attr, xmlElement,attributeName, hasDefaultdata,null,null);	
+    					continue;
+    				}
     				if (scsXmlPath.startsWith("function.")) { //function mapping to target
     					MutableFlag mutableFlag = new MutableFlag(false);
     					MutableFlag mutableFlagDefault = new MutableFlag(true);
@@ -322,7 +327,13 @@ public class DatatypeProcessor {
 			}
 			if (isSimple) {
 				String scsXmlPath = mappings.get(parentXPath+"."+attributeName);
-				if (scsXmlPath==null) continue;
+				if (scsXmlPath==null)
+				{
+					//use user's default,not"forceGenerate"
+					processAttributeDefaultValue(false, attr, xmlElement,attributeName, hasDefaultdata,null,null);	
+					continue;
+				}
+				
 				if (scsXmlPath.startsWith("function.")) { //function mapping to target
 					MutableFlag mutableFlag = new MutableFlag(false);
 					MutableFlag mutableFlagDefault = new MutableFlag(true);
