@@ -13,6 +13,7 @@ import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
@@ -34,8 +35,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.40 $
- *          date        $Date: 2007-10-31 20:37:08 $
+ *          revision    $Revision: 1.41 $
+ *          date        $Date: 2007-11-01 16:55:59 $
  */
 
 public class MapProcessor {
@@ -484,12 +485,16 @@ public class MapProcessor {
     	if (mifAttribute.getDatatype() == null) return NullXMLElement.NULL; //Abstract attrbiute
 
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
-    	
+    	//use the concrete Datatype if the original type is Abstract
+    	Datatype mifDt=mifAttribute.getConcreteDatatype();
+		if (mifDt==null)
+			mifDt=mifAttribute.getDatatype();
+		
     	//No mappings
     	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
-    			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifAttribute.getDatatype(), mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), mutableFlag);
+    			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), mutableFlag);
     			if (defaultXMLElement != null) 
     			{
     	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
@@ -514,7 +519,7 @@ public class MapProcessor {
     		else {
     			if (forceGenerate) {
     	    	    MutableFlag mutableFlag = new MutableFlag(false);
-        			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifAttribute.getDatatype(), mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(),mutableFlag);
+        			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(),mutableFlag);
         			if (defaultXMLElement != null)
         			{
         				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
@@ -536,7 +541,7 @@ public class MapProcessor {
     	{
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-    		xmlElements  = 	datatypeProcessor.process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), true, mutableFlag, mutableFlagDefault);
+    		xmlElements  = 	datatypeProcessor.process_datatype(mifDt, csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), true, mutableFlag, mutableFlagDefault);
     		if (mutableFlag.hasUserMappedData())
     		{
     			hasUserdata.setHasUserMappedData(true);
@@ -550,7 +555,7 @@ public class MapProcessor {
     	{
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-    		xmlElements  = 	datatypeProcessor.process_datatype(mifAttribute.getDatatype(), csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), false, mutableFlag, mutableFlagDefault);
+    		xmlElements  = 	datatypeProcessor.process_datatype(mifDt, csvSegment, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), false, mutableFlag, mutableFlagDefault);
     		if (mutableFlag.hasUserMappedData())
     		{
     			hasUserdata.setHasUserMappedData(true);
@@ -563,7 +568,7 @@ public class MapProcessor {
     	{
     		for(XMLElement xmlElement:xmlElements)
     		{
-    			xmlElement.addAttribute("xsi:type", mifAttribute.getDatatype().getName(), null, null, null);
+    			xmlElement.addAttribute("xsi:type", mifDt.getName(), null, null, null);
     			xmlElement.setDomainName(mifAttribute.getDomainName());
     			if (mifAttribute.getCodingStrength()!= null && !mifAttribute.getCodingStrength().equals(""))
     			{
@@ -573,7 +578,7 @@ public class MapProcessor {
     	}
     	else {
     		for(XMLElement xmlElement:xmlElements)
-    			xmlElement.addAttribute("xsi:type", mifAttribute.getDatatype().getName(), null, null, null);
+    			xmlElement.addAttribute("xsi:type", mifDt.getName(), null, null, null);
     	}
     	return xmlElements;
     }
@@ -635,6 +640,13 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.40  2007/10/31 20:37:08  wangeug
+ * HISTORY      : Use user's data for structual MIFAttribute:
+ * HISTORY      : 1. Use mapped source data if available
+ * HISTORY      : 2. Use user's default value if available
+ * HISTORY      : 3. Use HL7 default value (get from MIF spec and set with menomic value)
+ * HISTORY      : 4. Use Fixed value
+ * HISTORY      :
  * HISTORY      : Revision 1.39  2007/10/04 04:32:55  umkis
  * HISTORY      : Removed the problem when mifAttribute.getDatatype() is null.
  * HISTORY      :

@@ -66,7 +66,9 @@ public class MifMetaLookup implements MetaLookup {
 		{
 			table.put(mifAttr.getXmlPath(), mifAttr);
 			//process datatype attribute
-			Datatype attrDt=mifAttr.getDatatype();
+			Datatype attrDt=mifAttr.getConcreteDatatype();
+			if (attrDt==null)
+				attrDt=mifAttr.getDatatype();
 			processDatatype(attrDt);
 		}
 		//process assocations

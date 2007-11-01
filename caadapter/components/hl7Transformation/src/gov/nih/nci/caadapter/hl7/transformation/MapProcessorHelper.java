@@ -25,9 +25,9 @@ import java.util.Set;
  * This class assists the MapProcessor with alot of the buisness logic.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.14 $
- * @date $Date: 2007-08-30 21:56:57 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.15 $
+ * @date $Date: 2007-11-01 16:55:19 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -295,7 +295,12 @@ public class MapProcessorHelper {
     protected List<String> preprocess_attribute(MIFAttribute mifAttribute, MutableFlag structuralAttributeHasMapping) {
     	if (mifAttribute.getDatatype() == null&&!mifAttribute.isStrutural()) return new ArrayList<String>(); //Abstract attrbiute
     	if (!mifAttribute.isStrutural())
-    		mifAttribute.setCsvSegments(preprocess_datatype(mifAttribute.getDatatype(),mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName()));
+    	{
+    		Datatype mifDt=mifAttribute.getConcreteDatatype();
+    		if (mifDt==null)
+    			mifDt=mifAttribute.getDatatype();
+    		mifAttribute.setCsvSegments(preprocess_datatype(mifDt,mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName()));
+    	}
     	else
     	{
     		List<String> tempList = preprocess_structural_datatype(mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),structuralAttributeHasMapping); 
