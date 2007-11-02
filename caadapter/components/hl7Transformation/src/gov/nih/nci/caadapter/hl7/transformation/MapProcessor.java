@@ -35,8 +35,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.41 $
- *          date        $Date: 2007-11-01 16:55:59 $
+ *          revision    $Revision: 1.42 $
+ *          date        $Date: 2007-11-02 14:16:47 $
  */
 
 public class MapProcessor {
@@ -290,8 +290,9 @@ public class MapProcessor {
     				if (totalChoiceHasData > 1)
     				{
     					if (mifAssociation.getMaximumMultiplicity() == 1) {
-    						if (assoXmlElements.size()>0) {
-    							Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of  the choice " + mifAssociation.getXmlPath() + " is specified as "  + mifAssociation.getMinimumMultiplicity() + "..1" + ", but more than 1 choice contains data, and the data is dropped"});
+    						if (assoXmlElements.size()>1 )//0) 
+    						{
+    							Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of  the choice " + mifAssociation.getXmlPath() + " is specified as "  + mifAssociation.getMinimumMultiplicity() + "..1" + ", but more than 1 choice ("+assoXmlElements.size()+")contains data, and the data is dropped"});
     							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     							canAdd = false;
     						}
@@ -604,7 +605,7 @@ public class MapProcessor {
     					{
     						List<XMLElement> tempXmlElements = choiceHolder.get(i);
     						xmlElement.addChildren(tempXmlElements);
-    						Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " + choiceString + " does not have user data, default data is used instead."});
+    						Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " +mifAssociation.getParentXmlPath()+"."+mifAssociation.getNodeXmlName()+"."+ choiceString + " does not have user data, default data is used instead."});
     						if (mifAssociation.getMinimumMultiplicity()==1)
     							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
     						else
@@ -621,7 +622,7 @@ public class MapProcessor {
     						xmlElement.addChildren(tempXmlElements);
     					}
     				}
-    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " + choiceString + " does not have user data, default data is used instead."});
+    				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " +mifAssociation.getParentXmlPath()+"."+mifAssociation.getNodeXmlName()+"."+ choiceString + " does not have user data, default data is used instead."});
 					if (mifAssociation.getMinimumMultiplicity()==1)
 						theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
 					else
@@ -632,7 +633,7 @@ public class MapProcessor {
     		{
     			List<XMLElement> tempXmlElements = choiceHolder.get(0);
     			xmlElement.addChildren(tempXmlElements);
-    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " + choiceString + " does not have user data and default data, an empty element is generated instead."});
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The choice " +mifAssociation.getParentXmlPath()+"."+mifAssociation.getNodeXmlName()+"."+ choiceString + " does not have user data and default data, an empty element is generated instead."});
     			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     		}
 		}
@@ -640,6 +641,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.41  2007/11/01 16:55:59  wangeug
+ * HISTORY      : retrieve the concrete datatype if the datatype associated with a MIFAttribute is Abstract
+ * HISTORY      :
  * HISTORY      : Revision 1.40  2007/10/31 20:37:08  wangeug
  * HISTORY      : Use user's data for structual MIFAttribute:
  * HISTORY      : 1. Use mapped source data if available
