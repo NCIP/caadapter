@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAttributeValidator.java,v 1.2 2007-07-11 17:55:31 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MIFAttributeValidator.java,v 1.3 2007-11-02 15:27:37 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.Hashtable;
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $$Date: 2007-07-11 17:55:31 $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2007-11-02 15:27:37 $
  * @since caAdapter v1.2
  */
 
@@ -87,6 +87,8 @@ public class MIFAttributeValidator extends Validator
 			if (mifDatatype!=null&&mifDatatype.isAbstract())
 			{
 				results.addValidatorResults(validateAbstractTypeAttribute(attrToValidate));
+				if (attrToValidate.getConcreteDatatype()!=null)
+					mifDatatype=attrToValidate.getConcreteDatatype();
 			}
 			results.addValidatorResults(validateDatatypeType(mifDatatype));
         }
@@ -111,6 +113,26 @@ public class MIFAttributeValidator extends Validator
             			oneAttr.getDefaultValue()});
             	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, message));
        		}
+    		//validate Abstract datatype
+    		if (oneAttr.getReferenceDatatype()!=null)
+    		{
+    			if(oneAttr.getReferenceDatatype().isAbstract())
+	    		{
+	            	Message message = MessageResources.getMessage("HSM1",
+	                        new Object[]{oneAttr.getXmlPath(),
+	            			oneAttr.getType()});
+	            	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, message));
+	       		}
+    			else if (!oneAttr.getType().equals(oneAttr.getReferenceDatatype().getName()))
+    			{
+	            	Message message = MessageResources.getMessage("HSM1INFO",
+	                        new Object[]{oneAttr.getXmlPath(),
+	            			oneAttr.getType(), oneAttr.getReferenceDatatype().getName()});
+	            	results.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, message));
+	    
+    			}
+    			results.addValidatorResults(validateDatatypeType(oneAttr.getReferenceDatatype()));
+    		}
     	}
     	return results;
     }
