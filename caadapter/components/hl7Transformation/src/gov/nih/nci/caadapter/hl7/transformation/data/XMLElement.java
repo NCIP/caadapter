@@ -29,8 +29,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2007-10-30 15:58:35 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2007-11-02 14:18:11 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -288,33 +288,32 @@ public class XMLElement implements Cloneable{
 				{
 					HashSet predefinedValues = datatype.getPredefinedValues();
 					if (predefinedValues.size()>0) {
-//						System.out.println("Validating..." + attribute.getValue() + " " + attribute.getDomainName() + datatype.getName());
-//						System.out.println(((Datatype)datatypes.get("ActClass")).getPredefinedValues());
 						if (!predefinedValues.contains(attribute.getValue())) 
 						{
 				            if (attribute.getCodingStrength()!=null && attribute.getCodingStrength().equals("CNE")||(getCodingStrength()!=null && getCodingStrength().equals("CNE")))
 				            {
-					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute: " + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
 				            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 				            }
-				            else
-				            {
-					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " 	may not contain valid value (" + attribute.getValue() + ")"});
-				            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
-				            }
+//				            else
+//				            {
+//					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute: " + pXmlPath + "." + attribute.getName() + " 	may not contain valid value (" + attribute.getValue() + ")"});
+//				            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+//				            }
 						}
 					}
 					else {
 			            if (attribute.getCodingStrength()!=null && attribute.getCodingStrength().equals("CNE")||(getCodingStrength()!=null && getCodingStrength().equals("CNE")))
 			            {
-				            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
-			            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+//				            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
+			            	Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute: " + pXmlPath + "." + attribute.getName() + " may not contain valid value (" + attribute.getValue() + "); validation is stopped since no value defined with domain: "+getDomainName()});
+			            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO,msg));//.WARNING, msg));//.ERROR, msg));
 			            }
-			            else
-			            {
-				            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute" + pXmlPath + "." + attribute.getName() + " may not contain valid value (" + attribute.getValue() + ")"});
-			            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
-			            }
+//			            else
+//			            {
+//				            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute: " + pXmlPath + "." + attribute.getName() + " may not contain valid value (" + attribute.getValue() + "); validation is stopped since no value defined with domain: "+getDomainName()});
+//			            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+//			            }
 					}
 				}
 			}
