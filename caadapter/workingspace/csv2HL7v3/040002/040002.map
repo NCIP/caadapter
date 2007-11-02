@@ -3,52 +3,52 @@
    <components>
       <component kind="scs" location="{caAdapter_Home}\workingspace\csv2HL7v3\040002\040002.scs" type="source"/>
       <component kind="h3s" location="{caAdapter_Home}\workingspace\csv2HL7v3\040002\PORR_MT040002.h3s" type="target"/>
-      <component group="constant" kind="core" name="constant" type="function" id="0">
+      <component group="constant" kind="core" name="constant" type="function" id="72">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="1"/>
-      <component group="string" kind="core" name="Concatenate" type="function" id="2"/>
-      <component group="constant" kind="core" name="constant" type="function" id="3">
+      <component group="string" kind="core" name="Concatenate" type="function" id="73"/>
+      <component group="string" kind="core" name="Concatenate" type="function" id="74"/>
+      <component group="constant" kind="core" name="constant" type="function" id="75">
          <data type="String" value="tel:"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="4">
+      <component group="constant" kind="core" name="constant" type="function" id="76">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="5"/>
-      <component group="string" kind="core" name="Concatenate" type="function" id="6"/>
-      <component group="constant" kind="core" name="constant" type="function" id="7">
+      <component group="string" kind="core" name="Concatenate" type="function" id="77"/>
+      <component group="string" kind="core" name="Concatenate" type="function" id="78"/>
+      <component group="constant" kind="core" name="constant" type="function" id="79">
          <data type="String" value="tel:"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="8">
+      <component group="constant" kind="core" name="constant" type="function" id="80">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="9"/>
-      <component group="constant" kind="core" name="constant" type="function" id="10">
+      <component group="string" kind="core" name="Concatenate" type="function" id="81"/>
+      <component group="constant" kind="core" name="constant" type="function" id="82">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="11"/>
-      <component group="constant" kind="core" name="constant" type="function" id="12">
+      <component group="string" kind="core" name="Concatenate" type="function" id="83"/>
+      <component group="constant" kind="core" name="constant" type="function" id="84">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="13"/>
-      <component group="string" kind="core" name="Concatenate" type="function" id="14"/>
-      <component group="constant" kind="core" name="constant" type="function" id="15">
+      <component group="string" kind="core" name="Concatenate" type="function" id="85"/>
+      <component group="string" kind="core" name="Concatenate" type="function" id="86"/>
+      <component group="constant" kind="core" name="constant" type="function" id="87">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="16"/>
-      <component group="string" kind="core" name="Concatenate" type="function" id="17"/>
-      <component group="string" kind="core" name="Concatenate" type="function" id="18"/>
-      <component group="constant" kind="core" name="constant" type="function" id="19">
+      <component group="string" kind="core" name="Concatenate" type="function" id="88"/>
+      <component group="string" kind="core" name="Concatenate" type="function" id="89"/>
+      <component group="string" kind="core" name="Concatenate" type="function" id="90"/>
+      <component group="constant" kind="core" name="constant" type="function" id="91">
          <data type="String" value="tel:"/>
       </component>
-      <component group="string" kind="core" name="Concatenate" type="function" id="20"/>
-      <component group="constant" kind="core" name="constant" type="function" id="21">
+      <component group="string" kind="core" name="Concatenate" type="function" id="92"/>
+      <component group="constant" kind="core" name="constant" type="function" id="93">
          <data type="String" value="tel:"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="22">
+      <component group="constant" kind="core" name="constant" type="function" id="94">
          <data type="String" value="tel:"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="23">
+      <component group="constant" kind="core" name="constant" type="function" id="95">
          <data type="String" value="tel:"/>
       </component>
    </components>
@@ -199,10 +199,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.0.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.72.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.1.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.73.inputs.0"/>
          </target>
       </link>
       <link>
@@ -210,12 +210,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.loc_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.1.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.73.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.1.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.73.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.location.serviceDeliveryLocation.telecom00.value"/>
@@ -287,10 +287,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.3.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.75.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.2.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.74.inputs.0"/>
          </target>
       </link>
       <link>
@@ -298,12 +298,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.loc_prvdr_org_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.2.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.74.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.2.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.74.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.location.serviceDeliveryLocation.serviceProviderOrganization.telecom00.value"/>
@@ -399,10 +399,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.7.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.79.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.5.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.77.inputs.0"/>
          </target>
       </link>
       <link>
@@ -410,12 +410,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.APPROVAL.manufacturer_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.5.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.77.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.5.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.77.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.subjectOf00.approval.holder.aRole.playingManufacturer.telecom.value"/>
@@ -463,10 +463,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.8.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.80.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.6.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.78.inputs.0"/>
          </target>
       </link>
       <link>
@@ -474,12 +474,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.APPROVAL.manufacturer_contact_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.6.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.78.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.6.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.78.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.subjectOf00.approval.holder.aRole.playingManufacturer.contactParty.contactManufacturerContact.telecom.value"/>
@@ -511,10 +511,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.4.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.76.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.9.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.81.inputs.0"/>
          </target>
       </link>
       <link>
@@ -522,12 +522,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.APPROVAL.APPAGENTFOR.represented_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.9.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.81.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.9.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.81.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.subjectOf00.approval.holder.aRole.playingManufacturer.asAgent00.representedManufacturer.telecom.value"/>
@@ -599,10 +599,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.10.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.82.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.11.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.83.inputs.0"/>
          </target>
       </link>
       <link>
@@ -610,12 +610,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.MANUFACTURER.phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.11.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.83.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.11.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.83.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.partMedication.asManufacturedProduct00.manufacturer.telecom.value"/>
@@ -727,10 +727,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.15.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.87.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.13.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.85.inputs.0"/>
          </target>
       </link>
       <link>
@@ -738,12 +738,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.MANUFACTURER.contact_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.13.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.85.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.13.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.85.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.partMedication.asManufacturedProduct00.manufacturer.contactParty.contactManufacturerContact.telecom.value"/>
@@ -775,10 +775,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.12.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.84.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.14.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.86.inputs.0"/>
          </target>
       </link>
       <link>
@@ -786,12 +786,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.MANUFACTURER.MANUAGENTFOR.represented_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.14.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.86.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.14.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.86.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.partMedication.asManufacturedProduct00.manufacturer.asAgent00.representedManufacturer.telecom.value"/>
@@ -1495,10 +1495,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.22.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.94.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.17.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.89.inputs.0"/>
          </target>
       </link>
       <link>
@@ -1506,12 +1506,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.PERFORMER.primary_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.17.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.89.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.17.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.89.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.authorOrPerformer00.assignedEntity00.telecom00.value"/>
@@ -1559,10 +1559,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.19.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.91.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.18.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.90.inputs.0"/>
          </target>
       </link>
       <link>
@@ -1570,12 +1570,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.PERFORMER.org_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.18.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.90.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.18.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.90.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.authorOrPerformer00.assignedEntity00.representedOrganization.telecom00.value"/>
@@ -1623,10 +1623,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.21.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.93.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.16.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.88.inputs.0"/>
          </target>
       </link>
       <link>
@@ -1634,12 +1634,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.PERFORMER.OTHERROLE.org_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.16.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.88.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.16.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.88.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.authorOrPerformer00.assignedEntity00.assignedPerson.asRoleOther00.scopingOrganization.telecom00.value"/>
@@ -1911,10 +1911,10 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.23.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.95.outputs.0"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.20.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.92.inputs.0"/>
          </target>
       </link>
       <link>
@@ -1922,12 +1922,12 @@
             <linkpointer kind="scs" xmlPath="DRUGADMIN.PERFORMER.LICENSE.issuer_contact_phone"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.20.inputs.1"/>
+            <linkpointer kind="function" xmlPath="function.92.inputs.1"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.20.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.92.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.authorOrPerformer00.assignedEntity00.assignedPerson.asLicensedEntity00.issuingOrganization.contactParty00.telecom00.value"/>
@@ -2157,33 +2157,49 @@
             <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.pertinentInformation100.observation.value.numerator.unit"/>
          </target>
       </link>
+      <link>
+         <source>
+            <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.INGREDIENT.SUBINGREDIENT.quantity_ratio_denominator"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.partMedication.ingredient00.ingredient.subIngredient00.quantity.denominator.value"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="scs" xmlPath="DRUGADMIN.DRUG.INGREDIENT.SUBINGREDIENT.quantity_ratio_numerator"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="SubstanceAdministrationEvent.consumable.administeredDrug.partMedication.ingredient00.ingredient.subIngredient00.quantity.numerator.value"/>
+         </target>
+      </link>
    </links>
    <views>
       <view component-id="source.scs.0" height="0" width="0" x="0" y="0"/>
       <view component-id="target.h3s.0" height="0" width="0" x="0" y="0"/>
-      <view component-id="function.0" height="49" width="109" x="36" y="36"/>
-      <view component-id="function.1" height="67" width="91" x="168" y="12"/>
-      <view component-id="function.2" height="67" width="91" x="168" y="78"/>
-      <view component-id="function.3" height="49" width="109" x="30" y="90"/>
-      <view component-id="function.4" height="49" width="109" x="30" y="240"/>
-      <view component-id="function.5" height="67" width="91" x="168" y="150"/>
-      <view component-id="function.6" height="67" width="91" x="222" y="186"/>
-      <view component-id="function.7" height="49" width="109" x="30" y="138"/>
-      <view component-id="function.8" height="49" width="109" x="18" y="186"/>
-      <view component-id="function.9" height="67" width="91" x="216" y="270"/>
-      <view component-id="function.10" height="49" width="109" x="30" y="306"/>
-      <view component-id="function.11" height="67" width="91" x="156" y="312"/>
-      <view component-id="function.12" height="49" width="109" x="60" y="426"/>
-      <view component-id="function.13" height="67" width="91" x="192" y="384"/>
-      <view component-id="function.14" height="67" width="91" x="198" y="456"/>
-      <view component-id="function.15" height="49" width="109" x="18" y="372"/>
-      <view component-id="function.16" height="67" width="91" x="180" y="660"/>
-      <view component-id="function.17" height="67" width="91" x="192" y="522"/>
-      <view component-id="function.18" height="67" width="91" x="180" y="594"/>
-      <view component-id="function.19" height="49" width="109" x="30" y="600"/>
-      <view component-id="function.20" height="67" width="91" x="162" y="714"/>
-      <view component-id="function.21" height="49" width="109" x="30" y="648"/>
-      <view component-id="function.22" height="49" width="109" x="30" y="510"/>
-      <view component-id="function.23" height="49" width="109" x="30" y="720"/>
+      <view component-id="function.72" height="49" width="109" x="36" y="36"/>
+      <view component-id="function.73" height="67" width="91" x="168" y="12"/>
+      <view component-id="function.74" height="67" width="91" x="168" y="78"/>
+      <view component-id="function.75" height="49" width="109" x="30" y="90"/>
+      <view component-id="function.76" height="49" width="109" x="30" y="240"/>
+      <view component-id="function.77" height="67" width="91" x="168" y="150"/>
+      <view component-id="function.78" height="67" width="91" x="222" y="186"/>
+      <view component-id="function.79" height="49" width="109" x="30" y="138"/>
+      <view component-id="function.80" height="49" width="109" x="18" y="186"/>
+      <view component-id="function.81" height="67" width="91" x="216" y="270"/>
+      <view component-id="function.82" height="49" width="109" x="30" y="306"/>
+      <view component-id="function.83" height="67" width="91" x="156" y="312"/>
+      <view component-id="function.84" height="49" width="109" x="60" y="426"/>
+      <view component-id="function.85" height="67" width="91" x="192" y="384"/>
+      <view component-id="function.86" height="67" width="91" x="198" y="456"/>
+      <view component-id="function.87" height="49" width="109" x="18" y="372"/>
+      <view component-id="function.88" height="67" width="91" x="180" y="660"/>
+      <view component-id="function.89" height="67" width="91" x="192" y="522"/>
+      <view component-id="function.90" height="67" width="91" x="180" y="594"/>
+      <view component-id="function.91" height="49" width="109" x="30" y="600"/>
+      <view component-id="function.92" height="67" width="91" x="162" y="714"/>
+      <view component-id="function.93" height="49" width="109" x="30" y="648"/>
+      <view component-id="function.94" height="49" width="109" x="30" y="510"/>
+      <view component-id="function.95" height="49" width="109" x="30" y="720"/>
    </views>
 </mapping>
