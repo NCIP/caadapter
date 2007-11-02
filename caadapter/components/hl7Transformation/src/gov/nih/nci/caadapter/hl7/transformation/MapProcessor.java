@@ -35,8 +35,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.42 $
- *          date        $Date: 2007-11-02 14:16:47 $
+ *          revision    $Revision: 1.43 $
+ *          date        $Date: 2007-11-02 19:56:50 $
  */
 
 public class MapProcessor {
@@ -132,7 +132,9 @@ public class MapProcessor {
     	    ValidatorResults localValidatorResults = new ValidatorResults();
     	    MutableFlag mutableFlag = new MutableFlag(false);
     	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-			List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment,true,mutableFlag,mutableFlagDefault);
+    	    //process the root mifClass, do not relax cardinality
+    	    boolean relaxCardinality=false;
+			List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment,true,mutableFlag,mutableFlagDefault,relaxCardinality);
     		if (theValidatorResults.getAllMessages().size() == 0) {
 	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"HL7 v3 message is successfully generated!"});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
@@ -157,7 +159,7 @@ public class MapProcessor {
 	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
 	 */
     
-    private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment, boolean forceGeneratePassed, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException,FunctionException {
+    private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment, boolean forceGeneratePassed, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean isCardinalityRelaxed) throws MappingException,FunctionException {
     	boolean forceGenerate = forceGeneratePassed;
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
     	List<XMLElement> choiceXMLElements = new ArrayList<XMLElement>(); 
@@ -186,7 +188,7 @@ public class MapProcessor {
         	    	if (choiceMIFClass.isChoiceSelected()) {
         	    	    MutableFlag mutableFlag = new MutableFlag(false);
         	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-        	    		choiceXMLElements = processMIFclass(choiceMIFClass,csvSegment, forceGenerate, mutableFlag, mutableFlagDefault);
+        	    		choiceXMLElements = processMIFclass(choiceMIFClass,csvSegment, forceGenerate, mutableFlag, mutableFlagDefault,isCardinalityRelaxed);
         	    		if (mutableFlag.hasUserMappedData())
         	    		{
         	    			hasUserdata.setHasUserMappedData(true);
@@ -228,7 +230,8 @@ public class MapProcessor {
     					}
     				}
     				if (mifAttribute.getMinimumMultiplicity() == 1) {
-    					if (attrXmlElements.size()== 0) {
+    					if (attrXmlElements.size()== 0
+    							&& !isCardinalityRelaxed) {
     			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
     			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
     					}
@@ -249,6 +252,14 @@ public class MapProcessor {
     		List<List<XMLElement>> choiceHolder = new ArrayList<List<XMLElement>>();
     		List<MutableFlag> choiceFlag = new ArrayList<MutableFlag>();
     		for(MIFAssociation mifAssociation : associations) {
+    			boolean toRelaxCardinality=isCardinalityRelaxed;
+    			if (!toRelaxCardinality)
+    			{
+    			//check if to relax cardinality
+    				int asscMultiple=mifClass.getMaxAssociationMultiplicityWithName(mifAssociation.getName());
+    				if (asscMultiple>mifAssociation.getMaximumMultiplicity());
+    					toRelaxCardinality=true;
+    			}
     			boolean canAdd = true;
     			if (MIFUtil.containChoiceAssociation(mifAssociation)&& mifAssociation.getMifClass()!= null) {
     				if (mifAssociation.getNodeXmlName().substring(mifAssociation.getNodeXmlName().length()-2).equals("00"))
@@ -278,7 +289,7 @@ public class MapProcessor {
 	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
 	    	    boolean forceGenerateAssociation = (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0); 
 	    	    List<XMLElement> choiceXmlElements = new ArrayList<XMLElement>();
-    			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, forceGenerateAssociation, startChoice, choiceXmlElements);
+    			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, forceGenerateAssociation, startChoice, choiceXmlElements,toRelaxCardinality);
     			if (startChoice) {
     				choiceHolder.add(choiceXmlElements);
     				choiceFlag.add(mutableFlagDefault);
@@ -425,7 +436,7 @@ public class MapProcessor {
 	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
 	 */
     
-    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, boolean choiceFlag, List<XMLElement> choiceXmlElements) throws MappingException,FunctionException {
+    private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, boolean choiceFlag, List<XMLElement> choiceXmlElements, boolean isCardinalityRelaxed) throws MappingException,FunctionException {
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
     	
     	MIFClass mifClass =null;
@@ -437,7 +448,7 @@ public class MapProcessor {
     	}
     	MutableFlag mutableFlag = new MutableFlag(false);
     	MutableFlag mutableFlagDefault = new MutableFlag(true);
-    	List<XMLElement> xmlEments = processMIFclass(mifClass,csvSegment, forceGenerate, mutableFlag, mutableFlagDefault);
+    	List<XMLElement> xmlEments = processMIFclass(mifClass,csvSegment, forceGenerate, mutableFlag, mutableFlagDefault, isCardinalityRelaxed);
     	if (mutableFlag.hasUserMappedData())
     	{
     		hasUserdata.setHasUserMappedData(true);
@@ -641,6 +652,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.42  2007/11/02 14:16:47  wangeug
+ * HISTORY      : fix error:check cardinality; modify warning message
+ * HISTORY      :
  * HISTORY      : Revision 1.41  2007/11/01 16:55:59  wangeug
  * HISTORY      : retrieve the concrete datatype if the datatype associated with a MIFAttribute is Abstract
  * HISTORY      :
