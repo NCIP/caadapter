@@ -29,8 +29,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2007-11-02 14:18:11 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2007-11-02 19:56:00 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -292,7 +292,7 @@ public class XMLElement implements Cloneable{
 						{
 				            if (attribute.getCodingStrength()!=null && attribute.getCodingStrength().equals("CNE")||(getCodingStrength()!=null && getCodingStrength().equals("CNE")))
 				            {
-					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute: " + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + ")"});
+					            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Attribute: " + pXmlPath + "." + attribute.getName() + " does not contain valid value (" + attribute.getValue() + "); valid value(s) are:"+predefinedValues});
 				            	validatorResults_temp.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 				            }
 //				            else
