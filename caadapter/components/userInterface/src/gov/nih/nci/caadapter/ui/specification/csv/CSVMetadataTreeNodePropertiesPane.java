@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.7 2007-11-05 15:00:37 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.8 2007-11-05 16:35:55 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-11-05 15:00:37 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-11-05 16:35:55 $
  */
 public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -189,6 +189,14 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
                     return;
                 }
             } catch (Exception e1) {
+                try {
+                    if (((DefaultSCMTreeMutableTreeNode) obj).getUserObject() instanceof CSVFieldMetaImpl) {
+                       doForceDelete();
+                       return;
+                   }
+                } catch (Exception e2) {
+
+                }                
             }
             if (nodeSelected) {
                 DefaultMutableTreeNode showSelected = null;
@@ -421,7 +429,7 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
             if (treeNode != null) {
                 if (treeNode.getParent() != null) {
                     DefaultMutableTreeNode parentTreeNode = (DefaultMutableTreeNode) treeNode.getParent();
-                    int userChoice = JOptionPane.showConfirmDialog(parentController.getTree().getRootPane().getParent(), "Do you want to delete  \"" + treeNode + "\"", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    int userChoice = JOptionPane.showConfirmDialog(parentController.getTree().getRootPane().getParent(), "Do you want to delete  \"" + treeNode + "\"?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if (userChoice == JOptionPane.YES_OPTION) {
                         treeModel.removeNodeFromParent(treeNode);
 
@@ -438,6 +446,9 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/11/05 15:00:37  jayannah
+ * HISTORY      : changes to code for for the bug fixes due to tree selected etc.,
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/10/16 12:06:42  jayannah
  * HISTORY      : changed the code to reset to the previous when the user clicks no
  * HISTORY      :
