@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.3 2007-10-13 03:07:00 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.4 2007-11-05 15:00:26 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,10 +54,11 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-10-13 03:07:00 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-11-05 15:00:26 $
  */
-public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener, ListSelectionListener {
+public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener, ListSelectionListener
+{
     /**
      * Logging constant used to identify source of log entry, that could be later used to create
      * logging mechanism to uniquely identify the logged class.
@@ -69,7 +70,7 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.3 2007-10-13 03:07:00 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.4 2007-11-05 15:00:26 jayannah Exp $";
     private static final String MOVE_UP_COMMAND = "Move Up";
     private static final String MOVE_UP_COMMAND_MNEMONIC = "U";
     private static final String MOVE_DOWN_COMMAND = "Move Down";
@@ -79,12 +80,21 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
     private JButton moveUpButton;
     private JButton moveDownButton;
     private java.util.List csvFieldMetaList;
+    private CSVPanel controller_;
 
-    public CSVFieldOrderReshufflePane() {
+    public CSVFieldOrderReshufflePane()
+    {
         initialize();
     }
 
-    private void initialize() {
+    public CSVFieldOrderReshufflePane(CSVPanel controller)
+    {
+        initialize();
+        controller_ = controller;
+    }
+
+    private void initialize()
+    {
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
@@ -109,8 +119,10 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
         fieldTable.getSelectionModel().addListSelectionListener(this);
         // Following addMouseListener is inserted by umkis 11/07/05
         // for setting enable or disable button according to selected or non-selected data on segment property pane
-        fieldTable.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
+        fieldTable.addMouseListener(new MouseAdapter()
+        {
+            public void mouseClicked(MouseEvent e)
+            {
                 setButtonsEnabled();
                 int[] selectedRows = fieldTable.getSelectedRows();
                 if (selectedRows[0] == 0) {
@@ -134,41 +146,48 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
 
     // Following 2 methods are inserted by umkis 11/07/05
     // for setting enable or disable button according to selected or non-selected data on segment property pane
-    public void setButtonsEnabled() {
+    public void setButtonsEnabled()
+    {
         if (!moveUpButton.isEnabled()) moveUpButton.setEnabled(true);
         if (!moveDownButton.isEnabled()) moveDownButton.setEnabled(true);
     }
 
-    public void setButtonsDisabled() {
+    public void setButtonsDisabled()
+    {
         if (moveUpButton.isEnabled()) moveUpButton.setEnabled(false);
         if (moveDownButton.isEnabled()) moveDownButton.setEnabled(false);
     }
 
-    public boolean isDataChanged() {
+    public boolean isDataChanged()
+    {
         return tableModel.isDataChanged();
     }
 
-    public void setDataChanged(boolean value) {
+    public void setDataChanged(boolean value)
+    {
         if (!value) {//clear out the changes.
             tableModel.initializeSequenceIndexArray();
         }
     }
 
-    public boolean setCSVFieldMetaList(List<CSVFieldMeta> newCSVFieldMetaList) {
+    public boolean setCSVFieldMetaList(List<CSVFieldMeta> newCSVFieldMetaList)
+    {
         this.csvFieldMetaList = newCSVFieldMetaList;
         tableModel = new CSVFieldOrderReshuffleTableModel(csvFieldMetaList);
         fieldTable.setModel(tableModel);
         return true;
     }
 
-    public List getCSVFieldMetaList(boolean withUIChanges) {
+    public List getCSVFieldMetaList(boolean withUIChanges)
+    {
         return tableModel.getCsvFieldMetaList(withUIChanges);
     }
 
     /**
      * Invoked when an action occurs.
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         String command = e.getActionCommand();
         int[] selectedRows = fieldTable.getSelectedRows();
         if (selectedRows == null || selectedRows.length == 0) {
@@ -235,48 +254,57 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
 //		CSVFieldMetaImpl impl1 = new CSVFieldMetaImpl(1, "name_1", null);
 //		CSVFieldMetaImpl impl2 = new CSVFieldMetaImpl(2, "name_2", null);
 //		CSVFieldMetaImpl impl3 = new CSVFieldMetaImpl(3, "name_3", null);
-//		fieldMetaList.add(impl1);
-//		fieldMetaList.add(impl2);
+    //		fieldMetaList.add(impl1);
+    //		fieldMetaList.add(impl2);
     //		fieldMetaList.add(impl3);
     //		worker.setCSVFieldMetaList(fieldMetaList);
     //	}
     //int[] selectedNodesIndices = null;
     ArrayList selectedNodes = null;
-    HashSet selectedIndices = new HashSet();
+    HashSet selectedIndices= null;
 
-    public boolean areNodesSelected(){
-         populateArrayList();
-        return (selectedNodes != null && selectedNodes.size()>0);
+    public boolean areNodesSelected()
+    {
+        selectedNodes = new ArrayList();
+        populateArrayList();
+        return (selectedNodes != null && selectedNodes.size() > 0);
     }
 
-    public ArrayList getSelectedNodes() {
-
+    public ArrayList getSelectedNodes()
+    {
         return selectedNodes;
     }
 
-    public void clearSelectedNodes() {
+    public void clearSelectedNodes()
+    {
         selectedIndices.clear();
         selectedNodes = null;
     }
 
-    private void populateArrayList() {
-        selectedNodes = new ArrayList();
+    private void populateArrayList()
+    {
+        
         Iterator iter = selectedIndices.iterator();
         List tempList = getCSVFieldMetaList(true);
         while (iter.hasNext()) {
             Integer integer = (Integer) iter.next();
-            int val = integer.intValue();                     
+            int val = integer.intValue();
             CSVFieldMetaImpl csvFieldMeta = (CSVFieldMetaImpl) tempList.get(val);
             selectedNodes.add(csvFieldMeta);
         }
     }
 
-    public void valueChanged(ListSelectionEvent e) {
+    public void valueChanged(ListSelectionEvent e)
+    {
+        selectedIndices = new HashSet();
+        //clear the selection of the jtree; so that hittng delete button dont cause headaches
+        controller_.getTree().clearSelection();
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         int firstIndex = e.getFirstIndex();
         int lastIndex = e.getLastIndex();
-        boolean isAdjusting = e.getValueIsAdjusting();
+        boolean isAdjusting = e.getValueIsAdjusting();        
         // System.out.println("Event for indexes " + firstIndex + " - " + lastIndex + "; isAdjusting is " + isAdjusting + "; selected indexes:");
+        
         if (lsm.isSelectionEmpty()) {
             //System.out.println(" <none>");
         } else {
@@ -284,16 +312,21 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
             int minIndex = lsm.getMinSelectionIndex();
             int maxIndex = lsm.getMaxSelectionIndex();
             for (int i = minIndex; i <= maxIndex; i++) {
-                if (lsm.isSelectedIndex(i)) {                    
+                if (lsm.isSelectedIndex(i)) {
                     selectedIndices.add(new Integer(i));
+                    //System.out.println(new Integer(i));
                 }
             }
         }
-
     }
+
 }
+
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/10/13 03:07:00  jayannah
+ * HISTORY      : Changes to enable delete action from the properties pane and refresh the tree as well as the property pane, And show a confirmation window for the delete
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/10/05 20:27:11  schroedn
  * HISTORY      : Added hiding of MOVE UP/DOWN buttons depending on what field is selected
  * HISTORY      :

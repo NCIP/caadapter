@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.6 2007-10-16 12:06:42 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeNodePropertiesPane.java,v 1.7 2007-11-05 15:00:37 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,8 +36,10 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVFieldMetaImpl;
+import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.specification.csv.actions.DeleteTreeNodeAction;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultSCMTreeMutableTreeNode;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -55,10 +57,11 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-10-16 12:06:42 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-11-05 15:00:37 $
  */
-public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener {
+public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionListener
+{
     private static final String PROPERTIES_NAME_ON_TITLE = "Properties";
     private static final String DEFAULT_PROPERTIES_TITLE = Config.COMMON_METADATA_DISPLAY_NAME + " " + PROPERTIES_NAME_ON_TITLE;
     public static final String PREVIOUS_COMMAND_NAME = "Previous";
@@ -79,30 +82,36 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
     //default value
     private int visibleMode = SEGMENT_PROPERTY_MODE;
     private CSVPanel parentController;
+    private TreePath showPath = null;
 
-    public CSVMetadataTreeNodePropertiesPane(CSVPanel parentController) {
+    public CSVMetadataTreeNodePropertiesPane(CSVPanel parentController)
+    {
         this.parentController = parentController;
         initialize();
     }
 
-    public int getVisibleMode() {
+    public int getVisibleMode()
+    {
         return visibleMode;
     }
 
-    public void setVisibleMode(int visibleMode) {
+    public void setVisibleMode(int visibleMode)
+    {
         if (this.visibleMode != visibleMode) {
             this.visibleMode = visibleMode;
             constructCenterPane();
         }
     }
 
-    private void initialize() {
+    private void initialize()
+    {
         this.setLayout(new BorderLayout());
         this.add(constructCenterPane(), BorderLayout.CENTER);
         this.add(constructButtonPanel(), BorderLayout.SOUTH);
     }
 
-    private JScrollPane constructCenterPane() {
+    private JScrollPane constructCenterPane()
+    {
         JPanel centerPanel = null;
         if (centerScrollPane == null) {
             centerScrollPane = new JScrollPane();
@@ -125,7 +134,8 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         return centerScrollPane;
     }
 
-    private JPanel constructButtonPanel() {
+    private JPanel constructButtonPanel()
+    {
         JPanel buttonPanel = new JPanel(new BorderLayout());
         JPanel westPanel = new JPanel(new GridLayout(1, 2, 5, 5));
         JButton previousButton = new JButton(PREVIOUS_COMMAND_NAME);
@@ -160,29 +170,49 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
     /**
      * Invoked when an action occurs.
      */
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         String command = e.getActionCommand();
         if (PREVIOUS_COMMAND_NAME.equals(command)) {
         } else if (NEXT_COMMAND_NAME.equals(command)) {
         } else if (APPLY_COMMAND_NAME.equals(command)) {
             applyUserChanges();
         } else if (DELETE_COMMAND_NAME.equals(command)) {
-            if (segmentPane.getTableFields().areNodesSelected()) {
+            //parentController.getTree()
+            Object obj = parentController.getTree().getLastSelectedPathComponent();
+            boolean nodeSelected = false;
+            try {
+                nodeSelected = segmentPane.getTableFields().areNodesSelected();
+                if (((DefaultSCMTreeMutableTreeNode) obj).getUserObject() instanceof CSVSegmentMetaImpl) {
+                    doForceDelete();
+                    //parentController.getTree().setSelectionRow( );
+                    return;
+                }
+            } catch (Exception e1) {
+            }
+            if (nodeSelected) {
+                DefaultMutableTreeNode showSelected = null;
                 JTree jTree = parentController.getTree();
                 TreeNode rootNode = (TreeNode) jTree.getModel().getRoot();
                 ArrayList selectedNodesArrayList = segmentPane.getTableFields().getSelectedNodes();
                 int userChoice = JOptionPane.showConfirmDialog(jTree.getRootPane().getParent(), constructMessage(selectedNodesArrayList), "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (userChoice == JOptionPane.YES_OPTION) {
                     for (int i = 0; i < selectedNodesArrayList.size(); i++) {
-                        visitAllNodes(rootNode, (CSVFieldMetaImpl) selectedNodesArrayList.get(i));
+                        visitAllNodes(rootNode, (CSVFieldMetaImpl) selectedNodesArrayList.get(i), true);
                     }
-                } else {
-                        resetToPreviousValue();
+                    segmentPane.getTableFields().clearSelectedNodes();                  
+                    jTree.setSelectionPath(showPath);
+                    return;
+                } else if (userChoice == JOptionPane.NO_OPTION | userChoice == JOptionPane.CANCEL_OPTION) {
+                    //resetToPreviousValue();
+                    //parentController.getTree().setSelectionRow(0);
+                    return;
                 }
-                segmentPane.getTableFields().clearSelectedNodes();
-            } else {
-                doForceDelete();
             }
+//            else {
+//                doForceDelete();
+//            }
+            //}
         } else if (RESET_COMMAND_NAME.equals(command)) {
             resetToPreviousValue();
             if (isVisibleModeContains(SEGMENT_PROPERTY_MODE)) segmentPane.setMoveUpAndDownButtonsDisabled();
@@ -190,6 +220,7 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         } else {
             Log.logInfo(this, "I have no idea what you did here with command '" + command + "'.");
         }
+        segmentPane.getTableFields().clearSelectedNodes();
     }
 
     /**
@@ -197,14 +228,16 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
      *
      * @param treeNode
      */
-    public boolean setDisplayData(DefaultMutableTreeNode treeNode) {
+    public boolean setDisplayData(DefaultMutableTreeNode treeNode)
+    {
         if (isDataChanged()) {
             int userChoice = JOptionPane.showConfirmDialog(parentController, "Some properties of this CSV node has been changed. \nWould you like to APPLY this change before leaving this node or doing another action?", "Not Applied Change", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
             //int userChoice = JOptionPane.showConfirmDialog(parentController, "This CSV specification has been changed. Would you like to save it before moving to another one?", "Question", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (userChoice == JOptionPane.YES_OPTION) {
                 applyUserChanges();
-            } else if (userChoice == JOptionPane.CANCEL_OPTION) {//stay where user is at, abort the attemption to move to different node.
+            } else
+            if (userChoice == JOptionPane.CANCEL_OPTION) {//stay where user is at, abort the attemption to move to different node.
                 return false;
             }
         }
@@ -217,7 +250,8 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         return true;
     }
 
-    private void setDisplayData(DefaultMutableTreeNode treeNode, boolean refresh) {
+    private void setDisplayData(DefaultMutableTreeNode treeNode, boolean refresh)
+    {
         if (treeNode == null) {
 //			Log.logInfo(this, "TreeNode is null.");
             parentController.setPropertiesPaneVisible(false);
@@ -238,7 +272,8 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         }
     }
 
-    public DefaultMutableTreeNode getDisplayData(boolean withUserInputFromUI) {
+    public DefaultMutableTreeNode getDisplayData(boolean withUserInputFromUI)
+    {
         if (isVisibleModeContains(SEGMENT_PROPERTY_MODE)) {
             return segmentPane.getDisplayData(withUserInputFromUI);
         } else if (isVisibleModeContains(FIELD_PROPERTY_MODE)) {
@@ -248,7 +283,8 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         }
     }
 
-    public boolean isDataChanged() {
+    public boolean isDataChanged()
+    {
         if (parentController != null) {
             if (!parentController.isPropertiesPaneVisible()) {//if property pane is not visible, no need to report whether data is changed or not.
                 return false;
@@ -263,14 +299,16 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         }
     }
 
-    private boolean isVisibleModeContains(int mode) {
+    private boolean isVisibleModeContains(int mode)
+    {
         return (this.visibleMode & mode) == mode;
     }
 
     /**
      * Following handle some button actions
      */
-    private void applyUserChanges() {
+    private void applyUserChanges()
+    {
         boolean segmentDataFieldOrderChanged = false;
         if (isVisibleModeContains(SEGMENT_PROPERTY_MODE) && segmentPane != null) {
             segmentDataFieldOrderChanged = segmentPane.isFieldOrderChanged();
@@ -290,20 +328,24 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
 //		parentController.getDefaultNavigationAdapter().setDataChanged(false);
     }
 
-    private void resetToPreviousValue() {
+    private void resetToPreviousValue()
+    {
         DefaultMutableTreeNode targetNode = getDisplayData(false);
         setDisplayData(targetNode, true);
+
 //		parentController.getDefaultNavigationAdapter().setDataChanged(false);
     }
 
     /**
      * Reload the data.
      */
-    public void reloadData() {
+    public void reloadData()
+    {
         resetToPreviousValue();
     }
 
-    private String constructMessage(ArrayList aryList) {
+    private String constructMessage(ArrayList aryList)
+    {
         StringBuffer ret = new StringBuffer();
         ret.append("Do you want to delete the fields below?\n\n");
         for (int i = 0; i < aryList.size(); i++) {
@@ -312,7 +354,8 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
         return ret.toString();
     }
 
-    public void visitAllNodes(TreeNode node, CSVFieldMetaImpl searchObject) {
+    public void visitAllNodess(TreeNode node, CSVFieldMetaImpl searchObject)
+    {
         // node is visited exactly once
         //process(node);
         if (node.getChildCount() >= 0) {
@@ -334,49 +377,70 @@ public class CSVMetadataTreeNodePropertiesPane extends JPanel implements ActionL
                     System.out.println(e1.getMessage());
                 }
                 //targetNodes.add(n);
-                visitAllNodes(node1, searchObject);
+                visitAllNodess(node1, searchObject);
             }
         }
     }
 
-    private void doForceDelete() {
+     public void visitAllNodes(TreeNode node, CSVFieldMetaImpl searchObject, boolean ret)
+    {
+
+        // node is visited exactly once
+        //process(node);
+        if (node.getChildCount() >= 0) {
+            for (Enumeration e = node.children(); e.hasMoreElements();) {
+                DefaultMutableTreeNode node1 = (DefaultMutableTreeNode) e.nextElement();                 
+                try {
+                    // System.out.println(((SDTMMetadata) node1.getUserObject()).getXPath());
+                    CSVFieldMetaImpl csvFieldMeta = (CSVFieldMetaImpl) node1.getUserObject();
+                    if (csvFieldMeta == searchObject) {
+                        //System.out.println(csvFieldMeta);
+                        DefaultMutableTreeNode tempNode = (DefaultMutableTreeNode)node1.getParent();
+                        showPath = new TreePath(tempNode.getPath());
+                        DefaultTreeModel treeModel = (DefaultTreeModel) parentController.getTree().getModel();
+                        treeModel.removeNodeFromParent(node1);
+                    }
+                    //xPathNodeSet.put(((SDTMMetadata) node1.getUserObject()).getXPath(), node1);
+                } catch (Exception e1) {
+                    // System.out.println(((String) node1.getUserObject()).toString());
+                    // xPathNodeSet.put(((String) node1.getUserObject()).toString(), node1);
+                    System.out.println(e1.getMessage());
+                }
+                //targetNodes.add(n);
+                visitAllNodes(node1, searchObject, true);
+            }
+        }
+    }
+
+    private void doForceDelete()
+    {
         DefaultTreeModel treeModel = (DefaultTreeModel) parentController.getTree().getModel();
         TreePath[] treePathArray = parentController.getTree().getSelectionPaths();
-        // if (treePathArray.length == 0) {
-        //setSuccessfulDelete(false);
-//			return false;
-        //    }
-
-//		if(toShowDeleteWarning)
-//		{
-//            int userChoice = JOptionPane.showConfirmDialog(tree.getRootPane().getParent(),
-//					constructMessage(treePathArray), "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//			if(userChoice!=JOptionPane.YES_OPTION)
-//			{
-//				setSuccessfulDelete(false);
-//				return false;
-//			}
-//		}
         for (int i = treePathArray.length - 1; i > -1; i--) {
             MutableTreeNode treeNode = (MutableTreeNode) treePathArray[i].getLastPathComponent();
             if (treeNode != null) {
                 if (treeNode.getParent() != null) {
                     DefaultMutableTreeNode parentTreeNode = (DefaultMutableTreeNode) treeNode.getParent();
-                    int userChoice = JOptionPane.showConfirmDialog(parentController.getTree().getRootPane().getParent(), "Do you want to delete the field \"" + treeNode + "\"", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                    treeModel.removeNodeFromParent(treeNode);
+                    int userChoice = JOptionPane.showConfirmDialog(parentController.getTree().getRootPane().getParent(), "Do you want to delete  \"" + treeNode + "\"", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (userChoice == JOptionPane.YES_OPTION) {
+                        treeModel.removeNodeFromParent(treeNode);
+
+                    } else if (userChoice == JOptionPane.NO_OPTION | userChoice == JOptionPane.CANCEL_OPTION) {
+                        parentController.getTree().setSelectionPath( (TreePath)parentController.getTree().getLastSelectedPathComponent());
+                    }
                     parentController.getPropertiesPane().setDisplayData(parentTreeNode);
                 } else {
-                    treeModel.setRoot(null);
-                    //getParentPanel().setPropertiesPaneVisible(false);
+                    System.out.println(" last "+parentController.getTree().getLastSelectedPathComponent());
                 }
             }
         }
-//		setSuccessfulDelete(true);
-//		return isSuccessfulDelete();
     }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/10/16 12:06:42  jayannah
+ * HISTORY      : changed the code to reset to the previous when the user clicks no
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/10/13 03:14:07  jayannah
  * HISTORY      : changed the delete button action
  * HISTORY      :
