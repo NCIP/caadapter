@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.5 2007-10-23 14:35:49 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVSegmentMetadataPropertyPane.java,v 1.6 2007-11-05 16:53:26 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,10 +57,10 @@ import java.util.Enumeration;
 /**
  * This class defines the layout of segment metadata property pane.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-10-23 14:35:49 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-11-05 16:53:26 $
  */
 public class CSVSegmentMetadataPropertyPane extends JPanel
 {
@@ -177,7 +177,7 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 
         this.add(northPanel, BorderLayout.NORTH);
 
-		fieldOrderPane = new CSVFieldOrderReshufflePane();
+		fieldOrderPane = new CSVFieldOrderReshufflePane(parentController);
 		this.add(fieldOrderPane, BorderLayout.CENTER);
 	}
 
@@ -431,6 +431,9 @@ public class CSVSegmentMetadataPropertyPane extends JPanel
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/10/23 14:35:49  umkis
+ * HISTORY      : Fixing Error#36
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/10/13 03:07:00  jayannah
  * HISTORY      : Changes to enable delete action from the properties pane and refresh the tree as well as the property pane, And show a confirmation window for the delete
  * HISTORY      :

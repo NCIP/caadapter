@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.4 2007-11-05 15:00:26 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.5 2007-11-05 16:53:26 jayannah Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,8 +54,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-11-05 15:00:26 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-11-05 16:53:26 $
  */
 public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener, ListSelectionListener
 {
@@ -70,7 +70,7 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.4 2007-11-05 15:00:26 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVFieldOrderReshufflePane.java,v 1.5 2007-11-05 16:53:26 jayannah Exp $";
     private static final String MOVE_UP_COMMAND = "Move Up";
     private static final String MOVE_UP_COMMAND_MNEMONIC = "U";
     private static final String MOVE_DOWN_COMMAND = "Move Down";
@@ -298,7 +298,12 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
     {
         selectedIndices = new HashSet();
         //clear the selection of the jtree; so that hittng delete button dont cause headaches
-        controller_.getTree().clearSelection();
+        try {
+            controller_.getTree().clearSelection();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            System.out.println("after changes");
+        }
         ListSelectionModel lsm = (ListSelectionModel) e.getSource();
         int firstIndex = e.getFirstIndex();
         int lastIndex = e.getLastIndex();
@@ -324,6 +329,9 @@ public class CSVFieldOrderReshufflePane extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/11/05 15:00:26  jayannah
+ * HISTORY      : changes to code for for the bug fixes due to tree selected etc.,
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/10/13 03:07:00  jayannah
  * HISTORY      : Changes to enable delete action from the properties pane and refresh the tree as well as the property pane, And show a confirmation window for the delete
  * HISTORY      :
