@@ -32,8 +32,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.17 $
- *          $Date: 2007-10-16 14:10:27 $
+ *          $Revision: 1.18 $
+ *          $Date: 2007-11-05 15:42:19 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -47,7 +47,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.17 2007-10-16 14:10:27 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.18 2007-11-05 15:42:19 jayannah Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -150,7 +150,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                     //so the map file is saved successfully; now go enable the transform and dataviewer button just because a save file exists(*.map)
                     ((Database2SDTMMappingPanel) mappingPanel).get_commonBut().setEnabled(true);
                     //
-                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), file.getName() + " is saved successfully \n Do you want to open the Data Viewer using the \" " + file.getName() + " \" file", "Open Data Viewer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    n = JOptionPane.showOptionDialog(mappingPanel.getParent(), "File "+file.getName() + " was saved successfully \n Do you want to open the Data Viewer using the \" " + file.getName() + " \" file?", "Open Data Viewer", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (n == 0) {
                         //parse the mapping file
                         OpenQueryBuilder((Hashtable) getMappingsFromMapFile(file).get(0), (HashSet) getMappingsFromMapFile(file).get(1), file, out.toString());
@@ -423,6 +423,10 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2007/10/16 14:10:27  jayannah
+ * Changed the absolute path to getName during times when the pop up is displayed to the world;
+ * made changes so that the Tables cannot be mapped
+ *
  * Revision 1.16  2007/09/19 16:52:12  jayannah
  * added the animated icon to the process so that the user has the sense of a background process
  *

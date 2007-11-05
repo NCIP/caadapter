@@ -26,10 +26,11 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.19 $
- *          $Date: 2007-10-19 17:49:04 $
+ *          $Revision: 1.20 $
+ *          $Date: 2007-11-05 15:41:58 $
  */
-public class OpenSDTMMapFile extends JDialog {
+public class OpenSDTMMapFile extends JDialog
+{
     private MappingDataManager _mappingDataMananger = null;
     private HashMap _mappedData = null;
     private Database2SDTMMappingPanel _database2SDTMMappingPanel = null;
@@ -39,21 +40,26 @@ public class OpenSDTMMapFile extends JDialog {
     String _scsFileName = null, _dbParams = null;
     private Hashtable xPathNodeSet = null;
 
-    OpenSDTMMapFile() {
+    OpenSDTMMapFile()
+    {
     }
 
-    public OpenSDTMMapFile(Database2SDTMMappingPanel database2SDTMMappingPanel) {
+    public OpenSDTMMapFile(Database2SDTMMappingPanel database2SDTMMappingPanel)
+    {
         _database2SDTMMappingPanel = database2SDTMMappingPanel;
         _mappingDataMananger = database2SDTMMappingPanel.getMiddlePanel().getMappingDataManager();
     }
 
-    public OpenSDTMMapFile(final Database2SDTMMappingPanel database2SDTMMappingPanel, final String mapFile) throws Exception {
+    public OpenSDTMMapFile(final Database2SDTMMappingPanel database2SDTMMappingPanel, final String mapFile) throws Exception
+    {
         _database2SDTMMappingPanel = database2SDTMMappingPanel;
         _mappingDataMananger = database2SDTMMappingPanel.getMiddlePanel().getMappingDataManager();
         // start a thread here
         final Dialog _openMapfileWaitDialog = new Dialog(_database2SDTMMappingPanel.get_mainFrame());
-        new Thread(new Runnable() {
-            public void run() {
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
                 try {
                     getMappingInfo(mapFile);
                     database2SDTMMappingPanel.setChanged(false);
@@ -78,14 +84,16 @@ public class OpenSDTMMapFile extends JDialog {
         // the thread ends here
     }
 
-    public OpenSDTMMapFile(Database2SDTMMappingPanel database2SDTMMappingPanel, String mapFile, String xmlFile) throws Exception {
+    public OpenSDTMMapFile(Database2SDTMMappingPanel database2SDTMMappingPanel, String mapFile, String xmlFile) throws Exception
+    {
         _database2SDTMMappingPanel = database2SDTMMappingPanel;
         _xmlFile = xmlFile;
         _mappingDataMananger = database2SDTMMappingPanel.getMiddlePanel().getMappingDataManager();
         getMappingInfo(mapFile);
     }
 
-    public void getMappingInfo(String mapFileName) throws Exception {
+    public void getMappingInfo(String mapFileName) throws Exception
+    {
         /**
          * 1.Read the XML file <br>
          * 2.Obtain the source nodes and target nodes from the file<br>
@@ -108,7 +116,6 @@ public class OpenSDTMMapFile extends JDialog {
                 targetName1.getAttribute("location").toString();
                 if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
                     _scsFileName = targetName1.getAttribute("location").toString();
-
                 } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
                     _dbParams = targetName1.getAttribute("param").toString();
                 }
@@ -142,8 +149,6 @@ public class OpenSDTMMapFile extends JDialog {
                     return;
                 }
             }
-
-
             if (_scsFileName == null && !new File(_scsFileName).exists()) {
                 CaadapterFileFilter filter = new CaadapterFileFilter();
                 filter.addExtension("scs");
@@ -165,7 +170,6 @@ public class OpenSDTMMapFile extends JDialog {
                     return;
                 }
             } else {
-
             }
         }
         if (_dbParams != null) {
@@ -177,7 +181,6 @@ public class OpenSDTMMapFile extends JDialog {
                 _database2SDTMMappingPanel.getOpenTargetButton().setEnabled(true);
                 return;
             }
-
         }
         try {
             _xmlFileName = FileUtil.fileLocateOnClasspath(_xmlFileName);
@@ -256,7 +259,8 @@ public class OpenSDTMMapFile extends JDialog {
         }
     }
 
-    private void createMappingsInMiddlePanelForCSV() {
+    private void createMappingsInMiddlePanelForCSV()
+    {
         Set<String> _targetXPath = new HashSet<String>();
         Iterator it = _mappedData.keySet().iterator();
         while (it.hasNext()) {
@@ -274,7 +278,8 @@ public class OpenSDTMMapFile extends JDialog {
         }
     }
 
-    private void createMappingsInMiddlePanelForDB() {
+    private void createMappingsInMiddlePanelForDB()
+    {
         Set<String> _targetXPath = new HashSet<String>();
         Iterator it = _mappedData.keySet().iterator();
         while (it.hasNext()) {
@@ -293,13 +298,14 @@ public class OpenSDTMMapFile extends JDialog {
              ******************************************************************/
             if (resSourceNode != null && resTargetNode != null) {
                 // new DefaultMutableTreeNode()
-                _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);                
+                _mappingDataMananger.createMapping((MappableNode) resSourceNode, (MappableNode) resTargetNode);
                 _database2SDTMMappingPanel.getMappingDataManager().setMappingData(null, true);
             }
         }
     }
 
-    public void visitAllNodes(TreeNode node) {
+    public void visitAllNodes(TreeNode node)
+    {
         // node is visited exactly once
         //process(node);
         if (node.getChildCount() >= 0) {
@@ -318,7 +324,8 @@ public class OpenSDTMMapFile extends JDialog {
         }
     }
 
-    public DefaultMutableTreeNode searchNode1(String nodeStr, DefaultMutableTreeNode rootNode) {
+    public DefaultMutableTreeNode searchNode1(String nodeStr, DefaultMutableTreeNode rootNode)
+    {
         DefaultMutableTreeNode node = null;
         java.util.Enumeration enum1 = rootNode.depthFirstEnumeration();
         while (enum1.hasMoreElements()) {
@@ -332,7 +339,8 @@ public class OpenSDTMMapFile extends JDialog {
         return null;
     }
 
-    public DefaultMutableTreeNode searchNode2(String nodeStr, ArrayList checkArray) {
+    public DefaultMutableTreeNode searchNode2(String nodeStr, ArrayList checkArray)
+    {
         DefaultMutableTreeNode node = null;
         for (int i = 0; i < checkArray.size(); i++) {
             node = (DefaultMutableTreeNode) checkArray.get(i);
@@ -345,7 +353,8 @@ public class OpenSDTMMapFile extends JDialog {
         return null;
     }
 
-    public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode) {
+    public DefaultMutableTreeNode searchNode2(String nodeStr, DefaultMutableTreeNode rootNode)
+    {
         DefaultMutableTreeNode node = null;
         java.util.Enumeration enum1 = rootNode.depthFirstEnumeration();
         while (enum1.hasMoreElements()) {
@@ -357,7 +366,8 @@ public class OpenSDTMMapFile extends JDialog {
         return null;
     }
 
-    public String processSourceNode(DefaultMutableTreeNode node) {
+    public String processSourceNode(DefaultMutableTreeNode node)
+    {
         StringBuffer _tmpBuf = new StringBuffer();
         ArrayList<String> _tmp = new ArrayList<String>();
         _tmp.add(node.toString());
@@ -380,7 +390,8 @@ public class OpenSDTMMapFile extends JDialog {
         return _tmpBuf.toString();
     }
 
-    public String processTargetNode(DefaultMutableTreeNode node) {
+    public String processTargetNode(DefaultMutableTreeNode node)
+    {
         SDTMMetadata s = null;
         try {
             s = (SDTMMetadata) node.getUserObject();
@@ -392,18 +403,21 @@ public class OpenSDTMMapFile extends JDialog {
         return s.getXPath();
     }
 
-    public String processTargetNode1(DefaultMutableTreeNode node) {
+    public String processTargetNode1(DefaultMutableTreeNode node)
+    {
         SDTMMetadata s = (SDTMMetadata) node.getUserObject();
         return s.getXPath();
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception
+    {
         OpenSDTMMapFile n = new OpenSDTMMapFile();
         n.getMappingInfo("C:\\Documents and Settings\\Hjayanna\\My Documents\\SDTM.stuff\\map.files\\10302.map");
         System.out.print("The values are" + n._mappedData);
     }
 
-    private String getAltDefineXMLFile(String _xmlFileName) {
+    private String getAltDefineXMLFile(String _xmlFileName)
+    {
         CaadapterFileFilter filter = new CaadapterFileFilter();
         filter.addExtension("xml");
         String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
@@ -423,12 +437,13 @@ public class OpenSDTMMapFile extends JDialog {
         } else {
             return null;
         }
-
     }
-
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2007/10/19 17:49:04  jayannah
+ * Changes to add link selection highlighter for the map file
+ *
  * Revision 1.18  2007/10/18 19:13:39  jayannah
  * Changes to highlist the target node when the source is selected and vice versa
  *

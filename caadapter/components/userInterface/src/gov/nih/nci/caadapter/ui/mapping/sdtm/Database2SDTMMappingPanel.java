@@ -60,12 +60,12 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.23 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.24 $
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
 {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.23 2007-10-19 17:49:04 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.24 2007-11-05 15:41:58 jayannah Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -335,41 +335,58 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
                 }
             } else if (OPENDB.equalsIgnoreCase(command)) {
                 isDataBase = true;
-                final Dialog _queryWaitDialog = new Dialog(_mainFrame);
-                new Thread(new Runnable()
-                {
-                    public void run()
-                    {
-                        try {
-                            connectDB = true;
-                            openSCSButton.setEnabled(false);
-                            OpenDatabaseConnectionHelper _openDatabaseConnectionHelper = new OpenDatabaseConnectionHelper(_mainFrame);
-                            if (!_openDatabaseConnectionHelper.isCancelled()) {
-                                connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
-                                processOpenSourceTree(null, true, true);
-                                _dbCon.setEnabled(connectException);
-                            } else {
-                                _dbCon.setEnabled(true);
-                                openSCSButton.setEnabled(true);
+                //new changes begin
+                try {
+                    connectDB = true;
+                    openSCSButton.setEnabled(false);
+                    OpenDatabaseConnectionHelper _openDatabaseConnectionHelper = new OpenDatabaseConnectionHelper(_mainFrame);
+                    if (!_openDatabaseConnectionHelper.isCancelled()) {
+                        connectionParameters = _openDatabaseConnectionHelper.getDatabaseConnectionInfo();
+                        final Dialog _queryWaitDialog = new Dialog(_mainFrame);
+                        new Thread(new Runnable()
+                        {
+                            public void run()
+                            {
+                                try {
+                                    processOpenSourceTree(null, true, true);
+                                    _queryWaitDialog.dispose();
+                                } catch (Exception e1) {
+                                    _queryWaitDialog.dispose();
+                                    JOptionPane.showMessageDialog(_mainFrame, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                                    _dbCon.setEnabled(true);
+                                }
                             }
-                            _queryWaitDialog.dispose();
-                        } catch (Exception e) {
-                            _queryWaitDialog.dispose();
-                            JOptionPane.showMessageDialog(_mainFrame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                        }
+                        }).start();
+                        _queryWaitDialog.setTitle("Connection in Progress");
+                        _queryWaitDialog.setSize(350, 100);
+                        _queryWaitDialog.setLocationRelativeTo(null);
+                        _queryWaitDialog.setLayout(new BorderLayout());
+                        LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
+                        JPanel _waitLabel = new JPanel();
+                        _waitLabel.setBorder(lineBorder);
+                        _waitLabel.add(new JLabel("      Connecting to database, Please wait ..."));
+                        _queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
+                        _queryWaitDialog.add(_waitLabel, BorderLayout.CENTER);
+                        _queryWaitDialog.setVisible(true);
+                        openSCSButton.setEnabled(connectException);
+                        _dbCon.setEnabled(connectException);
+                    } else {
+                        _dbCon.setEnabled(true);
+                        openSCSButton.setEnabled(true);
                     }
-                }).start();
-                _queryWaitDialog.setTitle("Connection in Progress");
-                _queryWaitDialog.setSize(350, 100);
-                _queryWaitDialog.setLocationRelativeTo(null);
-                _queryWaitDialog.setLayout(new BorderLayout());
-                LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
-                JPanel _waitLabel = new JPanel();
-                _waitLabel.setBorder(lineBorder);
-                _waitLabel.add(new JLabel("      Connecting to database, Please wait ..."));
-                _queryWaitDialog.add(new JLabel("                       "), BorderLayout.NORTH);
-                _queryWaitDialog.add(_waitLabel, BorderLayout.CENTER);
-                _queryWaitDialog.setVisible(true);
+                } catch (Exception ew) {
+                    JOptionPane.showMessageDialog(_mainFrame, ew.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // new changes end
+
+//                final Dialog _queryWaitDialog = new Dialog(_mainFrame);
+//                new Thread(new Runnable()
+//                {
+//                    public void run()
+//                    {
+//                    }
+//                }).start();
                 _dbCon.setEnabled(false);
             } else if (command.equalsIgnoreCase("Transform")) {
                 try {
@@ -476,11 +493,18 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
     {
         ArrayList ary = null;
         try {
+
+
             ary = DBConnector.getSchemaCollection(connectionParameters);
+
+
+
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(_mainFrame, "         " + e.getMessage().toString() + "                 ", "Could not connect to Database : " + connectionParameters.get("URL").toString(), JOptionPane.ERROR_MESSAGE);
             connectException = true;
             openSCSButton.setEnabled(true);
+            _dbCon.setEnabled(true);
         }
         DefaultMutableTreeNode pNode = null;
         DefaultSourceTreeNode tableNode = null;
@@ -560,7 +584,7 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
         //instantiate the "DropTransferHandler"
         tTree.setCellRenderer(new TargetRenderer());
         tTree.addTreeSelectionListener(middlePanel.getGraphController().getHighLighter());
-        ToolTipManager.sharedInstance().registerComponent(tTree);    
+        ToolTipManager.sharedInstance().registerComponent(tTree);
         sdtmTargetTreeDropTransferHandler = new SdtmDropTransferHandler(tTree, getMappingDataManager(), DnDConstants.ACTION_LINK, sdtmMappingGenerator);
     }
 
@@ -877,6 +901,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2007/10/19 17:49:04  jayannah
+ * Changes to add link selection highlighter for the map file
+ *
  * Revision 1.22  2007/10/18 20:16:22  jayannah
  * -Added a new method in MappingMiddlePanel to get the reference to MiddlePanelJGraphController
  * -Added a new method in MiddlePanelJGraphController to get the reference to linkselectionhighlighter

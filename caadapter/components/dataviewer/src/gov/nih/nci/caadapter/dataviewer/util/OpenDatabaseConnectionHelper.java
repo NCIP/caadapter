@@ -25,8 +25,8 @@ import java.util.Iterator;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.14 $
- *          $Date: 2007-10-17 20:03:37 $
+ *          $Revision: 1.15 $
+ *          $Date: 2007-11-05 15:40:23 $
  */
 public class OpenDatabaseConnectionHelper implements TreeSelectionListener, WindowListener, KeyListener {
     private JTree tree = null;
@@ -75,7 +75,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         _profileConnections = new Hashtable();
         dialog = new JDialog(owner);
         dialog.setTitle("Enter Connection Parameters");
-        dialog.setUndecorated(true);
+        //dialog.setUndecorated(true);
         Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
         dialog.setSize(700, 330);
         dialog.setLocationRelativeTo(null);
@@ -144,14 +144,14 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         p1.setBorder(title);
         superpanel.add(p1);
         LineBorder lineBorder = (LineBorder) BorderFactory.createLineBorder(Color.black);
-        JLabel label01 = new JLabel("Enter the Connection Parameters");
-        label01.setBorder(lineBorder);
-        label01.setOpaque(true);
+        //JLabel label01 = new JLabel("Enter the Connection Parameters");
+        //label01.setBorder(lineBorder);
+        //label01.setOpaque(true);
         Color blue = new Color(0, 0, 153);
-        label01.setBackground(blue);
-        label01.setFont(new Font("Arial", Font.BOLD, 13));
-        label01.setForeground(Color.WHITE);
-        label01.setHorizontalAlignment(SwingConstants.CENTER);
+        //label01.setBackground(blue);
+        //label01.setFont(new Font("Arial", Font.BOLD, 13));
+        //label01.setForeground(Color.WHITE);
+        //label01.setHorizontalAlignment(SwingConstants.CENTER);
         JScrollPane treeView = new JScrollPane(createTrees());
         TitledBorder title1 = BorderFactory.createTitledBorder("Connection Profiles");
         treeView.setBorder(title1);
@@ -163,7 +163,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         splitPane.setDividerLocation(225);
         //
         superpanel.setLayout(new BorderLayout());
-        superpanel.add(label01, BorderLayout.NORTH);
+        //superpanel.add(label01, BorderLayout.NORTH);
         superpanel.add(splitPane, BorderLayout.CENTER);
         bottomPanel.add(statpan, BorderLayout.CENTER);
         bottomPanel.add(_butPan, BorderLayout.SOUTH);
@@ -495,6 +495,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         JPanel conPan = new JPanel();
         conPan.setLayout(new BorderLayout());
         if (title.equalsIgnoreCase("New Profile")) {
+            conDialog.setTitle("Add New Profile");
             profile.setText("");
             host.setText("");
             //three.setText(""); set the conbox here
@@ -516,7 +517,7 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         //
         JPanel conInfo = new JPanel();
         conInfo.setLayout(new GridLayout(5, 2));
-        conInfo.add(new JLabel("Enter the Profile Name: "));
+        conInfo.add(new JLabel("Profile name: "));
         if (title.equalsIgnoreCase("Edit Profile")) {
             profile.setEditable(false);
         } else {
@@ -524,10 +525,10 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
         }
         conInfo.add(profile);
         //
-        conInfo.add(new JLabel("Enter the Host URL <server:1521:SID>:"));
+        conInfo.add(new JLabel("Host URL <server:1521:SID>:"));
         conInfo.add(host);
         //
-        conInfo.add(new JLabel("Enter the Database driver: "));
+        conInfo.add(new JLabel("Database driver: "));
         if (title.equalsIgnoreCase("New Profile")) {
             conInfo.add(driver);
             //driver.setSelectedIndex(0);
@@ -545,13 +546,13 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
             }
         });
         //
-        conInfo.add(new JLabel("Enter your User ID: "));
+        conInfo.add(new JLabel("User ID: "));
         conInfo.add(four);
         //
         //conInfo.add(new JLabel("Enter your Password:"));
         //conInfo.add(five);
         //
-        conInfo.add(new JLabel("Enter your Schema"));
+        conInfo.add(new JLabel("Schema"));
         conInfo.add(six);
         //
         JPanel butInfo = new JPanel();
@@ -705,6 +706,10 @@ public class OpenDatabaseConnectionHelper implements TreeSelectionListener, Wind
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2007/10/17 20:03:37  jayannah
+ * -Changed the behavior of the jtree. enables a create new profile action upon right clicking the root
+ * -In the event of the file not found a pop box shows up to collect the values
+ *
  * Revision 1.13  2007/10/17 15:55:12  jayannah
  * set the fields to blank when a profile is deleted
  *

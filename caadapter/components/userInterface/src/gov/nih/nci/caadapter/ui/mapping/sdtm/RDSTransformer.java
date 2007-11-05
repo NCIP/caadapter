@@ -24,8 +24,8 @@ import java.util.*;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-10-15 21:01:14 $
+ *          $Revision: 1.10 $
+ *          $Date: 2007-11-05 15:41:58 $
  */
 public class RDSTransformer {
     String directoryLocation = null;
@@ -72,7 +72,7 @@ public class RDSTransformer {
         hashTableTransform = csvMapFileReader.getHashTableTransform();
         String scsFileName = RDSHelper.getSCSFileFromMapFile(mapFile);
         prepareCSVDataFromCSVDataFile(_csvFileName, scsFileName);
-        JOptionPane.showMessageDialog(callingFrame, "Transformation was successful, TXT files were created in  \""+directoryLocation+"\" directory", "Transfomation...", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(callingFrame, "Transformation was successful, TXT files were created in  \""+directoryLocation+"\" directory.", "Transfomation...", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void prepareCSVDataFromCSVDataFile(String _csvFileName, String _scsFileName) throws ApplicationException {
@@ -346,6 +346,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/10/15 21:01:14  jayannah
+ * Changed the wat reading files to accomodate the working directory path
+ *
  * Revision 1.8  2007/10/15 19:49:32  jayannah
  * Added a public API for the transformation of the CSV and DB in order to be compliant with the caCore.
  *

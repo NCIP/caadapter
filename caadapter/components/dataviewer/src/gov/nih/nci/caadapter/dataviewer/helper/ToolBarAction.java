@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: jayannah $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.8 $
- *          $Date: 2007-09-13 14:26:28 $
+ *          $Revision: 1.9 $
+ *          $Date: 2007-11-05 15:40:06 $
  */
 public class ToolBarAction implements ActionListener {
     MainDataViewerFrame _mD;
@@ -49,8 +49,8 @@ public class ToolBarAction implements ActionListener {
                 _mD.getQbAddButtons().getSaveButton().setEnabled(true);
             }
         } else if (cmd.equals("exitwithoutsave")) {
-            Object[] options = {"OK", "Cancel"};
-            int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue.?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+            Object[] options = {"Yes", "No"};
+            int n = JOptionPane.showOptionDialog(_mD.get_jf(), "Any changes made will be discarded, Continue?", "Exit without Saving", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
             if (n == 0) {
                   _mD.get_jf().dispose();
             }
@@ -112,7 +112,7 @@ public class ToolBarAction implements ActionListener {
                 }
                 out1.append("\n</mapping>");
                 out1.close();
-                JOptionPane.showMessageDialog(_mD.get_jf(), "The file \"" + _mD.getSaveFile().getName() + "\" is saved successfully with the mapping and generated SQL information", "Mapping file is saved", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(_mD.get_jf(), "File \"" + _mD.getSaveFile().getName() + "\" was saved successfully with the mapping and generated SQL information.", "Mapping file is saved", JOptionPane.INFORMATION_MESSAGE);
                 _mD.getDialog().dispose();
                 //_mD.getTransformBut().setEnabled(true);
             } catch (IOException ee) {
@@ -388,6 +388,9 @@ public class ToolBarAction implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.8  2007/09/13 14:26:28  jayannah
+ * handled the user choice if no is chosen
+ *
  * Revision 1.7  2007/09/13 14:11:15  jayannah
  * Added a comment to the map file for the user not to change the sql statements
  *
