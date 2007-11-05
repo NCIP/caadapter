@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CsvCache.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CsvCache.java,v 1.2 2007-11-05 17:44:15 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,41 +39,45 @@ package gov.nih.nci.caadapter.common.csv;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
-import com.Ostermiller.util.CSVParser;
+//import com.Ostermiller.util.CSVParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 public class CsvCache {
 
-    private static final HashMap cache = new HashMap<String,String[][]>();
-    private static final HashMap timestamp = new HashMap<String,Long>();
+    private static final HashMap<String, String[][]> cache = new HashMap<String,String[][]>();
+    private static final HashMap<String, Long> timestamp = new HashMap<String,Long>();
 
     public static synchronized String[][] getCsv(String filename) throws FileNotFoundException, IOException {
         String[][] returnArray = (String[][]) cache.get(filename);
         File f = new File(filename);
-
         long lastmodified = f.lastModified();
 
         // if the file is in the cache && the most current
-        if (returnArray != null && lastmodified == (Long)timestamp.get(filename)) {
+        if (returnArray != null && lastmodified == (Long)timestamp.get(filename)) 
+        {
             // do nothing.
-        }else{
+        	return returnArray;
+        }
+        else
+        {
             // otherwise, open it up and cache it.
             cache.remove(filename);
             timestamp.remove(filename);
-            FileReader fr = new FileReader(f);
-            CSVParser csvp = new CSVParser(fr);
-            returnArray = csvp.getAllValues();
-
+            returnArray = getCsvFromInputStream(new FileInputStream(f));
             cache.put(filename, returnArray);
             timestamp.put(filename, new Long(lastmodified));
         }
@@ -81,13 +85,52 @@ public class CsvCache {
     }
 
     public static synchronized String[][] getCsvFromString(String dataString) throws FileNotFoundException, IOException {
-        ByteArrayInputStream csvInputStream = new ByteArrayInputStream(dataString.getBytes()); 
-        CSVParser csvp = new CSVParser(csvInputStream);
-        return csvp.getAllValues();
+        return getCsvFromInputStream(new ByteArrayInputStream(dataString.getBytes()));
     }
+    
+    /**
+     * Read data from a CSV stream and convert it into a String array of Segments and Fields
+     * @param dataStream
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static synchronized String[][] getCsvFromInputStream(InputStream dataStream) throws FileNotFoundException, IOException {
-        CSVParser csvp = new CSVParser(dataStream);
-        return csvp.getAllValues();
+       LineNumberReader lRd=new LineNumberReader(new InputStreamReader(dataStream));
+       
+       ArrayList<String[]> rtnList=new ArrayList<String[]>();
+       String lValue=lRd.readLine();
+       while (lValue!=null&&!lValue.trim().equals(""))
+       {
+    	   rtnList.add(convertCsvLineToStringAarry(lValue));
+    	   lValue=lRd.readLine();
+       }
+       dataStream.close();
+ 
+//       CSVParser csvp = new CSVParser(dataStream);
+//       csvp.getAllValues();
+
+       String[][] rtnArray=new String[rtnList.size()][];
+       for (int i=0;i<rtnList.size();i++)
+    	   rtnArray[i]=rtnList.get(i);
+       return  rtnArray;
+    }
+    
+    /**
+     * Convert a line into a string array
+     * @param lineData
+     * @return
+     */
+    private static String[] convertCsvLineToStringAarry(String lineData)
+    {
+    	StringTokenizer st=new StringTokenizer(lineData,",");
+    	String[] rtnArray=new String[st.countTokens()];
+    	int i=0;
+    	while (st.hasMoreTokens())
+    	{	rtnArray[i]=st.nextToken();
+    		i++;
+    	}
+    	return rtnArray;
     }
 }
 
