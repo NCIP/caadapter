@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CsvCache.java,v 1.2 2007-11-05 17:44:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CsvCache.java,v 1.3 2007-11-06 16:31:26 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,7 +39,7 @@ package gov.nih.nci.caadapter.common.csv;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 //import com.Ostermiller.util.CSVParser;
@@ -102,7 +102,8 @@ public class CsvCache {
        String lValue=lRd.readLine();
        while (lValue!=null&&!lValue.trim().equals(""))
        {
-    	   rtnList.add(convertCsvLineToStringAarry(lValue));
+    	   CsvDataStringParser cParser=new CsvDataStringParser(lValue);
+    	   rtnList.add(cParser.getDataFields());
     	   lValue=lRd.readLine();
        }
        dataStream.close();
@@ -115,23 +116,7 @@ public class CsvCache {
     	   rtnArray[i]=rtnList.get(i);
        return  rtnArray;
     }
-    
-    /**
-     * Convert a line into a string array
-     * @param lineData
-     * @return
-     */
-    private static String[] convertCsvLineToStringAarry(String lineData)
-    {
-    	StringTokenizer st=new StringTokenizer(lineData,",");
-    	String[] rtnArray=new String[st.countTokens()];
-    	int i=0;
-    	while (st.hasMoreTokens())
-    	{	rtnArray[i]=st.nextToken();
-    		i++;
-    	}
-    	return rtnArray;
-    }
+
 }
 
 
