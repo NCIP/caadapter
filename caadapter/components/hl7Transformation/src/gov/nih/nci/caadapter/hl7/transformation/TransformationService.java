@@ -32,15 +32,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.14 $
- * @date $Date: 2007-09-13 14:01:19 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.15 $
+ * @date $Date: 2007-11-06 16:49:39 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.14 2007-09-13 14:01:19 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.15 2007-11-06 16:49:39 umkis Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -230,7 +230,7 @@ public class TransformationService
          */
         if (!csvDataValidatorResults.isValid())
         {
-            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file!"});
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file! : Please check and validate this csv file against the scs file."});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         	System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
             return null;
@@ -380,6 +380,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2007/09/13 14:01:19  wuye
+ * HISTORY      : Remove message print out
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2007/09/11 17:57:25  wuye
  * HISTORY      : Added error message when map or csv file is wrong
  * HISTORY      :
