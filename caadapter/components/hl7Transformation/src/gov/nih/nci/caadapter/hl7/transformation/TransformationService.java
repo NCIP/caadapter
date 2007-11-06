@@ -33,14 +33,14 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.15 $
- * @date $Date: 2007-11-06 16:49:39 $
+ * @version $Revision: 1.16 $
+ * @date $Date: 2007-11-06 16:50:32 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.15 2007-11-06 16:49:39 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.16 2007-11-06 16:50:32 umkis Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -118,8 +118,8 @@ public class TransformationService
 	 * This method will create a transformer that loads csv data from an Java File object  
 	 * and transforms into HL7 v3 messages
 	 * 
-	 * @param mapfilename the Java mapping file object
-	 * @param csvStream the csv file object
+	 * @param mapfile the Java mapping file object
+	 * @param csvfile the csv file object
 	 */
     public TransformationService(File mapfile, File csvfile)
     {
@@ -380,6 +380,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2007/11/06 16:49:39  umkis
+ * HISTORY      : Change the error message => Invalid CSV file! : Please check and validate this csv file against the scs file.
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2007/09/13 14:01:19  wuye
  * HISTORY      : Remove message print out
  * HISTORY      :
