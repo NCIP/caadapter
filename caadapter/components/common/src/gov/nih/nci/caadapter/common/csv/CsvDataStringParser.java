@@ -43,18 +43,20 @@ public class CsvDataStringParser {
 				&&!USER_DELIMITER.trim().equals(""))
 		{
 			//parse the content with user's delimiter
-			return parseStringToAarryWithDelimiter(contentData, USER_DELIMITER, false);
+			return contentData.split(USER_DELIMITER);//parseStringToAarryWithDelimiter(contentData, USER_DELIMITER, false);
 		}
 		else if (contentData.indexOf(DOUBLE_QUOTE_DELIMITER)<0)
 		{
 			//parse the content with the DEFAULT delimiter
-			return parseStringToAarryWithDelimiter(contentData, DEFAULT_DELIMITER, false);
+			return contentData.split(DEFAULT_DELIMITER);//parseStringToAarryWithDelimiter(contentData, DEFAULT_DELIMITER, false);
 		}
 		
 		ArrayList<String> fldList=new ArrayList<String>();
 		//parse the String containing one or more DOUBLE_QUOTE_DELIMITER
 		String [] preRtnData=parseStringToAarryWithDelimiter(contentData,DOUBLE_QUOTE_DELIMITER, true);
 		boolean isInField=false;
+		boolean isAfterDoubleQuote=false;
+		boolean isDoubleQuoteEmpty=false;
 		for(int i=0;i<preRtnData.length;i++)
 		{
 			String onePiece=preRtnData[i].trim();
@@ -62,22 +64,51 @@ public class CsvDataStringParser {
 			{
 				//start or end a field delimitted with DOUBLE_QUOTE_DELIMITER
 				if (isInField)
+				{
 					isInField=false;
+					isAfterDoubleQuote=true;
+					isDoubleQuoteEmpty=true;
+				}
 				else
-					isInField=true;		
+				{
+					isInField=true;	
+					isAfterDoubleQuote=false;
+					//add an empty field before close the double_quote
+					if(isDoubleQuoteEmpty)
+					{
+						fldList.add("");
+						isDoubleQuoteEmpty=false;
+					}
+				}
 			}
 			else
 			{
 				if (isInField)
+				{
 					fldList.add(onePiece); //the whole content is one field
+					//turn off the double_quote flag since NON-NULL data is found
+					isDoubleQuoteEmpty=false;
+				}
 				else
 				{
 					//this piece of data is out of DOUBLE_QUOTE_DELIMITER,parse it with default delimiter
-					String [] pieceData=parseStringToAarryWithDelimiter(onePiece, DEFAULT_DELIMITER, false);
+//					String [] pieceData=parseStringToAarryWithDelimiter(onePiece, DEFAULT_DELIMITER, false);
+					String realData=onePiece;
+					if (isAfterDoubleQuote)
+					{
+						//remove the first ","
+						if (onePiece.startsWith(DEFAULT_DELIMITER))
+							realData=onePiece.substring(1);
+					}
+				
+					String [] pieceData=realData.split(DEFAULT_DELIMITER);
 					if (pieceData.length==0)
-						continue;
-					for (int j=0;j<pieceData.length;j++)
-						 fldList.add(pieceData[j]);
+						fldList.add(onePiece);
+					else
+					{
+						for (int j=0;j<pieceData.length;j++)
+						fldList.add(pieceData[j]);
+					}
 				}
 			}
 		}
