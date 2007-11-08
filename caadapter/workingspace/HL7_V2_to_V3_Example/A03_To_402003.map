@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping version="1.2">
    <components>
-      <component kind="scs" location="ADT_A03.scs" type="source"/>
-      <component kind="h3s" location="PRPA_MT402003.h3s" type="target"/>
+      <component kind="scs" location="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\ADT_A03.scs" type="source"/>
+      <component kind="h3s" location="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\PRPA_MT402003.h3s" type="target"/>
       <component group="constant" kind="core" name="constant" type="function" id="0">
          <data type="String" value="completed"/>
       </component>
@@ -15,34 +15,34 @@
       <component group="constant" kind="core" name="constant" type="function" id="3">
          <data type="String" value="IMP"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="6">
+      <component group="constant" kind="core" name="constant" type="function" id="4">
          <data type="String" value="2.16.840.1.113883.11.16228"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="7">
+      <component group="constant" kind="core" name="constant" type="function" id="5">
          <data type="String" value="2.16.840.1.113883.11.19457"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="9">
+      <component group="constant" kind="core" name="constant" type="function" id="6">
          <data type="String" value="ObservationDiagnosisTypes"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="5">
+      <component group="constant" kind="core" name="constant" type="function" id="7">
          <data type="String" value="2.16.840.1.113883.12.112"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="12">
+      <component group="constant" kind="core" name="constant" type="function" id="8">
          <data type="String" value="false"/>
       </component>
-      <component group="vocabulary" kind="core" name="translateValue" type="function" id="11">
+      <component group="vocabulary" kind="core" name="translateValue" type="function" id="9">
          <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@AdmissionType"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="13">
+      <component group="constant" kind="core" name="constant" type="function" id="10">
          <data type="String" value="Discharge disposition"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="4">
+      <component group="constant" kind="core" name="constant" type="function" id="11">
          <data type="String" value="x_EncounterAdmissionUrgency"/>
       </component>
-      <component group="vocabulary" kind="core" name="translateValue" type="function" id="10">
+      <component group="vocabulary" kind="core" name="translateValue" type="function" id="12">
          <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiagnosisType"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="8">
+      <component group="constant" kind="core" name="constant" type="function" id="13">
          <data type="String" value="completed"/>
       </component>
       <component group="constant" kind="core" name="constant" type="function" id="14">
@@ -51,34 +51,34 @@
       <component group="constant" kind="core" name="constant" type="function" id="15">
          <data type="String" value="123-321"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="22">
+      <component group="constant" kind="core" name="constant" type="function" id="16">
          <data type="String" value="2.16.840.1.113883.13.1637"/>
       </component>
-      <component group="vocabulary" kind="core" name="translateValue" type="function" id="16">
+      <component group="vocabulary" kind="core" name="translateValue" type="function" id="17">
          <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemCodeName"/>
-      </component>
-      <component group="vocabulary" kind="core" name="translateValue" type="function" id="24">
-         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
       </component>
       <component group="vocabulary" kind="core" name="translateValue" type="function" id="18">
+         <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
+      </component>
+      <component group="vocabulary" kind="core" name="translateValue" type="function" id="19">
          <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemCodeName"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="23">
+      <component group="constant" kind="core" name="constant" type="function" id="20">
          <data type="String" value="2.16.840.1.113883.13.1546"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="25">
+      <component group="constant" kind="core" name="constant" type="function" id="21">
          <data type="String" value="DISDX"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="19">
+      <component group="constant" kind="core" name="constant" type="function" id="22">
          <data type="String" value="2.16.840.1.113883.13.1654"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="21">
+      <component group="constant" kind="core" name="constant" type="function" id="23">
          <data type="String" value="completed"/>
       </component>
-      <component group="constant" kind="core" name="constant" type="function" id="17">
+      <component group="constant" kind="core" name="constant" type="function" id="24">
          <data type="String" value="2.16.840.1.113883.11.16228"/>
       </component>
-      <component group="vocabulary" kind="core" name="translateValue" type="function" id="20">
+      <component group="vocabulary" kind="core" name="translateValue" type="function" id="25">
          <data type="VOM_File_Local" value="{caAdapter_Home}\workingspace\HL7_V2_to_V3_Example\A03_TO_402003.vom?@DiseaseCodingSystemOID"/>
       </component>
    </components>
@@ -157,7 +157,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.11.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.9.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.priorityCode00.code"/>
@@ -168,12 +168,12 @@
             <linkpointer kind="scs" xmlPath="ADT_A03.PV1.PV14_IS_ADMISSION_TYPE.Admission_Type"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.11.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.9.inputs.0"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.7.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.5.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.priorityCode00.codeSystem"/>
@@ -181,7 +181,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.4.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.11.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.priorityCode00.codeSystemName"/>
@@ -197,7 +197,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.5.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.7.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.dischargeDispositionCode.codeSystem"/>
@@ -205,7 +205,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.13.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.10.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.dischargeDispositionCode.codeSystemName"/>
@@ -325,7 +325,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.10.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.12.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.code.code"/>
@@ -336,12 +336,12 @@
             <linkpointer kind="scs" xmlPath="ADT_A03.DG1.DG16_IS_DIAGNOSIS_TYPE.Diagnosis_Type"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.10.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.12.inputs.0"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.6.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.4.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.code.codeSystem"/>
@@ -349,7 +349,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.9.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.6.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.code.codeSystemName"/>
@@ -357,7 +357,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.12.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.8.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.negationInd"/>
@@ -365,7 +365,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.8.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.13.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.statusCode.code"/>
@@ -397,7 +397,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.24.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.18.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.value.codeSystem"/>
@@ -408,12 +408,12 @@
             <linkpointer kind="scs" xmlPath="ADT_A03.DG1.DG13_CE_DIAGNOSIS_CODE_DG1.C3_IS_name_of_coding_system"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.24.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.18.inputs.0"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.16.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.17.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.value.codeSystemName"/>
@@ -424,12 +424,12 @@
             <linkpointer kind="scs" xmlPath="ADT_A03.DG1.DG13_CE_DIAGNOSIS_CODE_DG1.C3_IS_name_of_coding_system"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.16.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.17.inputs.0"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.19.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.22.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100.observationDx.author00.assignedEntity.id00.root"/>
@@ -453,7 +453,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.25.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.21.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101.observationDx.code.code"/>
@@ -461,7 +461,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.17.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.24.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101.observationDx.code.codeSystem"/>
@@ -469,7 +469,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.21.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.23.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101.observationDx.statusCode.code"/>
@@ -493,7 +493,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.20.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.25.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101.observationDx.value.codeSystem"/>
@@ -504,12 +504,12 @@
             <linkpointer kind="scs" xmlPath="ADT_A03.PR1.PR13_CE_PROCEDURE_CODE.C3_IS_name_of_coding_system"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.20.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.25.inputs.0"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.18.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.19.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101.observationDx.value.codeSystemName"/>
@@ -520,12 +520,12 @@
             <linkpointer kind="scs" xmlPath="ADT_A03.PR1.PR13_CE_PROCEDURE_CODE.C3_IS_name_of_coding_system"/>
          </source>
          <target>
-            <linkpointer kind="function" xmlPath="function.18.inputs.0"/>
+            <linkpointer kind="function" xmlPath="function.19.inputs.0"/>
          </target>
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.22.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.16.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101.observationDx.author00.assignedEntity.id00.root"/>
@@ -549,7 +549,7 @@
       </link>
       <link>
          <source>
-            <linkpointer kind="function" xmlPath="function.23.outputs.0"/>
+            <linkpointer kind="function" xmlPath="function.20.outputs.0"/>
          </source>
          <target>
             <linkpointer kind="h3s" xmlPath="EncounterEvent.attender00.id00.root"/>
@@ -611,6 +611,22 @@
             <linkpointer kind="h3s" xmlPath="EncounterEvent.attender00.assignedPerson00.assignedPerson.name00.prefix.inlineText"/>
          </target>
       </link>
+      <link>
+         <source>
+            <linkpointer kind="scs" xmlPath="ADT_A03.DG1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation100"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="scs" xmlPath="ADT_A03.PR1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.pertinentInformation101"/>
+         </target>
+      </link>
    </links>
    <views>
       <view component-id="source.scs.0" height="0" width="0" x="0" y="0"/>
@@ -619,27 +635,27 @@
       <view component-id="function.1" height="43" width="109" x="198" y="66"/>
       <view component-id="function.2" height="43" width="109" x="198" y="18"/>
       <view component-id="function.3" height="43" width="109" x="204" y="120"/>
-      <view component-id="function.6" height="43" width="109" x="66" y="162"/>
-      <view component-id="function.7" height="43" width="109" x="204" y="288"/>
-      <view component-id="function.9" height="43" width="109" x="66" y="216"/>
-      <view component-id="function.5" height="43" width="109" x="60" y="12"/>
-      <view component-id="function.12" height="43" width="109" x="66" y="264"/>
-      <view component-id="function.11" height="43" width="109" x="198" y="234"/>
-      <view component-id="function.13" height="43" width="109" x="60" y="60"/>
-      <view component-id="function.4" height="43" width="109" x="204" y="336"/>
-      <view component-id="function.10" height="43" width="109" x="66" y="114"/>
-      <view component-id="function.8" height="43" width="109" x="66" y="312"/>
+      <view component-id="function.4" height="43" width="109" x="66" y="162"/>
+      <view component-id="function.5" height="43" width="109" x="204" y="288"/>
+      <view component-id="function.6" height="43" width="109" x="66" y="216"/>
+      <view component-id="function.7" height="43" width="109" x="60" y="12"/>
+      <view component-id="function.8" height="43" width="109" x="66" y="264"/>
+      <view component-id="function.9" height="43" width="109" x="198" y="234"/>
+      <view component-id="function.10" height="43" width="109" x="60" y="60"/>
+      <view component-id="function.11" height="43" width="109" x="204" y="336"/>
+      <view component-id="function.12" height="43" width="109" x="66" y="114"/>
+      <view component-id="function.13" height="43" width="109" x="66" y="312"/>
       <view component-id="function.14" height="43" width="109" x="204" y="642"/>
       <view component-id="function.15" height="43" width="109" x="72" y="606"/>
-      <view component-id="function.22" height="43" width="109" x="72" y="558"/>
-      <view component-id="function.16" height="43" width="109" x="204" y="396"/>
-      <view component-id="function.24" height="43" width="109" x="72" y="360"/>
-      <view component-id="function.18" height="43" width="109" x="204" y="546"/>
-      <view component-id="function.23" height="43" width="109" x="198" y="594"/>
-      <view component-id="function.25" height="43" width="109" x="204" y="450"/>
-      <view component-id="function.19" height="43" width="109" x="72" y="414"/>
-      <view component-id="function.21" height="43" width="109" x="204" y="498"/>
-      <view component-id="function.17" height="43" width="109" x="78" y="462"/>
-      <view component-id="function.20" height="43" width="109" x="72" y="510"/>
+      <view component-id="function.16" height="43" width="109" x="72" y="558"/>
+      <view component-id="function.17" height="43" width="109" x="204" y="396"/>
+      <view component-id="function.18" height="43" width="109" x="72" y="360"/>
+      <view component-id="function.19" height="43" width="109" x="204" y="546"/>
+      <view component-id="function.20" height="43" width="109" x="198" y="594"/>
+      <view component-id="function.21" height="43" width="109" x="204" y="450"/>
+      <view component-id="function.22" height="43" width="109" x="72" y="414"/>
+      <view component-id="function.23" height="43" width="109" x="204" y="498"/>
+      <view component-id="function.24" height="43" width="109" x="78" y="462"/>
+      <view component-id="function.25" height="43" width="109" x="72" y="510"/>
    </views>
 </mapping>
