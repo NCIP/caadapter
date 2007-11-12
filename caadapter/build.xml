@@ -261,7 +261,7 @@
             	<include name="caAdapter_ui.jar"/>
             	<include name="resource.zip"/>
                 <include name="jgraph.jar"/>
-        	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+        	   
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
             	<include name="BrowserLauncher2-all-10rc4.jar"/>
@@ -352,7 +352,7 @@
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
-        	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+        	   	
         		<include name="sqleonardo.jar"/>
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
@@ -441,7 +441,7 @@
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
-        	   	<include name="ostermillerutils_1_04_03_for_java_1_4.jar"/>
+        	   	
         		<include name="sqleonardo.jar"/>
             	<include name="resource.zip"/>
         	</fileset>
