@@ -1,4 +1,4 @@
-The caAdapter Software License
+The caAdapter Version 4.0 Software License
 
 Copyright 2007 Science Applications International Corporation ("SAIC"). The software subject to this notice and license includes both human readable source code form and machine readable, binary, object code form. The caAdapter Software ('the Software') was developed in conjunction with the National Cancer Institute ("NCI") by NCI employees and employees of SAIC. To the extent government employees are authors, any rights in such works shall be subject to Title 17 of the United States Code, section 105. 
 
