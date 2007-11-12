@@ -117,8 +117,13 @@
     	</delete>
     	<antcall target="add-license"/>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-				excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
-				etc/schemas/**, docs/GME/**, docs/v4.0/*.mpp,  docs/v4.0/*Scope*.doc, referenceLib/**">
+				excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
+			docs/GME/**, docs/v4.0/*.mpp,  
+			docs/v4.0/*Scope*.doc, 
+			docs/v4.0/*Matrix.doc,
+			docs/v4.0/*Requirements.doc,
+			docs/v4.0/*Case*.doc,
+			referenceLib/**">
 		</zip>
 	<antcall target="dist.prepare" />
     </target>
@@ -545,12 +550,12 @@
     				<fileset file="${config.dir}/logging.properties" />
     	 </copy>
 
-        <mkdir dir="dist/docs/help"/>
+        <!--mkdir dir="dist/docs/help"/>
     	<copy todir="${dist.dir}/docs/help">
     	            <fileset dir="${basedir}/docs/help" >
     	            	<include name="**/*.*"/>
     				</fileset>
-    	 </copy>
+    	 </copy -->
     	 <mkdir dir="${dist.dir}/workingspace"/>
     	 <copy todir="${dist.dir}/workingspace">
 			<fileset dir="${basedir}/workingspace" >
