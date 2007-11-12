@@ -22,10 +22,10 @@ import java.util.*;
  * This class implements the fixed length records
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.10 $
- *          $Date: 2007-11-05 15:41:58 $
+ *          $Revision: 1.11 $
+ *          $Date: 2007-11-12 15:05:00 $
  */
 public class RDSTransformer {
     String directoryLocation = null;
@@ -321,13 +321,16 @@ public class RDSTransformer {
                     if (checkIfValueExists(writeToList)) {
                         String tempStr = writeToList.toString();
                         String resultStr = tempStr.substring(1, tempStr.indexOf(']'));
-                        out.write("\n" + resultStr);
+//                        out.write("\n" + resultStr);
+                        out.newLine();
+                        out.write(resultStr);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
                     System.out.println("continuing to next loop " + e.getMessage());
                 }
             }
+            out.flush();
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -346,6 +349,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/11/05 15:41:58  jayannah
+ * Changed the message/wording
+ *
  * Revision 1.9  2007/10/15 21:01:14  jayannah
  * Changed the wat reading files to accomodate the working directory path
  *
