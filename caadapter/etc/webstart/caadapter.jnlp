@@ -24,7 +24,6 @@
 	<jar href="log4j-1.2.8.jar"/>
 	<jar href="xercesImpl.jar"/>
 	<jar href="castor-0.9.9.jar"/>
-   	<jar href="ostermillerutils_1_04_03_for_java_1_4.jar"/>
    	<jar href="sqleonardo.jar"/>
    	<jar href="resource.zip"/>
    	<jar href="poi-2.5.1-final-20040804.jar"/>

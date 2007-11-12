@@ -23,7 +23,6 @@
 	<jar href="log4j-1.2.8.jar"/>
 	<jar href="xercesImpl.jar"/>
 	<jar href="castor-0.9.9.jar"/>
-   	<jar href="ostermillerutils_1_04_03_for_java_1_4.jar"/>
    	<jar href="sqleonardo.jar"/>
    	<jar href="mysql-connector-java-3.1.13-bin.jar"/>
    	<jar href="ojdbc14.jar"/>
