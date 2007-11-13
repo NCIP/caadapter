@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping version="1.2">
    <components>
-      <component kind="scs" location="{caAdapter_Home}\workingspace\csv2HL7v3\040002\040002.scs" type="source"/>
-      <component kind="h3s" location="{caAdapter_Home}\workingspace\csv2HL7v3\040002\PORR_MT040002.h3s" type="target"/>
+      <component kind="scs" location="040002.scs" type="source"/>
+      <component kind="h3s" location="PORR_MT040002.h3s" type="target"/>
       <component group="constant" kind="core" name="constant" type="function" id="72">
          <data type="String" value="tel:"/>
       </component>
