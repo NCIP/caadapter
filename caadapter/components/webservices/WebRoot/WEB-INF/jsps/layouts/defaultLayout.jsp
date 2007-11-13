@@ -57,7 +57,7 @@
 				<table width="295" height="100%" border="0" align="left" cellspacing="0">
                    <tr>
                      <td width="295" height="100%">
-                       <div align="right"class="loginStatus">
+                       <!-- removed div align="right"class="loginStatus">
                               <%
                                 if(user != null){
 					          %>
@@ -67,7 +67,7 @@
                               %>
 					  				You are not logged in
                                <%}%>
-                        </div>
+                        </div -->
                       </td>                      
                    </tr>
                  </table>
