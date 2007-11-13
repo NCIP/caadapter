@@ -24,6 +24,8 @@
 	<jar href="xercesImpl.jar"/>
 	<jar href="castor-0.9.9.jar"/>
    	<jar href="sqleonardo.jar"/>
+   	<jar href="mysql-connector-java-3.1.13-bin.jar"/>
+   	<jar href="ojdbc14.jar"/>
    	<jar href="resource.zip"/>
    	<jar href="poi-2.5.1-final-20040804.jar"/>
 	<jar href="xmi.in.out.jar"/>
