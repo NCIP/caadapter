@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.19 2007-10-09 21:00:32 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.20 2007-11-13 16:05:33 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -89,8 +89,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2007-10-09 21:00:32 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2007-11-13 16:05:33 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -369,6 +369,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					    	} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
+								listnerPane.setMessageText(e.getStackTrace().toString());
+								progressor.close();
 							}
 						}
 					}				
@@ -633,6 +635,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.19  2007/10/09 21:00:32  wangeug
+ * HISTORY      : save csv data from hl7MessagePanel
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2007/10/09 18:20:00  wangeug
  * HISTORY      : warning to save HL7 message before close panel
  * HISTORY      :
