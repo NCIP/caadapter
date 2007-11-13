@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.20 2007-11-13 16:05:33 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/HL7MessagePanel.java,v 1.21 2007-11-13 16:33:33 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -79,6 +79,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,8 +91,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.20 $
- *          date        $Date: 2007-11-13 16:05:33 $
+ *          revision    $Revision: 1.21 $
+ *          date        $Date: 2007-11-13 16:33:33 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -369,7 +371,11 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					    	} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
-								listnerPane.setMessageText(e.getStackTrace().toString());
+								StringWriter sw = new StringWriter();
+							    PrintWriter pw = new PrintWriter(sw);
+							    e.printStackTrace(pw);
+
+								listnerPane.setMessageText(sw.toString());
 								progressor.close();
 							}
 						}
@@ -635,6 +641,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.20  2007/11/13 16:05:33  wangeug
+ * HISTORY      : process exception message
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2007/10/09 21:00:32  wangeug
  * HISTORY      : save csv data from hl7MessagePanel
  * HISTORY      :
