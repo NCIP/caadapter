@@ -7,7 +7,7 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="600" height="100%">
       <!-- banner begins -->      
 		<tr>
-			<td width="100%" class="welcomeTitleCopy2" height="20">Welcome to the caAdapter Web Services Management Portal</td>
+			<td width="100%" class="welcomeTitleCopy2" height="20">Welcome to the caAdapter 4.0 Web Services Management Portal</td>
 		</tr>
 	
 		<tr>
