@@ -18,7 +18,6 @@
 	<jar href="BrowserLauncher2-all-10rc4.jar"/>   
 	<jar href="commons-collections-3.2.jar"/>
 	<jar href="commons-logging-1.0.4.jar"/>
-	<jar href="dom4j-1.4.jar"/>
 	<jar href="jdom.jar"/>
 	<jar href="jgraph.jar"/>
 	<jar href="log4j-1.2.8.jar"/>
@@ -28,6 +27,8 @@
    	<jar href="resource.zip"/>
    	<jar href="poi-2.5.1-final-20040804.jar"/>
 	<jar href="xmi.in.out.jar"/>
+	<jar href="jaxen-jdom.jar"/>
+	<jar href="dom4j-1.4.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />

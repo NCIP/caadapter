@@ -462,6 +462,7 @@
         	<fileset dir="${mms.module.home}/lib">
                 <include name="xmi.in.out.jar"/>
                 <include name="dom4j-1.4.jar"/>
+                <include name="jaxen-jdom.jar"/>
         	</fileset>
         </copy>
 
