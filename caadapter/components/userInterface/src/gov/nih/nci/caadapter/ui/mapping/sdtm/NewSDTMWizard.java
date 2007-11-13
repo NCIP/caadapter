@@ -44,8 +44,8 @@ import java.io.File;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.16 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.17 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -235,13 +235,18 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
             dataFileInputField.setText(dataFile.getAbsolutePath());
             dataFileInputField.setEnabled(false);
         } else if (command.equalsIgnoreCase("dir")) {
-             int returnVal = csvUserDirectoryLoc.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
-                 dirLoc = csvUserDirectoryLoc.getSelectedFile();
+        	File dirFile=DefaultSettings.getUserInputOfFileFromGUI(this, null, "Select Save Directory ...", false, false);
+//             int returnVal = csvUserDirectoryLoc.showOpenDialog(this);
+//            if (returnVal == JFileChooser.APPROVE_OPTION)
+//            {
+        	if (dirFile.isDirectory())
+        		dirLoc=dirFile;
+        	else
+        		dirLoc=dirFile.getParentFile();
+//                 dirLoc = csvUserDirectoryLoc.getSelectedFile();
                 csvDirInoutField.setText(dirLoc.getAbsolutePath().toString());
                 csvDirInoutField.setEnabled(false);
-            }
+//            }
         }
     }
 
