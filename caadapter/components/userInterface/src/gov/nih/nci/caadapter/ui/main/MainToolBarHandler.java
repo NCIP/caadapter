@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainToolBarHandler.java,v 1.1 2007-04-03 16:17:36 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainToolBarHandler.java,v 1.2 2007-11-14 20:55:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,8 +49,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:36 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-11-14 20:55:43 $
  */
 public class MainToolBarHandler implements ToolBarHandler
 {
@@ -66,19 +66,20 @@ public class MainToolBarHandler implements ToolBarHandler
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainToolBarHandler.java,v 1.1 2007-04-03 16:17:36 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainToolBarHandler.java,v 1.2 2007-11-14 20:55:43 wangeug Exp $";
 
 	private JToolBar toolbar = null;
-	//key: action, value: the JButton on the toolbar.
 	private Map <Action, JButton>actionButtonMap = null;
-    //private ContextManager contextManager = null;
-
-	public MainToolBarHandler() //ContextManager contextManager)
+    
+/**
+ * Constructor to initialize JToolBar and the action Map
+ *
+ */
+	public MainToolBarHandler() 
 	{
-//		this.contextManager = contextManager;
-		toolbar = new JToolBar();
-		actionButtonMap = Collections.synchronizedMap(new HashMap<Action, JButton>());
+		removeAllActions();
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractToolBarHandler#addAction(javax.swing.Action, boolean)
@@ -141,20 +142,17 @@ public class MainToolBarHandler implements ToolBarHandler
 	public void removeAllActions()
 	{
 		toolbar = new JToolBar();
+		toolbar.setFloatable(false);
 		actionButtonMap = Collections.synchronizedMap(new HashMap<Action, JButton>());
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.caadapter.ui.main.AbstractToolBarHandler#repaintToolBar()
-	 */
-	public void repaintToolBar()
-	{
-		toolbar.repaint();
-	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:36  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
