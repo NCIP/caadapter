@@ -12,11 +12,7 @@ public interface ToolBarHandler {
 	 * @param checkWithIcon
 	 */
 	public abstract void addAction(Action act, boolean checkWithIcon);
-
 	public abstract void removeAction(Action act);
-
 	public abstract void removeAllActions();
-
-	public abstract void repaintToolBar();
 	public abstract JToolBar getToolBar();
 }
