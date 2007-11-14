@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.6 2007-09-18 15:25:52 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.7 2007-11-14 20:55:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,7 +52,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-//import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -62,8 +61,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-09-18 15:25:52 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-11-14 20:55:57 $
  */
 public class DefaultSettings
 {
@@ -106,11 +105,6 @@ public class DefaultSettings
 		}
 	}
 
-	// can't construct one.
-	private DefaultSettings()
-	{
-	}
-
 	/**
 	 * Installs all default settings.
 	 */
@@ -123,7 +117,7 @@ public class DefaultSettings
 	/**
 	 * Installs the default LookAndFeel.
 	 */
-	public static void installLookAndFeel()
+	private static void installLookAndFeel()
 	{
 		try
 		{
@@ -431,16 +425,6 @@ public class DefaultSettings
 		}
 	}
 
-	/**
-	 * Create and return a JScrollPane instance with some default features.
-	 * @return a JScrollPane instance with some default features.
-	 */
-	public static final JScrollPane createScrollPaneWithDefaultFeatures()
-	{
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		return scrollPane;
-	}
 
 	/**
 	 * Currently utilize JOptionPane to report any given throwable to UI.
@@ -528,9 +512,8 @@ public class DefaultSettings
 		{
 			Container container = null;
 			JRootPane rootPane = component.getRootPane();
-			//		System.out.println("root pane type: " + rootPane.getClass().getName());
 			if (rootPane != null)
-			{//rootpane is not null implies this panel is fully displayed;
+			{
 				container = rootPane.getParent();
 			}
 			return container;
@@ -543,6 +526,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/09/18 15:25:52  wangeug
+ * HISTORY      : modify FileChooser to select Directory
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/08/10 16:48:24  wangeug
  * HISTORY      : make File choose work with multiple extensions
  * HISTORY      :
