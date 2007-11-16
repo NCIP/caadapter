@@ -16,6 +16,8 @@ import gov.nih.nci.caadapter.ui.main.MainFrame;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.DBConnector;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.Database2SDTMMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSFixedLenghtInput;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSHelper;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,10 +44,10 @@ import java.util.Iterator;
  * The class helps as a helper during transformation
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.21 $
- *          $Date: 2007-10-18 21:08:17 $
+ *          $Revision: 1.22 $
+ *          $Date: 2007-11-16 19:17:42 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -61,13 +63,14 @@ public class QBTransformAction {
     public QBTransformAction() {
     }
 
-    public void transformDB(String mapFile, String defineXMLocation, Connection con, String dirLocation) {
+    public void transformDB(String mapFile, Connection con, String dirLocation) {
         if (con == null) {
             return;
-        }
+        }       
         try {
-            this.con = con;
-            processTransform4SQLStatments(mapFile, defineXMLocation, dirLocation);
+        	String targetFile= RDSHelper.getDefineXMLNameFromMapFile(mapFile);
+        	this.con = con;
+            processTransform4SQLStatments(mapFile, targetFile, dirLocation);
             System.out.println("created the txt files at " + dirLocation);
         } catch (Exception e) {
             e.printStackTrace();
@@ -453,6 +456,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2007/10/18 21:08:17  jayannah
+ * Added a transformation confirmation message after the transformation is complete
+ *
  * Revision 1.20  2007/10/17 20:52:38  jayannah
  * Added a message dialog when the SQLs are not saved
  *

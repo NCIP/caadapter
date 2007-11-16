@@ -53,10 +53,10 @@
 		</jar>
 	</target>
 	
-	<target name="test.jar">
+	<target name="test.jar" description="create testing jar: CSV to HL7 V3">
 			<mkdir dir="../test"/>
 			<javac destdir="../test" 
-				classpath="lib/caAdapter.jar;lib/caAdapter.jar;../lib/junit-4.3.1.jar"
+				classpath="lib/caAdapter.jar;../lib/junit-4.3.1.jar"
 				fork="yes" debug="on">
 				<src path="../components/hl7Transformation/test/src" />
 				<include name="**/DemoCSV2HL7v3TransformationTests.java"/>
@@ -65,9 +65,36 @@
 				<fileset dir="../test" />
 			</jar>
 			<delete dir="../test"/>
-		</target>
-		
-	<target name="ws.client.jar">
+	</target>
+	
+	<target name="testCsvToRds.jar" description="create testing jar: CSV to RDS">
+		<mkdir dir="../test"/>
+		<javac destdir="../test" 
+			classpath="lib/caAdapter.jar"
+			fork="yes" debug="on">
+			<src path="../components/sdtmTransformation/test/src" />
+			<include name="**/TestCSVAPITransform4RDS.java"/>
+		</javac>
+		<jar destfile="csvToRdsTest.jar">
+			<fileset dir="../test" />
+		</jar>
+		<delete dir="../test"/>
+	</target>	
+	<target name="testDbToRds.jar" description="create testing jar: Database to RDS">
+			<mkdir dir="../test"/>
+			<javac destdir="../test" 
+				classpath="lib/caAdapter.jar"
+				fork="yes" debug="on">
+				<src path="../components/sdtmTransformation/test/src" />
+				<include name="**/TestDBAPITransform4RDS.java"/>
+			</javac>
+			<jar destfile="dbToRdsTest.jar">
+				<fileset dir="../test" />
+			</jar>
+			<delete dir="../test"/>
+	</target>
+	
+	<target name="ws.client.jar" description="create testing jar: web service client">
 		<javac destdir="../build" 
 			classpath="../demo/webServiceClient/axis.jar;../demo/webServiceClient/jaxrpc.jar"
 			fork="yes" debug="on">
