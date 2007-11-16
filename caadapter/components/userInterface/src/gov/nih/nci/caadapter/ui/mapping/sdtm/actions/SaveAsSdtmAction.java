@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 import edu.stanford.ejalbert.BrowserLauncher;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.EmptyStringTokenizer;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
 import gov.nih.nci.caadapter.dataviewer.util.CaDataViewHelper;
 import gov.nih.nci.caadapter.dataviewer.util.QBParseMappingFile;
@@ -30,10 +31,10 @@ import java.util.*;
  * Data Viewer
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.18 $
- *          $Date: 2007-11-05 15:42:19 $
+ *          $Revision: 1.19 $
+ *          $Date: 2007-11-16 17:19:00 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -47,7 +48,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.18 2007-11-05 15:42:19 jayannah Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.19 2007-11-16 17:19:00 wangeug Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -119,9 +120,11 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
                 String paramString = params.get("URL").toString() + "~" + params.get("Driver").toString() + "~" + params.get("UserID").toString() + "~" + params.get("SCHEMA").toString();
                 out.append("  \t<component kind=\"Database\" param=\"" + paramString + "\"/>\n");
             } else {
-                out.append("  \t<component kind=\"SCS\" location=\"" + sdtmMappingGenerator.getScsSDTMFile() + "\"/>\n");
+            	String srcFileName=FileUtil.getAssociatedFileRelativePath(file.getAbsolutePath(), sdtmMappingGenerator.getScsSDTMFile());
+                out.append("  \t<component kind=\"SCS\" location=\"" +  srcFileName + "\"/>\n");
             }
-            out.append("  \t<component kind=\"XML\" location=\"" + sdtmMappingGenerator.getScsDefineXMLFIle() + "\"/>\n");
+            String trgtFileName=FileUtil.getAssociatedFileRelativePath(file.getAbsolutePath(), sdtmMappingGenerator.getScsDefineXMLFIle());
+            out.append("  \t<component kind=\"XML\" location=\"" + trgtFileName + "\"/>\n");
             out.append("  </components>\n");
             for (int i = 0; i < sdtmMappingGenerator.results.size(); i++) {
                 out.append("  <link>\n");
@@ -423,6 +426,9 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2007/11/05 15:42:19  jayannah
+ * Changed the message/wording
+ *
  * Revision 1.17  2007/10/16 14:10:27  jayannah
  * Changed the absolute path to getName during times when the pop up is displayed to the world;
  * made changes so that the Tables cannot be mapped

@@ -24,10 +24,10 @@ import java.util.*;
  * The class helps in opening a MAP file(both SCS and Database)
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.20 $
- *          $Date: 2007-11-05 15:41:58 $
+ *          $Revision: 1.21 $
+ *          $Date: 2007-11-16 17:19:38 $
  */
 public class OpenSDTMMapFile extends JDialog
 {
@@ -115,13 +115,15 @@ public class OpenSDTMMapFile extends JDialog
                 Element targetName1 = (Element) targetNode.item(0);
                 targetName1.getAttribute("location").toString();
                 if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("SCS")) {
-                    _scsFileName = targetName1.getAttribute("location").toString();
+                    _scsFileName = FileUtil.getAssociatedFileAbsolutePath(mapFileName, targetName1.getAttribute("location").toString());
+//                    	targetName1.getAttribute("location").toString();
                 } else if (targetName1.getAttribute("kind").toString().equalsIgnoreCase("Database")) {
                     _dbParams = targetName1.getAttribute("param").toString();
                 }
                 Element targetName2 = (Element) targetNode.item(1);
                 if (targetName2.getAttribute("kind").toString().equalsIgnoreCase("XML")) {
-                    _xmlFileName = targetName2.getAttribute("location").toString();
+                    _xmlFileName =FileUtil.getAssociatedFileAbsolutePath(mapFileName, targetName2.getAttribute("location").toString());
+//                    	targetName2.getAttribute("location").toString();
                 }
             }
         }
@@ -441,6 +443,9 @@ public class OpenSDTMMapFile extends JDialog
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2007/11/05 15:41:58  jayannah
+ * Changed the message/wording
+ *
  * Revision 1.19  2007/10/19 17:49:04  jayannah
  * Changes to add link selection highlighter for the map file
  *

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.10 2007-09-24 20:05:28 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.11 2007-11-16 17:17:34 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,8 +65,8 @@ import javax.swing.*;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.10 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.11 $
  */
 
 public class FileUtil
@@ -88,7 +88,51 @@ public class FileUtil
             OUTPUT_DIR.mkdir();
         }
     }
+    
+    public static String getAssociatedFileAbsolutePath(String holderFile, String associatedFile)
+    {
+    	if(associatedFile.indexOf(File.separator)>-1)
+    		return associatedFile;
+    	File holder=new File(holderFile);
+    	File associted=new File(associatedFile);
+    	if (!holder.exists())
+    		return associatedFile;
+    	if (holder.isDirectory())
+    		return associatedFile;
 
+    	String holderParent=holder.getParent();
+
+    	String rntPath=holderParent+File.separator+associatedFile;
+    	
+    	return rntPath;
+    }
+/**
+ * Compare the name/absolute path of a holder file with its associated file
+ * return the name of the assoicated file without parentPath if they have the same
+ * parent, otherwise return the input value of the associated file
+ * @param holderFile the name/absolutePath of a holder file
+ * @param associatedFile the name/absolutePath of an associated file
+ * @return name of the associated file to be used as reference from the holder file
+ */
+    public static String getAssociatedFileRelativePath(String holderFile, String associatedFile)
+    {
+    	File holder=new File(holderFile);
+    	File associted=new File(associatedFile);
+    	if (!holder.exists())
+    		return associatedFile;
+    	if (holder.isDirectory())
+    		return associatedFile;
+    	if (!associted.exists())
+    		return associatedFile;
+    	if (associted.isDirectory())
+    		return associatedFile;
+    	String holderParent=holder.getParent();
+    	String associateParent=associted.getParent();
+    	if (!holderParent.equals(associateParent))
+    		return associatedFile;
+    	
+    	return associted.getName();
+    }
     /**
      * Create the output directory if necessary and return a reference to it.
      *
@@ -921,6 +965,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.10  2007/09/24 20:05:28  umkis
+ * Add v2 Meta data collector
+ *
  * Revision 1.9  2007/09/20 22:41:01  umkis
  * no message
  *

@@ -45,7 +45,7 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.17 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.18 $
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -132,17 +132,18 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
 
     private void handleButtonAction(AbstractMainFrame _callingFrame) {
         try {
-            JFileChooser fc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example");
-            CaadapterFileFilter filter = new CaadapterFileFilter();
-            filter.addExtension("map");
-            filter.setDescription("map");
-            fc.setFileFilter(filter);
-            fc.setDialogTitle("Open a RDS map file.....");
-            fc.showOpenDialog(_callingFrame);
-            selFile = fc.getSelectedFile();
+//            JFileChooser fc = new JFileChooser(FileUtil.getWorkingDirPath()+File.separator+"workingspace"+File.separator+"RDS_Example");
+//            CaadapterFileFilter filter = new CaadapterFileFilter();
+//            filter.addExtension("map");
+//            filter.setDescription("map");
+//            fc.setFileFilter(filter);
+//            fc.setDialogTitle("Open a RDS map file.....");
+//            fc.showOpenDialog(_callingFrame);
+//            selFile = fc.getSelectedFile();
+            selFile=DefaultSettings.getUserInputOfFileFromGUI(this, Config.MAP_FILE_DEFAULT_EXTENTION, "Open a RDS map file.....", false, false);
             if (selFile != null) {
                 if (!selFile.getName().endsWith("map")) {
-                    JOptionPane.showMessageDialog(_callingFrame, "Please a valid map file", "Invalid file", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(_callingFrame, "Please select a valid map file", "Invalid file", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (Exception e) {

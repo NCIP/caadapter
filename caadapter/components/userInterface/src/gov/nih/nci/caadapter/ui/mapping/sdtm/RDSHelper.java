@@ -23,10 +23,10 @@ import java.util.Hashtable;
  * The class read the map file for the rds transformer
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.3 $
- *          $Date: 2007-10-15 21:01:14 $
+ *          $Revision: 1.4 $
+ *          $Date: 2007-11-16 17:19:38 $
  */
 public class RDSHelper {
     public static String getDefineXMLNameFromMapFile(String mapFile) throws Exception {
@@ -48,7 +48,7 @@ public class RDSHelper {
                 targetName1.getAttribute("location").toString();
                 Element targetName2 = (Element) targetNode.item(1);
                 if (targetName2.getAttribute("kind").toString().equalsIgnoreCase("XML")) {
-                    defineXMLName = targetName2.getAttribute("location").toString();
+                    defineXMLName =FileUtil.getAssociatedFileAbsolutePath(mapFile,  targetName2.getAttribute("location").toString());
                 }
             }
         }
@@ -67,7 +67,7 @@ public class RDSHelper {
                 Element firstCompElement = (Element) node;
                 NodeList targetNode = firstCompElement.getElementsByTagName("component");
                 Element targetName1 = (Element) targetNode.item(0);
-                scsFileName = targetName1.getAttribute("location").toString();
+                scsFileName = FileUtil.getAssociatedFileAbsolutePath(mapFile.getAbsolutePath(),targetName1.getAttribute("location").toString());
             }
         }
         return scsFileName;
@@ -138,6 +138,9 @@ public class RDSHelper {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2007/10/15 21:01:14  jayannah
+ * Changed the wat reading files to accomodate the working directory path
+ *
  * Revision 1.2  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *
