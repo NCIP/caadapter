@@ -8,8 +8,8 @@ import java.io.File;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.1 $
- *          $Date: 2007-11-16 19:50:21 $
+ *          $Revision: 1.2 $
+ *          $Date: 2007-11-16 19:54:08 $
  */
 public class TestCSVAPITransform4RDS {
     public static void main(String[] args) throws Exception {
@@ -27,9 +27,7 @@ public class TestCSVAPITransform4RDS {
        File outputFile=new File(outPut);
        if (!outputFile.exists())
     	   outputFile.mkdir();
-       System.out.println("mapping file:"+mapFile);
-       System.out.println("CSV data file:"+csvFile);
-       System.out.println("ouput directory:"+outPut);
+
         new RDSTransformer().transformCSV(new File(mapFile), csvFile, outPut);
     }
 }
