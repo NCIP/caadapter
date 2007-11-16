@@ -1,0 +1,35 @@
+package gov.nih.nci.caadapter.sdtm;
+import gov.nih.nci.caadapter.ui.mapping.sdtm.RDSTransformer;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+
+import java.io.File;
+
+/**
+ * @author OWNER: Harsha Jayanna
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision
+ *          $Revision: 1.1 $
+ *          $Date: 2007-11-16 17:22:05 $
+ */
+public class TestCSVAPITransform4RDS {
+    public static void main(String[] args) throws Exception {
+    	if (args==null||args.length<2)
+    	{
+    		System.out.println("Usage:mapFile|csvDataFile|(Optonal)");
+    		System.exit(-1);
+    	}
+    	String workingDir=FileUtil.getWorkingDirPath();
+    	String mapFile=workingDir+File.separator+args[0];
+    	String csvFile=workingDir+File.separator+args[1];
+    	String outPut=workingDir+File.separator+"output";
+    	if (args.length==3)
+    		outPut=args[2];
+       File outputFile=new File(outPut);
+       if (!outputFile.exists())
+    	   outputFile.mkdir();
+       System.out.println("mapping file:"+mapFile);
+       System.out.println("CSV data file:"+csvFile);
+       System.out.println("ouput directory:"+outPut);
+        new RDSTransformer().transformCSV(new File(mapFile), csvFile, outPut);
+    }
+}
