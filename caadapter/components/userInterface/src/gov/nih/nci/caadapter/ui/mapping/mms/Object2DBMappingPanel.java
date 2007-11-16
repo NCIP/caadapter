@@ -22,16 +22,12 @@ import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerator;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.sdtm.meta.QBTableMetaData;
-import gov.nih.nci.caadapter.sdtm.meta.QueryBuilderMeta;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
@@ -51,19 +47,15 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -83,9 +75,7 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
@@ -100,14 +90,14 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.29 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.30 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.29 2007-10-11 19:06:26 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.30 2007-11-16 17:18:36 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -1084,6 +1074,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.29  2007/10/11 19:06:26  schroedn
+ * HISTORY : fixed HBMGenerator save error
+ * HISTORY :
  * HISTORY : Revision 1.28  2007/09/21 04:41:08  wuye
  * HISTORY : removed system.out
  * HISTORY :
