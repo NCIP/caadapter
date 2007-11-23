@@ -151,4 +151,8 @@
 
     <constant name="DEFAULT_XPATH_LEVEL_DELIMITER" type="String" value="\\"/>
 
+    <constant name="LINKED_URL_FOR_SUPPORT" type="String" value="http://ncicb.nci.nih.gov/NCICB/support"/>
+    <constant name="LINKED_URL_FOR_MORE_INFORMATION" type="String" value="http://trials.nci.nih.gov/projects/infrastructureProject/caAdapter"/>
+    
+
 </config>
