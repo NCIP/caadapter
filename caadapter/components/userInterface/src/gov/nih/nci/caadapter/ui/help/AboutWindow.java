@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.8 2007-10-10 19:58:17 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.9 2007-11-23 22:02:15 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-10-10 19:58:17 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2007-11-23 22:02:15 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.8 2007-10-10 19:58:17 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.9 2007-11-23 22:02:15 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -269,6 +269,9 @@ public class AboutWindow extends JWindow //implements ActionListener
     private String setVersionAndBuildNumber(String commonPath)
       {
         String tot = "";
+
+
+        /*
         boolean normal = true;
         FileReader fr = null;
         BufferedReader br = null;
@@ -316,7 +319,8 @@ public class AboutWindow extends JWindow //implements ActionListener
 
         try { while((readLineOfFile=br.readLine())!=null) tot = tot + readLineOfFile + "\r\n"; }
         catch(IOException ie) { return ERROR_MESSAGE_FILE_READING_ERROR; } // "ERROR : File Reading Error"; }
-
+        */
+        tot = getBaseHTML();
 
         tot = replaceTaggedContent(tot, VERSION_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_VERSION, VERSION_MARKER_IN_SOURCE_HTML_FILE);
         tot = replaceTaggedContent(tot, BUILD_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_BUILD_NUMBER, BUILD_MARKER_IN_SOURCE_HTML_FILE);
@@ -484,9 +488,88 @@ public class AboutWindow extends JWindow //implements ActionListener
 //        public void windowDeactivated(WindowEvent e) {tt.dispose();  	}
       
       }
+
+
+      private String getBaseHTML()
+      {
+          String htmlS = "";
+          htmlS = "<html><head><title>About Window of caAdapter</title></head>\n" +
+                  "<body background=\"../images/aboutwin.png\"><!--$$:BACKGROUND_FILE_NAME_MARKER;Don't touch this Paragraph-->\n" +
+                  "<table>\n" +
+                  "<tr>\n" +
+                  "<td width='8'></td>\n" +
+                  "<td width='240' valign='top'>\n" +
+                  "    <br><br><br>\n" +
+                  "    <font color='#164771' size='7' face='Arial'>\n" +
+                  "<b>caAdapter</b><br>\n" +
+                  "        </font>\n" +
+                  "<font color='#164771' size='5' face='Arial'>\n" +
+                  "\n" +
+                  "Version 1.2<!--@@:VERSION_MARKER;Don't touch this Paragraph-->\n" +
+                  "\n" +
+                  "</font>\n" +
+                  "<font color='#164771' size='4' face='Arial'>\n" +
+                  "<br>" + //"&nbsp;(Build# 121<!--$$:BUILD_MARKER;Don't touch this Paragraph-->)<br><br>\n" +
+                  "    JDK 1.5.0_04<!--$$:JDK_VERSION_MARKER;Don't touch this Paragraph--><br>\n" +
+                  "\n" +
+                  "\n" +
+                  "</font>\n" +
+                  "\n" +
+                  "<font color='#164771' size='3' face='Arial'><br>For NCICB Support, please visit:\n" +
+                  "    <a href='" + Config.LINKED_URL_FOR_SUPPORT + "'>" + Config.LINKED_URL_FOR_SUPPORT + "</a><br>\n" +
+                  "</font>\n" +
+                  "\n" +
+                  "\n" +
+                  "</td>\n" +
+                  "<td width='295' valign='top'>\n" +
+                  "<font color='#e1f2de' size='3' face='Arial'><!--&&:Variable Area;Don't touch this Paragraph-->\n" +
+                  "     <i><b>caAdapter</b></i> " + getNarrativeSentence() + "\n" +
+                  "<br>\n" +
+                  "\n" +
+                  "</font>\n" +
+                  "    <font color='blue' size='3' face='Ariel'>\n" +
+                  "    <a href='##LicenseInformation'>\n" +
+                  "        License Information</a>\n" +
+                  "    </font>\n" +
+                  "\n" +
+                  "<font color='#e1f2de' size='3' face='Arial'><br><br>\n" +
+                  "    Developed by: <br>\n" +
+                  "    Center for Bioinformatics,<br>National Cancer Institute,<br>National Institutes of Health\n" +
+                  "    </font><br>\n" +
+                  "    <font color='#d9ecdc' size='3' face='Arial'>\n" +
+                  "<br>Copyright © 2004-2006<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph--><br>National Cancer Institute USA<br>\n" +
+                  "All right reserved\n" +
+                  "</font>\n" +
+                  "    </td>\n" +
+                  "\n" +
+                  "    <td width='*' valign='top'><br><br></td>\n" +
+                  "    </tr></table>\n" +
+                  "            <table><tr><td>\n" +
+                  "\n" +
+                  "                <font color='#164771' size='3' face='Arial'>\n" +
+                  "   <br>&nbsp;&nbsp;For more information about caAdapter visit:<br>\n" +
+                  "</font>\n" +
+                  "<font color='#ffffff' size='3' face='Arial'>\n" +
+                  "    &nbsp;&nbsp;<a href='" + Config.LINKED_URL_FOR_MORE_INFORMATION + "'>" + Config.LINKED_URL_FOR_MORE_INFORMATION + "</a>\n" +
+                  "</font>\n" +
+                  "                </td><td>\n" +
+                  "                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='exit.html'><img src='OK_Button.png' border='0'></a><br>\n" +
+                  "    </td></tr></table>\n" +
+                  "</body>\n" +
+                  "</html>";
+          return htmlS;
+      }
+
+      private String getNarrativeSentence()
+      {
+          return " is an open source tool set that facilitates data mapping and transformation among different kinds of data sources including HL7 v2 and v3 messages, Study Data Tabulation Model (SDTM) data sets, object models and data models. For HL7 v3 messages, it possesses the capability to perform vocabulary validation by integrating with NCICB caCORE components and provides web service access for easy application integration. caAdapter has a component-based architecture to support message development and reporting using standard data formats.";
+      }
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/10/10 19:58:17  umkis
+ * HISTORY      : Fix bug item #7
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/09/28 19:38:30  umkis
  * HISTORY      : Upgrade v2 meta collector
  * HISTORY      :
