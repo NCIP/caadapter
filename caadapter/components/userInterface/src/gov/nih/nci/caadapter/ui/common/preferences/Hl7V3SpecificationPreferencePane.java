@@ -28,7 +28,7 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
 	private JDialog parent;
 	private JCheckBox nullFlavorCheck;
 	private JCheckBox complexDatatypeCheck;
-	private JCheckBox odiEnableCheck;
+	private JCheckBox oidEnableCheck;
 	
 	private ButtonGroup validationLevelGroup;
 	public Hl7V3SpecificationPreferencePane(JDialog parentDialog)
@@ -66,10 +66,10 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         if (complexDatatypeValue!=null&&complexDatatypeValue.equalsIgnoreCase("true"))
         	complexDatatypeCheck.setSelected(true);
         
-        odiEnableCheck= new JCheckBox("Enable ODI");
+        oidEnableCheck= new JCheckBox("Enable OID");
         String odiEnableValue=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
         if (odiEnableValue!=null&&odiEnableValue.equalsIgnoreCase("true"))
-        	odiEnableCheck.setSelected(true);
+        	oidEnableCheck.setSelected(true);
         
         GridBagConstraints ckx = new GridBagConstraints();
         ckx.gridy=0;
@@ -87,8 +87,8 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         ckx.gridwidth=2;//
         ckx.gridy=1;
         ckx.gridx=0;
-        ckxGridbag.setConstraints(odiEnableCheck, ckx);
-        checkboxPanel.add(odiEnableCheck);
+        ckxGridbag.setConstraints(oidEnableCheck, ckx);
+        checkboxPanel.add(oidEnableCheck);
         
         JPanel groupSelectPane=new JPanel();
         GridBagLayout gridbag = new GridBagLayout();
@@ -170,7 +170,7 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
        				String.valueOf(complexDatatypeCheck.isSelected()));
        		
         	CaadapterUtil.savePrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED, 
-       				String.valueOf(odiEnableCheck.isSelected()));
+       				String.valueOf(oidEnableCheck.isSelected()));
        		//read validation level from group selection
        		Enumeration grpButtons=validationLevelGroup.getElements();
        		String validationLevel=CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0;
