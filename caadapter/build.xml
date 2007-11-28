@@ -117,17 +117,18 @@
     	</delete>
     	<antcall target="add-license"/>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
-				excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
-				etc/schemas/**, docs/GME/**, docs/v3.3-4.0/*.mpp,  docs/v3.3-4.0/*Scope*.doc, referenceLib/**">
+			excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, 
+			etc/schemas/**, referenceLib/**">
 		</zip>
-	<antcall target="dist.prepare" />
-    </target>
-	<target name="build-all" depends="jar.all">
         <copy todir="${dist.dir}">
             <fileset dir="${ws.module.home}/dist">
                 <include name="**/caAdapterWS.war"/>
             </fileset>
         </copy>
+    </target>
+
+	<target name="build-all" depends="jar.all">
+    	<antcall target="dist.prepare" />
     	<antcall target="mmswebstart"/>
     	<antcall target="hl7webstart"/>
     	<antcall target="rdswebstart"/>
@@ -505,7 +506,7 @@
         <copy file="dist/demo_ui.jar" todir="${project.deploy.root}"/>
         <copy file="run.bat" todir="${project.deploy.root}"/>
     </target>
-	
+
     <target name="dist.prepare" depends="copy.modules.lib">
 
         <echo message="build demo_ui.jar...."/>
@@ -524,12 +525,6 @@
     				<fileset file="${config.dir}/logging.properties" />
     	 </copy>
 
-        <mkdir dir="dist/docs/help"/>
-    	<copy todir="${dist.dir}/docs/help">
-    	            <fileset dir="${basedir}/docs/help" >
-    	            	<include name="**/*.*"/>
-    				</fileset>
-    	 </copy>
         <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\deletethisfolder.jar"/>
     </target>

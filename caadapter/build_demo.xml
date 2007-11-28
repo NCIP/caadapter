@@ -29,11 +29,10 @@
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
-			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
-				lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,
-				lib/sqleonardo.jar, lib/ostermill*, lib/jgraph.jar,lib/junit*.jar" />
-			<zipfileset dir=".." includes="docs/help/**, docs/v3.3-4.0/*.doc"
-				excludes="docs/v3.3-4.0/*Scope*.doc"/>
+            <zipfileset dir="." excludes="build.xml, *.war, hl7webstart/**, mmswebstart/**, schemas/**,
+            	lib/*.zip, lib/ant.jar,	lib/sqleonardo.jar,lib/lib/deletethisfolder.jar,
+            	lib/ostermill*, lib/jgraph.jar,lib/junit*.jar" />
+        	<zipfileset dir=".." includes="docs/**"/>
 		</zip>
     </target>
 
@@ -56,12 +55,5 @@
 			<src path="../demo" />
 			<exclude name="test/**"/>
 		</javac>
-	</target>
-	<target name="deploy.webstart"  description="deploy webstart components">
-		 <copy todir="C:/devWeb/jboss-4.0.5.GA/server/default/deploy">
-		      <fileset dir=".">
-		           <include name="*.war"/>
-		       </fileset>
-        </copy>
 	</target>
 </project>
