@@ -99,8 +99,11 @@
             </fileset>
             <fileset dir="${basedir}/etc" excludes="*.html, schemas/**"/>
         </copy>
-    	<copy todir="${build.dir}/etc" file="etc/aboutwin.html"/>
-    	<copy todir="${build.dir}/etc" file="etc/licenseinformation.html"/>
+    	<copy todir="${build.dir}/etc" >
+    		<fileset dir="${basedir}/etc" includes="*.html"/>
+    	</copy>
+    	<!-- copy todir="${build.dir}/etc" file="etc/aboutwin.html"/ -->
+    	<!-- copy todir="${build.dir}/etc" file="etc/licenseinformation.html"/-->
         
         <delete includeemptydirs="true">
             <fileset dir="${dist.dir}" includes="**/*"/>
