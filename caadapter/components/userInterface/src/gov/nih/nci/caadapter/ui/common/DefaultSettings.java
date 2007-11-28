@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.7 2007-11-14 20:55:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.8 2007-11-28 15:05:40 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-11-14 20:55:57 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-11-28 15:05:40 $
  */
 public class DefaultSettings
 {
@@ -87,6 +87,8 @@ public class DefaultSettings
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Config.FRAME_DEFAULT_HEIGHT = (int) screenSize.getHeight() - 60;//considering the existence of underneath task bar.
 		Config.FRAME_DEFAULT_WIDTH = (int) screenSize.getWidth() - 20;
+		installLookAndFeel();
+		installFonts();
 	}
 
 	private static final JFileChooser getJFileChooser(boolean newOne)
@@ -105,14 +107,14 @@ public class DefaultSettings
 		}
 	}
 
-	/**
-	 * Installs all default settings.
-	 */
-	public static void installAll()
-	{
-		installLookAndFeel();
-		installFonts();
-	}
+//	/**
+//	 * Installs all default settings.
+//	 */
+//	public static void installAll()
+//	{
+//		installLookAndFeel();
+//		installFonts();
+//	}
 
 	/**
 	 * Installs the default LookAndFeel.
@@ -526,6 +528,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/11/14 20:55:57  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/09/18 15:25:52  wangeug
  * HISTORY      : modify FileChooser to select Directory
  * HISTORY      :
