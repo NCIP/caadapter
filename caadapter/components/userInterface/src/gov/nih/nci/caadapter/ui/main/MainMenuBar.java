@@ -56,6 +56,7 @@ import gov.nih.nci.caadapter.ui.hl7message.actions.OpenHL7V3MessageAction;
 import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.actions.V2V3MapAction;
+import gov.nih.nci.caadapter.ui.mapping.catrend.actions.NewCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.DefaultAnotateAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.NewObject2DBMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.OpenObjectToDbMapAction;
@@ -81,7 +82,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.22 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.23 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -291,6 +292,13 @@ public class MainMenuBar extends AbstractMenuBar
         NewObject2DBMapAction newObject2DBMapAction = new NewObject2DBMapAction(mainFrame);
         JMenuItem newO2DBMapFileItem = new JMenuItem(newObject2DBMapAction);
         newGroup.add(newO2DBMapFileItem);
+        
+        NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
+        JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
+        newGroup.add(newCSVSpecificationItem);
+        NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
+        JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
+        newGroup.add(mewCsvToXmiMapFileItem);
         actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
         menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newO2DBMapFileItem);
         return newGroup;
@@ -591,6 +599,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.22  2007/09/28 15:52:46  wangeug
+ * HISTORY : disable loading V2 Resource
+ * HISTORY :
  * HISTORY : Revision 1.21  2007/09/27 15:23:49  wuye
  * HISTORY : fixed for web start version
  * HISTORY :

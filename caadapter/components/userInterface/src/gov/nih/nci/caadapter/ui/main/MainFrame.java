@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.14 2007-10-04 18:09:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.15 2007-11-29 14:26:42 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,8 +64,8 @@ import java.util.HashMap;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2007-10-04 18:09:14 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2007-11-29 14:26:42 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -222,6 +222,8 @@ public class MainFrame extends AbstractMainFrame
 	} else if (panel instanceof Database2SDTMMappingPanel) {
         title = "Untitled_" + (++tabcount) + Config.MAP_FILE_DEFAULT_EXTENTION;
     }
+	else
+		title = "Untitled_" + (++tabcount) + Config.MAP_FILE_DEFAULT_EXTENTION;
 	tabbedPane.addTab(title, panel);
 	tabbedPane.setSelectedComponent(panel);
 	//		Log.logInfo(this, "Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
@@ -430,6 +432,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2007/10/04 18:09:14  wangeug
+ * HISTORY      : verify resource based on module
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2007/09/19 16:43:56  wangeug
  * HISTORY      : show missing resources
  * HISTORY      :
