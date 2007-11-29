@@ -57,6 +57,7 @@ import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.actions.V2V3MapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.NewCsvToXmiMapAction;
+import gov.nih.nci.caadapter.ui.mapping.catrend.actions.OpenCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.DefaultAnotateAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.NewObject2DBMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.OpenObjectToDbMapAction;
@@ -69,8 +70,6 @@ import gov.nih.nci.caadapter.ui.specification.hsm.actions.NewHSMAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.OpenHSMAction;
 
 import javax.swing.*;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.23 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.24 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -94,7 +93,8 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, JMenuItem> menuItemMap;
     private Map<String, JMenu> menuMap;
 
-
+    private JMenuItem newCsvItem; //this item is shared by multipleModule
+    
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
         this.mainFrame = mf;//contextManager.getMainFrame();
@@ -292,15 +292,17 @@ public class MainMenuBar extends AbstractMenuBar
         NewObject2DBMapAction newObject2DBMapAction = new NewObject2DBMapAction(mainFrame);
         JMenuItem newO2DBMapFileItem = new JMenuItem(newObject2DBMapAction);
         newGroup.add(newO2DBMapFileItem);
-        
+        actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
+        menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newO2DBMapFileItem);
+     
         NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
         newGroup.add(newCSVSpecificationItem);
         NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
         JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
         newGroup.add(mewCsvToXmiMapFileItem);
-        actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
-        menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newO2DBMapFileItem);
+        actionMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapAction);
+        menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, mewCsvToXmiMapFileItem);
         return newGroup;
     }
 
@@ -434,6 +436,13 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem openO2DBMapFileItem = new JMenuItem(openO2DBMapAction);
         actionMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapAction);
         menuItemMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapFileItem);
+        
+        OpenCsvToXmiMapAction openCsvToXmiMapAction = new OpenCsvToXmiMapAction(mainFrame);
+        JMenuItem openCsvToXmiMapFileItem = new JMenuItem(openCsvToXmiMapAction);
+        actionMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openCsvToXmiMapAction);
+        menuItemMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openCsvToXmiMapFileItem);
+        
+        
         OpenSDTMMapAction openSDTMMapAction = new OpenSDTMMapAction(mainFrame);
         JMenuItem openSDTMMapFile = new JMenuItem(openSDTMMapAction);
         OpenCsvSpecificationAction openCSVSpecificationAction = new OpenCsvSpecificationAction(mainFrame);
@@ -486,6 +495,7 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
             {
                 openMenu.add(openO2DBMapFileItem);
+                openMenu.add(openCsvToXmiMapFileItem);
             }
         }
         return openMenu;
@@ -599,6 +609,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.23  2007/11/29 14:26:42  wangeug
+ * HISTORY : create CSV_TO_XMI mapping module
+ * HISTORY :
  * HISTORY : Revision 1.22  2007/09/28 15:52:46  wangeug
  * HISTORY : disable loading V2 Resource
  * HISTORY :

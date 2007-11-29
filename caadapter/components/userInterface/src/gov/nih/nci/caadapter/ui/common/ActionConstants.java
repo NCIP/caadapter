@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.5 2007-08-30 19:55:33 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.6 2007-11-29 16:47:22 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,10 +40,10 @@ import gov.nih.nci.caadapter.common.util.Config;
  * Define a list of constants that are used by menu and some of action definition.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-30 19:55:33 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-11-29 16:47:22 $
  */
 public interface ActionConstants
 {
@@ -61,12 +61,14 @@ public interface ActionConstants
 	String NEW_HSM_FILE_TXT = Config.HL7_V3_METADATA_MODULE_NAME;
 	String NEW_HSM_FILE = "New " + NEW_HSM_FILE_TXT;
 	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
-
+	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
+	
 	String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
 	String OPEN_MAP_FILE = "Open HL7 v2 to HL7 v3 " + OPEN_MAP_FILE_TXT;
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
 	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
+	String OPEN_CSV2XMI_MAP_FILE = "Open Csv Meta To Xmi Mapping";
 	String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
 	String OPEN_CSV_SPEC = "Open " + OPEN_CSV_SPEC_TXT;
 	String OPEN_HL7_V3_MESSAGE_TXT = NEW_HL7_V3_MESSAGE_TXT;
@@ -96,6 +98,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/08/30 19:55:33  jayannah
+ * HISTORY      : changed the verbage
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/13 15:22:08  wangeug
  * HISTORY      : add new constants :open_dialog_tile_hsm_xml
  * HISTORY      :

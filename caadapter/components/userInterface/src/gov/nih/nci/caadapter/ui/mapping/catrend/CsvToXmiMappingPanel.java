@@ -94,13 +94,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.1 2007-11-29 14:26:31 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.2 2007-11-29 16:47:37 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 	private static final String SELECT_XMI = "Open XMI File...";
@@ -801,9 +801,9 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 									// is fully displayed;
 				// on the flip side, if it is null, it implies it is under
 				// certain construction.
-				contextManager.enableAction(ActionConstants.NEW_O2DB_MAP_FILE,
+				contextManager.enableAction(ActionConstants.NEW_CSV2XMI_MAP_FILE,
 						false);
-				contextManager.enableAction(ActionConstants.OPEN_O2DB_MAP_FILE,
+				contextManager.enableAction(ActionConstants.OPEN_CSV2XMI_MAP_FILE,
 						true);
 			}
 		}
@@ -879,7 +879,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	public Action getDefaultOpenAction() {
 		ContextManager contextManager = ContextManager.getContextManager();
 		return contextManager
-				.getDefinedAction(ActionConstants.OPEN_O2DB_MAP_FILE);
+				.getDefinedAction(ActionConstants.OPEN_CSV2XMI_MAP_FILE);
 	}
 
 	public void actionPerformed(ActionEvent e) {
