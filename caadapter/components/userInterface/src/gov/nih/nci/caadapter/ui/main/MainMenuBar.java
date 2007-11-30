@@ -81,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.24 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.25 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -92,8 +92,6 @@ public class MainMenuBar extends AbstractMenuBar
     private Map<String, AbstractContextAction> actionMap;
     private Map<String, JMenuItem> menuItemMap;
     private Map<String, JMenu> menuMap;
-
-    private JMenuItem newCsvItem; //this item is shared by multipleModule
     
     public MainMenuBar(MainFrame mf)//ContextManager contextManager) {
     {//this.contextManager = contextManager;
@@ -298,6 +296,11 @@ public class MainMenuBar extends AbstractMenuBar
         NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
         newGroup.add(newCSVSpecificationItem);
+        if (actionMap.get(ActionConstants.NEW_CSV_SPEC)==null)
+        {
+            actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
+            menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
+        }
         NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
         JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
         newGroup.add(mewCsvToXmiMapFileItem);
@@ -414,12 +417,20 @@ public class MainMenuBar extends AbstractMenuBar
 
     private JMenu constructNewDatabaseTOSDTMMenu()
     {
-        NewCsvSpecificationAction newCSVSpecificationActionDbToSdtm = new NewCsvSpecificationAction(mainFrame);
-        JMenuItem newCsvToSdtmSpecificationItem1 = new JMenuItem(newCSVSpecificationActionDbToSdtm);
+        
+        
         JMenu newGroup = new JMenu("RDS Mapping and Transformation Service");
         Database2SDTMAction newDB2SDTMAction = new Database2SDTMAction(mainFrame);
         NewSDTMStructureAction newSDTMStructureAction = new NewSDTMStructureAction(mainFrame);
-        newGroup.add(newCsvToSdtmSpecificationItem1);
+                
+        NewCsvSpecificationAction newCsvSpecAtion = new NewCsvSpecificationAction(mainFrame);
+        JMenuItem newCsvSpecItem = new JMenuItem(newCsvSpecAtion);
+        newGroup.add(newCsvSpecItem);
+        if (actionMap.get(ActionConstants.NEW_CSV_SPEC)==null)
+        {
+            actionMap.put(ActionConstants.NEW_CSV_SPEC, newCsvSpecAtion);
+            menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCsvSpecItem);
+        }
         newGroup.add(new JMenuItem(newDB2SDTMAction));
         newGroup.add(new JMenuItem(newSDTMStructureAction));
         return newGroup;
@@ -439,8 +450,8 @@ public class MainMenuBar extends AbstractMenuBar
         
         OpenCsvToXmiMapAction openCsvToXmiMapAction = new OpenCsvToXmiMapAction(mainFrame);
         JMenuItem openCsvToXmiMapFileItem = new JMenuItem(openCsvToXmiMapAction);
-        actionMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openCsvToXmiMapAction);
-        menuItemMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openCsvToXmiMapFileItem);
+        actionMap.put(ActionConstants.OPEN_CSV2XMI_MAP_FILE, openCsvToXmiMapAction);
+        menuItemMap.put(ActionConstants.OPEN_CSV2XMI_MAP_FILE, openCsvToXmiMapFileItem);
         
         
         OpenSDTMMapAction openSDTMMapAction = new OpenSDTMMapAction(mainFrame);
@@ -465,6 +476,8 @@ public class MainMenuBar extends AbstractMenuBar
         // link them together
         JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
         openMenu.setMnemonic('O');
+        //openCSVSpecificationItem is shared by multiple module
+        boolean isOpenCsvAdded=false;
         if (CaadapterUtil.getAllActivatedComponents().isEmpty())
         {
             //set csvToV3 as default
@@ -478,22 +491,31 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
             {
                 openMenu.add(openCSVSpecificationItem);
+                isOpenCsvAdded=true;
+                openMenu.add(openXmlHSMAction);
                 openMenu.add(openHSMFileItem);
                 openMenu.add(openMapFileItem);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
-                openMenu.add(openCSVSpecificationItem);
+            	if (!isOpenCsvAdded)
+            		openMenu.add(openCSVSpecificationItem);
                 openMenu.add(openXmlHSMAction);
                 openMenu.add(openHSMFileItem);
                 openMenu.add(openMapFileItem);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
+            	if (!isOpenCsvAdded)
+            		openMenu.add(openCSVSpecificationItem);
+                
                 openMenu.add(openSDTMMapFile);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
             {
+            	if (!isOpenCsvAdded)
+            		openMenu.add(openCSVSpecificationItem);
+            
                 openMenu.add(openO2DBMapFileItem);
                 openMenu.add(openCsvToXmiMapFileItem);
             }
@@ -609,6 +631,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.24  2007/11/29 16:45:31  wangeug
+ * HISTORY : create CSV_TO_XMI mapping module
+ * HISTORY :
  * HISTORY : Revision 1.23  2007/11/29 14:26:42  wangeug
  * HISTORY : create CSV_TO_XMI mapping module
  * HISTORY :

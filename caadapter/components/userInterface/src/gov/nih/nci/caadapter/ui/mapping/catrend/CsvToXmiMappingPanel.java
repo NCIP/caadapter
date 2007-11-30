@@ -15,12 +15,15 @@ import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
+import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.map.Mapping;
+import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
@@ -94,13 +97,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.2 2007-11-29 16:47:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.3 2007-11-30 17:19:57 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 	private static final String SELECT_XMI = "Open XMI File...";
@@ -414,7 +417,44 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 * @throws Exception
 	 *             changed from protected to pulic by sean
 	 */
-	private ValidatorResults processOpenMapFile(File file) throws Exception {
+	public ValidatorResults processOpenMapFile(File file) throws Exception
+	{
+		
+		long stTime=System.currentTimeMillis();
+		// parse the file.
+		MapParserImpl parser = new MapParserImpl();
+		ValidatorResults validatorResults = parser.parse(file.getParent(), new FileReader(file));
+		if (validatorResults != null && validatorResults.hasFatal())
+		{//immediately return if it has fatal errors.
+			return validatorResults;
+		}
+		Mapping mapping = parser.getMapping();//returnResult.getMapping();
+
+		//build source tree
+		BaseComponent sourceComp = mapping.getSourceComponent();
+		Object sourceMetaInfo = sourceComp.getMeta();
+		File sourceFile = sourceComp.getFile();
+		this.processOpenSourceTree(sourceFile, true, true);
+//		buildSourceTree(sourceMetaInfo, sourceFile, false);
+		//build target tree
+		BaseComponent targetComp = mapping.getTargetComponent();
+		Object targetMetaInfo = targetComp.getMeta();
+		File targetFile = targetComp.getFile();
+//		buildTargetTree(targetMetaInfo, targetFile, false);
+		processOpenTargetTree(targetFile, true, true);
+//		middlePanel.getMappingDataManager().setMappingData(mapping);
+
+		//set both invisible since no use to allow user to change while mapping exists.
+//		if (mapping.getFunctionComponent().size() > 0 || mapping.getMaps().size() > 0)
+//		{
+//			openSourceButton.setEnabled(false);
+//			openTargetButton.setEnabled(false);
+//		}
+		setSaveFile(file);
+		System.out.println("CsvToXmiMappingPanel.processOpenMapFile():"+(System.currentTimeMillis()-stTime));
+
+		return validatorResults;
+	/*
 		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
 
 		// Read the XMI Mapping attributes
@@ -585,6 +625,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 					.showMessageDialog(	null, "The .map or .xmi file selected is not valid. Please check the export settings in EA and try again.");
 		}
 		return null;
+		*/
 	}
 
 	//Recursive loop required to find all primaryKeys
@@ -794,7 +835,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		Action action = null;
 		ContextManager contextManager = ContextManager.getContextManager();
 		Map<String, Action> actionMap = contextManager.getClientMenuActions(
-				MenuConstants.DB_TO_OBJECT, menu_name);
+				MenuConstants.CSV_TO_XMI, menu_name);
 		if (MenuConstants.FILE_MENU_NAME.equals(menu_name)) {
 			JRootPane rootPane = this.getRootPane();
 			if (rootPane != null) {// rootpane is not null implies this panel
@@ -813,63 +854,62 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			contextManager.removeClientMenuAction(MenuConstants.CSV_SPEC,
 					menu_name, "");
 
-        action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.SaveObjectToDbMapAction(
+        action = new gov.nih.nci.caadapter.ui.mapping.catrend.actions.SaveCsvToXmiMapAction(
 				this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE, action);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.SAVE, action);
 		action.setEnabled(true);
 
-		action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.SaveAsObjectToDbMapAction(
+		action = new gov.nih.nci.caadapter.ui.mapping.catrend.actions.SaveAsCsvToXmiMapAction(
 				this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.SAVE_AS, action);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.SAVE_AS,
 				action);
 		action.setEnabled(true);
 
 		action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.AnotateAction(
 				this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.ANOTATE, action);
-		action.setEnabled(true);
+		action.setEnabled(false);
 
-		action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.ValidateObjectToDbMapAction(
+		action = new gov.nih.nci.caadapter.ui.mapping.catrend.actions.ValidateCsvToXmiMapAction(
 				this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.VALIDATE, action);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.VALIDATE,
 				action);
 		action.setEnabled(true);
 
 		action = new gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction(
 				this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.CLOSE, action);
 		action.setEnabled(true);
 
 		action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.ValidateObjectToDbMapAction(
 				this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.REPORT_MENU_NAME,
 				ActionConstants.GENERATE_REPORT, action);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.TOOLBAR_MENU_NAME,
 				ActionConstants.GENERATE_REPORT, action);
 		action.setEnabled(true);
 
 		action = new RefreshMapAction(this);
-		contextManager.addClientMenuAction(MenuConstants.DB_TO_OBJECT,
+		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.REFRESH,
 				action);
-		action.setEnabled(true);
+		action.setEnabled(false);
 
 		actionMap = contextManager.getClientMenuActions(
-				MenuConstants.DB_TO_OBJECT, menu_name);
-		// }
+				MenuConstants.CSV_TO_XMI, menu_name);
 		return actionMap;
 	}
 
@@ -878,8 +918,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 */
 	public Action getDefaultOpenAction() {
 		ContextManager contextManager = ContextManager.getContextManager();
-		return contextManager
-				.getDefinedAction(ActionConstants.OPEN_CSV2XMI_MAP_FILE);
+		return contextManager.getDefinedAction(ActionConstants.OPEN_CSV2XMI_MAP_FILE);
 	}
 
 	public void actionPerformed(ActionEvent e) {

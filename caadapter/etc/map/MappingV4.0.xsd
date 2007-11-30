@@ -68,7 +68,7 @@
   <xs:element name="linkpointer">
       <xs:complexType>
         <xs:attribute name="kind" use="required" type="xs:NMTOKEN"/>
-        <xs:attribute name="xmlPath" use="required" type="xs:NMTOKEN"/>
+        <xs:attribute name="xmlPath" use="required" type="xs:string"/> <!-- NMTOKEN"/ -->
       </xs:complexType>
   </xs:element>
   <!--
