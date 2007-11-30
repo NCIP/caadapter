@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.2 2007-11-30 14:40:33 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.3 2007-11-30 20:57:53 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,11 +36,15 @@ package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
 
 import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
+import gov.nih.nci.caadapter.hl7.map.Mapping;
+import gov.nih.nci.caadapter.hl7.map.impl.MapBuilderImpl;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
@@ -56,10 +60,10 @@ import org.jdom.output.XMLOutputter;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-11-30 14:40:33 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-11-30 20:57:53 $
  */
 public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 {
@@ -75,7 +79,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.2 2007-11-30 14:40:33 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.3 2007-11-30 20:57:53 schroedn Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -138,91 +142,41 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 */
 	protected boolean processSaveFile(File file) throws Exception
 	{		
-		System.out.println("SaveAsCsvToXmiMapAction.processSaveFile()..:"+file.getAbsolutePath());
-		boolean success = false;
-		try 
-		{
-            String savingMessage = "Saving file please wait...";
-
-            JFrame frame = new JFrame(savingMessage);
-
-            JTextArea comp = new JTextArea();
-            comp.setText( "Saving file please wait...");
-            frame.getContentPane().add( comp );
-
-            int width = 250;
-            int height = 75;
-            frame.setSize(width, height);
-            DefaultSettings.centerWindow(frame);
-            frame.setVisible(true);
-
-            String mappingFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
-			File mappingFile = new File( mappingFileName );
-			
-			// Create .MAP file with Mapping attribute tagged values			
-			success = saveMappingFile( mappingFile );			
-						
-			// Create .XMI file with Mapping attribute tagged values
-			String xmiFileName = file.getAbsolutePath().replaceAll(".map", ".xmi");
-			XMIGenerator generator = new XMIGenerator( mappingFile.getAbsolutePath(), xmiFileName );
-			generator.annotateXMI();
-
-			mappingPanel.setSaveFile(file);
-
-            frame.setVisible( false );
-            frame.dispose();
-
-            JOptionPane.showMessageDialog( mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE );
-        }
-		catch (Exception ex) 
-		{
-			ex.printStackTrace();
-		}		
-			
-		return success;	
-	}
-	
-	/**
-	 * 
-	 * @param file
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean saveMappingFile(File file) throws Exception 
-	{		
 		preActionPerformed(mappingPanel);
+		MappingDataManager mappingManager = mappingPanel.getMappingDataManager();
+		Mapping mappingData = mappingManager.retrieveMappingData(true);
+		MapBuilderImpl builder = new MapBuilderImpl();
+		FileOutputStream fw = null;
 		BufferedOutputStream bw = null;
 		boolean oldChangeValue = mappingPanel.isChanged();
-		
 		try
 		{
-        	 CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
-        	 myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName());
-        	
-        	//Creating mapping file        
-        	 myGenerator.createLocalMappingFile(); 
-        	 XMLOutputter outp = new XMLOutputter();
-     	     outp.setFormat(Format.getPrettyFormat());
-
-     	     try {
-     	    	FileOutputStream myStream = new FileOutputStream(file);
-     	    	outp.output(myGenerator.getDocument(), myStream);
-     	    	myStream.close();
-     	     } catch (Exception ex) {
-     	    	ex.printStackTrace();
-     	     }
-     	         	   
+			fw = new FileOutputStream(file);
+			bw = new BufferedOutputStream(fw);
+			builder.build(bw, mappingData);
+			if (!GeneralUtilities.areEqual(defaultFile, file))
+			{//not equal, change it.
+				removeFileUsageListener(defaultFile, mappingPanel);
+				defaultFile = file;
+			}
 			//clear the change flag.
-     	    mappingPanel.setChanged(false);
-     	   return true;   
+			mappingPanel.setChanged(false);
+			//try to notify affected panels
+			postActionPerformed(mappingPanel);
+
+			JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+
+			return true;
 		}
 		catch(Throwable e)
 		{
 			//restore the change value since something occurred and believe the save process is aborted.
 			mappingPanel.setChanged(oldChangeValue);
-			
 			//rethrow the exeception
+			e.printStackTrace();
 			throw new Exception(e);
+
+//			return false;
 		}
 		finally
 		{
@@ -232,17 +186,22 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 				if(bw!=null)
 				{
 					bw.close();
+					//the output stream will flush and assign the timestamp upon closure.
+					//moved the setSaveFile() call here so as to record the right timestamp of last modified.
+					mappingPanel.setSaveFile(file);
 				}
-				//mappingPanel.setSaveFile(file);
 			}
 			catch(Throwable e)
 			{//intentionally ignored.
 			}
 		}
-	}	
+	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/11/30 14:40:33  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/11/29 16:47:52  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :

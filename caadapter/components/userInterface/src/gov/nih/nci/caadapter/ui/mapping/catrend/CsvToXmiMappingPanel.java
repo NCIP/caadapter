@@ -5,34 +5,22 @@
 
 package gov.nih.nci.caadapter.ui.mapping.catrend;
 
-import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.common.BaseResult;
-import gov.nih.nci.caadapter.common.Message;
-import gov.nih.nci.caadapter.common.MessageResources;
-import gov.nih.nci.caadapter.common.MetaObject;
-import gov.nih.nci.caadapter.common.MetaObjectImpl;
-import gov.nih.nci.caadapter.common.MetaParser;
-import gov.nih.nci.caadapter.common.SDKMetaData;
+import gov.nih.nci.caadapter.common.*;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
-import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
-import gov.nih.nci.caadapter.ui.common.ActionConstants;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.ui.common.MappableNode;
-import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
+import gov.nih.nci.caadapter.ui.common.*;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
@@ -43,69 +31,41 @@ import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.actions.CsvToXmiTargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
-import gov.nih.nci.caadapter.ui.mapping.mms.actions.MmsTargetTreeDropTransferHandler;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
-import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.dnd.DnDConstants;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
-
+import gov.nih.nci.ncicb.xmiinout.domain.*;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
+import java.awt.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.util.*;
+import java.util.List;
 
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.3 2007-11-30 17:19:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.4 2007-11-30 21:00:02 schroedn Exp $";
 
-    private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
+    private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
 	private static final String SELECT_XMI = "Open XMI File...";
     private static final String SELECT_CSV = "Open CSV Meta File...";
     private static final String SAVE_MAP = "Save Map File...";
@@ -286,12 +246,12 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		
 		 tTree.setCellRenderer(new MMSRenderer());
         // instantiate the "DropTransferHandler"
-		mmsTargetTreeDropTransferHandler = new MmsTargetTreeDropTransferHandler(
+		csvToXmiTargetTreeDropTransferHandler = new CsvToXmiTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
 	}
 
 	protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler() {
-		return this.mmsTargetTreeDropTransferHandler;
+		return this.csvToXmiTargetTreeDropTransferHandler;
 	}
 
 	/**
@@ -697,7 +657,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		{
 			getPackages( pkg2 );
 		}
-	}
+	}	
 	
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
@@ -940,8 +900,11 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			}
 			else if (SAVE_MAP.equals(command))
 			{
-				System.out.println("Save CSV to XMI Mapping...........");
-			}
+				System.out.println("Now Save CSV to XMI Mapping...........");
+
+//                Action action = new gov.nih.nci.caadapter.ui.mapping.catrend.actions.SaveAsCsvToXmiMapAction(this);
+//                action.setEnabled(true);
+            }
 			if (!everythingGood) {
 				Message msg = MessageResources
 						.getMessage("GEN3", new Object[0]);
@@ -954,44 +917,10 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		}
 	}
 
-	public void saveMappingFile() {
-		File file = getSaveFile();		
-		File mapFile = new File(file.getAbsolutePath().replaceAll(".xmi", ".map"));
-		
-		if (file == null) {
-			file = DefaultSettings
-					.getUserInputOfFileFromGUI(this,
-							Config.MAP_FILE_DEFAULT_EXTENTION, "Save As...",
-							true, true);
-			if (file == null) {
-				// user cancelled the action
-				return;
-			}
-		}
-	
-		try {
-			CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
-			myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName().replaceAll(".xmi", ".map"));
-			// Creating mapping file		
-			myGenerator.createLocalMappingFile();
-			XMLOutputter outp = new XMLOutputter();
-			outp.setFormat(Format.getPrettyFormat());
-	
-			try {
-				FileOutputStream myStream = new FileOutputStream(mapFile);
-				outp.output(myGenerator.getDocument(), myStream);
-				myStream.close();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			// clear the change flag.
-			setChanged(false);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			setSaveFile(mapFile);
-		}
-	}
+	public void saveMappingFile()
+    {
+
+    }
 
 	/**
 	 * Explicitly reload information from the internal given file.

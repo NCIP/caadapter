@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.5 2007-07-20 17:02:18 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.6 2007-11-30 20:57:17 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,34 +34,20 @@
 
 package gov.nih.nci.caadapter.hl7.map.impl;
 
-import gov.nih.nci.caadapter.castor.map.impl.C_component;
-import gov.nih.nci.caadapter.castor.map.impl.C_components;
-import gov.nih.nci.caadapter.castor.map.impl.C_data;
-import gov.nih.nci.caadapter.castor.map.impl.C_link;
-import gov.nih.nci.caadapter.castor.map.impl.C_linkpointer;
-import gov.nih.nci.caadapter.castor.map.impl.C_links;
-import gov.nih.nci.caadapter.castor.map.impl.C_mapping;
-import gov.nih.nci.caadapter.castor.map.impl.C_source;
-import gov.nih.nci.caadapter.castor.map.impl.C_target;
-import gov.nih.nci.caadapter.castor.map.impl.C_view;
-import gov.nih.nci.caadapter.castor.map.impl.C_views;
+import gov.nih.nci.caadapter.castor.map.impl.*;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
+import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-//import gov.nih.nci.caadapter.hl7.clone.meta.HL7V3Meta;
-//import gov.nih.nci.caadapter.hl7.database.meta.DatabaseMeta;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
-import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
-import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
-import gov.nih.nci.caadapter.hl7.map.Map;
-import gov.nih.nci.caadapter.hl7.map.Mapping;
-import gov.nih.nci.caadapter.hl7.map.MappingException;
-import gov.nih.nci.caadapter.common.map.View;
+import gov.nih.nci.caadapter.hl7.map.*;
+import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.ValidationException;
@@ -83,14 +69,14 @@ import java.util.List;
  * Builder of map files.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.5 $
+ * @version    $Revision: 1.6 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.5 2007-07-20 17:02:18 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.6 2007-11-30 20:57:17 schroedn Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -167,8 +153,18 @@ public class MapBuilderImpl {
             String filePath = baseComponent.getFileAbsolutePath();
             if (filePath.startsWith(FileUtil.getWorkingDirPath())) filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
             	cComponent.setLocation(filePath);
-            if (metaObject ==null ||metaObject instanceof DatatypeBaseObject)
+            if ( metaObject == null )
+            {
+                if( filePath.contains(".xmi") )
+                {
+                    cComponent.setKind("xmi");
+                } else {
+                    cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+                }
+            }
+            else if (metaObject instanceof DatatypeBaseObject) {
             	cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+            }
             else if (metaObject instanceof CSVMeta) {
                 cComponent.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
             }
@@ -262,8 +258,25 @@ public class MapBuilderImpl {
             targetPointer.setXmlPath(targetmap.getDataXmlPath());
             if (targetmap.isComponentOfSourceType())
             	targetPointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
-            else if (targetmap.isComponentOfTargetType())
-            	targetPointer.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+            else if (targetmap.isComponentOfTargetType()){
+                targetPointer.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+
+                if( targetmap.getMetaObject() instanceof TableMetadata ) {
+                   targetPointer.setKind( "xmi" );
+
+                   TableMetadata table = (TableMetadata) targetmap.getMetaObject();
+                   String strTable = table.getXPath();
+                   System.out.println("table xPath:" + strTable );
+                   targetPointer.setXmlPath( strTable );
+                }
+                else if( targetmap.getMetaObject() instanceof ColumnMetadata ) {
+                   targetPointer.setKind( "xmi" );
+                   ColumnMetadata column = (ColumnMetadata) targetmap.getMetaObject();
+                   targetPointer.setXmlPath( column.getXPath() );
+                }
+            }
+
+
             else if (targetmap.isComponentOfFunctionType())
             {
             	targetPointer.setKind(Config.MAP_COMPONENT_FUNCTION_TYPE);
