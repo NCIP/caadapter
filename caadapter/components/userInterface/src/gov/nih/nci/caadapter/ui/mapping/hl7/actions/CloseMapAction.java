@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/actions/CloseMapAction.java,v 1.1 2007-07-03 19:37:42 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/actions/CloseMapAction.java,v 1.2 2007-11-30 14:40:53 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,8 +48,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:37:42 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-11-30 14:40:53 $
  */
 public class CloseMapAction extends DefaultContextCloseAction //implements ContextManagerClient
 {
@@ -83,12 +83,16 @@ public class CloseMapAction extends DefaultContextCloseAction //implements Conte
 			cm.enableAction(ActionConstants.OPEN_MAP_FILE, true);
 			cm.enableAction(ActionConstants.NEW_O2DB_MAP_FILE, true);
 			cm.enableAction(ActionConstants.NEW_MAP_FILE, true);
+			cm.enableAction(ActionConstants.NEW_CSV2XMI_MAP_FILE, true);
 		}
 		return true;
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:37:42  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2006/10/23 16:24:35  wuye
  * HISTORY      : Added code to lock & unlock new object-2-db mapping menu.
  * HISTORY      :

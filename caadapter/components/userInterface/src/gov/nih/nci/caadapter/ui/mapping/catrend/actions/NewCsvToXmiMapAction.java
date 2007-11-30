@@ -25,12 +25,12 @@ import java.util.ArrayList;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-11-29 14:26:22 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-11-30 14:41:37 $
  */
 public class NewCsvToXmiMapAction extends AbstractContextAction
 		{
-	private static final String COMMAND_NAME = "Csv to XMI Mapping";
+	private static final String COMMAND_NAME = "CSV to XMI Mapping";
 	private static final Character COMMAND_MNEMONIC = new Character('X');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false);
 
@@ -107,6 +107,9 @@ public class NewCsvToXmiMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/11/29 14:26:22  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/10/04 18:09:23  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

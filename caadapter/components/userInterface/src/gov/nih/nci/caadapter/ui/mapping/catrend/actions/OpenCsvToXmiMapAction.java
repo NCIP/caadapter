@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/OpenCsvToXmiMapAction.java,v 1.1 2007-11-29 16:47:52 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/OpenCsvToXmiMapAction.java,v 1.2 2007-11-30 14:39:46 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,6 +47,7 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultContextOpenAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManagerClient;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
+import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.mms.Object2DBMappingPanel;
 
 import javax.swing.*;
@@ -66,14 +67,14 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-11-29 16:47:52 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-11-30 14:39:46 $
  */
 public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 {
-	protected static String COMMAND_NAME = ActionConstants.OPEN_CSV2XMI_MAP_FILE;
+	protected static String COMMAND_NAME = ActionConstants.OPEN_CSV2XMI_MAP_FILE.substring(5);//remove the leading "open" 
 	protected static Character COMMAND_MNEMONIC = new Character('O');
-	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_5, Event.CTRL_MASK + Event.SHIFT_MASK, false);
+	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_6, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	protected static String TOOL_TIP_DESCRIPTION = "Open a Csv Meta To XMI Mapping File";
 
     private transient File openFile;
@@ -119,7 +120,7 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 	 */
 	protected Class getContextClientClass()
 	{
-		return Object2DBMappingPanel.class;
+		return CsvToXmiMappingPanel.class;
 	}
 
 	/**
@@ -140,7 +141,7 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 	 */
 	protected void launchPanel(final ContextManagerClient panel, final File file)
 	{
-		final Object2DBMappingPanel mappingPanel  = (Object2DBMappingPanel) panel;
+		final CsvToXmiMappingPanel mappingPanel  = (CsvToXmiMappingPanel) panel;
 		//have to add the new tab so as the panel may update its panel title in the tabbed pane.
 		SwingWorker worker = new SwingWorker()
 		{
@@ -178,16 +179,9 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 				try
 				{
                     GeneralUtilities.setCursorWaiting(mainFrame);
-					if( file.getAbsolutePath().contains(".map") || file.getAbsolutePath().contains(".MAP"))
-					{
-						validatorResults = mappingPanel.processOpenOldMapFile(file);
-						mappingPanel.setChanged(false);
-					}
-					else
-					{
+
 						validatorResults = mappingPanel.processOpenMapFile(file);
 						mappingPanel.setChanged(false);
-					}
 					Thread.sleep(1);
 					
 //					everythingGood = handleValidatorResults(validatorResults);
@@ -245,7 +239,7 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 			return isSuccessfullyPerformed();
 		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
-				Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
+				Config.MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
 		if (file != null)
 		{
 			openFile = file;
@@ -264,6 +258,9 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/11/29 16:47:52  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/10/04 18:09:23  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

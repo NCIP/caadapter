@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.10 2007-10-26 16:39:41 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.11 2007-11-30 14:41:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -91,14 +91,14 @@ import java.util.Set;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.10 $
- * @date $Date: 2007-10-26 16:39:41 $
+ * @version $Revision: 1.11 $
+ * @date $Date: 2007-11-30 14:41:08 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.10 2007-10-26 16:39:41 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.11 2007-11-30 14:41:08 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -195,7 +195,18 @@ public class MapParserImpl {
                 } 
                 else if (Config.FUNCTION_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
                     component = generateFunctionComponent(cComponent, kind);
-                } else {
+                } else if(kind.equalsIgnoreCase("xmi"))
+                {
+                	//create xmi component
+                	File xmiFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
+                    component = new BaseComponent();
+                    component.setType(cComponent.getType());
+                    component.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));//cComponent.getXmlPath());
+                    component.setKind(kind);
+                    component.setFile(xmiFile);
+                	
+                }
+                else {
                     throw new MappingException("Component kind not understood : " + kind, null);
                 }
                 // set the component in the Mapping Object.

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.1 2007-11-29 16:47:52 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.2 2007-11-30 14:40:33 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,7 +43,6 @@ import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 
 import java.awt.event.ActionEvent;
-import java.awt.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,8 +58,8 @@ import org.jdom.output.XMLOutputter;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-11-29 16:47:52 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-11-30 14:40:33 $
  */
 public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 {
@@ -76,7 +75,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.1 2007-11-29 16:47:52 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.2 2007-11-30 14:40:33 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -106,7 +105,6 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	{
 		super(name, icon, null);
 		this.mappingPanel = mappingPanel;
-//		setAdditionalAttributes();
 	}
 
 	protected boolean doAction(ActionEvent e) throws Exception
@@ -123,7 +121,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 		}
 		
 		//Select file name 
-		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
+		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if (file != null)
 		{
 			setSuccessfullyPerformed(processSaveFile(file));
@@ -140,6 +138,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 */
 	protected boolean processSaveFile(File file) throws Exception
 	{		
+		System.out.println("SaveAsCsvToXmiMapAction.processSaveFile()..:"+file.getAbsolutePath());
 		boolean success = false;
 		try 
 		{
@@ -233,8 +232,6 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 				if(bw!=null)
 				{
 					bw.close();
-					//the output stream will flush and assign the timestamp upon closure.
-					//moved the setSaveFile() call here so as to record the right timestamp of last modified.
 				}
 				//mappingPanel.setSaveFile(file);
 			}
@@ -246,6 +243,9 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/11/29 16:47:52  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/09/20 16:40:14  schroedn
  * HISTORY      : License text
  * HISTORY      :

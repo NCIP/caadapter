@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/MenuConstants.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/MenuConstants.java,v 1.2 2007-11-30 14:38:57 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,8 +40,8 @@ package gov.nih.nci.caadapter.ui.common.context;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-11-30 14:38:57 $
  */
 public interface MenuConstants
 {
@@ -61,10 +61,15 @@ public interface MenuConstants
 	String SDTM_TO_HL7V3="SDTM_TO_HL7V3";
 	String DB_TO_SDTM="DB_TO_SDTM";
 	String DB_TO_OBJECT="DB_TO_OBJECT";
+	String CSV_TO_XMI="CSV_TO_XMI";
+	
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:25  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
