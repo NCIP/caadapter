@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.5 2007-07-03 18:37:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.6 2007-12-03 15:25:47 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -70,8 +70,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-07-03 18:37:48 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-12-03 15:25:47 $
  */
 public final class UIHelper
 {
@@ -368,6 +368,12 @@ public final class UIHelper
 			DefaultMappableTreeNode root = (DefaultMappableTreeNode) treeRoot;
 			result = (MappableNode)findTreeNodeWithXmlPath(root, (String)dtObjectXmlPath);
 		}
+		else if (treeRoot instanceof DefaultMutableTreeNode)
+		{
+			DefaultMutableTreeNode rootNode =(DefaultMutableTreeNode)treeRoot;
+			result = (MappableNode)findTreeNodeWithXmlPath(rootNode, (String)dtObjectXmlPath);
+		}
+			
 		if(result == null)
 	    {
 	            Log.logError(internalInstance, (new StringBuilder()).append("Could not find the datatypeBaseObject '").append(dtObjectXmlPath).append("' in the given tree rooted by '").append(treeRoot).append("'.").toString());
@@ -385,6 +391,20 @@ public final class UIHelper
             DatatypeBaseObject dtUserObj = (DatatypeBaseObject)userObj;
             if(dtUserObj.getXmlPath().equals(nodeXmlPath))
                 return treeNode;
+        }
+        else if (userObj instanceof TableMetadata)
+        {
+        	TableMetadata tableMeta=(TableMetadata)userObj;
+        	if(tableMeta.getXPath().equals(nodeXmlPath))
+                return treeNode;
+        	
+        }
+        else if (userObj instanceof ColumnMetadata)
+        {
+        	ColumnMetadata colMeta=(ColumnMetadata)userObj;
+        	if(colMeta.getXPath().equals(nodeXmlPath))
+                return treeNode;
+        	
         }
 
         for(Enumeration childEnum = treeNode.children(); childEnum.hasMoreElements();)
@@ -434,6 +454,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/07/03 18:37:48  wangeug
+ * HISTORY      : construct map node with xmlpath
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/06/14 15:44:58  wangeug
  * HISTORY      : set link color of target table based on column type:
  * HISTORY      : TYPE_ATTRIBUTE or TYPE_ASSOCIATION
