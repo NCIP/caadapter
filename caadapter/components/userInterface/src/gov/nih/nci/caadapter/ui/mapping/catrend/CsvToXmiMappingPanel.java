@@ -11,13 +11,13 @@ import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
-import gov.nih.nci.caadapter.common.util.FileUtil;
+
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
-import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
+
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.*;
@@ -34,14 +34,9 @@ import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.CsvToXmiTargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
-import gov.nih.nci.ncicb.xmiinout.domain.*;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.dnd.DnDConstants;
@@ -49,33 +44,26 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
-import java.util.List;
+
 
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.4 2007-11-30 21:00:02 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.5 2007-12-03 15:37:25 wangeug Exp $";
 
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
 	private static final String SELECT_XMI = "Open XMI File...";
     private static final String SELECT_CSV = "Open CSV Meta File...";
-    private static final String SAVE_MAP = "Save Map File...";
     
-	private static HashSet<String> primaryKeys = new HashSet<String>();
-	private static HashSet<String> lazyKeys = new HashSet<String>();
-    private static HashSet<String> clobKeys = new HashSet<String>();
-    private static HashSet<String> discriminatorKeys = new HashSet<String>();
-    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
-
 	public CsvToXmiMappingPanel() {
 		this("CsvToXmiMapping");
 	}
@@ -172,10 +160,6 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		middlePanel.setSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3),
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-        JButton saveMapButton = new JButton(SAVE_MAP);
-		centerFuncationPanel.add(saveMapButton, BorderLayout.CENTER);
-
-		saveMapButton.addActionListener(this);
 		centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
 		centerFuncationPanel.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
@@ -200,30 +184,16 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	protected TreeNode loadSourceTreeData(Object metaInfo, File file)
 			throws Exception {
-		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
-		String fileExtension = FileUtil.getFileExtension(file, true);
-
 		TreeNode node;
-		if (Config.CSV_METADATA_FILE_DEFAULT_EXTENTION.equals(fileExtension))
-		{
-			// generate GUI nodes from object graph.
-			SCMMapSourceNodeLoader scmMapSourceNodeLoader = new SCMMapSourceNodeLoader();
-			node = scmMapSourceNodeLoader.loadData(metaInfo);
-		}
-		else
-		{
-			throw new ApplicationException("Unknow Source File Extension:" + file,
-				new IllegalArgumentException());
-		}
-
+		SCMMapSourceNodeLoader scmMapSourceNodeLoader = new SCMMapSourceNodeLoader();
+		node = scmMapSourceNodeLoader.loadData(metaInfo);
 		return node;
 	}
 
 	protected TreeNode loadTargetTreeData(Object metaInfo, File absoluteFile)
 			throws Exception {
 		TreeNode nodes = new DefaultMutableTreeNode("Data Model");
-		ModelMetadata myModel = ModelMetadata.getInstance();
-		LinkedHashMap myMap = myModel.getModelMetadata();
+		LinkedHashMap myMap = ModelMetadata.getInstance().getModelMetadata();
 
 		Set keySet = myMap.keySet();
 		Iterator keySetIterator = keySet.iterator();
@@ -231,9 +201,9 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			String key = (String) keySetIterator.next();
 			if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) {
 				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
-					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
+					constructXmiNTreeNde(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
 				} else {
-					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
+					constructXmiNTreeNde(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
 				}
 			}
 		}
@@ -244,33 +214,17 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			boolean isToResetGraph) throws Exception {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
 		
-		 tTree.setCellRenderer(new MMSRenderer());
+		tTree.setCellRenderer(new MMSRenderer());
         // instantiate the "DropTransferHandler"
 		csvToXmiTargetTreeDropTransferHandler = new CsvToXmiTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
 	}
 
 	protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler() {
-		return this.csvToXmiTargetTreeDropTransferHandler;
+		return csvToXmiTargetTreeDropTransferHandler;
 	}
 
-	/**
-	 * Returns an ImageIcon, or null if the path was invalid.
-	 */
-	protected static ImageIcon createImageIcon(String path)
-	{
-	    java.net.URL imgURL = DefaultSettings.class.getClassLoader().getResource("images/" + path);
-	    if (imgURL != null)
-	    {
-	        return new ImageIcon(imgURL);
-	    } else
-	    {
-	        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
-	        return null;
-	    }
-	}
-
-	private void construct_node(TreeNode node, String fullName, int prefixLen, boolean isTable, boolean isSourceNode)
+	private void constructXmiNTreeNde(TreeNode node, String fullName, int prefixLen, boolean isTable, boolean isSourceNode)
 	{
 		String name = fullName.substring(prefixLen, fullName.length());
 		String[] pks = name.split("\\.");
@@ -330,12 +284,10 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private boolean processOpenSourceTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
 
-		MetaParser parser = null;
-		MetaObject metaInfo = null;
 		BaseResult returnResult = null;
 
 		// parse the file into a meta object graph.
-		parser = new CSVMetaParserImpl();
+		MetaParser parser = new CSVMetaParserImpl();
 		returnResult = parser.parse(new FileReader(file));
 		ValidatorResults validatorResults = returnResult.getValidatorResults();
 		if (validatorResults != null && validatorResults.hasFatal())
@@ -345,7 +297,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			return false;
 		}
 		//default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-		metaInfo = ((CSVMetaResult) returnResult).getCsvMeta();
+		MetaObject metaInfo = ((CSVMetaResult) returnResult).getCsvMeta();
 
 		buildSourceTree(metaInfo, file, isToResetGraph);
 		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
@@ -379,8 +331,6 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 */
 	public ValidatorResults processOpenMapFile(File file) throws Exception
 	{
-		
-		long stTime=System.currentTimeMillis();
 		// parse the file.
 		MapParserImpl parser = new MapParserImpl();
 		ValidatorResults validatorResults = parser.parse(file.getParent(), new FileReader(file));
@@ -392,405 +342,20 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 		//build source tree
 		BaseComponent sourceComp = mapping.getSourceComponent();
-		Object sourceMetaInfo = sourceComp.getMeta();
 		File sourceFile = sourceComp.getFile();
-		this.processOpenSourceTree(sourceFile, true, true);
-//		buildSourceTree(sourceMetaInfo, sourceFile, false);
+		boolean srcTreeBuild=processOpenSourceTree(sourceFile, true, true);
 		//build target tree
 		BaseComponent targetComp = mapping.getTargetComponent();
-		Object targetMetaInfo = targetComp.getMeta();
 		File targetFile = targetComp.getFile();
-//		buildTargetTree(targetMetaInfo, targetFile, false);
-		processOpenTargetTree(targetFile, true, true);
-//		middlePanel.getMappingDataManager().setMappingData(mapping);
-
-		//set both invisible since no use to allow user to change while mapping exists.
-//		if (mapping.getFunctionComponent().size() > 0 || mapping.getMaps().size() > 0)
-//		{
-//			openSourceButton.setEnabled(false);
-//			openTargetButton.setEnabled(false);
-//		}
+		boolean targetTreeBuild=processOpenTargetTree(targetFile, true, true);
+		middlePanel.getMappingDataManager().setMappingData(mapping);
 		setSaveFile(file);
-		System.out.println("CsvToXmiMappingPanel.processOpenMapFile():"+(System.currentTimeMillis()-stTime));
-
 		return validatorResults;
-	/*
-		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-
-		// Read the XMI Mapping attributes
-		String fileName = file.getAbsolutePath();
-
-		boolean success = CumulativeMappingGenerator.init(fileName);
-
-		if (success) {
-			ModelMetadata myModel = ModelMetadata.getInstance();
-
-			if (myModel == null) {
-				JOptionPane.showMessageDialog(null, "Error opening XMI file");
-			}
-			boolean isSuccess;
-			boolean status = false;
-			String xmiFileName = "";
-
-			// Read XMI File and construct Target and Source Trees
-			status = processOpenSourceTree(file, true, true);
-
-			TreeModel sModel = sTree.getModel();
-			DefaultMutableTreeNode rootSTree = (DefaultMutableTreeNode) sModel
-					.getRoot();
-
-			TreeModel tModel = tTree.getModel();
-			DefaultMutableTreeNode rootTTree = (DefaultMutableTreeNode) tModel
-					.getRoot();
-
-			Hashtable sourceNodes = new Hashtable();
-			Hashtable targetNodes = new Hashtable();
-
-			buildHash(sourceNodes, rootSTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-			buildHash(targetNodes, rootTTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
-
-			MappingImpl newMappingImpl = new MappingImpl();
-			newMappingImpl.setSourceComponent(null);
-			newMappingImpl.setTargetComponent(null);
-
-			middlePanel.getMappingDataManager().setMappingData(newMappingImpl);
-			middlePanel.getMappingDataManager().clearAllGraphCells();
-
-			setSaveFile(file);
-
-			// Lets try to get all the details
-			UMLModel myUMLModel = myModel.getModel();
-			UMLClass client = null;
-			UMLClass supplier = null;
-
-			for (UMLDependency dep : myUMLModel.getDependencies()) {
-				String sourceXpath = "";
-				String targetXpath = "";
-
-				client = (UMLClass) dep.getClient();
-				supplier = (UMLClass) dep.getSupplier();
-
-				StringBuffer pathKey = new StringBuffer(ModelUtil
-						.getFullPackageName(client));
-				targetXpath = pathKey + "." + client.getName();
-
-				pathKey = new StringBuffer(ModelUtil
-						.getFullPackageName(supplier));
-				sourceXpath = pathKey + "." + supplier.getName();
-
-				DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
-						.get(sourceXpath);
-				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
-						.get(targetXpath);
-
-				if (sourceNode == null || targetNode == null)
-					continue;
-
-				SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
-						.getUserObject();
-				SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
-						.getUserObject();
-
-				sourceSDKMetaData.setMapped(true);
-				isSuccess = cumulativeMappingGenerator.map(sourceXpath,
-						targetXpath);
-				isSuccess = isSuccess
-						&& getMappingDataManager().createMapping(
-								(MappableNode) sourceNode,
-								(MappableNode) targetNode);
-			}
-
-			for (UMLPackage pkg : myUMLModel.getPackages()) {
-				for (UMLPackage pkg2 : pkg.getPackages()) {
-					for (UMLClass clazz : pkg2.getClasses()) {
-						StringBuffer pathKey = new StringBuffer(ModelUtil
-								.getFullPackageName(clazz));
-
-						for (UMLAttribute att : clazz.getAttributes()) {
-							for (UMLTaggedValue tagValue : att
-									.getTaggedValues()) {
-								String sourceXpath = "";
-								String targetXpath = "";
-
-								if (tagValue.getName().contains(
-										"mapped-attribute")
-										|| tagValue.getName().contains(
-												"implements-association")) {
-									targetXpath = pathKey + "."
-											+ clazz.getName() + "."
-											+ att.getName();
-									sourceXpath = CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
-											+ tagValue.getValue();
-									DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
-											.get(sourceXpath);
-									DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
-											.get(targetXpath);
-
-									if (sourceNode == null
-											|| targetNode == null)
-										continue;
-
-									SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
-											.getUserObject();
-									SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
-											.getUserObject();
-
-									sourceSDKMetaData.setMapped(true);
-									isSuccess = cumulativeMappingGenerator.map(
-											sourceXpath, targetXpath);
-									isSuccess = isSuccess
-											&& getMappingDataManager()
-													.createMapping(
-															(MappableNode) sourceNode,
-															(MappableNode) targetNode);
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			primaryKeys = new HashSet<String>();
-			lazyKeys = new HashSet<String>();
-			discriminatorKeys = new HashSet<String>();
-            clobKeys = new HashSet<String>();
-			
-			//Retrieve all the primaryKeys & lazyKeys saved as TaggedValues
-			for( UMLPackage pkg : myUMLModel.getPackages() ) 
-			{
-				getPackages( pkg );
-			}				
-
-            myModel.setPrimaryKeys( primaryKeys );
-			myModel.setLazyKeys( lazyKeys );
-            myModel.setClobKeys( clobKeys );
-            myModel.setDiscriminatorKeys( discriminatorKeys );
-            myModel.setDiscriminatorValues(discriminatorValues);
-
-            if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
-            {
-                myModel.setMmsPrefixDataModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
-            } else {
-                myModel.setMmsPrefixDataModel( "Logical View.Data Model" );
-            }
-            if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
-            {
-                myModel.setMmsPrefixObjectModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-            } else {
-                myModel.setMmsPrefixObjectModel( "Logical View.Logical Model" );
-            }
-
-        } else {
-			JOptionPane
-					.showMessageDialog(	null, "The .map or .xmi file selected is not valid. Please check the export settings in EA and try again.");
-		}
-		return null;
-		*/
 	}
 
-	//Recursive loop required to find all primaryKeys
-	private void getPackages( UMLPackage pkg )
-	{
-		for ( UMLClass clazz : pkg.getClasses() )
-		{
-			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
-			{
-				if( tagValue.getName().contains( "discriminator" ))
-				{	
-					String packageName = "";
-					UMLPackage umlPackage = clazz.getPackage();
-					while (umlPackage != null)
-					{
-						packageName = umlPackage.getName() + "." + packageName;
-						umlPackage = umlPackage.getParent();
-					}
-		            packageName =  packageName + clazz.getName();
-		            
-	    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_OBJECTMODEL).length();
-	    			String dvalue = (packageName).substring(preLen+1);
-
-	    			discriminatorValues.put(dvalue, tagValue.getValue() );
-				}
-			}			
-            for( UMLAttribute att : clazz.getAttributes() )
-			{	
-				for( UMLTaggedValue tagValue : att.getTaggedValues() )
-				{
-					if( tagValue.getName().contains( "id-attribute" ))
-					{																						
-						primaryKeys.add( tagValue.getValue() );
-					}
-                    if( tagValue.getName().contains( "discriminator" ) )
-                    {
-                        discriminatorKeys.add(clazz.getName()+"." + att.getName());
-                    }
-                    if( tagValue.getName().contains( "type" ) )
-                    {
-                        if( tagValue.getValue().equals( "CLOB") )
-                        {
-                            String fieldName = clazz.getName() + "." + att.getName();
-                            clobKeys.add( fieldName );                            
-                        }
-                    }
-                }
-			}		
-    		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-
-			for( UMLAssociation assc : clazz.getAssociations()) 
-			{
-				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
-				{
-					if( tagValue.getName().contains( "lazy-load" ) && tagValue.getValue().equalsIgnoreCase("no"))
-					{
-			    		String fieldName = cumulativeMappingGenerator.getColumnFromAssociation(assc);
-			    		if (fieldName!=null)
-			    		{
-			    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_DATAMODEL).length();
-			    			lazyKeys.add(fieldName.substring(preLen+1));
-			    		}
-					}
-				}
-			}				
-		}
-		
-		for ( UMLPackage pkg2 : pkg.getPackages() )
-		{
-			getPackages( pkg2 );
-		}
-	}	
-	
 	/**
-	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
-	 * @param file
-	 * @throws Exception
-	 *             changed from protected to pulic by sean
+	 * Over ridden method to return menuItem for menuBar and toolBar
 	 */
-	private ValidatorResults processOpenOldMapFile(File file) throws Exception {
-		String xmiFileName = "";
-		SAXBuilder builder = new SAXBuilder(false);
-		Document doc = builder.build(new File(file.getAbsolutePath()));
-		Element root = doc.getRootElement();
-		Element components = root.getChild("components");
-		if (components == null) {
-			xmiFileName = "";
-		} else {
-			Element component = components.getChild("component");
-			if (component == null) {
-				xmiFileName = "";
-			} else {
-				xmiFileName = component.getAttributeValue("location");
-			}
-		}
-		File newXmiFile = null;
-		if (xmiFileName.equals("")) {
-			newXmiFile = DefaultSettings.getUserInputOfFileFromGUI(
-					(AbstractMainFrame) (this.getRootPane().getParent()),
-					".xmi", "Select XMI file", false, false);
-		} else {
-			newXmiFile = new File(xmiFileName);
-			if (!(newXmiFile.exists())) {
-				newXmiFile = DefaultSettings.getUserInputOfFileFromGUI(
-						(AbstractMainFrame) (this.getRootPane().getParent()),
-						".xmi", "Select XMI file", false, false);
-			}
-		}
-
-		if (newXmiFile == null) {
-			return null;
-		}
-		boolean status = processOpenSourceTree(newXmiFile, true, true);
-
-		TreeModel sModel = sTree.getModel();
-		DefaultMutableTreeNode rootSTree = (DefaultMutableTreeNode) sModel
-				.getRoot();
-		TreeModel tModel = tTree.getModel();
-		DefaultMutableTreeNode rootTTree = (DefaultMutableTreeNode) tModel
-				.getRoot();
-		Hashtable sourceNodes = new Hashtable();
-		Hashtable targetNodes = new Hashtable();
-		buildHash(sourceNodes, rootSTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-		buildHash(targetNodes, rootTTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
-
-		MappingImpl newMappingImpl = new MappingImpl();
-		newMappingImpl.setSourceComponent(null);
-		newMappingImpl.setTargetComponent(null);
-		middlePanel.getMappingDataManager().setMappingData(newMappingImpl);
-
-		middlePanel.getMappingDataManager().clearAllGraphCells();
-
-		setSaveFile(file);
-
-		List elements = root.getChildren("link");
-		Iterator i = elements.iterator();
-		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator
-				.getInstance();
-		boolean isSuccess;
-		while (i.hasNext()) {
-			String sourceXpath = "";
-			String targetXpath = "";
-			Element link = (Element) i.next();
-			Element sourceElement = link.getChild("source");
-			if (sourceElement == null) {
-				/* TODO
-				* */
-			}
-			sourceXpath = sourceElement.getValue();
-
-			Element targetElement = link.getChild("target");
-			if (targetElement == null) {
-				/* TODO
-				* */
-			}
-			targetXpath = targetElement.getValue();
-			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
-					.get(sourceXpath);
-			DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
-					.get(targetXpath);
-			if (sourceNode == null || targetNode == null)
-				continue;
-			SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
-					.getUserObject();
-			SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
-					.getUserObject();
-			sourceSDKMetaData.setMapped(true);
-			isSuccess = cumulativeMappingGenerator
-					.map(sourceXpath, targetXpath);
-			isSuccess = isSuccess
-					&& getMappingDataManager().createMapping(
-							(MappableNode) sourceNode,
-							(MappableNode) targetNode);
-		}
-		return null;
-	}
-
-	private void buildHash(Hashtable hashtable, DefaultMutableTreeNode root,
-			String parent) {
-		if ((root.getUserObject().toString().equals("Object Model") && parent
-				.equals(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL )))
-				|| (root.getUserObject().toString().equals("Data Model") && parent
-						.equals(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL )))) {
-			for (int i = 0; i < root.getChildCount(); i++) {
-				buildHash(hashtable, (DefaultMutableTreeNode) root
-						.getChildAt(i), parent);
-			}
-		} else {
-			String treeString;
-			if (root.getUserObject() instanceof String) {
-				treeString = (String) root.getUserObject();
-			} else {
-				treeString = ((MetaObjectImpl) root.getUserObject()).getTitle();
-			}
-			hashtable.put(parent + "." + treeString, root);
-			if (root.isLeaf())
-				return;
-			for (int i = 0; i < root.getChildCount(); i++) {
-				buildHash(hashtable, (DefaultMutableTreeNode) root
-						.getChildAt(i), parent + "." + treeString);
-			}
-		}
-	}
-
 	public Map getMenuItems(String menu_name) {
 		Action action = null;
 		ContextManager contextManager = ContextManager.getContextManager();
@@ -798,10 +363,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				MenuConstants.CSV_TO_XMI, menu_name);
 		if (MenuConstants.FILE_MENU_NAME.equals(menu_name)) {
 			JRootPane rootPane = this.getRootPane();
-			if (rootPane != null) {// rootpane is not null implies this panel
-									// is fully displayed;
-				// on the flip side, if it is null, it implies it is under
-				// certain construction.
+			if (rootPane != null) {
 				contextManager.enableAction(ActionConstants.NEW_CSV2XMI_MAP_FILE,
 						false);
 				contextManager.enableAction(ActionConstants.OPEN_CSV2XMI_MAP_FILE,
@@ -898,13 +460,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				if (file != null) 
 					processOpenSourceTree(file, true, true);
 			}
-			else if (SAVE_MAP.equals(command))
-			{
-				System.out.println("Now Save CSV to XMI Mapping...........");
 
-//                Action action = new gov.nih.nci.caadapter.ui.mapping.catrend.actions.SaveAsCsvToXmiMapAction(this);
-//                action.setEnabled(true);
-            }
 			if (!everythingGood) {
 				Message msg = MessageResources
 						.getMessage("GEN3", new Object[0]);
@@ -917,10 +473,6 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		}
 	}
 
-	public void saveMappingFile()
-    {
-
-    }
 
 	/**
 	 * Explicitly reload information from the internal given file.
@@ -936,8 +488,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 * 
 	 * @param changedFileMap
 	 */
-	public void reload(
-			Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap) {
+	public void reload(	Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap) {
 		/**
 		 * Design rationale: 1) if the changedFileMap is null, simply return; 2)
 		 * if the getSaveFile() method does not return null, it implies current
