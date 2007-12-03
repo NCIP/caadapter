@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappableTreeNode.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappableTreeNode.java,v 1.2 2007-12-03 14:48:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,9 @@
 
 package gov.nih.nci.caadapter.ui.common.tree;
 
+import gov.nih.nci.caadapter.common.BaseObject;
+import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
+import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -46,8 +49,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-03 14:48:49 $
  */
 public class DefaultMappableTreeNode extends DefaultMutableTreeNode implements MappableNode
 {
@@ -139,6 +142,15 @@ public class DefaultMappableTreeNode extends DefaultMutableTreeNode implements M
 		}
 		else
 		{
+			String userObjectXmlpath=null;
+			String selfObjectXmlPath=null;
+			if (userObject instanceof BaseObject)
+				userObjectXmlpath=((BaseObject)userObject).getXmlPath();
+			if (selfUserObject instanceof BaseObject)
+				selfObjectXmlPath=((BaseObject)selfUserObject).getXmlPath();
+			if (userObjectXmlpath.equalsIgnoreCase(selfObjectXmlPath))	
+				return this;
+			
 			DefaultMutableTreeNode foundTarget = null;
 			int childCount = getChildCount();
 			for(int i=0; i<childCount; i++)
@@ -203,6 +215,9 @@ public class DefaultMappableTreeNode extends DefaultMutableTreeNode implements M
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
