@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDropTransferHandler.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDropTransferHandler.java,v 1.2 2007-12-03 17:46:12 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,8 +53,8 @@ import java.awt.dnd.DropTargetDropEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-03 17:46:12 $
  */
 public class TreeDefaultDropTransferHandler implements DropCompatibleComponent
 {
@@ -70,7 +70,7 @@ public class TreeDefaultDropTransferHandler implements DropCompatibleComponent
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDropTransferHandler.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDropTransferHandler.java,v 1.2 2007-12-03 17:46:12 wangeug Exp $";
 
 	//to indicate if current GUI status is in drag-and-drop
 	protected boolean dragging = false;
@@ -258,13 +258,9 @@ public class TreeDefaultDropTransferHandler implements DropCompatibleComponent
 		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path == null)
 		{
-//			System.out.println(this.getClass() + " path is null. cannot find the exact path. Going to find closest path.");
 			path = this.getTree().getClosestPathForLocation(p.x, p.y);
 			if (path == null)
-			{
-//				System.out.println(this.getClass() + " path is null. Even cannot find the closest path. setDropData() will reject drop.");
 				return false;
-			}
 		}
 
 		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -275,7 +271,6 @@ public class TreeDefaultDropTransferHandler implements DropCompatibleComponent
 			java.util.List dragSourceObjectList = dragSourceObjectSelection.getSelectionList();
 			if (dragSourceObjectList == null || dragSourceObjectList.size() < 1)
 			{
-//				DesktopController.showMessage("No Selected Object is found in this Drop action.");
 				return false;
 			}
 
@@ -302,18 +297,13 @@ public class TreeDefaultDropTransferHandler implements DropCompatibleComponent
 		}
 		catch (Exception exp)
 		{
-//			System.out.println(this.getClass() + " " + exp.getMessage());
-//			System.out.println(exp.getClass().getName());
 			Log.logException(this, exp);
 			JOptionPane.showMessageDialog(mTree.getRootPane().getParent(),
 					exp.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//			ErrorPane.showDialog(exp);
 			isSuccess = false;
 		}
-		finally
-		{
-			return isSuccess;
-		}
+		
+		return isSuccess;		
 	}
 
 	/**
@@ -398,6 +388,9 @@ public class TreeDefaultDropTransferHandler implements DropCompatibleComponent
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2006/08/02 18:44:24  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
