@@ -90,8 +90,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v1.2 revision $Revision: 1.15 $ date $Date: 2007-10-19 17:49:04 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.16 $ date $Date: 2007-12-03 15:26:43 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -106,7 +106,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.15 2007-10-19 17:49:04 jayannah Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.16 2007-12-03 15:26:43 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1450,7 +1450,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 					||targetMapComp.getMetaObject() instanceof DatatypeBaseObject)
 			{
 					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
-			} else {
+			} 
+			else if(targetMapComp.getDataXmlPath()!=null)
+			{
+				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getDataXmlPath());
+			}
+			else {
 				if ( sourceMapComp.getComponent() != null ) {
 					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
 				} else {
@@ -1477,6 +1482,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.15  2007/10/19 17:49:04  jayannah
+ * HISTORY : Changes to add link selection highlighter for the map file
+ * HISTORY :
  * HISTORY : Revision 1.14  2007/10/18 20:16:22  jayannah
  * HISTORY : -Added a new method in MappingMiddlePanel to get the reference to MiddlePanelJGraphController
  * HISTORY : -Added a new method in MiddlePanelJGraphController to get the reference to linkselectionhighlighter
