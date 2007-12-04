@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.11 2007-11-30 14:41:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.12 2007-12-04 15:10:49 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,6 +54,7 @@ import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
+import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
@@ -91,14 +92,14 @@ import java.util.Set;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.11 $
- * @date $Date: 2007-11-30 14:41:08 $
+ * @version $Revision: 1.12 $
+ * @date $Date: 2007-12-04 15:10:49 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.11 2007-11-30 14:41:08 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.12 2007-12-04 15:10:49 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -357,7 +358,8 @@ public class MapParserImpl {
 
             }else{
             // set the source/target respectively.
-            	if (mapElement1.getMetaObject() instanceof CSVFieldMeta)
+            	if ((mapElement1.getMetaObject() instanceof CSVFieldMeta)
+            			||(mapElement1.getMetaObject() instanceof CSVSegmentMeta))
             	{
             		//csv component is always source
                     map.setSourceMapElement(mapElement1);
