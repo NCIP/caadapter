@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingBaseTree.java,v 1.2 2007-07-03 19:24:46 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingBaseTree.java,v 1.3 2007-12-04 15:11:26 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,8 +35,14 @@
 package gov.nih.nci.caadapter.ui.common.tree;
 
 
+import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
+import gov.nih.nci.caadapter.ui.common.MappableNode;
+
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -44,6 +50,8 @@ import javax.swing.JPanel;
 //import javax.swing.JViewport;
 import java.awt.Graphics;
 //import java.awt.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -52,8 +60,8 @@ import java.awt.Graphics;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-03 19:24:46 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-04 15:11:26 $
  */
 public abstract class MappingBaseTree extends AutoscrollableTree implements TreeExpansionListener
 {
@@ -90,7 +98,57 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 	{
 		mappingMiddlePanel.repaint();
 	}
+	private boolean isNodeMappedOrHasMappedDecendant(MappableNode mappable)
+	{
+		if (mappable.isMapped())
+			return true;
+		DefaultMutableTreeNode treeNode=(DefaultMutableTreeNode)mappable;
+		if(treeNode.getChildCount()==0)
+			return false;
+		for(int i=0; i<treeNode.getChildCount();i++)
+		{
+			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(i);
+			boolean isChildMapped=false;
+			if (childNode instanceof MappableNode)
+				isChildMapped=isNodeMappedOrHasMappedDecendant((MappableNode)childNode);
+			if (isChildMapped)
+				return true;
+		}
+		
+		return false;
+	}
 	
+	/**
+	 * Find visible tree node if it is mapped or has mapped descendant
+	 * @return
+	 */
+	public List<DefaultMutableTreeNode> getAllVisibleMappedNode()
+	{
+		ArrayList<DefaultMutableTreeNode> rtnList=new ArrayList<DefaultMutableTreeNode>();
+		for (int i=0;i<getRowCount();i++)
+		{
+			TreePath rowPath=getPathForRow(i);
+			if (rowPath==null)
+				continue;
+			DefaultMutableTreeNode lastNode=(DefaultMutableTreeNode)rowPath.getLastPathComponent();
+			if (lastNode instanceof MappableNode)
+			{
+				MappableNode mappedNode=(MappableNode)lastNode;
+				if (isNodeMappedOrHasMappedDecendant(mappedNode))
+					 rtnList.add(lastNode);
+			}
+//
+//			Object usrObj=lastNode.getUserObject();
+//			if (usrObj instanceof TableMetadata)
+//				rtnList.add(((TableMetadata)usrObj).getXPath());
+//			else if (usrObj instanceof ColumnMetadata)
+//				rtnList.add(((ColumnMetadata)usrObj).getXPath());
+//
+//			else if (usrObj instanceof  MetaObject)
+//				rtnList.add(((MetaObject)usrObj).getXmlPath());
+		}
+		return rtnList;
+	}
 	public void expandAll()
 	{
 		int size = getRowCount();
@@ -139,6 +197,9 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/03 19:24:46  wangeug
+ * HISTORY      : initila loading hl7 code without "clone"
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
