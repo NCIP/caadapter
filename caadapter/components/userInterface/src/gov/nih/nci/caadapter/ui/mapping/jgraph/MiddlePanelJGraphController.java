@@ -40,6 +40,8 @@ import gov.nih.nci.caadapter.hl7.map.impl.BaseMapElementImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MapImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
+import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
@@ -56,6 +58,7 @@ import gov.nih.nci.caadapter.ui.common.jgraph.MiddlePanelJGraph;
 import gov.nih.nci.caadapter.ui.common.jgraph.UIHelper;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.MappingBaseTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
@@ -91,7 +94,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.16 $ date $Date: 2007-12-03 15:26:43 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.17 $ date $Date: 2007-12-04 15:13:08 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -106,7 +109,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.16 2007-12-03 15:26:43 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.17 2007-12-04 15:13:08 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -712,27 +715,18 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	public void renderInJGraph(Graphics g)
 	{
 		/** the real renderer */
-		// GraphModel model = graph.getModel();
-		// Log.logInfo(this, "In renderInJGraph(Graphics g):'" + System.currentTimeMillis() + "'");
-		// Log.logInfo(this, "JGraphController's renderInJGraph() and watermark image is null? " + (waterMarkImage==null));
-		// //put water mark here
-		// g.drawImage(waterMarkImage, 0, 0, graph);
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
 		long startTime = 0, endTime = 0;
 		startTime = System.currentTimeMillis();
-		// //render function boxes
-		// java.util.List<FunctionBoxMutableViewInterface> functionUsageList = getUsageManager().getAllFunctionUsageList();
-		// int size = functionUsageList.size();
-		// for (int i = 0; i < size; i++)
-		// {
-		// FunctionBoxMutableViewInterface functionView = functionUsageList.get(i);
-		// FunctionBoxCell functionCell = functionView.getFunctionBoxCell();
-		// AttributeMap attrMap = functionCell.getAttributes();
-		// Rectangle2D oldBound = GraphConstants.getBounds(attrMap);
-		// GraphConstants.setBounds(attrMap, calculateGraphScrolledDistanceOnY(oldBound));
-		// }
+
 		// render links
+		List visibleSrcNodes=new ArrayList<DefaultMutableTreeNode>();
+		if(mappingPanel.getSourceTree()!=null)
+			visibleSrcNodes=((MappingBaseTree)mappingPanel.getSourceTree()).getAllVisibleMappedNode();
+		List visibleTgrtNodes=new ArrayList<DefaultMutableTreeNode>();;
+		if (mappingPanel.getTargetTree()!=null)
+			visibleTgrtNodes=((MappingBaseTree)mappingPanel.getTargetTree()).getAllVisibleMappedNode();
 		int mappingSize = mappingViewList.size();
 		for (int i = 0; i < mappingSize; i++) {
 			MappingViewCommonComponent mappingComponent = (MappingViewCommonComponent) mappingViewList.get(i);
@@ -744,53 +738,52 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			AttributeMap lineStyle = linkEdge.getAttributes();
 			AttributeMap sourceNodeCellAttribute = sourceCell.getAttributes();
 			AttributeMap targetNodeCellAttribute = targetCell.getAttributes();
+			boolean sourceNodeDisplayed=true;
+			boolean targetNodeDisplayed=true;
 			try {
-				if ( sourceNode instanceof FunctionBoxDefaultPort ) {
-					if ( targetNode instanceof FunctionBoxDefaultPort ) {// todo: consider how to draw functional box movement.
-					} else if ( targetNode instanceof DefaultMutableTreeNode ) {
+				if ( sourceNode instanceof FunctionBoxDefaultPort ) 
+				{
+					if ( targetNode instanceof FunctionBoxDefaultPort ) 
+					{// todo: consider how to draw functional box movement.
+					} 
+					else if ( targetNode instanceof DefaultMutableTreeNode ) 
+					{
 						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
+						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
 						adjustToNewPosition(treeNode, targetNodeCellAttribute);
 					}
-				} else if ( sourceNode instanceof DefaultMutableTreeNode ) {// neither sourceNode nor targetNode is functional box, so this implies a direct map
+				} 
+				else if ( sourceNode instanceof DefaultMutableTreeNode ) 
+				{// neither sourceNode nor targetNode is functional box, so this implies a direct map
 					if ( !(targetNode instanceof FunctionBoxDefaultPort) && (targetNode instanceof DefaultMutableTreeNode) ) {
 						// change target node
 						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
+						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
 						adjustToNewPosition(treeNode, targetNodeCellAttribute);
 					}
 					// change source node
-					DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) sourceNode;
-					adjustToNewPosition(treeNode, sourceNodeCellAttribute);
+					DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) sourceNode;
+					sourceNodeDisplayed=visibleSrcNodes.contains(srcNode);
+					adjustToNewPosition(srcNode, sourceNodeCellAttribute);
 				}// end of else if(sourceNode instanceof DefaultMutableTreeNode)
 				if ( sourceNodeCellAttribute != null ) {// put in attribute if and only if it is constructed.
 					attributes.put(sourceCell, sourceNodeCellAttribute);
 					attributes.put(targetCell, targetNodeCellAttribute);
+					//reset link color
+//					if (!targetNodeDisplayed||!sourceNodeDisplayed)
+//					{
+//						lineStyle.put("linecolor",this.graphBackgroundColor);
+//					}
 					attributes.put(linkEdge, lineStyle);
 					// cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
 					// Log.logInfo(this, "Drew line for : " + mappingComponent.toString());
 				}
 			} catch (Throwable e) {
 				Log.logInfo(this, "Did not draw line for : " + mappingComponent.toString(true));
-				// StringWriter sw = new StringWriter();
-				// PrintWriter pw = new PrintWriter(sw);
-				// e.printStackTrace(pw);
-				// pw.flush();
-				// Log.logInfo(this, sw.toString());
-				// processRemoveNodeFromPaint(linkGroup, mappingNode, removeLinkCellList, attributes);
 			}
 		}// end of for
-		// Insert Cells into model
-		// Log.logInfo(this, "remove list " + removeLinkCellList);
-		// Log.logInfo(this, "new list " + newLinkCellList);
-		// should obtain those descendants and itself
-		// Object[] removeCells = graph.getDescendants(removeLinkCellList.toArray());
-		// model.remove(removeCells);
-		// graph.getGraphLayoutCache().insert(newLinkCellList.toArray(), attributes, cs, null, null);
-		// model.insert(newLinkCellList.toArray(), attributes, cs, null, null);
-		// model.edit(attributes, cs, null, null);
 		graph.getGraphLayoutCache().edit(attributes, cs, null, null);
 		graph.getGraphLayoutCache().setSelectsAllInsertedCells(false);
-		endTime = System.currentTimeMillis();
-		// UIHelper.timeMessage("JGraph render " + mappingSize + " mappings", endTime - startTime);
 	}
 
 
@@ -1482,6 +1475,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.16  2007/12/03 15:26:43  wangeug
+ * HISTORY : look for maping end node with XmlPath
+ * HISTORY :
  * HISTORY : Revision 1.15  2007/10/19 17:49:04  jayannah
  * HISTORY : Changes to add link selection highlighter for the map file
  * HISTORY :
