@@ -9,18 +9,18 @@ import gov.nih.nci.caadapter.common.*;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
-import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
-
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.map.Mapping;
+import gov.nih.nci.caadapter.hl7.map.*;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
-
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.ui.common.*;
+import gov.nih.nci.caadapter.ui.common.ActionConstants;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
@@ -34,6 +34,13 @@ import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.CsvToXmiTargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
+import gov.nih.nci.ncicb.xmiinout.domain.*;
+import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
+import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
+import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
+import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
+import org.jdom.Document;
+import org.jdom.input.SAXBuilder;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -44,6 +51,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -51,20 +60,24 @@ import java.util.*;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.5 2007-12-03 15:37:25 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.6 2007-12-06 16:16:53 schroedn Exp $";
 
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
 	private static final String SELECT_XMI = "Open XMI File...";
     private static final String SELECT_CSV = "Open CSV Meta File...";
-    
-	public CsvToXmiMappingPanel() {
+    private static final String SAVE_MAP = "Save Map File...";
+
+    private String mappingFile;
+    private String xmiFile;
+
+    public CsvToXmiMappingPanel() {
 		this("CsvToXmiMapping");
 	}
 
@@ -160,7 +173,12 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		middlePanel.setSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3),
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-		centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
+
+//        JButton saveMapButton = new JButton(SAVE_MAP);
+//		centerFuncationPanel.add(saveMapButton, BorderLayout.CENTER);
+//		saveMapButton.addActionListener(this);
+
+        centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
 		centerFuncationPanel.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
 		middleContainerPanel.add(centerFuncationPanel, BorderLayout.NORTH);
@@ -353,7 +371,95 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		return validatorResults;
 	}
 
-	/**
+    public ValidatorResults cvsToXmiGeneration(String mappingFile) throws Exception
+    {
+        System.out.println("Creating XMI File...");
+        XmiInOutHandler handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
+
+        //todo: move to saveas section, add check to see if already saved
+        //mappingFile = "c:/testing.map";
+        File file = new File(mappingFile);
+
+        //init() - read parameters from mappingFile
+        MapParserImpl parser = new MapParserImpl();
+        ValidatorResults validatorResults = parser.parse(file.getParent(), new FileReader(file));
+
+        if (validatorResults != null && validatorResults.hasFatal())
+        {//immediately return if it has fatal errors.
+            return validatorResults;
+        }
+
+        Mapping mapping = parser.getMapping();//returnResult.getMapping();
+        xmiFile = mapping.getTargetComponent().getFile().getAbsolutePath();
+        System.out.println("Writing xmi file: " + mapping.getTargetComponent().getFile().getAbsolutePath() );
+
+        handler.load( xmiFile );
+        UMLModel model = handler.getModel();
+        
+        //clear out the xmi file so duplicate tagvalues are not added on multiple saves
+        for( UMLPackage pkg : model.getPackages() )
+        {
+			getPackages( pkg );
+		}
+
+        //for each map in mapList to the following
+        for ( gov.nih.nci.caadapter.hl7.map.Map map : mapping.getMaps() )
+        {
+            System.out.println("Searching for target: " + map.getTargetMapElement().getXmlPath() );
+            System.out.println("added tagged value: " + map.getSourceMapElement().getXmlPath() );
+
+            UMLAttribute column = null;
+
+            //implement class search and add
+            //UMLClass clazz = null;
+
+            column = ModelUtil.findAttribute( model,  map.getTargetMapElement().getXmlPath() );
+            //clazz = ModelUtil.findClass( model,  map.getTargetMapElement().getXmlPath() );
+
+            if ( column != null ) {
+                System.out.println(" *Attribute Found, adding* ");
+                column.addTaggedValue( "XMLNamespace", map.getSourceMapElement().getXmlPath() );
+            }
+//            if ( clazz != null ) {
+//                System.out.println(" *Class Found* ");
+//                column.addTaggedValue( "XMLNamespace", "TESTING 123" + map.getSourceMapElement().getXmlPath() );
+//            }
+        }
+
+        //Annotate XMI
+//        SAXBuilder builder = new SAXBuilder( false );
+//        Document doc = builder.build( new File( this.mappingFile ) );
+
+        //write xmi file
+        handler.save(xmiFile);
+
+        return validatorResults;
+    }
+
+    public void getPackages( UMLPackage pkg )
+    {
+        for ( UMLClass clazz : pkg.getClasses() )
+        {
+            for( UMLAttribute att : clazz.getAttributes() )
+            {
+                for( UMLTaggedValue tagValue : att.getTaggedValues() )
+                {
+                    if( tagValue.getName().contains( "XMLNamespace" ))
+                    {
+                        System.out.println("Clearing Tagged Values");
+                        att.removeTaggedValue( "XMLNamespace" );
+                    }
+                }
+            }
+        }
+
+        for ( UMLPackage pkg2 : pkg.getPackages() )
+        {
+            getPackages( pkg2 );
+        }
+    }
+
+    /**
 	 * Over ridden method to return menuItem for menuBar and toolBar
 	 */
 	public Map getMenuItems(String menu_name) {
@@ -460,8 +566,14 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				if (file != null) 
 					processOpenSourceTree(file, true, true);
 			}
+            else if ( SAVE_MAP.equals(command)) {
 
-			if (!everythingGood) {
+                //todo: check for mapping file, !exist save first
+                //xmiFile = "xmiTestFile.xmi";
+                //cvsToXmiGeneration();
+            }
+
+            if (!everythingGood) {
 				Message msg = MessageResources
 						.getMessage("GEN3", new Object[0]);
 				JOptionPane.showMessageDialog(this, msg.toString(), "Error",

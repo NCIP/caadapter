@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.3 2007-11-30 20:57:53 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.4 2007-12-06 16:16:28 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,27 +34,21 @@
 
 package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
 
-import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
-import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
-import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.MapBuilderImpl;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
+import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
+import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-
-import javax.swing.*;
-
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 /**
  * This class defines a concrete "Save As" action.
@@ -62,8 +56,8 @@ import org.jdom.output.XMLOutputter;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-11-30 20:57:53 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-12-06 16:16:28 $
  */
 public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 {
@@ -79,7 +73,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.3 2007-11-30 20:57:53 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.4 2007-12-06 16:16:28 schroedn Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -164,7 +158,11 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 			//try to notify affected panels
 			postActionPerformed(mappingPanel);
 
-			JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+            CsvToXmiMappingPanel csvMappingPanel = new CsvToXmiMappingPanel();
+            System.out.println("file path:" + file.getAbsolutePath());
+            csvMappingPanel.cvsToXmiGeneration(file.getAbsolutePath());
+
+            JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 
 			return true;
 		}
@@ -199,6 +197,9 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/11/30 20:57:53  schroedn
+ * HISTORY      : CSV to XMI mapping
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/11/30 14:40:33  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :
