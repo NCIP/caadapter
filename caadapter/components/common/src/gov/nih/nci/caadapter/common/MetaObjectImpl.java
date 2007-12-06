@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/MetaObjectImpl.java,v 1.2 2007-10-09 20:14:56 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/MetaObjectImpl.java,v 1.3 2007-12-06 20:39:33 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,9 +46,9 @@ import java.util.List;
  * Base class for all meta objects (CVS meta, HL7 V3 meta, etc).
  *
  * @author OWNER: Eric Chen
- * @author LAST UPDATE: $Author: jayannah $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-10-09 20:14:56 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-12-06 20:39:33 $
  * @since caAdapter v1.2
  */
 
@@ -193,10 +193,21 @@ public class MetaObjectImpl extends BaseObjectImpl implements MetaObject, Proper
 	public void setMapped(boolean isMapped) {
 		this.isMapped = isMapped;
 	}
+	/**
+	 * Override method
+	 * return xPath as xmlPath
+	 */
+	public String getXmlPath()
+	{
+		return this.getXPath();
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/10/09 20:14:56  jayannah
+ * HISTORY      : The overiding of equals and hashcode method was causing problems during times when the duplicate field were entered by the user.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :
