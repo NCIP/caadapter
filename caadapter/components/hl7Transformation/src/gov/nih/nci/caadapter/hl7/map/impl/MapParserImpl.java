@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.12 2007-12-04 15:10:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.13 2007-12-06 20:46:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -92,14 +92,14 @@ import java.util.Set;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.12 $
- * @date $Date: 2007-12-04 15:10:49 $
+ * @version $Revision: 1.13 $
+ * @date $Date: 2007-12-06 20:46:19 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.12 2007-12-04 15:10:49 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.13 2007-12-06 20:46:19 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -117,6 +117,7 @@ public class MapParserImpl {
 
         try {
             C_mapping cMapping = (C_mapping) C_mapping.unmarshalC_mapping(metafile);
+            mapping.setMappingType(cMapping.getType());
             processComponents(cMapping.getC_components());
             processLinks(cMapping.getC_links(), validatorResults);
             processViews(cMapping.getC_views());

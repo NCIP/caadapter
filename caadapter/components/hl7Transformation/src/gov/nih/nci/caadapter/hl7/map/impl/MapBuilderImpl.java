@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.6 2007-11-30 20:57:17 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.7 2007-12-06 20:45:46 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -69,14 +69,14 @@ import java.util.List;
  * Builder of map files.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.6 $
+ * @version    $Revision: 1.7 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.6 2007-11-30 20:57:17 schroedn Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.7 2007-12-06 20:45:46 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -96,6 +96,7 @@ public class MapBuilderImpl {
             cComponents = new C_components();
             cLinks = new C_links();
             cViews = new C_views();
+            cMapping.setType(mapping.getMappingType());
             cMapping.setC_components(cComponents);
             cMapping.setC_links(cLinks);
             cMapping.setC_views(cViews);
@@ -155,7 +156,7 @@ public class MapBuilderImpl {
             	cComponent.setLocation(filePath);
             if ( metaObject == null )
             {
-                if( filePath.contains(".xmi") )
+            	if (cMapping.getType().indexOf("CSV_TO_XMI")>-1)
                 {
                     cComponent.setKind("xmi");
                 } else {
@@ -260,20 +261,8 @@ public class MapBuilderImpl {
             	targetPointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
             else if (targetmap.isComponentOfTargetType()){
                 targetPointer.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
-
-                if( targetmap.getMetaObject() instanceof TableMetadata ) {
-                   targetPointer.setKind( "xmi" );
-
-                   TableMetadata table = (TableMetadata) targetmap.getMetaObject();
-                   String strTable = table.getXPath();
-                   System.out.println("table xPath:" + strTable );
-                   targetPointer.setXmlPath( strTable );
-                }
-                else if( targetmap.getMetaObject() instanceof ColumnMetadata ) {
-                   targetPointer.setKind( "xmi" );
-                   ColumnMetadata column = (ColumnMetadata) targetmap.getMetaObject();
-                   targetPointer.setXmlPath( column.getXPath() );
-                }
+                if (cMapping.getType().indexOf("CSV_TO_XMI")>-1)
+                	targetPointer.setKind("xmi");
             }
 
 

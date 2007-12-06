@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.6 2007-12-03 15:25:47 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.7 2007-12-06 20:46:56 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -70,8 +70,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-12-03 15:25:47 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-12-06 20:46:56 $
  */
 public final class UIHelper
 {
@@ -392,19 +392,11 @@ public final class UIHelper
             if(dtUserObj.getXmlPath().equals(nodeXmlPath))
                 return treeNode;
         }
-        else if (userObj instanceof TableMetadata)
+        else if (userObj instanceof MetaObject )
         {
-        	TableMetadata tableMeta=(TableMetadata)userObj;
-        	if(tableMeta.getXPath().equals(nodeXmlPath))
-                return treeNode;
-        	
-        }
-        else if (userObj instanceof ColumnMetadata)
-        {
-        	ColumnMetadata colMeta=(ColumnMetadata)userObj;
-        	if(colMeta.getXPath().equals(nodeXmlPath))
-                return treeNode;
-        	
+        	String objXmlPath=((MetaObject)userObj).getXmlPath();
+        	if (nodeXmlPath.equalsIgnoreCase(objXmlPath))
+        		return treeNode;
         }
 
         for(Enumeration childEnum = treeNode.children(); childEnum.hasMoreElements();)
@@ -454,6 +446,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/12/03 15:25:47  wangeug
+ * HISTORY      : mappingParser: find target node from an Xmi tree node
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/07/03 18:37:48  wangeug
  * HISTORY      : construct map node with xmlpath
  * HISTORY      :

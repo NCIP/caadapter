@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.5 2007-12-04 15:10:12 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.6 2007-12-06 20:46:02 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,8 +54,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-12-04 15:10:12 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-12-06 20:46:02 $
  */
 public class MapLinkValidator extends Validator {
 	/**
@@ -70,7 +70,7 @@ public class MapLinkValidator extends Validator {
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.5 2007-12-04 15:10:12 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.6 2007-12-06 20:46:02 wangeug Exp $";
 
 	private transient Object source;
 	private transient Object target;
@@ -139,6 +139,10 @@ public class MapLinkValidator extends Validator {
 				&& (target instanceof   gov.nih.nci.caadapter.mms.metadata.ColumnMetadata))
 		{
 		}
+		else if ((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
+				&& (target instanceof   gov.nih.nci.caadapter.mms.metadata.AttributeMetadata))
+		{
+		}
 		else
 			foundError=true;
 		
@@ -180,6 +184,9 @@ public class MapLinkValidator extends Validator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/12/04 15:10:12  wangeug
+ * HISTORY      : apply mapping rule for csv-to-xmi mapping
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/10/25 20:18:13  wangeug
  * HISTORY      : allow mapping from a CVS metaField to MIFAttribute if the MIFAttribute is "INSTANCE+KIND" or editable
  * HISTORY      :

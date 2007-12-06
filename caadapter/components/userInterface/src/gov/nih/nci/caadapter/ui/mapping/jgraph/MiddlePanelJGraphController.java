@@ -94,7 +94,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.17 $ date $Date: 2007-12-04 15:13:08 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.18 $ date $Date: 2007-12-06 20:41:13 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -109,7 +109,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.17 2007-12-04 15:13:08 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.18 2007-12-06 20:41:13 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -204,6 +204,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			MappingImpl newMappingImpl = new MappingImpl();
 			newMappingImpl.setSourceComponent(this.mappingData.getSourceComponent());
 			newMappingImpl.setTargetComponent(this.mappingData.getTargetComponent());
+			newMappingImpl.setMappingType(this.mappingData.getMappingType());
 			setMappingData(newMappingImpl);
 		} else {// initialize all
 			setMappingData(new MappingImpl());
@@ -1472,9 +1473,15 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		// return viewPortVisibleWidth;// - 23;
 		return visibleWidth - 20;
 	}
+	public Mapping getMappingData() {
+		return mappingData;
+	}
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.17  2007/12/04 15:13:08  wangeug
+ * HISTORY : clean codes
+ * HISTORY :
  * HISTORY : Revision 1.16  2007/12/03 15:26:43  wangeug
  * HISTORY : look for maping end node with XmlPath
  * HISTORY :

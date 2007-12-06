@@ -7,11 +7,11 @@ package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.ui.common.ActionConstants;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
-import gov.nih.nci.caadapter.ui.mapping.mms.Object2DBMappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.NewMappingPanelWizard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,8 +25,8 @@ import java.util.ArrayList;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-11-30 14:41:37 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-06 20:47:29 $
  */
 public class NewCsvToXmiMapAction extends AbstractContextAction
 		{
@@ -81,9 +81,20 @@ public class NewCsvToXmiMapAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
-		CsvToXmiMappingPanel mp = new CsvToXmiMappingPanel("Test");
-		mp.setChanged(false);
-		mainFrame.addNewTab(mp);
+		NewMappingPanelWizard wizard = new NewMappingPanelWizard(mainFrame, "New CSV to XMI Mapping", true);
+		DefaultSettings.centerWindow(wizard);
+		wizard.setVisible(true);
+		if (wizard.isOkButtonClicked())
+		{
+			CsvToXmiMappingPanel mp = new CsvToXmiMappingPanel("Test");
+			if (wizard.getSelectionType()==1)
+				mp.setMappingTarget(CsvToXmiMappingPanel.MAPPING_TARGET_OBJECT_MODEL);
+			else if (wizard.getSelectionType()==2)
+				mp.setMappingTarget(CsvToXmiMappingPanel.MAPPING_TARGET_DATA_MODEL);
+			mp.setChanged(false);
+			mainFrame.addNewTab(mp);
+		}
+		
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
 	}
@@ -107,6 +118,9 @@ public class NewCsvToXmiMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/11/30 14:41:37  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/11/29 14:26:22  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :

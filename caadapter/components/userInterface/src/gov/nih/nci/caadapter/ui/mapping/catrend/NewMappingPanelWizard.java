@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/Mapping.java,v 1.2 2007-12-06 20:44:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/NewMappingPanelWizard.java,v 1.1 2007-12-06 20:40:27 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -32,49 +32,100 @@
  */
 
 
-package gov.nih.nci.caadapter.hl7.map;
+package gov.nih.nci.caadapter.ui.mapping.catrend;
 
-import gov.nih.nci.caadapter.common.map.BaseComponent;
 
-import java.util.List;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * The primary interface which contains all Mapping information.
- *
- * @author OWNER: Matthew Giordano
+ * This is the main class of wizard.
+ * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-12-06 20:44:49 $
+ * @version Since caAdapter v1.2
+ *          revision    $Revision: 1.1 $
+ *          date        $Date: 2007-12-06 20:40:27 $
  */
-
-public interface Mapping
+public class NewMappingPanelWizard extends JDialog implements ActionListener
 {
-	//define mapping type
-	public String getMappingType();
-	public void setMappingType(String newType);
-    // source stuff
-	public BaseComponent getSourceComponent();
-	public void setSourceComponent(BaseComponent sourceComponent);
-    // target stuff
-	public BaseComponent getTargetComponent();
-	public void setTargetComponent(BaseComponent targetComponent);
-    // map stuff
-	public List<Map> getMaps();
-	public void setMaps(List<Map> maps);
-    public void addMap(Map m);
-    public void removeMap(Map m);
-	public void removeAllMaps();
-    // function stuff
+	private static final String OK_COMMAND = "OK";
+	private static final String CANCEL_COMMAND = "Cancel";
+	private int selectionType=1;
+	//centerWindow
+	private MappingTypePanelFrontPage frontPage;
+	private boolean okButtonClicked = false;
+
+	public NewMappingPanelWizard(Frame owner, String title, boolean modal) throws HeadlessException
+	{
+		super(owner, title, modal);
+		initialize();
+	}
+
+	private void initialize()
+	{
+		Container contentPane = this.getContentPane();
+		contentPane.setLayout(new BorderLayout());
+
+		frontPage = new MappingTypePanelFrontPage();
+		contentPane.add(frontPage, BorderLayout.CENTER);
+
+		JPanel southPanel = new JPanel(new BorderLayout());
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));//new BorderLayout());
+		JButton okButton = new JButton(OK_COMMAND);
+		okButton.setMnemonic('O');
+		okButton.addActionListener(this);
+		JButton cancelButton = new JButton(CANCEL_COMMAND);
+		cancelButton.setMnemonic('C');
+		cancelButton.addActionListener(this);
+		JPanel tempPanel = new JPanel(new GridLayout(1, 2));
+		tempPanel.add(okButton);
+		tempPanel.add(cancelButton);
+		buttonPanel.add(tempPanel);//, BorderLayout.EAST);
+		southPanel.add(buttonPanel, BorderLayout.NORTH);
+
+		contentPane.add(southPanel, BorderLayout.SOUTH);
+		this.setSize(360,240);
+		this.setResizable(false);
+	}
+	
+	public boolean isOkButtonClicked()
+	{
+		return okButtonClicked;
+	}
+
+
 	/**
-	 * Return a list of function component in this mapping.
-	 * This function never return null. If nothing exists, will return an empty list.
-	 * @return
+	 * Invoked when an action occurs.
 	 */
-	public List<FunctionComponent> getFunctionComponent();
-	public void setFunctionComponent(List<FunctionComponent> functionComponent);
-    public void addFunctionComponent(FunctionComponent f);
-    public void removeFunctionComponent(FunctionComponent f);
-	public void removeAllFunctionComponents();
-    public FunctionComponent getFunctionComponent(String uuid);
+	public void actionPerformed(ActionEvent e)
+	{
+		String command = e.getActionCommand();
+		if(OK_COMMAND.equals(command))
+		{
+			this.setSelectionType(frontPage.getSelectionType());
+			okButtonClicked = true;
+		}
+		else if(CANCEL_COMMAND.equals(command))
+		{
+			okButtonClicked = false;
+		}
+		else
+		{
+			System.err.println("Why am I here with command '" + command + "'?");
+		}
+		setVisible(false);
+		dispose();
+	}
+
+	public int getSelectionType() {
+		return selectionType;
+	}
+
+	public void setSelectionType(int selectionType) {
+		this.selectionType = selectionType;
+	}
+
 }

@@ -7,6 +7,7 @@ package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
 
 import gov.nih.nci.caadapter.common.Log;
 
+import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
 import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
@@ -15,9 +16,6 @@ import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
-//import gov.nih.nci.caadapter.ui.mapping.mms.AddDiscriminatorValue;
-//import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
-//import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 
 import javax.swing.JTree;
 import javax.swing.JOptionPane;
@@ -39,8 +37,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-12-03 17:46:45 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-06 20:48:06 $
  */
 public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -77,16 +75,20 @@ public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 		if(targetNode instanceof MappableNode)
 		{
 			MappableNode mappableNode = (MappableNode) targetNode;
-			if(mappableNode.isMapped())
-			{
-				if (!(targetNode.getUserObject() instanceof TableMetadata)
-						&&!(targetNode.getUserObject() instanceof ColumnMetadata))
-				{
-					return false;	
-				}
-			}
+	
+//			if(mappableNode.isMapped())
+//			{
+//				if (!(targetNode.getUserObject() instanceof TableMetadata)
+//						&&!(targetNode.getUserObject() instanceof ColumnMetadata))
+//				{
+//					return false;	
+//				}
+//			}
 			
 			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
+			//only CSVField is allowed to map with a target node
+			if (!(sourceNode.getUserObject() instanceof CSVFieldMeta))
+				return false;
 			MapLinkValidator validator = new MapLinkValidator(sourceNode.getUserObject(), targetNode.getUserObject());
 			ValidatorResults validatorResult = validator.validate();
 //			Object targetUserObject = targetNode.getUserObject();

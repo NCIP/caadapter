@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.2 2007-07-16 19:25:05 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.3 2007-12-06 20:45:08 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,16 +47,16 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-07-16 19:25:05 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-12-06 20:45:08 $
  * @since caAdapter v1.2
  */
 
 public class MappingImpl implements Mapping
 {
 	private static final String LOGID = "$RCSfile: MappingImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.2 2007-07-16 19:25:05 wangeug Exp $";
-
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.3 2007-12-06 20:45:08 wangeug Exp $";
+	private String mappingType="";
 	private List<Map> maps = new ArrayList<Map>();
 	private List<FunctionComponent> functionComponents = new ArrayList<FunctionComponent>();
 	private BaseComponent sourceComponent = null;
@@ -177,4 +177,14 @@ public class MappingImpl implements Mapping
         }
         return null;
     }
+
+	public String getMappingType() {
+		// TODO Auto-generated method stub
+		return mappingType;
+	}
+
+	public void setMappingType(String newType) {
+		// TODO Auto-generated method stub
+		mappingType=newType;
+	}
 }
