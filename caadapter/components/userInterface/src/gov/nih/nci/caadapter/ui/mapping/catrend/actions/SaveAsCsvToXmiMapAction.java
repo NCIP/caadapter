@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.4 2007-12-06 16:16:28 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.5 2007-12-07 16:06:15 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,10 +54,10 @@ import java.io.FileOutputStream;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-12-06 16:16:28 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-12-07 16:06:15 $
  */
 public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 {
@@ -73,7 +73,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.4 2007-12-06 16:16:28 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.5 2007-12-07 16:06:15 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -142,6 +142,8 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 		MapBuilderImpl builder = new MapBuilderImpl();
 		FileOutputStream fw = null;
 		BufferedOutputStream bw = null;
+		CsvToXmiMappingPanel csvToXmi=(CsvToXmiMappingPanel)mappingPanel;
+		mappingData.setMappingType(csvToXmi.getMappingTarget());
 		boolean oldChangeValue = mappingPanel.isChanged();
 		try
 		{
@@ -197,6 +199,9 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/12/06 16:16:28  schroedn
+ * HISTORY      : Annotate XMI file in csv to xmi
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/11/30 20:57:53  schroedn
  * HISTORY      : CSV to XMI mapping
  * HISTORY      :

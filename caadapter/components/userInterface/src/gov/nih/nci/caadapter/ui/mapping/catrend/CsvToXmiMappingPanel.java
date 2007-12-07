@@ -33,8 +33,15 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.CsvToXmiTargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
+import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
-import gov.nih.nci.ncicb.xmiinout.domain.*;
+import gov.nih.nci.caadapter.ui.mapping.mms.MMSRendererPK;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
+
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
@@ -60,24 +67,22 @@ import java.util.Map;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.6 2007-12-06 16:16:53 schroedn Exp $";
-
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.7 2007-12-07 16:09:34 wangeug Exp $";
+	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
+	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
-	private static final String SELECT_XMI = "Open XMI File...";
+	private String mappingTarget=MAPPING_TARGET_OBJECT_MODEL;
+    private static final String SELECT_XMI = "Open XMI File...";
     private static final String SELECT_CSV = "Open CSV Meta File...";
-    private static final String SAVE_MAP = "Save Map File...";
-
-    private String mappingFile;
-    private String xmiFile;
-
-    public CsvToXmiMappingPanel() {
+    
+	public CsvToXmiMappingPanel() {
 		this("CsvToXmiMapping");
 	}
 
@@ -173,12 +178,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		middlePanel.setSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3),
 				(int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
-
-//        JButton saveMapButton = new JButton(SAVE_MAP);
-//		centerFuncationPanel.add(saveMapButton, BorderLayout.CENTER);
-//		saveMapButton.addActionListener(this);
-
-        centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
+		centerFuncationPanel.add(placeHolderLabel, BorderLayout.EAST);
 		centerFuncationPanel.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 3.5), 24));
 		middleContainerPanel.add(centerFuncationPanel, BorderLayout.NORTH);
@@ -210,29 +210,45 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	protected TreeNode loadTargetTreeData(Object metaInfo, File absoluteFile)
 			throws Exception {
-		TreeNode nodes = new DefaultMutableTreeNode("Data Model");
-		LinkedHashMap myMap = ModelMetadata.getInstance().getModelMetadata();
+		String targetNodeName="";
+		if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
+			targetNodeName="Object Model";
+ 
+		else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
+			targetNodeName="Data Model";
+		else
+			throw new Exception("Failed in building XMI target tree: Target type is not defined");
+		TreeNode node = new DefaultMutableTreeNode(targetNodeName);
+		ModelMetadata myModel = ModelMetadata.getInstance();
+		LinkedHashMap myMap = myModel.getModelMetadata();
 
 		Set keySet = myMap.keySet();
 		Iterator keySetIterator = keySet.iterator();
 		while (keySetIterator.hasNext()) {
-			String key = (String) keySetIterator.next();
-			if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) {
-				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
-					constructXmiNTreeNde(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
-				} else {
-					constructXmiNTreeNde(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
-				}
+			String key = (String) keySetIterator.next();		
+			if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL)) 
+			{
+				if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) 
+					constructXmiNTreeNde(node, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false);
+
+			}
+			else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL)) 
+			{
+				if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) 
+					constructXmiNTreeNde(node, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(),  false);
 			}
 		}
-		return nodes;
+		return node;
 	}
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile,
 			boolean isToResetGraph) throws Exception {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
+		if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
+			tTree.setCellRenderer(new MMSRendererPK());		
+		else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
+			tTree.setCellRenderer(new MMSRenderer());
 		
-		tTree.setCellRenderer(new MMSRenderer());
         // instantiate the "DropTransferHandler"
 		csvToXmiTargetTreeDropTransferHandler = new CsvToXmiTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
@@ -242,7 +258,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		return csvToXmiTargetTreeDropTransferHandler;
 	}
 
-	private void constructXmiNTreeNde(TreeNode node, String fullName, int prefixLen, boolean isTable, boolean isSourceNode)
+	private void constructXmiNTreeNde(TreeNode node, String fullName, int prefixLen, boolean isSourceNode)
 	{
 		String name = fullName.substring(prefixLen, fullName.length());
 		String[] pks = name.split("\\.");
@@ -330,6 +346,14 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 */
 	private boolean processOpenTargetTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
+		if( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
+		{
+			CaadapterUtil.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View.Logical Model");
+		}
+		if( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) == null )
+		{
+			CaadapterUtil.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View.Data Model");
+		}
 		String fileName = file.getAbsolutePath();
 		boolean success = CumulativeMappingGenerator.init(fileName);
 		// parse the file into a meta object graph.
@@ -357,7 +381,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			return validatorResults;
 		}
 		Mapping mapping = parser.getMapping();//returnResult.getMapping();
-
+		this.setMappingTarget(mapping.getMappingType());
 		//build source tree
 		BaseComponent sourceComp = mapping.getSourceComponent();
 		File sourceFile = sourceComp.getFile();
@@ -390,7 +414,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
         }
 
         Mapping mapping = parser.getMapping();//returnResult.getMapping();
-        xmiFile = mapping.getTargetComponent().getFile().getAbsolutePath();
+        String  xmiFile = mapping.getTargetComponent().getFile().getAbsolutePath();
         System.out.println("Writing xmi file: " + mapping.getTargetComponent().getFile().getAbsolutePath() );
 
         handler.load( xmiFile );
@@ -566,14 +590,8 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				if (file != null) 
 					processOpenSourceTree(file, true, true);
 			}
-            else if ( SAVE_MAP.equals(command)) {
 
-                //todo: check for mapping file, !exist save first
-                //xmiFile = "xmiTestFile.xmi";
-                //cvsToXmiGeneration();
-            }
-
-            if (!everythingGood) {
+			if (!everythingGood) {
 				Message msg = MessageResources
 						.getMessage("GEN3", new Object[0]);
 				JOptionPane.showMessageDialog(this, msg.toString(), "Error",
@@ -643,6 +661,15 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			DefaultSettings.reportThrowableToLogAndUI(this, e, "", this, false,
 					false);
 		}
+	}
+	
+
+	public String getMappingTarget() {
+		return mappingTarget;
+	}
+
+	public void setMappingTarget(String mappingTarget) {
+		this.mappingTarget = mappingTarget;
 	}
 }
 
