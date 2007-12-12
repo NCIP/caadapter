@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.1 2007-11-29 16:47:52 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.2 2007-12-12 19:54:07 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,29 +34,21 @@
 
 package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
 
-import gov.nih.nci.caadapter.common.Message;
-import gov.nih.nci.caadapter.common.MessageResources;
-import gov.nih.nci.caadapter.common.MetaObjectImpl;
-import gov.nih.nci.caadapter.common.validation.ValidatorResult;
-import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+
+import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
+import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
-import gov.nih.nci.caadapter.ui.common.message.ValidationMessageDialog;
+import gov.nih.nci.caadapter.ui.common.tree.MappingBaseTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
-//import gov.nih.nci.caadapter.ui.hl7.map.HL7MappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingReportPanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingReporter;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Set;
 
 /**
  * This class defines the action to invoke validation of HSM.
@@ -64,8 +56,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-11-29 16:47:52 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-12 19:54:07 $
  */
 public class ValidateCsvToXmiMapAction extends AbstractContextAction
 {
@@ -81,7 +73,7 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.1 2007-11-29 16:47:52 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.2 2007-12-12 19:54:07 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -136,72 +128,44 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-		if( ModelMetadata.getInstance() != null )
-		{
+		System.out.println("ValidateCsvToXmiMapAction.doAction()");		
+        //generate mapping report:
+		CsvToXmiMappingPanel mappingPanel=(CsvToXmiMappingPanel)parentPanel;
+        MappingBaseTree mappingBaseTree=(MappingBaseTree)mappingPanel.getSourceTree();
 
-        ValidatorResults validatorResults = new ValidatorResults();
-
-        ModelMetadata myModel = ModelMetadata.getInstance();
-		LinkedHashMap myMap = myModel.getModelMetadata();
-
-		Set keySet = myMap.keySet();
-		Iterator keySetIterator = keySet.iterator();
-		while (keySetIterator.hasNext()) {
-			String key = (String)keySetIterator.next();
-			if (key.contains("Data Model")) continue;
-			MetaObjectImpl metaO = (MetaObjectImpl)myMap.get(key);
-			if (metaO instanceof AssociationMetadata) {
-				if (!((AssociationMetadata)metaO).getNavigability())
-					continue;
-			}
-			
-			if (!metaO.isMapped()) {
-				if (metaO instanceof ObjectMetadata) {
-					Message msg = MessageResources.getMessage("O2DB3", new Object[]{metaO.getXPath()});
-					validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-				}
-				if (metaO instanceof AttributeMetadata) {
-					if (((AttributeMetadata)metaO).isDerived()) {
-						Message msg = MessageResources.getMessage("O2DB4", new Object[]{metaO.getXPath()});
-						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));						
-					}else {
-						Message msg = MessageResources.getMessage("O2DB1", new Object[]{metaO.getXPath()});
-						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-					}
-				}
-				if (metaO instanceof AssociationMetadata) {
-					if (!((AssociationMetadata)metaO).isBidirectional()) {
-						Message msg = MessageResources.getMessage("O2DB2", new Object[]{metaO.getXPath()});
-						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-					}
-				}
-			}
-		}
-		Container container = parentPanel.getRootContainer();
-		ValidationMessageDialog dlg = null;
-		if (container instanceof Frame)
-		{
-			dlg = new ValidationMessageDialog((Frame) container, true);
-		}
-		else if (container instanceof Dialog)
-		{
-			dlg = new ValidationMessageDialog((Dialog) container, true);
-		}
-		if (dlg != null)
-		{
-			dlg.setValidatorResults(validatorResults);
-			DefaultSettings.centerWindow(dlg);
-			dlg.setVisible(true);
-		}
+        CsvToXmiMappingReportPanel mpReportPane = mappingPanel.getReportPanel();
+        if (mpReportPane==null)
+        {
+        	mpReportPane=new CsvToXmiMappingReportPanel();
+        	mappingPanel.setReportPanel(mpReportPane);
+        	CsvToXmiMappingReporter reporter=new CsvToXmiMappingReporter((MappableNode)mappingBaseTree.getRootTreeNode(), CsvToXmiMappingReporter.REPORT_UNMAPPED);
+        	reporter.setSourceFileName(mappingPanel.getSourceFileName());
+        	reporter.setTargetFileName(mappingPanel.getTargetFileName());
+        	mpReportPane.setReporter(reporter);
+        	JFrame holderFrame=findHolderFrame(parentPanel);
+    		AbstractMainFrame mainFrame= (AbstractMainFrame)holderFrame;
+    		mainFrame.addNewTab(mpReportPane);
+        	mpReportPane.setChanged(false);
+        }
+        else
+        {
+//        	reporter=mpReportPane.getReporter();
+        	mpReportPane.setChanged(true);
+        }
+        
 		
-		setSuccessfullyPerformed(true);
-		return isSuccessfullyPerformed();
-		
-		} else {
-			return false;
-		}			
+		return true;
 	}
 
+	private JFrame findHolderFrame(JPanel holder)
+	{
+		Container container=holder.getParent();
+		while (!( container instanceof JFrame))
+		{
+			container= container.getParent();
+		}
+		return (JFrame)container;
+	}
 	/**
 	 * Return the associated UI component.
 	 *
@@ -211,58 +175,5 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
 	{
 		return parentPanel;
 	}
+	
 }
-/**
- * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.3  2007/06/13 20:24:53  schroedn
- * HISTORY      : minor change
- * HISTORY      :
- * HISTORY      : Revision 1.2  2007/06/13 20:24:16  schroedn
- * HISTORY      : added check for xmi file, null error fix
- * HISTORY      :
- * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
- * HISTORY      : initial loading
- * HISTORY      :
- * HISTORY      : Revision 1.3  2006/11/15 06:27:21  wuye
- * HISTORY      : Added message for no-mapped inherted attributes
- * HISTORY      :
- * HISTORY      : Revision 1.2  2006/11/14 16:49:17  wuye
- * HISTORY      : Added one more O2DB messages
- * HISTORY      :
- * HISTORY      : Revision 1.1  2006/11/14 15:23:59  wuye
- * HISTORY      : Added validation funcationality
- * HISTORY      :
- * HISTORY      : Revision 1.11  2006/08/02 18:44:23  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.10  2006/01/03 19:16:52  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.9  2006/01/03 18:56:25  jiangsc
- * HISTORY      : License Update
- * HISTORY      :
- * HISTORY      : Revision 1.8  2005/12/29 23:06:15  jiangsc
- * HISTORY      : Changed to latest project name.
- * HISTORY      :
- * HISTORY      : Revision 1.7  2005/12/14 21:37:18  jiangsc
- * HISTORY      : Updated license information
- * HISTORY      :
- * HISTORY      : Revision 1.6  2005/11/29 16:23:54  jiangsc
- * HISTORY      : Updated License
- * HISTORY      :
- * HISTORY      : Revision 1.5  2005/10/21 18:26:17  jiangsc
- * HISTORY      : Validation Class name changes.
- * HISTORY      :
- * HISTORY      : Revision 1.4  2005/10/19 18:51:24  jiangsc
- * HISTORY      : Re-engineered Action calling sequence.
- * HISTORY      :
- * HISTORY      : Revision 1.3  2005/10/05 20:52:31  jiangsc
- * HISTORY      : GUI Enhancement.
- * HISTORY      :
- * HISTORY      : Revision 1.2  2005/10/05 20:50:29  jiangsc
- * HISTORY      : GUI Enhancement.
- * HISTORY      :
- * HISTORY      : Revision 1.1  2005/10/05 20:39:53  jiangsc
- * HISTORY      : GUI Enhancement.
- * HISTORY      :
- */

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.5 2007-12-07 16:06:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.6 2007-12-12 19:54:07 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,10 +39,13 @@ import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.MapBuilderImpl;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
+import gov.nih.nci.caadapter.ui.common.tree.MappingBaseTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
+import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingReporter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -56,8 +59,8 @@ import java.io.FileOutputStream;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-12-07 16:06:15 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2007-12-12 19:54:07 $
  */
 public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 {
@@ -73,7 +76,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.5 2007-12-07 16:06:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.6 2007-12-12 19:54:07 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -159,13 +162,22 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 			mappingPanel.setChanged(false);
 			//try to notify affected panels
 			postActionPerformed(mappingPanel);
-
-            CsvToXmiMappingPanel csvMappingPanel = new CsvToXmiMappingPanel();
-            System.out.println("file path:" + file.getAbsolutePath());
-            csvMappingPanel.cvsToXmiGeneration(file.getAbsolutePath());
-
+		
+            csvToXmi.cvsToXmiGeneration(file.getAbsolutePath());
+    		
+            //generate mapping report:
+            File rptFile =null;
+            if (csvToXmi.getReportPanel()!=null)
+            	rptFile=csvToXmi.getReportPanel().getSaveFile();
+            
+            if (rptFile==null)
+            	rptFile=DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save Mapping Report As...", true, true);
+            MappingBaseTree mappingBaseTree=(MappingBaseTree)csvToXmi.getSourceTree();
+            CsvToXmiMappingReporter reporter=new CsvToXmiMappingReporter((MappableNode)mappingBaseTree.getRootTreeNode(), CsvToXmiMappingReporter.REPORT_UNMAPPED);
+            reporter.setSourceFileName(csvToXmi.getSourceFileName());
+            reporter.setTargetFileName(csvToXmi.getTargetFileName());
+            reporter.generateReportFile(rptFile);
             JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
-
 			return true;
 		}
 		catch(Throwable e)
@@ -175,8 +187,6 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 			//rethrow the exeception
 			e.printStackTrace();
 			throw new Exception(e);
-
-//			return false;
 		}
 		finally
 		{
@@ -186,8 +196,6 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 				if(bw!=null)
 				{
 					bw.close();
-					//the output stream will flush and assign the timestamp upon closure.
-					//moved the setSaveFile() call here so as to record the right timestamp of last modified.
 					mappingPanel.setSaveFile(file);
 				}
 			}
@@ -199,6 +207,9 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/12/07 16:06:15  wangeug
+ * HISTORY      : support both data model and object model
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/12/06 16:16:28  schroedn
  * HISTORY      : Annotate XMI file in csv to xmi
  * HISTORY      :

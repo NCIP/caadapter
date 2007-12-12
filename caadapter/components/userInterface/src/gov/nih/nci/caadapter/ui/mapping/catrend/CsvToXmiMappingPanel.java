@@ -68,20 +68,23 @@ import java.util.Map;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.7 2007-12-07 16:09:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.8 2007-12-12 19:53:37 wangeug Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
 	private String mappingTarget=MAPPING_TARGET_OBJECT_MODEL;
     private static final String SELECT_XMI = "Open XMI File...";
     private static final String SELECT_CSV = "Open CSV Meta File...";
+    private String sourceFileName;
+    private String targetFileName;
     
+    private CsvToXmiMappingReportPanel reportPanel;
 	public CsvToXmiMappingPanel() {
 		this("CsvToXmiMapping");
 	}
@@ -317,7 +320,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 */
 	private boolean processOpenSourceTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
-
+		this.setSourceFileName(file.getAbsolutePath());
 		BaseResult returnResult = null;
 
 		// parse the file into a meta object graph.
@@ -346,6 +349,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 */
 	private boolean processOpenTargetTree(File file, boolean isToResetGraph,
 			boolean supressReportIssuesToUI) throws Exception {
+		this.setTargetFileName(file.getAbsolutePath());
 		if( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) == null )
 		{
 			CaadapterUtil.savePrefParams( Config.MMS_PREFIX_OBJECTMODEL , "Logical View.Logical Model");
@@ -670,6 +674,30 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	public void setMappingTarget(String mappingTarget) {
 		this.mappingTarget = mappingTarget;
+	}
+
+	public CsvToXmiMappingReportPanel getReportPanel() {
+		return reportPanel;
+	}
+
+	public void setReportPanel(CsvToXmiMappingReportPanel reportPanel) {
+		this.reportPanel = reportPanel;
+	}
+
+	public String getSourceFileName() {
+		return sourceFileName;
+	}
+
+	public void setSourceFileName(String sourceFileName) {
+		this.sourceFileName = sourceFileName;
+	}
+
+	public String getTargetFileName() {
+		return targetFileName;
+	}
+
+	public void setTargetFileName(String targetFileName) {
+		this.targetFileName = targetFileName;
 	}
 }
 
