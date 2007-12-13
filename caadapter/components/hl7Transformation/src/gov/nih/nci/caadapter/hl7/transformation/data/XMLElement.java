@@ -11,11 +11,9 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -29,8 +27,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2007-11-02 19:56:00 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2007-12-13 19:29:45 $
  */
 public class XMLElement implements Cloneable{
 	

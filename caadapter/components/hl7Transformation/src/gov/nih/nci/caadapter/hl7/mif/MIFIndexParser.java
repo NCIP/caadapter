@@ -1,7 +1,5 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

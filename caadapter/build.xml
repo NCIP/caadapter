@@ -659,7 +659,7 @@
 
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
-		
+		<mkdir dir="${project.ref.lib.dir}"/>
     	<condition property="ref.sqleonardo">
 		   <available file="${ref_sqleonardo.jar}"/>
 		</condition>

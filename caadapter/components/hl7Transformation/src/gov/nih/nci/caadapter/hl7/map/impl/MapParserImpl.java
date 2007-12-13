@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.13 2007-12-06 20:46:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.14 2007-12-13 19:29:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -69,13 +69,11 @@ import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
-//import gov.nih.nci.caadapter.hl7.map.MappingResult;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
-import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.common.map.View;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
-//import gov.nih.nci.caadapter.hl7.validation.MapValidator;
+
 
 import java.awt.Color;
 import java.io.File;
@@ -85,21 +83,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Hashtable;
-import java.util.Set;
 
 /**
  * Parser of map files.
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.13 $
- * @date $Date: 2007-12-06 20:46:19 $
+ * @version $Revision: 1.14 $
+ * @date $Date: 2007-12-13 19:29:19 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.13 2007-12-06 20:46:19 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.14 2007-12-13 19:29:19 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
