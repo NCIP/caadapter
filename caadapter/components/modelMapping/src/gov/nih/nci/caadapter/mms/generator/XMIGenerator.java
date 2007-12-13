@@ -4,36 +4,24 @@
  */
 
 package gov.nih.nci.caadapter.mms.generator;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
-import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
-import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
-import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLDependencyEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
-import gov.nih.nci.caadapter.common.SDKMetaData;
-import gov.nih.nci.caadapter.common.util.Config;
 //import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 
 import java.io.*;
 import java.util.*;
 import java.util.List;
-import java.awt.*;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.*;
 
 import org.jdom.*;
 import org.jdom.filter.ElementFilter;

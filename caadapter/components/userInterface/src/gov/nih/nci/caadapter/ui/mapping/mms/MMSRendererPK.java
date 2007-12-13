@@ -5,7 +5,7 @@
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
 
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -52,9 +52,9 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
         
         try
         {
-            if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AttributeMetadata )
+            if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.common.metadata.AttributeMetadata )
             {
-                gov.nih.nci.caadapter.mms.metadata.AttributeMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AttributeMetadata) ((DefaultSourceTreeNode) value).getUserObject();
+                gov.nih.nci.caadapter.common.metadata.AttributeMetadata attMeta = (gov.nih.nci.caadapter.common.metadata.AttributeMetadata) ((DefaultSourceTreeNode) value).getUserObject();
                 System.out.println("attMeta" + attMeta );
                 boolean primaryKeyFound = false;
 
@@ -74,9 +74,9 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
                     setToolTipText("Primary");
                 }
             }
-            if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AssociationMetadata )
+            if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.common.metadata.AssociationMetadata )
             {
-                gov.nih.nci.caadapter.mms.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
+                gov.nih.nci.caadapter.common.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.common.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
                 System.out.println("attMeta" + attMeta );
                 boolean primaryKeyFound = false;
 
@@ -95,9 +95,9 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
                     setToolTipText("Primary");
                 }
             }
-            if( ((DefaultMutableTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.mms.metadata.AssociationMetadata )
+            if( ((DefaultMutableTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.common.metadata.AssociationMetadata )
             {
-                gov.nih.nci.caadapter.mms.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.mms.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
+                gov.nih.nci.caadapter.common.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.common.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
                 System.out.println("attMeta" + attMeta );
                 boolean primaryKeyFound = false;
 

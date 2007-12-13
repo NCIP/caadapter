@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.3 2007-06-13 20:24:53 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.4 2007-12-13 21:09:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,16 +39,15 @@ import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessageDialog;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
-//import gov.nih.nci.caadapter.ui.hl7.map.HL7MappingPanel;
 
 import javax.swing.*;
 
@@ -62,10 +61,10 @@ import java.util.Set;
  * This class defines the action to invoke validation of HSM.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-06-13 20:24:53 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-12-13 21:09:43 $
  */
 public class ValidateObjectToDbMapAction extends AbstractContextAction
 {
@@ -81,7 +80,7 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.3 2007-06-13 20:24:53 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.4 2007-12-13 21:09:43 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -214,6 +213,9 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/06/13 20:24:53  schroedn
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/06/13 20:24:16  schroedn
  * HISTORY      : added check for xmi file, null error fix
  * HISTORY      :

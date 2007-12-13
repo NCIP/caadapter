@@ -11,10 +11,10 @@ import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.caadapter.mms.map.SingleAssociationMapping;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 
 /**
  * The purpose of this class is to validate the single association role

@@ -4,10 +4,8 @@
  */
 
 package gov.nih.nci.caadapter.mms.map;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
-
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 
 /**
  * This object is used to hold the mapping between an association and a

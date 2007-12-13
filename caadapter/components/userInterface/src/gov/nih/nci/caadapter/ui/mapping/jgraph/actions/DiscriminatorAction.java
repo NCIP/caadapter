@@ -3,8 +3,8 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class DiscriminatorAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: DiscriminatorAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.5 2007-09-14 22:39:54 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.6 2007-12-13 21:09:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Disciminator";
 	private static final Character COMMAND_MNEMONIC = new Character('D');

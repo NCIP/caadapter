@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.7 2007-12-13 21:09:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,7 +34,7 @@
 
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
@@ -55,7 +55,7 @@ public class PrimaryKeyAction extends AbstractContextAction
 	private static final String COMMAND_NAME = "Make Primary Key";
 	
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.6 2007-09-20 16:40:14 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.7 2007-12-13 21:09:23 wangeug Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);

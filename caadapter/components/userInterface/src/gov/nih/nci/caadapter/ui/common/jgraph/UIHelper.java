@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.7 2007-12-06 20:46:56 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.8 2007-12-13 21:08:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,11 +42,11 @@ import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
-import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.TableMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultGraphCell;
@@ -70,8 +70,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-12-06 20:46:56 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-12-13 21:08:29 $
  */
 public final class UIHelper
 {
@@ -446,6 +446,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/12/06 20:46:56  wangeug
+ * HISTORY      : support both data model and object model
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/12/03 15:25:47  wangeug
  * HISTORY      : mappingParser: find target node from an Xmi tree node
  * HISTORY      :

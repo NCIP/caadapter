@@ -7,7 +7,7 @@ package gov.nih.nci.caadapter.mms.map;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 
 /**
  * As the user maps objects and attributes to tables and columns this

@@ -22,7 +22,7 @@ import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerator;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -91,13 +91,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.30 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.31 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.30 2007-11-16 17:18:36 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.31 2007-12-13 21:09:33 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -358,7 +358,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			throws Exception {
 		TreeNode nodes = new DefaultMutableTreeNode("Object Model");
 		CumulativeMappingGenerator.init(file.getAbsolutePath());
-		ModelMetadata myModel = ModelMetadata.getInstance();
+		ModelMetadata myModel = gov.nih.nci.caadapter.common.metadata.ModelMetadata.getInstance();
 		LinkedHashMap myMap = myModel.getModelMetadata();
 
 		Set keySet = myMap.keySet();
@@ -366,7 +366,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
             if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".") ) {
-				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
+				if (myMap.get(key) instanceof gov.nih.nci.caadapter.common.metadata.ObjectMetadata) {
 					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), true, true);
 				} else {
 					construct_node(nodes, key, (CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + ".").length(), false, true);
@@ -438,7 +438,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		while (keySetIterator.hasNext()) {
 			String key = (String) keySetIterator.next();
 			if (key.contains( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".")) {
-				if (myMap.get(key) instanceof gov.nih.nci.caadapter.mms.metadata.ObjectMetadata) {
+				if (myMap.get(key) instanceof gov.nih.nci.caadapter.common.metadata.ObjectMetadata) {
 					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), true, false);
 				} else {
 					construct_node(nodes, key, ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) + ".").length(), false, false);
@@ -1074,6 +1074,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.30  2007/11/16 17:18:36  wangeug
+ * HISTORY : clean codes: remove unused "import"
+ * HISTORY :
  * HISTORY : Revision 1.29  2007/10/11 19:06:26  schroedn
  * HISTORY : fixed HBMGenerator save error
  * HISTORY :

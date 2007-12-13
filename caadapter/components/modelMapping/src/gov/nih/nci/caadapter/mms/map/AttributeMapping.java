@@ -4,8 +4,8 @@
  */
 
 package gov.nih.nci.caadapter.mms.map;
-import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 
 /**
  * @version 1.0

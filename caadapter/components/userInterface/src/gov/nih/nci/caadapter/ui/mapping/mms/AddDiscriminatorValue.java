@@ -4,8 +4,8 @@
  */
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
 import javax.swing.*;
@@ -29,8 +29,8 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 
 	/**
 	 * @author OWNER: Ye Wu
-	 * @author LAST UPDATE $Author: schroedn $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+	 * @author LAST UPDATE $Author: wangeug $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.5 $
 	 */
 	    String curDir;
 	    String sourceName1 = "";

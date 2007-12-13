@@ -10,8 +10,6 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -37,8 +35,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-12-06 20:48:06 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-12-13 21:10:12 $
  */
 public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {

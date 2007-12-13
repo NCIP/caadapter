@@ -8,9 +8,9 @@ package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -41,10 +41,10 @@ import java.util.List;
  * This class handles drop-related data manipulation for target tree on the mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-20 16:40:14 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-12-13 21:09:43 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -339,6 +339,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/09/20 16:40:14  schroedn
+ * HISTORY      : License text
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/09/14 22:40:24  wuye
  * HISTORY      : Fixed discriminator issue
  * HISTORY      :

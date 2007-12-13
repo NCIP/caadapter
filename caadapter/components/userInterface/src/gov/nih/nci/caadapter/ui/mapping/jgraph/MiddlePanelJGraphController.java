@@ -40,8 +40,6 @@ import gov.nih.nci.caadapter.hl7.map.impl.BaseMapElementImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MapImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
@@ -94,7 +92,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.18 $ date $Date: 2007-12-06 20:41:13 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.19 $ date $Date: 2007-12-13 21:09:11 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -109,7 +107,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.18 2007-12-06 20:41:13 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.19 2007-12-13 21:09:11 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1479,6 +1477,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.18  2007/12/06 20:41:13  wangeug
+ * HISTORY : support both data model and object model
+ * HISTORY :
  * HISTORY : Revision 1.17  2007/12/04 15:13:08  wangeug
  * HISTORY : clean codes
  * HISTORY :

@@ -3,7 +3,7 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class ClobAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: ClobAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.2 2007-09-14 14:06:40 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.3 2007-12-13 21:09:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Clob";
 	private static final Character COMMAND_MNEMONIC = new Character('C');

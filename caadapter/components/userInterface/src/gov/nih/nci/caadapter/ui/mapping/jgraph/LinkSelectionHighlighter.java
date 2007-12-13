@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.10 2007-10-02 14:52:25 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.11 2007-12-13 21:09:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,9 +43,9 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.*;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
@@ -77,10 +77,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-10-02 14:52:25 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-12-13 21:09:11 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -96,7 +96,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.10 2007-10-02 14:52:25 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.11 2007-12-13 21:09:11 wangeug Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -675,6 +675,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/10/02 14:52:25  schroedn
+ * HISTORY      : Changed error message to warning message
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/09/21 04:41:21  wuye
  * HISTORY      : removed system.out
  * HISTORY      :

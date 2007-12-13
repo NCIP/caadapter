@@ -7,7 +7,7 @@ package gov.nih.nci.caadapter.mms.validator;
 import com.sun.org.apache.xerces.internal.impl.dv.DatatypeValidator;
 
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 
 /**
  * This is a singleton class and it's purpose is to coordinate all

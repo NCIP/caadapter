@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.4 2007-09-14 14:06:40 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.5 2007-12-13 21:09:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,8 +34,7 @@
 
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
-import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
@@ -44,9 +43,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
@@ -58,15 +55,15 @@ import javax.swing.tree.TreePath;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-09-14 14:06:40 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2007-12-13 21:09:23 $
  */
 public class TestAction extends AbstractContextAction
 {
 	private static final String LOGID = "$RCSfile: TestAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.4 2007-09-14 14:06:40 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/TestAction.java,v 1.5 2007-12-13 21:09:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Lazy";
 	private static final Character COMMAND_MNEMONIC = new Character('L');

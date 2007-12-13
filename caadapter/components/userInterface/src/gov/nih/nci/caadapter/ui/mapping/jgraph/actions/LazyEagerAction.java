@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.7 2007-09-21 04:41:38 wuye Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.8 2007-12-13 21:09:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,18 +36,14 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-
-import org.jgraph.JGraph;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import java.awt.*;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.*;
@@ -55,14 +51,14 @@ import java.util.*;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-09-21 04:41:38 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2007-12-13 21:09:23 $
  */
 public class LazyEagerAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: LazyEagerAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.7 2007-09-21 04:41:38 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.8 2007-12-13 21:09:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Eager";
 	private static final Character COMMAND_MNEMONIC = new Character('L');

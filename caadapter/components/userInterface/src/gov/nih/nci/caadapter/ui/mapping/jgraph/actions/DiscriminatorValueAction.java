@@ -6,8 +6,8 @@
 
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
@@ -29,7 +29,7 @@ public class DiscriminatorValueAction extends AbstractContextAction
 	private static final String COMMAND_NAME = "Set Discriminator Value";
 	
 	private static final String LOGID = "$RCSfile: DiscriminatorValueAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorValueAction.java,v 1.1 2007-09-17 15:08:30 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorValueAction.java,v 1.2 2007-12-13 21:09:23 wangeug Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('D');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);

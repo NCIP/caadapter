@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.9 2007-10-30 16:00:27 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/DefaultMappingTreeCellRender.java,v 1.10 2007-12-13 21:08:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,7 +41,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import javax.swing.ImageIcon;
@@ -58,8 +58,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-10-30 16:00:27 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2007-12-13 21:08:43 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {

@@ -5,7 +5,7 @@
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
 
-import gov.nih.nci.caadapter.mms.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
@@ -61,7 +61,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
 
         try
         {
-            gov.nih.nci.caadapter.mms.metadata.TableMetadata qbTableMetaData = (gov.nih.nci.caadapter.mms.metadata.TableMetadata) ((DefaultTargetTreeNode) value).getUserObject();
+            gov.nih.nci.caadapter.common.metadata.TableMetadata qbTableMetaData = (gov.nih.nci.caadapter.common.metadata.TableMetadata) ((DefaultTargetTreeNode) value).getUserObject();
             table = qbTableMetaData.getName();
             //System.out.println("Tables " + table );
 
@@ -80,7 +80,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
         {
             try
             {
-                gov.nih.nci.caadapter.mms.metadata.ColumnMetadata discriminatorColumnMeta = (gov.nih.nci.caadapter.mms.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
+                gov.nih.nci.caadapter.common.metadata.ColumnMetadata discriminatorColumnMeta = (gov.nih.nci.caadapter.common.metadata.ColumnMetadata) ((DefaultTargetTreeNode) value).getUserObject();
                 //System.out.println("Column " + queryBuilderMeta.getXPath() );
                 boolean lazyKeyFound = false;
                 boolean clobKeyFound = false;

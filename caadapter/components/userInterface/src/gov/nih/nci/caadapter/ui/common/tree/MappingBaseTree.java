@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingBaseTree.java,v 1.3 2007-12-04 15:11:26 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MappingBaseTree.java,v 1.4 2007-12-13 21:08:43 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,11 +35,7 @@
 package gov.nih.nci.caadapter.ui.common.tree;
 
 
-import gov.nih.nci.caadapter.common.MetaObject;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.mms.metadata.TableMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
-
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -60,8 +56,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-12-04 15:11:26 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-12-13 21:08:43 $
  */
 public abstract class MappingBaseTree extends AutoscrollableTree implements TreeExpansionListener
 {
@@ -197,6 +193,9 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/12/04 15:11:26  wangeug
+ * HISTORY      : add new method: return all visible mapped nodes
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/03 19:24:46  wangeug
  * HISTORY      : initila loading hl7 code without "clone"
  * HISTORY      :

@@ -12,7 +12,7 @@ import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.caadapter.mms.map.ManyToManyMapping;
-import gov.nih.nci.caadapter.mms.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.mms.util.DatatypeCompatablityProperties;
 
 

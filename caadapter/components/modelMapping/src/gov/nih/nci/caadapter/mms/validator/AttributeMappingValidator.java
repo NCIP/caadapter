@@ -7,8 +7,8 @@ package gov.nih.nci.caadapter.mms.validator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
-import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.mms.metadata.ColumnMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.mms.util.DatatypeCompatablityProperties;
 
 import java.util.Iterator;

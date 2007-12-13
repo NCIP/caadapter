@@ -4,7 +4,7 @@
  */
 
 package gov.nih.nci.caadapter.mms.map;
-import gov.nih.nci.caadapter.mms.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 
 /**
  * This class represents the semantic relationship between attributes of
