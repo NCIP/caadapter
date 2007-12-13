@@ -67,14 +67,14 @@ import java.util.Map;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.8 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.9 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.8 2007-12-12 19:53:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.9 2007-12-13 17:46:32 schroedn Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
@@ -404,8 +404,6 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
         System.out.println("Creating XMI File...");
         XmiInOutHandler handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
 
-        //todo: move to saveas section, add check to see if already saved
-        //mappingFile = "c:/testing.map";
         File file = new File(mappingFile);
 
         //init() - read parameters from mappingFile
@@ -437,30 +435,19 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
             System.out.println("added tagged value: " + map.getSourceMapElement().getXmlPath() );
 
             UMLAttribute column = null;
-
-            //implement class search and add
-            //UMLClass clazz = null;
-
             column = ModelUtil.findAttribute( model,  map.getTargetMapElement().getXmlPath() );
-            //clazz = ModelUtil.findClass( model,  map.getTargetMapElement().getXmlPath() );
 
             if ( column != null ) {
                 System.out.println(" *Attribute Found, adding* ");
                 column.addTaggedValue( "XMLNamespace", map.getSourceMapElement().getXmlPath() );
             }
-//            if ( clazz != null ) {
-//                System.out.println(" *Class Found* ");
-//                column.addTaggedValue( "XMLNamespace", "TESTING 123" + map.getSourceMapElement().getXmlPath() );
-//            }
         }
-
-        //Annotate XMI
-//        SAXBuilder builder = new SAXBuilder( false );
-//        Document doc = builder.build( new File( this.mappingFile ) );
 
         //write xmi file
         handler.save(xmiFile);
 
+        this.reload();
+        
         return validatorResults;
     }
 
