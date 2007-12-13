@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingReportPanel.java,v 1.1 2007-12-12 19:53:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingReportPanel.java,v 1.2 2007-12-13 15:28:28 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,8 +65,8 @@ import java.util.Map;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-12-12 19:53:48 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-13 15:28:28 $
  */
 public class CsvToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 {
@@ -93,22 +93,22 @@ public class CsvToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 		int posY = 0;
 		JLabel dataFileNameLabel = new JLabel("Source File:");
 		fieldsPanel.add(dataFileNameLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		targetFileNameField = new JTextField();
-		Dimension fieldDimension = new Dimension(dataFileNameLabel.getPreferredSize().width, targetFileNameField.getPreferredSize().height);
-		targetFileNameField.setEditable(false);
-		targetFileNameField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
-		targetFileNameField.setPreferredSize(fieldDimension);
-		fieldsPanel.add(targetFileNameField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-
-		posY++;
-		JLabel mapFileNameLabel = new JLabel("Target File:");
-		fieldsPanel.add(mapFileNameLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		sourceFileNameField = new JTextField();
-		fieldDimension = new Dimension(mapFileNameLabel.getPreferredSize().width, sourceFileNameField.getPreferredSize().height);
+		Dimension fieldDimension = new Dimension(dataFileNameLabel.getPreferredSize().width, sourceFileNameField.getPreferredSize().height);
 		sourceFileNameField.setEditable(false);
 		sourceFileNameField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
 		sourceFileNameField.setPreferredSize(fieldDimension);
 		fieldsPanel.add(sourceFileNameField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+		posY++;
+		JLabel mapFileNameLabel = new JLabel("Target File:");
+		fieldsPanel.add(mapFileNameLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+		targetFileNameField = new JTextField();
+		fieldDimension = new Dimension(mapFileNameLabel.getPreferredSize().width, targetFileNameField.getPreferredSize().height);
+		targetFileNameField.setEditable(false);
+		targetFileNameField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
+		targetFileNameField.setPreferredSize(fieldDimension);
+		fieldsPanel.add(targetFileNameField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		fieldsOuterPanel.add(fieldsPanel, BorderLayout.CENTER);
 
 		return fieldsOuterPanel;

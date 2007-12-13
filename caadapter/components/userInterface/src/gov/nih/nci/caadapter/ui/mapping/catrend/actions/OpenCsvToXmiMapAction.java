@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/OpenCsvToXmiMapAction.java,v 1.2 2007-11-30 14:39:46 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/OpenCsvToXmiMapAction.java,v 1.3 2007-12-13 15:29:20 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -67,14 +67,14 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-11-30 14:39:46 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-13 15:29:20 $
  */
 public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 {
 	protected static String COMMAND_NAME = ActionConstants.OPEN_CSV2XMI_MAP_FILE.substring(5);//remove the leading "open" 
 	protected static Character COMMAND_MNEMONIC = new Character('O');
-	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_6, Event.CTRL_MASK + Event.SHIFT_MASK, false);
+	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	protected static String TOOL_TIP_DESCRIPTION = "Open a Csv Meta To XMI Mapping File";
 
     private transient File openFile;
@@ -258,6 +258,9 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/11/30 14:39:46  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/11/29 16:47:52  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :

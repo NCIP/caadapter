@@ -25,12 +25,12 @@ import java.util.ArrayList;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-12-06 20:47:29 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2007-12-13 15:29:09 $
  */
 public class NewCsvToXmiMapAction extends AbstractContextAction
 		{
-	private static final String COMMAND_NAME = "CSV to XMI Mapping";
+	private static final String COMMAND_NAME = "CSV Meta To Object/Data Model Mapping";
 	private static final Character COMMAND_MNEMONIC = new Character('X');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false);
 
@@ -81,7 +81,7 @@ public class NewCsvToXmiMapAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
-		NewMappingPanelWizard wizard = new NewMappingPanelWizard(mainFrame, "New CSV to XMI Mapping", true);
+		NewMappingPanelWizard wizard = new NewMappingPanelWizard(mainFrame, "New CSV Meta To Object/Data Model Mapping", true);
 		DefaultSettings.centerWindow(wizard);
 		wizard.setVisible(true);
 		if (wizard.isOkButtonClicked())
@@ -118,6 +118,9 @@ public class NewCsvToXmiMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/12/06 20:47:29  wangeug
+ * HISTORY      : support both data model and object model
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/11/30 14:41:37  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :

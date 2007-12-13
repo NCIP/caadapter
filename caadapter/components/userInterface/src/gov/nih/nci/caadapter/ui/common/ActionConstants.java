@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.6 2007-11-29 16:47:22 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.7 2007-12-13 15:28:14 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,8 +42,8 @@ import gov.nih.nci.caadapter.common.util.Config;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-11-29 16:47:22 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2007-12-13 15:28:14 $
  */
 public interface ActionConstants
 {
@@ -68,7 +68,7 @@ public interface ActionConstants
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
 	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
-	String OPEN_CSV2XMI_MAP_FILE = "Open Csv Meta To Xmi Mapping";
+	String OPEN_CSV2XMI_MAP_FILE = "Open CSV Meta To Object/Data Model Mapping";
 	String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
 	String OPEN_CSV_SPEC = "Open " + OPEN_CSV_SPEC_TXT;
 	String OPEN_HL7_V3_MESSAGE_TXT = NEW_HL7_V3_MESSAGE_TXT;
@@ -98,6 +98,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/11/29 16:47:22  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/08/30 19:55:33  jayannah
  * HISTORY      : changed the verbage
  * HISTORY      :

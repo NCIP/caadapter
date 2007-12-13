@@ -81,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.25 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.26 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -257,7 +257,23 @@ public class MainMenuBar extends AbstractMenuBar
         {
             //set csvToV3 as default
             newGroup.add(constructNewCSVTOV3Menu());
-        } else
+        } 
+        else if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
+        {
+        	//directly add menuItem
+             NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
+             JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
+             newGroup.add(newCSVSpecificationItem);
+             actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
+             menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
+
+             NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
+             JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
+             newGroup.add(mewCsvToXmiMapFileItem);
+             actionMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapAction);
+             menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, mewCsvToXmiMapFileItem);
+        }
+        else
         {
             //load each activated component
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
@@ -293,19 +309,19 @@ public class MainMenuBar extends AbstractMenuBar
         actionMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newObject2DBMapAction);
         menuItemMap.put(ActionConstants.NEW_O2DB_MAP_FILE, newO2DBMapFileItem);
      
-        NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
-        JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
-        newGroup.add(newCSVSpecificationItem);
-        if (actionMap.get(ActionConstants.NEW_CSV_SPEC)==null)
-        {
-            actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
-            menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
-        }
-        NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
-        JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
-        newGroup.add(mewCsvToXmiMapFileItem);
-        actionMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapAction);
-        menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, mewCsvToXmiMapFileItem);
+//        NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
+//        JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
+//        newGroup.add(newCSVSpecificationItem);
+//        if (actionMap.get(ActionConstants.NEW_CSV_SPEC)==null)
+//        {
+//            actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
+//            menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
+//        }
+//        NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
+//        JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
+//        newGroup.add(mewCsvToXmiMapFileItem);
+//        actionMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapAction);
+//        menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, mewCsvToXmiMapFileItem);
         return newGroup;
     }
 
@@ -485,7 +501,14 @@ public class MainMenuBar extends AbstractMenuBar
             openMenu.add(openXmlHSMAction);
             openMenu.add(openHSMFileItem);
             openMenu.add(openMapFileItem);
-        } else
+        } 
+        else if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
+        {
+        	//only add the required menuItem
+        	openMenu.add(openCSVSpecificationItem);
+        	openMenu.add(openCsvToXmiMapFileItem);
+        }
+        else
         {
             //load each activated component
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
@@ -499,7 +522,10 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
             	if (!isOpenCsvAdded)
+            	{
             		openMenu.add(openCSVSpecificationItem);
+            		isOpenCsvAdded=true;
+            	}
                 openMenu.add(openXmlHSMAction);
                 openMenu.add(openHSMFileItem);
                 openMenu.add(openMapFileItem);
@@ -507,17 +533,15 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
             	if (!isOpenCsvAdded)
+            	{
             		openMenu.add(openCSVSpecificationItem);
-                
+            		isOpenCsvAdded=true;
+            	}
                 openMenu.add(openSDTMMapFile);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
-            {
-            	if (!isOpenCsvAdded)
-            		openMenu.add(openCSVSpecificationItem);
-            
+            {      
                 openMenu.add(openO2DBMapFileItem);
-                openMenu.add(openCsvToXmiMapFileItem);
             }
         }
         return openMenu;
@@ -631,6 +655,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.25  2007/11/30 17:19:43  wangeug
+ * HISTORY : create CSV_TO_XMI mapping module
+ * HISTORY :
  * HISTORY : Revision 1.24  2007/11/29 16:45:31  wangeug
  * HISTORY : create CSV_TO_XMI mapping module
  * HISTORY :

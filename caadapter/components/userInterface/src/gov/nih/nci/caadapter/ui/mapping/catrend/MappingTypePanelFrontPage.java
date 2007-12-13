@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/MappingTypePanelFrontPage.java,v 1.1 2007-12-06 20:40:35 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/MappingTypePanelFrontPage.java,v 1.2 2007-12-13 15:28:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -50,8 +50,8 @@ import java.io.File;
  * @author OWNER: wangeug
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-12-06 20:40:35 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-13 15:28:38 $
  */
 public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 {
@@ -67,13 +67,13 @@ public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/MappingTypePanelFrontPage.java,v 1.1 2007-12-06 20:40:35 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/MappingTypePanelFrontPage.java,v 1.2 2007-12-13 15:28:38 wangeug Exp $";
 
 	public static final int OBJECT_SELECTED = 1;
 	public static final int DATA_SELECTED = 2;
 	
-	private static final String DATA_MODEL = "Data Model (XMI)";
-	private static final String OBJECT_MODEL = "Object Model (XMI)";
+	private static final String DATA_MODEL = "Data Model ";
+	private static final String OBJECT_MODEL = "Object Model ";
 	private int selectionType=1;
 
 	private JRadioButton objectButton;
@@ -87,7 +87,7 @@ public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 	{
 		this.setLayout(new BorderLayout());
 		JPanel northPanel = new JPanel(new BorderLayout());
-		JTextArea noteArea = new JTextArea("Select mapping target");
+		JTextArea noteArea = new JTextArea("Select the mapping target");
 		noteArea.setEditable(false);
 		noteArea.setBackground(northPanel.getBackground());
 		northPanel.add(noteArea, BorderLayout.CENTER);
