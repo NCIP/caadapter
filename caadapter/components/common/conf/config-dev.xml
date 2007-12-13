@@ -13,6 +13,7 @@
 	<constant name="CAADAPTER_COMPONENT_WEBSTART_ACTIVATED" type="String" value="webstart.activated"/>
 	<constant name="CAADAPTER_HELP_MENU_ACTIVATED" type="String" value="caadapter.help.menu.activated"/>	
 	<constant name="CAADAPTER_QUERYBUILDER_MENU_ACTIVATED" type="String" value="caadapter.querybuilder.menu.activated"/>	
+	<constant name="CAADAPTER_CSV_XMI_MENU_ACTIVATED" type="String" value="caadapter.csv.xmi.menu.activated"/>	
 	<constant name="MMS_PREFIX_DATAMODEL" type="String" value="cadapter.mms.prefix.datamodel"/>
 	<constant name="MMS_PREFIX_OBJECTMODEL" type="String" value="cadapter.mms.prefix.objectmodel"/>
 	    
