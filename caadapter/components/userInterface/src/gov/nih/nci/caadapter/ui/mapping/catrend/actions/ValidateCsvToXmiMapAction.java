@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.2 2007-12-12 19:54:07 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.3 2007-12-14 15:59:16 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-12-12 19:54:07 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-14 15:59:16 $
  */
 public class ValidateCsvToXmiMapAction extends AbstractContextAction
 {
@@ -73,7 +73,7 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.2 2007-12-12 19:54:07 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/ValidateCsvToXmiMapAction.java,v 1.3 2007-12-14 15:59:16 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -134,7 +134,18 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
         MappingBaseTree mappingBaseTree=(MappingBaseTree)mappingPanel.getSourceTree();
 
         CsvToXmiMappingReportPanel mpReportPane = mappingPanel.getReportPanel();
+        boolean createNewReport=false;
+        
         if (mpReportPane==null)
+        {
+        	createNewReport=true;
+        }
+        else if (mpReportPane.getReporter()==null)
+        	createNewReport=true;
+        JFrame holderFrame=findHolderFrame(parentPanel);
+		AbstractMainFrame mainFrame= (AbstractMainFrame)holderFrame;
+		
+        if (createNewReport)
         {
         	mpReportPane=new CsvToXmiMappingReportPanel();
         	mappingPanel.setReportPanel(mpReportPane);
@@ -142,15 +153,15 @@ public class ValidateCsvToXmiMapAction extends AbstractContextAction
         	reporter.setSourceFileName(mappingPanel.getSourceFileName());
         	reporter.setTargetFileName(mappingPanel.getTargetFileName());
         	mpReportPane.setReporter(reporter);
-        	JFrame holderFrame=findHolderFrame(parentPanel);
-    		AbstractMainFrame mainFrame= (AbstractMainFrame)holderFrame;
-    		mainFrame.addNewTab(mpReportPane);
+        	mainFrame.addNewTab(mpReportPane);
         	mpReportPane.setChanged(false);
         }
         else
         {
-//        	reporter=mpReportPane.getReporter();
+        	mpReportPane.getReporter().setTreeNode((MappableNode)mappingBaseTree.getRootTreeNode());
         	mpReportPane.setChanged(true);
+        	//bring the report pane to front
+        	mainFrame.getTabbedPane().setSelectedComponent(mpReportPane);
         }
         
 		
