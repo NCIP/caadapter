@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.15 2007-11-29 14:26:42 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.16 2007-12-14 17:03:33 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,10 +62,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2007-11-29 14:26:42 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2007-12-14 17:03:33 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -245,12 +245,15 @@ public class MainFrame extends AbstractMainFrame
 	    centerPanel.update(centerPanel.getGraphics());
 	    //-------------------------------------------------------------------------------------------------
 	}
-	tabMap.remove(comp.getClass());
-	if (comp instanceof ContextManagerClient) {
-		ContextManager.getContextManager().getContextFileManager().removeFileUsageListener((ContextManagerClient) comp);
-	}
-    }
 
+    if( comp != null ){
+        tabMap.remove(comp.getClass());
+
+        if (comp instanceof ContextManagerClient) {
+            ContextManager.getContextManager().getContextFileManager().removeFileUsageListener((ContextManagerClient) comp);
+        }
+    }
+    }
     /**
      * Only accessible by the same package so as to
      * avoid abuse of using the tabbedPane directly.
@@ -432,6 +435,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2007/11/29 14:26:42  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2007/10/04 18:09:14  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :
