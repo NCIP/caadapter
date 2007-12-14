@@ -64,14 +64,14 @@ import java.util.Map;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.11 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.12 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.11 2007-12-14 15:56:53 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.12 2007-12-14 17:02:55 schroedn Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
@@ -443,6 +443,8 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
         //write xmi file
         handler.save(xmiFile);
 
+        setSaveFile(file);
+        
         this.reload();
         
         return validatorResults;
@@ -597,7 +599,8 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	 * @throws Exception
 	 */
 	public void reload() throws Exception {
-		processOpenMapFile(getSaveFile());
+		if( getSaveFile() != null)
+            processOpenMapFile(getSaveFile());
 	}
 
 	/**
