@@ -33,7 +33,6 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.CsvToXmiTargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRendererPK;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -46,8 +45,7 @@ import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
-import org.jdom.Document;
-import org.jdom.input.SAXBuilder;
+
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -58,7 +56,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
-import java.util.List;
 import java.util.Map;
 
 
@@ -68,13 +65,13 @@ import java.util.Map;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.10 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.11 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.10 2007-12-13 21:08:58 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.11 2007-12-14 15:56:53 wangeug Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
@@ -529,8 +526,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				action);
 		action.setEnabled(true);
 
-		action = new gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction(
-				this);
+		action = new gov.nih.nci.caadapter.ui.mapping.catrend.actions.CloseCsvToXmiMapAction(this);
 		contextManager.addClientMenuAction(MenuConstants.CSV_TO_XMI,
 				MenuConstants.FILE_MENU_NAME, ActionConstants.CLOSE, action);
 		action.setEnabled(true);
