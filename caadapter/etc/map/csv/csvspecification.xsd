@@ -6,7 +6,8 @@
 			<xs:sequence>
 				<xs:element ref="segment"/>
 			</xs:sequence>
-			<xs:attribute name="xmlPath" type="xs:NMTOKEN" use="optional" default="csvMetaData"/>
+            <xs:attribute name="type" type="xs:NMTOKEN" use="optional"/>
+            <xs:attribute name="xmlPath" type="xs:NMTOKEN" use="optional" default="csvMetaData"/>
 			<!-- xs:attribute name="xmlPath" type="xs:NMTOKEN" use="required" default="csvMetaData"/ -->
 			<xs:attribute name="version" type="xs:decimal" use="optional"/>
 		</xs:complexType>
