@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelWizard.java,v 1.2 2007-04-19 14:01:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelWizard.java,v 1.3 2007-12-19 22:33:50 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,10 +55,10 @@ import java.io.FileReader;
 /**
  * This is the main class of wizard.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-04-19 14:01:48 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-19 22:33:50 $
  */
 public class NewCSVPanelWizard extends JDialog implements ActionListener
 {
@@ -147,7 +147,23 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 						return;
 					}
 				}
-				else if (buttonSelectedMode == frontPage.NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND_SELECTED)
+				else if (buttonSelectedMode == frontPage.GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND_SELECTED)
+				{
+					CSVMetaFromInstanceUtil util = null;
+					try
+					{
+                        util = new CSVMetaFromInstanceUtil(tempFile.getPath());
+					    util.setNonStructure(true);
+                        util.setNonStructureFilename(tempFile.getName());
+                        csvMetaResult = util.getMetadata();
+					}
+					catch (Exception e1)
+					{
+						DefaultSettings.reportThrowableToLogAndUI(this, e1, null, this, false, false);
+						return;
+					}
+				}
+                else if (buttonSelectedMode == frontPage.NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND_SELECTED)
 				{
 					CSVMetaParserImpl parser = new CSVMetaParserImpl();
 					try
@@ -217,9 +233,14 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 		wizard.setVisible(true);
 		DefaultSettings.centerWindow(wizard);
 	}
+
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/04/19 14:01:48  wangeug
+ * HISTORY      : clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

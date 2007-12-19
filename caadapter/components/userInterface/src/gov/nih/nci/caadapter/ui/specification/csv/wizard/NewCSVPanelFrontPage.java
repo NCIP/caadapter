@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.2 2007-12-19 22:33:50 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,10 +48,10 @@ import java.io.File;
  * This class defines the first page for NewCSVPanelWizard.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-19 22:33:50 $
  */
 public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 {
@@ -67,16 +67,18 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.2 2007-12-19 22:33:50 schroedn Exp $";
 
 	public static final int BLANK_COMMAND_SELECTED = 1;
 	public static final int GENERATE_FROM_CSV_INSTANCE_COMMAND_SELECTED = 2;
-	public static final int NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND_SELECTED = 3;
+    public static final int GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND_SELECTED = 4;
+    public static final int NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND_SELECTED = 3;
 
 
 	private static final String BLANK_COMMAND = "Create a CSV Specification from scratch";
 	private static final String GENERATE_FROM_CSV_INSTANCE_COMMAND = "Generate from a CSV file";
-	//	private static final String GENERATE_FROM_HMD_COMMAND = "Generate from a HL7 Metadata File";
+    private static final String GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND = "Generate from a Non-Structure CSV file";
+    //	private static final String GENERATE_FROM_HMD_COMMAND = "Generate from a HL7 Metadata File";
 	private static final String NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND = "Copy from an Existing CSV Specification";
 
 	//	private NewCSVPanelWizard wizard;
@@ -84,7 +86,8 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 	private ButtonGroup buttonGroup;
 	private JRadioButton blankButton;
 	private JRadioButton generateFromCSVInstanceButton;
-	//	private JRadioButton generateFromHMDButton;
+    private JRadioButton generateFromNonStructureCSVInstanceButton;
+    //	private JRadioButton generateFromHMDButton;
 	private JRadioButton newFromCSVSchemaButton;
 
 	private JPanel selectCSVLocationPanel;
@@ -136,7 +139,12 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		generateFromCSVInstanceButton.addActionListener(this);
 		centerPanel.add(generateFromCSVInstanceButton);
 
-		selectCSVLocationPanel = new JPanel(new BorderLayout());
+        generateFromNonStructureCSVInstanceButton = new JRadioButton(GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND);
+        generateFromNonStructureCSVInstanceButton.setMnemonic('N');
+        generateFromNonStructureCSVInstanceButton.addActionListener(this);
+        centerPanel.add(generateFromNonStructureCSVInstanceButton);
+
+        selectCSVLocationPanel = new JPanel(new BorderLayout());
 		JPanel tempPanel = new JPanel(new BorderLayout(5, 5));
 		csvLocationField = new JTextField();
 		browseAction = new BrowseCsvAction(this);
@@ -181,7 +189,8 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		buttonGroup = new ButtonGroup();
 		buttonGroup.add(blankButton);
 		buttonGroup.add(generateFromCSVInstanceButton);
-		//		buttonGroup.add(generateFromHMDButton);
+        buttonGroup.add(generateFromNonStructureCSVInstanceButton);
+        //		buttonGroup.add(generateFromHMDButton);
 		buttonGroup.add(newFromCSVSchemaButton);
 
 		//default selection
@@ -265,7 +274,13 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 			csvLocationBrowseButton.setEnabled(true);
 			buttonSelectedMode = GENERATE_FROM_CSV_INSTANCE_COMMAND_SELECTED;
 		}
-		//		else if(GENERATE_FROM_HMD_COMMAND.equals(command))
+        else if (GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND.equals(command))
+        {
+            csvLocationField.setEnabled(true);
+            csvLocationBrowseButton.setEnabled(true);
+            buttonSelectedMode = GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND_SELECTED;
+        }
+        //		else if(GENERATE_FROM_HMD_COMMAND.equals(command))
 		//		{
 		//			hmdLocationField.setEnabled(true);
 		//			hmdLocationBrowseButton.setEnabled(true);
@@ -322,7 +337,7 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 			System.err.println("This function should not be called.");
 		}
 
-		if (generateFromCSVInstanceButton.isSelected())
+		if (generateFromCSVInstanceButton.isSelected() || generateFromNonStructureCSVInstanceButton.isSelected() )
 		{
 			result = Config.CSV_DATA_FILE_DEFAULT_EXTENSTION;
 		}
@@ -349,7 +364,7 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 			System.err.println("This function should not be called.");
 		}
 
-		if (generateFromCSVInstanceButton.isSelected())
+		if (generateFromCSVInstanceButton.isSelected() || generateFromNonStructureCSVInstanceButton.isSelected())
 		{
 			result = Config.OPEN_DIALOG_TITLE_FOR_CSV_FILE;
 		}
@@ -371,6 +386,9 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

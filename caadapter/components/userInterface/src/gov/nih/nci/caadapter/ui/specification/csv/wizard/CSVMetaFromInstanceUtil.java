@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.2 2007-12-19 22:33:41 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,7 @@ import gov.nih.nci.caadapter.common.csv.CSVMetaGeneratorUtil;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.CSVParser;
 import gov.nih.nci.caadapter.common.csv.CSVParserImpl;
+import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVFieldMetaImpl;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
@@ -57,18 +58,20 @@ import java.util.List;
  * Generates a "starting point" csv meta object graph from a CSV instance.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-04-03 16:18:15 $
+ * @author LAST UPDATE $Author: schroedn $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2007-12-19 22:33:41 $
  * @since caAdapter v1.2
  */
 
 public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
     private static final String LOGID = "$RCSfile: CSVMetaFromInstanceUtil.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.2 2007-12-19 22:33:41 schroedn Exp $";
 
     private String filename = null;
     private String[][] fileData = null;
+    private boolean isNonStructure = false;
+    private String nonStructureFilename = null;
     private static final int SEGMENT_COLUMN = 0;
 
     public CSVMetaFromInstanceUtil(String filename) {
@@ -96,32 +99,51 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
 
         CSVMetaImpl meta = new CSVMetaImpl();
         csvMetaResult.setCsvMeta(meta);
-
+        
         ArrayList<String> segmentNames = getUniqueSegmentNames();
 
         // create the segments.
         boolean isFirstSegment = true;
         CSVSegmentMetaImpl rootSegment = null;
-        for (int i = 0; i < segmentNames.size(); i++) {
-            String segmentName = segmentNames.get(i);
-            if (isFirstSegment) {
-                rootSegment = new CSVSegmentMetaImpl(segmentName, null);
-                meta.setRootSegment(rootSegment);
-                isFirstSegment = false;
-            } else {
-                CSVSegmentMetaImpl segment = new CSVSegmentMetaImpl(segmentName, rootSegment);
-                rootSegment.addSegment(segment);
+        CSVSegmentMetaImpl firstSegment = null;
+
+        if( isNonStructure ) {
+            rootSegment = new CSVSegmentMetaImpl(nonStructureFilename, null);
+            meta.setRootSegment(rootSegment);
+
+            String segmentName = segmentNames.get(0);
+            firstSegment = new CSVSegmentMetaImpl(segmentName, null);
+
+            ArrayList<String> fieldNames = getFieldList(firstSegment.getName());
+
+            for (int i = 0; i < fieldNames.size(); i++) {
+                 String strFieldName = fieldNames.get(i);
+                 System.out.println("str " + strFieldName);
+                 CSVFieldMetaImpl field = new CSVFieldMetaImpl(i+1, strFieldName, rootSegment);
+                 rootSegment.addField(field);
             }
         }
+        else {
+            for (int i = 0; i < segmentNames.size(); i++) {
+                String segmentName = segmentNames.get(i);
+                if (isFirstSegment) {
+                    rootSegment = new CSVSegmentMetaImpl(segmentName, null);
+                    meta.setRootSegment(rootSegment);
+                    isFirstSegment = false;
+                } else {
+                    CSVSegmentMetaImpl segment = new CSVSegmentMetaImpl(segmentName, rootSegment);
+                    rootSegment.addSegment(segment);
+                }
+            }
 
-        // create the fields.
-        genFields(rootSegment);
-        List<CSVSegmentMeta> childSegments = rootSegment.getChildSegments();
-        for (int i = 0; i < childSegments.size(); i++) {
-            CSVSegmentMeta csvSegmentMeta = childSegments.get(i);
-            genFields(csvSegmentMeta);
+            // create the fields.
+            genFields(rootSegment);
+            List<CSVSegmentMeta> childSegments = rootSegment.getChildSegments();
+            for (int i = 0; i < childSegments.size(); i++) {
+                CSVSegmentMeta csvSegmentMeta = childSegments.get(i);
+                genFields(csvSegmentMeta);
+            }
         }
-
         return csvMetaResult;
     }
 
@@ -140,6 +162,18 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
             CSVFieldMetaImpl field = new CSVFieldMetaImpl(j + 1, "FieldName" + (j + 1), segment);
             segment.addField(field);
         }
+    }
+
+    private void genNonStructureFields(CSVSegmentMeta segment) {
+
+            ArrayList<String> fieldNames = getFieldList(segment.getName());
+
+            for (int i = 0; i < fieldNames.size(); i++) {
+                 String strFieldName = fieldNames.get(i);
+                 System.out.println("str " + strFieldName);
+                 CSVFieldMetaImpl field = new CSVFieldMetaImpl(i+1, strFieldName, segment);
+                 segment.addField(field);
+            }
     }
 
     private ArrayList<String> getUniqueSegmentNames() {
@@ -167,6 +201,7 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
                     // is there something in this cell?
                     if (row[j] != null && !"".equalsIgnoreCase(row[j])) {
                         // if so, update the temporary count.
+                        //System.out.println("row: " + row[j]);
                         tempCount = j;
                     }
                 }
@@ -182,5 +217,54 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
             }
         }
         return colCount;
+    }
+
+       private ArrayList<String> getFieldList(String segmentName) {
+        ArrayList<String> a = new ArrayList<String>();
+        int colCount = 0;
+        for (int i = 0; i < fileData.length; i++) {
+            String[] row = fileData[i];
+            // Is this the row based on the segment that you want?
+            if (segmentName.equalsIgnoreCase(row[SEGMENT_COLUMN])) {
+//                System.out.println(segmentName + " row : " + i + " colcount : " + row.length);
+                // how many columns are in this row?
+                int tempCount = 0;
+                for (int j = 0; j < row.length; j++) {
+                    // is there something in this cell?
+                    if (row[j] != null && !"".equalsIgnoreCase(row[j])) {
+                        // if so, update the temporary count.
+                        System.out.println("row: " + row[j]);
+                        a.add(row[j]);
+                        tempCount = j;
+                    }
+                }
+                // update the count if this is greater than what
+                // we have already.
+                if (tempCount > colCount) {
+                    // you would expect to subtract 1 here becuase the segment name doesn't count.
+                    // we don't have to becuse our counting began at zero.
+                    colCount = tempCount;
+                }
+            } else {
+                // skip this row - it's a segment we don't care about.
+            }
+        }
+        return a;
+    }
+    
+    public boolean isNonStructure() {
+        return isNonStructure;
+    }
+
+    public void setNonStructure(boolean nonStructure) {
+        isNonStructure = nonStructure;
+    }
+
+    public String getNonStructureFilename() {
+        return nonStructureFilename;
+    }
+
+    public void setNonStructureFilename(String nonStructureFilename) {
+        this.nonStructureFilename = nonStructureFilename;
     }
 }
