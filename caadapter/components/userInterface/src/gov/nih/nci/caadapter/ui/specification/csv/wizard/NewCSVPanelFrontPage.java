@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.2 2007-12-19 22:33:50 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.3 2007-12-20 16:16:23 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -48,10 +48,10 @@ import java.io.File;
  * This class defines the first page for NewCSVPanelWizard.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-12-19 22:33:50 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-20 16:16:23 $
  */
 public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 {
@@ -67,36 +67,28 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.2 2007-12-19 22:33:50 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelFrontPage.java,v 1.3 2007-12-20 16:16:23 wangeug Exp $";
 
 	public static final int BLANK_COMMAND_SELECTED = 1;
 	public static final int GENERATE_FROM_CSV_INSTANCE_COMMAND_SELECTED = 2;
     public static final int GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND_SELECTED = 4;
     public static final int NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND_SELECTED = 3;
 
-
 	private static final String BLANK_COMMAND = "Create a CSV Specification from scratch";
-	private static final String GENERATE_FROM_CSV_INSTANCE_COMMAND = "Generate from a CSV file";
+	private static final String GENERATE_FROM_CSV_INSTANCE_COMMAND = "Generate from a Structure CSV file";
     private static final String GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND = "Generate from a Non-Structure CSV file";
-    //	private static final String GENERATE_FROM_HMD_COMMAND = "Generate from a HL7 Metadata File";
-	private static final String NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND = "Copy from an Existing CSV Specification";
+   	private static final String NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND = "Copy from an Existing CSV Specification";
 
-	//	private NewCSVPanelWizard wizard;
-
+	
 	private ButtonGroup buttonGroup;
 	private JRadioButton blankButton;
 	private JRadioButton generateFromCSVInstanceButton;
     private JRadioButton generateFromNonStructureCSVInstanceButton;
-    //	private JRadioButton generateFromHMDButton;
-	private JRadioButton newFromCSVSchemaButton;
+   	private JRadioButton newFromCSVSchemaButton;
 
 	private JPanel selectCSVLocationPanel;
 	private JTextField csvLocationField;
 	private JButton csvLocationBrowseButton;
-
-	//  private JPanel selectHMDLocationPanel;
-	//	private JTextField hmdLocationField;
-	//	private JButton hmdLocationBrowseButton;
 
 	private JPanel selectCSVSchemaLocationPanel;
 	private JTextField csvSchemaLocationField;
@@ -104,14 +96,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 
 	private BrowseCsvAction browseAction;
 
-
-//	/**
-//	 * Creates a new <code>JPanel</code> with a double buffer
-//	 * and a flow layout.
-//	 */
-//	public NewCSVPanelFrontPage()
-//	{
-//	}
 
 	protected void initialize()
 	{
@@ -126,7 +110,7 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		northPanel.add(noteArea, BorderLayout.CENTER);
 		this.add(northPanel, BorderLayout.NORTH);
 
-		JPanel centerPanel = new JPanel(new GridLayout(5, 1));
+		JPanel centerPanel = new JPanel(new GridLayout(6, 1));
 		this.setBorder(BorderFactory.createTitledBorder(this.getBorder(), "" /*ActionConstants.NEW_CSV_SPEC*/));
 
 		blankButton = new JRadioButton(BLANK_COMMAND);
@@ -138,7 +122,8 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		generateFromCSVInstanceButton.setMnemonic('G');
 		generateFromCSVInstanceButton.addActionListener(this);
 		centerPanel.add(generateFromCSVInstanceButton);
-
+		
+		
         generateFromNonStructureCSVInstanceButton = new JRadioButton(GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND);
         generateFromNonStructureCSVInstanceButton.setMnemonic('N');
         generateFromNonStructureCSVInstanceButton.addActionListener(this);
@@ -154,20 +139,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		selectCSVLocationPanel.add(tempPanel, BorderLayout.NORTH);
 		centerPanel.add(selectCSVLocationPanel);
 
-		//		generateFromHMDButton = new JRadioButton(GENERATE_FROM_HMD_COMMAND);
-		//		generateFromHMDButton.setMnemonic('H');
-		//		generateFromHMDButton.addActionListener(this);
-		//		centerPanel.add(generateFromHMDButton);
-		//
-		//		selectHMDLocationPanel = new JPanel(new BorderLayout());
-		//		tempPanel = new JPanel(new BorderLayout(5, 5));
-		//		hmdLocationField = new JTextField();
-		//		hmdLocationBrowseButton = new JButton(browseAction);
-		//		tempPanel.add(hmdLocationField, BorderLayout.CENTER);
-		//		tempPanel.add(hmdLocationBrowseButton, BorderLayout.EAST);
-		//		selectHMDLocationPanel.add(tempPanel, BorderLayout.NORTH);
-		//		centerPanel.add(selectHMDLocationPanel);
-
 		newFromCSVSchemaButton = new JRadioButton(NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND);
 		newFromCSVSchemaButton.setMnemonic('N');
 		newFromCSVSchemaButton.addActionListener(this);
@@ -176,7 +147,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		selectCSVSchemaLocationPanel = new JPanel(new BorderLayout());
 		tempPanel = new JPanel(new BorderLayout(5, 5));
 		csvSchemaLocationField = new JTextField();
-		//		browseAction = new BrowseCsvAction(this);
 		csvSchemaLocationBrowseButton = new JButton(browseAction);
 		tempPanel.add(csvSchemaLocationField, BorderLayout.CENTER);
 		tempPanel.add(csvSchemaLocationBrowseButton, BorderLayout.EAST);
@@ -205,9 +175,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		csvLocationField.setEnabled(value);
 		csvLocationBrowseButton.setEnabled(value);
 
-		//		hmdLocationField.setEnabled(value);
-		//		hmdLocationBrowseButton.setEnabled(value);
-
 		csvSchemaLocationField.setEnabled(value);
 		csvSchemaLocationBrowseButton.setEnabled(value);
 	}
@@ -218,10 +185,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		{
 			csvLocationField.setText(text);
 		}
-		//		else if (hmdLocationField.isEnabled())
-		//		{
-		//			hmdLocationField.setText(text);
-		//		}
 		else if (csvSchemaLocationField.isEnabled())
 		{
 			csvSchemaLocationField.setText(text);
@@ -238,10 +201,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		{
 			return csvLocationField.getText();
 		}
-		//		else if(hmdLocationField.isEnabled())
-		//		{
-		//			return hmdLocationField.getText();
-		//		}
 		else if (csvSchemaLocationField.isEnabled())
 		{
 			return csvSchemaLocationField.getText();
@@ -280,11 +239,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
             csvLocationBrowseButton.setEnabled(true);
             buttonSelectedMode = GENERATE_FROM_CSV_NONSTRUCTURE_INSTANCE_COMMAND_SELECTED;
         }
-        //		else if(GENERATE_FROM_HMD_COMMAND.equals(command))
-		//		{
-		//			hmdLocationField.setEnabled(true);
-		//			hmdLocationBrowseButton.setEnabled(true);
-		//		}
 		else if (NEW_FROM_AN_EXISTING_CSV_SCHEMA_COMMAND.equals(command))
 		{
 			csvSchemaLocationField.setEnabled(true);
@@ -341,10 +295,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		{
 			result = Config.CSV_DATA_FILE_DEFAULT_EXTENSTION;
 		}
-		//		else if(generateFromHMDButton.isSelected())
-		//		{
-		//			result = Config.HL7_META_DEFINITION_FILE_DEFAULT_EXTENSION;
-		//		}
 		else if (newFromCSVSchemaButton.isSelected())
 		{
 			result = Config.CSV_METADATA_FILE_DEFAULT_EXTENTION;
@@ -368,10 +318,6 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 		{
 			result = Config.OPEN_DIALOG_TITLE_FOR_CSV_FILE;
 		}
-		//		else if (generateFromHMDButton.isSelected())
-		//		{
-		//			result = Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_HL7_META_DEFINITION_FILE;
-		//		}
 		else if (newFromCSVSchemaButton.isSelected())
 		{
 			result = Config.OPEN_DIALOG_TITLE_FOR_CSV_METADATA_FILE;
@@ -386,6 +332,9 @@ public class NewCSVPanelFrontPage extends FrontPage implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/12/19 22:33:50  schroedn
+ * HISTORY      : Added Non-Structure new to CSV
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
