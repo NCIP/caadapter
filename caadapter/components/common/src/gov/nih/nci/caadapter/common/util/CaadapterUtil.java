@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.16 2007-10-12 16:12:16 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.17 2007-12-20 18:10:19 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,8 +55,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.16 $
- * @date $$Date: 2007-10-12 16:12:16 $
+ * @version $Revision: 1.17 $
+ * @date $$Date: 2007-12-20 18:10:19 $
  * @since caAdapter v1.2
  */
 
@@ -141,7 +141,10 @@ public class CaadapterUtil {
 			return;
 		//always add common required
 		addModuleResource(Config.CAADAPTER_COMMON_RESOURCE_REQUIRED,prop);
-	
+		//no additional resource is required except the common ones
+		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
+			return;
+		
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
 			addModuleResource(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED,prop);
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
@@ -332,6 +335,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16  2007/10/12 16:12:16  wangeug
+ * HISTORY      : avoid duplicated record of missed resource
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2007/10/04 18:08:27  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :
