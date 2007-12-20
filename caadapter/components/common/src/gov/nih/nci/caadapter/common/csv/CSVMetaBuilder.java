@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.4 2007-07-17 16:14:43 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.5 2007-12-20 17:02:44 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -67,10 +67,10 @@ import java.util.List;
  * objects to castor objects and then marshals them.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.4 $
- * @date        $Date: 2007-07-17 16:14:43 $
+ * @version    $Revision: 1.5 $
+ * @date        $Date: 2007-12-20 17:02:44 $
  */
 
 public class CSVMetaBuilder extends MetaBuilderBase {
@@ -78,7 +78,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
     private static CSVMetaBuilder metaBuilder = null;
 
     private static final String LOGID = "$RCSfile: CSVMetaBuilder.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.4 2007-07-17 16:14:43 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.5 2007-12-20 17:02:44 schroedn Exp $";
 
     private CSVMetaBuilder()
     {
@@ -96,6 +96,11 @@ public class CSVMetaBuilder extends MetaBuilderBase {
                 C_csvMetadata c = new C_csvMetadata();
                 c.setC_segment(processSegment(csvMeta.getRootSegment()));
                 c.setVersion(new BigDecimal("1.2"));
+
+                if ( csvMeta.isNonStructure() ) {
+                    c.setType("NON_STRUCTURE");
+                }
+
                 c.setXmlPath(meta.getXmlPath());
 
                 // set up the Source.

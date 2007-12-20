@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.2 2007-12-19 22:33:41 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.3 2007-12-20 17:00:55 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,14 +59,14 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: schroedn $
- * @version $Revision: 1.2 $
- * @date $Date: 2007-12-19 22:33:41 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2007-12-20 17:00:55 $
  * @since caAdapter v1.2
  */
 
 public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
     private static final String LOGID = "$RCSfile: CSVMetaFromInstanceUtil.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.2 2007-12-19 22:33:41 schroedn Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.3 2007-12-20 17:00:55 schroedn Exp $";
 
     private String filename = null;
     private String[][] fileData = null;
@@ -98,8 +98,9 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
         }
 
         CSVMetaImpl meta = new CSVMetaImpl();
-        csvMetaResult.setCsvMeta(meta);
-        
+       // CSVMetaImpl meta = new CSVMetaImpl();        
+        //csvMetaResult.setCsvMeta(meta);
+
         ArrayList<String> segmentNames = getUniqueSegmentNames();
 
         // create the segments.
@@ -108,6 +109,7 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
         CSVSegmentMetaImpl firstSegment = null;
 
         if( isNonStructure ) {
+            meta.setNonStructure( true );
             rootSegment = new CSVSegmentMetaImpl(nonStructureFilename, null);
             meta.setRootSegment(rootSegment);
 
@@ -118,7 +120,7 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
 
             for (int i = 0; i < fieldNames.size(); i++) {
                  String strFieldName = fieldNames.get(i);
-                 System.out.println("str " + strFieldName);
+                 //System.out.println("str " + strFieldName);
                  CSVFieldMetaImpl field = new CSVFieldMetaImpl(i+1, strFieldName, rootSegment);
                  rootSegment.addField(field);
             }
@@ -144,6 +146,7 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
                 genFields(csvSegmentMeta);
             }
         }
+        csvMetaResult.setCsvMeta(meta);
         return csvMetaResult;
     }
 

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/SaveAsCsvAction.java,v 1.1 2007-04-03 16:18:15 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/actions/SaveAsCsvAction.java,v 1.2 2007-12-20 17:01:24 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,10 +55,10 @@ import java.io.FileOutputStream;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:18:15 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2007-12-20 17:01:24 $
  */
 public class SaveAsCsvAction extends DefaultSaveAsAction
 {
@@ -143,13 +143,19 @@ public class SaveAsCsvAction extends DefaultSaveAsAction
 			{//otherwise, preserve in a new one.
 			    existMeta = metaData;
 			}
-			//Build the file from the meta objects.
+
+            if ( csvPanel.getCSVMeta(false).isNonStructure() )
+                    existMeta.setNonStructure( true );
+            
+            //Build the file from the meta objects.
 			CSVMetaBuilder builder = CSVMetaBuilder.getInstance();
 //			fw = new FileOutputStream(file);
 //			bw = new BufferedOutputStream(fw);
 //			builder.build(bw, existMeta);
 			builder.build(file, existMeta);
-			if (!GeneralUtilities.areEqual(defaultFile, file))
+            //builder.build(file, csvPanel.getCSVMeta(false));
+
+            if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
 				removeFileUsageListener(defaultFile, csvPanel);
 				defaultFile = file;
@@ -188,6 +194,9 @@ public class SaveAsCsvAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.30  2006/08/02 18:44:21  jiangsc
  * HISTORY      : License Update
  * HISTORY      :

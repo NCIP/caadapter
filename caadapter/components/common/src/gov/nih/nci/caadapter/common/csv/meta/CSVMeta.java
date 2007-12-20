@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/CSVMeta.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/CSVMeta.java,v 1.2 2007-12-20 17:02:20 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,13 +40,15 @@ import gov.nih.nci.caadapter.common.MetaObject;
  * Interface for an in-memory segmented csv meta file.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.1 $
- * @date        $Date: 2007-04-03 16:02:37 $
+ * @version    $Revision: 1.2 $
+ * @date        $Date: 2007-12-20 17:02:20 $
  */
 
 public interface CSVMeta extends MetaObject{
     public CSVSegmentMeta getRootSegment();
 	public void setRootSegment(CSVSegmentMeta rootSegment);
+    public boolean isNonStructure();
+    public void setNonStructure(boolean nonStructure);
 }

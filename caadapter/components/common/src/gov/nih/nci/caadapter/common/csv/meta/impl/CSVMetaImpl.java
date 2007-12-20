@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.2 2007-07-16 19:05:13 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.3 2007-12-20 17:02:10 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -42,20 +42,28 @@ import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
  * Implementation of an in-memory segmented csv meta file.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2007-07-16 19:05:13 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2007-12-20 17:02:10 $
  */
 
 public class CSVMetaImpl extends MetaObjectImpl implements CSVMeta {
     private static final String LOGID = "$RCSfile: CSVMetaImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.2 2007-07-16 19:05:13 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaImpl.java,v 1.3 2007-12-20 17:02:10 schroedn Exp $";
 
     // a reference to the child.
     private CSVSegmentMeta rootSegment;
+    private boolean isNonStructure = false;
 
-    // CONSTRUCTORS
+    public boolean isNonStructure() {
+        return isNonStructure;
+    }
+
+    public void setNonStructure(boolean nonStructure) {
+        isNonStructure = nonStructure;
+
+    }// CONSTRUCTORS
     public CSVMetaImpl() {
     }
 
@@ -69,6 +77,7 @@ public class CSVMetaImpl extends MetaObjectImpl implements CSVMeta {
     }
 
     public void setRootSegment(CSVSegmentMeta rootSegment) {
+        //rootSegment.setName( "Test_filename.csv");
         this.rootSegment = rootSegment;
     }
 }
