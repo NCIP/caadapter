@@ -560,8 +560,8 @@
     	            	<include name="**/*.*"/>
     				</fileset>
     	 </copy -->
-    	 <mkdir dir="${dist.dir}/workingspace"/>
-    	 <copy todir="${dist.dir}/workingspace">
+    	 <mkdir dir="${dist.dir}/workingspace/TrWorkbench_example"/>
+    	 <copy todir="${dist.dir}/workingspace/TrWorkbench_example">
 			<fileset dir="${basedir}/workingspace" >
 				  <include name="**/*.*"/>
 			</fileset>
