@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.4 2007-07-17 16:15:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.5 2007-12-21 15:59:39 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,14 +54,14 @@ import java.io.FileReader;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-07-17 16:15:14 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2007-12-21 15:59:39 $
  * @since caAdapter v1.2
  */
 
 public class CSVMetaParserImpl implements MetaParser {
     private static final String LOGID = "$RCSfile: CSVMetaParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.4 2007-07-17 16:15:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaParserImpl.java,v 1.5 2007-12-21 15:59:39 wangeug Exp $";
 
 
     public CSVMetaResult parse(FileReader metafile){
@@ -84,6 +84,8 @@ public class CSVMetaParserImpl implements MetaParser {
         CSVMetaImpl csvFileMetaImpl = new CSVMetaImpl();
         csvFileMetaImpl.setRootSegment(processSegment(cm.getC_segment(), null));
         csvFileMetaImpl.setXmlPath(cm.getXmlPath());
+        if (cm.getType()!=null&&cm.getType().equalsIgnoreCase("NON_STRUCTURE"))
+        	csvFileMetaImpl.setNonStructure(true);
         return csvFileMetaImpl;
     }
 
