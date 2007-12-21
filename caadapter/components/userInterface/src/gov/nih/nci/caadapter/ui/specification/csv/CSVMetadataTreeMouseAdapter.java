@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeMouseAdapter.java,v 1.2 2007-07-12 15:48:37 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/CSVMetadataTreeMouseAdapter.java,v 1.3 2007-12-21 16:00:32 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -35,6 +35,7 @@
 package gov.nih.nci.caadapter.ui.specification.csv;
 
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
+import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.ui.specification.csv.actions.*;
 
@@ -47,10 +48,10 @@ import java.awt.event.MouseEvent;
 /**
  * This class defines the mouse listener to responds mouse events occurred on the tree view of CSV Panel.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-07-12 15:48:37 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2007-12-21 16:00:32 $
  */
 public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 {
@@ -130,7 +131,12 @@ public class CSVMetadataTreeMouseAdapter extends MouseAdapter
                     CSVSegmentMeta seg = (CSVSegmentMeta) userObj;
                     addFieldAction.setEnabled(!seg.isChoiceSegment());
                     addChoiceSegmentAction.setEnabled(!seg.isChoiceSegment());
-                    
+                    CSVMeta rootMeta=parentPanel.getCSVMeta(false);
+					if (rootMeta!=null&&rootMeta.isNonStructure())
+					{
+						addSegmentAction.setEnabled(false);
+						addChoiceSegmentAction.setEnabled(false);
+					}
                 }
 
 				popupMenu.show(mouseEvent.getComponent(),
@@ -176,6 +182,9 @@ public class CSVMetadataTreeMouseAdapter extends MouseAdapter
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/12 15:48:37  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
