@@ -1,0 +1,9 @@
+The caAdapter Version 4.0 Translational Data Mapping Service
+	
+caAdapter is an open source tool set that facilitates data mapping and
+transformation among differnt kinds of data sources. The Translational
+Data Mapping Service (TDMS) module provides the mapping capability from 
+a CSV metadata to a UML model.
+ 
+Copyright 2007 Science Applications International Corporation ("SAIC").
+
