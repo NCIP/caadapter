@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.3 2008-01-03 15:52:04 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.4 2008-01-03 17:11:01 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,12 +41,15 @@ import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.help.AboutWindow;
-import gov.nih.nci.caadapter.ui.main.VerifyResourceDialog;
 
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * The class defines the about action for the whole HL7SDK application.
@@ -54,8 +57,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-01-03 15:52:04 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-01-03 17:11:01 $
  */
 public class AboutAction extends AbstractContextAction
 {
@@ -77,7 +80,7 @@ public class AboutAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.3 2008-01-03 15:52:04 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.4 2008-01-03 17:11:01 wangeug Exp $";
 
 	private JFrame mainFrame = null;
 
@@ -112,7 +115,9 @@ public class AboutAction extends AbstractContextAction
 	{
 		 if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
         {	
-        	String warningMsg="caAdapter is an open-source tool kit, the Translational Data Mapping Service module provides \nthe mapping capability from a CSV metadata to a UML model...";
+			 String aboutTextPath="/license/caAdapter_about.txt";
+			 
+        	String warningMsg=readMessageFromFile(aboutTextPath).toString();
         	String frmName="About caAdapter TDMS Module";
 			JOptionPane.showMessageDialog(mainFrame, warningMsg, frmName, JOptionPane.DEFAULT_OPTION);
         }
@@ -125,6 +130,28 @@ public class AboutAction extends AbstractContextAction
 		 }
         setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
+	}
+	
+	private StringBuffer readMessageFromFile(String filePath)
+	{
+		StringBuffer licenseBf=new StringBuffer();
+		try {
+			InputStream input=this.getClass().getResourceAsStream(filePath);
+			InputStreamReader reader=new InputStreamReader(input);
+			BufferedReader bfReader=new BufferedReader(reader);
+			String lineSt;
+			lineSt = bfReader.readLine();
+			while (lineSt!=null)
+			{
+				licenseBf.append(lineSt+"\n");
+				lineSt = bfReader.readLine();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(0);
+		}
+		return licenseBf;
 	}
 
 	/**
@@ -140,6 +167,9 @@ public class AboutAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/01/03 15:52:04  wangeug
+ * HISTORY      : customize the about window based on user's configuration
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/10/10 19:58:17  umkis
  * HISTORY      : Fix bug item #7
  * HISTORY      :
