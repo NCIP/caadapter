@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.3 2007-12-20 17:00:55 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.4 2008-01-04 20:33:02 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,15 +58,15 @@ import java.util.List;
  * Generates a "starting point" csv meta object graph from a CSV instance.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: schroedn $
- * @version $Revision: 1.3 $
- * @date $Date: 2007-12-20 17:00:55 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2008-01-04 20:33:02 $
  * @since caAdapter v1.2
  */
 
 public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
     private static final String LOGID = "$RCSfile: CSVMetaFromInstanceUtil.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.3 2007-12-20 17:00:55 schroedn Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.4 2008-01-04 20:33:02 wangeug Exp $";
 
     private String filename = null;
     private String[][] fileData = null;
@@ -127,7 +127,7 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
         }
         else {
             for (int i = 0; i < segmentNames.size(); i++) {
-                String segmentName = segmentNames.get(i);
+                String segmentName = segmentNames.get(i).toUpperCase();
                 if (isFirstSegment) {
                     rootSegment = new CSVSegmentMetaImpl(segmentName, null);
                     meta.setRootSegment(rootSegment);

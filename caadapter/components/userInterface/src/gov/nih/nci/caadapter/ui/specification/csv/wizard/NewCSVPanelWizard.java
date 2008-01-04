@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelWizard.java,v 1.3 2007-12-19 22:33:50 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/NewCSVPanelWizard.java,v 1.4 2008-01-04 20:33:11 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -55,10 +55,10 @@ import java.io.FileReader;
 /**
  * This is the main class of wizard.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-12-19 22:33:50 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-01-04 20:33:11 $
  */
 public class NewCSVPanelWizard extends JDialog implements ActionListener
 {
@@ -154,7 +154,11 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 					{
                         util = new CSVMetaFromInstanceUtil(tempFile.getPath());
 					    util.setNonStructure(true);
-                        util.setNonStructureFilename(tempFile.getName());
+					    String tempFileName=tempFile.getName();
+					    if (tempFileName.indexOf(".")>-1)
+					    	tempFileName=tempFileName.substring(0, tempFileName.indexOf("."));
+					    	
+                        util.setNonStructureFilename(tempFileName.toUpperCase());
                         csvMetaResult = util.getMetadata();
 					}
 					catch (Exception e1)
@@ -238,6 +242,9 @@ public class NewCSVPanelWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/12/19 22:33:50  schroedn
+ * HISTORY      : Added Non-Structure new to CSV
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/04/19 14:01:48  wangeug
  * HISTORY      : clean code
  * HISTORY      :
