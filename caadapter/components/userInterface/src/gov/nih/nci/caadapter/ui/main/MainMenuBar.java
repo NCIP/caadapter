@@ -81,7 +81,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.26 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.27 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -234,6 +234,10 @@ public class MainMenuBar extends AbstractMenuBar
     {
         AboutAction aboutAction = new AboutAction(mainFrame);
         HelpTopicAction helpTopicAction = new HelpTopicAction(mainFrame);
+        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
+        {
+        	helpTopicAction.setEnabled(false);
+        }
         JMenu helpMenu = new JMenu(MenuConstants.HELP_MENU_NAME);
         helpMenu.setMnemonic('H');
         JMenuItem helpAboutItem = new JMenuItem(aboutAction);
@@ -347,6 +351,10 @@ public class MainMenuBar extends AbstractMenuBar
         BuildHL7ResourceAction buildV3=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V3, mainFrame);
         if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
         	buildV3.setEnabled(false);
+        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
+        {
+        	buildV3.setEnabled(false);
+        }
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
         //the following section setup V2 meta
@@ -655,6 +663,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.26  2007/12/13 15:28:53  wangeug
+ * HISTORY : support both data model and object model
+ * HISTORY :
  * HISTORY : Revision 1.25  2007/11/30 17:19:43  wangeug
  * HISTORY : create CSV_TO_XMI mapping module
  * HISTORY :
