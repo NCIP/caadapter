@@ -63,26 +63,6 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	 */
 	private String returnTypeXpath;
 
-	public AssociationMetadata(){
-		
-	}
-
-	/**
-	 *
-	 * @param xPath
-	 * @param roleName
-	 * @param navigability
-	 * @param multiplicity
-	 */
-	public AssociationMetadata(String xPath, String roleName, String recipricolRoleName, boolean navigability, int multiplicity, String returnTypeXpath){
-		this.xPath = xPath;
-		this.roleName = roleName;
-		this.recipricolRoleName = recipricolRoleName;
-		this.navigability = navigability;
-		this.multiplicity = multiplicity;
-		this.returnTypeXpath = returnTypeXpath;
-	}
-
 	public int getMultiplicity(){
 		return multiplicity;
 	}

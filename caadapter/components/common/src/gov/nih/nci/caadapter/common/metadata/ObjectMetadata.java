@@ -10,7 +10,6 @@ import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -254,20 +253,20 @@ public class ObjectMetadata extends MetaObjectImpl implements SDKMetaData{
 		this.id = id;
 	}
 	
-	public String getRootId() {
-		ModelMetadata myModel = ModelMetadata.getInstance();
-		HashMap myMap = myModel.getInheritanceMetadata();
-		HashMap objectMap = myModel.getObjectMetadata();
-		if (myMap.get(this.getId()) == null) return "";
-		else {
-			String root = (String)myMap.get(this.getId());
-			while (myMap.get(root)!= null) {
-				root = (String)myMap.get(root);
-			}
-		return (String)objectMap.get(root);
-		}
-	}
-	
+//	public String getRootId() {
+//		ModelMetadata myModel = ModelMetadata.getInstance();
+//		HashMap myMap = myModel.getInheritanceMetadata();
+//		HashMap objectMap = myModel.getObjectMetadata();
+//		if (myMap.get(this.getId()) == null) return "";
+//		else {
+//			String root = (String)myMap.get(this.getId());
+//			while (myMap.get(root)!= null) {
+//				root = (String)myMap.get(root);
+//			}
+//		return (String)objectMap.get(root);
+//		}
+//	}
+//	
 	private UMLClass umlClass;
 
 	/**

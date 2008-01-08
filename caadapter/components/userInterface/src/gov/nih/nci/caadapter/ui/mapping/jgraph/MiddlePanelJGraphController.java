@@ -92,7 +92,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.19 $ date $Date: 2007-12-13 21:09:11 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.20 $ date $Date: 2008-01-08 18:45:03 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -107,7 +107,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.19 2007-12-13 21:09:11 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.20 2008-01-08 18:45:03 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -716,16 +716,14 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		/** the real renderer */
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
-		long startTime = 0, endTime = 0;
-		startTime = System.currentTimeMillis();
 
 		// render links
-		List visibleSrcNodes=new ArrayList<DefaultMutableTreeNode>();
-		if(mappingPanel.getSourceTree()!=null)
-			visibleSrcNodes=((MappingBaseTree)mappingPanel.getSourceTree()).getAllVisibleMappedNode();
-		List visibleTgrtNodes=new ArrayList<DefaultMutableTreeNode>();;
-		if (mappingPanel.getTargetTree()!=null)
-			visibleTgrtNodes=((MappingBaseTree)mappingPanel.getTargetTree()).getAllVisibleMappedNode();
+//		List visibleSrcNodes=new ArrayList<DefaultMutableTreeNode>();
+//		if(mappingPanel.getSourceTree()!=null)
+//			visibleSrcNodes=((MappingBaseTree)mappingPanel.getSourceTree()).getAllVisibleMappedNode();
+//		List visibleTgrtNodes=new ArrayList<DefaultMutableTreeNode>();;
+//		if (mappingPanel.getTargetTree()!=null)
+//			visibleTgrtNodes=((MappingBaseTree)mappingPanel.getTargetTree()).getAllVisibleMappedNode();
 		int mappingSize = mappingViewList.size();
 		for (int i = 0; i < mappingSize; i++) {
 			MappingViewCommonComponent mappingComponent = (MappingViewCommonComponent) mappingViewList.get(i);
@@ -737,8 +735,8 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			AttributeMap lineStyle = linkEdge.getAttributes();
 			AttributeMap sourceNodeCellAttribute = sourceCell.getAttributes();
 			AttributeMap targetNodeCellAttribute = targetCell.getAttributes();
-			boolean sourceNodeDisplayed=true;
-			boolean targetNodeDisplayed=true;
+//			boolean sourceNodeDisplayed=true;
+//			boolean targetNodeDisplayed=true;
 			try {
 				if ( sourceNode instanceof FunctionBoxDefaultPort ) 
 				{
@@ -748,7 +746,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 					else if ( targetNode instanceof DefaultMutableTreeNode ) 
 					{
 						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
-						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
+//						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
 						adjustToNewPosition(treeNode, targetNodeCellAttribute);
 					}
 				} 
@@ -757,15 +755,16 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 					if ( !(targetNode instanceof FunctionBoxDefaultPort) && (targetNode instanceof DefaultMutableTreeNode) ) {
 						// change target node
 						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
-						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
+//						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
 						adjustToNewPosition(treeNode, targetNodeCellAttribute);
 					}
 					// change source node
 					DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) sourceNode;
-					sourceNodeDisplayed=visibleSrcNodes.contains(srcNode);
+//					sourceNodeDisplayed=visibleSrcNodes.contains(srcNode);
 					adjustToNewPosition(srcNode, sourceNodeCellAttribute);
 				}// end of else if(sourceNode instanceof DefaultMutableTreeNode)
-				if ( sourceNodeCellAttribute != null ) {// put in attribute if and only if it is constructed.
+				if ( sourceNodeCellAttribute != null
+						&&targetNodeCellAttribute!=null) {// put in attribute if and only if it is constructed.
 					attributes.put(sourceCell, sourceNodeCellAttribute);
 					attributes.put(targetCell, targetNodeCellAttribute);
 					//reset link color
@@ -818,28 +817,6 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		}
 		return oldAttributeMap;
 	}
-//
-//	private Rectangle2D calculateGraphScrolledDistanceOnY(Rectangle2D functionBoxBound)
-//	{
-//		JScrollPane treeScrollPane = null;
-//		int scrollSource = getMiddlePanel().getAdjustmentCoordinator().getScrollSource();
-//		if ( scrollSource == MiddlePanelScrollAdjustmentCoordinator.FROM_SOURCE_TREE ) {
-//			treeScrollPane = mappingPanel.getSourceScrollPane();
-//		} else if ( scrollSource == MiddlePanelScrollAdjustmentCoordinator.FROM_TARGET_TREE ) {
-//			treeScrollPane = mappingPanel.getTargetScrollPane();
-//		}
-//		// once used never use it again
-//		getMiddlePanel().getAdjustmentCoordinator().clearScrollSource();
-//		if ( treeScrollPane == null ) {// no need to work further, since render is not triggered by the scrolling.
-//			return functionBoxBound;
-//		}
-//		int graphHeightHidden = (int) middlePanel.getGraphScrollPane().getViewport().getViewPosition().getY();
-//		int treeHeightHidden = (int) treeScrollPane.getViewport().getViewPosition().getY();
-//		int delta = graphHeightHidden - treeHeightHidden;
-//		Rectangle2D newBound = new Rectangle((int) functionBoxBound.getX(), (int) functionBoxBound.getY() + delta, (int) functionBoxBound.getWidth(), (int) functionBoxBound.getHeight());
-//		return newBound;
-//	}
-
 	/**
 	 * Return the number of pixels changed due to scrolling.
 	 * 
@@ -1055,23 +1032,6 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		return result;
 	}
 
-	// private boolean createTreeToFunctionBoxMapping(DefaultMutableTreeNode treeNode, FunctionBoxCell targetNode, List graphCellList)
-	// {
-	// boolean isDataFromSourceTree = UIHelper.isDataFromSourceTree(treeNode);
-	// Log.logInfo(this, "cell is '" + targetNode.getUserObject() + "'");
-	// FunctionBoxDefaultPort port = (FunctionBoxDefaultPort)UIHelper.getFirstUnmappedPort(targetNode, isDataFromSourceTree);
-	// if (port == null)
-	// {
-	// String origination = (isDataFromSourceTree) ? "input(s)" : "output(s)";
-	// Log.logInfo(this, "No more empty port available to use!");
-	// JOptionPane.showMessageDialog(mappingPanel.getRootPane().getParent(),
-	// "All " + origination + " of this functional box have been mapped.",
-	// "Mapping Error",
-	// JOptionPane.ERROR_MESSAGE);
-	// return false;
-	// }
-	// return createTreeToFunctionBoxPortMapping(treeNode, port, graphCellList);
-	// }
 	private boolean createTreeToFunctionBoxPortMapping(DefaultMutableTreeNode treeNode, FunctionBoxDefaultPort port, List graphCellList)
 	{
 		boolean isDataFromSourceTree = UIHelper.isDataFromSourceTree(treeNode);
@@ -1471,12 +1431,15 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		// return viewPortVisibleWidth;// - 23;
 		return visibleWidth - 20;
 	}
-	public Mapping getMappingData() {
-		return mappingData;
-	}
+//	public Mapping getMappingData() {
+//		return mappingData;
+//	}
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.19  2007/12/13 21:09:11  wangeug
+ * HISTORY : resolve code dependence in compiling
+ * HISTORY :
  * HISTORY : Revision 1.18  2007/12/06 20:41:13  wangeug
  * HISTORY : support both data model and object model
  * HISTORY :

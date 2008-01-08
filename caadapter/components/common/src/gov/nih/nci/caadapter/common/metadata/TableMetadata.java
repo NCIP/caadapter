@@ -25,56 +25,6 @@ public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 	private String type = "normal";
 	private String xPath;
 	private boolean hasDiscriminator = false;
-
-	public TableMetadata(){
-	}
-
-	/**
-	 * @param name
-	 */
-	public TableMetadata(String name) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.name = name;
-	}
-
-	/**
-	 * @param name
-	 * @param path
-	 */
-	public TableMetadata(String name, String path) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.name = name;
-		xPath = path;
-	}
-
-	/**
-	 * @param name
-	 * @param type
-	 * @param path
-	 */
-	public TableMetadata(String name, String type, String path) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.name = name;
-		this.type = type;
-		xPath = path;
-	}
-
-	/**
-	 *
-	 * @param columns
-	 * @param type
-	 * @param xPath
-	 */
-	public TableMetadata(List<ColumnMetadata> columns, String type, String xPath, String name){
-		this.columns = columns;
-		this.type = type;
-		this.xPath = xPath;
-		this.name = name;
-	}
-
 	/**
 	 *
 	 * @param column

@@ -24,55 +24,6 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 	private String semanticConcept;
 	private boolean derived;
 	
-	public AttributeMetadata(){
-	}
-
-	/**
-	 * @param name
-	 */
-	public AttributeMetadata(String name) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.name = name;
-	}
-
-	/**
-	 * @param name
-	 * @param path
-	 */
-	public AttributeMetadata(String name, String path) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.name = name;
-		xPath = path;
-	}
-
-	/**
-	 * @param datatype
-	 * @param name
-	 * @param path
-	 */
-	public AttributeMetadata(String datatype, String name, String path) {
-		super();
-		// TODO Auto-generated constructor stub
-		this.datatype = datatype;
-		this.name = name;
-		xPath = path;
-	}
-
-	/**
-	 *
-	 * @param xPath
-	 * @param datatype
-	 * @param name
-	 * @param semanticConcept
-	 */
-	public AttributeMetadata(String xPath, String datatype, String name, String semanticConcept){
-		this.datatype = datatype;
-		this.name = name;
-		this.xPath = xPath;
-		this.semanticConcept = semanticConcept;
-	}
 	public String getSemanticConcept(){
 		return semanticConcept;
 	}
