@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.8 2007-12-13 21:08:29 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/UIHelper.java,v 1.9 2008-01-08 18:44:28 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -70,8 +70,8 @@ import java.util.Enumeration;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-12-13 21:08:29 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-01-08 18:44:28 $
  */
 public final class UIHelper
 {
@@ -384,7 +384,11 @@ public final class UIHelper
 	
     public static DefaultMutableTreeNode findTreeNodeWithXmlPath(DefaultMutableTreeNode treeNode, String nodeXmlPath)
     {
-        
+        if (nodeXmlPath==null)
+        {
+        	System.out.println("UIHelper.findTreeNodeWithXmlPath()..invalid node to search:"+nodeXmlPath);
+        	return null;
+        }
         Object userObj = treeNode.getUserObject();
         if(userObj instanceof DatatypeBaseObject)
         {
@@ -446,6 +450,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/12/13 21:08:29  wangeug
+ * HISTORY      : resolve code dependence in compiling
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/12/06 20:46:56  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :
