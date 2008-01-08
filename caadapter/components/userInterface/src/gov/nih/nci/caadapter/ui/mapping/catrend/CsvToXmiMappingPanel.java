@@ -5,7 +5,11 @@
 
 package gov.nih.nci.caadapter.ui.mapping.catrend;
 
-import gov.nih.nci.caadapter.common.*;
+import gov.nih.nci.caadapter.common.BaseResult;
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
@@ -14,10 +18,9 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.map.*;
+import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
@@ -41,8 +44,6 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 
-import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
-import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
@@ -55,8 +56,11 @@ import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileReader;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -64,14 +68,14 @@ import java.util.Map;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.12 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.13 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.12 2007-12-14 17:02:55 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.13 2008-01-08 18:47:29 wangeug Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
@@ -80,7 +84,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
     private static final String SELECT_CSV = "Open CSV Meta File...";
     private String sourceFileName;
     private String targetFileName;
-    
+    private XmiModelMetadata xmiModelMeta;
     private CsvToXmiMappingReportPanel reportPanel;
 	public CsvToXmiMappingPanel() {
 		this("CsvToXmiMapping");
@@ -219,8 +223,11 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		else
 			throw new Exception("Failed in building XMI target tree: Target type is not defined");
 		TreeNode node = new DefaultMutableTreeNode(targetNodeName);
-		ModelMetadata myModel = ModelMetadata.getInstance();
-		LinkedHashMap myMap = myModel.getModelMetadata();
+		if (this.getXmiModelMeta()==null)
+			setXmiModelMeta(new XmiModelMetadata(""));
+		//load xmiModel data
+		getXmiModelMeta().setXmiFileName(absoluteFile.getAbsolutePath());
+		LinkedHashMap myMap = getXmiModelMeta().getModelMetadata();
 
 		Set keySet = myMap.keySet();
 		Iterator keySetIterator = keySet.iterator();
@@ -245,10 +252,17 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 			boolean isToResetGraph) throws Exception {
 		super.buildTargetTree(metaInfo, absoluteFile, isToResetGraph);
 		if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
-			tTree.setCellRenderer(new MMSRendererPK());		
+		{
+			MMSRendererPK objectModelRenderer=new MMSRendererPK();
+			objectModelRenderer.setXmiMeta(getXmiModelMeta());
+			tTree.setCellRenderer(objectModelRenderer);		
+		}
 		else if(getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_DATA_MODEL))
-			tTree.setCellRenderer(new MMSRenderer());
-		
+		{
+			MMSRenderer renderer=new MMSRenderer();
+			renderer.setXmiMeta(getXmiModelMeta());
+			tTree.setCellRenderer(renderer);
+		}
         // instantiate the "DropTransferHandler"
 		csvToXmiTargetTreeDropTransferHandler = new CsvToXmiTargetTreeDropTransferHandler(
 				tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
@@ -262,10 +276,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	{
 		String name = fullName.substring(prefixLen, fullName.length());
 		String[] pks = name.split("\\.");
-	
-		ModelMetadata myModel = ModelMetadata.getInstance();
-		LinkedHashMap myMap = myModel.getModelMetadata();
-	
+		LinkedHashMap myMap =getXmiModelMeta().getModelMetadata();
 		if (pks.length <= 0)
 			return;
 		if (pks.length == 1) {
@@ -355,8 +366,6 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 		{
 			CaadapterUtil.savePrefParams( Config.MMS_PREFIX_DATAMODEL , "Logical View.Data Model");
 		}
-		String fileName = file.getAbsolutePath();
-		boolean success = CumulativeMappingGenerator.init(fileName);
 		// parse the file into a meta object graph.
         MetaObject metaInfo = null;
 		buildTargetTree(metaInfo, file, isToResetGraph);
@@ -398,11 +407,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
     public ValidatorResults cvsToXmiGeneration(String mappingFile) throws Exception
     {
-        System.out.println("Creating XMI File...");
-        XmiInOutHandler handler = XmiHandlerFactory.getXmiHandler(HandlerEnum.EADefault);
-
         File file = new File(mappingFile);
-
         //init() - read parameters from mappingFile
         MapParserImpl parser = new MapParserImpl();
         ValidatorResults validatorResults = parser.parse(file.getParent(), new FileReader(file));
@@ -414,28 +419,23 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
         Mapping mapping = parser.getMapping();//returnResult.getMapping();
         String  xmiFile = mapping.getTargetComponent().getFile().getAbsolutePath();
-        System.out.println("Writing xmi file: " + mapping.getTargetComponent().getFile().getAbsolutePath() );
-
-        handler.load( xmiFile );
-        UMLModel model = handler.getModel();
-        
+        System.out.println("CsvToXmiMappingPanel.cvsToXmiGeneration()..mapping target xmi file:"+xmiFile);
+        XmiInOutHandler handler=getXmiModelMeta().getHandler();
+        UMLModel model=handler.getModel();
         //clear out the xmi file so duplicate tagvalues are not added on multiple saves
         for( UMLPackage pkg : model.getPackages() )
         {
-			getPackages( pkg );
+			clearXMLNamespacePackages( pkg );
 		}
 
         //for each map in mapList to the following
-        for ( gov.nih.nci.caadapter.hl7.map.Map map : mapping.getMaps() )
+        for (gov.nih.nci.caadapter.hl7.map.Map map : mapping.getMaps() )
         {
-            System.out.println("Searching for target: " + map.getTargetMapElement().getXmlPath() );
-            System.out.println("added tagged value: " + map.getSourceMapElement().getXmlPath() );
-
             UMLAttribute column = null;
             column = ModelUtil.findAttribute( model,  map.getTargetMapElement().getXmlPath() );
 
             if ( column != null ) {
-                System.out.println(" *Attribute Found, adding* ");
+                System.out.println("Annotate Attribute :"+map.getTargetMapElement().getXmlPath() + "XMLNamespace.. "+ map.getSourceMapElement().getXmlPath());
                 column.addTaggedValue( "XMLNamespace", map.getSourceMapElement().getXmlPath() );
             }
         }
@@ -444,13 +444,12 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
         handler.save(xmiFile);
 
         setSaveFile(file);
-        
-        this.reload();
-        
+		//redraw mapping panel
+		middlePanel.getMappingDataManager().setMappingData(mapping);		       
         return validatorResults;
     }
 
-    public void getPackages( UMLPackage pkg )
+    private void clearXMLNamespacePackages( UMLPackage pkg )
     {
         for ( UMLClass clazz : pkg.getClasses() )
         {
@@ -469,7 +468,7 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
         for ( UMLPackage pkg2 : pkg.getPackages() )
         {
-            getPackages( pkg2 );
+            clearXMLNamespacePackages( pkg2 );
         }
     }
 
@@ -570,14 +569,23 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, // FileUtil.getUIWorkingDirectoryPath(),
 						".xmi", "Open XMI file ...", false, false);
 				if (file != null)
+				{
 						processOpenTargetTree(file, true, true);
+						//redraw mapping panel
+						Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
+						middlePanel.getMappingDataManager().setMappingData(currentMapping);		
+				}
 			}
 			else if (SELECT_CSV.equals(command)) {
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, // FileUtil.getUIWorkingDirectoryPath(),
 						".scs", "Open CSV meta file ...", false, false);
 	
 				if (file != null) 
+				{
 					processOpenSourceTree(file, true, true);
+					Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
+					middlePanel.getMappingDataManager().setMappingData(currentMapping);		
+				}
 			}
 
 			if (!everythingGood) {
@@ -684,6 +692,14 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 
 	public void setTargetFileName(String targetFileName) {
 		this.targetFileName = targetFileName;
+	}
+
+	public XmiModelMetadata getXmiModelMeta() {
+		return xmiModelMeta;
+	}
+
+	public void setXmiModelMeta(XmiModelMetadata xmiModelMeta) {
+		this.xmiModelMeta = xmiModelMeta;
 	}
 }
 

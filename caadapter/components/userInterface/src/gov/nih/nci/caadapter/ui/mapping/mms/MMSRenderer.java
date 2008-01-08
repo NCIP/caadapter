@@ -6,6 +6,7 @@
 package gov.nih.nci.caadapter.ui.mapping.mms;
 
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
@@ -24,19 +25,31 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 public class MMSRenderer extends DefaultTreeCellRenderer
 {
-  // this control comes here	
+  // this control comes here
+	private XmiModelMetadata xmiMeta;
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
     {
         super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
         ImageIcon tutorialIcon;
         String table = "";
+        HashSet<String> lazyKeys ;
+        HashSet<String> clobKeys ;
+        HashSet<String> discriminatorKeys;
 
-        ModelMetadata modelMetadata = ModelMetadata.getInstance();
-        HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
-        HashSet<String> clobKeys = modelMetadata.getClobKeys();
-        HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
-
-//        System.out.println( "*** Current Lazy Keys = " + lazyKeys );
+        if (xmiMeta!=null)
+        {
+        	lazyKeys = xmiMeta.getLazyKeys();
+        	clobKeys = xmiMeta.getClobKeys();
+        	discriminatorKeys = xmiMeta.getDiscriminatorKeys();
+ 
+        }
+        else
+        {
+        	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+        	lazyKeys = modelMetadata.getLazyKeys();
+        	clobKeys = modelMetadata.getClobKeys();
+        	discriminatorKeys = modelMetadata.getDiscriminatorKeys();
+        }
 
         try
         {
@@ -161,6 +174,14 @@ public class MMSRenderer extends DefaultTreeCellRenderer
 	        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
 	        return null;
 	    }
+	}
+
+	public XmiModelMetadata getXmiMeta() {
+		return xmiMeta;
+	}
+
+	public void setXmiMeta(XmiModelMetadata xmiMeta) {
+		this.xmiMeta = xmiMeta;
 	}
 }
 

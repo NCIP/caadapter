@@ -6,6 +6,7 @@
 package gov.nih.nci.caadapter.ui.mapping.mms;
 
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -26,14 +27,20 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 public class MMSRendererPK extends DefaultTreeCellRenderer
 {
   // this control comes here
+	private XmiModelMetadata xmiMeta;
+	
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
     {
         super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
         ImageIcon tutorialIcon;
-
-        ModelMetadata modelMetadata = ModelMetadata.getInstance();
-        HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
-
+        HashSet<String> primaryKeys;
+        if (xmiMeta!=null)
+        	primaryKeys=xmiMeta.getPrimaryKeys();
+        else
+        {
+        	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+        	primaryKeys = modelMetadata.getPrimaryKeys();
+        }
         try
         {
             String _tmpStr = (String) ((DefaultMutableTreeNode) value).getUserObject();
@@ -145,5 +152,13 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
 	        System.err.println("Couldn't find file: " + imgURL.toString() + " & " + path);
 	        return null;
 	    }
+	}
+
+	public XmiModelMetadata getXmiMeta() {
+		return xmiMeta;
+	}
+
+	public void setXmiMeta(XmiModelMetadata xmiMeta) {
+		this.xmiMeta = xmiMeta;
 	}
 }
