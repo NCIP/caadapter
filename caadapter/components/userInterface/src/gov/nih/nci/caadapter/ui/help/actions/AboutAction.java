@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.4 2008-01-03 17:11:01 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.5 2008-01-10 16:44:51 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,8 +57,8 @@ import java.io.InputStreamReader;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-01-03 17:11:01 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-01-10 16:44:51 $
  */
 public class AboutAction extends AbstractContextAction
 {
@@ -80,7 +80,7 @@ public class AboutAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.4 2008-01-03 17:11:01 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.5 2008-01-10 16:44:51 wangeug Exp $";
 
 	private JFrame mainFrame = null;
 
@@ -118,7 +118,7 @@ public class AboutAction extends AbstractContextAction
 			 String aboutTextPath="/license/caAdapter_about.txt";
 			 
         	String warningMsg=readMessageFromFile(aboutTextPath).toString();
-        	String frmName="About caAdapter TDMS Module";
+        	String frmName="About caAdapter TDMS";
 			JOptionPane.showMessageDialog(mainFrame, warningMsg, frmName, JOptionPane.DEFAULT_OPTION);
         }
 		 else
@@ -167,6 +167,9 @@ public class AboutAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/01/03 17:11:01  wangeug
+ * HISTORY      : *** empty log message ***
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/01/03 15:52:04  wangeug
  * HISTORY      : customize the about window based on user's configuration
  * HISTORY      :
