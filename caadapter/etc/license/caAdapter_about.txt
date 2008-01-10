@@ -1,5 +1,3 @@
-About caAdapter TDMS
-
 caAdapter Translational Data Mapping Service (TDMS)
 Version 4.0 TDMS 1.0
 
