@@ -33,3 +33,4 @@ analysis_family &caintegrator-analysis-server &caintegrator-analysis-commons
 TARGET &target &caintegrator-analysis-commons &caintegrator-application-commons &caintegrator-spec
 evs-api &evsapi &cacoresdk
 sentinel-master &sentinel &sentinel-props
+cdecurate-master &cdecurate &cdecurate-props
