@@ -1,0 +1,107 @@
+/*
+ *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/SampleTempV2FromCSV.java,v 1.00 Jan 15, 2008 1:03:44 PM umkis Exp $
+ *
+ * ******************************************************************
+ * COPYRIGHT NOTICE  
+ * ******************************************************************
+ *
+ *	The caAdapter Software License, Version 1.0
+ *
+ *	Copyright 2001 SAIC. This software was developed in conjunction with the National Cancer
+ *	Institute, and so to the extent government employees are co-authors, any rights in such works
+ *	shall be subject to Title 17 of the United States Code, section 105.
+ *
+ *	Redistribution and use in source and binary forms, with or without modification, are permitted
+ *	provided that the following conditions are met:
+ *
+ *	1. Redistributions of source code must retain the above copyright notice, this list of conditions
+ *	and the disclaimer of Article 3, below.  Redistributions in binary form must reproduce the above
+ *	copyright notice, this list of conditions and the following disclaimer in the documentation and/or
+ *	other materials provided with the distribution.
+ *
+ *	2.  The end-user documentation included with the redistribution, if any, must include the
+ *	following acknowledgment:
+ *
+ *	"This product includes software developed by the SAIC and the National Cancer
+ *	Institute."
+ *
+ *	If no such end-user documentation is to be included, this acknowledgment shall appear in the
+ *	software itself, wherever such third-party acknowledgments normally appear.
+ *
+ *	3. The names "The National Cancer Institute", "NCI" and "SAIC" must not be used to endorse or
+ *	promote products derived from this software.
+ *
+ *	4. This license does not authorize the incorporation of this software into any proprietary
+ *	programs.  This license does not authorize the recipient to use any trademarks owned by either
+ *	NCI or SAIC-Frederick.
+ *
+ *	5. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED
+ *	WARRANTIES, (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *	MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE
+ *	DISCLAIMED.  IN NO EVENT SHALL THE NATIONAL CANCER INSTITUTE, SAIC, OR
+ *	THEIR AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *	EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *	PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+ *	OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * ******************************************************************
+ */
+
+package gov.nih.nci.caadapter.hl7.v2v3.v2gene;
+
+import gov.nih.nci.caadapter.common.util.FileUtil;
+
+import java.util.List;
+
+/**
+ * This class defines ...
+ *
+ * @author OWNER: Kisung Um
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v3.3
+ *          revision    $Revision: 1.1 $
+ *          date        Jan 15, 2008
+ *          Time:       1:03:44 PM $
+ */
+public class SampleTempV2FromCSV
+{
+    public static void main(String[] args)
+    {
+        TempV2FromCSV gen = null;
+        try
+        {
+            // argument 1 : input csv file name
+            // argument 2 : output directory (full pathname)
+            gen = new TempV2FromCSV("C:\\baylorhealth\\Sample input file Test 1.csv", "C:\\baylorhealth\\test");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }
+
+        // At this point the v2 message file may be generated at the output directory.
+        // One message is one file of which file name is "Message Control-ID" + ".hl7".
+        // "Message Control-ID" consists of "VISION" + Generating Time(yyyymmddhhMMss) + "_" + 6 digit record_number in the input csv file.
+
+
+        List<String> outFileList = gen.getOutFileList();  // the list of the output v2 message file names
+        List<String> logList = gen.getLogList();          // generating log list for each csv record.
+        List<String> errList = gen.getErrorList();        // error message list for each failure csv record.
+
+        for (String fname : outFileList) System.out.println(FileUtil.readFileIntoString(fname));
+        for (String str : logList) System.out.println(str);
+        for (String str : errList) System.out.println(str);
+
+        gen.deleteOutFiles();  // delete all the files in the outFileList
+    }
+
+}
+
+/**
+ * HISTORY      : : SampleTempV2FromCSV.java,v $
+ */
