@@ -54,7 +54,7 @@
 package gov.nih.nci.caadapter.hl7.v2v3.v2gene;
 
 import gov.nih.nci.caadapter.common.function.DateFunction;
-import gov.nih.nci.caadapter.common.util.FileUtil;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -64,9 +64,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jan 14, 2008
  *          Time:       10:27:02 PM $
  */
@@ -101,7 +101,7 @@ public class TempV2FromCSV
         if (!outDir.exists()) throw new Exception("Not exist output directory : " + outDirStr);
         if (!outDir.isDirectory()) throw new Exception("Not valid output directory : " + outDirStr);
 
-        List<String> list = new ArrayList<String>();
+//        List<String> list = new ArrayList<String>();
 
         FileReader fr = null;
 
@@ -111,6 +111,7 @@ public class TempV2FromCSV
         BufferedReader br = new BufferedReader(fr);
         String readLineOfFile = "";
         int n = 0;
+        StringBuffer sb=new StringBuffer();
         try
         {
             DateFunction df = new DateFunction();
@@ -139,25 +140,27 @@ public class TempV2FromCSV
 
                 String now = df.getCurrentTime();
                 String mesg_ID = "VISION" + now + "_" + lineNum;
-                String fileName = outDirStr + File.separator + mesg_ID + ".hl7";
+//                String fileName = outDirStr + File.separator + mesg_ID + ".hl7";
 
                 mesg = mesg.replaceAll("%!NOW!%", now);
                 mesg = mesg.replaceAll("%!ID!%", mesg_ID);
 
                 //System.out.println(mesg + "\n");
 
-                FileWriter fw = null;
+//                FileWriter fw = null;
                 String errTag = null;
-                try
-                {
-                    fw = new FileWriter(fileName);
-                    fw.write(mesg);
-                    fw.close();
-                }
-                catch(Exception ie)
-                {
-                    errTag = ie.getMessage();
-                }
+//                try
+//                {
+//                    fw = new FileWriter(fileName);
+//                    fw.write(mesg);
+                    sb.append(mesg.toString());
+                    sb.append("\n");
+//                    fw.close();
+//                }
+//                catch(Exception ie)
+//                {
+//                    errTag = ie.getMessage();
+//                }
                 if (mesg.indexOf("%!") >= 0) errTag = "%! Insufficient data";
 
                 if (errTag != null)
@@ -169,9 +172,15 @@ public class TempV2FromCSV
                     continue;
                 }
 
-                outFileList.add(fileName);
-                logList.add("SUCCESSFUL (line "+n+") : " + fileName + " : " + readLineOfFile);
+//                outFileList.add(fileName);
+//                logList.add("SUCCESSFUL (line "+n+") : " + fileName + " : " + readLineOfFile);
             }
+            String outFileName=outDir.getAbsolutePath()+File.separator+"messageOut.hl7";
+            System.out.println("TempV2FromCSV.TempV2FromCSV()..output File:"+outFileName);
+            FileWriter fw=new FileWriter(outFileName);
+            System.out.println("TempV2FromCSV.TempV2FromCSV()..write message:"+sb);
+            fw.write(sb.toString());
+            fw.close();
         }
         catch(IOException ie) { throw new Exception("File reading Error in FileUtil.readFileIntoList() : " + csvFileStr); }
 
@@ -242,9 +251,10 @@ public class TempV2FromCSV
 
     public static void main(String[] args)
     {
+    	String fileHome="C:\\Documents and Settings\\wangeug\\My Documents\\caAdapter\\csvToHLv2";
         try
         {
-            new TempV2FromCSV("C:\\baylorhealth\\Sample input file Test 1.csv", "C:\\baylorhealth\\test");
+            new TempV2FromCSV(fileHome+"\\Sample input file Test 1.csv", fileHome+"\\test");
         }
         catch(Exception e)
         {
