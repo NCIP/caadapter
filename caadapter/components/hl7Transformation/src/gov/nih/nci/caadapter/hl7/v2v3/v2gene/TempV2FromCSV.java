@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jan 14, 2008
  *          Time:       10:27:02 PM $
  */
@@ -87,7 +87,6 @@ public class TempV2FromCSV
      */
     public static String RCSID = ": /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/TempV2FromCSV.java,v 1.00 Jan 14, 2008 10:27:02 PM umkis Exp $";
 
-    private List<String> outFileList = new ArrayList<String>();
     private List<String> errorList = new ArrayList<String>();
     private List<String> logList = new ArrayList<String>();
 
@@ -118,7 +117,6 @@ public class TempV2FromCSV
         try
         {
             DateFunction df = new DateFunction();
-            //String fileTag = df.getCurrentTime() + "_" + FileUtil.getRandomNumber(4);
             while((readLineOfFile=br.readLine())!=null)
             {
                 String[] csvData = getCSVDataFromReadLine(readLineOfFile);
@@ -146,11 +144,9 @@ public class TempV2FromCSV
                 mesg = mesg.replaceAll("%!NOW!%", now);
                 mesg = mesg.replaceAll("%!ID!%", mesg_ID);
 
-                //System.out.println(mesg + "\n");
-
                 String errTag = null;
-                    sb.append(mesg.toString());
-                    sb.append("\n");
+                sb.append(mesg.toString());
+                sb.append("\n");
                 if (mesg.indexOf("%!") >= 0) errTag = "%! Insufficient data";
 
                 if (errTag != null)
@@ -177,25 +173,7 @@ public class TempV2FromCSV
             br.close();
         }
         catch(IOException ie) { throw new IOException("File Closing Error in FileUtil.readFileIntoList() : " + csvFileStr); }
-        //for (String a : logList) System.out.println(a);
     }
-
-    public List<String> getOutFileList() { return outFileList; }
-    public List<String> getErrorList() { return errorList; }
-    public List<String> getLogList() { return logList; }
-
-    public void deleteOutFiles()
-    {
-        for (int i=0;i<outFileList.size();i++)
-        {
-            File file = new File(outFileList.get(i));
-            if (!file.exists()) continue;
-            if (!file.isFile()) continue;
-
-            file.delete();
-        }
-    }
-
 
     private String[] getCSVDataFromReadLine(String line)
     {
@@ -226,9 +204,6 @@ public class TempV2FromCSV
 
     private String getSampleV2MessageFormat()
     {
-        DateFunction df = new DateFunction();
-        String nowDate = df.getCurrentTime();
-
         String t = "";
         t = "MSH|^~\\&|VISION|VISION-DDAP|LOGIC|LOGIC|%!NOW!%+0000^S|NO SECURITY|ADT^A08|%!ID!%|P|2.3|||AL||||\r\n" +
             "EVN|A08|%!NOW!%+0000^S|||00000|\r\n" +
@@ -238,12 +213,8 @@ public class TempV2FromCSV
 
     public static void main(String[] args)
     {
-//    	String fileHome="C:\\Documents and Settings\\wangeug\\My Documents\\caAdapter\\csvToHLv2";
     	if (args.length<2)
-    	{
     		System.out.println("Usage: sourceFileName|output Dir");
-    	}
-
     	try
         {
             new TempV2FromCSV(args[0],args[1]); 
