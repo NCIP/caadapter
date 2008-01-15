@@ -64,9 +64,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jan 14, 2008
  *          Time:       10:27:02 PM $
  */
@@ -146,7 +146,7 @@ public class TempV2FromCSV
 
                 String errTag = null;
                 sb.append(mesg.toString());
-                sb.append("\n");
+                sb.append("\r\n");
                 if (mesg.indexOf("%!") >= 0) errTag = "%! Insufficient data";
 
                 if (errTag != null)
