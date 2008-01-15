@@ -34,3 +34,4 @@ TARGET &target &caintegrator-analysis-commons &caintegrator-application-commons 
 evs-api &evsapi &cacoresdk
 sentinel-master &sentinel &sentinel-props
 cdecurate-master &cdecurate &cdecurate-props
+freestylesearch-master &freestylesearch &freestylesearch-props
