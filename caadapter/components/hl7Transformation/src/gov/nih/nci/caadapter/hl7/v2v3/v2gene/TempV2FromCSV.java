@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jan 14, 2008
  *          Time:       10:27:02 PM $
  */
@@ -98,10 +98,13 @@ public class TempV2FromCSV
         if (!csvFile.isFile()) throw new Exception("Not valid csv file type : " + csvFileStr);
 
         File outDir = new File(outDirStr);
-        if (!outDir.exists()) throw new Exception("Not exist output directory : " + outDirStr);
+        if (!outDir.exists()) 
+        {
+        	outDirStr=System.getProperty("user.dir");
+        	outDir = new File(outDirStr);     
+        }
         if (!outDir.isDirectory()) throw new Exception("Not valid output directory : " + outDirStr);
 
-//        List<String> list = new ArrayList<String>();
 
         FileReader fr = null;
 
@@ -140,27 +143,14 @@ public class TempV2FromCSV
 
                 String now = df.getCurrentTime();
                 String mesg_ID = "VISION" + now + "_" + lineNum;
-//                String fileName = outDirStr + File.separator + mesg_ID + ".hl7";
-
                 mesg = mesg.replaceAll("%!NOW!%", now);
                 mesg = mesg.replaceAll("%!ID!%", mesg_ID);
 
                 //System.out.println(mesg + "\n");
 
-//                FileWriter fw = null;
                 String errTag = null;
-//                try
-//                {
-//                    fw = new FileWriter(fileName);
-//                    fw.write(mesg);
                     sb.append(mesg.toString());
                     sb.append("\n");
-//                    fw.close();
-//                }
-//                catch(Exception ie)
-//                {
-//                    errTag = ie.getMessage();
-//                }
                 if (mesg.indexOf("%!") >= 0) errTag = "%! Insufficient data";
 
                 if (errTag != null)
@@ -172,13 +162,10 @@ public class TempV2FromCSV
                     continue;
                 }
 
-//                outFileList.add(fileName);
-//                logList.add("SUCCESSFUL (line "+n+") : " + fileName + " : " + readLineOfFile);
-            }
+           }
             String outFileName=outDir.getAbsolutePath()+File.separator+"messageOut.hl7";
             System.out.println("TempV2FromCSV.TempV2FromCSV()..output File:"+outFileName);
             FileWriter fw=new FileWriter(outFileName);
-            System.out.println("TempV2FromCSV.TempV2FromCSV()..write message:"+sb);
             fw.write(sb.toString());
             fw.close();
         }
@@ -251,10 +238,15 @@ public class TempV2FromCSV
 
     public static void main(String[] args)
     {
-    	String fileHome="C:\\Documents and Settings\\wangeug\\My Documents\\caAdapter\\csvToHLv2";
-        try
+//    	String fileHome="C:\\Documents and Settings\\wangeug\\My Documents\\caAdapter\\csvToHLv2";
+    	if (args.length<2)
+    	{
+    		System.out.println("Usage: sourceFileName|output Dir");
+    	}
+
+    	try
         {
-            new TempV2FromCSV(fileHome+"\\Sample input file Test 1.csv", fileHome+"\\test");
+            new TempV2FromCSV(args[0],args[1]); 
         }
         catch(Exception e)
         {
