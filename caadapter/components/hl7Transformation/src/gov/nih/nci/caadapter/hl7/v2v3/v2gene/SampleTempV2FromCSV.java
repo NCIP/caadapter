@@ -63,7 +63,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jan 15, 2008
  *          Time:       1:03:44 PM $
  */
@@ -89,9 +89,9 @@ public class SampleTempV2FromCSV
         // "Message Control-ID" consists of "VISION" + Generating Time(yyyymmddhhMMss) + "_" + 6 digit record_number in the input csv file.
 
 
-        String outFile = gen.getOutputFileName();       // the list of the output v2 message file names
-        String logFile = gen.getLogFileName();          // generating log list for each csv record.
-        String errorFile = gen.getErrorListFileName();  // error message list for each failure csv record.
+        String outFile = gen.getOutputFileName();       // get the output v2 message file name
+        String logFile = gen.getLogFileName();          // get the log file name for each csv record.
+        String errorFile = gen.getErrorListFileName();  // get the error message list file name for each failure csv record.
         int successCount = gen.getSuccessCount();       // get the number of the records generated successfully
         int errorCount = gen.getErrorCount();           // get the number of the error records
         int recordCount = gen.getRecordCount();         // get the number of the total records in the csv file
