@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.6 $
+ *          revision    $Revision: 1.7 $
  *          date        Jan 14, 2008
  *          Time:       10:27:02 PM $
  */
@@ -99,13 +99,14 @@ public class TempV2FromCSV
         File csvFile = new File(csvFileStr);
         if (!csvFile.exists()) throw new Exception("Not exist csv file : " + csvFileStr);
         if (!csvFile.isFile()) throw new Exception("Not valid csv file type : " + csvFileStr);
+        csvFileStr = csvFile.getAbsolutePath();
 
         File outFile = new File(outFileStr);
         if (!outFile.isDirectory())
         {
             throw new Exception("This output file name is not a directory. : " + outFileStr);
         }
-
+        outFileStr = outFile.getAbsolutePath();
         //FileUtil.saveStringIntoTemporaryFile(outFileStr, "test");
 
         DateFunction df = new DateFunction();
