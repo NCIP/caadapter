@@ -63,7 +63,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jan 15, 2008
  *          Time:       1:03:44 PM $
  */
@@ -85,19 +85,23 @@ public class SampleTempV2FromCSV
         }
 
         // At this point the v2 message file may be generated at the output directory.
-        // One message is one file of which file name is "Message Control-ID" + ".hl7".
+        // The all messages are saved to the output file of which file name can be gotten by getOutputFileName().
         // "Message Control-ID" consists of "VISION" + Generating Time(yyyymmddhhMMss) + "_" + 6 digit record_number in the input csv file.
 
 
-        List<String> outFileList = gen.getOutFileList();  // the list of the output v2 message file names
-        List<String> logList = gen.getLogList();          // generating log list for each csv record.
-        List<String> errList = gen.getErrorList();        // error message list for each failure csv record.
+        String outFile = gen.getOutputFileName();       // the list of the output v2 message file names
+        String logFile = gen.getLogFileName();          // generating log list for each csv record.
+        String errorFile = gen.getErrorListFileName();  // error message list for each failure csv record.
+        int successCount = gen.getSuccessCount();       // get the number of the records generated successfully
+        int errorCount = gen.getErrorCount();           // get the number of the error records
+        int recordCount = gen.getRecordCount();         // get the number of the total records in the csv file
 
-        for (String fname : outFileList) System.out.println(FileUtil.readFileIntoString(fname));
-        for (String str : logList) System.out.println(str);
-        for (String str : errList) System.out.println(str);
 
-        gen.deleteOutFiles();  // delete all the files in the outFileList
+        System.out.println("\n\n--------------------------\nMessagr File ("+outFile+")\n\n" + FileUtil.readFileIntoString(outFile));
+        System.out.println("\n\n--------------------------\nLog File ("+logFile+")\n\n" + FileUtil.readFileIntoString(logFile));
+        System.out.println("\n\n--------------------------\nError File ("+errorFile+")\n\n" + FileUtil.readFileIntoString(errorFile));
+
+
     }
 
 }
