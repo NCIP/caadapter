@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.7 $
+ *          revision    $Revision: 1.8 $
  *          date        Jan 14, 2008
  *          Time:       10:27:02 PM $
  */
@@ -110,23 +110,24 @@ public class TempV2FromCSV
         //FileUtil.saveStringIntoTemporaryFile(outFileStr, "test");
 
         DateFunction df = new DateFunction();
-        String fname = outFileStr + File.separator + "VISION" + df.getCurrentTime() + "_" + FileUtil.getRandomNumber(4);
+        //String fname = outFileStr + File.separator + "VISION" + df.getCurrentTime() + "_" + FileUtil.getRandomNumber(4);
 
-        errorListFileName = fname + ".err";
-        logFileName = fname + ".log";
-        outputFileName = fname + ".hl7";
+        errorListFileName = outFileStr + File.separator + "HL7 v2 Conversion - Errors.err";
+        logFileName = outFileStr + File.separator + "HL7 v2 Conversion - Log.log";
+        outputFileName = outFileStr + File.separator + "HL7 v2 Conversion - Output.hl7";
 
         FileWriter fw_msg = new FileWriter(outputFileName);
         FileWriter fw_err = new FileWriter(errorListFileName);
         FileWriter fw_log = new FileWriter(logFileName);
 
         String init = "SOURCE CSV FILE NAME : " + csvFileStr + "\r\n"
-                    + "OUTPUT HL7 V2 MESSAGE FILE NAME : " + outputFileName + "\r\n" + "\r\n";
+                    + "OUTPUT HL7 V2 MESSAGE FILE NAME : " + outputFileName + "\r\n"
+                    + "Start time : " + df.getCurrentTime("MM/dd/yyyy hh:mm:ss.SSS") + "\r\n\r\n";
 
         fw_msg.write("");
         try
         {
-            fw_err.write("This is a Error list file : \r\n" + init);
+            fw_err.write("HL7 v2 Conversion Error File : \r\n" + init);
         }
         catch(IOException ie)
         {
@@ -134,7 +135,7 @@ public class TempV2FromCSV
         }
         try
         {
-            fw_log.write("This is a log file : \r\n" + init);
+            fw_log.write("HL7 v2 Conversion Log File : \r\n" + init);
         }
         catch(IOException ie)
         {
@@ -229,11 +230,13 @@ public class TempV2FromCSV
 
             }
             recordCount = n;
+            String endTime = "\r\n  End time : " + df.getCurrentTime("MM/dd/yyyy hh:mm:ss.SSS");
             try
             {
-                fw_err.write("\r\n\r\n  TOTAL COUNT = " + recordCount + "\r\n  ERROR COUNT = " + errorCount);
+                if (errorCount == 0) fw_err.write("\r\nNO ERROR\r\n");
+                fw_err.write("\r\n  TOTAL COUNT = " + recordCount + "\r\n  ERROR COUNT = " + errorCount + endTime);
                 fw_err.close();
-                fw_log.write("\r\n\r\n  TOTAL COUNT = " + recordCount + "\r\n  SUCCESS COUNT = " + successCount + "\r\n  ERROR COUNT = " + errorCount);
+                fw_log.write("\r\n  TOTAL COUNT = " + recordCount + "\r\n  SUCCESS COUNT = " + successCount + "\r\n  ERROR COUNT = " + errorCount + endTime);
                 fw_log.close();
                 fw_msg.close();
             }
