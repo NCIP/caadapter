@@ -120,6 +120,11 @@
     	</delete>
     	<antcall target="add-license"/>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
+					excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
+					docs/GME/**, docs/v4.0/**,
+					referenceLib/**, run.bat, build_demo.xml, *.spp, *.mpp,">
+		</zip>
+		<!-- zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 				excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
 			docs/GME/**, docs/v4.0/*.mpp,  
 			docs/v4.0/*Scope*.doc, 
@@ -127,7 +132,7 @@
 			docs/v4.0/*Requirements.doc,
 			docs/v4.0/*Case*.doc,
 			referenceLib/**">
-		</zip>
+		</zip -->
 	<antcall target="dist.prepare" />
     </target>
 	<target name="build-all" depends="jar.all">
