@@ -65,12 +65,12 @@
 
 	<path id="castor.gencode.path">
 		<pathelement location="${caadapter.project.lib.dir}/castor-0.9.9.jar"/>
-		<pathelement location="${module.lib.dir}/commons-logging-1.0.4.jar"/>
-		<pathelement location="${module.lib.dir}/xercesImpl.jar"/>
+		<pathelement location="${caadapter.project.lib.dir}/commons-logging-1.0.4.jar"/>
+		<pathelement location="${caadapter.project.lib.dir}/xercesImpl.jar"/>
 	</path>
 	
 	<path id="saxon8.gencode.path">
-		<pathelement location="${module.lib.dir}/saxon8.jar"/>
+		<pathelement location="${caadapter.project.lib.dir}/saxon8.jar"/>
 	</path>
 	
 	<target name="build" depends="jar" description="deliever the module jar">

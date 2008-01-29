@@ -37,8 +37,9 @@
             <include name="**/*.zip"/>
         </fileset>
         <fileset dir="${caadapter.project.lib.dir}">
-            <include name="**/sql*.jar"/>
+            <include name="**/*sql*.jar"/>
         </fileset>
+
     </path>
 
     <target name="build" depends="jar" description="deliever the module jar">

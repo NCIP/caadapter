@@ -38,6 +38,9 @@
 			 <include name="**/*.jar"/>
 			 <include name="**/*.zip"/>
 		</fileset>
+		<fileset dir="${caadapter.project.lib.dir}">
+			<include name="**/*commons-collection*.jar"/>
+		</fileset>
 	</path>
 
 	<target name="build" depends="jar" description="deliever the module jar">
