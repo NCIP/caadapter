@@ -32,10 +32,12 @@
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
+	<!--
 		<fileset dir="${module.lib.dir}/../../dataviewer/lib">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
+	-->
 		<fileset dir="${module.lib.dir}/../../modelMapping/lib">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
