@@ -92,8 +92,8 @@
             <!-- fileset dir="${lib.dir}"/ -->
         </copy>
         <!-- "${download.jar.location}\delete.jar" dest="${download.jar.location}\deletethisfolder.jar" -->
-        <!--delete file="${lib.dir}\delete.jar"/>
-        <delete dir="${lib.dir}\deletethisfolder.jar"/-->
+        <delete file="${lib.dir}\delete.jar"/>
+        <!-- delete dir="${lib.dir}\deletethisfolder.jar"/-->
 
         <copy todir="${build.dir}">
             <fileset dir="${ui.module.home}/resources">
