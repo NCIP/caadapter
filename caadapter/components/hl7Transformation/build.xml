@@ -39,10 +39,12 @@
 	<property name="dbspec_package" value="gov.nih.nci.caadapter.castor.database.impl"/>
 
 	<path id="module.class.path">
+	<!--	
 		<fileset dir="${module.lib.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
+	-->
 		<fileset dir="${caadapter.project.lib.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
