@@ -69,7 +69,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jan 31, 2008
  *          Time:       2:50:22 PM $
  */
@@ -400,12 +400,21 @@ public class ConvertFromV2ToCSV
             if (arg.endsWith("\"")) arg = arg.substring(0, arg.length()-1);
             arg = arg.trim();
             if ((n==0)&&(arg.equals(""))) arg = FileUtil.getV2DataDirPath();
+            if ((n==2)&&(arg.length()==6)) arg = arg.substring(0,3) + "^" + arg.substring(3);
+            if ((n==2)&&(arg.length()==7)) arg = arg.substring(0,3) + "^" + arg.substring(4);
             args[n] = arg;
 
             n++;
         }
-
-        new ConvertFromV2ToCSV(args[0], args[1], args[2], args[3], args[4], args[5], false);
+        try
+        {
+            ConvertFromV2ToCSV con = new ConvertFromV2ToCSV(args[0], args[1], args[2], args[3], args[4], args[5], false);
+            System.out.println("## " + con.getMessage());
+        }
+        catch(Exception ee)
+        {
+            System.out.println("## " + ee.getMessage());
+        }
 
     }
 }
