@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.2 2008-01-31 21:39:49 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.3 2008-01-31 22:39:39 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -83,8 +83,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-01-31 21:39:49 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-01-31 22:39:39 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -101,7 +101,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.2 2008-01-31 21:39:49 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.3 2008-01-31 22:39:39 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -1746,7 +1746,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
     public static void main(String arg[])
     {
-        String dataPath = "C:\\projects\\temp\\v2Meta";
+        String dataPath = FileUtil.getV2DataDirPath();
         try
         {
             JFrame frame = (new V2ConverterToSCSPanel(dataPath)).setFrame(new JFrame("V2 Converter"));
@@ -1768,6 +1768,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/01/31 21:39:49  umkis
+ * HISTORY      : csv converting from multi message included v2 file.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
  * HISTORY      : initila loading
  * HISTORY      :
