@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.8 2007-11-28 15:05:40 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.9 2008-01-31 21:44:22 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -59,10 +59,10 @@ import java.util.StringTokenizer;
  * This class defines a list of default settings for GUI Settings.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-11-28 15:05:40 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-01-31 21:44:22 $
  */
 public class DefaultSettings
 {
@@ -273,7 +273,12 @@ public class DefaultSettings
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			toSelectedDir=true;
 		}
-		else
+        else if ((fileExtension.equals("*.*"))||(fileExtension.equals(".*")))      //JFileChooser.FILES_AND_DIRECTORIES
+		{
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY);
+			toSelectedDir=true;
+		}
+        else
 		{	
 			StringTokenizer stk=new StringTokenizer(fileExtension,";");
 			while (stk.hasMoreElements())
@@ -528,6 +533,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/11/28 15:05:40  wangeug
+ * HISTORY      : setup UI environment with DefaultSettings implementation
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/11/14 20:55:57  wangeug
  * HISTORY      : clean codes
  * HISTORY      :

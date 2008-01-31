@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.3 2007-08-17 01:13:28 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.4 2008-01-31 21:40:06 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -81,8 +81,8 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.SCSIDChangerToXMLPath;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v3.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-08-17 01:13:28 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-01-31 21:40:06 $
  */
 public class V2Converter
 {
@@ -99,7 +99,7 @@ public class V2Converter
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.3 2007-08-17 01:13:28 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.4 2008-01-31 21:40:06 umkis Exp $";
 
 
     HL7V2MessageTree messageTree = null;
@@ -119,6 +119,10 @@ public class V2Converter
     ValidatorResults resultValidationSCS = null;
     ValidatorResults resultValidationCSV = null;
 
+    public V2Converter()
+    {
+
+    }
     public V2Converter(HL7V2MessageTree messTree) throws HL7MessageTreeException
     {
         if (messTree == null) throw new HL7MessageTreeException("This Message Tree is null.");
@@ -427,7 +431,7 @@ public class V2Converter
             String level = temp.getLevel();
 
             //System.out.println(level + "." + messageTreeEmpty.getNodeSequence(temp) + "." + temp.getType() + "." + setupDesc(temp.getDescription()) + "." + temp.getValue());
-            if (level.equals("message"))
+            if (level.equals(messageTree.getLevelMessage()))
             {
                 String type = temp.getType().replace("^", "_");
                 //nextUUID = "$$$" + UUIDGenerator.getUniqueString() + "@@@";
@@ -435,7 +439,7 @@ public class V2Converter
                 headSegmentTail = "        <field column=\"1\" name=\""+setupDesc(temp.getDescription())+ "\" uuid=\"" + UUIDGenerator.getUniqueString() + "\"/>\n" +
                                   "    </segment> <!--" + type + "-->\n";
             }
-            if (level.equals("segment"))
+            if (level.equals(messageTree.getLevelSegment()))
             {
                 if (filteringNonDataSegment)
                 {
@@ -456,8 +460,8 @@ public class V2Converter
                         scsContent = scsContent + beforeSegmentTail;
                         //segmentTag = true;
                         //fieldTag = false;
-                        int prefix = messageTreeEmpty.getSegmentPrefix(temp);
-                        if (prefix == 1) segName = temp.getType();
+                        String prefix = messageTreeEmpty.getSegmentPrefixSeq(temp);
+                        if ((prefix == null)||(prefix.trim().equals(""))) segName = temp.getType();
                         else segName = "V" + prefix + temp.getType();
 
                         String markingOBXGroupingLine = "";
@@ -503,8 +507,8 @@ public class V2Converter
                     scsContent = scsContent + beforeSegmentTail;
                     //segmentTag = true;
                     //fieldTag = false;
-                    int prefix = messageTreeEmpty.getSegmentPrefix(temp);
-                    if (prefix == 1) segName = temp.getType();
+                    String prefix = messageTreeEmpty.getSegmentPrefixSeq(temp);
+                    if ((prefix == null)||(prefix.trim().equals(""))) segName = temp.getType();
                     else segName = "V" + prefix + temp.getType();
 
                     String markingOBXGroupingLine = "";
@@ -524,7 +528,7 @@ public class V2Converter
                 }
             }
 
-            if (level.equals("field"))
+            if (level.equals(messageTree.getLevelField()))
             {
 
                 try
@@ -581,7 +585,7 @@ public class V2Converter
                         }
 
                         String comp = "";
-                        if (temp.getLevel().equals("component"))
+                        if (temp.getLevel().equals(messageTree.getLevelComponent()))
                         {
                             comp = "C"+ messageTreeEmpty.getNodeSequence(temp) + "_" + temp.getType();
                             if (temp.getLowerLink() == null)
@@ -594,7 +598,7 @@ public class V2Converter
                                 comp = "";
                             }
                         }
-                        if (temp.getLevel().equals("subcomponent"))
+                        if (temp.getLevel().equals(messageTree.getLevelSubcomponent()))
                         {
                             comp = componentName + "_S" + messageTreeEmpty.getNodeSequence(temp) + "_" + temp.getType();
                         }
@@ -674,19 +678,19 @@ public class V2Converter
             String level = temp.getLevel();//messageTree.getThisNodeLevel(temp);
 
             //System.out.println(level + "." + messageTree.getNodeSequence(temp) + "." + temp.getType() + "." + setupDesc(temp.getDescription()) + "." + temp.getValue());
-            if (level.equals("message"))
+            if (level.equals(messageTree.getLevelMessage()))
             {
                 String type = temp.getType().replace("^", "_");
 
                 if (messageTree.hasValue(temp)) csvContent = type + ","+ setupDesc(temp.getDescription())+"\n";
                 else return;
             }
-            if (level.equals("segment"))
+            if (level.equals(messageTree.getLevelSegment()))
             {
                 //scsContent = scsContent + beforeSegmentTail;
 
-                int prefix = messageTree.getSegmentPrefix(temp);
-                if (prefix == 1) segName = temp.getType();
+                String prefix = messageTree.getSegmentPrefixSeq(temp);
+                if ((prefix == null)||(prefix.trim().equals(""))) segName = temp.getType();
                 else segName = "V" + prefix + temp.getType();
                 if (temp.getType().equals("OBX"))
                 {
@@ -695,6 +699,7 @@ public class V2Converter
                     if (groupingYesOrNo)
                     {
                         if ((dt.equals("ST"))||(dt.equals("FT"))||(dt.equals("TX"))) segName = segName + "_" + defaultOBXDataType;
+                        else segName = segName + "_" + dt;
                     }
                     else segName = segName + "_" + dt;
                 }
@@ -706,7 +711,7 @@ public class V2Converter
                     else continue;
                 }
             }
-            if (level.equals("field"))
+            if (level.equals(messageTree.getLevelField()))
             {
                 String dt = temp.getType();
 
@@ -729,7 +734,7 @@ public class V2Converter
                 if (temp.getLowerLink() != null)
                 {
                     ElementNode tmp = temp.getLowerLink();
-                    if (messageTree.getThisNodeLevel(tmp).equals("repetition_field"))
+                    if (messageTree.getThisNodeLevel(tmp).equals(messageTree.getLevelFieldRepetition()))
                     {
                         repeatTag = true;
                         temp = tmp;
@@ -737,14 +742,14 @@ public class V2Converter
                 }
                 if (temp.getLowerLink() == null)
                 {
-                    if (messageTree.getThisNodeLevel(temp).equals("field"))
+                    if (messageTree.getThisNodeLevel(temp).equals(messageTree.getLevelField()))
                     {
                         String value = temp.getValue().trim();
                         if (value.indexOf(",") >= 0) value = "\"" + value + "\"";
                         imsi = checkSegmentData(type + "," + value);
                         if (!imsi.equals("")) csvContent = csvContent + imsi + "\n";
                     }
-                    else if (messageTree.getThisNodeLevel(temp).equals("repetition_field"))
+                    else if (messageTree.getThisNodeLevel(temp).equals(messageTree.getLevelFieldRepetition()))
                     {
                         ElementNode tmp = temp;
                         while(tmp!=null)
@@ -885,10 +890,10 @@ public class V2Converter
         }
     }
 
-    private ValidatorResults validateSpecification(File scsFile)
+    public ValidatorResults validateSpecification(File scsFile)
 	{
         CSVPanel csvPanel = new CSVPanel();
-        //ValidatorResults validatorResults = csvPanel.setSaveFile(scsFile, true);
+        ValidatorResults validatorResults = csvPanel.setSaveFile(scsFile, true);
         ValidatorResults validatorResults2 = new ValidatorResults();
         CSVMeta rootMeta = csvPanel.getCSVMeta(false);
 		if (rootMeta != null)
@@ -896,13 +901,15 @@ public class V2Converter
 			CSVMetaValidator metaValidator = new CSVMetaValidator(rootMeta);
 			validatorResults2 = metaValidator.validate();
         }
-        return validatorResults2;
+        validatorResults.addValidatorResults(validatorResults2);
+        return validatorResults;
     }
 
 	private ValidatorResults validateDataAgainstSpecification(File scsFile, File csvFile)
 	{
         CSVPanel csvPanel = new CSVPanel();
-        //ValidatorResults validatorResults = csvPanel.setSaveFile(scsFile, true);
+        ValidatorResults validatorResults = csvPanel.setSaveFile(scsFile, true);
+        //if (!validatorResults.isValid()) System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV------------------------------------------------------------");
         ValidatorResults validatorResults2 = new ValidatorResults();
         CSVMeta rootMeta = csvPanel.getCSVMeta(false);
 		if (rootMeta != null)
@@ -915,11 +922,13 @@ public class V2Converter
             }
             catch(ApplicationException ae)
             {
+                //System.out.println("VVVVVVVVVVV : " +  ae.getMessage());
                 return GeneralUtilities.addValidatorMessage(validatorResults2, ae.getMessage());
             }
             validatorResults2 = result.getValidatorResults();
-		}
-        return validatorResults2;
+            validatorResults.addValidatorResults(validatorResults2);
+        }
+        return validatorResults;
     }
 
 
@@ -1116,6 +1125,9 @@ public class V2Converter
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/17 01:13:28  umkis
+ * HISTORY      : generated SCS file using xml path
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/09 16:21:42  umkis
  * HISTORY      : add a try-catch block on to 'result = segmentedCSVParser.parse(csvFile, rootMeta);'
  * HISTORY      :

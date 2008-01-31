@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.2 2008-01-31 21:39:49 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,36 +53,38 @@
 
 package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
-import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
-import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
-
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.*;
-import java.io.IOException;
-import java.io.File;
-import java.util.*;
-
+import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
+import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
+import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.message.ValidationMessageDialog;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-07-03 19:32:58 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-01-31 21:39:49 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -99,10 +101,13 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.1 2007-07-03 19:32:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.2 2008-01-31 21:39:49 umkis Exp $";
 
-    private JRadioButton jrHL7MessageTypeOnly;
-    private JRadioButton jrHL7MessageFile;
+    private JRadioButton jrStrictValidationYes;
+    private JRadioButton jrStrictValidationNo;
+    private JLabel jlStrictValidation;
+    //private JRadioButton jrHL7MessageTypeOnly = new JRadioButton();
+    //private JRadioButton jrHL7MessageFile = new JRadioButton();
     private JRadioButton jrBoth;
     private JRadioButton jrCSV;
     private JRadioButton jrSCS;
@@ -119,9 +124,15 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private JLabel jlHL7VersionLabel;
     private JComboBox jcHL7Version;
 
+    private JLabel jlInputMessageTypeLabel;
     private JTextField jtInputMessageType;
     private JButton jbInputMessageTypeConfirm;
+    private JButton jbViewErrorMessages;
 
+    private JTextField jtDataDirectory;
+    private JButton jbDataDirectoryBrowse;
+
+    private JLabel jlInputFileLabel;
     private JTextField jtInputFile;
     private JButton jbInputFileBrowse;
 
@@ -133,13 +144,15 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private JTextField jtValidateSCSFile;
     private JButton jbValidateSCSFileBrowse;
 
+    private JLabel jlMultiMessageNote = new JLabel("The input v2 message file has multi messages.");
+
     private JLabel jlInputCSVLabel;
     private JTextField jtInputCSVFile;
     private JButton jbInputCSVFileBrowse;
 
-    private String[] jcbOBXName = {"ST", "TX", "FT", "NM", "TS", "DT", "TM", "TN", "XTN", "CE",
-                                   "MO", "CP", "SN", "ED" ,"RP" , "AD", "XAD", "PN", "XPN", "CX",
-                                   "CF", "CN", "XCN", "CK", "XON"};
+    private String[] jcbOBXName = {"ST", "TX", "FT", "NA", "MA", "NM", "TS", "DT", "TM", "TN", "XTN",
+                                   "CE", "CD", "MO", "CP", "SN", "ED" ,"RP" , "AD", "XAD", "PN", "XPN",
+                                   "CX", "CN", "XCN", "CK", "XON"};
     private JCheckBox[] jcbOBXCheck = new JCheckBox[jcbOBXName.length];
 
     private JButton jbGenerate;
@@ -161,50 +174,73 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private boolean wasOBXUsed = false;
     private boolean buttonNextVisible = false;
     private boolean buttonCloseVisible = false;
+    private boolean msgTypeOnly = false;
+    private boolean hasMultiMessages = false;
+    private String oneMessage = "";
+    private File oneMessageFile = null;
+    private String segmentsOBX = "";
     private String v2MetaDataPath = "";
-    private int countV2Versions = 0;
+   
     private HL7V2MessageTree v2Tree;
     private V2Converter converter;
     private java.util.List<String> listOBXDataType = new ArrayList<String>();
+    private java.util.List<String> listOBXDataType2 = new ArrayList<String>();
 
-    private String versionDirTag = "Version";
+    private ValidatorResults validatorResults = new ValidatorResults();
+    private java.util.List<String> errorMessages = new ArrayList<String>();
+
+    private String versionDirTag = "version";
 
     private AbstractMainFrame mainFrame = null;
     private JFrame frame = null;
     private JDialog dialog = null;
-    private Dimension minimum = new Dimension(500, 685);
+    private Dimension minimum = new Dimension(500, 740);
 
-    V2ConverterToSCSPanel()
+    public V2ConverterToSCSPanel()
     {
-        setupMainPanel();
+        try
+        {
+            setupMainPanel(null);
+        }
+        catch(IOException ee) {}
     }
     public V2ConverterToSCSPanel(String v2DataPath) throws IOException
     {
-        if (!setV2DataPath(v2DataPath).equals("OK")) throw new IOException("Invalid V2 meta data directory : " + v2DataPath);
-        setupMainPanel();
+        setupMainPanel(v2DataPath);
     }
     public V2ConverterToSCSPanel(String v2DataPath, AbstractMainFrame mFrame) throws IOException
     {
-        if (!setV2DataPath(v2DataPath).equals("OK")) throw new IOException("Invalid V2 meta data directory : " + v2DataPath);
+        setupMainPanel(v2DataPath);
         mainFrame = mFrame;
-        //dialog = setupDialogBasedOnAFrame();
-        setupMainPanel();
+    }
+    private boolean isValidDataDirectory()
+    {
+        String dataDir = jtDataDirectory.getText();
+        if ((dataDir == null)||(dataDir.trim().equals(""))) dataDir = "";
+        dataDir = dataDir.trim();
+        if (setV2DataPath(dataDir).equals("OK")) return true;
+        jtDataDirectory.setText("");
+        return false;
     }
     private void setInitialState()
     {
-        jrHL7MessageTypeOnly.setSelected(false);
-        jrHL7MessageTypeOnly.setEnabled(true);
-        jrHL7MessageFile.setSelected(true);
-        jrHL7MessageFile.setEnabled(true);
+
+        if (jcHL7Version.getItemCount() > 0) jcHL7Version.setEnabled(true);
+        else jcHL7Version.setEnabled(false);
+
+        jtDataDirectory.setEditable(false);
+        jtInputFile.setEditable(false);
 
         jbNext.setEnabled(false);
         jbNext.setVisible(buttonNextVisible);
         jbClose.setVisible(buttonCloseVisible);
 
-        jtInputFile.setEditable(false);
+        jbViewErrorMessages.setEnabled(false);
+
         jtInputSCSFile.setEditable(false);
-        jtValidateSCSFile.setEditable(false);
-        jtInputCSVFile.setEditable(false);
+        jtValidateSCSFile.setEditable(true);
+        jtInputCSVFile.setEditable(true);
+        jtInputSCSFile.setEditable(true);
 
         jtInputFile.setText("");
         jtInputMessageType.setText("");
@@ -222,17 +258,54 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         wasSuccessfullyParsed = false;
         foundOBXSegment = false;
         wasOBXUsed = false;
+        msgTypeOnly = false;
+
+        msgTypeOnly = false;
+        hasMultiMessages = false;
+        oneMessage = "";
+        oneMessageFile = null;
+
+        validatorResults = new ValidatorResults();
+        errorMessages = new ArrayList<String>();
 
         listOBXDataType = new ArrayList<String>();
+        listOBXDataType2 = new ArrayList<String>();
         converter = null;
         for(int i=0;i<jcbOBXCheck.length;i++) jcbOBXCheck[i].setSelected(false);
     }
     private void setRadioButtonState()
     {
-        jrBoth.setEnabled(wasSuccessfullyParsed&&jrHL7MessageFile.isSelected());
+        boolean cTag = isValidDataDirectory();
+
+        jtInputMessageType.setEditable(cTag);
+        jtInputFile.setEnabled(cTag);
+
+        jtInputMessageType.setEnabled(cTag);
+        jbInputMessageTypeConfirm.setEnabled(cTag);
+        jbInputFileBrowse.setEnabled(cTag);
+        jlInputFileLabel.setEnabled(cTag);
+        jlInputMessageTypeLabel.setEnabled(cTag);
+        jlHL7VersionLabel.setEnabled(cTag);
+        jcHL7Version.setEnabled(cTag);
+        jcHL7Version.setEditable(false);
+        jrStrictValidationYes.setEnabled(cTag);
+        jrStrictValidationNo.setEnabled(cTag);
+        jlStrictValidation.setEnabled(cTag);
+
+
+        //String fileN = jtInputSCSFile.getText();
+        String fileN = jtInputFile.getText();
+        boolean fTag = (!((fileN==null)||(fileN.trim().equals(""))));
+        jrBoth.setEnabled(wasSuccessfullyParsed&&fTag);
         jrSCS.setEnabled(wasSuccessfullyParsed);
-        jrCSV.setEnabled(wasSuccessfullyParsed&&jrHL7MessageFile.isSelected());
-        if (jrHL7MessageFile.isSelected())
+        jrCSV.setEnabled(wasSuccessfullyParsed&&fTag);
+//        if (hasMultiMessages)
+//        {
+//            jrBoth.setEnabled(false);
+//            jrSCS.setEnabled(wasSuccessfullyParsed&&hasMultiMessages);
+//            jrCSV.setEnabled(false);
+//        }
+        if (fTag)
         {
             jrOutputWhole.setEnabled((jrBoth.isEnabled()&&jrBoth.isSelected())||(jrSCS.isEnabled()&&jrSCS.isSelected()));
             jrOutputApparentOnly.setEnabled((jrBoth.isEnabled()&&jrBoth.isSelected())||(jrSCS.isEnabled()&&jrSCS.isSelected()));
@@ -254,6 +327,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         jrOBXSelection.setEnabled(wasSuccessfullyParsed&&foundOBXSegment);
         jrOBXDataTypeSTOnly.setEnabled(wasSuccessfullyParsed&&foundOBXSegment&&(!wasOBXUsed));
 
+        jlMultiMessageNote.setVisible(hasMultiMessages);
+
         if (jrCSV.isSelected())
         {
             jrGroupingYes.setEnabled(false);
@@ -263,15 +338,17 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             jrOBXSelection.setEnabled(false);
             jrOBXDataTypeSTOnly.setEnabled(false);
         }
+          //msgTypeOnly
+//        jlHL7VersionLabel.setEnabled(jrHL7MessageTypeOnly.isSelected());
+//        jcHL7Version.setEnabled(jrHL7MessageTypeOnly.isSelected());
+//        jtInputMessageType.setEnabled(jrHL7MessageTypeOnly.isSelected());
+//        jtInputMessageType.setEditable(jrHL7MessageTypeOnly.isSelected());
+//        jbInputMessageTypeConfirm.setEnabled(jrHL7MessageTypeOnly.isSelected());
+        
 
-        jlHL7VersionLabel.setEnabled(jrHL7MessageTypeOnly.isSelected());
-        jcHL7Version.setEnabled(jrHL7MessageTypeOnly.isSelected());
-        jtInputMessageType.setEnabled(jrHL7MessageTypeOnly.isSelected());
-        jtInputMessageType.setEditable(jrHL7MessageTypeOnly.isSelected());
-        jbInputMessageTypeConfirm.setEnabled(jrHL7MessageTypeOnly.isSelected());
 
-        jtInputFile.setEnabled(jrHL7MessageFile.isSelected());
-        jbInputFileBrowse.setEnabled(jrHL7MessageFile.isSelected());
+//        jtInputFile.setEnabled(jrHL7MessageFile.isSelected());
+//        jbInputFileBrowse.setEnabled(jrHL7MessageFile.isSelected());
 
         jlValidateSCSLabel.setEnabled(jrCSV.isEnabled()&&jrCSV.isSelected());
         jtValidateSCSFile.setEnabled(jrCSV.isEnabled()&&jrCSV.isSelected());
@@ -328,6 +405,10 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             doPressNext();
         }
+        if (e.getSource() == jbDataDirectoryBrowse)
+        {
+            doPressDataDirectoryBrowse();
+        }
         if (e.getSource() == jbInputFileBrowse)
         {
             doPressHL7MessageFileBrowse();
@@ -336,36 +417,40 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             doPressHL7MessageTypeConfirm();
         }
+        if (e.getSource() == jbViewErrorMessages)
+        {
+            doPressViewErrorMessages();
+        }
         if ((e.getSource() == jbInputSCSFileBrowse)||
             (e.getSource() == jbInputCSVFileBrowse)||
             (e.getSource() == jbValidateSCSFileBrowse))
         {
             doPressSCSOrCSVFileBrowse((JButton) e.getSource());
         }
-        if (e.getSource() == jrHL7MessageFile)
-        {
-            String st = jtInputMessageType.getText();
-            if (st == null) st = "";
-            if ((wasSuccessfullyParsed)&&((st.trim().length() == 7)&&(st.substring(3,4).equals("^"))))
-            {
-                jtInputMessageType.setText("");
-                partlyReset();
-            }
-            jrOutputApparentOnly.setSelected(true);
-            jrOBXApparentOnly.setSelected(true);
-        }
-        if (e.getSource() == jrHL7MessageTypeOnly)
-        {
-            String st = jtInputFile.getText();
-            if (st == null) st = "";
-            if ((wasSuccessfullyParsed)&&(st.trim().length() > 7))
-            {
-                jtInputFile.setText("");
-                partlyReset();
-            }
-            jrOutputApparentOnly.setSelected(true);
-            jrOBXApparentOnly.setSelected(true);
-        }
+//        if (e.getSource() == jrHL7MessageFile)
+//        {
+//            String st = jtInputMessageType.getText();
+//            if (st == null) st = "";
+//            if ((wasSuccessfullyParsed)&&((st.trim().length() == 7)&&(st.substring(3,4).equals("^"))))
+//            {
+//                jtInputMessageType.setText("");
+//                partlyReset();
+//            }
+//            jrOutputApparentOnly.setSelected(true);
+//            jrOBXApparentOnly.setSelected(true);
+//        }
+//        if (e.getSource() == jrHL7MessageTypeOnly)
+//        {
+//            String st = jtInputFile.getText();
+//            if (st == null) st = "";
+//            if ((wasSuccessfullyParsed)&&(st.trim().length() > 7))
+//            {
+//                jtInputFile.setText("");
+//                partlyReset();
+//            }
+//            jrOutputApparentOnly.setSelected(true);
+//            jrOBXApparentOnly.setSelected(true);
+//        }
         if (e.getSource() == jrOBXApparentOnly)
         {
 
@@ -397,18 +482,49 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     }
     private String setV2DataPath(String v2DataPath)
     {
+        HL7V2MessageTree mt = null;
+        boolean cTag = false;
+        String msg = null;
         try
         {
-            HL7V2MessageTree mt = new HL7V2MessageTree(v2DataPath);
+            mt = new HL7V2MessageTree();
+            mt.setDataPath(v2DataPath);
+
+            File dir = new File(v2DataPath);
+            for (File sDir:dir.listFiles())
+            {
+                if (!sDir.isDirectory()) continue;
+                try
+                {
+                    mt.setVersion(sDir.getName());
+                    cTag = true;
+                }
+                catch(HL7MessageTreeException he)
+                {
+                    msg = he.getMessage();
+                    continue;
+                }
+                break;
+            }
+
         }
         catch(HL7MessageTreeException he)
         {
             return he.getMessage();
         }
-        v2MetaDataPath = v2DataPath;
-        return "OK";
+        catch(Exception ee)
+        {
+            return ee.getMessage();
+        }
+        if (cTag)
+        {
+            v2MetaDataPath = mt.getDataPath();//v2DataPath;
+            return "OK";
+        }
+        return msg;
     }
-    private void setupMainPanel()
+
+    private void setupMainPanel(String v2DataPath) throws IOException
     {
         try
         {
@@ -416,6 +532,24 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         }
         catch (Exception e)
         {  }
+        if (v2DataPath != null)
+        {
+            if (!v2DataPath.trim().equals(""))
+            {
+                v2DataPath = v2DataPath.trim();
+                jcHL7Version = new JComboBox();
+                jtDataDirectory = new JTextField();
+                jtDataDirectory.setText(v2DataPath);
+                if (setV2DataPath(v2DataPath).equals("OK")) setHL7VersionComboBox(v2DataPath);
+                else throw new IOException("Invalid V2 meta data directory : " + v2DataPath);
+            }
+        }
+        setupMainPanel();
+    }
+
+    private void setupMainPanel()
+    {
+
         jlPanelTitle = new JLabel("V2 Message Converter Main", JLabel.CENTER);
         optionSourcePanel = wrappingBorder("V2 Message Source" ,optionPanel_MessageOrType());
         optionOutputPanel = wrappingBorder("Output File Option", constructOutputOptionPanel());
@@ -452,6 +586,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         setLayout(new BorderLayout(10, 10));
 
         JPanel bottom = new JPanel(new BorderLayout());
+
+        bottom.add(wrappingBorder("V2 Meta Source" ,panel_DataDirectory()), BorderLayout.NORTH);
         bottom.add(mid, BorderLayout.CENTER);
         bottom.add(generateButtonPanel, BorderLayout.SOUTH);
 
@@ -545,66 +681,106 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         if (buttonLabel03 != null) out[3] = radioButton03;
         return out;
     }
+    private JPanel panel_DataDirectory()
+    {
+        JPanel bPanel = new JPanel(new BorderLayout());
+        //bPanel.add(jrHL7MessageTypeOnly, BorderLayout.WEST);
+
+        Object[] out1 = inputFileNameCommon("V2 Meta Data Directory", jtDataDirectory, jbDataDirectoryBrowse, "Browse", "Browse..");
+        bPanel.add((JPanel)out1[0], BorderLayout.CENTER);
+        jtDataDirectory =(JTextField) out1[2];
+        jbDataDirectoryBrowse = (JButton) out1[3];
+
+        jtDataDirectory.setText(v2MetaDataPath);
+        JPanel cPanel = new JPanel(new BorderLayout());
+        cPanel.add(bPanel, BorderLayout.CENTER);
+
+        if (jcHL7Version == null) jcHL7Version = new JComboBox();
+
+        JPanel ePanel = new JPanel(new BorderLayout());
+        jlHL7VersionLabel = new JLabel("                      Target Version  ", JLabel.LEFT);
+        ePanel.add(jlHL7VersionLabel, BorderLayout.WEST);
+
+
+        ePanel.add(jcHL7Version, BorderLayout.CENTER);
+        cPanel.add(ePanel, BorderLayout.SOUTH);
+
+        return cPanel;
+    }
+
     private JPanel optionPanel_MessageOrType()
     {
-        Object[] out = setupRadioButtonPanel(jrHL7MessageFile, "Message File", "File", true,
-                              jrHL7MessageTypeOnly, "Message Type", "Type", false, false);
-
-        ((JPanel)out[0]).removeAll();
-
-        jrHL7MessageFile = (JRadioButton) out[1];
-        jrHL7MessageTypeOnly = (JRadioButton) out[2];
+//        Object[] out = setupRadioButtonPanel(jrHL7MessageFile, "Message File", "File", true,
+//                              jrHL7MessageTypeOnly, "Message Type", "Type", false, false);
+//
+//        ((JPanel)out[0]).removeAll();
+//
+//        jrHL7MessageFile = (JRadioButton) out[1];
+//        jrHL7MessageTypeOnly = (JRadioButton) out[2];
 
         JPanel bPanel = new JPanel(new BorderLayout());
-        bPanel.add(jrHL7MessageTypeOnly, BorderLayout.WEST);
+        bPanel.add((new JLabel("")), BorderLayout.WEST);
 
-        Object[] out1 = inputFileNameCommon("", jtInputMessageType, jbInputMessageTypeConfirm, "Confirm", "Confirm");
+        Object[] out1 = inputFileNameCommon("Message Type", jtInputMessageType, jbInputMessageTypeConfirm, "Start V2 Parsing", "Start V2 Parsing");
         bPanel.add((JPanel)out1[0], BorderLayout.CENTER);
+        jlInputMessageTypeLabel = (JLabel) out1[1];
         jtInputMessageType =(JTextField) out1[2];
         jbInputMessageTypeConfirm = (JButton) out1[3];
 
         JPanel cPanel = new JPanel(new BorderLayout());
         cPanel.add(bPanel, BorderLayout.CENTER);
 
-        File aFile = new File(v2MetaDataPath);
-        File[] files = aFile.listFiles();
-        java.util.List<String> listVersionDir = new ArrayList<String>();
-
-        jcHL7Version = new JComboBox();
-        for (int i=0;i<files.length;i++)
-        {
-            File file = files[i];
-
-            if(!file.isDirectory()) continue;
-            String dirName = file.getName();
-            //System.out.println("VersionsXX = > " + dirName);// + " : " + dirName.substring(versionDirTag.length()));
-
-            if (dirName.toLowerCase().startsWith(versionDirTag.toLowerCase()))
-            {
-                listVersionDir.add(dirName.substring(versionDirTag.length()));
-                //System.out.println("Versions = > " + dirName + " : " + dirName.substring(versionDirTag.length()));
-            }
-        }
-        countV2Versions = listVersionDir.size();
-        jcHL7Version = new JComboBox(listVersionDir.toArray());
-
-
-        JPanel ePanel = new JPanel(new BorderLayout());
-
-        String ss = "";
-        if (listVersionDir.size() > 1) ss = "s";
-
-        jlHL7VersionLabel = new JLabel("                      Available Version"+ss+"  ", JLabel.LEFT);
-        ePanel.add(jlHL7VersionLabel, BorderLayout.WEST);
-
-        ePanel.add(jcHL7Version, BorderLayout.CENTER);
-        cPanel.add(ePanel, BorderLayout.SOUTH);
+//        File aFile = new File(v2MetaDataPath);
+//        File[] files = aFile.listFiles();
+//        java.util.List<String> listVersionDir = new ArrayList<String>();
+//
+//        jcHL7Version = new JComboBox();
+//        for (int i=0;i<files.length;i++)
+//        {
+//            File file = files[i];
+//
+//            if(!file.isDirectory()) continue;
+//            String dirName = file.getName();
+//            //System.out.println("VersionsXX = > " + dirName);// + " : " + dirName.substring(versionDirTag.length()));
+//
+//            if (dirName.toLowerCase().startsWith(versionDirTag.toLowerCase()))
+//            {
+//                listVersionDir.add(dirName.substring(versionDirTag.length()));
+//                //System.out.println("Versions = > " + dirName + " : " + dirName.substring(versionDirTag.length()));
+//            }
+//        }
+//        countV2Versions = listVersionDir.size();
+//        jcHL7Version = new JComboBox(listVersionDir.toArray());
+//        for(int i=0;i<jcHL7Version.getItemCount();i++)
+//        {
+//            String ver = (String) jcHL7Version.getItemAt(i);
+//            if (ver.indexOf("2.4") >= 0) jcHL7Version.setSelectedIndex(i);
+//        }
+//        JPanel ePanel = new JPanel(new BorderLayout());
+//
+//        String ss = "";
+//        if (listVersionDir.size() > 1) ss = "s";
+//
+//        jlHL7VersionLabel = new JLabel("                      Available Version"+ss+"  ", JLabel.LEFT);
+//        ePanel.add(jlHL7VersionLabel, BorderLayout.WEST);
+//
+//        ePanel.add(jcHL7Version, BorderLayout.CENTER);
+//        cPanel.add(ePanel, BorderLayout.SOUTH);
+        cPanel.add(optionStrictValidation(), BorderLayout.SOUTH);
 
         JPanel dPanel = new JPanel(new BorderLayout());
-        dPanel.add(jrHL7MessageFile, BorderLayout.WEST);
+        dPanel.add((new JLabel()), BorderLayout.WEST);
 
-        Object[] out2 = inputFileNameCommon("", jtInputFile, jbInputFileBrowse, "Browse..", "Browse");
+        Object[] out2 = inputFileNameCommon("Message File", jtInputFile, jbInputFileBrowse, "Browse..", "Browse");
         dPanel.add((JPanel) out2[0], BorderLayout.CENTER);
+
+        JPanel fPanel = new JPanel(new BorderLayout());
+        jlMultiMessageNote = new JLabel("This input v2 message file has multi v2 messages.");
+        jlMultiMessageNote.setHorizontalAlignment(JLabel.TRAILING);
+        fPanel.add(jlMultiMessageNote, BorderLayout.EAST);
+        fPanel.add(new JLabel("."), BorderLayout.WEST);
+        dPanel.add(fPanel, BorderLayout.NORTH);
+        jlInputFileLabel = (JLabel) out2[1];
         jtInputFile = (JTextField) out2[2];
         jbInputFileBrowse = (JButton) out2[3];
 
@@ -695,6 +871,24 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         //aPanel.add(inputFileNameCommon("CSV File ", jtInputCSVFile, jbInputCSVFileBrowse, "Browse..", "Browse"), BorderLayout.CENTER);
         return aPanel;
     }
+
+    private JPanel optionStrictValidation()
+    {
+        Object[] out = setupRadioButtonPanel(jrStrictValidationYes, "Yes", "Yes", false,
+                                    jrStrictValidationNo, "No", "No", true, false);
+        jlStrictValidation = new JLabel("Strict Validation?", JLabel.LEFT);
+
+        JPanel north1 = new JPanel(new BorderLayout());
+        north1.add(jlStrictValidation, BorderLayout.WEST);
+        north1.add((JPanel)out[0], BorderLayout.CENTER);
+        jbViewErrorMessages = new JButton("View Error Messages");
+        jbViewErrorMessages.addActionListener(this);
+        north1.add(jbViewErrorMessages, BorderLayout.EAST);
+        jrStrictValidationYes = (JRadioButton) out[1];
+        jrStrictValidationNo = (JRadioButton) out[2];
+        return north1;
+    }
+
     private JPanel optionOBXDataTypes()
     {
         Object[] out = setupRadioButtonPanel(jrOBXApparentOnly, "Apparent Data Type only", "ApparentDT", true,
@@ -790,16 +984,74 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         //aPanel.add(jbReset);
         //return aPanel;
     }
+
     private void doPressGenerate()
     {
+        if (hasMultiMessages) doPressGenerateMultiMessage();
+        else doPressGenerateSingleMessage();
+    }
+    private void doPressGenerateMultiMessage()
+    {            
+        String fileSCS = jtInputSCSFile.getText();
+        String fileCSV = jtInputCSVFile.getText();
+        String fileSCSValidate = jtValidateSCSFile.getText();
+
+        if (fileSCS == null) fileSCS = "";
+        if (fileCSV == null) fileCSV = "";
+        if (fileSCSValidate == null) fileSCSValidate = "";
+        //System.out.println("DDDDDD : start");
+        if ((jrBoth.isSelected())||(jrSCS.isSelected()))
+        {
+            if (!doPressGenerateSingleMessage(v2Tree, fileSCS, "", "", !jrSCS.isSelected())) return;
+            //System.out.println("DDDDDD : OK");
+        }
+        if ((jrBoth.isSelected())||(jrCSV.isSelected()))
+        {
+            String scsVal = "";
+            if (jrBoth.isSelected()) scsVal = fileSCS;
+            if (jrCSV.isSelected()) scsVal = fileSCSValidate;
+
+            boolean strict = jrStrictValidationYes.isSelected();
+            String mType = jtInputMessageType.getText();
+            if (mType == null) mType = "";
+            mType = mType.trim();
+            String versionS = ((String)jcHL7Version.getSelectedItem()).trim();
+
+            ConvertFromV2ToCSV con = new ConvertFromV2ToCSV(v2MetaDataPath, jtInputFile.getText().trim(), mType, versionS, fileCSV, scsVal, strict);
+
+            JOptionPane.showMessageDialog(this, con.getMessage(), con.getMessageTitle(), con.getErrorLevel());
+        }
+    }
+
+    public java.util.List<String> getErrorMessages()
+    {
+        return errorMessages;
+    }
+
+    private void doPressGenerateSingleMessage()
+    {
+
+        String fileSCS = jtInputSCSFile.getText();
+        String fileCSV = jtInputCSVFile.getText();
+        String fileSCSValidate = jtValidateSCSFile.getText();
+
+        if (fileSCS == null) fileSCS = "";
+        if (fileCSV == null) fileCSV = "";
+        if (fileSCSValidate == null) fileSCSValidate = "";
+
+        doPressGenerateSingleMessage(v2Tree, fileSCS, fileCSV, fileSCSValidate, false);
+    }
+    public boolean doPressGenerateSingleMessage(HL7V2MessageTree tree, String fileSCS, String fileCSV, String fileSCSValidate, boolean mute)
+    {
+
         try
         {
-            converter = new V2Converter(v2Tree);
+            converter = new V2Converter(tree);
         }
         catch(HL7MessageTreeException he)
         {
             JOptionPane.showMessageDialog(this, he.getMessage(), "V2 Converter initialize error!",JOptionPane.ERROR_MESSAGE);
-            return;
+            return false;
         }
         java.util.List<String> listDataTypeOfOBX = new ArrayList<String>();
 
@@ -811,14 +1063,6 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             }
         }
 
-        String fileSCS = jtInputSCSFile.getText();
-        String fileCSV = jtInputCSVFile.getText();
-        String fileSCSValidate = jtValidateSCSFile.getText();
-
-        if (fileSCS == null) fileSCS = "";
-        if (fileCSV == null) fileCSV = "";
-        if (fileSCSValidate == null) fileSCSValidate = "";
-
         converter.process(fileSCS, fileCSV, jrOutputApparentOnly.isSelected(), jrGroupingYes.isSelected(), listDataTypeOfOBX, fileSCSValidate);
         if (converter.wasSuccessful())
         {
@@ -828,21 +1072,36 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             if ((!fileCSV.equals(""))&&(!converter.isCSVValid())) validateResultCSV = false;
             if ((validateResultSCS)&&(validateResultCSV))
             {
-                JOptionPane.showMessageDialog(this, "V2 Converter Process is successfully Complete!", "V2 Converter Process Complete!",JOptionPane.INFORMATION_MESSAGE);
+                if (!mute) JOptionPane.showMessageDialog(this, "V2 Converter Process is successfully Complete!", "V2 Converter Process Complete!",JOptionPane.INFORMATION_MESSAGE);
             }
             else
             {
-                ValidationMessageDialog dialogVal = null;
-
-                if (frame != null) dialogVal = new ValidationMessageDialog(frame, "V2 Converter Validation Result", true);
-                else if (dialog != null) dialogVal = new ValidationMessageDialog(dialog, "V2 Converter Validation Result", true);
-                else
+                java.util.List<Message> messages = converter.getValidationResults().getAllMessages();
+                if (messages.size() > 0)
                 {
-                    return;
-                }
-                dialogVal.setValidatorResults(converter.getValidationResults());
+                    errorMessages.add("###=== Converter error : SCS=" + fileSCS + ", CSV=" + fileCSV + ", Validation=" + fileSCSValidate);
+                    for (Message message:messages) errorMessages.add(message.toString());
 
-                dialogVal.setVisible(true);
+                    if (mute)
+                    {
+                        validatorResults.addValidatorResults(converter.getValidationResults());
+                    }
+                    else
+                    {
+                        ValidationMessageDialog dialogVal = null;
+
+                        if (frame != null) dialogVal = new ValidationMessageDialog(frame, "V2 Converter Validation Result", true);
+                        else if (dialog != null) dialogVal = new ValidationMessageDialog(dialog, "V2 Converter Validation Result", true);
+                        else
+                        {
+                            return false;
+                        }
+                        validatorResults.addValidatorResults(converter.getValidationResults());
+                        dialogVal.setValidatorResults(validatorResults);
+                        dialogVal.setVisible(true);
+                        validatorResults = new ValidatorResults();
+                    }
+                }
             }
         }
         else
@@ -850,35 +1109,97 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             String errMsg = "";
             if(converter.getErrorMessage().trim().equals("")) errMsg = "null message";
             else errMsg = converter.getErrorMessage();
-            JOptionPane.showMessageDialog(this, errMsg, "V2 Converter Process error!!",JOptionPane.ERROR_MESSAGE);
+            validatorResults = GeneralUtilities.addValidatorMessage(validatorResults, errMsg);
+            errorMessages.add("###=== Conveting Error: " + errMsg);
+            if (!mute) JOptionPane.showMessageDialog(this, errMsg, "V2 Converter Process error!!",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private void doPressDataDirectoryBrowse()
+    {
+        if (jcHL7Version.getItemCount() > 0) jcHL7Version.setEnabled(true);
+        else jcHL7Version.setEnabled(false);
+        
+        String dataDir = jtDataDirectory.getText();
+        if ((dataDir == null)||(dataDir.trim().equals(""))) dataDir = "";
+        File fileD = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
+					dataDir, "", "Finding v2 Meta Data Directory", false, false);//Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE.replace("3", "2"), false, false);
+        if (fileD == null) return;
+        if (!fileD.isDirectory())
+        {
+            JOptionPane.showMessageDialog(this, "This is NOT a directory : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (setHL7VersionComboBox(fileD.getAbsolutePath()))
+        {
+            jtDataDirectory.setText(v2MetaDataPath);
+            setRadioButtonState();
+        }
     }
+
+    private boolean setHL7VersionComboBox(String pathValue)
+    {
+        File fileD = new File(pathValue);
+        if ((!fileD.exists())||(!fileD.isDirectory())) return false;
+        pathValue = fileD.getAbsolutePath();
+
+        pathValue = pathValue.trim();   
+        if (setV2DataPath(pathValue).equals("OK")) {} //jtDataDirectory.setText(v2MetaDataPath);
+        else
+        {
+            JOptionPane.showMessageDialog(this, "This is NOT a V2 Meta data directory : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        jcHL7Version.setEnabled(true);
+        jcHL7Version.removeAllItems();
+
+        File aFile = new File(v2MetaDataPath);
+        File[] files = aFile.listFiles();
+        java.util.List<String> listVersionDir = new ArrayList<String>();
+
+        for (int i=0;i<files.length;i++)
+        {
+            File file = files[i];
+
+            if (!file.isDirectory()) continue;
+            String dirName = file.getName();
+            //System.out.println("VersionsXX = > " + dirName);// + " : " + dirName.substring(versionDirTag.length()));
+
+            if (dirName.toLowerCase().startsWith(versionDirTag.toLowerCase()))
+            {
+                listVersionDir.add(dirName.substring(versionDirTag.length()));
+                //System.out.println("Versions = > " + dirName + " : " + dirName.substring(versionDirTag.length()));
+            }
+        }
+        //countV2Versions = listVersionDir.size();
+        for (String dir:listVersionDir) jcHL7Version.addItem(dir);
+        //jcHL7Version = new JComboBox(listVersionDir.toArray());
+        for(int i=0;i<jcHL7Version.getItemCount();i++)
+        {
+            String ver = (String) jcHL7Version.getItemAt(i);
+            if (ver.indexOf("2.4") >= 0) jcHL7Version.setSelectedIndex(i);
+        }
+
+        return true;
+    }
+
     private void doPressHL7MessageFileBrowse()
-    {   /*
-        JFileChooser chooser = new JFileChooser(new File(FileUtil.getWorkingDirPath()));
-
-        int returnVal = chooser.showOpenDialog(this);
-        String pathValue = "";
-        if(returnVal != JFileChooser.APPROVE_OPTION) return;
-
-        pathValue = chooser.getSelectedFile().getAbsolutePath();
-        */
+    {
         File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					"", Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE.replace("3", "2"), false, false);
+					"*.*", Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE.replace("3", "2"), false, false);
         if (file == null) return;
         String pathValue = file.getAbsolutePath();
-        try
+
+        if (organizeInputFile(pathValue))
         {
-            parseV2Message(v2MetaDataPath, "2.4", pathValue);
+            jtInputFile.setText(pathValue);
+            setRadioButtonState();
         }
-        catch(HL7MessageTreeException he)
-        {
-            JOptionPane.showMessageDialog(this, he.getMessage(), "HL7 Message Parsing Error!",JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        jtInputFile.setText(pathValue);
     }
+    
     private void doPressSCSOrCSVFileBrowse(JButton button)
     {
 
@@ -1051,45 +1372,125 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         if (dialog != null) dialog.dispose();
         if (frame != null) frame.dispose();
     }
+
+    private void doPressViewErrorMessages()
+    {
+        //System.out.println("VVVV CCCCCCCCC1");
+
+        ValidationMessageDialog frm = null;
+
+        if (frame != null)
+            frm = new ValidationMessageDialog(frame, "V2 message parsing error list.", false);
+
+        if (dialog != null)
+            frm = new ValidationMessageDialog(dialog, "V2 message parsing error list.", false);
+
+        ValidatorResults validatorResults = new ValidatorResults();
+        //System.out.println("VVVV CCCCCCCCC2");
+        for(String msg:v2Tree.getErrorMessageList())
+        {
+            if (msg.startsWith("FAT")) validatorResults = GeneralUtilities.addValidatorMessageFatal(validatorResults, msg);
+            else if (msg.startsWith("ERR")) validatorResults = GeneralUtilities.addValidatorMessage(validatorResults, msg);
+            else if (msg.startsWith("WAN")) validatorResults = GeneralUtilities.addValidatorMessageWarning(validatorResults, msg);
+            else if (msg.startsWith("OBS")) validatorResults = GeneralUtilities.addValidatorMessageInfo(validatorResults, msg);
+            else validatorResults = GeneralUtilities.addValidatorMessageInfo(validatorResults, msg);
+        }
+
+        frm.setValidatorResults(validatorResults);
+
+        frm.setVisible(true);
+
+
+    }
+
     private void doPressHL7MessageTypeConfirm()
     {
+        jbViewErrorMessages.setEnabled(false);
         String type = jtInputMessageType.getText();
         if (type == null) type = "";
         type = type.trim();
-        if ((type.length() != 7)||(!type.substring(3, 4).equals("^")))
+        if (!type.equals(""))
         {
-            JOptionPane.showMessageDialog(this, "Invalid Message Type : " + type, "Invalid Message Type", JOptionPane.ERROR_MESSAGE);
-            jtInputMessageType.setFocusable(true);
-            return;
+            if ((type.length() != 7)||(!type.substring(3, 4).equals("^")))
+            {
+                JOptionPane.showMessageDialog(this, "Invalid Message Type : " + type, "Invalid Message Type", JOptionPane.ERROR_MESSAGE);
+                //jtInputMessageType.setFocusable(true);
+                return;
+            }
         }
-
         String version = jcHL7Version.getSelectedItem().toString();
         if (version == null) version = "";
         version = version.trim();
         if (version.length() < 3)
         {
             JOptionPane.showMessageDialog(this, "Invalid HL7 Version : " + version, "Invalid HL7 Version", JOptionPane.ERROR_MESSAGE);
-            jtInputMessageType.setFocusable(true);
+            //jtInputMessageType.setFocusable(true);
             return;
         }
 
         try
         {
-            parseV2Message(v2MetaDataPath, version, type);
+            parseV2Message();
         }
         catch(HL7MessageTreeException he)
         {
-            JOptionPane.showMessageDialog(this, he.getMessage(), "HL7 Message Parsing Error!",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, he.getMessage(), "HL7 Message Parsing Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }
-    private void parseV2Message(String dataPath, String versionS, String messageSourse) throws HL7MessageTreeException
+    private void parseV2Message() throws HL7MessageTreeException
     {
-        messageSourse = messageSourse.trim();
         wasSuccessfullyParsed = false;
+        boolean strict = jrStrictValidationYes.isSelected();
+        String inputF = jtInputFile.getText();
+        if (inputF == null) inputF = "";
+        inputF = inputF.trim();
+        String mType = jtInputMessageType.getText();
+        if (mType == null) mType = "";
+        mType = mType.trim();
+        String versionS = ((String)jcHL7Version.getSelectedItem()).trim();
+        msgTypeOnly = false;
+
+
         try
         {
-            v2Tree = new HL7V2MessageTree(dataPath, versionS, messageSourse);
+            if (strict)
+            {
+                if (!inputF.equals(""))
+                {
+                    v2Tree = new HL7V2MessageTree(v2MetaDataPath);
+                    v2Tree.setVersion(versionS);
+                    if (oneMessageFile != null) v2Tree.parse(oneMessageFile.getAbsolutePath());
+                    else v2Tree.parse(inputF);
+                    if ((inputF.length() == 7)||(inputF.substring(3, 4).equals("^"))) msgTypeOnly = true;
+                }
+                else
+                {
+                    v2Tree = new HL7V2MessageTree(v2MetaDataPath);
+                    v2Tree.setVersion(versionS);
+                    v2Tree.parse(mType);
+                    msgTypeOnly = true;
+                }
+            }
+            else
+            {
+
+                v2Tree = new HL7V2MessageTree(v2MetaDataPath);
+                v2Tree.setVersion(versionS);
+                v2Tree.setFlagDataValidation(false);
+                if (!mType.equals(""))
+                {
+                    if ((mType.length() != 7)||(!mType.substring(3, 4).equals("^")))
+                    {
+                        throw new HL7MessageTreeException("Invalid Message Type : " + mType);
+                    }
+                    v2Tree.makeTreeHead(mType.substring(0, 3), mType.substring(4));
+                }
+                if (oneMessageFile != null) v2Tree.parse(oneMessageFile.getAbsolutePath());
+                else v2Tree.parse(inputF);
+
+            }
+
         }
         catch(HL7MessageTreeException he)
         {
@@ -1100,6 +1501,19 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             ee.printStackTrace();
             throw new HL7MessageTreeException("Un expected Exception - This may not be a HL7 V2 Message. : " + ee.getMessage());
         }
+
+        if (v2Tree.getErrorMessageList().size() > 0)
+        {
+            errorMessages.add("###=== v2 Main Parsing Error Messages : " + jtInputFile.getText());
+            for (String ss:v2Tree.getErrorMessageList()) errorMessages.add(ss);
+            String errMsg = v2Tree.getErrorMessageList().get(0);
+            if ((errMsg.startsWith("FAT"))||(errMsg.startsWith("ERR")))
+            {
+                jbViewErrorMessages.setEnabled(true);
+                JOptionPane.showMessageDialog(this, "Some errors were found. For view these messages, Press 'View Error Messages' button.", "Finding Errors", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
         wasSuccessfullyParsed = true;
 
 
@@ -1115,17 +1529,16 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             foundOBXSegment = false;
         }
 
-        if ((messageSourse.substring(3, 4).equals("^"))&&(messageSourse.length() == 7))
+        if (msgTypeOnly)
         {
             jtInputFile.setText("");
             listOBXDataType = new ArrayList<String>();
+            listOBXDataType2 = new ArrayList<String>();
         }
         else
         {
-            jtInputMessageType.setText("");
+            //jtInputMessageType.setText("");
             if (foundOBXSegment) listOBXDataType = searchOBXDataTypes();
-
-
         }
 
         if (listOBXDataType.size() > 0) wasOBXUsed = true;
@@ -1133,6 +1546,112 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 
         setRadioButtonState();
+    }
+
+    private boolean organizeInputFile(String pathValue)
+    {
+        String inputF = pathValue;
+        if (!inputF.equals(""))
+        {
+            boolean isMessageStarted = false;
+            boolean wasFirstMessageEnded = false;
+            hasMultiMessages = false;
+            oneMessage = "";
+            oneMessageFile = null;
+            segmentsOBX = "";
+            java.util.List<String> listOBXDataType2 = new ArrayList<String>();
+            try
+            {
+                FileReader fr = new FileReader(inputF);
+                BufferedReader br = new BufferedReader(fr);
+                while(true)
+                {
+                    String line = br.readLine();
+                    if (line == null) break;
+                    line = line.trim();
+                    if (line.equals("")) continue;
+                    if (!isMessageStarted)
+                    {
+                        if (line.startsWith("MSH")) isMessageStarted = true;
+                        else
+                        {
+                            JOptionPane.showMessageDialog(this, "This file does not start with 'MSH' segment. : " + inputF, "Not a v2 Messahe File.", JOptionPane.ERROR_MESSAGE);
+                            return false;
+                        }
+                        oneMessage = oneMessage + line + "\r";
+                        continue;
+                    }
+                    if ((isMessageStarted)&&(line.startsWith("MSH")))
+                    {
+                        wasFirstMessageEnded = true;
+                        hasMultiMessages = true;
+                    }
+                    if (line.startsWith("OBX"))
+                    {
+                        String sr = "";
+                        String line2 = line;
+                        int idx = line2.indexOf("|");
+                        if (idx < 0) continue;
+                        line2 = line2.substring(idx+1);
+                        idx = line2.indexOf("|");
+                        if (idx < 0) continue;
+                        line2 = line2.substring(idx+1);
+                        idx = line2.indexOf("|");
+                        if (idx < 0) continue;
+                        sr = line2.substring(0,idx).trim();
+
+                        if (sr.equals("")) continue;
+                        boolean isThereSameDataType = false;
+                        for (String cx:listOBXDataType2) if (cx.equals(sr)) isThereSameDataType = true;
+                        if (!isThereSameDataType)
+                        {
+                            segmentsOBX = segmentsOBX + line + "\r";
+                            listOBXDataType2.add(sr);
+                        }
+                    }
+                    if (!wasFirstMessageEnded)
+                    {
+                        if (line.startsWith("OBX"))
+                        {
+                            if (listOBXDataType2.size() < 1) oneMessage = oneMessage + "OBX|" + "\r";
+                        }
+                        else oneMessage = oneMessage + line + "\r";
+                    }
+                }
+                if (hasMultiMessages)
+                {
+                    if (!segmentsOBX.equals(""))
+                    {
+                        StringTokenizer st = new StringTokenizer(oneMessage, "\r");
+                        String str = "";
+                        boolean wasOBXFound = false;
+                        while(st.hasMoreTokens())
+                        {
+                            String stt = st.nextToken().trim();
+                            if (stt.equals("")) continue;
+                            if ((stt.startsWith("OBX"))&&(!wasOBXFound))
+                            {
+                                wasOBXFound = true;
+                                str = str + segmentsOBX;
+                            }
+                            else str = str + stt + "\r";
+                        }
+                        if (!wasOBXFound) str = str + segmentsOBX;
+                        oneMessage = str;
+                    }
+                    oneMessageFile = new File(FileUtil.saveStringIntoTemporaryFile(oneMessage));
+                }
+                fr.close();
+                br.close();
+                //System.out.println("New inputF file : " + inputF);
+            }
+            catch(IOException ie)
+            {
+                JOptionPane.showMessageDialog(this, "Error on message file reorganizing(" + inputF + ") : " + ie.getMessage(), "IOException", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        return true;
     }
 
     private  java.util.List<String> searchOBXDataTypes()
@@ -1145,7 +1664,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             node = v2Tree.nextTraverse(node);
             if (node == null) break;
             if (node == v2Tree.getHeadNode()) break;
-            if (!((node.getLevel().equals("field"))&&(node.getSequence() == 2))) continue;
+            if (!((node.getLevel().equals(v2Tree.getLevelField()))&&(node.getSequence() == 2))) continue;
             if (!node.getUpperLink().getType().equals("OBX")) continue;
 
             cTag = false;
@@ -1227,23 +1746,31 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
     public static void main(String arg[])
     {
-        String dataPath = "C:\\projects\\hl7sdk\\data\\v2Meta";
+        String dataPath = "C:\\projects\\temp\\v2Meta";
         try
         {
             JFrame frame = (new V2ConverterToSCSPanel(dataPath)).setFrame(new JFrame("V2 Converter"));
 
-            frame.setSize(500, 640);
+            frame.setSize(500, 740);
             frame.setVisible(true);
         }
         catch(IOException he)
-        {}
-
+        {
+            System.out.println("Error : " + he.getMessage());
+        }
+//        JFrame frame = (new V2ConverterToSCSPanel()).setFrame(new JFrame("V2 Converter"));
+//
+//            frame.setSize(500, 715);
+//            frame.setVisible(true);
     }
 
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/03 19:32:58  wangeug
+ * HISTORY      : initila loading
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2006/12/05 20:01:56  umkis
  * HISTORY      : minor modifying
  * HISTORY      :
