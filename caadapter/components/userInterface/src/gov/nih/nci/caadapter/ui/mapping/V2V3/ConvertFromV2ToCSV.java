@@ -69,7 +69,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jan 31, 2008
  *          Time:       2:50:22 PM $
  */
@@ -409,11 +409,11 @@ public class ConvertFromV2ToCSV
         try
         {
             ConvertFromV2ToCSV con = new ConvertFromV2ToCSV(args[0], args[1], args[2], args[3], args[4], args[5], false);
-            System.out.println("## " + con.getMessage());
+            System.out.println("## Good : " + con.getMessage());
         }
         catch(Exception ee)
         {
-            System.out.println("## " + ee.getMessage());
+            System.out.println("## Sorry! : " + ee.getMessage());
         }
 
     }
