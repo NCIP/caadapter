@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.6 2008-02-01 02:01:56 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.7 2008-02-01 02:11:41 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -81,8 +81,8 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v3.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-02-01 02:01:56 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-02-01 02:11:41 $
  */
 public class V2Converter
 {
@@ -99,7 +99,7 @@ public class V2Converter
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.6 2008-02-01 02:01:56 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.7 2008-02-01 02:11:41 umkis Exp $";
 
 
     HL7V2MessageTree messageTree = null;
@@ -744,7 +744,7 @@ public class V2Converter
                 {
                     if (messageTree.getThisNodeLevel(temp).equals(messageTree.getLevelField()))
                     {
-                        String value = transformValue(temp.getValue().trim()));
+                        String value = transformValue(temp.getValue().trim());
                         if (value.indexOf(",") >= 0) value = "\"" + value + "\"";
                         imsi = checkSegmentData(type + "," + value);
                         if (!imsi.equals("")) csvContent = csvContent + imsi + "\n";
@@ -1137,6 +1137,9 @@ public class V2Converter
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/02/01 02:01:56  umkis
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/02/01 01:59:54  umkis
  * HISTORY      : minor change
  * HISTORY      :
