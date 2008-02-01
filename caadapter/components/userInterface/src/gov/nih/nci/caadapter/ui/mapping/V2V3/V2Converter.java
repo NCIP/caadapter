@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.4 2008-01-31 21:40:06 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.5 2008-02-01 01:59:54 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -53,27 +53,27 @@
 
 package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
-import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
-import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.io.*;
-
-import gov.nih.nci.caadapter.common.Message;
+import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
+import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.function.FunctionUtil;
-import gov.nih.nci.caadapter.common.util.UUIDGenerator;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.UUIDGenerator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
-import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 import gov.nih.nci.caadapter.ui.hl7message.instanceGen.SCSIDChangerToXMLPath;
+import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class defines ...
@@ -81,8 +81,8 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.SCSIDChangerToXMLPath;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v3.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-01-31 21:40:06 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-02-01 01:59:54 $
  */
 public class V2Converter
 {
@@ -99,7 +99,7 @@ public class V2Converter
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.4 2008-01-31 21:40:06 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.5 2008-02-01 01:59:54 umkis Exp $";
 
 
     HL7V2MessageTree messageTree = null;
@@ -744,7 +744,7 @@ public class V2Converter
                 {
                     if (messageTree.getThisNodeLevel(temp).equals(messageTree.getLevelField()))
                     {
-                        String value = temp.getValue().trim();
+                        String value = transformValue(temp.getValue().trim()));
                         if (value.indexOf(",") >= 0) value = "\"" + value + "\"";
                         imsi = checkSegmentData(type + "," + value);
                         if (!imsi.equals("")) csvContent = csvContent + imsi + "\n";
@@ -754,7 +754,7 @@ public class V2Converter
                         ElementNode tmp = temp;
                         while(tmp!=null)
                         {
-                            String value = tmp.getValue().trim();
+                            String value = transformValue(tmp.getValue().trim());
                             if (value.indexOf(",") >= 0) value = "\"" + value + "\"";
                             imsi = checkSegmentData(type + "," + value);
                             if (!imsi.equals("")) csvContent = csvContent + imsi + "\n";
@@ -798,7 +798,7 @@ public class V2Converter
                         }
                         if (temp.getLowerLink() == null)
                         {
-                            String value = temp.getValue().trim();
+                            String value = transformValue(temp.getValue().trim());
                             if (value.indexOf(",") >= 0) value = "\"" + value + "\"";
                             content = content + "," + value;
                         }
@@ -831,6 +831,16 @@ public class V2Converter
             return;
         }
         wasSuccessful = true;
+    }
+
+    private String transformValue(String src)
+    {
+        String source = src;
+        if (src.startsWith(messageTreeEmpty.getFileHead()))
+        {
+            source = FileUtil.readFileIntoString(src.substring(messageTreeEmpty.getFileHead().length()));
+        }
+        return source;
     }
 
     public void convertV2ToCSV(String v2Message, String csvFile, String fileSCSForValidation) throws HL7MessageTreeException
@@ -1125,6 +1135,9 @@ public class V2Converter
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/01/31 21:40:06  umkis
+ * HISTORY      : csv converting from multi message included v2 file.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/08/17 01:13:28  umkis
  * HISTORY      : generated SCS file using xml path
  * HISTORY      :
