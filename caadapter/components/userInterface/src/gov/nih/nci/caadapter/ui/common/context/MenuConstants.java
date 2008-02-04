@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/MenuConstants.java,v 1.2 2007-11-30 14:38:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/MenuConstants.java,v 1.3 2008-02-04 15:09:07 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,10 +38,10 @@ package gov.nih.nci.caadapter.ui.common.context;
  * This class defines a list of menu names that will be referenced across the system.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-11-30 14:38:57 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-02-04 15:09:07 $
  */
 public interface MenuConstants
 {
@@ -55,18 +55,23 @@ public interface MenuConstants
 	//Module Name 
 	String CSV_TO_HL7V3="CSV_TO_HL7V3";
 	String CSV_SPEC="CSV_SPEC";
-	String HSM_FILE="HSM_FILE";
+    String XSD_SPEC="XSD_SPEC";
+    String HSM_FILE="HSM_FILE";
 	String HL7_V3_MESSAGE="HL7_V3_MESSAGE";
 	String HL7_V2_TO_V3="HL7_V2_TO_V3";
 	String SDTM_TO_HL7V3="SDTM_TO_HL7V3";
 	String DB_TO_SDTM="DB_TO_SDTM";
 	String DB_TO_OBJECT="DB_TO_OBJECT";
 	String CSV_TO_XMI="CSV_TO_XMI";
+    String XSD_TO_XMI="XSD_TO_XMI";
 	
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/11/30 14:38:57  wangeug
+ * HISTORY      : create CSV_TO_XMI mapping module
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

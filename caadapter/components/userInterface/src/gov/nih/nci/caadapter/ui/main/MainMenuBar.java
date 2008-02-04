@@ -55,6 +55,7 @@ import gov.nih.nci.caadapter.ui.hl7message.actions.NewHL7V3MessageAction;
 import gov.nih.nci.caadapter.ui.hl7message.actions.OpenHL7V3MessageAction;
 import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
+import gov.nih.nci.caadapter.ui.mapping.GME.actions.NewXsdToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.actions.V2V3MapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.NewCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.OpenCsvToXmiMapAction;
@@ -80,8 +81,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.27 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v1.2 revision $Revision: 1.28 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -272,10 +273,25 @@ public class MainMenuBar extends AbstractMenuBar
              menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
 
              NewCsvToXmiMapAction newCsvToXmiMapAction=new NewCsvToXmiMapAction(mainFrame);
-             JMenuItem mewCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);  
-             newGroup.add(mewCsvToXmiMapFileItem);
+             JMenuItem newCsvToXmiMapFileItem  = new JMenuItem(newCsvToXmiMapAction);
+             newGroup.add(newCsvToXmiMapFileItem);
              actionMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapAction);
-             menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, mewCsvToXmiMapFileItem);
+             menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapFileItem);
+        }
+        else if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
+        {
+        	//directly add menuItem
+//             NewCsvSpecificationAction newXSDSpecificationAction = new NewCsvSpecificationAction(mainFrame);
+//             JMenuItem newCSVSpecificationItem = new JMenuItem(newXSDSpecificationAction);
+//             newGroup.add(newCSVSpecificationItem);
+//             actionMap.put(ActionConstants.NEW_CSV_SPEC, newXSDSpecificationAction);
+//             menuItemMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationItem);
+
+             NewXsdToXmiMapAction newXsdToXmiMapAction=new NewXsdToXmiMapAction(mainFrame);
+             JMenuItem newXsdToXmiMapFileItem  = new JMenuItem(newXsdToXmiMapAction);
+             newGroup.add(newXsdToXmiMapFileItem);
+             actionMap.put(ActionConstants.NEW_XSD2XMI_MAP_FILE, newXsdToXmiMapAction);
+             menuItemMap.put(ActionConstants.NEW_XSD2XMI_MAP_FILE, newXsdToXmiMapFileItem);
         }
         else
         {
@@ -663,6 +679,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.27  2008/01/04 19:40:15  wangeug
+ * HISTORY : disable help menu for TDMS release
+ * HISTORY :
  * HISTORY : Revision 1.26  2007/12/13 15:28:53  wangeug
  * HISTORY : support both data model and object model
  * HISTORY :

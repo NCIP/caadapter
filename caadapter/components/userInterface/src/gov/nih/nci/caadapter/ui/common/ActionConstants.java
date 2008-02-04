@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.7 2007-12-13 15:28:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/ActionConstants.java,v 1.8 2008-02-04 15:08:49 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -40,10 +40,10 @@ import gov.nih.nci.caadapter.common.util.Config;
  * Define a list of constants that are used by menu and some of action definition.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-12-13 15:28:14 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-02-04 15:08:49 $
  */
 public interface ActionConstants
 {
@@ -62,14 +62,16 @@ public interface ActionConstants
 	String NEW_HSM_FILE = "New " + NEW_HSM_FILE_TXT;
 	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
 	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
-	
-	String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
+    String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";   
+
+    String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
 	String OPEN_MAP_FILE = "Open HL7 v2 to HL7 v3 " + OPEN_MAP_FILE_TXT;
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
 	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
 	String OPEN_CSV2XMI_MAP_FILE = "Open CSV Meta To Object/Data Model Mapping";
-	String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
+    String OPEN_XSD2XMI_MAP_FILE = "Open XSD Meta To XMI Mapping";
+    String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
 	String OPEN_CSV_SPEC = "Open " + OPEN_CSV_SPEC_TXT;
 	String OPEN_HL7_V3_MESSAGE_TXT = NEW_HL7_V3_MESSAGE_TXT;
 	String OPEN_HL7_V3_MESSAGE = "Open " + OPEN_HL7_V3_MESSAGE_TXT;
@@ -98,6 +100,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/12/13 15:28:14  wangeug
+ * HISTORY      : support both data model and object model
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/11/29 16:47:22  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :

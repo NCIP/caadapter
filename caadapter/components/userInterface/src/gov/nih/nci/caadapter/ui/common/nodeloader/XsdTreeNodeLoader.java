@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/XsdTreeNodeLoader.java,v 1.1 2008-01-25 16:48:02 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/XsdTreeNodeLoader.java,v 1.2 2008-02-04 15:09:37 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,6 +39,8 @@ import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.metadata.XsdModelMetadata;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -46,10 +48,10 @@ import javax.swing.tree.TreeNode;
  * This class helps convert a CSV meta object graph (SCM) into a graph of TreeNodes.
  *
  * @author OWNER: wangeug
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-01-25 16:48:02 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-02-04 15:09:37 $
  */
 public class XsdTreeNodeLoader extends DefaultNodeLoader
 {
@@ -165,4 +167,17 @@ public class XsdTreeNodeLoader extends DefaultNodeLoader
     	}
     	return clsNode;
 	}
+    /**
+     * Overloaded version of the function above.
+     *
+     * @param userObject
+     * @param allowsChildren
+     * @return a tree node that wraps the user object.
+     */
+    public DefaultMutableTreeNode constructTreeNode(Object userObject, boolean allowsChildren)
+    {
+        DefaultMutableTreeNode node = new DefaultSourceTreeNode(userObject, allowsChildren);
+        return node;
+    }
+
 }
