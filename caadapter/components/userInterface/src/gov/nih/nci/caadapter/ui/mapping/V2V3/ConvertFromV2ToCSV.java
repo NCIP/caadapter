@@ -69,7 +69,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jan 31, 2008
  *          Time:       2:50:22 PM $
  */
@@ -90,13 +90,14 @@ public class ConvertFromV2ToCSV
      */
     public static String RCSID = ": /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/ConvertFromV2ToCSV.java,v 1.00 Jan 31, 2008 2:50:22 PM umkis Exp $";
 
-    private List<String> errorMessages = new ArrayList<String>();
+    //private List<String> errorMessages = new ArrayList<String>();
     private int errorLevel = -1;
     private String message = "";
     private String messageTitle = "";
     private int messageCount = 0;
     private List<String> failErrorMessageList = new ArrayList<String>();
     private String logFileName = null;
+    private String numberTag = "V2 Message num.";
 
 //    public ConvertFromV2ToCSV()
 //    {
@@ -140,7 +141,7 @@ public class ConvertFromV2ToCSV
         {
             errorLevel = JOptionPane.ERROR_MESSAGE;
             message = "This SCS file is not exist. : " + fileSCSValidate;
-            messageTitle = "Not ExistSCS File";
+            messageTitle = "Not Exist SCS File";
             return;
         }
 
@@ -156,12 +157,20 @@ public class ConvertFromV2ToCSV
 
         int n = 0;
         int failCount = 0;
-        String logFileName = "";
+        String logFileName = fileCSV + ".log";
+        int logCount = 0;
+
+        FileReader fr = null;
+        BufferedReader br = null;
+        FileWriter fw = null;
+        FileWriter fwLog = null;
+
             try
             {
-                FileReader fr = new FileReader(v2File);
-                BufferedReader br = new BufferedReader(fr);
-                FileWriter fw = new FileWriter(fileCSV);
+                fr = new FileReader(v2File);
+                br = new BufferedReader(fr);
+                fw = new FileWriter(fileCSV);
+                fwLog = new FileWriter(logFileName);
 
                 String msg = "";
                 String msgF = "";
@@ -193,7 +202,7 @@ public class ConvertFromV2ToCSV
                         else
                         {
                             n++;
-                            String msgTagStr = "Message num." + n;
+                            String msgTagStr = numberTag + n + " ";
                             System.out.println("  Converting Processing " + msgTagStr);
                             //boolean strict = jrStrictValidationYes.isSelected();
                             //String mType = jtInputMessageType.getText();
@@ -220,10 +229,12 @@ public class ConvertFromV2ToCSV
                                         if ((mType.length() != 7)||(!mType.substring(3, 4).equals("^")))
                                         {
                                             failCount++;
-                                            String err = "   " + n + " , Fail Converting " + msgTagStr+" Error: Messge Type is not right : " + mType;
+                                            String err = "   Fail Converting " + msgTagStr+" Error: Messge Type is not right : " + mType;
                                             System.err.println(err);
                                             failErrorMessageList.add(err);
-                                            errorMessages.add("###=== "+err);
+                                            //errorMessages.add("###=== "+err);
+                                            fwLog.write("###=== "+err+"\r\n");
+                                            logCount++;
                                             if (isFileEnded) break;
                                             continue;
                                         }
@@ -235,28 +246,39 @@ public class ConvertFromV2ToCSV
                             catch(HL7MessageTreeException he)
                             {
                                 failCount++;
-                                String err = "   " + n + " , Fail Converting " + msgTagStr+" HL7MessageTreeException: " + he.getMessage();
+                                String err = "    Fail Converting " + msgTagStr+" HL7MessageTreeException: " + he.getMessage();
                                 System.err.println(err);
                                 failErrorMessageList.add(err);
-                                errorMessages.add("###=== "+err);
+                                //errorMessages.add("###=== "+err);
+                                fwLog.write("###=== "+err+"\r\n");
+                                logCount++;
                                 if (isFileEnded) break;
                                 continue;
                             }
                             catch(Exception ee)
                             {
                                 failCount++;
-                                String err = "   " + n + " , Fail Converting " + msgTagStr+" Unexpected Exception: " + ee.getMessage();
+                                String err = "   Fail Converting " + msgTagStr+" Unexpected Exception: " + ee.getMessage();
                                 System.err.println(err);
                                 failErrorMessageList.add(err);
-                                errorMessages.add("###=== "+err);
+                                //errorMessages.add("###=== "+err);
+                                fwLog.write("###=== "+err+"\r\n");
+                                logCount++;
                                 ee.printStackTrace();
                                 if (isFileEnded) break;
                                 continue;
                             }
                             if (aTree.getErrorMessageList().size() > 0)
                             {
-                                errorMessages.add("###=== v2 "+msgTagStr+" Parsing complete!! Followings are Error Messages : " + v2File);
-                                for (String ss:aTree.getErrorMessageList()) errorMessages.add(ss);
+                                //errorMessages.add("###=== v2 "+msgTagStr+" Parsing complete!! Followings are Error Messages : " + v2File);
+                                fwLog.write("###=== v2 "+msgTagStr+" Parsing complete!! Followings are Error Messages : " + v2File + "\r\n");
+                                logCount++;
+                                for (String ss:aTree.getErrorMessageList())
+                                {
+                                    //errorMessages.add(ss);
+                                    fwLog.write("   " + ss + "\r\n");
+                                    logCount++;
+                                }
                             }
 
                             String tempCSVFile = FileUtil.getTemporaryFileName();
@@ -264,10 +286,12 @@ public class ConvertFromV2ToCSV
                             if (!panel.doPressGenerateSingleMessage(aTree, "", tempCSVFile, fileSCSValidate, true))
                             {
                                 failCount++;
-                                String err = "   " + n + " , Fail Converting "+msgTagStr+" Conveting Error: ";
+                                String err = "   Fail Converting "+msgTagStr+" Conveting Error: ";
                                 System.err.println(err);
                                 failErrorMessageList.add(err);
-                                errorMessages.add("###=== "+err);
+                                //errorMessages.add("###=== "+err);
+                                fwLog.write("###=== "+err+"\r\n");
+                                logCount++;
                                 if (isFileEnded) break;
                                 continue;
                             }
@@ -284,33 +308,13 @@ public class ConvertFromV2ToCSV
                 fr.close();
                 br.close();
                 fw.close();
+                if (logCount == 0) fwLog.write("Any Error or Warning was not found during Converting : " + v2File);
+                fwLog.close();
 
-                if (errorMessages.size() > 0)
-                {
-                    logFileName = fileCSV + ".log";
-                    fw = new FileWriter(logFileName);
-                    for (String err:errorMessages) fw.write(err + "\r\n");
-                    fw.close();
-                    if (failCount > 0)
-                    {
-                        errorLevel = JOptionPane.WARNING_MESSAGE;
-                        message = "" + failCount + " message(s) were(was) fail among "+n+" messages. \n Log file '" + fileCSV + ".log' is created. Take a look if you necessary.";
-                        messageTitle = "" + failCount + " Conversion Failure";
-                    }
-                    else
-                    {
-                        errorLevel = JOptionPane.INFORMATION_MESSAGE;
-                        message = "" + n + " messages were successfully converted. \n Log file '" + fileCSV + ".log' is created. Take a look if you necessary.";
-                        messageTitle = "Log File Created";
-                    }
-                }
-                else
-                {
-                    errorLevel = JOptionPane.INFORMATION_MESSAGE;
-                    message = "" + n + " messages were successfully converted.";
-                    messageTitle = "Successully Converted";
-                }
-
+                fr = null;
+                br = null;
+                fw = null;
+                fwLog = null;
             }
             catch(FileNotFoundException fe)
             {
@@ -324,14 +328,56 @@ public class ConvertFromV2ToCSV
                 message = "IOException : " + ie.getMessage();
                 messageTitle = "IOException";
             }
-        messageCount = n;
+
+        try { if (fr != null) fr.close(); } catch(IOException ie) {}
+        try { if (br != null) br.close(); } catch(IOException ie) {}
+        try { if (fw != null) fw.close(); } catch(IOException ie) {}
+        try { if (fwLog != null) fwLog.close(); } catch(IOException ie) {}
+
+        if (logCount > 0)
+        {
+            //logFileName = fileCSV + ".log";
+            //fw = new FileWriter(logFileName);
+            //for (String err:errorMessages) fw.write(err + "\r\n");
+            //fw.close();
+            if (failCount > 0)
+            {
+                errorLevel = JOptionPane.WARNING_MESSAGE;
+                message = "" + failCount + " message(s) were(was) fail among "+n+" V2 messages. \n Log file '" + fileCSV + ".log' is created. Take a look if you necessary.";
+                messageTitle = "" + failCount + " Conversion Failure";
+            }
+            else
+            {
+                errorLevel = JOptionPane.INFORMATION_MESSAGE;
+                message = "" + n + " V2 messages were successfully converted. \n Log file '" + fileCSV + ".log' is created. Take a look if you necessary.";
+                messageTitle = "Log File Created";
+            }
+
+        }
+        else
+        {
+            errorLevel = JOptionPane.INFORMATION_MESSAGE;
+            message = "" + n + " V2 messages were successfully converted. (Neither Error nor Warning)";
+            messageTitle = "Successully Converted";
+
+        }
         this.logFileName = logFileName;
+        messageCount = n;
+
         System.out.println("*** " + message);
+
     }
 
     public List<String> getErrorMessages()
     {
-        return errorMessages;
+        if (logFileName == null) return new ArrayList<String>();
+        try
+        {
+            return FileUtil.readFileIntoList(logFileName);
+        }
+        catch(IOException ie)
+        {}
+        return null;
     }
     public int getErrorLevel()
     {
@@ -374,11 +420,12 @@ public class ConvertFromV2ToCSV
         for (String str:getFailErrorMessageList())
         {
             str = str.trim();
-            int idx = str.indexOf(" ");
+            int idx = str.indexOf(numberTag);
             if (idx < 0) continue;
+            str = str.substring(idx + numberTag.length());
             try
             {
-                list.add(Integer.parseInt(str.substring(0,idx)));
+                list.add(Integer.parseInt(str.substring(0,str.indexOf(" "))));
             }
             catch(NumberFormatException ne) { continue; }
         }
