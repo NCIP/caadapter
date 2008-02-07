@@ -69,7 +69,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Jan 31, 2008
  *          Time:       2:50:22 PM $
  */
@@ -271,7 +271,7 @@ public class ConvertFromV2ToCSV
                             if (aTree.getErrorMessageList().size() > 0)
                             {
                                 //errorMessages.add("###=== v2 "+msgTagStr+" Parsing complete!! Followings are Error Messages : " + v2File);
-                                fwLog.write("###=== v2 "+msgTagStr+" Parsing complete!! Followings are Error Messages : " + v2File + "\r\n");
+                                fwLog.write("###=== "+msgTagStr+" Parsing complete!! Followings are Error Messages : " + v2File + "\r\n");
                                 logCount++;
                                 for (String ss:aTree.getErrorMessageList())
                                 {
@@ -340,7 +340,13 @@ public class ConvertFromV2ToCSV
             //fw = new FileWriter(logFileName);
             //for (String err:errorMessages) fw.write(err + "\r\n");
             //fw.close();
-            if (failCount > 0)
+            if (failCount == n)
+            {
+                errorLevel = JOptionPane.ERROR_MESSAGE;
+                message = "The All " + failCount + " V2 messages were fail to generate csv file. \n Log file '" + fileCSV + ".log' is created. Take a look if you necessary.";
+                messageTitle = "The All" + failCount + " messages Conversion Failure";
+            }
+            else if (failCount > 0)
             {
                 errorLevel = JOptionPane.WARNING_MESSAGE;
                 message = "" + failCount + " message(s) were(was) fail among "+n+" V2 messages. \n Log file '" + fileCSV + ".log' is created. Take a look if you necessary.";
