@@ -55,7 +55,8 @@ public class XmiModelMetadata {
 	private LinkedHashMap modelHashMap = new LinkedHashMap();
 	private HashMap objectHashMap = new HashMap();
 	private HashMap inheritanceHashMap = new HashMap();
-
+	private LinkedHashMap umlHashMap = new LinkedHashMap();
+	
 	private HashSet<String> primaryKeys = new HashSet<String>();
 	private HashSet<String> lazyKeys = new HashSet<String>();
     private HashSet<String> discriminatorKeys = new HashSet<String>();
@@ -78,7 +79,7 @@ public class XmiModelMetadata {
 	private void loadXmiModel() 
 	{
 		long stTime=System.currentTimeMillis();
-		System.out.println("XmiModelMetadata.XmiModelMetadata()..start loading:"+stTime);
+//		System.out.println("XmiModelMetadata.XmiModelMetadata()..start loading:"+stTime);
 		if(xmiFileName==null)
 			return;
 		if(xmiFileName.equals(""))
@@ -181,17 +182,26 @@ public class XmiModelMetadata {
 	private TreeSet loadUMLModel(UMLModel model)
     {
 		TreeSet rtnSet=new TreeSet(new XPathComparator());
-        for( UMLPackage pkg : model.getPackages() )
+		XmiTraversalPath xmiPath=new XmiTraversalPath(model.getName());
+//		System.out.println("XmiModelMetadata.loadUMLModel()..path Nevigator:"+xmiPath.pathNevigator());
+		umlHashMap.put(xmiPath.pathNevigator(), model);
+		for( UMLPackage pkg : model.getPackages() )
         {
-            loadPackage(rtnSet, pkg);
+            loadPackage(rtnSet,xmiPath, pkg);
         }
         return rtnSet;
     }
 
-    private void loadPackage(TreeSet sortedModel, UMLPackage pkg)
+    private void loadPackage(TreeSet sortedModel,XmiTraversalPath traversalPath, UMLPackage pkg)
     {
+    	traversalPath.addOnePathElement(pkg.getName());
+//    	System.out.println("XmiModelMetadata.loadPackage()..path Nevigator:"+traversalPath.pathNevigator());
+    	umlHashMap.put(traversalPath.pathNevigator(), pkg);
         for(UMLClass clazz : pkg.getClasses())
         {
+        	traversalPath.addOnePathElement(clazz.getName());
+//    		System.out.println("XmiModelMetadata.loadClass()..path Nevigator:"+traversalPath.pathNevigator());
+    		umlHashMap.put(traversalPath.pathNevigator(), clazz);
             StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
             if (pathKey.toString().contains(  XmiModelMetadata.getMmsDataModelPrefix() )) {
                 //create a TableMetadata object
@@ -203,7 +213,7 @@ public class XmiModelMetadata {
 
                 sortedModel.add(table);
                 for(UMLAttribute att : clazz.getAttributes()) {
-                    loadColumnAttribute(sortedModel, att, table, pathKey);
+                    loadColumnAttribute(sortedModel,traversalPath, att, table, pathKey);
                 }
             } else if (pathKey.toString().contains( XmiModelMetadata.getMmsObjectModelPrefix() ) && !pathKey.toString().contains("java")) 
             {
@@ -254,25 +264,27 @@ public class XmiModelMetadata {
                     }
                     for(UMLClass p : parents) {
                         for(UMLAttribute att : p.getAttributes()) {
-                            loadAttribute(sortedModel, att, object, pathKey, true);
+                            loadAttribute(sortedModel, traversalPath, att, object, pathKey, true);
                         }
                     }
                 }
                 for(UMLAttribute att : clazz.getAttributes()) {
-                	loadAttribute(sortedModel, att, object, pathKey, false);
+                	loadAttribute(sortedModel, traversalPath, att, object, pathKey, false);
                 }
                 for(UMLAssociation assoc : clazz.getAssociations()) {
-                     loadAssociation(sortedModel, assoc, object, pathKey, clazz);
-             }
+                     loadAssociation(sortedModel, traversalPath, assoc, object, pathKey, clazz);
+                }
             }
+            traversalPath.removeLastPathElement(clazz.getName());
         }
         //load sub package
         for(UMLPackage _pkg : pkg.getPackages()) {
-          loadPackage(sortedModel, _pkg);
+          loadPackage(sortedModel,traversalPath, _pkg);
         }
+        traversalPath.removeLastPathElement(pkg.getName());
       }
 
-	  private void loadAssociation(TreeSet sortedModel, UMLAssociation assoc, ObjectMetadata object, StringBuffer keyPath, UMLClass clazz) {
+	  private void loadAssociation(TreeSet sortedModel, XmiTraversalPath traversalPath, UMLAssociation assoc, ObjectMetadata object, StringBuffer keyPath, UMLClass clazz) {
 		  	boolean isOneToMany = false;
 		  	boolean isManyToMany = false;
 	    	UMLAssociationEnd assocEndA = (UMLAssociationEnd)assoc.getAssociationEnds().get(0);
@@ -312,12 +324,22 @@ public class XmiModelMetadata {
 	    			}
 	    			else {//This is uni-direction
 	    			}
+	    			traversalPath.addOnePathElement(assocEnd.getRoleName());
+//	    			System.out.println("XmiModelMetadata.loadAssociation()..path Nevigator:"+traversalPath.pathNevigator());
+	    	    	
+	    	    	umlHashMap.put(traversalPath.pathNevigator(), assoc);  
+	    	    	traversalPath.removeLastPathElement(assocEnd.getRoleName());
+
 		    	}
 	    	}
+		    
 	  }	  	  
 	  
-	  private void loadAttribute(TreeSet sortedModel, UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
-		    StringBuffer attributePath = new StringBuffer();
+	  private void loadAttribute(TreeSet sortedModel, XmiTraversalPath traversalPath, UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
+		  	traversalPath.addOnePathElement(att.getName());
+//	    	System.out.println("XmiModelMetadata.loadAttribute()..path Nevigator:"+traversalPath.pathNevigator());
+	    	umlHashMap.put(traversalPath.pathNevigator(), att);  
+	    	StringBuffer attributePath = new StringBuffer();
 		    attributePath.append(pathKey);
 	        AttributeMetadata attMetadata = new AttributeMetadata();
 	        attMetadata.setName(att.getName());
@@ -329,11 +351,15 @@ public class XmiModelMetadata {
 	        attMetadata.setXPath(attributePath.toString());
 	        attMetadata.setDerived(derived);
 	        sortedModel.add(attMetadata);
+	        traversalPath.removeLastPathElement(att.getName());
 	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());   
 	  }
 	  
-	  private void loadColumnAttribute(TreeSet sortedModel, UMLAttribute att, TableMetadata tableMeta, StringBuffer pathKey) 
+	  private void loadColumnAttribute(TreeSet sortedModel, XmiTraversalPath traversalPath, UMLAttribute att, TableMetadata tableMeta, StringBuffer pathKey) 
 	  {
+		  	traversalPath.addOnePathElement(att.getName());
+//	    	System.out.println("XmiModelMetadata.loadColumnAttribute()..path Nevigator:"+traversalPath.pathNevigator());
+	    	umlHashMap.put(traversalPath.pathNevigator(), att);
 	        ColumnMetadata attMetadata = new ColumnMetadata();
 	        StringBuffer colPathKey = new StringBuffer();
 	        colPathKey.append(pathKey);
@@ -346,6 +372,7 @@ public class XmiModelMetadata {
 	        attMetadata.setXPath(colPathKey.toString());
 	        attMetadata.setTableMetadata(tableMeta);
 	        sortedModel.add(attMetadata);
+	        traversalPath.removeLastPathElement(att.getName());
 	  }
 	 
 	  /**
@@ -485,6 +512,10 @@ public class XmiModelMetadata {
 	public void setDiscriminatorValues(
 			Hashtable<String, String> discriminatorValues) {
 		discriminatorValues = discriminatorValues;
+	}
+
+	public LinkedHashMap getUmlHashMap() {
+		return umlHashMap;
 	}
 }
 
