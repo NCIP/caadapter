@@ -135,7 +135,7 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 			 ElementDecl contElm=(ElementDecl)particle;
 			 System.out.println("XsdModelMetadata.buildObjectMetadata()..elemnt:"+contElm.getName());
 			 if (contElm.getType().isSimpleType())
-				 buildObjectAttribute(objMeta, contElm);
+				 buildObjectElementAttribute(objMeta, contElm);
 		 }
 		 else
 			 System.out.println("XsdModelMetadata.buildObjectMetadata()..:"+particle);
@@ -149,6 +149,11 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 	}
 	objectMap.put(objMeta.getXmlPath(), objMeta);
 }
+/**
+ * XSD defines the attibute as as a XML element attribute of the parent object element
+ * @param objMeta
+ * @param attrElement
+ */
 private void buildObjectAttribute(ObjectMetadata objMeta,AttributeDecl attrElement )
 {
 	AttributeMetadata attr=new AttributeMetadata();
@@ -159,12 +164,18 @@ private void buildObjectAttribute(ObjectMetadata objMeta,AttributeDecl attrEleme
 	objMeta.addAttribute(attr);
 }
 
-private void buildObjectAttribute(ObjectMetadata objMeta,ElementDecl attrElement )
+/**
+ * XSD defines the Attribute as a child element of the parent object element
+ * @param objMeta
+ * @param attrElement
+ */
+private void buildObjectElementAttribute(ObjectMetadata objMeta,ElementDecl attrElement )
 {
 	AttributeMetadata attr=new AttributeMetadata();
 	attr.setName(attrElement.getName());
 	attr.setDatatype(attrElement.getType().getName());
 	attr.setXPath(objMeta.getXmlPath()+"."+attrElement.getName());
+	attr.setChildTag(true);
 	attributeMap.put(attr.getXPath(), attr);
 	objMeta.addAttribute(attr);
 }
@@ -182,7 +193,7 @@ private void buildObjectContent(ObjectMetadata objMeta, Group complexContent)
 			 ElementDecl elm=(ElementDecl)particle;
 			 if (elm.getType().isSimpleType())
 			 {
-				 buildObjectAttribute(objMeta, elm);
+				 buildObjectElementAttribute(objMeta, elm);
 			 }
 			 else
 			 {
