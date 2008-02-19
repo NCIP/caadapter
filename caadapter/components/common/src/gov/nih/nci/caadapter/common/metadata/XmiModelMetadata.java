@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.jdom.Element;
+
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
@@ -28,6 +30,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLDatatype;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLModelBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
@@ -187,7 +191,7 @@ public class XmiModelMetadata {
 		umlHashMap.put(xmiPath.pathNevigator(), model);
 		for( UMLPackage pkg : model.getPackages() )
         {
-            loadPackage(rtnSet,xmiPath, pkg);
+			loadPackage(rtnSet,xmiPath, pkg);
         }
         return rtnSet;
     }
@@ -516,6 +520,50 @@ public class XmiModelMetadata {
 
 	public LinkedHashMap getUmlHashMap() {
 		return umlHashMap;
+	}
+	
+	public void cleanClassObjectAnnotation()
+	{
+		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+		Element modelElement=(Element)modelBean.getJDomElement();
+		
+		Element xmiContent=modelElement.getParentElement();
+		xmiContent.removeChild("TaggedValue");
+	}
+	public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
+	{
+		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+		Element modelElement=(Element)modelBean.getJDomElement();
+		
+		Element xmiContent=modelElement.getParentElement();
+		Element newGmeTag=new Element("TaggedValue", "UML");
+		newGmeTag.setAttribute("tag", "GME_XMLNamespace");
+		newGmeTag.setAttribute("value", gmeXmlNamespace);
+		newGmeTag.setAttribute("modelElement", packageModelElementId);
+		
+		xmiContent.getChildren().add(newGmeTag);
+		
+		
+		Element newElementTag=new Element("TaggedValue");
+		newElementTag.setAttribute("tag", "GME_XMLElement");
+		newElementTag.setAttribute("value", gmeXmlNamespace);
+		newElementTag.setAttribute("modelElement", classModelElementId);
+		
+		xmiContent.getChildren().add(newElementTag);
+		
+	}
+	
+	public String findModelElementXmiId(String modelElementXmlPath)
+	{
+		Object modelObj=umlHashMap.get(modelElementXmlPath);
+		if (modelObj==null)
+			return "not found:"+modelElementXmlPath;
+		if (modelObj instanceof JDomDomainObject)
+		{
+			JDomDomainObject umlBean=(JDomDomainObject)modelObj;
+			return umlBean.getJDomElement().getAttributeValue("xmi.id");
+		}
+		return "invalideObject:"+modelObj;
 	}
 }
 
