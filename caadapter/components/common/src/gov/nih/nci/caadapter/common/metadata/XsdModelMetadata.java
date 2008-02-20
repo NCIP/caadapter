@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.exolab.castor.util.Configuration;
@@ -97,6 +98,20 @@ private void initModel()
 		 Schema schemaImported=(Schema)imptSchema.nextElement();
 		 setSchemaClassMapping(schemaImported);
 	}
+
+}
+public String findPackageNamespace(String classPackage)
+{
+	String rtnSt="GME://notDefined";
+	Iterator it=getPackageMap().keySet().iterator();
+	while (it.hasNext())
+	{
+		String keyIt =(String)it.next();
+		String valueIt=(String)this.getPackageMap().get(keyIt);
+		if (valueIt!=null&&valueIt.equals(classPackage))
+			rtnSt=keyIt;
+	}
+	return rtnSt;
 }
 
 private void setSchemaClassMapping(Schema schema)
