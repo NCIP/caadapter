@@ -72,12 +72,12 @@ import java.util.Set;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.1 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.2 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.1 2008-02-04 15:10:34 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.2 2008-02-20 21:46:29 schroedn Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
     private XsdToXmiTargetTreeDropTransferHandler xsdToXmiTargetTreeDropTransferHandler = null;
@@ -211,8 +211,9 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	protected TreeNode loadSourceTreeData(Object metaInfo, File file)
 			throws Exception {
 
-        TreeNode node;
+        TreeNode node;    
         XsdModelMetadata xsdModel = new XsdModelMetadata();
+        setXsdModelMeta(xsdModel);
         String xmlSchema=file.getAbsolutePath();
         xsdModel.parseSchema(xmlSchema);
         XsdTreeNodeLoader xsdLoader=new XsdTreeNodeLoader();
@@ -282,7 +283,6 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 //		if (getMappingTarget().equalsIgnoreCase(MAPPING_TARGET_OBJECT_MODEL))
 //		{
 
-        //TODO: Make new MMSRenderer for XSD
 //        MMSRendererPK objectModelRenderer=new MMSRendererPK();
 //        objectModelRenderer.setXmiMeta(getXmiModelMeta());
 //        sTree.setCellRenderer(objectModelRenderer);
@@ -449,15 +449,17 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
         Mapping mapping = parser.getMapping();//returnResult.getMapping();
         String  xmiFile = mapping.getTargetComponent().getFile().getAbsolutePath();
-        System.out.println("XsdToXmiMappingPanel.cvsToXmiGeneration()..mapping target xmi file:"+xmiFile);
+        System.out.println("XsdToXmiMappingPanel.cvsToXmiGeneration().mapping target xmi file:" + xmiFile);
         XmiInOutHandler handler=getXmiModelMeta().getHandler();
         UMLModel model=handler.getModel();
+
         //clear out the xmi file so duplicate tagvalues are not added on multiple saves
         for( UMLPackage pkg : model.getPackages() )
         {
 			clearXMLNamespacePackages( pkg );
 		}
 
+//TODO: Change this, must use something different for saving!
         //for each map in mapList to the following
         for (gov.nih.nci.caadapter.hl7.map.Map map : mapping.getMaps() )
         {
