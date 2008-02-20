@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.8 2007-12-13 21:06:08 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.9 2008-02-20 22:07:25 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,10 +52,10 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * Future enhancement or refactory may be needed along the expansion of functionality.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-12-13 21:06:08 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-02-20 22:07:25 $
  */
 public class MapLinkValidator extends Validator {
 	/**
@@ -70,7 +70,7 @@ public class MapLinkValidator extends Validator {
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.8 2007-12-13 21:06:08 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.9 2008-02-20 22:07:25 schroedn Exp $";
 
 	private transient Object source;
 	private transient Object target;
@@ -99,7 +99,22 @@ public class MapLinkValidator extends Validator {
 			else if (!MIFUtil.isEditableMIFAttributeDefault(mifAttr))
 				foundError=true;
 		}
-		else if((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
+        else if ((source instanceof gov.nih.nci.caadapter.common.metadata.AttributeMetadata)
+                && (target instanceof gov.nih.nci.caadapter.common.metadata.AttributeMetadata))
+        {
+//            System.out.println("target" + target.getClass().toString());
+//            System.out.println("target" + target.toString());
+            //valid
+        }
+        else if ((source instanceof gov.nih.nci.caadapter.common.metadata.AssociationMetadata)
+                && (target instanceof gov.nih.nci.caadapter.common.metadata.AssociationMetadata))
+        {
+            System.out.println("target" + target.getClass().toString());
+            System.out.println("target" + target.toString());
+            //valid
+        }
+
+        else if((source instanceof gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta)
 				&& (target instanceof gov.nih.nci.caadapter.hl7.datatype.Attribute))
 		{
 			//Do not allowed map from a CSV field to Datatype field 
@@ -184,6 +199,9 @@ public class MapLinkValidator extends Validator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/12/13 21:06:08  wangeug
+ * HISTORY      : resolve code dependence in compiling
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/12/13 19:29:57  wangeug
  * HISTORY      : resolve code dependence in compiling
  * HISTORY      :
