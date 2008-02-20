@@ -1,5 +1,5 @@
 /**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.6 2007-11-28 15:04:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.7 2008-02-20 19:54:47 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -54,20 +54,47 @@
  */
 package gov.nih.nci.caadapter.hl7.demo;
 import gov.nih.nci.caadapter.ui.main.MainFrame;
+
+import javax.swing.*;
+
 /**
  * A tiny driver which will launch the HL7SDK Swing Mapping Tool.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.6 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.7 $
  * @since caAdapter v1.2
  */
 public class LaunchUI {
     private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.6 2007-11-28 15:04:57 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.7 2008-02-20 19:54:47 umkis Exp $";
 
     public static void main(String[] args)
     {
-           	new MainFrame().launch();
+        try
+            {
+		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	        }
+            catch (ClassNotFoundException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            catch (InstantiationException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            catch (IllegalAccessException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            catch (UnsupportedLookAndFeelException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            new MainFrame().launch();
     }
 }
