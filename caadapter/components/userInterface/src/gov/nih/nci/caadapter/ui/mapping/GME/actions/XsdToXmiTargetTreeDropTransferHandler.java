@@ -6,10 +6,14 @@
 package gov.nih.nci.caadapter.ui.mapping.GME.actions;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.map.BaseComponent;
 
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.MapLinkValidator;
+import gov.nih.nci.caadapter.hl7.map.Mapping;
+import gov.nih.nci.caadapter.hl7.map.Map;
+import gov.nih.nci.caadapter.hl7.map.impl.BaseMapElementImpl;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
@@ -35,14 +39,15 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-02-04 15:10:34 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-02-20 15:24:38 $
  */
 public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
 	private MappingDataManager mappingDataMananger;
 //	protected O2DBDropTargetAdapter dropTargetAdapter;
-	public XsdToXmiTargetTreeDropTransferHandler(JTree tree, MappingDataManager mappingDataMananger)
+
+    public XsdToXmiTargetTreeDropTransferHandler(JTree tree, MappingDataManager mappingDataMananger)
 	{
 		this(tree, mappingDataMananger, DnDConstants.ACTION_MOVE);
 	}
@@ -66,11 +71,14 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 				return false;
 				
 		Point p = e.getLocation();
-		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
+
+        TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path==null)
 			return false;
-		DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-		if(targetNode instanceof MappableNode)
+
+        DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+
+        if(targetNode instanceof MappableNode)
 		{
 			MappableNode mappableNode = (MappableNode) targetNode;
 	
@@ -79,13 +87,15 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 //				if (!(targetNode.getUserObject() instanceof TableMetadata)
 //						&&!(targetNode.getUserObject() instanceof ColumnMetadata))
 //				{
-//					return false;	
+//					return false;
 //				}
 //			}
-			
-			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
 
-			//only CSVField is allowed to map with a target node
+            DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
+            System.out.println("[ sourceNode: " + sourceNode.toString() + " <-> " + "targetNode: " + targetNode.toString() + " ]");
+            System.out.println("[ sourceNode: " + sourceNode.getClass().toString() + " <-> " + "targetNode: " + targetNode.getClass().toString() + " ]");
+                       
+            //only CSVField is allowed to map with a target node
 //			if (!(sourceNode.getUserObject() instanceof CSVFieldMeta))
 //				return false;
 
@@ -110,7 +120,8 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 	 */
 	public boolean setDropData(Object transferredData, DropTargetDropEvent e, DataFlavor chosen)
 	{
-		boolean isSuccess = false;
+        
+        boolean isSuccess = false;
 		Point p = e.getLocation();
 		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
 		if (path == null)
@@ -143,10 +154,25 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 				}
 				else
 				{// we have a valid map, so go to map it!
-
-                        System.out.println("Creating Mapping");
+                        System.out.println("[ Creating Mapping: sourceNode: " + sourceNode.toString() + " <-> " + "targetNode: " + targetNode.toString() + " ]");
                         isSuccess = mappingDataMananger.createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
-				}
+
+                        if ( isSuccess )
+                        {
+                            System.out.println("[ Current Mappings ]" );
+
+                            Mapping mData = mappingDataMananger.retrieveMappingData(true);
+
+                            List<Map> maps = mData.getMaps();
+                            
+                            for (int j=0; j < maps.size(); j++ )
+                            {
+                                Map tempMap = maps.get(j);
+                                System.out.println(tempMap.getClass().toString());
+                                System.out.println("[ source: " + tempMap.getSourceMapElement().getMetaObject().getName() + " <-> " + " target: " + tempMap.getTargetMapElement().getMetaObject().getName() + " ]");
+                            }
+                        }
+                }
 
 //				if (isSuccess)
 //				{
