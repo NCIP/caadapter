@@ -537,7 +537,7 @@ public class XmiModelMetadata {
 		
 		addClassObjectAnnotationTag("GME_XMLNamespace", gmeXmlNamespace,packageModelElementId);
 		
-		addClassObjectAnnotationTag("GME_XMLElement", gmeXmlNamespace,classModelElementId);
+		addClassObjectAnnotationTag("GME_XMLElement", gmeXmlElementName,classModelElementId);
 	}
 	
 	private void addClassObjectAnnotationTag(String tag, String value, String modelElmentId)
