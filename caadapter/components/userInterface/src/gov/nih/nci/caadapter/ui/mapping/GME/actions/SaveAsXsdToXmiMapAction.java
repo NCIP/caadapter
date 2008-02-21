@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.3 2008-02-20 21:46:06 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.4 2008-02-21 15:39:31 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,7 @@
 
 package gov.nih.nci.caadapter.ui.mapping.GME.actions;
 
+import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.metadata.*;
@@ -52,7 +53,11 @@ import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingReporter;
 import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationBean;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAttributeBean;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLModelBean;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLPackageBean;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -67,10 +72,10 @@ import java.util.Iterator;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-02-20 21:46:06 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-02-21 15:39:31 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -86,7 +91,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.3 2008-02-20 21:46:06 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.4 2008-02-21 15:39:31 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -160,8 +165,6 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 
         XsdToXmiMappingPanel xsdToXmi = (XsdToXmiMappingPanel)mappingPanel;
 		mappingData.setMappingType(xsdToXmi.getMappingTarget());
-
-        XsdModelMetadata xsdModelMeta =  xsdToXmi.getXsdModelMeta();
         XmiModelMetadata xmiModelMeta = xsdToXmi.getXmiModelMeta();
 
         boolean oldChangeValue = mappingPanel.isChanged();
@@ -170,15 +173,34 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 		{
             //Clean XMI.Content Mappings
             xmiModelMeta.cleanClassObjectAnnotation();
+//          //TODO: Remove previous annotation tags TaggedValues
+            Iterator xsdBeanIt = xsdToXmi.getXmiModelMeta().getUmlHashMap().keySet().iterator();//xsdModelMeta.getAttributeMap().keySet().iterator();
+            while (xsdBeanIt.hasNext())
+            {
+                  String modelKey=(String)xsdBeanIt.next();
+                  System.out.println("[ attribute mappings: " + modelKey );
+                  //find the attribute
+                  Object umlObject = (Object) xsdToXmi.getXmiModelMeta().getUmlHashMap().get(modelKey );
+
+                  //remove the taggedValue
+                  if(umlObject ==null)
+                	  System.out
+							.println("SaveAsXsdToXmiMapAction.processSaveFile()..uml object is missing:"+modelKey);
+                  else  if (umlObject instanceof UMLAttribute){
+                     System.out.println("Removing attr " + modelKey );
+                     ((UMLAttribute)umlObject).removeTaggedValue("GME_XMLLocReference");
+                  }
+                  else if (umlObject instanceof UMLPackage){ 	  
+                	  ((UMLPackage)umlObject).removeTaggedValue("GME_XMLNamespace");
+                  }
+                  else
+                	  System.out
+							.println("SaveAsXsdToXmiMapAction.processSaveFile()... invalid uml object:"+umlObject.getClass());
+            }
 
             //TODO: Remove all taggedValues
-            System.out.println("[ Removing Tagged Values ]");
-            UMLModelBean umlModel=( UMLModelBean) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model" );
-//            for( UMLPackage pkg : umlModel.getPackages() )
-//			{
-//				getPackages( pkg );
-//			}
-            System.out.println("[ / Removing Tagged Values ]\n");
+//            System.out.println("[ Removing Tagged Values ]");
+//            UMLModelBean umlModel=( UMLModelBean) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model" );
 
 //            Iterator keySetIterator = xmiModelMeta.getUmlHashMap().keySet().iterator();
 //            while(keySetIterator.hasNext())
@@ -200,24 +222,6 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 //                  //System.out.println("XsdToXmiMappingPanel.actionPerformed() ..GME:"+modelKey+"="+clsGME);
 //            }
 //
-//            //TODO: Remove all Attribute TaggedValues
-            Iterator xsdAttrIt = xsdToXmi.getXmiModelMeta().getUmlHashMap().keySet().iterator();//xsdModelMeta.getAttributeMap().keySet().iterator();
-
-            while (xsdAttrIt.hasNext())
-            {
-                  String modelKey=(String)xsdAttrIt.next();
-                  System.out.println("[ attribute mappings: " + modelKey );
-                  //find the attribute
-                  Object umlAttribute = (Object) xsdToXmi.getXmiModelMeta().getUmlHashMap().get(  modelKey );
-
-                  //remove the taggedValue
-                  if ( umlAttribute != null  &&umlAttribute instanceof UMLAttribute){
-                     System.out.println("Removing attr " + modelKey );
-                     ((UMLAttribute)umlAttribute).removeTaggedValue("GME_XMLLocReference");
-                  }
-                  else if (umlAttribute != null  &&umlAttribute instanceof UMLClass){
-
-            }
 
             
             Mapping mData = mappingManager.retrieveMappingData(true);
@@ -232,163 +236,239 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 System.out.println( tempMap.getClass().toString() );
                 System.out.println( "[target xpath: " + tempMap.getTargetMapElement().getMetaObject().getXmlPath() + " ]" );
 
-                //TODO: Project-lvl
-                umlModel =( UMLModelBean) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model" );
-                if ( umlModel != null )
+                MetaObject srcMeta=tempMap.getSourceMapElement().getMetaObject();
+                MetaObject trgtMeta =tempMap.getTargetMapElement().getMetaObject();
+                if (trgtMeta==null)
+                	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()...invalidate mapping:"+tempMap.getXmlPath());
+                else if (trgtMeta instanceof AttributeMetadata)
                 {
-                    if ( xsdToXmi.getXsdModelMeta() != null )
+                	//annotate attribute
+                	AttributeMetadata srcAttr=(AttributeMetadata)srcMeta;
+                	AttributeMetadata trgtAttr=(AttributeMetadata)trgtMeta;
+                	String srcKey=srcAttr.getXPath();
+                	//add "EA Model" infront of the xmlPath
+                	String trgtKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAttr.getXmlPath();
+                	System.out
+							.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate source:"+srcKey);
+                	System.out
+					.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate target:"+trgtKey);
+        	
+                	UMLAttributeBean trgtUmlBean=(UMLAttributeBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtKey);
+                    if ( trgtUmlBean ==null)
+                    	System.out
+								.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtKey);
+                    else
                     {
-                       System.out.println( "[ Adding GME Project Name: " + xsdToXmi.getXsdModelMeta().getProjectName() + " ]\n");
-                       umlModel.addTaggedValue( "GME_XMLNamespaces", xsdToXmi.getXsdModelMeta().getProjectName() );
+                    	if(srcAttr.isChildTag())
+                    		trgtUmlBean.addTaggedValue("GME_XMLLocReference", srcAttr.getName());
+                    	else
+                    		trgtUmlBean.addTaggedValue("GME_XMLLocReference", "@"+srcAttr.getName());
+                    }
+                    
+                    //find the class and package of the this attribute
+                    //remove attribute name from xmlPath
+                    String classPathKey =trgtKey.substring(0,trgtKey.lastIndexOf(".") );
+                    if (!classList.contains(classPathKey))
+                    {
+                    	classList.add(classPathKey);
+                    	//annotate the class at its first attribute
+                    	UMLClassBean trgtClassBean=(UMLClassBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(classPathKey);
+                    	String modelElmentId=trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
+                    	//remove class name from xmlPath
+                    	String umlPackageKey=classPathKey.substring(0, classPathKey.lastIndexOf("."));
+                    	UMLPackageBean trgtPkgBean=(UMLPackageBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(umlPackageKey);
+                    	//look the name space of source package
+                    	String srcClassPath=srcKey.substring(0, srcKey.lastIndexOf("."));
+                    	String srcPkgPath=srcClassPath.substring(0,srcClassPath.lastIndexOf("."));
+                    	String srcGmeNameSpace=xsdToXmi.getXsdModelMeta().findPackageNamespace(srcPkgPath);
+                    	String annoateGmeNamespace=srcGmeNameSpace+"/"+srcPkgPath;
+                    	//annotate package
+                    	trgtPkgBean.addTaggedValue("GME_XMLNamespace", annoateGmeNamespace);
+                    	//annoate class to add tag at XMI level
+                    	String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
+                    	xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
+                    }
+                	
+                }
+                else if (trgtMeta instanceof AssociationMetadata)
+                {
+                	//annotate association
+                	AssociationMetadata srcAssc=(AssociationMetadata)srcMeta;
+                	AssociationMetadata trgtAssc=(AssociationMetadata)trgtMeta;
+ 
+                	//add "EA Model" infront of the xmlPath
+                	String trgtAsscKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAssc.getXmlPath();
+                	UMLAssociationBean trgtUmlAsscBean=(UMLAssociationBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtAsscKey);
+                    if ( trgtUmlAsscBean ==null)
+                    	System.out
+								.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtAsscKey);
+                    else
+                    {
+                    	trgtUmlAsscBean.addTaggedValue("GME_TargetXMLLocRef",srcAssc.getRoleName());
+                    	trgtUmlAsscBean.addTaggedValue("GME_SourceXMLLocRef",srcAssc.getParentXPath());
                     }
                 }
-
-                //TODO: Attribute-lvl
-                if ( tempMap.getTargetMapElement().getMetaObject() instanceof AttributeMetadata )
-                {
-                    System.out.println("** Searching for attr: " + tempMap.getTargetMapElement().getMetaObject().getXmlPath() );
-                    umlAttribute = (UMLAttribute) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( tempMap.getTargetMapElement().getMetaObject().getXmlPath() );
-                    if( umlAttribute != null)
-                    {
-                        //TODO: Class-lvl
-                        System.out.println("[ Class-lvl ]");
-                        String umlClassStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath();//.substring( 0, tempMap.getTargetMapElement().getMetaObject().getXmlPath().lastIndexOf(".") );
-                        System.out.println("umlClass Str :" + umlClassStr );
-                        UMLClass umlClass = (UMLClass) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( umlClassStr);
-                        if ( umlClass != null )
-                        {
-                            //Add to a list, check the list if ! contains add tagged value
-                            if ( ! classList.contains( umlClassStr ) )
-                            {
-                                classList.add( umlClassStr );
-                                System.out.println("Class Found (added) -> Part of: " + umlClass.getName() );
-                                //TODO: PROBLEM WITH CLASS ELEMENT! Being placed in xmi.content
-                                umlClass.addTaggedValue( "GME_XMLElement_12345", umlClass.getName() );
-                            }
-                            System.out.println("[ / Class-lvl ]\n");
-
-                            //TODO: XMI.Content
-                            System.out.println("[ Xmi.Content ]");
-                            String classModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr );
-                            System.out.println( "Class: " + umlClassStr );
-                            System.out.println( "classModelKey:  " + classModelKey );
-
-                            String packageModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ) );
-                            System.out.println("Package: " + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ));
-                            System.out.println("packageModelKey: " + packageModelKey);
-                            System.out.println("[ / Xmi.Content ]\n");
-                            
-                            if ( classModelKey != null )
-                            {
-                                if ( xsdToXmi.getXsdModelMeta() != null )
-                                {
-                                    xmiModelMeta.annotateClassObject( xsdToXmi.getXsdModelMeta().getProjectName(), packageModelKey, tempMap.getTargetMapElement().getMetaObject().getName(), classModelKey );
-                                    //public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
-                                }
-                            }
-                            
-                            //TODO: Package-lvl
-                            System.out.println("[ Package-lvl ]");
-                            String umlPackageStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( 0, umlClassStr.lastIndexOf(".") );
-                            System.out.println("umlPackageStr :" + umlPackageStr );
-
-                            UMLPackage umlPackage = (UMLPackage) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + umlPackageStr );
-                            if( umlPackage != null)
-                            {
-                                if( ! packageList.contains( umlPackageStr) )
-                                {
-                                    packageList.add( umlPackageStr );
-                                    System.out.println("Package Found (added) -> Part of: " + umlPackageStr );
-
-                                    //TODO: Get GMENamespace for the XSD Class here
-                                    String clsGME = xsdModelMeta.findPackageNamespace( umlPackageStr );
-                                    System.out.println("GME Namespace: " + clsGME );                                    
-                                    umlPackage.addTaggedValue( "GME_XMLNamespace", clsGME );
-                                }
-                            }
-                            System.out.println("[ / Package-lvl ]\n");
-                        }
-
-                        //Add the TaggedValue
-                        System.out.println("[ Adding GME Attribute TaggedValue ]\n");
-                        AttributeMetadata attr = (AttributeMetadata) tempMap.getSourceMapElement().getMetaObject();
-                        if ( attr.isChildTag() )
-                        {
-                            umlAttribute.addTaggedValue( "GME_XMLLocReference", tempMap.getSourceMapElement().getMetaObject().getName() );
-                        }
-                        else 
-                        {
-                            umlAttribute.addTaggedValue( "GME_XMLLocReference", "@" + tempMap.getSourceMapElement().getMetaObject().getName() );
-                        }
-                    }
-                }
-
-                //TODO: Association-lvl
-                if ( tempMap.getTargetMapElement().getMetaObject() instanceof AssociationMetadata )
-                {
-                    UMLAssociation umlAssoc = (UMLAssociation) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + tempMap.getTargetMapElement().getMetaObject().getXmlPath() );
-
-                    if ( umlAssoc != null)
-                    {
-                        //TODO: Class-lvl
-                         System.out.println("[ Class-lvl ]");
-                        String umlClassStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( 0, tempMap.getTargetMapElement().getMetaObject().getXmlPath().lastIndexOf(".") );
-                        System.out.println("umlClass Str :" + umlClassStr );
-                        UMLClass umlClass = (UMLClass) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + umlClassStr );
-                        if ( umlClass != null )
-                        {
-                            //Add to a list, check the list if ! contains add tagged value
-                            if ( ! classList.contains( umlClassStr ) )
-                            {
-                                classList.add( umlClassStr );
-                                System.out.println("Class Found (added) -> Part of: " + umlClassStr );
-                                umlClass.addTaggedValue( "GME_XMLElement_12345", umlClass.getName() );
-                            }
-                             System.out.println("[ / Class-lvl ]\n");
-
-                            //TODO: XMI.Content-lvl
-                            System.out.println("[ Xmi.Content ]");
-                            String classModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr );
-                            System.out.println( "Class: " + umlClassStr );
-                            System.out.println( "classModelKey:  " + classModelKey );
-
-                            String packageModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ) );
-                            System.out.println("Package: " + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ));
-                            System.out.println("packageModelKey: " + packageModelKey);
-                            System.out.println("[ / Xmi.Content ]\n");
-
-                            if ( classModelKey != null )
-                            {
-                                if ( xsdToXmi.getXsdModelMeta() != null )
-                                {
-                                    xmiModelMeta.annotateClassObject( xsdToXmi.getXsdModelMeta().getProjectName(), packageModelKey, tempMap.getTargetMapElement().getMetaObject().getName(), classModelKey );
-                                    //public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
-                                }
-                            }
-
-                            //TODO: Package-lvl
-                             System.out.println("[ Package-lvl ]");
-                            String umlPackageStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( 0, umlClassStr.lastIndexOf(".") );
-                            System.out.println( "umlPackageStr :" + umlPackageStr );
-                            UMLPackage umlPackage = (UMLPackage) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + umlPackageStr );
-                            if( umlPackage != null)
-                            {
-                                if( ! packageList.contains( umlPackageStr ) )
-                                {
-                                    packageList.add( umlPackageStr );
-                                    System.out.println( "Package Found (added) -> Part of: " + umlPackageStr );
-                                    umlPackage.addTaggedValue( "GME_XMLNamespace", umlPackage.getName() );
-                                }
-                            }
-                             System.out.println("[ / Package-lvl ]\n");
-                        }
-
-                        System.out.println( "[ Adding GME Assoc TaggedValue ]\n" );
-                        umlAssoc.addTaggedValue( "GME_SourceXMLLocRef",  "" + tempMap.getSourceMapElement().getMetaObject().getXmlPath().substring( tempMap.getSourceMapElement().getMetaObject().getXmlPath().lastIndexOf(".") + 1, tempMap.getSourceMapElement().getMetaObject().getXmlPath().length() ) );                        
-                        umlAssoc.addTaggedValue( "GME_TargetXMLLocRef",  "" + tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( tempMap.getTargetMapElement().getMetaObject().getXmlPath().lastIndexOf(".") + 1, tempMap.getTargetMapElement().getMetaObject().getXmlPath().length() ) );
-                    }
-                }
+                else
+                	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()... invalidate targetMetadata:"+trgtMeta.getName());
+                
             }
+                //                //TODO: Project-lvl
+//                umlModel =( UMLModelBean) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model" );
+//                if ( umlModel != null )
+//                {
+//                    if ( xsdToXmi.getXsdModelMeta() != null )
+//                    {
+//                       System.out.println( "[ Adding GME Project Name: " + xsdToXmi.getXsdModelMeta().getProjectName() + " ]\n");
+//                       umlModel.addTaggedValue( "GME_XMLNamespaces", xsdToXmi.getXsdModelMeta().getProjectName() );
+//                    }
+//                }
+//
+//                //TODO: Attribute-lvl
+//                if ( tempMap.getTargetMapElement().getMetaObject() instanceof AttributeMetadata )
+//                {
+//                    System.out.println("** Searching for attr: " + tempMap.getTargetMapElement().getMetaObject().getXmlPath() );
+//                    umlAttribute = (UMLAttribute) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( tempMap.getTargetMapElement().getMetaObject().getXmlPath() );
+//                    if( umlAttribute != null)
+//                    {
+//                        //TODO: Class-lvl
+//                        System.out.println("[ Class-lvl ]");
+//                        String umlClassStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath();//.substring( 0, tempMap.getTargetMapElement().getMetaObject().getXmlPath().lastIndexOf(".") );
+//                        System.out.println("umlClass Str :" + umlClassStr );
+//                        UMLClass umlClass = (UMLClass) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( umlClassStr);
+//                        if ( umlClass != null )
+//                        {
+//                            //Add to a list, check the list if ! contains add tagged value
+//                            if ( ! classList.contains( umlClassStr ) )
+//                            {
+//                                classList.add( umlClassStr );
+//                                System.out.println("Class Found (added) -> Part of: " + umlClass.getName() );
+//                                //TODO: PROBLEM WITH CLASS ELEMENT! Being placed in xmi.content
+//                                umlClass.addTaggedValue( "GME_XMLElement_12345", umlClass.getName() );
+//                            }
+//                            System.out.println("[ / Class-lvl ]\n");
+//
+//                            //TODO: XMI.Content
+//                            System.out.println("[ Xmi.Content ]");
+//                            String classModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr );
+//                            System.out.println( "Class: " + umlClassStr );
+//                            System.out.println( "classModelKey:  " + classModelKey );
+//
+//                            String packageModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ) );
+//                            System.out.println("Package: " + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ));
+//                            System.out.println("packageModelKey: " + packageModelKey);
+//                            System.out.println("[ / Xmi.Content ]\n");
+//                            
+//                            if ( classModelKey != null )
+//                            {
+//                                if ( xsdToXmi.getXsdModelMeta() != null )
+//                                {
+//                                    xmiModelMeta.annotateClassObject( xsdToXmi.getXsdModelMeta().getProjectName(), packageModelKey, tempMap.getTargetMapElement().getMetaObject().getName(), classModelKey );
+//                                    //public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
+//                                }
+//                            }
+//                            
+//                            //TODO: Package-lvl
+//                            System.out.println("[ Package-lvl ]");
+//                            String umlPackageStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( 0, umlClassStr.lastIndexOf(".") );
+//                            System.out.println("umlPackageStr :" + umlPackageStr );
+//
+//                            UMLPackage umlPackage = (UMLPackage) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + umlPackageStr );
+//                            if( umlPackage != null)
+//                            {
+//                                if( ! packageList.contains( umlPackageStr) )
+//                                {
+//                                    packageList.add( umlPackageStr );
+//                                    System.out.println("Package Found (added) -> Part of: " + umlPackageStr );
+//
+//                                    //TODO: Get GMENamespace for the XSD Class here
+//                                    String clsGME = xsdModelMeta.findPackageNamespace( umlPackageStr );
+//                                    System.out.println("GME Namespace: " + clsGME );                                    
+//                                    umlPackage.addTaggedValue( "GME_XMLNamespace", clsGME );
+//                                }
+//                            }
+//                            System.out.println("[ / Package-lvl ]\n");
+//                        }
+//
+//                        //Add the TaggedValue
+//                        System.out.println("[ Adding GME Attribute TaggedValue ]\n");
+//                        AttributeMetadata attr = (AttributeMetadata) tempMap.getSourceMapElement().getMetaObject();
+//                        if ( attr.isChildTag() )
+//                        {
+//                            umlAttribute.addTaggedValue( "GME_XMLLocReference", tempMap.getSourceMapElement().getMetaObject().getName() );
+//                        }
+//                        else 
+//                        {
+//                            umlAttribute.addTaggedValue( "GME_XMLLocReference", "@" + tempMap.getSourceMapElement().getMetaObject().getName() );
+//                        }
+//                    }
+//                }
+
+//                //TODO: Association-lvl
+//                if ( tempMap.getTargetMapElement().getMetaObject() instanceof AssociationMetadata )
+//                {
+//                    UMLAssociation umlAssoc = (UMLAssociation) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + tempMap.getTargetMapElement().getMetaObject().getXmlPath() );
+//
+//                    if ( umlAssoc != null)
+//                    {
+//                        //TODO: Class-lvl
+//                         System.out.println("[ Class-lvl ]");
+//                        String umlClassStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( 0, tempMap.getTargetMapElement().getMetaObject().getXmlPath().lastIndexOf(".") );
+//                        System.out.println("umlClass Str :" + umlClassStr );
+//                        UMLClass umlClass = (UMLClass) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + umlClassStr );
+//                        if ( umlClass != null )
+//                        {
+//                            //Add to a list, check the list if ! contains add tagged value
+//                            if ( ! classList.contains( umlClassStr ) )
+//                            {
+//                                classList.add( umlClassStr );
+//                                System.out.println("Class Found (added) -> Part of: " + umlClassStr );
+//                                umlClass.addTaggedValue( "GME_XMLElement_12345", umlClass.getName() );
+//                            }
+//                             System.out.println("[ / Class-lvl ]\n");
+//
+//                            //TODO: XMI.Content-lvl
+//                            System.out.println("[ Xmi.Content ]");
+//                            String classModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr );
+//                            System.out.println( "Class: " + umlClassStr );
+//                            System.out.println( "classModelKey:  " + classModelKey );
+//
+//                            String packageModelKey = xmiModelMeta.findModelElementXmiId( "EA Model." + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ) );
+//                            System.out.println("Package: " + umlClassStr.substring( 0, umlClassStr.lastIndexOf(".") ));
+//                            System.out.println("packageModelKey: " + packageModelKey);
+//                            System.out.println("[ / Xmi.Content ]\n");
+//
+//                            if ( classModelKey != null )
+//                            {
+//                                if ( xsdToXmi.getXsdModelMeta() != null )
+//                                {
+//                                    xmiModelMeta.annotateClassObject( xsdToXmi.getXsdModelMeta().getProjectName(), packageModelKey, tempMap.getTargetMapElement().getMetaObject().getName(), classModelKey );
+//                                    //public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
+//                                }
+//                            }
+//
+//                            //TODO: Package-lvl
+//                             System.out.println("[ Package-lvl ]");
+//                            String umlPackageStr = tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( 0, umlClassStr.lastIndexOf(".") );
+//                            System.out.println( "umlPackageStr :" + umlPackageStr );
+//                            UMLPackage umlPackage = (UMLPackage) xsdToXmi.getXmiModelMeta().getUmlHashMap().get( "EA Model." + umlPackageStr );
+//                            if( umlPackage != null)
+//                            {
+//                                if( ! packageList.contains( umlPackageStr ) )
+//                                {
+//                                    packageList.add( umlPackageStr );
+//                                    System.out.println( "Package Found (added) -> Part of: " + umlPackageStr );
+//                                    umlPackage.addTaggedValue( "GME_XMLNamespace", umlPackage.getName() );
+//                                }
+//                            }
+//                             System.out.println("[ / Package-lvl ]\n");
+//                        }
+//
+//                        System.out.println( "[ Adding GME Assoc TaggedValue ]\n" );
+//                        umlAssoc.addTaggedValue( "GME_SourceXMLLocRef",  "" + tempMap.getSourceMapElement().getMetaObject().getXmlPath().substring( tempMap.getSourceMapElement().getMetaObject().getXmlPath().lastIndexOf(".") + 1, tempMap.getSourceMapElement().getMetaObject().getXmlPath().length() ) );                        
+//                        umlAssoc.addTaggedValue( "GME_TargetXMLLocRef",  "" + tempMap.getTargetMapElement().getMetaObject().getXmlPath().substring( tempMap.getTargetMapElement().getMetaObject().getXmlPath().lastIndexOf(".") + 1, tempMap.getTargetMapElement().getMetaObject().getXmlPath().length() ) );
+//                    }
+//                }
+//            }
 
             //Save xmi to disk
             xsdToXmi.getXmiModelMeta().getHandler().save( file.getAbsolutePath() );
@@ -423,6 +503,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
             }
             JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
 			return true;
+
 		}
 		catch(Throwable e)
 		{
@@ -512,6 +593,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/02/20 21:46:06  schroedn
+ * HISTORY      : *** empty log message ***
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/02/20 15:24:38  schroedn
  * HISTORY      : Annotations
  * HISTORY      :
