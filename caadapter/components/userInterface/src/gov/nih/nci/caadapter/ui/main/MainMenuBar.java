@@ -82,7 +82,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.28 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.29 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -625,6 +625,7 @@ public class MainMenuBar extends AbstractMenuBar
             //			newCSVSpecificationItem.getAction().setEnabled(true);
             //			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
             resetMenuItem(ActionConstants.NEW_CSV_SPEC, true);
+            resetMenuItem(ActionConstants.NEW_XSD2XMI_MAP_FILE, true);
             //			newHSMFileItem.getAction().setEnabled(true);
             //			menuItemMap.get(ActionConstants.NEW_HSM_FILE).getAction().setEnabled(true);
             resetMenuItem(ActionConstants.NEW_HSM_FILE, true);
@@ -679,6 +680,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.28  2008/02/04 15:09:54  schroedn
+ * HISTORY : XSD to XMI Mapping - GME initial
+ * HISTORY :
  * HISTORY : Revision 1.27  2008/01/04 19:40:15  wangeug
  * HISTORY : disable help menu for TDMS release
  * HISTORY :
