@@ -119,6 +119,11 @@ public class DatatypeProcessor {
     		
     		int size = allListsCSVSegments.size();
     		for(int i=0;i<size;i++) {
+    			if (allListsCSVSegments.get(i).isEmpty())
+    			{
+    				System.out.println("DatatypeProcessor.process_datatype()..missed segment:"+pCsvSegment+"."+xmlName);
+    				return null;
+    			}
     			csvSegmentList.add(allListsCSVSegments.get(i).get(0));
     			csvSegmentSum.add(allListsCSVSegments.get(i).size());
     			csvSegmentIndex.add(0);
