@@ -17,11 +17,9 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
-//import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
 
 import java.io.*;
 import java.util.*;
-import java.util.List;
 
 import org.jdom.*;
 import org.jdom.filter.ElementFilter;
@@ -89,10 +87,10 @@ public class XMIGenerator
             // Remove all dependencies from the Model
 		    for ( UMLDependency dep : model.getDependencies() )
 		    {		    	
-				model.removeDependency( dep );
+				model.getDependencies().remove(dep);//.removeDependency( dep );
             }
-		    
-		    model.emptyDependency();
+		    model.getDependencies().clear();
+//		    model.emptyDependency();
 		    
 			for( UMLPackage pkg : model.getPackages() ) 
 			{
