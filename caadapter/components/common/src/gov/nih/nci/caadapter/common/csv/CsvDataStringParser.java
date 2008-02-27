@@ -17,7 +17,8 @@ public class CsvDataStringParser {
 	private String DOUBLE_QUOTE_DELIMITER="\"";
 	private String USER_DELIMITER;
 	private String contentData="";
-	
+	private static String  DOUBLE_QUOTE_ENCODER="CAADAPTER_&#34;";
+	private static String  COMMA_ENCODER="CAADAPTER_&#44;";
 	/**
 	 * Constructor with the default delimiter
 	 * @param s 
@@ -50,90 +51,50 @@ public class CsvDataStringParser {
 			//parse the content with the DEFAULT delimiter
 			return contentData.split(DEFAULT_DELIMITER);//parseStringToAarryWithDelimiter(contentData, DEFAULT_DELIMITER, false);
 		}
-		
-		ArrayList<String> fldList=new ArrayList<String>();
+
 		//parse the String containing one or more DOUBLE_QUOTE_DELIMITER
-		String [] preRtnData=parseStringToAarryWithDelimiter(contentData,DOUBLE_QUOTE_DELIMITER, true);
-		boolean isInField=false;
-		boolean isAfterDoubleQuote=false;
-		boolean isDoubleQuoteEmpty=false;
-		for(int i=0;i<preRtnData.length;i++)
+		encodeData();
+		String [] encodedFields= contentData.split(DEFAULT_DELIMITER);
+		//decode the encodeFields
+		for (int i=0;i<encodedFields.length;i++)
 		{
-			String onePiece=preRtnData[i].trim();
-			if (onePiece.equals(DOUBLE_QUOTE_DELIMITER))
-			{
-				//start or end a field delimitted with DOUBLE_QUOTE_DELIMITER
-				if (isInField)
-				{
-					isInField=false;
-					isAfterDoubleQuote=true;
-					isDoubleQuoteEmpty=true;
-				}
-				else
-				{
-					isInField=true;	
-					isAfterDoubleQuote=false;
-					//add an empty field before close the double_quote
-					if(isDoubleQuoteEmpty)
-					{
-						fldList.add("");
-						isDoubleQuoteEmpty=false;
-					}
-				}
-			}
-			else
-			{
-				if (isInField)
-				{
-					fldList.add(onePiece); //the whole content is one field
-					//turn off the double_quote flag since NON-NULL data is found
-					isDoubleQuoteEmpty=false;
-				}
-				else
-				{
-					//this piece of data is out of DOUBLE_QUOTE_DELIMITER,parse it with default delimiter
-//					String [] pieceData=parseStringToAarryWithDelimiter(onePiece, DEFAULT_DELIMITER, false);
-					String realData=onePiece;
-					if (isAfterDoubleQuote)
-					{
-						//remove the first ","
-						if (onePiece.startsWith(DEFAULT_DELIMITER))
-							realData=onePiece.substring(1);
-					}
-				
-					String [] pieceData=realData.split(DEFAULT_DELIMITER);
-					if (pieceData.length==0)
-						fldList.add(onePiece);
-					else
-					{
-						for (int j=0;j<pieceData.length;j++)
-						fldList.add(pieceData[j]);
-					}
-				}
-			}
+			String oneField=encodedFields[i];
+			//remove the boundary DOUBLE_QUOTE
+			oneField=oneField.replace("\"", " ");
+			oneField=oneField.replace(DOUBLE_QUOTE_ENCODER, "\"");
+			encodedFields[i]=oneField.replace(COMMA_ENCODER,",");
 		}
-		
-		String[] rtnArray=new String[fldList.size()];
-	    for (int i=0;i<fldList.size();i++)
-	    	   rtnArray[i]=fldList.get(i);
-	    
-		return rtnArray;
+		return encodedFields;
 	}
 	
-	 /**
-     * Convert a line into a string array
-     * @param lineData
-     * @return
-     */
-    private String[] parseStringToAarryWithDelimiter(String lineData, String delimiter, boolean returnDelimiter)
-    {
-    	StringTokenizer st=new StringTokenizer(lineData,delimiter,returnDelimiter);
-    	String[] rtnArray=new String[st.countTokens()];
-    	int i=0;
-    	while (st.hasMoreTokens())
-    	{	rtnArray[i]=st.nextToken();
-    		i++;
-    	}
-    	return rtnArray;
-    }
+	/**
+	 * Encode the contentData string
+	 * Encode DOULBE_QUOT and COMMA within a pair of delimiters (DOUBLE_QUOTE).
+	 *
+	 */
+	private void encodeData()
+	{
+		//encode DOUBLE_QUOTE -- the "" within a "..."
+		if (contentData.contains("\"\""))
+		{
+			String encodeContentData=contentData.replace("\"\"", DOUBLE_QUOTE_ENCODER);
+			contentData=encodeContentData;
+		}
+		//encode COMMA
+		boolean isInDoubleQuote=false;
+		char[] stChars=contentData.toCharArray();
+		StringBuffer encodeSb=new StringBuffer();
+		for (int i=0;i<stChars.length;i++)
+		{
+			//chck if the DOUBLE_QUOTE is closed
+			if (stChars[i]=='\"')
+				isInDoubleQuote=!isInDoubleQuote;
+
+			if (stChars[i]==','&&isInDoubleQuote)
+				encodeSb.append(COMMA_ENCODER);
+			else
+				encodeSb.append(stChars[i]);	
+		}
+		contentData=encodeSb.toString().replace("\"", "");
+	}
 }
