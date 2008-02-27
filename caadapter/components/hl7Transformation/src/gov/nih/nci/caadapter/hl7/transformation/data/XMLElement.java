@@ -7,6 +7,7 @@ package gov.nih.nci.caadapter.hl7.transformation.data;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -27,8 +28,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2007-12-13 19:29:45 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2008-02-27 14:47:25 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -235,7 +236,7 @@ public class XMLElement implements Cloneable{
 			}
 			else {
 				output.append(">");
-				output.append(bodyValue);
+				output.append(bodyValue.replaceAll(CaadapterUtil.LINEFEED_ENCODE, "\n"));
 				output.append("</" + getName() + ">\n");
 				
 			}
