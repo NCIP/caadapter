@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.17 2007-12-20 18:10:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.18 2008-02-27 14:47:48 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -41,6 +41,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -55,8 +56,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.17 $
- * @date $$Date: 2007-12-20 18:10:19 $
+ * @version $Revision: 1.18 $
+ * @date $$Date: 2008-02-27 14:47:48 $
  * @since caAdapter v1.2
  */
 
@@ -68,6 +69,9 @@ public class CaadapterUtil {
 	private static HashMap<String, ArrayList<String>> RESOURCE_MODULE_REQUIRED =new HashMap<String, ArrayList<String>>();
 	private static HashMap prefs;
 	private static boolean authorizedUser=false;
+	public static final String  LINEFEED_ENCODE="&#x0A;";//html format of UTF-8 unicode value of '\n'
+	public static final String  CARTRIAGE_RETURN_ENCODE="&#x0D;";//html format of UTF-8 unicode value of '\r'
+	
 	static {
 		//mkdir for logging 
 		File logDir=new File("log");
@@ -335,6 +339,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2007/12/20 18:10:19  wangeug
+ * HISTORY      : validate resource required
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2007/10/12 16:12:16  wangeug
  * HISTORY      : avoid duplicated record of missed resource
  * HISTORY      :
