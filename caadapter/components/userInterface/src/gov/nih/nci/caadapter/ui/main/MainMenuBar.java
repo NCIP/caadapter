@@ -56,6 +56,7 @@ import gov.nih.nci.caadapter.ui.hl7message.actions.OpenHL7V3MessageAction;
 import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.GME.actions.NewXsdToXmiMapAction;
+import gov.nih.nci.caadapter.ui.mapping.GME.actions.OpenXsdToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.actions.V2V3MapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.NewCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.OpenCsvToXmiMapAction;
@@ -82,7 +83,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.29 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.30 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -480,27 +481,35 @@ public class MainMenuBar extends AbstractMenuBar
     {
         // construct actions and menu items.
         OpenMapFileAction openMapAction = new OpenMapFileAction(mainFrame);
+
         JMenuItem openMapFileItem = new JMenuItem(openMapAction);
         actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
         menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
         OpenObjectToDbMapAction openO2DBMapAction = new OpenObjectToDbMapAction(mainFrame);
+
         JMenuItem openO2DBMapFileItem = new JMenuItem(openO2DBMapAction);
         actionMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapAction);
         menuItemMap.put(ActionConstants.OPEN_O2DB_MAP_FILE, openO2DBMapFileItem);
-        
+
         OpenCsvToXmiMapAction openCsvToXmiMapAction = new OpenCsvToXmiMapAction(mainFrame);
         JMenuItem openCsvToXmiMapFileItem = new JMenuItem(openCsvToXmiMapAction);
         actionMap.put(ActionConstants.OPEN_CSV2XMI_MAP_FILE, openCsvToXmiMapAction);
         menuItemMap.put(ActionConstants.OPEN_CSV2XMI_MAP_FILE, openCsvToXmiMapFileItem);
-        
-        
+
+        OpenXsdToXmiMapAction openXsdToXmiMapAction = new OpenXsdToXmiMapAction(mainFrame);
+        JMenuItem openXsdToXmiMapFileItem = new JMenuItem(openXsdToXmiMapAction);
+        actionMap.put(ActionConstants.OPEN_XSD2XMI_MAP_FILE, openXsdToXmiMapAction);
+        menuItemMap.put(ActionConstants.OPEN_XSD2XMI_MAP_FILE, openXsdToXmiMapFileItem);
+
         OpenSDTMMapAction openSDTMMapAction = new OpenSDTMMapAction(mainFrame);
         JMenuItem openSDTMMapFile = new JMenuItem(openSDTMMapAction);
         OpenCsvSpecificationAction openCSVSpecificationAction = new OpenCsvSpecificationAction(mainFrame);
+
         JMenuItem openCSVSpecificationItem = new JMenuItem(openCSVSpecificationAction);
         actionMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationAction);
         menuItemMap.put(ActionConstants.OPEN_CSV_SPEC, openCSVSpecificationItem);
         OpenHSMAction openHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.h3s)", mainFrame);
+
         JMenuItem openHSMFileItem = new JMenuItem(openHSMAction);
         actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
         menuItemMap.put(ActionConstants.OPEN_HSM_FILE, openHSMFileItem);
@@ -513,9 +522,13 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem openHL7V3MessageItem = new JMenuItem(openHL7V3MessageAction);
         actionMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageAction);
         menuItemMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageItem);
+
         // link them together
         JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
         openMenu.setMnemonic('O');
+
+        openMenu.add( openXsdToXmiMapFileItem);
+        
         //openCSVSpecificationItem is shared by multiple module
         boolean isOpenCsvAdded=false;
         if (CaadapterUtil.getAllActivatedComponents().isEmpty())
@@ -680,6 +693,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.29  2008/02/25 20:43:50  schroedn
+ * HISTORY : Fixed grayed out menu bar for XSDtoXMI
+ * HISTORY :
  * HISTORY : Revision 1.28  2008/02/04 15:09:54  schroedn
  * HISTORY : XSD to XMI Mapping - GME initial
  * HISTORY :
