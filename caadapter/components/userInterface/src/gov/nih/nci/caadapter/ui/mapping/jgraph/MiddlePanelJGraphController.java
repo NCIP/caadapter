@@ -93,7 +93,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.21 $ date $Date: 2008-02-28 19:12:18 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.22 $ date $Date: 2008-02-28 19:17:23 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -108,7 +108,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.21 2008-02-28 19:12:18 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.22 2008-02-28 19:17:23 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1381,7 +1381,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 					||sourceMapComp.getMetaObject() instanceof DatatypeBaseObject) {// flip back the real source and target
 				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getXmlPath());
 			} 
-			else if (sourceMapComp.getMetaObject() instanceof AttributeMetadata )
+			else if (sourceMapComp.getMetaObject() instanceof MetaObject )
 			{
 				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getXmlPath());
 			}
@@ -1412,7 +1412,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			{
 				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getDataXmlPath());
 			}
-			else if (targetMapComp.getMetaObject() instanceof AttributeMetadata )
+			else if (targetMapComp.getMetaObject() instanceof MetaObject )
 			{
 				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
 			}
@@ -1446,6 +1446,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.21  2008/02/28 19:12:18  wangeug
+ * HISTORY : load mapping from xsd to Xmi
+ * HISTORY :
  * HISTORY : Revision 1.20  2008/01/08 18:45:03  wangeug
  * HISTORY : clean codes
  * HISTORY :

@@ -69,13 +69,13 @@ import org.jdom.Element;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.3 2008-02-28 18:14:10 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.4 2008-02-28 19:12:54 wangeug Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
     private XsdToXmiTargetTreeDropTransferHandler xsdToXmiTargetTreeDropTransferHandler = null;
@@ -539,27 +539,27 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                System.out.println("xmiPath: " + xmiPath );
                                System.out.println("Found XMI target UMLAttribute: " + att.getName());
 
-                               //TODO: add source mapping here
+                               //TODO: add target mapping here, which is xmiTree
                                String xmiKey = (String) key;
                                AttributeMetadata xmiAttrMeta = (AttributeMetadata) xmiModelMeta.getModelMetadata().get( xmiKey.replaceAll("EA Model.", "") );
 
                                MapImpl gmeLocRefmap = new MapImpl();
-                               BaseMapElementImpl sourceMapElement = new BaseMapElementImpl();
+                               BaseMapElementImpl trgtMapElement = new BaseMapElementImpl();
                                //sourceMapElement.setComponent();
-                               sourceMapElement.setMetaObject( xmiAttrMeta );
-                               sourceMapElement.setXmlPath( xmiAttrMeta.getXmlPath() );
-                               gmeLocRefmap.setSourceMapElement( sourceMapElement );
+                               trgtMapElement.setMetaObject( xmiAttrMeta );
+                               trgtMapElement.setXmlPath( xmiAttrMeta.getXmlPath() );
+                               gmeLocRefmap.setTargetMapElement( trgtMapElement );
 
-                               //TODO: add target mapping here
+                               //TODO: add source mapping here, which is XSD
                                TreeMap xsdMap = xsdModelMeta.getAttributeMap();
-                               AttributeMetadata targetAttr = (AttributeMetadata) xsdMap.get( xsdPath );
-                               System.out.println("Found XSD target AttributeMetadata: " + targetAttr.getXmlPath() );
+                               AttributeMetadata xsdSrcAttr = (AttributeMetadata) xsdMap.get( xsdPath );
+                               System.out.println("Found XSD target AttributeMetadata: " + xsdSrcAttr.getXmlPath() );
 
-                               BaseMapElementImpl targetMapElement = new BaseMapElementImpl( );
+                               BaseMapElementImpl srcMapElement = new BaseMapElementImpl( );
                                //targetMapElement.setComponent();
-                               targetMapElement.setMetaObject( targetAttr );
-                               targetMapElement.setXmlPath( targetAttr.getXmlPath());
-                               gmeLocRefmap.setTargetMapElement(targetMapElement);
+                               srcMapElement.setMetaObject( xsdSrcAttr );
+                               srcMapElement.setXmlPath( xsdSrcAttr.getXmlPath());
+                               gmeLocRefmap.setSourceMapElement(srcMapElement);
 
                                currentMapping.addMap(gmeLocRefmap);
                            }

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.5 2008-02-25 20:15:32 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.6 2008-02-28 19:12:30 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -72,10 +72,10 @@ import java.util.Iterator;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-02-25 20:15:32 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-02-28 19:12:30 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -91,7 +91,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.5 2008-02-25 20:15:32 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.6 2008-02-28 19:12:30 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -203,7 +203,8 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                   else if (umlObject instanceof UMLPackage)
                   {
                       System.out.println("Removing package " + modelKey );
-                      ((UMLPackage)umlObject).removeTaggedValue("GME_XMLNamespace");
+                      xmiModelMeta.cleanPackageTaggedValue((UMLPackage)umlObject,"GME_XMLNamespace");
+//                      ((UMLPackage)umlObject).removeTaggedValue("GME_XMLNamespace");
                   }
                   else
                 	  System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()... invalid uml object:"+umlObject.getClass());
@@ -629,6 +630,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/02/25 20:15:32  schroedn
+ * HISTORY      : *** empty log message ***
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/02/21 15:39:31  wangeug
  * HISTORY      : annotate XMI to support GME
  * HISTORY      :
