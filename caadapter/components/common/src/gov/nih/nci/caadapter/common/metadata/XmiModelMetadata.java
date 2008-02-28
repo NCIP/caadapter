@@ -532,15 +532,25 @@ public class XmiModelMetadata {
 		Element xmiContent=modelElement.getParentElement();
 		xmiContent.removeChild("TaggedValue");
 	}
-	public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
+
+    public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
 	{
 		
 		addClassObjectAnnotationTag("GME_XMLNamespace", gmeXmlNamespace,packageModelElementId);
 		
 		addClassObjectAnnotationTag("GME_XMLElement", gmeXmlElementName,classModelElementId);
 	}
-	
-	private void addClassObjectAnnotationTag(String tag, String value, String modelElmentId)
+    
+    public Element getXmiContent()
+    {
+        UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+		Element modelElement=(Element)modelBean.getJDomElement();
+
+		Element xmiContent=modelElement.getParentElement();
+        return xmiContent;
+    }
+
+    private void addClassObjectAnnotationTag(String tag, String value, String modelElmentId)
 	{
 		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
 		Element modelElement=(Element)modelBean.getJDomElement();
