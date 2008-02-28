@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/OpenXsdToXmiMapAction.java,v 1.1 2008-02-04 15:10:34 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/OpenXsdToXmiMapAction.java,v 1.2 2008-02-28 18:14:22 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,8 +64,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-02-04 15:10:34 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-02-28 18:14:22 $
  */
 public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 {
@@ -177,9 +177,14 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 				{
                     GeneralUtilities.setCursorWaiting(mainFrame);
 
-						validatorResults = mappingPanel.processOpenMapFile(file);
-						mappingPanel.setChanged(false);
-					Thread.sleep(1);
+                        //load XSD file
+                        mappingPanel.processOpenXSDFile(file);
+
+                        //load XMI file
+                        mappingPanel.processOpenXMIFile();
+
+                        mappingPanel.setChanged(false);
+					    Thread.sleep(1);
 					
 //					everythingGood = handleValidatorResults(validatorResults);
 					/*
@@ -236,7 +241,7 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 			return isSuccessfullyPerformed();
 		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
-				Config.MAP_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_MAP_FILE, false, false);
+				".xsd", "Open XSD file...", false, false);
 		if (file != null)
 		{
 			openFile = file;
@@ -255,6 +260,9 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/02/04 15:10:34  schroedn
+ * HISTORY      : XSD to XMI Mapping - GME initial load
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/12/13 15:29:20  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :
