@@ -35,6 +35,7 @@ import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
 import gov.nih.nci.caadapter.common.map.View;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 
 import gov.nih.nci.caadapter.hl7.map.impl.BaseMapElementImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MapImpl;
@@ -92,7 +93,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.20 $ date $Date: 2008-01-08 18:45:03 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.21 $ date $Date: 2008-02-28 19:12:18 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -107,7 +108,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.20 2008-01-08 18:45:03 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.21 2008-02-28 19:12:18 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1378,8 +1379,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				// Log.logInfo(this, "paramMeta is '" + paramMeta.toString() + "',field type:'" + paramMeta.getParameterType() + "'.");
 			} else if ( sourceMapComp.isComponentOfTargetType() 
 					||sourceMapComp.getMetaObject() instanceof DatatypeBaseObject) {// flip back the real source and target
-				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), sourceMapComp.getXmlPath());
+				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getXmlPath());
 			} 
+			else if (sourceMapComp.getMetaObject() instanceof AttributeMetadata )
+			{
+				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getXmlPath());
+			}
 			else {
 				if ( sourceMapComp.getComponent() != null ) {
 					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
@@ -1406,6 +1411,10 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			else if(targetMapComp.getDataXmlPath()!=null)
 			{
 				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getDataXmlPath());
+			}
+			else if (targetMapComp.getMetaObject() instanceof AttributeMetadata )
+			{
+				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
 			}
 			else {
 				if ( sourceMapComp.getComponent() != null ) {
@@ -1437,6 +1446,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.20  2008/01/08 18:45:03  wangeug
+ * HISTORY : clean codes
+ * HISTORY :
  * HISTORY : Revision 1.19  2007/12/13 21:09:11  wangeug
  * HISTORY : resolve code dependence in compiling
  * HISTORY :

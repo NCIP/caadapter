@@ -32,8 +32,10 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAttributeBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLModelBean;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLPackageBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
@@ -523,17 +525,62 @@ public class XmiModelMetadata {
 	public LinkedHashMap getUmlHashMap() {
 		return umlHashMap;
 	}
+	/**
+	 * Clean the Tagged value in the "ModelElment.taggedValue" child given the tag name
+	 * @param pkg
+	 * @param tagName
+	 */
+	public void cleanPackageTaggedValue(UMLPackage pkg, String tagName)
+	{
+		UMLPackageBean pkgBean=(UMLPackageBean)pkg;
+		Element pkgElmt=pkgBean.getJDomElement();
+		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+		Element modelElement=(Element)modelBean.getJDomElement();
+		Element taggedValueElmnt=pkgElmt.getChild("ModelElement.taggedValue", modelElement.getNamespace());
+		cleanElmentTaggedChild(taggedValueElmnt, tagName);
+	}
 	
+	/**
+	 * Remove "taggedValue" element from a JDOM element
+	 * @param elmnt
+	 * @param tagName
+	 */
+	private void cleanElmentTaggedChild(Element elmnt, String tagName)
+	{
+		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+		Element modelElement=(Element)modelBean.getJDomElement();
+		List<Element> taggedList=elmnt.getChildren("TaggedValue", modelElement.getNamespace());
+		for (int i=taggedList.size();i>0;i--)
+		{
+			Element tagElmnt=taggedList.get(i-1);
+			String tagAttrName=tagElmnt.getAttributeValue("tag");
+			if (tagAttrName.equalsIgnoreCase(tagName))
+				taggedList.remove(i-1);
+		}
+	}
+	
+	/**
+	 * Clean all annotation information related with classes, which are set with XMI.content element
+	 *
+	 */
 	public void cleanClassObjectAnnotation()
 	{
 		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
 		Element modelElement=(Element)modelBean.getJDomElement();
 		
 		Element xmiContent=modelElement.getParentElement();
-		xmiContent.removeChild("TaggedValue");
-	}
-
-    public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
+		cleanElmentTaggedChild(xmiContent, "GME_XMLNamespace");
+		cleanElmentTaggedChild(xmiContent, "GME_XMLElement");
+ 	}
+	
+	/**
+	 * Annotate XMI file once one target class being mapped
+	 * @param gmeXmlNamespace
+	 * @param packageModelElementId
+	 * @param gmeXmlElementName
+	 * @param classModelElementId
+	 */
+	public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
 	{
 		
 		addClassObjectAnnotationTag("GME_XMLNamespace", gmeXmlNamespace,packageModelElementId);
@@ -560,19 +607,35 @@ public class XmiModelMetadata {
 		newGmeTag.setAttribute("tag", tag);
 		newGmeTag.setAttribute("value", value);
 		// create one XMI.ID
-//		String tempTagName="CAADAPTER_TEMPORARY_TAG";
-//		String tempTagValue="CAADAPTER_TEMPORARY_VALUE\n_AdditionValue";
-//		modelBean.addTaggedValue(tempTagName,tempTagValue);
-//		//read XMI.ID from the new <TaggedValue>
-//		List<Element> taggedValues=modelElement.getChildren("TaggedValue");
+		Iterator xsdBeanIt = getUmlHashMap().keySet().iterator();//xsdModelMeta.getAttributeMap().keySet().iterator();
+		UMLAttributeBean umlAttrBean=null;
+		while (xsdBeanIt.hasNext())
+        {
+              String umlObjKey=(String)xsdBeanIt.next();
+              Object umlAttr=this.getUmlHashMap().get(umlObjKey);
+              if (umlAttr instanceof UMLAttributeBean)
+              {
+            	  umlAttrBean=(UMLAttributeBean)umlAttr;
+            	  break;
+              }
+        }
 		String tempXmiId="";
-//		for (Element taggedElm:taggedValues)
-//		{
-//			if (taggedElm.getAttributeValue("tag")!=null
-//					&&taggedElm.getAttributeValue("tag").equals(tempTagName))
-//				tempXmiId=taggedElm.getAttributeValue("xmi.id");
-//		}
-//		modelBean.removeTaggedValue(tempTagName);
+		if (umlAttrBean!=null)
+		{
+			String tempTagName="CAADAPTER_TEMPORARY_TAG";
+			String tempTagValue="CAADAPTER_TEMPORARY_VALUE_AdditionValue";
+			umlAttrBean.addTaggedValue(tempTagName,tempTagValue);
+			//read XMI.ID from the new <TaggedValue>
+			Element taggedValueElmnt=umlAttrBean.getJDomElement().getChild("ModelElement.taggedValue", modelElement.getNamespace());
+			List<Element> taggedValues=taggedValueElmnt.getChildren("TaggedValue", modelElement.getNamespace());
+			for (Element taggedElm:taggedValues)
+			{
+				if (taggedElm.getAttributeValue("tag")!=null
+						&&taggedElm.getAttributeValue("tag").equals(tempTagName))
+					tempXmiId=taggedElm.getAttributeValue("xmi.id");
+			}
+			umlAttrBean.removeTaggedValue(tempTagName);
+		}
 		//set XMI.ID attribute
 		newGmeTag.setAttribute("xmi.id",tempXmiId);
 		newGmeTag.setAttribute("modelElement", modelElmentId);
