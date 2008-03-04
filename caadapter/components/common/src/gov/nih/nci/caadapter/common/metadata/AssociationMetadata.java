@@ -113,7 +113,10 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 		this.roleName = roleName;
 	}
 
-	/**
+    public String getName(){
+		return this.roleName;
+	}
+    /**
 	 *
 	 * @param reciprocolRoleName
 	 */
