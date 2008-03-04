@@ -92,8 +92,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.22 $ date $Date: 2008-02-28 19:17:23 $
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v1.2 revision $Revision: 1.23 $ date $Date: 2008-03-04 16:09:00 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -108,7 +108,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.22 2008-02-28 19:17:23 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.23 2008-03-04 16:09:00 schroedn Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -403,7 +403,23 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		}
 	}
 
-	/**
+      /**
+	 * Handle the deletion of all graph cells on the middle panel.
+	 */
+    public synchronized void handleDeleteAll()
+    {     
+        clearAllGraphCells();
+
+		//repaint the source and target scrollPanes
+        mappingPanel.getSourceScrollPane().repaint();
+        mappingPanel.getTargetScrollPane().repaint();
+
+        System.out.println("middlePanel type: " + middlePanel.getKind() );
+
+        setGraphChanged(true);
+    }
+
+    /**
 	 * Handle the deletion of graph cells on the middle panel.
 	 */
 	public synchronized void handleDelete()
@@ -412,7 +428,6 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		removeCells(cells, true);
         
         //System.out.println("middlePanel kind: " + middlePanel.getKind() );
-
         if ( middlePanel.getKind().equalsIgnoreCase("o2db") ) {
 			if ( cells.length > 0 ) {
 				DefaultEdge edge = (DefaultEdge) cells[0];
@@ -423,7 +438,8 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
                 sourceSDKMetaData.setMapped(false);
             }
-		} else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
+		} 
+        else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
 			if ( cells.length > 0 ) {
 				DefaultEdge edge = (DefaultEdge) cells[0];
 				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
@@ -1446,6 +1462,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.22  2008/02/28 19:17:23  wangeug
+ * HISTORY : load mapping from xsd to Xmi
+ * HISTORY :
  * HISTORY : Revision 1.21  2008/02/28 19:12:18  wangeug
  * HISTORY : load mapping from xsd to Xmi
  * HISTORY :
