@@ -24,6 +24,7 @@ import gov.nih.nci.caadapter.hl7.map.impl.*;
 import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.XsdModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
@@ -46,6 +47,7 @@ import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRendererPK;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
@@ -69,13 +71,13 @@ import org.jdom.Element;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date:
+ * @author LAST UPDATE $Author: schroedn $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.4 2008-02-28 19:12:54 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.5 2008-03-04 16:06:40 schroedn Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
     private XsdToXmiTargetTreeDropTransferHandler xsdToXmiTargetTreeDropTransferHandler = null;
@@ -458,6 +460,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	{
         //TODO: open and create mappings from XMIModelMetadata
         File file = DefaultSettings.getUserInputOfFileFromGUI(this, ".xmi", "Open XMI file ...", false, false);
+        this.setSaveFile(file);
 
         if (file != null)
         {
@@ -500,7 +503,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                className = className.substring(0, className.lastIndexOf("."));
                                System.out.println("class: (" + className + ")" );
 
-                               // Find the xmi.id for this classs
+                               // Find the xmi.id for this class
                                UMLClassBean trgtClassBean = (UMLClassBean) xmiModelMeta.getUmlHashMap().get( className );
                                String modelElementId = trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
                                System.out.println("xmi.id: (" + modelElementId + " )" );
@@ -569,7 +572,6 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                     if ( value instanceof UMLAssociation)
                     {
                         UMLAssociation assoc = (UMLAssociation) value;
-                        System.out.println("Assoc: " + assoc.getRoleName() );
 
                         for (Iterator iter= assoc.getTaggedValues().iterator(); iter.hasNext(); ) {
                            Object element = iter.next();
@@ -577,12 +579,115 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
                            if ( tag.getName().contains( "GME_TargetXMLLocRef") )
                            {
-                               System.out.println("**** GME_TargetXMLLocRef: " + tag.getName() + " ( " + tag.getValue() + " )" );
-                           }
-                           if ( tag.getName().contains( "GME_SourceXMLLocRef") )
-                           {
-                               System.out.println("**** GME_SourceXMLLocRef: " + tag.getName() + " ( " + tag.getValue() + " )" );
-                           }
+                               String className = (String) key;
+                               String classPath = className.substring(0, className.lastIndexOf("."));
+                               String classRealName = classPath.substring(classPath.lastIndexOf(".")+1);
+                               System.out.println("class: (" + classRealName + ")" );
+
+                               if( assoc.getTaggedValue("ea_sourceName").getValue().equals(classRealName) )
+                               {
+                                    String srcKey=assoc.getTaggedValue("GME_SourceXMLLocRef").getValue()+"."+assoc.getTaggedValue("GME_TargetXMLLocRef").getValue();
+                                    AssociationMetadata asscXmi = (AssociationMetadata) xmiModelMeta.getModelMetadata().get(((String)key).replaceAll("EA Model.", ""));
+                                    AssociationMetadata asscXsd = xsdModelMeta.getAssociationMap().get(srcKey);
+
+                                    System.out.println("srcKey:   " + srcKey );
+                                    System.out.println("asscXmi:  " + asscXmi);
+                                    System.out.println("asscXsd:  " + asscXsd + "\n");
+
+                                    MapImpl gmeLocRefmap = new MapImpl();
+                                    BaseMapElementImpl trgtMapElement = new BaseMapElementImpl();
+
+                                    trgtMapElement.setMetaObject( asscXmi );
+                                    trgtMapElement.setXmlPath( asscXmi.getXmlPath() );
+                                    gmeLocRefmap.setTargetMapElement( trgtMapElement );
+
+                                    //TODO: add source mapping here, which is XSD
+                                    BaseMapElementImpl srcMapElement = new BaseMapElementImpl( );
+
+                                    //targetMapElement.setComponent();
+                                    srcMapElement.setMetaObject( asscXsd );
+                                    srcMapElement.setXmlPath( asscXsd.getXmlPath());
+                                    gmeLocRefmap.setSourceMapElement(srcMapElement);
+
+                                    currentMapping.addMap(gmeLocRefmap);
+                               }
+                            }
+
+//                           if ( tag.getName().contains( "GME_TargetXMLLocRef") ||  tag.getName().contains( "GME_SourceXMLLocRef") )
+//                           {
+//                               System.out.println("**** GME_TargetXMLLocRef: " + tag.getName() + " ( " + tag.getValue() + " )" );
+//
+//                               //find the class of this association
+//
+//                               String className = (String) key;
+//                               className = className.substring(0, className.lastIndexOf("."));
+//                               System.out.println("class: (" + className + ")" );
+//
+//                               //Find the xmi.id for this class
+//                               UMLClassBean trgtClassBean = (UMLClassBean) xmiModelMeta.getUmlHashMap().get( className );
+//                               String modelElementId = trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
+//                               System.out.println("xmi.id: (" + modelElementId + " )" );
+//
+//                               //Return any TaggedValues in xmi.content level
+//                               Element xmiContent = xmiModelMeta.getXmiContent();
+//                               java.util.List children = xmiContent.getChildren();
+//
+//                               String xsdRoot = null;
+//                               String xsdClass = null;
+//                               for (Object obj:children)
+//                               {
+//                                     Element elmnt=(Element)obj;
+//                                     String modelElement = elmnt.getAttributeValue("modelElement");
+//
+//                                     if ( modelElement != null )
+//                                     {
+//                                         //System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
+//                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLNamespace") )
+//                                         {
+//                                             System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (value: " + elmnt.getAttributeValue("value") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
+//                                             xsdRoot = elmnt.getAttributeValue("value");
+//                                         }
+//                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLElement") )
+//                                         {
+//                                            xsdClass = elmnt.getAttributeValue("value");
+//                                         }
+//                                     }
+//                               }
+//
+//
+//                               String xmiPath = (String)key;
+//                               String xsdAttr = tag.getValue().replaceAll("@", "");
+//                               String xsdPath = xsdRoot.substring( xsdRoot.lastIndexOf("/") + 1, xsdRoot.length() ) + "." + xsdClass + "." + xsdAttr;
+//
+//                               System.out.println("xsdPath: " + xsdPath );
+//                               System.out.println("xmiPath: " + xmiPath );
+//                               System.out.println("Found XMI target UMLAssoc: " + assoc.getRoleName() );
+//
+//                              //TODO: add target mapping here, which is xmiTree
+//                               String xmiKey = (String) key;
+//                               AssociationMetadata xmiAssocMeta = (AssociationMetadata) xmiModelMeta.getModelMetadata().get( xmiKey.replaceAll("EA Model.", "") );
+//
+//                               MapImpl gmeLocRefmap = new MapImpl();
+//                               BaseMapElementImpl trgtMapElement = new BaseMapElementImpl();
+//
+//                               //sourceMapElement.setComponent();
+//                               trgtMapElement.setMetaObject( xmiAssocMeta );
+//                               trgtMapElement.setXmlPath( xmiAssocMeta.getXmlPath() );
+//                               gmeLocRefmap.setTargetMapElement( trgtMapElement );
+//
+//                               //TODO: add source mapping here, which is XSD
+//                               TreeMap xsdMap = xsdModelMeta.getAssociationMap();
+//                               AssociationMetadata xsdSrcAssoc = (AssociationMetadata) xsdMap.get( xsdPath );
+//                               System.out.println("Found XSD target AssociationMetadata: " + xsdSrcAssoc.getXmlPath() );
+//                               BaseMapElementImpl srcMapElement = new BaseMapElementImpl( );
+//
+//                               //targetMapElement.setComponent();
+//                               srcMapElement.setMetaObject( xsdSrcAssoc );
+//                               srcMapElement.setXmlPath( xsdSrcAssoc.getXmlPath());
+//                               gmeLocRefmap.setSourceMapElement(srcMapElement);
+//
+//                               currentMapping.addMap(gmeLocRefmap);
+//                           }
                         }
                     }
                 }
