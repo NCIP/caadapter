@@ -558,8 +558,28 @@ public class XmiModelMetadata {
 				taggedList.remove(i-1);
 		}
 	}
-	
-	/**
+
+    public void cleanProjectObjectAnnotation()
+    {
+ 		UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+        Element prjElmt=modelBean.getJDomElement();
+        //UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+		Element modelElement=(Element)modelBean.getJDomElement();
+		Element taggedValueElmnt=prjElmt.getChild("ModelElement.taggedValue", modelElement.getNamespace());
+
+        if (taggedValueElmnt != null)        
+            cleanElmentTaggedChild(taggedValueElmnt, "GME_XMLNamespace");
+
+//        modelBean.removeTaggedValue("GME_XMLNamespace");
+    }
+
+    public void annotateProjectObject(String gmeXmlNamespace)
+    {
+        UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
+        modelBean.addTaggedValue("GME_XMLNamespace", gmeXmlNamespace );
+    }
+    
+    /**
 	 * Clean all annotation information related with classes, which are set with XMI.content element
 	 *
 	 */
