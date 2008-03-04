@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelMarqueeHandler.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelMarqueeHandler.java,v 1.2 2008-03-04 16:09:23 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -39,10 +39,7 @@ import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxMutableViewInterface;
 import gov.nih.nci.caadapter.ui.common.jgraph.MiddlePanelJGraph;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.AddFunctionalBoxAction;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.ConstantEditAction;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.GraphDeleteAction;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.VacabularyMappingEditAction;
+import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.*;
 
 import org.jgraph.graph.*;
 
@@ -65,10 +62,10 @@ import java.awt.geom.Rectangle2D;
  * and mainly focuses on drag-and-drop and handlings of repaint of graph, for example.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:57 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-03-04 16:09:23 $
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 {
@@ -88,7 +85,8 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	private AddFunctionalBoxAction addFunctionalBoxAction;
 	private ConstantEditAction constantEditAction;
     private VacabularyMappingEditAction vacabularyMappingEditAction;
-
+    private GraphDeleteAllAction deleteAllAction;
+    
     private JPopupMenu popupMenu = null;
 
 	public MiddlePanelMarqueeHandler(MiddlePanelJGraph graph, MiddlePanelJGraphController controller)
@@ -332,18 +330,27 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 			popupMenu.add(menuItem);
 			popupMenu.addSeparator();
-			// Insert Function
+
+            // Insert Function
 			addFunctionalBoxAction = new AddFunctionalBoxAction(controller.getMiddlePanel(), controller);
 			menuItem = new JMenuItem(addFunctionalBoxAction);
 			popupMenu.add(menuItem);
-			//Edit constant
+
+            //Edit constant
 			constantEditAction = new ConstantEditAction(controller.getMiddlePanel(), controller);
 			menuItem = new JMenuItem(constantEditAction);
 			popupMenu.add(menuItem);
+
             //Edit constant
 			vacabularyMappingEditAction = new VacabularyMappingEditAction(controller.getMiddlePanel(), controller);
 			menuItem = new JMenuItem(vacabularyMappingEditAction);
 			popupMenu.add(menuItem);
+
+            //Delete All Action
+            deleteAllAction = new GraphDeleteAllAction(controller.getMiddlePanel(), controller);
+            menuItem = new JMenuItem(deleteAllAction);
+            popupMenu.add(menuItem);
+
         }
 
 		constantEditAction.setEnabled(false);
@@ -415,6 +422,9 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.26  2006/09/06 18:24:44  umkis
  * HISTORY      : The new implement of Vocabulary Mapping function.
  * HISTORY      :
