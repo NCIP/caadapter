@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.7 2007-12-14 16:01:36 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.8 2008-03-04 16:05:29 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -57,10 +57,10 @@ import java.io.FileOutputStream;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2007-12-14 16:01:36 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-03-04 16:05:29 $
  */
 public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 {
@@ -76,7 +76,7 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.7 2007-12-14 16:01:36 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveAsCsvToXmiMapAction.java,v 1.8 2008-03-04 16:05:29 schroedn Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -140,20 +140,27 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 	protected boolean processSaveFile(File file) throws Exception
 	{		
 		preActionPerformed(mappingPanel);
-		MappingDataManager mappingManager = mappingPanel.getMappingDataManager();
+
+        MappingDataManager mappingManager = mappingPanel.getMappingDataManager();
 		Mapping mappingData = mappingManager.retrieveMappingData(true);
 		MapBuilderImpl builder = new MapBuilderImpl();
-		FileOutputStream fw = null;
+
+        FileOutputStream fw = null;
 		BufferedOutputStream bw = null;
-		CsvToXmiMappingPanel csvToXmi=(CsvToXmiMappingPanel)mappingPanel;
+
+        CsvToXmiMappingPanel csvToXmi = (CsvToXmiMappingPanel)mappingPanel;
 		mappingData.setMappingType(csvToXmi.getMappingTarget());
-		boolean oldChangeValue = mappingPanel.isChanged();
-		try
+
+        boolean oldChangeValue = mappingPanel.isChanged();
+
+        try
 		{
 			fw = new FileOutputStream(file);
 			bw = new BufferedOutputStream(fw);
-			builder.build(bw, mappingData);
-			if (!GeneralUtilities.areEqual(defaultFile, file))
+
+            builder.build(bw, mappingData);
+
+            if (!GeneralUtilities.areEqual(defaultFile, file))
 			{//not equal, change it.
 				removeFileUsageListener(defaultFile, mappingPanel);
 				defaultFile = file;
@@ -210,6 +217,9 @@ public class SaveAsCsvToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2007/12/14 16:01:36  wangeug
+ * HISTORY      : do not force to save mapping report
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/12/12 19:54:07  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :
