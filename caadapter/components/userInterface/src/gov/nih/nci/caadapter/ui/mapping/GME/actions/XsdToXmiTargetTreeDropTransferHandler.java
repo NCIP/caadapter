@@ -39,8 +39,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-02-20 15:24:38 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-03-04 16:08:32 $
  */
 public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -82,14 +82,10 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 		{
 			MappableNode mappableNode = (MappableNode) targetNode;
 	
-//			if(mappableNode.isMapped())
-//			{
-//				if (!(targetNode.getUserObject() instanceof TableMetadata)
-//						&&!(targetNode.getUserObject() instanceof ColumnMetadata))
-//				{
-//					return false;
-//				}
-//			}
+			if(mappableNode.isMapped())
+			{
+					return false;
+			}
 
             DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
             System.out.println("[ sourceNode: " + sourceNode.toString() + " <-> " + "targetNode: " + targetNode.toString() + " ]");
