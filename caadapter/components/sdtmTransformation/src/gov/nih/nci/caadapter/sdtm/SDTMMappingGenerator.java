@@ -8,9 +8,9 @@ import java.util.HashMap;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v3.2 revision
- *          $Revision: 1.6 $
+ *          $Revision: 1.7 $
  */
 public class SDTMMappingGenerator
 {
@@ -30,6 +30,11 @@ public class SDTMMappingGenerator
     public void removeObject(String source, String target)
     {
         results.remove(source + "~" + target);
+    }
+
+    public void removeAllObjects()
+    {
+        results.clear();
     }
 
     public boolean put(String source, String target) throws Exception
