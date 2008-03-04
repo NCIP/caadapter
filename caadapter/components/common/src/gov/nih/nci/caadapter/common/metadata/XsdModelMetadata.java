@@ -175,7 +175,8 @@ private void buildObjectAttribute(ObjectMetadata objMeta,AttributeDecl attrEleme
 	attr.setName(attrElement.getName());
 	attr.setDatatype(attrElement.getSimpleType().getName());
 	attr.setXPath(objMeta.getXmlPath()+"."+attrElement.getName());
-	attributeMap.put(attr.getXPath(), attr);
+    attr.setChildTag(false);
+    attributeMap.put(attr.getXPath(), attr);
 	objMeta.addAttribute(attr);
 }
 
@@ -190,7 +191,7 @@ private void buildObjectElementAttribute(ObjectMetadata objMeta,ElementDecl attr
 	attr.setName(attrElement.getName());
 	attr.setDatatype(attrElement.getType().getName());
 	attr.setXPath(objMeta.getXmlPath()+"."+attrElement.getName());
-	attr.setChildTag(true);
+//	attr.setChildTag(true);
 	attributeMap.put(attr.getXPath(), attr);
 	objMeta.addAttribute(attr);
 }
@@ -332,7 +333,7 @@ private void loadSchemaSource(InputSource source)
 }
 
 public String getProjectName() {
-	return projectName;
+	return "GME://projectName";
 }
 
 public void setProjectName(String projectName) {

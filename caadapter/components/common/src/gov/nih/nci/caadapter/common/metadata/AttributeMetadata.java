@@ -23,7 +23,7 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 	private String xPath;
 	private String semanticConcept;
 	private boolean derived;
-	private boolean childTag=false; //define if a child tag is required to represent this the attribute
+	private boolean childTag=true; //define if a child tag is required to represent this the attribute
 									//as GME present a object metadata as an XML
 	
 	public String getSemanticConcept(){
@@ -37,15 +37,17 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 		return name;
 	}
 
-	public String toString() {
+	public String toString() {  
 		if (isDerived()) {
 			return getName() + " (A - Derived)";
-		}else if (isChildTag()){
-			return "@"+getName() + " (A)";
+		}
+
+        if (isChildTag()){
+			return getName() + " (A)";
 		}
 		else
-			return getName() + " (A)";	
-		
+			return "@"+getName() + " (A)";
+		//TODO: check for xmi
 	}
 
 	public String getTitle() {
