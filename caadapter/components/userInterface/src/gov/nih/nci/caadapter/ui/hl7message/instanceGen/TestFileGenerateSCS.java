@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.2 2007-08-06 14:27:43 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.3 2008-03-06 17:26:10 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -69,7 +69,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 6, 2007
  *          Time:       4:02:14 PM $
  */
@@ -88,7 +88,7 @@ public class TestFileGenerateSCS
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.2 2007-08-06 14:27:43 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.3 2008-03-06 17:26:10 umkis Exp $";
 
     //private List<String> list = new ArrayList<String>();
     DataNode head;
@@ -200,7 +200,7 @@ public class TestFileGenerateSCS
                     continue;
                 }
                 temp = head;
-                //System.out.println("SSSSSSSSSSSSSS : " + readLineOfFile);
+                System.out.println("SSSSSSSSSSSSSS : " + readLineOfFile);
 
                 for (int i=0;i<(list.size()-2);i++)
                 {
@@ -222,13 +222,16 @@ public class TestFileGenerateSCS
                         }
                     }
                     else temp = this.getChildNodeWithName(temp, list.get(i));
-                    //System.out.println("  " + i + " : " + this.getSegmentName(temp));
+                    System.out.println("  " + i + " => " + list.get(i) + " : " + this.getSegmentName(temp));
                 }
                 if (!temp.isLeafNode())
                 {
-                    System.out.println("SSS: This node is not a leaf node : " + readLineOfFile + " : " + this.getSegmentName(temp) + " : " + list.get(list.size()-3));
-                    temp = this.getChildNodeWithName(temp, list.get(list.size()-3));
+                    System.out.println("SSS: This node is not a leaf node : " + readLineOfFile + " : " + temp.getNodeName() + " : " + this.getSegmentName(temp) + " : " + list.get(list.size()-3));
+                    temp = this.getChildNodeWithName(temp, list.get(list.size()));
                 }
+                if (temp == null)
+                    System.out.println("SSS: This node is null : " + readLineOfFile);// + " : " + this.getSegmentName(temp));
+
                 temp.inputField(field, dat);
             }
         }
@@ -780,6 +783,9 @@ class DataNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/06 14:27:43  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/02 16:29:40  umkis
  * HISTORY      : This package was moved from the common component
  * HISTORY      :
