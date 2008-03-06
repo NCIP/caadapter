@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.29 2007-10-24 18:38:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.30 2008-03-06 19:10:36 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -82,8 +82,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.29 $
- *          date        $Date: 2007-10-24 18:38:34 $
+ *          revision    $Revision: 1.30 $
+ *          date        $Date: 2008-03-06 19:10:36 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -490,9 +490,11 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		while (childAttrsEnum.hasMoreElements())
 		{
 			Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
+			if (childAttr.getReferenceDatatype()!=null)
+				continue;
 			childAttr.setEnabled(true);
 			childAttr.setSimple(true);
-			Datatype childDataType=(Datatype)DatatypeParserUtil.getDatatype(childAttr.getType());
+			Datatype childDataType=(Datatype)DatatypeParserUtil.getDatatype(childAttr.getType()).clone();
 			
 			if (childDataType!=null&&!childDataType.isSimple())
 			{
