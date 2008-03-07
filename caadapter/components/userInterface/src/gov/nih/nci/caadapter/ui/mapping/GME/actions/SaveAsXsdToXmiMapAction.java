@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.7 2008-03-04 16:08:11 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.8 2008-03-07 15:36:48 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -75,8 +75,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-03-04 16:08:11 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-03-07 15:36:48 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -92,7 +92,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.7 2008-03-04 16:08:11 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.8 2008-03-07 15:36:48 schroedn Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
@@ -213,7 +213,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 //                      ((UMLPackage)umlObject).removeTaggedValue("GME_XMLNamespace");
                   }
                   else
-                	  System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()... invalid uml object:"+umlObject.getClass());
+                  {
+                      System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()... invalid uml object:"+umlObject.getClass());
+                  }
             }
             System.out.println("[ / Removing annotations ]\n");
 
@@ -311,22 +313,29 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 	AssociationMetadata trgtAssc=(AssociationMetadata)trgtMeta;
                     String srcAsscKey=srcAssc.getXPath();
 
-
                     //add "EA Model" infront of the xmlPath
                 	String trgtAsscKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAssc.getXmlPath();
                 	UMLAssociationBean trgtUmlAsscBean=(UMLAssociationBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtAsscKey);
+
+                    //find containing class
                     String className = (String) trgtAsscKey;
-                               String classPath = className.substring(0, className.lastIndexOf("."));
-                               String classRealName = classPath.substring(classPath.lastIndexOf(".")+1);
-                               System.out.println("class: (" + classRealName + ")" );
+                    String classPath = className.substring(0, className.lastIndexOf("."));
+                    String classRealName = classPath.substring(classPath.lastIndexOf(".")+1);
+                    System.out.println("class: (" + classRealName + ")" );
+
                     if ( trgtUmlAsscBean ==null)
                     {
                     	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtAsscKey);
                     }
                     else  if( trgtUmlAsscBean.getTaggedValue("ea_sourceName").getValue().equals(classRealName) )
                     {
-                    	trgtUmlAsscBean.addTaggedValue("GME_TargetXMLLocRef",srcAssc.getRoleName());
-                    	trgtUmlAsscBean.addTaggedValue("GME_SourceXMLLocRef",srcAssc.getParentXPath());
+//                    	trgtUmlAsscBean.addTaggedValue("GME_TargetXMLLocRef",srcAssc.getRoleName());
+                    	trgtUmlAsscBean.addTaggedValue("GME_SourceXMLLocRef",srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() )+"/"+srcAssc.getRoleName());
+                    }
+                    else  if( trgtUmlAsscBean.getTaggedValue("ea_targetName").getValue().equals(classRealName) )
+                    {
+                    	trgtUmlAsscBean.addTaggedValue("GME_TargetXMLLocRef",srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() )+"/"+srcAssc.getRoleName());
+//                    	trgtUmlAsscBean.addTaggedValue("GME_SourceXMLLocRef",srcAssc.getParentXPath());
                     }
 
                     //find the class and package of the this attribute
@@ -498,6 +507,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/03/04 16:08:11  schroedn
+ * HISTORY      : GME - creating annotated XMI file
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/02/28 19:12:30  wangeug
  * HISTORY      : load mapping from xsd to Xmi
  * HISTORY      :
