@@ -41,7 +41,8 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	 */
 	private String roleName;
 	public String toString() {
-		return getRoleName() + " (" + (getMultiplicity()== -1?"Many":getMultiplicity()) + " to " + (getReciprocalMultiplity()==-1?"Many":getReciprocalMultiplity()) +")";
+		return getRoleName() + " (" + (getReciprocalMultiplity()== -1?"Many":getReciprocalMultiplity()) + " to " + (getMultiplicity()==-1?"Many":getMultiplicity()) +")";
+//		return getRoleName() + " (" + (getMultiplicity()== -1?"Many":getMultiplicity()) + " to " + (getReciprocalMultiplity()==-1?"Many":getReciprocalMultiplity()) +")";
 	}
 	public String getTitle() {
 		return getRoleName();
