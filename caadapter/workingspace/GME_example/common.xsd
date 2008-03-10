@@ -6,7 +6,10 @@
 	<xs:element name="Address" type="com:Address"/>
 	<xs:complexType name="Address">
 		<xs:sequence>
-			<xs:element name="address" type="xs:string"/>
+			<xs:element name="streetLine" type="xs:string"/>
+			<xs:element name="city" type="xs:string"/>
+			<xs:element name="state" type="xs:string"/>
 		</xs:sequence>
+		<xs:attribute name="zipCode" type="xs:int"/>
 	</xs:complexType>
 </xs:schema>
