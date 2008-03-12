@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.common.metadata;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,6 +35,8 @@ private TreeMap <String,AttributeMetadata>attributeMap=new TreeMap <String,Attri
 private TreeMap <String,AssociationMetadata>associationMap=new TreeMap <String,AssociationMetadata>();
 
 private String projectName;
+private String projectContext;
+private String projectVersion;
 
 public XsdModelMetadata()
 {
@@ -71,32 +74,23 @@ private void initModel()
 		return;
 	
 	//set project name
-	String targetNsURI =gmeSchema.getTargetNamespace();
-	//the target namespace uri string contains project name
-	if (targetNsURI.indexOf(":")>-1)
-	{
-		String sbValue=targetNsURI.substring(0, targetNsURI.indexOf(":"));
-		setProjectName(sbValue);
-	}
+
+	setProjectName(gmeSchema.getAttribute("projectName").getDefaultValue());
+	setProjectContext(gmeSchema.getAttribute("projectContext").getDefaultValue());
+	setProjectVersion(gmeSchema.getAttribute("projectVersion").getDefaultValue());
+//	String targetNsURI =gmeSchema.getTargetNamespace();
+//	setProjectName(targetNsURI);
+
 	
-	//set package map
-	Namespaces gmeNamespaces=gmeSchema.getNamespaces();
-	Enumeration nsEnu=gmeNamespaces.getLocalNamespaces();
-	while(nsEnu.hasMoreElements())
-	{
-		String nsURI=(String)nsEnu.nextElement();
-		String pkName=XsdUtil.parsePackageNameFromURI(nsURI);
-		packageMap.put(nsURI, pkName);
-	}
 	
 	//set class mapping
-	setSchemaClassMapping(gmeSchema);
+	buildSchemaClassMapping(gmeSchema);
 	//set class mapping from imported schema(s)
 	Enumeration imptSchema =gmeSchema.getImportedSchema();
 	while(imptSchema.hasMoreElements())
 	{
 		 Schema schemaImported=(Schema)imptSchema.nextElement();
-		 setSchemaClassMapping(schemaImported);
+		 buildSchemaClassMapping(schemaImported);
 	}
 
 }
@@ -114,8 +108,17 @@ public String findPackageNamespace(String classPackage)
 	return rtnSt;
 }
 
-private void setSchemaClassMapping(Schema schema)
+private void buildSchemaClassMapping(Schema schema)
 {
+	//set package map
+	Namespaces gmeNamespaces=schema.getNamespaces();
+	Enumeration nsEnu=gmeNamespaces.getLocalNamespaces();
+	while(nsEnu.hasMoreElements())
+	{
+		String nsURI=(String)nsEnu.nextElement();
+		String pkName=XsdUtil.parsePackageNameFromURI(nsURI);
+		packageMap.put(nsURI, pkName);
+	}
 	Enumeration clsEnu=schema.getElementDecls();
 	while(clsEnu.hasMoreElements())
 	{
@@ -333,11 +336,15 @@ private void loadSchemaSource(InputSource source)
 }
 
 public String getProjectName() {
+	if (projectName!=null&&!projectName.equals(""))
+		return projectName;
 	return "GME://projectName";
 }
 
 public void setProjectName(String projectName) {
-	this.projectName = projectName;
+	if (projectName!=null&&!projectName.equals(""))
+		this.projectName=URLEncoder.encode(projectName);
+//	this.projectName = projectName;
 }
 
 public HashMap getPackageMap() {
@@ -360,4 +367,25 @@ public Schema getGmeSchema() {
 	return gmeSchema;
 }
 
+public String getProjectContext() {
+	return projectContext;
+}
+
+public void setProjectContext(String projectContent) {
+	this.projectContext = projectContent;
+}
+
+public String getProjectVersion() {
+	return projectVersion;
+}
+
+public void setProjectVersion(String projectVersion) {
+	this.projectVersion = projectVersion;
+}
+
+public String getProjectNamespace()
+{
+	String rtnSt="gem://"+URLEncoder.encode(getProjectName())+"."+getProjectContext()+"/"+getProjectVersion();
+	return rtnSt;
+}
 }

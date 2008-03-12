@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.8 2008-03-07 15:36:48 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.9 2008-03-12 13:59:05 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -73,10 +73,10 @@ import java.util.Iterator;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-03-07 15:36:48 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-03-12 13:59:05 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -92,7 +92,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.8 2008-03-07 15:36:48 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.9 2008-03-12 13:59:05 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
@@ -294,13 +294,6 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                             trgtPkgBean.addTaggedValue("GME_XMLNamespace", annoateGmeNamespace);
                         }
 
-                        //Add Project Namespace
-                        if( projectAnnotation == false )
-                        {
-                            xmiModelMeta.annotateProjectObject(srcGmeNameSpace);
-                            projectAnnotation = true;
-                        }
-
                         //annoate class to add tag at XMI level (xmi.content)
                     	String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
                     	xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
@@ -366,13 +359,6 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                             trgtPkgBean.addTaggedValue("GME_XMLNamespace", annoateGmeNamespace);
                         }
 
-                        //Add Project Namespace
-                        if( projectAnnotation == false )
-                        {
-                            xmiModelMeta.annotateProjectObject(srcGmeNameSpace);
-                            projectAnnotation = true;
-                        }
-
                         //annoate class to add tag at XMI level
                     	String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
                     	xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
@@ -381,6 +367,13 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 else
                 {
                     System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()... invalidate targetMetadata:"+trgtMeta.getName());
+                }
+                //Add Project Namespace
+                if( projectAnnotation == false )
+                {
+                	String projectNamespace=xsdToXmi.getXsdModelMeta().getProjectNamespace();
+                    xmiModelMeta.annotateProjectObject(projectNamespace);//srcGmeNameSpace);
+                    projectAnnotation = true;
                 }
             }
 
@@ -444,69 +437,12 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 		}
 	}
 
-    public void getPackages( UMLPackage pkg )
-    {
-//        for( UMLTaggedValue tagValue : pkg.getTaggedValues() )
-//        {
-//                if( tagValue.getName().contains( "GME_XMLNamespace" ))
-//                {
-//                    System.out.println("Removing pkg GME_XMLNamespace (pkg)");
-//                    pkg.removeTaggedValue( "GME_XMLNamespace" );
-//                }
-//        }
-
-        for ( UMLClass clazz : pkg.getClasses() )
-        {
-            System.out.println("class.name: " + clazz.getName());
-
-            for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
-            {
-                if( tagValue.getName().contains( "GME_XMLElement" ))
-                {
-                    System.out.println("Removing pkg GME_XMLElement (class)");
-                    clazz.removeTaggedValue( "GME_XMLElement" );
-                }
-            }
-
-            for( UMLAttribute att : clazz.getAttributes() )
-            {
-                System.out.println("attr.name: " + att.getName() );
-                for( UMLTaggedValue tagValue : att.getTaggedValues() )
-                {
-                    if( tagValue.getName().contains( "GME_XMLLocReference" ))
-                    {
-                        System.out.println("Removing pkg GME_XMLLocReference (attr)");
-                        att.removeTaggedValue( "GME_XMLLocReference" );
-                    }
-                }
-            }
-            for( UMLAssociation assc : clazz.getAssociations())
-            {
-                for( UMLTaggedValue tagValue : assc.getTaggedValues() )
-                {
-                    if( tagValue.getName().contains( "GME_SourceXMLLocRef" ))
-                    {
-                        System.out.println("Removing pkg GME_SourceXMLLocRef (assoc)");
-                        assc.removeTaggedValue( "GME_SourceXMLLocRef" );
-                    }
-                    if( tagValue.getName().contains( "GME_TargetXMLLocRef" ))
-                    {
-                        System.out.println("Removing pkg GME_TargetXMLLocRef (assoc)");
-                        assc.removeTaggedValue( "GME_TargetXMLLocRef" );
-                    }
-                }
-            }
-        }
-
-        for ( UMLPackage pkg2 : pkg.getPackages() )
-        {
-            getPackages( pkg2 );
-        }
-    }
-
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/03/07 15:36:48  schroedn
+ * HISTORY      : saving association
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/03/04 16:08:11  schroedn
  * HISTORY      : GME - creating annotated XMI file
  * HISTORY      :
