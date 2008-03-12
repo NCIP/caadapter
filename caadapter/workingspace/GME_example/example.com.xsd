@@ -5,10 +5,6 @@
     xmlns:bs="gme://bookstore.example.com/version/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
     elementFormDefault="qualified" attributeFormDefault="unqualified">
     
-	<xs:attribute name="projectName" type="xs:string" use="optional" default="Cancer Models Database 2.1"/> 
-	<xs:attribute name="projectContext" type="xs:string" use="optional" default="caBIG"/> 
-	<xs:attribute name="projectVersion" type="xs:string" use="optional" default="1.0"/>
-	
     <xs:import namespace="gme://common.example.com/version/2.5" schemaLocation="./common.xsd"/>
     <xs:import namespace="gme://bookstore.example.com/version/1.0" schemaLocation="./bookstore.xsd"/>
 </xs:schema>

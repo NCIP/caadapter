@@ -1,8 +1,11 @@
 package gov.nih.nci.caadapter.common.metadata;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -74,10 +77,13 @@ private void initModel()
 		return;
 	
 	//set project name
+	setProjectName(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.name"));
+	setProjectContext(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.content"));
+	setProjectVersion(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.version"));
 
-	setProjectName(gmeSchema.getAttribute("projectName").getDefaultValue());
-	setProjectContext(gmeSchema.getAttribute("projectContext").getDefaultValue());
-	setProjectVersion(gmeSchema.getAttribute("projectVersion").getDefaultValue());
+//	setProjectName(gmeSchema.getAttribute("projectName").getDefaultValue());
+//	setProjectContext(gmeSchema.getAttribute("projectContext").getDefaultValue());
+//	setProjectVersion(gmeSchema.getAttribute("projectVersion").getDefaultValue());
 //	String targetNsURI =gmeSchema.getTargetNamespace();
 //	setProjectName(targetNsURI);
 
@@ -385,7 +391,13 @@ public void setProjectVersion(String projectVersion) {
 
 public String getProjectNamespace()
 {
-	String rtnSt="gem://"+URLEncoder.encode(getProjectName())+"."+getProjectContext()+"/"+getProjectVersion();
-	return rtnSt;
+	String rtnSt="";
+	try {
+		rtnSt = "gme://"+URLEncoder.encode(getProjectName(),"UTF-8")+"."+getProjectContext()+"/"+getProjectVersion();
+	} catch (UnsupportedEncodingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return rtnSt.replace("%2B", "%20");
 }
 }

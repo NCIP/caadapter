@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.18 2008-02-27 14:47:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/CaadapterUtil.java,v 1.19 2008-03-12 20:33:29 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,8 +56,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.18 $
- * @date $$Date: 2008-02-27 14:47:48 $
+ * @version $Revision: 1.19 $
+ * @date $$Date: 2008-03-12 20:33:29 $
  * @since caAdapter v1.2
  */
 
@@ -68,6 +68,7 @@ public class CaadapterUtil {
 //	private static ArrayList<String> RESOURCE_REQUIRED =new ArrayList<String>();
 	private static HashMap<String, ArrayList<String>> RESOURCE_MODULE_REQUIRED =new HashMap<String, ArrayList<String>>();
 	private static HashMap prefs;
+	private static HashMap appConfig;
 	private static boolean authorizedUser=false;
 	public static final String  LINEFEED_ENCODE="&#x0A;";//html format of UTF-8 unicode value of '\n'
 	public static final String  CARTRIAGE_RETURN_ENCODE="&#x0D;";//html format of UTF-8 unicode value of '\r'
@@ -79,6 +80,7 @@ public class CaadapterUtil {
 			logDir.mkdir();
 
         InputStream fi = null;
+        appConfig=new HashMap();
         //load caadapter component types to run
         Properties properties=new Properties();
         try {
@@ -98,6 +100,7 @@ public class CaadapterUtil {
             	{
             		String onePropKey=(String)propKeys.nextElement();
             		String onePropValue=(String)properties.getProperty(onePropKey);
+            		appConfig.put(onePropKey, onePropValue);
             		if (onePropValue!=null&onePropValue.trim().equalsIgnoreCase("true"))
             		{
             			ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
@@ -335,10 +338,18 @@ public class CaadapterUtil {
 		public static void setAuthorizedUser(boolean authorizedUser) {
 			CaadapterUtil.authorizedUser = authorizedUser;
 		}
+		
+		public static String findApplicationConfigValue(String configKey)
+		{
+			return (String)appConfig.get(configKey);
+		}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2008/02/27 14:47:48  wangeug
+ * HISTORY      : add new constants
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2007/12/20 18:10:19  wangeug
  * HISTORY      : validate resource required
  * HISTORY      :
