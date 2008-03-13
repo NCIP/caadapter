@@ -39,8 +39,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-03-07 15:36:04 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-03-13 15:34:29 $
  */
 public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -78,7 +78,7 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
         DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) transferableNode.getSelectionList().get(0);
-
+        //System.out.println("targetNode class " + targetNode.getUserObject().getClass().toString() );
         if( sourceNode instanceof MappableNode )
         {
             MappableNode mappableNode = (MappableNode) sourceNode;
@@ -86,6 +86,11 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 			{
 					return false;
 			}
+        }
+
+        if (targetNode.getUserObject() instanceof String )
+        {
+            return false;
         }
 
         if( targetNode instanceof MappableNode )
@@ -96,6 +101,8 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 			{
 					return false;
 			}
+
+
 
 //            System.out.println("[ sourceNode: " + sourceNode.toString() + " <-> " + "targetNode: " + targetNode.toString() + " ]");
 //            System.out.println("[ sourceNode: " + sourceNode.getClass().toString() + " <-> " + "targetNode: " + targetNode.getClass().toString() + " ]");
