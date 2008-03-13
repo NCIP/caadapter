@@ -73,20 +73,27 @@ import org.jdom.Element;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.7 2008-03-13 15:35:28 schroedn Exp $";
+
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.8 2008-03-13 20:09:28 schroedn Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
+
     private XsdToXmiTargetTreeDropTransferHandler xsdToXmiTargetTreeDropTransferHandler = null;
 	private String mappingTarget=MAPPING_TARGET_OBJECT_MODEL;
+
     private static final String SELECT_XMI = "Open XMI File...";
     private static final String SELECT_XSD = "Open XSD Meta File...";
+
+    private boolean xsdLoaded = false;
+
     private String sourceFileName;
     private String targetFileName;
+
     private XmiModelMetadata xmiModelMeta;
     private XsdModelMetadata xsdModelMeta;
     private XsdToXmiMappingReportPanel reportPanel;
@@ -159,8 +166,9 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 		openXmiButton.setMnemonic('X');
 		openXmiButton.setToolTipText("Select XMI file...");
 		openXmiButton.addActionListener(this);
-		targetLocationPanel.add(openXmiButton, BorderLayout.EAST);
-		
+        openXmiButton.setEnabled( false );
+        targetLocationPanel.add(openXmiButton, BorderLayout.EAST);
+
 		targetLocationArea.setEditable(false);
 		targetLocationArea.setPreferredSize(new Dimension(
 				(int) (Config.FRAME_DEFAULT_WIDTH / 10), 24));
@@ -448,15 +456,23 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	 *             changed from protected to pulic by sean
 	 */
 	public void processOpenXSDFile(File file) throws Exception
-	{
+	{        
         if (file != null)
         {
+            JButton xmiButton = (JButton) targetLocationPanel.getComponent(1);
+            xmiButton.setEnabled( true );
+
             processOpenSourceTree(file, true, true);
             Mapping currentMapping = middlePanel.getMappingDataManager().retrieveMappingData(false);
             middlePanel.getMappingDataManager().setMappingData(currentMapping);
         }
     }
 
+    public JPanel getTargetLocationPanel()
+    {
+          return targetLocationPanel;
+    }
+    
     public void processOpenXMIFile() throws Exception
 	{
         //TODO: open and create mappings from XMIModelMetadata
@@ -949,10 +965,13 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	                           
 				if (file != null) 
 				{
-					processOpenSourceTree(file, true, true);
+                    JButton xmiButton = (JButton) targetLocationPanel.getComponent(1);
+                    xmiButton.setEnabled( true );
+                    
+                    processOpenSourceTree(file, true, true);
 					Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
-					middlePanel.getMappingDataManager().setMappingData(currentMapping);		
-				}
+					middlePanel.getMappingDataManager().setMappingData(currentMapping);
+                }
 			}
 
 			if (!everythingGood) {

@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/OpenXsdToXmiMapAction.java,v 1.2 2008-02-28 18:14:22 schroedn Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/OpenXsdToXmiMapAction.java,v 1.3 2008-03-13 20:09:45 schroedn Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -64,8 +64,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: schroedn $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-02-28 18:14:22 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-03-13 20:09:45 $
  */
 public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 {
@@ -195,14 +195,18 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 				}
 				catch (Throwable e1)
 				{
+                    JButton xmiButton = (JButton) mappingPanel.getTargetLocationPanel().getComponent(1);
+                    xmiButton.setEnabled( false );
+                    JOptionPane.showMessageDialog(null, "Selected file type not valid", "Error", JOptionPane.ERROR_MESSAGE);
+
 //					reportThrowableToUI(e1, mainFrame);
 					//log the exception, but not report
-					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
-					Message msg = MessageResources.getMessage("GEN3", new Object[0]);
-					
-					//report the nice to have message
-					DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), mainFrame, false, false);
-					everythingGood = false;
+//					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
+//					Message msg = MessageResources.getMessage("GEN3", new Object[0]);
+//
+//					//report the nice to have message
+//					DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), mainFrame, false, false);
+//					everythingGood = false;
 				}
 				finally
 				{
@@ -260,6 +264,9 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/02/28 18:14:22  schroedn
+ * HISTORY      : xsd loading
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/02/04 15:10:34  schroedn
  * HISTORY      : XSD to XMI Mapping - GME initial load
  * HISTORY      :
