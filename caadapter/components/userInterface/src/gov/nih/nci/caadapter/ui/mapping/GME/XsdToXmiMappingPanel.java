@@ -73,12 +73,12 @@ import org.jdom.Element;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v3.2 revision $Revision: 1.6 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.7 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.6 2008-03-07 15:35:04 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.7 2008-03-13 15:35:28 schroedn Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
     private XsdToXmiTargetTreeDropTransferHandler xsdToXmiTargetTreeDropTransferHandler = null;
@@ -883,14 +883,15 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 				MenuConstants.FILE_MENU_NAME, ActionConstants.ANOTATE, action);
 		action.setEnabled(false);
 
-		action = new gov.nih.nci.caadapter.ui.mapping.GME.actions.ValidateXsdToXmiMapAction(
-				this);
-		contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
-				MenuConstants.FILE_MENU_NAME, ActionConstants.VALIDATE, action);
-		contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
-				MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.VALIDATE,
-				action);
-		action.setEnabled(true);
+//		action = new gov.nih.nci.caadapter.ui.mapping.GME.actions.ValidateXsdToXmiMapAction(
+//				this);
+//
+//        contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
+//				MenuConstants.FILE_MENU_NAME, ActionConstants.VALIDATE, action);
+//		contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
+//				MenuConstants.TOOLBAR_MENU_NAME, ActionConstants.VALIDATE,
+//				action);
+//		action.setEnabled(false);
 
 		action = new gov.nih.nci.caadapter.ui.mapping.GME.actions.CloseXsdToXmiMapAction(this);
 		contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
@@ -936,7 +937,8 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 				if (file != null)
 				{
 						processOpenTargetTree(file, true, true);
-						//redraw mapping panel
+
+                        //redraw mapping panel
 						Mapping currentMapping= middlePanel.getMappingDataManager().retrieveMappingData(false);
 						middlePanel.getMappingDataManager().setMappingData(currentMapping);		
 				}
@@ -944,7 +946,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 			else if (SELECT_XSD.equals(command)) {
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, // FileUtil.getUIWorkingDirectoryPath(),
 						".xsd", "Open XSD meta file ...", false, false);
-	
+	                           
 				if (file != null) 
 				{
 					processOpenSourceTree(file, true, true);
@@ -960,8 +962,8 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e1) {
-			DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this,
-					false, false);
+            JOptionPane.showMessageDialog(this, "Selected file type not valid", "Error", JOptionPane.ERROR_MESSAGE);
+            //DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this,	false, false);
 		}
 	}
 
