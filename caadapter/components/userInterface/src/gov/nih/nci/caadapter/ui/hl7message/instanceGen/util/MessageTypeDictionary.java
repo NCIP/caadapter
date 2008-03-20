@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.1 2007-08-07 04:10:07 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.2 2008-03-20 03:49:26 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -75,7 +75,7 @@ import java.io.*;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Aug 3, 2007
  *          Time:       11:33:55 AM $
  */
@@ -94,7 +94,7 @@ public class MessageTypeDictionary
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.1 2007-08-07 04:10:07 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.2 2008-03-20 03:49:26 umkis Exp $";
 
     private String MIF = "mif";
 
@@ -152,7 +152,7 @@ public class MessageTypeDictionary
                     continue;
                 }
                 Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
-                List<JarEntry> jarEntryList = new ArrayList<JarEntry>();
+                //List<JarEntry> jarEntryList = new ArrayList<JarEntry>();
                 while(jarEntries.hasMoreElements())
                 {
                     ZipEntry jarEntry = jarEntries.nextElement();
@@ -206,4 +206,7 @@ public class MessageTypeDictionary
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/08/07 04:10:07  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  */
