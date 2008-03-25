@@ -1,15 +1,12 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
+
+import java.io.*;
 import java.util.Enumeration;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 
 public class MIFIndexParser {
@@ -111,7 +108,57 @@ public class MIFIndexParser {
 		return mifIndex;
 	}
 
-	public static void main(String[] args) throws Exception {
+    /*
+    public  static MIFIndex loadMIFInfos() throws Exception {
+		InputStream is = null;//Thread.currentThread().getClass().getResourceAsStream("/mifIndexInfos");
+
+        ClassLoaderUtil clUtil = null;
+        try
+        {
+            clUtil = new ClassLoaderUtil("mifIndexInfos", false);
+        }
+        catch(IOException ie)
+        {
+            System.out.println("WWW01" + ie.getMessage());
+            ie.printStackTrace();
+        }
+
+        List<InputStream> list =  clUtil.getInputStreams();
+
+        if (list == null) System.out.println("WWWW1 : null Input Streams ");
+        else
+        {
+            for (String fileName:clUtil.getURLs())
+            {
+                System.out.println("WWWW1 : " + fileName);
+            }
+
+        }
+        //if (is == null)
+        if ((list == null)||(list.size() == 0))
+        {
+			try
+            {
+                //is = Thread.currentThread().getClass().getClassLoader().getResource("mifIndexInfos").openStream();
+			    is = MIFIndexParser.class.getClassLoader().getResource("mifIndexInfos").openStream();
+                System.out.println("WWWW2");
+                if (is == null)
+				    throw new Exception("Loading MIF information failure : ");
+            }
+            catch(NullPointerException ne)
+            {
+                throw new Exception("Loading MIF information failure : Check the location of mif resource file");
+            }
+        }
+        else is = list.get(0);
+        ObjectInputStream ois = new ObjectInputStream(is);
+		MIFIndex mifIndex = (MIFIndex)ois.readObject();
+		ois.close();
+		is.close();
+		return mifIndex;
+	}
+    */
+    public static void main(String[] args) throws Exception {
 		MIFIndexParser mifInfoParser = new MIFIndexParser();
 //		MIFIndex mifIndexInfos= mifInfoParser.parseMIFIndexInfo();
 //		MIFIndex mifIndexInfos=mifInfoParser.readMIFIndexInfo();
