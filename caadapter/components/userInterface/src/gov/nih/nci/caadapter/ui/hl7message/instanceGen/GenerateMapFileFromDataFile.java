@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.5 2008-03-20 03:49:26 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.6 2008-03-26 14:43:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -80,7 +80,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -99,10 +99,11 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.5 2008-03-20 03:49:26 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.6 2008-03-26 14:43:30 umkis Exp $";
 
 
     private boolean success = false;
+    private String message = "";
     private DataTree dt;
     private boolean isNewMethod = false;
     private List<String> scsList = new ArrayList<String>();
@@ -118,11 +119,13 @@ public class GenerateMapFileFromDataFile
         TestFileGenerateSCS tfg = new TestFileGenerateSCS(dataFilePath, header, generatedFilePath);
         if (!tfg.checkSuccess())
         {
-            System.out.println("SCS and CSV file couldn't be generated...");
+            message = "SCS and CSV file couldn't be generated... : " + tfg.getMessage();
+            System.out.println(message);
             return;
         }
 
         dt = new DataTree(generatedFilePath+".scs", h3sFileName, header);
+
         h3sList = fileIntoList(h3sFileName);
         generateMapFile(dataFilePath, header, generatedFilePath, h3sFileName);
     }
@@ -133,7 +136,8 @@ public class GenerateMapFileFromDataFile
         TestFileGenerateSCS tfg = new TestFileGenerateSCS(dataFilePath, header, generatedFilePath, isNewMethod);
         if (!tfg.checkSuccess())
         {
-            System.out.println("SCS and CSV file couldn't be generated...");
+            message = "SCS and CSV file couldn't be generated... : " + tfg.getMessage();
+            System.out.println(message);
             return;
         }
 
@@ -148,7 +152,7 @@ public class GenerateMapFileFromDataFile
 
         if (!dt.checkSuccess())
         {
-            System.out.println("SCS and CSV tree structure couldn't be built...");
+            message = "SCS and CSV tree structure couldn't be built... : " + dt.getErrorMessage();
             return;
         }
 
@@ -205,7 +209,8 @@ public class GenerateMapFileFromDataFile
             }
             catch(IOException ie)
             {
-                System.out.println("Map file open error : " + ie.getMessage());
+                message = "Map file open error : " + ie.getMessage();
+                System.out.println(message);
                 return;
             }
             String line = "";
@@ -507,7 +512,8 @@ public class GenerateMapFileFromDataFile
                 }
                 catch(IOException ie)
                 {
-                    System.out.println("Map file Writing error : " + ie.getMessage());
+                    message = "Map file Writing error : " + ie.getMessage();
+                    System.out.println(message);
                     return;
                 }
             }
@@ -535,13 +541,15 @@ public class GenerateMapFileFromDataFile
             }
             catch(IOException ie)
             {
-                System.out.println("Map file closing error : " + ie.getMessage());
+                message = "Map file closing error : " + ie.getMessage();
+                System.out.println(message);
                 return;
             }
         }
         catch(IOException e)
         {
-            System.out.println("Main raw Data File Not Found : " + dataFilePath);
+            message = "Main raw Data File Not Found : " + dataFilePath;
+            System.out.println(message);
             return;
         }
         if (!isNewMethod)
@@ -552,24 +560,33 @@ public class GenerateMapFileFromDataFile
             if (!writeMAPList(generatedFilePath, functionSeq, function1, function2, function3))
             {
                 //System.err.println("Not found scs node for this line : " + line);
+                message = message + "\n" + "Error at writeMAPList";
                 success = false;
             }
             if (!writeSCSList(generatedFilePath))
             {
+                message = message + "\n" + "Error at writeSCSList";
                 success = false;
             }
             if (!writeH3SList(generatedFilePath))
             {
+                message = message + "\n" + "Error at writeH3SList";
                 success = false;
             }
             if (!writeCSVList(generatedFilePath))
             {
+                message = message + "\n" + "Error at writeCSVList";
                 success = false;
             }
         }
 
+        if (message.equals("")) success = true;
+        else success = false;
+    }
 
-
+    public String getMessage()
+    {
+        return message;
     }
 
     private String cutFileName(String fi)
@@ -1427,6 +1444,7 @@ class DataTree
         while(true)
         {
             tt = temp.getName();
+            //if (find.indexOf("entry") >= 0) System.out.println("QQQQQ : " + tt + ", " + find);
             if (tt.trim().equals(find.trim())) break;
             if (temp.isEndRight()) return null;
             temp = temp.getRight();
@@ -1765,6 +1783,25 @@ class DataTree
                 System.out.println("This is already a leaf node : " + search + " : " + curr.getLevel() + ", " + curr.getName() + "\n  **str : " + str + "\n  **pth : " + this.getH3SNodePath(curr));
                 return null;
             }
+
+            temp = curr.getLower();
+            while(true)
+            {
+                String nodeName = temp.getName();
+                if (nodeName.equals(ser)) break;
+                if (temp.getRight() == null)
+                {
+                    temp = null;
+                    break;
+                }
+                temp = temp.getRight();
+            }
+            if (temp != null)
+            {
+                curr = temp;
+                continue;
+            }
+
             if (ser.equals("pert21")) temp = this.getChildNodeWithNameSimilar(curr, "perti2");
             else if (ser.equals("pert22")) temp = this.getChildNodeWithNameSimilar(curr, "perti2", 2);
             else if (ser.equals("pert23")) temp = this.getChildNodeWithNameSimilar(curr, "perti2", 3);
@@ -2389,6 +2426,9 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/03/20 03:49:26  umkis
+ * HISTORY      : for re-assigning sort key to mif files
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/17 01:11:38  umkis
  * HISTORY      : upgrade test instance generator
  * HISTORY      :

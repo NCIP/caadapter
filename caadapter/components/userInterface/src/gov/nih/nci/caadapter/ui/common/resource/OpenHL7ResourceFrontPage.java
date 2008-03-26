@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.1 2007-09-18 15:25:11 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.2 2008-03-26 14:43:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -43,10 +43,10 @@ import java.io.File;
  * The front page of open HL7 Message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-09-18 15:25:11 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-03-26 14:43:30 $
  */
 public class OpenHL7ResourceFrontPage extends JPanel
 {
@@ -62,11 +62,12 @@ public class OpenHL7ResourceFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.1 2007-09-18 15:25:11 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.2 2008-03-26 14:43:30 umkis Exp $";
 
 	public static final String HL7_RESOURCE_SITE = "Target Location:";
 	private JTextField dataFileInputField;
-	private String openWizardType;
+    private JCheckBox isSortKeyReassigning = null;
+    private String openWizardType;
 	private String targetSite;
 	/**
 	 * Creates a new <code>JPanel</code> with a double buffer
@@ -86,8 +87,11 @@ public class OpenHL7ResourceFrontPage extends JPanel
 		Insets insets = new Insets(5, 5, 5, 5);
 		String resourcHome="";
 		if (openWizardType.equals(BuildHL7ResourceAction.COMMAND_BUILD_V3))
-			resourcHome="HL7 Normative Home:";
-		else
+        {
+            resourcHome="HL7 Normative Home:";
+            isSortKeyReassigning = new JCheckBox("Sort Key Reassigning");
+        }
+        else
 			resourcHome="HL7 V2 Resource Home:";
 			
 		JLabel dataFileLabel = new JLabel(resourcHome);
@@ -109,7 +113,13 @@ public class OpenHL7ResourceFrontPage extends JPanel
 		targetSit.setPreferredSize(new Dimension(350, 25));
 		centerPanel.add(targetSit, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		this.add(centerPanel, BorderLayout.CENTER);
+
+        if (isSortKeyReassigning != null)
+        {
+            centerPanel.add(isSortKeyReassigning, new GridBagConstraints(3, 1, 2, 1, 1.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        }
+        this.add(centerPanel, BorderLayout.CENTER);
 	}
 
 	public void setUserSelectionFile(File file, String browseMode)
@@ -121,7 +131,11 @@ public class OpenHL7ResourceFrontPage extends JPanel
 	public String getSelectFileHome() {
 		return dataFileInputField.getText();
 	}
- 
+
+    public boolean isSortKeyReassigning() {
+        if (isSortKeyReassigning != null) return isSortKeyReassigning.isSelected();
+        return false;
+    }
 
 	public String getTargetSite() {
 		return targetSite;

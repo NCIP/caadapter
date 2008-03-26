@@ -23,8 +23,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.16 $ date $Date: 2007-10-25 20:20:39 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-03-26 14:37:30 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -425,8 +425,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("isAbstract", beanClass, "findIsAbstract", null));
 		propList.add(new PropertyDescriptor("Data Type", beanClass, "getType", null));
 //		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getDefaultValue", null));
-		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "findDefaultValueProperty", null));
-		propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "findDomainNameOidProperty", null));
+		//propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "findDefaultValueProperty", null));
+        propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getFixedValue", null));
+        propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "findDomainNameOidProperty", null));
 		propList.add(new PropertyDescriptor("Coding Strength", beanClass, "getCodingStrength", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);

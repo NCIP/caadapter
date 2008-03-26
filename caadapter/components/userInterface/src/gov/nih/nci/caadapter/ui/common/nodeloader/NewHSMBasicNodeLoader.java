@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.30 2008-03-06 19:10:36 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.31 2008-03-26 14:39:25 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -80,10 +80,10 @@ import java.util.Hashtable;
  * while leaving the algorithm of traversing HSM meta data tree defined here intact.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.30 $
- *          date        $Date: 2008-03-06 19:10:36 $
+ *          revision    $Revision: 1.31 $
+ *          date        $Date: 2008-03-26 14:39:25 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -279,7 +279,11 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	private MIFClass loadReferenceMIFClass(String refClassName, Hashtable asscRefTraversalNames)
 	{
 		MIFClass rtnMif=null;
-		if (refClassName.equals(rootMIFClass.getName()))
+
+        Hashtable<String, MIFClass> ref = rootMIFClass.getResolvedReferenceClasses();
+        MIFClass referedClass = ref.get(refClassName);
+	            
+        if (refClassName.equals(rootMIFClass.getName()))
 		{
 			//resolve reference with root MIFClass
 
@@ -293,7 +297,11 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				}			
 //				rtnMif.setReferenceLevel(1);
 		}
-		else
+        else if (referedClass!=null)
+        {
+            return referedClass;
+        }
+        else
 		{
 			//loading the referenced MIF class from CMET
 			CMETRef cmetRef = CMETUtil.getCMET(refClassName);
@@ -301,7 +309,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			{
 				String cmetMifName=cmetRef.getFilename() + ".mif";
 				Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
-				rtnMif = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();			
+				rtnMif = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName+"3QQQ").clone();			
 			}
 			else
 			{

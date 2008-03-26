@@ -1,25 +1,22 @@
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
+import gov.nih.nci.caadapter.hl7.mif.v1.ReassignSortKeyToMIF;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import java.io.*;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 public class BuildResourceUtil {
 	
@@ -152,7 +149,11 @@ public class BuildResourceUtil {
 	
 	public static void parserMifFromZipFile(String zipFileName) throws Exception
 	{
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();		
+        parserMifFromZipFile(zipFileName, false);
+    }
+    public static void parserMifFromZipFile(String zipFileName, boolean isSortKeyReassigning) throws Exception
+	{
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 //		System.out.println("BuildResourceUtil.parserMifFromZipFile()..creat target dir:"+RESOURCE_DIR);
 		File resourceFile=new File(RESOURCE_DIR);
 		if (!resourceFile.exists())
@@ -183,9 +184,43 @@ public class BuildResourceUtil {
 			if (!msgType.endsWith(".mif"))
 				continue;
 
-			InputStream mifIs=zip.getInputStream(zipEntry);
-			Document mifDoc = db.parse(mifIs);//"T:/YeWu/Edition2006/mif/" + filename);
-        	MIFParser mifParser = new MIFParser();
+			InputStream mifIs = null;
+            File newFile = null;
+            while(isSortKeyReassigning)
+            {
+                //if (!pathName.toLowerCase().endsWith(".mif")) break;
+                ReassignSortKeyToMIF rs = null;
+
+                try
+                {
+                    rs = new ReassignSortKeyToMIF(msgType, zip.getInputStream(zipEntry));
+                }
+                catch(ApplicationException ae)
+                {
+                    System.out.println("Sort Key Reassigning error ("+msgType+") : " + ae.getMessage());
+                    break;
+                }
+                newFile = new File(rs.getNewFileName());
+
+                mifIs = new FileInputStream(newFile);
+                newFile.deleteOnExit();
+                break;
+            }
+
+            if (mifIs == null) mifIs = zip.getInputStream(zipEntry);
+
+            Document mifDoc = null;
+            try
+            {
+                mifDoc = db.parse(mifIs);//"T:/YeWu/Edition2006/mif/" + filename);
+            }
+            catch(org.xml.sax.SAXParseException se)
+            {
+                System.out.println("######### ERROR : "+se.getMessage()+"\n" + FileUtil.readFileIntoString(newFile.getAbsolutePath()));
+                return;
+            }
+            if (newFile != null) newFile.delete();
+            MIFParser mifParser = new MIFParser();
         	mifParser.parse(mifDoc);
       		
     		if (msgType.indexOf("UV")>-1)
@@ -229,7 +264,11 @@ public class BuildResourceUtil {
 	
 
     public static void zipDir(String zipFileName, String dir) throws Exception
-    { 
+    {
+        zipDir(zipFileName, dir, false);
+    }
+    public static void zipDir(String zipFileName, String dir, boolean isSortKeyReassigning) throws Exception
+    {
         File dirObj = new File(dir); 
         if(!dirObj.isDirectory()) 
         { 
@@ -239,14 +278,14 @@ public class BuildResourceUtil {
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName)); 
 //        System.out.println("Creating : " + zipFileName); 
 
-        addDir(dirObj, out,""); 
+        addDir(dirObj, out,"", isSortKeyReassigning);
         // Complete the ZIP file 
         out.close(); 
 //        System.out.println("BuildResourceUtil.zipDir() deleting:"+dirObj);
         dirObj.delete();
     } 
 
-    private static void addDir(File dirObj, ZipOutputStream out,String parentPath) throws IOException 
+    private static void addDir(File dirObj, ZipOutputStream out,String parentPath, boolean isSortKeyReassigning) throws IOException
     { 
         File[] files = dirObj.listFiles(); 
         byte[] tmpBuf = new byte[1024]; 
@@ -258,11 +297,39 @@ public class BuildResourceUtil {
             	String subDirPath=files[i].getName();
             	if (parentPath!=null&&!parentPath.equals(""))
             		subDirPath=parentPath+"/"+subDirPath;
-                addDir(files[i], out, subDirPath); 
+                addDir(files[i], out, subDirPath, isSortKeyReassigning);
                 continue; 
             } 
+            if(!files[i].isFile()) continue;
 
-            FileInputStream in = new FileInputStream(files[i].getAbsolutePath()); 
+            String pathName = files[i].getAbsolutePath();
+
+            while(isSortKeyReassigning)
+            {
+                if (!pathName.toLowerCase().endsWith(".mif")) break;
+                ReassignSortKeyToMIF rs = null;
+
+                try
+                {
+                    rs = new ReassignSortKeyToMIF(pathName);
+                }
+                catch(ApplicationException ae)
+                {
+                    System.out.println("Sort Key Reassigning error ("+pathName+") : " + ae.getMessage());
+                    break;
+                }
+                File newFile = new File(rs.getNewFileName());
+                if (!files[i].delete())
+                {
+                    System.out.println("Deleteing error ("+pathName+") ");
+                    newFile.delete();
+                    break;
+                }
+                newFile.renameTo(new File(pathName));
+                break;
+            }
+
+            FileInputStream in = new FileInputStream(pathName);
              
             String entryName=files[i].getName();
             if (parentPath!=null&&!parentPath.equals(""))

@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.3 2008-03-06 17:26:10 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.4 2008-03-26 14:43:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -69,7 +69,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jul 6, 2007
  *          Time:       4:02:14 PM $
  */
@@ -88,7 +88,7 @@ public class TestFileGenerateSCS
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.3 2008-03-06 17:26:10 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.4 2008-03-26 14:43:30 umkis Exp $";
 
     //private List<String> list = new ArrayList<String>();
     DataNode head;
@@ -96,6 +96,7 @@ public class TestFileGenerateSCS
     String cont = "";
     String dataL = "";
     boolean success = false;
+    String message = "";
     boolean isNewMethod = false;
 
 
@@ -184,12 +185,14 @@ public class TestFileGenerateSCS
 
                 if (list.size() < 3)
                 {
-                    System.err.println("Header item is less than 3 : " + lin);
+                    message = "Header item is less than 3 : " + lin;
+                    System.err.println(message);
                     return;
                 }
                 if ((list.get(0).equals(title))&&(list.size() != 3))
                 {
-                    System.out.println("Invalid Header list : " + lin);
+                    message = "Invalid Header list : " + lin;
+                    System.err.println(message);
                     return;
                 }
                 if (list.get(list.size()-1).equals("noneX")) field = list.get(list.size()-2);
@@ -200,7 +203,7 @@ public class TestFileGenerateSCS
                     continue;
                 }
                 temp = head;
-                System.out.println("SSSSSSSSSSSSSS : " + readLineOfFile);
+                //System.out.println("SSSSSSSSSSSSSS : " + readLineOfFile);
 
                 for (int i=0;i<(list.size()-2);i++)
                 {
@@ -237,7 +240,9 @@ public class TestFileGenerateSCS
         }
         catch(IOException e)
         {
-            System.out.println("Main Meta File Not Found : " + file);
+            message = "Main Meta File Not Found : " + file;
+            System.out.println(message);
+            return;
         }
         currNode = null;
         while(true)
@@ -397,8 +402,10 @@ public class TestFileGenerateSCS
         }
         catch(IOException ie)
         {
-            System.err.println("SCS file Writing error : " + ie.getMessage());
+            message = "SCS file Writing error : " + ie.getMessage();
+            System.err.println(message);
             success = false;
+            return;
         }
         System.out.println("CVVV : SCS file Writing : " + filePath + ".scs");
         if (isNewMethod)
@@ -406,8 +413,10 @@ public class TestFileGenerateSCS
             SCSIDChangerToXMLPath changer = new SCSIDChangerToXMLPath(filePath + ".scs");//, filePath + "_X.scs");
             if (!changer.wasSuccessful())
             {
-                System.err.println("SCS file changer Writing error : " + changer.getChangedFileName() + " : " + changer.getErrorMessage());
+                message = "SCS file changer Writing error : " + changer.getChangedFileName() + " : " + changer.getErrorMessage();
+                System.err.println(message);
                 success = false;
+                return;
             }
         }
 
@@ -421,8 +430,10 @@ public class TestFileGenerateSCS
         }
         catch(IOException ie)
         {
-            System.out.println("CSV file Writing error : " + ie.getMessage());
+            message = "CSV file Writing error : " + ie.getMessage();
+            System.out.println(message);
             success = false;
+            return;
         }
         /*
                 //m = 2;
@@ -491,6 +502,10 @@ public class TestFileGenerateSCS
     public boolean checkSuccess()
     {
         return success;
+    }
+    public String getMessage()
+    {
+        return message;
     }
 
     private int getDepth(DataNode curr)
@@ -783,6 +798,9 @@ class DataNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/03/06 17:26:10  umkis
+ * HISTORY      : update end minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/06 14:27:43  umkis
  * HISTORY      : upgrade test instance generator
  * HISTORY      :

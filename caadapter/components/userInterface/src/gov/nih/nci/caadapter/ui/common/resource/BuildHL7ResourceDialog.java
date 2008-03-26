@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.3 2007-10-03 16:21:49 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.4 2008-03-26 14:43:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -46,10 +46,10 @@ import java.io.File;
 /**
  * This class is the main entry class of message wizard to collect user's inputs.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-10-03 16:21:49 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-03-26 14:43:30 $
  */
 public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 {
@@ -65,7 +65,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.3 2007-10-03 16:21:49 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.4 2008-03-26 14:43:30 umkis Exp $";
 
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
@@ -110,7 +110,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     	monitor.setNote(note);
 //    	System.out.println("BuildHL7ResourceDialog.updateMonitor()..."+monitor.getNote());
     }
-    private String buildHL7V3Resource(final String resourceHome, final String targetSite)
+    private String buildHL7V3Resource(final String resourceHome, final String targetSite, final boolean isSortKeyReassigning)
     {
     	String rtnMsg="Failed to build HL7 V3 resource";
     	final ProgressMonitor monitor=new ProgressMonitor(this.getParent(),
@@ -133,7 +133,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 						String mifZipPath=resourceHome+"/processable/mif/mif.zip";
 						int stepCount=0;
 						updateMonitor(monitor, stepCount++, "Serialize MIF files");
-						BuildResourceUtil.parserMifFromZipFile(mifZipPath);
+						BuildResourceUtil.parserMifFromZipFile(mifZipPath, isSortKeyReassigning);
 						updateMonitor(monitor, stepCount++, "Create message index");
 						BuildResourceUtil.parerMifIndexFromZipFile(mifZipPath);
 				
@@ -142,7 +142,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 						updateMonitor(monitor, stepCount++, "Serialize datatype files");
 						BuildResourceUtil.loadDatatypes(coreSchemaSrcHome);
 						updateMonitor(monitor, stepCount++, "Create ZIP");
-						BuildResourceUtil.zipDir(targetSite,BuildResourceUtil.RESOURCE_DIR);
+						BuildResourceUtil.zipDir(targetSite, BuildResourceUtil.RESOURCE_DIR);
 						
 						//copy schema:
 						//find parentDir of tagetHome../lib/
@@ -197,7 +197,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 				String srcHome=frontPage.getSelectFileHome();
 				String targetSite=frontPage.getTargetSite();
 			
-				confirmMsg=buildHL7V3Resource(srcHome,targetSite);
+				confirmMsg=buildHL7V3Resource(srcHome,targetSite,frontPage.isSortKeyReassigning());
  
 			}
 			else if(this.getTitle().equals(BuildHL7ResourceAction.COMMAND_BUILD_V2))

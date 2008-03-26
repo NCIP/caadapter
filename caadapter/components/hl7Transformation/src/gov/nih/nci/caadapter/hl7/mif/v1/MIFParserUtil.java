@@ -24,10 +24,10 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * The class provides Utilities to access the MIF info.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-09-18 15:16:27 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-03-26 14:37:30 $
  */
 public class MIFParserUtil {
 
@@ -35,7 +35,10 @@ public class MIFParserUtil {
 	{
 		MIFParser mifParser = new MIFParser();
 		MIFClass mifClass = null;
-		try {
+
+        System.out.println("mif file name : " + mifFileName);
+        if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
+        try {
 			mifClass = mifParser.loadMIF(mifFileName);
 		//resolve the internal reference
 			MIFReferenceResolver refResolver=new MIFReferenceResolver();

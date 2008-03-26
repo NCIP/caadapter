@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.6 2007-10-04 18:10:06 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.7 2008-03-26 14:42:15 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -58,10 +58,10 @@ import java.util.ArrayList;
  * This class defines the new HSM panel action
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2007-10-04 18:10:06 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-03-26 14:42:15 $
  */
 public class NewHSMAction extends AbstractContextAction
 {
@@ -76,7 +76,7 @@ public class NewHSMAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.6 2007-10-04 18:10:06 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.7 2008-03-26 14:42:15 umkis Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HSM_FILE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -213,12 +213,29 @@ public class NewHSMAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
-		NewHSMWizard wizard = new NewHSMWizard(mainFrame, ActionConstants.NEW_HSM_FILE_TXT, true);
 
-        if (!((wizard.getErrorMessage() == null)||(wizard.getErrorMessage().trim().equals(""))))
+        NewHSMWizard wizard = null;
+        try
         {
-            JOptionPane.showMessageDialog(mainFrame, wizard.getErrorMessage(), "New H3S creation failure", JOptionPane.ERROR_MESSAGE);
+            wizard = new NewHSMWizard(mainFrame, ActionConstants.NEW_HSM_FILE_TXT, true);
+        }
+        catch(Exception ee)
+        {
+            JOptionPane.showMessageDialog(mainFrame, "NewHSMWizard Error (1) : " + ee.getMessage(), "New H3S creation failure !! ", JOptionPane.ERROR_MESSAGE);
             return false;
+        }
+
+        String msg = wizard.getErrorMessage();
+
+        if (msg != null)
+        //if (!((wizard.getErrorMessage() == null)||(wizard.getErrorMessage().trim().equals(""))))
+        {
+            //System.out.println("EEE2 " + msg);
+            if (!msg.trim().equals(""))
+            {
+                JOptionPane.showMessageDialog(mainFrame, "NewHSMWizard Error (2) : " + wizard.getErrorMessage(), "New H3S creation failure !! ", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
         }
 
         DefaultSettings.centerWindow(wizard);
@@ -251,6 +268,9 @@ public class NewHSMAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/10/04 18:10:06  wangeug
+ * HISTORY      : verify resource based on module
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/10/03 18:47:03  umkis
  * HISTORY      : Protect from crashing and display a fit message when resouce.zip is absent.
  * HISTORY      :

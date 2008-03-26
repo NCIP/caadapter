@@ -24,8 +24,8 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-08-27 17:34:35 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.16 $ date $Date: 2008-03-26 14:37:30 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -55,7 +55,9 @@ import java.util.Iterator;
 	  */
 
 	 public void addAttribute(MIFAttribute attr) {
-			attributes.add(attr);
+
+         attr.setParent(this);
+            attributes.add(attr);
 	 }
 	 /**
 	  * @return attributes of a MIFClass
@@ -67,8 +69,20 @@ import java.util.Iterator;
 	 * @param newAttributes the attributes to set
 	 */
 	public void setAttributes(HashSet<MIFAttribute> newAttributes) {
-		attributes=newAttributes;
-	}
+        if (newAttributes == null) return;
+         Object[] obs = newAttributes.toArray();
+         if (obs.length == 0) return;
+
+        HashSet<MIFAttribute> atts = new HashSet<MIFAttribute>();
+        for(Object ob:obs)
+        {
+            MIFAttribute mifOb = (MIFAttribute) ob;
+            mifOb.setParent(this);
+            atts.add(mifOb);
+        }
+        //attributes=newAttributes;
+        attributes=atts;
+    }
 		 
 	 public void removeAttribute(MIFAttribute attrToRemove)
 	 {
@@ -118,12 +132,26 @@ import java.util.Iterator;
 	  */
 
 	 public void addAssociation(MIFAssociation association) {
-		 associations.add(association);
+         association.setParent(this);
+         associations.add(association);
 	 }
 	 
 	 public void setAssociation(HashSet<MIFAssociation> newAsscs)
 	 {
-		 associations=newAsscs;
+         if (newAsscs == null) return;
+         Object[] obs = newAsscs.toArray();
+         if (obs.length == 0) return;
+         HashSet<MIFAssociation> atts = new HashSet<MIFAssociation>();
+         for(Object ob:obs)
+         {
+             MIFAssociation mifOb = (MIFAssociation) ob;
+             mifOb.setParent(this);
+             atts.add(mifOb);
+         }
+
+         associations=atts;
+
+         //associations=newAsscs;
 	 }
 	 
 	 public void removeAssociation(MIFAssociation asscToRemove)
@@ -178,12 +206,25 @@ import java.util.Iterator;
 	  */
 
 	 public void addChoice(MIFClass choice) {
-		 choices.add(choice);
+         choice.setParent(this);
+         choices.add(choice);
 	 }
 	 
 	 public void setChoice(HashSet<MIFClass> newChoices)
 	 {
-		 choices=newChoices;
+         if (newChoices == null) return;
+         Object[] obs = newChoices.toArray();
+         if (obs.length == 0) return;
+         HashSet<MIFClass> atts = new HashSet<MIFClass>();
+         for(Object ob:obs)
+         {
+             MIFClass mifOb = (MIFClass) ob;
+             mifOb.setParent(this);
+             atts.add(mifOb);
+         }
+
+         choices=atts;
+         //choices=newChoices;
 	 }
 	 /**
 	  * @return choices of a MIFClass
@@ -275,7 +316,7 @@ import java.util.Iterator;
 			if (cmetRef == null) System.out.println("Not Found");
 			else {
 				System.out.println(cmetRef.getName() + "'s class name is : " + cmetRef.getClassName() +  "   Filename is:" + cmetRef.getFilename());
-				MIFClass mifClass = MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif");
+				MIFClass mifClass = MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif" + "1QQQ");
 				mifClass.printMIFClass(level+1, visitedMIFClass);
 			}
 		}
@@ -528,4 +569,10 @@ import java.util.Iterator;
 	public void setPackageLocation(Hashtable<String, String> packageLocation) {
 		this.packageLocation = packageLocation;
 	}
+    public Hashtable<String, MIFClass> getResolvedReferenceClasses()
+    {
+        MIFReferenceResolver resolver = new MIFReferenceResolver();
+        resolver.getReferenceResolved(this);
+        return resolver.getClassReferences();
+    }
  }

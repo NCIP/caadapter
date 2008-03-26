@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.12 2008-03-20 03:49:26 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.13 2008-03-26 14:43:30 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -98,7 +98,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.12 $
+ *          revision    $Revision: 1.13 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -118,7 +118,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.12 2008-03-20 03:49:26 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.13 2008-03-26 14:43:30 umkis Exp $";
 
     boolean isCode = false;
 
@@ -136,6 +136,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     String headerName = null;
     String dataFileName;
     String dataPath;
+    String currentDataType;
     boolean success = false;
 
     private static int INPUT_DATA_TYPE_XML = 0;
@@ -143,22 +144,24 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
     int inputDataType = -1;
 
-    public H3SInstanceMetaTree(String h3sFileName)
+    public H3SInstanceMetaTree(String h3sFileName) throws ApplicationException
     {
         super();
         success = false;
         //System.out.println("CCCV : V2 Meta Directory : " + FileUtil.getV2DataDirPath());
         if ((h3sFileName == null)||(h3sFileName.trim().equals("")))
         {
-            System.out.println("null h3s filename");
-            return;
+//            System.out.println("null h3s filename");
+//            return;
+            throw new ApplicationException("null h3s filename");
         }
         h3sFileName = h3sFileName.trim();
 
         if (!h3sFileName.toLowerCase().endsWith(".h3s"))
         {
-            System.out.println("File type is mismatch (.h3s) : " +  h3sFileName);
-            return;
+//            System.out.println("File type is mismatch (.h3s) : " +  h3sFileName);
+//            return;
+            throw new ApplicationException("File type is mismatch (.h3s) : " +  h3sFileName);
         }
 
         File h3sFile = new File(h3sFileName);
@@ -168,9 +171,11 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             build(h3sFile);
         }
         catch(ApplicationException ae)
-        {   ae.printStackTrace();
-            System.out.println("Build H3s Tree Error : " + ae.getMessage());
-            return;
+        {
+            ae.printStackTrace();
+            throw ae;
+//            System.out.println("Build H3s Tree Error : " + ae.getMessage());
+//            return;
         }
 
         dataPath = h3sFileName.substring(0, h3sFileName.length()-4);
@@ -183,8 +188,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         }
         catch(IOException ie)
         {
-            System.out.println("data file opening error for writing : " + ie.getMessage());
-            return;
+            throw new ApplicationException("data file opening error for writing : " + ie.getMessage());
+            //return;
         }
 
         ValidatorResults result = validateTree(false);
@@ -196,8 +201,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (GeneralUtilities.getV3VocabularySeeker() == null)
         {
             //h3sVocTree.displayTreeWithText();
-            System.err.println("Vocabulary Tree buliding failure....");
-            return;
+            throw new ApplicationException("Vocabulary Tree buliding failure....");
+            //return;
         }
 
         CommonNode temp = this.getHeadSegment();
@@ -209,15 +214,15 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             List<String> list = loaderUtil.getFileNames();
             if ((list == null)||(list.size() == 0))
             {
-                System.out.println("Not found class loader : changeList.txt");
-                return;
+                throw new ApplicationException("Not found class loader : changeList.txt");
+                //return;
             }
             changeList = FileUtil.readFileIntoList(list.get(0));
         }
         catch(IOException ie)
         {
-            System.out.println("IOException :changeList : " + ie.getMessage());
-            return;
+            throw new ApplicationException("IOException :changeList : " + ie.getMessage());
+            //return;
         }
 
         List<String> replaceList = null;
@@ -227,28 +232,30 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             List<String> list = loaderUtil.getFileNames();
             if ((list == null)||(list.size() == 0))
             {
-                System.out.println("Not found class loader : replaceList.txt");
-                return;
+                throw new ApplicationException("Not found class loader : replaceList.txt");
+                //return;
             }
             replaceList = FileUtil.readFileIntoList(list.get(0));
         }
         catch(IOException ie)
         {
-            System.out.println("IOException : replaceList : " + ie.getMessage());
-            return;
+            throw new ApplicationException("IOException : replaceList : " + ie.getMessage());
+            //return;
         }
 
         List<String> data = new ArrayList<String>();
         while(temp!=null)
         {
             boolean cTag = false;
+            H3SInstanceMetaSegment segmentOri = null;
             if (temp instanceof H3SInstanceMetaSegment)
             {
-                H3SInstanceMetaSegment segment = (H3SInstanceMetaSegment) temp;
-                if (segment.getChildNodes().size() == 0)
+                segmentOri = (H3SInstanceMetaSegment) temp;
+                if (segmentOri.getChildNodes().size() == 0)
                 {
                     cTag = true;
                 }
+                else segmentOri = null;
             }
 
             if ((temp instanceof MetaField)||(cTag))
@@ -287,8 +294,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 else if (numClone > 1) numClone = 3;
                 else
                 {
-                    System.err.println("ERROR : numClone = 0 : " +  line);
-                    return;
+                    throw new ApplicationException("ERROR : numClone = 0 : " +  line);
+                    //return;
                 }
 
                 int thirdPeriodPoint = 0;
@@ -334,7 +341,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                 line = replaceLine(line, replaceList);
 
-                line = changeLine(line, changeList, field);
+                line = changeLine(line, changeList, field, segmentOri);
 
                 if (line.toLowerCase().indexOf("code.originaltext.inlinetext => ") > 0) line = "";
                 if (line.toLowerCase().indexOf("code.translation.") > 0) line = "";
@@ -351,8 +358,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     }
                     catch(IOException ie)
                     {
-                        System.out.println("data file Writing error (2) : " + ie.getMessage());
-                        return;
+                        throw new ApplicationException("data file Writing error (2) : " + ie.getMessage());
+                        //return;
                     }
                 }
             }
@@ -363,8 +370,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             }
             catch(ApplicationException ae)
             {
-                System.out.println("Travers Error");
-                return;
+                throw new ApplicationException("Travers Error : " + ae.getMessage());
+                //return;
             }
         }
         try
@@ -373,18 +380,19 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         }
         catch(IOException ie)
         {
-            System.out.println("data file closing error : " + ie.getMessage());
-            return;
+            throw new ApplicationException("data file closing error : " + ie.getMessage());
+            //return;
         }
         GenerateMapFileFromDataFile generate = null;
         if (inputDataType == INPUT_DATA_TYPE_XML)
            generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName);
         else generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName, this.getHeadSegment());
 
-        if (!generate.getSuccess())
+        if (generate.getSuccess()) System.out.println("V3 meta instance has been successfully generated! : " + h3sFileName);
+        else
         {
-            System.out.println("Test Instance generating failure...");
-            return;
+            throw new ApplicationException("Test Instance generating failure... : " + generate.getMessage());
+            //return;
         }
         success = true;
     }
@@ -425,28 +433,36 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (res == null) return "";
         else return res.trim();
     }
-    private String changeLine(String line, List<String> changeList, MetaField field)
-    {    
-        H3SInstanceMetaSegment parent = (H3SInstanceMetaSegment) field.getParent();
+
+    private String changeLine(String line, List<String> changeList, MetaField field, H3SInstanceMetaSegment seg)
+    {
+        H3SInstanceMetaSegment parent = null;
+        if (seg == null) parent = (H3SInstanceMetaSegment) field.getParent();
+        else  parent = seg;
         String datatype = getAttributeItemValue(parent.getAttributes(), "datatype");
         String codingStrength = getAttributeItemValue(parent.getAttributes(), "codingStrength");
         String datatypePN = getAttributeItemValue(parent.getParent().getAttributes(), "datatype");
         String hl7Default = getAttributeItemValue(parent.getAttributes(), "hl7-default");
         String userDefault = getAttributeItemValue(parent.getAttributes(), "user-default");
-
+        currentDataType = datatypePN;
         //boolean existsDefaultValue = false;
         if (((hl7Default != null)&&(!hl7Default.trim().equals("")))||
             ((userDefault != null)&&(!userDefault.trim().equals("")))) {}//return "";//existsDefaultValue = true;
         else
         {               
-            if (line.endsWith("statusCode"))
-            {
-                return line + ".noneX => normal";
-            }
-            if (line.endsWith("determinerCode"))
-            {
-                return line + ".noneX => INSTANCE";
-            }
+//            if (line.endsWith("statusCode"))
+//            {
+//                return line + ".noneX => normal";
+//            }
+//            if (line.endsWith("determinerCode"))
+//            {
+//                return line + ".noneX => INSTANCE";
+//            }
+//            if (line.endsWith("moodCode"))
+//            {
+//                return line + ".noneX => EVN";
+//            }
+            
             if ((line.endsWith("addr"))||(line.endsWith("addr00"))||(line.endsWith("addr01")))
             {
                 return line + ".noneX => 1634 Helperton St., Uniline, MD 20919";
@@ -509,7 +525,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 String[] res = null;
                 if ((!userDefault.equals(""))||(!hl7Default.equals("")))
                 {
-                    if (hl7Default.equals("")) hl7Default = userDefault;
+                    if (hl7Default.equals("")) hl7Default = userDefault; 
                     //res = getVocabularyDomainCode(domainName, hl7Default);
                     res = GeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName, hl7Default);
                 }
@@ -592,7 +608,36 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (((hl7Default != null)&&(!hl7Default.trim().equals("")))||
             ((userDefault != null)&&(!userDefault.trim().equals(""))))
         {
-            if (!isCode) return "";
+            //if (!isCode) return "";
+            return "";
+        }
+        else
+        {
+            boolean gTag = false;
+            String vl = ".noneX";
+            if (line.endsWith(".statusCode")) gTag = true;
+            if (line.endsWith(".determinerCode")) gTag = true;
+            if (line.endsWith(".moodCode")) gTag = true;
+            if (line.endsWith(".typeCode")) gTag = true;
+            if (line.endsWith(".classCode")) gTag = true;
+            if (line.endsWith(".contextControlCode")) gTag = true;
+
+            if (line.endsWith(".statusCode.code"))
+            {
+                vl = "";
+                gTag = true;
+            }
+
+            if ((seg != null)&&(gTag))
+            {
+                String val = codeValue;
+                codeValue = null;
+                codeSystem = null;
+                codeSystemName = null;
+                codeDisplayName = null;
+                isCode = false;
+                return line + vl + " => " + val;
+            }
         }
 
         String dtTag = "&DataType:";
@@ -703,11 +748,56 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         }
         return line + " => " + newLine;
     }
+    private boolean checkDataType(String datatype, String target)
+    {
+        if (target == null) return false;
+        target = target.trim();
+        if (target.equals("")) return false;
 
+        List<String> list = new ArrayList<String>();
+
+        if (datatype.indexOf(";") < 0) list.add(datatype);
+        else
+        {
+            StringTokenizer st = new StringTokenizer(datatype, ";");
+            while(st.hasMoreTokens())
+            {
+                String ss = st.nextToken();
+                if (ss == null) ss = "";
+                ss = ss.trim();
+                if (!ss.equals("")) list.add(ss);
+            }
+        }
+        if (list.size() == 0) return false;
+
+        for (String dt:list)
+        {
+            if (dt.equals(target)) return true;
+            if (target.endsWith("_" + dt)) return true;
+        }
+        return false;
+    }
     private String changeData(String block, String datatype)
     {
         if (datatype == null) datatype = "";
-        if (datatype.equals("PN"))
+        boolean checkDataType = checkDataType(datatype, currentDataType);
+        if (!datatype.trim().equals(""))
+        {
+            if (!currentDataType.trim().equals(""))
+            {
+                if (!checkDataType) return null;
+                else
+                {
+                    if (block.startsWith("NULL")) return null;
+                }
+            }
+        }
+        else
+        {
+            if (block.startsWith("NULL")) return null;
+        }
+        
+        if (checkDataType(datatype, "PN"))
         {
             if (block.equals("PERSON_FAMILY_NAME_LIST"))
             {
@@ -722,7 +812,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 return null;
             }
         }
-        if (datatype.equals("EN"))
+        if (checkDataType(datatype, "EN"))
         {
             if (block.startsWith("NULL"))
             {
@@ -730,7 +820,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             }
         }
 
-        if (datatype.equals("PQ"))
+        if (checkDataType(datatype, "PQ"))
         {
             if (block.startsWith("NULL"))
             {
@@ -1093,7 +1183,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (lineArr.length != tailArr.length) return false;
         int index = 0;
         int matchCount = -1;
-        if (tailArr[index].equals("*")) matchCount++;
+        if (tailArr[index].equals("*")) matchCount++; 
         else
         {
             divided = checkStringAndNumberSuffix(lineArr[index]);
@@ -1425,6 +1515,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                         //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.DATAFIELD.toString());
                         addAttributeItem(field, "user-default", attT.getDefaultValue());
+                        //if (attT.)
                         //addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
 
 
@@ -1684,16 +1775,27 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         //String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\COCT_MT010000_Simple.h3s";
         //String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\" + args[0] + ".h3s";
         //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000030.h3s";
-        String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000040.h3s";
+        //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000040.h3s";
+        String fileName = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000040UV02.h3s";
 
         //new H3SInstanceMetaTree(args[0]);
-        new H3SInstanceMetaTree(fileName);
+        try
+        {
+            new H3SInstanceMetaTree(fileName);
+        }
+        catch(ApplicationException ae)
+        {
+            System.out.println(ae.getMessage());
+        }
     }
 }
 
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2008/03/20 03:49:26  umkis
+ * HISTORY      : for re-assigning sort key to mif files
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2008/03/06 17:25:53  umkis
  * HISTORY      : update end minor change
  * HISTORY      :
