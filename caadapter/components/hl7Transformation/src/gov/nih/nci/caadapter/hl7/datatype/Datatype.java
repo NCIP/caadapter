@@ -8,10 +8,10 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-08-29 00:01:54 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-03-31 21:10:15 $
  */
 
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
@@ -47,7 +47,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private List<String> csvSegments;
 	private String csvSegment;
 
-	
+	private int attributeCnt=0;
 	public String getNodeXmlName() {
 		return this.getName();
 	}
@@ -66,6 +66,11 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	 */
 
 	public void addAttribute(String attributeName, Attribute attr) {
+		if (attributeName.equalsIgnoreCase(attr.getName()))
+		{//add attribute as parsing datatype XSDs
+			attr.setSortKey(attributeCnt);
+			attributeCnt++;
+		}
 		attributes.put(attributeName, attr);
 	}
 	/**

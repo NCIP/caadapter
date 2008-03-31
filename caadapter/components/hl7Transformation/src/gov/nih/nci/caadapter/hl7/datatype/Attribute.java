@@ -5,6 +5,7 @@
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
+import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFCardinality;
 
 import java.beans.PropertyDescriptor;
@@ -18,10 +19,10 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2007-10-30 15:56:45 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.12 $ date $Date: 2008-03-31 21:10:15 $
  */
 
-public class Attribute extends DatatypeBaseObject implements Serializable, Cloneable  {
+public class Attribute extends DatatypeBaseObject implements Serializable, Comparable <Attribute>, Cloneable  {
 	static final long serialVersionUID = 1L;
 	
 	private String name;
@@ -44,7 +45,34 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 	private boolean enabled = true;
 	private boolean simple=true;
 	private Datatype referenceDatatype;
+	private int sortKey=0;
 	
+	public int compareTo(Attribute attr)
+	{
+		int rtnValue=0;
+		//compare attribute type
+		if (this.isAttribute()&&!attr.isAttribute())
+			rtnValue=-1; //this is attribute and attr is element
+		else if (!this.isAttribute()&&attr.isAttribute())
+			rtnValue=1; //this is element and attr is attribute
+		else
+		{
+			//compare sortKey
+			if (getSortKey()>attr.getSortKey())
+				rtnValue=1;
+			else if (getSortKey()<attr.getSortKey())
+				rtnValue=-1;
+			else
+			{
+				//compare index
+				if (getMultiplicityIndex()>attr.getMultiplicityIndex())
+					rtnValue=1;
+				else if (getMultiplicityIndex()<attr.getMultiplicityIndex())
+					rtnValue=-1;
+			}
+		}
+		return rtnValue;
+	}
 	/**
 	  * Build nodeXmlName with node name and multiplicityIndex 
 	 * @return nodeXmlName as part of the element XML patth
@@ -285,5 +313,13 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Clone
 
 	public void setMultiplicityIndex(int multiplicityIndex) {
 		this.multiplicityIndex = multiplicityIndex;
+	}
+
+	public int getSortKey() {
+		return sortKey;
+	}
+
+	public void setSortKey(int sortKey) {
+		this.sortKey = sortKey;
 	}
 }

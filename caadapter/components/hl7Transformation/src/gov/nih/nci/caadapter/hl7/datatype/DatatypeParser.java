@@ -4,6 +4,8 @@
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
+import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -19,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -37,8 +41,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2007-09-18 15:23:56 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-03-31 21:10:15 $
  */
 
 public class DatatypeParser {
@@ -211,16 +215,24 @@ public class DatatypeParser {
 
 					Datatype parentDatatype = (Datatype)datatypes.get(parentDatatypeString);
 
-					Hashtable pAttributes = parentDatatype.getAttributes();
+//					Hashtable pAttributes = parentDatatype.getAttributes();
 					Hashtable attributes = currentDatatype.getAttributes();
-
-					Iterator pAttrIt = pAttributes.keySet().iterator();
-
+					//retrieve the Attributes of parent datatype and sort them in decending order
+					TreeSet pDtAttrSet=MIFUtil.sortDatatypeAttribute(parentDatatype);
+			    	Iterator pAttrIt=pDtAttrSet.iterator();
+			    	ArrayList <Attribute> pAttrList=new  ArrayList<Attribute>();
+			    	while (pAttrIt.hasNext()) {
+							Attribute pAttribute = (Attribute)pAttrIt.next();
+							pAttrList.add(pAttribute);
+			    	}
+			    	Comparator decendingOrder = Collections.reverseOrder();
+			    	Collections.sort(pAttrList, decendingOrder);
 					//Process attributes
 					while (pAttrIt.hasNext()) {
-						Attribute pAttribute = (Attribute)pAttributes.get(pAttrIt.next());
+						Attribute pAttribute = (Attribute)pAttrIt.next();
 						if (attributes.get(pAttribute.getName()) == null) {
-							currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
+//							currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
+							MIFUtil.addDatatypeAttributeOnTop(currentDatatype, (Attribute)pAttribute.clone());
 						}
 					}
 
