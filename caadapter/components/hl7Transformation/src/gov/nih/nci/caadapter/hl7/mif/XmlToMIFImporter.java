@@ -26,8 +26,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.7 $
- * @date $Date: 2007-10-24 18:33:56 $
+ * @version $Revision: 1.8 $
+ * @date $Date: 2008-04-01 14:06:19 $
  * @since caAdapter v4.0
  */
 
@@ -162,7 +162,8 @@ public class XmlToMIFImporter {
 			{
 				Attribute childAttr=parserDatatypeAttribute((Element)oneElmnt);
 //				rtnDt.addAttribute(childAttr.getName(),childAttr);
-				rtnDt.addAttribute(childAttr.getNodeXmlName(),childAttr);
+//				rtnDt.addAttribute(childAttr.getNodeXmlName(),childAttr);
+				rtnDt.getAttributes().put(childAttr.getNodeXmlName(),childAttr);
 			}
 		}
 		return rtnDt;

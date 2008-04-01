@@ -4,6 +4,7 @@ import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MIFUtil {
 	
@@ -156,6 +159,37 @@ public class MIFUtil {
 				rtnList.add(mifAttr);
 		}
 		return rtnList;
+	}
+	public static TreeSet sortDatatypeAttribute(Datatype dt)
+	{
+		TreeSet<Attribute> rtnSet=new TreeSet<Attribute>();
+		
+		Hashtable childAttrHash=dt.getAttributes();
+		Enumeration keyEnums=childAttrHash.keys();
+		while (keyEnums.hasMoreElements())
+		{
+			String attrName=(String)keyEnums.nextElement();
+			Attribute childAttr=(Attribute)childAttrHash.get(attrName);
+			rtnSet.add(childAttr);
+		}
+		return rtnSet;
+	}
+	
+	public static void addDatatypeAttributeOnTop(Datatype dt, Attribute attr)
+	{
+ 
+		
+		Hashtable childAttrHash=dt.getAttributes();
+		Enumeration keyEnums=childAttrHash.keys();
+		while (keyEnums.hasMoreElements())
+		{
+			String attrName=(String)keyEnums.nextElement();
+			Attribute childAttr=(Attribute)childAttrHash.get(attrName);
+			childAttr.setSortKey(childAttr.getSortKey()+1);
+		}
+		attr.setSortKey(0);
+		dt.getAttributes().put(attr.getName(),attr);
+ 
 	}
 	
 	public static List<Attribute> findDatatypeAttributeWithName(Datatype mifDatatype, String attrName)
