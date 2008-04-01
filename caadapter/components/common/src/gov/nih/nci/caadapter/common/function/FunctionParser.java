@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionParser.java,v 1.3 2008-04-01 20:59:59 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionParser.java,v 1.4 2008-04-01 21:49:44 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -120,7 +120,7 @@ public class FunctionParser
     }
 
 
-    private ArrayList processFunction(C_group c_group) {
+    private ArrayList processFunction(C_group c_group) {   
 
         FunctionMetaImpl functionMeta = null;     //Stores individual FunctionMetaImpl object
         ArrayList<FunctionMeta> alstFunctionMeta = new ArrayList<FunctionMeta>();       //Stores a list of  FunctionMetaImpl objects

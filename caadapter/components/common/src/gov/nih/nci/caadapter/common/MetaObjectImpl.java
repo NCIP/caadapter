@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/MetaObjectImpl.java,v 1.4 2008-04-01 21:04:09 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/MetaObjectImpl.java,v 1.5 2008-04-01 21:52:54 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -47,8 +47,8 @@ import java.util.List;
  *
  * @author OWNER: Eric Chen
  * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.4 $
- * @date $Date: 2008-04-01 21:04:09 $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2008-04-01 21:52:54 $
  * @since caAdapter v1.2
  */
 
@@ -202,11 +202,14 @@ public class MetaObjectImpl extends BaseObjectImpl implements MetaObject, Proper
 //        String xpath = this.getXPath();
 //        if (xpath == null) return super.getXmlPath();
 //        return this.getXPath();
-//	}
+//	}     
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/04/01 21:04:09  umkis
+ * HISTORY      : delete getXmlPath() for preventing from conflict with same method name of its super class.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/12/06 20:39:33  wangeug
  * HISTORY      : set xPath as xmlPath
  * HISTORY      :
