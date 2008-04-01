@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.8 2007-08-17 01:11:36 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.12 2008-03-20 03:49:26 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -98,7 +98,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.8 $
+ *          revision    $Revision: 1.12 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -118,7 +118,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.8 2007-08-17 01:11:36 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.12 2008-03-20 03:49:26 umkis Exp $";
 
     boolean isCode = false;
 
@@ -168,7 +168,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             build(h3sFile);
         }
         catch(ApplicationException ae)
-        {
+        {   ae.printStackTrace();
             System.out.println("Build H3s Tree Error : " + ae.getMessage());
             return;
         }
@@ -335,6 +335,11 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 line = replaceLine(line, replaceList);
 
                 line = changeLine(line, changeList, field);
+
+                if (line.toLowerCase().indexOf("code.originaltext.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("code.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("name.validtime.") > 0) line = "";
+                if (line.toLowerCase().indexOf("addr.inlinetext => ") > 0) line = "";
 
                 if ((line!=null)&&(!line.trim().equals("")))
                 {
@@ -1345,6 +1350,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
             //tempPar.setName(mif.getName());
             xmlPath = mif.getXmlPath();
+            if ((xmlPath == null)||(xmlPath.trim().equals("")))
+            {
+                System.out.println("   CVVV mif : xmlPath is null : " + mif.getName());
+                xmlPath = mif.getName();
+                //return null;
+            }
             setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.CLONE.toString(), 1, 1);
 
             //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.CLONE.toString());
@@ -1362,8 +1373,15 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 att = (MIFAttribute) node.getUserObject();
 
                 nodeName = att.getName();
-                tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
                 xmlPath = att.getXmlPath();
+                if ((xmlPath == null)||(xmlPath.trim().equals("")))
+                {
+                    System.out.println("   CVVV att : xmlPath is null : " + att.getName());
+                    xmlPath = att.getName();
+                    //return null;
+                }
+                tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
+
                 setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.ATTRIBUTE.toString(), att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
 
                 //tempPar.setName(att.getName());
@@ -1390,6 +1408,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     attT = (Attribute) node.getUserObject();
                     xmlPath = attT.getXmlPath();
+                    if ((xmlPath == null)||(xmlPath.trim().equals("")))
+                    {
+                        System.out.println("   CVVV attT : xmlPath is null : " + attT.getName());
+                        xmlPath = attT.getName();
+                        //return null;
+                    }
                     nodeName = attT.getName();
                     if (node.getChildCount() == 0)
                     {
@@ -1425,8 +1449,15 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                     nodeName = asso.getName();
                     tag = "B:";
-                    tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
                     xmlPath = asso.getXmlPath();
+                    if ((xmlPath == null)||(xmlPath.trim().equals("")))
+                    {
+                        System.out.println("   CVVV asso : xmlPath is null : " + asso.getName());
+                        xmlPath = asso.getName();
+                        //return null;
+                    }
+                    tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.CLONE);
+
                     setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.ASSOCIATION.toString(), asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
 
                     //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.ASSOCIATION.toString());
@@ -1488,7 +1519,10 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     {
 
         if (tempPar == null) throw new ApplicationException("Node for setNane is null.");
-        if (parent == null) tempPar.setName(xmlPath);
+        if (parent == null)
+        {
+            tempPar.setName(xmlPath);
+        }
 
         String cardinality = "";
         if ((min == 0)&&(max == -1)) cardinality = Config.CARDINALITY_ZERO_TO_MANY;
@@ -1647,8 +1681,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         //String fileName = "T:\\YeWu\\xmlpathSpec\\newCOCT_MT150003.h3s";
         //String fileName = "C:\\projects\\caadapter\\workingspace\\NewEncounter\\NewEncounter.h3s";
         //String fileName = "C:\\projects\\caadapter\\workingspace\\010000\\010000-Person.h3s";
-        String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\COCT_MT010000_Choice_S.h3s";
+        //String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\COCT_MT010000_Simple.h3s";
+        //String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\" + args[0] + ".h3s";
+        //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000030.h3s";
+        String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000040.h3s";
 
+        //new H3SInstanceMetaTree(args[0]);
         new H3SInstanceMetaTree(fileName);
     }
 }
@@ -1656,6 +1694,18 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2008/03/06 17:25:53  umkis
+ * HISTORY      : update end minor change
+ * HISTORY      :
+ * HISTORY      : Revision 1.10  2007/09/08 20:59:38  umkis
+ * HISTORY      : no message
+ * HISTORY      :
+ * HISTORY      : Revision 1.9  2007/08/27 20:43:22  umkis
+ * HISTORY      : fix the Bug of infinite looping when choice included HL7 transformation
+ * HISTORY      :
+ * HISTORY      : Revision 1.8  2007/08/17 01:11:36  umkis
+ * HISTORY      : upgrade test instance generator
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/08/09 01:56:52  umkis
  * HISTORY      : add a feature that v2Meta directory creating when search the directory
  * HISTORY      :

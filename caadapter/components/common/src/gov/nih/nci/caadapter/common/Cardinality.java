@@ -16,6 +16,8 @@ public class Cardinality
    */
   private int max_;
 
+  private boolean isChoice = false;
+
   public static final int UNBOUNDED = Integer.MAX_VALUE;
 
   //-------------------------------------------------------------------------
@@ -96,6 +98,17 @@ public class Cardinality
             throw new IllegalArgumentException("Null Cardinality String");
         }
         s = s.trim();
+        int idx = s.indexOf(Config.SUFFIX_OF_CHOICE_CARDINALITY);
+
+        if (idx < 0)
+        {
+            isChoice = false;
+        }
+        else
+        {
+            s = s.substring(0, idx).trim();
+            isChoice = true;
+        }
         if (s.equals(Config.CARDINALITY_ONE_TO_ONE))
         {
             min_ = 1;
@@ -144,6 +157,17 @@ public class Cardinality
   public int getMaximum()
   {
     return max_;
+  }
+
+  //-------------------------------------------------------------------------
+  /**
+   * Gets the boolean value whether this cardinalityu is choice or not.
+   *
+   * @return isChoice value;
+   */
+  public boolean isChoice()
+  {
+    return isChoice;
   }
 
   //-------------------------------------------------------------------------
@@ -198,9 +222,10 @@ public class Cardinality
 		}
 		else
 		{
-			if (getMinimum() == 1)
+			if (getMaximum() == 1)
 				rtnString = Config.CARDINALITY_ZERO_TO_ONE;
 		}
-		return rtnString;
+        if (isChoice) rtnString = rtnString + " " + Config.SUFFIX_OF_CHOICE_CARDINALITY;
+        return rtnString;
 	}
 }

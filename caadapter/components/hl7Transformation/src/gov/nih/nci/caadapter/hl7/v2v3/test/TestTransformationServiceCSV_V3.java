@@ -1,8 +1,8 @@
-/**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.7 2008-02-20 19:54:47 umkis Exp $
+/*
+ *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/TestTransformationServiceCSV_V3.java,v 1.00 Mar 6, 2008 12:39:01 PM umkis Exp $
  *
  * ******************************************************************
- * COPYRIGHT NOTICE
+ * COPYRIGHT NOTICE  
  * ******************************************************************
  *
  *	The caAdapter Software License, Version 1.0
@@ -35,7 +35,6 @@
  *	programs.  This license does not authorize the recipient to use any trademarks owned by either
  *	NCI or SAIC-Frederick.
  *
- *
  *	5. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED
  *	WARRANTIES, (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  *	MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE
@@ -48,53 +47,78 @@
  *	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *  MODULENAME   : $Workfile: $
  *
- * ********************************************************************
+ * ******************************************************************
  */
-package gov.nih.nci.caadapter.hl7.demo;
-import gov.nih.nci.caadapter.ui.main.MainFrame;
 
-import javax.swing.*;
+package gov.nih.nci.caadapter.hl7.v2v3.test;
+
+import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
+import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
+
+import java.util.List;
 
 /**
- * A tiny driver which will launch the HL7SDK Swing Mapping Tool.
+ * This class defines ...
  *
- * @author OWNER: Matthew Giordano
+ * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.7 $
- * @since caAdapter v1.2
+ * @version Since caAdapter v3.3
+ *          revision    $Revision: 1.1 $
+ *          date        Mar 6, 2008
+ *          Time:       12:39:01 PM $
  */
-public class LaunchUI {
-    private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.7 2008-02-20 19:54:47 umkis Exp $";
+public class TestTransformationServiceCSV_V3
+{
+
+    /**
+     * Logging constant used to identify source of log entry, that could be later used to create
+     * logging mechanism to uniquely identify the logged class.
+     */
+    private static final String LOGID = ": TestTransformationServiceCSV_V3.java,v $";
+
+    /**
+     * String that identifies the class version and solves the serial version UID problem.
+     * This String is for informational purposes only and MUST not be made final.
+     *
+     * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
+     */
+    public static String RCSID = ": /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/TestTransformationServiceCSV_V3.java,v 1.00 Mar 6, 2008 12:39:01 PM umkis Exp $";
+
+    public TestTransformationServiceCSV_V3(String csv, String map)
+    {
+        TransformationService ts = new TransformationService(csv, map);
+        List<XMLElement> msgs = null;
+        try
+        {
+            msgs = ts.process();
+        }
+        catch(Exception ee)
+        {
+            System.out.println("Exception : " + ee.getMessage());
+            ee.printStackTrace();
+            return;
+        }
+        int n = 0;
+        for(XMLElement msg:msgs)
+        {
+            n++;
+            System.out.println("#### MESSAGE " + n + " #####");
+            System.out.println(msg.toXML().toString());
+        }
+        System.out.println("\n#### Validation Results #####");
+        System.out.println(ts.getValidatorResults().toString());
+
+    }
 
     public static void main(String[] args)
     {
-        try
-            {
-		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	        }
-            catch (ClassNotFoundException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            catch (InstantiationException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            catch (IllegalAccessException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            catch (UnsupportedLookAndFeelException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            new MainFrame().launch();
+        String csv = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000030.csv";
+        String map = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000030.map";
+        new TestTransformationServiceCSV_V3(map, csv);
     }
 }
+
+/**
+ * HISTORY      : : TestTransformationServiceCSV_V3.java,v $
+ */

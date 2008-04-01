@@ -1,8 +1,8 @@
-/**
- * $Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.7 2008-02-20 19:54:47 umkis Exp $
+/*
+ *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/SampleTempV2FromCSV.java,v 1.00 Jan 15, 2008 1:03:44 PM umkis Exp $
  *
  * ******************************************************************
- * COPYRIGHT NOTICE
+ * COPYRIGHT NOTICE  
  * ******************************************************************
  *
  *	The caAdapter Software License, Version 1.0
@@ -35,7 +35,6 @@
  *	programs.  This license does not authorize the recipient to use any trademarks owned by either
  *	NCI or SAIC-Frederick.
  *
- *
  *	5. THIS SOFTWARE IS PROVIDED "AS IS," AND ANY EXPRESSED OR IMPLIED
  *	WARRANTIES, (INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  *	MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE
@@ -48,53 +47,65 @@
  *	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *  MODULENAME   : $Workfile: $
  *
- * ********************************************************************
+ * ******************************************************************
  */
-package gov.nih.nci.caadapter.hl7.demo;
-import gov.nih.nci.caadapter.ui.main.MainFrame;
 
-import javax.swing.*;
+package gov.nih.nci.caadapter.hl7.v2v3.v2gene;
+
+import gov.nih.nci.caadapter.common.util.FileUtil;
+
+import java.util.List;
 
 /**
- * A tiny driver which will launch the HL7SDK Swing Mapping Tool.
+ * This class defines ...
  *
- * @author OWNER: Matthew Giordano
+ * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.7 $
- * @since caAdapter v1.2
+ * @version Since caAdapter v3.3
+ *          revision    $Revision: 1.3 $
+ *          date        Jan 15, 2008
+ *          Time:       1:03:44 PM $
  */
-public class LaunchUI {
-    private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.7 2008-02-20 19:54:47 umkis Exp $";
-
+public class SampleTempV2FromCSV
+{
     public static void main(String[] args)
     {
+        TempV2FromCSV gen = null;
         try
-            {
-		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	        }
-            catch (ClassNotFoundException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            catch (InstantiationException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            catch (IllegalAccessException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            catch (UnsupportedLookAndFeelException e1)
-            {
-		        // TODO Auto-generated catch block
-		        e1.printStackTrace();
-	        }
-            new MainFrame().launch();
+        {
+            // argument 1 : input csv file name
+            // argument 2 : output directory (full pathname)
+            gen = new TempV2FromCSV("C:\\baylorhealth\\Sample input file Test 1.csv", "C:\\baylorhealth\\test");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }
+
+        // At this point the v2 message file may be generated at the output directory.
+        // The all messages are saved to the output file of which file name can be gotten by getOutputFileName().
+        // "Message Control-ID" consists of "VISION" + Generating Time(yyyymmddhhMMss) + "_" + 6 digit record_number in the input csv file.
+
+
+        String outFile = gen.getOutputFileName();       // get the output v2 message file name
+        String logFile = gen.getLogFileName();          // get the log file name for each csv record.
+        String errorFile = gen.getErrorListFileName();  // get the error message list file name for each failure csv record.
+        int successCount = gen.getSuccessCount();       // get the number of the records generated successfully
+        int errorCount = gen.getErrorCount();           // get the number of the error records
+        int recordCount = gen.getRecordCount();         // get the number of the total records in the csv file
+
+
+        System.out.println("\n\n--------------------------\nMessagr File ("+outFile+")\n\n" + FileUtil.readFileIntoString(outFile));
+        System.out.println("\n\n--------------------------\nLog File ("+logFile+")\n\n" + FileUtil.readFileIntoString(logFile));
+        System.out.println("\n\n--------------------------\nError File ("+errorFile+")\n\n" + FileUtil.readFileIntoString(errorFile));
+
+
     }
+
 }
+
+/**
+ * HISTORY      : : SampleTempV2FromCSV.java,v $
+ */

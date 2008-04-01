@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.5 2007-08-09 01:56:52 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.7 2008-03-25 02:07:02 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -74,7 +74,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.7 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -93,10 +93,11 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.5 2007-08-09 01:56:52 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.7 2008-03-25 02:07:02 umkis Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
+    private List<String> urls = new ArrayList<String>();
     private List<String> fileNames = new ArrayList<String>();
 
     public ClassLoaderUtil(String name) throws IOException
@@ -123,6 +124,7 @@ public class ClassLoaderUtil
         {
             URL fileURL = fileURLs.nextElement();
             String url = fileURL.toString();
+            urls.add(url);
             InputStream stream = null;
 
             if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
@@ -226,8 +228,8 @@ public class ClassLoaderUtil
                 Tstreams.add(stream);
                 Tnames.add(nameS);
                 fileNames.add(fileName);
-    //            File file = new File(fileName);
-    //            file.delete();
+                File file = new File(fileName);
+                file.deleteOnExit();
             }
 
             if (streams.size() != Tstreams.size()) names = Tnames;
@@ -332,6 +334,16 @@ public class ClassLoaderUtil
         return name;
     }
 
+    public List<String> getURLs()
+    {
+        return urls;
+    }
+
+
+    public List<String> getNames()
+    {
+        return names;
+    }
     public String getName(int index)
     {
         if (names.size() <= index) return null;
@@ -370,6 +382,12 @@ public class ClassLoaderUtil
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2007/09/07 14:40:21  umkis
+ * HISTORY      : Temporary files will be automatically deleted when system exit.
+ * HISTORY      :
+ * HISTORY      : Revision 1.5  2007/08/09 01:56:52  umkis
+ * HISTORY      : add a feature that v2Meta directory creating when search the directory
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/08 21:18:10  umkis
  * HISTORY      : Change to V3VocabularyTreeBuildEventHandler
  * HISTORY      :

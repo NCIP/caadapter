@@ -16,8 +16,8 @@ import java.util.Hashtable;
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2007-08-20 20:39:13 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-03-26 14:37:30 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -152,7 +152,8 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	 * @param mifClass the mifClass to set
 	 */
 	public void setMifClass(MIFClass mifClass) {
-		this.mifClass = mifClass;
+        mifClass.setParent(this);
+        this.mifClass = mifClass;
 	}
 	/**
 	 * @return the minimumMultiplicity
@@ -193,7 +194,11 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		}
 			
 		if (getMaximumMultiplicity()==1)
-			return viewName;
+		{
+			if(!MIFUtil.containChoiceAssociation(this))
+				return viewName;
+			
+		}
 		
 		String stB="";
 		if (getMultiplicityIndex()<10)

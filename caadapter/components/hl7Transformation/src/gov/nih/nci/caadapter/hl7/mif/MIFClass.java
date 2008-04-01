@@ -15,6 +15,7 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Iterator;
@@ -23,12 +24,13 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2007-08-15 17:54:49 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-04-01 20:59:22 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
 		static final long serialVersionUID = 6L;
+		private Hashtable<String, String> packageLocation = new Hashtable<String, String> ();
 	 private HashSet<MIFAttribute> attributes = new HashSet<MIFAttribute>();
 	 private HashSet<MIFAssociation> associations = new HashSet<MIFAssociation>();
 	 private HashSet<MIFClass> choices = new HashSet<MIFClass>();
@@ -53,7 +55,9 @@ import java.util.Iterator;
 	  */
 
 	 public void addAttribute(MIFAttribute attr) {
-			attributes.add(attr);
+
+         attr.setParent(this);
+            attributes.add(attr);
 	 }
 	 /**
 	  * @return attributes of a MIFClass
@@ -65,8 +69,20 @@ import java.util.Iterator;
 	 * @param newAttributes the attributes to set
 	 */
 	public void setAttributes(HashSet<MIFAttribute> newAttributes) {
-		attributes=newAttributes;
-	}
+        if (newAttributes == null) return;
+         Object[] obs = newAttributes.toArray();
+         if (obs.length == 0) return;
+
+        HashSet<MIFAttribute> atts = new HashSet<MIFAttribute>();
+        for(Object ob:obs)
+        {
+            MIFAttribute mifOb = (MIFAttribute) ob;
+            mifOb.setParent(this);
+            atts.add(mifOb);
+        }
+        //attributes=newAttributes;
+        attributes=atts;
+    }
 		 
 	 public void removeAttribute(MIFAttribute attrToRemove)
 	 {
@@ -116,12 +132,26 @@ import java.util.Iterator;
 	  */
 
 	 public void addAssociation(MIFAssociation association) {
-		 associations.add(association);
+         association.setParent(this);
+         associations.add(association);
 	 }
 	 
 	 public void setAssociation(HashSet<MIFAssociation> newAsscs)
 	 {
-		 associations=newAsscs;
+         if (newAsscs == null) return;
+         Object[] obs = newAsscs.toArray();
+         if (obs.length == 0) return;
+         HashSet<MIFAssociation> atts = new HashSet<MIFAssociation>();
+         for(Object ob:obs)
+         {
+             MIFAssociation mifOb = (MIFAssociation) ob;
+             mifOb.setParent(this);
+             atts.add(mifOb);
+         }
+
+         associations=atts;
+
+         //associations=newAsscs;
 	 }
 	 
 	 public void removeAssociation(MIFAssociation asscToRemove)
@@ -176,12 +206,25 @@ import java.util.Iterator;
 	  */
 
 	 public void addChoice(MIFClass choice) {
-		 choices.add(choice);
+         choice.setParent(this);
+         choices.add(choice);
 	 }
 	 
 	 public void setChoice(HashSet<MIFClass> newChoices)
 	 {
-		 choices=newChoices;
+         if (newChoices == null) return;
+         Object[] obs = newChoices.toArray();
+         if (obs.length == 0) return;
+         HashSet<MIFClass> atts = new HashSet<MIFClass>();
+         for(Object ob:obs)
+         {
+             MIFClass mifOb = (MIFClass) ob;
+             mifOb.setParent(this);
+             atts.add(mifOb);
+         }
+
+         choices=atts;
+         //choices=newChoices;
 	 }
 	 /**
 	  * @return choices of a MIFClass
@@ -415,7 +458,7 @@ import java.util.Iterator;
 
 	}
 	public String getNodeXmlName() {
-		if (traversalName!=null)
+		if (traversalName!=null&&!traversalName.equals(""))
 			return traversalName;
 		
 		return this.getName();
@@ -516,4 +559,20 @@ import java.util.Iterator;
 	public void setTraversalName(String traversalName) {
 		this.traversalName = traversalName;
 	}
+	public String toString()
+	{
+		return getNodeXmlName();
+	}
+	public Hashtable<String, String> getPackageLocation() {
+		return packageLocation;
+	}
+	public void setPackageLocation(Hashtable<String, String> packageLocation) {
+		this.packageLocation = packageLocation;
+	}
+    public Hashtable<String, MIFClass> getResolvedReferenceClasses()
+    {
+        MIFReferenceResolver resolver = new MIFReferenceResolver();
+        resolver.getReferenceResolved(this);
+        return resolver.getClassReferences();
+    }
  }

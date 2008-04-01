@@ -1,6 +1,6 @@
  /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.8 2007-08-01 17:20:05 jayannah Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/main/MainFrame.java,v 1.11 2007-09-08 20:19:12 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,6 +34,7 @@ package gov.nih.nci.caadapter.ui.main;
 
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.function.FunctionUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -62,10 +63,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2007-08-01 17:20:05 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2007-09-08 20:19:12 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -123,7 +124,6 @@ public class MainFrame extends AbstractMainFrame
 	    this.setFocusable(true);
 		this.setFocusableWindowState(true);
 		//helpContentViewer = new HelpContentViewer(this);
-
 
 		InitialSplashWindow isw = new InitialSplashWindow();
 		//isw.setAlwaysOnTop(true);
@@ -225,12 +225,6 @@ public class MainFrame extends AbstractMainFrame
 	tabbedPane.setSelectedComponent(panel);
 	//		Log.logInfo(this, "Panel Class: '" + (panel==null?"null":panel.getClass().getName()) + "'.");
 	tabMap.put(panel.getClass(), panel);
-    }
-
-    private boolean isContainedInTabPane(JPanel j) {
-	boolean result = false;
-	result = tabMap.containsValue(j);
-	return result;
     }
 
     /* (non-Javadoc)
@@ -372,6 +366,11 @@ public class MainFrame extends AbstractMainFrame
 	 */
     public void showHelpContentViewer() // inserted by umkis on 01/16/2006, for reduce uploading time for help content.
     {
+    	if (helpContentViewer==null)
+    	{
+    		System.out.println("MainFrame.showHelpContentViewer()..the help window has not been intialized yet !!");
+    		return;
+    	}
 	    DefaultSettings.centerWindow(helpContentViewer);
 	    helpContentViewer.setVisible(true);
     }
@@ -485,13 +484,22 @@ public class MainFrame extends AbstractMainFrame
     protected void exit(int errorLevel) {
 	this.setVisible(false);
 	this.dispose();
-	//FunctionUtil.deleteTemporaryFiles();
+	FunctionUtil.deleteTemporaryFiles();   //Revision 1.10  2007/09/07 15:19:26  umkis
 	Log.logInfo(this, "\r\n\r\nShutting down logging with exit code = " + errorLevel + "\r\n\r\n" + "===============================================================\r\n" + "===============================================================\r\n");
 	System.exit(errorLevel);
     }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2007/09/07 15:19:26  umkis
+ * HISTORY      : Temporary files will be automatically deleted when system exit.
+ * HISTORY      :
+ * HISTORY      : Revision 1.9  2007/09/06 17:10:49  wangeug
+ * HISTORY      : check null to view help window
+ * HISTORY      :
+ * HISTORY      : Revision 1.8  2007/08/01 17:20:05  jayannah
+ * HISTORY      : added untitled name to the panel name
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2007/07/27 20:42:22  wangeug
  * HISTORY      : clean codes
  * HISTORY      :

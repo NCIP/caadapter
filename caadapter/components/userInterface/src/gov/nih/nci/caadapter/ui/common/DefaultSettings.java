@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.5 2007-08-10 16:48:24 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.9 2008-01-31 21:44:22 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -52,7 +52,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-//import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -60,10 +59,10 @@ import java.util.StringTokenizer;
  * This class defines a list of default settings for GUI Settings.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-08-10 16:48:24 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-01-31 21:44:22 $
  */
 public class DefaultSettings
 {
@@ -88,6 +87,8 @@ public class DefaultSettings
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Config.FRAME_DEFAULT_HEIGHT = (int) screenSize.getHeight() - 60;//considering the existence of underneath task bar.
 		Config.FRAME_DEFAULT_WIDTH = (int) screenSize.getWidth() - 20;
+		installLookAndFeel();
+		installFonts();
 	}
 
 	private static final JFileChooser getJFileChooser(boolean newOne)
@@ -106,24 +107,19 @@ public class DefaultSettings
 		}
 	}
 
-	// can't construct one.
-	private DefaultSettings()
-	{
-	}
-
-	/**
-	 * Installs all default settings.
-	 */
-	public static void installAll()
-	{
-		installLookAndFeel();
-		installFonts();
-	}
+//	/**
+//	 * Installs all default settings.
+//	 */
+//	public static void installAll()
+//	{
+//		installLookAndFeel();
+//		installFonts();
+//	}
 
 	/**
 	 * Installs the default LookAndFeel.
 	 */
-	public static void installLookAndFeel()
+	private static void installLookAndFeel()
 	{
 		try
 		{
@@ -270,17 +266,31 @@ public class DefaultSettings
 		
 		JFileChooser fileChooser = getJFileChooser(true);
 		fileChooser.setCurrentDirectory(new File(workingDirectoryPath));
-		StringTokenizer stk=new StringTokenizer(fileExtension,";");
+		boolean toSelectedDir=false;
 		ArrayList<FileFilter> fileFilters=new ArrayList<FileFilter>();
-		while (stk.hasMoreElements())
+		if (fileExtension==null||fileExtension.equals(""))
 		{
-			String nxtExt=(String)stk.nextElement();
-			FileFilter singleFileFilter = new SingleFileFilter(nxtExt);
-			fileFilters.add(singleFileFilter);
-			fileChooser.addChoosableFileFilter(singleFileFilter);
+			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			toSelectedDir=true;
 		}
-		
+        else if ((fileExtension.equals("*.*"))||(fileExtension.equals(".*")))      //JFileChooser.FILES_AND_DIRECTORIES
+		{
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY);
+			toSelectedDir=true;
+		}
+        else
+		{	
+			StringTokenizer stk=new StringTokenizer(fileExtension,";");
+			while (stk.hasMoreElements())
+			{
+				String nxtExt=(String)stk.nextElement();
+				FileFilter singleFileFilter = new SingleFileFilter(nxtExt);
+				fileFilters.add(singleFileFilter);
+				fileChooser.addChoosableFileFilter(singleFileFilter);
+			}
+		}
 		fileChooser.setDialogTitle(title);
+		
 		do
 		{
 			int returnVal = -1;
@@ -289,6 +299,8 @@ public class DefaultSettings
 			{
 				returnVal = fileChooser.showSaveDialog(parentComponent);
 			}
+			else if (toSelectedDir)
+				returnVal = fileChooser.showDialog(parentComponent, "Select");
 			else
 			{
 				returnVal = fileChooser.showOpenDialog(parentComponent);
@@ -365,6 +377,8 @@ public class DefaultSettings
 		//		{
 		//			((BasicFileChooserUI) fileChooserUI).setFileName("");
 		//		}
+		System.out
+		.println("DefaultSettings.getUserInputOfFileFromGUI()..currentDir:"+fileChooser.getCurrentDirectory());
 
 		return file;
 	}
@@ -418,16 +432,6 @@ public class DefaultSettings
 		}
 	}
 
-	/**
-	 * Create and return a JScrollPane instance with some default features.
-	 * @return a JScrollPane instance with some default features.
-	 */
-	public static final JScrollPane createScrollPaneWithDefaultFeatures()
-	{
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		return scrollPane;
-	}
 
 	/**
 	 * Currently utilize JOptionPane to report any given throwable to UI.
@@ -515,9 +519,8 @@ public class DefaultSettings
 		{
 			Container container = null;
 			JRootPane rootPane = component.getRootPane();
-			//		System.out.println("root pane type: " + rootPane.getClass().getName());
 			if (rootPane != null)
-			{//rootpane is not null implies this panel is fully displayed;
+			{
 				container = rootPane.getParent();
 			}
 			return container;
@@ -530,6 +533,18 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2007/11/28 15:05:40  wangeug
+ * HISTORY      : setup UI environment with DefaultSettings implementation
+ * HISTORY      :
+ * HISTORY      : Revision 1.7  2007/11/14 20:55:57  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
+ * HISTORY      : Revision 1.6  2007/09/18 15:25:52  wangeug
+ * HISTORY      : modify FileChooser to select Directory
+ * HISTORY      :
+ * HISTORY      : Revision 1.5  2007/08/10 16:48:24  wangeug
+ * HISTORY      : make File choose work with multiple extensions
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/07/14 20:26:18  umkis
  * HISTORY      : add a comment about 'imageFileName'
  * HISTORY      :

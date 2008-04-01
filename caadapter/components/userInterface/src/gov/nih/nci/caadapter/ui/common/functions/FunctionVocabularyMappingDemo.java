@@ -1,11 +1,11 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDefinitionDialog.java,v 1.2 2007-10-17 14:50:56 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDemo.java,v 1.1 2007-10-17 14:50:42 umkis Exp $
  *
  * ******************************************************************
- * COPYRIGHT NOTICE
+ * COPYRIGHT NOTICE  
  * ******************************************************************
  *
- *	The HL7 SDK Software License, Version 1.0
+ *	The caAdapter Software License, Version 1.0
  *
  *	Copyright 2001 SAIC. This software was developed in conjunction with the National Cancer
  *	Institute, and so to the extent government employees are co-authors, any rights in such works
@@ -53,11 +53,13 @@
 
 package gov.nih.nci.caadapter.ui.common.functions;
 
-import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
+import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.preferences.CaWindowClosingListener;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -70,18 +72,19 @@ import java.io.File;
  *
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
- * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-10-17 14:50:56 $
+ * @version Since caAdapter v3.3
+ *          revision    $Revision: 1.1 $
+ *          date        Oct 16, 2007
+ *          Time:       1:33:31 PM $
  */
-public class FunctionVocabularyMappingDefinitionDialog extends JDialog implements ActionListener
+public class FunctionVocabularyMappingDemo extends JFrame implements ActionListener
 {
 
     /**
      * Logging constant used to identify source of log entry, that could be later used to create
      * logging mechanism to uniquely identify the logged class.
      */
-    private static final String LOGID = "$RCSfile: FunctionVocabularyMappingDefinitionDialog.java,v $";
+    private static final String LOGID = "$RCSfile: FunctionVocabularyMappingDemo.java,v $";
 
     /**
      * String that identifies the class version and solves the serial version UID problem.
@@ -89,7 +92,7 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDefinitionDialog.java,v 1.2 2007-10-17 14:50:56 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDemo.java,v 1.1 2007-10-17 14:50:42 umkis Exp $";
 
 
     private static final String TITLE = "Function Vocabulary Mapping Definition";
@@ -122,6 +125,10 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
     private JButton checkServiceButton;
     private JButton cancelButton;
 
+    private JCheckBox inverse;
+    private JTextField inputField;
+    private JTextField outputField;
+
 
     private boolean okButtonClicked;
 
@@ -133,130 +140,50 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
     //private boolean foundDomain;
     //private boolean isFileSearched;
     private boolean okButtonEnabled;
+    private JFrame frame;
 
-    private JDialog dialog;
-    /**
-     * Creates a non-modal dialog without a title with the
-     * specified <code>Frame</code> as its owner.  If <code>owner</code>
-     * is <code>null</code>, a shared, hidden frame will be set as the
-     * owner of the dialog.
-     * <p/>
-     * This constructor sets the component's locale property to the value
-     * returned by <code>JComponent.getDefaultLocale</code>.
-     *
-     * @param owner the <code>Frame</code> from which the dialog is displayed
-     * @throws java.awt.HeadlessException if GraphicsEnvironment.isHeadless()
-     *                                    returns true.
-     * @see java.awt.GraphicsEnvironment#isHeadless
-     * @see javax.swing.JComponent#getDefaultLocale
-     */
-    public FunctionVocabularyMappingDefinitionDialog(Frame owner, boolean inverse) throws HeadlessException
+    public FunctionVocabularyMappingDemo()//Frame owner, boolean inverse) throws HeadlessException
     {
-        super(owner, TITLE, true);
-        inverseTag = inverse;
+        //super(owner, TITLE, true);
+        super(TITLE);
+        //inverseTag = inverse;
         initialize();
     }
 
-    /**
-     * Creates a non-modal dialog without a title with the
-     * specified <code>Dialog</code> as its owner.
-     * <p/>
-     * This constructor sets the component's locale property to the value
-     * returned by <code>JComponent.getDefaultLocale</code>.
-     *
-     * @param owner the non-null <code>Dialog</code> from which the dialog is displayed
-     * @throws java.awt.HeadlessException if GraphicsEnvironment.isHeadless()
-     *                                    returns true.
-     * @see java.awt.GraphicsEnvironment#isHeadless
-     * @see javax.swing.JComponent#getDefaultLocale
-     */
-    public FunctionVocabularyMappingDefinitionDialog(Dialog owner, boolean inverse) throws HeadlessException
-    {
-        super(owner, TITLE, true);
-        inverseTag = inverse;
-        initialize();
-    }
 
     private void initialize()
     {
-
-
-        /*
-        setLayout(new BorderLayout());
-        centerPanel = new JPanel(new GridBagLayout());
-        Dimension inputFieldSize = computeFieldSize(false);
-        valueField.setPreferredSize(inputFieldSize);
-
-
-        //typeField.setPreferredSize(computeFieldSize(true));
-        Insets insets = new Insets(5, 5, 5, 5);
-
-        searchButton = new JButton(SEARCH_COMMAND);
-        searchButton.setMnemonic(SEARCH_COMMAND_MNENOMIC.charAt(0));
-        searchButton.addActionListener(this);
-
-        centerPanel.add(typeLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        centerPanel.add(new JLabel(""), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
-        centerPanel.add(typeField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        centerPanel.add(valueLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        centerPanel.add(searchButton, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
-        centerPanel.add(valueField, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        centerPanel.add(domainLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-        centerPanel.add(new JLabel(""), new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
-        centerPanel.add(domainField, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0,
-                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-
-        this.add(centerPanel, BorderLayout.CENTER);
-
-        okButton = new JButton(OK_COMMAND);
-        //okButton.setMnemonic(OK_COMMAND_MNENOMIC.charAt(0));
-        okButton.addActionListener(this);
-        checkButton = new JButton(CHECK_COMMAND);
-        //checkButton.setMnemonic(CHECK_COMMAND_MNENOMIC.charAt(0));
-        checkButton.addActionListener(this);
-
-        cancelButton = new JButton(CANCEL_COMMAND);
-        //cancelButton.setMnemonic(CANCEL_COMMAND_MNENOMIC.charAt(0));
-        cancelButton.addActionListener(this);
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
-        buttonPanel.add(checkButton);
-        buttonPanel.add(okButton);
-        buttonPanel.add(cancelButton);
-        this.add(buttonPanel, BorderLayout.SOUTH);
-        this.setSize(460, 200);
-        searchButton.setEnabled(true);
-        domainField.setEnabled(false);
-        checkButton.setEnabled(false);
-
-        selectedItem = functionVocabularyMapping.getTypeNamePossibleList()[0];
-        valueField.setText("");
-        valueField.setEditable(false);
-        typeField.setSelectedIndex(0);
-
-        typeField.addItemListener(
-                new ItemListener()
-                {
-                    public void itemStateChanged(ItemEvent e)
-                    {
-                        String type = (String)typeField.getSelectedItem();
-                        if (!type.equals(selectedItem))
-                        {
-                            selectedItem = type;
-                            doItemChanged(type);
-                        }
-
-                    }
-                }
-        );
-        */
+        try
+        {
+	        try
+            {
+		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	        }
+            catch (ClassNotFoundException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            catch (InstantiationException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            catch (IllegalAccessException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+            catch (UnsupportedLookAndFeelException e1)
+            {
+		        // TODO Auto-generated catch block
+		        e1.printStackTrace();
+	        }
+        }
+        catch (Throwable t)
+        {
+	        Log.logException(new Object(), t);
+	    }
 
         Object[] ob = inputFileNameCommon("", valueField, searchButton, "   " + SEARCH_COMMAND + "   ", SEARCH_COMMAND);
 
@@ -335,14 +262,49 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 
         JPanel centerPanel = new JPanel(new BorderLayout());
 
-        centerPanel.add(domainPanel, BorderLayout.CENTER);
+
         centerPanel.add(locationVOMPanel, BorderLayout.NORTH);
-        centerPanel.add(serviceURLPanel, BorderLayout.SOUTH);
+
+
+        JPanel centerPanel1 = new JPanel(new BorderLayout());
+
+        centerPanel1.add(domainPanel, BorderLayout.NORTH);
+        centerPanel1.add(serviceURLPanel, BorderLayout.CENTER);
+        centerPanel.add(centerPanel1, BorderLayout.CENTER);
+
+        JPanel southWestPanel = new JPanel(new BorderLayout());
+        southWestPanel.add(new JLabel("         Source value : "), BorderLayout.WEST);
+        inputField = new JTextField();
+        southWestPanel.add(inputField, BorderLayout.CENTER);
+        inputField.setEditable(true);
+        inputField.setEnabled(true);
+
+        JPanel southEastPanel = new JPanel(new BorderLayout());
+        southEastPanel.add(new JLabel("         Target value : "), BorderLayout.WEST);
+        outputField = new JTextField();
+        southEastPanel.add(outputField, BorderLayout.CENTER);
+        outputField.setEditable(false);
+        outputField.setEnabled(true);
+
+        JPanel southSouthPanel = new JPanel(new BorderLayout());
+        southSouthPanel.add(southWestPanel, BorderLayout.CENTER);
+        southSouthPanel.add(southEastPanel, BorderLayout.SOUTH);
+
+        southSouthPanel = wrappingBorder("Vocabulary Demo Data and Result", southSouthPanel);
+
+
+        JPanel southMainPanel = new JPanel(new BorderLayout());
+        southMainPanel.add(southSouthPanel, BorderLayout.SOUTH);
+        
+
+        JPanel southPanel = new JPanel(new BorderLayout());
+        southPanel.add(southMainPanel, BorderLayout.CENTER);
+        southPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         mainPanel.add(radioButtonPanel, BorderLayout.NORTH);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
 
         getContentPane().add(new JLabel(" "), BorderLayout.WEST);
         getContentPane().add(new JLabel(" "), BorderLayout.EAST);
@@ -356,7 +318,7 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
         //isFileSearched = false;
         okButtonEnabled = false;
         setupComponentState();
-        this.setSize(600, 240);
+        this.setSize(600, 300);
 
         if (mappingValue == null) mappingValue = "";
 
@@ -398,12 +360,12 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
                 }
         );
 
-        dialog = this;
+        frame = this;
         addWindowListener(new WindowAdapter()
             {
                 public void windowClosing(WindowEvent e)
                 {
-                    dialog.dispose();
+                    frame.dispose();
                 }
             }
         );
@@ -412,6 +374,9 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 //        serviceLabel.setVisible(false);
 //        checkServiceButton.setVisible(false);
 //        serviceField.setVisible(false);
+        this.setVisible(true);
+        //this.addWindowListener(new CaWindowClosingListener());
+        DefaultSettings.centerWindow(this);
     }
 
     private void setupComponentState()
@@ -526,6 +491,15 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
             cPanel.add(radioButton03, BorderLayout.CENTER);
             aPanel.add(cPanel, BorderLayout.CENTER);
         }
+
+
+        inverse = new JCheckBox();
+        JPanel checkPanel = new JPanel(new BorderLayout());
+        checkPanel.add(new JLabel("Inverse Map "), BorderLayout.WEST);
+        checkPanel.add(inverse, BorderLayout.CENTER);
+
+        aPanel.add(checkPanel, BorderLayout.EAST);
+
         bPanel.add(aPanel, BorderLayout.NORTH);
 
         Object[] out = new Object[4];
@@ -553,6 +527,7 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
      */
     public void actionPerformed(ActionEvent e)
     {
+        inverseTag = inverse.isSelected();
 
         String command = e.getActionCommand();
         if (e.getSource() instanceof JRadioButton)
@@ -589,6 +564,7 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 
         if(OK_COMMAND.equals(command))
         {
+
             String inputValue = "";
             if ((typeField.equals(functionVocabularyMapping.getTypeNamePossibleList()[0]))||
                 (typeField.equals(functionVocabularyMapping.getTypeNamePossibleList()[2])))
@@ -599,11 +575,20 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
             {
                 inputValue = serviceField.getText();
             }
-            if(inputValue==null || inputValue.length()==0)
+            if((inputValue==null)||(inputValue.trim().equals("")))
             {
                 JOptionPane.showMessageDialog(this, "No Input value.", "Missing Value", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            String sourceValue = inputField.getText();
+            if((sourceValue==null)||(sourceValue.trim().equals("")))
+            {
+                JOptionPane.showMessageDialog(this, "No Source value.", "Missing Value", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            sourceValue = sourceValue.trim();
+
             String userSelect = typeField;
             if ((userSelect.equals(functionVocabularyMapping.getTypeNamePossibleList()[0]))||
                 (userSelect.equals(functionVocabularyMapping.getTypeNamePossibleList()[2])))
@@ -622,10 +607,24 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 
             }
             mappingTypeClass = userSelect;
+            try
+            {
+                //System.out.println("" + );
+                FunctionVocabularyMapping fvm = new FunctionVocabularyMapping(getMappingTypeClass(), getMappingValue(), inverseTag);
+                if (inverseTag) outputField.setText(fvm.translateInverseValue(sourceValue));
+                else outputField.setText(fvm.translateValue(sourceValue));
+            }
+            catch(FunctionException fe)
+            {
+                JOptionPane.showMessageDialog(this, fe.getMessage(), "Vocabulary Mapping Failure", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            okButtonClicked = true;
-            setVisible(false);
-            dispose();
+
+
+//            okButtonClicked = true;
+//            setVisible(false);
+//            dispose();
         }
         if(CANCEL_COMMAND.equals(command))
         {
@@ -896,37 +895,13 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
         if (idx < 0) return "";
         else return val2.substring(0, idx);
     }
+
+    public static void main(String arg[])
+    {
+        new FunctionVocabularyMappingDemo();
+    }
 }
+
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
- * HISTORY      : initial loading
- * HISTORY      :
- * HISTORY      : Revision 1.9  2006/12/19 22:47:58  umkis
- * HISTORY      : remove(setVisible(false)) serviceURL radio button.
- * HISTORY      :
- * HISTORY      : Revision 1.8  2006/12/19 22:21:37  wuye
- * HISTORY      : remove the service url radio button
- * HISTORY      :
- * HISTORY      : Revision 1.7  2006/11/15 05:46:54  umkis
- * HISTORY      : Fixing Bugs item #3420
- * HISTORY      :
- * HISTORY      : Revision 1.6  2006/11/10 03:54:54  umkis
- * HISTORY      : Error debugging related to File choosing. (Press 'Browser' button)
- * HISTORY      :
- * HISTORY      : Revision 1.5  2006/11/09 23:49:05  umkis
- * HISTORY      : Error debugging related to File choosing. (Press 'Browser' button)
- * HISTORY      :
- * HISTORY      : Revision 1.4  2006/11/02 18:38:05  umkis
- * HISTORY      : XML format vom file must be validated before recorded into a map file with the xml schema file which is directed by Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION.
- * HISTORY      :
- * HISTORY      : Revision 1.3  2006/11/01 02:06:25  umkis
- * HISTORY      : Extending function of vocabulary mapping : URL XML vom file can use.
- * HISTORY      :
- * HISTORY      : Revision 1.2  2006/10/11 18:36:49  umkis
- * HISTORY      : protect inputting 'URL' type when inverse mapping.
- * HISTORY      :
- * HISTORY      : Revision 1.1  2006/10/02 18:06:26  umkis
- * HISTORY      : Vocabulary mapping function upgrade which allow to mapping through a URL and domained .vom file.
- * HISTORY      :
  */

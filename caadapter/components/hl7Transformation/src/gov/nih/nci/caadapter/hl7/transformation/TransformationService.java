@@ -6,12 +6,15 @@
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
+import gov.nih.nci.caadapter.common.Message;
+import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaException;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -29,15 +32,15 @@ import java.util.List;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version $Revision: 1.7 $
- * @date $Date: 2007-08-13 19:21:56 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.16 $
+ * @date $Date: 2007-11-06 16:50:32 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.7 2007-08-13 19:21:56 wuye Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.16 2007-11-06 16:50:32 umkis Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -47,6 +50,8 @@ public class TransformationService
     private File scsfile = null;
     private InputStream csvStream = null;
     private CSVSegmentedFile csvSegmentedFile = null;
+    private ArrayList <TransformationObserver>transformationWatchList;
+    ValidatorResults theValidatorResults = new ValidatorResults();
 
 	/**
 	 * This method will create a transformer that loads csv data from a file 
@@ -58,6 +63,7 @@ public class TransformationService
 
     public TransformationService(String mapfilename, String csvfilename)
     {
+    	this();
         if (mapfilename == null || csvfilename == null)
         {
             throw new IllegalArgumentException("Map File or csv File should not be null!");
@@ -77,6 +83,7 @@ public class TransformationService
 
     public TransformationService(String mapfilename, String csvString, boolean flag)
     {
+    	this();
         if (mapfilename == null)
         {
             throw new IllegalArgumentException("Map File should not be null!");
@@ -96,6 +103,7 @@ public class TransformationService
 	 */
     public TransformationService(String mapfilename, InputStream csvStream)
     {
+    	this();
         if (mapfilename == null)
         {
             throw new IllegalArgumentException("Map File should not be null!");
@@ -110,11 +118,12 @@ public class TransformationService
 	 * This method will create a transformer that loads csv data from an Java File object  
 	 * and transforms into HL7 v3 messages
 	 * 
-	 * @param mapfilename the Java mapping file object
-	 * @param csvStream the csv file object
+	 * @param mapfile the Java mapping file object
+	 * @param csvfile the csv file object
 	 */
     public TransformationService(File mapfile, File csvfile)
     {
+    	this();
         if (mapfile == null || csvfile == null)
         {
             throw new IllegalArgumentException("Map File or csv File should not be null!");
@@ -125,8 +134,42 @@ public class TransformationService
 
     private TransformationService()
     {
+    	transformationWatchList=new ArrayList<TransformationObserver>();
     }
 
+    /**
+     * Add an oberver to the tranformation server
+     * @param observer
+     */
+    public synchronized  void addProgressWatch(TransformationObserver observer)
+    {
+    	if (transformationWatchList==null)
+    		transformationWatchList=new ArrayList<TransformationObserver>();
+    	transformationWatchList.add(observer);
+    }
+    
+    /**
+     * Add an oberver to the tranformation server
+     * @param observer
+     */
+    public synchronized void removeProgressWatch(TransformationObserver observer)
+    {
+    	if (transformationWatchList==null)
+    		return;
+    	if (transformationWatchList.contains(observer))
+    			transformationWatchList.remove(observer);
+    }
+    
+    private void informProcessProgress(int steps)
+    {
+    	if (transformationWatchList.size()!=0) {
+        	for (TransformationObserver tObserver:transformationWatchList)
+        	{
+        		tObserver.progressUpdate(steps);
+        		if (tObserver.isRequestCanceled()) break;
+        	}
+        }
+    }
     /**
      * @return list of HL7 v3 message object.
      * To get HL7 v3 message of each object, call .toXML() method of each object
@@ -141,9 +184,12 @@ public class TransformationService
     	/*
     	 * TODO Exception handling here
     	 */
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
         long mapbegintime = System.currentTimeMillis();
         MapParser mapParser = new MapParser();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
         mappings = mapParser.processOpenMapFile(mapfile);
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
         funcations = mapParser.getFunctions();
     	System.out.println("Map Parsing time" + (System.currentTimeMillis()-mapbegintime));
 
@@ -152,9 +198,12 @@ public class TransformationService
         if (!mapParser.getValidatorResults().isValid())
         {	
         	System.out.println("Invalid .map file");
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         	return null;
         }
         long csvbegintime = System.currentTimeMillis();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
         CSVDataResult csvDataResult = null;
         if (isInputStream) 
         {
@@ -168,24 +217,30 @@ public class TransformationService
         {
         	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
         }
+        
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
     	
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
         // parse the datafile, if there are errors.. return.
         final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
+
 //        prepareValidatorResults.addValidatorResults(csvDataValidatorResults);
         /*
          * TODO consolidate validatorResults
          */
         if (!csvDataValidatorResults.isValid())
         {
+            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file! : Please check and validate this csv file against the scs file."});
+            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+        	System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
             return null;
         }
 
         csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
-        
+       
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
         String h3sFilename = mapParser.getH3SFilename();
         String fullh3sfilepath = FileUtil.filenameLocate(mapfile.getParent(), h3sFilename);
-
         
         long loadmifbegintime = System.currentTimeMillis();
         
@@ -202,19 +257,26 @@ public class TransformationService
         
     	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
 
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE);
     	MapProcessor mapProcess = new MapProcessor();
         
-        List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass);
+        List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
 //    	HL7V3MessageValidator validator = new HL7V3MessageValidator();
-        for(XMLElement xmlElement:xmlElements) 
+/*        for(XMLElement xmlElement:xmlElements) 
         {
         	System.out.println("Message:"+xmlElement.toXML());
-        	xmlElement.validate();
+//        	xmlElement.validate();
         	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages().size());
-        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
+        	for(Message message:xmlElement.getValidatorResults().getAllMessages())
+        	{
+        		System.out.println("Message:" + message+".");
+        	}
+//        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
         	
-//        	validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
-        }
+        	System.out.println("XML validation results:");
+//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
+//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
+        }*/
         System.out.println("total message" + xmlElements.size());
         return xmlElements;
    }
@@ -243,6 +305,9 @@ public class TransformationService
         CSVDataResult csvDataResult = parser.parse(csvStream, new File(fullscmfilepath));
         return csvDataResult;
     }
+	public ValidatorResults getValidatorResults() {
+		return theValidatorResults;
+	}
 	
 	
 /*    private TransformationResult handleException(Exception e) //List<TransformationResult> v3messageResults
@@ -291,23 +356,23 @@ public class TransformationService
 //		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
 //       	TransformationService ts = new TransformationService("C:/xmlpathSpec/xmlpath150003.map",
 //		"C:/xmlpathSpec/COCT_MT150003.csv");
-
+//
 //        TransformationService ts = new TransformationService(
 //        	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT010000_MAP1-1.map",
 //			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT01000_Person.csv");
 
 //        TransformationService ts = new TransformationService(
-//            	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP3-1.map",
-//    			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP_Scenario_Test_Empty.csv");
+//            	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP7-1.map",
+//    			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP_Scenario_Test.csv");
 
         //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
 //		"C:/xmlpathSpec/NewEncounter_comp2.csv");
         
-   	TransformationService ts = new TransformationService("C:/xmlpathSpec/COCT_MT010000_Simple.map",
-		"C:/xmlpathSpec/COCT_MT010000_Simple.csv");
+   	TransformationService ts = new TransformationService("C:/xmlpathSpec/error/choice_basic.map",
+		"C:/xmlpathSpec/error/choice_basic_without_patient.csv");
 
-        //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/010000-Person.map",
-//		"C:/xmlpathSpec/010000-Person.csv");
+//           	TransformationService ts = new TransformationService("C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/test.map",
+//		"C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/COCT_MT150003.csv");
         ts.process();
        	System.out.println(System.currentTimeMillis()-begintime2);
     }
@@ -315,6 +380,33 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2007/11/06 16:49:39  umkis
+ * HISTORY      : Change the error message => Invalid CSV file! : Please check and validate this csv file against the scs file.
+ * HISTORY      :
+ * HISTORY      : Revision 1.14  2007/09/13 14:01:19  wuye
+ * HISTORY      : Remove message print out
+ * HISTORY      :
+ * HISTORY      : Revision 1.13  2007/09/11 17:57:25  wuye
+ * HISTORY      : Added error message when map or csv file is wrong
+ * HISTORY      :
+ * HISTORY      : Revision 1.12  2007/09/06 15:09:27  wangeug
+ * HISTORY      : refine codes
+ * HISTORY      :
+ * HISTORY      : Revision 1.11  2007/09/04 20:42:14  wangeug
+ * HISTORY      : add progressor
+ * HISTORY      :
+ * HISTORY      : Revision 1.10  2007/09/04 14:07:19  wuye
+ * HISTORY      : Added progress bar
+ * HISTORY      :
+ * HISTORY      : Revision 1.9  2007/09/04 13:47:52  wangeug
+ * HISTORY      : add an progress observer list
+ * HISTORY      :
+ * HISTORY      : Revision 1.8  2007/08/29 00:13:15  wuye
+ * HISTORY      : Modified the default value generation strategy
+ * HISTORY      :
+ * HISTORY      : Revision 1.7  2007/08/13 19:21:56  wuye
+ * HISTORY      : load h3s in different format
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/08/03 13:25:32  wuye
  * HISTORY      : Fixed the mapping scenario #1 bug according to the design document
  * HISTORY      :

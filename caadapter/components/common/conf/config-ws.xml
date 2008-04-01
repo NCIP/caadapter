@@ -111,5 +111,9 @@
 	<constant name="EVS_QA_URL" type="String" value="http://cbioqa101.nci.nih.gov:49080/cacore31/http/remoteService"/>
 
 	<constant name="EVS_DEFAULT_CONNECTION" type="String" value="http://cabio-stage.nci.nih.gov/cacore31/http/remoteService"/>
+
+    <constant name="LINKED_URL_FOR_SUPPORT" type="String" value="http://ncicb.nci.nih.gov/NCICB/support"/>
+    <constant name="LINKED_URL_FOR_MORE_INFORMATION" type="String" value="http://trials.nci.nih.gov/projects/infrastructureProject/caAdapter"/>
+    
 	
 </config>

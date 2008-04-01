@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.2 2008-03-20 03:49:26 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.1 2007-09-08 21:00:50 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -51,23 +51,19 @@
  * ******************************************************************
  */
 
-package gov.nih.nci.caadapter.ui.hl7message.instanceGen.util;
-
-import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
+package gov.nih.nci.caadapter.common.csv.data.impl;
 
 import java.net.URL;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.jar.JarFile;
-import java.util.jar.JarEntry;
+import java.net.URLConnection;
+import java.io.*;
+import java.util.*;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
-import java.io.*;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
+import java.util.jar.Attributes;
 
 /**
  * This class defines ...
@@ -75,18 +71,18 @@ import java.io.*;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
- *          date        Aug 3, 2007
- *          Time:       11:33:55 AM $
+ *          revision    $Revision: 1.1 $
+ *          date        Jul 12, 2007
+ *          Time:       4:46:01 PM $
  */
-public class MessageTypeDictionary
+public class ClassLoaderTest
 {
 
     /**
      * Logging constant used to identify source of log entry, that could be later used to create
      * logging mechanism to uniquely identify the logged class.
      */
-    private static final String LOGID = "$RCSfile: MessageTypeDictionary.java,v $";
+    private static final String LOGID = "$RCSfile: ClassLoaderTest.java,v $";
 
     /**
      * String that identifies the class version and solves the serial version UID problem.
@@ -94,26 +90,25 @@ public class MessageTypeDictionary
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.2 2008-03-20 03:49:26 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.1 2007-09-08 21:00:50 umkis Exp $";
 
-    private String MIF = "mif";
-
-    public MessageTypeDictionary() throws ApplicationException
+    public ClassLoaderTest(String name)
     {
         Enumeration<URL> fileURLs = null;
         try
         {
-            fileURLs= ClassLoader.getSystemResources(MIF);
+            fileURLs= ClassLoader.getSystemResources(name);
         }
         catch(IOException ie)
         {
-            throw new ApplicationException("IOException #1 : " + ie.getMessage());
+            System.out.println("IOException #1 : " + ie.getMessage());
         }
         if (fileURLs == null)
         {
-            throw new ApplicationException("Result : Not Found any mif class");
+            System.out.println("Result : " + name + " : Not Found");
+            return;
         }
-        //System.out.println("Number of Result : " + fileURLs.toString());
+        System.out.println("Number of Result : " + fileURLs.toString());
         int n = 0;
         while(fileURLs.hasMoreElements())
         {
@@ -122,7 +117,7 @@ public class MessageTypeDictionary
 
             String url = fileURL.toString();
 
-            //System.out.println("Result "+n+" : " + name + " : " +  url);
+            System.out.println("Result "+n+" : " + name + " : " +  url);
             //URLConnection conn = null;
 
             InputStream stream = null;
@@ -152,61 +147,99 @@ public class MessageTypeDictionary
                     continue;
                 }
                 Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
-                //List<JarEntry> jarEntryList = new ArrayList<JarEntry>();
+                List<JarEntry> jarEntryList = new ArrayList<JarEntry>();
                 while(jarEntries.hasMoreElements())
                 {
                     ZipEntry jarEntry = jarEntries.nextElement();
                     //System.out.println("JarEntry : " + jarEntry.getName());
                     String nameE = jarEntry.getName();
-                    if (nameE.length() < (MIF.length()+5)) continue;
-                    if (nameE.startsWith(MIF))
+                    if (nameE.startsWith(name))
                     {
-
-                        String mifName = nameE.substring(4);
-                        if (!mifName.endsWith(MIF)) continue;
-                        //if (mifName.indexOf("_MT") < 0) continue;
                         System.out.println("=====================================================================================================================================================================================================================");
-                        //System.out.println("JarEntry : " + mifName);
-                        MIFClass mifClass = null;
+                        System.out.println("JarEntry : " + jarEntry.getName());
+                        DataInputStream dis = null;
                         try
                         {
-                            mifClass= MIFParserUtil.getMIFClass(mifName);
-
+                            stream = jarFile.getInputStream(jarEntry);
+                            dis = new DataInputStream(stream);
                         }
-                        catch(Exception e)
+                        catch(IOException ie)
                         {
-                            System.err.println("JarEntry : " + mifName + " class loading failure!! : " + e.getMessage());
-                            continue;
+                            System.out.println("Connection IOException : " + ie.getMessage());
                         }
-                        System.out.println("JarEntry : " + mifName + " ,1: " + mifClass.getName() + " ,2: " + mifClass.getNodeXmlName() + " ,3: " + mifClass.getParentXmlPath() + " ,4: " + mifClass.getReferenceName() + " ,5: " + mifClass.getCsvSegment() + " ,6: " + mifClass.getTitle() + " ,7: " + mifClass.getXmlPath() + " ,8: " + mifClass.toString());
 
+                        while(true)
+                        {
+
+                            byte bt = -1;
+                            try
+                            {
+
+                                bt = dis.readByte();
+                            }
+                            catch(IOException ie) { break; }
+                            catch(NullPointerException ne) { break; }
+
+                            if (bt < 0) break;
+                            //byte bt = (byte) i;
+                            char ch = (char) bt;
+                            String c = "" + ch;
+                            System.out.print(c);
+                        }
                     }
                 }
             }
             else
             {
+                try
+                {
+                    stream = (fileURL.openConnection()).getInputStream();
+                }
+                catch(IOException ie)
+                {
+                    System.out.println("Connection IOException : " + ie.getMessage());
+                }
 
+                try
+                {
+                    while(true)
+                    {
+                        int i = stream.read();
+
+                        if (i < 0) break;
+                        byte bt = (byte) i;
+                        char ch = (char) bt;
+                        String c = "" + ch;
+
+                        System.out.print(c);
+                    }
+                }
+                catch(IOException ie)
+                {
+                    System.out.println("IOException : ");
+                }
+                catch(NullPointerException ne)
+                {
+                    System.out.println("NullPointerException : ");
+                }
             }
-
+            try
+            {
+                if (stream != null) stream.close();
+            }
+            catch(IOException ie)
+            {
+                System.out.println("IOException 2 : ");
+            }
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String args[])
     {
-        try
-        {
-            new MessageTypeDictionary();
-        }
-        catch(ApplicationException ae)
-        {
-            System.out.println("Error : " + ae.getMessage());
-        }
+        new ClassLoaderTest(args[0]);
     }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.1  2007/08/07 04:10:07  umkis
- * HISTORY      : upgrade test instance generator
- * HISTORY      :
  */

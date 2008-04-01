@@ -5,26 +5,26 @@
 package gov.nih.nci.caadapter.hl7.mif;
 
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 
-import java.beans.Expression;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+
 /**
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2007-08-14 15:49:17 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-03-26 14:37:30 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -425,8 +425,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("isAbstract", beanClass, "findIsAbstract", null));
 		propList.add(new PropertyDescriptor("Data Type", beanClass, "getType", null));
 //		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getDefaultValue", null));
-		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "findDefaultValueProperty", null));
-		propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "getDomainName", null));
+		//propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "findDefaultValueProperty", null));
+        propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getFixedValue", null));
+        propList.add(new PropertyDescriptor("HL7 Domain", beanClass, "findDomainNameOidProperty", null));
 		propList.add(new PropertyDescriptor("Coding Strength", beanClass, "getCodingStrength", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
@@ -463,15 +464,38 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		// TODO Auto-generated method stub
 		return "Attribute";
 	}
+	
+	public String findDomainNameOidProperty() {
+		// TODO Auto-generated method stub
+		String dmName=getDomainName();
+		if(dmName==null||dmName.equals(""))
+			return dmName;
+		String odiSetting=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
+		if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
+			return dmName;
+		
+		long sTime=System.currentTimeMillis();
+		String oid="";
+		try {
+			oid= FileUtil.findODIWithDomainName(dmName);
+			if (oid!=null&&!oid.equals(""))
+				dmName=dmName+" ("+oid +")";
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
+		return dmName;
+	}
 	/**
 	 * Use fixedValue as default value if available
 	 * @return
 	 */
-	public String findDefaultValueProperty()
+	public String findHL7DefaultValueProperty()
 	{
 		if (getFixedValue()!=null
 				&&!getFixedValue().equals(""))
 			return getFixedValue();
-		return getDefaultValue();
+		return getMnemonic();
 	}
 }

@@ -6,7 +6,9 @@ import gov.nih.nci.caadapter.common.util.PropertiesResult;
 
 public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObject{
 
-	public PropertiesResult getPropertyDescriptors() throws Exception {
+    DatatypeBaseObject parent;
+
+    public PropertiesResult getPropertyDescriptors() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,7 +52,18 @@ public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObje
 	public abstract String getName();
 	public abstract void setName(String newName);
 
-	/**
+    public void setParent(DatatypeBaseObject par)
+    {
+        parent = par;
+    }
+
+    public DatatypeBaseObject getParent()
+    {
+        return parent;
+    }
+
+
+    /**
 	 * This method is called to set tree icon if the object being
 	 * set as userObject of a tree node
 	 */
