@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewManager.java,v 1.3 2007-07-16 19:27:12 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewManager.java,v 1.4 2008-04-01 21:43:14 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -45,10 +45,10 @@ import java.util.*;
  * This class manages loading the series of functional box definitions identified in the system.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-07-16 19:27:12 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-04-01 21:43:14 $
  */
 public class FunctionBoxViewManager
 {
@@ -161,7 +161,7 @@ public class FunctionBoxViewManager
 		return (FunctionMeta) functionDefinitionsMap.get(function);
 	}
 
-	private String getFunctionUUID(Object function)
+	private String getFunctionUUID(Object function)  
 	{
 		String functionUUID = null;
 		if (function instanceof String)
@@ -200,6 +200,9 @@ public class FunctionBoxViewManager
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/07/16 19:27:12  wangeug
+ * HISTORY      : change UIUID to xmlPath
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/03 18:57:48  wangeug
  * HISTORY      : relocate "FunctionComponent" object from  other package
  * HISTORY      :
