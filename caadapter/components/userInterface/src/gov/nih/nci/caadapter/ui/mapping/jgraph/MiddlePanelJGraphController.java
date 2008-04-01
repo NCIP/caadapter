@@ -92,8 +92,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.23 $ date $Date: 2008-03-04 16:09:00 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v1.2 revision $Revision: 1.24 $ date $Date: 2008-04-01 21:21:01 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -108,7 +108,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.23 2008-03-04 16:09:00 schroedn Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.24 2008-04-01 21:21:01 umkis Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1365,65 +1365,105 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		int functionSize = functionComponentList.size();
 		List mapList = mappingData.getMaps();
 		int mapSize = mapList.size();
-		if ( functionSize == 0 && mapSize == 0 ) {
+		if ( functionSize == 0 && mapSize == 0 )
+        {
 			// Log.logInfo(this, "No need to refresh graph.");
 			return;
 		}
 		// render functional box first
 		// Log.logInfo(this, "Total function component: '" + functionSize + "'.");
-		for (int i = 0; i < functionSize; i++) {
+		for (int i = 0; i < functionSize; i++)
+        {
 			FunctionComponent functionComp = (FunctionComponent) functionComponentList.get(i);
 			addFunction(functionComp);
 		}
 		// render map second
-		for (int i = 0; i < mapSize; i++) {
+		for (int i = 0; i < mapSize; i++)
+        {
 			MapImpl map = (MapImpl) mapList.get(i);
 			BaseMapElement sourceMapComp = map.getSourceMapElement();
 			BaseMapElement targetMapComp = map.getTargetMapElement();
-			MappableNode sourceNode = null;
-			MappableNode targetNode = null;
-			if ( sourceMapComp.isComponentOfSourceType() 
+
+
+            MappableNode sourceNode = null;
+            MappableNode targetNode = null;
+
+            sourceNode = getSourceMappableNode(sourceMapComp);
+            targetNode = getTargetMappableNode(targetMapComp);
+
+			createMapping(sourceNode, targetNode);
+		}
+	}
+
+    private MappableNode getSourceMappableNode(BaseMapElement sourceMapComp)
+    {
+        MappableNode sourceNode = null;
+
+			if ( sourceMapComp.isComponentOfSourceType()
 					||sourceMapComp.getMetaObject() instanceof CSVFieldMeta
-					||sourceMapComp.getMetaObject() instanceof CSVSegmentMeta) {
+					||sourceMapComp.getMetaObject() instanceof CSVSegmentMeta)
+            {
 				sourceNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getMetaObject());
-			} else if ( sourceMapComp.isComponentOfFunctionType() ) {
+			    //if (sourceNode == null) System.out.println("QQQQ3-1 :");
+            }
+            else if ( sourceMapComp.isComponentOfFunctionType() )
+            {
 				FunctionComponent functionComp = (FunctionComponent) sourceMapComp.getComponent();
 				FunctionBoxMutableViewInterface functionView = getUsageManager().findFunctionUsageInstanceByComponentUUID(functionComp);
 				FunctionBoxCell functionBoxCell = functionView.getFunctionBoxCell();
 				ParameterMeta paramMeta = (ParameterMeta) sourceMapComp.getMetaObject();
 				sourceNode = functionBoxCell.findPortByParameterMeta(paramMeta);
-				// Log.logInfo(this, "paramMeta is '" + paramMeta.toString() + "',field type:'" + paramMeta.getParameterType() + "'.");
-			} else if ( sourceMapComp.isComponentOfTargetType() 
-					||sourceMapComp.getMetaObject() instanceof DatatypeBaseObject) {// flip back the real source and target
+                //if (sourceNode == null)
+                //    System.out.println("QQQQ3-2 : paramMeta is '" + paramMeta.toString() + "',field type:'" + paramMeta.getParameterType() + "'.");
+
+                // Log.logInfo(this, "paramMeta is '" + paramMeta.toString() + "',field type:'" + paramMeta.getParameterType() + "'.");
+			}
+            else if ( sourceMapComp.isComponentOfTargetType()
+					||sourceMapComp.getMetaObject() instanceof DatatypeBaseObject)
+            {// flip back the real source and target
 				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getXmlPath());
-			} 
+                //if (sourceNode == null) System.out.println("QQQQ3-3 : " + sourceMapComp.getXmlPath());
+            }
 			else if (sourceMapComp.getMetaObject() instanceof MetaObject )
 			{
 				sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getXmlPath());
-			}
-			else {
-				if ( sourceMapComp.getComponent() != null ) {
+                //if (sourceNode == null) System.out.println("QQQQ3-4 :");
+            }
+			else
+            {
+				if ( sourceMapComp.getComponent() != null )
+                {
 					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
-				} else {
+				}
+                else
+                {
 					throw new NullPointerException("map's sourceMapComponent has a null component!");
 				}
 			}
-			
-			if ( targetMapComp.isComponentOfSourceType() 
+        return sourceNode;
+    }
+    private MappableNode getTargetMappableNode(BaseMapElement targetMapComp)
+    {
+        MappableNode targetNode = null;
+            if ( targetMapComp.isComponentOfSourceType()
 					||targetMapComp.getMetaObject() instanceof CSVFieldMeta
-					||targetMapComp.getMetaObject() instanceof CSVSegmentMeta) {
+					||targetMapComp.getMetaObject() instanceof CSVSegmentMeta)
+            {
 				targetNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), targetMapComp.getMetaObject());
-			} else if ( targetMapComp.isComponentOfFunctionType() ) {
+			}
+            else if ( targetMapComp.isComponentOfFunctionType() )
+            {
 				FunctionComponent functionComp = (FunctionComponent) targetMapComp.getComponent();
 				FunctionBoxMutableViewInterface functionView = getUsageManager().findFunctionUsageInstanceByComponentUUID(functionComp);
 				FunctionBoxCell functionBoxCell = functionView.getFunctionBoxCell();
 				ParameterMeta paramMeta = (ParameterMeta) targetMapComp.getMetaObject();
 				targetNode = functionBoxCell.findPortByParameterMeta(paramMeta);
-			} else if ( targetMapComp.isComponentOfTargetType() 
+			}
+            else if ( targetMapComp.isComponentOfTargetType()
 					||targetMapComp.getMetaObject() instanceof DatatypeBaseObject)
 			{
 					targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
-			} 
+			}
 			else if(targetMapComp.getDataXmlPath()!=null)
 			{
 				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getDataXmlPath());
@@ -1432,18 +1472,21 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			{
 				targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), targetMapComp.getXmlPath());
 			}
-			else {
-				if ( sourceMapComp.getComponent() != null ) {
-					throw new IllegalArgumentException("map's sourceMapComponent has an invalid component '" + sourceMapComp.getComponent() + "' of type as of '" + sourceMapComp.getComponent().getType() + "'.");
-				} else {
-					throw new NullPointerException("map's sourceMapComponent has a null component!");
+			else
+            {
+				if ( targetMapComp.getComponent() != null )
+                {
+					throw new IllegalArgumentException("map's targetMapComponent has an invalid component '" + targetMapComp.getComponent() + "' of type as of '" + targetMapComp.getComponent().getType() + "'.");
+				}
+                else
+                {
+					throw new NullPointerException("map's targetMapComponent has a null component!");
 				}
 			}
-			createMapping(sourceNode, targetNode);
-		}
-	}
+        return targetNode;
+    }
 
-	private int getMaximalXValueOnPane()
+    private int getMaximalXValueOnPane()
 	{
 		int visibleWidth = (int) this.middlePanel.getGraphScrollPane().getVisibleRect().getWidth();
 		int viewPortVisibleWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getVisibleRect().getWidth();
@@ -1462,6 +1505,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.23  2008/03/04 16:09:00  schroedn
+ * HISTORY : Handling DeleteAll
+ * HISTORY :
  * HISTORY : Revision 1.22  2008/02/28 19:17:23  wangeug
  * HISTORY : load mapping from xsd to Xmi
  * HISTORY :
