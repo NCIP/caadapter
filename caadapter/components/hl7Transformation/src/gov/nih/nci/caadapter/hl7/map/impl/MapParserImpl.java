@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.14 2007-12-13 19:29:19 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.15 2008-04-01 21:36:54 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -88,15 +88,15 @@ import java.util.Hashtable;
  * Parser of map files.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.14 $
- * @date $Date: 2007-12-13 19:29:19 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.15 $
+ * @date $Date: 2008-04-01 21:36:54 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.14 2007-12-13 19:29:19 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.15 2008-04-01 21:36:54 umkis Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -331,20 +331,28 @@ public class MapParserImpl {
             BaseMapElement mapElement2 = null;
             String errMessage1 = new String();
             String errMessage2 = new String();
-            try {
+
+            try
+            {
                 mapElement1 = createBaseMapElement(cLink.getC_source().getC_linkpointer());
-            } catch (MappingException e) {
-                errMessage1 = e.getMessage();
-                
             }
-            try {
+            catch (MappingException e)
+            {
+                errMessage1 = e.getMessage();
+            }
+
+            try
+            {
                 mapElement2 = createBaseMapElement(cLink.getC_target().getC_linkpointer());
-            } catch (MappingException e) {
+            }
+            catch (MappingException e)
+            {
                 errMessage2 = e.getMessage();
             }
 
             // if there was a problem locating the links.
-            if(mapElement2==null || mapElement1 == null){
+            if ((mapElement2 == null)||(mapElement1 == null))
+            {
                 StringBuffer message = new StringBuffer("**LINK ERROR**\n");
                 message.append("Map Element #1 : ");
                 message.append(mapElement1 == null ? errMessage1 : mapElement1.toString());
@@ -353,9 +361,14 @@ public class MapParserImpl {
                 Log.logWarning(this, message);
                 Message msg = MessageResources.getMessage("GEN0", new Object[]{message});
                 vResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
+            }
+            else
+            {
+                map.setSourceMapElement(mapElement1);
+                map.setTargetMapElement(mapElement2);
 
-            }else{
-            // set the source/target respectively.
+                /*
+                // set the source/target respectively.
             	if ((mapElement1.getMetaObject() instanceof CSVFieldMeta)
             			||(mapElement1.getMetaObject() instanceof CSVSegmentMeta))
             	{
@@ -385,16 +398,19 @@ public class MapParserImpl {
 	                    map.setTargetMapElement(mapElement1);
 	                }
             	}
+            	*/
                 // log a warning OR add it to the list.
-                if (map.getSourceMapElement() == null || map.getTargetMapElement() == null) {
+                if (map.getSourceMapElement() == null || map.getTargetMapElement() == null)
+                {
                     String waringMsg="Link ignored.  An error occured creating --source: " + cLink.getC_source().getC_linkpointer().getXmlPath()
         			+ "/target: "+cLink.getC_target().getC_linkpointer().getXmlPath();
                     
                 	Log.logWarning(this, waringMsg);
                     Message msg = MessageResources.getMessage("GEN0", new Object[]{waringMsg});
                     vResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.WARNING, msg));
-
-                } else {
+                }
+                else
+                {
                     mapping.addMap(map);
                 }
             }
