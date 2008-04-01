@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionParser.java,v 1.2 2007-07-16 19:06:16 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionParser.java,v 1.3 2008-04-01 20:59:59 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -105,7 +105,7 @@ public class FunctionParser
             groupmeta = new GroupMetaImpl();
             groupmeta.setGroupName(c_groupobject.getName());
             groupmeta.setXmlPath(c_groupobject.getXmlPath());
-
+            //System.out.println("9-1 : " + groupmeta.getXmlPath() + ", " + c_groupobject.getXmlPath());
             //Build function list within the Group
             alstFunctions = new ArrayList();
             alstFunctions = processFunction(c_group[i]);
@@ -133,6 +133,7 @@ public class FunctionParser
             functionMeta = new FunctionMetaImpl();      //Stores a FunctionMetaImpl object
             C_function c_function = c_functionlist[i];  //Get function definition object from castor.
             functionMeta.setXmlPath(c_function.getXmlPath());
+            //System.out.println("9-2 : " + functionMeta.getXmlPath() + ", " + c_function.getXmlPath());
             functionMeta.setGroupName(c_group.getName());
             functionMeta.setKind(kind);
             functionMeta.setFunctionName(c_function.getName());  //Set the function name.

@@ -25,7 +25,7 @@ import java.util.Iterator;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v4.0 revision $Revision: 1.16 $ date $Date: 2008-03-26 14:37:30 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-04-01 20:59:22 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -316,7 +316,7 @@ import java.util.Iterator;
 			if (cmetRef == null) System.out.println("Not Found");
 			else {
 				System.out.println(cmetRef.getName() + "'s class name is : " + cmetRef.getClassName() +  "   Filename is:" + cmetRef.getFilename());
-				MIFClass mifClass = MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif" + "1QQQ");
+				MIFClass mifClass = MIFParserUtil.getMIFClass(cmetRef.getFilename() + ".mif");
 				mifClass.printMIFClass(level+1, visitedMIFClass);
 			}
 		}
