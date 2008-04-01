@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.9 2008-01-31 21:44:22 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.10 2008-04-01 21:07:18 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-01-31 21:44:22 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-04-01 21:07:18 $
  */
 public class DefaultSettings
 {
@@ -498,11 +498,11 @@ public class DefaultSettings
 		{
 			if (parentComponent != null && !(parentComponent instanceof Container))
 			{
-				JOptionPane.showMessageDialog(parentComponent.getParent(), reportMsg, "Exception Occurred", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(parentComponent.getParent(), reportMsg, "Exception Occurred(1)", JOptionPane.ERROR_MESSAGE);
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(parentComponent, reportMsg, "Exception Occurred", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(parentComponent, reportMsg, "Exception Occurred(2)", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -533,6 +533,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/01/31 21:44:22  umkis
+ * HISTORY      : csv converting from multi message included v2 file.
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/11/28 15:05:40  wangeug
  * HISTORY      : setup UI environment with DefaultSettings implementation
  * HISTORY      :

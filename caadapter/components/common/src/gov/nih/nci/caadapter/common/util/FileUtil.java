@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.11 2007-11-16 17:17:34 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.12 2008-04-01 21:06:46 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,8 +65,8 @@ import javax.swing.*;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.11 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.12 $
  */
 
 public class FileUtil
@@ -313,13 +313,14 @@ public class FileUtil
   public static String searchMessageTypeSchemaFileName(String messageType, String fileExtension)
         throws FileNotFoundException
   {
-	  for (int i = -1; i < 100; i++)
+      String schemaFileNamePath ="";
+      for (int i = -1; i < 100; i++)
       {
           String pad = "";
           if (i < 0) pad = "";
           else pad = i < 10 ? "UV0" + i : "UV" + String.valueOf(i);
           String schemaFileName = Config.SCHEMA_LOCATION+messageType+pad + "." + fileExtension;
-          String schemaFileNamePath=FileUtil.getETCDirPath() + File.separator + schemaFileName;
+          schemaFileNamePath=FileUtil.getWorkingDirPath() + File.separator + schemaFileName;
           File file = new File(schemaFileNamePath);
           if ((file.exists())&&(file.isFile()))
         	  return schemaFileName;
@@ -331,7 +332,7 @@ public class FileUtil
       }
 	  //Throw exception since file is not found....
       throw new FileNotFoundException("File Directory:" + Config.SCHEMA_LOCATION + " Message Type:" + messageType
-                + " File Extenstion:" + fileExtension);
+                + " File Extenstion:" + fileExtension +  ", "+schemaFileNamePath);
   }
 
     /**
@@ -965,6 +966,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/11/16 17:17:34  wangeug
+ * update SDTM module
+ *
  * Revision 1.10  2007/09/24 20:05:28  umkis
  * Add v2 Meta data collector
  *
