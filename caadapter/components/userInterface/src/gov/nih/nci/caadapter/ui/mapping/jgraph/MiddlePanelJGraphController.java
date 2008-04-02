@@ -93,7 +93,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v1.2 revision $Revision: 1.24 $ date $Date: 2008-04-01 21:21:01 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.25 $ date $Date: 2008-04-02 16:24:06 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -108,7 +108,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.24 2008-04-01 21:21:01 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.25 2008-04-02 16:24:06 umkis Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1389,7 +1389,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
             MappableNode targetNode = null;
 
             sourceNode = getSourceMappableNode(sourceMapComp);
-            targetNode = getTargetMappableNode(targetMapComp);
+            if (sourceNode == null)
+            {
+                sourceNode = getTargetMappableNode(sourceMapComp);
+                targetNode = getSourceMappableNode(targetMapComp);
+            }
+            else targetNode = getTargetMappableNode(targetMapComp);
 
 			createMapping(sourceNode, targetNode);
 		}
@@ -1505,6 +1510,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.24  2008/04/01 21:21:01  umkis
+ * HISTORY : add getTargetMappableNode() and getSourceMappableNode
+ * HISTORY :
  * HISTORY : Revision 1.23  2008/03/04 16:09:00  schroedn
  * HISTORY : Handling DeleteAll
  * HISTORY :
