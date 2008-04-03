@@ -39,10 +39,10 @@ import org.xml.sax.SAXException;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2008-03-31 21:10:15 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2008-04-03 17:05:53 $
  */
 
 public class DatatypeParser {
@@ -120,15 +120,18 @@ public class DatatypeParser {
 		}
 		
 	}
-	public void populateDatatypes() {
+	public void populateDatatypes()
+    {
 		Hashtable datatypes_check = new Hashtable();
 		Stack<String> processingStack = new Stack(); 
 		
 		Iterator datatypeCheckIt = datatypes.keySet().iterator();
-		while (datatypeCheckIt.hasNext()) {
+		while (datatypeCheckIt.hasNext())
+        {
 			String datatypeString = (String)datatypeCheckIt.next();
 			Datatype datatype = (Datatype)datatypes.get(datatypeString);
-			if (datatype.isSimple()) {
+			if (datatype.isSimple())
+            {
 				//Process patterns
 				
 //				System.out.println("Unions for:"+datatype.getName()+ " -- unions"+ datatype.getUnions());
@@ -137,30 +140,36 @@ public class DatatypeParser {
 //					System.out.println("Unions for:"+datatype.getName());
 					datatypes_check.put(datatypeString, NONCOMPLETE);
 				}
-				else {
+				else
+                {
 					datatypes_check.put(datatypeString, COMPLETE);					
 				}
 
 			}
-			else {
-				if (datatypeString.equals("ANY")) {
+			else
+            {
+				if (datatypeString.equals("ANY"))
+                {
 					datatypes_check.put(datatypeString, COMPLETE);
 				}
-				else {
+				else
+                {
 					datatypes_check.put(datatypeString, NONCOMPLETE);
 				}
 			}
 		}
 		
 		Iterator datatypeIt = datatypes.keySet().iterator();
-		while (datatypeIt.hasNext()) {
+		while (datatypeIt.hasNext())
+        {
 			String datatypeString = (String)datatypeIt.next();
 			Datatype datatype = (Datatype)datatypes.get(datatypeString);
 			if ((Integer)datatypes_check.get(datatypeString) == COMPLETE) continue;
 			
 			processingStack.push(datatypeString);
 			
-			while (processingStack.size() > 0) {
+			while (processingStack.size() > 0)
+            {
 				boolean restart = false;
 				String currentDatatypeString = processingStack.pop();
 				Datatype currentDatatype = (Datatype)datatypes.get(currentDatatypeString);
@@ -168,7 +177,8 @@ public class DatatypeParser {
 				{
 					String unions = currentDatatype.getUnions();
 					StringTokenizer st = new StringTokenizer(unions);
-					while (st.hasMoreTokens()) {
+					while (st.hasMoreTokens())
+                    {
 					   String union = st.nextToken();
 					   Datatype uDT = ((Datatype)datatypes.get(union));
 					   if (uDT!=null)
@@ -180,8 +190,10 @@ public class DatatypeParser {
 								restart = true;
 								break;
 						   }
-						   if (uDT.getPatterns().size()>0) {
-							   for(String p:uDT.getPatterns()) {
+						   if (uDT.getPatterns().size()>0)
+                           {
+							   for(String p:uDT.getPatterns())
+                               {
 								   currentDatatype.addPattern(p);
 							   }
 						   }
@@ -206,8 +218,13 @@ public class DatatypeParser {
 				else 
 				{
 					String parentDatatypeString = currentDatatype.getParents();
-//					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
-					if ((Integer)datatypes_check.get(parentDatatypeString) == NONCOMPLETE) {
+					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
+
+                    if (parentDatatypeString == null) parentDatatypeString = "ANY";
+                    // This line was inserted by umkis for protecting null pointer exception when meet 'StrucDoc.Text' data type of CDA.
+
+                    if ((Integer)datatypes_check.get(parentDatatypeString) == NONCOMPLETE)
+                    {
 						processingStack.push(currentDatatypeString);
 						processingStack.push(parentDatatypeString);
 						continue;
