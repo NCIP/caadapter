@@ -241,6 +241,7 @@ public class BuildResourceUtil {
 			String pathVoc=coreSchemaHome+"/voc.xsd";
 			String pathBase=coreSchemaHome+"/datatypes-base.xsd";
 			String pathDatatype=coreSchemaHome+"/datatypes.xsd";
+            //String pathNarrativeBlock=coreSchemaHome+"/NarrativeBlock.xsd";
 			
 //			InputStream isVoc =datatypeParser.getClass().getResourceAsStream(pathVoc);
 //			InputStream isDatatypeBase =datatypeParser.getClass().getResourceAsStream(pathBase);
@@ -253,11 +254,13 @@ public class BuildResourceUtil {
 			Document vocDoc = db.parse(new File(pathVoc));
 			Document baseDoc = db.parse(new File(pathBase));
 			Document allDoc = db.parse(new File(pathDatatype));
-			datatypeParser.handleGTS();
+            //Document narrativeDoc = db.parse(new File(pathNarrativeBlock));
+            datatypeParser.handleGTS();
 			datatypeParser.parse(vocDoc);
 			datatypeParser.parse(baseDoc);
 			datatypeParser.parse(allDoc);
-			datatypeParser.populateDatatypes();
+            //datatypeParser.parse(narrativeDoc);
+            datatypeParser.populateDatatypes();
 			datatypeParser.saveDatatypes(RESOURCE_DIR+"/"+DATATYPE_FILE);
 //			populateSubclasses();
 	}

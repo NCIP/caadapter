@@ -175,7 +175,7 @@ private void resolveReference(MIFClass mifClass, Object sender, Hashtable<String
                 {
                     if (checkAndPutMIFClass(mifOb.getName(), mifOb))
                     {
-                        System.out.println("   MIFClass added (association) : " + mifOb.getName());
+                        //System.out.println("   MIFClass added (association) : " + mifOb.getName());
                         collectMIFClassesNext(mifOb);
                     }
 //                    checkAndPutMIFClass(mifOb.getName(), mifOb);
