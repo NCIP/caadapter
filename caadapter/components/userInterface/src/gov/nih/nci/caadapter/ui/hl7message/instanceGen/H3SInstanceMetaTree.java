@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.13 2008-03-26 14:43:30 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.14 2008-04-23 18:12:02 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -60,9 +60,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
@@ -89,6 +87,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 
 import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentType;
 
@@ -98,7 +97,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.13 $
+ *          revision    $Revision: 1.14 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -118,7 +117,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.13 2008-03-26 14:43:30 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.14 2008-04-23 18:12:02 umkis Exp $";
 
     boolean isCode = false;
 
@@ -147,6 +146,23 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     public H3SInstanceMetaTree(String h3sFileName) throws ApplicationException
     {
         super();
+        mainProcess(h3sFileName,null, null, null);
+    }
+    public H3SInstanceMetaTree(String h3sFileName, String replaceFileName, String changeFileName) throws ApplicationException
+    {
+        super();
+        mainProcess(h3sFileName, null, replaceFileName, changeFileName);
+    }
+
+    public H3SInstanceMetaTree(String h3sFileName, String datFileName, String replaceFileName, String changeFileName) throws ApplicationException
+    {
+        super();
+        mainProcess(h3sFileName, datFileName, replaceFileName, changeFileName);
+    }
+
+    private void mainProcess(String h3sFileName, String datFileName, String replaceFileName, String changeFileName) throws ApplicationException
+    {
+
         success = false;
         //System.out.println("CCCV : V2 Meta Directory : " + FileUtil.getV2DataDirPath());
         if ((h3sFileName == null)||(h3sFileName.trim().equals("")))
@@ -181,6 +197,55 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         dataPath = h3sFileName.substring(0, h3sFileName.length()-4);
         dataFileName = dataPath + ".dat";
 
+        if ((datFileName == null)||(datFileName.trim().equals("")))
+        {
+            generateDATFile(replaceFileName, changeFileName);
+        }
+        else
+        {
+            dataFileName = datFileName;
+            List<String> tempList = null;
+            try
+            {
+                tempList = FileUtil.readFileIntoList(dataFileName);
+            }
+            catch(IOException ie)
+            {
+                throw new ApplicationException("Data File is invalid("+dataFileName+") : " + ie.getMessage());
+            }
+            for(String str:tempList)
+            {
+                if (str == null) continue;
+                if (str.trim().equals("")) continue;
+                str = str.trim();
+                if (str.startsWith("#")) continue;
+                int idx = str.indexOf("=>");
+                if (idx <= 0) throw new ApplicationException("Data File is invalid. 1 ("+dataFileName+")");
+                str = str.substring(0, idx);
+                idx = str.indexOf(".");
+                if (idx <= 0) throw new ApplicationException("Data File is invalid. 2 ("+dataFileName+")");
+                header = str.substring(0, idx);
+                break;
+            }
+        }
+
+
+        GenerateMapFileFromDataFile generate = null;
+        if (inputDataType == INPUT_DATA_TYPE_XML)
+           generate = new GenerateMapFileFromDataFile(dataFileName, header, dataPath, h3sFileName);
+        else generate = new GenerateMapFileFromDataFile(dataFileName, header, dataPath, h3sFileName, this.getHeadSegment());
+
+        if (generate.getSuccess()) System.out.println("V3 meta instance has been successfully generated! : " + h3sFileName);
+        else
+        {
+            throw new ApplicationException("Test Instance generating failure... : " + generate.getMessage());
+            //return;
+        }
+        success = true;
+    }
+
+    private void generateDATFile(String replaceFileName, String changeFileName) throws ApplicationException
+    {
         FileWriter fw = null;
         try
         {
@@ -210,32 +275,43 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         List<String> changeList = null;
         try
         {
-            ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/changeList.txt");
-            List<String> list = loaderUtil.getFileNames();
-            if ((list == null)||(list.size() == 0))
+            if ((changeFileName == null)||(changeFileName.trim().equals("")))
             {
-                throw new ApplicationException("Not found class loader : changeList.txt");
-                //return;
+                changeFileName = "instanceGen/changeList.txt";
+                ClassLoaderUtil loaderUtil = new ClassLoaderUtil(changeFileName);
+                List<String> list = loaderUtil.getFileNames();
+                if ((list == null)||(list.size() == 0))
+                {
+                    throw new ApplicationException("Not found class loader : changeList.txt");
+                    //return;
+                }
+                changeList = FileUtil.readFileIntoList(list.get(0));
             }
-            changeList = FileUtil.readFileIntoList(list.get(0));
+            else changeList = FileUtil.readFileIntoList(changeFileName.trim());
         }
         catch(IOException ie)
         {
             throw new ApplicationException("IOException :changeList : " + ie.getMessage());
             //return;
         }
+        if (!checkChangeReplaceList(changeList, "=>")) throw new ApplicationException("This change file is invalid : " + changeFileName);
 
         List<String> replaceList = null;
         try
         {
-            ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/replaceList.txt");
-            List<String> list = loaderUtil.getFileNames();
-            if ((list == null)||(list.size() == 0))
+            if ((replaceFileName == null)||(replaceFileName.trim().equals("")))
             {
-                throw new ApplicationException("Not found class loader : replaceList.txt");
-                //return;
+                replaceFileName = "instanceGen/replaceList.txt";
+                ClassLoaderUtil loaderUtil = new ClassLoaderUtil(replaceFileName);
+                List<String> list = loaderUtil.getFileNames();
+                if ((list == null)||(list.size() == 0))
+                {
+                    throw new ApplicationException("Not found class loader : replaceList.txt");
+                    //return;
+                }
+                replaceList = FileUtil.readFileIntoList(list.get(0));
             }
-            replaceList = FileUtil.readFileIntoList(list.get(0));
+            else replaceList = FileUtil.readFileIntoList(replaceFileName.trim());
         }
         catch(IOException ie)
         {
@@ -243,7 +319,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             //return;
         }
 
-        List<String> data = new ArrayList<String>();
+        if (!checkChangeReplaceList(replaceList, "::")) throw new ApplicationException("This replace file is invalid : " + replaceFileName);
+
+        //List<String> data = new ArrayList<String>();
         while(temp!=null)
         {
             boolean cTag = false;
@@ -383,19 +461,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             throw new ApplicationException("data file closing error : " + ie.getMessage());
             //return;
         }
-        GenerateMapFileFromDataFile generate = null;
-        if (inputDataType == INPUT_DATA_TYPE_XML)
-           generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName);
-        else generate = new GenerateMapFileFromDataFile(dataFileName, header,  dataPath, h3sFileName, this.getHeadSegment());
-
-        if (generate.getSuccess()) System.out.println("V3 meta instance has been successfully generated! : " + h3sFileName);
-        else
-        {
-            throw new ApplicationException("Test Instance generating failure... : " + generate.getMessage());
-            //return;
-        }
-        success = true;
     }
+
     public String getHeader()
     {
         return header;
@@ -1046,6 +1113,27 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (num < 0) return null;
         return res;
     }
+
+    private boolean checkChangeReplaceList(List<String> list, String delimiter)
+    {
+        int count = 0;
+        for (String str:list)
+        {
+            if (str == null) continue;
+            if (str.trim().equals("")) continue;
+            str = str.trim();
+            if (str.startsWith("#")) continue;
+            int idx = str.indexOf(delimiter);
+            if (idx <= 0) continue;
+            str = str.substring(0, idx);
+            idx = str.indexOf(".");
+            if (idx <= 0) continue;
+            count++;
+        }
+        if (count > 10) return true;
+        return false;
+    }
+
     private String replaceLine(String line, List<String> replaceList)
     {
         String[] body = new String[] {"@@", "$$", "!!"};
@@ -1776,12 +1864,14 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         //String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\" + args[0] + ".h3s";
         //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000030.h3s";
         //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000040.h3s";
-        String fileName = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000040UV02.h3s";
+        String fileName = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000040UV02_3.h3s";
 
         //new H3SInstanceMetaTree(args[0]);
+        String arg = "";
         try
         {
-            new H3SInstanceMetaTree(fileName);
+            if ((arg == null)||(arg.trim().equals(""))) new H3SInstanceMetaTree(fileName);
+            else new H3SInstanceMetaTree(args[0].trim());
         }
         catch(ApplicationException ae)
         {
@@ -1793,6 +1883,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/03/26 14:43:30  umkis
+ * HISTORY      : Re-assigning sortkey
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2008/03/20 03:49:26  umkis
  * HISTORY      : for re-assigning sort key to mif files
  * HISTORY      :

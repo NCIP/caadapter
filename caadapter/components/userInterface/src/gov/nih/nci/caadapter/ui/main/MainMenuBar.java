@@ -47,16 +47,17 @@ import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
-import gov.nih.nci.caadapter.ui.common.resource.BuildHL7ResourceAction;
+import gov.nih.nci.caadapter.ui.common.geneInstance.BuildGenerateHL7TestInstanceAction;
 import gov.nih.nci.caadapter.ui.common.preferences.OpenPreferenceAction;
+import gov.nih.nci.caadapter.ui.common.resource.BuildHL7ResourceAction;
 import gov.nih.nci.caadapter.ui.help.actions.AboutAction;
 import gov.nih.nci.caadapter.ui.help.actions.HelpTopicAction;
 import gov.nih.nci.caadapter.ui.hl7message.actions.NewHL7V3MessageAction;
 import gov.nih.nci.caadapter.ui.hl7message.actions.OpenHL7V3MessageAction;
-import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
-import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.GME.actions.NewXsdToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.GME.actions.OpenXsdToXmiMapAction;
+import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
+import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.V2V3.actions.V2V3MapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.NewCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.OpenCsvToXmiMapAction;
@@ -82,8 +83,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: schroedn $
- * @version Since caAdapter v1.2 revision $Revision: 1.30 $ date $Date:
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v1.2 revision $Revision: 1.31 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -381,6 +382,12 @@ public class MainMenuBar extends AbstractMenuBar
         	buildV2.setEnabled(false);
         JMenuItem _buildV2Item = new JMenuItem(buildV2);
         _qb.add(_buildV2Item);
+
+        BuildGenerateHL7TestInstanceAction buildTestInstance=new BuildGenerateHL7TestInstanceAction(BuildGenerateHL7TestInstanceAction.COMMAND_Generate_Test_Instance, mainFrame);
+        if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
+        	buildTestInstance.setEnabled(false);
+        JMenuItem _buildTestInstance = new JMenuItem(buildTestInstance);
+        _qb.add(_buildTestInstance);
         
 //        JMenu v2Menu=new JMenu(BuildHL7ResourceAction.COMMAND_BUILD_V2);
 //        BuildHL7ResourceAction buildV2Core=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2_CORE, mainFrame);
@@ -693,6 +700,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.30  2008/02/28 18:13:55  schroedn
+ * HISTORY : xsd added to menu
+ * HISTORY :
  * HISTORY : Revision 1.29  2008/02/25 20:43:50  schroedn
  * HISTORY : Fixed grayed out menu bar for XSDtoXMI
  * HISTORY :
