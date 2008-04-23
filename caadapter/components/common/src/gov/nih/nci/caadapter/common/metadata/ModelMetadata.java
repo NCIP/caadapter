@@ -291,7 +291,10 @@ public class ModelMetadata {
 	    		thisEnd.setUMLAssociation(assoc);
 	    		UMLClass clazz1 = (UMLClass)assocEnd.getUMLElement();
   			if (assocEnd.getRoleName().equals("")) continue;
-	    		if (!clazz1.getName().equals(clazz.getName())) {
+//  			commented following line to allow the self associaiton
+//				gforge bug id: 11802  			
+//	    		if (!clazz1.getName().equals(clazz.getName())) {
+//  			end change for 11802
 //	    			if (!assocEnd.getRoleName().equals("")) {
 	    			if (assocEnd.isNavigable()||isOneToMany || isManyToMany) {
 	    				thisEnd.setRoleName(assocEnd.getRoleName());
@@ -305,7 +308,9 @@ public class ModelMetadata {
 	    			}
 	    			else {//This is uni-direction
 	    			}
-	    		}
+//	    			change for bug id 11802
+//	    		}
+//	    			end change bug id 11802
 	    	}
 	  }	  	  
 	  
