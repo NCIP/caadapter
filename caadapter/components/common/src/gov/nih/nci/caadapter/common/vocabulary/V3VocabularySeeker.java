@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.2 2007-08-08 20:53:57 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.3 2008-04-23 18:15:25 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -54,22 +54,20 @@
 package gov.nih.nci.caadapter.common.vocabulary;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
-import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
 import gov.nih.nci.caadapter.common.standard.*;
-//import gov.nih.nci.caadapter.ui.hl7message.instanceGen.*;
-//import gov.nih.nci.caadapter.ui.hl7message.instanceGen.H3SVocabTreeBuildEventHandler;
-
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
-
-import org.xml.sax.XMLReader;
+import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
+import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.util.*;
 
 /**
  * This class defines ...
@@ -77,7 +75,7 @@ import java.util.ArrayList;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Aug 8, 2007
  *          Time:       1:22:08 PM $
  */
@@ -96,7 +94,7 @@ public class V3VocabularySeeker
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.2 2007-08-08 20:53:57 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/vocabulary/V3VocabularySeeker.java,v 1.3 2008-04-23 18:15:25 umkis Exp $";
 
     MetaTreeMeta h3sVocTree = null;
     List<String> codeList = null;
@@ -274,12 +272,16 @@ public class V3VocabularySeeker
                 return null;
             }
         }
-        if (!success) return null;
+        if (!success)
+        {
+            return retrySearchCodeWithMif(domainName, findCode);
+            //return null;
+        }
 
         int idx = -1;
         if (findCode.equals(""))
         {
-            if (codeList.size() == 0) return new String[] {"NoData", "Domain was found but no Data implemented"};
+            if (codeList.size() == 0) return retrySearchCodeWithMif(domainName, null);//return new String[] {"NoData", "Domain was found but no Data implemented"};
             if (codeList.size() == 1) return new String[] {codeList.get(0), displayList.get(0)};
 
             idx = FileUtil.getRandomNumber(0, codeList.size());
@@ -291,7 +293,7 @@ public class V3VocabularySeeker
                 if (findCode.equals(codeList.get(i).trim())) idx = i;
             }
         }
-        if (idx < 0) return new String[] {findCode, "This default code cannot be found"};
+        if (idx < 0) return retrySearchCodeWithMif(domainName, findCode);//return new String[] {findCode, "This default code cannot be found"};
         else
         {
             if (idx >= displayList.size()) return new String[] {codeList.get(idx), "No Display Name"};
@@ -299,10 +301,84 @@ public class V3VocabularySeeker
         }
     }
 
+    private String[] retrySearchCodeWithMif(String domainName, String findCode)
+    {
+        if (findCode == null) findCode = "";
+        findCode = findCode.trim();
+        
+        Hashtable datatypes = new Hashtable();
+        try
+        {
+            InputStream is = this.getClass().getResourceAsStream("/datatypes");
+            if (is == null)
+            {
+                is = this.getClass().getClassLoader().getResource("datatypes").openStream();
+            }
+            ObjectInputStream ois = new ObjectInputStream(is);
+            datatypes = (Hashtable)ois.readObject();
+            ois.close();
+            is.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+
+            return null;
+        }
+
+        Datatype datatypeItem = null;
+        if (domainName!= null && !domainName.equals(""))
+            datatypeItem = (Datatype)datatypes.get(domainName);
+        else
+            datatypeItem = (Datatype)datatypes.get(domainName);
+        if (datatypeItem != null)
+        {
+            HashSet predefinedValues = datatypeItem.getPredefinedValues();
+            if (predefinedValues.size() > 0)
+            {
+                if (findCode.equals(""))
+                {
+                    Iterator iter = predefinedValues.iterator();
+                    int idx = FileUtil.getRandomNumber(0, predefinedValues.size());
+                    int n = 0;
+                    while(iter.hasNext())
+                    {
+                        if (n == idx) return new String[] {(String)iter.next(), "Random code with No display name"};
+                        n++;
+                    }
+                }
+                else
+                {
+                    if (predefinedValues.contains(findCode))
+                    {
+                        return new String[] {findCode, "No display name"};
+                    }
+                    else
+                    {
+                        return new String[] {findCode, "Domain and Data exist, but Not found this data."};
+                    }
+                }
+
+            }
+            else
+            {
+                if (findCode.equals("")) findCode = "NoData";
+                return new String[] {findCode, "Domain exists, but No Data."};
+            }
+        }
+        //return null;
+        if (findCode.equals("")) findCode = "NoData";
+        return new String[] {findCode, "Domain not found"};
+
+    }
+
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/08 20:53:57  umkis
+ * HISTORY      : Change to V3VocabularyTreeBuildEventHandler
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/08/08 20:33:11  umkis
  * HISTORY      : V3 Vocavulary utility objects initializing setup
  * HISTORY      :
