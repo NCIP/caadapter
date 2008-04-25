@@ -252,7 +252,7 @@ public class XmiModelMetadata {
                  * also, one assumption is one class can only have one supertype
                  */
                 for (UMLGeneralization clazzG : clazzGs) {
-                    parent = clazzG.getSupertype();
+                    parent = (UMLClass)clazzG.getSupertype();
                     if (parent != clazz) {
                         inheritanceHashMap.put(clazz.toString(),parent.toString());
                         break;
@@ -265,7 +265,7 @@ public class XmiModelMetadata {
                         pre = parent;
                         parent = null;
                         for (UMLGeneralization clazzG : clazzGs) {
-                            parent = clazzG.getSupertype();
+                            parent = (UMLClass)clazzG.getSupertype();
                             if (parent != pre) {break;}
                         }
                         if (parent == pre) parent = null;

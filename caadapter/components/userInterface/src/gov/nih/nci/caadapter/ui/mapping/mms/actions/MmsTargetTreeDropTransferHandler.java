@@ -43,8 +43,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2007-12-13 21:09:43 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-04-25 20:07:16 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -259,7 +259,7 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 					List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
 
 	                for (UMLGeneralization clazzG : clazzGs) {
-	                    UMLClass parent = clazzG.getSupertype();
+	                    UMLClass parent =(UMLClass) clazzG.getSupertype();
 	                    if (parent != clazz) {
 	                    	isRoot = false;
 	                        break;
@@ -339,6 +339,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2007/12/13 21:09:43  wangeug
+ * HISTORY      : resolve code dependence in compiling
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/09/20 16:40:14  schroedn
  * HISTORY      : License text
  * HISTORY      :
