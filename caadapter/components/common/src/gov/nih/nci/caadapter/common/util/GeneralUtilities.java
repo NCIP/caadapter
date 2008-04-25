@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.5 2008-04-24 20:24:21 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/GeneralUtilities.java,v 1.6 2008-04-25 04:45:53 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,8 +36,6 @@ package gov.nih.nci.caadapter.common.util;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
-import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.hl7.vocabulary.V3VocabularySeeker;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 
@@ -50,37 +48,15 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-04-24 20:24:21 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-04-25 04:45:53 $
  */
 public class GeneralUtilities
 {
-    public static V3VocabularySeeker vocabulrarySeeker = null;
-
     private GeneralUtilities()
 	{//never instantiable
-        getV3VocabularySeeker();
-    }
 
-    /**
-	 * Return V3VocabularySeeker object.
-	 * @return V3VocabularySeeker.
-	 */
-	public static final V3VocabularySeeker getV3VocabularySeeker()
-	{
-        if (vocabulrarySeeker == null)
-        {
-            try
-            {
-                vocabulrarySeeker = new V3VocabularySeeker();
-            }
-            catch(ApplicationException ae)
-            {
-                System.err.println("V3 Vocabulary tree building failure... : " + ae.getMessage());
-            }
-        }
-        return vocabulrarySeeker;
-	}
+    }
 
     /**
 	 * Return true if one is equal to another.
@@ -363,6 +339,9 @@ public class GeneralUtilities
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/04/24 20:24:21  umkis
+ * HISTORY      : Move from the 'common' component to 'hl7' (V3VocabularySeeker)
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/08/08 21:17:53  umkis
  * HISTORY      : Change to V3VocabularyTreeBuildEventHandler
  * HISTORY      :

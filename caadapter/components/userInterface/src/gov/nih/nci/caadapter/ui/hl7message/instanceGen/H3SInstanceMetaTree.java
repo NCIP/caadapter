@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.14 2008-04-23 18:12:02 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.15 2008-04-25 04:46:19 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -53,43 +53,40 @@
 
 package gov.nih.nci.caadapter.ui.hl7message.instanceGen;
 
-import org.xml.sax.XMLReader;
-import org.xml.sax.InputSource;
-
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.*;
-import java.util.*;
-import java.text.SimpleDateFormat;
-
-import gov.nih.nci.caadapter.common.standard.*;
-import gov.nih.nci.caadapter.common.standard.type.NodeIdentifierType;
-import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
-import gov.nih.nci.caadapter.common.standard.impl.MetaFieldImpl;
-import gov.nih.nci.caadapter.common.standard.impl.CommonAttributeItemImpl;
 import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.Message;
-import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.function.DateFunction;
-import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.standard.*;
+import gov.nih.nci.caadapter.common.standard.impl.CommonAttributeItemImpl;
+import gov.nih.nci.caadapter.common.standard.impl.MetaFieldImpl;
+import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
+import gov.nih.nci.caadapter.common.standard.type.NodeIdentifierType;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.common.validation.ValidatorResult;
-import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
-import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.MIFObjectClassType;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
-import gov.nih.nci.caadapter.hl7.datatype.Attribute;
-import gov.nih.nci.caadapter.hl7.datatype.Datatype;
-
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.vocabulary.VocabularyGeneralUtilities;
+import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentType;
+import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.MIFObjectClassType;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * This class defines ...
@@ -97,7 +94,7 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.14 $
+ *          revision    $Revision: 1.15 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -117,7 +114,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.14 2008-04-23 18:12:02 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.15 2008-04-25 04:46:19 umkis Exp $";
 
     boolean isCode = false;
 
@@ -263,7 +260,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         displayTreeWithText();
         System.out.println("");
 
-        if (GeneralUtilities.getV3VocabularySeeker() == null)
+        if (VocabularyGeneralUtilities.getV3VocabularySeeker() == null)
         {
             //h3sVocTree.displayTreeWithText();
             throw new ApplicationException("Vocabulary Tree buliding failure....");
@@ -594,12 +591,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 {
                     if (hl7Default.equals("")) hl7Default = userDefault; 
                     //res = getVocabularyDomainCode(domainName, hl7Default);
-                    res = GeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName, hl7Default);
+                    res = VocabularyGeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName, hl7Default);
                 }
                 else
                 {
                     //res = getVocabularyDomainCode(domainName);
-                    res = GeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName);
+                    res = VocabularyGeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName);
                 }
 
                 if (res != null)
@@ -1883,6 +1880,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/04/23 18:12:02  umkis
+ * HISTORY      : H3S test instance generator install onto ManuBar
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/03/26 14:43:30  umkis
  * HISTORY      : Re-assigning sortkey
  * HISTORY      :
