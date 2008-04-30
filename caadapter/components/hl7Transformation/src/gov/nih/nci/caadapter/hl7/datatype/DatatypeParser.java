@@ -39,10 +39,10 @@ import org.xml.sax.SAXException;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-04-03 17:05:53 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-04-30 16:17:57 $
  */
 
 public class DatatypeParser {
@@ -245,13 +245,19 @@ public class DatatypeParser {
 			    	Comparator decendingOrder = Collections.reverseOrder();
 			    	Collections.sort(pAttrList, decendingOrder);
 					//Process attributes
-					while (pAttrIt.hasNext()) {
-						Attribute pAttribute = (Attribute)pAttrIt.next();
-						if (attributes.get(pAttribute.getName()) == null) {
-//							currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
-							MIFUtil.addDatatypeAttributeOnTop(currentDatatype, (Attribute)pAttribute.clone());
+			    	for (Attribute onePAttr:pAttrList)
+			    	{
+						if (attributes.get(onePAttr.getName()) == null) {
+							MIFUtil.addDatatypeAttributeOnTop(currentDatatype, (Attribute)onePAttr.clone());
 						}
-					}
+			    	}
+//					while (pAttrIt.hasNext()) {
+//						Attribute pAttribute = (Attribute)pAttrIt.next();
+//						if (attributes.get(pAttribute.getName()) == null) {
+////							currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
+//							MIFUtil.addDatatypeAttributeOnTop(currentDatatype, (Attribute)pAttribute.clone());
+//						}
+//					}
 
 					datatypes_check.put(currentDatatypeString,COMPLETE);
 				}
