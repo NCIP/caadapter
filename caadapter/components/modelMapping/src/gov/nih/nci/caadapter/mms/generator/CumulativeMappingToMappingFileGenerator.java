@@ -236,7 +236,7 @@ public class CumulativeMappingToMappingFileGenerator {
 	    	List<UMLGeneralization> generalizations = clazz.getGeneralizations();
 	    	for (int i = 0; i < generalizations.size(); i++){
 	    		if (generalizations.get(i).getSupertype()!= clazz) {
-	    			clazz = generalizations.get(i).getSupertype();
+	    			clazz =(UMLClass) generalizations.get(i).getSupertype();
 	    			hasParent = true;
 	    		}
 	    	}
