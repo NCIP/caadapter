@@ -5,7 +5,12 @@
 
 package gov.nih.nci.caadapter.mms.generator;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.mms.map.AttributeMapping;
+import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
+import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
@@ -15,6 +20,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLPackageBean;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
@@ -56,6 +63,7 @@ public class XMIGenerator
 
     public XMIGenerator(){
 	}
+    
 	
 	public XMIGenerator(String mappingFile, String xmiFile)
 	{
@@ -83,14 +91,41 @@ public class XMIGenerator
 		    clobKeys = modelMetadata.getClobKeys();
             discriminatorKeys = modelMetadata.getDiscriminatorKeys();
             discriminatorValues = modelMetadata.getDiscriminatorValues();
-            
+// changes made by Sandeep Phadke on 5/2/2008 
+// The dependencies were not being removed if file came from EA, so commented the following
+// for loop and the clear method to remove from model. Added new method addTableClassDependency
+// to check dependency either in package or class DomElements. If exists remove it.
             // Remove all dependencies from the Model
-		    for ( UMLDependency dep : model.getDependencies() )
-		    {		    	
-				model.getDependencies().remove(dep);//.removeDependency( dep );
-            }
-		    model.getDependencies().clear();
-//		    model.emptyDependency();
+//		    for ( UMLDependency dep : model.getDependencies() )
+//		    {		    	
+//				model.getDependencies().remove(dep);//.removeDependency( dep );
+//            }
+//		    model.getDependencies().clear();
+		    //model.emptyDependency();
+//////////////// Removing the existing dependencies          
+            boolean isDependencyMapped = false;
+    	    List <UMLDependency> existingDeps = model.getDependencies();
+    	    UMLClass clientEnd;
+	    	String asscClient, className ;
+	    	int i=0;
+	    	for(i = (existingDeps.size()-1); i>=0; i--)
+    	    {
+    	    	UMLDependency oldDep = existingDeps.get(i);
+    	    	isDependencyMapped = false;
+    	    	clientEnd =  ((UMLClass) oldDep.getClient());
+    	    	asscClient = clientEnd.getName();
+
+    	    	String pathKey = new String(ModelUtil.getFullPackageName(clientEnd));
+    	    	pathKey = pathKey + "." + clientEnd.getName();
+    	    	for( UMLPackage pkg : model.getPackages() ) 
+    			{
+    	    		checkTableClassDependency(pkg, asscClient, oldDep );
+    				UMLPackageBean pkgBean=(UMLPackageBean)pkg;
+    				Element pkgElm=   pkgBean.getJDomElement();
+    				removeDepElement(pkgElm, oldDep);
+    			}
+    	    }
+///////////////// End changes 5/2/2008           
 		    
 			for( UMLPackage pkg : model.getPackages() ) 
 			{
@@ -104,7 +139,117 @@ public class XMIGenerator
 	      e.printStackTrace();
 	    }
 	}
+
+	public void checkTableClassDependency(UMLPackage pkg, String checkClass, UMLDependency oldDep ){
+// new method to check for the dependency for the table/Class. It checks it in UMLclass and UMLpackage
+// becuase EA keeps it in Class and XMI jar saves it under package. So need to check at both places.		
+// created by Sandeep on 4/28/08.		
+		for ( UMLClass clazz : pkg.getClasses() )
+		{
+
+			if (clazz.getName().equals(checkClass)) {
+				System.out.println("XMIGenerator.getPackages()..class:"+clazz.getName() +"remove dependency"+clazz.getDependencies());
+				UMLClassBean classBean=(UMLClassBean)clazz;
+				Element clazzElm=   classBean.getJDomElement();
+				Element parentElm= clazzElm.getParentElement();
+				parentElm.removeChild("Dependency",parentElm.getNamespace() );
+				//also remove it from the model, becuase while saving and 
+				//adding dependency back, we check for its existance in the model too.
+				model.getDependencies().remove(oldDep);//.removeDependency( dep );
+			}
+		}
+		for ( UMLPackage pkg2 : pkg.getPackages() )
+		{
+			checkTableClassDependency( pkg2, checkClass, oldDep );
+			UMLPackageBean pkgBean=(UMLPackageBean)pkg2;
+			Element pkgElm=   pkgBean.getJDomElement();
+			removeDepElement(pkgElm, oldDep);
+		}
+	}
 		
+	public void removeDepElement(Element elm, UMLDependency oldDep){
+	// removes the DepElement from any DOM element and its children.	
+		List<Element> childrenList = elm.getChildren();
+		int i=0;
+		for(i = (childrenList.size()-1); i>=0; i--){
+			Element childElm = childrenList.get(i);
+			String elmName = childElm.getName();
+			if (elmName.equals("Dependency")){
+				Element parentElm= childElm.getParentElement();
+				parentElm.removeChild("Dependency",parentElm.getNamespace() );
+				model.getDependencies().remove(oldDep);
+			} else {
+				removeDepElement(childElm, oldDep);
+			}
+		}
+	}
+
+	public boolean addTableClassDependency(String xPath){
+// created by Sandeep 5/2/2008		
+// while saving the XMI checks if the dependecy should be added to the model or not
+// since model has been cleaned earlier in init, it does not have any depenedency, the Cumulative mapping
+// stores the current status, so if user deletes a mapping or adds it in the current session
+// it is captured in cumulative mapping. While saving model mapping gets saved. So this syncs both.
+// In addition, it should not have same mapping twice so checks no duplicate exists. 		
+//  		
+//	CumulativeDepExist     ModelDependeciesExists      Result(AddDependency)
+//		Y					N						->		Y
+//		Y					Y						->		N
+//		N					N						->		N
+//		N					Y						->		N
+		
+		
+    	boolean modelDepExists = false, addDependencies = false; 
+		CumulativeMapping cummulativeMapping = null;
+		try {
+			cummulativeMapping = CumulativeMapping.getInstance();
+		} catch (Exception e) {
+			
+		}
+
+		List<DependencyMapping> dependencyMapping = cummulativeMapping.getDependencyMappings();
+		for (DependencyMapping d : dependencyMapping) {
+			try {
+				String targetXPath = d.getTargetDependency().getXPath(); 
+				if (targetXPath.contains(xPath)){
+					modelDepExists = false;
+					
+					List<UMLDependency> modelMappings = model.getDependencies();
+					Iterator itrModel = modelMappings.iterator();
+					while (itrModel.hasNext()) {
+						try {
+							UMLDependency dep = (UMLDependency)itrModel.next();	
+							UMLClass depTarget = (UMLClass) dep.getClient();
+					    	String pathKeyTarget = new String(ModelUtil.getFullPackageName(depTarget));
+					    	pathKeyTarget = pathKeyTarget + "." + depTarget.getName();
+							if (pathKeyTarget.equals(xPath)){
+								// since dependency already exist in model, dont add again.
+								modelDepExists = true;
+								break;
+							}
+						} catch (Exception e) {
+							
+						}
+					}
+					if (modelDepExists) {
+						addDependencies = false;
+					}
+					else{
+						addDependencies = true;
+					}
+					break;
+					
+				} else {
+					addDependencies = false;
+				}
+			} catch (Exception e) {
+		            e.printStackTrace();
+			}
+		}
+		return addDependencies;
+	}	
+	
+	
 	public void getPackages( UMLPackage pkg )
 	{
 		for ( UMLClass clazz : pkg.getClasses() )
@@ -168,7 +313,7 @@ public class XMIGenerator
 						assc.removeTaggedValue( "correlation-table" );
 					}												
 				}
-			}				
+			}
 		}
 		
 		for ( UMLPackage pkg2 : pkg.getPackages() )
@@ -306,28 +451,32 @@ public class XMIGenerator
 	    
         client = ModelUtil.findClass(model, dependency.getChildText("target"));
 	    supplier = ModelUtil.findClass(model, dependency.getChildText("source"));
-	    List <UMLDependency> deps = model.getDependencies();
+	    String pathKey = new String(ModelUtil.getFullPackageName(client));
+    	pathKey = pathKey + "." + client.getName();	    
+	    boolean addDependency = false;	    
+//	    for(UMLDependency oldDep : deps) 
+//	    {
+//	    	if (((UMLClass)(oldDep.getClient())==client) && ((UMLClass)(oldDep.getSupplier())==supplier)) 
+//	    	{
+//	    		exist = true;
+//	    	}
 	    
-	    boolean exist = false;	    
-	    for(UMLDependency oldDep : deps) 
-	    {
-	    	if (((UMLClass)(oldDep.getClient())==client) && ((UMLClass)(oldDep.getSupplier())==supplier)) 
-	    	{
-	    		exist = true;
-	    	}
-	    }	    
-	    if (exist) return;
-	 
-	    dependencyMap.put(dependency.getChildText( "target"), supplier );
-	    UMLDependency dep = model.createDependency( client, supplier, "dependency" );
+	    addDependency = addTableClassDependency(pathKey);
+	    	if (!addDependency) return; 
+//	    }
+		    dependencyMap.put(dependency.getChildText( "target"), supplier );
+		    UMLDependency dep = model.createDependency( client, supplier, "dependency" );
+		    
+		    dep = model.addDependency( dep );
+		    // added new Stereotype for bug id 11561
+		    dep.addStereotype("DataSource");
+		    // end changes bug id 11561. By Sandeep on 5/2/08
+		    dep.addTaggedValue("stereotype", "DataSource");
+		    dep.addTaggedValue("ea_type", "Dependency");
+		    // the following to tagged values may not be necessary
+		    dep.addTaggedValue("direction", "Source -> Destination");
+		    dep.addTaggedValue("style", "3");
 	    
-	    dep = model.addDependency( dep );	    
-	    dep.addTaggedValue("stereotype", "DataSource");
-	    dep.addTaggedValue("ea_type", "Dependency");
-	    
-	    // the following to tagged values may not be necessary
-	    dep.addTaggedValue("direction", "Source -> Destination");
-	    dep.addTaggedValue("style", "3");
 	}
 		
 	/**
@@ -602,7 +751,7 @@ public class XMIGenerator
 				List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
 
 				for (UMLGeneralization clazzG : clazzGs) {
-					UMLClass parent = clazzG.getSupertype();
+					UMLClass parent =  (UMLClass)clazzG.getSupertype();
 					if (parent != clazz) {
 						clazz = parent;
 						break;
