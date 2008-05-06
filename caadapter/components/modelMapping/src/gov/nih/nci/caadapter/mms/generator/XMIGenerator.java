@@ -317,11 +317,12 @@ public class XMIGenerator
 					if( tagValue.getName().contains( "correlation-table" ))
 					{
 						att.removeTaggedValue( "correlation-table" );
-					}												
-					if( tagValue.getName().contains( "inverse-of" ))
-					{
-						att.removeTaggedValue( "inverse-of" );
-					}
+					}	
+					// commented by Sandeep on 5/8/08 for bug id 12958 per Eugene's instructions.
+//					if( tagValue.getName().contains( "inverse-of" ))
+//					{
+//						att.removeTaggedValue( "inverse-of" );
+//					}
 					if( tagValue.getName().contains( "type" ))
 					{
                         if( tagValue.getValue().equalsIgnoreCase("CLOB"))
@@ -605,6 +606,7 @@ public class XMIGenerator
 	 * @param model
 	 * @param attribute
 	 */
+	
 	public void addManyToManyTaggedValue(UMLModel model, Element attribute)
 	{
 		//Adding tagged values for attributes and single associations is pretty straightforward, however
@@ -620,6 +622,7 @@ public class XMIGenerator
 		//mapping file has been made.
 		
 	    UMLAttribute target = null;
+	    boolean inverseofExists = false;
 	    target = ModelUtil.findAttribute(model, attribute.getChildText("target"));
 	    
 	    // Remove all implements-association, correlation-table
@@ -636,7 +639,20 @@ public class XMIGenerator
 	    	}
 	    	if ( element.getName().equals("inverse-of") )
 	    	{
-	    		target.removeTaggedValue( element.getName() );	    	
+//		    	// commented by Sandeep per Eugene's instructions for bug id 12958. Instruction as follows:
+//		    	// A “roleName is assigned with the “Many” end of association
+////		    	•	Do not remove the existing Tag Value associated a table.column. It may be either assigned by user from EA or from caAdapter Mapping Tool.
+////		    	•	Add Tag Value as a table.column is mapped as the “Many” end of an association and if no existing one associated with it.
+////		    	•	Update Tag Valuewith correct value as update a mapping.
+	////
+////		    	No “roleName” being assigned with the “Many” end of an association. 
+////		    	Currently, the Tag Value can only be created from EA since caAdapter annotation process does not have knowledge to determine if a table.column has been involved in an association. 
+////		    	•	Leave the existing Tag Value intact.
+////		    	•	New Tag Value can only be assigned by user from EA.
+	    		// date: 5/6/2008
+	    		
+	    		inverseofExists = true;
+	    		//target.removeTaggedValue( element.getName() );	    	
 	    	}
 	    }
 	    	    
@@ -654,17 +670,14 @@ public class XMIGenerator
 	    }
 	   
 	    target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
-	    if(reciprolRoleHasInverseOfTag(attribute.getChildText("source")) == false )
+	    // if inverseof already exists do not add again.
+	    if(reciprolRoleHasInverseOfTag(attribute.getChildText("source")) == false && (!inverseofExists) )
 	    {
 	    	addInverseOfTagValue(target,attribute);
 	    	saveModel();
 	    }
-	}
-	
-	/**
-	 * @param Target
-	 * @param attribute
-	 */
+	}	
+
 	public void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
 	{
 		//check to see if this Tag Value already exists
@@ -702,7 +715,7 @@ public class XMIGenerator
 		}
 		return hasInverseOfTagValue;
 	}
-	
+
 	/**
 	 * @param pathToColumnName
 	 * @return hasInverseOfTaggedValue
@@ -720,7 +733,7 @@ public class XMIGenerator
 		}
 		return hasInverseOfTaggedValue;
 	}
-	
+
 	public void addPrimaryKey( String pKey )
 	{
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
