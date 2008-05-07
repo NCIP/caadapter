@@ -94,8 +94,7 @@ public class XMIGenerator
 // changes made by Sandeep Phadke on 5/2/2008 
 // The dependencies were not being removed if file came from EA, so commented the following
 // for loop and the clear method to remove from model. Added new method addTableClassDependency
-// to check dependency either in package or class DomElements. If it doesn't contain in cumulative
-// mapping then remove it.
+// to check dependency either in package or class DomElements. If exists remove it.
             // Remove all dependencies from the Model
 //		    for ( UMLDependency dep : model.getDependencies() )
 //		    {		    	
@@ -118,16 +117,13 @@ public class XMIGenerator
 
     	    	String pathKey = new String(ModelUtil.getFullPackageName(clientEnd));
     	    	pathKey = pathKey + "." + clientEnd.getName();
-    	    	// if this dependency exists in cumulative mapping, then don't remove.
-    	    	if (!checkCumulativeDependency(pathKey)) {
-	    	    	for( UMLPackage pkg : model.getPackages() ) 
-	    			{
-	    	    		checkTableClassDependency(pkg, asscClient, oldDep );
-//	    				UMLPackageBean pkgBean=(UMLPackageBean)pkg;
-//	    				Element pkgElm=   pkgBean.getJDomElement();
-//	    				removeDepElement(pkgElm, oldDep, asscClient);
-	    			}
-    	    	}
+    	    	for( UMLPackage pkg : model.getPackages() ) 
+    			{
+    	    		checkTableClassDependency(pkg, asscClient, oldDep );
+    				UMLPackageBean pkgBean=(UMLPackageBean)pkg;
+    				Element pkgElm=   pkgBean.getJDomElement();
+    				removeDepElement(pkgElm, oldDep);
+    			}
     	    }
 ///////////////// End changes 5/2/2008           
 		    
@@ -152,11 +148,10 @@ public class XMIGenerator
 		{
 
 			if (clazz.getName().equals(checkClass)) {
-				
 				System.out.println("XMIGenerator.getPackages()..class:"+clazz.getName() +"remove dependency"+clazz.getDependencies());
 				UMLClassBean classBean=(UMLClassBean)clazz;
 				Element clazzElm=   classBean.getJDomElement();
-				Element parentElm = clazzElm.getParentElement();
+				Element parentElm= clazzElm.getParentElement();
 				parentElm.removeChild("Dependency",parentElm.getNamespace() );
 				//also remove it from the model, becuase while saving and 
 				//adding dependency back, we check for its existance in the model too.
@@ -166,13 +161,13 @@ public class XMIGenerator
 		for ( UMLPackage pkg2 : pkg.getPackages() )
 		{
 			checkTableClassDependency( pkg2, checkClass, oldDep );
-//			UMLPackageBean pkgBean=(UMLPackageBean)pkg2;
-//			Element pkgElm=   pkgBean.getJDomElement();
-//			removeDepElement(pkgElm, oldDep, checkClass);
+			UMLPackageBean pkgBean=(UMLPackageBean)pkg2;
+			Element pkgElm=   pkgBean.getJDomElement();
+			removeDepElement(pkgElm, oldDep);
 		}
 	}
 		
-	public void removeDepElement(Element elm, UMLDependency oldDep, String checkClass){
+	public void removeDepElement(Element elm, UMLDependency oldDep){
 	// removes the DepElement from any DOM element and its children.	
 		List<Element> childrenList = elm.getChildren();
 		int i=0;
@@ -181,13 +176,10 @@ public class XMIGenerator
 			String elmName = childElm.getName();
 			if (elmName.equals("Dependency")){
 				Element parentElm= childElm.getParentElement();
-				String parentName = parentElm.getName();
-				if (parentName.equals(checkClass)){
-					parentElm.removeChild("Dependency",parentElm.getNamespace() );
-					model.getDependencies().remove(oldDep);
-				}
+				parentElm.removeChild("Dependency",parentElm.getNamespace() );
+				model.getDependencies().remove(oldDep);
 			} else {
-				removeDepElement(childElm, oldDep, checkClass);
+				removeDepElement(childElm, oldDep);
 			}
 		}
 	}
@@ -195,7 +187,7 @@ public class XMIGenerator
 	public boolean addTableClassDependency(String xPath){
 // created by Sandeep 5/2/2008		
 // while saving the XMI checks if the dependecy should be added to the model or not
-// since model has been cleaned earlier in init, it may/may not have any depenedency, the Cumulative mapping
+// since model has been cleaned earlier in init, it does not have any depenedency, the Cumulative mapping
 // stores the current status, so if user deletes a mapping or adds it in the current session
 // it is captured in cumulative mapping. While saving model mapping gets saved. So this syncs both.
 // In addition, it should not have same mapping twice so checks no duplicate exists. 		
@@ -256,34 +248,7 @@ public class XMIGenerator
 		}
 		return addDependencies;
 	}	
-
 	
-	public boolean checkCumulativeDependency(String xPath){
-		// created by Sandeep 5/5/2008		
-// checks if the current xPath mapping exists in Cumulativemapping				
-				
-		    	boolean mappingExists = false ;
-				CumulativeMapping cummulativeMapping = null;
-				try {
-					cummulativeMapping = CumulativeMapping.getInstance();
-				} catch (Exception e) {
-					
-				}
-
-				List<DependencyMapping> dependencyMapping = cummulativeMapping.getDependencyMappings();
-				for (DependencyMapping d : dependencyMapping) {
-					try {
-						String targetXPath = d.getTargetDependency().getXPath(); 
-						if (targetXPath.contains(xPath)){
-							mappingExists = true;
-							break;
-						}
-					} catch (Exception e) {
-				            e.printStackTrace();
-					}
-				}
-				return mappingExists;
-			}		
 	
 	public void getPackages( UMLPackage pkg )
 	{
@@ -317,7 +282,7 @@ public class XMIGenerator
 					if( tagValue.getName().contains( "correlation-table" ))
 					{
 						att.removeTaggedValue( "correlation-table" );
-					}	
+					}												
 					// commented by Sandeep on 5/8/08 for bug id 12958 per Eugene's instructions.
 //					if( tagValue.getName().contains( "inverse-of" ))
 //					{
@@ -375,6 +340,7 @@ public class XMIGenerator
 	public void annotateXMIFile()
 	{
 		loadLinks();
+		
 		//Add the Primary Keys
 		for( String pKey : primaryKeys )
 		{
@@ -406,7 +372,6 @@ public class XMIGenerator
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
 		addManyToManyTaggedValues(this.manytomanys);
-		
 		//deleteMappingFile();
 	}
 	
@@ -606,7 +571,6 @@ public class XMIGenerator
 	 * @param model
 	 * @param attribute
 	 */
-	
 	public void addManyToManyTaggedValue(UMLModel model, Element attribute)
 	{
 		//Adding tagged values for attributes and single associations is pretty straightforward, however
@@ -676,8 +640,12 @@ public class XMIGenerator
 	    	addInverseOfTagValue(target,attribute);
 	    	saveModel();
 	    }
-	}	
-
+	}
+	
+	/**
+	 * @param Target
+	 * @param attribute
+	 */
 	public void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
 	{
 		//check to see if this Tag Value already exists
@@ -715,7 +683,7 @@ public class XMIGenerator
 		}
 		return hasInverseOfTagValue;
 	}
-
+	
 	/**
 	 * @param pathToColumnName
 	 * @return hasInverseOfTaggedValue
@@ -733,7 +701,7 @@ public class XMIGenerator
 		}
 		return hasInverseOfTaggedValue;
 	}
-
+	
 	public void addPrimaryKey( String pKey )
 	{
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
