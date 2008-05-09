@@ -22,10 +22,10 @@ import java.util.Iterator;
 
 /**
  * The class defines a MIF Class.
- * 
+ *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-04-01 20:59:22 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.18 $ date $Date: 2008-05-09 16:22:31 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -49,15 +49,13 @@ import java.util.Iterator;
  	private String traversalName;
 	 /**
 	  * This method will add an attribute object to a given MIF object.
-	  * 
+	  *
 	  *
 	  * @param attr is the MIFAttribute object associates with the name of that attribute
 	  */
 
 	 public void addAttribute(MIFAttribute attr) {
-
-         attr.setParent(this);
-            attributes.add(attr);
+			attributes.add(attr);
 	 }
 	 /**
 	  * @return attributes of a MIFClass
@@ -69,21 +67,9 @@ import java.util.Iterator;
 	 * @param newAttributes the attributes to set
 	 */
 	public void setAttributes(HashSet<MIFAttribute> newAttributes) {
-        if (newAttributes == null) return;
-         Object[] obs = newAttributes.toArray();
-         if (obs.length == 0) return;
+		attributes=newAttributes;
+	}
 
-        HashSet<MIFAttribute> atts = new HashSet<MIFAttribute>();
-        for(Object ob:obs)
-        {
-            MIFAttribute mifOb = (MIFAttribute) ob;
-            mifOb.setParent(this);
-            atts.add(mifOb);
-        }
-        //attributes=newAttributes;
-        attributes=atts;
-    }
-		 
 	 public void removeAttribute(MIFAttribute attrToRemove)
 	 {
 			Iterator it=getAttributes().iterator();
@@ -95,21 +81,21 @@ import java.util.Iterator;
 				 {
 					 if (nxtAttr.getMultiplicityIndex()==attrToRemove.getMultiplicityIndex())
 						 mifFound=nxtAttr;
-					 else 
+					 else
 					 {
 					 	if (nxtAttr.getMultiplicityIndex()>attrToRemove.getMultiplicityIndex())
-						 	nxtAttr.setMultiplicityIndex(nxtAttr.getMultiplicityIndex()-1); 
+						 	nxtAttr.setMultiplicityIndex(nxtAttr.getMultiplicityIndex()-1);
 					 }
 				 }
-			}	
+			}
 			if (mifFound!=null)
 				 attributes.remove(mifFound);
-			
+
 	 }
-	 
+
 	 public TreeSet<MIFAttribute> getSortedAttributes ()
 	 {
-		TreeSet<MIFAttribute> rtnSet =new TreeSet<MIFAttribute>(); 
+		TreeSet<MIFAttribute> rtnSet =new TreeSet<MIFAttribute>();
 		Iterator it=getAttributes().iterator();
 		while(it.hasNext())
 			rtnSet.add((MIFAttribute)(it.next()));
@@ -126,34 +112,20 @@ import java.util.Iterator;
 	 }
 	 /**
 	  * This method will add an association object to a given MIF object.
-	  * 
+	  *
 	  *
 	  * @param association is the MIFClass object associates with the name of that association
 	  */
 
 	 public void addAssociation(MIFAssociation association) {
-         association.setParent(this);
-         associations.add(association);
+		 associations.add(association);
 	 }
-	 
+
 	 public void setAssociation(HashSet<MIFAssociation> newAsscs)
 	 {
-         if (newAsscs == null) return;
-         Object[] obs = newAsscs.toArray();
-         if (obs.length == 0) return;
-         HashSet<MIFAssociation> atts = new HashSet<MIFAssociation>();
-         for(Object ob:obs)
-         {
-             MIFAssociation mifOb = (MIFAssociation) ob;
-             mifOb.setParent(this);
-             atts.add(mifOb);
-         }
-
-         associations=atts;
-
-         //associations=newAsscs;
+		 associations=newAsscs;
 	 }
-	 
+
 	 public void removeAssociation(MIFAssociation asscToRemove)
 	 {
 			Iterator it=getAssociations().iterator();
@@ -169,7 +141,7 @@ import java.util.Iterator;
 						 nxtAssc.setMultiplicityIndex(nxtAssc.getMultiplicityIndex()-1);
 				 }
 			}
-			
+
 			if (asscFound!=null)
 				associations.remove(asscFound);
 	 }
@@ -179,16 +151,16 @@ import java.util.Iterator;
 	 public HashSet<MIFAssociation> getAssociations() {
 	 	return associations;
 	 }
-	 
+
 	 public TreeSet<MIFAssociation> getSortedAssociations ()
 	 {
-		TreeSet<MIFAssociation> rtnSet =new TreeSet<MIFAssociation>(); 
+		TreeSet<MIFAssociation> rtnSet =new TreeSet<MIFAssociation>();
 		Iterator it=getAssociations().iterator();
 		while(it.hasNext())
 			rtnSet.add((MIFAssociation)(it.next()));
 		return rtnSet;
 	 }
-	 
+
 	 public int getMaxAssociationMultiplicityWithName(String asscName)
 	 {
 		 int rtnCount=0;
@@ -197,34 +169,21 @@ import java.util.Iterator;
 				 rtnCount++;
 		 return rtnCount;
 	 }
-	 
+
 	 /**
 	  * This method will add an choice object to a given MIF object.
-	  * 
-	  * 
+	  *
+	  *
 	  * @param choice is the MIFClass object associates with the name of that choiceName
 	  */
 
 	 public void addChoice(MIFClass choice) {
-         choice.setParent(this);
-         choices.add(choice);
+		 choices.add(choice);
 	 }
-	 
+
 	 public void setChoice(HashSet<MIFClass> newChoices)
 	 {
-         if (newChoices == null) return;
-         Object[] obs = newChoices.toArray();
-         if (obs.length == 0) return;
-         HashSet<MIFClass> atts = new HashSet<MIFClass>();
-         for(Object ob:obs)
-         {
-             MIFClass mifOb = (MIFClass) ob;
-             mifOb.setParent(this);
-             atts.add(mifOb);
-         }
-
-         choices=atts;
-         //choices=newChoices;
+		 choices=newChoices;
 	 }
 	 /**
 	  * @return choices of a MIFClass
@@ -235,7 +194,7 @@ import java.util.Iterator;
 
 	 public TreeSet<MIFClass> getSortedChoices ()
 	 {
-		TreeSet<MIFClass> rtnSet =new TreeSet<MIFClass>(); 
+		TreeSet<MIFClass> rtnSet =new TreeSet<MIFClass>();
 		Iterator it=getChoices().iterator();
 		while(it.hasNext())
 			rtnSet.add((MIFClass)(it.next()));
@@ -243,7 +202,7 @@ import java.util.Iterator;
 	 }
 	 /**
 	  * This method will set the reference name to a CMET.
-	  * 
+	  *
 	  * @param referenceName is the name of a CMET reference
 	  */
 
@@ -282,7 +241,7 @@ import java.util.Iterator;
 	}
 
 	/*
-	 * 
+	 *
 	 */
 	public void printMIFClass(int level, HashSet visitedMIFClass) {
 		if (visitedMIFClass != null) {
@@ -308,7 +267,7 @@ import java.util.Iterator;
 			else {
 				System.out.println("Self-Reference MIF Class: " + this.referenceName);
 			}
-			
+
 			CMETRef cmetRef = CMETUtil.getCMET(this.referenceName);
 			for(int i=0;i<level;i++) {
 				System.out.print("   ");
@@ -339,7 +298,7 @@ import java.util.Iterator;
 			}
 			System.out.println("Attribute name:" + mifAttribute.getName() + "  type:" + mifAttribute.getType());
 			DatatypeParserUtil.getDatatype(mifAttribute.getType()).print(level);
-			
+
 		}
 	}
 	public void printAssociation(int level, HashSet visitedMIFClass) {
@@ -428,7 +387,7 @@ import java.util.Iterator;
 				 attrClonnedHash.add((MIFAttribute)oneAttr.clone());
 			 }
 			 clonnedObj.setAttributes(attrClonnedHash);
-			 
+
 			 //clone MIFAssociation
 			 HashSet  asscHash=getAssociations();
 			 HashSet <MIFAssociation> asscClonnedHash=new HashSet<MIFAssociation>();
@@ -439,7 +398,7 @@ import java.util.Iterator;
 				 asscClonnedHash.add((MIFAssociation)oneAssc.clone());
 			 }
 			 clonnedObj.setAssociation(asscClonnedHash);
-			 
+
 //			clone choice MIFClass
 			 HashSet  choiceHash=this.getChoices();
 			 HashSet <MIFClass> choiceClonnedHash=new HashSet<MIFClass>();
@@ -460,7 +419,7 @@ import java.util.Iterator;
 	public String getNodeXmlName() {
 		if (traversalName!=null&&!traversalName.equals(""))
 			return traversalName;
-		
+
 		return this.getName();
 	}
 
@@ -478,7 +437,7 @@ import java.util.Iterator;
 	@Override
 	public void setEnabled(boolean enable) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	/**
 	 * @return the csvSegment
@@ -516,7 +475,7 @@ import java.util.Iterator;
 	public void setMapped(boolean mapped) {
 		this.mapped = mapped;
 	}
-	
+
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class beanClass = this.getClass();
 
@@ -533,12 +492,12 @@ import java.util.Iterator;
 		result.addPropertyDescriptors(this, propList);
 		return result;
 	}
-	
+
 	public String getTitle() {
 		return "MIF Clone Properties";
 	}
-	
-	
+
+
 	public String findCardinality() {
 
 		return Config.CARDINALITY_ONE_TO_ONE;
@@ -569,10 +528,4 @@ import java.util.Iterator;
 	public void setPackageLocation(Hashtable<String, String> packageLocation) {
 		this.packageLocation = packageLocation;
 	}
-    public Hashtable<String, MIFClass> getResolvedReferenceClasses()
-    {
-        MIFReferenceResolver resolver = new MIFReferenceResolver();
-        resolver.getReferenceResolved(this);
-        return resolver.getClassReferences();
-    }
  }
