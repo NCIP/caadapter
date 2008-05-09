@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.33 2008-04-03 16:57:12 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.34 2008-05-09 16:33:41 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -82,8 +82,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.33 $
- *          date        $Date: 2008-04-03 16:57:12 $
+ *          revision    $Revision: 1.34 $
+ *          date        $Date: 2008-05-09 16:33:41 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -280,11 +280,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	private MIFClass loadReferenceMIFClass(String refClassName, Hashtable asscRefTraversalNames)
 	{
 		MIFClass rtnMif=null;
-
-        Hashtable<String, MIFClass> ref = rootMIFClass.getResolvedReferenceClasses();
-        MIFClass referedClass = ref.get(refClassName);
-
-        if (refClassName.equals(rootMIFClass.getName()))
+		if (refClassName.equals(rootMIFClass.getName()))
 		{
 			//resolve reference with root MIFClass
 
@@ -298,11 +294,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				}
 //				rtnMif.setReferenceLevel(1);
 		}
-        else if (referedClass!=null)
-        {
-            rtnMif = (MIFClass)referedClass.clone();
-        }
-        else
+		else
 		{
 			//loading the referenced MIF class from CMET
 			CMETRef cmetRef = CMETUtil.getCMET(refClassName);
