@@ -17,7 +17,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v4.0 revision $Revision: 1.17 $ date $Date: 2008-03-26 14:37:30 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.18 $ date $Date: 2008-05-09 16:36:22 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -152,7 +152,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	 * @param mifClass the mifClass to set
 	 */
 	public void setMifClass(MIFClass mifClass) {
-        mifClass.setParent(this);
+        //mifClass.setParent(this);
         this.mifClass = mifClass;
 	}
 	/**
