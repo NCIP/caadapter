@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.35 2008-05-16 20:56:03 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.36 2008-05-16 21:07:38 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -69,6 +69,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 /**
  * This class defines a basic node loader implementation focusing on how to traverse HSM
@@ -82,8 +84,8 @@ import java.util.Hashtable;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.35 $
- *          date        $Date: 2008-05-16 20:56:03 $
+ *          revision    $Revision: 1.36 $
+ *          date        $Date: 2008-05-16 21:07:38 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -381,7 +383,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			else
 				mifAttribute.setEnabled(true);
 				
-			Hashtable dtAttrs=mifAttribute.getDatatype().getAttributes();
+			TreeSet dtAttrs=MIFUtil.sortDatatypeAttribute(mifAttribute.getDatatype());
+ 	    		
+//			Hashtable dtAttrs=mifAttribute.getDatatype().getAttributes();
 			String dtTypeName=mifAttribute.getDatatype().getName();
 			if (mifAttribute.getDatatype().isAbstract())
 			{
@@ -391,19 +395,15 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					enableDatatypeAttributesComplextype(concretDt, newSpecificationFlag);
 					if (concretDt.getName().equals("GTS"))
 						concretDt.setSimple(false);
-					dtAttrs=concretDt.getAttributes();
+					dtAttrs=MIFUtil.sortDatatypeAttribute(concretDt);//concretDt.getAttributes();
 					dtTypeName=concretDt.getName();
 				}
 			}
 
-			ArrayList<String> keyList=new ArrayList<String>();
- 			Enumeration keyEnums=dtAttrs.keys();
-			while (keyEnums.hasMoreElements())
-				keyList.add((String)keyEnums.nextElement());
-			Collections.sort(keyList);
-			for(String attrName:keyList)
-			{
-				Attribute childAttr=(Attribute)dtAttrs.get(attrName);
+			Iterator dtAttrIt=dtAttrs.iterator();
+	    	while (dtAttrIt.hasNext()) 
+	    	{
+	    		Attribute childAttr = (Attribute)dtAttrIt.next();
 				if (!childAttr.isProhibited()&&childAttr.isValid())
 				{
 					//and only the the chosen Datatype field for "AD" attributes
@@ -450,15 +450,12 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				enableDatatypeAttributesComplextype(attrDataType,false);
 				dtAttr.setReferenceDatatype(attrDataType);
 			}
-			Hashtable childAttrHash=dtAttr.getReferenceDatatype().getAttributes();
-			ArrayList<String> keyList=new ArrayList<String>();
-			Enumeration keyEnums=childAttrHash.keys();
-			while (keyEnums.hasMoreElements())
-				keyList.add((String)keyEnums.nextElement());
-			Collections.sort(keyList);
-			for(String attrName:keyList)
-			{
-				Attribute childAttr=(Attribute)childAttrHash.get(attrName);
+//			Hashtable childAttrHash=dtAttr.getReferenceDatatype().getAttributes();
+			TreeSet dtAttrSet=MIFUtil.sortDatatypeAttribute(dtAttr.getReferenceDatatype());
+			Iterator dtAttrIt=dtAttrSet.iterator();
+	    	while (dtAttrIt.hasNext()) 
+	    	{
+	    		Attribute childAttr = (Attribute)dtAttrIt.next();
 				if (!childAttr.isProhibited()&&childAttr.isValid())
 				{
 					DefaultMutableTreeNode childNode=buildDatatypeAttributeNode(childAttr); 
@@ -528,6 +525,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			inlineText.setMax(1);
 			inlineText.setMin(1);
 			inlineText.setSimple(true);
+			inlineText.setAttribute(true);
 			//always being selected/mandatory
 			inlineText.setOptionChosen(true);
 			dtType.addAttribute(inlineText.getName(),inlineText);
