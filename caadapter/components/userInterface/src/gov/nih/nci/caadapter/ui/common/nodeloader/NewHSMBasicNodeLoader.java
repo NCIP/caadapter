@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.36 2008-05-16 21:07:38 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.37 2008-05-19 20:38:33 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -84,8 +84,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.36 $
- *          date        $Date: 2008-05-16 21:07:38 $
+ *          revision    $Revision: 1.37 $
+ *          date        $Date: 2008-05-19 20:38:33 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -205,7 +205,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				for (MIFClass choiceClass:mifClass.getSortedChoices())
 				{
 					//load the choice and resolve internal reference
-					if (!choiceClass.getReferenceName().equals(""))
+					if (choiceClass.isReference()) // !choiceClass.getReferenceName().equals(""))
 					{
 						MIFClass referencedMifClass =this.loadReferenceMIFClass(choiceClass.getReferenceName(), null);
 						if (referencedMifClass != null) 
@@ -284,7 +284,6 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		if (refClassName.equals(rootMIFClass.getName()))
 		{
 			//resolve reference with root MIFClass
-
 				try {
 					String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(rootMIFClass.getMessageType());
 					Log.logInfo(this, "Resolving referenece:"+refClassName);
@@ -297,17 +296,23 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		}
 		else
 		{
-			//loading the referenced MIF class from CMET
-			CMETRef cmetRef = CMETUtil.getCMET(refClassName);
-			if (cmetRef != null) 
-			{
-				String cmetMifName=cmetRef.getFilename() + ".mif";
-				Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
-				rtnMif = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();			
-			}
+			MIFClass refMif=MIFUtil.findLocalRefenceClass(rootMIFClass, refClassName);
+			if (refMif!=null)
+				rtnMif=(MIFClass)refMif.clone();
 			else
 			{
-				Log.logError(this, "Not Found..:"+refClassName);				
+				//loading the referenced MIF class from CMET
+				CMETRef cmetRef = CMETUtil.getCMET(refClassName);
+				if (cmetRef != null) 
+				{
+					String cmetMifName=cmetRef.getFilename() + ".mif";
+					Log.logInfo(this, "load commonModelElementRef:"+cmetMifName);
+					rtnMif = (MIFClass)MIFParserUtil.getMIFClass(cmetMifName).clone();			
+				}
+				else
+				{
+					Log.logError(this, "Not Found..:"+refClassName);				
+				}
 			}
 		}
 //		set traversal name with 
@@ -333,9 +338,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		if (treeEditable)
 		{
 			//load reference class
-			String asscMIFClassRefName=asscMifClass.getReferenceName();
-			if(!asscMIFClassRefName.equals(""))
-			{
+			if(asscMifClass.isReference()) //. !asscMIFClassRefName.equals(""))
+			{//load CMetReference
+				String asscMIFClassRefName=asscMifClass.getReferenceName();
 				MIFClass referedMifClass=loadReferenceMIFClass(asscMIFClassRefName,mifAssc.getParticipantTraversalNames());
 				if(referedMifClass!=null)
 					mifAssc.setMifClass(referedMifClass);
