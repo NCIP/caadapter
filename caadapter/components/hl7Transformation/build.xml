@@ -93,6 +93,7 @@
 			<src path="${module.src.dir}"/>
 			<src path="${castor.gencode.dir}"/>
 			<exclude name="test/**"/>
+			<exclude name="gov/nih/nci/caadapter/hl7/v2v3/tools/V2MessageBrowser.java"/>
 		</javac>
 	</target>
 
