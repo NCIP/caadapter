@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.9 2007-11-23 22:02:15 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.10 2008-05-19 15:16:08 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -62,8 +62,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2007-11-23 22:02:15 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-05-19 15:16:08 $
  */
 public class AboutWindow extends JWindow //implements ActionListener
   {
@@ -80,7 +80,7 @@ public class AboutWindow extends JWindow //implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.9 2007-11-23 22:02:15 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.10 2008-05-19 15:16:08 umkis Exp $";
 
 
     private JEditorPane mainView;
@@ -537,7 +537,7 @@ public class AboutWindow extends JWindow //implements ActionListener
                   "    Center for Bioinformatics,<br>National Cancer Institute,<br>National Institutes of Health\n" +
                   "    </font><br>\n" +
                   "    <font color='#d9ecdc' size='3' face='Arial'>\n" +
-                  "<br>Copyright © 2004-2006<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph--><br>National Cancer Institute USA<br>\n" +
+                  "<br>Copyright © 2004-2008<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph--><br>National Cancer Institute USA<br>\n" +
                   "All right reserved\n" +
                   "</font>\n" +
                   "    </td>\n" +
@@ -567,6 +567,9 @@ public class AboutWindow extends JWindow //implements ActionListener
   }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2007/11/23 22:02:15  umkis
+ * HISTORY      : Delete aboutWin.html and the content was inserted into AboutWindow.java
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/10/10 19:58:17  umkis
  * HISTORY      : Fix bug item #7
  * HISTORY      :
