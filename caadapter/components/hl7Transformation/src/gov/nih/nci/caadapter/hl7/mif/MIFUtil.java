@@ -282,4 +282,49 @@ public class MIFUtil {
 		}
 		return rtnValue;
 	}
+	
+	/**
+	 * Recursively check if a class have been defined by the class or its child classes
+	 */
+	public static MIFClass findLocalRefenceClass(MIFClass mifClass, String toLook)
+	{
+		if (mifClass.getName().equalsIgnoreCase(toLook))
+			return mifClass;
+		MIFClass rtnMif=null;
+		TreeSet<MIFAssociation> mifAsscs=mifClass.getSortedAssociations();
+		if (mifAsscs!=null
+			&&!mifAsscs.isEmpty())
+		{
+			for(MIFAssociation assc:mifAsscs)
+			{
+				 MIFClass asscMifClass=assc.getMifClass();
+				 if (asscMifClass.getName().equalsIgnoreCase(toLook))
+					 return asscMifClass;
+				 else
+				 {
+					 rtnMif =findLocalRefenceClass(asscMifClass, toLook);
+					 if (rtnMif!=null)
+						 return rtnMif;
+				 }
+
+			}
+		}
+		//process choice class
+		if(mifClass.getSortedChoices()!=null)
+		{
+			for (MIFClass choiceClass:mifClass.getChoices())
+			{
+				if (choiceClass.getName().equalsIgnoreCase(toLook))
+					 return choiceClass;
+				else
+				 {
+					 rtnMif =findLocalRefenceClass(choiceClass, toLook);
+					 if (rtnMif!=null)
+						 return rtnMif;
+				 }
+
+			}
+		}
+		return null;
+	}
 }
