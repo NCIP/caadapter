@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.37 2008-05-19 20:38:33 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/nodeloader/NewHSMBasicNodeLoader.java,v 1.38 2008-05-20 14:57:52 wangeug Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -84,8 +84,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.37 $
- *          date        $Date: 2008-05-19 20:38:33 $
+ *          revision    $Revision: 1.38 $
+ *          date        $Date: 2008-05-20 14:57:52 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -205,9 +205,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				for (MIFClass choiceClass:mifClass.getSortedChoices())
 				{
 					//load the choice and resolve internal reference
-					if (choiceClass.isReference()) // !choiceClass.getReferenceName().equals(""))
+					if (!choiceClass.getReferenceName().equals(""))
 					{
-						MIFClass referencedMifClass =this.loadReferenceMIFClass(choiceClass.getReferenceName(), null);
+						MIFClass referencedMifClass =loadReferenceMIFClass(choiceClass.getReferenceName(), null);
 						if (referencedMifClass != null) 
 						{
 							//there is not "traversalName" issue to load the CMET class for a choice item
@@ -280,25 +280,32 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	
 	private MIFClass loadReferenceMIFClass(String refClassName, Hashtable asscRefTraversalNames)
 	{
+		Log.logError(this,"Loading class reference..className:"+refClassName +"..rootClass:"+rootMIFClass.getName());
 		MIFClass rtnMif=null;
 		if (refClassName.equals(rootMIFClass.getName()))
 		{
 			//resolve reference with root MIFClass
+			//05-20-2008, this section may never be visited.
 				try {
 					String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(rootMIFClass.getMessageType());
-					Log.logInfo(this, "Resolving referenece:"+refClassName);
+					Log.logInfo(this, "Resolving root class referenece:"+refClassName);
 					rtnMif=(MIFClass)MIFParserUtil.getMIFClass(refClassMIFFileName).clone();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}			
-//				rtnMif.setReferenceLevel(1);
 		}
 		else
 		{
 			MIFClass refMif=MIFUtil.findLocalRefenceClass(rootMIFClass, refClassName);
-			if (refMif!=null)
-				rtnMif=(MIFClass)refMif.clone();
+			/*
+			 * A local classReference may point to 
+			 * 1. a ClassDefinition section-- a locally defined class without referenceName
+			 * 2. a CommonModelReference section -- the locally defined class with "referenceName", @see CMETRefParser
+			 * 
+			 */
+			if (refMif!=null&&refMif.getReferenceName().equals(""))
+				rtnMif=(MIFClass)refMif.clone(); //find the referenced class and it is not a CMET
 			else
 			{
 				//loading the referenced MIF class from CMET
@@ -338,7 +345,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		if (treeEditable)
 		{
 			//load reference class
-			if(asscMifClass.isReference()) //. !asscMIFClassRefName.equals(""))
+			if(!asscMifClass.getReferenceName().equals(""))
 			{//load CMetReference
 				String asscMIFClassRefName=asscMifClass.getReferenceName();
 				MIFClass referedMifClass=loadReferenceMIFClass(asscMIFClassRefName,mifAssc.getParticipantTraversalNames());

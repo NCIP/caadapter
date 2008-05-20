@@ -48,6 +48,8 @@ private  void findReferenceDefinition(MIFClass mifClass)
 				 classReferences.put(asscMifClass.getName(), asscMifClass);
 				 findReferenceDefinition(asscMifClass);
 			 }
+			 else if (!asscMifClass.isReference()) //here is a CMET class
+				 classReferences.put(asscMifClass.getName(), asscMifClass);
 
 		}
 	}
@@ -61,6 +63,8 @@ private  void findReferenceDefinition(MIFClass mifClass)
 				 classReferences.put(choiceClass.getName(), choiceClass);
 				 findReferenceDefinition(choiceClass);
 			 }
+			else if (!choiceClass.isReference()) //here is a CMET class
+				 classReferences.put(choiceClass.getName(), choiceClass);
 		}
 	}
 }
@@ -84,20 +88,17 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 		for(MIFAssociation assc:mifAsscs)
 		{
 			 MIFClass asscMifClass=assc.getMifClass();
-			 if(asscMifClass.isReference())//.getReferenceName().equals(""))
+			 if(!asscMifClass.getReferenceName().equals(""))
 			 {
 				//it is a local refereence
 				 MIFClass referedClass=classReferences.get(asscMifClass.getName());
 				 if (referedClass!=null)
 				 {
 					 MIFClass asscRefMifClass=(MIFClass)referedClass.clone();
-					 //the resolved class can not be referenced any more
-					 asscRefMifClass.setReference(false);
 					 assc.setMifClass(asscRefMifClass);
 				 }
 				 else
 				 {//put the CMET into classReference for later cloning
-					 classReferences.put(asscMifClass.getName(), asscMifClass);
 					 Log.logInfo(sender,"Reference is not resolved..className:"+asscMifClass.getName() +"..messageType:"+messageType);
 				 }
 			 }
@@ -105,7 +106,6 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 			 resolveReference(assc.getMifClass(),sender, assc.getParticipantTraversalNames());
 
 		}
-		referencePath.removeLast();
 	}
 	//process choice class
 	if(mifClass.getSortedChoices()!=null)
@@ -114,19 +114,16 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 		for (MIFClass choiceClass:mifClass.getChoices())
 		{
 			MIFClass clsToAdd=choiceClass;
-			if(choiceClass.isReference())//.getReferenceName().equals(""))
+			if(!choiceClass.getReferenceName().equals(""))
 			 {
 				 MIFClass referedClass=classReferences.get(choiceClass.getName());
 				 if (referedClass!=null) //point the choice class to the reference class
 				 {
 					 clsToAdd=(MIFClass)referedClass.clone();
-					 //the resoleved class can not be  referenced any more
-					 clsToAdd.setReference(false);
 				 }
 				 else
 				 {
 					 //put the CMET into classReference for later cloning
-					 classReferences.put(choiceClass.getName(), choiceClass);
 					 Log.logError(sender,"Reference is not resolved..className:"+choiceClass.getName() +"..messageType:"+messageType);
 				 }
 			}
@@ -143,5 +140,6 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 		}
 		mifClass.setChoice(resolvedChoices);
 	}
+	referencePath.removeLast();
 }
 }
