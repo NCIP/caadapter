@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.13 2008-05-22 15:33:42 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.14 2008-05-22 15:59:47 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,7 +56,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 
 public class FileUtil
@@ -281,6 +281,28 @@ public class FileUtil
 
     public static MetaDataLoader getV2ResourceMetaDataLoader()
     {
+        return getV2ResourceMetaDataLoader(null);
+    }
+    public static MetaDataLoader getV2ResourceMetaDataLoader(String resourceFile)
+    {
+        if (resourceFile == null) resourceFile = "";
+        else resourceFile = resourceFile.trim();
+
+        if (!resourceFile.equals(""))
+        {
+            MetaDataLoader loader = null;
+            try
+            {
+                loader = new MetaDataLoader(resourceFile);
+            }
+            catch(HL7MessageTreeException he)
+            {
+                return null;
+            }
+            v2Loader = loader;
+            return loader;
+        }
+
         if (v2Loader == null)
         {
             String name = "v2Meta";
@@ -1014,6 +1036,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2008/05/22 15:33:42  umkis
+ * add getV2ResourceMetaDataLoader()
+ *
  * Revision 1.12  2008/04/01 21:06:46  umkis
  * minor change
  *
