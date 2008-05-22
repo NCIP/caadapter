@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.12 2008-04-01 21:06:46 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.13 2008-05-22 15:33:42 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -34,39 +34,29 @@
 
 package gov.nih.nci.caadapter.common.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.FileOutputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URLConnection;
-import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.logging.FileHandler;
-import java.awt.*;
-
+import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.function.DateFunction;
+import gov.nih.nci.caadapter.common.function.FunctionException;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
+import java.util.List;
+import java.util.logging.FileHandler;
 
 /**
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 
 public class FileUtil
@@ -76,6 +66,8 @@ public class FileUtil
     private static File ODI_FILE = null;
 
     //private static String dateFormat = "yyyyMMddHHmmssSSS";
+
+    private static MetaDataLoader v2Loader = null;
 
     /**
      * Create the output directory if it doesn't exist.
@@ -285,6 +277,62 @@ public class FileUtil
             }
         }
         return f.getAbsolutePath();
+    }
+
+    public static MetaDataLoader getV2ResourceMetaDataLoader()
+    {
+        if (v2Loader == null)
+        {
+            String name = "v2Meta";
+
+            Enumeration<URL> fileURLs = null;
+            try
+            {
+                fileURLs= ClassLoader.getSystemResources(name);
+            }
+            catch(IOException ie)
+            {
+                System.out.println("IOException #1 : " + ie.getMessage());
+            }
+            if (fileURLs == null)
+            {
+                System.out.println("ClassLoader Result : " + name + " : Not Found");
+                return null;
+            }
+            //System.out.println("Number of Result : " + fileURLs.toString());
+            boolean found = false;
+            while(fileURLs.hasMoreElements())
+            {
+                URL fileURL = fileURLs.nextElement();
+
+                String url = fileURL.toString();
+
+                if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
+                {
+                    int idx = url.indexOf("!");
+                    if (idx < 0)
+                    {
+                        System.err.println("Invalid jar file url : " + url);
+                        continue;
+                    }
+                    String jarFileName = url.substring(4, idx);
+                    try
+                    {
+                        v2Loader = new MetaDataLoader(jarFileName);
+                        found = true;
+                    }
+                    catch(HL7MessageTreeException he)
+                    {
+                        continue;
+                    }
+                }
+                if ((found)&&(v2Loader != null)) return v2Loader;
+            }
+
+            v2Loader = null;
+            return null;
+        }
+        else return v2Loader;
     }
 
     /**
@@ -966,6 +1014,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.12  2008/04/01 21:06:46  umkis
+ * minor change
+ *
  * Revision 1.11  2007/11/16 17:17:34  wangeug
  * update SDTM module
  *
