@@ -21,7 +21,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
-import gov.nih.nci.caadapter.mms.generator.HBMGenerator;
+import gov.nih.nci.caadapter.mms.generator.HBMGenerateCacoreIntegrator;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -91,13 +91,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.31 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.32 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.31 2007-12-13 21:09:33 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.32 2008-05-22 15:48:49 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -285,12 +285,10 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 						return;
 					}
 										
-					saveMappingFile();
-					HBMGenerator myGenerator = new HBMGenerator(getSaveFile().getAbsolutePath());
-
-					myGenerator.setOutputDirectory(fileChooser
-							.getSelectedFile().getAbsolutePath());
-					myGenerator.generateHBMFiles(fileFromPanel.getAbsolutePath().replaceAll(".xmi", ".map"));
+					saveMappingFile();			
+					String outputDir=fileChooser.getSelectedFile().getAbsolutePath();
+					UMLModel model=ModelMetadata.getHandler().getModel();
+					HBMGenerateCacoreIntegrator.getInstance().generateMapping(model,outputDir);
 					JOptionPane.showMessageDialog(getParent(),
 							"HBM files are generated at "
 									+ fileChooser.getSelectedFile()
@@ -1074,6 +1072,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.31  2007/12/13 21:09:33  wangeug
+ * HISTORY : resolve code dependence in compiling
+ * HISTORY :
  * HISTORY : Revision 1.30  2007/11/16 17:18:36  wangeug
  * HISTORY : clean codes: remove unused "import"
  * HISTORY :
