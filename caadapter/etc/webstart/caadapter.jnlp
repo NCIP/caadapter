@@ -27,7 +27,8 @@
    	<jar href="mysql-connector-java-3.1.13-bin.jar"/>
    	<jar href="ojdbc14.jar"/>
    	<jar href="resource.zip"/>
-   	<jar href="poi-2.5.1-final-20040804.jar"/>
+    <jar href="resourceV2.zip"/>
+    <jar href="poi-2.5.1-final-20040804.jar"/>
 	<jar href="xmi.in.out.jar"/>
 	<jar href="jaxen-jdom.jar"/>
 	<jar href="dom4j-1.4.jar"/>
