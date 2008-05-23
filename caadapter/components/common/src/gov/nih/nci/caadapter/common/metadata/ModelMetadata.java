@@ -27,6 +27,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiHandlerFactory;
@@ -273,6 +274,12 @@ public class ModelMetadata {
 		  	boolean isManyToMany = false;
 	    	UMLAssociationEnd assocEndA = (UMLAssociationEnd)assoc.getAssociationEnds().get(0);
 	    	UMLAssociationEnd assocEndB = (UMLAssociationEnd)assoc.getAssociationEnds().get(1);
+	    	//check if it is self-association
+	    	boolean isSelfAssociated=false;
+	    	String eaIdEndA=((UMLAssociationEndBean)assocEndA).getJDomElement().getAttributeValue("type");
+	    	String eaIdEndB=((UMLAssociationEndBean)assocEndB).getJDomElement().getAttributeValue("type");
+	    	if (eaIdEndA.equals(eaIdEndB))
+	    		isSelfAssociated=true;
 	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) || 
 	    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==1)) {
 	    		isOneToMany = true;
@@ -290,12 +297,11 @@ public class ModelMetadata {
 	    		AssociationMetadata thisEnd = new AssociationMetadata();
 	    		thisEnd.setUMLAssociation(assoc);
 	    		UMLClass clazz1 = (UMLClass)assocEnd.getUMLElement();
-  			if (assocEnd.getRoleName().equals("")) continue;
-//  			commented following line to allow the self associaiton
-//				gforge bug id: 11802  			
-//	    		if (!clazz1.getName().equals(clazz.getName())) {
-//  			end change for 11802
-//	    			if (!assocEnd.getRoleName().equals("")) {
+	    		if (assocEnd.getRoleName().equals("")) 
+	    			continue;
+			
+	    		if (!clazz1.getName().equals(clazz.getName())||isSelfAssociated) 
+	    		{
 	    			if (assocEnd.isNavigable()||isOneToMany || isManyToMany) {
 	    				thisEnd.setRoleName(assocEnd.getRoleName());
 	    				thisEnd.setMultiplicity(assocEnd.getHighMultiplicity());
@@ -303,14 +309,10 @@ public class ModelMetadata {
 	    				thisEnd.setXPath(associationKeyPath.toString());
 	    				thisEnd.setReturnTypeXPath(clazz1.toString());
 	    				thisEnd.setNavigability(assocEnd.isNavigable());
-  					thisEnd.setBidirectional(other.isNavigable()&&assocEnd.isNavigable());
+	    				thisEnd.setBidirectional(other.isNavigable()&&assocEnd.isNavigable());
 	    				sortedModel.add(thisEnd);
 	    			}
-	    			else {//This is uni-direction
-	    			}
-//	    			change for bug id 11802
-//	    		}
-//	    			end change bug id 11802
+	    		}
 	    	}
 	  }	  	  
 	  
