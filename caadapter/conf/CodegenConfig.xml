@@ -22,7 +22,7 @@
 	<!-- define file handler -->
 	<bean name="HibernateMappingFilehandler" class="gov.nih.nci.codegen.handler.FileHandler">
 		<property name="useArtifactSource" value="true"/>
-		<property name="outputDir" value="output"/>				
+		<property name="outputDir" value="outputDefault"/>				
 		<property name="suffix" value=".spring.config.test.hbm.xml"/>						
 	</bean>
 </beans>
