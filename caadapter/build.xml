@@ -664,6 +664,7 @@
         <mkdir dir="dist/conf"/>
     	<copy todir="${dist.dir}/conf">
     	            <fileset file="${config.dir}/caadapter-components.properties" />
+    	            <fileset file="${config.dir}/CodegenConfig.xml" />
     				<fileset file="${config.dir}/logging.properties" />
     	 </copy>
 
@@ -678,6 +679,11 @@
 			<fileset dir="${basedir}/workingspace/TrWorkbench_example" >
 				  <include name="**/*.*"/>
 			</fileset>
+    	 </copy>
+    	 <copy todir="${dist.dir}/workingspace/Object_to_DB_Example">
+ 			<fileset dir="${basedir}/workingspace/Object_to_DB_Example" >
+				<include name="**/*.*"/>
+ 			</fileset>
     	 </copy>
     	 
         <delete file="${lib.dir}\sqleonardo.jar"/>

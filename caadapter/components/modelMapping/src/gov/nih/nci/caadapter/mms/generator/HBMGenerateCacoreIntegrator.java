@@ -11,12 +11,12 @@ import gov.nih.nci.codegen.transformer.jet.HibernateMappingTransformer;
 import gov.nih.nci.codegen.util.ObjectFactory;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
- 
+
 public class HBMGenerateCacoreIntegrator {
-	public static String GENERATOR_CONFIG="LocalCodegenConfig.xml";//CodegenConfig.xml";
-	private HibernateMappingTransformer transformer;	 
+	public static String GENERATOR_CONFIG="conf/CodegenConfig.xml";//CodegenConfig.xml";
+	private HibernateMappingTransformer transformer;
 	private static HBMGenerateCacoreIntegrator generator;
-	
+
 	public static HBMGenerateCacoreIntegrator getInstance()
 	{
 		if (generator==null)
@@ -26,7 +26,7 @@ public class HBMGenerateCacoreIntegrator {
 		}
 		return generator;
 	}
-	
+
 	private void init(String configFile)
 	{
 		ObjectFactory.initialize(configFile);
@@ -37,16 +37,16 @@ public class HBMGenerateCacoreIntegrator {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Generate HBM mapping given the UML object/data model
 	 * @param model The Object/Data model created with Enterprise Architecture following caCORE SDK convention
 	 * @param outDir The root directory of output files
-	 * @throws GenerationException 
+	 * @throws GenerationException
 	 */
 	public void generateMapping(UMLModel model, String outDir) throws GenerationException
 	{
-		Properties umlProp=(Properties)ObjectFactory.getObject("UMLModelFileProperties"); 		
+		Properties umlProp=(Properties)ObjectFactory.getObject("UMLModelFileProperties");
 		Log.logInfo(this,"Generate Hibernate mapping... Include Package... default setting:"+ umlProp.getProperty("Include Package"));
 		//found the root package name of the "Logical Model"
 		UMLPackage logicalPck=model.getPackage("Logical View").getPackage("Logical Model");
@@ -56,23 +56,23 @@ public class HBMGenerateCacoreIntegrator {
 		{
 			String pckName=onePck.getName();
 			if (!(pckName==null||pckName.equals("")||pckName.equals("java")||pckName.equals("Diagrams")))
-				rootPckName=pckName;			 
+				rootPckName=pckName;
 		}
 		if (!rootPckName.equals(""))
 			umlProp.setProperty("Include Package", rootPckName);
 		Log.logInfo(this,"Generate Hibernate mapping...  included package:"+ umlProp.getProperty("Include Package"));
-		
+
 		//set output directory
 		FileHandler fileHandler=(FileHandler)ObjectFactory.getObject("HibernateMappingFilehandler");
 		Log.logInfo(this,"Generate Hibernate mapping... Output Directory... default setting:"+ fileHandler.getOutputDir());
 		if (outDir!=null&&!outDir.equals(""))
 			fileHandler.setOutputDir(outDir);
-		
+
 		Log.logInfo(this,"Generate Hibernate mapping... Output Directory:"+fileHandler.getOutputDir());
 		transformer.execute(model);
 	}
 
-	
+
 	/**
 	 * @param args
 	 */
@@ -85,7 +85,7 @@ public class HBMGenerateCacoreIntegrator {
 		FileHandler fileHandler=(FileHandler)ObjectFactory.getObject("HibernateMappingFilehandler");
 		fileHandler.setOutputDir("new_output");
 		System.out.println("CodegenTest.main()..output dir:"+fileHandler.getOutputDir());
-		
+
 		//manipulate umlProp
 //		Properties umlProp=(Properties)ObjectFactory.getObject("UMLModelFileProperties");
 //		Enumeration umlKeys=umlProp.propertyNames();//.keys();
@@ -97,7 +97,7 @@ public class HBMGenerateCacoreIntegrator {
 //			String propValue=(String)umlProp.getProperty(propKey);
 //			System.out.println("CodegenTest.main()..UML property:"+propKey +"="+propValue);
 //		}
-//		
+//
 		HibernateMappingTransformer transformer=(HibernateMappingTransformer)ObjectFactory.getObject("HibernateMappingTransformer");
 //		String xmiFilePath="C:\\myProject\\caCORE40Src\\models\\sdk.xmi";
 		XmiModelMetadata xmlModelMeta=new XmiModelMetadata(xmiFilePath);
