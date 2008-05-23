@@ -11,6 +11,7 @@ import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 
 import java.util.List;
+import java.io.File;
 
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.TestCase;
@@ -21,8 +22,8 @@ import org.junit.Test;
  * The class will test the CSV to HL7v3 transformation service.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2007-08-13 20:26:50 $
+ * @author LAST UPDATE $Author: linc $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2.2.1 $ date $Date: 2008-05-23 15:48:35 $
  */
 
 public class CSV2HL7v3TransformationTests extends TestCase {
@@ -110,6 +111,18 @@ public class CSV2HL7v3TransformationTests extends TestCase {
 	        	assertEquals(true, contacPartyAppearence);
 	        }
 	 }
+	 
+	 @Test public void testBatchMappingScenario1_1() throws Exception{
+	        TransformationService ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+			"data/Transformation/COCT_MT01000_Person.csv");
+	        
+	        ts.setOutputFile(new File("data/Transformation/tmpout.zip"));
+
+	        int count = ts.batchProcess();
+	        assertEquals(1,count);
+       
+	 }
+
 	 public static junit.framework.Test suite() {
 		  return new JUnit4TestAdapter(CSV2HL7v3TransformationTests.class);    
 		}

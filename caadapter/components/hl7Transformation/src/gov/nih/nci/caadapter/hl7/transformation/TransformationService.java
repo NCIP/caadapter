@@ -6,13 +6,19 @@
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
+import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaException;
+import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
+import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
+import gov.nih.nci.caadapter.common.csv.CsvReader;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
+import gov.nih.nci.caadapter.common.csv.data.impl.CSVSegmentedFileImpl;
+import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
@@ -27,28 +33,41 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipEntry;
 
 /**
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.16 $
- * @date $Date: 2007-11-06 16:50:32 $
+ * @author LAST UPDATE $Author: linc $
+ * @version $Revision: 1.16.2.1 $
+ * @date $Date: 2008-05-23 15:48:34 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.16 2007-11-06 16:50:32 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.16.2.1 2008-05-23 15:48:34 linc Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
+    private boolean isOutputStream = false;
     private String csvString = "";
     private File mapfile = null;
     private File csvfile = null;
-    private File scsfile = null;
+    //private File scsfile = null;
+    private File outputFile = null;
     private InputStream csvStream = null;
+    private OutputStream outputStream = null;
+    //intermediate data
+	Hashtable mappings = null;
+	Hashtable<String, FunctionComponent> funcations = null;
+	MapParser mapParser = null;
+    CSVMeta meta = null;
+    MIFClass mifClass = null;
+    CsvReader reader = null;
+    
     private CSVSegmentedFile csvSegmentedFile = null;
     private ArrayList <TransformationObserver>transformationWatchList;
     ValidatorResults theValidatorResults = new ValidatorResults();
@@ -137,7 +156,44 @@ public class TransformationService
     	transformationWatchList=new ArrayList<TransformationObserver>();
     }
 
+    
     /**
+	 * @return the isOutputStream
+	 */
+	public boolean isOutputStream() {
+		return isOutputStream;
+	}
+
+	/**
+	 * @return the outputFile
+	 */
+	public File getOutputFile() {
+		return outputFile;
+	}
+
+	/**
+	 * @param outputFile the outputFile to set
+	 */
+	public void setOutputFile(File outputFile) {
+		this.outputFile = outputFile;
+	}
+
+	/**
+	 * @return the outputStream
+	 */
+	public OutputStream getOutputStream() {
+		return outputStream;
+	}
+
+	/**
+	 * @param outputStream the outputStream to set
+	 */
+	public void setOutputStream(OutputStream outputStream) {
+		this.outputStream = outputStream;
+		this.isOutputStream = true;
+	}
+
+	/**
      * Add an oberver to the tranformation server
      * @param observer
      */
@@ -175,25 +231,56 @@ public class TransformationService
      * To get HL7 v3 message of each object, call .toXML() method of each object
      */
 
-    
-    public List<XMLElement> process() throws Exception
+
+    private void loadMap() throws Exception
     {
+    	mappings = new Hashtable();
+    	funcations = new Hashtable<String, FunctionComponent>();
     	
-    	Hashtable mappings = new Hashtable();
-    	Hashtable<String, FunctionComponent> funcations = new Hashtable<String, FunctionComponent>();
     	/*
     	 * TODO Exception handling here
     	 */
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
         long mapbegintime = System.currentTimeMillis();
-        MapParser mapParser = new MapParser();
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
+        mapParser = new MapParser();
         mappings = mapParser.processOpenMapFile(mapfile);
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
         funcations = mapParser.getFunctions();
     	System.out.println("Map Parsing time" + (System.currentTimeMillis()-mapbegintime));
-
+    }
+    
+    private void loadH3S()  throws FileNotFoundException
+    {
+        String h3sFilename = mapParser.getH3SFilename();
+        String fullh3sfilepath = FileUtil.filenameLocate(mapfile.getParent(), h3sFilename);
         
+        long loadmifbegintime = System.currentTimeMillis();
+        
+        if (fullh3sfilepath.endsWith(".h3s"))
+        {
+        	mifClass = loadMIF(fullh3sfilepath);
+        }
+        else 
+        {
+        	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter(); 
+        	mifClass = xmlToMIFImporter.importMifFromXml(new File(fullh3sfilepath));
+        }
+        
+    	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
+    }
+    
+    public void loadCsvMeta(File metaFile) throws FileNotFoundException
+    {
+    	CSVMetaParserImpl parser = new CSVMetaParserImpl();
+    	CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
+    	meta = csvMetaResult.getCsvMeta();
+    }
+    
+    public List<XMLElement> process() throws Exception
+    {
+       	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
+
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
+       	this.loadMap();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
         
         if (!mapParser.getValidatorResults().isValid())
         {	
@@ -202,6 +289,11 @@ public class TransformationService
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
         	return null;
         }
+
+        this.loadH3S();
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
+        
+        
         long csvbegintime = System.currentTimeMillis();
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
         CSVDataResult csvDataResult = null;
@@ -219,8 +311,8 @@ public class TransformationService
         }
         
     	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
-    	
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
+
         // parse the datafile, if there are errors.. return.
         final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
 
@@ -235,29 +327,9 @@ public class TransformationService
         	System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
             return null;
         }
-
         csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
-       
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
-        String h3sFilename = mapParser.getH3SFilename();
-        String fullh3sfilepath = FileUtil.filenameLocate(mapfile.getParent(), h3sFilename);
-        
-        long loadmifbegintime = System.currentTimeMillis();
-        
-        MIFClass mifClass = null;
-        if (fullh3sfilepath.endsWith(".h3s"))
-        {
-        	mifClass = loadMIF(fullh3sfilepath);
-        }
-        else 
-        {
-        	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter(); 
-        	mifClass = xmlToMIFImporter.importMifFromXml(new File(fullh3sfilepath));
-        }
-        
-    	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
-
     	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE);
+        
     	MapProcessor mapProcess = new MapProcessor();
         
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
@@ -281,6 +353,119 @@ public class TransformationService
         return xmlElements;
    }
 
+    public int batchProcess() throws Exception
+    {
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
+
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
+    	this.loadMap();
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
+
+    	if (!mapParser.getValidatorResults().isValid())
+    	{	
+    		System.out.println("Invalid .map file");
+    		Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
+    		theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    		return -1;
+    	}
+
+    	this.loadH3S();
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
+
+    	long csvbegintime = System.currentTimeMillis();
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
+
+    	boolean batchFinished = false;
+    	File scsFile = new File(FileUtil.filenameLocate(mapfile.getParent(), mapParser.getSCSFilename()));
+    	this.loadCsvMeta(scsFile);
+
+    	if (isCsvString || (!this.isOutputStream && this.outputFile==null && this.outputStream==null)) 
+    	{
+    		throw new Exception("not valid for batch transformation.");
+    	}
+    	if(!this.isInputStream && this.csvfile!=null)
+    	{
+    		this.csvStream = new FileInputStream(this.csvfile);
+    	}
+    	if(!this.isOutputStream && this.outputFile!=null)
+    	{
+    		this.outputStream = new FileOutputStream(this.outputFile);
+    	}
+
+    	reader = new CsvReader(this.csvStream, this.meta);
+    	ZipOutputStream zipOut = new ZipOutputStream(outputStream);
+    	OutputStreamWriter writer = new OutputStreamWriter(zipOut);
+    	int messageCount = 0;
+    	long bufferStart = 0;
+    	long bufferSize = 0;
+    	while(reader.hasMoreRecord())
+    	{
+    		List<XMLElement> xmlElements = processNext();
+//  		HL7V3MessageValidator validator = new HL7V3MessageValidator();
+    		/*        for(XMLElement xmlElement:xmlElements) 
+        {
+        	System.out.println("Message:"+xmlElement.toXML());
+//        	xmlElement.validate();
+        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages().size());
+        	for(Message message:xmlElement.getValidatorResults().getAllMessages())
+        	{
+        		System.out.println("Message:" + message+".");
+        	}
+//        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
+
+        	System.out.println("XML validation results:");
+//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
+//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
+        }*/
+    		if(xmlElements!=null && xmlElements.size()>0)
+    		{
+    			for(int i=0; i<xmlElements.size(); i++)
+    			{
+    				zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)));
+    				writer.write(xmlElements.get(i).toXML().toString());
+    				writer.flush();
+    			}
+    			System.out.println("Parsed "+xmlElements.size()+" records in " + (System.currentTimeMillis()-csvbegintime)+" ms");
+    			messageCount += xmlElements.size();
+    			bufferSize = reader.getReadCount()-bufferStart;
+    		}else
+    		{
+    			System.out.println("[WARNING] got no message, current count="+messageCount);
+    		}
+    	}
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
+    	System.out.println("total message" + messageCount);
+    	writer.close();
+    	return messageCount;
+    }
+
+    public List<XMLElement> processNext() throws Exception
+    {
+    	CSVDataResult csvDataResult = null;
+    	csvDataResult=reader.getNextRecord();
+
+		// parse the datafile, if there are errors.. return.
+		final ValidatorResults csvDataValidatorResults = csvDataResult.getValidatorResults();
+
+//		prepareValidatorResults.addValidatorResults(csvDataValidatorResults);
+		/*
+		 * TODO consolidate validatorResults
+		 */
+		if (!csvDataValidatorResults.isValid())
+		{
+			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file! : Please check and validate this csv file against the scs file."});
+			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+			System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
+			return null;
+		}
+		csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
+		//informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE);
+
+		MapProcessor mapProcess = new MapProcessor();
+
+		List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
+    	return xmlElements;
+    }
 
     private CSVDataResult parseCsvfile(String scsFilename) throws Exception
     {
@@ -380,6 +565,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16  2007/11/06 16:50:32  umkis
+ * HISTORY      : Change the error message => Invalid CSV file! : Please check and validate this csv file against the scs file.
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2007/11/06 16:49:39  umkis
  * HISTORY      : Change the error message => Invalid CSV file! : Please check and validate this csv file against the scs file.
  * HISTORY      :
