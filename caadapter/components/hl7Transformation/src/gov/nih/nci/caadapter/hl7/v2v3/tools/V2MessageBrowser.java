@@ -56,6 +56,7 @@ package gov.nih.nci.caadapter.hl7.v2v3.tools;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.help.HelpContentElement;
@@ -78,7 +79,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jan 17, 2008
  *          Time:       4:30:30 PM $
  */
@@ -97,7 +98,7 @@ public class V2MessageBrowser extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/v2v3/tools/V2MessageBrowser.java,v 1.1 2008-01-17 23:48:47 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/v2v3/tools/V2MessageBrowser.java,v 1.2 2008-05-29 01:26:09 umkis Exp $";
 
     private HL7V2MessageTree messaggTree;
 
@@ -176,7 +177,7 @@ public class V2MessageBrowser extends JPanel implements ActionListener
     JToolBar toolBar;
       String contentPageTag = "";
 
-    String metadataPath = "";
+    MetaDataLoader metadataPath = null;
     String messageFileName = "";
 
       private boolean taskComplete;
@@ -189,16 +190,54 @@ public class V2MessageBrowser extends JPanel implements ActionListener
       public final static int ONE_SECOND = 1000;
 
   //String dirSeparater;
-    public V2MessageBrowser(String datapath) throws HL7MessageTreeException
+    public V2MessageBrowser() throws HL7MessageTreeException
     {
-        metadataPath = datapath;
+        setMetaDataPath(null);
+        //metadataPath = FileUtil.getV2ResourceMetaDataLoader();
         constructPanel();
     }
-    public V2MessageBrowser(String datapath, String filename) throws HL7MessageTreeException
+    public V2MessageBrowser(Object datapath) throws HL7MessageTreeException
     {
-        metadataPath = datapath;
+        setMetaDataPath(datapath);
+        //metadataPath = datapath;
+        constructPanel();
+    }
+    public V2MessageBrowser(Object datapath, String filename) throws HL7MessageTreeException
+    {
+        //metadataPath = datapath;
+        setMetaDataPath(datapath);
         messageFileName = filename;
         constructPanel();
+    }
+
+    private void setMetaDataPath(Object meta) throws HL7MessageTreeException
+    {
+        if (meta == null)
+        {
+            meta = "";
+        }
+        if (meta instanceof String)
+        {
+            String metaS = ((String)meta).trim();
+            if (metaS.equals(""))
+            {
+                metadataPath = FileUtil.getV2ResourceMetaDataLoader();
+                if (metadataPath == null)
+                {
+                    throw new HL7MessageTreeException("No v2 resource zip file");
+                }
+            }
+            else
+            {
+                metadataPath = FileUtil.getV2ResourceMetaDataLoader(metaS);
+                if (metadataPath == null)
+                {
+                    throw new HL7MessageTreeException("Invalid v2 resource path or zip file : " + metaS);
+                }
+            }
+        }
+        else if (meta instanceof MetaDataLoader) metadataPath = (MetaDataLoader) meta;
+        else throw new HL7MessageTreeException("Invalid instance of v2 resource object");
     }
     private void constructPanel() throws HL7MessageTreeException
     {
@@ -673,7 +712,8 @@ public class V2MessageBrowser extends JPanel implements ActionListener
         //String messageSource = jtFileName.getText();
         try
         {
-            treeHL7V2Main = new HL7V2MessageTree(metadataPath);
+            //treeHL7V2Main = new HL7V2MessageTree(metadataPath);
+            treeHL7V2Main = new HL7V2MessageTree(FileUtil.getV2ResourceMetaDataLoader());
             treeHL7V2Main.setVersion("2.5");
             treeHL7V2Main.parse(msg);
         }
@@ -1302,7 +1342,8 @@ public class V2MessageBrowser extends JPanel implements ActionListener
 
     public static void main(String arg[])
     {
-        String dataPath = "C:\\projects\\temp\\v2Meta";
+        //String dataPath = "C:\\projects\\temp\\v2Meta";
+        String dataPath = null;
         try
         {
             JFrame frame = (new V2MessageBrowser(dataPath)).setFrame(new JFrame("HL7 Version2 Message Browser"));
@@ -1310,7 +1351,9 @@ public class V2MessageBrowser extends JPanel implements ActionListener
             frame.setVisible(true);
         }
         catch(HL7MessageTreeException he)
-        {}
+        {
+            System.out.println("Error Message : " + he.getMessage());
+        }
 
     }
 

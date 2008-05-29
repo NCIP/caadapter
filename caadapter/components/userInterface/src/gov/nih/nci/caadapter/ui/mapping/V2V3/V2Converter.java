@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.7 2008-02-01 02:11:41 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.8 2008-05-29 01:25:34 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,6 +56,7 @@ package gov.nih.nci.caadapter.ui.mapping.V2V3;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
@@ -71,6 +72,7 @@ import gov.nih.nci.caadapter.hl7.validation.CSVMetaValidator;
 import gov.nih.nci.caadapter.ui.hl7message.instanceGen.SCSIDChangerToXMLPath;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,8 +83,8 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v3.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-02-01 02:11:41 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-05-29 01:25:34 $
  */
 public class V2Converter
 {
@@ -99,12 +101,12 @@ public class V2Converter
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.7 2008-02-01 02:11:41 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2Converter.java,v 1.8 2008-05-29 01:25:34 umkis Exp $";
 
 
     HL7V2MessageTree messageTree = null;
     HL7V2MessageTree messageTreeEmpty = null;
-    String dataPathOfV2Meta;
+    MetaDataLoader dataPathOfV2Meta = null;
     String messageType = "";
     String errorMessage = "";
     boolean wasSuccessful = false;
@@ -129,35 +131,55 @@ public class V2Converter
         ElementNode head = messTree.getHeadNode();
         if (head == null) throw new HL7MessageTreeException("The head node is null.");
         if (messTree.isTreeEmpty()) throw new HL7MessageTreeException("This v2 message tree is empty.");
-        messageTreeEmpty = new HL7V2MessageTree(messTree.getDataPath(), messTree.getVersion(), messTree.getMessageType());
-        dataPathOfV2Meta = messTree.getDataPath();
+        messageTreeEmpty = createV2MessageTree(messTree.getMetaDataLoader(), messTree.getVersion(), messTree.getMessageType());
+        //dataPathOfV2Meta = messTree.getDataPath();
         messageTree = messTree;
         messageType = messageTree.getMessageType();
     }
 
-    public V2Converter(String dataPath) throws HL7MessageTreeException
+    public V2Converter(Object dataPath) throws HL7MessageTreeException
     {
-        messageTree = buildV2MessageTree(dataPath, "2.5", "ADT^A03");
-        dataPathOfV2Meta = dataPath;
+        messageTree = createV2MessageTree(dataPath, "2.5", "ADT^A03");
+        //dataPathOfV2Meta = dataPath;
         messageTree = null;
     }
 
-    public V2Converter(String v2FileName, String dataPath) throws HL7MessageTreeException
+    public V2Converter(String v2FileName, Object dataPath) throws HL7MessageTreeException
     {
-        messageTree = buildV2MessageTree(dataPath, "2.5", v2FileName);
+        messageTree = createV2MessageTree(dataPath, "2.5", v2FileName);
         messageType = messageTree.getMessageType();
-        messageTreeEmpty = new HL7V2MessageTree(messageTree.getDataPath(), messageTree.getVersion(), messageType);
-        dataPathOfV2Meta = dataPath;
+        messageTreeEmpty = createV2MessageTree(messageTree.getMetaDataLoader(), messageTree.getVersion(), messageType);
+        //dataPathOfV2Meta = dataPath;
     }
 
-    public V2Converter(String messageType, String version, String dataPath) throws HL7MessageTreeException
+    public V2Converter(String messageType, String version, Object dataPath) throws HL7MessageTreeException
     {
         messageTree = null;
-        messageTreeEmpty = new HL7V2MessageTree(dataPath, version, messageType);
-        dataPathOfV2Meta = dataPath;
+        messageTreeEmpty = createV2MessageTree(dataPath, version, messageType);
+        //dataPathOfV2Meta = dataPath;
     }
 
-    private HL7V2MessageTree buildV2MessageTree(String dataPath, String version, String v2FileName) throws HL7MessageTreeException
+    private HL7V2MessageTree createV2MessageTree(Object v2MetaPathObject, String version, String mType) throws HL7MessageTreeException
+    {
+        HL7V2MessageTree aTree = null;
+        if (((v2MetaPathObject != null))&&(v2MetaPathObject instanceof String))
+        {
+            String v2MetaPath = (String)v2MetaPathObject;
+            if (v2MetaPath.trim().equals("")) v2MetaPathObject = null;
+        }
+        if (v2MetaPathObject == null)
+        {
+            MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+            if (loader == null) throw new HL7MessageTreeException("V2 Meta Data Loader creation failure");
+            else aTree = new HL7V2MessageTree(loader, version, mType);
+        }
+        else aTree = new HL7V2MessageTree(v2MetaPathObject, version, mType);
+
+        dataPathOfV2Meta = aTree.getMetaDataLoader();
+        return aTree;
+    }
+
+    private HL7V2MessageTree buildV2MessageTree(Object dataPath, String version, String v2FileName) throws HL7MessageTreeException
     {
         return new HL7V2MessageTree(dataPath, version, v2FileName);
     }
@@ -878,7 +900,7 @@ public class V2Converter
 
         messageTree = buildV2MessageTree(dataPathOfV2Meta, "2.5", v2FileName);
         messageType = messageTree.getMessageType();
-        messageTreeEmpty = new HL7V2MessageTree(messageTree.getDataPath(), messageTree.getVersion(), messageType);
+        messageTreeEmpty = new HL7V2MessageTree(messageTree.getMetaDataLoader(), messageTree.getVersion(), messageType);
 
         wasSuccessful = true;
         process("", csvFile, false, false, null, fileSCSForValidation);
@@ -1137,6 +1159,9 @@ public class V2Converter
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/02/01 02:11:41  umkis
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/02/01 02:01:56  umkis
  * HISTORY      : minor change
  * HISTORY      :

@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.4 2008-01-31 22:48:17 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.5 2008-05-29 01:25:20 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,6 +56,7 @@ package gov.nih.nci.caadapter.ui.mapping.V2V3;
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -73,7 +74,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -83,8 +87,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-01-31 22:48:17 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-05-29 01:25:20 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -101,7 +105,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.4 2008-01-31 22:48:17 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.5 2008-05-29 01:25:20 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -179,7 +183,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private String oneMessage = "";
     private File oneMessageFile = null;
     private String segmentsOBX = "";
-    private String v2MetaDataPath = "";
+    private MetaDataLoader v2MetaDataPath = null;
    
     private HL7V2MessageTree v2Tree;
     private V2Converter converter;
@@ -204,11 +208,11 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         }
         catch(IOException ee) {}
     }
-    public V2ConverterToSCSPanel(String v2DataPath) throws IOException
+    public V2ConverterToSCSPanel(Object v2DataPath) throws IOException
     {
         setupMainPanel(v2DataPath);
     }
-    public V2ConverterToSCSPanel(String v2DataPath, AbstractMainFrame mFrame) throws IOException
+    public V2ConverterToSCSPanel(Object v2DataPath, AbstractMainFrame mFrame) throws IOException
     {
         setupMainPanel(v2DataPath);
         mainFrame = mFrame;
@@ -218,6 +222,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         String dataDir = jtDataDirectory.getText();
         if ((dataDir == null)||(dataDir.trim().equals(""))) dataDir = "";
         dataDir = dataDir.trim();
+        //System.out.println("CCCC OK 6 : " + dataDir);
         if (setV2DataPath(dataDir).equals("OK")) return true;
         jtDataDirectory.setText("");
         return false;
@@ -480,51 +485,78 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         if (e.getSource() instanceof JRadioButton) setRadioButtonState();
 
     }
-    private String setV2DataPath(String v2DataPath)
+    private String setV2DataPath(Object v2DataPath)
     {
         HL7V2MessageTree mt = null;
         boolean cTag = false;
         String msg = null;
         try
         {
-            mt = new HL7V2MessageTree();
-            mt.setDataPath(v2DataPath);
-
-            File dir = new File(v2DataPath);
-            for (File sDir:dir.listFiles())
+            if (v2DataPath instanceof String)
             {
-                if (!sDir.isDirectory()) continue;
-                try
-                {
-                    mt.setVersion(sDir.getName());
-                    cTag = true;
-                }
-                catch(HL7MessageTreeException he)
-                {
-                    msg = he.getMessage();
-                    continue;
-                }
-                break;
+                String c = (String)v2DataPath;
+                if (c.trim().equals("")) v2DataPath = null;
+                //System.out.println("CCCC OK 1 : " + c);
             }
+
+            if (v2DataPath == null)
+            {
+                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+                if (loader == null) throw new HL7MessageTreeException("V2 Meta Data Loader creation failure");
+                else mt = new HL7V2MessageTree(loader);
+                //System.out.println("CCCC OK 2 : ");// + loader.getPath());
+                cTag = true;
+            }
+            else
+            {
+                mt = new HL7V2MessageTree(v2DataPath);
+                //System.out.println("CCCC OK 3 : ");
+                cTag = true;
+            }
+
+//            if (v2DataPath instanceof String)
+//            {
+//                File dir = new File((String)v2DataPath);
+//                if (dir.isDirectory())
+//                {
+//                    for (File sDir:dir.listFiles())
+//                    {
+//                        if (!sDir.isDirectory()) continue;
+//                        try
+//                        {
+//                            mt.setVersion(sDir.getName());
+//                            cTag = true;
+//                        }
+//                        catch(HL7MessageTreeException he)
+//                        {
+//                            msg = he.getMessage();
+//                            continue;
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
 
         }
         catch(HL7MessageTreeException he)
         {
-            return he.getMessage();
+            msg = he.getMessage();
         }
         catch(Exception ee)
         {
-            return ee.getMessage();
+            msg = ee.getMessage();
         }
         if (cTag)
         {
-            v2MetaDataPath = mt.getDataPath();//v2DataPath;
+            v2MetaDataPath = mt.getMetaDataLoader();//v2DataPath;
+            //System.out.println("CCCC OK : " + v2MetaDataPath.getPath());
             return "OK";
         }
+        //System.out.println("CCCC err : " + msg);
         return msg;
     }
 
-    private void setupMainPanel(String v2DataPath) throws IOException
+    private void setupMainPanel(Object v2DataPathObject) throws IOException
     {
         try
         {
@@ -532,18 +564,55 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         }
         catch (Exception e)
         {  }
-        if (v2DataPath != null)
+
+        boolean cTag = false;
+        if ((v2DataPathObject != null)&&(v2DataPathObject instanceof String))
         {
-            if (!v2DataPath.trim().equals(""))
+            String v2DataPath = (String) v2DataPathObject;
+            if (v2DataPath.trim().equals(""))
+            {
+                v2DataPathObject = null;
+                cTag = true;
+            }
+            else
             {
                 v2DataPath = v2DataPath.trim();
-                jcHL7Version = new JComboBox();
-                jtDataDirectory = new JTextField();
-                jtDataDirectory.setText(v2DataPath);
-                if (setV2DataPath(v2DataPath).equals("OK")) setHL7VersionComboBox(v2DataPath);
-                else throw new IOException("Invalid V2 meta data directory : " + v2DataPath);
+
+                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader(v2DataPath);
+
+                if (loader != null) v2MetaDataPath = loader;
+                else throw new IOException("Invalid V2 meta data directory or zip file : " + v2DataPath);
+
+//                jcHL7Version = new JComboBox();
+//                jtDataDirectory = new JTextField();
+//                jtDataDirectory.setText(v2DataPath);
+//                if (setV2DataPath(v2DataPath).equals("OK")) setHL7VersionComboBox(v2DataPath);
+//                else throw new IOException("Invalid V2 meta data directory or zip file : " + v2DataPath);
             }
         }
+        else cTag = true;
+
+        if(cTag)
+        {
+            if (v2DataPathObject == null)
+            {
+                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+
+                if (loader == null) throw new IOException("V2 Meta Data Loader creation failure");
+                v2DataPathObject = loader;
+            }
+            if (v2DataPathObject instanceof MetaDataLoader)
+            {
+                v2MetaDataPath = (MetaDataLoader) v2DataPathObject;
+            }
+            else throw new IOException("Invalid instance of v2 meta object : ");
+        }
+        jcHL7Version = new JComboBox();
+        jtDataDirectory = new JTextField();
+        jtDataDirectory.setText(v2MetaDataPath.getPath());
+        //System.out.println("CCC : " + v2MetaDataPath.getPath());
+        setHL7VersionComboBox(v2MetaDataPath);
+
         setupMainPanel();
     }
 
@@ -691,7 +760,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         jtDataDirectory =(JTextField) out1[2];
         jbDataDirectoryBrowse = (JButton) out1[3];
 
-        jtDataDirectory.setText(v2MetaDataPath);
+        jtDataDirectory.setText(v2MetaDataPath.getPath());
         JPanel cPanel = new JPanel(new BorderLayout());
         cPanel.add(bPanel, BorderLayout.CENTER);
 
@@ -1125,56 +1194,36 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         String dataDir = jtDataDirectory.getText();
         if ((dataDir == null)||(dataDir.trim().equals(""))) dataDir = "";
         File fileD = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					dataDir, "", "Finding v2 Meta Data Directory", false, false);//Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE.replace("3", "2"), false, false);
+					dataDir, "*", "Finding v2 Meta Data Directory", false, false);//Config.OPEN_DIALOG_TITLE_FOR_HL7_V3_MESSAGE_FILE.replace("3", "2"), false, false);
         if (fileD == null) return;
         if (!fileD.isDirectory())
         {
-            JOptionPane.showMessageDialog(this, "This is NOT a directory : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
+            if (!fileD.getName().toLowerCase().endsWith(".zip"))
+            {
+                JOptionPane.showMessageDialog(this, "This is Neither a directory nor a zip file : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        //MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader(dataDir);
+        MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader(fileD.getAbsolutePath());
+        if (loader == null)
+        {
+            JOptionPane.showMessageDialog(this, "This is Neither a V2 meta directory nor a V2 Meta zip file : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (setHL7VersionComboBox(fileD.getAbsolutePath()))
+        v2MetaDataPath = loader;
+        if (setHL7VersionComboBox(loader))
         {
-            jtDataDirectory.setText(v2MetaDataPath);
+            //System.out.println("CCCC OK 7 : " + v2MetaDataPath.getPath() + ", " + dataDir);
+            jtDataDirectory.setText(v2MetaDataPath.getPath());
             setRadioButtonState();
         }
     }
 
-    private boolean setHL7VersionComboBox(String pathValue)
+    private boolean setHL7VersionComboBox(MetaDataLoader loader)
     {
-        File fileD = new File(pathValue);
-        if ((!fileD.exists())||(!fileD.isDirectory())) return false;
-        pathValue = fileD.getAbsolutePath();
-
-        pathValue = pathValue.trim();   
-        if (setV2DataPath(pathValue).equals("OK")) {} //jtDataDirectory.setText(v2MetaDataPath);
-        else
-        {
-            JOptionPane.showMessageDialog(this, "This is NOT a V2 Meta data directory : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        jcHL7Version.setEnabled(true);
         jcHL7Version.removeAllItems();
-
-        File aFile = new File(v2MetaDataPath);
-        File[] files = aFile.listFiles();
-        java.util.List<String> listVersionDir = new ArrayList<String>();
-
-        for (int i=0;i<files.length;i++)
-        {
-            File file = files[i];
-
-            if (!file.isDirectory()) continue;
-            String dirName = file.getName();
-            //System.out.println("VersionsXX = > " + dirName);// + " : " + dirName.substring(versionDirTag.length()));
-
-            if (dirName.toLowerCase().startsWith(versionDirTag.toLowerCase()))
-            {
-                listVersionDir.add(dirName.substring(versionDirTag.length()));
-                //System.out.println("Versions = > " + dirName + " : " + dirName.substring(versionDirTag.length()));
-            }
-        }
-        //countV2Versions = listVersionDir.size();
+        String[] listVersionDir = loader.getVersions();
         for (String dir:listVersionDir) jcHL7Version.addItem(dir);
         //jcHL7Version = new JComboBox(listVersionDir.toArray());
         for(int i=0;i<jcHL7Version.getItemCount();i++)
@@ -1185,6 +1234,83 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
         return true;
     }
+//    private boolean setHL7VersionComboBox(String pathValue)
+//    {
+//        File fileD = new File(pathValue);
+//        if ((!fileD.exists())||(!fileD.isDirectory())) return false;
+//        pathValue = fileD.getAbsolutePath();
+//
+//        pathValue = pathValue.trim();
+//        if (setV2DataPath(pathValue).equals("OK")) {} //jtDataDirectory.setText(v2MetaDataPath);
+//        else
+//        {
+//            JOptionPane.showMessageDialog(this, "This is NOT a V2 Meta data directory : " + fileD.getAbsolutePath(), "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+//
+//        jcHL7Version.setEnabled(true);
+//        jcHL7Version.removeAllItems();
+//
+//        String fileName = v2MetaDataPath.getPath();
+//        File aFile = new File(fileName);
+//        java.util.List<String> listVersionDir = new ArrayList<String>();
+//        if (aFile.isDirectory())
+//        {
+//            File[] files = aFile.listFiles();
+//
+//
+//            for (int i=0;i<files.length;i++)
+//            {
+//                File file = files[i];
+//
+//                if (!file.isDirectory()) continue;
+//                String dirName = file.getName();
+//                //System.out.println("VersionsXX = > " + dirName);// + " : " + dirName.substring(versionDirTag.length()));
+//
+//                if (dirName.toLowerCase().startsWith(versionDirTag.toLowerCase()))
+//                {
+//                    listVersionDir.add(dirName.substring(versionDirTag.length()));
+//                    //System.out.println("Versions = > " + dirName + " : " + dirName.substring(versionDirTag.length()));
+//                }
+//            }
+//        }
+//        else
+//        {
+//            if (!fileName.toLowerCase().endsWith(".zip"))
+//            {
+//                JOptionPane.showMessageDialog(this, "Unidentified meta directory or file : " + fileName, "Meta data directory finding error!",JOptionPane.ERROR_MESSAGE);
+//                return false;
+//            }
+//            java.util.List<String> keys = v2MetaDataPath.getMetaKeys();
+//            for(String key:keys)
+//            {
+//                int idx = key.toLowerCase().indexOf("version");
+//                if (idx < 0) continue;
+//                key = key.substring(idx);
+//                idx = key.indexOf("/");
+//                if (idx < 0) continue;
+//                String vers = key.substring(0, idx);
+//                vers = vers.trim();
+//                boolean cTag = false;
+//                for (String dir:listVersionDir)
+//                {
+//                    dir = dir.trim();
+//                    if (dir.equalsIgnoreCase(vers)) cTag = true;
+//                }
+//                if (!cTag) listVersionDir.add(vers);
+//            }
+//        }
+//        //countV2Versions = listVersionDir.size();
+//        for (String dir:listVersionDir) jcHL7Version.addItem(dir);
+//        //jcHL7Version = new JComboBox(listVersionDir.toArray());
+//        for(int i=0;i<jcHL7Version.getItemCount();i++)
+//        {
+//            String ver = (String) jcHL7Version.getItemAt(i);
+//            if (ver.indexOf("2.4") >= 0) jcHL7Version.setSelectedIndex(i);
+//        }
+//
+//        return true;
+//    }
 
     private void doPressHL7MessageFileBrowse()
     {
@@ -1746,15 +1872,20 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
     public static void main(String arg[])
     {
-        if (arg.length == 0)
-        {
-            System.out.println("Error : HL7 v2 meta directory must be specfied.");
-            return;
-        }
-        String dataPath = arg[0];
+//        String dataPath = "";
+//        MetaDataLoader loader = null;
+//        if (arg.length == 0)
+//        {
+//            //System.out.println("Error : HL7 v2 meta directory must be specfied.");
+//            //return;
+//            loader = FileUtil.getV2ResourceMetaDataLoader();
+//        }
+//        else dataPath = arg[0];
         try
         {
-            JFrame frame = (new V2ConverterToSCSPanel(dataPath)).setFrame(new JFrame("V2 Converter"));
+            JFrame frame = null;
+            if (arg.length == 0) frame = (new V2ConverterToSCSPanel()).setFrame(new JFrame("V2 Converter"));
+            else frame = (new V2ConverterToSCSPanel(arg[0])).setFrame(new JFrame("V2 Converter"));
 
             frame.setSize(500, 740);
             frame.setVisible(true);
@@ -1773,6 +1904,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/01/31 22:48:17  umkis
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/01/31 22:39:39  umkis
  * HISTORY      : minor change
  * HISTORY      :

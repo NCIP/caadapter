@@ -55,6 +55,7 @@ package gov.nih.nci.caadapter.ui.mapping.V2V3;
 
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 import edu.knu.medinfo.hl7.v2tree.HL7V2MessageTree;
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
@@ -69,7 +70,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.6 $
+ *          revision    $Revision: 1.7 $
  *          date        Jan 31, 2008
  *          Time:       2:50:22 PM $
  */
@@ -103,18 +104,40 @@ public class ConvertFromV2ToCSV
 //    {
 //    }
 
-    public ConvertFromV2ToCSV(String v2MetaPath, String v2File, String mType, String versionS, String fileCSV, String fileSCSValidate, boolean strict)
+    public ConvertFromV2ToCSV(Object v2MetaPath, String v2File, String mType, String versionS, String fileCSV, String fileSCSValidate, boolean strict)
     {
         convertToCSVFile(v2MetaPath, v2File, mType, versionS, fileCSV, fileSCSValidate, strict);
     }
-    private void convertToCSVFile(String v2MetaPath, String v2File, String mType, String versionS, String fileCSV, String fileSCSValidate, boolean strict)
+    public ConvertFromV2ToCSV(String v2File, String mType, String versionS, String fileCSV, String fileSCSValidate, boolean strict)
+    {
+        convertToCSVFile(null, v2File, mType, versionS, fileCSV, fileSCSValidate, strict);
+    }
+    private void convertToCSVFile(Object v2MetaPathObject, String v2File, String mType, String versionS, String fileCSV, String fileSCSValidate, boolean strict)
     {
 
         V2ConverterToSCSPanel panel = new V2ConverterToSCSPanel();
-
+        HL7V2MessageTree aTree = null;
         try
         {
-            HL7V2MessageTree aTree = new HL7V2MessageTree(v2MetaPath);
+            if (((v2MetaPathObject != null))&&(v2MetaPathObject instanceof String))
+            {
+                String v2MetaPath = (String)v2MetaPathObject;
+                if (v2MetaPath.trim().equals("")) v2MetaPathObject = null;
+            }
+            if (v2MetaPathObject == null)
+            {
+                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+                if (loader == null)
+                {
+                    errorLevel = JOptionPane.ERROR_MESSAGE;
+                    message = "V2 Meta Data Loader creation failure";
+                    messageTitle = "HL7MessageTreeException";
+                    return;
+                }
+                else aTree = new HL7V2MessageTree(loader);
+            }
+            else aTree = new HL7V2MessageTree(v2MetaPathObject);
+
             aTree.setVersion(versionS);
             if (!((mType == null)||(mType.trim().equals("")))) aTree.parse(mType);
         }
@@ -210,18 +233,18 @@ public class ConvertFromV2ToCSV
 //                            mType = mType.trim();
 //                            String versionS = ((String)jcHL7Version.getSelectedItem()).trim();
 
-                            HL7V2MessageTree aTree = null;
+                            //HL7V2MessageTree aTree = null;
                             try
                             {
                                 if (strict)
                                 {
-                                    aTree = new HL7V2MessageTree(v2MetaPath);
+                                    //aTree = new HL7V2MessageTree(v2MetaPath);
                                     aTree.setVersion(versionS);
                                     aTree.parse(msgF);
                                 }
                                 else
                                 {
-                                    aTree = new HL7V2MessageTree(v2MetaPath);
+                                    //aTree = new HL7V2MessageTree(v2MetaPath);
                                     aTree.setVersion(versionS);
                                     aTree.setFlagDataValidation(false);
                                     if (!mType.equals(""))
