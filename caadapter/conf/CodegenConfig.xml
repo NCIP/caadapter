@@ -25,4 +25,17 @@
 		<property name="outputDir" value="outputDefault"/>				
 		<property name="suffix" value=".spring.config.test.hbm.xml"/>						
 	</bean>
+	
+	<!-- 									 -->
+	<!--  Code Generation Validator			 -->
+	<!-- 									 -->
+	<bean name="LogicalModelValidator" class="gov.nih.nci.codegen.validator.UMLLogicalModelValidator">
+		<property name="enabled" value="@VALIDATE_LOGICAL_MODEL@"/>
+		<property name="name" value="Logical Model Validator"/>
+	</bean>
+	<bean name="ModelMappingValidator" class="gov.nih.nci.codegen.validator.UMLModelMappingValidator">
+		<property name="enabled" value="@VALIDATE_MODEL_MAPPING@"/>
+		<property name="name" value="Model Mapping Validator"/>		
+	</bean>
+	
 </beans>
