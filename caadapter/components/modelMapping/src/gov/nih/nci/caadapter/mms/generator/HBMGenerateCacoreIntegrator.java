@@ -2,7 +2,6 @@ package gov.nih.nci.caadapter.mms.generator;
 
 import java.util.Collection;
 import java.util.Properties;
-
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
 import gov.nih.nci.codegen.GenerationException;
@@ -16,7 +15,10 @@ public class HBMGenerateCacoreIntegrator {
 	public static String GENERATOR_CONFIG="conf/CodegenConfig.xml";//CodegenConfig.xml";
 	private HibernateMappingTransformer transformer;
 	private static HBMGenerateCacoreIntegrator generator;
-
+	/**
+	 * Impplemnt HBMGenerateCacoreIntegrator with factory design pattern
+	 * @return HBMGenerateCacoreIntegrator instance
+	 */
 	public static HBMGenerateCacoreIntegrator getInstance()
 	{
 		if (generator==null)

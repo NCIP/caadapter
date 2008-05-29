@@ -91,13 +91,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.32 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.33 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.32 2008-05-22 15:48:49 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.33 2008-05-29 14:35:16 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -650,6 +650,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 													.createMapping(
 															(MappableNode) sourceNode,
 															(MappableNode) targetNode);
+									if (isSuccess)
+									{
+										//remove the existing TaggeValue since it has been added into
+										//UI link list, it will be re-added to model as annotating
+										if (tagValue.getName().equals("mapped-attributes"))
+											att.removeTaggedValue("mapped-attributes");
+									}
 								}
 							}
 						}
@@ -1072,6 +1079,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.32  2008/05/22 15:48:49  wangeug
+ * HISTORY : integrate with caCORE SDK to generate Hibernate mapping
+ * HISTORY :
  * HISTORY : Revision 1.31  2007/12/13 21:09:33  wangeug
  * HISTORY : resolve code dependence in compiling
  * HISTORY :
