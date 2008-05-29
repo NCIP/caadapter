@@ -23,7 +23,7 @@ import org.junit.Test;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: linc $
- * @version Since caAdapter v4.0 revision $Revision: 1.2.2.1 $ date $Date: 2008-05-23 15:48:35 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2.2.2 $ date $Date: 2008-05-29 16:37:30 $
  */
 
 public class CSV2HL7v3TransformationTests extends TestCase {
@@ -112,15 +112,83 @@ public class CSV2HL7v3TransformationTests extends TestCase {
 	        }
 	 }
 	 
-	 @Test public void testBatchMappingScenario1_1() throws Exception{
-	        TransformationService ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
-			"data/Transformation/COCT_MT01000_Person.csv");
-	        
-	        ts.setOutputFile(new File("data/Transformation/tmpout.zip"));
+	 @Test public void testBatchMappingScenario1_Read_200M() throws Exception{
+		 long start = System.currentTimeMillis();
+		 int count = TransformationService.countEntriesInZip(new File("data/Transformation/tmpout2.zip"));
+		 long end1 = System.currentTimeMillis();
+		 System.out.println("counted "+count+" in "+(end1-start)+" ms");
+		 int seq = 59127;
+		 String ret = TransformationService.readFromZip(new File("data/Transformation/tmpout2.zip"), String.valueOf(seq)+".xml");
+		 long end2 = System.currentTimeMillis();
+		 System.out.println("read #"+seq+" in "+(end2-end1)+" ms:["+ret+"]");
+	 }
 
-	        int count = ts.batchProcess();
-	        assertEquals(1,count);
-       
+	 @Test public void testBatchMappingScenario1_1() throws Exception{
+		 long start = System.currentTimeMillis();
+		 TransformationService ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person.csv");
+		 ts.setOutputFile(new File("data/Transformation/tmpout.zip"));
+		 int count1 = ts.batchProcess();
+		 long end1 = System.currentTimeMillis();
+		 System.out.println("batch finished = "+(end1-start)+" ms");
+		 ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person.csv");
+		 List<XMLElement> xmlElements = ts.process();
+		 int count2 = xmlElements.size();
+		 long end2 = System.currentTimeMillis();
+		 System.out.println("batch time = "+(end1-start)+" ms, old time = "+(end2-end1));
+		 assertEquals(count1,count2);
+	 }
+
+	 @Test public void testBatchMappingScenario1_1M() throws Exception{
+		 long start = System.currentTimeMillis();
+		 TransformationService ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person_1M.csv");
+		 ts.setOutputFile(new File("data/Transformation/tmpout.zip"));
+		 int count1 = ts.batchProcess();
+		 long end1 = System.currentTimeMillis();
+		 System.out.println("batch finished = "+(end1-start)+" ms");
+		 ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person_1M.csv");
+		 List<XMLElement> xmlElements = ts.process();
+		 int count2 = xmlElements.size();
+		 long end2 = System.currentTimeMillis();
+		 System.out.println("batch time = "+(end1-start)+" ms, old time = "+(end2-end1));
+		 assertEquals(count1,count2);
+	 }
+
+	 @Test public void testBatchMappingScenario1_20M() throws Exception{
+		 long start = System.currentTimeMillis();
+		 TransformationService ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person_20M.csv");
+		 ts.setOutputFile(new File("data/Transformation/tmpout.zip"));
+		 int count1 = ts.batchProcess();
+		 long end1 = System.currentTimeMillis();
+		 System.out.println("batch finished = "+(end1-start)+" ms");
+		 ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person_20M.csv");
+		 List<XMLElement> xmlElements = ts.process();
+		 int count2 = xmlElements.size();
+		 long end2 = System.currentTimeMillis();
+		 System.out.println("batch time = "+(end1-start)+" ms, old time = "+(end2-end1));
+		 assertEquals(count1,count2);
+	 }
+
+	 @Test public void testBatchMappingScenario1_200M() throws Exception{
+		 long start = System.currentTimeMillis();
+		 TransformationService ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person_200M.csv");
+		 ts.setOutputFile(new File("data/Transformation/tmpout.zip"));
+		 int count1 = ts.batchProcess();
+		 long end1 = System.currentTimeMillis();
+		 System.out.println("batch finished = "+(end1-start)+" ms");
+		 ts = new TransformationService("data/Transformation/COCT_MT010000_MAP1-1.map",
+		 "data/Transformation/COCT_MT01000_Person_200M.csv");
+		 List<XMLElement> xmlElements = ts.process();
+		 int count2 = xmlElements.size();
+		 long end2 = System.currentTimeMillis();
+		 System.out.println("batch time = "+(end1-start)+" ms, old time = "+(end2-end1));
+		 assertEquals(count1,count2);
 	 }
 
 	 public static junit.framework.Test suite() {

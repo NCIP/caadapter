@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipEntry;
 
 /**
@@ -41,14 +42,14 @@ import java.util.zip.ZipEntry;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: linc $
- * @version $Revision: 1.16.2.1 $
- * @date $Date: 2008-05-23 15:48:34 $
+ * @version $Revision: 1.16.2.2 $
+ * @date $Date: 2008-05-29 16:37:30 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.16.2.1 2008-05-23 15:48:34 linc Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.16.2.2 2008-05-29 16:37:30 linc Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -421,11 +422,11 @@ public class TransformationService
     		{
     			for(int i=0; i<xmlElements.size(); i++)
     			{
-    				zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)));
+    				zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
     				writer.write(xmlElements.get(i).toXML().toString());
     				writer.flush();
     			}
-    			System.out.println("Parsed "+xmlElements.size()+" records in " + (System.currentTimeMillis()-csvbegintime)+" ms");
+    			//System.out.println("Parsed "+xmlElements.size()+" records in " + (System.currentTimeMillis()-csvbegintime)+" ms");
     			messageCount += xmlElements.size();
     			bufferSize = reader.getReadCount()-bufferStart;
     		}else
@@ -467,6 +468,36 @@ public class TransformationService
     	return xmlElements;
     }
 
+    public static String readFromZip(File file, String name) throws FileNotFoundException, IOException{
+    	ZipInputStream inZip = new ZipInputStream(new FileInputStream(file));
+    	StringBuffer ret = new StringBuffer();
+    	String entryName = "";
+    	while(!entryName.equals(name))
+    	{
+    		ZipEntry entry = inZip.getNextEntry();
+    		if(entry==null) throw new IOException("entry not found.");
+    		entryName = entry.getName();
+    	}
+    	byte[] buf = new byte[1024];
+    	int count = 0;
+    	while(count>=0)
+    	{
+    		count = inZip.read(buf, 0, 1024);
+    		if(count>0) ret.append(new String(buf, 0, count));
+    	}
+    	inZip.close();
+    	return ret.toString();
+    }
+    
+    public static int countEntriesInZip(File file) throws FileNotFoundException, IOException{
+    	ZipInputStream inZip = new ZipInputStream(new FileInputStream(file));
+    	int count = 0;
+    	while(inZip.getNextEntry()!=null) 
+    		count++;
+    	inZip.close();
+    	return count;
+    }
+    
     private CSVDataResult parseCsvfile(String scsFilename) throws Exception
     {
         SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
@@ -565,6 +596,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16.2.1  2008/05/23 15:48:34  linc
+ * HISTORY      : implemented new APIs to batch transform, for solving memory issues.
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2007/11/06 16:50:32  umkis
  * HISTORY      : Change the error message => Invalid CSV file! : Please check and validate this csv file against the scs file.
  * HISTORY      :
