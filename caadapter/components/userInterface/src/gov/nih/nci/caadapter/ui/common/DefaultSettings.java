@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.10 2008-04-01 21:07:18 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/DefaultSettings.java,v 1.11 2008-05-29 00:30:18 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -61,8 +61,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-04-01 21:07:18 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-05-29 00:30:18 $
  */
 public class DefaultSettings
 {
@@ -268,7 +268,7 @@ public class DefaultSettings
 		fileChooser.setCurrentDirectory(new File(workingDirectoryPath));
 		boolean toSelectedDir=false;
 		ArrayList<FileFilter> fileFilters=new ArrayList<FileFilter>();
-		if (fileExtension==null||fileExtension.equals(""))
+		if ((fileExtension==null)||(fileExtension.trim().equals("")))
 		{
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			toSelectedDir=true;
@@ -276,6 +276,11 @@ public class DefaultSettings
         else if ((fileExtension.equals("*.*"))||(fileExtension.equals(".*")))      //JFileChooser.FILES_AND_DIRECTORIES
 		{
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY);
+			toSelectedDir=true;
+		}
+        else if (fileExtension.equals("*"))      //JFileChooser.FILES_AND_DIRECTORIES
+		{
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);//.DIRECTORIES_ONLY);
 			toSelectedDir=true;
 		}
         else
@@ -533,6 +538,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/04/01 21:07:18  umkis
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/01/31 21:44:22  umkis
  * HISTORY      : csv converting from multi message included v2 file.
  * HISTORY      :
