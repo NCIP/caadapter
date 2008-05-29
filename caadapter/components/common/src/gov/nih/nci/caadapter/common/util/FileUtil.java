@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.14 2008-05-22 15:59:47 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.15 2008-05-29 00:30:56 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,7 +56,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 
 public class FileUtil
@@ -297,6 +297,7 @@ public class FileUtil
             }
             catch(HL7MessageTreeException he)
             {
+                System.out.println("CCC : " + he.getMessage());
                 return null;
             }
             v2Loader = loader;
@@ -1036,6 +1037,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.14  2008/05/22 15:59:47  umkis
+ * add getV2ResourceMetaDataLoader(String)
+ *
  * Revision 1.13  2008/05/22 15:33:42  umkis
  * add getV2ResourceMetaDataLoader()
  *
