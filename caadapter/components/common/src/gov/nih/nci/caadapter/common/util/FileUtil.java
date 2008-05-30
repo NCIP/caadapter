@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.15 2008-05-29 00:30:56 umkis Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/FileUtil.java,v 1.16 2008-05-30 01:00:40 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -56,7 +56,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 
 public class FileUtil
@@ -288,6 +288,9 @@ public class FileUtil
         if (resourceFile == null) resourceFile = "";
         else resourceFile = resourceFile.trim();
 
+        //if (v2Loader == null) System.out.println("CCC v3 meta loader (1) : " + resourceFile);
+        //else System.out.println("CCC v3 meta loader (2) : " + v2Loader.getPath() + ", " + resourceFile);
+        
         if (!resourceFile.equals(""))
         {
             MetaDataLoader loader = null;
@@ -297,7 +300,7 @@ public class FileUtil
             }
             catch(HL7MessageTreeException he)
             {
-                System.out.println("CCC : " + he.getMessage());
+                System.out.println("HL7MessageTreeException : " + he.getMessage());
                 return null;
             }
             v2Loader = loader;
@@ -1037,6 +1040,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.15  2008/05/29 00:30:56  umkis
+ * add getV2ResourceMetaDataLoader()
+ *
  * Revision 1.14  2008/05/22 15:59:47  umkis
  * add getV2ResourceMetaDataLoader(String)
  *
