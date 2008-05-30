@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.9 2008-05-30 04:43:32 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.10 2008-05-30 04:50:08 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -87,8 +87,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-05-30 04:43:32 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-05-30 04:50:08 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -105,7 +105,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.9 2008-05-30 04:43:32 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.10 2008-05-30 04:50:08 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -199,7 +199,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private AbstractMainFrame mainFrame = null;
     private JFrame frame = null;
     private JDialog dialog = null;
-    private Dimension minimum = new Dimension(740, 720);
+    private Dimension minimum = new Dimension(740, 700);
 
     public V2ConverterToSCSPanel()
     {
@@ -1945,6 +1945,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/05/30 04:43:32  umkis
+ * HISTORY      : frame size adjusted
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2008/05/30 04:05:39  umkis
  * HISTORY      : frame size adjusted
  * HISTORY      :
