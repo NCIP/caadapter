@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.7 2008-05-30 02:00:29 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.8 2008-05-30 04:05:39 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -87,8 +87,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-05-30 02:00:29 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-05-30 04:05:39 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -105,7 +105,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.7 2008-05-30 02:00:29 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.8 2008-05-30 04:05:39 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -123,7 +123,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private JRadioButton jrGroupingYes;
     private JRadioButton jrGroupingNo;
 
-    private JLabel jlGrouping;
+    private JLabel jlGrouping1;
+    private JLabel jlGrouping2;
 
     private JLabel jlHL7VersionLabel;
     private JComboBox jcHL7Version;
@@ -198,7 +199,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private AbstractMainFrame mainFrame = null;
     private JFrame frame = null;
     private JDialog dialog = null;
-    private Dimension minimum = new Dimension(500, 750);
+    private Dimension minimum = new Dimension(540, 740);
 
     public V2ConverterToSCSPanel()
     {
@@ -327,8 +328,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
         jrGroupingYes.setEnabled(wasSuccessfullyParsed&&foundOBXSegment&&(!(jrOBXDataTypeSTOnly.isEnabled()&&jrOBXDataTypeSTOnly.isSelected())));
         jrGroupingNo.setEnabled(wasSuccessfullyParsed&&foundOBXSegment&&(!(jrOBXDataTypeSTOnly.isEnabled()&&jrOBXDataTypeSTOnly.isSelected())));
-        jlGrouping.setEnabled(wasSuccessfullyParsed&&foundOBXSegment&&(!(jrOBXDataTypeSTOnly.isEnabled()&&jrOBXDataTypeSTOnly.isSelected())));
-
+        jlGrouping1.setEnabled(wasSuccessfullyParsed&&foundOBXSegment&&(!(jrOBXDataTypeSTOnly.isEnabled()&&jrOBXDataTypeSTOnly.isSelected())));
+        jlGrouping2.setEnabled(jlGrouping1.isEnabled());
         jrOBXSelection.setEnabled(wasSuccessfullyParsed&&foundOBXSegment);
         jrOBXDataTypeSTOnly.setEnabled(wasSuccessfullyParsed&&foundOBXSegment&&(!wasOBXUsed));
 
@@ -338,7 +339,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             jrGroupingYes.setEnabled(false);
             jrGroupingNo.setEnabled(false);
-            jlGrouping.setEnabled(false);
+            jlGrouping1.setEnabled(false);
+            jlGrouping2.setEnabled(jlGrouping1.isEnabled());
             jrOBXApparentOnly.setEnabled(false);
             jrOBXSelection.setEnabled(false);
             jrOBXDataTypeSTOnly.setEnabled(false);
@@ -910,8 +912,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     }
     private JPanel optionPanel_SCSOption_WholeOrApparent()
     {
-        Object[] out = setupRadioButtonPanel(jrOutputApparentOnly, "Apparent Segments only in this Message File", "Apparent", true,
-                                     jrOutputWhole, "Whole Segments of this message type", "Whole", false, true);
+        Object[] out = setupRadioButtonPanel(jrOutputApparentOnly, "Apparent Segments only    ", "Apparent", true,
+                                     jrOutputWhole, "Whole Segments of this message type", "Whole", false, false);
         jrOutputApparentOnly = (JRadioButton) out[1];
         jrOutputWhole = (JRadioButton) out[2];
         return (JPanel) out[0];
@@ -986,12 +988,17 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
         out = setupRadioButtonPanel(jrGroupingYes, "Yes", "Yes", false,
                                     jrGroupingNo, "No", "No", true, false);
-        jlGrouping = new JLabel("Want grouping? (ST, TX and FT will be simplfied into ST)", JLabel.LEFT);
+        jlGrouping1 = new JLabel("Want grouping? ", JLabel.LEFT);
+        jlGrouping2 = new JLabel("   (If Yes, ST, TX and FT will be simplfied into ST.)", JLabel.LEFT);
+        JPanel north1 = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        north1.add(jlGrouping1);//, BorderLayout.WEST);
+        //JPanel north12 = new JPanel(new BorderLayout());
 
-        JPanel north1 = new JPanel(new BorderLayout());
-        north1.add(jlGrouping, BorderLayout.NORTH);
-        north1.add((JPanel)out[0], BorderLayout.CENTER);
+        north1.add((JPanel)out[0]);//, BorderLayout.CENTER);
+        north1.add(jlGrouping2);//, BorderLayout.WEST);
+        //north1.add(north12, BorderLayout.EAST);
         JPanel north2 = wrappingBorder("Grouping", north1);
+
         jrGroupingYes = (JRadioButton) out[1];
         jrGroupingNo = (JRadioButton) out[2];
 
@@ -1911,9 +1918,10 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
         try
         {
-            JFrame frame = (new V2ConverterToSCSPanel(loader)).setFrame(new JFrame("V2 Converter"));
+            V2ConverterToSCSPanel panel = new V2ConverterToSCSPanel(loader);
+            JFrame frame = panel.setFrame(new JFrame("V2 Converter"));
 
-            frame.setSize(500, 750);
+            frame.setSize(panel.getMinimumSize());
             frame.setVisible(true);
         }
         catch(IOException he)
@@ -1930,6 +1938,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/05/30 02:00:29  umkis
+ * HISTORY      : frame size adjusted
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/05/30 00:59:29  umkis
  * HISTORY      : update: v2 resource zip file can be accessed not only meta directory.
  * HISTORY      :
