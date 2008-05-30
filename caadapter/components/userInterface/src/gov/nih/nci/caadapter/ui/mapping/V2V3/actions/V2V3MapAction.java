@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/V2V3MapAction.java,v 1.3 2007-10-04 18:09:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/actions/V2V3MapAction.java,v 1.4 2008-05-30 01:03:53 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -32,28 +32,30 @@
  */
 package gov.nih.nci.caadapter.ui.mapping.V2V3.actions;
 
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
+import gov.nih.nci.caadapter.ui.mapping.V2V3.V2ConverterToSCSPanel;
 
-import java.awt.Component;
-import java.awt.Event;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
-import javax.swing.*;
 
 
 /**
  * This class creates a Menu item Create V2 V3 action and assigns the action to it.
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2007-10-04 18:09:48 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-05-30 01:03:53 $
  */
 public class V2V3MapAction extends AbstractContextAction  {
     /**
@@ -120,7 +122,42 @@ public class V2V3MapAction extends AbstractContextAction  {
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
-        new MapV2V3(mainFrame);
+        //new MapV2V3(mainFrame);
+        //new MapV2V3(mainFrame, "");
+        MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+        int check = -1;
+        if (loader == null)
+        {
+            check = JOptionPane.showConfirmDialog(mainFrame, "v3 meta resource zip file isn't exist.\n Do you have another v2 meta source?",
+                                                      "No v2 resource zip file", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (check != JOptionPane.YES_OPTION)
+            {
+                setSuccessfullyPerformed(false);
+                return isSuccessfullyPerformed();
+            }
+        }
+
+        try
+        {
+            V2ConverterToSCSPanel v2ConverterPanel = null;
+            if (check == JOptionPane.YES_OPTION)
+            {
+                v2ConverterPanel = new V2ConverterToSCSPanel(null);
+            }
+            else v2ConverterPanel = new V2ConverterToSCSPanel(loader);
+            JDialog dialog = v2ConverterPanel.setupDialogBasedOnMainFrame(mainFrame);
+            v2ConverterPanel.setNextButtonVisible();
+            v2ConverterPanel.setCloseButtonVisible();
+            dialog.setSize(v2ConverterPanel.getMinimumSize());
+            dialog.setVisible(true);
+            DefaultSettings.centerWindow(dialog);
+        }
+        catch (Exception e1)
+        {
+            JOptionPane.showMessageDialog(mainFrame, "Error : " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            setSuccessfullyPerformed(false);
+            return isSuccessfullyPerformed();
+        }
 
 //        V2ConverterToSCSPanel v2ConverterPanel = new V2ConverterToSCSPanel(FileUtil.getV2DataDirPath());
 //        JDialog dialog = v2ConverterPanel.setupDialogBasedOnMainFrame(mainFrame);
@@ -129,8 +166,8 @@ public class V2V3MapAction extends AbstractContextAction  {
 //        dialog.setSize(v2ConverterPanel.getMinimumSize());
 //        dialog.setVisible(true);
 //        DefaultSettings.centerWindow(dialog);
-	setSuccessfullyPerformed(true);
-	return isSuccessfullyPerformed();
+	    setSuccessfullyPerformed(true);
+	    return isSuccessfullyPerformed();
     }
 
     /**
@@ -150,6 +187,9 @@ public class V2V3MapAction extends AbstractContextAction  {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/10/04 18:09:48  wangeug
+ * HISTORY      : verify resource based on module
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/09/19 16:42:37  wangeug
  * HISTORY      : authorized user request
  * HISTORY      :
