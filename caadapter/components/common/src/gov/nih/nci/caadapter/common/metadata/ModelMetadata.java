@@ -27,6 +27,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
@@ -65,8 +66,8 @@ public class ModelMetadata {
     
     private static String mmsPrefixObjectModel = "Logical View.Logical Model";
     private static String mmsPrefixDataModel = "Logical View.Data Model";
-
-
+    //define a list to hold "tag:value" of the UMLTaggedValue for the mapped attributes 
+    private static List <String>preservedMappedTag=new ArrayList<String>();
     public ModelMetadata(){}
 	
 	public ModelMetadata(String xmiFileName){
@@ -104,6 +105,7 @@ public class ModelMetadata {
 
             handler.load(xmiFileName);
 	    	model = handler.getModel();
+	    	preservedMappedTag.clear();
 	    } catch (XmiException e) {
 	    	e.printStackTrace();
 	    } catch (IOException e) {
@@ -485,6 +487,10 @@ public class ModelMetadata {
 	public static void setDiscriminatorValues(
 			Hashtable<String, String> discriminatorValues) {
 		ModelMetadata.discriminatorValues = discriminatorValues;
+	}
+
+	public static List<String> getPreservedMappedTag() {
+		return preservedMappedTag;
 	}
 }
 

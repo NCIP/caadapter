@@ -269,17 +269,21 @@ public class XMIGenerator
 			{
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
 				{
-                    
-//                    if( tagValue.getName().contains( "mapped-attributes" ))
-//					{
-//						att.removeTaggedValue( "mapped-attributes" );
-//					}
-//					if( tagValue.getName().contains( "implements-association" ))
-//					{
-//						att.removeTaggedValue( "implements-association" );
-//					}
+                    String tagPrvdkey=tagValue.getName()+":"+tagValue.getValue();
+                    System.out.println("XMIGenerator.getPackages()..preservedTag:"+ModelMetadata.getInstance().getPreservedMappedTag());
+                    if( tagValue.getName().contains( "mapped-attributes" ))
+					{
+                    	//only removed if not preserved
+                    	if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
+                    		att.removeTaggedValue( "mapped-attributes" );
+					}
+					if( tagValue.getName().contains( "implements-association" ))
+					{
+						if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
+							att.removeTaggedValue( "implements-association" );
+					}
 //					if( tagValue.getName().contains( "correlation-table" ))
-//					{
+//					{//EYW this condition should never be met since "correlation-table" is attached with association
 //						att.removeTaggedValue( "correlation-table" );
 //					}												
 					// commented by Sandeep on 5/8/08 for bug id 12958 per Eugene's instructions.
@@ -304,10 +308,10 @@ public class XMIGenerator
 			{
 				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
 				{
-//					if( tagValue.getName().contains( "lazy-load" ))
-//					{
-//						assc.removeTaggedValue( "lazy-load" );
-//					}
+					if( tagValue.getName().contains( "lazy-load" ))
+					{
+						assc.removeTaggedValue( "lazy-load" );
+					}
 //					if( tagValue.getName().contains( "correlation-table" ))
 //					{
 //						assc.removeTaggedValue( "correlation-table" );
@@ -369,8 +373,8 @@ public class XMIGenerator
 
 //        annotateDependencies(this.dependencies);
 		addAttributeTaggedValues(this.attributes);
-//		addAssociationTaggedValues(this.associations);
-//		addManyToManyTaggedValues(this.manytomanys);
+		addAssociationTaggedValues(this.associations);
+		addManyToManyTaggedValues(this.manytomanys);
 		//deleteMappingFile();
 	}
 	
@@ -404,7 +408,7 @@ public class XMIGenerator
 	/**
 	 * @param associations
 	 */
-	public void addAssociationTaggedValues( List associations )
+	private void addAssociationTaggedValues( List associations )
 	{
 		for (int i = 0; i < associations.size(); i++)
 		{
@@ -542,7 +546,7 @@ public class XMIGenerator
 	 * @param model
 	 * @param attribute
 	 */
-	public void addAssociatonTaggedValue(UMLModel model, Element attribute)
+	private void addAssociatonTaggedValue(UMLModel model, Element attribute)
 	{
 	    UMLAttribute target = null;
 	    target = ModelUtil.findAttribute(model, attribute.getChildText("target"));	 	    	    	    
@@ -581,7 +585,7 @@ public class XMIGenerator
 		if (umlAssociation.getTaggedValue("correlation-table")== null) 
 		{
 		    targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());	   
-			umlAssociation.addTaggedValue("correlation-table", targetAttr);
+//			umlAssociation.addTaggedValue("correlation-table", targetAttr);
 		}
 	}
 	
@@ -736,7 +740,7 @@ public class XMIGenerator
 		}
 	}
 	
-	public void addLazyKey( String lKey )
+	private void addLazyKey( String lKey )
 	{
 		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
 		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();

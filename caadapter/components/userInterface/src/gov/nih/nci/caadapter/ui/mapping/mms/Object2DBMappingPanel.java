@@ -46,6 +46,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.awt.BorderLayout;
@@ -91,13 +92,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.33 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.34 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.33 2008-05-29 14:35:16 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.34 2008-05-30 17:35:05 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -606,7 +607,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 								(MappableNode) sourceNode,
 								(MappableNode) targetNode);
 			}
-
+			ModelMetadata.getPreservedMappedTag().clear();
 			for (UMLPackage pkg : myUMLModel.getPackages()) {
 				for (UMLPackage pkg2 : pkg.getPackages()) {
 					for (UMLClass clazz : pkg2.getClasses()) {
@@ -650,12 +651,13 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 													.createMapping(
 															(MappableNode) sourceNode,
 															(MappableNode) targetNode);
-									if (isSuccess)
+									if (!isSuccess)
 									{
-										//remove the existing TaggeValue since it has been added into
-										//UI link list, it will be re-added to model as annotating
-										if (tagValue.getName().equals("mapped-attributes"))
-											att.removeTaggedValue("mapped-attributes");
+										//no UI link is created for the mapped table.column 
+										//"mapped-attributes"/"implements-association"
+										String prvdTag=tagValue.getName()+":"+tagValue.getValue();
+										ModelMetadata.getPreservedMappedTag().add(prvdTag);
+
 									}
 								}
 							}
@@ -1079,6 +1081,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.33  2008/05/29 14:35:16  wangeug
+ * HISTORY : use caCORE SDK 4.0 process "mapped-attributes" tagvalue
+ * HISTORY :
  * HISTORY : Revision 1.32  2008/05/22 15:48:49  wangeug
  * HISTORY : integrate with caCORE SDK to generate Hibernate mapping
  * HISTORY :
