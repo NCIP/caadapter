@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.5 2008-05-29 01:25:20 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.6 2008-05-30 00:59:29 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -87,8 +87,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-05-29 01:25:20 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-05-30 00:59:29 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -105,7 +105,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.5 2008-05-29 01:25:20 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.6 2008-05-30 00:59:29 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -198,7 +198,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private AbstractMainFrame mainFrame = null;
     private JFrame frame = null;
     private JDialog dialog = null;
-    private Dimension minimum = new Dimension(500, 740);
+    private Dimension minimum = new Dimension(500, 800);
 
     public V2ConverterToSCSPanel()
     {
@@ -392,6 +392,16 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     }
     public void actionPerformed(ActionEvent e)
     {
+        if ((v2MetaDataPath == null)&&(e.getSource() != jbDataDirectoryBrowse))
+        {
+            JOptionPane.showMessageDialog(this, "First of all, you MUST set v2 meta resource.", "No v2 meta source", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (e.getSource() == jbDataDirectoryBrowse)
+        {
+            doPressDataDirectoryBrowse();
+        }
         if (e.getSource() == jbReset)
         {
             setInitialState();
@@ -410,10 +420,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             doPressNext();
         }
-        if (e.getSource() == jbDataDirectoryBrowse)
-        {
-            doPressDataDirectoryBrowse();
-        }
+
         if (e.getSource() == jbInputFileBrowse)
         {
             doPressHL7MessageFileBrowse();
@@ -596,12 +603,13 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             if (v2DataPathObject == null)
             {
-                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+                v2MetaDataPath = null;
+                //MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
 
-                if (loader == null) throw new IOException("V2 Meta Data Loader creation failure");
-                v2DataPathObject = loader;
+                //if (loader == null) throw new IOException("V2 Meta Data Loader creation failure");
+                //v2DataPathObject = loader;
             }
-            if (v2DataPathObject instanceof MetaDataLoader)
+            else if (v2DataPathObject instanceof MetaDataLoader)
             {
                 v2MetaDataPath = (MetaDataLoader) v2DataPathObject;
             }
@@ -609,10 +617,16 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         }
         jcHL7Version = new JComboBox();
         jtDataDirectory = new JTextField();
-        jtDataDirectory.setText(v2MetaDataPath.getPath());
-        //System.out.println("CCC : " + v2MetaDataPath.getPath());
-        setHL7VersionComboBox(v2MetaDataPath);
-
+        if (v2MetaDataPath == null)
+        {
+            jtDataDirectory.setText("");
+            setHL7VersionComboBox(null);
+        }
+        else
+        {
+            jtDataDirectory.setText(v2MetaDataPath.getPath());
+            setHL7VersionComboBox(v2MetaDataPath);
+        }
         setupMainPanel();
     }
 
@@ -755,12 +769,13 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         JPanel bPanel = new JPanel(new BorderLayout());
         //bPanel.add(jrHL7MessageTypeOnly, BorderLayout.WEST);
 
-        Object[] out1 = inputFileNameCommon("V2 Meta Data Directory", jtDataDirectory, jbDataDirectoryBrowse, "Browse", "Browse..");
+        Object[] out1 = inputFileNameCommon("V2 Meta Dir or Zip  ", jtDataDirectory, jbDataDirectoryBrowse, "Browse", "Browse..");
         bPanel.add((JPanel)out1[0], BorderLayout.CENTER);
         jtDataDirectory =(JTextField) out1[2];
         jbDataDirectoryBrowse = (JButton) out1[3];
 
-        jtDataDirectory.setText(v2MetaDataPath.getPath());
+        if (v2MetaDataPath == null) jtDataDirectory.setText("");
+        else jtDataDirectory.setText(v2MetaDataPath.getPath());
         JPanel cPanel = new JPanel(new BorderLayout());
         cPanel.add(bPanel, BorderLayout.CENTER);
 
@@ -1223,6 +1238,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private boolean setHL7VersionComboBox(MetaDataLoader loader)
     {
         jcHL7Version.removeAllItems();
+        if (loader == null) return true;
         String[] listVersionDir = loader.getVersions();
         for (String dir:listVersionDir) jcHL7Version.addItem(dir);
         //jcHL7Version = new JComboBox(listVersionDir.toArray());
@@ -1872,22 +1888,31 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
     public static void main(String arg[])
     {
-//        String dataPath = "";
-//        MetaDataLoader loader = null;
-//        if (arg.length == 0)
-//        {
-//            //System.out.println("Error : HL7 v2 meta directory must be specfied.");
-//            //return;
-//            loader = FileUtil.getV2ResourceMetaDataLoader();
-//        }
-//        else dataPath = arg[0];
+        String dataPath = "";
+        MetaDataLoader loader = null;
+        String message = null;
+        if (arg.length == 0)
+        {
+            loader = FileUtil.getV2ResourceMetaDataLoader();
+            message = "No v2 Resource zip file.";
+        }
+        else
+        {
+            loader = FileUtil.getV2ResourceMetaDataLoader(arg[0]);
+            message = "Invalid v2 meta resource directory or zip file : " + arg[0];
+        }
+
+        if (loader == null)
+        {
+            System.out.println(message);
+            return;
+        }
+
         try
         {
-            JFrame frame = null;
-            if (arg.length == 0) frame = (new V2ConverterToSCSPanel()).setFrame(new JFrame("V2 Converter"));
-            else frame = (new V2ConverterToSCSPanel(arg[0])).setFrame(new JFrame("V2 Converter"));
+            JFrame frame = (new V2ConverterToSCSPanel(loader)).setFrame(new JFrame("V2 Converter"));
 
-            frame.setSize(500, 740);
+            frame.setSize(500, 800);
             frame.setVisible(true);
         }
         catch(IOException he)
@@ -1904,6 +1929,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/05/29 01:25:20  umkis
+ * HISTORY      : update: v2 resource zip file can be accessed not only meta directory
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/01/31 22:48:17  umkis
  * HISTORY      : minor change
  * HISTORY      :
