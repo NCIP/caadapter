@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.8 2008-05-30 04:05:39 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.9 2008-05-30 04:43:32 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -87,8 +87,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-05-30 04:05:39 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-05-30 04:43:32 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -105,7 +105,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.8 2008-05-30 04:05:39 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.9 2008-05-30 04:43:32 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -189,7 +189,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private HL7V2MessageTree v2Tree;
     private V2Converter converter;
     private java.util.List<String> listOBXDataType = new ArrayList<String>();
-    private java.util.List<String> listOBXDataType2 = new ArrayList<String>();
+    //private java.util.List<String> listOBXDataType2 = new ArrayList<String>();
 
     private ValidatorResults validatorResults = new ValidatorResults();
     private java.util.List<String> errorMessages = new ArrayList<String>();
@@ -199,7 +199,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private AbstractMainFrame mainFrame = null;
     private JFrame frame = null;
     private JDialog dialog = null;
-    private Dimension minimum = new Dimension(540, 740);
+    private Dimension minimum = new Dimension(740, 720);
 
     public V2ConverterToSCSPanel()
     {
@@ -275,7 +275,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         errorMessages = new ArrayList<String>();
 
         listOBXDataType = new ArrayList<String>();
-        listOBXDataType2 = new ArrayList<String>();
+        //listOBXDataType2 = new ArrayList<String>();
         converter = null;
         for(int i=0;i<jcbOBXCheck.length;i++) jcbOBXCheck[i].setSelected(false);
     }
@@ -898,17 +898,22 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         jrBoth = (JRadioButton) out[1];
         jrSCS = (JRadioButton) out[2];
         jrCSV = (JRadioButton) out[3];
-        JPanel north= (JPanel) out[0];
+        JPanel north = (JPanel) out[0];
 
 
-        Object[] out2 = inputFileNameCommon("   Validating SCS for this CSV ", jtValidateSCSFile, jbValidateSCSFileBrowse, "Browse..", "Browse");
+        Object[] out2 = inputFileNameCommon("  Validating SCS ", jtValidateSCSFile, jbValidateSCSFileBrowse, "Browse..", "Browse");
         JPanel north2 = new JPanel(new BorderLayout());
         north2.add((JPanel) out2[0], BorderLayout.NORTH);
         jlValidateSCSLabel = (JLabel) out2[1];
         jtValidateSCSFile = (JTextField) out2[2];
         jbValidateSCSFileBrowse = (JButton) out2[3];
-        north.add(north2, BorderLayout.CENTER);
-        return north;
+
+        //north.add(north2, BorderLayout.CENTER);
+
+        JPanel north3 = new JPanel(new BorderLayout());
+        north3.add(north, BorderLayout.WEST);
+        north3.add(north2, BorderLayout.CENTER);
+        return north3;
     }
     private JPanel optionPanel_SCSOption_WholeOrApparent()
     {
@@ -1005,6 +1010,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 
         JPanel selectionOBX = new JPanel(new GridBagLayout());
+        //JPanel selectionOBX = new JPanel(new FlowLayout(FlowLayout.LEADING));
         int insetN = 1;
         Insets insets = new Insets(insetN, insetN, insetN, insetN);
 
@@ -1018,10 +1024,11 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             jcbOBXCheck[i].setSelected(false);
             jcbOBXCheck[i].setEnabled(false);
             jcbOBXCheck[i].addActionListener(this);
-            int modeBase = 9;
+            int modeBase = 14;
 
             if ((i+1) == modeBase) selectionOBX.add(jcbOBXCheck[i], new GridBagConstraints((i % modeBase), (i / modeBase), 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
             else selectionOBX.add(jcbOBXCheck[i], new GridBagConstraints((i % modeBase), (i / modeBase), 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+            //selectionOBX.add(jcbOBXCheck[i]);
         }
         //JScrollPane jsp = new JScrollPane();
         //jsp.add(selectionOBX);
@@ -1683,7 +1690,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             jtInputFile.setText("");
             listOBXDataType = new ArrayList<String>();
-            listOBXDataType2 = new ArrayList<String>();
+            //listOBXDataType2 = new ArrayList<String>();
         }
         else
         {
@@ -1938,6 +1945,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/05/30 04:05:39  umkis
+ * HISTORY      : frame size adjusted
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/05/30 02:00:29  umkis
  * HISTORY      : frame size adjusted
  * HISTORY      :
