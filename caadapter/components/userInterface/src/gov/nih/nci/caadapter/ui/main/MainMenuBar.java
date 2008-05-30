@@ -40,9 +40,11 @@
 
 package gov.nih.nci.caadapter.ui.main;
 
+import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
@@ -73,12 +75,12 @@ import gov.nih.nci.caadapter.ui.specification.hsm.actions.NewHSMAction;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.OpenHSMAction;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Enumeration;
-import java.net.URL;
-import java.io.IOException;
 
 /**
  * This class manages the definitions and instantiations of menu items. It will
@@ -87,7 +89,7 @@ import java.io.IOException;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v1.2 revision $Revision: 1.32 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.33 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -266,6 +268,7 @@ public class MainMenuBar extends AbstractMenuBar
         if (CaadapterUtil.getAllActivatedComponents().isEmpty())
         {
             //set csvToV3 as default
+            System.out.println("  -- Menu activated: NewCSVTOV3Menu as default");
             newGroup.add(constructNewCSVTOV3Menu());
         } 
         else if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
@@ -282,6 +285,7 @@ public class MainMenuBar extends AbstractMenuBar
              newGroup.add(newCsvToXmiMapFileItem);
              actionMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapAction);
              menuItemMap.put(ActionConstants.NEW_CSV2XMI_MAP_FILE, newCsvToXmiMapFileItem);
+            System.out.println("  -- Menu activated (1): " + Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED);
         }
         else if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
         {
@@ -297,6 +301,7 @@ public class MainMenuBar extends AbstractMenuBar
              newGroup.add(newXsdToXmiMapFileItem);
              actionMap.put(ActionConstants.NEW_XSD2XMI_MAP_FILE, newXsdToXmiMapAction);
              menuItemMap.put(ActionConstants.NEW_XSD2XMI_MAP_FILE, newXsdToXmiMapFileItem);
+            System.out.println("  -- Menu activated (2): " + Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED);
         }
         else
         {
@@ -304,22 +309,28 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewCSVTOV3Menu());
+                System.out.println("  -- Menu activated (3): " + Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewV3TOCSVMenu());
+                System.out.println("  -- Menu activated (4): " + Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
             {
                 newGroup.add(constructNewV2TOV3Menu());
+                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+                System.out.println("  -- Menu activated (5): " + Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewDatabaseTOSDTMMenu());
+                System.out.println("  -- Menu activated (6): " + Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
             {
                 newGroup.add(constructNewObjectTODatabaseMenu());
+                System.out.println("  -- Menu activated (7): " + Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
             }
         }
         return newGroup;
@@ -728,6 +739,9 @@ public class MainMenuBar extends AbstractMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.32  2008/05/29 02:31:03  umkis
+ * HISTORY : 'Generate HL7 v3 Test Instance' menu will be shown in only case that resourceInstanceGen.zip is exist in the lib directory.
+ * HISTORY :
  * HISTORY : Revision 1.31  2008/04/23 18:12:02  umkis
  * HISTORY : H3S test instance generator install onto ManuBar
  * HISTORY :
