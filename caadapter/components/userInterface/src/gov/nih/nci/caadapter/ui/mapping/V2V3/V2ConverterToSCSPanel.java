@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.6 2008-05-30 00:59:29 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.7 2008-05-30 02:00:29 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -87,8 +87,8 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-05-30 00:59:29 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-05-30 02:00:29 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -105,7 +105,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.6 2008-05-30 00:59:29 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.7 2008-05-30 02:00:29 umkis Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -198,7 +198,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private AbstractMainFrame mainFrame = null;
     private JFrame frame = null;
     private JDialog dialog = null;
-    private Dimension minimum = new Dimension(500, 800);
+    private Dimension minimum = new Dimension(500, 750);
 
     public V2ConverterToSCSPanel()
     {
@@ -633,7 +633,8 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
     private void setupMainPanel()
     {
 
-        jlPanelTitle = new JLabel("V2 Message Converter Main", JLabel.CENTER);
+        //jlPanelTitle = new JLabel("V2 Message Converter Main", JLabel.CENTER);
+        jlPanelTitle = new JLabel("", JLabel.CENTER);
         optionSourcePanel = wrappingBorder("V2 Message Source" ,optionPanel_MessageOrType());
         optionOutputPanel = wrappingBorder("Output File Option", constructOutputOptionPanel());
         //inputSourcePanel = wrappingBorder("Input Source", inputV2Source());
@@ -862,7 +863,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         jlMultiMessageNote = new JLabel("This input v2 message file has multi v2 messages.");
         jlMultiMessageNote.setHorizontalAlignment(JLabel.TRAILING);
         fPanel.add(jlMultiMessageNote, BorderLayout.EAST);
-        fPanel.add(new JLabel("."), BorderLayout.WEST);
+        fPanel.add(new JLabel(""), BorderLayout.WEST);
         dPanel.add(fPanel, BorderLayout.NORTH);
         jlInputFileLabel = (JLabel) out2[1];
         jtInputFile = (JTextField) out2[2];
@@ -1912,7 +1913,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
         {
             JFrame frame = (new V2ConverterToSCSPanel(loader)).setFrame(new JFrame("V2 Converter"));
 
-            frame.setSize(500, 800);
+            frame.setSize(500, 750);
             frame.setVisible(true);
         }
         catch(IOException he)
@@ -1929,6 +1930,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/05/30 00:59:29  umkis
+ * HISTORY      : update: v2 resource zip file can be accessed not only meta directory.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/05/29 01:25:20  umkis
  * HISTORY      : update: v2 resource zip file can be accessed not only meta directory
  * HISTORY      :
