@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/DefaultEdgeRenderer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/DefaultEdgeRenderer.java,v 1.2 2008-06-03 20:35:08 linc Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -36,6 +36,7 @@ package gov.nih.nci.caadapter.ui.common.jgraph;
 
 import org.jgraph.graph.EdgeRenderer;
 import org.jgraph.graph.GraphConstants;
+import org.jgraph.JGraph;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -46,10 +47,10 @@ import java.awt.Dimension;
  * This class defines a customized edge renderer class to customized highlight (selected) edge rendering.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:17:14 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-06-03 20:35:08 $
  */
 public class DefaultEdgeRenderer extends EdgeRenderer
 {
@@ -65,33 +66,33 @@ public class DefaultEdgeRenderer extends EdgeRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/DefaultEdgeRenderer.java,v 1.1 2007-04-03 16:17:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/jgraph/DefaultEdgeRenderer.java,v 1.2 2008-06-03 20:35:08 linc Exp $";
 
 	/**
 	 * Allow user to set customized hightlight color;
 	 */
-	protected Color highlightColor;
+	protected Color highlightColorConfig;
 
 	public DefaultEdgeRenderer()
 	{
 		super();
-		this.highlightColor = Color.BLUE;
+		this.highlightColorConfig = Color.BLUE;
 	}
 
 	public DefaultEdgeRenderer(Color highlightColor)
 	{
 		super();
-		this.highlightColor = highlightColor;
+		this.highlightColorConfig = highlightColor;
 	}
 
 	public Color getHighlightColor()
 	{
-		return highlightColor;
+		return highlightColorConfig;
 	}
 
 	public void setHighlightColor(Color highlightColor)
 	{
-		this.highlightColor = highlightColor;
+		this.highlightColorConfig = highlightColor;
 	}
 
 	/**
@@ -100,9 +101,10 @@ public class DefaultEdgeRenderer extends EdgeRenderer
 	public void paint(Graphics g)
 	{
 		//changing colors and other attributes to what we want before the actual painting.
-		Color oldHighlightColor = graph.getHighlightColor();
+		Color oldHighlightColor = highlightColor;
 		Color decidedHighlightColor = getDecidedHighlightColor();
-		graph.setHighlightColor(decidedHighlightColor);
+		if(graph.get()!=null)
+			((JGraph)graph.get()).setHighlightColor(decidedHighlightColor);
 		Color oldGradientColor = null;
 		if (getGradientColor() != null && !preview)
 		{
@@ -123,13 +125,16 @@ public class DefaultEdgeRenderer extends EdgeRenderer
 		{ // Paint Selected
 			Graphics2D g2 = (Graphics2D) g;
 			//			g2.setStroke(GraphConstants.SELECTION_STROKE);
-			g2.setColor(graph.getHighlightColor());
+			if(graph.get()!=null)
+				g2.setColor(((JGraph)graph.get()).getHighlightColor());
 			if (view.beginShape != null) g2.draw(view.beginShape);
 			if (view.lineShape != null) g2.draw(view.lineShape);
 			if (view.endShape != null) g2.draw(view.endShape);
 		}
 
-		graph.setHighlightColor(oldHighlightColor);
+		if(graph.get()!=null)
+			((JGraph)graph.get()).setHighlightColor(oldHighlightColor);
+		
 		if(oldGradientColor!=null)
 		{
 			setGradientColor(oldGradientColor);
@@ -148,11 +153,13 @@ public class DefaultEdgeRenderer extends EdgeRenderer
 		((Graphics2D) g).setStroke(GraphConstants.SELECTION_STROKE);
 		if (childrenSelected)
 		{
-			g.setColor(graph.getGridColor());
+			if(graph.get()!=null)
+				g.setColor(((JGraph)graph.get()).getGridColor());
 		}
 		else if (focus && selected)
 		{
-			g.setColor(graph.getLockedHandleColor());
+			if(graph.get()!=null)
+				g.setColor(((JGraph)graph.get()).getLockedHandleColor());
 		}
 		else if (selected)
 		{
@@ -167,18 +174,24 @@ public class DefaultEdgeRenderer extends EdgeRenderer
 
 	private Color getDecidedHighlightColor()
 	{
-		if(this.highlightColor!=null)
+		if(this.highlightColorConfig!=null)
 		{
-			return this.highlightColor;
+			return this.highlightColorConfig;
 		}
 		else
 		{
-			return graph.getHighlightColor();
+			if(graph.get()!=null)
+				return ((JGraph)graph.get()).getHighlightColor();
+			else 
+				return null;
 		}
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
+ * HISTORY      : initial loading
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2006/08/02 18:44:22  jiangsc
  * HISTORY      : License Update
  * HISTORY      :
