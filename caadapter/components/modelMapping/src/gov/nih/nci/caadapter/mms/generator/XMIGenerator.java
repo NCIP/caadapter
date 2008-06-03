@@ -257,13 +257,13 @@ public class XMIGenerator
 	{
 		for ( UMLClass clazz : pkg.getClasses() )
 		{
-//			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
-//			{
-//				if( tagValue.getName().contains( "discriminator" ))
-//				{
-//					clazz.removeTaggedValue( "discriminator" );
-//				}
-//			}
+			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
+			{
+				if( tagValue.getName().contains( "discriminator" ))
+				{
+					clazz.removeTaggedValue( "discriminator" );
+				}
+			}
 			
 			for( UMLAttribute att : clazz.getAttributes() ) 
 			{
@@ -298,10 +298,10 @@ public class XMIGenerator
                            att.removeTaggedValue( "type" );
                         }                        
 					}
-//					if( tagValue.getName().contains( "discriminator" ))
-//					{
-//						att.removeTaggedValue( "discriminator" );
-//					}
+					if( tagValue.getName().contains( "discriminator" ))
+					{
+						att.removeTaggedValue( "discriminator" );
+					}
 				}
 			}				
 			for( UMLAssociation assc : clazz.getAssociations()) 
@@ -361,15 +361,16 @@ public class XMIGenerator
             addClobKey( cKey );
         }
 
-//        for ( String dKey : discriminatorKeys )
-//        {
-//            addDiscriminatorKey( dKey );
-//        }
-//
-//        for ( String dKey : discriminatorValues.keySet() )
-//        {
-//            addDiscriminatorValues( dKey );
-//        }
+        HashMap<String, Integer> tableDiscriminatorCount = new HashMap<String, Integer>();
+        for ( String dKey : discriminatorKeys )
+        {
+            addDiscriminatorKey( dKey, tableDiscriminatorCount );
+        }
+
+        for ( String dKey : discriminatorValues.keySet() )
+        {
+            addDiscriminatorValues( dKey );
+        }
 
 //        annotateDependencies(this.dependencies);
 		addAttributeTaggedValues(this.attributes);
@@ -766,11 +767,20 @@ public class XMIGenerator
         	column.addTaggedValue( "type", "CLOB" );
     }
 
-    public void addDiscriminatorKey( String dKey )
+    // When table has more than one level of inheritance and need more than one discriminator columns
+    // it is not possible to find out which column applied to which inheritance just by the 
+    // existing information.  so the strategy here is to let it follow the order of the columns,
+    // i.e., the first column applies to first level of inheritance, second column to second level, etc.
+    // A hashmap is used to keep the current count of discriminators on a table.
+    public void addDiscriminatorKey( String dKey, HashMap<String, Integer> tableDiscriminatorCount)
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixDataModel() + "." + dKey;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
 		String tableName = "."+dKey.substring(0, dKey.lastIndexOf('.'));
+		
+		int count = 0;
+		if(tableDiscriminatorCount.get(tableName)!=null)
+			count = tableDiscriminatorCount.get(tableName);
 		
 		String objectName = null;
 		for (int i = 0; i < this.dependencies.size(); i++)
@@ -790,24 +800,33 @@ public class XMIGenerator
 			
 			if (clazz == null) return;
  			
-			UMLClass oldclazz = null;
-			while (!(clazz == oldclazz))
-			{
-				oldclazz = clazz;
-				List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
+//			UMLClass oldclazz = null;
+//			while (!(clazz == oldclazz))
+//			{
+//				oldclazz = clazz;
+//				List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
+//
+//				for (UMLGeneralization clazzG : clazzGs) {
+//					UMLClass parent =  (UMLClass)clazzG.getSupertype();
+//					if (parent != clazz) {
+//						clazz = parent;
+//						break;
+//					}
+//					else {
+//						oldclazz = clazz;
+//						break;
+//					}
+//				}
+//			}
 
-				for (UMLGeneralization clazzG : clazzGs) {
-					UMLClass parent =  (UMLClass)clazzG.getSupertype();
-					if (parent != clazz) {
-						clazz = parent;
-						break;
-					}
-					else {
-						oldclazz = clazz;
-						break;
-					}
-				}
+			ArrayList<UMLClass> parentList = new ArrayList<UMLClass>();  
+			List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
+			for (UMLGeneralization clazzG : clazzGs) {
+				UMLClass parent =  (UMLClass)clazzG.getSupertype();
+				if(!parentList.contains(parent)) parentList.add(parent);
 			}
+			
+			if(parentList.size()>count) clazz = parentList.get(parentList.size()-count-1);
 			
 			String packageName = "";
 			UMLPackage umlPackage = clazz.getPackage();
@@ -823,6 +842,7 @@ public class XMIGenerator
             	column.removeTaggedValue("discriminator");
             column.addTaggedValue( "discriminator",  packageName.substring(modelMetadata.getMmsPrefixObjectModel().length()+1));
             //umlClass.addTaggedValue( "discriminator", dKey );
+    		tableDiscriminatorCount.put(tableName, count+1);            
         }
 	}
     
