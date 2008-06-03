@@ -92,13 +92,13 @@ import org.jdom.output.XMLOutputter;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.34 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.35 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.34 2008-05-30 17:35:05 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.35 2008-06-03 20:12:03 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -657,7 +657,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 										//"mapped-attributes"/"implements-association"
 										String prvdTag=tagValue.getName()+":"+tagValue.getValue();
 										ModelMetadata.getPreservedMappedTag().add(prvdTag);
-
+										logger.logInfo(this, "No UI link is created, preserve the mapping:"+prvdTag);
 									}
 								}
 							}
@@ -733,7 +733,15 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 				{
 					if( tagValue.getName().contains( "id-attribute" ))
 					{																						
-						primaryKeys.add( tagValue.getValue() );
+						String pkValue=ModelMetadata.getMmsPrefixObjectModel() + "."+tagValue.getValue();
+						UMLAttribute column = ModelUtil.findAttribute(ModelMetadata.getHandler().getModel(), pkValue);
+						if (column==null)
+						{
+							logger.logInfo(this,"No Attribute being found for primary key, preserve the primary key mapping:" + tagValue.getName()+":"+tagValue.getValue());
+							ModelMetadata.getPreservedMappedTag().add(tagValue.getName()+":"+tagValue.getValue());
+						}
+						else
+							primaryKeys.add( tagValue.getValue() );
 					}
                     if( tagValue.getName().contains( "discriminator" ) )
                     {
@@ -1081,6 +1089,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.34  2008/05/30 17:35:05  wangeug
+ * HISTORY : add list to keep preserved mapping information
+ * HISTORY :
  * HISTORY : Revision 1.33  2008/05/29 14:35:16  wangeug
  * HISTORY : use caCORE SDK 4.0 process "mapped-attributes" tagvalue
  * HISTORY :
