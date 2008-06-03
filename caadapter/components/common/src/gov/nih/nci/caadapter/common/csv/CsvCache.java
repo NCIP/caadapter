@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CsvCache.java,v 1.4 2008-02-27 14:49:48 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CsvCache.java,v 1.5 2008-06-03 20:43:55 linc Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -38,8 +38,8 @@ package gov.nih.nci.caadapter.common.csv;
  * CVS Cache class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.4 $
+ * @author LAST UPDATE $Author: linc $
+ * @version $Revision: 1.5 $
  */
 
 //import com.Ostermiller.util.CSVParser;
@@ -193,7 +193,7 @@ public class CsvCache {
      * @param newLineContent
      * @return
      */
-    private static boolean isDoubleQuoteClosed(boolean searchNewQuote,String newLineContent )
+    protected static boolean isDoubleQuoteClosed(boolean searchNewQuote,String newLineContent )
     {
     	if (newLineContent==null||newLineContent.equalsIgnoreCase(""))
     		return searchNewQuote; 
@@ -209,7 +209,7 @@ public class CsvCache {
     	return searchNewQuote;
     }
     
-    private static String readLineWithCarriageReturn(InputStream dataStream)
+    protected static String readLineWithCarriageReturn(InputStream dataStream)
     {
     	StringBuffer rtnSb=new StringBuffer();
     	

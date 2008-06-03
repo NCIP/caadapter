@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
- * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.4 2007-07-17 16:15:44 wangeug Exp $
+ * $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.5 2008-06-03 20:43:55 linc Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -65,18 +65,18 @@ import java.util.Stack;
  * Parses csv datafiles that are based on a certain csv meta specification.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.4 $
- * @date $Date: 2007-07-17 16:15:44 $
+ * @author LAST UPDATE $Author: linc $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2008-06-03 20:43:55 $
  * @since caAdapter v1.2
  */
 
 public class SegmentedCSVParserImpl {
     private static final String LOGID = "$RCSfile: SegmentedCSVParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.4 2007-07-17 16:15:44 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.5 2008-06-03 20:43:55 linc Exp $";
+    private static final SegmentedCSVParserImpl singleton = new SegmentedCSVParserImpl();
 
-
-    public CSVDataResult parse(File dataFile, File metaFile) throws ApplicationException
+    public static CSVDataResult parse(File dataFile, File metaFile) throws ApplicationException
     {
         // parse the metafile
         CSVMeta meta = null;
@@ -85,7 +85,7 @@ public class SegmentedCSVParserImpl {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
             meta = csvMetaResult.getCsvMeta();
         } catch (FileNotFoundException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             ValidatorResults validatorResults =new ValidatorResults();
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -94,7 +94,7 @@ public class SegmentedCSVParserImpl {
         return parse(dataFile, meta);
     }
 
-    public CSVDataResult parse(InputStream dataStream, File metaFile) throws ApplicationException{
+    public static CSVDataResult parse(InputStream dataStream, File metaFile) throws ApplicationException{
         // parse the metafile
         CSVMeta meta = null;
         try {
@@ -102,7 +102,7 @@ public class SegmentedCSVParserImpl {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
             meta = csvMetaResult.getCsvMeta();
         } catch (FileNotFoundException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             ValidatorResults validatorResults =new ValidatorResults();
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -110,7 +110,7 @@ public class SegmentedCSVParserImpl {
         }
         return parse(dataStream, meta);
     }
-    public CSVDataResult parse(String dataString, File metaFile) throws ApplicationException{
+    public static CSVDataResult parse(String dataString, File metaFile) throws ApplicationException{
         // parse the metafile
         CSVMeta meta = null;
         try {
@@ -118,7 +118,7 @@ public class SegmentedCSVParserImpl {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
             meta = csvMetaResult.getCsvMeta();
         } catch (FileNotFoundException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             ValidatorResults validatorResults =new ValidatorResults();
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -127,7 +127,7 @@ public class SegmentedCSVParserImpl {
         return parse(dataString, meta);
     }
 
-    public CSVDataResult parse(File dataFile, CSVMeta csvMeta) throws ApplicationException{
+    public static CSVDataResult parse(File dataFile, CSVMeta csvMeta) throws ApplicationException{
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -135,7 +135,7 @@ public class SegmentedCSVParserImpl {
     		String[][] data = CsvCache.getCsv(dataFile.getPath());
             return parse(data,csvMeta);
     	} catch (IOException e) {
-          Log.logException(this, e);
+          Log.logException(singleton, e);
           Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
           validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
           csvDataResult.setValidatorResults(validatorResults);
@@ -143,7 +143,7 @@ public class SegmentedCSVParserImpl {
         }
     }
 
-    public CSVDataResult parse(String dataString, CSVMeta csvMeta) throws ApplicationException{
+    public static CSVDataResult parse(String dataString, CSVMeta csvMeta) throws ApplicationException{
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -151,7 +151,7 @@ public class SegmentedCSVParserImpl {
     		String[][] data = CsvCache.getCsvFromString(dataString);
     		return parse(data,csvMeta);
     	} catch (IOException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
             csvDataResult.setValidatorResults(validatorResults);
@@ -159,7 +159,7 @@ public class SegmentedCSVParserImpl {
           }
     }
 
-    public CSVDataResult parse(InputStream dataStream, CSVMeta csvMeta) throws ApplicationException{
+    public static CSVDataResult parse(InputStream dataStream, CSVMeta csvMeta) throws ApplicationException{
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -167,7 +167,7 @@ public class SegmentedCSVParserImpl {
     		String[][] data = CsvCache.getCsvFromInputStream(dataStream);
     		return parse(data,csvMeta);
     	} catch (IOException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
             csvDataResult.setValidatorResults(validatorResults);
@@ -175,7 +175,7 @@ public class SegmentedCSVParserImpl {
           }
     }
 
-    public CSVDataResult parse(String[][] data, CSVMeta csvMeta) throws ApplicationException
+    public static CSVDataResult parse(String[][] data, CSVMeta csvMeta) throws ApplicationException
     {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
@@ -299,7 +299,7 @@ public class SegmentedCSVParserImpl {
     }
 
 
-    public CSVSegmentMeta findCSVSegmentMeta(CSVSegmentMeta rootsegment, String segmentname) {
+    public static CSVSegmentMeta findCSVSegmentMeta(CSVSegmentMeta rootsegment, String segmentname) {
         if (segmentname.equalsIgnoreCase(rootsegment.getName())) {
             return rootsegment;
         } else {
@@ -315,7 +315,7 @@ public class SegmentedCSVParserImpl {
         return null;
     }
 
-    private CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults) {
+    private static CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults) {
         CSVSegmentImpl segment = new CSVSegmentImpl(meta);
         segment.setXmlPath(meta.getXmlPath());
         segment.setCardinalityType(meta.getCardinalityType());
@@ -348,7 +348,7 @@ public class SegmentedCSVParserImpl {
 
 
 /*
-    public CSVDataResult parse(File dataFile, File metaFile) {
+    public static CSVDataResult parse(File dataFile, File metaFile) {
         // parse the metafile
         CSVMeta meta = null;
         try {
@@ -356,7 +356,7 @@ public class SegmentedCSVParserImpl {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
             meta = csvMetaResult.getCsvMeta();
         } catch (FileNotFoundException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             ValidatorResults validatorResults =new ValidatorResults();
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -365,7 +365,7 @@ public class SegmentedCSVParserImpl {
         return parse(dataFile, meta);
     }
 
-    public CSVDataResult parse(InputStream dataStream, File metaFile) {
+    public static CSVDataResult parse(InputStream dataStream, File metaFile) {
         // parse the metafile
         CSVMeta meta = null;
         try {
@@ -373,7 +373,7 @@ public class SegmentedCSVParserImpl {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
             meta = csvMetaResult.getCsvMeta();
         } catch (FileNotFoundException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             ValidatorResults validatorResults =new ValidatorResults();
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -381,7 +381,7 @@ public class SegmentedCSVParserImpl {
         }
         return parse(dataStream, meta);
     }
-    public CSVDataResult parse(String dataString, File metaFile) {
+    public static CSVDataResult parse(String dataString, File metaFile) {
         // parse the metafile
         CSVMeta meta = null;
         try {
@@ -389,7 +389,7 @@ public class SegmentedCSVParserImpl {
             CSVMetaResult csvMetaResult = parser.parse(new FileReader(metaFile));
             meta = csvMetaResult.getCsvMeta();
         } catch (FileNotFoundException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             ValidatorResults validatorResults =new ValidatorResults();
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
@@ -399,7 +399,7 @@ public class SegmentedCSVParserImpl {
     }
 
     
-    public CSVDataResult parse(File dataFile, CSVMeta csvMeta) {
+    public static CSVDataResult parse(File dataFile, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -407,7 +407,7 @@ public class SegmentedCSVParserImpl {
     		String[][] data = CsvCache.getCsv(dataFile.getPath());
         	return parse(data,csvMeta);
     	} catch (IOException e) {
-          Log.logException(this, e);
+          Log.logException(singleton, e);
           Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
           validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
           csvDataResult.setValidatorResults(validatorResults);
@@ -415,7 +415,7 @@ public class SegmentedCSVParserImpl {
         }
     }
 
-    public CSVDataResult parse(String dataString, CSVMeta csvMeta) {
+    public static CSVDataResult parse(String dataString, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -423,7 +423,7 @@ public class SegmentedCSVParserImpl {
     		String[][] data = CsvCache.getCsvFromString(dataString);
     		return parse(data,csvMeta);
     	} catch (IOException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
             csvDataResult.setValidatorResults(validatorResults);
@@ -431,7 +431,7 @@ public class SegmentedCSVParserImpl {
           }
     }
 
-    public CSVDataResult parse(InputStream dataStream, CSVMeta csvMeta) {
+    public static CSVDataResult parse(InputStream dataStream, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -439,7 +439,7 @@ public class SegmentedCSVParserImpl {
     		String[][] data = CsvCache.getCsvFromInputStream(dataStream);
     		return parse(data,csvMeta);
     	} catch (IOException e) {
-            Log.logException(this, e);
+            Log.logException(singleton, e);
             Message msg = MessageResources.getMessage("GEN0", new Object[]{e.getMessage()});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
             csvDataResult.setValidatorResults(validatorResults);
@@ -447,7 +447,7 @@ public class SegmentedCSVParserImpl {
           }
     }
     
-    public CSVDataResult parse(String[][] data, CSVMeta csvMeta) {
+    public static CSVDataResult parse(String[][] data, CSVMeta csvMeta) {
         ValidatorResults validatorResults = new ValidatorResults();
         CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
         CSVDataResult csvDataResult = new CSVDataResult(segmentedFile, validatorResults);
@@ -512,7 +512,7 @@ public class SegmentedCSVParserImpl {
 								return csvDataResult;
 							}
 						} catch (EmptyStackException e) {
-                            Log.logException(this, e);
+                            Log.logException(singleton, e);
                             Message msg = MessageResources.getMessage("CSV4", new Object[]{segmentName, parentSegmentMetaName, i});
                             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
                             return csvDataResult;
@@ -544,7 +544,7 @@ public class SegmentedCSVParserImpl {
         return csvDataResult;
     }
 
-    public CSVSegmentMeta findCSVSegmentMeta(CSVSegmentMeta rootsegment, String segmentname) {
+    public static CSVSegmentMeta findCSVSegmentMeta(CSVSegmentMeta rootsegment, String segmentname) {
         if (segmentname.equalsIgnoreCase(rootsegment.getName())) {
             return rootsegment;
         } else {
@@ -560,7 +560,7 @@ public class SegmentedCSVParserImpl {
         return null;
     }
 
-    private CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults) {
+    private static CSVSegment createSegment(CSVSegmentMeta meta, String[] data, ValidatorResults validatorResults) {
         CSVSegmentImpl segment = new CSVSegmentImpl(meta);
         segment.setUUID(meta.getUUID());
         // check for validation rule #3
