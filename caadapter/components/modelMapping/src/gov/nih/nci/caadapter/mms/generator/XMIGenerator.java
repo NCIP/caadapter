@@ -5,26 +5,19 @@
 
 package gov.nih.nci.caadapter.mms.generator;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
-import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
-import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.mms.map.AttributeMapping;
-import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
-import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLDependencyEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
+import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLDependencyBean;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLModelBean;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLPackageBean;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 import gov.nih.nci.caadapter.common.Log;
@@ -54,7 +47,6 @@ public class XMIGenerator
     private XmiInOutHandler handler = null;
 	private UMLModel model = null;
 	private Document doc = null;
-    private HashMap dependencyMap = new HashMap();
 	private ModelMetadata modelMetadata = null;
 	private LinkedHashMap myMap = null;
 
@@ -93,42 +85,7 @@ public class XMIGenerator
 		    lazyKeys = modelMetadata.getLazyKeys();
 		    clobKeys = modelMetadata.getClobKeys();
             discriminatorKeys = modelMetadata.getDiscriminatorKeys();
-            discriminatorValues = modelMetadata.getDiscriminatorValues();
-// changes made by Sandeep Phadke on 5/2/2008 
-// The dependencies were not being removed if file came from EA, so commented the following
-// for loop and the clear method to remove from model. Added new method addTableClassDependency
-// to check dependency either in package or class DomElements. If exists remove it.
-            // Remove all dependencies from the Model
-//		    for ( UMLDependency dep : model.getDependencies() )
-//		    {		    	
-//				model.getDependencies().remove(dep);//.removeDependency( dep );
-//            }
-//		    model.getDependencies().clear();
-		    //model.emptyDependency();
-//////////////// Removing the existing dependencies          
-//            boolean isDependencyMapped = false;
-//    	    List <UMLDependency> existingDeps = model.getDependencies();
-//    	    UMLClass clientEnd;
-//	    	String asscClient, className ;
-//	    	int i=0;
-//	    	for(i = (existingDeps.size()-1); i>=0; i--)
-//    	    {
-//    	    	UMLDependency oldDep = existingDeps.get(i);
-//    	    	isDependencyMapped = false;
-//    	    	clientEnd =  ((UMLClass) oldDep.getClient());
-//    	    	asscClient = clientEnd.getName();
-//
-//    	    	String pathKey = new String(ModelUtil.getFullPackageName(clientEnd));
-//    	    	pathKey = pathKey + "." + clientEnd.getName();
-//    	    	for( UMLPackage pkg : model.getPackages() ) 
-//    			{
-//    	    		checkTableClassDependency(pkg, asscClient, oldDep );
-//    				UMLPackageBean pkgBean=(UMLPackageBean)pkg;
-//    				Element pkgElm=   pkgBean.getJDomElement();
-//    				removeDepElement(pkgElm, oldDep);
-//    			}
-//    	    }
-///////////////// End changes 5/2/2008           
+            discriminatorValues = modelMetadata.getDiscriminatorValues();       
 		    
 			for( UMLPackage pkg : model.getPackages() ) 
 			{
@@ -142,116 +99,6 @@ public class XMIGenerator
 	      e.printStackTrace();
 	    }
 	}
-
-	public void checkTableClassDependency(UMLPackage pkg, String checkClass, UMLDependency oldDep ){
-// new method to check for the dependency for the table/Class. It checks it in UMLclass and UMLpackage
-// becuase EA keeps it in Class and XMI jar saves it under package. So need to check at both places.		
-// created by Sandeep on 4/28/08.		
-		for ( UMLClass clazz : pkg.getClasses() )
-		{
-
-			if (clazz.getName().equals(checkClass)) {
-				System.out.println("XMIGenerator.getPackages()..class:"+clazz.getName() +"remove dependency"+clazz.getDependencies());
-				UMLClassBean classBean=(UMLClassBean)clazz;
-				Element clazzElm=   classBean.getJDomElement();
-				Element parentElm= clazzElm.getParentElement();
-				parentElm.removeChild("Dependency",parentElm.getNamespace() );
-				//also remove it from the model, becuase while saving and 
-				//adding dependency back, we check for its existance in the model too.
-				model.getDependencies().remove(oldDep);//.removeDependency( dep );
-			}
-		}
-		for ( UMLPackage pkg2 : pkg.getPackages() )
-		{
-			checkTableClassDependency( pkg2, checkClass, oldDep );
-			UMLPackageBean pkgBean=(UMLPackageBean)pkg2;
-			Element pkgElm=   pkgBean.getJDomElement();
-			removeDepElement(pkgElm, oldDep);
-		}
-	}
-		
-	public void removeDepElement(Element elm, UMLDependency oldDep){
-	// removes the DepElement from any DOM element and its children.	
-		List<Element> childrenList = elm.getChildren();
-		int i=0;
-		for(i = (childrenList.size()-1); i>=0; i--){
-			Element childElm = childrenList.get(i);
-			String elmName = childElm.getName();
-			if (elmName.equals("Dependency")){
-				Element parentElm= childElm.getParentElement();
-				parentElm.removeChild("Dependency",parentElm.getNamespace() );
-				model.getDependencies().remove(oldDep);
-			} else {
-				removeDepElement(childElm, oldDep);
-			}
-		}
-	}
-
-	public boolean addTableClassDependency(String xPath){
-// created by Sandeep 5/2/2008		
-// while saving the XMI checks if the dependecy should be added to the model or not
-// since model has been cleaned earlier in init, it does not have any depenedency, the Cumulative mapping
-// stores the current status, so if user deletes a mapping or adds it in the current session
-// it is captured in cumulative mapping. While saving model mapping gets saved. So this syncs both.
-// In addition, it should not have same mapping twice so checks no duplicate exists. 		
-//  		
-//	CumulativeDepExist     ModelDependeciesExists      Result(AddDependency)
-//		Y					N						->		Y
-//		Y					Y						->		N
-//		N					N						->		N
-//		N					Y						->		N
-		
-		
-    	boolean modelDepExists = false, addDependencies = false; 
-		CumulativeMapping cummulativeMapping = null;
-		try {
-			cummulativeMapping = CumulativeMapping.getInstance();
-		} catch (Exception e) {
-			
-		}
-
-		List<DependencyMapping> dependencyMapping = cummulativeMapping.getDependencyMappings();
-		for (DependencyMapping d : dependencyMapping) {
-			try {
-				String targetXPath = d.getTargetDependency().getXPath(); 
-				if (targetXPath.contains(xPath)){
-					modelDepExists = false;
-					
-					List<UMLDependency> modelMappings = model.getDependencies();
-					Iterator itrModel = modelMappings.iterator();
-					while (itrModel.hasNext()) {
-						try {
-							UMLDependency dep = (UMLDependency)itrModel.next();	
-							UMLClass depTarget = (UMLClass) dep.getClient();
-					    	String pathKeyTarget = new String(ModelUtil.getFullPackageName(depTarget));
-					    	pathKeyTarget = pathKeyTarget + "." + depTarget.getName();
-							if (pathKeyTarget.equals(xPath)){
-								// since dependency already exist in model, dont add again.
-								modelDepExists = true;
-								break;
-							}
-						} catch (Exception e) {
-							
-						}
-					}
-					if (modelDepExists) {
-						addDependencies = false;
-					}
-					else{
-						addDependencies = true;
-					}
-					break;
-					
-				} else {
-					addDependencies = false;
-				}
-			} catch (Exception e) {
-		            e.printStackTrace();
-			}
-		}
-		return addDependencies;
-	}	
-	
 	
 	private void getPackages( UMLPackage pkg )
 	{
@@ -270,7 +117,12 @@ public class XMIGenerator
 				for( UMLTaggedValue tagValue : att.getTaggedValues() )
 				{
                     String tagPrvdkey=tagValue.getName()+":"+tagValue.getValue();
-                    System.out.println("XMIGenerator.getPackages()..preservedTag:"+ModelMetadata.getInstance().getPreservedMappedTag());
+                    if( tagValue.getName().equals( "id-attribute" ))
+					{
+                    	//only removed if not preserved
+                    	if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
+                    		att.removeTaggedValue( "id-attribute" );
+					}
                     if( tagValue.getName().contains( "mapped-attributes" ))
 					{
                     	//only removed if not preserved
@@ -281,11 +133,7 @@ public class XMIGenerator
 					{
 						if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
 							att.removeTaggedValue( "implements-association" );
-					}
-//					if( tagValue.getName().contains( "correlation-table" ))
-//					{//EYW this condition should never be met since "correlation-table" is attached with association
-//						att.removeTaggedValue( "correlation-table" );
-//					}												
+					}											
 					// commented by Sandeep on 5/8/08 for bug id 12958 per Eugene's instructions.
 //					if( tagValue.getName().contains( "inverse-of" ))
 //					{
@@ -312,10 +160,11 @@ public class XMIGenerator
 					{
 						assc.removeTaggedValue( "lazy-load" );
 					}
-//					if( tagValue.getName().contains( "correlation-table" ))
-//					{
-//						assc.removeTaggedValue( "correlation-table" );
-//					}												
+					if( tagValue.getName().contains( "correlation-table" ))
+					{
+						if (!isPreservedCorrelation(assc))
+							assc.removeTaggedValue( "correlation-table" );
+					}												
 				}
 			}
 		}
@@ -324,6 +173,58 @@ public class XMIGenerator
 		{
 			getPackages( pkg2 );
 		}
+	}
+	
+	/**
+	 * The "correlation-table" tag will be preserved if it is a one-to-one associaiton with join
+	 * @param assc
+	 * @return
+	 */
+	private boolean isPreservedCorrelation(UMLAssociation assc)
+	{
+		boolean rtnValue=false;
+		UMLTaggedValue correlationTag=((UMLAssociationBean)assc).getTaggedValue("correlation-table");
+		if (correlationTag==null)
+			return rtnValue;
+		UMLAssociationEnd thisEnd=assc.getAssociationEnds().get(0);
+		UMLAssociationEnd otherEnd=assc.getAssociationEnds().get(1);
+		if (thisEnd.getHighMultiplicity()==-1&&otherEnd.getHighMultiplicity()==-1)
+		{
+			logger.logInfo(this, "Remove the tag:correlation-table for many-to-many association using join table :"+correlationTag.getValue()
+					+"...thisEnd:"+thisEnd.getRoleName() +"...otherEndRole:"+otherEnd.getRoleName());
+			return rtnValue;
+		}
+		rtnValue=true;
+		if (thisEnd.getHighMultiplicity()==1&&otherEnd.getHighMultiplicity()==1)
+		{
+			logger.logInfo(this, "Preserve the tag:correlation-table for one-to-one association using join table :"+correlationTag.getValue()
+					+"...thisEnd:"+thisEnd.getRoleName() +"... otherEnd:"+otherEnd.getRoleName());
+			return rtnValue;
+		}
+		
+		//many to one-- the one side has role
+		UMLAssociationEnd oneEnd=null;
+		if (thisEnd.getHighMultiplicity()==1&&thisEnd.getRoleName()!=null)
+			oneEnd=thisEnd;
+		else if(otherEnd.getHighMultiplicity()==1&&otherEnd.getRoleName()!=null)
+			oneEnd=otherEnd;
+		
+		//one to many-- the many side has role
+		UMLAssociationEnd manyEnd=null;
+		if (thisEnd.getHighMultiplicity()==-11&&thisEnd.getRoleName()!=null)
+			manyEnd=thisEnd;
+		else if(otherEnd.getHighMultiplicity()==-11&&otherEnd.getRoleName()!=null)
+			manyEnd=otherEnd;
+		
+		if (oneEnd!=null)
+			logger.logInfo(this, "Preserve the tag:correlation-table for many-to-one association using join table :"+correlationTag.getValue()
+				+"...oneEnd:"+oneEnd.getRoleName() );
+		
+		if (manyEnd!=null)
+			logger.logInfo(this, "Preserve the tag:correlation-table for one-to-many association using join table :"+correlationTag.getValue()
+				+"...manyEnd:"+manyEnd.getRoleName());
+		
+		return rtnValue;
 	}
 	
 	/**
@@ -372,7 +273,7 @@ public class XMIGenerator
             addDiscriminatorValues( dKey );
         }
 
-//        annotateDependencies(this.dependencies);
+        annotateDependencies(this.dependencies);
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
 		addManyToManyTaggedValues(this.manytomanys);
@@ -435,6 +336,68 @@ public class XMIGenerator
 	 */
 	private void annotateDependencies(List dependencies) 
 	{
+		//clean the model
+		//if one dependency has been delete by user
+		//its corresponding UI must be removed
+		//compare the existing dependency of the model and the list
+		//remove the "deleted" one.
+		List<UMLDependency>allExistingDep=model.getDependencies();
+		for (int dpcyIndx=allExistingDep.size();dpcyIndx>0;dpcyIndx--)
+		{
+			UMLDependency dpcy=allExistingDep.get(dpcyIndx-1);
+			if (dpcy.getStereotype()==null||!dpcy.getStereotype().equals("DataSource"))
+				continue;
+			//find the stake holder of a dependency
+			//client: table in data model
+			//supplier: object in logical model
+			UMLClassBean supplierEnd=(UMLClassBean)dpcy.getSupplier();
+			String supplierXmiId=supplierEnd.getModelId();
+			UMLClassBean clientEnd=(UMLClassBean)dpcy.getClient();
+			String clientXmiId=clientEnd.getModelId();
+			boolean isDepFound=false;
+			//check if the dependency has been deleted
+			for (Object objDependency:dependencies)
+			{
+				Element dependLink=(Element)objDependency;
+			    
+			    UMLClass uiClient = ModelUtil.findClass(model, dependLink.getChildText("target"));
+			    UMLClass uiSupplier = ModelUtil.findClass(model, dependLink.getChildText("source"));
+				if (uiClient==null|uiSupplier==null)
+					continue;
+				String uiClientXmiId=((UMLClassBean)uiClient).getModelId();
+				String uiSupplierXmiId=((UMLClassBean)uiSupplier).getModelId();
+				if (uiClientXmiId==null|uiSupplierXmiId==null)
+					continue;
+				if (uiClientXmiId.equals(clientXmiId)&uiSupplierXmiId.equals(supplierXmiId))
+				{
+					isDepFound=true;
+					break;
+				}
+			}
+			//remove the dependency from model if deleted by user
+			if (!isDepFound)
+			{
+			    //remove the JDomElement from Model 
+				logger.logInfo(this, "Dependency deleted...Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
+			    Element depElt=((UMLDependencyBean)dpcy).getJDomElement();
+			    List<Element> dpcyChildren=depElt.getParentElement().getChildren("Dependency",depElt.getNamespace());
+			    for (int i=0;i<dpcyChildren.size();i++)
+			    {
+			    	Element childElmnt=dpcyChildren.get(i);
+			    	String childClientId=childElmnt.getAttributeValue("client");
+			    	if (childClientId.equals(clientXmiId))
+			    	{
+			    		logger.logInfo(this, "Remove dependency from XMI file...index:"+i+"...Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
+			    		depElt.getParentElement().removeContent(childElmnt);
+			    		break;
+			    	}
+			    }
+			
+			    //remove the dependency from list of dependency associated with model
+			    model.getDependencies().remove(dpcyIndx-1);
+			}
+		}
+  
 		for (int i = 0; i < this.dependencies.size(); i++)
 		{
 			Element dependency = (Element)this.dependencies.get(i);
@@ -458,46 +421,35 @@ public class XMIGenerator
 	    {
 	    	//modify the existing existing dependency
 	    	UMLDependencyBean existingDcpyBean=(UMLDependencyBean)existingDpcy;
-	    	System.out.println("XMIGenerator.addDependency()..existing client:"+((UMLClassBean)existingDpcy.getClient()).getModelId());
-	    	System.out.println("XMIGenerator.addDependency().....reset client:"+((UMLClassBean)client).getModelId());	   
-	    	existingDcpyBean.getJDomElement().setAttribute("client",((UMLClassBean)client).getModelId());
+	    	logger.logInfo(this, "Dependency modified...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
+	    	String existClientXmiId=((UMLClassBean)existingDcpyBean.getClient()).getModelId();
+	    	String newClientXmiId=((UMLClassBean)client).getModelId();
+	    	if (!existClientXmiId.equals(newClientXmiId))
+	    	{
+	    		existingDcpyBean.getJDomElement().setAttribute("client",newClientXmiId);
+	    	}
 	    	return;  //return here since the dependency has been modified
 	    }
 	    
-	    System.out.println("XMIGenerator.addDependency()...create new dependency ..supplier:"+((UMLClassBean)supplier).getModelId());
-	    System.out.println("XMIGenerator.addDependency()...create new dependency ....client:"+((UMLClassBean)client).getModelId());
-	    //	    String pathKey = new String(ModelUtil.getFullPackageName(client));
-//    	pathKey = pathKey + "." + client.getName();	    
-//	    boolean addDependency = false;	    
-//
-//	    
-//	    addDependency = addTableClassDependency(pathKey);
-//	    	if (!addDependency) return; 
-////	    }
-		    dependencyMap.put(dependency.getChildText( "target"), supplier );
-		    UMLDependency dep = model.createDependency( client, supplier, "dependency" );
-		    dep = model.addDependency( dep );
-		    // added new Stereotype for bug id 11561
-		    dep.addStereotype("DataSource");
-		    // end changes bug id 11561. By Sandeep on 5/2/08
-		    dep.addTaggedValue("stereotype", "DataSource");
-		    dep.addTaggedValue("ea_type", "Dependency");
-		    // the following to tagged values may not be necessary
-		    dep.addTaggedValue("direction", "Source -> Destination");
-		    dep.addTaggedValue("style", "3");
-		    //move the JDomElement from Model to Table
-		    Element depElement=((UMLDependencyBean)dep).getJDomElement();
-		    depElement.getParentElement().removeChild("Dependency", depElement.getNamespace());
-//		    ((UMLClassBean)supplier).addDependency(dep);
-		    //		    Element depContent=depElement.getChild("Dependency", depElement.getNamespace());
-//		    ((UMLModelBean)model).getJDomElement().removeChild("Dependency", depElement.getNamespace());
-		    Element tableElement= ((UMLClassBean)supplier).getJDomElement();
-		    Element tableParent=tableElement.getParentElement();
-		    tableParent.addContent((Element)depElement.clone());
-//		    List<Element> tableParentChildren= tableParent.getChildren();//
-//		    tableParentChildren.add(depElement);//.getContent().add(depContent);//.getChildren().add(depElement);
-//		    ((UMLClassBean)supplier).addDependency(dep);
+	    //since XMIHandler write new Dependency UML section under "Logical Model.Object" section
+	    //create the new dependency with the "switched over" client and suppler
+	    //supplier passed as "client" parameter
+	    //client passed as "supplier" parameter
+	    UMLDependency dep = model.createDependency(supplier, client, "dependency" );
+	    dep = model.addDependency( dep );
+	    dep.addStereotype("DataSource");
+	    dep.addTaggedValue("stereotype", "DataSource");
+	    dep.addTaggedValue("ea_type", "Dependency");
+	    dep.addTaggedValue("direction", "Source -> Destination");
+	    dep.addTaggedValue("style", "3");
+	    //re-edit the created dependency to switch back the "client/supplier"
+	    ((UMLDependencyBean)dep).getJDomElement().setAttribute("client",((UMLClassBean)client).getModelId());
+	    ((UMLDependencyBean)dep).getJDomElement().setAttribute("supplier",((UMLClassBean)supplier).getModelId());
+	    dep.addTaggedValue("ea_sourceName", client.getName());
+	    dep.addTaggedValue("ea_targetName", supplier.getName());
+	    logger.logInfo(this, "Dependency created...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	}
+	
 		
 	private UMLDependency findExistingDependencyForSupplier(UMLModel umlModel, UMLClass supplier)
 	{
@@ -583,11 +535,15 @@ public class XMIGenerator
 		umlAssociation = cumulativeMappingGenerator.getAssociationFromColumn(columnName2);
 		if (umlAssociation == null) return;
 	    
-		if (umlAssociation.getTaggedValue("correlation-table")== null) 
-		{
-		    targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());	   
-//			umlAssociation.addTaggedValue("correlation-table", targetAttr);
+		UMLTaggedValue corrTag=umlAssociation.getTaggedValue("correlation-table");
+		targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());
+		//create new one if not exist otherwise edit it
+		if (corrTag== null) 
+		{	   
+			umlAssociation.addTaggedValue("correlation-table", targetAttr);
 		}
+		else
+			corrTag.setValue(targetAttr);
 	}
 	
 	/**
@@ -620,10 +576,6 @@ public class XMIGenerator
 	    	{
 	    		target.removeTaggedValue( element.getName() );	    		
 	    	}
-	    	if ( element.getName().equals("correlation-table") )
-	    	{
-	    		target.removeTaggedValue( element.getName() );	    	
-	    	}
 	    	if ( element.getName().equals("inverse-of") )
 	    	{
 //		    	// commented by Sandeep per Eugene's instructions for bug id 12958. Instruction as follows:
@@ -651,10 +603,15 @@ public class XMIGenerator
 	    
 	    AssociationMetadata assoMeta = (AssociationMetadata)myMap.get(sourceAttr);
 	    UMLAssociation asso = assoMeta.getUMLAssociation();
-	    if (asso.getTaggedValue("correlation-table")== null) 
+		UMLTaggedValue corrTag=asso.getTaggedValue("correlation-table");
+		targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());
+		//create new one if not exist otherwise edit it
+	    if (corrTag== null) 
 	    {
 	    	asso.addTaggedValue("correlation-table", targetAttr);
 	    }
+	    else
+	    	corrTag.setValue(targetAttr);
 	   
 	    target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
 	    // if inverseof already exists do not add again.
@@ -669,7 +626,7 @@ public class XMIGenerator
 	 * @param Target
 	 * @param attribute
 	 */
-	public void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
+	private void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
 	{
 		//check to see if this Tag Value already exists
 			Target.addTaggedValue( "inverse-of", getInverseRoleName(attribute.getChildText("source")) );
@@ -680,7 +637,7 @@ public class XMIGenerator
 	 * @param roleName
 	 * @return inverseRoleName
 	 */
-	public String getInverseRoleName(String roleName)
+	private String getInverseRoleName(String roleName)
 	{
 		String inverseRoleName = getCleanPath(getRecipricolRolePath(roleName));
 		return inverseRoleName;
@@ -690,7 +647,7 @@ public class XMIGenerator
 	 * @param pathToThisEnd
 	 * @return hasInverseOfTagValue
 	 */
-	public boolean reciprolRoleHasInverseOfTag(String pathToThisEnd)
+	private boolean reciprolRoleHasInverseOfTag(String pathToThisEnd)
 	{
 		//pathToThisEnd is the object model path to the many to many role currently being mapped.
 		//we need to determine if the database column that the reciprocol role is mapped to has 
@@ -711,7 +668,7 @@ public class XMIGenerator
 	 * @param pathToColumnName
 	 * @return hasInverseOfTaggedValue
 	 */
-	public boolean checkInverseOfTagValue(String pathToColumnName)
+	private boolean checkInverseOfTagValue(String pathToColumnName)
 	{
 		boolean hasInverseOfTaggedValue = false;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, pathToColumnName);
@@ -729,10 +686,10 @@ public class XMIGenerator
 	{
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
-        
+		logger.logInfo(this,"Add primary id for Attribute " + primaryKey);   
         if ( column != null )
 		{		
-        	logger.logInfo(this,"Add primary id for Attribute " + primaryKey);
+        	logger.logInfo(this,"Add primary id for column:" + column.getName());
         	UMLTaggedValue prmKeyTag=column.getTaggedValue("id-attribute");
         	if (prmKeyTag!=null)
         		prmKeyTag.setValue(pKey);
