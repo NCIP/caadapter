@@ -5,6 +5,7 @@
  
 package gov.nih.nci.caadapter.ui.mapping;
 
+import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
@@ -70,7 +71,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 	
 	protected File mappingSourceFile = null;
 	protected File mappingTargetFile = null;
-	
+	protected static Log logger =new Log();
 	// ??? Not Sure the behavior difference of build target tree and source tree besides we have MappingSourceTree TargerTree -Eric
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{		
