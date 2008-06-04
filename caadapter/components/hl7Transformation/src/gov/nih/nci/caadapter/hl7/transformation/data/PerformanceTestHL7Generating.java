@@ -53,10 +53,10 @@
 
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
-import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jun 2, 2008
  *          Time:       10:53:35 PM $
  */
@@ -95,45 +95,45 @@ public class PerformanceTestHL7Generating
         String path0 = "C:\\projects\\caadapter\\"+path1+"workingspace\\PerformanceTest\\";
 
         String comm = "java -cp ./lib/caAdapter.jar;./lib/caadapterCommon.jar;./lib/castor-0.9.9.jar;./lib/client.jar;./lib/knuHL7V2tree.jar;./lib/commons-collections-3.2.jar;./lib/commons-logging-1.0.4.jar;./lib/dom4j-1.4.jar;./lib/jaxen-jdom.jar;./lib/jdom.jar;./lib/log4j-1.2.8.jar;./lib/poi-2.5.1-final-20040804.jar;./lib/resource.zip;./lib/saxon8.jar;./lib/sdk-codegen.jar;./lib/spring.jar;./lib/xercesImpl.jar;./lib/xmi.in.out.jar;./lib/xml-apis.jar gov.nih.nci.caadapter.hl7.transformation.data.PerformanceTestHL7Generating ";
-
+        String third = " N";
 
         path = path0 + "150000\\";
-        System.out.println(comm + path + "150000_basic.csv " +path + "150000_basic.map");
-        System.out.println(comm + path + "150000_ten.csv " +path + "150000_basic.map");
-        System.out.println(comm + path + "150000_hundred.csv " +path + "150000_basic.map");
-        System.out.println(comm + path + "150000_thousand.csv " +path + "150000_basic.map");
+        System.out.println(comm + path + "150000_basic.csv " +path + "150000_basic.map" + third);
+        System.out.println(comm + path + "150000_ten.csv " +path + "150000_basic.map" + third);
+        System.out.println(comm + path + "150000_hundred.csv " +path + "150000_basic.map" + third);
+        System.out.println(comm + path + "150000_thousand.csv " +path + "150000_basic.map" + third);
 
         path = path0 + "404001\\";
-        System.out.println(comm + path + "404001_basic.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_ten.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_hundred.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_thousand.csv " +path + "404001_basic.map");
+        System.out.println(comm + path + "404001_basic.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_ten.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_hundred.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_thousand.csv " +path + "404001_basic.map" + third);
 
         path = path0 + "040011\\";
-        System.out.println(comm + path + "040011_basic2.csv " +path + "040011_basic2.map");
-        System.out.println(comm + path + "040011_basic2_ten.csv " +path + "040011_basic2.map");
-        System.out.println(comm + path + "040011_basic2_hundred.csv " +path + "040011_basic2.map");
-        System.out.println(comm + path + "040011_basic2_thousand.csv " +path + "040011_basic2.map");
+        System.out.println(comm + path + "040011_basic2.csv " +path + "040011_basic2.map" + third);
+        System.out.println(comm + path + "040011_basic2_ten.csv " +path + "040011_basic2.map" + third);
+        System.out.println(comm + path + "040011_basic2_hundred.csv " +path + "040011_basic2.map" + third);
+        System.out.println(comm + path + "040011_basic2_thousand.csv " +path + "040011_basic2.map" + third);
 
         path = path0 + "404001\\";
-        System.out.println(comm + path + "404001_basic_oneBulk_1M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_2M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_twoBulk_2M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_3M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_4M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_5M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_6M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_7M.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_oneBulk_8M.csv " +path + "404001_basic.map");
+        System.out.println(comm + path + "404001_basic_oneBulk_1M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_2M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_twoBulk_2M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_3M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_4M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_5M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_6M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_7M.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_oneBulk_8M.csv " +path + "404001_basic.map" + third);
 
 
 
-        System.out.println(comm + path + "404001_basic_multi_seg_3000.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_multi_seg_4000.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_multi_seg_5000.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_multi_seg_6000.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_multi_seg_7000.csv " +path + "404001_basic.map");
-        System.out.println(comm + path + "404001_basic_thousand.csv " +path + "404001_basic.map");
+        System.out.println(comm + path + "404001_basic_multi_seg_3000.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_multi_seg_4000.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_multi_seg_5000.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_multi_seg_6000.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_multi_seg_7000.csv " +path + "404001_basic.map" + third);
+        System.out.println(comm + path + "404001_basic_multi_seg_8000.csv " +path + "404001_basic.map" + third);
         
 
 
@@ -177,17 +177,18 @@ public class PerformanceTestHL7Generating
     }
     public PerformanceTestHL7Generating(boolean ss, String csv, String map) //throws IOException
     {
-        processUnit(ss, csv, map);
+        processUnit2(ss, csv, map);
     }
     public PerformanceTestHL7Generating(String csv, String map) //throws IOException
     {
         processUnit(csv, map);
     }
-    public void processUnit(String csv, String map) //throws IOException
+    public PerformanceTestHL7Generating(String cc, String csv, String map) //throws IOException
     {
-        processUnit(false, csv, map);
+        processUnit2(csv, map);
     }
-    public void processUnit(boolean ss, String csv, String map) //throws IOException
+
+    public void processUnit(String csv, String map) //throws IOException
     {
         System.out.println("===========================================================================");
         System.out.println(" Source csv : " + csv);
@@ -197,11 +198,13 @@ public class PerformanceTestHL7Generating
         cal.setTime(dat);
         long dd1 = cal.getTimeInMillis();
         TransformationService serv = new TransformationService(map, csv);
+        serv.setOutputFile(new File(csv.replace(".", "_") + ".xml"));
         List<XMLElement> res = null;
+        int res1 = 0;
         try
         {
-            int res = serv.batchProcess();
-            res = serv.process();
+            res1 = serv.batchProcess();
+            //res = serv.process();
         }
         catch(Exception ee)
         {
@@ -217,6 +220,66 @@ public class PerformanceTestHL7Generating
             return;
             //throw new IOException("OutOfMemoryError : " + er.getMessage());
         }
+        if (res1 == 0)
+        {
+            System.out.println("*******************************\n  NO RESULT ");
+            return;
+        }
+        java.util.Date dat1 = new java.util.Date();
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(dat1);
+        long dd2 = cal1.getTimeInMillis();
+        int tm = (int)(dd2 - dd1);
+        double dl = (double)tm / 1000.0;
+
+        System.out.println("   time : " + dl);
+        System.out.println("   Generated message(s) : " + res1);
+//        int n = 0;
+//        for(XMLElement ele:res)
+//        {
+//            n++;
+//            ValidatorResults val = ele.getValidatorResults();
+//            StringBuffer msg = ele.toXML();
+//            if (ss) System.out.println("  ---- Validate Result ("+n+") ---------------------\n" + val.toString());
+//
+//            if (ss) System.out.println("  ---- HL7 message ("+n+") ---------------------\n" + msg.toString());
+//        }
+    }
+    public void processUnit2(String csv, String map) //throws IOException
+    {
+        processUnit2(false, csv, map);
+    }
+    public void processUnit2(boolean ss, String csv, String map) //throws IOException
+    {
+        System.out.println("===========================================================================");
+        System.out.println(" Source csv : " + csv);
+        System.out.println(" Source map : " + map);
+        java.util.Date dat = new java.util.Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dat);
+        long dd1 = cal.getTimeInMillis();
+        TransformationService serv = new TransformationService(map, csv);
+
+        List<XMLElement> res = null;
+        try
+        {
+            //int res1 = serv.batchProcess();
+            res = serv.process();
+        }
+        catch(Exception ee)
+        {
+            System.out.println("*******************************\n  Exception : " + ee.getMessage());
+            ee.printStackTrace();
+            return;
+            //throw new IOException("Exception : " + ee.getMessage());
+        }
+        catch(java.lang.OutOfMemoryError er)
+        {
+            System.out.println("*******************************\n OutOfMemoryError (1) : " + er.getMessage());
+            er.printStackTrace();
+            return;
+            //throw new IOException("OutOfMemoryError : " + er.getMessage());
+        }
         java.util.Date dat1 = new java.util.Date();
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(dat1);
@@ -226,18 +289,27 @@ public class PerformanceTestHL7Generating
 
         System.out.println("   time : " + dl);
         System.out.println("   Generated message(s) : " + res.size());
-        int n = 0;
-        for(XMLElement ele:res)
+        try
         {
-            n++;
-            ValidatorResults val = ele.getValidatorResults();
-            StringBuffer msg = ele.toXML();
-            if (ss) System.out.println("  ---- Validate Result ("+n+") ---------------------\n" + val.toString());
+            int n = 0;
+            for(XMLElement ele:res)
+            {
+                n++;
+                ValidatorResults val = ele.getValidatorResults();
+                StringBuffer msg = ele.toXML();
+                if (ss) System.out.println("  ---- Validate Result ("+n+") ---------------------\n" + val.toString());
 
-            if (ss) System.out.println("  ---- HL7 message ("+n+") ---------------------\n" + msg.toString());
+                if (ss) System.out.println("  ---- HL7 message ("+n+") ---------------------\n" + msg.toString());
+            }
+        }
+        catch(java.lang.OutOfMemoryError er)
+        {
+            System.out.println("*******************************\n OutOfMemoryError (2) : " + er.getMessage());
+            er.printStackTrace();
+            return;
+            //throw new IOException("OutOfMemoryError : " + er.getMessage());
         }
     }
-
     public static void main(String[] args)
     {
         if (args.length == 0) new PerformanceTestHL7Generating();
@@ -248,7 +320,11 @@ public class PerformanceTestHL7Generating
             {
                 new PerformanceTestHL7Generating(true, args[0], args[1]);
             }
-            else new PerformanceTestHL7Generating(args[0], args[1]);
+            else if ((args[2].equalsIgnoreCase("N"))||(args[2].equalsIgnoreCase("No")))
+            {
+                new PerformanceTestHL7Generating(false, args[0], args[1]);
+            }
+            else new PerformanceTestHL7Generating(args[2], args[0], args[1]);
         }
         else System.out.println("Invalid argument number : " + args.length);
     }
