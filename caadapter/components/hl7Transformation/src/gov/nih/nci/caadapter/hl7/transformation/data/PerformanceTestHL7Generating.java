@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jun 2, 2008
  *          Time:       10:53:35 PM $
  */
@@ -269,14 +269,16 @@ public class PerformanceTestHL7Generating
         catch(Exception ee)
         {
             System.out.println("*******************************\n  Exception : " + ee.getMessage());
-            ee.printStackTrace();
+            //ee.printStackTrace();
+            displayStackTrace(ee.getStackTrace());
             return;
             //throw new IOException("Exception : " + ee.getMessage());
         }
         catch(java.lang.OutOfMemoryError er)
         {
             System.out.println("*******************************\n OutOfMemoryError (1) : " + er.getMessage());
-            er.printStackTrace();
+            displayStackTrace(er.getStackTrace());
+            //er.printStackTrace();
             return;
             //throw new IOException("OutOfMemoryError : " + er.getMessage());
         }
@@ -305,9 +307,22 @@ public class PerformanceTestHL7Generating
         catch(java.lang.OutOfMemoryError er)
         {
             System.out.println("*******************************\n OutOfMemoryError (2) : " + er.getMessage());
-            er.printStackTrace();
+            //er.printStackTrace();
+            displayStackTrace(er.getStackTrace());
             return;
             //throw new IOException("OutOfMemoryError : " + er.getMessage());
+        }
+    }
+    private void displayStackTrace(StackTraceElement[] eles)
+    {
+        if (eles == null)
+        {
+            System.out.println("     **Null StackTrace");
+            return;
+        }
+        for (StackTraceElement ele:eles)
+        {
+            System.out.println("     " + ele.toString());
         }
     }
     public static void main(String[] args)
