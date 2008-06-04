@@ -322,7 +322,7 @@ public class XMIGenerator
 	/**
 	 * @param manytomanys
 	 */
-	public void addManyToManyTaggedValues(List manytomanys)
+	private void addManyToManyTaggedValues(List manytomanys)
 	{
 		for (int i = 0; i < manytomanys.size(); i++)
 		{
@@ -378,21 +378,10 @@ public class XMIGenerator
 			if (!isDepFound)
 			{
 			    //remove the JDomElement from Model 
-				logger.logInfo(this, "Dependency deleted...Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
+				logger.logInfo(this, "Dependency deleted from model...Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
 			    Element depElt=((UMLDependencyBean)dpcy).getJDomElement();
-			    List<Element> dpcyChildren=depElt.getParentElement().getChildren("Dependency",depElt.getNamespace());
-			    for (int i=0;i<dpcyChildren.size();i++)
-			    {
-			    	Element childElmnt=dpcyChildren.get(i);
-			    	String childClientId=childElmnt.getAttributeValue("client");
-			    	if (childClientId.equals(clientXmiId))
-			    	{
-			    		logger.logInfo(this, "Remove dependency from XMI file...index:"+i+"...Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
-			    		depElt.getParentElement().removeContent(childElmnt);
-			    		break;
-			    	}
-			    }
-			
+			    logger.logInfo(this, "Remove dependency section from XMI file....Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
+			    depElt.getParentElement().removeContent(depElt);//childElmnt);
 			    //remove the dependency from list of dependency associated with model
 			    model.getDependencies().remove(dpcyIndx-1);
 			}
@@ -421,11 +410,11 @@ public class XMIGenerator
 	    {
 	    	//modify the existing existing dependency
 	    	UMLDependencyBean existingDcpyBean=(UMLDependencyBean)existingDpcy;
-	    	logger.logInfo(this, "Dependency modified...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	    	String existClientXmiId=((UMLClassBean)existingDcpyBean.getClient()).getModelId();
 	    	String newClientXmiId=((UMLClassBean)client).getModelId();
 	    	if (!existClientXmiId.equals(newClientXmiId))
 	    	{
+	    		logger.logInfo(this, "Dependency modified...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	    		existingDcpyBean.getJDomElement().setAttribute("client",newClientXmiId);
 	    	}
 	    	return;  //return here since the dependency has been modified
@@ -550,7 +539,7 @@ public class XMIGenerator
 	 * @param model
 	 * @param attribute
 	 */
-	public void addManyToManyTaggedValue(UMLModel model, Element attribute)
+	private void addManyToManyTaggedValue(UMLModel model, Element attribute)
 	{
 		//Adding tagged values for attributes and single associations is pretty straightforward, however
 		//for many to many relationship its a little tricky. The caCORE sdk requires that the 
@@ -682,7 +671,7 @@ public class XMIGenerator
 		return hasInverseOfTaggedValue;
 	}
 	
-	public void addPrimaryKey( String pKey )
+	private void addPrimaryKey( String pKey )
 	{
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
@@ -729,7 +718,7 @@ public class XMIGenerator
     // existing information.  so the strategy here is to let it follow the order of the columns,
     // i.e., the first column applies to first level of inheritance, second column to second level, etc.
     // A hashmap is used to keep the current count of discriminators on a table.
-    public void addDiscriminatorKey( String dKey, HashMap<String, Integer> tableDiscriminatorCount)
+    private void addDiscriminatorKey( String dKey, HashMap<String, Integer> tableDiscriminatorCount)
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixDataModel() + "." + dKey;
 		UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
@@ -803,7 +792,7 @@ public class XMIGenerator
         }
 	}
     
-    public void addDiscriminatorValues( String dKey )
+    private void addDiscriminatorValues( String dKey )
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixObjectModel() + "." + dKey;
 		UMLClass clazz = ModelUtil.findClass(this.model, discriminatorKey);
@@ -824,7 +813,7 @@ public class XMIGenerator
 	 * @param pathToThisEnd
 	 * @return pathToOtherEnd
 	 */
-	public String getRecipricolRolePath(String pathToThisEnd)
+    private String getRecipricolRolePath(String pathToThisEnd)
 	{
 		StringBuffer pathToOtherEnd = new StringBuffer();
 		int end = pathToThisEnd.lastIndexOf(".");
@@ -863,7 +852,7 @@ public class XMIGenerator
 	 * @param grossPath
 	 * @return cleanPath
 	 */
-	public String getCleanPath(String grossPath)
+    private String getCleanPath(String grossPath)
     {
 		String cleanPath = null;
 		if (grossPath.startsWith( modelMetadata.getMmsPrefixObjectModel() ))
