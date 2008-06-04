@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.1 2007-09-08 21:00:50 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.2 2008-06-04 14:46:14 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -71,7 +71,7 @@ import java.util.jar.Attributes;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 12, 2007
  *          Time:       4:46:01 PM $
  */
@@ -90,10 +90,11 @@ public class ClassLoaderTest
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.1 2007-09-08 21:00:50 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.2 2008-06-04 14:46:14 umkis Exp $";
 
     public ClassLoaderTest(String name)
     {
+        System.out.println("Strat search : " + name);
         Enumeration<URL> fileURLs = null;
         try
         {
@@ -242,4 +243,7 @@ public class ClassLoaderTest
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/09/08 21:00:50  umkis
+ * HISTORY      : Temporary files will be automatically deleted when system exit.
+ * HISTORY      :
  */
