@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Jun 2, 2008
  *          Time:       10:53:35 PM $
  */
@@ -190,7 +190,7 @@ public class PerformanceTestHL7Generating
 
     public void processUnit(String csv, String map) //throws IOException
     {
-        System.out.println("===========================================================================");
+        System.out.println("BAT===========================================================================");
         System.out.println(" Source csv : " + csv);
         System.out.println(" Source map : " + map);
         java.util.Date dat = new java.util.Date();
@@ -253,7 +253,7 @@ public class PerformanceTestHL7Generating
     }
     public void processUnit2(boolean ss, String csv, String map) //throws IOException
     {
-        System.out.println("===========================================================================");
+        System.out.println("OLD===========================================================================");
         System.out.println(" Source csv : " + csv);
         System.out.println(" Source map : " + map);
         java.util.Date dat = new java.util.Date();
