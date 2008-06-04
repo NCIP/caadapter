@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jun 2, 2008
  *          Time:       10:53:35 PM $
  */
@@ -198,7 +198,7 @@ public class PerformanceTestHL7Generating
         cal.setTime(dat);
         long dd1 = cal.getTimeInMillis();
         TransformationService serv = new TransformationService(map, csv);
-        serv.setOutputFile(new File(csv.replace(".", "_") + ".xml"));
+        serv.setOutputFile(new File(csv.replace(".", "_") + ".zip"));
         List<XMLElement> res = null;
         int res1 = 0;
         try
