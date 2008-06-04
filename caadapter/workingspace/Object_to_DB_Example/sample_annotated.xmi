@@ -144,7 +144,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_D389D622_D7DA_4720_89C9_3BE621CE34A0" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_E461AB5F_3B0B_404e_8B20_D93C1A520EDC" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F1B49B13_9059_49ee_8AF1_76E6D458EC23" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.id" xmi.id="EAID_C25F78F5_1FE7_4B79_9DD1_2B2EAD8EA51D" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.id" xmi.id="EAID_D327A660_6A4E_413D_BFE1_536CE0AD0AA1" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="INSERT_SIZE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -178,7 +178,7 @@
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_D5F57315_476C_4e26_A019_C33DEE113CB8" />
                         <UML:TaggedValue tag="length" value="0" xmi.id="EAID_F191F1F6_FDD8_4b37_931A_9ECE986B5A38" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_F1C3ED7C_4F5C_4746_9F44_DD861FC1443B" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.insertSize" xmi.id="EAID_CAF53FC6_B4E1_4458_99A4_BD172E16FBDD" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.insertSize" xmi.id="EAID_133987BC_78D5_4B82_94DF_4B7CF5F43A3F" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CLONE_NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -212,7 +212,7 @@
                         <UML:TaggedValue tag="precision" value="0" xmi.id="EAID_D8140246_4497_464f_A0BE_54040DEA0898" />
                         <UML:TaggedValue tag="position" value="2" xmi.id="EAID_E58FE5BB_2B41_4cca_96C1_B08426985599" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_F5B3A745_65D7_4299_A2CC_9B8F826A76E8" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.name" xmi.id="EAID_5C2A5ECD_3B49_4671_9237_1283AB075A9C" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.name" xmi.id="EAID_2AEC464E_ADAB_42EA_87B2_8D0A5CB9ECC8" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="VERSION" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -246,7 +246,7 @@
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_D78F23B1_8E8B_4064_B465_D28512F0F370" />
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_F49E1284_DA5B_43ef_95E3_D1499440A425" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_F6A61E25_C78A_4244_8BF0_7D09438AD381" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.version" xmi.id="EAID_311F1A48_2259_44EE_BAD7_BD7877D685EC" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.version" xmi.id="EAID_B8281021_19C0_46BF_9B36_E28046BA9598" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="ACCESSION_NUMBER" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -280,7 +280,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_E93FFEDC_9613_46eb_8040_35FA7A4C849D" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F58E2CD2_94A0_474b_A176_622419718A2C" />
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_FDB39BCD_8341_4908_8CDD_5D4DB6462122" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.accessionNumber" xmi.id="EAID_9C29187E_E712_41CB_A819_9CBF5F97C0A2" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.accessionNumber" xmi.id="EAID_780B2496_E82A_4A28_B0F8_13583AF7F3A5" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CLONE_STRAIN" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -314,7 +314,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_F7D8F964_428E_4d6a_B473_FE1C5359AA51" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_F9D44788_A3F6_464d_9CB6_0276ECC2E0F1" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_FEDD9B91_AA85_4936_B399_7703D17B98D5" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.strain" xmi.id="EAID_AEB6B694_4E25_4C1F_8942_DB47B88D8854" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.strain" xmi.id="EAID_05E60818_C95C_4A64_ABCE_8A4FDFBA4FCF" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LIBRARY_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -347,7 +347,7 @@
                         <UML:TaggedValue tag="collection" value="true" xmi.id="EAID_C6B77FC8_F5C7_424d_8BD7_5E1345DBE25B" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_C99312E1_E00B_4a43_90C8_E2158740F7AC" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_DEC38F49_1337_4d20_8FAC_260F9F23DDEB" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Clone.library" xmi.id="EAID_40C3FFBF_6BE0_4EEE_B110_3619FED57937" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Clone.library" xmi.id="EAID_AC60B1A6_0CFB_426A_9714_25D0428D6FFC" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="VERIFIED" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -378,7 +378,7 @@
                         <UML:TaggedValue tag="position" value="7" xmi.id="EAID_A5EA3F5C_E151_4605_967F_F2E2CDCEA3FC" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_DD0C1DD3_FF76_41ea_BC0F_2C427B879CE8" />
                         <UML:TaggedValue tag="ea_guid" value="{4955C159-4404-4993-943F-2E6FE8152D63}" xmi.id="EAID_F3FA011D_7D54_446c_AFF3_CB4DD1525388" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.verified" xmi.id="EAID_4532C367_B4B4_459D_95FD_12E47BCED607" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Clone.verified" xmi.id="EAID_DB43B1EC_222B_4732_97F4_59D1355D904C" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_CLONE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -650,8 +650,8 @@
                         <UML:TaggedValue tag="type" value="NUMERIC" xmi.id="EAID_744F3071_BF67_4c21_9C94_71E83C89217C" />
                         <UML:TaggedValue tag="ea_guid" value="{1F2B4E1C-DFF6-4850-A2BD-399FABDD2225}" xmi.id="EAID_906045DF_4FFA_4fff_82BA_E90871D97198" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_DDFA1A40_2A6A_4b09_B0C8_8A572920C249" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Sequence.geneCollection" xmi.id="EAID_68062AE2_731B_4BF7_8BA0_9491E413C5B8" />
                         <UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cabio.domain.Gene.sequenceCollection" xmi.id="EAID_5E555E48_025B_466B_B984_94708BFE7969" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Sequence.geneCollection" xmi.id="EAID_CEB6B106_70AF_45D8_906B_E0453732CB2C" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="SEQUENCE_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -684,8 +684,8 @@
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_CD121A17_4238_4720_84C3_18344A855578" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_D7AF05E2_2282_46d0_828C_F573F82D70C2" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_EDA2B8BE_349D_4613_8B9E_8BC61E352A06" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.sequenceCollection" xmi.id="EAID_3D2E911F_471E_4D87_80BF_C0763D5D9BEE" />
                         <UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cabio.domain.Sequence.geneCollection" xmi.id="EAID_BFC16D49_431E_4B7F_9E96_FF2284DFCE4A" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.sequenceCollection" xmi.id="EAID_7C89DAF4_3AEB_4EEC_A395_EF257494ABA1" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="FK_GENE_SEQUENCE_GENE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -917,7 +917,7 @@
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_CFE0015E_02C3_4c36_A48F_BC054ED8FDB9" />
                         <UML:TaggedValue tag="precision" value="38" xmi.id="EAID_EC6F2BA3_AC42_49fd_9ECC_D118B39708A5" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_F9B8074E_493C_49d2_9A4D_49EEF0BBA5CA" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.id" xmi.id="EAID_924C76C1_4E26_4CC2_A273_9A4EBFA2E6D3" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.id" xmi.id="EAID_8F64C728_2298_4F1D_B769_458CFFE34350" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="SCIENTIFIC_NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -951,7 +951,7 @@
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_EE5D1B44_DAA8_46ca_9AF4_5EE42E5149FF" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_F1173174_39A9_41ea_9A80_95269CADA36D" />
                         <UML:TaggedValue tag="length" value="50" xmi.id="EAID_F15E9B07_524F_49fa_A73C_CFB5D9EE48AE" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.scientificName" xmi.id="EAID_2219DC8D_EDB3_427F_8C91_E9ECC7877240" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.scientificName" xmi.id="EAID_CC7C4538_1D07_4E48_A52D_7D26862C4BE3" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="STRAIN_OR_ETHNICITY" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -985,7 +985,7 @@
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_BFEB90C6_C0AE_41b6_9790_9F88FF69B7A3" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_C321C2D7_95F2_43eb_980A_5E08747441AF" />
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_E11DAC6D_6D4E_4c98_9F82_4EC68DF98642" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.ethnicityOrStrain" xmi.id="EAID_FD617AD1_05E2_4399_B02B_8D80E399986D" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.ethnicityOrStrain" xmi.id="EAID_AC845D55_8590_4D94_B2E4_7DE01EB520F7" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="COMMON_NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1019,7 +1019,7 @@
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_E57856B0_765B_4c0f_8092_3B126EE455E3" />
                         <UML:TaggedValue tag="length" value="50" xmi.id="EAID_E7046976_CF8C_4197_9249_AD99AFF21FC2" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_FB5EA90D_523D_4c87_BEB6_8DCC880302D9" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.commonName" xmi.id="EAID_71CACE25_A67C_4992_B594_3D052E627E68" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.commonName" xmi.id="EAID_A1E96915_8166_4F3A_97AD_ACCCE74CC5D3" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="PREFERRED" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1050,7 +1050,7 @@
                         <UML:TaggedValue tag="type" value="BOOL" xmi.id="EAID_C203F7D4_BDE6_4589_9AB0_0A89433D2ED0" />
                         <UML:TaggedValue tag="ea_guid" value="{1A627B7B-5D7F-4796-9F2E-4728388206A0}" xmi.id="EAID_D8BA3CB6_67BC_4fbe_AF04_92210417EB78" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_FCD02231_348F_4a68_B3C5_A0DB81F6F9BA" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.isPreferred" xmi.id="EAID_D0ABC86A_361C_42FE_BBBB_EE63407FAACF" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.isPreferred" xmi.id="EAID_26D04226_2355_4799_A385_E5844A01FE55" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="ABBREVIATION" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1084,7 +1084,7 @@
                         <UML:TaggedValue tag="precision" value="0" xmi.id="EAID_C6D9F298_B8BB_4433_8A62_0EA0292B6534" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_D6A62AF4_18EB_4e24_B74E_6B79AE6F66EB" />
                         <UML:TaggedValue tag="length" value="50" xmi.id="EAID_E3D02CE3_F9BF_4c34_8BD4_83500ABB6598" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.abbreviation" xmi.id="EAID_879EA33E_8755_427A_B887_CA76130EDFEF" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Taxon.abbreviation" xmi.id="EAID_833897FB_0F48_4ACF_A8FF_9E6B160D7E98" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_TAXON" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -1312,7 +1312,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_D5D5491D_DE55_4fb6_A671_91F3262A781F" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_E5295593_D177_45d0_9159_D2319659FE01" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_FB532446_8430_4105_9D26_CABFE8F90277" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.id" xmi.id="EAID_7FD7989D_E837_46BF_82E7_C36D127D46BC" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.id" xmi.id="EAID_6DDBCAED_2376_4694_AE7F_F767AC7FA8CA" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LIBRARY_TYPE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1346,7 +1346,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_C9C49046_8994_41bb_83A9_D4FF9EBB174F" />
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_CBE58C24_66A5_4ec4_B675_FF913A004434" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_DF9F28EE_1560_42de_BAE4_A245F2C49AB0" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.type" xmi.id="EAID_BEB30E50_3232_497E_BE6E_935A7AA19450" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.type" xmi.id="EAID_717D1C31_8947_4C44_A639_6CFCC0EA2F0F" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LIBRARY_NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1380,7 +1380,7 @@
                         <UML:TaggedValue tag="ea_guid" value="{3455A4B9-55B5-4ff7-8C30-9C6F56B2160D}" xmi.id="EAID_D1106DBC_77ED_4022_861D_569392A21200" />
                         <UML:TaggedValue tag="position" value="2" xmi.id="EAID_DBFB4515_1994_4632_9511_00C4F50C897D" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_E68B7767_D469_4089_9A1F_E3E54A3A24AB" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.name" xmi.id="EAID_4E3A19B7_4DF6_43B9_9D44_F8AFEE304590" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.name" xmi.id="EAID_5E49162B_25A1_42B2_B748_5DFCB84D2D02" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="DESCRIPTION" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1414,7 +1414,7 @@
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_B94A3959_50E3_4c5c_8219_DFBB14226074" />
                         <UML:TaggedValue tag="ea_guid" value="{5B7A1210-B6A0-4b5e-9D6C-6E876DD8EED0}" xmi.id="EAID_C04F70B7_8A7E_43ce_9486_FEDCE03C3087" />
                         <UML:TaggedValue tag="precision" value="0" xmi.id="EAID_D278239A_AFE3_40bc_AE72_F38543AF1B5A" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.description" xmi.id="EAID_1F0D45D8_5596_487E_B757_2438B5F776FC" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.description" xmi.id="EAID_EA348A89_5EFB_4E85_A97D_9944CC8699B3" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="KEYWORD" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1448,7 +1448,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_D181F042_5892_4ea6_844E_4F1FDF50A892" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_E952840A_36A6_4ac6_8A73_666733D9B835" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_F2976172_7643_4f8f_A232_F2D67FD2F85C" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.keyword" xmi.id="EAID_E4B30BAE_C3A6_43D3_B488_69D03C93186D" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.keyword" xmi.id="EAID_018809DC_8930_439F_A72B_01F0B807633B" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="R_SITE_1" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1482,7 +1482,7 @@
                         <UML:TaggedValue tag="position" value="5" xmi.id="EAID_C383A198_9FF8_490d_B375_64BE89A57FC2" />
                         <UML:TaggedValue tag="ea_guid" value="{906456D7-969B-479d-A4FE-7A81257305FF}" xmi.id="EAID_E4717136_41EC_4f14_888A_A2BF6CC8A95F" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_E83A7D16_9CFB_40d2_9E0D_B86FCD6604AE" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.RSite1" xmi.id="EAID_74344646_C270_465C_A138_3983F974A69A" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.RSite1" xmi.id="EAID_225E8C58_F5DB_424B_A108_CF016E3A4CE6" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="R_SITE_2" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1516,7 +1516,7 @@
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_DF126FBA_2BE3_4403_9150_D08D0ADF6567" />
                         <UML:TaggedValue tag="length" value="50" xmi.id="EAID_E4220587_CBF1_4d8a_BB35_7840DAFFE071" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_F30FDCD0_B542_4480_8587_43AD400DAE2D" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.RSite2" xmi.id="EAID_E5F724C1_C305_4911_9284_20059D24471E" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.RSite2" xmi.id="EAID_B120D586_B8F9_4502_9C9B_EB49B7C3E63F" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="SEQUENCES_TO_DATE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1550,7 +1550,7 @@
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_B08106C3_89F3_46b9_BDEA_F97880FE5D6F" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_C7946D52_D68D_4b7f_B12E_5380DC856A5C" />
                         <UML:TaggedValue tag="ea_guid" value="{2DCA7A3D-78A5-43b5-9B75-1CCAA5415C31}" xmi.id="EAID_E0CA0A8B_F162_49fa_9878_623A11E2EB9D" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.sequencesToDate" xmi.id="EAID_48D7DE22_A074_4AC9_AABB_59B60337EF2B" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.sequencesToDate" xmi.id="EAID_5F91204A_9828_4C16_89DA_5D79FB0C1546" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CLONES_TO_DATE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1584,7 +1584,7 @@
                         <UML:TaggedValue tag="length" value="0" xmi.id="EAID_E230182D_1CD9_4f56_9057_FB3073970925" />
                         <UML:TaggedValue tag="position" value="8" xmi.id="EAID_EC193E50_A583_474f_8FEA_9291E5ACD4AF" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_FDB87D97_1889_4f4a_8C32_214A8C77B843" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.clonesToDate" xmi.id="EAID_1D970EF1_46B9_4B5C_BB0F_F20CCC810395" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.clonesToDate" xmi.id="EAID_8519B175_76BE_40D7_8437_E4B7908B1B33" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="UNIGENE_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1618,7 +1618,7 @@
                         <UML:TaggedValue tag="ea_guid" value="{2BB4B59E-C451-4309-8329-7DD41D79D4F8}" xmi.id="EAID_8A62A189_C895_444c_890B_0F5A75C25937" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_C76CDFD7_FC77_40ff_A185_7CD1E7B77A3D" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_CC5BAD1E_F565_43dd_9FA1_CBEB99256055" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.unigeneId" xmi.id="EAID_224565F2_CF91_42A5_BAED_35ADE6905902" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.unigeneId" xmi.id="EAID_683A82F7_157D_4B0B_8340_0F52769F497B" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CREATE_DATE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1652,7 +1652,7 @@
                         <UML:TaggedValue tag="precision" value="0" xmi.id="EAID_BAF2D336_E7B5_4e52_8280_C465AFDC5231" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_C70E2BAA_5412_4fff_A44D_0D0EE337ABC0" />
                         <UML:TaggedValue tag="position" value="10" xmi.id="EAID_ED923F35_EEB2_448b_8793_0841D244124A" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.creationDate" xmi.id="EAID_007DD3CB_05A6_4AE0_9EA9_0F0B5C166D0F" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.creationDate" xmi.id="EAID_3DC682DB_BCE7_404B_BFA9_E4504825CFD6" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LAB_HOST" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1686,7 +1686,7 @@
                         <UML:TaggedValue tag="precision" value="0" xmi.id="EAID_F0639BB8_0603_405f_807A_C88B2DCA38F3" />
                         <UML:TaggedValue tag="ea_guid" value="{84BB7950-91B9-463f-84D8-4E26629191FD}" xmi.id="EAID_F1967C04_AF34_45b4_952D_114F246DD00F" />
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_F6BB2AC4_06A7_42db_A268_8A85DA45FD06" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.labHost" xmi.id="EAID_E085CA24_EACF_41B3_B9FB_1D11892F0245" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Library.labHost" xmi.id="EAID_F2AE7353_6224_4907_9222_47C8D7E843B0" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_LIBRARY" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -1872,7 +1872,7 @@
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_DC1DEBF7_B14E_4c07_86D7_B6EF5C48093D" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_E3D3A021_F8FD_4ce3_A8B7_2D1FAC2A5E33" />
                         <UML:TaggedValue tag="ea_guid" value="{49806200-C116-4bfa-A859-E763FBF35053}" xmi.id="EAID_F7C92840_3B11_49d5_936B_E0BD2E0CAB6D" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Library.geneCollection" xmi.id="EAID_D54587E5_5C58_46BB_8DFC_3F4577954647" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Library.geneCollection" xmi.id="EAID_3EBF5EB5_21F4_4D1D_A6FA_9BF48392DEA2" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LIBRARY_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -1905,8 +1905,8 @@
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_99059244_D220_4f63_B47D_83C469B2C555" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F4978319_1286_4e37_8025_AF6F35BF8F24" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_FDA0493A_82EE_4760_9F3C_BA51B4E599C8" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.libraryCollection" xmi.id="EAID_729EA5DF_842B_4527_A409_B062D3A3A8F4" />
                         <UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cabio.domain.Library.geneCollection" xmi.id="EAID_113D7569_CCE8_433E_A744_526757E4BA78" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.libraryCollection" xmi.id="EAID_3A53CF8F_4C83_4295_B8E9_1A2355705CB2" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="FK_LIBRARY_GENE_GENE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -2100,7 +2100,7 @@
                         <UML:TaggedValue tag="length" value="0" xmi.id="EAID_9CB153FC_B55E_4a78_8A42_73FB3CC9CBED" />
                         <UML:TaggedValue tag="position" value="0" xmi.id="EAID_B5A79E38_962F_4488_880C_4B2E91288392" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_B91CBC38_9C45_4861_BF89_609EAFE87A53" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Target.id" xmi.id="EAID_001FF76D_67A2_40E1_A6E8_66AFF82E8C7D" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Target.id" xmi.id="EAID_7A8C9083_4919_4E95_9627_BEC053223CCE" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="TARGET_NAME" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2134,7 +2134,7 @@
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_AEBD55D4_523D_4363_9D43_222D76FDA9F1" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_CFB3D239_0334_48ef_89C6_0C4765BDF4CF" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_E3E97D58_300D_47e5_B1C5_50C9A213AECD" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Target.name" xmi.id="EAID_65F37598_13B3_4C5A_A773_6E0C897E256E" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Target.name" xmi.id="EAID_DAA8B34C_254C_43BA_A670_7752C8D9FD69" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="TARGET_TYPE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2168,7 +2168,7 @@
                         <UML:TaggedValue tag="type" value="CHAR" xmi.id="EAID_DD5267AA_3350_4b6c_BF06_C49AB8FCCAE9" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_E99FB551_2327_45dc_8FE7_D6E3CDC7344B" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F05FC4E7_3B5E_4f50_876C_C15277C82905" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Target.type" xmi.id="EAID_E09B89B3_8500_48DC_A13A_72B3E7EC2D41" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Target.type" xmi.id="EAID_DCFC6C07_6105_4A44_8AB1_0112FD9F2352" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_TARGET" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -2404,7 +2404,7 @@
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_E1836AD6_58AC_4b1a_BAF1_D152AF042014" />
                         <UML:TaggedValue tag="type" value="NUMERIC" xmi.id="EAID_E4FBD9DD_F7AF_4641_A1F0_A0A48A471A3E" />
                         <UML:TaggedValue tag="precision" value="38" xmi.id="EAID_E87734B9_5A02_482f_B0EA_2F07D1FB61FC" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.id" xmi.id="EAID_90EF42AA_A76C_459D_A249_029B9929FA37" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.id" xmi.id="EAID_8436CE8C_6444_4FB6_92BF_F8E36766B0C8" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CLUSTER_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2438,7 +2438,7 @@
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_C30EAF94_0D97_45d0_9D70_F2BF5E2D7A0E" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_D640AAB6_5F3B_4676_A346_6C9BE152FB68" />
                         <UML:TaggedValue tag="length" value="0" xmi.id="EAID_D9EE42F7_2AB9_43be_8524_7DE76AB75ADF" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.clusterId" xmi.id="EAID_D42874F9_69AA_4E15_8EDE_4479F8756446" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.clusterId" xmi.id="EAID_8DC513AE_E8A5_4BAB_BF50_915694B98357" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="GENE_TITLE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2472,7 +2472,7 @@
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_D252587E_2A86_4f6a_8E1B_515C2D6F09F9" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_DE3EE33A_A709_4701_94F2_A4B1AE51C664" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_F4D8CD81_3A46_4d84_9C28_5D4D69C89E40" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.title" xmi.id="EAID_51856A26_A048_4A78_B5DE_171ECCA20373" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.title" xmi.id="EAID_39BE7AAB_34AA_404C_9117_5CE6BCB6BB7B" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LOCUS_LINK_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2506,7 +2506,7 @@
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_BDDB2608_7E0D_44c4_AF84_0FE6881F9146" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F658F100_D65C_4323_B5CF_E58854088FA9" />
                         <UML:TaggedValue tag="ea_guid" value="{66B47E2A-D1D9-4134-B8AC-FB66D03AB647}" xmi.id="EAID_F6B14BE3_C564_47c5_B4EC_DDC567CB49BF" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.locusLinkId" xmi.id="EAID_9FA2A10F_D8F8_4973_B6BA_453222613F74" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.locusLinkId" xmi.id="EAID_C50C97A2_94A7_49CB_B1A7_A4ADB65DAFD1" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="GENE_SYMBOL" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2540,7 +2540,7 @@
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_CEB1712C_A223_4383_8251_06587C103576" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_D0B69E8E_5496_4ad5_B904_093BD6914CF2" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_F0DC1266_2CEF_49c0_819F_B89B4CB2E0B3" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.symbol" xmi.id="EAID_FE1ABF3D_BA65_4C7F_8EEF_834B4B79D7A5" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.symbol" xmi.id="EAID_140EB673_D17F_42CE_AF82_5524EB39CA96" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="OMIM_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2574,7 +2574,7 @@
                         <UML:TaggedValue tag="position" value="5" xmi.id="EAID_BB4B1918_7B05_4572_A984_105D2630B9DE" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_C9EC70B3_0B38_4961_AE95_55A9B5C59071" />
                         <UML:TaggedValue tag="ea_guid" value="{D1AADA2A-AE4F-49d3-AE45-E213CE4BE9D9}" xmi.id="EAID_F63B8877_B65C_41bc_927F_8B305CE71886" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.OMIMID" xmi.id="EAID_F6BAB76B_19CC_4AA1_8A43_80D8E3B3B883" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.OMIMID" xmi.id="EAID_26768E2B_C8A8_492A_A4A4_D73001C6CDE5" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LOCUS_LINK_SUMMARY" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2608,7 +2608,7 @@
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F40131F5_E44A_419b_A3DE_7D5DDC7714AC" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_F5E0564A_3C84_4dbf_9A7B_603D16DC01F8" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_FDD0883B_F276_4779_8C82_88D0F4C64ACD" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.locusLinkSummary" xmi.id="EAID_EE2CF81B_B019_4669_941B_79997B861EAD" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Gene.locusLinkSummary" xmi.id="EAID_F1F25B8C_EE96_42C5_B150_43DB688C6A29" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CHROMOSOME_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2642,7 +2642,7 @@
                         <UML:TaggedValue tag="ea_guid" value="{2B9C1D11-4845-4aa7-B3A3-89E81D1F6609}" xmi.id="EAID_CA6D1021_2E4C_4858_9F2A_D05D009564F5" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_CC0A3E6E_5CC1_46cc_B662_E873BDA7F1B0" />
                         <UML:TaggedValue tag="position" value="7" xmi.id="EAID_D0DED211_13CE_4f63_9594_DFC6D633B499" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.chromosome" xmi.id="EAID_F830C04F_C2D3_4C50_A30E_2CDF028367D7" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.chromosome" xmi.id="EAID_B9DCA7C3_672D_4EEF_9D3C_3F204D157D86" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="TAXON_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -2676,7 +2676,7 @@
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_D0B70AAD_444F_4fe4_BAB9_F46DA83496BF" />
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_DD87F81D_0151_487f_9962_0AFCAA5B6672" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F4194566_CC28_4930_B733_615DCCFCAB65" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.taxon" xmi.id="EAID_1D61B4BE_99A6_4BB2_858A_F08D7429CA74" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.taxon" xmi.id="EAID_F1554C7C_E50A_4071_80CF_F9D6C679500A" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_GENE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -2999,7 +2999,7 @@
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_81C85FE0_3DE6_4097_84FC_C5707389589F" />
                         <UML:TaggedValue tag="type" value="NUMERIC" xmi.id="EAID_B6472B1B_F861_44ab_90E8_D35663E4AACA" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_C6AF096A_D730_4e6b_AE90_AFC85BF35625" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.id" xmi.id="EAID_F4283877_7310_42E6_8140_260CE2B4358F" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.id" xmi.id="EAID_DCC867D6_D6A7_4DE8_BBBF_C418ABE9D07F" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="ACCESSION_NUMBER" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3033,7 +3033,7 @@
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_9101FFDB_9FDF_417d_8297_10D4B23B531B" />
                         <UML:TaggedValue tag="position" value="1" xmi.id="EAID_EC918468_76D1_4dea_BC4A_A4E93BE5F4BD" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_FA44C9E0_A07B_4ab0_8F54_BF52A25054A1" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.accessionNumber" xmi.id="EAID_03C560A9_4CD0_490A_958A_DEF8CC4D1538" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.accessionNumber" xmi.id="EAID_E7C57620_43A7_45D4_9F29_D7FB67D499A3" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="IS_REF_SEQUENCE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3064,7 +3064,7 @@
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_B4B52AD5_C602_4f67_A4EE_D3154B7507AC" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_D7F91AED_9C02_4e98_B983_7E45241E06C0" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_D9D0F093_D32F_4c22_B906_3EC87BDD2250" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.isReferenceSequence" xmi.id="EAID_E5C4DEAC_ACEF_4275_8409_BBD87DAA2842" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.isReferenceSequence" xmi.id="EAID_3D913732_C238_4F1A_888D_789BC93CF7A6" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="DESCRIPTION" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3098,7 +3098,7 @@
                         <UML:TaggedValue tag="type" value="VARCHAR" xmi.id="EAID_E2876617_B71C_4b4a_8B33_7D8DCFB4500C" />
                         <UML:TaggedValue tag="position" value="3" xmi.id="EAID_F253198A_8787_40cd_BE90_7C72FB6886E4" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_FB7033F4_F574_4fb1_A389_9E1F9E373092" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.description" xmi.id="EAID_9F698CCD_99BD_4495_8EE5_C143B69DE0BE" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.description" xmi.id="EAID_4315B431_F7DD_441E_83A9_7A954FEE35D3" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="ASCII_STRING" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3132,7 +3132,7 @@
                         <UML:TaggedValue tag="precision" value="0" xmi.id="EAID_C7AA7FE2_568E_4dae_97CE_E04CF733783F" />
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_D6C47627_2897_4a20_8131_F38358B28484" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_F04D8CBE_A483_489a_B1DE_041DD17762AB" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.asciiString" xmi.id="EAID_DFFA7B6C_C146_4621_97BF_DE1F9217CF82" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.asciiString" xmi.id="EAID_E65FABD4_65E6_45C4_9AEF_0ADA742DB116" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="LENGTH" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3166,7 +3166,7 @@
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_C0EA585C_F79F_4013_B855_C3E04D2C5E7F" />
                         <UML:TaggedValue tag="ea_guid" value="{158D2200-AA3C-4a5e-B336-5445900C3E75}" xmi.id="EAID_D69175A8_FAA9_4d2f_B978_6042EEB286CA" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_F6105F7D_0277_4206_80AE_10D3E3010106" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.length" xmi.id="EAID_486FBD96_2BCD_4F7F_999A_C35A25630818" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.length" xmi.id="EAID_6319CA14_D816_43B4_890B_AEAB8CDA9455" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="SEQUENCE_TYPE" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3200,7 +3200,7 @@
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_90A2EAB0_63FE_4011_A3C8_25EFCADCA530" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_C2E20FB3_F7E1_4e46_88C9_18114B4EF98E" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_FBF05C82_CCAB_404e_855F_15F6B24C51D5" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.type" xmi.id="EAID_6C39D00C_A8DF_4F35_BAC6_04F87B4467A3" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.type" xmi.id="EAID_4BD33B8E_C1D7_460F_B495_B7E0DD5FDF70" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="VERSION" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3234,7 +3234,7 @@
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_B33ED62A_9DC2_4a03_AD09_B476E799F54C" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_B8FFF7B4_8CD7_4e9f_A466_F5F403DDFB30" />
                         <UML:TaggedValue tag="duplicates" value="0" xmi.id="EAID_DE7D2D69_CDB8_4dc5_8CC0_03810BADAB80" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.accessionNumberVersion" xmi.id="EAID_6826F3C3_0023_402A_A8F6_074C23329A32" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Sequence.accessionNumberVersion" xmi.id="EAID_AA58B855_FF49_4580_A503_92BB986EC58A" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CLONE_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3267,7 +3267,7 @@
                         <UML:TaggedValue tag="ea_guid" value="{0955DE2C-382B-40d2-96C5-717CDEBDB045}" xmi.id="EAID_E7210639_8E85_48c4_A663_998BC3496957" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_F4016A46_977E_4c20_AE72_1CE491354386" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F603A8F1_0878_4f99_9806_1CC0D28E3ED1" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Sequence.clone" xmi.id="EAID_1D6B780F_6A36_455C_8C72_54A1511C3ECF" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Sequence.clone" xmi.id="EAID_D743B6A2_482C_4951_A98A_B6B6CF72B154" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_SEQUENCE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -3460,8 +3460,8 @@
                         <UML:TaggedValue tag="position" value="0" xmi.id="EAID_DA264904_91A2_4235_B6C4_92040A87D87D" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_FD0C6C46_080D_410e_AFBC_D3365441BFE4" />
                         <UML:TaggedValue tag="type" value="NUMERIC" xmi.id="EAID_FD6C5851_1370_476e_A84B_D479917D33BD" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Target.geneCollection" xmi.id="EAID_5D671AED_0187_432B_9B82_0F0DD7DC8D07" />
                         <UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cabio.domain.Gene.targetCollection" xmi.id="EAID_7DBD8423_9375_429E_A707_AE8AA6AC4E2F" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Target.geneCollection" xmi.id="EAID_DC703A7F_0AC3_44F1_8934_DD6E15AA6ED9" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="TARGET_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3494,8 +3494,8 @@
                         <UML:TaggedValue tag="ordered" value="0" xmi.id="EAID_D1D85AC7_2A5F_4c0e_9DD4_E21A086F8F58" />
                         <UML:TaggedValue tag="scale" value="0" xmi.id="EAID_DF024322_F61C_4b99_A122_F34BE80DE9BF" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_EF4B92B1_37D4_47ad_AEA8_67CE19575B5E" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.targetCollection" xmi.id="EAID_48592489_C2B5_4994_B426_A7740108147C" />
                         <UML:TaggedValue tag="inverse-of" value="gov.nih.nci.cabio.domain.Target.geneCollection" xmi.id="EAID_D41A7D31_07EC_4C46_BF30_E04F28966B06" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Gene.targetCollection" xmi.id="EAID_FCA4E5EB_FED8_413C_A281_375701CB63A8" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="FK_GENE_TARGET_GENE" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -3647,7 +3647,7 @@
                         <UML:TaggedValue tag="duplicates" value="1" xmi.id="EAID_DBF3126F_5848_4010_B468_B4C08B11AAAB" />
                         <UML:TaggedValue tag="type" value="NUMERIC" xmi.id="EAID_EABFF782_6B53_4223_8FAA_C671CF91AF93" />
                         <UML:TaggedValue tag="upperBound" value="1" xmi.id="EAID_F41E8C94_7FCC_4a23_A0FD_465ECFC1BF8F" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Chromosome.id" xmi.id="EAID_A30F0415_79D4_465B_B950_D70DAC1E9733" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Chromosome.id" xmi.id="EAID_A1F006B7_07DF_4A38_BB80_46DE916DD3FA" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="CHROMOSOME_NUMBER" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3679,7 +3679,7 @@
                         <UML:TaggedValue tag="collection" value="false" xmi.id="EAID_D50E747E_2766_4ea5_8BEB_2DA58B93188D" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_D7135D87_58F8_4b85_A49B_A9B63336E4D2" />
                         <UML:TaggedValue tag="stereotype" value="column" xmi.id="EAID_E377D426_EA9E_43b2_B8BA_A6249E593AF0" />
-                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Chromosome.name" xmi.id="EAID_2062D01A_085F_4F18_AED5_35CBB52D2189" />
+                        <UML:TaggedValue tag="mapped-attributes" value="gov.nih.nci.cabio.domain.Chromosome.name" xmi.id="EAID_46243E2C_8369_4DB6_AEAC_F0D573588311" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Attribute name="TAXON_ID" changeable="none" visibility="public" ownerScope="instance" targetScope="instance">
@@ -3712,7 +3712,7 @@
                         <UML:TaggedValue tag="type" value="NUMERIC" xmi.id="EAID_C5FD8A13_E1FC_4a23_90B2_FD73C60FEFED" />
                         <UML:TaggedValue tag="precision" value="10" xmi.id="EAID_E016CA38_A7A2_429d_9A46_14914129A985" />
                         <UML:TaggedValue tag="lowerBound" value="1" xmi.id="EAID_F5F42EE2_A279_468c_9937_A565C5192107" />
-                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Chromosome.taxon" xmi.id="EAID_0A9BDD50_132E_4690_9CFB_A0A5B2A5FDEA" />
+                        <UML:TaggedValue tag="implements-association" value="gov.nih.nci.cabio.domain.Chromosome.taxon" xmi.id="EAID_59E320AF_9788_4688_ACD1_47A2BBBE7196" />
                       </UML:ModelElement.taggedValue>
                     </UML:Attribute>
                     <UML:Operation name="PK_CHROMOSOME" visibility="public" ownerScope="instance" isQuery="false" concurrency="sequential">
@@ -3851,6 +3851,97 @@
                     </UML:Operation>
                   </UML:Classifier.feature>
                 </UML:Class>
+                <UML:Dependency client="EAID_8B97E70D_FDDE_4c32_8A8A_6A74A24C0960" supplier="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9" name="dependency" xmi.id="EAID_28887A4C_6698_4FC4_ACC6_43D0024EF028">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="GENE" />
+                    <UML:TaggedValue tag="ea_targetName" value="Gene" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
+                <UML:Dependency client="EAID_42CB17FD_629A_4fde_AFFE_2AF32D751586" supplier="EAID_2B14ED6A_6DC5_48a3_AFA1_FDFCC30363AD" name="dependency" xmi.id="EAID_C844ECF2_5444_4E70_880D_CD9E0CC039CE">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="TAXON" />
+                    <UML:TaggedValue tag="ea_targetName" value="Taxon" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
+                <UML:Dependency client="EAID_01E0E997_B5D8_4caf_9A1C_A39C86434B71" supplier="EAID_34026E67_CD0A_4f15_B6AB_AD3A11509603" name="dependency" xmi.id="EAID_E6C536BE_82C3_4A5B_B952_2E04D36FBE39">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="CLONE" />
+                    <UML:TaggedValue tag="ea_targetName" value="Clone" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
+                <UML:Dependency client="EAID_D6AB86A4_3B7A_4513_BF06_0F7856945719" supplier="EAID_B383BA02_A63C_4199_9596_E9442A190AA2" name="dependency" xmi.id="EAID_759EB5A1_9674_444F_97AD_C8777D9513B5">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="CHROMOSOME" />
+                    <UML:TaggedValue tag="ea_targetName" value="Chromosome" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
+                <UML:Dependency client="EAID_A2E4E520_3A58_4695_9243_CF1D82012F9F" supplier="EAID_B743805D_29BB_490c_9ED7_BA74F8C1FB0B" name="dependency" xmi.id="EAID_B0602D48_01CB_4A7E_90C2_B409CDC3CE4F">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="SEQUENCE" />
+                    <UML:TaggedValue tag="ea_targetName" value="Sequence" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
+                <UML:Dependency client="EAID_82BC98EE_85B7_4ec6_AB93_ACF39502BBD1" supplier="EAID_E368F58E_6B0C_41e0_9F09_ABC065975476" name="dependency" xmi.id="EAID_5A90F91F_4E88_4B51_84E1_7DBDAB2ACBB9">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="TARGET" />
+                    <UML:TaggedValue tag="ea_targetName" value="Target" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
+                <UML:Dependency client="EAID_47E96644_E5DC_45a5_8EA3_3066210D3E55" supplier="EAID_EF3067A6_EBCF_4294_B730_5A2E38632DBA" name="dependency" xmi.id="EAID_5D0418A5_722F_45A4_A3BB_3220BB6E915B">
+                  <UML:ModelElement.stereotype>
+                    <UML:Stereotype name="DataSource" />
+                  </UML:ModelElement.stereotype>
+                  <UML:ModelElement.taggedValue>
+                    <UML:TaggedValue tag="stereotype" value="DataSource" />
+                    <UML:TaggedValue tag="ea_type" value="Dependency" />
+                    <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
+                    <UML:TaggedValue tag="style" value="3" />
+                    <UML:TaggedValue tag="ea_sourceName" value="LIBRARY" />
+                    <UML:TaggedValue tag="ea_targetName" value="Library" />
+                  </UML:ModelElement.taggedValue>
+                </UML:Dependency>
               </UML:Namespace.ownedElement>
             </UML:Package>
             <UML:Package name="Logical Model" xmi.id="EAPK_4D6BA798_0D31_45cf_A25C_DB8F66F2CCE2" isRoot="false" isLeaf="false" isAbstract="false" visibility="public">
@@ -4399,12 +4490,12 @@
                                         <UML:TaggedValue tag="seqno" value="0" xmi.id="EAID_4C3ED035_2883_4d2f_AAF8_6CF48995A08B" />
                                         <UML:TaggedValue tag="direction" value="Bi-Directional" xmi.id="EAID_4ECAAECA_A379_4d85_8340_1907AFEA5BC8" />
                                         <UML:TaggedValue tag="ea_type" value="Association" xmi.id="EAID_527B1D74_F6F0_4bc1_98AF_19DFCA995252" />
-                                        <UML:TaggedValue tag="correlation-table" value="LIBRARY_GENE" xmi.id="EAID_56A937BD_C59F_406a_AFF6_4FF14A64F2CF" />
                                         <UML:TaggedValue tag="headStyle" value="0" xmi.id="EAID_72B3A721_DF6B_48b7_B802_0539193ADB6B" />
                                         <UML:TaggedValue tag="linemode" value="3" xmi.id="EAID_A39E30EA_AE7D_43b2_B4C8_EC5EF9AAD441" />
                                         <UML:TaggedValue tag="virtualInheritance" value="0" xmi.id="EAID_C11F05FE_8D66_4c3f_812C_C465BCD1049F" />
                                         <UML:TaggedValue tag="lineStyle" value="0" xmi.id="EAID_D3F54D75_4E42_411f_B4BF_E548E7E38B87" />
                                         <UML:TaggedValue tag="style" value="3" xmi.id="EAID_F4A4984D_E85E_43d4_B88D_C381CDB6409A" />
+                                        <UML:TaggedValue tag="correlation-table" value="LIBRARY_GENE" xmi.id="EAID_651C16FF_657B_41C8_B577_DE8D79FC4A5B" />
                                       </UML:ModelElement.taggedValue>
                                       <UML:Association.connection>
                                         <UML:AssociationEnd visibility="public" multiplicity="0..*" name="geneCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9">
@@ -4439,13 +4530,13 @@
                                         <UML:TaggedValue tag="ea_targetID" value="117" />
                                         <UML:TaggedValue tag="ea_type" value="Association" xmi.id="EAID_0DAC0DB5_1F67_4b69_A776_64B5844C1E7B" />
                                         <UML:TaggedValue tag="linemode" value="3" xmi.id="EAID_59A4120B_540D_40f0_979F_5644E0163D85" />
-                                        <UML:TaggedValue tag="correlation-table" value="GENE_SEQUENCE" xmi.id="EAID_5DFAE779_EC34_4b14_924D_C152783D75FD" />
                                         <UML:TaggedValue tag="direction" value="Bi-Directional" xmi.id="EAID_5EA5C76C_4153_46fe_B060_1CFBCD887F2D" />
                                         <UML:TaggedValue tag="virtualInheritance" value="0" xmi.id="EAID_AACC2EF7_FF17_4343_A56C_70C97424DEDB" />
                                         <UML:TaggedValue tag="headStyle" value="0" xmi.id="EAID_E472E5A4_C14C_47eb_A9EE_D3CA61E58392" />
                                         <UML:TaggedValue tag="style" value="3" xmi.id="EAID_F6138C20_0BA5_4117_8FDD_50EE463F3A89" />
                                         <UML:TaggedValue tag="lineStyle" value="0" xmi.id="EAID_F98585D0_503B_4c59_A204_FA41A971ED23" />
                                         <UML:TaggedValue tag="seqno" value="0" xmi.id="EAID_F9A3F530_6FF0_473d_B451_1306BBA3A43C" />
+                                        <UML:TaggedValue tag="correlation-table" value="GENE_SEQUENCE" xmi.id="EAID_666F056A_2FEE_4F6E_B04C_AD7A41EB8A7D" />
                                       </UML:ModelElement.taggedValue>
                                       <UML:Association.connection>
                                         <UML:AssociationEnd visibility="public" multiplicity="0..*" name="geneCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9">
@@ -4486,7 +4577,7 @@
                                         <UML:TaggedValue tag="lineStyle" value="0" xmi.id="EAID_C7D4A6E2_D81C_41d7_B83D_7D8FE64F3C1A" />
                                         <UML:TaggedValue tag="seqno" value="0" xmi.id="EAID_DB214F43_9794_4f08_B9DF_59E289A1B2A3" />
                                         <UML:TaggedValue tag="virtualInheritance" value="0" xmi.id="EAID_E0D349CC_0D06_4edf_AA21_6B5545E5FCCE" />
-                                        <UML:TaggedValue tag="correlation-table" value="GENE_TARGET" xmi.id="EAID_F923990E_D7F4_45d7_B39E_EE93BFAB6751" />
+                                        <UML:TaggedValue tag="correlation-table" value="GENE_TARGET" xmi.id="EAID_30E4D229_9116_4BD1_8E61_0B4E4948B7F3" />
                                       </UML:ModelElement.taggedValue>
                                       <UML:Association.connection>
                                         <UML:AssociationEnd visibility="public" multiplicity="0..*" name="geneCollection" aggregation="none" isOrdered="false" isNavigable="true" type="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9">
@@ -6342,62 +6433,6 @@
                                         </UML:Attribute>
                                       </UML:Classifier.feature>
                                     </UML:Class>
-                                    <UML:Dependency client="EAID_8B97E70D_FDDE_4c32_8A8A_6A74A24C0960" supplier="EAID_108EADA7_2DB6_4f20_B78F_98B9622502F9" name="dependency" xmi.id="EAID_48B8E24E_1A9C_448F_8632_053D5080C855">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
-                                    <UML:Dependency client="EAID_42CB17FD_629A_4fde_AFFE_2AF32D751586" supplier="EAID_2B14ED6A_6DC5_48a3_AFA1_FDFCC30363AD" name="dependency" xmi.id="EAID_01CD1DB8_19C7_45D5_A9A7_B48AF98A8BF2">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
-                                    <UML:Dependency client="EAID_01E0E997_B5D8_4caf_9A1C_A39C86434B71" supplier="EAID_34026E67_CD0A_4f15_B6AB_AD3A11509603" name="dependency" xmi.id="EAID_E682A315_F720_4E4E_BCFF_109579E32066">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
-                                    <UML:Dependency client="EAID_D6AB86A4_3B7A_4513_BF06_0F7856945719" supplier="EAID_B383BA02_A63C_4199_9596_E9442A190AA2" name="dependency" xmi.id="EAID_A03EE48B_6E33_4445_8C72_FFB879308EDB">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
-                                    <UML:Dependency client="EAID_A2E4E520_3A58_4695_9243_CF1D82012F9F" supplier="EAID_B743805D_29BB_490c_9ED7_BA74F8C1FB0B" name="dependency" xmi.id="EAID_460ADB68_72C6_4F7D_83E4_237E3684E3F9">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
-                                    <UML:Dependency client="EAID_82BC98EE_85B7_4ec6_AB93_ACF39502BBD1" supplier="EAID_E368F58E_6B0C_41e0_9F09_ABC065975476" name="dependency" xmi.id="EAID_4BB984FB_2B43_4E70_B041_82FD9D66C4B0">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
-                                    <UML:Dependency client="EAID_47E96644_E5DC_45a5_8EA3_3066210D3E55" supplier="EAID_EF3067A6_EBCF_4294_B730_5A2E38632DBA" name="dependency" xmi.id="EAID_A9909430_8E2E_4071_BD0E_061495C1FBEA">
-                                      <UML:ModelElement.taggedValue>
-                                        <UML:TaggedValue tag="stereotype" value="DataSource" />
-                                        <UML:TaggedValue tag="ea_type" value="Dependency" />
-                                        <UML:TaggedValue tag="direction" value="Source -&gt; Destination" />
-                                        <UML:TaggedValue tag="style" value="3" />
-                                      </UML:ModelElement.taggedValue>
-                                    </UML:Dependency>
                                   </UML:Namespace.ownedElement>
                                 </UML:Package>
                               </UML:Namespace.ownedElement>
