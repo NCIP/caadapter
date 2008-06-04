@@ -66,7 +66,7 @@ import java.util.List;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jun 2, 2008
  *          Time:       10:53:35 PM $
  */
@@ -199,7 +199,7 @@ public class PerformanceTestHL7Generating
         long dd1 = cal.getTimeInMillis();
         TransformationService serv = new TransformationService(map, csv);
         serv.setOutputFile(new File(csv.replace(".", "_") + ".zip"));
-        List<XMLElement> res = null;
+
         int res1 = 0;
         try
         {
@@ -209,14 +209,16 @@ public class PerformanceTestHL7Generating
         catch(Exception ee)
         {
             System.out.println("*******************************\n  Exception : " + ee.getMessage());
-            ee.printStackTrace();
+            //ee.printStackTrace();
+            displayStackTrace(ee.getStackTrace());
             return;
             //throw new IOException("Exception : " + ee.getMessage());
         }
         catch(java.lang.OutOfMemoryError er)
         {
             System.out.println("*******************************\n OutOfMemoryError : " + er.getMessage());
-            er.printStackTrace();
+            //er.printStackTrace();
+            displayStackTrace(er.getStackTrace());
             return;
             //throw new IOException("OutOfMemoryError : " + er.getMessage());
         }
