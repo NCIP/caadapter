@@ -1,5 +1,5 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.15 2008-04-25 04:46:19 umkis Exp $
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.16 2008-06-04 14:45:25 umkis Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -94,7 +94,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.15 $
+ *          revision    $Revision: 1.16 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -114,7 +114,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.15 2008-04-25 04:46:19 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.16 2008-06-04 14:45:25 umkis Exp $";
 
     boolean isCode = false;
 
@@ -419,9 +419,30 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 line = changeLine(line, changeList, field, segmentOri);
 
                 if (line.toLowerCase().indexOf("code.originaltext.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("code00.originaltext.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("code01.originaltext.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("code02.originaltext.inlinetext => ") > 0) line = "";
+
+                if (line.toLowerCase().indexOf("uantity.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("uantity00.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("uantity01.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("uantity02.translation.") > 0) line = "";
+
                 if (line.toLowerCase().indexOf("code.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("code00.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("code01.translation.") > 0) line = "";
+                if (line.toLowerCase().indexOf("code02.translation.") > 0) line = "";
+
+
                 if (line.toLowerCase().indexOf("name.validtime.") > 0) line = "";
+                if (line.toLowerCase().indexOf("name00.validtime.") > 0) line = "";
+                if (line.toLowerCase().indexOf("name01.validtime.") > 0) line = "";
+                if (line.toLowerCase().indexOf("name02.validtime.") > 0) line = "";
+
                 if (line.toLowerCase().indexOf("addr.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("addr00.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("addr01.inlinetext => ") > 0) line = "";
+                if (line.toLowerCase().indexOf("addr02.inlinetext => ") > 0) line = "";
 
                 if ((line!=null)&&(!line.trim().equals("")))
                 {
@@ -1880,6 +1901,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/04/25 04:46:19  umkis
+ * HISTORY      : getVocabularySeeker() was picked out from GeneralUtilities and moved into VocabulraryGeneralUtilities.
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2008/04/23 18:12:02  umkis
  * HISTORY      : H3S test instance generator install onto ManuBar
  * HISTORY      :
