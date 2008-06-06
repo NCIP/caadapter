@@ -6,7 +6,7 @@
 			<props>
 				<prop key="Logical Model">Logical View.Logical Model</prop>
 				<prop key="Data Model">Logical View.Data Model</prop>
-				<prop key="Include Package">com</prop>
+				<prop key="Include Package">com, gov</prop>
 				<prop key="Exclude Package"></prop>
 				<prop key="Exclude Name"></prop>
 			</props>
