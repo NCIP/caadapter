@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="caAdapter" default="jar.all" basedir=".">
+<project name="caAdapter" default="dist.bin" basedir=".">
     <description>
         **************************************************************************
         caAdapter ANT BUILD SCRIPT
@@ -37,9 +37,9 @@
 
     <!-- Mailer properties begin-->
     <property name="MailLogger.from" value="caAdapter.build.notifier"/>
-    <property name="MailLogger.failure.to" value="jayannah@mail.nih.gov,wuye@mail.nih.gov,wangeug@mail.nih.gov,schroedln@mail.nih.gov"/>
+    <property name="MailLogger.failure.to" value="jayannah@mail.nih.gov,wuye@mail.nih.gov,wangeug@mail.nih.gov,linc3@mail.nih.gov"/>
     <property name="MailLogger.mailhost" value="mailfwd.nih.gov"/>
-    <property name="MailLogger.success.to" value="jayannah@mail.nih.gov,wuye@mail.nih.gov,wangeug@mail.nih.gov,schroedln@mail.nih.gov"/>
+    <property name="MailLogger.success.to" value="jayannah@mail.nih.gov,wuye@mail.nih.gov,wangeug@mail.nih.gov,linc3@mail.nih.gov"/>
     <property name="MailLogger.success.subject" value="Build successful"/>
     <property name="MailLogger.failure.subject" value="Build failed"/>
     <property name="MailLogger.success.notify" value="on"/>
@@ -80,7 +80,7 @@
     <property name="ws.module.home" value="${basedir}/components/webservices"/>
     <property name="ws.module.build" value="${ws.module.home}/build.xml"/>
 
-    <target name="jar.all" depends="build.modules">
+    <target name="compile" depends="build.modules">
         <echo message="-------- build jar for all modules  --------"/>
         <copy todir="${build.dir}">
             <fileset dir="${common.module.home}/build"/>
@@ -116,11 +116,15 @@
             <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
         </jar>
     	
+    	<antcall target="add-license"/>
+		<antcall target="dist.prepare" />
+    </target>
+
+    <target name="dist.src">
     	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
     	<delete>
     		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
     	</delete>
-    	<antcall target="add-license"/>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 					excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
 					docs/GME/**, docs/v4.0/**,
@@ -135,10 +139,13 @@
 			docs/v4.0/*Case*.doc,
 			referenceLib/**">
 		</zip -->
-	<antcall target="dist.prepare" />
     </target>
 
-    <target name="build-all" depends="jar.all">
+    <target name="dist.bin" depends="compile, dist.src">
+		<ant dir="${dist.dir}" inheritAll="false" target="demo.zip"/>
+	</target>
+
+    <target name="build-all" depends="compile">
         <copy todir="${dist.dir}">
             <fileset dir="${ws.module.home}/dist">
                 <include name="**/caAdapterWS.war"/>
@@ -809,7 +816,9 @@
         <echo message="-------- clean ${project.name}  --------"/>
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
-        <delete dir="gencode"/>
+		<delete includeemptydirs="true">
+			<fileset dir="gencode" includes="**/*" excludes="**/CVS/*" />
+		</delete>
         <ant antfile="${common.module.build}" target="clean"/>
         <ant antfile="${hl7.module.build}" target="clean"/>
         <ant antfile="${mms.module.build}" target="clean"/>
@@ -817,11 +826,6 @@
         <ant antfile="${sdtm.module.build}" target="clean"/>
         <ant antfile="${ui.module.build}" target="clean"/>
         <ant antfile="${ws.module.build}" target="clean"/>
-    </target>
-
-    <target name="build" description="build caadapter">
-
-        <echo message="-------- clean ${project.name}  --------"/>        
     </target>
 
 	<!-- ************************************************************************************************-->
