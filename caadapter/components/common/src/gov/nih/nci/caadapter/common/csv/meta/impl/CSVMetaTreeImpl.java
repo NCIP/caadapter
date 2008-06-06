@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.2 2007-07-17 16:16:34 wangeug Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.3 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,6 +50,7 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
 
 package gov.nih.nci.caadapter.common.csv.meta.impl;
@@ -76,9 +78,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 3, 2007
  *          Time:       11:21:13 AM $
  */
@@ -97,7 +99,7 @@ public class CSVMetaTreeImpl extends MetaTreeMetaImpl implements CSVMetaTree
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.2 2007-07-17 16:16:34 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVMetaTreeImpl.java,v 1.3 2008-06-06 18:54:28 phadkes Exp $";
 
     private final String csvMetaExtention = "scs";
     private final String csvDataExtention = "csv";
@@ -214,6 +216,9 @@ public class CSVMetaTreeImpl extends MetaTreeMetaImpl implements CSVMetaTree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/07/17 16:16:34  wangeug
+ * HISTORY      : change UIUID to xmlPath
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/09 15:37:33  umkis
  * HISTORY      : csv cardinality
  * HISTORY      :

@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.3 2007-08-02 14:24:46 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.4 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.common.standard.impl;
 
 import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
@@ -70,9 +72,9 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jul 2, 2007
  *          Time:       8:08:54 PM $
  */
@@ -91,7 +93,7 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.3 2007-08-02 14:24:46 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/impl/CommonSegmentImpl.java,v 1.4 2008-06-06 18:54:28 phadkes Exp $";
 
     private List<CommonNode> children = new ArrayList<CommonNode>();
 
@@ -679,6 +681,9 @@ public class CommonSegmentImpl extends CommonNodeImpl implements CommonSegment
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2007/08/02 14:24:46  umkis
+ * HISTORY      : Update test instance generator engine
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/17 16:11:23  wangeug
  * HISTORY      : change UIUID to xmlPath
  * HISTORY      :

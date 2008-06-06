@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/CommonField.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/CommonField.java,v 1.2 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.common.standard;
 
 import gov.nih.nci.caadapter.castor.csv.meta.impl.types.BasicDataType;
@@ -60,9 +62,9 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       7:41:31 PM $
  */
@@ -82,5 +84,8 @@ public interface CommonField extends CommonNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */
 

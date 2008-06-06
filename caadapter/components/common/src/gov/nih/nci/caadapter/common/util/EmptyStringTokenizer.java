@@ -1,5 +1,6 @@
 /**
- * <!-- LICENSE_TEXT_START --> $Header: /share/content/cvsroot/hl7sdk/src/gov/nih/nci/caAdapter/ui/V2V3Util/EmptyStringTokenizer.java,v 1.2 2006/10/03 15:14:29
+ * <!-- LICENSE_TEXT_START --> 
+ * $Header: /share/content/cvsroot/hl7sdk/src/gov/nih/nci/caAdapter/ui/V2V3Util/EmptyStringTokenizer.java,v 1.2 2006/10/03 15:14:29
  * jayannah Exp $ ****************************************************************** COPYRIGHT NOTICE
  * ****************************************************************** The caAdapter Software License, Version 3.2 Copyright Notice. Copyright 2006 SAIC. This
  * software was developed in conjunction with the National Cancer Institute. To the extent government employees are co-authors, any rights in such works are
@@ -16,7 +17,8 @@
  * CANCER INSTITUTE, SAIC, OR THEIR AFFILIATES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
- * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. <!-- LICENSE_TEXT_END -->
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * <!-- LICENSE_TEXT_END -->
  */
 
 package gov.nih.nci.caadapter.common.util;
@@ -27,8 +29,8 @@ import java.util.ArrayList;
  * This class provides empty tokens if the string has empty commas and toArray() and getTokenAt() implementations.
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $ date $Date: 2007-10-10 19:47:04 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $ date $Date: 2008-06-06 18:54:28 $
  */
 public class EmptyStringTokenizer
 {
@@ -186,6 +188,9 @@ public class EmptyStringTokenizer
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.4  2007/10/10 19:47:04  jayannah
+ * HISTORY : commented a System.out
+ * HISTORY :
  * HISTORY : Revision 1.3  2007/07/19 18:33:32  jayannah
  * HISTORY : Changes for 4.0 release
  * HISTORY :

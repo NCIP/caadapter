@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/CSVMetaValidator.java,v 1.1 2007-07-09 15:40:56 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/CSVMetaValidator.java,v 1.2 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.common.validation;
 
 import gov.nih.nci.caadapter.common.MessageResources;
@@ -81,9 +83,9 @@ import java.io.FileNotFoundException;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 2, 2007
  *          Time:       5:59:39 PM $
  */
@@ -91,15 +93,15 @@ import java.io.FileNotFoundException;
  * Used to validate CSV metadata (scs files).
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.1 $
- * @date $Date: 2007-07-09 15:40:56 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version $Revision: 1.2 $
+ * @date $Date: 2008-06-06 18:54:28 $
  * @since caAdapter v1.2
  */
 public class CSVMetaValidator extends Validator
 {
 	private static final String LOGID = "$RCSfile: CSVMetaValidator.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/CSVMetaValidator.java,v 1.1 2007-07-09 15:40:56 umkis Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/validation/CSVMetaValidator.java,v 1.2 2008-06-06 18:54:28 phadkes Exp $";
 
 	private List<CSVSegmentMeta> segmentArray = null;
 
@@ -703,4 +705,7 @@ public class CSVMetaValidator extends Validator
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:40:56  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  */

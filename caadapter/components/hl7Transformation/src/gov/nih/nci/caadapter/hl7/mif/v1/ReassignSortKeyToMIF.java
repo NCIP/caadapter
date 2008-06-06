@@ -1,4 +1,5 @@
 /*
+ * <!-- LICENSE_TEXT_START -->
  *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/ReassignSortKeyToMIF.java,v 1.00 Mar 20, 2008 4:12:07 PM umkis Exp $
  *
  * ******************************************************************
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -71,9 +73,9 @@ import java.util.Stack;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Mar 20, 2008
  *          Time:       4:12:07 PM $
  */

@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/CommonAttribute.java,v 1.1 2007-07-09 15:39:24 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/standard/CommonAttribute.java,v 1.2 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.common.standard;
 
 import gov.nih.nci.caadapter.castor.csv.meta.impl.types.BasicDataType;
@@ -63,9 +65,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Apr 24, 2007
  *          Time:       7:09:06 PM $
  */
@@ -109,6 +111,9 @@ public interface CommonAttribute
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/05/22 14:53:14  umkis
  * HISTORY      : Common Standard Node and Tree
  * HISTORY      :
@@ -118,5 +123,8 @@ public interface CommonAttribute
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:39:24  umkis
+ * HISTORY      : Basic resource programs for csv cardinality and test instance generating.
+ * HISTORY      :
  */
 

@@ -1,4 +1,5 @@
 /*
+ * <!-- LICENSE_TEXT_START -->
  *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/V2MessageBrowser.java,v 1.00 Jan 17, 2008 4:30:30 PM umkis Exp $
  *
  * ******************************************************************
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.hl7.v2v3.tools;
 
 import edu.knu.medinfo.hl7.v2tree.ElementNode;
@@ -77,9 +79,9 @@ import java.util.StringTokenizer;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jan 17, 2008
  *          Time:       4:30:30 PM $
  */
@@ -98,7 +100,7 @@ public class V2MessageBrowser extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/v2v3/tools/V2MessageBrowser.java,v 1.2 2008-05-29 01:26:09 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/v2v3/tools/V2MessageBrowser.java,v 1.3 2008-06-06 18:54:56 phadkes Exp $";
 
     private HL7V2MessageTree messaggTree;
 

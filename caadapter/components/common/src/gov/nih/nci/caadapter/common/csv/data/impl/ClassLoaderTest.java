@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.2 2008-06-04 14:46:14 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.3 2008-06-06 18:53:56 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,6 +50,7 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
 
 package gov.nih.nci.caadapter.common.csv.data.impl;
@@ -69,9 +71,9 @@ import java.util.jar.Attributes;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Jul 12, 2007
  *          Time:       4:46:01 PM $
  */
@@ -90,7 +92,7 @@ public class ClassLoaderTest
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.2 2008-06-04 14:46:14 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.3 2008-06-06 18:53:56 phadkes Exp $";
 
     public ClassLoaderTest(String name)
     {
@@ -243,6 +245,9 @@ public class ClassLoaderTest
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/04 14:46:14  umkis
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/09/08 21:00:50  umkis
  * HISTORY      : Temporary files will be automatically deleted when system exit.
  * HISTORY      :

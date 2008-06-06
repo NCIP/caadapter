@@ -1,4 +1,5 @@
 /*
+ * <!-- LICENSE_TEXT_START -->
  *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/SampleTempV2FromCSV.java,v 1.00 Jan 15, 2008 1:03:44 PM umkis Exp $
  *
  * ******************************************************************
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.hl7.v2v3.v2gene;
 
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -61,9 +63,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Jan 15, 2008
  *          Time:       1:03:44 PM $
  */

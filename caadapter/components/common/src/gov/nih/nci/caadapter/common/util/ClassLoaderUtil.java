@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.7 2008-03-25 02:07:02 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.8 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.common.util;
 
 import java.net.URL;
@@ -72,9 +74,9 @@ import java.io.DataInputStream;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.7 $
+ *          revision    $Revision: 1.8 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -93,7 +95,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.7 2008-03-25 02:07:02 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.8 2008-06-06 18:54:28 phadkes Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -382,6 +384,9 @@ public class ClassLoaderUtil
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/03/25 02:07:02  umkis
+ * HISTORY      : add getURLs()
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/09/07 14:40:21  umkis
  * HISTORY      : Temporary files will be automatically deleted when system exit.
  * HISTORY      :

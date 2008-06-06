@@ -1,4 +1,5 @@
 /*
+ * <!-- LICENSE_TEXT_START -->
  *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/PerformanceTestHL7Generating.java,v 1.00 Jun 2, 2008 10:53:35 PM umkis Exp $
  *
  * ******************************************************************
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
@@ -64,9 +66,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.6 $
+ *          revision    $Revision: 1.7 $
  *          date        Jun 2, 2008
  *          Time:       10:53:35 PM $
  */

@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/CSVDataTree.java,v 1.1 2007-07-09 15:36:40 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/CSVDataTree.java,v 1.2 2008-06-06 18:53:45 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE  
@@ -49,6 +50,7 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
 
 package gov.nih.nci.caadapter.common.csv.data;
@@ -60,9 +62,9 @@ import gov.nih.nci.caadapter.common.standard.DataTree;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Jul 3, 2007
  *          Time:       11:10:00 AM $
  */
@@ -76,5 +78,8 @@ public interface CSVDataTree extends DataTree
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/07/09 15:36:40  umkis
+ * HISTORY      : csv cardinality
+ * HISTORY      :
  */
 

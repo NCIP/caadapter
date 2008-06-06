@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.2 2007-10-03 21:54:31 umkis Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.3 2008-06-06 18:54:55 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -82,10 +84,10 @@ import org.xml.sax.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-10-03 21:54:31 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-06-06 18:54:55 $
  */
 public class FunctionVocabularyMapping
 {
@@ -102,7 +104,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.2 2007-10-03 21:54:31 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.3 2008-06-06 18:54:55 phadkes Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -875,6 +877,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/10/03 21:54:31  umkis
+ * HISTORY      : Removed the problem of calling vom.xsd file from the resource zip file.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 18:26:25  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

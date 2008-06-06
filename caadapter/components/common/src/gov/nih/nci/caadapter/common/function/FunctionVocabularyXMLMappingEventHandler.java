@@ -1,5 +1,6 @@
 /*
- *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyXMLMappingEventHandler.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $
+ * <!-- LICENSE_TEXT_START -->
+ *  $Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyXMLMappingEventHandler.java,v 1.2 2008-06-06 18:54:28 phadkes Exp $
  *
  * ******************************************************************
  * COPYRIGHT NOTICE
@@ -49,6 +50,7 @@
  *
  *
  * ******************************************************************
+ * <!-- LICENSE_TEXT_END -->
  */
 
 package gov.nih.nci.caadapter.common.function;
@@ -66,10 +68,10 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2007-04-03 16:02:37 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-06-06 18:54:28 $
  */
 public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
 {
@@ -86,7 +88,7 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyXMLMappingEventHandler.java,v 1.1 2007-04-03 16:02:37 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyXMLMappingEventHandler.java,v 1.2 2008-06-06 18:54:28 phadkes Exp $";
 
     private FunctionVocabularyEventHandlerNode head = null;
     private FunctionVocabularyEventHandlerNode current = null;
@@ -384,6 +386,9 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
+ * HISTORY      : initial loading of common module
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2006/11/02 18:38:04  umkis
  * HISTORY      : XML format vom file must be validated before recorded into a map file with the xml schema file which is directed by Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION.
  * HISTORY      :

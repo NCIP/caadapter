@@ -1,4 +1,5 @@
 /*
+ * <!-- LICENSE_TEXT_START -->
  *  : /share/content/cvsroot/hl7sdk/src/gov/nih/nci/hl7/common/standard/impl/VocabularyGeneralUtilities.java,v 1.00 Apr 25, 2008 12:31:37 AM umkis Exp $
  *
  * ******************************************************************
@@ -49,8 +50,9 @@
  *
  *
  * ******************************************************************
+* <!-- LICENSE_TEXT_END -->
  */
-
+ 
 package gov.nih.nci.caadapter.hl7.vocabulary;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -59,9 +61,9 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.1 $
+ *          revision    $Revision: 1.2 $
  *          date        Apr 25, 2008
  *          Time:       12:31:37 AM $
  */
