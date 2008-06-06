@@ -24,16 +24,16 @@ import java.util.ArrayList;
  * This class defines the new Map panel action.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: schroedn $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-02-04 15:10:34 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-06-06 20:39:43 $
  */
 public class NewXsdToXmiMapAction extends AbstractContextAction
 		{
 	private static final String COMMAND_NAME = "XSD Meta To XMI Model Mapping";
 	private static final Character COMMAND_MNEMONIC = new Character('X');
-	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, false);
+	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_G, Event.CTRL_MASK, false);
 
 	private AbstractMainFrame mainFrame;
 
@@ -120,6 +120,9 @@ public class NewXsdToXmiMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/02/04 15:10:34  schroedn
+ * HISTORY      : XSD to XMI Mapping - GME initial load
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/12/13 15:29:09  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :
