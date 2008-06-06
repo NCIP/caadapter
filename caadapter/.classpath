@@ -25,5 +25,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/uiModuleLib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/caadapterProjectLib"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/axisLib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jfreechart-1.0.9"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jgraph-5.12.1.0"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
