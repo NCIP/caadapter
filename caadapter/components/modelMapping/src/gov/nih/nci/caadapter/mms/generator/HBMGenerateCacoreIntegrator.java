@@ -1,7 +1,9 @@
 package gov.nih.nci.caadapter.mms.generator;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Properties;
+
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
 import gov.nih.nci.codegen.GenerationException;
@@ -12,8 +14,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 
 public class HBMGenerateCacoreIntegrator {
-	public static String GENERATOR_CONFIG="conf/CodegenConfig.xml";//CodegenConfig.xml";
-	private HibernateMappingTransformer transformer;
+	public static String GENERATOR_CONFIG="conf/CodegenConfig.xml";
+	public static String GENERATOR_CONFIG_WEBSTART="CodegenConfig.xml";
 	private static HBMGenerateCacoreIntegrator generator;
 	/**
 	 * Impplemnt HBMGenerateCacoreIntegrator with factory design pattern
@@ -24,20 +26,33 @@ public class HBMGenerateCacoreIntegrator {
 		if (generator==null)
 		{
 			generator=new HBMGenerateCacoreIntegrator();
-			generator.init(GENERATOR_CONFIG);
+			File srcFile=new  File(GENERATOR_CONFIG);
+	    	if (srcFile.exists())
+	    	{
+	    		
+				try {
+					generator.init(GENERATOR_CONFIG);
+				} catch (Exception e) 
+				{
+					e.printStackTrace();
+				}   
+	    	}
+	    	else
+	    	{
+				try {
+					generator.init(GENERATOR_CONFIG_WEBSTART);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	    	}
 		}
 		return generator;
 	}
 
-	private void init(String configFile)
+	private void init(String configFile) throws Exception
 	{
-		ObjectFactory.initialize(configFile);
-		try {
-			transformer=(HibernateMappingTransformer)ObjectFactory.getObject("HibernateMappingTransformer");
-		} catch (GenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ObjectFactory.initialize(configFile);	
 	}
 
 	/**
@@ -48,17 +63,18 @@ public class HBMGenerateCacoreIntegrator {
 	 */
 	public void generateMapping(UMLModel model, String outDir) throws GenerationException
 	{
+		HibernateMappingTransformer transformer=(HibernateMappingTransformer)ObjectFactory.getObject("HibernateMappingTransformer");
 		Properties umlProp=(Properties)ObjectFactory.getObject("UMLModelFileProperties");
 		Log.logInfo(this,"Generate Hibernate mapping... Include Package... default setting:"+ umlProp.getProperty("Include Package"));
 		//found the root package name of the "Logical Model"
 		UMLPackage logicalPck=model.getPackage("Logical View").getPackage("Logical Model");
 		Collection <UMLPackage> modelPcks=logicalPck.getPackages();
-		String rootPckName="";
+		String rootPckName=umlProp.getProperty("Include Package");
 		for (UMLPackage onePck :modelPcks)
 		{
 			String pckName=onePck.getName();
 			if (!(pckName==null||pckName.equals("")||pckName.equals("java")||pckName.equals("Diagrams")))
-				rootPckName=pckName;
+				rootPckName=rootPckName+","+pckName;
 		}
 		if (!rootPckName.equals(""))
 			umlProp.setProperty("Include Package", rootPckName);
