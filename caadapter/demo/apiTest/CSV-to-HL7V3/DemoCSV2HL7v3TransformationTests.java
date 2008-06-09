@@ -1,4 +1,10 @@
-
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.hl7.junit;
 
 import gov.nih.nci.caadapter.common.Message;
@@ -16,8 +22,8 @@ import org.junit.Test;
  * The class tests the CSV to HL7v3 transformation service.
  *
  * @author OWNER: Wang, Eugene
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.1 $ date $Date: 2007-11-15 19:40:57 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2008-06-09 19:54:07 $
  */
 
 public class DemoCSV2HL7v3TransformationTests extends TestCase {

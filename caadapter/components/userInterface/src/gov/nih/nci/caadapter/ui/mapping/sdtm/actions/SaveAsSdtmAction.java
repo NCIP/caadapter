@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 import edu.stanford.ejalbert.BrowserLauncher;
@@ -31,10 +38,10 @@ import java.util.*;
  * Data Viewer
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.19 $
- *          $Date: 2007-11-16 17:19:00 $
+ *          $Revision: 1.20 $
+ *          $Date: 2008-06-09 19:54:06 $
  */
 public class SaveAsSdtmAction extends DefaultSaveAsAction {
     private MainDataViewerFrame _mD = null;
@@ -48,7 +55,7 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.19 2007-11-16 17:19:00 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveAsSdtmAction.java,v 1.20 2008-06-09 19:54:06 phadkes Exp $";
     protected AbstractMappingPanel mappingPanel;
     public SDTMMappingGenerator sdtmMappingGenerator;
     private boolean alreadySaved = false;
@@ -426,6 +433,9 @@ public class SaveAsSdtmAction extends DefaultSaveAsAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2007/11/16 17:19:00  wangeug
+ * update SDTM module
+ *
  * Revision 1.18  2007/11/05 15:42:19  jayannah
  * Changed the message/wording
  *

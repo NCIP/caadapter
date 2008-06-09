@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -41,15 +44,15 @@ import java.util.zip.ZipEntry;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: linc $
- * @version $Revision: 1.17 $
- * @date $Date: 2008-06-03 20:43:55 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version $Revision: 1.18 $
+ * @date $Date: 2008-06-09 19:53:50 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.17 2008-06-03 20:43:55 linc Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.18 2008-06-09 19:53:50 phadkes Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -596,6 +599,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2008/06/03 20:43:55  linc
+ * HISTORY      : merge batch transform api to solve OutOfMemory issues.
+ * HISTORY      :
  * HISTORY      : Revision 1.16.2.2  2008/05/29 16:37:30  linc
  * HISTORY      : updated.
  * HISTORY      :

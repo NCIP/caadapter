@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
 import gov.nih.nci.caadapter.common.util.Config;
@@ -18,8 +25,8 @@ import java.util.ArrayList;
  * This class defines the action to carry out process report functionality on a SCM file.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.1 $ date $Date: 2007-04-03 16:17:57 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version Since caAdapter v1.2 revision $Revision: 1.2 $ date $Date: 2008-06-09 19:54:06 $
  */
 public class GenerateSDTMReportAction extends AbstractContextAction {
 	protected static final String COMMAND_NAME = "Generate Report...";
@@ -38,7 +45,7 @@ public class GenerateSDTMReportAction extends AbstractContextAction {
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/GenerateSDTMReportAction.java,v 1.1 2007-04-03 16:17:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/GenerateSDTMReportAction.java,v 1.2 2008-06-09 19:54:06 phadkes Exp $";
 
 	protected Database2SDTMMappingPanel sdtmMappingPanel;
 

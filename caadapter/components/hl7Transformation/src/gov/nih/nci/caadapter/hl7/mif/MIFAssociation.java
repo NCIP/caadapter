@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.hl7.mif;
@@ -16,8 +19,8 @@ import java.util.Hashtable;
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
- * @version Since caAdapter v4.0 revision $Revision: 1.18 $ date $Date: 2008-05-09 16:36:22 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version Since caAdapter v4.0 revision $Revision: 1.19 $ date $Date: 2008-06-09 19:53:50 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {

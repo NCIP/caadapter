@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -36,10 +39,10 @@ import java.util.*;
  * This class defines functions to generate a basic map report in Excel format. 
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wuye $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2007-08-31 20:00:35 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-06-09 19:53:50 $
  */
 public class MapReportGenerator
 {
@@ -55,7 +58,7 @@ public class MapReportGenerator
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/report/MapReportGenerator.java,v 1.2 2007-08-31 20:00:35 wuye Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/report/MapReportGenerator.java,v 1.3 2008-06-09 19:53:50 phadkes Exp $";
 
 	/**
 	 * Terminology used within this class:
@@ -410,6 +413,9 @@ public class MapReportGenerator
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2007/08/31 20:00:35  wuye
+ * HISTORY      : Fixed the missing association name issue
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/31 21:37:16  wuye
  * HISTORY      : New map report generator
  * HISTORY      :

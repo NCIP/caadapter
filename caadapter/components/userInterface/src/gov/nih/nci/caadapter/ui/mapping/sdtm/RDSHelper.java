@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
@@ -23,10 +30,10 @@ import java.util.Hashtable;
  * The class read the map file for the rds transformer
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.4 $
- *          $Date: 2007-11-16 17:19:38 $
+ *          $Revision: 1.5 $
+ *          $Date: 2008-06-09 19:54:06 $
  */
 public class RDSHelper {
     public static String getDefineXMLNameFromMapFile(String mapFile) throws Exception {
@@ -138,6 +145,9 @@ public class RDSHelper {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2007/11/16 17:19:38  wangeug
+ * update SDTM module
+ *
  * Revision 1.3  2007/10/15 21:01:14  jayannah
  * Changed the wat reading files to accomodate the working directory path
  *

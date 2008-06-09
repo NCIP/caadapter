@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -23,10 +26,10 @@ import java.util.ArrayList;
  * This class defines the new Map panel action.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2007-12-13 15:29:09 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-06-09 19:54:06 $
  */
 public class NewCsvToXmiMapAction extends AbstractContextAction
 		{
@@ -118,6 +121,9 @@ public class NewCsvToXmiMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2007/12/13 15:29:09  wangeug
+ * HISTORY      : support both data model and object model
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/12/06 20:47:29  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :

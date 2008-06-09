@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -22,10 +29,10 @@ import java.util.*;
  * This class implements the fixed length records
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.11 $
- *          $Date: 2007-11-12 15:05:00 $
+ *          $Revision: 1.12 $
+ *          $Date: 2008-06-09 19:54:06 $
  */
 public class RDSTransformer {
     String directoryLocation = null;
@@ -349,6 +356,9 @@ public class RDSTransformer {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.11  2007/11/12 15:05:00  wangeug
+ * add "newline" at the end of each STDM record
+ *
  * Revision 1.10  2007/11/05 15:41:58  jayannah
  * Changed the message/wording
  *

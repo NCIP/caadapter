@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -19,8 +22,8 @@ import org.w3c.dom.NodeList;
  * The class will parse an MIF association section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2007-08-07 20:27:06 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2008-06-09 19:53:50 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {

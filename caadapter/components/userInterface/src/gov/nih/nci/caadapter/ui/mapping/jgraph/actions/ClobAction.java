@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
@@ -24,7 +31,7 @@ import java.util.List;
  */
 public class ClobAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: ClobAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.3 2007-12-13 21:09:23 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.4 2008-06-09 19:54:06 phadkes Exp $";
 
 	private static final String COMMAND_NAME = "Set as Clob";
 	private static final Character COMMAND_MNEMONIC = new Character('C');

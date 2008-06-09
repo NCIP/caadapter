@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.dataviewer.helper;
 
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
@@ -15,10 +22,10 @@ import java.util.*;
  * This class is a listener to save the map file during a window close event
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-10-16 14:10:18 $
+ *          $Revision: 1.10 $
+ *          $Date: 2008-06-09 19:53:50 $
  */
 public class DialogClosingListener implements WindowListener {
     private MainDataViewerFrame mainDataViewerFrame = null;
@@ -192,6 +199,10 @@ public class DialogClosingListener implements WindowListener {
 /*
     Change History
     $Log: not supported by cvs2svn $
+    Revision 1.9  2007/10/16 14:10:18  jayannah
+    Changed the absolute path to getName during times when the pop up is displayed to the world;
+    made changes so that the Tables cannot be mapped
+
     Revision 1.8  2007/09/13 13:53:56  jayannah
     Changes made to fix, window position, parameters during the launch of data viewer, handling of the toolbar buttons and to GEnerate the SQL when the user does not want to use the data viewer
 

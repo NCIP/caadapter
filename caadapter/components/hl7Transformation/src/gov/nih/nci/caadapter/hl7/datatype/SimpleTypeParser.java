@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.hl7.datatype;
@@ -14,8 +17,8 @@ import org.w3c.dom.Node;
  * The class will parse a simple HL7 Datatype from the xsd file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2007-09-14 13:47:44 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-06-09 19:53:50 $
  */
 
 public class SimpleTypeParser {

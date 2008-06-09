@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.ui.mapping.sdtm;
 
 import gov.nih.nci.caadapter.common.Log;
@@ -25,10 +32,10 @@ import java.util.*;
  * This class preprocess the CSV data for transformation 
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2007-08-16 19:39:45 $
+ *          $Revision: 1.6 $
+ *          $Date: 2008-06-09 19:54:06 $
  */
 public class SDTMMany2ManyMapping {
     // MultiValueMap returnCsvMapData = new MultiValueMap();
@@ -359,4 +366,7 @@ public class SDTMMany2ManyMapping {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2007/08/16 19:39:45  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

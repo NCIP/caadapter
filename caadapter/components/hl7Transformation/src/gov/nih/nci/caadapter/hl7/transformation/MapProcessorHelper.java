@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -25,9 +28,9 @@ import java.util.Set;
  * This class assists the MapProcessor with alot of the buisness logic.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.15 $
- * @date $Date: 2007-11-01 16:55:19 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version $Revision: 1.16 $
+ * @date $Date: 2008-06-09 19:53:50 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {

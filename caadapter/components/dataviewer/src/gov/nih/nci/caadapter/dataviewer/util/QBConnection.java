@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.dataviewer.util;
 
 import java.sql.Connection;
@@ -16,7 +23,7 @@ public class QBConnection
     public static Connection getDBConnection(String url, String driver, String uid, String pwd)
     {
         try
-        {                                   
+        {
             Connection connection;
             Class.forName(driver);
             connection = DriverManager.getConnection(url, uid, pwd);

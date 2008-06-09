@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -24,10 +27,10 @@ import java.util.ArrayList;
  * This class defines the new Map panel action.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-06 20:39:43 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-06-09 19:54:05 $
  */
 public class NewXsdToXmiMapAction extends AbstractContextAction
 		{
@@ -120,6 +123,9 @@ public class NewXsdToXmiMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/06 20:39:43  wangeug
+ * HISTORY      : setup main menu bar
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/02/04 15:10:34  schroedn
  * HISTORY      : XSD to XMI Mapping - GME initial load
  * HISTORY      :

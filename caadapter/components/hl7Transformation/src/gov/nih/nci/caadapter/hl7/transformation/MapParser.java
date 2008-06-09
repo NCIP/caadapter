@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
  */
 
@@ -36,9 +39,9 @@ import org.jdom.output.XMLOutputter;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.6 $
- * @date $Date: 2007-10-11 04:23:51 $
+ * @author LAST UPDATE $Author: phadkes $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2008-06-09 19:53:50 $
  * @since caAdapter v4.0
  */
 

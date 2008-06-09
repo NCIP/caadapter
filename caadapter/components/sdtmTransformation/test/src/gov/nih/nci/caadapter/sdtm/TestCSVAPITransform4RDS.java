@@ -16,8 +16,8 @@ import java.io.File;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.2 $
- *          $Date: 2008-06-06 18:55:54 $
+ *          $Revision: 1.3 $
+ *          $Date: 2008-06-09 19:53:51 $
  */
 public class TestCSVAPITransform4RDS {
     public static void main(String[] args) throws Exception {

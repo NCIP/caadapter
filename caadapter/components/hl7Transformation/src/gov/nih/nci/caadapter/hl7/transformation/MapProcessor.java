@@ -1,5 +1,8 @@
 /**
  * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
   * <!-- LICENSE_TEXT_END -->
  */
 
@@ -33,10 +36,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.43 $
- *          date        $Date: 2007-11-02 19:56:50 $
+ *          revision    $Revision: 1.44 $
+ *          date        $Date: 2008-06-09 19:53:50 $
  */
 
 public class MapProcessor {
@@ -652,6 +655,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.43  2007/11/02 19:56:50  wangeug
+ * HISTORY      : relax cardinality validation for choice
+ * HISTORY      :
  * HISTORY      : Revision 1.42  2007/11/02 14:16:47  wangeug
  * HISTORY      : fix error:check cardinality; modify warning message
  * HISTORY      :

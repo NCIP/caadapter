@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.dataviewer.util;
 
 import gov.nih.nci.caadapter.dataviewer.MainDataViewerFrame;
@@ -10,10 +17,10 @@ import java.net.URL;
  * This class creates all the JButtons on the toolbar
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.9 $
- *          $Date: 2007-09-11 18:20:08 $
+ *          $Revision: 1.10 $
+ *          $Date: 2008-06-09 19:53:50 $
  */
 public class QBAddButtons {
     MainDataViewerFrame maindialog = null;
@@ -79,6 +86,9 @@ public class QBAddButtons {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.9  2007/09/11 18:20:08  jayannah
+ * added save with out exit button
+ *
  * Revision 1.8  2007/09/05 13:25:43  jayannah
  * made changes to the upper lower case image file name
  *

@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.dataviewer.util;
 
 import javax.swing.table.AbstractTableModel;
@@ -13,10 +20,10 @@ import java.util.Vector;
  * returns the password for that connection if the connection is alive
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: jayannah $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.2 $
- *          $Date: 2007-08-16 18:53:55 $
+ *          $Revision: 1.3 $
+ *          $Date: 2008-06-09 19:53:50 $
  */
 public class QueryTableModel extends AbstractTableModel {
     Vector cache=null;// will hold String[] objects . . .
@@ -144,4 +151,7 @@ public class QueryTableModel extends AbstractTableModel {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.2  2007/08/16 18:53:55  jayannah
+ * Reformatted and added the Comments and the log tags for all the files
+ *
  */

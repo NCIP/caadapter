@@ -1,3 +1,10 @@
+/**
+ * <!-- LICENSE_TEXT_START -->
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+[caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
+http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
+ * <!-- LICENSE_TEXT_END -->
+ */
 package gov.nih.nci.caadapter.sdtm;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.mapping.sdtm.actions.QBTransformAction;
@@ -8,10 +15,10 @@ import java.sql.DriverManager;
 
 /**
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.1 $
- *          $Date: 2007-11-16 19:50:05 $
+ *          $Revision: 1.2 $
+ *          $Date: 2008-06-09 19:54:07 $
  */
 public class TestDBAPITransform4RDS {
     public static void main(String[] args) throws Exception {
