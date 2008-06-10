@@ -30,7 +30,7 @@
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
 			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
-				lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,
+				lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,lib/jgraph.jar,
 				lib/sqleonardo.jar, lib/ostermill*,lib/junit*.jar" />
 			<zipfileset dir=".." includes="docs/help/**, *.doc" />
 				
