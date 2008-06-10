@@ -57,10 +57,10 @@ import java.util.TreeSet;
  * while leaving the algorithm of traversing HSM meta data tree defined here intact.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.39 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.40 $
+ *          date        $Date: 2008-06-10 19:53:37 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -345,6 +345,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			rtnNode.setAllowsChildren(false);
 			return rtnNode;
 		}
+		TreeSet dtAttrs=null;
 			if (mifAttribute.getDatatype()==null)
 			{
 				//load from DataType spec for the new HL7 specification
@@ -364,15 +365,17 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				}
 				mifAttribute.setDatatype(dType);
 				enableDatatypeAttributesComplextype(dType, newSpecificationFlag);
+				dtAttrs=MIFUtil.sortDatatypeAttribute(dType);
 				if (mifAttrType.equals("GTS"))
 					mifAttribute.getDatatype().setSimple(false);
 			}
 			else
+			{
 				mifAttribute.setEnabled(true);
+				enableDatatypeAttributesComplextype(mifAttribute.getDatatype(), newSpecificationFlag);
+				dtAttrs=MIFUtil.sortDatatypeAttribute(mifAttribute.getDatatype());
+			}
 				
-			TreeSet dtAttrs=MIFUtil.sortDatatypeAttribute(mifAttribute.getDatatype());
- 	    		
-//			Hashtable dtAttrs=mifAttribute.getDatatype().getAttributes();
 			String dtTypeName=mifAttribute.getDatatype().getName();
 			if (mifAttribute.getDatatype().isAbstract())
 			{
@@ -402,22 +405,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 					}
 				}
 			}
-//			Enumeration childAttrsEnum=dtAttrs.elements();
-//			
-//			while (childAttrsEnum.hasMoreElements())
-//			{
-//				Attribute childAttr=(Attribute)childAttrsEnum.nextElement();
-//				if (!childAttr.isProhibited()&&childAttr.isValid())
-//				{
-//					//and only the the chosen Datatype field for "AD" attributes
-//					if (childAttr.isOptionChosen()
-//							||!dtTypeName.equals("AD"))
-//					{		
-//						DefaultMutableTreeNode childNode=buildDatatypeAttributeNode(childAttr);
-//						rtnNode.add(childNode);
-//					}
-//				}
-//			}
+			
 		return rtnNode;
 	}
  
@@ -478,7 +466,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				continue;
 			childAttr.setEnabled(true);
 			childAttr.setSimple(true);
-			Datatype childDataType=(Datatype)DatatypeParserUtil.getDatatype(childAttr.getType()).clone();
+			Datatype childDataType=null;
+			if (childAttr.getType()!=null&&!childAttr.getType().equals(""))
+				childDataType=(Datatype)DatatypeParserUtil.getDatatype(childAttr.getType()).clone();
 			
 			if (childDataType!=null&&!childDataType.isSimple())
 			{
@@ -516,6 +506,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			//always being selected/mandatory
 			inlineText.setOptionChosen(true);
 			dtType.addAttribute(inlineText.getName(),inlineText);
+			inlineText.setSortKey(dtType.getAttributes().keySet().size());
+			
+	
 		}
 			
 	}

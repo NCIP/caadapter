@@ -21,8 +21,8 @@ import java.util.List;
  * The class defines attributes of a HL7 Datatype.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.13 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2008-06-10 19:54:26 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Comparable <Attribute>, Cloneable  {
@@ -72,6 +72,8 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 					rtnValue=1;
 				else if (getMultiplicityIndex()<attr.getMultiplicityIndex())
 					rtnValue=-1;
+				else
+					rtnValue=this.getName().compareTo(attr.getName());
 			}
 		}
 		return rtnValue;
