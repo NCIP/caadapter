@@ -692,7 +692,26 @@
 				<include name="**/*.*"/>
  			</fileset>
     	 </copy>
-    	 
+    	<copy todir="${dist.dir}/workingspace/GME_example">
+			<fileset dir="${basedir}/workingspace/GME_example" >
+				<include name="**/*.*"/>
+			</fileset>
+    	 </copy>
+    	 <copy todir="${dist.dir}/workingspace/RDS_Example">
+		 	<fileset dir="${basedir}/workingspace/RDS_Example" >
+		 			<include name="**/*.*"/>
+		 	</fileset>
+    	 </copy>
+    	 <copy todir="${dist.dir}/workingspace/CSV_to_HL7_V3_Example">
+			<fileset dir="${basedir}/workingspace/CSV_to_HL7_V3_Example" >
+				<include name="**/*.*"/>
+			</fileset>
+    	 </copy>
+    	 <copy todir="${dist.dir}/workingspace/HL7_V2_to_V3_Example">
+		  	<fileset dir="${basedir}/workingspace/HL7_V2_to_V3_Example" >
+		 		<include name="**/*.*"/>
+		  	</fileset>
+    	 </copy>
         <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\delete.jar"/>
     </target>
@@ -816,9 +835,6 @@
         <echo message="-------- clean ${project.name}  --------"/>
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
-		<delete includeemptydirs="true">
-			<fileset dir="gencode" includes="**/*" excludes="**/CVS/*" />
-		</delete>
         <ant antfile="${common.module.build}" target="clean"/>
         <ant antfile="${hl7.module.build}" target="clean"/>
         <ant antfile="${mms.module.build}" target="clean"/>
