@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
@@ -96,7 +97,8 @@ public class CsvToXmiMappingReporter {
 			if (mutableNode.isLeaf())
 			{
 				MetaObject metaObj=(MetaObject)mutableNode.getUserObject();
-				reportElments.add(metaObj.getXmlPath());
+//				reportElments.add( metaObj.getXmlPath());
+				reportElments.add(((MetaObjectImpl)metaObj).getXPath());//.getXmlPath());
 			}
 		}
 		for (int i=0;i<mutableNode.getChildCount(); i++)

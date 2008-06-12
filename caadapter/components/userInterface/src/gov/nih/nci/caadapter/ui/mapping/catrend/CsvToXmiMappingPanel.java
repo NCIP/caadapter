@@ -12,6 +12,7 @@ import gov.nih.nci.caadapter.common.BaseResult;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
@@ -72,13 +73,13 @@ import java.util.Set;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.14 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.15 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.14 2008-06-09 19:54:05 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.15 2008-06-12 17:28:56 phadkes Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
@@ -435,8 +436,8 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
         for (gov.nih.nci.caadapter.hl7.map.Map map : mapping.getMaps() )
         {
             UMLAttribute column = null;
-            column = ModelUtil.findAttribute( model,  map.getTargetMapElement().getXmlPath() );
-
+            column = ModelUtil.findAttribute( model,  map.getTargetMapElement().getDataXmlPath());//.getXPath());//.getXmlPath() );
+            System.out.println("Annotate Attribute :"+map.getTargetMapElement().getDataXmlPath() +"..."+map.getTargetMapElement().getXmlPath() + "XMLNamespace.. "+ map.getSourceMapElement().getXmlPath());
             if ( column != null ) {
                 System.out.println("Annotate Attribute :"+map.getTargetMapElement().getXmlPath() + "XMLNamespace.. "+ map.getSourceMapElement().getXmlPath());
                 column.addTaggedValue( "XMLNamespace", map.getSourceMapElement().getXmlPath() );
