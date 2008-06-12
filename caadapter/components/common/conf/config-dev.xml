@@ -25,10 +25,10 @@
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED" type="String" value="caadapter.hl7.attribute.inlinetext.required"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_MANDATORY_SELECTED" type="String" value="caadapter.hl7.attribute.mandatory.selected"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL" type="String" value= "caadapter.hl7.transformation.validation.level"/>
-	<constant name="CAADAPTER_VERSION" type="String" value="V4.0"/>
-    <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="#401"/>
-    <constant name="JDK_VERSION" type="String" value="1.5.0_06"/>
-    <constant name="COPYRIGHT_YEARS" type="String" value="2004-2007"/>
+	<constant name="CAADAPTER_VERSION" type="String" value="V4.1"/>
+    <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="#410"/>
+    <constant name="JDK_VERSION" type="String" value="1.5.0_15"/>
+    <constant name="COPYRIGHT_YEARS" type="String" value="2004-2008"/>
     <!-- required resource for each module -->
     <constant name="CAADAPTER_COMMON_RESOURCE_REQUIRED" type="String" value="caadapter.common.resource.required"/>
     <constant name="CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED" type="String" value="caadapter.hl7.transformation.resource.required"/>
@@ -95,6 +95,7 @@
         The all these files are located in 'image' directory   -->
     <constant name="DEFAULT_SCREEN_IMAGE_FILENAME" type="String" value="default_scr.gif"/>
     <constant name="ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME" type="String" value="aboutwin.png"/>
+    <constant name="CAADAPTER_ICON_FILENAME" type="String" value="caAdapter-icon.gif"/>
     <constant name="SPLASH_WINDOW_IMAGE_FILENAME" type="String" value="splash00.png"/>
 
 
