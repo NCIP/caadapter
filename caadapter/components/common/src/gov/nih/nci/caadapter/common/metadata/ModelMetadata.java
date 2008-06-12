@@ -330,6 +330,7 @@ public class ModelMetadata {
 	        attributePath.append(".");
 	        attributePath.append(att.getName());
 	        attMetadata.setXPath(attributePath.toString());
+	        attMetadata.setXmlPath(attributePath.toString());
 	        attMetadata.setDerived(derived);
 	        sortedModel.add(attMetadata);
 	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());   
