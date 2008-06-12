@@ -147,6 +147,7 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 	String schemaTargetNs=clsDecl.getType().getSchema().getTargetNamespace();
 	String pkName=(String)getPackageMap().get(schemaTargetNs);
 	objMeta.setXPath(pkName+"."+clsDecl.getName());
+	objMeta.setXmlPath(pkName+"."+clsDecl.getName());
 	
 	//set attribute mapping and association mapping
 	ComplexType complexType =clsDecl.getType().getSchema().getComplexType(clsType);
@@ -191,6 +192,7 @@ private void buildObjectAttribute(ObjectMetadata objMeta,AttributeDecl attrEleme
 	attr.setName(attrElement.getName());
 	attr.setDatatype(attrElement.getSimpleType().getName());
 	attr.setXPath(objMeta.getXmlPath()+"."+attrElement.getName());
+	attr.setXmlPath(objMeta.getXmlPath()+"."+attrElement.getName());
     attr.setChildTag(false);
     attributeMap.put(attr.getXPath(), attr);
 	objMeta.addAttribute(attr);
@@ -207,6 +209,7 @@ private void buildObjectElementAttribute(ObjectMetadata objMeta,ElementDecl attr
 	attr.setName(attrElement.getName());
 	attr.setDatatype(attrElement.getType().getName());
 	attr.setXPath(objMeta.getXmlPath()+"."+attrElement.getName());
+	attr.setXmlPath(objMeta.getXmlPath()+"."+attrElement.getName());
 //	attr.setChildTag(true);
 	attributeMap.put(attr.getXPath(), attr);
 	objMeta.addAttribute(attr);
@@ -279,6 +282,7 @@ private void buildAssociationWithCardinality(String roleName, ObjectMetadata xsd
 	asscMeta.setReciprocalMultiplity(1);
 	asscMeta.setRoleName(roleName);
 	asscMeta.setXPath(xsdObj.getXPath()+"."+roleName);
+	asscMeta.setXmlPath(xsdObj.getXPath()+"."+roleName);
 	
 	String returnType=asscElm.getType().getName();
 	String schemaTargetNs=asscElm.getType().getSchema().getTargetNamespace();

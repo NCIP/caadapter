@@ -221,7 +221,7 @@ public class XmiModelMetadata {
                 pathKey.append(".");
                 pathKey.append(clazz.getName());
                 table.setXPath(pathKey.toString());
-
+                table.setXmlPath(pathKey.toString());
                 sortedModel.add(table);
                 for(UMLAttribute att : clazz.getAttributes()) {
                     loadColumnAttribute(sortedModel,traversalPath, att, table, pathKey);
@@ -235,6 +235,7 @@ public class XmiModelMetadata {
                 pathKey.append(".");
                 pathKey.append(clazz.getName());
                 object.setXPath(pathKey.toString());
+                object.setXmlPath(pathKey.toString());
                 object.setId(clazz.toString());
                 objectHashMap.put(clazz.toString(), pathKey.toString());
 
@@ -328,6 +329,7 @@ public class XmiModelMetadata {
 	    				thisEnd.setMultiplicity(assocEnd.getHighMultiplicity());
 	    				thisEnd.setReciprocalMultiplity(getReciprocalMultiplicity(assocEnd));
 	    				thisEnd.setXPath(associationKeyPath.toString());
+	    				thisEnd.setXmlPath(associationKeyPath.toString());
 	    				thisEnd.setReturnTypeXPath(clazz1.toString());
 	    				thisEnd.setNavigability(assocEnd.isNavigable());
 	    				thisEnd.setBidirectional(other.isNavigable()&&assocEnd.isNavigable());
@@ -360,6 +362,7 @@ public class XmiModelMetadata {
 	        attributePath.append(".");
 	        attributePath.append(att.getName());
 	        attMetadata.setXPath(attributePath.toString());
+	        attMetadata.setXmlPath(attributePath.toString());
 	        attMetadata.setDerived(derived);
 	        sortedModel.add(attMetadata);
 	        traversalPath.removeLastPathElement(att.getName());
@@ -381,6 +384,7 @@ public class XmiModelMetadata {
 	        colPathKey.append(".");
 	        colPathKey.append(att.getName());
 	        attMetadata.setXPath(colPathKey.toString());
+	        attMetadata.setXmlPath(colPathKey.toString());
 	        attMetadata.setTableMetadata(tableMeta);
 	        sortedModel.add(attMetadata);
 	        traversalPath.removeLastPathElement(att.getName());
