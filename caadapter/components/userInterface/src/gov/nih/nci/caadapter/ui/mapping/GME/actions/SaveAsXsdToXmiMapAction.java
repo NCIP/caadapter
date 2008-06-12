@@ -50,8 +50,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-06-12 17:36:06 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -67,7 +67,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.10 2008-06-09 19:54:05 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.11 2008-06-12 17:36:06 phadkes Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
@@ -218,7 +218,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 	//annotate attribute
                 	AttributeMetadata srcAttr=(AttributeMetadata)srcMeta;
                 	AttributeMetadata trgtAttr=(AttributeMetadata)trgtMeta;
-                	String srcKey=srcAttr.getXPath();
+//                	String srcKey=srcAttr.getXPath();
+                	String srcKey=srcAttr.getXmlPath();
+                	
 
                     //add "EA Model" infront of the xmlPath
                 	String trgtKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAttr.getXmlPath();
@@ -415,6 +417,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/06/09 19:54:05  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/03/12 13:59:05  wangeug
  * HISTORY      : annotate GME_XMLNamespace at project level
  * HISTORY      :
