@@ -283,7 +283,7 @@ public class ModelMetadata {
 	    	boolean isSelfAssociated=false;
 	    	String eaIdEndA=((UMLAssociationEndBean)assocEndA).getJDomElement().getAttributeValue("type");
 	    	String eaIdEndB=((UMLAssociationEndBean)assocEndB).getJDomElement().getAttributeValue("type");
-	    	if (eaIdEndA.equals(eaIdEndB))
+	    	if(eaIdEndA!=null && eaIdEndA.equals(eaIdEndB))
 	    		isSelfAssociated=true;
 	    	if ((assocEndA.getHighMultiplicity()==-1 && assocEndB.getHighMultiplicity()==1) || 
 	    		(assocEndB.getHighMultiplicity()==-1 && assocEndA.getHighMultiplicity()==1)) {
