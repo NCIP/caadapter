@@ -79,8 +79,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2 revision $Revision: 1.26 $ date $Date: 2008-06-09 19:54:06 $
+ * @author LAST UPDATE $Author: linc $
+ * @version Since caAdapter v1.2 revision $Revision: 1.27 $ date $Date: 2008-06-16 15:50:50 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -95,7 +95,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.26 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.27 2008-06-16 15:50:50 linc Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -413,26 +413,31 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	{
 		Object[] cells = graph.getSelectionCells();
 		removeCells(cells, true);
-        
-        //System.out.println("middlePanel kind: " + middlePanel.getKind() );
-        if ( middlePanel.getKind().equalsIgnoreCase("o2db") ) {
-			if ( cells.length > 0 ) {
-				DefaultEdge edge = (DefaultEdge) cells[0];
+		unmapCells(cells);
+		setGraphChanged(true);
+	}
+
+	private void unmapCells(Object[] cells)
+	{
+		//System.out.println("middlePanel kind: " + middlePanel.getKind() );
+		for(int i=0; i<cells.length; i++)
+		{
+			if(cells[i] == null || !(cells[i] instanceof DefaultEdge)) 
+				continue;
+			DefaultEdge edge = (DefaultEdge) cells[i];
+
+			if ( middlePanel.getKind().equalsIgnoreCase("o2db") ) {
 				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
 				SDKMetaData sourceSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
 				SDKMetaData targetSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
 				CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
 				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
-                sourceSDKMetaData.setMapped(false);
-            }
-		} 
-        else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
-			if ( cells.length > 0 ) {
-				DefaultEdge edge = (DefaultEdge) cells[0];
+				sourceSDKMetaData.setMapped(false);
+			} else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
 				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
 				@SuppressWarnings("unused")
 				//SDTMMetadata sourceSDKMetaData = (SDTMMetadata) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
-				
+
 				StringBuffer _sourceDataAsXPath;
 				DefaultSourceTreeNode _tn0 = (DefaultSourceTreeNode) e.getSourceNode();
 				TreeNode t;
@@ -463,30 +468,29 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				String _tmpStr = e.getSourceNode().toString();
 				_tmpStr = _tmpStr.replace("]", "");
 				_sourceDataAsXPath.append("\\" + _tmpStr);
-				
-				
-				
+
+
+
 				@SuppressWarnings("unused")
-			//	SDTMMetadata targetSDKMetaData = (SDTMMetadata) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
-				
-				
-				
+				//	SDTMMetadata targetSDKMetaData = (SDTMMetadata) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
+
+
+
 				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) e.getTargetNode();
 				SDTMMetadata _sdtmMetadata = (SDTMMetadata) targetNode.getUserObject();
 				// Do a check if the chosen target is DM or not
-			
+
 				String _targetDataAsXpath = _sdtmMetadata.getXPath();
 				System.out.println ("");
-				
+
 				SDTMMappingGenerator.get_sdtmMappingGeneratorReference().removeObject(_sourceDataAsXPath.toString(), _targetDataAsXpath.toString());
 				System.out.println ("");
 				// CumulativeMappingGenerator cumulativeMappingGenerator=CumulativeMappingGenerator.getInstance();
 				// boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
 			}
 		}
-		setGraphChanged(true);
 	}
-
+	
 	/**
 	 * Called by setMappingData() or constructMappingGraph(), and other methods.
 	 */
@@ -495,7 +499,8 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		// clean up
 		Object[] cells = DefaultGraphModel.getDescendants(graph.getModel(), graph.getRoots()).toArray();
 		// call to remove all cells
-		removeCells(cells, true);
+		removeCells(cells, false);
+		unmapCells(cells);		
 		setMappingViewList(Collections.synchronizedList(new ArrayList()));
 		setGraphChanged(false);
 	}
@@ -1497,6 +1502,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.26  2008/06/09 19:54:06  phadkes
+ * HISTORY : New license text replaced for all .java files.
+ * HISTORY :
  * HISTORY : Revision 1.25  2008/04/02 16:24:06  umkis
  * HISTORY : add 'if (sourceNode == null)' block
  * HISTORY :
