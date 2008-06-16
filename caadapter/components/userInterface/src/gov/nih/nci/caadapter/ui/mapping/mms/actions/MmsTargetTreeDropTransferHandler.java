@@ -44,10 +44,10 @@ import java.util.List;
  * This class handles drop-related data manipulation for target tree on the mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-06-16 21:28:15 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -257,6 +257,7 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 
 					boolean isRoot = true;
 					
+					if(!(sourceNode.getUserObject() instanceof ObjectMetadata)) continue;
 					UMLClass clazz = ((ObjectMetadata)sourceNode.getUserObject()).getUmlClass();
 					
 					List<UMLGeneralization> clazzGs = clazz.getGeneralizations();
@@ -342,6 +343,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/04/25 20:07:16  wangeug
  * HISTORY      : build xmi.in.out.jar from XMIHandler project SVN repository
  * HISTORY      :

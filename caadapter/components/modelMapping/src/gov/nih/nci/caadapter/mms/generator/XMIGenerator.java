@@ -365,13 +365,13 @@ public class XMIGenerator
 			    
 			    UMLClass uiClient = ModelUtil.findClass(model, dependLink.getChildText("target"));
 			    UMLClass uiSupplier = ModelUtil.findClass(model, dependLink.getChildText("source"));
-				if (uiClient==null|uiSupplier==null)
+				if (uiClient==null || uiSupplier==null)
 					continue;
 				String uiClientXmiId=((UMLClassBean)uiClient).getModelId();
 				String uiSupplierXmiId=((UMLClassBean)uiSupplier).getModelId();
-				if (uiClientXmiId==null|uiSupplierXmiId==null)
+				if (uiClientXmiId==null || uiSupplierXmiId==null)
 					continue;
-				if (uiClientXmiId.equals(clientXmiId)&uiSupplierXmiId.equals(supplierXmiId))
+				if (uiClientXmiId.equals(clientXmiId) && uiSupplierXmiId.equals(supplierXmiId))
 				{
 					isDepFound=true;
 					break;
@@ -423,22 +423,33 @@ public class XMIGenerator
 	    	return;  //return here since the dependency has been modified
 	    }
 	    
-	    //since XMIHandler write new Dependency UML section under "Logical Model.Object" section
-	    //create the new dependency with the "switched over" client and suppler
-	    //supplier passed as "client" parameter
-	    //client passed as "supplier" parameter
-	    UMLDependency dep = model.createDependency(supplier, client, "dependency" );
-	    dep = model.addDependency( dep );
-	    dep.addStereotype("DataSource");
+	    
+	    //original create dependency with correct client and supplier
+	    UMLDependency dep = model.createDependency( client, supplier, "dependency" );
+	    dep = model.addDependency( dep );	    
 	    dep.addTaggedValue("stereotype", "DataSource");
 	    dep.addTaggedValue("ea_type", "Dependency");
 	    dep.addTaggedValue("direction", "Source -> Destination");
 	    dep.addTaggedValue("style", "3");
-	    //re-edit the created dependency to switch back the "client/supplier"
-	    ((UMLDependencyBean)dep).getJDomElement().setAttribute("client",((UMLClassBean)client).getModelId());
-	    ((UMLDependencyBean)dep).getJDomElement().setAttribute("supplier",((UMLClassBean)supplier).getModelId());
-	    dep.addTaggedValue("ea_sourceName", client.getName());
-	    dep.addTaggedValue("ea_targetName", supplier.getName());
+
+
+	    //since XMIHandler write new Dependency UML section under "Logical Model.Object" section
+	    //create the new dependency with the "switched over" client and suppler
+	    //supplier passed as "client" parameter
+	    //client passed as "supplier" parameter
+//	    UMLDependency dep = model.createDependency(supplier, client, "dependency" );
+//	    dep = model.addDependency( dep );
+//	    dep.addStereotype("DataSource");
+//	    dep.addTaggedValue("stereotype", "DataSource");
+//	    dep.addTaggedValue("ea_type", "Dependency");
+//	    dep.addTaggedValue("direction", "Source -> Destination");
+//	    dep.addTaggedValue("style", "3");
+//	    //re-edit the created dependency to switch back the "client/supplier"
+//	    ((UMLDependencyBean)dep).getJDomElement().setAttribute("client",((UMLClassBean)client).getModelId());
+//	    ((UMLDependencyBean)dep).getJDomElement().setAttribute("supplier",((UMLClassBean)supplier).getModelId());
+//	    dep.addTaggedValue("ea_sourceName", client.getName());
+//	    dep.addTaggedValue("ea_targetName", supplier.getName());
+	    
 	    logger.logInfo(this, "Dependency created...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	}
 	
