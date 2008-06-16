@@ -15,9 +15,9 @@ import java.util.List;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Mar 31, 2008
  *          Time:       5:41:15 PM $
  */
@@ -42,12 +42,13 @@ public class SampleProgramForCSVConvertingFromV2
     public SampleProgramForCSVConvertingFromV2()
     {
         // Constructor
-        ConvertFromV2ToCSV con = new ConvertFromV2ToCSV("C:\\projects\\temp\\v2Meta" // v2 meta data directory
+        // This program is for generating csv file from HL7 V2 file and scs file must be prepared.
+        ConvertFromV2ToCSV con = new ConvertFromV2ToCSV("C:\\projects\\temp\\v2Meta" // v2 meta data directory or zip file, if null and there is the default resource zip file, system uses the default resources.
                                                         , "c:\\v2.msg"               // input v2 message file
                                                         , "ORU^R01"                  // message type
                                                         , "2.4"                      // target version
                                                         , "c:\\fff.csv"              // output csv file
-                                                        , "c:\\fff.scs"              // scs file for validation
+                                                        , "c:\\fff.scs"              // scs file for the output csv file validation
                                                         , false                      // this value must be false
                                                         );
         // If input v2 file is well made, with only the constructor, output csv file will be generated.
