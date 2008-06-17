@@ -60,7 +60,7 @@ import java.util.Map;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.36 $ date $Date:
+ * @version Since caAdapter v1.2 revision $Revision: 1.37 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -213,10 +213,10 @@ public class MainMenuBar extends AbstractMenuBar
     {
         AboutAction aboutAction = new AboutAction(mainFrame);
         HelpTopicAction helpTopicAction = new HelpTopicAction(mainFrame);
-        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
-        {
-        	helpTopicAction.setEnabled(false);
-        }
+//        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
+//        {
+//        	helpTopicAction.setEnabled(false);
+//        }
         JMenu helpMenu = new JMenu(MenuConstants.HELP_MENU_NAME);
         helpMenu.setMnemonic('H');
         JMenuItem helpAboutItem = new JMenuItem(aboutAction);
@@ -742,6 +742,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.36  2008/06/13 15:55:20  wangeug
+ * HISTORY : exclude GME module from caAdapter 4.1 beta release
+ * HISTORY :
  * HISTORY : Revision 1.35  2008/06/09 19:53:53  phadkes
  * HISTORY : New license text replaced for all .java files.
  * HISTORY :
