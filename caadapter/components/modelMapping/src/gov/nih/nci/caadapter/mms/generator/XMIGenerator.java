@@ -427,10 +427,13 @@ public class XMIGenerator
 	    //original create dependency with correct client and supplier
 	    UMLDependency dep = model.createDependency( client, supplier, "dependency" );
 	    dep = model.addDependency( dep );	    
+	    dep.addStereotype("DataSource");
 	    dep.addTaggedValue("stereotype", "DataSource");
 	    dep.addTaggedValue("ea_type", "Dependency");
 	    dep.addTaggedValue("direction", "Source -> Destination");
 	    dep.addTaggedValue("style", "3");
+	    dep.addTaggedValue("ea_sourceName", client.getName());
+	    dep.addTaggedValue("ea_targetName", supplier.getName());
 
 
 	    //since XMIHandler write new Dependency UML section under "Logical Model.Object" section
