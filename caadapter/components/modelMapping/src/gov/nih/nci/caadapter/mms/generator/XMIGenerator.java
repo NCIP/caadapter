@@ -280,7 +280,7 @@ public class XMIGenerator
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
 		addManyToManyTaggedValues(this.manytomanys);
-		//deleteMappingFile();
+		deleteMappingFile();
 	}
 	
 	/**
