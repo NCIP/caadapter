@@ -29,9 +29,11 @@
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
         <zip destfile="caadapter4_0_Bin_${DATE}.zip">
-			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
+			<!-- zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
 				lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,lib/jgraph.jar,
-				lib/sqleonardo.jar, lib/ostermill*,lib/junit*.jar" />
+				lib/sqleonardo.jar, lib/ostermill*,lib/junit*.jar" / -->
+			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
+				lib/caadapterCommon.jar,lib/caAdapter_ui.jar,lib/junit*.jar" />
 			<zipfileset dir=".." includes="docs/help/**, docs/v*BETA/**" />
 			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
 			<zipfileset dir="../workingspace" 
