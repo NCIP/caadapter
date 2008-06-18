@@ -32,8 +32,8 @@ import java.io.InputStreamReader;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-06-17 17:33:47 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-06-18 16:08:28 $
  */
 public class AboutAction extends AbstractContextAction
 {
@@ -55,7 +55,7 @@ public class AboutAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.7 2008-06-17 17:33:47 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/actions/AboutAction.java,v 1.8 2008-06-18 16:08:28 linc Exp $";
 
 	private JFrame mainFrame = null;
 
@@ -98,7 +98,7 @@ public class AboutAction extends AbstractContextAction
         }
 		 else
 		 {
-			AboutWindow cc = new AboutWindow();
+			AboutWindow cc = new AboutWindow(mainFrame);
 			DefaultSettings.centerWindow(cc);
 			cc.setVisible(true);
 	        cc.setAlwaysOnTop(true);
@@ -142,6 +142,9 @@ public class AboutAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/06/17 17:33:47  linc
+ * HISTORY      : updated with new about screen.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

@@ -37,10 +37,10 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-06-12 20:27:15 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-06-18 16:08:28 $
  */
-public class AboutWindow extends JFrame //implements ActionListener
+public class AboutWindow extends JDialog //implements ActionListener
 {
 
 	/**
@@ -55,11 +55,11 @@ public class AboutWindow extends JFrame //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.12 2008-06-12 20:27:15 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.13 2008-06-18 16:08:28 linc Exp $";
 
 
 	private JEditorPane mainView;
-	private JFrame thisWindow;
+	private JDialog thisWindow;
 	private String dirSeparater;
 	private String commonPath;
 	private String commonURIPath = "file:///";
@@ -94,9 +94,9 @@ public class AboutWindow extends JFrame //implements ActionListener
 	private String LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE = "licenseinformation";
 	private String WEB_BROWSER_COMMAND_ON_WINDOW_OS = "C:/Program Files/Internet Explorer/IEXPLORE.EXE ";
 
-	public AboutWindow()
+	public AboutWindow(JFrame parent)
 	{
-		super("About caAdapter");
+		super(parent, "About caAdapter", false);
 		dirSeparater = File.separator;
 		thisWindow = this;
 		mainView = new JEditorPane("text/html", "<html><head><title>help</title></head><body><font color='blue'>Start</font></body></html>");
@@ -458,10 +458,10 @@ public class AboutWindow extends JFrame //implements ActionListener
 		public void windowDeiconified(WindowEvent e) {}//System.out.println(" URL -- A4 : windowDeiconified");}
 		public void windowIconified(WindowEvent e) {}//System.out.println(" URL -- A5 : windowIconified");}
 		public void windowActivated(WindowEvent e) {}//System.out.println(" URL -- A6 : windowActivated");}
-		public void windowDeactivated(WindowEvent e) {}//System.out.println(" URL -- A7 : windowDeactivated");}
+		//public void windowDeactivated(WindowEvent e) {}//System.out.println(" URL -- A7 : windowDeactivated");}
 		public void windowLostFocus(WindowEvent e) {}//System.out.println(" URL -- A7 : windowLostFocus");}
 		public void windowGainedFocus(WindowEvent e) {}//System.out.println(" URL -- A7 : windowGainedFocus(");}
-//		public void windowDeactivated(WindowEvent e) {tt.dispose();  	}
+		public void windowDeactivated(WindowEvent e) {tt.dispose();  	}
 
 	}
 
@@ -589,6 +589,9 @@ public class AboutWindow extends JFrame //implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2008/06/12 20:27:15  linc
+ * HISTORY      : New About windows view.
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
