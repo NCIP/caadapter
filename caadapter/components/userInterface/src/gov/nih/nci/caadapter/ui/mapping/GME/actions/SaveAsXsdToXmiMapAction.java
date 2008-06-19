@@ -50,8 +50,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2008-06-12 17:36:06 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2008-06-19 20:03:53 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -67,7 +67,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.11 2008-06-12 17:36:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.12 2008-06-19 20:03:53 phadkes Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
@@ -173,19 +173,19 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                   else  if (umlObject instanceof UMLAttribute)
                   {
                      System.out.println("Removing attr " + modelKey );
-                     ((UMLAttribute)umlObject).removeTaggedValue("GME_XMLLocReference");
+                     ((UMLAttribute)umlObject).removeTaggedValue("NCI_GME_XML_LOC_REF");
                   }
                   else  if (umlObject instanceof UMLAssociation)
                   {
                      System.out.println("Removing assoc " + modelKey );
-                     ((UMLAssociation)umlObject).removeTaggedValue("GME_TargetXMLLocRef");
-                     ((UMLAssociation)umlObject).removeTaggedValue("GME_SourceXMLLocRef");
+                     ((UMLAssociation)umlObject).removeTaggedValue("NCI_GME_TARGET_XML_LOC_REF");
+                     ((UMLAssociation)umlObject).removeTaggedValue("NCI_GME_SOURCE_XML_LOC_REF");
                   }
                   else if (umlObject instanceof UMLPackage)
                   {
                       System.out.println("Removing package " + modelKey );
-                      xmiModelMeta.cleanPackageTaggedValue((UMLPackage)umlObject,"GME_XMLNamespace");
-//                      ((UMLPackage)umlObject).removeTaggedValue("GME_XMLNamespace");
+                      xmiModelMeta.cleanPackageTaggedValue((UMLPackage)umlObject,"NCI_GME_XML_NAMESPACE");
+//                      ((UMLPackage)umlObject).removeTaggedValue("NCI_GME_XML_NAMESPACE");
                   }
                   else
                   {
@@ -252,7 +252,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                     	String modelElmentId=trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
 
                         //annotate at the class lvl
-                        //trgtClassBean.addTaggedValue("GME_XMLNamespace", "Testing" );
+                        //trgtClassBean.addTaggedValue("NCI_GME_XML_NAMESPACE", "Testing" );
 
                         //remove class name from xmlPath
                     	String umlPackageKey=classPathKey.substring(0, classPathKey.lastIndexOf("."));
@@ -268,7 +268,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                         if( !packageList.contains(trgtPkgBean.getName()))
                         {
                             packageList.add(trgtPkgBean.getName());
-                            trgtPkgBean.addTaggedValue("GME_XMLNamespace", annoateGmeNamespace);
+                            trgtPkgBean.addTaggedValue("NCI_GME_XML_NAMESPACE", annoateGmeNamespace);
                         }
 
                         //annoate class to add tag at XMI level (xmi.content)
@@ -299,13 +299,13 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                     }
                     else  if( trgtUmlAsscBean.getTaggedValue("ea_sourceName").getValue().equals(classRealName) )
                     {
-//                    	trgtUmlAsscBean.addTaggedValue("GME_TargetXMLLocRef",srcAssc.getRoleName());
-                    	trgtUmlAsscBean.addTaggedValue("GME_SourceXMLLocRef",srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() )+"/"+srcAssc.getRoleName());
+//                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getRoleName());
+                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() )+"/"+srcAssc.getRoleName());
                     }
                     else  if( trgtUmlAsscBean.getTaggedValue("ea_targetName").getValue().equals(classRealName) )
                     {
-                    	trgtUmlAsscBean.addTaggedValue("GME_TargetXMLLocRef",srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() )+"/"+srcAssc.getRoleName());
-//                    	trgtUmlAsscBean.addTaggedValue("GME_SourceXMLLocRef",srcAssc.getParentXPath());
+                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() )+"/"+srcAssc.getRoleName());
+//                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getParentXPath());
                     }
 
                     //find the class and package of the this attribute
@@ -333,7 +333,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                         if( !packageList.contains(trgtPkgBean.getName()))
                         {
                             packageList.add(trgtPkgBean.getName());
-                            trgtPkgBean.addTaggedValue("GME_XMLNamespace", annoateGmeNamespace);
+                            trgtPkgBean.addTaggedValue("NCI_GME_XML_NAMESPACE", annoateGmeNamespace);
                         }
 
                         //annoate class to add tag at XMI level
@@ -417,6 +417,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2008/06/12 17:36:06  phadkes
+ * HISTORY      : Replaced to getXmlPath  instead of getXPath
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2008/06/09 19:54:05  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

@@ -575,15 +575,15 @@ public class XmiModelMetadata {
 		Element taggedValueElmnt=prjElmt.getChild("ModelElement.taggedValue", modelElement.getNamespace());
 
         if (taggedValueElmnt != null)        
-            cleanElmentTaggedChild(taggedValueElmnt, "GME_XMLNamespace");
+            cleanElmentTaggedChild(taggedValueElmnt, "NCI_GME_XML_NAMESPACE");
 
-//        modelBean.removeTaggedValue("GME_XMLNamespace");
+//        modelBean.removeTaggedValue("NCI_GME_XML_NAMESPACE");
     }
 
     public void annotateProjectObject(String gmeXmlNamespace)
     {
         UMLModelBean modelBean=(UMLModelBean)getHandler().getModel();
-        modelBean.addTaggedValue("GME_XMLNamespace", gmeXmlNamespace );
+        modelBean.addTaggedValue("NCI_GME_XML_NAMESPACE", gmeXmlNamespace );
     }
     
     /**
@@ -596,8 +596,8 @@ public class XmiModelMetadata {
 		Element modelElement=(Element)modelBean.getJDomElement();
 		
 		Element xmiContent=modelElement.getParentElement();
-		cleanElmentTaggedChild(xmiContent, "GME_XMLNamespace");
-		cleanElmentTaggedChild(xmiContent, "GME_XMLElement");
+		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_NAMESPACE");
+		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_NAMESPACE");
  	}
 	
 	/**
@@ -610,9 +610,9 @@ public class XmiModelMetadata {
 	public void annotateClassObject(String gmeXmlNamespace, String packageModelElementId, String gmeXmlElementName,String classModelElementId)
 	{
 		
-		addClassObjectAnnotationTag("GME_XMLNamespace", gmeXmlNamespace,packageModelElementId);
+		addClassObjectAnnotationTag("NCI_GME_XML_NAMESPACE", gmeXmlNamespace,packageModelElementId);
 		
-		addClassObjectAnnotationTag("GME_XMLElement", gmeXmlElementName,classModelElementId);
+		addClassObjectAnnotationTag("NCI_GME_XML_NAMESPACE", gmeXmlElementName,classModelElementId);
 	}
     
     public Element getXmiContent()

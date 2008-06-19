@@ -76,13 +76,13 @@ import org.jdom.Element;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.9 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.10 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.9 2008-06-09 19:54:05 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.10 2008-06-19 20:04:20 phadkes Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
 
@@ -512,11 +512,11 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                            Object element = iter.next();
                            UMLTaggedValue tag = (UMLTaggedValue) element;
 
-                           if ( tag.getName().contains( "GME_XMLLocReference" ) )
+                           if ( tag.getName().contains( "NCI_GME_XML_LOC_REF" ) )
                            {
                                //create the mapping, find src & target elements
                                System.out.println("Attr: " + att.getName() );
-                               System.out.println("**** GME_XMLLocReference: " + tag.getName() + " ( " + tag.getValue() + " )" );
+                               System.out.println("**** NCI_GME_XML_LOC_REF: " + tag.getName() + " ( " + tag.getValue() + " )" );
 
                                // Find the class of this attribute
                                String className = (String) key;
@@ -542,12 +542,12 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                      if ( modelElement != null )
                                      {
                                          //System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
-                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLNamespace") )
+                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_NAMESPACE") )
                                          {
                                              System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (value: " + elmnt.getAttributeValue("value") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
                                              xsdRoot = elmnt.getAttributeValue("value");
                                          }
-                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLElement") )
+                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_ELEMENT") )
                                          {
                                             xsdClass = elmnt.getAttributeValue("value"); 
                                          }
@@ -597,7 +597,7 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                            Object element = iter.next();
                            UMLTaggedValue tag = (UMLTaggedValue) element;
 
-                           if ( tag.getName().contains( "GME_TargetXMLLocRef") || tag.getName().contains( "GME_SourceXMLLocRef"))
+                           if ( tag.getName().contains( "NCI_GME_TARGET_XML_LOC_REF") || tag.getName().contains( "NCI_GME_SOURCE_XML_LOC_REF"))
                            {
 //                                String className = (String) key;
 //                                String classPath = className.substring(0, className.lastIndexOf("."));
@@ -614,12 +614,12 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                String mappedValue="";
                                if( umlAssocBean.getTaggedValue("ea_sourceName").getValue().equals(className) )
                                {
-                                   if(umlAssocBean.getTaggedValue("GME_SourceXMLLocRef") != null )
-                                     mappedValue = umlAssocBean.getTaggedValue( "GME_SourceXMLLocRef" ).getValue();
+                                   if(umlAssocBean.getTaggedValue("NCI_GME_SOURCE_XML_LOC_REF") != null )
+                                     mappedValue = umlAssocBean.getTaggedValue( "NCI_GME_SOURCE_XML_LOC_REF" ).getValue();
                                }  else if( umlAssocBean.getTaggedValue("ea_targetName").getValue().equals(className) )
                                {
-                                   if(umlAssocBean.getTaggedValue("GME_TargetXMLLocRef") != null )
-                                     mappedValue = umlAssocBean.getTaggedValue( "GME_TargetXMLLocRef" ).getValue();
+                                   if(umlAssocBean.getTaggedValue("NCI_GME_TARGET_XML_LOC_REF") != null )
+                                     mappedValue = umlAssocBean.getTaggedValue( "NCI_GME_TARGET_XML_LOC_REF" ).getValue();
                                }
 
                             if (mappedValue.equalsIgnoreCase(""))
@@ -644,12 +644,12 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
                                      if ( modelElement != null )
                                      {
                                          //System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
-                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLNamespace") )
+                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_NAMESPACE") )
                                          {
                                              System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (value: " + elmnt.getAttributeValue("value") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
                                              xsdRoot = elmnt.getAttributeValue("value");
                                          }
-                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLElement") )
+                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_ELEMENT") )
                                          {
                                             xsdClass = elmnt.getAttributeValue("value");
                                          }
@@ -669,11 +669,11 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 //                               if( assoc.getTaggedValue("ea_sourceName").getValue().equals(classRealName) )
 //                               {
 //                               String srcKey;
-//                               if ( tag.getName().contains( "GME_TargetXMLLocRef") ) {
-//                                    srcKey = xsdPath + "." + assoc.getTaggedValue("GME_TargetXMLLocRef").getValue().replaceAll("/",".");  //+"."+assoc.getTaggedValue("GME_TargetXMLLocRef").getValue();
+//                               if ( tag.getName().contains( "NCI_GME_TARGET_XML_LOC_REF") ) {
+//                                    srcKey = xsdPath + "." + assoc.getTaggedValue("NCI_GME_TARGET_XML_LOC_REF").getValue().replaceAll("/",".");  //+"."+assoc.getTaggedValue("NCI_GME_TARGET_XML_LOC_REF").getValue();
 //                               }
 //                               else{
-//                                    srcKey = xsdPath + "." + assoc.getTaggedValue("GME_SourcetXMLLocRef").getValue().replaceAll("/",".");  //+"."+assoc.getTaggedValue("GME_TargetXMLLocRef").getValue();
+//                                    srcKey = xsdPath + "." + assoc.getTaggedValue("GME_SourcetXMLLocRef").getValue().replaceAll("/",".");  //+"."+assoc.getTaggedValue("NCI_GME_TARGET_XML_LOC_REF").getValue();
 //                               }
                                 AssociationMetadata asscXmi = (AssociationMetadata) xmiModelMeta.getModelMetadata().get(((String)key).replaceAll("EA Model.", ""));
                                 AssociationMetadata asscXsd = xsdModelMeta.getAssociationMap().get(xsdPath);
@@ -701,9 +701,9 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
   //                             }
                             }
 
-//                           if ( tag.getName().contains( "GME_TargetXMLLocRef") ||  tag.getName().contains( "GME_SourceXMLLocRef") )
+//                           if ( tag.getName().contains( "NCI_GME_TARGET_XML_LOC_REF") ||  tag.getName().contains( "NCI_GME_SOURCE_XML_LOC_REF") )
 //                           {
-//                               System.out.println("**** GME_TargetXMLLocRef: " + tag.getName() + " ( " + tag.getValue() + " )" );
+//                               System.out.println("**** NCI_GME_TARGET_XML_LOC_REF: " + tag.getName() + " ( " + tag.getValue() + " )" );
 //
 //                               //find the class of this association
 //
@@ -730,12 +730,12 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 //                                     if ( modelElement != null )
 //                                     {
 //                                         //System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
-//                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLNamespace") )
+//                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_NAMESPACE") )
 //                                         {
 //                                             System.out.println("elment: (modelELement: " + elmnt.getAttributeValue("modelElement") + ") (value: " + elmnt.getAttributeValue("value") + ") (tag: " + elmnt.getAttributeValue("tag") + ")");
 //                                             xsdRoot = elmnt.getAttributeValue("value");
 //                                         }
-//                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("GME_XMLElement") )
+//                                         if( modelElement.equals(modelElementId) && elmnt.getAttributeValue("tag").equals("NCI_GME_XML_ELEMENT") )
 //                                         {
 //                                            xsdClass = elmnt.getAttributeValue("value");
 //                                         }
