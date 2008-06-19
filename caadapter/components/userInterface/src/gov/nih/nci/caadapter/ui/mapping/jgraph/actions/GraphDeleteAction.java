@@ -28,10 +28,10 @@ import java.awt.event.KeyEvent;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-06-19 17:22:50 $
  */
 public class GraphDeleteAction extends DefaultAbstractJgraphAction
 {
@@ -102,7 +102,7 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 				DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
 				for(int i=0;i<tableTreeNode.getChildCount(); i++)
 				{
-					DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)tableTreeNode.getChildAt(0);
+					DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)tableTreeNode.getChildAt(i);
 					SDKMetaData columnMeta=(SDKMetaData)childNode.getUserObject();
 					if (columnMeta.isMapped())
 					{
@@ -135,6 +135,9 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/06/04 18:08:06  wangeug
  * HISTORY      : handle delete a table-object dependency mappingl
  * HISTORY      :
