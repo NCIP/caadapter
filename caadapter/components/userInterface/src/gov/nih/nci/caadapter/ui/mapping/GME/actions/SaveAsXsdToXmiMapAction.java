@@ -50,8 +50,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-06-19 20:03:53 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-06-26 20:17:39 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -67,7 +67,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.12 2008-06-19 20:03:53 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.13 2008-06-26 20:17:39 phadkes Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
@@ -235,9 +235,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                     else
                     {
                     	if(srcAttr.isChildTag())
-                    		trgtUmlBean.addTaggedValue( "GME_XMLLocReference", srcAttr.getName() );
+                    		trgtUmlBean.addTaggedValue( "NCI_GME_XML_LOC_REF", srcAttr.getName() );
                     	else
-                    		trgtUmlBean.addTaggedValue( "GME_XMLLocReference", "@" + srcAttr.getName() );
+                    		trgtUmlBean.addTaggedValue( "NCI_GME_XML_LOC_REF", "@" + srcAttr.getName() );
                     }
 
                     //find the class and package of the this attribute
@@ -417,6 +417,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2008/06/19 20:03:53  phadkes
+ * HISTORY      : Changes to GME tags.
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2008/06/12 17:36:06  phadkes
  * HISTORY      : Replaced to getXmlPath  instead of getXPath
  * HISTORY      :

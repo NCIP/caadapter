@@ -597,7 +597,7 @@ public class XmiModelMetadata {
 		
 		Element xmiContent=modelElement.getParentElement();
 		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_NAMESPACE");
-		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_NAMESPACE");
+		cleanElmentTaggedChild(xmiContent, "NCI_GME_XML_ELEMENT");
  	}
 	
 	/**
@@ -612,7 +612,7 @@ public class XmiModelMetadata {
 		
 		addClassObjectAnnotationTag("NCI_GME_XML_NAMESPACE", gmeXmlNamespace,packageModelElementId);
 		
-		addClassObjectAnnotationTag("NCI_GME_XML_NAMESPACE", gmeXmlElementName,classModelElementId);
+		addClassObjectAnnotationTag("NCI_GME_XML_ELEMENT", gmeXmlElementName,classModelElementId);
 	}
     
     public Element getXmiContent()
