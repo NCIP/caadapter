@@ -24,14 +24,10 @@ import gov.nih.nci.caadapter.mms.validator.ManyToManyMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.SingleAssociationMappingValidator;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
 import gov.nih.nci.ncicb.xmiinout.handler.*;
-import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 /**
  * @author connellm
@@ -460,8 +456,10 @@ public static boolean mapManyToManyAssociation(UMLAssociationEnd source, String 
 	boolean successfullyMapped = false;
 	ManyToManyMapping mapping = new ManyToManyMapping();
 	AssociationMetadata thisEnd = new AssociationMetadata();
+	thisEnd.setUMLAssociation(source.getOwningAssociation());
 	UMLAssociationEnd end = getOtherAssociationEnd(source);
 	AssociationMetadata otherEnd = new AssociationMetadata();
+	otherEnd.setUMLAssociation(end.getOwningAssociation());
 	otherEnd.setRoleName(end.getRoleName());
 	otherEnd.setMultiplicity(end.getHighMultiplicity());
 	otherEnd.setNavigability(end.isNavigable());
