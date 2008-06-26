@@ -21,10 +21,10 @@ import java.io.File;
  * The front page of open HL7 Message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-06-26 19:45:51 $
  */
 public class OpenHL7MessageFrontPage extends JPanel
 {
@@ -40,15 +40,18 @@ public class OpenHL7MessageFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageFrontPage.java,v 1.2 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageFrontPage.java,v 1.3 2008-06-26 19:45:51 linc Exp $";
 
 	public static final String DATA_FILE_BROWSE_MODE = "Data File";
 	public static final String MAP_FILE_BROWSE_MODE = "Map Specification";
+	public static final String DEST_FILE_BROWSE_MODE = "Result File";
 	private JTextField dataFileInputField;
 	private JTextField mapFileInputField;
-
+	private JTextField destFileInputField;
+	private boolean isCSV2HL7 = false;
 	private File mapFile;
 	private File dataFile;
+	private File destFile;
 	private String openWizardTitle;
 	/**
 	 * Creates a new <code>JPanel</code> with a double buffer
@@ -87,6 +90,19 @@ public class OpenHL7MessageFrontPage extends JPanel
 		centerPanel.add(mapFileBrowseButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
+		if (!(openWizardTitle!=null&&openWizardTitle.contains(Config.HL7_V3_TO_CSV_MODULE_NAME))){
+			this.isCSV2HL7 = true;
+			JLabel destFileLabel = new JLabel(DEST_FILE_BROWSE_MODE);
+			centerPanel.add(destFileLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+					GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+			destFileInputField = new JTextField();
+			destFileInputField.setPreferredSize(new Dimension(350, 25));
+			centerPanel.add(destFileInputField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+			JButton destFileBrowseButton = new JButton(new BrowseHLV3MessageAction(this, DEST_FILE_BROWSE_MODE));
+			centerPanel.add(destFileBrowseButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+		}
 		this.add(centerPanel, BorderLayout.CENTER);
 	}
 
@@ -103,6 +119,10 @@ public class OpenHL7MessageFrontPage extends JPanel
 		else if(MAP_FILE_BROWSE_MODE.equals(browseMode))
 		{
             result = Config.MAP_FILE_DEFAULT_EXTENTION;
+		}
+		else if(DEST_FILE_BROWSE_MODE.equals(browseMode))
+		{
+            result = ".zip";
 		}
 		else
 		{
@@ -122,6 +142,10 @@ public class OpenHL7MessageFrontPage extends JPanel
 		{
 			this.setMapFile(file);
 		}
+		else if (DEST_FILE_BROWSE_MODE.equals(browseMode))
+		{
+			this.setDestFile(file);
+		}
 		else
 		{
 			System.err.println(getClass().getName() + ".getFileExtension() does not understand this mode '" + browseMode + "'.");
@@ -135,7 +159,7 @@ public class OpenHL7MessageFrontPage extends JPanel
 	 */
 	public boolean validateInputFields()
 	{
-        boolean result = validateInputByMode(DATA_FILE_BROWSE_MODE) && validateInputByMode(MAP_FILE_BROWSE_MODE);
+        boolean result = validateInputByMode(DATA_FILE_BROWSE_MODE) && validateInputByMode(MAP_FILE_BROWSE_MODE) && validateInputByMode(DEST_FILE_BROWSE_MODE);
 		return result;
 	}
 
@@ -143,6 +167,26 @@ public class OpenHL7MessageFrontPage extends JPanel
 	{
 		File tempFile = null;
 		String fileTypeMsg = null;
+		
+		//if csv->hl7, validate dest file
+		if(!this.isCSV2HL7 && DEST_FILE_BROWSE_MODE.equals(mode))
+			return true;
+		if(this.isCSV2HL7 && DEST_FILE_BROWSE_MODE.equals(mode))
+        {
+        	tempFile = getDestFile();
+        	if(tempFile == null){
+        		JOptionPane.showMessageDialog(this, "Please choose result file", "File Not Found Error",
+    					JOptionPane.ERROR_MESSAGE);
+        		return false;
+        	}
+        		
+//        	if(tempFile.exists()){
+//        		if( JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(this, getDestFile()+" exists, do you want to overwrite it?"))
+//        			return false;
+//        	}
+        	return true;
+        }
+        		
 		if(DATA_FILE_BROWSE_MODE.equals(mode))
 		{
 			tempFile = getDataFile();
@@ -153,7 +197,7 @@ public class OpenHL7MessageFrontPage extends JPanel
 			tempFile = getMapFile();
 			fileTypeMsg = "The map specification ";
 		}
-
+		
 		if (tempFile == null || !tempFile.isFile())
 		{
 			String errorDetail = (tempFile==null) ? "should not be null."
@@ -166,6 +210,8 @@ public class OpenHL7MessageFrontPage extends JPanel
 		{
 			return true;
 		}
+		
+		
 	}
 
 	/**
@@ -215,6 +261,29 @@ public class OpenHL7MessageFrontPage extends JPanel
 		return dataFile;
 	}
 
+	/**
+	 * Return null if user does not specify any file.
+	 * @return
+	 */
+	public File getDestFile()
+	{
+		String userInputText = destFileInputField.getText();
+		if (userInputText != null && userInputText.length() > 0)
+		{
+			File tempFile = new File(userInputText);
+			if (!GeneralUtilities.areEqual(destFile, tempFile))
+			{//user input supersedes browsed value.
+				destFile = tempFile;
+			}
+		}
+		else
+		{
+			destFile = null;
+		}
+
+		return destFile;
+	}
+
 	protected void setMapFile(File mapFile)
 	{
 		this.mapFile = mapFile;
@@ -240,10 +309,26 @@ public class OpenHL7MessageFrontPage extends JPanel
 			dataFileInputField.setText("");
 		}
 	}
+
+	protected void setDestFile(File destFile)
+	{
+		this.destFile = destFile;
+		if (destFile != null)
+		{
+			destFileInputField.setText(destFile.getAbsolutePath());
+		}
+		else
+		{
+			destFileInputField.setText("");
+		}
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

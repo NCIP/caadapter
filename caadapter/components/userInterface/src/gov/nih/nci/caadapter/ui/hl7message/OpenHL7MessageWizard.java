@@ -18,10 +18,10 @@ import java.io.File;
 /**
  * This class is the main entry class of message wizard to collect user's inputs.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-06-26 19:45:51 $
  */
 public class OpenHL7MessageWizard extends JDialog implements ActionListener
 {
@@ -37,7 +37,7 @@ public class OpenHL7MessageWizard extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageWizard.java,v 1.2 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageWizard.java,v 1.3 2008-06-26 19:45:51 linc Exp $";
 
 	private static final String OK_COMMAND = "OK";
 
@@ -95,6 +95,11 @@ public class OpenHL7MessageWizard extends JDialog implements ActionListener
 		return frontPage.getDataFile();
 	}
 
+	public File getDestFile()
+	{
+		return frontPage.getDestFile();
+	}
+
 	public boolean isOkButtonClicked()
 	{
 		return okButtonClicked;
@@ -144,6 +149,9 @@ public class OpenHL7MessageWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

@@ -21,14 +21,14 @@ import java.util.List;
  * An aggregation of validator result
  *
  * @author OWNER: Eric Chen  Date: Aug 22, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.7 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: linc $
+ * @version $Revision: 1.8 $
+ * @date $$Date: 2008-06-26 19:45:50 $
  * @since caAdapter v1.2
  */
 
 
-public class ValidatorResults
+public class ValidatorResults extends Object implements java.io.Serializable
 {
     private List<ValidatorResult> fatalResults = new ArrayList<ValidatorResult>();
     private List<ValidatorResult> errorResults = new ArrayList<ValidatorResult>();
@@ -276,6 +276,9 @@ public class ValidatorResults
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/07/31 20:05:41  wangeug
  * HISTORY      : display validation result with level and message text
  * HISTORY      :

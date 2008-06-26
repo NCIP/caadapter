@@ -64,10 +64,10 @@ import java.util.Map;
  * This class is the main entry point to display HL7V3 message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.22 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.23 $
+ *          date        $Date: 2008-06-26 19:45:51 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -78,7 +78,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	private JTextField currentMessageField = new JTextField("");
 	private JTextField totalNumberOfMessageField = new JTextField();
 	private int currentCount = 1;//count from 1...
-
+	private int totalNumberOfMessages = 0;
+	private boolean isBatchTransform = false;
+	
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
 
@@ -323,9 +325,14 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				progressor.setNote(TransformationObserver.TRANSFORMATION_MESSAGE_GENERATING_STEP);
 				progressor.setProgress(1);
 
-				final TransformationService ts=new TransformationService(mapFile, dataFile);
+				final HL7MessagePanel listnerPane=this;
+		    	final TransformationService ts=new TransformationService(mapFile, dataFile);
+				if(this.getSaveFile()!=null)
+				{
+					ts.setOutputFile(this.getSaveFile());
+					listnerPane.isBatchTransform = true;
+				}
 		    	progressor.setProgress(100);
-		    	final HL7MessagePanel listnerPane=this;
 		    	ts.addProgressWatch(progressor);
 				Thread localThread=new Thread(
 					new Runnable()
@@ -334,15 +341,30 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 						{
 							
 					    	try {
-								List<XMLElement> xmlElements =ts.process();
-								if (xmlElements==null)
+					    		int count = 0;
+					    		List<XMLElement> xmlElements = null;
+								if(listnerPane.isBatchTransform){
+									count = ts.batchProcess();
+								}else{
+									xmlElements =ts.process();
+								}
+								if (count<0 && xmlElements == null)
 								{
 									ValidatorResults rs=ts.getValidatorResults();
 									listnerPane.setMessageText(rs.getAllMessages().toString());
 									progressor.close();
 								}
 								else
-									listnerPane.setMessageResultList(xmlElements);
+								{
+									
+									if(count>0){
+										listnerPane.totalNumberOfMessages = count;
+										listnerPane.currentCount = 1;
+										listnerPane.changeDisplay();
+									}
+									if(xmlElements!=null && !listnerPane.isBatchTransform)
+										listnerPane.setMessageResultList(xmlElements);
+								}
 					    	} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -357,7 +379,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					}				
 				);
 				localThread.start();
-				this.setChanged(true);
+				this.setChanged(!this.isBatchTransform);
 				setMessageFileType(MESSAGE_PANEL_HL7);
 				return validatorResults;
 			}
@@ -383,18 +405,18 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
     private void changeDisplay()
     {
-    	if (messageList==null|messageList.isEmpty())
+    	if (!isBatchTransform && (messageList==null||messageList.isEmpty()))
     		return;
-    	
-		int totalNumberOfMessages = messageList.size();
+    	if(!isBatchTransform)
+    		totalNumberOfMessages = messageList.size();
 		nextButton.setEnabled(currentCount < totalNumberOfMessages);
         previousButton.setEnabled(currentCount > 1);
         currentMessageField.setText(String.valueOf(currentCount));
 		totalNumberOfMessageField.setText(String.valueOf(totalNumberOfMessages));
-		if(totalNumberOfMessages > 0)
+		String messageValidationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
+		if(totalNumberOfMessages > 0 && !isBatchTransform)
 		{
 			Object generalMssg= messageList.get(currentCount - 1);
-			String messageValidationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
 			if (generalMssg instanceof XMLElement)
 			{
 				XMLElement xmlMsg =(XMLElement)generalMssg;
@@ -427,6 +449,37 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				setMessageText(hl7ToCsv.getMessageText());
 				validationMessagePane.setValidatorResults(hl7ToCsv.getValidatorResults());
 			}
+		}
+		else if(totalNumberOfMessages>0 && isBatchTransform)
+		{
+			try{
+				setMessageText(TransformationService.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml"));
+
+				ValidatorResults validatorsToShow=new ValidatorResults();
+				//add structure validation ... level_0
+				validatorsToShow.addValidatorResults((ValidatorResults)TransformationService.readObjFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".ser"));
+//				if(messageValidationLevel!=null&&
+//						!messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0))
+//				{
+//					//add vocabulary validation ... level_1
+//					validatorsToShow.addValidatorResults(xmlMsg.validate());
+//					if(messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2))
+//					{	//add xsd validation
+//						try {
+//							String xsdFile=FileUtil.searchMessageTypeSchemaFileName(xmlMsg.getMessageType(),"xsd");
+//							HL7V3MessageValidator h7v3Validator=new HL7V3MessageValidator();
+//							//add xsd validation ... level_2
+//							validatorsToShow.addValidatorResults(h7v3Validator.validate(xmlMsg.toXML().toString(), xsdFile));//"C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd");
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+				validationMessagePane.setValidatorResults(validatorsToShow);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
 		}
 		else
 		{//just clean up
@@ -616,6 +669,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.22  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.21  2007/11/13 16:33:33  wangeug
  * HISTORY      : convert Exception.printStackTrace() into a string
  * HISTORY      :

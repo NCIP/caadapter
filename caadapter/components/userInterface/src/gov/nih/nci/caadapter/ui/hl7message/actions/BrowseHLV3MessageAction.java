@@ -24,10 +24,10 @@ import java.io.File;
  * This class defines the Browse action used across the message wisard.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-06-26 19:45:51 $
  */
 public class BrowseHLV3MessageAction extends AbstractContextAction
 {
@@ -43,7 +43,7 @@ public class BrowseHLV3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/BrowseHLV3MessageAction.java,v 1.3 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/BrowseHLV3MessageAction.java,v 1.4 2008-06-26 19:45:51 linc Exp $";
 
 	private static final String COMMAND_NAME = "Browse...";
 	private static final Character COMMAND_MNEMONIC = new Character('B');
@@ -96,7 +96,7 @@ public class BrowseHLV3MessageAction extends AbstractContextAction
 		String fileExtension = frontPage.getFileExtension(browseMode);
 
         File file = DefaultSettings.getUserInputOfFileFromGUI(frontPage, //FileUtil.getUIWorkingDirectoryPath(),
-				fileExtension, getOpenDialogTitle(fileExtension), false, false);
+				fileExtension, getOpenDialogTitle(fileExtension), browseMode.equals(OpenHL7MessageFrontPage.DEST_FILE_BROWSE_MODE), browseMode.equals(OpenHL7MessageFrontPage.DEST_FILE_BROWSE_MODE));
 		if (file != null)
 		{
 			frontPage.setUserSelectionFile(file, browseMode);
@@ -137,6 +137,9 @@ public class BrowseHLV3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/08/13 15:22:26  wangeug
  * HISTORY      : add new constants :open_dialog_tile_hsm_xml
  * HISTORY      :

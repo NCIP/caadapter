@@ -18,14 +18,14 @@ import java.text.MessageFormat;
  * A text message which could take parameter
  *
  * @author OWNER: Eric Chen  Date: Aug 18, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.2 $
- * @date $$Date: 2008-06-09 19:53:49 $
+ * @author LAST UPDATE: $Author: linc $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2008-06-26 19:45:50 $
  * @since caAdapter v1.2
  */
 
 
-public class Message
+public class Message extends Object implements java.io.Serializable
 {
     private String template="";
     private Object[] args =  new Object[0];
@@ -60,6 +60,9 @@ public class Message
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:49  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:02:37  wangeug
  * HISTORY      : initial loading of common module
  * HISTORY      :

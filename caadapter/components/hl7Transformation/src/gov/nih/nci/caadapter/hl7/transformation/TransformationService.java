@@ -44,15 +44,15 @@ import java.util.zip.ZipEntry;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.18 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: linc $
+ * @version $Revision: 1.19 $
+ * @date $Date: 2008-06-26 19:45:50 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.18 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.19 2008-06-26 19:45:50 linc Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -359,54 +359,56 @@ public class TransformationService
 
     public int batchProcess() throws Exception
     {
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
-
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
-    	this.loadMap();
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
-
-    	if (!mapParser.getValidatorResults().isValid())
-    	{	
-    		System.out.println("Invalid .map file");
-    		Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
-    		theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-    		return -1;
-    	}
-
-    	this.loadH3S();
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
-
-    	long csvbegintime = System.currentTimeMillis();
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
-
-    	boolean batchFinished = false;
-    	File scsFile = new File(FileUtil.filenameLocate(mapfile.getParent(), mapParser.getSCSFilename()));
-    	this.loadCsvMeta(scsFile);
-
-    	if (isCsvString || (!this.isOutputStream && this.outputFile==null && this.outputStream==null)) 
-    	{
-    		throw new Exception("not valid for batch transformation.");
-    	}
-    	if(!this.isInputStream && this.csvfile!=null)
-    	{
-    		this.csvStream = new FileInputStream(this.csvfile);
-    	}
-    	if(!this.isOutputStream && this.outputFile!=null)
-    	{
-    		this.outputStream = new FileOutputStream(this.outputFile);
-    	}
-
-    	reader = new CsvReader(this.csvStream, this.meta);
-    	ZipOutputStream zipOut = new ZipOutputStream(outputStream);
-    	OutputStreamWriter writer = new OutputStreamWriter(zipOut);
+    	ZipOutputStream zipOut = null;
     	int messageCount = 0;
-    	long bufferStart = 0;
-    	long bufferSize = 0;
-    	while(reader.hasMoreRecord())
-    	{
-    		List<XMLElement> xmlElements = processNext();
-//  		HL7V3MessageValidator validator = new HL7V3MessageValidator();
-    		/*        for(XMLElement xmlElement:xmlElements) 
+		try{
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
+
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
+    		this.loadMap();
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
+
+    		if (!mapParser.getValidatorResults().isValid())
+    		{	
+    			System.out.println("Invalid .map file");
+    			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
+    			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+    			return -1;
+    		}
+
+    		this.loadH3S();
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
+
+    		long csvbegintime = System.currentTimeMillis();
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
+
+    		boolean batchFinished = false;
+    		File scsFile = new File(FileUtil.filenameLocate(mapfile.getParent(), mapParser.getSCSFilename()));
+    		this.loadCsvMeta(scsFile);
+
+    		if (isCsvString || (!this.isOutputStream && this.outputFile==null && this.outputStream==null)) 
+    		{
+    			throw new Exception("not valid for batch transformation.");
+    		}
+    		if(!this.isInputStream && this.csvfile!=null)
+    		{
+    			this.csvStream = new FileInputStream(this.csvfile);
+    		}
+    		if(!this.isOutputStream && this.outputFile!=null)
+    		{
+    			this.outputStream = new FileOutputStream(this.outputFile);
+    		}
+
+    		reader = new CsvReader(this.csvStream, this.meta);
+    		zipOut = new ZipOutputStream(outputStream);
+    		OutputStreamWriter writer = new OutputStreamWriter(zipOut);
+    		long bufferStart = 0;
+    		long bufferSize = 0;
+    		while(reader.hasMoreRecord())
+    		{
+    			List<XMLElement> xmlElements = processNext();
+//  			HL7V3MessageValidator validator = new HL7V3MessageValidator();
+    			/*        for(XMLElement xmlElement:xmlElements) 
         {
         	System.out.println("Message:"+xmlElement.toXML());
 //        	xmlElement.validate();
@@ -421,25 +423,35 @@ public class TransformationService
 //        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
 //        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
         }*/
-    		if(xmlElements!=null && xmlElements.size()>0)
-    		{
-    			for(int i=0; i<xmlElements.size(); i++)
+    			if(xmlElements!=null)
     			{
-    				zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
-    				writer.write(xmlElements.get(i).toXML().toString());
-    				writer.flush();
+    				for(int i=0; i<xmlElements.size(); i++)
+    				{
+    					zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
+    					writer.write(xmlElements.get(i).toXML().toString());
+    					writer.flush();
+    					zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
+    					ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
+    					objOut.writeObject(xmlElements.get(i).getValidatorResults());
+    					objOut.flush();
+    				}
+    				//System.out.println("Parsed "+xmlElements.size()+" records in " + (System.currentTimeMillis()-csvbegintime)+" ms");
+    				messageCount += xmlElements.size();
+    				bufferSize = reader.getReadCount()-bufferStart;
+    			}else
+    			{
+    				System.out.println("[WARNING] got no message, current count="+messageCount);
+    				return -1;
     			}
-    			//System.out.println("Parsed "+xmlElements.size()+" records in " + (System.currentTimeMillis()-csvbegintime)+" ms");
-    			messageCount += xmlElements.size();
-    			bufferSize = reader.getReadCount()-bufferStart;
-    		}else
-    		{
-    			System.out.println("[WARNING] got no message, current count="+messageCount);
     		}
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
+    		System.out.println("total message" + messageCount);
+    		writer.close();
+    	}finally{
+    		try{
+    			zipOut.close();
+    		}catch(Exception ignored){}
     	}
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
-    	System.out.println("total message" + messageCount);
-    	writer.close();
     	return messageCount;
     }
 
@@ -472,24 +484,53 @@ public class TransformationService
     }
 
     public static String readFromZip(File file, String name) throws FileNotFoundException, IOException{
-    	ZipInputStream inZip = new ZipInputStream(new FileInputStream(file));
+    	ZipInputStream inZip = null;
     	StringBuffer ret = new StringBuffer();
-    	String entryName = "";
-    	while(!entryName.equals(name))
-    	{
-    		ZipEntry entry = inZip.getNextEntry();
-    		if(entry==null) throw new IOException("entry not found.");
-    		entryName = entry.getName();
+		try{
+    		inZip = new ZipInputStream(new FileInputStream(file));
+    		String entryName = "";
+    		while(!entryName.equals(name))
+    		{
+    			ZipEntry entry = inZip.getNextEntry();
+    			if(entry==null) throw new IOException("entry not found.");
+    			entryName = entry.getName();
+    		}
+    		byte[] buf = new byte[1024];
+    		int count = 0;
+    		while(count>=0)
+    		{
+    			count = inZip.read(buf, 0, 1024);
+    			if(count>0) ret.append(new String(buf, 0, count));
+    		}
+    	}finally{
+    		try{
+    			inZip.close();
+    		}catch(Exception ignored){}
     	}
-    	byte[] buf = new byte[1024];
-    	int count = 0;
-    	while(count>=0)
-    	{
-    		count = inZip.read(buf, 0, 1024);
-    		if(count>0) ret.append(new String(buf, 0, count));
-    	}
-    	inZip.close();
     	return ret.toString();
+    }
+    
+    public static Object readObjFromZip(File file, String name) throws FileNotFoundException, ClassNotFoundException, IOException{
+    	Object ret = null;
+    	ZipInputStream inZip = null;
+    	try{
+    		inZip = new ZipInputStream(new FileInputStream(file));
+    		String entryName = "";
+    		while(!entryName.equals(name))
+    		{
+    			ZipEntry entry = inZip.getNextEntry();
+    			if(entry==null) throw new IOException("entry not found.");
+    			entryName = entry.getName();
+    		}
+    		ObjectInputStream objIn = new ObjectInputStream(inZip);
+    		ret = objIn.readObject();
+    	}finally{
+    		try{
+    			inZip.close();
+    		}catch(Exception ignored){}
+    	}
+    		
+    	return ret;
     }
     
     public static int countEntriesInZip(File file) throws FileNotFoundException, IOException{
@@ -599,6 +640,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2008/06/03 20:43:55  linc
  * HISTORY      : merge batch transform api to solve OutOfMemory issues.
  * HISTORY      :

@@ -35,10 +35,10 @@ import java.util.ArrayList;
  * This class defines the new HL7V3 message panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-06-26 19:45:51 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -54,7 +54,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.10 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.11 2008-06-26 19:45:51 linc Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -192,6 +192,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 		{
 			File dataFile = openWizard.getDataFile();
 			File mapFile = openWizard.getMapFile();
+			File destFile = openWizard.getDestFile();
 			openWizard = null;
 			JComponent currentActivePanel = mainFrame.hasComponentOfGivenClass(HL7MessagePanel.class, true);//getMainContextManager().getCurrentPanel();
 			//release resource
@@ -211,6 +212,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 			else
 				msgPaneName="CSV Data";
 			panel.setName(msgPaneName);
+			panel.setSaveFile(destFile);
 			//launch panel will determine whether the command has been executed successfully.
 			launchPanel(panel, dataFile, mapFile, e);
 		}
@@ -240,6 +242,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2007/10/09 21:00:13  wangeug
  * HISTORY      : save csv data from hl7MessagePanel
  * HISTORY      :

@@ -27,14 +27,14 @@ import gov.nih.nci.caadapter.common.Message;
  *
  *
  * @author OWNER: Eric Chen  Date: Aug 18, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.3 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: linc $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2008-06-26 19:45:50 $
  * @since caAdapter v1.2
  */
 
 
-public class ValidatorResult
+public class ValidatorResult extends Object implements java.io.Serializable
 {
 
     private Level level;
@@ -88,6 +88,9 @@ public class ValidatorResult
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/12 14:37:49  wangeug
  * HISTORY      : Add "ALL" as option in the validation message type dropdown so you can see all types of validation messages
  * HISTORY      :
