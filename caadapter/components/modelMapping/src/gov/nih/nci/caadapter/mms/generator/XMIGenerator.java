@@ -53,12 +53,12 @@ public class XMIGenerator
 	private ModelMetadata modelMetadata = null;
 	private LinkedHashMap myMap = null;
 
-    private static HashSet<String> primaryKeys = new HashSet<String>();
-	private static HashSet<String> lazyKeys = new HashSet<String>();
-	private static HashSet<String> clobKeys = new HashSet<String>();
-    private static HashSet<String> discriminatorKeys = new HashSet<String>();
-    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
-    private static Log logger =new Log();
+    private HashSet<String> primaryKeys = new HashSet<String>();
+	private HashSet<String> lazyKeys = new HashSet<String>();
+	private HashSet<String> clobKeys = new HashSet<String>();
+    private HashSet<String> discriminatorKeys = new HashSet<String>();
+    private Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
+    private Log logger =new Log();
     public XMIGenerator(){
 	}
     
@@ -718,6 +718,8 @@ public class XMIGenerator
 			UMLTaggedValue lazyTag=umlAssociation.getTaggedValue("lazy-load");
 			if (lazyTag==null)
 				umlAssociation.addTaggedValue("lazy-load", "No");
+			else
+				lazyTag.setValue("No");
 		}
 	}
 
