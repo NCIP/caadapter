@@ -199,6 +199,8 @@
         	<fileset dir="${mms.module.home}/lib">
         		<include name="jaxen-jdom.jar"/>
                 <include name="dom4j-1.4.jar"/>
+				<include name="sdk-codegen.jar"/>
+				<include name="spring.jar"/>
         	</fileset>
         </copy>
 
@@ -283,7 +285,7 @@
             	<include name="caAdapter_ui.jar"/>
             	<include name="resource.zip"/>
         		<include name="resourceV2.zip"/>
-                <include name="jgraph.jar"/>        	   
+                <include name="jgraph.jar"/>      
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
         		<include name="BrowserLauncher2-all-10rc4.jar"/>   
@@ -470,6 +472,8 @@
             	<include name="caAdapter.jar"/>
                 <include name="jaxen-jdom.jar"/>
                 <include name="dom4j-1.4.jar"/>
+				<include name="sdk-codegen.jar"/>
+				<include name="spring.jar"/>
         	</fileset>  
         	<fileset dir="${common.module.home}/lib">
 			   	<include name="log4j-1.2.8.jar"/>
@@ -582,6 +586,8 @@
         	<fileset dir="${mms.module.home}/lib">
                 <include name="dom4j-1.4.jar"/>
                 <include name="jaxen-jdom.jar"/>
+				<include name="sdk-codegen.jar"/>
+				<include name="spring.jar"/>
         	</fileset>
         </copy>
 
