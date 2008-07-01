@@ -26,6 +26,9 @@
    	<jar href="sqleonardo.jar"/>
    	<jar href="mysql-connector-java-3.1.13-bin.jar"/>
    	<jar href="ojdbc14.jar"/>
+	<jar href="knuHL7V2tree.jar"/>
+	<jar href="sdk-codegen.jar"/>
+	<jar href="spring.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />

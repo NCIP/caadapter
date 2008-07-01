@@ -26,6 +26,9 @@
 	<jar href="xmi.in.out.jar"/>
 	<jar href="castor-0.9.9.jar"/>
    	<jar href="dom4j-1.4.jar"/>
+	<jar href="knuHL7V2tree.jar"/>
+	<jar href="sdk-codegen.jar"/>
+	<jar href="spring.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />

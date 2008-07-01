@@ -26,6 +26,9 @@
    	<jar href="resource.zip"/>
     <jar href="resourceV2.zip"/>   
     <jar href="poi-2.5.1-final-20040804.jar"/>
+	<jar href="knuHL7V2tree.jar"/>
+	<jar href="sdk-codegen.jar"/>
+	<jar href="spring.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />
