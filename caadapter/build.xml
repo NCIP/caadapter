@@ -33,7 +33,7 @@
     <property name="tdms.webstart.warfile.name" value="caadapter-tdms.war"/>
     <property name="caadapter.webstart.warfile.name" value="caadapter-webstart.war"/>
     <property name="webstart.config.dir" value="${basedir}/etc/webstartconf"/>
-    <property name="webserver" value="http://localhost/"/>
+    <property name="webserver" value="http://localhost:8080"/>
 
     <!-- Mailer properties begin-->
     <property name="MailLogger.from" value="caAdapter.build.notifier"/>
@@ -47,7 +47,7 @@
     <property name="signjar.alias" value="myAlias"/>
     <property name="signjar.storepass" value="saic123"/>
     <property name="signjar.keystore" value="NCICBkey"/>
-    <property name="tomcat.dir" value="C:\devtools\jboss-4.0.5.GA\server\default\deploy"/>
+    <property name="tomcat.dir" value="C:\jboss-4.2.2.GA\server\default\deploy"/>
 
 	<property name="sqleonardo.jar" value="${basedir}/lib/sqleonardo.jar"/>
 	<property name="ref_sqleonardo.jar" value="${basedir}/referenceLib/sqleonardo.jar"/>
@@ -181,6 +181,7 @@
                 <include name="xercesImpl.jar"/>
                 <include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
+            	<include name="knuHL7V2tree.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
@@ -240,7 +241,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
     </target>
 
     <target name="hl7webstart">
@@ -275,12 +276,13 @@
 				<include name="xercesImpl.jar"/>
 				<include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
-               
+            	<include name="knuHL7V2tree.jar"/>
                	<include name="poi-2.5.1-final-20040804.jar"/>
         	</fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
             	<include name="resource.zip"/>
+        		<include name="resourceV2.zip"/>
                 <include name="jgraph.jar"/>        	   
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
@@ -331,7 +333,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
     </target>
 
     <target name="rdswebstart">
@@ -369,6 +371,7 @@
 				<include name="xercesImpl.jar"/>
 				<include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
+            	<include name="knuHL7V2tree.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
@@ -426,7 +429,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
     </target>
 
     <target name="tdmswebstart">
@@ -461,6 +464,7 @@
 				<include name="xercesImpl.jar"/>
 				<include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
+            	<include name="knuHL7V2tree.jar"/>
             </fileset>
             <fileset dir="${dist.dir}/lib">
             	<include name="caAdapter.jar"/>
@@ -521,7 +525,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
     </target>
 
     <target name="caadapter-webstart">
@@ -560,12 +564,14 @@
 				<include name="xercesImpl.jar"/>
 				<include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
+            	<include name="knuHL7V2tree.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
         		<include name="sqleonardo.jar"/>
             	<include name="resource.zip"/>
+        		<include name="resourceV2.zip"/>
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
             	<include name="BrowserLauncher2-all-10rc4.jar"/>
@@ -618,7 +624,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <!--<copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>-->
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
     </target>
 	
 	<!-- target name="demo.dist"  -->
