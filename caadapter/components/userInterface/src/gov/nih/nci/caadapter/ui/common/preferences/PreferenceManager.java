@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.common.preferences;
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.main.MainMenuBar;
 
 import javax.swing.*;
@@ -24,10 +25,10 @@ import java.util.HashMap;
  * This class implements preferences in caAdapter
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.13 $
- *          $Date: 2008-06-09 19:53:51 $
+ *          $Revision: 1.14 $
+ *          $Date: 2008-07-10 15:51:00 $
  */
 public class PreferenceManager extends JDialog implements ActionListener {
 
@@ -49,12 +50,15 @@ public class PreferenceManager extends JDialog implements ActionListener {
         //
         JTabbedPane tabbedPane = new JTabbedPane();
         //
-        tabbedPane.addTab("RDS Module", null, makeRDSPanel(), "");
+        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
+        	tabbedPane.addTab("RDS Module", null, makeRDSPanel(), "");
         //
         JComponent panel2 = new Hl7V3SpecificationPreferencePane(this);
-        tabbedPane.addTab("HL7 V3 Transformation", null, panel2, "");
+        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
+            tabbedPane.addTab("HL7 V3 Transformation", null, panel2, "");
         JComponent panel3 = new MMSPreferencePane(this);
-        tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
+        if(CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED))
+        	tabbedPane.addTab("MMS Preference Pane", null, panel3, "");
         //JComponent panel4 = new NamespacePreferencePane(this);
         //tabbedPane.addTab("Namespace Preference Pane", null, panel4, "");
         //
@@ -217,6 +221,9 @@ public class PreferenceManager extends JDialog implements ActionListener {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.13  2008/06/09 19:53:51  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.12  2007/09/20 16:38:34  schroedn
  * License text
  *

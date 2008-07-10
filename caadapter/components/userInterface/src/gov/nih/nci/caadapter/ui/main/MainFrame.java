@@ -37,10 +37,10 @@ import java.util.HashMap;
  * This class is the main entry of this sdk application.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2008-06-09 19:53:53 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2008-07-10 15:51:00 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -74,7 +74,10 @@ public class MainFrame extends AbstractMainFrame
 		contextManager.setMenu(frameMenu);
 		contextManager.setToolBarHandler(new MainToolBarHandler());
 		contextManager.initContextManager(this);
-		this.setTitle(Config.PRODUCT_NAME);
+		if(CaadapterUtil.findApplicationConfigValue("caadapter.product.name")!=null)
+			this.setTitle(CaadapterUtil.findApplicationConfigValue("caadapter.product.name"));
+		else
+			this.setTitle(Config.PRODUCT_NAME);
 		Container contentPane = this.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		//set the icon.
@@ -410,6 +413,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2008/06/09 19:53:53  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2007/12/14 17:03:33  schroedn
  * HISTORY      : added null check
  * HISTORY      :

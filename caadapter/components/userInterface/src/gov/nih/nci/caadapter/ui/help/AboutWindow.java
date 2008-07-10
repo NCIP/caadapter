@@ -37,8 +37,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2008-06-18 16:08:28 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2008-07-10 15:51:00 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.13 2008-06-18 16:08:28 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.14 2008-07-10 15:51:00 linc Exp $";
 
 
 	private JEditorPane mainView;
@@ -477,7 +477,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"<td width='8' valign='top'><img id=\"icon\" src=\"../images/caAdapter-icon.gif\" /><!-- caadapter icon --> </td>\n" +
 		"<td valign='top'>\n" +
 		"<font color='black' size='3' face='Arial'><!--&&:Variable Area;Don't touch this Paragraph-->\n" +
-		"     <h2>caAdapter version 4.1 (BETA)</h2> " + getNarrativeSentence() + "\n" +
+		"     <h2>caAdapter version 4.1 </h2> " + getNarrativeSentence() + "\n" +
 		"<br>\n" +
 		"\n" +
 		"</font>\n" +
@@ -589,6 +589,9 @@ public class AboutWindow extends JDialog //implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/06/18 16:08:28  linc
+ * HISTORY      : Fixed about windows issues.
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2008/06/12 20:27:15  linc
  * HISTORY      : New About windows view.
  * HISTORY      :
