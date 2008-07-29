@@ -30,9 +30,9 @@ import java.util.StringTokenizer;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.20 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: linc $
+ * @version $Revision: 1.21 $
+ * @date $$Date: 2008-07-29 18:00:46 $
  * @since caAdapter v1.2
  */
 
@@ -78,9 +78,12 @@ public class CaadapterUtil {
             		appConfig.put(onePropKey, onePropValue);
             		if (onePropValue!=null&onePropValue.trim().equalsIgnoreCase("true"))
             		{
-            			ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
+            			//disable all components
+            			//ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
             		}
             	}
+            	ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
+            	ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_HELP_MENU_ACTIVATED);
              }
             //load datatypes require inlineText
             String inlineTextTypes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED);
@@ -322,6 +325,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.20  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2008/03/12 20:33:29  wangeug
  * HISTORY      : annotate GME_XMLNamespace at project level
  * HISTORY      :

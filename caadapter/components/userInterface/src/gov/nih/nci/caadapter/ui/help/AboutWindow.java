@@ -37,8 +37,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-07-10 15:51:00 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-07-29 18:00:46 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.14 2008-07-10 15:51:00 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.15 2008-07-29 18:00:46 linc Exp $";
 
 
 	private JEditorPane mainView;
@@ -96,7 +96,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 
 	public AboutWindow(JFrame parent)
 	{
-		super(parent, "About caAdapter", false);
+		super(parent, "About caAdapter Model Mapping Service (MMS)", false);
 		dirSeparater = File.separator;
 		thisWindow = this;
 		mainView = new JEditorPane("text/html", "<html><head><title>help</title></head><body><font color='blue'>Start</font></body></html>");
@@ -470,14 +470,14 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String getBaseHTML1()
 	{
 		String htmlS = "";
-		htmlS = "<html><head><title>About Window of caAdapter</title></head>\n" +
+		htmlS = "<html><head><title>About Window of caAdapter Model Mapping Service (MMS) </title></head>\n" +
 		"<body bgcolor='#dddddd'>\n" +
 		"<table>\n" +
 		"<tr>\n" +
 		"<td width='8' valign='top'><img id=\"icon\" src=\"../images/caAdapter-icon.gif\" /><!-- caadapter icon --> </td>\n" +
 		"<td valign='top'>\n" +
 		"<font color='black' size='3' face='Arial'><!--&&:Variable Area;Don't touch this Paragraph-->\n" +
-		"     <h2>caAdapter version 4.1 </h2> " + getNarrativeSentence() + "\n" +
+		"     <h2>caAdapter Model Mapping Service (MMS) version 4.1 </h2> " + getNarrativeSentence() + "\n" +
 		"<br>\n" +
 		"\n" +
 		"</font>\n" +
@@ -488,7 +488,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"    </font>\n" +
 		"<br>\n" +
 		"    <font color='black' size='3' face='Arial'>\n" +
-		"<br>Copyright © 2004-2008<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph-->  Science Applications International Corporation (\"SAIC\").  \n" +
+		"<br>Copyright © 2004-2008<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph-->  Science Applications International Corporation (\"SAIC\")(\"caBIG™ Participant\").  \n" +
 		"All right reserved\n" +
 		"</font>\n" +
 		"    </td>\n" +
@@ -579,16 +579,16 @@ public class AboutWindow extends JDialog //implements ActionListener
 
 	private String getNarrativeSentence()
 	{
-		return " caAdapter is an open source tool set that provides model mapping services in support of caCORE components and facilitates data mapping and transformation among different kinds of data sources including HL7 v2 messages, HL7 v3 messages, and Regulatory Data Sets. " +
-		"<br>caAdapter has a component-based architecture to support message development and reporting using standard data formats. It also integrates with other clinical trials applications such as caXchange. caAdapter provides web service access and APIs for easy application integration." +
-		//"<br>caAdapter has two major architectural components ?the Core Engine and the Mapping Tool. The Core Engine is built on top of a set of APIs including an XMI parser, message validation, and other sub-components. It provides core services for building HL7 v3 messages, RDS data sets, object and data models mappings. It also provides additional services of vocabulary validation of the HL7 structural attributes. caAdapter is built based on the HL7 Normative Editions." +
-		//"<br>The Mapping Tool component has a GUI-based front-end application with drag-and-drop capability for mapping clinical data of various types and the ability to incorporate built-in data transformation functions into a mapping." +
-		//"<br>The caAdapter supports NCI CBIIT’s mission of developing a translational research infrastructure and building a clinical research network by providing a common platform for sharing data. " +
+		return " caAdapter is an open source tool set that provides model mapping services in support of caCORE components and facilitates data mapping and transformation among different kinds of data sources."+
+		"<br>caAdapter MMS is one component of caAdapter. The MMS tool provides Object to Data Model mapping capabilities in support of building caCORE compatible applications."+
 		"";
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/07/10 15:51:00  linc
+ * HISTORY      : Ready for MMS 4.1 releases.
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/06/18 16:08:28  linc
  * HISTORY      : Fixed about windows issues.
  * HISTORY      :
