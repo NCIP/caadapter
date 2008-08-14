@@ -27,22 +27,58 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * The class provides Utilities to access the MIF info.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-08-14 18:36:41 $
  */
 public class MIFParserUtil {
 
+	private static MIFClass loadUnprocessedMIF(String mifFileName)
+	{
+		try
+        {
+        	InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName); 
+        	//this.getClass().getResourceAsStream("/mif/" + mifFileName);
+        	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        	DocumentBuilder db = dbf.newDocumentBuilder();
+        	Document mifDoc = db.parse(mifIs);
+        	MIFParser mifParser=new MIFParser();
+        	boolean mifParsed=mifParser.parse(mifDoc);
+      		if (!mifParsed)
+      		{
+      			System.out.println("BuildResourceUtil.parserMifFromZipFile()...failed parsing:"+mifFileName);
+
+      		}
+      		return mifParser.getMIFClass();
+        }
+        catch(org.xml.sax.SAXParseException se)
+        {
+            System.out.println("######### ERROR : "+se.getMessage());
+            return null;
+        } catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   
+		return null;
+	}
 	public static MIFClass getMIFClass(String mifFileName)
 	{
 		MIFParser mifParser = new MIFParser();
 		MIFClass mifClass = null;
 
-        System.out.println("mif file name : " + mifFileName);
+        System.out.println("MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
         if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
         try {
 			mifClass = mifParser.loadMIF(mifFileName);
+			//mifClass=loadUnprocessedMIF(mifFileName);
 		//resolve the internal reference
 			MIFReferenceResolver refResolver=new MIFReferenceResolver();
 			refResolver.getReferenceResolved(mifClass);
