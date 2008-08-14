@@ -95,20 +95,23 @@ public class MIFIndexParser {
 
 	public  static MIFIndex loadMIFInfos() throws Exception {
 		InputStream is = Thread.currentThread().getClass().getResourceAsStream("/mifIndexInfos");
-		if (is == null)
-		{
-			try
-            {
-                //is = Thread.currentThread().getClass().getClassLoader().getResource("mifIndexInfos").openStream();
-			    is = MIFIndexParser.class.getClassLoader().getResource("mifIndexInfos").openStream();
-			    if (is == null)
-				    throw new Exception("Loading MIF information failure : ");
-            }
-            catch(NullPointerException ne)
-            {
-                throw new Exception("Loading MIF information failure : Check the location of mif resource file");
-            }
-        }
+//		if (is == null)
+//		{
+//			try
+//            {
+////                is = Thread.currentThread().getClass().getClassLoader().getResource("mifIndexInfos").openStream();
+//			    is = MIFIndexParser.class.getClassLoader().getResource("mifIndexInfos").openStream();
+//			    if (is == null)
+//				    throw new Exception("Loading MIF index information failure : Check the location of mif index file");
+//            }
+//            catch(NullPointerException ne)
+//            {
+//            	ne.printStackTrace();
+//                throw new Exception("Loading MIF index information failure : Check the MIF index file");
+//            }
+//        }
+	    if (is == null)
+	    	throw new Exception("Loading MIF index information failure : Check the location of mif index file");
 		ObjectInputStream ois = new ObjectInputStream(is);
 		MIFIndex mifIndex = (MIFIndex)ois.readObject();
 		ois.close();
