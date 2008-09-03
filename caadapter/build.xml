@@ -675,6 +675,11 @@
     				<fileset file="${config.dir}/logging.properties" />
     	 </copy>
     	 <mkdir dir="${dist.dir}/workingspace"/>
+		<unzip dest="${dist.dir}/docs">
+        	<fileset dir="docs/">
+            	<include name="help.zip"/>
+        	</fileset>
+		</unzip>
     	 
         <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\delete.jar"/>
