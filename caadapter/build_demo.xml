@@ -34,7 +34,7 @@
 				lib/sqleonardo.jar, lib/ostermill*,lib/junit*.jar" / -->
 			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
 				lib/caadapterCommon.jar,lib/caAdapter_ui.jar,lib/junit*.jar" />
-			<zipfileset dir=".." includes="docs/help/**, docs/v*BETA/**" />
+			<zipfileset dir=".." includes="docs/help/**, docs/MMSv4.1/**" excludes="docs/MMSv4.1/*.zip" />
 			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
 			<zipfileset dir="../workingspace" 
 				excludes="GME_example/**,VocabularyMapping/**"

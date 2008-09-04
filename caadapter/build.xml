@@ -127,7 +127,7 @@
     	</delete>
 		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
 					excludes="**/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
-					docs/GME/**, docs/v4.0/**,
+					docs/GME/**, docs/v4.0/**, docs/MMSv4.1/*.zip, docs/v4.1*BETA/**, **/CVS/**,
 					referenceLib/**, run.bat, build_demo.xml, *.spp, *.mpp,">
 		</zip>
     </target>
