@@ -59,8 +59,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.37 $ date $Date:
+ * @author LAST UPDATE $Author: linc $
+ * @version Since caAdapter v1.2 revision $Revision: 1.38 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -321,6 +321,8 @@ public class MainMenuBar extends AbstractMenuBar
         	CaadapterUtil.setAuthorizedUser(true);
         }
         
+        if(!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
+        	return _qb;
         //add the build resource menu for standalone application
         BuildHL7ResourceAction buildV3=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V3, mainFrame);
         if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
@@ -742,6 +744,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.37  2008/06/17 17:23:47  wangeug
+ * HISTORY : setup main menu bar
+ * HISTORY :
  * HISTORY : Revision 1.36  2008/06/13 15:55:20  wangeug
  * HISTORY : exclude GME module from caAdapter 4.1 beta release
  * HISTORY :

@@ -31,8 +31,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: linc $
- * @version $Revision: 1.21 $
- * @date $$Date: 2008-07-29 18:00:46 $
+ * @version $Revision: 1.22 $
+ * @date $$Date: 2008-09-08 15:15:15 $
  * @since caAdapter v1.2
  */
 
@@ -78,12 +78,18 @@ public class CaadapterUtil {
             		appConfig.put(onePropKey, onePropValue);
             		if (onePropValue!=null&onePropValue.trim().equalsIgnoreCase("true"))
             		{
-            			//disable all components
-            			//ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
+            			ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
             		}
             	}
-            	ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
-            	ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_HELP_MENU_ACTIVATED);
+            	//disable all components except MMS
+    			if(ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED)){
+    				ACTIVATED_CAADAPTER_COMPONENTS.clear();
+    				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
+    			}else{
+    				ACTIVATED_CAADAPTER_COMPONENTS.clear();
+    				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
+    				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_HELP_MENU_ACTIVATED);
+    			}
              }
             //load datatypes require inlineText
             String inlineTextTypes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED);
@@ -325,6 +331,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.21  2008/07/29 18:00:46  linc
+ * HISTORY      : disable components other than mms in code.
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2008/06/09 19:53:50  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

@@ -37,8 +37,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-07-29 18:00:46 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2008-09-08 15:15:16 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.15 2008-07-29 18:00:46 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.16 2008-09-08 15:15:16 linc Exp $";
 
 
 	private JEditorPane mainView;
@@ -97,6 +97,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	public AboutWindow(JFrame parent)
 	{
 		super(parent, "About caAdapter Model Mapping Service (MMS)", false);
+		this.setResizable(false);
 		dirSeparater = File.separator;
 		thisWindow = this;
 		mainView = new JEditorPane("text/html", "<html><head><title>help</title></head><body><font color='blue'>Start</font></body></html>");
@@ -586,6 +587,9 @@ public class AboutWindow extends JDialog //implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/07/29 18:00:46  linc
+ * HISTORY      : disable components other than mms in code.
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2008/07/10 15:51:00  linc
  * HISTORY      : Ready for MMS 4.1 releases.
  * HISTORY      :
