@@ -718,7 +718,7 @@
             <fileset dir="${lib.dir}">
                 <exclude name="delete.jar"/>
             </fileset>
-            <fileset dir="${project.ref.lib.dir}" excludes="ant.jar,mif.zip"/>
+            <fileset dir="${project.ref.lib.dir}" excludes="ant.jar,caAdapter_ui.jar, caAdapterCommon.jar,resource*.zip"/>
 
         </copy>
     </target>
@@ -833,9 +833,9 @@
 		<echo message="*****************************************************"/>
 		<echo message="**   Adding licenses ... ...                       **"/>
 		<echo message="*****************************************************"/>
-		<taskdef name="update-license" classname="gov.nih.nci.codegen.core.ant.LicenseUpdaterTask">
+		<!-- taskdef name="update-license" classname="gov.nih.nci.codegen.core.ant.LicenseUpdaterTask">
 			<classpath refid="development.class.path"/>
-		</taskdef>
+		</taskdef -->
 		<!--echo message="${properties.dir}/license.txt"/-->
 		<update-license logFile="log/addlicense.log" beginPattern="LICENSE_TEXT_START" endPattern="LICENSE_TEXT_END" licenseFile="${basedir}/etc/license/caAdapter_license_build.txt">
 			<fileset dir="${basedir}">
