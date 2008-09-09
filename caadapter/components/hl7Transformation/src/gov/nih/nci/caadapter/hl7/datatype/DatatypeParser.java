@@ -9,6 +9,7 @@ package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,10 +43,10 @@ import org.xml.sax.SAXException;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-09-09 18:14:42 $
  */
 
 public class DatatypeParser {
@@ -54,6 +55,7 @@ public class DatatypeParser {
     private final int COMPLETE = 1;
     private final int NONCOMPLETE = 0; 
     private Hashtable<String, List<String>> datatypeSubclass=new Hashtable<String, List<String>>();
+    private boolean dataLoaded=false;
     public Hashtable getDatatypes() {
     	return datatypes;
     }
@@ -214,14 +216,14 @@ public class DatatypeParser {
 					}
 					else {
 						datatypes_check.put(currentDatatypeString,COMPLETE);
-						System.out.println(((Datatype)datatypes.get("ActClassDocument")).getPredefinedValues()+currentDatatypeString);
+//						System.out.println(((Datatype)datatypes.get("ActClassDocument")).getPredefinedValues()+currentDatatypeString);
 
 					}
 				}
 				else 
 				{
 					String parentDatatypeString = currentDatatype.getParents();
-					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
+//					System.out.println("current datatype = " + currentDatatypeString + "   Parent datatypd = "+ parentDatatypeString);
 
                     if (parentDatatypeString == null) parentDatatypeString = "ANY";
                     // This line was inserted by umkis for protecting null pointer exception when meet 'StrucDoc.Text' data type of CDA.
@@ -322,20 +324,36 @@ public class DatatypeParser {
 	}
 	
 	public void loadDatatypes() {
-		try {
-			InputStream is = this.getClass().getResourceAsStream("/datatypes");
-			ObjectInputStream ois = new ObjectInputStream(is);
-			datatypes = (Hashtable)ois.readObject();
-			populateSubclasses();
-			ois.close();
-			is.close();
-		}catch(Exception e) {
-			e.printStackTrace();
+		if(!dataLoaded)
+		{
+			loadDatatypeRawdata();
+			dataLoaded=true;
 		}
-//		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//  		DocumentBuilder db;
 //		try {
-//			db = dbf.newDocumentBuilder();	
+//			InputStream is = this.getClass().getResourceAsStream("/datatypes");
+//			ObjectInputStream ois = new ObjectInputStream(is);
+//			datatypes = (Hashtable)ois.readObject();
+//			populateSubclasses();
+//			ois.close();
+//			is.close();
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+	}
+	/**
+	 * Load datatype data from original HL7 schema data
+	 */
+	private void loadDatatypeRawdata()
+	{
+		System.out.println("DatatypeParser.loadDatatypeRawdata()");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  		DocumentBuilder db;
+		try {
+			db = dbf.newDocumentBuilder();
+			String coreSchemaHome="schemas/coreschemas";
+			String pathVoc=coreSchemaHome+"/voc.xsd";
+			String pathBase=coreSchemaHome+"/datatypes-base.xsd";
+			String pathDatatype=coreSchemaHome+"/datatypes.xsd";
 //			InputStream isVoc =getClass().getResourceAsStream("/schemas/coreschemas/voc.xsd");
 //			InputStream isDatatypeBase =getClass().getResourceAsStream("/schemas/coreschemas/datatypes-base.xsd");
 //			InputStream isDatatype =getClass().getResourceAsStream("/schemas/coreschemas/datatypes.xsd");
@@ -343,23 +361,28 @@ public class DatatypeParser {
 //			Document vocDoc = db.parse(isVoc);
 //			Document baseDoc = db.parse(isDatatypeBase);
 //			Document allDoc = db.parse(isDatatype);	
-//			handleGTS();
-//			parse(vocDoc);
-//			parse(baseDoc);
-//			parse(allDoc);
-//			populateDatatypes();
-//			populateSubclasses();
-//			
-//		} catch (ParserConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SAXException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+			
+			Document vocDoc = db.parse(new File(pathVoc));
+			Document baseDoc = db.parse(new File(pathBase));
+			Document allDoc = db.parse(new File(pathDatatype));
+			
+			handleGTS();
+			parse(vocDoc);
+			parse(baseDoc);
+			parse(allDoc);
+			populateDatatypes();
+			populateSubclasses();
+			
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public List<String> findSubclassList(String typeName)

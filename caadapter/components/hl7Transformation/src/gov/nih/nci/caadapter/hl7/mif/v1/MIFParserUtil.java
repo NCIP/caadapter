@@ -29,8 +29,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-08-14 18:36:41 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-09-09 18:18:15 $
  */
 public class MIFParserUtil {
 
@@ -50,6 +50,12 @@ public class MIFParserUtil {
       			System.out.println("BuildResourceUtil.parserMifFromZipFile()...failed parsing:"+mifFileName);
 
       		}
+      		String msgType=mifFileName;
+      		if (msgType.indexOf("UV")>-1)
+    			msgType=msgType.substring(0, msgType.indexOf("UV"));
+    		else if (msgType.indexOf(".mif")>-1)
+    			msgType=msgType.substring(0, msgType.indexOf(".mif"));
+      		mifParser.getMIFClass().setMessageType(msgType);
       		return mifParser.getMIFClass();
         }
         catch(org.xml.sax.SAXParseException se)
@@ -77,8 +83,8 @@ public class MIFParserUtil {
         System.out.println("MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
         if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
         try {
-			mifClass = mifParser.loadMIF(mifFileName);
-			//mifClass=loadUnprocessedMIF(mifFileName);
+//			mifClass = mifParser.loadMIF(mifFileName);
+			mifClass=loadUnprocessedMIF(mifFileName);
 		//resolve the internal reference
 			MIFReferenceResolver refResolver=new MIFReferenceResolver();
 			refResolver.getReferenceResolved(mifClass);

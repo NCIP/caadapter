@@ -75,7 +75,7 @@ public class BuildResourceUtil {
 			 {
 				 String filename = children[i];
 	             if (filename.indexOf(".mif")>-1)
-	            	 mifIndexInfos.addMessageType(filename);
+	            	 mifIndexInfos.addMessageType(filename.substring(0));
 			 }
 			 mifInfoParser.saveMIFIndex(RESOURCE_DIR+"/mifIndexInfos",mifIndexInfos);
 		} catch (IOException e) {
@@ -139,7 +139,14 @@ public class BuildResourceUtil {
 	
 	public static void parerMifIndexFromZipFile(String zipFileName) throws Exception
 	{
-		 ZipFile zip = new ZipFile(zipFileName);
+		File resourceFile=new File(RESOURCE_DIR);
+		if (!resourceFile.exists())
+		{
+			resourceFile.mkdir();
+			File mifFile=new File(RESOURCE_DIR+File.separator+"mif");
+			mifFile.mkdir();
+		} 
+		ZipFile zip = new ZipFile(zipFileName);
 		 Enumeration entryEnum=zip.entries();
 		 MIFIndexParser mifInfoParser = new MIFIndexParser();
 		 MIFIndex mifIndexInfos = new MIFIndex();
@@ -147,18 +154,63 @@ public class BuildResourceUtil {
 		 {
 			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
 			String fileName=zipEntry.getName();
-			String msgType=fileName;
-			if (!msgType.endsWith(".mif"))
+			
+			//only process the "mif" directory
+			String validNameStart="mif/";
+			if (!fileName.startsWith(validNameStart))
 				continue;
-      	  	mifIndexInfos.addMessageType(fileName);
+			if (!fileName.endsWith(".mif"))
+				continue;
+			String msgType=fileName.substring(4);
+      	  	mifIndexInfos.addMessageType(msgType);
 		 }
 		 mifInfoParser.saveMIFIndex(RESOURCE_DIR+File.separator+"mifIndexInfos",mifIndexInfos);
 	}
-	
-	public static void parserMifFromZipFile(String zipFileName) throws Exception
+	public static void parserCmetFromZipFile(String zipFileName)
 	{
-        parserMifFromZipFile(zipFileName, false);
-    }
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//		System.out.println("BuildResourceUtil.parserMifFromZipFile()..creat target dir:"+RESOURCE_DIR);
+		File resourceFile=new File(RESOURCE_DIR);
+		if (!resourceFile.exists())
+		{
+			resourceFile.mkdir();
+			File mifFile=new File(RESOURCE_DIR+File.separator+"mif");
+			mifFile.mkdir();
+		}
+		try {
+			
+			ZipFile zip=new ZipFile(zipFileName);
+			Enumeration entryEnum=zip.entries();
+			while (entryEnum.hasMoreElements())
+			{
+				ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
+				String fileName=zipEntry.getName();
+				
+				//only process the "mif" directory
+				String validNameStart="mif/";
+				if (!fileName.startsWith(validNameStart))
+					continue;
+				String msgType=fileName;
+				if (fileName.equals("mif/"+CMET_INFOR_SOURCE_FILE))
+				{
+					//parer CMET INFO
+					CMETInfoParser cmetInfoParser = new CMETInfoParser();
+					InputStream cmetIs;
+					cmetIs = zip.getInputStream(zipEntry);
+					cmetInfoParser.parserCMETInfoWithStream(cmetIs);//.parseCMETInfo(fileName);
+					String targetFile=RESOURCE_DIR+File.separator+CMET_INFOR_TARGET_FILE;
+					cmetInfoParser.saveCMETInofs(targetFile);
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
     public static void parserMifFromZipFile(String zipFileName, boolean isSortKeyReassigning) throws Exception
 	{
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -177,28 +229,34 @@ public class BuildResourceUtil {
 		{
 			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
 			String fileName=zipEntry.getName();
+			
+			//only process the "mif" directory
+			String validNameStart="mif/";
+			if (!fileName.startsWith(validNameStart))
+				continue;
 			String msgType=fileName;
-			if (fileName.equals(CMET_INFOR_SOURCE_FILE))
+			if (fileName.equals("mif/"+CMET_INFOR_SOURCE_FILE))
 			{
 				//parer CMET INFO
-
 				CMETInfoParser cmetInfoParser = new CMETInfoParser();
 				InputStream cmetIs=zip.getInputStream(zipEntry);
 				cmetInfoParser.parserCMETInfoWithStream(cmetIs);//.parseCMETInfo(fileName);
 				String targetFile=RESOURCE_DIR+File.separator+CMET_INFOR_TARGET_FILE;
 				cmetInfoParser.saveCMETInofs(targetFile);
-
 			}
 			if (!msgType.endsWith(".mif"))
 				continue;
-
+			/**
+			 * "cmetList.mif is the name of CMET configuration of HL7 release 2.1 dated on August, 2008
+			 */
+//			if (msgType.equalsIgnoreCase("cmetList.mif"))
+//				continue;
 			InputStream mifIs = null;
             File newFile = null;
             while(isSortKeyReassigning)
             {
                 //if (!pathName.toLowerCase().endsWith(".mif")) break;
                 ReassignSortKeyToMIF rs = null;
-
                 try
                 {
                     rs = new ReassignSortKeyToMIF(msgType, zip.getInputStream(zipEntry));
@@ -220,7 +278,7 @@ public class BuildResourceUtil {
             Document mifDoc = null;
             try
             {
-                mifDoc = db.parse(mifIs);//"T:/YeWu/Edition2006/mif/" + filename);
+                mifDoc = db.parse(mifIs);
             }
             catch(org.xml.sax.SAXParseException se)
             {
@@ -229,13 +287,18 @@ public class BuildResourceUtil {
             }
             if (newFile != null) newFile.delete();
             MIFParser mifParser = new MIFParser();
-        	mifParser.parse(mifDoc);
-      		
+        	boolean mifParsed=mifParser.parse(mifDoc);
+      		if (!mifParsed)
+      		{
+      			System.out.println("BuildResourceUtil.parserMifFromZipFile()...failed parsing:"+msgType);
+      			continue;
+      		}
     		if (msgType.indexOf("UV")>-1)
     			msgType=msgType.substring(0, msgType.indexOf("UV"));
     		else if (msgType.indexOf(".mif")>-1)
-    			msgType=msgType.substring(0, msgType.indexOf(".mif"));		
-        	  mifParser.saveMIFs(RESOURCE_DIR+"/mif/" + fileName,msgType);
+    			msgType=msgType.substring(0, msgType.indexOf(".mif"));	
+//    		System.out.println("BuildResourceUtil.parserMifFromZipFile()..save:"+fileName+"="+msgType);
+        	  mifParser.saveMIFs(RESOURCE_DIR+"/" + fileName,msgType);
         }
 	}
 
@@ -287,12 +350,9 @@ public class BuildResourceUtil {
         } 
 
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName)); 
-//        System.out.println("Creating : " + zipFileName); 
-
         addDir(dirObj, out,"", isSortKeyReassigning);
         // Complete the ZIP file 
         out.close(); 
-//        System.out.println("BuildResourceUtil.zipDir() deleting:"+dirObj);
         dirObj.delete();
     } 
 
@@ -392,7 +452,6 @@ public class BuildResourceUtil {
 	}
 	else if (strPath==null||strPath.endsWith(srcExtension))
 	{
-//		System.out.println("BuildResourceUtil.copyFiles()..copy:"+strPath +"..target:"+dstPath);
 		FileInputStream fin = new FileInputStream(src);
 		FileOutputStream fout = new FileOutputStream (dest);
 		int c;
@@ -401,11 +460,6 @@ public class BuildResourceUtil {
 			fin.close();
 			fout.close();
 	}
-//	else
-//	{
-//		System.out.println("BuildResourceUtil.copyFiles()..igonor:"+strPath);
-//
-//	}
 }
 	public static void main(String[] args)
 	{
@@ -423,19 +477,12 @@ public class BuildResourceUtil {
 			tempFileHome=args[1];
 	
 		BuildResourceUtil.RESOURCE_DIR=tempFileHome;
- 
 		String mifZipPath=args[0]+"/processable/mif/mif.zip";
 		String datatypeHomePath=args[0]+"/processable/coreschemas";
 		try {
-			BuildResourceUtil.parserMifFromZipFile(mifZipPath);
-
+			BuildResourceUtil.parserMifFromZipFile(mifZipPath,false);
 			BuildResourceUtil.parerMifIndexFromZipFile(mifZipPath);
-
-//		BuildResourceUtil.RESOURCE_DIR="C:/temp/buildMIF/dirResource";
-//		BuildResourceUtil.parerMifIndexFromFileDirectory("T:/YeWu/Edition2006/mif");
-//		BuildResourceUtil.parserMifFromFileDirectory("T:/YeWu/Edition2006/mif");
 			BuildResourceUtil.loadDatatypes(datatypeHomePath);
- 
 			BuildResourceUtil.zipDir("resource.zip",BuildResourceUtil.RESOURCE_DIR);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

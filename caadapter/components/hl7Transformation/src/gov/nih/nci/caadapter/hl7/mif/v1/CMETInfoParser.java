@@ -28,10 +28,10 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * The class load a MIF document into the MIF class object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-09 18:17:38 $
  */
 
 public class CMETInfoParser {
@@ -120,15 +120,17 @@ public class CMETInfoParser {
 	}
 	
 	public void loadCMETInofs() throws Exception {
-		InputStream is = this.getClass().getResourceAsStream("/cmetInfos");
-		ObjectInputStream ois = new ObjectInputStream(is);
-		cmetInfos = (HashSet)ois.readObject();
-		ois.close();
-		is.close();
+//		InputStream is = this.getClass().getResourceAsStream("/cmetInfos");
+//		ObjectInputStream ois = new ObjectInputStream(is);
+//		cmetInfos = (HashSet)ois.readObject();
+//		ois.close();
+//		is.close();
 //		//always load from mif.zip/
-//		String cmetFileName="cmetinfo.coremif";
-//		parseCMETInfo(cmetFileName);
+		String cmetFileName="/mif/cmetinfo.coremif";
+		InputStream cmetIs=this.getClass().getResourceAsStream(cmetFileName);
+		parserCMETInfoWithStream(cmetIs);
 	}
+ 
 
 	public static void main(String[] args) throws Exception {
 		CMETInfoParser cmetInfoParser = new CMETInfoParser();

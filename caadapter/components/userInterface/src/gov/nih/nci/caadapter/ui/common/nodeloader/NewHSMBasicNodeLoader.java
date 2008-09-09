@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.40 $
- *          date        $Date: 2008-06-10 19:53:37 $
+ *          revision    $Revision: 1.41 $
+ *          date        $Date: 2008-09-09 18:13:01 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -262,6 +262,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			//resolve reference with root MIFClass
 			//05-20-2008, this section may never be visited.
 				try {
+					Log.logInfo(this, "Root class message type:"+rootMIFClass.getMessageType());
 					String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(rootMIFClass.getMessageType());
 					Log.logInfo(this, "Resolving root class referenece:"+refClassName);
 					rtnMif=(MIFClass)MIFParserUtil.getMIFClass(refClassMIFFileName).clone();
