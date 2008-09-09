@@ -21,8 +21,8 @@ import org.w3c.dom.Node;
  * The class will parse a MIF class from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2008-09-09 18:27:23 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -38,14 +38,17 @@ public class ClassParser {
 		
         Node child = node.getFirstChild();
         while (child != null) {
-        	if (child.getNodeName().equals(prefix+"attribute")) {
+        	if (child.getNodeName().equals(prefix+"attribute")
+        			||child.getNodeName().equals("attribute")) {
         		MIFAttribute mifAttribute = AttributeParser.parseAttribute(child, prefix);
         		mifClass.addAttribute(mifAttribute);
         	}
-        	if (child.getNodeName().equals(prefix+"specializationChild")) {
+        	if (child.getNodeName().equals("specializationChild")
+        			||child.getNodeName().equals(prefix+"specializationChild")) {
            		Node specializedChild = child.getFirstChild();
         		while (specializedChild != null) {
-        			if (specializedChild.getNodeName().equals(prefix+"specializedClass")) {
+        			if (specializedChild.getNodeName().equals(prefix+"specializedClass")
+        					||specializedChild.getNodeName().equals("specializedClass")) {
         				SpecializedClassParser specializedClass = new SpecializedClassParser();
         				MIFClass specializedMIFClass = specializedClass.parseSpecializedClass(specializedChild, prefix,null);
         				if (participantTraversalName!=null)
@@ -57,7 +60,8 @@ public class ClassParser {
         			specializedChild = specializedChild.getNextSibling();
         		}
         	}
-        	if (child.getNodeName().equals(prefix+"association")) {
+        	if (child.getNodeName().equals(prefix+"association")
+        			||child.getNodeName().equals("association")) {
         		AssociationParser associationParser = new AssociationParser();
         		MIFAssociation mifAssociation = associationParser.parseAttribute(child, prefix);
         		mifClass.addAssociation(mifAssociation);

@@ -8,12 +8,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,20 +25,22 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /**
  * The class load a MIF document into the MIF class object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-09 18:27:23 $
  */
 
 public class MIFParser {
@@ -46,20 +50,31 @@ public class MIFParser {
 	public boolean parse(Node node) {
         Document document = (Document)node;
         String schemaString = document.getDocumentElement().getNodeName();
-        if (!schemaString.endsWith("serializedStaticModel")) return false;
-        if (schemaString.equals("serializedStaticModel")) prefix = "";
-        else if (schemaString.endsWith(":serializedStaticModel")) {
-        	prefix = schemaString.substring(0,schemaString.lastIndexOf(":serializedStaticModel")+1);
+        String isSerializable=document.getDocumentElement().getAttribute("isSerializable");
+//        if (!schemaString.endsWith("serializedStaticModel")) return false;
+        if (!isSerializable.equalsIgnoreCase("true"))
+        {
+        	System.out.println("MIFParser.parse()..mif is not serializable:"+schemaString);
+        	return false;
         }
+//        if (schemaString.equals("serializedStaticModel")) prefix = "";
+//        else if (schemaString.endsWith(":serializedStaticModel")) {
+//        	prefix = schemaString.substring(0,schemaString.lastIndexOf(":serializedStaticModel")+1);
+//        }
+//        else if (schemaString.indexOf(":")>-1)
+//        	prefix=schemaString.substring(0,schemaString.indexOf(":")+1);
+        prefix="mif:";
         Node child = document.getDocumentElement().getFirstChild();
         Hashtable<String, String> mifPackageLocation=new Hashtable<String, String>();
         while (child != null) {
-        	if (child.getNodeName().equals(prefix+"packageLocation"))
+        	if (child.getNodeName().equals(prefix+"packageLocation")
+        			||child.getNodeName().equals("packageLocation"))
         		mifPackageLocation=MIFParserUtil.getDocumentElementAttributes(child);
         	else if (child.getNodeName().equals(prefix+"ownedEntryPoint")) {
         		Node ownedEntryPointChild = child.getFirstChild();
         		while (ownedEntryPointChild != null) {
-        			if (ownedEntryPointChild.getNodeName().equals(prefix+"specializedClass")) {
+        			if (ownedEntryPointChild.getNodeName().equals(prefix+"specializedClass")
+        					||ownedEntryPointChild.getNodeName().equals("specializedClass")) {
         				SpecializedClassParser specializedClass = new SpecializedClassParser();
         				mifClass = specializedClass.parseSpecializedClass(ownedEntryPointChild, prefix,null);
         			}
@@ -68,6 +83,8 @@ public class MIFParser {
         	}
             child = child.getNextSibling();
         }
+        if (mifClass==null)
+        	return false;
         mifClass.setPackageLocation(mifPackageLocation);
         return true;
 	}
@@ -87,10 +104,11 @@ public class MIFParser {
 	}
 	
 	public MIFClass loadMIF(String mifFileName) {
+		 
 		try {
 			InputStream is = this.getClass().getResourceAsStream("/mif/" + mifFileName);
 			ObjectInputStream ois = new ObjectInputStream(is);
-			mifClass = (MIFClass)ois.readObject();
+			MIFClass  mifClass = (MIFClass)ois.readObject();
 			ois.close();
 			is.close();
 			return mifClass;

@@ -17,8 +17,8 @@ import org.w3c.dom.Node;
  * The class will parse an MIF attribute section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2008-09-09 18:27:23 $
  */
 public class AttributeParser {
 	public static synchronized MIFAttribute parseAttribute(Node node, String prefix) {
@@ -63,12 +63,14 @@ public class AttributeParser {
 		Node child = node.getFirstChild();
 
         while (child != null) {
-        	if (child.getNodeName().equals(prefix+"supplierDomainSpecification")) {
+//        	if (child.getNodeName().equals(prefix+"supplierDomainSpecification"))
+        	if (child.getNodeName().endsWith("supplierDomainSpecification"))
+        	{
         		mifAtrribute.setDomainName(XSDParserUtil.getAttribute(child, "domainName"));
         		mifAtrribute.setMnemonic(XSDParserUtil.getAttribute(child, "mnemonic"));
         		mifAtrribute.setCodingStrength(XSDParserUtil.getAttribute(child, "codingStrength"));
         	}
-        	if (child.getNodeName().equals(prefix+"type")) {
+        	if (child.getNodeName().endsWith("type")) {//.equals(prefix+"type")) {
         		String type = "";
         		String typeName = XSDParserUtil.getAttribute(child, "name");
         		if (!(typeName.equals("SET")||typeName.equals("BAG")||typeName.equals("LIST"))) {
@@ -77,12 +79,12 @@ public class AttributeParser {
         		
         		Node firstChild = XSDParserUtil.getFirstChildElement(child);
         		if (firstChild!= null) {
-        			if (firstChild.getNodeName().equals("supplierBindingArgumentDatatype")) {
+        			if (firstChild.getNodeName().endsWith("supplierBindingArgumentDatatype")) { //.equals("supplierBindingArgumentDatatype")) {
         				if (!type.equals("")) type = type + "_";
         				type = type + XSDParserUtil.getAttribute(firstChild, "name");
         				Node secondChild = XSDParserUtil.getNextElement(firstChild);
         				if (secondChild != null)
-        					if (secondChild.getNodeName().equals("supplierBindingArgumentDatatype")) {
+        					if (secondChild.getNodeName().endsWith("supplierBindingArgumentDatatype")) {//.equals("supplierBindingArgumentDatatype")) {
         						if (!type.equals("")) type = type + "_";
         						type = type + XSDParserUtil.getAttribute(secondChild, "name");
         					}        				

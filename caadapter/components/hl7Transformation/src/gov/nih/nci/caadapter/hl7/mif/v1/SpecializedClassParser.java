@@ -19,19 +19,21 @@ import org.w3c.dom.Node;
  * The class will parse a specializedClass section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2008-09-09 18:27:23 $
  */
 public class SpecializedClassParser {
 	public MIFClass parseSpecializedClass(Node node,String prefix, Hashtable<String,String> participantTraversalNames) {
 		
         Node child = node.getFirstChild();
         while (child != null) {
-        	if (child.getNodeName().equals(prefix+"class")) {
+        	if (child.getNodeName().equals(prefix+"class")
+        			||child.getNodeName().equals("class")) {
         		ClassParser classParser = new ClassParser();
         		return classParser.parseClass(child, prefix,participantTraversalNames);
         	}
-        	if (child.getNodeName().equals(prefix+"commonModelElementRef")) {
+        	if (child.getNodeName().equals(prefix+"commonModelElementRef")
+        			||child.getNodeName().equals("commonModelElementRef")) {
         		CMETRefParser cmetRefParser = new CMETRefParser();
         		return cmetRefParser.parseCMetRef(child, prefix,false);
         	}
@@ -39,7 +41,8 @@ public class SpecializedClassParser {
         	 * The following is not part of the spec but appears in MIF files anyway. The reference 
         	 * is a link to a class of the same CMET. (Personal observation)
         	 */
-        	if (child.getNodeName().equals(prefix+"reference")) {
+        	if (child.getNodeName().equals(prefix+"reference")
+        			||child.getNodeName().equals("reference")) {
         		CMETRefParser cmetRefParser = new CMETRefParser();
         		return cmetRefParser.parseCMetRef(child, prefix, true);
         	}

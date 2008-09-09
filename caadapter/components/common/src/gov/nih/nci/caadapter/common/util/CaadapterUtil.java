@@ -30,9 +30,9 @@ import java.util.StringTokenizer;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: linc $
- * @version $Revision: 1.22 $
- * @date $$Date: 2008-09-08 15:15:15 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.23 $
+ * @date $$Date: 2008-09-09 18:29:44 $
  * @since caAdapter v1.2
  */
 
@@ -47,7 +47,11 @@ public class CaadapterUtil {
 	private static boolean authorizedUser=false;
 	public static final String  LINEFEED_ENCODE="&#x0A;";//html format of UTF-8 unicode value of '\n'
 	public static final String  CARTRIAGE_RETURN_ENCODE="&#x0D;";//html format of UTF-8 unicode value of '\r'
-	
+	public static String HL7_MIF_FILE_PATH;
+	public static String getHL7_MIF_FILE_PATH() {
+		return HL7_MIF_FILE_PATH;
+	}
+
 	static {
 		//mkdir for logging 
 		File logDir=new File("log");
@@ -81,16 +85,20 @@ public class CaadapterUtil {
             			ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
             		}
             	}
+
             	//disable all components except MMS
     			if(ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED)){
     				ACTIVATED_CAADAPTER_COMPONENTS.clear();
     				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
-    			}else{
+    			}else if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED)){
     				ACTIVATED_CAADAPTER_COMPONENTS.clear();
     				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
     				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_HELP_MENU_ACTIVATED);
     			}
              }
+            //load MIF file path
+            HL7_MIF_FILE_PATH=(String)properties.getProperty("caadapter.hl7.mif.path");
+ 
             //load datatypes require inlineText
             String inlineTextTypes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED);
             if (inlineTextTypes!=null)
@@ -331,9 +339,6 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.21  2008/07/29 18:00:46  linc
- * HISTORY      : disable components other than mms in code.
- * HISTORY      :
  * HISTORY      : Revision 1.20  2008/06/09 19:53:50  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
