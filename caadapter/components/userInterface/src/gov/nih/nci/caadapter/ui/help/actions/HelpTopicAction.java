@@ -26,8 +26,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Ki Sung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-09-10 18:08:14 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-10 19:19:34 $
  */
 public class HelpTopicAction extends AbstractContextAction
 {
@@ -82,7 +82,7 @@ public class HelpTopicAction extends AbstractContextAction
         	if(location==null || location.trim().length()==0)
         		location = "file:///"+System.getProperty("user.dir") + "/docs/help/index.html";
         	else 
-        		location = location+"/help/index.html";
+        		location = location+"caadapter-mms/help/index.html";
         	brLauncher.openURLinBrowser(location);
         	
         }
@@ -108,6 +108,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/09/10 18:08:14  linc
+ * HISTORY      : MMS 4.1 with help enabled.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
