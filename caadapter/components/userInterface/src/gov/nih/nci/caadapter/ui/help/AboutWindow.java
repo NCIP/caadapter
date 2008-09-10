@@ -37,8 +37,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2008-09-08 15:15:16 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2008-09-10 18:08:14 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.16 2008-09-08 15:15:16 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.17 2008-09-10 18:08:14 linc Exp $";
 
 
 	private JEditorPane mainView;
@@ -300,15 +300,15 @@ public class AboutWindow extends JDialog //implements ActionListener
 		tot = replaceTaggedContent(tot, JDK_VERSION_TAG_IN_SOURCE_HTML_FILE, Config.JDK_VERSION, JDK_VERSION_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, COPYRIGHT_YEARS_TAG_IN_SOURCE_HTML_FILE, Config.COPYRIGHT_YEARS, COPYRIGHT_YEARS_MARKER_IN_SOURCE_HTML_FILE);
 		//replace background image path
-		URL bkgUrl=ClassLoader.getSystemResource("images/"+Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME);
-		URL iconUrl=ClassLoader.getSystemResource("images/"+Config.CAADAPTER_ICON_FILENAME);
+		URL bkgUrl=getResource("images/"+Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME);
+		URL iconUrl=getResource("images/"+Config.CAADAPTER_ICON_FILENAME);
 		
 		//tot = replaceTaggedContent(tot, BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE, IMAGE_DIRECTORY_PATH + Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME + "\">", BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE, bkgUrl+ "\">", BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, "<img id=\"icon\" src=\"", iconUrl+ "\" >", "<!-- caadapter icon -->" );
 		//replace ok Button image path
 		String okImageName="OK_Button.png";
-		URL okButtonUrl=ClassLoader.getSystemResource("images/"+okImageName);
+		URL okButtonUrl=getResource("images/"+okImageName);
 		int okNameStart=tot.indexOf(okImageName);
 		tot=tot.substring(0,okNameStart)
 		+okButtonUrl+tot.substring(okNameStart+okImageName.length());
@@ -331,6 +331,17 @@ public class AboutWindow extends JDialog //implements ActionListener
 		File aFile = new File(displayFileName);
 		aFile.deleteOnExit();
 		return displayFileName;
+	}
+	private URL getResource(String name){
+		URL ret = null;
+		ret = this.getClass().getClassLoader().getResource(name);
+		if(ret!=null) return ret;
+		ret = this.getClass().getClassLoader().getResource("/"+name);
+		if(ret!=null) return ret;
+		ret = ClassLoader.getSystemResource(name);
+		if(ret!=null) return ret;
+		ret = ClassLoader.getSystemResource("/"+name);
+		return ret;
 	}
 	private String generateLicenseInformationHTML(String licensePath)
 	{
@@ -587,6 +598,9 @@ public class AboutWindow extends JDialog //implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16  2008/09/08 15:15:16  linc
+ * HISTORY      : UI fixup for MMS 4.1
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2008/07/29 18:00:46  linc
  * HISTORY      : disable components other than mms in code.
  * HISTORY      :

@@ -24,10 +24,10 @@ import java.awt.event.KeyEvent;
  * The class defines the about action for the whole HL7SDK application.
  *
  * @author OWNER: Ki Sung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-10 18:08:14 $
  */
 public class HelpTopicAction extends AbstractContextAction
 {
@@ -78,8 +78,12 @@ public class HelpTopicAction extends AbstractContextAction
 //        	gov.nih.nci.caadapter.common.BrowserLaunch.openURL("file:///"+System.getProperty("user.dir") + "/docs/help/caAdapter-Help.html");
         	edu.stanford.ejalbert.BrowserLauncher brLauncher = new edu.stanford.ejalbert.BrowserLauncher(null);
 //        	System.out.println(System.getProperty("user.dir"));
-
-        	brLauncher.openURLinBrowser("file:///"+System.getProperty("user.dir") + "/docs/help/index.html");
+        	String location = gov.nih.nci.caadapter.hl7.demo.LaunchUI.getCodebase();
+        	if(location==null || location.trim().length()==0)
+        		location = "file:///"+System.getProperty("user.dir") + "/docs/help/index.html";
+        	else 
+        		location = location+"/help/index.html";
+        	brLauncher.openURLinBrowser(location);
         	
         }
         catch(NullPointerException ne)
@@ -104,6 +108,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/09/28 06:41:27  wuye
  * HISTORY      : enable help
  * HISTORY      :

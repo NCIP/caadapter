@@ -187,6 +187,10 @@
             	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
         	</fileset>
+        	<fileset dir="${dist.dir}/docs">
+        	    <include name="help/**"/>
+        	</fileset>
+        	        	
         	<fileset dir="${dist.dir}/lib">
             	<include name="caAdapter.jar"/>
         	</fileset>

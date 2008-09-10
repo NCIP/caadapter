@@ -31,7 +31,9 @@
 	<jar href="spring.jar"/>
    </resources>
 
-   <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />
+   <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI">
+       <argument>$WEBSERVER</argument> 
+   </application-desc>
 
 </jnlp>
 

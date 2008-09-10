@@ -30,9 +30,9 @@ import java.util.StringTokenizer;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.23 $
- * @date $$Date: 2008-09-09 18:29:44 $
+ * @author LAST UPDATE: $Author: linc $
+ * @version $Revision: 1.24 $
+ * @date $$Date: 2008-09-10 18:08:14 $
  * @since caAdapter v1.2
  */
 
@@ -87,10 +87,7 @@ public class CaadapterUtil {
             	}
 
             	//disable all components except MMS
-    			if(ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED)){
-    				ACTIVATED_CAADAPTER_COMPONENTS.clear();
-    				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
-    			}else if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED)){
+    			{
     				ACTIVATED_CAADAPTER_COMPONENTS.clear();
     				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED);
     				ACTIVATED_CAADAPTER_COMPONENTS.add(Config.CAADAPTER_HELP_MENU_ACTIVATED);
@@ -339,6 +336,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.23  2008/09/09 18:29:44  wangeug
+ * HISTORY      : support HL7 normative 2008, MIF format release 1
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2008/06/09 19:53:50  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
