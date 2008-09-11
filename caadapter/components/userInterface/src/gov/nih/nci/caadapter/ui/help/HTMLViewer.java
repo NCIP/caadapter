@@ -27,10 +27,10 @@ import java.net.URL;
  * This class defines frame to view HTML content.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-11 16:06:30 $
  */
 
 public class HTMLViewer extends JDialog
@@ -47,7 +47,7 @@ public class HTMLViewer extends JDialog
    *
    * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
    */
-  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HTMLViewer.java,v 1.3 2008-06-09 19:53:52 phadkes Exp $";
+  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/HTMLViewer.java,v 1.4 2008-09-11 16:06:30 linc Exp $";
 
 
   JEditorPane mainView;
@@ -57,6 +57,7 @@ public class HTMLViewer extends JDialog
   JButton releaseButton;
 
   String htmlAddress;
+  String htmlContent;
   int screenWidth = Config.FRAME_DEFAULT_WIDTH - 30;
   int screenHeight = Config.FRAME_DEFAULT_HEIGHT - 30;
   boolean protectDisposeTag = false;
@@ -109,9 +110,28 @@ public class HTMLViewer extends JDialog
       screenHeight = height;
       htmlAddress = addr;
       titleName = title;
-      mainDisplaying(title.trim().equalsIgnoreCase("caAdapter License Information"));
+      mainDisplaying(title.trim().equalsIgnoreCase("caAdapter License Information"), false);
 
     }
+  
+  public HTMLViewer(String content, int width, int height, String title, boolean isString)
+  {
+    if (width < 0) width = screenWidth + width;
+    if (height < 0) height = screenHeight + height;
+    if (width <= 0) width = screenWidth;
+    if (height <= 0) height = screenHeight;
+
+    screenWidth = width;
+    screenHeight = height;
+    if(isString)
+    	htmlContent = content;
+    else
+    	htmlAddress = content;
+    titleName = title;
+    mainDisplaying(title.trim().equalsIgnoreCase("caAdapter License Information"), true);
+
+  }
+
   public HTMLViewer(String mode, String text, int width, int height)
     {
       if (width < 0) width = screenWidth + width;
@@ -136,9 +156,9 @@ public class HTMLViewer extends JDialog
     }
   public void mainDisplaying()
     {
-        mainDisplaying(false);
+        mainDisplaying(false, false);
     }
-  public void mainDisplaying(boolean htmlAddressDisplay)
+  public void mainDisplaying(boolean htmlAddressDisplay, boolean isString)
     {
       thisWindow = this;
       mainView = new JEditorPane("text/html", "<html><head><title>help</title></head><body><font color='blue'>Start</font></body></html>");
@@ -237,7 +257,10 @@ public class HTMLViewer extends JDialog
       this.setVisible(true);
       try
         {
-          mainView.setPage(new URL(htmlAddress));
+    	  if(isString)
+    		  mainView.setText(htmlContent);
+    	  else
+    		  mainView.setPage(new URL(htmlAddress));
         }
       catch(IOException ie)
         {
@@ -405,6 +428,9 @@ public class HTMLViewer extends JDialog
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/07/14 20:26:58  umkis
  * HISTORY      : minor change
  * HISTORY      :

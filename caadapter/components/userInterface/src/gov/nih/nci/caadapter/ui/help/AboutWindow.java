@@ -37,8 +37,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caadapter v1.2
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2008-09-10 18:08:14 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2008-09-11 16:06:30 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.17 2008-09-10 18:08:14 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.18 2008-09-11 16:06:30 linc Exp $";
 
 
 	private JEditorPane mainView;
@@ -186,9 +186,19 @@ public class AboutWindow extends JDialog //implements ActionListener
 
 									//System.out.println(" URL -- B");
 									thisWindow.dispose();
-									String licenseHTML_URL = generateLicenseInformationHTML(LICENSE_DIRECTORY_PATH);
-									if (licenseHTML_URL.startsWith(ERROR_TAG)) new HTMLViewer(commonURIPath + LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE + ".html", 700, 500, "caadapter License Information");
-									else new HTMLViewer(licenseHTML_URL, 700, 500, "caAdapter License Information");
+									
+									String licenseString = generateLicenseInformationHTMLString();
+									new HTMLViewer(licenseString, 700, 500, "caAdapter License Information", true);
+									
+//									String licenseHTML_URL = "";
+//						        	String location = gov.nih.nci.caadapter.hl7.demo.LaunchUI.getCodebase();
+//						        	if(location!=null && location.trim().length()>0){
+//						        		licenseHTML_URL = location+"caadapter-mms/licenseinformation.html";
+//						        	}
+//
+//									licenseHTML_URL = generateLicenseInformationHTML(LICENSE_DIRECTORY_PATH);
+//									if (licenseHTML_URL.startsWith(ERROR_TAG)) new HTMLViewer(commonURIPath + LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE + ".html", 700, 500, "caadapter License Information");
+//									else new HTMLViewer(licenseHTML_URL, 700, 500, "caAdapter License Information");
 								}
 								else
 								{
@@ -343,6 +353,36 @@ public class AboutWindow extends JDialog //implements ActionListener
 		ret = ClassLoader.getSystemResource("/"+name);
 		return ret;
 	}
+	
+	private String generateLicenseInformationHTMLString()
+	{
+		String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> <br><hr width=\"80%\"><br>";
+		
+		String readLineOfFile = "";
+		String buffer = "";
+		try
+		{
+			BufferedReader br = new BufferedReader(new InputStreamReader(getResource("license/caAdapter_license.txt").openStream()));
+			while(true)
+			{
+				readLineOfFile=br.readLine();
+				if (readLineOfFile==null) break;
+
+				String c = readLineOfFile.trim();
+				if (c.equals("")) mainContent = mainContent + "<br><br>";
+				else mainContent = mainContent + "<br>" + c;
+			}
+		}
+		catch(IOException ie)
+		{
+			return ERROR_MESSAGE_FILE_READING_ERROR; // "ERROR : File Reading Error"; }
+		}
+		
+		mainContent = "<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent + "<br></body></html>";
+		return mainContent;
+	}
+
+	
 	private String generateLicenseInformationHTML(String licensePath)
 	{
 		ClassLoaderUtil loader = null;
@@ -598,6 +638,9 @@ public class AboutWindow extends JDialog //implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2008/09/10 18:08:14  linc
+ * HISTORY      : MMS 4.1 with help enabled.
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2008/09/08 15:15:16  linc
  * HISTORY      : UI fixup for MMS 4.1
  * HISTORY      :
