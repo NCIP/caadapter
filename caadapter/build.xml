@@ -116,7 +116,7 @@
             <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
         </jar>
     	
-    	<antcall target="add-license"/>
+    	<!-- antcall target="add-license"/ -->
 		<antcall target="dist.prepare" />
     </target>
 
@@ -833,20 +833,20 @@
     	</fileset>
 	</path>
 
-	<target name="add-license" if="add-license">
+	<!-- target name="add-license" if="add-license">
 		<echo message="*****************************************************"/>
 		<echo message="**   Adding licenses ... ...                       **"/>
 		<echo message="*****************************************************"/>
-		<!-- taskdef name="update-license" classname="gov.nih.nci.codegen.core.ant.LicenseUpdaterTask">
+		<taskdef name="update-license" classname="gov.nih.nci.codegen.core.ant.LicenseUpdaterTask">
 			<classpath refid="development.class.path"/>
-		</taskdef -->
-		<!--echo message="${properties.dir}/license.txt"/-->
+		</taskdef>
+		<echo message="${properties.dir}/license.txt" />
 		<update-license logFile="log/addlicense.log" beginPattern="LICENSE_TEXT_START" endPattern="LICENSE_TEXT_END" licenseFile="${basedir}/etc/license/caAdapter_license_build.txt">
 			<fileset dir="${basedir}">
 				<include name="**/**.java"/>
 			</fileset>
 		</update-license>
-	</target>
+	</target -->
 	<!-- ================================= 
           target: generate keys              
          ================================= -->
