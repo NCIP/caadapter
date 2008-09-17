@@ -29,8 +29,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-09-09 18:18:15 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-09-17 18:47:52 $
  */
 public class MIFParserUtil {
 
@@ -38,7 +38,10 @@ public class MIFParserUtil {
 	{
 		try
         {
-        	InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName); 
+			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
+        	InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName);
+        	//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
+//			InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName);
         	//this.getClass().getResourceAsStream("/mif/" + mifFileName);
         	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         	DocumentBuilder db = dbf.newDocumentBuilder();
