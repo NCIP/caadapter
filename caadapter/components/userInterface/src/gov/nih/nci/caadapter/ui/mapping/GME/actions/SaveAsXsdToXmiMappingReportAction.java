@@ -26,8 +26,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-17 21:32:24 $
  */
 public class SaveAsXsdToXmiMappingReportAction extends DefaultSaveAsAction
 {
@@ -43,7 +43,7 @@ public class SaveAsXsdToXmiMappingReportAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMappingReportAction.java,v 1.2 2008-06-09 19:54:05 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMappingReportAction.java,v 1.3 2008-09-17 21:32:24 phadkes Exp $";
 
 	private XsdToXmiMappingReportPanel holderPane;
 	/**
@@ -96,3 +96,6 @@ public class SaveAsXsdToXmiMappingReportAction extends DefaultSaveAsAction
 	}
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/
