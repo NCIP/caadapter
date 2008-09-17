@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:cmps="http://cmps.cbiit.nci.nih.gov/core" targetNamespace="http://cmps.cbiit.nci.nih.gov/core">
+	<xsd:complexType name="baseMeta">
+		<xsd:attribute name="name" type="xsd:string" />
+		<xsd:attribute name="type" type="xsd:string" />
+		<xsd:attribute name="id" type="xsd:string" />
+		<xsd:attribute name="idSpec" type="xsd:string" default="xmlPath" />
+	</xsd:complexType>
+	<xsd:complexType name="attributeMeta">
+		<xsd:complexContent>
+			<xsd:extension base="cmps:baseMeta">
+				<xsd:attribute name="isRequired" type="xsd:boolean" />
+				<xsd:attribute name="isEnabled" type="xsd:boolean" />
+				<xsd:attribute name="isValid" type="xsd:boolean" />
+				<xsd:attribute name="isFixed" type="xsd:boolean" />
+				<xsd:attribute name="defaultValue" type="xsd:string" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="elementMeta">
+		<xsd:complexContent>
+			<xsd:extension base="cmps:baseMeta">
+				<xsd:sequence>
+					<xsd:element name="attrData" type="cmps:attributeMeta"
+						minOccurs="0" maxOccurs="unbounded" />
+					<xsd:element name="childElement" type="cmps:elementMeta"
+						minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+				<xsd:attribute name="multiplicityIndex" type="xsd:integer" />
+				<xsd:attribute name="isSimple" type="xsd:boolean" />
+				<xsd:attribute name="isRequired" type="xsd:boolean" />
+				<xsd:attribute name="isEnabled" type="xsd:boolean" />
+				<xsd:attribute name="isValid" type="xsd:boolean" />
+				<xsd:attribute name="isFixed" type="xsd:boolean" />
+				<xsd:attribute name="defaultValue" type="xsd:string" />
+				<xsd:attribute name="minOccurs" type="xsd:integer" />
+				<xsd:attribute name="maxOccurs" type="xsd:integer" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:simpleType name="componentType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="source" />
+			<xsd:enumeration value="target" />
+			<xsd:enumeration value="function" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="kindType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="xml" />
+			<xsd:enumeration value="csv" />
+			<xsd:enumeration value="core" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="functionName">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="constant" />
+			<xsd:enumeration value="join" />
+			<xsd:enumeration value="concatenate" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="functionData">
+		<xsd:attribute name="name" type="xsd:string" />
+		<xsd:attribute name="value" type="xsd:string" />
+		<xsd:attribute name="type" type="xsd:string" />
+	</xsd:complexType>
+	<xsd:complexType name="functionType">
+		<xsd:sequence>
+			<xsd:element name="data" type="cmps:functionData"
+				minOccurs="0" maxOccurs="unbounded">
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="name" type="cmps:functionName" />
+		<xsd:attribute name="group" type="xsd:string" />
+	</xsd:complexType>
+	<xsd:complexType name="component">
+		<xsd:choice>
+			<xsd:element name="rootElement" type="cmps:elementMeta" />
+			<xsd:element name="function" type="cmps:functionType" />
+		</xsd:choice>
+		<xsd:attribute name="id" type="xsd:string" />
+		<xsd:attribute name="type" type="cmps:componentType" />
+		<xsd:attribute name="kind" type="cmps:kindType" />
+		<xsd:attribute name="location" type="xsd:string" />
+	</xsd:complexType>
+	<xsd:complexType name="linkpointType">
+		<xsd:attribute name="componentid" type="xsd:string" />
+		<xsd:attribute name="id" type="xsd:string" />
+	</xsd:complexType>
+	<xsd:complexType name="linkType">
+		<xsd:sequence>
+			<xsd:element name="source" type="cmps:linkpointType" />
+			<xsd:element name="target" type="cmps:linkpointType" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="viewType">
+		<xsd:attribute name="componentid" type="xsd:string" />
+		<xsd:attribute name="x" type="xsd:integer" />
+		<xsd:attribute name="y" type="xsd:integer" />
+		<xsd:attribute name="hight" type="xsd:integer" />
+		<xsd:attribute name="width" type="xsd:integer" />
+	</xsd:complexType>
+	<xsd:complexType name="mapping">
+		<xsd:sequence>
+			<xsd:element name="components">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="component" type="cmps:component"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="links">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="link" type="cmps:linkType"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="views">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="view" type="cmps:viewType"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="mapping" type="cmps:mapping"></xsd:element>
+</xsd:schema>
