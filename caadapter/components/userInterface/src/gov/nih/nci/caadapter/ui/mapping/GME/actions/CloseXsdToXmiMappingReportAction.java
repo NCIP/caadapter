@@ -24,8 +24,8 @@ import gov.nih.nci.caadapter.ui.mapping.GME.XsdToXmiMappingReportPanel;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-09-17 21:25:07 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-17 21:28:03 $
  */
 public class CloseXsdToXmiMappingReportAction extends DefaultContextCloseAction
 {
@@ -51,7 +51,7 @@ public class CloseXsdToXmiMappingReportAction extends DefaultContextCloseAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/CloseXsdToXmiMappingReportAction.java,v 1.3 2008-09-17 21:25:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/CloseXsdToXmiMappingReportAction.java,v 1.4 2008-09-17 21:28:03 phadkes Exp $";
 
 	public CloseXsdToXmiMappingReportAction(DefaultContextManagerClientPanel contentPanel)
 	{
@@ -62,5 +62,7 @@ public class CloseXsdToXmiMappingReportAction extends DefaultContextCloseAction
 }
 
 /**
- * HISTORY      :
- */ 
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : 
+ * HISTORY      : 
+**/
