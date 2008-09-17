@@ -30,8 +30,8 @@ import gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-17 21:29:50 $
  */
 public class CloseXsdToXmiMapAction extends CloseMapAction
 {
@@ -78,7 +78,7 @@ public class CloseXsdToXmiMapAction extends CloseMapAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/CloseXsdToXmiMapAction.java,v 1.2 2008-06-09 19:54:05 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/CloseXsdToXmiMapAction.java,v 1.3 2008-09-17 21:29:50 phadkes Exp $";
 
 	public CloseXsdToXmiMapAction(DefaultContextManagerClientPanel contentPanel)
 	{
@@ -87,4 +87,6 @@ public class CloseXsdToXmiMapAction extends CloseMapAction
 	}
 
 }
-
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/
