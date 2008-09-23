@@ -73,6 +73,8 @@
 				fork="yes" debug="on">
 			<src path="${module.src.dir}" />
 			<src path="${module.src.dir}/../../dataviewer/src" />
+			<src path="${module.src.dir}/../../../demo/gov/" />
+			<exclude name="**/TestCaadapterWebservice.java"/>
 			<exclude name="test/**"/>
 		</javac>
 	</target>

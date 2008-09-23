@@ -59,8 +59,8 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
- * @version Since caAdapter v1.2 revision $Revision: 1.38 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.39 $ date $Date:
  *          2006/10/23 16:27:28 $
  */
 public class MainMenuBar extends AbstractMenuBar
@@ -504,9 +504,9 @@ public class MainMenuBar extends AbstractMenuBar
         actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
         menuItemMap.put(ActionConstants.OPEN_HSM_FILE, openHSMFileItem);
 
-        OpenHSMAction openXmlHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.xml)", mainFrame);
-        actionMap.put(ActionConstants.OPEN_XML_HSM_FILE, openXmlHSMAction);
-        menuItemMap.put(ActionConstants.OPEN_XML_HSM_FILE, new JMenuItem(openXmlHSMAction));
+//        OpenHSMAction openXmlHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.xml)", mainFrame);
+//        actionMap.put(ActionConstants.OPEN_XML_HSM_FILE, openXmlHSMAction);
+//        menuItemMap.put(ActionConstants.OPEN_XML_HSM_FILE, new JMenuItem(openXmlHSMAction));
 
         OpenHL7V3MessageAction openHL7V3MessageAction = new OpenHL7V3MessageAction(mainFrame);
         JMenuItem openHL7V3MessageItem = new JMenuItem(openHL7V3MessageAction);
@@ -523,12 +523,12 @@ public class MainMenuBar extends AbstractMenuBar
         {
             //set csvToV3 as default
             openMenu.add(openCSVSpecificationItem);
-            openMenu.add(openXmlHSMAction);
-            openHSMFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false));
+//            openMenu.add(openXmlHSMAction);
+            openHSMFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openHSMFileItem);
-            openCsvToXmiMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, Event.CTRL_MASK + Event.SHIFT_MASK, false));
+            openCsvToXmiMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openCsvToXmiMapFileItem);
-            openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, Event.CTRL_MASK + Event.SHIFT_MASK, false));
+            openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openMapFileItem);
         } 
         else
@@ -541,10 +541,12 @@ public class MainMenuBar extends AbstractMenuBar
                 openMenu.add(openCSVSpecificationItem);
                 isOpenCsvAdded=true;
                 keyStrokeIndex++;
-                openMenu.add(openXmlHSMAction);
-                isHSMAdded=true;
-                keyStrokeIndex++;
+//                openMenu.add(openXmlHSMAction);
+//                isHSMAdded=true;
+//                keyStrokeIndex++;
+                openHSMFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openHSMFileItem);
+                isHSMAdded=true;
                 keyStrokeIndex++;
                 openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openMapFileItem);
@@ -561,8 +563,8 @@ public class MainMenuBar extends AbstractMenuBar
             	}
             	if(!isHSMAdded)
             	{
-	                openMenu.add(openXmlHSMAction);
-	                keyStrokeIndex++;
+//	                openMenu.add(openXmlHSMAction);
+//	                keyStrokeIndex++;
 	                openMenu.add(openHSMFileItem);
 	                keyStrokeIndex++;
 	                openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
@@ -744,6 +746,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.38  2008/09/08 15:15:16  linc
+ * HISTORY : UI fixup for MMS 4.1
+ * HISTORY :
  * HISTORY : Revision 1.37  2008/06/17 17:23:47  wangeug
  * HISTORY : setup main menu bar
  * HISTORY :

@@ -36,10 +36,10 @@ import java.util.ArrayList;
  * This class defines the open HSM panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-23 15:19:34 $
  */
 public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextAction
 {
@@ -61,7 +61,7 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.5 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.6 2008-09-23 15:19:34 wangeug Exp $";
 
 	private static final String COMMAND_NAME_H3S = ActionConstants.OPEN_HSM_FILE_TXT +"(.h3s)";
 	private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -225,11 +225,11 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 		//invoke openFile dialog based on Hl7 V3 specification file type
 		String specExtension=Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
 		String dialogTitle=Config.OPEN_DIALOG_TITLE_FOR_H3S_HSM_FILE;
-		if (!super.getName().equals(COMMAND_NAME_H3S))
-		{
-			specExtension=Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION;
-			dialogTitle=Config.OPEN_DIALOG_TITLE_FOR_XML_HSM_FILE;
-		}
+//		if (!super.getName().equals(COMMAND_NAME_H3S))
+//		{
+//			specExtension=Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION;
+//			dialogTitle=Config.OPEN_DIALOG_TITLE_FOR_XML_HSM_FILE;
+//		}
 		File file = DefaultSettings.getUserInputOfFileFromGUI(mainFrame, //getUIWorkingDirectoryPath(),
 				specExtension, dialogTitle, false, false);
 		if (file != null)
@@ -248,6 +248,9 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/10/04 18:10:06  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

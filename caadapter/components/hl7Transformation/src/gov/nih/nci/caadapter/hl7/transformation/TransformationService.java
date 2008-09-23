@@ -9,18 +9,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
-import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
-import gov.nih.nci.caadapter.common.MetaException;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.CsvReader;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
-import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
-import gov.nih.nci.caadapter.common.csv.data.impl.CSVSegmentedFileImpl;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
@@ -29,8 +25,6 @@ import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
-import gov.nih.nci.caadapter.hl7.validation.HL7V3MessageValidator;
-
 
 import java.io.*;
 import java.util.ArrayList;
@@ -44,15 +38,15 @@ import java.util.zip.ZipEntry;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: linc $
- * @version $Revision: 1.19 $
- * @date $Date: 2008-06-26 19:45:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.20 $
+ * @date $Date: 2008-09-23 15:18:14 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.19 2008-06-26 19:45:50 linc Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.20 2008-09-23 15:18:14 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -258,15 +252,15 @@ public class TransformationService
         
         long loadmifbegintime = System.currentTimeMillis();
         
-        if (fullh3sfilepath.endsWith(".h3s"))
-        {
-        	mifClass = loadMIF(fullh3sfilepath);
-        }
-        else 
-        {
+//        if (fullh3sfilepath.endsWith(".h3s"))
+//        {
+//        	mifClass = loadMIF(fullh3sfilepath);
+//        }
+//        else 
+//        {
         	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter(); 
         	mifClass = xmlToMIFImporter.importMifFromXml(new File(fullh3sfilepath));
-        }
+//        }
         
     	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
     }
@@ -612,25 +606,8 @@ public class TransformationService
     public static void main(String[] argv) throws Exception {
         long begintime2 = System.currentTimeMillis();
 
-//       	TransformationService ts = new TransformationService("C:/Projects/caadapter-gforge-2007-May/tests/150003.map",
-//		"C:/Projects/caadapter-gforge-2007-May/tests/COCT_MT150003.csv");
-//       	TransformationService ts = new TransformationService("C:/xmlpathSpec/xmlpath150003.map",
-//		"C:/xmlpathSpec/COCT_MT150003.csv");
-//
-//        TransformationService ts = new TransformationService(
-//        	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT010000_MAP1-1.map",
-//			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT01000_Person.csv");
-
-//        TransformationService ts = new TransformationService(
-//            	"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP7-1.map",
-//    			"c:/projects/caadapter-gforge-2007-May/components/hl7Transformation/test/data/Transformation/COCT_MT150003_MAP_Scenario_Test.csv");
-
-        //   	TransformationService ts = new TransformationService("C:/xmlpathSpec/NewEncounter_comp.map",
-//		"C:/xmlpathSpec/NewEncounter_comp2.csv");
-        
    	TransformationService ts = new TransformationService("C:/xmlpathSpec/error/choice_basic.map",
 		"C:/xmlpathSpec/error/choice_basic_without_patient.csv");
-
 //           	TransformationService ts = new TransformationService("C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/test.map",
 //		"C:/Projects/caadapter/components/hl7Transformation/test/data/Transformation/MissingDataValidation/Scenarios11-Choice/COCT_MT150003.csv");
         ts.process();
@@ -640,6 +617,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.19  2008/06/26 19:45:50  linc
+ * HISTORY      : Change HL7 transformation GUI to use batch api.
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2008/06/09 19:53:50  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

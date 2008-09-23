@@ -30,10 +30,10 @@ import java.io.OutputStream;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-23 15:19:33 $
  */
 public class SaveAsHsmAction extends DefaultSaveAsAction
 {
@@ -49,7 +49,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.5 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.6 2008-09-23 15:19:33 wangeug Exp $";
 
 	protected transient HSMPanel hsmPanel;
 
@@ -89,9 +89,9 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-//		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, getUIWorkingDirectoryPath(), Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
-		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, 
-				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
+		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, getUIWorkingDirectoryPath(), Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
+//		File file = DefaultSettings.getUserInputOfFileFromGUI(this.hsmPanel, 
+//				Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save As...", true, true);
 		if (file != null)
 		{
 			setSuccessfullyPerformed(processSaveFile(file, true));
@@ -115,15 +115,15 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 
 			if (specFileName.endsWith(Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION))
 			{
-				System.out.println("SaveAsHsmAction.processSaveFile()..H3S format:"+specFileName);
-				OutputStream os = new FileOutputStream(file);
-				ObjectOutputStream oos = new ObjectOutputStream(os); 
-				oos.writeObject(specObject);
-				oos.close();
-				os.close();
-			}
-			else if (specFileName.endsWith(".xml"))
-			{
+//				System.out.println("SaveAsHsmAction.processSaveFile()..H3S format:"+specFileName);
+//				OutputStream os = new FileOutputStream(file);
+//				ObjectOutputStream oos = new ObjectOutputStream(os); 
+//				oos.writeObject(specObject);
+//				oos.close();
+//				os.close();
+//			}
+//			else if (specFileName.endsWith(".xml"))
+//			{
 				//save as xml
 				MIFToXmlExporter xmlExporter;					
 				xmlExporter = new MIFToXmlExporter((MIFClass)specObject);
@@ -165,4 +165,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	}
 }
 	
+/**
+ *HISTORY 	:$Log: not supported by cvs2svn $
+ */
 	

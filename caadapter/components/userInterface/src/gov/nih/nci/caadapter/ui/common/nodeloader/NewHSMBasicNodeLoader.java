@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.42 $
- *          date        $Date: 2008-09-23 15:12:14 $
+ *          revision    $Revision: 1.43 $
+ *          date        $Date: 2008-09-23 15:19:50 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -580,7 +580,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	
 }
 /**
- *HISTORY 
- *$Log: not supported by cvs2svn $
+ *HISTORY 	:$Log: not supported by cvs2svn $
+ *Revision 1.42  2008/09/23 15:12:14  wangeug
+ *caAdapter 4.2 alpha release
+ *
  *  
  */
