@@ -39,8 +39,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-09 18:27:23 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-23 19:58:25 $
  */
 
 public class MIFParser {
@@ -70,7 +70,8 @@ public class MIFParser {
         	if (child.getNodeName().equals(prefix+"packageLocation")
         			||child.getNodeName().equals("packageLocation"))
         		mifPackageLocation=MIFParserUtil.getDocumentElementAttributes(child);
-        	else if (child.getNodeName().equals(prefix+"ownedEntryPoint")) {
+        	else if (child.getNodeName().equals(prefix+"ownedEntryPoint")
+        			||child.getNodeName().equals("ownedEntryPoint")) {
         		Node ownedEntryPointChild = child.getFirstChild();
         		while (ownedEntryPointChild != null) {
         			if (ownedEntryPointChild.getNodeName().equals(prefix+"specializedClass")

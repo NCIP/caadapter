@@ -30,8 +30,8 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-09 18:17:38 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-23 19:58:25 $
  */
 
 public class CMETInfoParser {
@@ -126,8 +126,16 @@ public class CMETInfoParser {
 //		ois.close();
 //		is.close();
 //		//always load from mif.zip/
+		//normative 2008 structure /mif/cmetinfo.coremif
+		//normative 2006 structure /cmetinfo.coremif
 		String cmetFileName="/mif/cmetinfo.coremif";
 		InputStream cmetIs=this.getClass().getResourceAsStream(cmetFileName);
+		if (cmetIs==null)
+		{
+			//working for Normative 2006
+			cmetFileName="/cmetinfo.coremif";
+			cmetIs=this.getClass().getResourceAsStream(cmetFileName);
+		}
 		parserCMETInfoWithStream(cmetIs);
 	}
  

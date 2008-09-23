@@ -79,18 +79,19 @@ public class MIFIndexParser {
 		{
 			ZipEntry zipEntry=(ZipEntry)entryEnum.nextElement();			
 			String fileName=zipEntry.getName();
-			
 			//only process the "mif" directory
 			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
 			//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
-			String validNameStart="mif/";
-			if (!fileName.startsWith(validNameStart))
+			String validNameStart="";
+			if (fileName.indexOf("/")>-1)
+				validNameStart="mif/";
+			if (!validNameStart.equals("")&&!fileName.startsWith(validNameStart))
 				continue;
 			if (!fileName.endsWith(".mif"))
 				continue;
 			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
 			//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
-			String msgType=fileName.substring(4);
+			String msgType=fileName.substring(validNameStart.length());
      	  	mifIndexInfos.addMessageType(msgType);
 		}
 		 return mifIndexInfos;
