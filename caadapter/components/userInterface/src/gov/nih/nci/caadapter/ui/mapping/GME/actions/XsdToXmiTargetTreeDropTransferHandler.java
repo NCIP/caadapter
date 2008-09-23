@@ -48,8 +48,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-07-11 14:42:43 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-09-23 19:33:18 $
  */
 public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -279,3 +279,6 @@ public class XsdToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 	}
 
 }
+/**
+ * $Log: not supported by cvs2svn $
+*/

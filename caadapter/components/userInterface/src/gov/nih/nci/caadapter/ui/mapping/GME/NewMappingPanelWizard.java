@@ -21,8 +21,8 @@ import java.awt.event.ActionListener;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-23 19:33:18 $
  */
 public class NewMappingPanelWizard extends JDialog implements ActionListener
 {
@@ -104,3 +104,6 @@ public class NewMappingPanelWizard extends JDialog implements ActionListener
 	}
 
 }
+/**
+ * $Log: not supported by cvs2svn $
+*/
