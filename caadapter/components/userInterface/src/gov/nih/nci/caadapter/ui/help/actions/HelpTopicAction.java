@@ -26,8 +26,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Ki Sung Um
  * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-10 19:19:34 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-23 15:43:28 $
  */
 public class HelpTopicAction extends AbstractContextAction
 {
@@ -36,9 +36,24 @@ public class HelpTopicAction extends AbstractContextAction
 	public static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0, false);
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("Help16.gif"));
 	private static final String TOOL_TIP_DESCRIPTION = ActionConstants.HELP;
+	private static String codeBase = null;
     //private static HelpContentViewer helpContentViewer = null;
 
     private JFrame mainFrame = null;
+
+	/**
+	 * @return the codeBase
+	 */
+	public static final String getCodeBase() {
+		return codeBase;
+	}
+
+	/**
+	 * @param codeBase the codeBase to set
+	 */
+	public static final void setCodeBase(String codeBase) {
+		HelpTopicAction.codeBase = codeBase;
+	}
 
 	public HelpTopicAction(JFrame mainFrame)
 	{
@@ -78,7 +93,7 @@ public class HelpTopicAction extends AbstractContextAction
 //        	gov.nih.nci.caadapter.common.BrowserLaunch.openURL("file:///"+System.getProperty("user.dir") + "/docs/help/caAdapter-Help.html");
         	edu.stanford.ejalbert.BrowserLauncher brLauncher = new edu.stanford.ejalbert.BrowserLauncher(null);
 //        	System.out.println(System.getProperty("user.dir"));
-        	String location = gov.nih.nci.caadapter.hl7.demo.LaunchUI.getCodebase();
+        	String location = codeBase;
         	if(location==null || location.trim().length()==0)
         		location = "file:///"+System.getProperty("user.dir") + "/docs/help/index.html";
         	else 
@@ -108,6 +123,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/10 19:19:34  linc
+ * HISTORY      : updated.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/09/10 18:08:14  linc
  * HISTORY      : MMS 4.1 with help enabled.
  * HISTORY      :

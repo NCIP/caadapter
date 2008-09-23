@@ -16,34 +16,20 @@ import javax.swing.*;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: linc $
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * @since caAdapter v1.2
  */
 public class LaunchUI {
     private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.9 2008-09-10 18:08:14 linc Exp $";
-    private static String codebase = null;
-
-    /**
-	 * @return the codebase
-	 */
-	public static String getCodebase() {
-		return codebase;
-	}
-
-	/**
-	 * @param codebase the codebase to set
-	 */
-	public static void setCodebase(String codebase) {
-		LaunchUI.codebase = codebase;
-	}
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.10 2008-09-23 15:43:28 linc Exp $";
 
 	public static void main(String[] args)
     {
         try	
             {
-        		if(args!=null && args.length>0 && args[0].startsWith("http:"))
-        			codebase = args[0];
+        		if (args!=null && args.length>0 && args[0].startsWith("http:")) {
+        			gov.nih.nci.caadapter.ui.help.actions.HelpTopicAction.setCodeBase(args[0]);
+        		}
 		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 	        }
             catch (ClassNotFoundException e1)
