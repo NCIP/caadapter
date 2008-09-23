@@ -9,11 +9,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.common.resource;
 
-import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
-import gov.nih.nci.caadapter.ui.hl7message.OpenHL7MessageFrontPage;
-
+ 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,10 +22,10 @@ import java.io.File;
  * This class defines the Browse action used across the message wisard.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-23 15:09:09 $
  */
 public class BrowseHL7ResourceAction extends AbstractContextAction
 {
@@ -43,42 +41,46 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BrowseHL7ResourceAction.java,v 1.2 2008-06-09 19:53:51 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BrowseHL7ResourceAction.java,v 1.3 2008-09-23 15:09:09 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Browse...";
 	private static final Character COMMAND_MNEMONIC = new Character('B');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
 
+	private transient JTextField inputTargetField;
 	private transient OpenHL7ResourceFrontPage frontPage;
 	private transient String browseMode;
+	private transient String fileExt;
 
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
 	 */
-	public BrowseHL7ResourceAction(OpenHL7ResourceFrontPage frontPage, String browseMode)
+	public BrowseHL7ResourceAction(OpenHL7ResourceFrontPage front, JTextField targetFiled, String bMode, String fExt)
 	{
-		this(COMMAND_NAME, frontPage, browseMode);
+		this(COMMAND_NAME, front,targetFiled, bMode,fExt);
 	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a default icon.
 	 */
-	public BrowseHL7ResourceAction(String name, OpenHL7ResourceFrontPage frontPage, String browseMode)
+	public BrowseHL7ResourceAction(String name,OpenHL7ResourceFrontPage front, JTextField targetFiled, String bMode,String fExt)
 	{
-		this(name, null, frontPage, browseMode);
+		this(name, null, front,targetFiled, bMode,fExt);
 	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
 	 * description string and a the specified icon.
 	 */
-	public BrowseHL7ResourceAction(String name, Icon icon, OpenHL7ResourceFrontPage frontPage, String browseMode)
+	public BrowseHL7ResourceAction(String name, Icon icon, OpenHL7ResourceFrontPage front,JTextField targetFiled, String bMode,String fExt)
 	{
 		super(name, icon);
-		this.frontPage = frontPage;
-		this.browseMode = browseMode;
+		inputTargetField = targetFiled;
+		frontPage=front;
+		browseMode = bMode;
+		fileExt=fExt;
 		setMnemonic(COMMAND_MNEMONIC);
 		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
@@ -93,13 +95,15 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e)
 	{
-		String fileExtension = null;// frontPage.getFileExtension(browseMode);
+		String fileExtension = fileExt;// frontPage.getFileExtension(browseMode);
+ 
 		//get user's input of resource directory
         File file = DefaultSettings.getUserInputOfFileFromGUI(frontPage, //FileUtil.getUIWorkingDirectoryPath(),
         		fileExtension, "Select Resource", false, false);
 		if (file != null)
 		{
-			frontPage.setUserSelectionFile(file, browseMode);
+//			frontPage.setUserSelectionFile(file, browseMode);
+			inputTargetField.setText(file.getAbsolutePath());
 			setSuccessfullyPerformed(true);
 		}
 		else

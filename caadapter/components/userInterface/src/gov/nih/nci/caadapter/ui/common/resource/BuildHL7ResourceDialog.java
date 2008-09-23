@@ -20,11 +20,11 @@ import java.io.File;
 
 /**
  * This class is the main entry class of message wizard to collect user's inputs.
- * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-23 15:08:49 $
  */
 public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 {
@@ -40,7 +40,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.5 2008-06-09 19:53:51 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.6 2008-09-23 15:08:49 wangeug Exp $";
 
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
@@ -85,7 +85,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     	monitor.setNote(note);
 //    	System.out.println("BuildHL7ResourceDialog.updateMonitor()..."+monitor.getNote());
     }
-    private String buildHL7V3Resource(final String resourceHome, final String targetSite, final boolean isSortKeyReassigning)
+    private String buildHL7V3Resource(final String mifFilePath, final String coreschemaHome, final String msgSchemaHome, final boolean isSortKeyReassigning)
     {
     	String rtnMsg="Failed to build HL7 V3 resource";
     	final ProgressMonitor monitor=new ProgressMonitor(this.getParent(),
@@ -102,45 +102,31 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     				{
 			    	//process mif.zip
 					try {
-				    	String targetHome=targetSite.substring(0,targetSite.lastIndexOf(File.separator));
-				    	BuildResourceUtil.RESOURCE_DIR=targetHome+File.separator+"temp";
-				 
-						String mifZipPath=resourceHome+"/processable/mif/mif.zip";
-						int stepCount=0;
-						updateMonitor(monitor, stepCount++, "Serialize MIF files");
-						BuildResourceUtil.parserMifFromZipFile(mifZipPath, isSortKeyReassigning);
-						updateMonitor(monitor, stepCount++, "Create message index");
-						BuildResourceUtil.parerMifIndexFromZipFile(mifZipPath);
-				
-						//process "core schema"/datatypes
-						String coreSchemaSrcHome=resourceHome+File.separator+"processable"+File.separator+"coreschemas";
-						updateMonitor(monitor, stepCount++, "Serialize datatype files");
-						BuildResourceUtil.loadDatatypes(coreSchemaSrcHome);
-						updateMonitor(monitor, stepCount++, "Create ZIP");
-						BuildResourceUtil.zipDir(targetSite, BuildResourceUtil.RESOURCE_DIR);
+				    	String targetHome=System.getProperty("user.dir");
+				    	int stepCount=1;
+				    	//copy mif.zip to lib directory
+				    	String  mifTarget=targetHome+File.separator+"lib"+File.separator+"mif.zip";
+				    	BuildResourceUtil.copyFiles(mifFilePath, mifTarget, ".zip");
 						
-						//copy schema:
-						//find parentDir of tagetHome../lib/
-//						System.out.println(".run()..targetSite:"+targetSite);
-						String schemaHome=targetSite.substring(0,targetSite.lastIndexOf(File.separator));
-//						System.out.println(".run()..schemaHome:"+schemaHome);
-						schemaHome=schemaHome.substring(0, schemaHome.lastIndexOf(File.separator));
-//						System.out.println(".run()..schemaHome:"+schemaHome);
-						schemaHome=schemaHome+File.separator+"schemas";
-						updateMonitor(monitor, stepCount++, "Copy coreschema files "+schemaHome+ File.separator+"coreschemas");
-						BuildResourceUtil.copyFiles(coreSchemaSrcHome, schemaHome+File.separator+"coreschemas", ".xsd");
+				    	//copy core schemas:
+						String targetCoreschema=targetHome+File.separator+"schemas"+File.separator+"coreschemas";
+						updateMonitor(monitor, stepCount++, "Copy coreschema files "+coreschemaHome);
+						BuildResourceUtil.copyFiles(coreschemaHome, targetCoreschema, ".xsd");
 						
-						String mifSchemaSrcHome=resourceHome+File.separator+"processable"+File.separator+"multicacheschemas";
-						updateMonitor(monitor, stepCount++, "Copy MIF schema files "+schemaHome+File.separator+"multicacheschemas");
-						BuildResourceUtil.copyFiles(mifSchemaSrcHome, schemaHome+File.separator+"multicacheschemas", "xsd");
+						//copy Message schemas
+						String targetMsgschema=targetHome+File.separator+"schemas"+File.separator+"multicacheschemas";
+						updateMonitor(monitor, stepCount++, "Copy MIF schema files "+msgSchemaHome+File.separator+"multicacheschemas");
+						BuildResourceUtil.copyFiles(msgSchemaHome, targetMsgschema, "xsd");
+						
 						monitor.close();
-						String confirmMsg="HL7 V3 resource being successfully built at: "+targetSite;
+						String confirmMsg="Successfully loaded HL7 V3 Standards !";
 						JOptionPane.showMessageDialog(owner, confirmMsg,"Success",JOptionPane.DEFAULT_OPTION);
+						
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-			//			rtnMsg=
-						String confirmMsg="Failed to build HL7 V3 resource"+":"+e.getMessage();
+
+						String confirmMsg="Failed to build HL7 V3 Standards"+":"+e.getMessage();
 						JOptionPane.showMessageDialog(owner, confirmMsg,"Failed",JOptionPane.DEFAULT_OPTION);
 						monitor.close();
 					}
@@ -169,11 +155,30 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 			 String confirmMsg="ConfirmAction";
 			if(this.getTitle().equals(BuildHL7ResourceAction.COMMAND_BUILD_V3))
 			{
-				String srcHome=frontPage.getSelectFileHome();
-				String targetSite=frontPage.getTargetSite();
-			
-				confirmMsg=buildHL7V3Resource(srcHome,targetSite,frontPage.isSortKeyReassigning());
- 
+				String mifFileName=frontPage.getSelectFileHome();
+				String coreSchHome=frontPage.getCoreSchemaFileDirectory();
+				String messageSchHome=frontPage.getMessageSchemaFileDirectory();
+				String warnMsg="Please Select MIF file";
+				if (mifFileName==null||mifFileName.equals(""))
+				{
+					JOptionPane.showConfirmDialog(this, warnMsg,"Warning",JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				warnMsg="Please Select Coreschema Home";
+				if (coreSchHome==null||coreSchHome.equals(""))
+				{
+					JOptionPane.showConfirmDialog(this, warnMsg,"Warning",JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				warnMsg="Please Select Multicacheschema (Message Schema)Home";
+				if (messageSchHome==null||messageSchHome.equals(""))
+				{
+					JOptionPane.showConfirmDialog(this, warnMsg,"Warning",JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				//String targetSite=frontPage.getTargetSite();
+				//never reset sortKey, use false as default
+				confirmMsg=buildHL7V3Resource(mifFileName,coreSchHome,messageSchHome,false);
 			}
 			else if(this.getTitle().equals(BuildHL7ResourceAction.COMMAND_BUILD_V2))
 			{
@@ -181,13 +186,10 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 				int userReply=JOptionPane.showConfirmDialog(this, confirmMsg,"Confirm",JOptionPane.YES_NO_OPTION);
 			}
 		}
- 
- 
-			setVisible(false);
+ 			setVisible(false);
 			dispose();
-
 	}
-
-
 }
-
+/**
+ * $Log: not supported by cvs2svn $
+ */

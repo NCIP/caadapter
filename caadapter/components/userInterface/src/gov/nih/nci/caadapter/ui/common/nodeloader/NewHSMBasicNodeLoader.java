@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.41 $
- *          date        $Date: 2008-09-09 18:13:01 $
+ *          revision    $Revision: 1.42 $
+ *          date        $Date: 2008-09-23 15:12:14 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -113,31 +113,31 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		{
 			System.out.println("NewHSMBasicNodeLoader.loadData()..with file:"+((File)o).getAbsolutePath());
 			FileInputStream fis;
-			try {
+//			try {
 				File file=(File)o;
-				if (file.getName().endsWith(".xml"))
-				{
+//				if (file.getName().endsWith(".xml"))
+//				{
 					XmlToMIFImporter mifImport=new XmlToMIFImporter();
 					rootMIFClass=mifImport.importMifFromXml(file);
-				}
-				else
-				{
-				fis = new FileInputStream ((File)o);
-				ObjectInputStream ois = new ObjectInputStream(fis);
-				rootMIFClass = (MIFClass)ois.readObject();
-	    		ois.close();
-	    		fis.close();
-				}
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				Log.logException(this, e);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				Log.logException(this, e);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				Log.logException(this, e);
-			}
+//				}
+//				else
+//				{
+//				fis = new FileInputStream ((File)o);
+//				ObjectInputStream ois = new ObjectInputStream(fis);
+//				rootMIFClass = (MIFClass)ois.readObject();
+//	    		ois.close();
+//	    		fis.close();
+//				}
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				Log.logException(this, e);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				Log.logException(this, e);
+//			} catch (ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				Log.logException(this, e);
+//			}
         	
 		}
 		if (rootMIFClass!=null)
@@ -579,3 +579,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	}
 	
 }
+/**
+ *HISTORY 
+ *$Log: not supported by cvs2svn $
+ *  
+ */

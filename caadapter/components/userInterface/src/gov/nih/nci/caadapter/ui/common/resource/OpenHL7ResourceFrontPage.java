@@ -18,10 +18,10 @@ import java.io.File;
  * The front page of open HL7 Message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-23 15:09:09 $
  */
 public class OpenHL7ResourceFrontPage extends JPanel
 {
@@ -37,11 +37,12 @@ public class OpenHL7ResourceFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.3 2008-06-09 19:53:51 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.4 2008-09-23 15:09:09 wangeug Exp $";
 
-	public static final String HL7_RESOURCE_SITE = "Target Location:";
-	private JTextField dataFileInputField;
-    private JCheckBox isSortKeyReassigning = null;
+	public static final String HL7_RESOURCE_SITE = "caAdapter Home:";
+	private JTextField mifFileInputField;
+	private JTextField coreSchemaInputField;
+	private JTextField messageSchemaInputField;
     private String openWizardType;
 	private String targetSite;
 	/**
@@ -63,58 +64,86 @@ public class OpenHL7ResourceFrontPage extends JPanel
 		String resourcHome="";
 		if (openWizardType.equals(BuildHL7ResourceAction.COMMAND_BUILD_V3))
         {
-            resourcHome="HL7 Normative Home:";
-            isSortKeyReassigning = new JCheckBox("Sort Key Reassigning");
+            resourcHome="HL7 V3 MIF File (mif.zip) :";
         }
         else
 			resourcHome="HL7 V2 Resource Home:";
 			
-		JLabel dataFileLabel = new JLabel(resourcHome);
-		centerPanel.add(dataFileLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+		//set MIF file selection
+		JLabel mifFileLabel = new JLabel(resourcHome);
+		centerPanel.add(mifFileLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		dataFileInputField = new JTextField();
-		dataFileInputField.setPreferredSize(new Dimension(350, 25));
-		centerPanel.add(dataFileInputField, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
+		mifFileInputField = new JTextField();
+		mifFileInputField.setPreferredSize(new Dimension(350, 25));
+		centerPanel.add(mifFileInputField, new GridBagConstraints(1, 0, 2, 1, 1.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		JButton dataFileBrowseButton =new JButton(new BrowseHL7ResourceAction(this, "Browser"));
-
-		centerPanel.add(dataFileBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+		JButton mifFileBrowseButton=new JButton(new BrowseHL7ResourceAction(this, mifFileInputField, "Browser", ".zip"));
+		centerPanel.add(mifFileBrowseButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
 
-		JLabel mapFileLabel = new JLabel(HL7_RESOURCE_SITE);
-		centerPanel.add(mapFileLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		//set coreSchema selection
+		JLabel coreSchLabel=new JLabel("Coreschemas (file folder):");
+		centerPanel.add(coreSchLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		JLabel targetSit = new JLabel(targetSite);
-		targetSit.setPreferredSize(new Dimension(350, 25));
-		centerPanel.add(targetSit, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
+		coreSchemaInputField = new JTextField();
+		coreSchemaInputField.setPreferredSize(new Dimension(350, 25));
+		centerPanel.add(coreSchemaInputField, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+		JButton coreScheamBrowseButton=new JButton(new BrowseHL7ResourceAction(this, coreSchemaInputField, "Browser", null));
+		centerPanel.add(coreScheamBrowseButton, new GridBagConstraints(3,1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+
+		//set messageSchema selection
+		JLabel messageSchLabel=new JLabel("Multicacheschemas (file folder):");
+		centerPanel.add(messageSchLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+		messageSchemaInputField = new JTextField();
+		messageSchemaInputField.setPreferredSize(new Dimension(350, 25));
+		centerPanel.add(messageSchemaInputField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+		JButton messageScheamBrowseButton=new JButton(new BrowseHL7ResourceAction(this, messageSchemaInputField, "Browser", null));
+		centerPanel.add(messageScheamBrowseButton, new GridBagConstraints(3,2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+		
+		JLabel mapFileLabel = new JLabel(HL7_RESOURCE_SITE);
+		centerPanel.add(mapFileLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+//		JLabel targetSit = new JLabel(targetSite);
+		JLabel caAdapterHome=new JLabel(System.getProperty("user.dir"));
+		caAdapterHome.setPreferredSize(new Dimension(350, 25));
+		centerPanel.add(caAdapterHome, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
-        if (isSortKeyReassigning != null)
-        {
-            centerPanel.add(isSortKeyReassigning, new GridBagConstraints(3, 1, 2, 1, 1.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-        }
         this.add(centerPanel, BorderLayout.CENTER);
 	}
 
 	public void setUserSelectionFile(File file, String browseMode)
 	{
 //		System.out.println("OpenHL7ResourceFrontPage.setUserSelectionFile()..selected file:"+file);
-		dataFileInputField.setText(file.getAbsolutePath());
+		mifFileInputField.setText(file.getAbsolutePath());
 	}
 	
 	public String getSelectFileHome() {
-		return dataFileInputField.getText();
+		return mifFileInputField.getText();
 	}
 
-    public boolean isSortKeyReassigning() {
-        if (isSortKeyReassigning != null) return isSortKeyReassigning.isSelected();
-        return false;
-    }
+//    public boolean isSortKeyReassigning() {
+//        if (isSortKeyReassigning != null) return isSortKeyReassigning.isSelected();
+//        return false;
+//    }
 
 	public String getTargetSite() {
 		return targetSite;
 	}
+
+	public String getCoreSchemaFileDirectory() {
+		return coreSchemaInputField.getText();
+	}
+
+	public String getMessageSchemaFileDirectory() {
+		return messageSchemaInputField.getText();
+	}
+	
 }
 
 
