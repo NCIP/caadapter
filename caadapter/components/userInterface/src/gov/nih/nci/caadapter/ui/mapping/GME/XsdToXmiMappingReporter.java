@@ -30,8 +30,11 @@ import gov.nih.nci.caadapter.ui.common.MappableNode;
 
 /**
  * Define the reporting class to list mapped or mapped element from a s mapping source tree
- * @author wangeug
- *
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-23 19:28:35 $
  */
 public class XsdToXmiMappingReporter {
 	public static String REPORT_MAPPED="REPORT_MAPPED";
@@ -248,4 +251,7 @@ public class XsdToXmiMappingReporter {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/09/23 19:21:32  phadkes
+ * HISTORY      : Added History block
+ * HISTORY      :
 */
