@@ -40,8 +40,8 @@ import java.util.Map;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-23 19:20:23 $
  */
 public class XsdToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 {
@@ -197,3 +197,7 @@ public class XsdToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 	}
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+*/

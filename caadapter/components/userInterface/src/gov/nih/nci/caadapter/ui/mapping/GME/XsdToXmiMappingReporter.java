@@ -246,3 +246,6 @@ public class XsdToXmiMappingReporter {
 	}
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
