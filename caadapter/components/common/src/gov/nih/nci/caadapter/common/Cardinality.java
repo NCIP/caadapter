@@ -7,6 +7,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.common;
+/**
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-24 19:51:48 $
+*/
 
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
@@ -237,3 +244,6 @@ public class Cardinality
         return rtnString;
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

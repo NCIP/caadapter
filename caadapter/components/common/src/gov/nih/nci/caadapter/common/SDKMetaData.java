@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.common;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:49 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-24 19:51:48 $
  */
 
 public interface SDKMetaData {
@@ -25,3 +25,6 @@ public interface SDKMetaData {
 	public void setMapped(boolean isMapped);
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
