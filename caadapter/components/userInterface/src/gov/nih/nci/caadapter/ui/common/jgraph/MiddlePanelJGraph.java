@@ -20,8 +20,8 @@ import java.awt.Graphics;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-09-24 17:37:19 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-24 17:50:19 $
  */
 public class MiddlePanelJGraph extends JGraph
 {
@@ -196,5 +196,5 @@ public class MiddlePanelJGraph extends JGraph
 
 }
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

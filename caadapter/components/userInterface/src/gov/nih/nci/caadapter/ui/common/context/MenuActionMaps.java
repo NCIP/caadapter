@@ -6,6 +6,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.ui.common.context;
+
+/**
+ * Maintians map for MenuActions
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-24 17:46:09 $
+*/
 import javax.swing.Action;
 
 import java.util.Collections;
@@ -79,3 +88,6 @@ public class MenuActionMaps {
 		getToolBarMenuActions().put(actionName, newAction);
 	}
 }
+/**
+ * HISTORY $Log: not supported by cvs2svn $
+*/
