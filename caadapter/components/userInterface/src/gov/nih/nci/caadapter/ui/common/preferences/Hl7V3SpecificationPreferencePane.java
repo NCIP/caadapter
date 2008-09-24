@@ -6,6 +6,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.ui.common.preferences;
+/* Hl7V3SpecificationPreferencePane
+ *  * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-24 17:18:07 $
+ */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
@@ -203,3 +210,7 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
         }
 	}
 }
+
+/**
+ * $Log: not supported by cvs2svn $
+*/

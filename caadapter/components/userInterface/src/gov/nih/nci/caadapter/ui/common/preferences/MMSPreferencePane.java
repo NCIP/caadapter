@@ -7,6 +7,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 package gov.nih.nci.caadapter.ui.common.preferences;
+/** MMSPreferencePane
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-24 17:18:07 $
+*/
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
@@ -115,3 +122,7 @@ public class MMSPreferencePane extends JPanel
         //System.out.println( "MMS_Prefix = " + (PreferenceManager.readPrefParams( Config.MMS_PREFIX_DATAMODEL  ) + ".").length() );
     }
 }
+
+/**
+ * $Log: not supported by cvs2svn $
+*/
