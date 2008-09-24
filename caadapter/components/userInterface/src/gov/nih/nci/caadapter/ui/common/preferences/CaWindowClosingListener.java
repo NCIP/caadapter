@@ -15,11 +15,15 @@ import java.awt.event.WindowListener;
 import java.util.HashMap;
 
 /**
+ * To change this template use File | Settings | File Templates.
  * Created by IntelliJ IDEA.
  * User: hjayanna
  * Date: Jul 26, 2007
  * Time: 2:40:41 PM
- * To change this template use File | Settings | File Templates.
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-24 16:18:42 $
  */
 public class CaWindowClosingListener implements WindowListener
 {
@@ -60,3 +64,6 @@ public class CaWindowClosingListener implements WindowListener
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }
+/**
+ * $Log: not supported by cvs2svn $
+*/
