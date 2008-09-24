@@ -20,13 +20,13 @@ import java.util.ArrayList;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2008-09-24 20:00:11 $
  */
 
 public class CSVSegmentedFileImpl implements CSVSegmentedFile{
     private static final String LOGID = "$RCSfile: CSVSegmentedFileImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentedFileImpl.java,v 1.2 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentedFileImpl.java,v 1.3 2008-09-24 20:00:11 phadkes Exp $";
 
     ArrayList<CSVSegment> logicalRecords = new ArrayList<CSVSegment>();
 
@@ -42,3 +42,6 @@ public class CSVSegmentedFileImpl implements CSVSegmentedFile{
         logicalRecords.add(segment);
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

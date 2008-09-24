@@ -11,7 +11,14 @@ import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import java.util.*;
-
+/**
+ * CSVSegmentExtension
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-24 20:00:11 $
+*/
 public class CSVSegmentExtension extends CSVSegmentImpl {
 
 	public CSVSegmentExtension (CSVSegmentMeta meta)
@@ -79,3 +86,6 @@ public class CSVSegmentExtension extends CSVSegmentImpl {
 		return sb.toString();
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

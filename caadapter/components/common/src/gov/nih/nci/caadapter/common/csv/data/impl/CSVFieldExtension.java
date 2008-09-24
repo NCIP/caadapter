@@ -8,6 +8,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.common.csv.data.impl;
 import gov.nih.nci.caadapter.common.csv.meta.*;
+/**
+ * sets CSVField Extensions
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-24 20:00:10 $
+*/
 public class CSVFieldExtension extends CSVFieldImpl {
 
 	private boolean valueSetFlag=false;
@@ -29,3 +37,6 @@ public class CSVFieldExtension extends CSVFieldImpl {
 		valueSetFlag = resetValueFlag;
 	}	
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

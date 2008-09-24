@@ -18,6 +18,15 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+/**
+ * CSVSegmentedFileExtension
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-24 20:00:10 $
+*/
+
 public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 	private CSVMeta csvMeta;
 	private ValidatorResults transformationResults;
@@ -250,3 +259,6 @@ public class CSVSegmentedFileExtension extends CSVSegmentedFileImpl {
 		return sb.toString();
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

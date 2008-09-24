@@ -27,13 +27,13 @@ import gov.nih.nci.caadapter.common.Cardinality;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.6 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.7 $
+ * @date        $Date: 2008-09-24 20:00:10 $
  */
 
 public class CSVSegmentImpl extends DataObjectImpl implements CSVSegment{
     private static final String LOGID = "$RCSfile: CSVSegmentImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.6 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/CSVSegmentImpl.java,v 1.7 2008-09-24 20:00:10 phadkes Exp $";
 
     public ArrayList<CSVField> fields = new ArrayList<CSVField>();
     public ArrayList<CSVSegment> childSegments = new ArrayList<CSVSegment>();
@@ -175,4 +175,8 @@ public class CSVSegmentImpl extends DataObjectImpl implements CSVSegment{
 	}
 
 }
+*/
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
 */
