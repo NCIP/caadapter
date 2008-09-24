@@ -22,10 +22,10 @@ import java.io.File;
  * This class defines the Browse action used across the message wisard.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-09-23 15:09:09 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-24 16:34:41 $
  */
 public class BrowseHL7ResourceAction extends AbstractContextAction
 {
@@ -41,7 +41,7 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BrowseHL7ResourceAction.java,v 1.3 2008-09-23 15:09:09 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BrowseHL7ResourceAction.java,v 1.4 2008-09-24 16:34:41 phadkes Exp $";
 
 	private static final String COMMAND_NAME = "Browse...";
 	private static final Character COMMAND_MNEMONIC = new Character('B');
@@ -125,3 +125,8 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 	}
 }
 
+
+
+/**
+ * $Log: not supported by cvs2svn $
+*/
