@@ -18,13 +18,13 @@ import java.io.IOException;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2008-09-24 20:52:37 $
  * @deprecated
  */
 public class CSVParserImpl implements CSVParser {
     private static final String LOGID = "$RCSfile: CSVParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVParserImpl.java,v 1.2 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVParserImpl.java,v 1.3 2008-09-24 20:52:37 phadkes Exp $";
 
     public String fetch(String file, int row, int column) throws IOException {
         String[][] csvData = null;
@@ -57,3 +57,7 @@ public class CSVParserImpl implements CSVParser {
     }
 
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

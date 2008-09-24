@@ -23,7 +23,10 @@ import gov.nih.nci.caadapter.common.ApplicationException;
 /**
  * Reader for reading CSV logical records from an input stream
  * @author Chunqing Lin
- *
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-24 20:52:36 $
  */
 public class CsvReader {
 	private InputStream dataStream;
@@ -126,3 +129,7 @@ public class CsvReader {
 	}
 	
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

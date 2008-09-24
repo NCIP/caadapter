@@ -18,6 +18,11 @@ import java.util.StringTokenizer;
  * 1. "," is used as the default delimiter
  * 2. "\"" override the default delimiter
  * 3. User's delimiter is the first choosen one
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-24 20:52:36 $
  */
 public class CsvDataStringParser {
 
@@ -106,3 +111,7 @@ public class CsvDataStringParser {
 		contentData=encodeSb.toString().replace("\"", "");
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

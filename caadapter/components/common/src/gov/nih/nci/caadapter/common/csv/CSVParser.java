@@ -17,8 +17,8 @@ import java.io.IOException;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2008-09-24 20:52:37 $
  */
 
 public interface CSVParser {
@@ -48,3 +48,7 @@ public interface CSVParser {
     public int countRows(String file)throws IOException;
 
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

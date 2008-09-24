@@ -41,14 +41,14 @@ import java.util.Stack;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.6 $
- * @date $Date: 2008-06-09 19:53:49 $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2008-09-24 20:52:37 $
  * @since caAdapter v1.2
  */
 
 public class SegmentedCSVParserImpl {
     private static final String LOGID = "$RCSfile: SegmentedCSVParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.6 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/SegmentedCSVParserImpl.java,v 1.7 2008-09-24 20:52:37 phadkes Exp $";
     private static final SegmentedCSVParserImpl singleton = new SegmentedCSVParserImpl();
 
     public static CSVDataResult parse(File dataFile, File metaFile) throws ApplicationException
@@ -564,4 +564,8 @@ public class SegmentedCSVParserImpl {
         return segment;
     }
 }
+*/
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

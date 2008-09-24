@@ -44,8 +44,8 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.6 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.7 $
+ * @date        $Date: 2008-09-24 20:52:36 $
  */
 
 public class CSVMetaBuilder extends MetaBuilderBase {
@@ -53,7 +53,7 @@ public class CSVMetaBuilder extends MetaBuilderBase {
     private static CSVMetaBuilder metaBuilder = null;
 
     private static final String LOGID = "$RCSfile: CSVMetaBuilder.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.6 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaBuilder.java,v 1.7 2008-09-24 20:52:36 phadkes Exp $";
 
     private CSVMetaBuilder()
     {
@@ -230,4 +230,8 @@ public class CSVMetaBuilder extends MetaBuilderBase {
         return metaBuilder;
     }
 }
+*/
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

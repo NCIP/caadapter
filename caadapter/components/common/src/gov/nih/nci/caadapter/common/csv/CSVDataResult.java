@@ -18,14 +18,14 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.2 $
- * @date $Date: 2008-06-09 19:53:49 $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2008-09-24 20:52:37 $
  * @since caAdapter v1.2
  */
 
 public class CSVDataResult extends BaseResult{
     private static final String LOGID = "$RCSfile: CSVDataResult.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVDataResult.java,v 1.2 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVDataResult.java,v 1.3 2008-09-24 20:52:37 phadkes Exp $";
 
     CSVSegmentedFile csvSegmentedFile = null;
 
@@ -45,3 +45,7 @@ public class CSVDataResult extends BaseResult{
         this.csvSegmentedFile = csvSegmentedFile;
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

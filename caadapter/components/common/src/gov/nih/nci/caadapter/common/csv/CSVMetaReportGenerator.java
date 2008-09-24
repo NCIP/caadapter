@@ -30,13 +30,13 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.3 $
- * @date $Date: 2008-06-09 19:53:49 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2008-09-24 20:52:36 $
  * @since caAdapter v1.2
  */
 public class CSVMetaReportGenerator {
     private static final String LOGID = "$RCSfile: CSVMetaReportGenerator.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaReportGenerator.java,v 1.3 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/CSVMetaReportGenerator.java,v 1.4 2008-09-24 20:52:36 phadkes Exp $";
 
     private int maxfields = 0;
 
@@ -96,3 +96,7 @@ public class CSVMetaReportGenerator {
         return s;
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
