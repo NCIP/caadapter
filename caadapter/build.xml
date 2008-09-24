@@ -9,8 +9,7 @@
     	"ant -logger org.apache.tools.ant.listener.MailLogger" or "run.bat"
     	-->
     <!-- Define project properties !-->
-    <property name="logger" value="org.apache.tools.ant.listener.MailLogger"/>
-    <property name="project.name" value="caAdapter"/>
+    <property file="./build.properties"/>
     <property name="project.ref.lib.dir" value="${basedir}/referenceLib"/>
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
@@ -121,11 +120,11 @@
     </target>
 
     <target name="dist.src">
-    	<echo message="create caadapter_MMS_4_1_Src_${DATE}.zip"/>
+    	<echo message="create ${project.release.version}_Src_${DATE}.zip"/>
     	<delete>
     		<fileset dir="." includes="caadapter*.zip"/>
     	</delete>
-		<zip destfile="caadapter_MMS_4_1_Src_${DATE}.zip" basedir="." 
+		<zip destfile="${project.release.version}_Src_${DATE}.zip" basedir="." 
 					excludes="tdms*.doc,lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
 					docs/GME/**, docs/v4.0/**, docs/MMSv4.1/*.zip, docs/v4.1*BETA/**, **/CVS/**,
 					referenceLib/**, run.bat, *.spp, *.mpp,">
@@ -783,7 +782,20 @@
 		</condition>
     	
 		<antcall target="copyRef"></antcall>
-
+		
+		<!-- if only release MMS module, copy the CaadapterUtil from MMS module -->
+		<condition property="caadapter.util.mms.copy">	
+			<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
+		</condition>
+		<antcall target="copyMMSCaadapterUtil"/>
+		
+		<!-- if only release HL7 module, copy the CaadapterUtil from HL& module -->
+		<condition property="caadapter.util.hl7.copy">	
+			<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
+		</condition>
+		<antcall target="copyHL7CaadapterUtil"/>
+		
+		
     	<condition property="download.sqleonardo">
 		   <available file="${sqleonardo.jar}"/>
 		</condition>
@@ -799,7 +811,23 @@
     		<fileset dir="." includes="caadapter*.zip"/>
     	</delete>
     </target>
-
+    
+	<target name="copyMMSCaadapterUtil" if="caadapter.util.mms.copy">
+		<echo message="caadapter.release.mms.only=${caadapter.release.mms.only}"/>
+		<copy toDir="${common.module.home}/src"
+				overwrite="true">
+			<fileset dir="${mms.module.home}/src" includes="**/CaadapterUtil.java"/>
+		</copy>
+	</target>
+	
+	<target name="copyHL7CaadapterUtil" if="caadapter.util.hl7.copy">
+		<echo message="caadapter.release.hl7.only=${caadapter.release.hl7.only}"/>
+		<copy toDir="${common.module.home}/src"
+				overwrite="true">
+			<fileset dir="${hl7.module.home}/src" includes="**/CaadapterUtil.java"/>
+		</copy>
+	</target>
+	
 	<target name="copyRef" if="ref.sqleonardo">
 		<copy file="${ref_sqleonardo.jar}" tofile="${sqleonardo.jar}"/>
 	</target>
