@@ -33,8 +33,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-09-24 15:55:54 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-09-24 18:00:29 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -194,7 +194,6 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 	}
 }
 
-
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

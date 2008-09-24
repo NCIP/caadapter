@@ -76,13 +76,13 @@ import org.jdom.Element;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.11 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.12 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.11 2008-09-23 19:30:13 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.12 2008-09-24 18:02:22 phadkes Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
 
@@ -1100,5 +1100,5 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
 }
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

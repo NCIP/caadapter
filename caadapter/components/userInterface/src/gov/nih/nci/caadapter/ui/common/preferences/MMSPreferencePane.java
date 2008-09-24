@@ -11,8 +11,8 @@ package gov.nih.nci.caadapter.ui.common.preferences;
  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-09-24 17:18:07 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-24 17:53:33 $
 */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -124,5 +124,5 @@ public class MMSPreferencePane extends JPanel
 }
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

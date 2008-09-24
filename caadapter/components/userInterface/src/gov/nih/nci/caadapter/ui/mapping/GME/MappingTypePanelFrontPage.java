@@ -25,8 +25,8 @@ import java.io.File;
  * @author OWNER: wangeug
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-09-23 19:33:18 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-24 18:02:22 $
  */
 public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 {
@@ -42,7 +42,7 @@ public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/MappingTypePanelFrontPage.java,v 1.3 2008-09-23 19:33:18 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/MappingTypePanelFrontPage.java,v 1.4 2008-09-24 18:02:22 phadkes Exp $";
 
 	public static final int OBJECT_SELECTED = 1;
 	public static final int DATA_SELECTED = 2;
@@ -127,5 +127,5 @@ public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 
 }
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

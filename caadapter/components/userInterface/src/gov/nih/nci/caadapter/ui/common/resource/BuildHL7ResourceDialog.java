@@ -21,10 +21,10 @@ import java.io.File;
 /**
  * This class is the main entry class of message wizard to collect user's inputs.
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-23 15:08:49 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-24 17:55:16 $
  */
 public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 {
@@ -40,7 +40,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.6 2008-09-23 15:08:49 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.7 2008-09-24 17:55:16 phadkes Exp $";
 
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
@@ -191,5 +191,6 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 	}
 }
 /**
- * $Log: not supported by cvs2svn $
- */
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
+

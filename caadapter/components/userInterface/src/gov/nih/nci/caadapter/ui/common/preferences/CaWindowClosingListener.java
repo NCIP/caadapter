@@ -22,8 +22,8 @@ import java.util.HashMap;
  * Time: 2:40:41 PM
  * @author LAST UPDATE $Author: phadkes $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-09-24 16:18:42 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-24 17:53:33 $
  */
 public class CaWindowClosingListener implements WindowListener
 {
@@ -65,5 +65,5 @@ public class CaWindowClosingListener implements WindowListener
     }
 }
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

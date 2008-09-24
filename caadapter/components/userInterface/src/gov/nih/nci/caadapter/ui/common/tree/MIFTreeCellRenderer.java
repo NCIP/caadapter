@@ -32,8 +32,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-09-24 15:55:54 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-09-24 18:00:29 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -49,7 +49,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.12 2008-09-24 15:55:54 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.13 2008-09-24 18:00:29 phadkes Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -317,5 +317,5 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

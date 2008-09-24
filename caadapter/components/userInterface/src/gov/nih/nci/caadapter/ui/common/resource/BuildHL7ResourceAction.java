@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.ui.common.resource;
  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.13 $
- * @date       $Date: 2008-09-24 16:36:05 $
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2008-09-24 17:55:15 $
 */
 
 import gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil;
@@ -140,5 +140,5 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
 }
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

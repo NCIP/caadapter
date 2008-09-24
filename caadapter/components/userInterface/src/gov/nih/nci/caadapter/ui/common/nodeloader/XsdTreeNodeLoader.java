@@ -25,8 +25,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: wangeug
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-24 17:33:23 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-24 17:52:22 $
  */
 public class XsdTreeNodeLoader extends DefaultNodeLoader
 {
@@ -158,5 +158,5 @@ public class XsdTreeNodeLoader extends DefaultNodeLoader
 
 }
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

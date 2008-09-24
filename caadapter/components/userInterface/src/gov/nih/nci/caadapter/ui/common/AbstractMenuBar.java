@@ -16,8 +16,8 @@ import javax.swing.JMenuItem;
  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-09-24 15:55:54 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-24 17:59:38 $
  */
 public abstract class AbstractMenuBar extends JMenuBar {
 
@@ -39,5 +39,5 @@ public abstract class AbstractMenuBar extends JMenuBar {
 
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

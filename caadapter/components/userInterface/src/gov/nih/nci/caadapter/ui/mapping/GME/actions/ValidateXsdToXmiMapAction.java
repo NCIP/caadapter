@@ -34,8 +34,8 @@ import java.awt.event.ActionEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-09-17 21:34:35 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-24 18:03:54 $
  */
 public class ValidateXsdToXmiMapAction extends AbstractContextAction
 {
@@ -51,7 +51,7 @@ public class ValidateXsdToXmiMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/ValidateXsdToXmiMapAction.java,v 1.3 2008-09-17 21:34:35 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/ValidateXsdToXmiMapAction.java,v 1.4 2008-09-24 18:03:54 phadkes Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -167,5 +167,5 @@ public class ValidateXsdToXmiMapAction extends AbstractContextAction
 	
 }
 /**
- * $Log: not supported by cvs2svn $
- **/ 
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

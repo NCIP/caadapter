@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.ui.common.preferences;
  *  * @author OWNER: $Author: phadkes $
  * @author LAST UPDATE $Author: phadkes $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-09-24 17:18:07 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2008-09-24 17:53:33 $
  */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -212,5 +212,5 @@ public class Hl7V3SpecificationPreferencePane extends JPanel
 }
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

@@ -20,8 +20,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-24 16:40:02 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-24 17:55:16 $
  */
 public class OpenHL7ResourceFrontPage extends JPanel
 {
@@ -37,7 +37,7 @@ public class OpenHL7ResourceFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.5 2008-09-24 16:40:02 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.6 2008-09-24 17:55:16 phadkes Exp $";
 
 	public static final String HL7_RESOURCE_SITE = "caAdapter Home:";
 	private JTextField mifFileInputField;
@@ -147,5 +147,5 @@ public class OpenHL7ResourceFrontPage extends JPanel
 }
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */

@@ -27,7 +27,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Apr 21, 2008
  *          Time:       3:46:15 PM $
  */
@@ -337,5 +337,5 @@ public class GenerateHL7TestInstanceDialog extends JDialog implements ActionList
 }
 
 /**
- * $Log: not supported by cvs2svn $
+ * HISTORY      : $Log: not supported by cvs2svn $
 */
