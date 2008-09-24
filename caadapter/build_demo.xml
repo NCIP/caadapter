@@ -6,6 +6,8 @@
 					caAdapter demo
 		************************************************************************** 
 	</description>	
+	<!-- load project properties -->
+	<property file="../build.properties"/>
 
 	<path id="execution.class.path">
 		<fileset dir="lib">
