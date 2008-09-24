@@ -9,6 +9,14 @@ package gov.nih.nci.caadapter.ui.common;
 
 import javax.swing.Action;
 import javax.swing.JToolBar;
+/**
+ * ToolbarHandler, adds, removes actions from toolbar.
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-24 15:55:54 $
+*/
 
 public interface ToolBarHandler {
 
@@ -23,3 +31,8 @@ public interface ToolBarHandler {
 	public abstract void removeAllActions();
 	public abstract JToolBar getToolBar();
 }
+
+
+/**
+ * $Log: not supported by cvs2svn $
+*/

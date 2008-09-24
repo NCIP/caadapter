@@ -64,9 +64,11 @@ import javax.swing.filechooser.FileFilter;
  * ExampleFileFilter( new String{"gif", "jpg"}, "JPEG & GIF Images")
  * chooser.addChoosableFileFilter(filter); chooser.showOpenDialog(this);
  *
- * @version Since caAdapter v3.2
- * revision $Revision: 1.2 $
- * date $Date: 2008-06-09 19:53:51 $
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-24 15:55:54 $
  */
 public class CaadapterFileFilter extends FileFilter {
     private static String TYPE_UNKNOWN = "Type Unknown";
@@ -287,6 +289,9 @@ public class CaadapterFileFilter extends FileFilter {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

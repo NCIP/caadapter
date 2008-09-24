@@ -18,6 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
+/* AbstractMainFrame extends JFrame
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-24 15:55:54 $ 
+ */
 public abstract class AbstractMainFrame extends JFrame {
 
 	public abstract void addNewTab(JPanel panel);
@@ -67,3 +74,7 @@ public abstract class AbstractMainFrame extends JFrame {
 	public abstract void exit();
 
 }
+
+/**
+ * $Log: not supported by cvs2svn $
+*/

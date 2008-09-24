@@ -12,6 +12,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+/* AbstractMenuBar (extends JMenuBar) for the UI
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-24 15:55:54 $
+ */
 public abstract class AbstractMenuBar extends JMenuBar {
 
 	/**
@@ -29,3 +36,8 @@ public abstract class AbstractMenuBar extends JMenuBar {
 	public  abstract JMenu getDefinedMenu(String actionConstant);
 	public abstract void resetMenus(boolean hasActiveDocument);
 }
+
+
+/**
+ * $Log: not supported by cvs2svn $
+*/
