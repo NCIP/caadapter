@@ -20,8 +20,8 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.6 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.7 $
+ * @date        $Date: 2008-09-24 20:42:38 $
  */
 
 public interface CSVSegmentMeta extends MetaObject{
@@ -52,3 +52,7 @@ public interface CSVSegmentMeta extends MetaObject{
     public int getMinCardinality();
 }
 
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

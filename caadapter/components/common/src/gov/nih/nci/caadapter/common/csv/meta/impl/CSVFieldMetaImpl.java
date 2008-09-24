@@ -24,13 +24,13 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.7 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.8 $
+ * @date        $Date: 2008-09-24 20:40:14 $
  */
 
 public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 	private static final String LOGID = "$RCSfile: CSVFieldMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.7 2008-06-09 19:53:49 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVFieldMetaImpl.java,v 1.8 2008-09-24 20:40:14 phadkes Exp $";
 
 	int column;
 //	String name; 
@@ -130,3 +130,8 @@ public class CSVFieldMetaImpl extends MetaObjectImpl implements CSVFieldMeta {
 		return getSegment().getXmlPath()+"."+getName();
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
+

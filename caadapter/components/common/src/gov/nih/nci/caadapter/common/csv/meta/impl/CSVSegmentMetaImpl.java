@@ -28,15 +28,15 @@ import gov.nih.nci.caadapter.common.Cardinality;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.10 $
- * 			$Date: 2008-06-09 19:53:49 $
+ * @version $Revision: 1.11 $
+ * 			$Date: 2008-09-24 20:40:14 $
  * @since caAdapter v1.2
  */
 
 public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
 {
 	private static final String LOGID = "$RCSfile: CSVSegmentMetaImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.10 2008-06-09 19:53:49 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/meta/impl/CSVSegmentMetaImpl.java,v 1.11 2008-09-24 20:40:14 phadkes Exp $";
     private String segmentName;
     List<CSVFieldMeta> fields = new ArrayList<CSVFieldMeta>();
     List<CSVSegmentMeta> childSegments = new ArrayList<CSVSegmentMeta>();
@@ -288,3 +288,7 @@ public class CSVSegmentMetaImpl extends MetaObjectImpl implements CSVSegmentMeta
         return sbXmlPath.toString()+getName();
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
+

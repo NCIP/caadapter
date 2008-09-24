@@ -17,8 +17,8 @@ import gov.nih.nci.caadapter.common.MetaObject;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.3 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.4 $
+ * @date        $Date: 2008-09-24 20:42:38 $
  */
 
 public interface CSVMeta extends MetaObject{
@@ -27,3 +27,7 @@ public interface CSVMeta extends MetaObject{
     public boolean isNonStructure();
     public void setNonStructure(boolean nonStructure);
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
