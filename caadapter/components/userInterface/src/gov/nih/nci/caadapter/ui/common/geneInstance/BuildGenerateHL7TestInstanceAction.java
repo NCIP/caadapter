@@ -28,7 +28,7 @@ import java.awt.*;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Apr 21, 2008
  *          Time:       3:28:10 PM $
  */
@@ -104,5 +104,5 @@ public class BuildGenerateHL7TestInstanceAction extends AbstractContextAction
 
 
 /**
- * HISTORY      : : BuildGenerateHL7TestInstanceAction.java,v $
- */
+ * $Log: not supported by cvs2svn $
+*/
