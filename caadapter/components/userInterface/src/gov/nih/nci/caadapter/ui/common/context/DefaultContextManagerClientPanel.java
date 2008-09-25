@@ -29,10 +29,10 @@ import java.util.List;
  * Descendant classes are expected to override some of them to provide customized implementations.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-25 15:41:16 $
  */
 abstract public class DefaultContextManagerClientPanel extends JPanel implements ContextManagerClient
 {
@@ -48,7 +48,7 @@ abstract public class DefaultContextManagerClientPanel extends JPanel implements
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/DefaultContextManagerClientPanel.java,v 1.2 2008-06-09 19:53:51 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/DefaultContextManagerClientPanel.java,v 1.3 2008-09-25 15:41:16 wangeug Exp $";
 
 	protected File saveFile = null;
 	
@@ -91,7 +91,8 @@ abstract public class DefaultContextManagerClientPanel extends JPanel implements
 		{//register interest in the context file manager for new file
 				contextManager.getContextFileManager().registerFileUsageListener(this);
 		}
-		updateTitle(this.saveFile.getName());
+		if (this.saveFile!=null)
+			updateTitle(this.saveFile.getName());
 		return true;
 //		}
 //		return false;
@@ -214,6 +215,9 @@ abstract public class DefaultContextManagerClientPanel extends JPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

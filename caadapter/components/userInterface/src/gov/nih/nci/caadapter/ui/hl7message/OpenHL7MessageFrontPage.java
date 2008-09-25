@@ -21,10 +21,10 @@ import java.io.File;
  * The front page of open HL7 Message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-26 19:45:51 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-25 15:41:31 $
  */
 public class OpenHL7MessageFrontPage extends JPanel
 {
@@ -40,7 +40,7 @@ public class OpenHL7MessageFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageFrontPage.java,v 1.3 2008-06-26 19:45:51 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageFrontPage.java,v 1.4 2008-09-25 15:41:31 wangeug Exp $";
 
 	public static final String DATA_FILE_BROWSE_MODE = "Data File";
 	public static final String MAP_FILE_BROWSE_MODE = "Map Specification";
@@ -267,6 +267,8 @@ public class OpenHL7MessageFrontPage extends JPanel
 	 */
 	public File getDestFile()
 	{
+		if (destFileInputField==null)
+			return null; //not destination file is set/required
 		String userInputText = destFileInputField.getText();
 		if (userInputText != null && userInputText.length() > 0)
 		{
@@ -326,6 +328,9 @@ public class OpenHL7MessageFrontPage extends JPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/26 19:45:51  linc
+ * HISTORY      : Change HL7 transformation GUI to use batch api.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
