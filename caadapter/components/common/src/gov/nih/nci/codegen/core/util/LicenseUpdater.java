@@ -21,8 +21,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 /**
+ * Used in updating the License text for all the classes in the app.
  * @author caBIO Team
  * @version 1.0
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-25 20:14:39 $
  */
 public class LicenseUpdater {
 
@@ -307,3 +313,7 @@ public class LicenseUpdater {
 
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

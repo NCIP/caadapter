@@ -16,7 +16,7 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @since caAdapter v1.2
  */
 
@@ -32,3 +32,7 @@ public class ValidationException extends ApplicationException
 		super(message, cause, severity);
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
