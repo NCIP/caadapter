@@ -721,7 +721,7 @@
             <fileset dir="${lib.dir}">
                 <exclude name="delete.jar"/>
             </fileset>
-            <fileset dir="${project.ref.lib.dir}" excludes="ant.jar,caAdapter_ui.jar, caAdapterCommon.jar,resource*.zip"/>
+            <fileset dir="${project.ref.lib.dir}" includes="jgraph.jar,caAdapter.jar, client.jar, sqleonardo.jar, mif.zip"/>
 
         </copy>
     </target>
