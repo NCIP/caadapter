@@ -7,11 +7,11 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.ui.common.resource;
 /** BuildsHL7ResourceAction for HL7 UI
- * @author OWNER: $Author: phadkes $
- * @author LAST UPDATE $Author: phadkes $
+ * @author OWNER: $Author: wangeug $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.14 $
- * @date       $Date: 2008-09-24 17:55:15 $
+ * @version    $Revision: 1.15 $
+ * @date       $Date: 2008-09-25 19:25:59 $
 */
 
 import gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil;
@@ -31,10 +31,10 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
      *
      */
     private static final long serialVersionUID = 1L;
-    public static final String COMMAND_BUILD_V3 = "Load HL7 v3 Normative Edition Processable Artifacts";
-    public static final String COMMAND_BUILD_V2 = "Load HL7 v2 Processable Artifacts";
-    public static final String COMMAND_BUILD_V2_CORE ="Load HL7 v2 Core Artifacts";
-    public static final String COMMAND_BUILD_V_MESSAGE = "Load HL7 v2 Message Artifacts";
+    public static final String COMMAND_BUILD_V3 = "Load HL7 V3 Normative Edition Artifacts";
+    public static final String COMMAND_BUILD_V2 = "Load HL7 V2 Processable Artifacts";
+    public static final String COMMAND_BUILD_V2_CORE ="Load HL7 V2 Core Artifacts";
+    public static final String COMMAND_BUILD_V_MESSAGE = "Load HL7 V2 Message Artifacts";
  
     private AbstractMainFrame mainFrame;
    
@@ -141,4 +141,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/09/24 17:55:15  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
