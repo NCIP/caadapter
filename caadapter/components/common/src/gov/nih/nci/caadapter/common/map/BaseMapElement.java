@@ -16,8 +16,8 @@ import gov.nih.nci.caadapter.common.MetaObject;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.4 $
- * @date        $Date: 2008-06-09 19:53:49 $
+ * @version    $Revision: 1.5 $
+ * @date        $Date: 2008-09-25 19:15:46 $
  */
 public interface BaseMapElement
 {
@@ -47,3 +47,7 @@ public interface BaseMapElement
 	 */
     public boolean isComponentOfFunctionType();
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

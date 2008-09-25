@@ -17,8 +17,8 @@ import java.awt.*;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: phadkes $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.3 $
- * @date        $Date: 2008-06-06 18:54:28 $
+ * @version    $Revision: 1.4 $
+ * @date        $Date: 2008-09-25 19:15:46 $
  */
 
 public interface View {
@@ -31,3 +31,7 @@ public interface View {
 	public String getComponentId() ;
 	public void setComponentId(String componentId);
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
