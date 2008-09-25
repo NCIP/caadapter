@@ -64,7 +64,7 @@
 						common*.jar, dom4j*.jar, jdom*.jar, knuHL7V2tree.jar, log4j*.jar,poi*.jar, 
 						saxon*.jar, xercesImpl.jar, xml-apis.jar"/>
 	
-				<zipfileset dir="../docs" prefix="docs" includes="v4.0/**" />
+				<zipfileset dir="../docs" prefix="docs" includes="v4.2/**" />
 				<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
 				<zipfileset dir="../workingspace/CSV_to_HL7_V3_Example" 
 					includes="COCT_010000/**,COCT_150003/**, PORR_040002/**.*"
