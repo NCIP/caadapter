@@ -21,6 +21,10 @@ import java.util.Calendar;
  * Date: Aug 5, 2005
  * Time: 2:40:11 PM
  * To change this template use File | Settings | File Templates.
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-25 18:57:45 $ 
  */
 public class DateFunction
 {
@@ -358,3 +362,6 @@ public class DateFunction
     */
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

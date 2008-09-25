@@ -8,6 +8,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 
 package gov.nih.nci.caadapter.common.function;
+/**
+ * This class parses the Functions.
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-25 18:57:45 $
+*/
 
 import gov.nih.nci.caadapter.castor.function.impl.C_datapoint;
 import gov.nih.nci.caadapter.castor.function.impl.C_function;
@@ -177,6 +185,10 @@ public class FunctionParser
 		return kind;
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
 
 
 

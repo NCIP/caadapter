@@ -7,6 +7,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.common.function;
+/**
+ * Util for functions
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-25 18:57:45 $
+*/
 
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -218,3 +226,7 @@ public class FunctionUtil {
         return true;
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

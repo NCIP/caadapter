@@ -21,13 +21,13 @@ import java.io.*;
  *
  * @author OWNER: doswellj
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.3 $
- * @date $Date: 2008-06-09 19:53:49 $
+ * @version $Revision: 1.4 $
+ * @date $Date: 2008-09-25 18:57:45 $
  * @since caAdapter v1.2
  */
 public class FunctionConstant {
     private static final String LOGID = "$RCSfile: FunctionConstant.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionConstant.java,v 1.3 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionConstant.java,v 1.4 2008-09-25 18:57:45 phadkes Exp $";
 
     private String type;
     private String value;
@@ -338,3 +338,7 @@ public class FunctionConstant {
         return check;
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
