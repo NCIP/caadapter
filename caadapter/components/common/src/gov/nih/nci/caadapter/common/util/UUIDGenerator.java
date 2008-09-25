@@ -11,6 +11,10 @@ package gov.nih.nci.caadapter.common.util;
 
 /***
  * Utility class to generate UUID
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-25 20:03:52 $
  */
 
 import java.net.InetAddress;
@@ -43,3 +47,7 @@ public class UUIDGenerator {
         }
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
