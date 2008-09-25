@@ -56,7 +56,12 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * object. The key/value pairs are loaded into the LinkedHashMap in order of location
  * in the XMI file and can be retrieved in the same order. The contents of the
  * LinkedHashMap can be used to construct the Object and Data model portions of
- * the caAdapter JTree mapping UI. 
+ * the caAdapter JTree mapping UI.
+
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2008-09-25 19:30:39 $
  * */
 
 public class XmiModelMetadata {
@@ -691,3 +696,7 @@ class XmiXPathComparator implements Comparator {
 	return (info1.getXPath().compareTo(info2.getXPath())); 
 	} // en
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

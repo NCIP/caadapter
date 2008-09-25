@@ -51,6 +51,10 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * LinkedHashMap can be used to construct the Object and Data model portions of
  * the caAdapter JTree mapping UI. This class is designed to be a singleton because
  * there should never be more than one instance of it in the runtime environment.
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-09-25 19:30:39 $
  */
 public class ModelMetadata {
 	private static ModelMetadata modelMetadata = null;
@@ -506,3 +510,7 @@ class XPathComparator implements Comparator {
 	return (info1.getXPath().compareTo(info2.getXPath())); 
 	} // en
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

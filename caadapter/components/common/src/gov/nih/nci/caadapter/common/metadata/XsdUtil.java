@@ -24,6 +24,10 @@ public class XsdUtil {
      *
      * @param path The absolute path of the file.
      * @return A string representing the URI of the file.
+     * @author LAST UPDATE $Author: phadkes $
+     * @since      caAdapter  v4.2    
+     * @version    $Revision: 1.3 $
+     * @date       $Date: 2008-09-25 19:30:39 $
      */
     public static String toURIRepresentation(final String path) {
         String result = path;
@@ -90,3 +94,7 @@ public class XsdUtil {
     	return sb.toString();
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

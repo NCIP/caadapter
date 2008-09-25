@@ -12,8 +12,13 @@ import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 
 /**
+ * This class holds columnmetadata during mapping.
  * @version 1.0
  * @created 11-Aug-2006 8:18:15 AM
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-25 19:30:38 $
  */
 public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 
@@ -122,3 +127,7 @@ public class ColumnMetadata extends MetaObjectImpl implements SDKMetaData{
 		}
 
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

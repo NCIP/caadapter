@@ -7,6 +7,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.common.metadata;
+/**
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-25 19:30:39 $
+*/
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -60,3 +67,7 @@ public class XmiTraversalPath {
 		return rtnSt;
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

@@ -6,6 +6,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.common.metadata;
+/** This class holds XsdModelMetadata during the mapping
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-09-25 19:30:39 $
+*/
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 
@@ -412,3 +419,7 @@ public String getProjectNamespace()
 	return rtnSt.replace("%2B", "%20");
 }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

@@ -11,8 +11,13 @@ package gov.nih.nci.caadapter.common.metadata;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 /**
+ * This class holds attributemetadata during the mapping.
  * @version 1.0
  * @created 11-Aug-2006 8:18:15 AM
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-25 19:30:38 $
  */
 public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 
@@ -114,3 +119,7 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 	}
 
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
