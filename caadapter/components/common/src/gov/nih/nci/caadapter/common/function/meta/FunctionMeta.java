@@ -19,7 +19,11 @@ import java.util.List;
  * 
  * This class also defines the computational logic as well as defined the number
  * of inputs and outputs, etc.
- * @version 1.0
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-25 18:48:58 $
  */
 public interface FunctionMeta extends MetaObject{
 
@@ -54,3 +58,6 @@ public interface FunctionMeta extends MetaObject{
     public boolean isFunctionVocabularyMapping();
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

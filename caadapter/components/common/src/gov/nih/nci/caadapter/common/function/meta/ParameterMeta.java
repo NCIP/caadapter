@@ -12,8 +12,14 @@ package gov.nih.nci.caadapter.common.function.meta;
 import gov.nih.nci.caadapter.common.MetaObject;
 
 /**
- * @version 1.0
- */
+ * interface ParameterMeta
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since      caAdapter  v4.2    
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-25 18:48:58 $
+*/
+ 
 public interface ParameterMeta extends MetaObject{
 	public void finalize() throws Throwable;
 
@@ -35,3 +41,6 @@ public interface ParameterMeta extends MetaObject{
 //    public void setParameterUUID(String newParamUUID);
 
 }
+ /**
+  * HISTORY      : $Log: not supported by cvs2svn $
+ */
