@@ -12,7 +12,12 @@ import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 /**
  * This class represents the semantic relationship between attributes of
  * objects contained within different object models.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:18 AM
  */
 public class SemanticMapping {
@@ -72,3 +77,6 @@ public class SemanticMapping {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

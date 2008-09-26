@@ -9,11 +9,20 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.mms.exception;
 
 /**
- * @version 1.0
- * @created 11-Aug-2006 8:18:17 AM
+ * Class for mapping Exception
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+ * @created 11-Aug-2006 8:18:16 AM
  */
 public class MappingException {
 
 	public MappingException(){
 	}
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

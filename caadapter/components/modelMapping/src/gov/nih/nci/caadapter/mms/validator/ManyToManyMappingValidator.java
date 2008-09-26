@@ -23,7 +23,12 @@ import gov.nih.nci.caadapter.mms.util.DatatypeCompatablityProperties;
  * The purpose of this class is to validate the mapping of the two ends
  * of a many to many association to the two columns of the associated
  * correlation table.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:17 AM
  */
 public class ManyToManyMappingValidator {
@@ -215,3 +220,6 @@ public class ManyToManyMappingValidator {
 	    }
 }
 	
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

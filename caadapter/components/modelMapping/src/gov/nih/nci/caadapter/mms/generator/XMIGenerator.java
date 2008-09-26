@@ -34,7 +34,12 @@ import org.jdom.input.*;
 /**
  * The purpose of this class is to add tagged values and dependencies to
  * an xmi file based on the contents of a source to target mapping file.
- * @version 1.0
+ * 
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.35 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class XMIGenerator 
@@ -975,3 +980,6 @@ public class XMIGenerator
 	   
 	  }
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

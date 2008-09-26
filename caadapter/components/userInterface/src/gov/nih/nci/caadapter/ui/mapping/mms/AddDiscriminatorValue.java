@@ -22,7 +22,13 @@ import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
- * @author wuye
+ * Dialog for adding discriminator Values
+ *
+ * @author OWNER: wuye
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  *
  */
 @SuppressWarnings("serial")
@@ -32,8 +38,8 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 
 	/**
 	 * @author OWNER: Ye Wu
-	 * @author LAST UPDATE $Author: phadkes $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.6 $
+	 * @author LAST UPDATE $Author: linc $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.7 $
 	 */
 	    String curDir;
 	    String sourceName1 = "";
@@ -155,3 +161,6 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	    }
 	}
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

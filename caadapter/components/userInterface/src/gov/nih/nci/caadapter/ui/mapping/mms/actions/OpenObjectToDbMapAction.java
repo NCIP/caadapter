@@ -39,10 +39,10 @@ import java.util.ArrayList;
  * This class defines the open Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 {
@@ -242,6 +242,9 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/10/04 18:09:23  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

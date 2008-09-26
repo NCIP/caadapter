@@ -25,10 +25,10 @@ import java.awt.event.KeyEvent;
  *
  * @author OWNER: Ki Sung Um
  * @author LAST UPDATE $Author: linc $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-23 15:43:28 $
- */
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+*/
 public class HelpTopicAction extends AbstractContextAction
 {
 	public static final String COMMAND_NAME = ActionConstants.HELP;
@@ -123,6 +123,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/23 15:43:28  linc
+ * HISTORY      : modified method to set codebase.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/09/10 19:19:34  linc
  * HISTORY      : updated.
  * HISTORY      :

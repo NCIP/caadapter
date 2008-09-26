@@ -15,10 +15,10 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
  * This class defines splash window thread.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 
 
@@ -37,7 +37,7 @@ public class InitialSplashThread implements Runnable
    *
    * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
    */
-  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/InitialSplashThread.java,v 1.2 2008-06-09 19:53:52 phadkes Exp $";
+  public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/InitialSplashThread.java,v 1.3 2008-09-26 20:35:27 linc Exp $";
 
   //private String tagFileName;
   private boolean tagOFSignal;
@@ -95,6 +95,9 @@ public class InitialSplashThread implements Runnable
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

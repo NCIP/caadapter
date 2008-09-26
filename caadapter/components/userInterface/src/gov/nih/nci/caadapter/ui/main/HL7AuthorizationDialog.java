@@ -34,7 +34,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
+/**
+ * This class defines the HL7 license Authorization Dialog
+ *
+ * @author OWNER: Scott Jiang
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+ */
 public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	private String contextFilePath="";
 	public static String DEFAULT_CONTEXT_FILE_PATH="/warning/hl7-authorization.txt";
@@ -186,3 +194,6 @@ public class HL7AuthorizationDialog extends JDialog implements ActionListener {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

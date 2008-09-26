@@ -11,7 +11,13 @@ package gov.nih.nci.caadapter.mms.util;
 import java.util.Properties;
 
 /**
- * @author zengje
+ * Class for data type compatibility properties
+ *
+ * @author OWNER: zengje
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-26 20:35:27 $ * 
  *
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
@@ -45,3 +51,6 @@ public class DatatypeCompatablityProperties {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

@@ -24,10 +24,10 @@ import java.awt.dnd.*;
  * for Drop action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class O2DBDropTargetAdapter implements DropTargetListener
 {
@@ -613,6 +613,9 @@ public class O2DBDropTargetAdapter implements DropTargetListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

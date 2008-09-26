@@ -30,13 +30,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
- * @author connellm
  * The purpose of this class is to create and maintain a CumulativeMapping
  * object. As a caAdapter user drags and drops a source to a target in the UI 
  * the system will first determine what type of mapping the user is attempting
  * to create then it will determine if the mapping is valid based on various business rules. 
  * If the mapping is found to be valid it will add it to the CumulativeMapping 
  * object as either a DependencyMapping, AttributeMapping, SingleAssociationMapping, or ManyToManyMapping object.
+ *
+ * @author OWNER: connellm
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.15 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class CumulativeMappingGenerator {
 
@@ -831,3 +836,6 @@ public static String getColumnFromAssociation(UMLAssociation association)
 	
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

@@ -32,10 +32,10 @@ import org.jdom.output.XMLOutputter;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 {
@@ -51,7 +51,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.4 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.5 2008-09-26 20:35:27 linc Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -221,6 +221,9 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/09/20 16:40:14  schroedn
  * HISTORY      : License text
  * HISTORY      :

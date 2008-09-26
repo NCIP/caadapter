@@ -36,9 +36,9 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  *
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: linc $
- * @version Since caadapter v1.2
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2008-09-11 16:06:30 $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.19 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.18 2008-09-11 16:06:30 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.19 2008-09-26 20:35:27 linc Exp $";
 
 
 	private JEditorPane mainView;
@@ -638,6 +638,9 @@ public class AboutWindow extends JDialog //implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2008/09/11 16:06:30  linc
+ * HISTORY      : read license from jar file.
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2008/09/10 18:08:14  linc
  * HISTORY      : MMS 4.1 with help enabled.
  * HISTORY      :

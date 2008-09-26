@@ -16,7 +16,12 @@ import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 /**
  * The purpose of this class is to validate that an object has been
  * correcltly mapped to a database table.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:16 AM
  */
 
@@ -111,3 +116,6 @@ public class DependencyMappingValidator {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

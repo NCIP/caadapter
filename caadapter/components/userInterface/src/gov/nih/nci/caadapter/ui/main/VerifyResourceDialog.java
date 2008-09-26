@@ -35,6 +35,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
+/**
+ * This class defines the Verify Resource Dialog
+ *
+ * @author OWNER: Scott Jiang
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+ */
 public class VerifyResourceDialog extends JDialog implements ActionListener {
 	private String contextFilePath="";
 	public static String DEFAULT_CONTEXT_FILE_PATH="/warning/hl7-resource-warning.txt";
@@ -215,3 +224,6 @@ public class VerifyResourceDialog extends JDialog implements ActionListener {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

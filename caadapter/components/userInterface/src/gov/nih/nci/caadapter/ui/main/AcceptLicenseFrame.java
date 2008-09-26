@@ -40,6 +40,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 
+/**
+ * This class defines the Window for Accepting License terms
+ *
+ * @author OWNER: Scott Jiang
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+ */
 public class AcceptLicenseFrame extends JFrame implements ActionListener {
 	private String licenseFilePath="";
 	public static String ACCEPT_AGREEMENT_STATEMENT="I accept the terms in the license agreement";
@@ -216,3 +225,6 @@ public class AcceptLicenseFrame extends JFrame implements ActionListener {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

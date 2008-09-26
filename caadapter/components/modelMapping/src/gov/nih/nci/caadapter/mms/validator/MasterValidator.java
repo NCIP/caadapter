@@ -15,7 +15,12 @@ import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 /**
  * This is a singleton class and it's purpose is to coordinate all
  * aspects of the object to database mapping validation tasks.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:17 AM
  */
 public class MasterValidator {
@@ -60,3 +65,6 @@ public class MasterValidator {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

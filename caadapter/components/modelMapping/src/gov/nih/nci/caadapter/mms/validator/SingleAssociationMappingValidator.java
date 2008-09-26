@@ -22,7 +22,12 @@ import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 /**
  * The purpose of this class is to validate the single association role
  * name mapping to a foreign key column of a dependant table.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class SingleAssociationMappingValidator {
@@ -343,3 +348,6 @@ public class SingleAssociationMappingValidator {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

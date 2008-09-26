@@ -94,14 +94,15 @@ import org.jdom.output.XMLOutputter;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.36 $ date $Date:
- *          2007/04/03 16:17:57 $
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v3.2
+ * @version    $Revision: 1.37 $
+ * @date       $Date: 2008-09-26 20:35:27 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.36 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.37 2008-09-26 20:35:27 linc Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -1092,6 +1093,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.36  2008/06/09 19:54:06  phadkes
+ * HISTORY : New license text replaced for all .java files.
+ * HISTORY :
  * HISTORY : Revision 1.35  2008/06/03 20:12:03  wangeug
  * HISTORY : use logger and preserve the primary key tag if mapped to an Object rather than an Object.Attribute
  * HISTORY :

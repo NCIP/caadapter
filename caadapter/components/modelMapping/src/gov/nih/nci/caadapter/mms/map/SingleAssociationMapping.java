@@ -14,7 +14,12 @@ import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 /**
  * This class represents the mapping between a single association role
  * name and a foregeign key column of a table.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class SingleAssociationMapping {
@@ -68,3 +73,6 @@ public class SingleAssociationMapping {
 		return containsColumnMetadata;
 	}
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

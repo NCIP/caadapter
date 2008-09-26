@@ -16,7 +16,12 @@ import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
  * linked to a database column has the same semantic meaning as another
  * attribute of another object in another uml model that has already
  * been mapped to this database column.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:18 AM
  */
 public class SemanticMappingValidator {
@@ -65,3 +70,6 @@ public class SemanticMappingValidator {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

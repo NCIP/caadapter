@@ -20,6 +20,17 @@ import gov.nih.nci.codegen.util.ObjectFactory;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 
+/**
+ * Class for generating Hibernate mapping files using caCORE SDK
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+ * @created 11-Aug-2006 8:18:16 AM
+ */
+
 public class HBMGenerateCacoreIntegrator {
 	public static String GENERATOR_CONFIG="conf/CodegenConfig.xml";
 	public static String GENERATOR_CONFIG_WEBSTART="CodegenConfig.xml";
@@ -138,3 +149,6 @@ public class HBMGenerateCacoreIntegrator {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

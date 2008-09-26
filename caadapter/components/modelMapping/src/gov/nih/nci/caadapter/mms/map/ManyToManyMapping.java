@@ -13,7 +13,12 @@ import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 /**
  * This object is used to hold the mapping between an association and a
  * correlation table.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $ *
  * @created 11-Aug-2006 8:18:16 AM
  */
 public class ManyToManyMapping {
@@ -92,3 +97,6 @@ public class ManyToManyMapping {
 		
 	}
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

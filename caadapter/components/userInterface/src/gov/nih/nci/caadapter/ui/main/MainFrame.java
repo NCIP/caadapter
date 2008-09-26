@@ -38,9 +38,9 @@ import java.util.HashMap;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: linc $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2008-07-10 15:51:00 $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.19 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class MainFrame extends AbstractMainFrame
 {
@@ -413,6 +413,9 @@ public class MainFrame extends AbstractMainFrame
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2008/07/10 15:51:00  linc
+ * HISTORY      : Ready for MMS 4.1 releases.
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2008/06/09 19:53:53  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

@@ -24,10 +24,10 @@ import java.io.File;
  * It will utilize the look and feel defined in DefaultSaveAction.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class SaveObjectToDbMapAction extends SaveAsObjectToDbMapAction
 {
@@ -43,7 +43,7 @@ public class SaveObjectToDbMapAction extends SaveAsObjectToDbMapAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveObjectToDbMapAction.java,v 1.2 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveObjectToDbMapAction.java,v 1.3 2008-09-26 20:35:27 linc Exp $";
 
 	private static final String TOOL_TIP_DESCRIPTION = "Save a Mapping File";
 	/**
@@ -116,6 +116,9 @@ public class SaveObjectToDbMapAction extends SaveAsObjectToDbMapAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

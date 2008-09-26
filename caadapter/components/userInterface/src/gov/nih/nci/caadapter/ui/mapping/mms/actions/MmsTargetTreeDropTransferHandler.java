@@ -45,9 +45,9 @@ import java.util.List;
  *
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: linc $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-06-16 21:28:15 $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -343,6 +343,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/06/16 21:28:15  linc
+ * HISTORY      : updated.
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

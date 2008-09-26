@@ -18,7 +18,12 @@ import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
  * information is important because the validators will use this
  * information to determine if an attribute or object has already been
  * mapped.
- * @version 1.0
+ * 
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class CumulativeMapping {
@@ -206,3 +211,6 @@ public class CumulativeMapping {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

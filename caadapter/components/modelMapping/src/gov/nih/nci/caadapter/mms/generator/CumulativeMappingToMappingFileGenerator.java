@@ -39,8 +39,14 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 /**
- * @version 1.0
- * @created 11-Aug-2006 8:18:17 AM
+ * Class for generating mapping file from cumulative mapping
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-26 20:35:27 $
+ * @created 11-Aug-2006 8:18:16 AM
  */
 public class CumulativeMappingToMappingFileGenerator {
 
@@ -331,3 +337,8 @@ public class CumulativeMappingToMappingFileGenerator {
         }
     }
 }
+
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */
+

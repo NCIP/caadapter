@@ -40,10 +40,10 @@ package gov.nih.nci.caadapter.ui.help;
  * This class defines the document renderer.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 import gov.nih.nci.caadapter.ui.common.DocumentRenderer;
 
@@ -113,3 +113,6 @@ public class HelpViewerDocumentRenderer extends DocumentRenderer
   }
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

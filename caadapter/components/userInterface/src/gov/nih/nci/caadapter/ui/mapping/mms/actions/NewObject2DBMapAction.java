@@ -25,10 +25,10 @@ import java.util.ArrayList;
  * This class defines the new Map panel action.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class NewObject2DBMapAction extends AbstractContextAction
 		{
@@ -111,6 +111,9 @@ public class NewObject2DBMapAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2007/10/04 18:09:23  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

@@ -23,7 +23,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
- * @author wuye
+ * TreeCellRenderer for MMS
+ *
+ * @author OWNER: wuye
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2008-09-26 20:35:27 $ 
  *
  */
 public class MMSRenderer extends DefaultTreeCellRenderer
@@ -188,3 +194,6 @@ public class MMSRenderer extends DefaultTreeCellRenderer
 	}
 }
 
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

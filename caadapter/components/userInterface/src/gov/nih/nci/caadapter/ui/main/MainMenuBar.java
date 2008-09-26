@@ -59,9 +59,10 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.39 $ date $Date:
- *          2006/10/23 16:27:28 $
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.40 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -746,6 +747,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.39  2008/09/23 15:19:42  wangeug
+ * HISTORY : caAdapter 4.2 alpha release
+ * HISTORY :
  * HISTORY : Revision 1.38  2008/09/08 15:15:16  linc
  * HISTORY : UI fixup for MMS 4.1
  * HISTORY :

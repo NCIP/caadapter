@@ -11,7 +11,13 @@ import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 
 /**
- * @version 1.0
+ * Class for dependency mapping
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:16 AM
  */
 public class DependencyMapping {
@@ -82,3 +88,6 @@ public class DependencyMapping {
 	}
 
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */

@@ -21,7 +21,12 @@ import java.util.Properties;
  * The purpose of this class is to validate that an object attribute
  * linked to a database table column are compatible with respect to
  * datatypes.
- * @version 1.0
+ *
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-26 20:35:27 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class AttributeMappingValidator {
@@ -167,3 +172,6 @@ public class AttributeMappingValidator {
 		this.validationErrorMessage = validationErrorMessage;
 	}
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ */
