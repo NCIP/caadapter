@@ -30,8 +30,8 @@ import java.util.Hashtable;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.3 $
- *          $Date: 2008-06-09 19:54:06 $
+ *          $Revision: 1.4 $
+ *          $Date: 2008-09-29 21:31:27 $
  */
 public class DBConnector
 {
@@ -171,3 +171,7 @@ public class DBConnector
         }
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

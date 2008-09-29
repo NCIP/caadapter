@@ -17,6 +17,10 @@ import java.util.*;
  * User: hjayanna
  * Date: Jun 22, 2007
  * Time: 2:52:39 PM
+ * @author LAST UPDATE $Author: phadkes $
+ * @since  caAdapter v4.2        
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-09-29 21:31:27 $ 
  * To change this template use File | Settings | File Templates.
  */
 public class RDSMapResult {
@@ -135,6 +139,9 @@ public class RDSMapResult {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.4  2008/06/09 19:54:06  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.3  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

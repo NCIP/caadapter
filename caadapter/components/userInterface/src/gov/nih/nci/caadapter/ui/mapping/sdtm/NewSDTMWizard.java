@@ -32,7 +32,8 @@ import java.io.File;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.19 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.20 $
+ * @date       $Date: 2008-09-29 21:31:27 $ 
  */
 @SuppressWarnings("serial")
 public class NewSDTMWizard extends JDialog implements ActionListener {
@@ -272,3 +273,7 @@ public class NewSDTMWizard extends JDialog implements ActionListener {
         }
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

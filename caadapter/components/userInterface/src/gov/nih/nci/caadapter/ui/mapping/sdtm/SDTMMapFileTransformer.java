@@ -32,7 +32,8 @@ import org.xml.sax.SAXParseException;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.5 $
+ * @date       $Date: 2008-09-29 21:31:27 $ 
  */
 public class SDTMMapFileTransformer
 {
@@ -307,3 +308,6 @@ public class SDTMMapFileTransformer
 		}
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

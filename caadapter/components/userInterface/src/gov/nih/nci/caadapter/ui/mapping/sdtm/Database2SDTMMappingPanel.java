@@ -67,12 +67,13 @@ import org.jgraph.graph.DefaultGraphCell;
  *
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.25 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.26 $
+ * @date       $Date: 2008-09-29 21:31:27 $ 
  */
 public class Database2SDTMMappingPanel extends AbstractMappingPanel
 {
     private static final String LOGID = "$RCSfile: Database2SDTMMappingPanel.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.25 2008-06-09 19:54:06 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/Database2SDTMMappingPanel.java,v 1.26 2008-09-29 21:31:27 phadkes Exp $";
     private static final String SELECT_SCS = "Open SCS file...";
     private static final String SELECT_TARGET = "Open SDTM definition file...";
     private SdtmDropTransferHandler sdtmTargetTreeDropTransferHandler = null;
@@ -908,6 +909,9 @@ public class Database2SDTMMappingPanel extends AbstractMappingPanel
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2008/06/09 19:54:06  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.24  2007/11/05 15:41:58  jayannah
  * Changed the message/wording
  *
