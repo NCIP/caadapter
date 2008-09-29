@@ -28,9 +28,9 @@ import java.util.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Apr 24, 2008
  *          Time:       1:10:36 PM $
  */
@@ -330,5 +330,5 @@ public class V3VocabularySeeker
 
 }
 /**
- * HISTORY      : : V3VocabularySeeker.java,v $
+ * HISTORY :$Log : v $
  */

@@ -14,9 +14,9 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Apr 25, 2008
  *          Time:       12:31:37 AM $
  */
@@ -65,7 +65,7 @@ public class VocabularyGeneralUtilities
 	}
 
 }
-
+ 
 /**
- * HISTORY      : : VocabularyGeneralUtilities.java,v $
+ * HISTORY : $log: VocabularyGeneralUtilities.java,v $
  */
