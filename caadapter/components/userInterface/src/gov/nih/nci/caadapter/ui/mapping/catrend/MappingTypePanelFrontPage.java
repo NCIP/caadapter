@@ -23,10 +23,10 @@ import java.io.File;
  * This class defines the first page for NewCSVPanelWizard.
  *
  * @author OWNER: wangeug
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 20:27:57 $
  */
 public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 {
@@ -42,7 +42,7 @@ public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/MappingTypePanelFrontPage.java,v 1.3 2008-06-09 19:54:05 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/MappingTypePanelFrontPage.java,v 1.4 2008-09-29 20:27:57 wangeug Exp $";
 
 	public static final int OBJECT_SELECTED = 1;
 	public static final int DATA_SELECTED = 2;
@@ -122,7 +122,7 @@ public class MappingTypePanelFrontPage extends JPanel implements ActionListener
 	public void setSelectionType(int selectionType) {
 		this.selectionType = selectionType;
 	}
-
-
-
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/

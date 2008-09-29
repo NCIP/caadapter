@@ -23,7 +23,6 @@ import gov.nih.nci.caadapter.ui.common.actions.DefaultContextOpenAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManagerClient;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
-import gov.nih.nci.caadapter.ui.mapping.mms.Object2DBMappingPanel;
 
 import javax.swing.*;
 
@@ -40,10 +39,10 @@ import java.util.ArrayList;
  * This class defines the open Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-29 20:28:13 $
  */
 public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 {
@@ -233,6 +232,9 @@ public class OpenCsvToXmiMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/12/13 15:29:20  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :

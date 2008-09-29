@@ -38,10 +38,10 @@ import java.util.Map;
  * This class is the main entry point to display HL7V3 message panel.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 20:27:57 $
  */
 public class CsvToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 {
@@ -197,3 +197,6 @@ public class CsvToXmiMappingReportPanel extends DefaultContextManagerClientPanel
 	}
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/

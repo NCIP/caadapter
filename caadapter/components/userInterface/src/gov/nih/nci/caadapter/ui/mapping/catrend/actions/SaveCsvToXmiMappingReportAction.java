@@ -9,24 +9,20 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.catrend.actions;
 
-import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAction;
 import gov.nih.nci.caadapter.ui.common.context.DefaultContextManagerClientPanel;
-import gov.nih.nci.caadapter.ui.hl7message.HL7MessagePanel;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 
 /**
  * This class defines the concrete implementation of "Save" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 20:28:13 $
  */
 public class SaveCsvToXmiMappingReportAction extends SaveAsCsvToXmiMappingReportAction
 {
@@ -42,7 +38,7 @@ public class SaveCsvToXmiMappingReportAction extends SaveAsCsvToXmiMappingReport
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveCsvToXmiMappingReportAction.java,v 1.2 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/SaveCsvToXmiMappingReportAction.java,v 1.3 2008-09-29 20:28:13 wangeug Exp $";
 
 	private static final String TOOL_TIP_DESCRIPTION = "Save HL7 v3 Message to a File";
 
@@ -83,6 +79,9 @@ public class SaveCsvToXmiMappingReportAction extends SaveAsCsvToXmiMappingReport
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/12/12 19:54:20  wangeug
  * HISTORY      : support both data model and object model
  * HISTORY      :

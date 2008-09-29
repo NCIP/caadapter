@@ -23,10 +23,10 @@ import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingReportPanel;
  * This class defines the close action of HL7 panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 20:28:13 $
  */
 public class CloseCsvToXmiMappingReportAction extends DefaultContextCloseAction
 {
@@ -52,7 +52,7 @@ public class CloseCsvToXmiMappingReportAction extends DefaultContextCloseAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/CloseCsvToXmiMappingReportAction.java,v 1.3 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/actions/CloseCsvToXmiMappingReportAction.java,v 1.4 2008-09-29 20:28:13 wangeug Exp $";
 
 	public CloseCsvToXmiMappingReportAction(DefaultContextManagerClientPanel contentPanel)
 	{
@@ -61,4 +61,6 @@ public class CloseCsvToXmiMappingReportAction extends DefaultContextCloseAction
 	}
 
 }
-
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/

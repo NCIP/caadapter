@@ -24,7 +24,6 @@ import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
-//import gov.nih.nci.caadapter.hl7.map.MappingResult;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -34,8 +33,6 @@ import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
-//import gov.nih.nci.caadapter.ui.common.nodeloader.DBMMapSourceNodeLoader;
-//import gov.nih.nci.caadapter.ui.common.nodeloader.DBMMapTargetNodeLoader;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.common.nodeloader.SCMMapSourceNodeLoader;
 import gov.nih.nci.caadapter.ui.common.tree.TargetTreeDropTransferHandler;
@@ -60,26 +57,24 @@ import java.awt.BorderLayout;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.ObjectInputStream;
 import java.util.Iterator;
 import java.util.Map;
-import org.jgraph.graph.GraphModel;
+
 /**
  * The class is the main panel to construct the UI and initialize the utilities to
  * facilitate mapping functions.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-09-29 20:29:07 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.9 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.10 2008-09-29 20:29:07 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -599,6 +594,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/10/03 16:40:52  wangeug
  * HISTORY      : set .h3s as default to open targetFile from csvtoHl7V3 mapping panel
  * HISTORY      :

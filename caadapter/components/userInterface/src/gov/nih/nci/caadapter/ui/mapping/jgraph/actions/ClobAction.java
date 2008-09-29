@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class ClobAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: ClobAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.4 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.5 2008-09-29 20:32:34 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Clob";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -194,3 +194,6 @@ public class ClobAction extends AbstractContextAction {
         return result.toString();
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ **/

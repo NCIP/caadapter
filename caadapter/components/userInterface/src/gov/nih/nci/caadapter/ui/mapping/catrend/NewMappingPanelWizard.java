@@ -19,10 +19,10 @@ import java.awt.event.ActionListener;
 /**
  * This is the main class of wizard.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 20:27:57 $
  */
 public class NewMappingPanelWizard extends JDialog implements ActionListener
 {
@@ -104,3 +104,6 @@ public class NewMappingPanelWizard extends JDialog implements ActionListener
 	}
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/

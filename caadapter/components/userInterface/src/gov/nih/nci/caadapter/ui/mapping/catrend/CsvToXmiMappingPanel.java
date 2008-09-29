@@ -12,7 +12,6 @@ import gov.nih.nci.caadapter.common.BaseResult;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaObject;
-import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
@@ -72,14 +71,14 @@ import java.util.Set;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.15 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.16 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: CsvToXmiMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.15 2008-06-12 17:28:56 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/catrend/CsvToXmiMappingPanel.java,v 1.16 2008-09-29 20:27:57 wangeug Exp $";
 	public static String MAPPING_TARGET_DATA_MODEL="CSV_TO_XMI_DATA_MODEL";
 	public static String MAPPING_TARGET_OBJECT_MODEL="CSV_TO_XMI_OBJECT_MODEL";
     private CsvToXmiTargetTreeDropTransferHandler csvToXmiTargetTreeDropTransferHandler = null;
@@ -707,3 +706,6 @@ public class CsvToXmiMappingPanel extends AbstractMappingPanel {
 	}
 }
 
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/

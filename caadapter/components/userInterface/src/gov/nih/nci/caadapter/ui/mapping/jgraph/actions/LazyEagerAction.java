@@ -26,14 +26,14 @@ import java.util.*;
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-09-29 20:32:34 $
  */
 public class LazyEagerAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: LazyEagerAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.9 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.10 2008-09-29 20:32:34 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Eager";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
@@ -204,4 +204,6 @@ public class LazyEagerAction extends AbstractContextAction {
     }
 }
 
-
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ **/

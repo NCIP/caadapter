@@ -24,7 +24,18 @@ import java.awt.Component;
 
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.UIHelper;
-import gov.nih.nci.caadapter.common.SDKMetaData;;
+import gov.nih.nci.caadapter.common.SDKMetaData;
+
+/**
+ * The class defines the ScrollHandler of mapping panel
+ * source and target tree panel.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 20:23:51 $
+ */
 public class MappingTreeScrollPane extends JScrollPane 
 {
 	final public static String DRAW_NODE_TO_LEFT="MAPPING_SOURCE";
@@ -219,5 +230,8 @@ public class MappingTreeScrollPane extends JScrollPane
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/29 20:21:32  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/

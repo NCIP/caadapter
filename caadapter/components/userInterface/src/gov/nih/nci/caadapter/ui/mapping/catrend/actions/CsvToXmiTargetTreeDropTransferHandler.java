@@ -36,10 +36,10 @@ import java.util.List;
  * This class handles drop-related data manipulation for target tree on the mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-29 20:28:13 $
  */
 public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -177,3 +177,6 @@ public class CsvToXmiTargetTreeDropTransferHandler extends TreeDefaultDropTransf
 	}
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+**/
