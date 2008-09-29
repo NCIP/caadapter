@@ -9,9 +9,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.transformation;
 /**
  * Define the method to watch progress of a transformation service 
- * @author wangeug
- *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ * revision    $Revision: 1.7 $
+ * date        $Date: 2008-09-29 15:40:38 $
  */
+
 public interface TransformationObserver {
 public static int TRANSFORMATION_DATA_LOADING_START=0;
 public static int TRANSFORMATION_DATA_LOADING_READ_MAPPING=1;
@@ -47,3 +51,6 @@ public boolean isRequestCanceled();
 public void setMessageCount(int count);
 
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -6,18 +6,24 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.hl7.datatype;
+/**
+ * The class defines Utilitis of parsing a XSD file.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 15:48:56 $
+ */
 
 import java.util.HashSet;
 import java.util.Iterator;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class XSDParserUtil {
 	/*
@@ -161,3 +167,6 @@ public class XSDParserUtil {
 		  return false;
 		  }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -8,30 +8,21 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
-import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Hashtable;
-import java.util.Map;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * The class load a MIF document into the MIF class object.
@@ -39,8 +30,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-09-23 19:58:25 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-09-29 15:42:44 $
  */
 
 public class MIFParser {
@@ -167,3 +158,6 @@ public class MIFParser {
 
     }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -180,3 +180,6 @@ public class MIFCardinality
 		return rtnString;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

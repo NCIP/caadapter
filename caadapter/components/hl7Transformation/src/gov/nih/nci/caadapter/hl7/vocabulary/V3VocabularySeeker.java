@@ -30,7 +30,7 @@ import java.util.*;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Apr 24, 2008
  *          Time:       1:10:36 PM $
  */
@@ -330,5 +330,5 @@ public class V3VocabularySeeker
 
 }
 /**
- * HISTORY :$Log : v $
+ * HISTORY :$Log: not supported by cvs2svn $
  */

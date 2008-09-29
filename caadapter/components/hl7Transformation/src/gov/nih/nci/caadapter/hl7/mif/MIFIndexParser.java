@@ -8,6 +8,17 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.hl7.mif;
 
+/**
+ * The class defines an object parsing the index of HL7 message MIF.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2008-09-29 15:44:41 $
+ */
+
+
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import java.io.*;
 import java.util.Enumeration;
@@ -119,4 +130,6 @@ public class MIFIndexParser {
 		mifInfoParser.printMIFIndex(mifIndexInfos);
 	}
 }
-
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

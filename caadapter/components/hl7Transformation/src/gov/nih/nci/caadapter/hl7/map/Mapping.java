@@ -17,10 +17,10 @@ import java.util.List;
  * The primary interface which contains all Mapping information.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.3 $
- * @date        $Date: 2008-06-09 19:53:50 $
+ * @version    $Revision: 1.4 $
+ * @date        $Date: 2008-09-29 15:47:19 $
  */
 
 public interface Mapping
@@ -53,3 +53,6 @@ public interface Mapping
 	public void removeAllFunctionComponents();
     public FunctionComponent getFunctionComponent(String uuid);
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

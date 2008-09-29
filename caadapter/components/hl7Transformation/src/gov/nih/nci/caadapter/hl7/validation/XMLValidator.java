@@ -18,7 +18,13 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
 /**
- * Perform XML validations.
+ * This class defines XML document validator 
+ * 
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ * revision    $Revision: 1.4 $
+ * date        $Date: 2008-09-29 15:37:31 $
  */
 public class XMLValidator extends Validator
 {
@@ -127,3 +133,6 @@ public class XMLValidator extends Validator
         return result;
     }
   }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

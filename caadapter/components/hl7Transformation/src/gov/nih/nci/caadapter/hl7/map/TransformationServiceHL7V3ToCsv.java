@@ -7,7 +7,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.hl7.map;
-
+/**
+ * The class defines the engine to transfer a HL7 v3 message into a CSV data set.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 15:47:19 $
+ */
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.transformation.MapParser;
@@ -122,6 +130,8 @@ public class TransformationServiceHL7V3ToCsv  {
 		String fName=usrDir+"\\workingspace\\examples\\mif150003\\example15003_1.xml";
 		TransformationServiceHL7V3ToCsv svc= new TransformationServiceHL7V3ToCsv(mapFileName,fName);
 		svc.process();
-	}
-	
+	}	
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

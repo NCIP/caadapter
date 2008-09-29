@@ -12,10 +12,10 @@ package gov.nih.nci.caadapter.hl7.transformation.data;
  * The class contains attributes of a HL7 v3 XMLElement.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-29 15:39:06 $
  */
 
 public class Attribute {
@@ -85,3 +85,6 @@ public class Attribute {
 		this.domainName = domainName;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

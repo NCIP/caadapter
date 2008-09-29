@@ -13,10 +13,10 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * The class provides Utilities to access the CMET meta info.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 15:42:44 $
  */
 public class CMETUtil {
 	private static CMETInfoParser cmetInfoParser = null;
@@ -50,3 +50,6 @@ public class CMETUtil {
 		return null;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

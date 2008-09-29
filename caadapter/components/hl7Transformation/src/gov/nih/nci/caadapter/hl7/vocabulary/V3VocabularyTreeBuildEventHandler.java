@@ -25,7 +25,7 @@ import java.util.Stack;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Apr 24, 2008
  *          Time:       1:12:44 PM $
  */
@@ -185,5 +185,5 @@ public class V3VocabularyTreeBuildEventHandler extends DefaultHandler
 }
 
 /**
- * HISTORY :$Log : v $
+ * HISTORY :$Log: not supported by cvs2svn $
  */

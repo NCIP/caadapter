@@ -9,8 +9,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
 import java.util.Hashtable;
-import java.util.List;
-
 import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -23,7 +21,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-09-09 18:27:23 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2008-09-29 15:42:45 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
@@ -93,3 +91,6 @@ public class AssociationParser {
         return mifAssociation;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

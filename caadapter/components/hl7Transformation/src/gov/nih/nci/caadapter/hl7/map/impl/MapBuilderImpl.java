@@ -42,14 +42,14 @@ import java.util.List;
  * Builder of map files.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.11 $
+ * @version    $Revision: 1.12 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.11 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.12 2008-09-29 15:45:55 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -287,3 +287,6 @@ public class MapBuilderImpl {
     	return rtnSt;
     }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

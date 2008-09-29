@@ -8,7 +8,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
-import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFCardinality;
 
 import java.beans.PropertyDescriptor;
@@ -22,7 +21,7 @@ import java.util.List;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.14 $ date $Date: 2008-06-10 19:54:26 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2008-09-29 15:48:56 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Comparable <Attribute>, Cloneable  {
@@ -328,3 +327,6 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 		this.sortKey = sortKey;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

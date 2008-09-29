@@ -8,6 +8,16 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.hl7.map;
 
+/**
+ * The class defines SAX parser handler for a HL7 v3 message.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 15:47:19 $
+ */
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -193,3 +203,6 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 		return srcRef;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

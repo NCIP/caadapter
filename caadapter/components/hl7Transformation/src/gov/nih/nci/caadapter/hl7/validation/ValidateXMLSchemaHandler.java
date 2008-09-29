@@ -7,7 +7,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.hl7.validation;
-
+/**
+ * This class defines XML schema handler validator 
+ * 
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ * revision    $Revision: 1.3 $
+ * date        $Date: 2008-09-29 15:37:31 $
+ */
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -89,4 +97,6 @@ class ValidateXMLSchemaHandler extends DefaultHandler
 		this.isValid = isValid;
 	}
 }
-
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -7,14 +7,21 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+/**
+ * The class defines an object parsing CMET information.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 15:42:44 $
+ */
+
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
-import java.util.Iterator;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -30,8 +37,8 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-23 19:58:25 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 15:42:44 $
  */
 
 public class CMETInfoParser {
@@ -150,3 +157,6 @@ public class CMETInfoParser {
 //		cmetInfoParser.printCMETInfo();
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

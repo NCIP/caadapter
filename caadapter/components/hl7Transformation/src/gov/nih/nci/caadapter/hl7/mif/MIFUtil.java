@@ -8,11 +8,20 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.hl7.mif;
 
+/**
+ * The class defines a Utility class processing MIF information.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-09-29 15:44:41 $
+ */
+
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -21,7 +30,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MIFUtil {
 	
@@ -336,3 +344,6 @@ public class MIFUtil {
 		return null;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

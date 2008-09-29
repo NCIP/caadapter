@@ -16,7 +16,7 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Apr 25, 2008
  *          Time:       12:31:37 AM $
  */
@@ -67,5 +67,5 @@ public class VocabularyGeneralUtilities
 }
  
 /**
- * HISTORY : $log: VocabularyGeneralUtilities.java,v $
+ * HISTORY : $Log: not supported by cvs2svn $
  */

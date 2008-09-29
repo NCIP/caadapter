@@ -27,9 +27,7 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.CSVMetaLookup;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
-import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
-import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
@@ -63,15 +61,15 @@ import java.util.Hashtable;
  * Parser of map files.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.16 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.17 $
+ * @date $Date: 2008-09-29 15:45:55 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.16 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.17 2008-09-29 15:45:55 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -494,3 +492,6 @@ public class MapParserImpl {
 		return mapping;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

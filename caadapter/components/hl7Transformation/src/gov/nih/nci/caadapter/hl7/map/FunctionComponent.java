@@ -11,22 +11,21 @@ package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
-import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 
 /**
  * A component that contains function information.
  *
  * @author OWNER: Eric Chen  Date: Jun 8, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.4 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2008-09-29 15:47:18 $
  * @since caAdapter v1.2
  */
 
 public class FunctionComponent extends BaseComponent {
     private static final String LOGID = "$RCSfile: FunctionComponent.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.4 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.5 2008-09-29 15:47:18 wangeug Exp $";
 
     private FunctionConstant functionConstant = null;
     private FunctionVocabularyMapping functionVocabularyMapping = null;
@@ -110,6 +109,9 @@ public class FunctionComponent extends BaseComponent {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/07/18 20:37:50  wangeug
  * HISTORY      : create CSV-H7L mapping with mapppingV4.0.xsd
  * HISTORY      :

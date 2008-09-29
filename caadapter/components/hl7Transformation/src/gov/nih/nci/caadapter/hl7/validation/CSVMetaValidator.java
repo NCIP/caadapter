@@ -28,15 +28,15 @@ import java.util.regex.Pattern;
  * Used to validate CSV metadata (scs files).
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.2 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.3 $
+ * @date $Date: 2008-09-29 15:37:32 $
  * @since caAdapter v1.2
  */
 public class CSVMetaValidator extends Validator
 {
 	private static final String LOGID = "$RCSfile: CSVMetaValidator.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/CSVMetaValidator.java,v 1.2 2008-06-09 19:53:50 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/CSVMetaValidator.java,v 1.3 2008-09-29 15:37:32 wangeug Exp $";
 
 	private List<CSVSegmentMeta> segmentArray = null;
 
@@ -326,3 +326,6 @@ public class CSVMetaValidator extends Validator
 		return returnArray;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

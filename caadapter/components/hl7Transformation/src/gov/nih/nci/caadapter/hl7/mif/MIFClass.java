@@ -27,8 +27,8 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.19 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.20 $ date $Date: 2008-09-29 15:44:40 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -532,3 +532,6 @@ import java.util.Iterator;
 		this.packageLocation = packageLocation;
 	}
  }
+ /**
+  * HISTORY :$Log: not supported by cvs2svn $
+  */

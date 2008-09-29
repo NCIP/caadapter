@@ -27,10 +27,10 @@ import org.xml.sax.SAXException;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-29 15:37:31 $
  */
 
 public class HL7V3MessageValidator {
@@ -146,3 +146,6 @@ public class HL7V3MessageValidator {
 		}
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

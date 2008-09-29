@@ -7,6 +7,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.hl7.mif.v1;
+/**
+ * The class defines the Utiliy object loading HL7 v3 normative artifacts
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-29 15:42:45 $
+ */
 
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -490,3 +499,6 @@ public class BuildResourceUtil {
 		}
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

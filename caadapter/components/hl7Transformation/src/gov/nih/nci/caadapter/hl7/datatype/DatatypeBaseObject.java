@@ -12,6 +12,15 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.util.PropertiesProvider;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
 
+/**
+ * The class defines HL7 DatatypesBaseObject.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-09-29 15:48:56 $
+ */
 public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObject{
 
     DatatypeBaseObject parent;
@@ -77,10 +86,10 @@ public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObje
 	 */
 	public String toString()
 	{
-//		if(getXmlPath()!=null)
-//			return getXmlPath();
-//		else 
 			return getName();
 	}
 
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

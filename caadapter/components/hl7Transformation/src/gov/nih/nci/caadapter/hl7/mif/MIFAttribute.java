@@ -26,8 +26,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.18 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.19 $ date $Date: 2008-09-29 15:44:40 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -502,3 +502,6 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		return getMnemonic();
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

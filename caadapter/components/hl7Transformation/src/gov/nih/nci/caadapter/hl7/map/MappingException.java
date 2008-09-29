@@ -15,10 +15,10 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  * An exception for the mapping subsystem.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2008-06-09 19:53:50 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2008-09-29 15:47:18 $
  */
 
 public class MappingException extends ApplicationException{
@@ -32,3 +32,6 @@ public class MappingException extends ApplicationException{
 		super(message, cause, severity);
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

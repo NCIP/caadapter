@@ -8,10 +8,17 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
+
 /**
- * @author wuye
- *
+ * This class defines mutable flag object 
+ * 
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 15:39:06 $
  */
+
 public class MutableFlag {
 boolean hasUserMappedData = false;
 

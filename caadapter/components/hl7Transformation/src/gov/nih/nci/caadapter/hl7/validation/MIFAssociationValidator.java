@@ -22,9 +22,9 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
  * Validate if the choice is made on the choice box options, only validate at clone level, not the child clone level.
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.4 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2008-09-29 15:37:31 $
  * @since caAdapter v1.2
  */
 
@@ -101,3 +101,6 @@ public class MIFAssociationValidator extends Validator
 	}
 }
 
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

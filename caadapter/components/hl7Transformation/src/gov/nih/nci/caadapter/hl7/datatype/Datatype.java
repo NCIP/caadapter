@@ -11,13 +11,12 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-09-29 15:48:57 $
  */
 
-import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 import java.util.Enumeration;
 
@@ -294,3 +292,6 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 		this.unions = new String(unions);
 	}	
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

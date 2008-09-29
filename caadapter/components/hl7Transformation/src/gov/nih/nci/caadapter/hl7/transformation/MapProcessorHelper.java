@@ -28,9 +28,9 @@ import java.util.Set;
  * This class assists the MapProcessor with alot of the buisness logic.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.16 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.17 $
+ * @date $Date: 2008-09-29 15:40:38 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -439,3 +439,6 @@ public class MapProcessorHelper {
     	return commonP;
     }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

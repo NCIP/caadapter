@@ -21,16 +21,16 @@ import java.util.List;
  * The primary class which contains all Mapping information.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.4 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.5 $
+ * @date $Date: 2008-09-29 15:45:56 $
  * @since caAdapter v1.2
  */
 
 public class MappingImpl implements Mapping
 {
 	private static final String LOGID = "$RCSfile: MappingImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.4 2008-06-09 19:53:50 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.5 2008-09-29 15:45:56 wangeug Exp $";
 	private String mappingType="";
 	private List<Map> maps = new ArrayList<Map>();
 	private List<FunctionComponent> functionComponents = new ArrayList<FunctionComponent>();
@@ -163,3 +163,6 @@ public class MappingImpl implements Mapping
 		mappingType=newType;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

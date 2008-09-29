@@ -16,8 +16,8 @@ import org.w3c.dom.Node;
  * The class will parse a commonModelElementRef section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.2 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.3 $ date $Date: 2008-09-29 15:42:45 $
  */
 public class CMETRefParser {
 	public MIFClass parseCMetRef(Node node,String prefix, boolean isReference) {
@@ -30,3 +30,6 @@ public class CMETRefParser {
 	}
 
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

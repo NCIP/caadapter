@@ -7,6 +7,17 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.hl7.mif;
+
+/**
+ * The class defines an object containing the index of HL7 message MIF.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 15:44:40 $
+ */
+
 import java.io.Serializable;
 import java.util.TreeSet;
 import java.util.Set;
@@ -72,3 +83,6 @@ public class MIFIndex implements Serializable {
 		return (String)mifNames.get(messageType);
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

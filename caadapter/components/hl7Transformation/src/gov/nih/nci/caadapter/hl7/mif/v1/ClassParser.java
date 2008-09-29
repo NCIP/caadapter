@@ -22,7 +22,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2008-09-09 18:27:23 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-09-29 15:42:44 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -72,3 +72,6 @@ public class ClassParser {
 		return mifClass;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

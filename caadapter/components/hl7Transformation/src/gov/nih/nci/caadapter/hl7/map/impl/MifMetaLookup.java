@@ -8,12 +8,19 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.hl7.map.impl;
 
+/**
+ * The class defines a lookup utility for MIF item.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-29 15:45:56 $
+ */
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import gov.nih.nci.caadapter.common.MetaLookup;
 import gov.nih.nci.caadapter.common.MetaObject;
@@ -97,5 +104,7 @@ public class MifMetaLookup implements MetaLookup {
 					initLookupTable(choice);
 			}
 	}
-
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

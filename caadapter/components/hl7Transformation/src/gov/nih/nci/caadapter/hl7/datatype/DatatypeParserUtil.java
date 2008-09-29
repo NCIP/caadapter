@@ -14,10 +14,10 @@ import java.util.List;
  * The class provides Utilities to access the Datatype info.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-29 15:48:57 $
  */
 public class DatatypeParserUtil {
 	private static DatatypeParser datatypeParser = null;
@@ -56,3 +56,6 @@ public class DatatypeParserUtil {
 		return true;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -19,8 +19,8 @@ import java.util.Hashtable;
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.19 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.20 $ date $Date: 2008-09-29 15:44:40 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -385,3 +385,6 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		this.participantTraversalNames = participantTraversalNames;
 	}
 }	
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

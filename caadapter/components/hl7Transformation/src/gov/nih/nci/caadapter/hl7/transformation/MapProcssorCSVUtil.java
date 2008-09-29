@@ -14,6 +14,15 @@ import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class defines the Utility class to process a CSV data object 
+ * 
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 15:40:38 $
+ */
 public class MapProcssorCSVUtil {
     public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) {
 //    	System.out.println("CSVSegment "+csvSegment.getXmlPath() + "-->target"+targetXmlPath);
@@ -149,5 +158,7 @@ public class MapProcssorCSVUtil {
     	return null;
     	// Error should be thrown
     }
-
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

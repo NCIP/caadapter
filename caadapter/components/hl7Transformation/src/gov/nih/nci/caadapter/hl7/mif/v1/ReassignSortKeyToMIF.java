@@ -26,9 +26,9 @@ import java.util.Stack;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Mar 20, 2008
  *          Time:       4:12:07 PM $
  */
@@ -524,5 +524,5 @@ class MifFileEventHandler extends DefaultHandler
     }
 }
 /**
- * HISTORY      : : ReassignSortKeyToMIF.java,v $
+ * HISTORY :$Log: not supported by cvs2svn $
  */

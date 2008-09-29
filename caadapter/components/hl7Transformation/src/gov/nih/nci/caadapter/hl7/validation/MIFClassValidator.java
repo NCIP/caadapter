@@ -29,9 +29,9 @@ import java.util.HashSet;
  * choice validation
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.3 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2008-09-29 15:37:31 $
  * @since caAdapter v1.2
  */
 
@@ -100,3 +100,6 @@ public class MIFClassValidator extends Validator
         return validatorResults;
     }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

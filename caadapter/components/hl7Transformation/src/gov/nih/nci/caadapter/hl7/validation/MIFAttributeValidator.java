@@ -11,27 +11,23 @@ package gov.nih.nci.caadapter.hl7.validation;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
-//import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 import java.util.Enumeration;
-import java.util.HashSet;
-//import java.util.List;
 import java.util.Hashtable;
 
 /**
  * Validate if the abstract data type has been specialized. 
  *
  * @author OWNER: Eric Chen  Date: Aug 23, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.4 $
- * @date $$Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2008-09-29 15:37:32 $
  * @since caAdapter v1.2
  */
 
@@ -140,4 +136,6 @@ public class MIFAttributeValidator extends Validator
         return results;
     }
 }
-
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

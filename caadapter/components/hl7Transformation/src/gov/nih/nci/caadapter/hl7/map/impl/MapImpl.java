@@ -18,14 +18,14 @@ import gov.nih.nci.caadapter.hl7.map.Map;
  * two BaseMapElements (or MetaObjects).
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2008-06-09 19:53:50 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2008-09-29 15:45:56 $
  */
 public class MapImpl extends BaseObjectImpl implements Map {
     private static final String LOGID = "$RCSfile: MapImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapImpl.java,v 1.2 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapImpl.java,v 1.3 2008-09-29 15:45:56 wangeug Exp $";
 
 	private BaseMapElement targetMapElement;
 	private BaseMapElement sourceMapElement;
@@ -50,3 +50,6 @@ public class MapImpl extends BaseObjectImpl implements Map {
     }
 
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -23,13 +23,13 @@ import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
  * Half of a map, represents an object that has been mapped to or from.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.6 $
+ * @version    $Revision: 1.7 $
  */
 public class BaseMapElementImpl implements BaseMapElement{
     private static final String LOGID = "$RCSfile: BaseMapElementImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.6 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/BaseMapElementImpl.java,v 1.7 2008-09-29 15:45:56 wangeug Exp $";
 
     private BaseComponent component;
     private MetaObject metaObject;
@@ -183,3 +183,6 @@ public class BaseMapElementImpl implements BaseMapElement{
     	return rtnSb.toString();
     }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

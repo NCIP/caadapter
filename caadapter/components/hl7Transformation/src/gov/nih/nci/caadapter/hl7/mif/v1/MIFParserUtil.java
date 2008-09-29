@@ -29,8 +29,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2008-09-23 19:58:25 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2008-09-29 15:42:45 $
  */
 public class MIFParserUtil {
 
@@ -151,3 +151,6 @@ public class MIFParserUtil {
 		return rtnHash;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

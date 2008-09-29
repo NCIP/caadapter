@@ -8,17 +8,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import java.util.HashSet;
-
-import org.w3c.dom.Attr;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
  * The class will parse a simple HL7 Datatype from the xsd file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2008-09-29 15:48:56 $
  */
 
 public class SimpleTypeParser {
@@ -123,3 +120,6 @@ public class SimpleTypeParser {
 		System.out.println("all nodes within child nodes is " + allWithinChild);
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

@@ -12,9 +12,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,8 +43,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-09-09 18:14:42 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2008-09-29 15:48:56 $
  */
 
 public class DatatypeParser {
@@ -474,3 +472,6 @@ public class DatatypeParser {
 		
     }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

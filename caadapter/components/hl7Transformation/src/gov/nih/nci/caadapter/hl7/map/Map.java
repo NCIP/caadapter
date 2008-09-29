@@ -17,13 +17,16 @@ import gov.nih.nci.caadapter.common.map.BaseMapElement;
  * two BaseMapElements (or MetaObjects).
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.2 $
- * @date        $Date: 2008-06-09 19:53:50 $
+ * @version    $Revision: 1.3 $
+ * @date        $Date: 2008-09-29 15:47:18 $
  */
 
 public interface Map extends BaseObject{
 	public BaseMapElement getTargetMapElement();
 	public BaseMapElement getSourceMapElement();
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

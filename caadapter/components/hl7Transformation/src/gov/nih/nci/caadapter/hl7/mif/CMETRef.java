@@ -14,10 +14,10 @@ import java.io.Serializable;
  * The class contains CMETs reference information.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 15:44:40 $
  */
 public class CMETRef implements Serializable{
 
@@ -64,3 +64,6 @@ public class CMETRef implements Serializable{
 		this.name = name;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

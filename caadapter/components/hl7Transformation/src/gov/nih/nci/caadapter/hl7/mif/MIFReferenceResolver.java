@@ -15,9 +15,14 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 /**
  * This class resolve the reference defined within a MIF file
- * @author wangeug
  *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2008-09-29 15:44:40 $
  */
+
 public class MIFReferenceResolver {
 private Hashtable<String, MIFClass> classReferences=new Hashtable<String, MIFClass>();;
 private String messageType;
@@ -151,3 +156,6 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 	referencePath.removeLast();
 }
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

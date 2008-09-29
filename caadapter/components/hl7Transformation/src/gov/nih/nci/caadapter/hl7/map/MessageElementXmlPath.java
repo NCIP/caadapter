@@ -7,7 +7,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.hl7.map;
-
+/**
+ * The class defines XML path element.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-09-29 15:47:19 $
+ */
 import java.util.ArrayList;
 
 public class MessageElementXmlPath extends ArrayList<String> {
@@ -45,3 +53,6 @@ public class MessageElementXmlPath extends ArrayList<String> {
 		this.rootName = rootName;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

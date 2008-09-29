@@ -30,9 +30,9 @@ import gov.nih.nci.caadapter.common.Log;
  * Export a MIF/HL7 specification to an xml file
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.5 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2008-09-29 15:44:40 $
  * @since caAdapter v4.0
  */
 public class MIFToXmlExporter {
@@ -329,3 +329,6 @@ public class MIFToXmlExporter {
 			elm.setAttribute(attrName, attrValue.toString());
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

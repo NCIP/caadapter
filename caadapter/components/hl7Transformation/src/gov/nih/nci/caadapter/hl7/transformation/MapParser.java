@@ -9,14 +9,11 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
-import gov.nih.nci.caadapter.castor.map.impl.C_component;
-import gov.nih.nci.caadapter.castor.map.impl.C_data;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
-import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -25,23 +22,19 @@ import gov.nih.nci.caadapter.hl7.map.MappingException;
 
 import java.io.File;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.filter.ElementFilter;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 /**
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.7 $
- * @date $Date: 2008-06-09 19:53:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.8 $
+ * @date $Date: 2008-09-29 15:40:38 $
  * @since caAdapter v4.0
  */
 
@@ -270,3 +263,6 @@ public class MapParser {
 		return functions;
 	}
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */

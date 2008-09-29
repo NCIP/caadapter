@@ -27,15 +27,18 @@ import gov.nih.nci.caadapter.hl7.transformation.data.NullXMLElement;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
 /**
- * @author wuye
- *
+ * This class defines functions to process a datatyp object 
+ * 
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 15:40:38 $
  */
 public class DatatypeProcessor {
 	/**
@@ -528,6 +531,7 @@ public class DatatypeProcessor {
     		}
     	}
     }
-
-
 }
+/**
+ * HISTORY :$Log: not supported by cvs2svn $
+ */
