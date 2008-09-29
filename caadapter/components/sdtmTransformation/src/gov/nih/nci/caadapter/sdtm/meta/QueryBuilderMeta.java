@@ -7,7 +7,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.sdtm.meta;
-
+/*
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since  caAdapter v4.2        
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-29 18:40:24 $ 
+*/
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
@@ -116,3 +122,7 @@ public class QueryBuilderMeta extends MetaObjectImpl implements SDKMetaData
         return columnName;
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
