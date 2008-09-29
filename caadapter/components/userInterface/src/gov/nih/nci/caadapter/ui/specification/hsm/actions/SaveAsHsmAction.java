@@ -21,10 +21,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileOutputStream;
-
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 
 /**
  * This class defines a concrete "Save As" action.
@@ -32,8 +28,8 @@ import java.io.OutputStream;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-23 15:19:33 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 20:18:57 $
  */
 public class SaveAsHsmAction extends DefaultSaveAsAction
 {
@@ -49,7 +45,7 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.6 2008-09-23 15:19:33 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SaveAsHsmAction.java,v 1.7 2008-09-29 20:18:57 wangeug Exp $";
 
 	protected transient HSMPanel hsmPanel;
 
@@ -167,5 +163,8 @@ public class SaveAsHsmAction extends DefaultSaveAsAction
 	
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.6  2008/09/23 15:19:33  wangeug
+ *HISTORY 	:caAdapter 4.2 alpha release
+ *HISTORY 	:
  */
 	

@@ -35,10 +35,10 @@ import java.util.Vector;
  * This class defines the add multiple action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-09-29 20:18:57 $
  */
 public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 {
@@ -54,7 +54,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.9 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectAddressPartsAction.java,v 1.10 2008-09-29 20:18:57 wangeug Exp $";
 
     public static final String ADD_PART_COMMAND_NAME = "Add Address Parts";
     public static final String REMOVE_PART_COMMAND_NAME = "Remove Address Parts";
@@ -176,3 +176,7 @@ public class SelectAddressPartsAction extends AbstractHSMContextCRUDAction
 	}
 }
 
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

@@ -50,10 +50,10 @@ import java.util.Map;
  * facilitate HSM meta-data management.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 20:14:14 $
  */
 public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel implements ContextManagerClient
 {
@@ -68,7 +68,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.6 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanel.java,v 1.7 2008-09-29 20:14:14 wangeug Exp $";
  
     private JTabbedPane rightTabbedPane;
     private TreeExpandAllAction treeExpandAllAction;
@@ -416,3 +416,7 @@ public class HSMPanel extends DefaultContextManagerClientPanel//extends JPanel i
         setSaveFile(getSaveFile(), true);
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

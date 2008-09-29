@@ -25,10 +25,10 @@ import java.util.Set;
 /**
  * Define the first page in the open wizard.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.5 $
- * date        $Date: 2008-06-09 19:54:07 $
+ * revision    $Revision: 1.6 $
+ * date        $Date: 2008-09-29 20:14:54 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -43,7 +43,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.5 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.6 2008-09-29 20:14:54 wangeug Exp $";
 
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
@@ -189,3 +189,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	}
 }
 
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

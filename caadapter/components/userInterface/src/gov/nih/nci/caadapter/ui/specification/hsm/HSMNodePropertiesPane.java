@@ -17,7 +17,6 @@ import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
-//import gov.nih.nci.caadapter.hl7.mif.CMETRef;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -48,17 +47,16 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * This class defines the layout and some of data handling of the properties pane resided in HSMPanel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.21 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.22 $
+ *          date        $Date: 2008-09-29 20:14:14 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -73,7 +71,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.21 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.22 2008-09-29 20:14:14 wangeug Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -673,4 +671,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		this.setDisplayData(slctdNode,true);
 	}
 }
-
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

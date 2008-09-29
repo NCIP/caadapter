@@ -37,10 +37,10 @@ import java.awt.*;
  * This class defines the tree event handler that will support HSMPanel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 20:14:14 $
  */
 public class HSMPanelController implements TreeSelectionListener, TreeModelListener
 {
@@ -56,7 +56,7 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.6 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMPanelController.java,v 1.7 2008-09-29 20:14:14 wangeug Exp $";
 
 	private transient HSMPanel parentPanel;
 	private DefaultMutableTreeNode currentNode;
@@ -268,15 +268,6 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 	protected void reportThrowableToUI(Throwable t, Component parentComponent)
 	{
 		DefaultSettings.reportThrowableToLogAndUI(this, t, null, parentComponent, false, false);
-//		t.printStackTrace();
-//		StringWriter sw = new StringWriter();
-//		PrintWriter pw = new PrintWriter(sw);
-//		t.printStackTrace(pw);
-//		pw.flush();
-//		JOptionPane.showMessageDialog(parentComponent,
-//				sw.toString(),
-//				"Exception Occurred",
-//				JOptionPane.ERROR_MESSAGE);
 	}
 
 	/**
@@ -290,3 +281,7 @@ public class HSMPanelController implements TreeSelectionListener, TreeModelListe
 	}
 }
 
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

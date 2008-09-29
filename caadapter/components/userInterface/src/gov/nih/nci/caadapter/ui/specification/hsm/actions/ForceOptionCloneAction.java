@@ -9,7 +9,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
-import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 
@@ -40,7 +39,7 @@ public class ForceOptionCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ForceOptionCloneAction.java,v 1.3 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/ForceOptionCloneAction.java,v 1.4 2008-09-29 20:18:57 wangeug Exp $";
 
     private static final String DEFAULT_COMMAND_FORCE_CLONE = "Force XML";
     public static final String ENABLE_COMMAND_FORCE_CLONE = "Enable Force XML";
@@ -108,3 +107,7 @@ public class ForceOptionCloneAction extends AbstractHSMContextCRUDAction
 		return isSuccessfullyPerformed();
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

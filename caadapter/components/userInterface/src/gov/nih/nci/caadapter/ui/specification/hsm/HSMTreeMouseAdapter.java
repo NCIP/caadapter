@@ -9,11 +9,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.specification.hsm;
 
-import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.ui.specification.hsm.actions.*;
 
 import javax.swing.JPopupMenu;
-//import javax.swing.JMenuItem;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -32,10 +30,10 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * This class defines the mouse listener to responds mouse events occurred on the tree view of HSM Panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-09-29 20:14:14 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -327,4 +325,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
         }	
     }
 }
-
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

@@ -12,9 +12,9 @@ package gov.nih.nci.caadapter.ui.hl7message.instanceGen;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.2 $
+ *          revision    $Revision: 1.3 $
  *          date        Mar 19, 2008
  *          Time:       2:18:15 PM $
  */
@@ -150,5 +150,5 @@ public class NodeElement
 
 
 /**
- * HISTORY      : : NodeElement.java,v $
+ * HISTORY      :$Log: not supported by cvs2svn $
  */

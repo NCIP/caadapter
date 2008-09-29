@@ -8,8 +8,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
-
-import gov.nih.nci.caadapter.common.Log;
+ 
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
@@ -41,7 +40,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.4 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/EnableAttributeDatafieldAction.java,v 1.5 2008-09-29 20:18:57 wangeug Exp $";
 
     private static final String COMMAND_ENABLE_DATA = "Enable Attribute Field";
     private static final String COMMAND_DISABLE_DATA = "Disable Attribute Field";
@@ -122,3 +121,7 @@ public class EnableAttributeDatafieldAction extends AbstractHSMContextCRUDAction
 			return isSuccessfullyPerformed();
 		}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

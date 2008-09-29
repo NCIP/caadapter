@@ -10,17 +10,12 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.specification.hsm.actions;
 
 import gov.nih.nci.caadapter.common.Log;
-import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.specification.hsm.HSMPanel;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
-import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
-import java.util.List;
-import java.util.HashSet;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -31,10 +26,10 @@ import java.awt.event.ActionEvent;
  * This class defines the remove multiple attribute action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 20:18:57 $
  */
 public class RemoveMultipleComplexDatatypeAction extends AbstractHSMContextCRUDAction
 {
@@ -50,7 +45,7 @@ public class RemoveMultipleComplexDatatypeAction extends AbstractHSMContextCRUDA
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleComplexDatatypeAction.java,v 1.2 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveMultipleComplexDatatypeAction.java,v 1.3 2008-09-29 20:18:57 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Remove Multiple Attribute";
     private static final Character COMMAND_MNEMONIC = new Character('u');
@@ -153,6 +148,9 @@ public class RemoveMultipleComplexDatatypeAction extends AbstractHSMContextCRUDA
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/10/24 18:37:48  wangeug
  * HISTORY      : initial load
  * HISTORY      :

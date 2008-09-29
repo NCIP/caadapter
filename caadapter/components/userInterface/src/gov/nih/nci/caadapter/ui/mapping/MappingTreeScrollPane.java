@@ -217,3 +217,7 @@ public class MappingTreeScrollPane extends JScrollPane
 	}
 	
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

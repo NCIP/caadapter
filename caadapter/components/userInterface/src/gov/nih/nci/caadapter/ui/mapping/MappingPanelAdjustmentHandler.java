@@ -35,3 +35,7 @@ public class MappingPanelAdjustmentHandler implements AdjustmentListener {
 			observingComponents.add(comp);
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

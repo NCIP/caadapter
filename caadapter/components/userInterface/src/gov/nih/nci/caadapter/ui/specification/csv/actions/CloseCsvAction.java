@@ -12,7 +12,6 @@ package gov.nih.nci.caadapter.ui.specification.csv.actions;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultContextCloseAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
-import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.specification.csv.CSVPanel;
 
 import javax.swing.*;
@@ -21,10 +20,10 @@ import java.awt.event.ActionEvent;
 /**
  * This class defines the close action of CSV specification panel.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-09-29 20:09:49 $
  */
 public class CloseCsvAction extends DefaultContextCloseAction//DefaultCloseAction
 {
@@ -60,6 +59,9 @@ public class CloseCsvAction extends DefaultContextCloseAction//DefaultCloseActio
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:18:15  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

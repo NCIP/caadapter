@@ -24,17 +24,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * This class defines the add multiple action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-09-29 20:18:57 $
  */
 public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
 {
@@ -50,7 +48,7 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.7 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleAttributeAction.java,v 1.8 2008-09-29 20:18:57 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Attribute";
     private static final Character COMMAND_MNEMONIC = new Character('M');
@@ -153,6 +151,9 @@ public class AddMultipleAttributeAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2007/08/23 17:54:58  wangeug
  * HISTORY      : resolve recursive reference within a MIF file
  * HISTORY      :

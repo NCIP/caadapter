@@ -16,7 +16,6 @@ import gov.nih.nci.caadapter.common.csv.CSVMetaGeneratorUtil;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.CSVParser;
 import gov.nih.nci.caadapter.common.csv.CSVParserImpl;
-import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVFieldMetaImpl;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
@@ -33,15 +32,15 @@ import java.util.List;
  * Generates a "starting point" csv meta object graph from a CSV instance.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.5 $
- * @date $Date: 2008-06-09 19:54:07 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.6 $
+ * @date $Date: 2008-09-29 20:12:05 $
  * @since caAdapter v1.2
  */
 
 public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
     private static final String LOGID = "$RCSfile: CSVMetaFromInstanceUtil.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.5 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/csv/wizard/CSVMetaFromInstanceUtil.java,v 1.6 2008-09-29 20:12:05 wangeug Exp $";
 
     private String filename = null;
     private String[][] fileData = null;
@@ -246,3 +245,6 @@ public class CSVMetaFromInstanceUtil implements CSVMetaGeneratorUtil {
         this.nonStructureFilename = nonStructureFilename;
     }
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+**/

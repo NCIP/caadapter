@@ -42,7 +42,16 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeNode;
-
+/**
+ * The panel is used as super class of mapping panel
+ * source and target tree panel.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 20:21:31 $
+ */
 public abstract class AbstractMappingPanel extends DefaultContextManagerClientPanel  implements ActionListener
 {
 	protected FunctionLibraryPane functionPane;
@@ -426,3 +435,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 	public abstract Map getMenuItems(String menu_name) ;
 
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

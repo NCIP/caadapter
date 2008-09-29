@@ -35,10 +35,10 @@ import java.util.List;
  * This class defines the add optional clone action.
  *
  * @author OWNER: Eric Chen
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-09-29 20:18:57 $
  */
 public class AddCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -54,7 +54,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.8 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.9 2008-09-29 20:18:57 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Add Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -164,3 +164,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 		return isSuccessfullyPerformed();
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+ * 
+ * **/

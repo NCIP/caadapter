@@ -16,10 +16,7 @@ import java.net.URL;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.jar.JarFile;
-import java.util.jar.JarEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import java.io.*;
@@ -28,9 +25,9 @@ import java.io.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Aug 3, 2007
  *          Time:       11:33:55 AM $
  */
@@ -49,7 +46,7 @@ public class MessageTypeDictionary
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.3 2008-06-09 19:53:53 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/util/MessageTypeDictionary.java,v 1.4 2008-09-29 20:05:54 wangeug Exp $";
 
     private String MIF = "mif";
 
@@ -161,6 +158,9 @@ public class MessageTypeDictionary
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:53  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/03/20 03:49:26  umkis
  * HISTORY      : for re-assigning sort key to mif files
  * HISTORY      :
