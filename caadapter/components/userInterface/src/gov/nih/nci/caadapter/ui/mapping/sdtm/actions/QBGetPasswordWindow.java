@@ -26,6 +26,10 @@ import java.awt.event.*;
  * <p/>
  * Time: 11:07:41 PM
  * <p/>
+ * @author LAST UPDATE $Author: phadkes $
+ * @since  caAdapter v4.2        
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-09-29 21:22:50 $ 
  * To change this template use File | Settings | File Templates.
  */
 public class QBGetPasswordWindow implements WindowListener, KeyListener {
@@ -186,3 +190,7 @@ public class QBGetPasswordWindow implements WindowListener, KeyListener {
         new QBGetPasswordWindow(null, "jdbc:oracle:thin:@localhost:1521:XE~oracle.jdbc.OracleDriver~hr~hr", "blah blah");
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

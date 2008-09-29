@@ -7,6 +7,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.ui.mapping.sdtm.actions;
 
+/* 
+ * saves the SDTM action on the UI
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since  caAdapter v4.2        
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-29 21:22:50 $ 
+*/
+
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -37,7 +46,7 @@ public class SaveSdtmAction extends SaveAsSdtmAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveSdtmAction.java,v 1.3 2008-06-09 19:54:06 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/sdtm/actions/SaveSdtmAction.java,v 1.4 2008-09-29 21:22:50 phadkes Exp $";
 
     // private static final String TOOL_TIP_DESCRIPTION = "Save a Mapping File";
     /**
@@ -100,3 +109,6 @@ public class SaveSdtmAction extends SaveAsSdtmAction {
 		}
 	}
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

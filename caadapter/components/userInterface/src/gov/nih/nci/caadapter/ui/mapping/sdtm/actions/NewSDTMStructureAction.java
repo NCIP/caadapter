@@ -25,7 +25,8 @@ import java.util.HashMap;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.8 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.9 $
+ * @date       $Date: 2008-09-29 21:22:50 $ 
  */
 public class NewSDTMStructureAction extends AbstractContextAction
 {
@@ -119,3 +120,6 @@ public class NewSDTMStructureAction extends AbstractContextAction
 }
 
 
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

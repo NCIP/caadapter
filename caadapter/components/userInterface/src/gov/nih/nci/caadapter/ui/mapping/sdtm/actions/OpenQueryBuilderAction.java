@@ -19,7 +19,8 @@ import java.awt.event.KeyEvent;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @date       $Date: 2008-09-29 21:22:50 $  
  */
 public class OpenQueryBuilderAction extends AbstractContextAction
 {
@@ -134,3 +135,6 @@ public class OpenQueryBuilderAction extends AbstractContextAction
         return mainFrame;
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

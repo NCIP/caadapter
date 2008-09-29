@@ -34,7 +34,8 @@ import java.util.ArrayList;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.7 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.8 $
+ * @date       $Date: 2008-09-29 21:22:50 $ 
  */
 public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -332,3 +333,6 @@ public class SdtmDropTransferHandler extends TreeDefaultDropTransferHandler
         return parentComponent;
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

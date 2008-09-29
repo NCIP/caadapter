@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2 revision $Revision: 1.8 $ date $Date: 2008-06-09 19:54:06 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.9 $ date $Date: 2008-09-29 21:22:50 $
  */
 public class OpenSDTMMapAction extends DefaultContextOpenAction
 {
@@ -207,3 +207,7 @@ public class OpenSDTMMapAction extends DefaultContextOpenAction
 	}
 	
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
