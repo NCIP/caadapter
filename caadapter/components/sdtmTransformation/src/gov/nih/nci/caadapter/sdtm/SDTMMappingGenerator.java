@@ -18,7 +18,8 @@ import java.util.HashMap;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision
- *          $Revision: 1.9 $
+ * @date       $Date: 2008-09-29 19:12:01 $ 
+ *          $Revision: 1.10 $
  */
 public class SDTMMappingGenerator
 {
@@ -91,4 +92,7 @@ public class SDTMMappingGenerator
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/09/29 19:08:05  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
