@@ -20,18 +20,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.awt.*;
 import java.util.HashSet;
-import java.util.List;
-
+ 
 /**
- * Created by IntelliJ IDEA.
- * User: Administrator
- * Date: Sep 7, 2007
- * Time: 11:20:05 AM
- * To change this template use File | Settings | File Templates.
+ * This class defines the Clob box action.
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-09-29 20:36:23 $
  */
 public class ClobAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: ClobAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.5 2008-09-29 20:32:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ClobAction.java,v 1.6 2008-09-29 20:36:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Clob";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -196,4 +196,7 @@ public class ClobAction extends AbstractContextAction {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/29 20:32:34  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  **/

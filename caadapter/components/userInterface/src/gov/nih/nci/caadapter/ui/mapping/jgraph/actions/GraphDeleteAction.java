@@ -10,7 +10,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.common.SDKMetaData;
-import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
@@ -30,8 +29,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-19 17:22:50 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-29 20:36:23 $
  */
 public class GraphDeleteAction extends DefaultAbstractJgraphAction
 {
@@ -135,6 +134,9 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/19 17:22:50  wangeug
+ * HISTORY      : verify if any child note being mapped before delete a parent tree node
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
