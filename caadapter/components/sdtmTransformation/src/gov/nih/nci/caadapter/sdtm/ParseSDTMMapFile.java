@@ -35,7 +35,8 @@ import java.io.IOException;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @date       $Date: 2008-09-29 19:08:04 $ 
  */
 public class ParseSDTMMapFile {
     // private final static String xmlFileName = "c:/example.xml";
@@ -225,6 +226,9 @@ public class ParseSDTMMapFile {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2008/06/06 18:55:19  phadkes
+ * Changes for License Text
+ *
  * Revision 1.2  2007/08/16 19:04:58  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

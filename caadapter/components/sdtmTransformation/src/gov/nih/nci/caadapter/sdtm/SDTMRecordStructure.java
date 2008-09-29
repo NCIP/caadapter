@@ -7,7 +7,13 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
  
 package gov.nih.nci.caadapter.sdtm;
-
+/*
+ * @author OWNER: $Author: phadkes $
+ * @author LAST UPDATE $Author: phadkes $
+ * @since  caAdapter v4.2        
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-09-29 19:08:04 $ 
+*/
 public class SDTMRecordStructure
 {
 
@@ -316,3 +322,7 @@ public class SDTMRecordStructure
         return "STUDYID,DOMAIN,USUBJID,SUBJID,DM_RFSTDTC,DM_RFENDTC,DM_SITEID,DM_INVID,DM_BRTHDTC,DM_AGE,DM_AGEU,DM_SEX,DM_RACE,DM_ARMCD,DM_ARM,DM_COUNTRY,DM_DM_TC,DM_DMDY";
     }
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

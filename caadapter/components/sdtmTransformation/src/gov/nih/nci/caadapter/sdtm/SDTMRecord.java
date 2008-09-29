@@ -16,7 +16,8 @@ import java.util.Collections;
 /**
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.3 $
+ * @version Since caAdapter v3.2 revision $Revision: 1.4 $
+ * @date       $Date: 2008-09-29 19:08:04 $ 
  */
 public class SDTMRecord
 {
@@ -297,3 +298,7 @@ public class SDTMRecord
 		DM_DMDY.add(val);
 	}
 }
+
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

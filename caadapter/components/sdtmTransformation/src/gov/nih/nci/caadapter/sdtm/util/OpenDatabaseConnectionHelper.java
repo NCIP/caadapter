@@ -216,3 +216,6 @@ public class OpenDatabaseConnectionHelper
         tt.dialog.setVisible(true);
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/

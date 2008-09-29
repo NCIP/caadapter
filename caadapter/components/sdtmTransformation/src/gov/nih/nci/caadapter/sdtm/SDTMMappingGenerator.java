@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @author OWNER: Harsha Jayanna
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v3.2 revision
- *          $Revision: 1.8 $
+ *          $Revision: 1.9 $
  */
 public class SDTMMappingGenerator
 {
@@ -89,3 +89,6 @@ public class SDTMMappingGenerator
         _sdtmMappingGeneratorReference = mappingGeneratorReference;
     }
 }
+/**
+ * HISTORY      : $Log: not supported by cvs2svn $
+*/
