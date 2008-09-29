@@ -18,8 +18,6 @@ import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.hl7message.HL7MessagePanel;
-import gov.nih.nci.caadapter.ui.hl7message.HL7TransformationProgressDialog;
-import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,10 +28,10 @@ import java.io.File;
  * This class defines a action to trigger generation of HL7 v3 message again.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 19:58:08 $
  */
 public class RegenerateHL7V3MessageAction extends AbstractContextAction
 {
@@ -49,7 +47,7 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.6 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/RegenerateHL7V3MessageAction.java,v 1.7 2008-09-29 19:58:08 wangeug Exp $";
 
 	public static final String COMMAND_NAME = "Regenerate";
 	public static final Character COMMAND_MNEMONIC = new Character('R');
@@ -231,6 +229,9 @@ public class RegenerateHL7V3MessageAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/09/10 16:41:51  wangeug
  * HISTORY      : use a local Progressor instance
  * HISTORY      :

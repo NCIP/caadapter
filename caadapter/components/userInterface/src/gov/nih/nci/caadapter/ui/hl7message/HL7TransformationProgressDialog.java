@@ -12,7 +12,15 @@ import java.awt.HeadlessException;
 
 import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
 import javax.swing.ProgressMonitor;
-
+/**
+ * This class is the main entry point to display HL7V3 message panel.
+ *
+ * @author OWNER: Eugene Wang
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-09-29 19:56:37 $
+ */
 public class HL7TransformationProgressDialog extends ProgressMonitor implements TransformationObserver
 {
 	private int messageCount; 
@@ -78,3 +86,7 @@ public class HL7TransformationProgressDialog extends ProgressMonitor implements 
 		
 	}
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ * 
+ * */

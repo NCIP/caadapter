@@ -13,7 +13,6 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
-import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -31,10 +30,10 @@ import java.util.List;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-09-29 19:58:08 $
  */
 public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 {
@@ -50,7 +49,7 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.4 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/SaveAsHL7V3MessageAction.java,v 1.5 2008-09-29 19:58:08 wangeug Exp $";
 
 	protected transient HL7MessagePanel hl7Panel;
 
@@ -183,6 +182,9 @@ public class SaveAsHL7V3MessageAction extends DefaultSaveAsAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/10/09 21:00:13  wangeug
  * HISTORY      : save csv data from hl7MessagePanel
  * HISTORY      :
