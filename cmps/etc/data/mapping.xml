@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
+	<components>
+		<component location="etc/data/shiporder3.xsd" kind="xml"
+			type="source" id="file://etc/data/shiporder3.xsd">
+			<rootElement name="shiporder">
+				<attrData isRequired="true" name="orderid" />
+				<childElement name="orderperson" />
+				<childElement name="shipto">
+					<childElement name="name" />
+					<childElement name="address" />
+					<childElement name="city" />
+					<childElement name="country" />
+				</childElement>
+				<childElement name="item">
+					<childElement name="title" />
+					<childElement name="note" />
+					<childElement name="quantity" />
+					<childElement name="price" />
+				</childElement>
+			</rootElement>
+		</component>
+		<component location="etc/data/shiporder3.xsd" kind="xml"
+			type="target" id="file://etc/data/shiporder3.xsd">
+			<rootElement name="shiporder">
+				<attrData isRequired="true" name="orderid" />
+				<childElement name="orderperson" />
+				<childElement name="shipto">
+					<childElement name="name" />
+					<childElement name="address" />
+					<childElement name="city" />
+					<childElement name="country" />
+				</childElement>
+				<childElement name="item">
+					<childElement name="title" />
+					<childElement name="note" />
+					<childElement name="quantity" />
+					<childElement name="price" />
+				</childElement>
+			</rootElement>
+		</component>
+	</components>
+</mapping>

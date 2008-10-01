@@ -21,4 +21,9 @@ xsi:noNamespaceSchemaLocation="shiporder.xsd">
   <quantity>1</quantity>
   <price>9.90</price>
  </item>
+ <item>
+  <title>Java Exercise</title>
+  <quantity>2</quantity>
+  <price>30.00</price>
+ </item>
 </shiporder>
