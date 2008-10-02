@@ -116,19 +116,19 @@
             <fileset dir="${config.dir}" excludes="caadapter-components.properties, logging.properties"/>
         </jar>
     	
-    	<antcall target="add-license"/>
+    	<!-- antcall target="add-license"/ -->
 		<antcall target="dist.prepare" />
     </target>
 
     <target name="dist.src">
-    	<echo message="create caadapter4_0_Src_${DATE}.zip"/>
+    	<echo message="create caadapter_MMS_4_1_Src_${DATE}.zip"/>
     	<delete>
-    		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
+    		<fileset dir="." includes="caadapter*.zip"/>
     	</delete>
-		<zip destfile="caadapter4_0_Src_${DATE}.zip" basedir="." 
+		<zip destfile="caadapter_MMS_4_1_Src_${DATE}.zip" basedir="." 
 					excludes="tdms*.doc,lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
 					docs/GME/**, docs/v4.0/**, docs/MMSv4.1/*.zip, docs/v4.1*BETA/**, **/CVS/**,
-					referenceLib/**, run.bat, build_demo.xml, *.spp, *.mpp,">
+					referenceLib/**, run.bat, *.spp, *.mpp,">
 		</zip>
     </target>
 
@@ -187,6 +187,10 @@
             	<include name="caAdapter_ui.jar"/>
                 <include name="jgraph.jar"/>
         	</fileset>
+        	<fileset dir="${dist.dir}/docs">
+        	    <include name="help/**"/>
+        	</fileset>
+        	        	
         	<fileset dir="${dist.dir}/lib">
             	<include name="caAdapter.jar"/>
         	</fileset>
@@ -718,7 +722,7 @@
             <fileset dir="${lib.dir}">
                 <exclude name="delete.jar"/>
             </fileset>
-            <fileset dir="${project.ref.lib.dir}" excludes="ant.jar,mif.zip"/>
+            <fileset dir="${project.ref.lib.dir}" excludes="ant.jar,caAdapter_ui.jar, caAdapterCommon.jar,resource*.zip"/>
 
         </copy>
     </target>
@@ -792,7 +796,7 @@
         <ant antfile="${ui.module.build}" target="init"/>
         <!--ant antfile="${ws.module.build}" target="init"/-->
     	<delete>
-    		<fileset dir="." includes="caadapter4_0_Src_*.zip"/>
+    		<fileset dir="." includes="caadapter*.zip"/>
     	</delete>
     </target>
 
@@ -829,20 +833,20 @@
     	</fileset>
 	</path>
 
-	<target name="add-license" if="add-license">
+	<!-- target name="add-license" if="add-license">
 		<echo message="*****************************************************"/>
 		<echo message="**   Adding licenses ... ...                       **"/>
 		<echo message="*****************************************************"/>
 		<taskdef name="update-license" classname="gov.nih.nci.codegen.core.ant.LicenseUpdaterTask">
 			<classpath refid="development.class.path"/>
 		</taskdef>
-		<!--echo message="${properties.dir}/license.txt"/-->
+		<echo message="${properties.dir}/license.txt" />
 		<update-license logFile="log/addlicense.log" beginPattern="LICENSE_TEXT_START" endPattern="LICENSE_TEXT_END" licenseFile="${basedir}/etc/license/caAdapter_license_build.txt">
 			<fileset dir="${basedir}">
 				<include name="**/**.java"/>
 			</fileset>
 		</update-license>
-	</target>
+	</target -->
 	<!-- ================================= 
           target: generate keys              
          ================================= -->
