@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.jgraph;
 
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
@@ -21,6 +22,7 @@ import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.*;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
@@ -52,10 +54,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-10-02 18:59:27 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -71,7 +73,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.12 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.13 2008-10-02 18:59:27 linc Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -560,13 +562,22 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		TreePath leadingPath = targetTree.getLeadSelectionPath();														
 		
 		System.out.println( "Lazy Keys: " + lazyKeys );
-        if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
-        {
-        	lazyText = "Set as Lazy";
-        }
-        else {
-        	lazyText = "Set as Eager";
-        }
+		String lKey = parseNode( leadingPath.toString() );
+		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
+		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
+		UMLAssociation umlAssociation = cumulativeMappingGenerator.getAssociationFromColumn(lazyKey);
+
+		if (umlAssociation != null) {
+			if ( lazyKeys.contains( lKey ) )
+			{
+				lazyText = "Set as Lazy";
+			}
+			else {
+				lazyText = "Set as Eager";
+			}
+		} else {
+			lazyText = null;
+		}
 
         System.out.println( "Clob Keys: " + clobKeys );
         if ( clobKeys.contains( parseNode( leadingPath.toString() ) ) )
@@ -586,19 +597,21 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         	discriminatorText = "Set as Discriminator";
         }
 
-        lazyEagerAction = new LazyEagerAction( mappingPanel, middlePanel, lazyText );
+        if (lazyText != null) {
+        	lazyEagerAction = new LazyEagerAction( mappingPanel, middlePanel, lazyText );
+        	lazyEagerAction.setEnabled( false );
+        	JMenuItem lazyItem = new JMenuItem(lazyEagerAction);
+        	popupMenu.add(lazyItem);
+        }
         clobAction = new ClobAction( mappingPanel, middlePanel, clobText );
         discriminatorAction = new DiscriminatorAction( mappingPanel, middlePanel, discriminatorText );
 
-        JMenuItem lazyItem = new JMenuItem(lazyEagerAction);
         JMenuItem clobItem = new JMenuItem(clobAction);
         JMenuItem discriminatorItem = new JMenuItem(discriminatorAction);
 
-        popupMenu.add(lazyItem);
         popupMenu.add(clobItem);
         popupMenu.add(discriminatorItem);
 		
-		lazyEagerAction.setEnabled( false );
         clobAction.setEnabled( false );
         discriminatorAction.setEnabled( false );
 
@@ -611,7 +624,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			// Disable PK function if selected node has children		
 			if( mutNode.getChildCount() == 0 )
 			{
-				lazyEagerAction.setEnabled( true );
+				if (lazyEagerAction !=null) lazyEagerAction.setEnabled( true );
                 clobAction.setEnabled( true );
                 discriminatorAction.setEnabled( true );
             }
@@ -650,6 +663,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2007/12/13 21:09:11  wangeug
  * HISTORY      : resolve code dependence in compiling
  * HISTORY      :
