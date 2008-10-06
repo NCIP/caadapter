@@ -12,8 +12,8 @@ package gov.nih.nci.caadapter.hl7.v2meta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2008-10-06 19:59:33 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2008-10-06 20:03:03 $
  * @since caAdapter v4.2
  */
 
@@ -23,5 +23,5 @@ public class XSDUtil {
 
 
 /**
-* HISTORY: $log$
+* HISTORY: $Log: not supported by cvs2svn $
 **/
