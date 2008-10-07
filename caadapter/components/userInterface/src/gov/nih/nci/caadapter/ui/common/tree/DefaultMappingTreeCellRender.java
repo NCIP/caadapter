@@ -31,17 +31,17 @@ import java.awt.Component;
  * The class defines the default tree cell renderer for mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2008-09-24 18:00:29 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2008-10-07 15:16:55 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
 	private static final Color NONDRAG_COLOR = new Color(140, 140, 175);
 	private static final Color MANYTOONE_COLOR = Color.pink;
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
-	private static ImageIcon pseudoRootIcon = new ImageIcon(DefaultSettings.getImage("pseudo_root.gif"));
+//	private static ImageIcon pseudoRootIcon = new ImageIcon(DefaultSettings.getImage("pseudo_root.gif"));
 	private static ImageIcon disableItemIcon = new ImageIcon(DefaultSettings.getImage("blue.png"));
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 	{
@@ -58,11 +58,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 			}
 		}
 		Component returnValue = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-		if (value instanceof PseudoRootTreeNode)
-		{
-			setIcon(pseudoRootIcon);
-		}
-		
+
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 		if (node.getUserObject() instanceof DatatypeBaseObject)
 		{
@@ -196,4 +192,7 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/09/24 18:00:29  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
