@@ -24,13 +24,24 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-10-08 18:54:42 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-10-08 20:05:55 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
 	private XSLoader schemaLoader;
 	private XSModel model;
+	private static boolean debug = false;
+	private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
+
+	private static String getPrefix(int i){
+		//if(i<prefix.length) return prefix[i];
+		StringBuffer sb = new StringBuffer();
+		for(int j=0; j<i+1; j++) sb.append("  ");
+		sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
+		return sb.toString();
+	}
+	
 	public XSDParser() {
         try {
 			// get DOM Implementation using DOM Registry
@@ -77,7 +88,7 @@ public class XSDParser implements DOMErrorHandler {
     public void loadSchema(String schemaURI) {
 
             // parse document
-            System.out.println("Parsing " + schemaURI + "...");
+            if(debug) System.out.println("Parsing " + schemaURI + "...");
             model = schemaLoader.loadURI(schemaURI);
 
     }
@@ -86,8 +97,8 @@ public class XSDParser implements DOMErrorHandler {
         if (model != null) {
         	// element declarations
             XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-            processMap(map);
-            return processXSObject(map.itemByName(namespace, name));
+            //processMap(map, 0);
+            return processXSObject(map.itemByName(namespace, name), 0);
             //map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
             //map = model.getComponents(XSConstants.TYPE_DEFINITION);
 			//map = model.getComponents(XSConstants.NOTATION_DECLARATION);
@@ -110,59 +121,59 @@ public class XSDParser implements DOMErrorHandler {
 	}
 	
 
-    private static ElementMeta processXSObject(XSObject item) {
+    private static ElementMeta processXSObject(XSObject item, int depth) {
 		if(item instanceof XSComplexTypeDefinition){
-			return processComplexType((XSComplexTypeDefinition)item);
+			return processComplexType((XSComplexTypeDefinition)item, depth);
 		}else if(item instanceof XSSimpleTypeDefinition){
 			//processSimpleType((XSSimpleTypeDefinition)item);
 			return null;
 		}else if(item instanceof XSElementDeclaration){
-			return processElement((XSElementDeclaration)item);
+			return processElement((XSElementDeclaration)item, depth);
 		}
 		return null;
     }
     
-	private static List<ElementMeta> processMap(XSNamedMap map){
+	private static List<ElementMeta> processMap(XSNamedMap map, int depth){
 		ArrayList<ElementMeta> ret = new ArrayList<ElementMeta>();
 		for (int i = 0; i < map.getLength(); i++) {
 			XSObject item = map.item(i);
 			if(item instanceof XSComplexTypeDefinition){
-				ret.add(processComplexType((XSComplexTypeDefinition)item));
+				ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
 			}else if(item instanceof XSSimpleTypeDefinition){
-				processSimpleType((XSSimpleTypeDefinition)item);
+				processSimpleType((XSSimpleTypeDefinition)item, depth);
 			}else if(item instanceof XSElementDeclaration){
-				ret.add(processElement((XSElementDeclaration)item));
+				ret.add(processElement((XSElementDeclaration)item, depth));
 			}
 		}
 		return ret;
 	}
 	
-	private static List<BaseMeta> processList(XSObjectList map){
+	private static List<BaseMeta> processList(XSObjectList map, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
 		for (int i = 0; i < map.getLength(); i++) {
 			XSObject item = map.item(i);
 			if(item instanceof XSComplexTypeDefinition){
-				ret.add(processComplexType((XSComplexTypeDefinition)item));
+				ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
 			}else if(item instanceof XSParticle){
-				ret.addAll(processParticle((XSParticle)item));
+				ret.addAll(processParticle((XSParticle)item, depth));
 			}else if(item instanceof XSAttributeUse){
-				ret.add(processAttribute((XSAttributeUse)item));
+				ret.add(processAttribute((XSAttributeUse)item, depth));
 			}
 		}
 		return ret;
 	}
 	
-	private static void processSimpleType(XSSimpleTypeDefinition item){
-		System.out.println("SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+	private static void processSimpleType(XSSimpleTypeDefinition item, int depth){
+		if(debug) System.out.println(getPrefix(depth+1)+"SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		//processParticle(item.getParticle(), indent);
 	}
-	private static ElementMeta processComplexType(XSComplexTypeDefinition item){
-		System.out.println("ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+	private static ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
+		if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		ElementMeta ret = new ElementMeta();
 		ret.setName((item.getNamespace()==null?"":(item.getNamespace()+":"))+item.getName());
 		List<ElementMeta> childs = ret.getChildElement();
 		List<AttributeMeta> attrs = ret.getAttrData(); 
-		List<BaseMeta> l = processList(item.getAttributeUses());
+		List<BaseMeta> l = processList(item.getAttributeUses(), depth);
 		for (BaseMeta b:l) {
 			if (b instanceof AttributeMeta) {
 				attrs.add((AttributeMeta)b);
@@ -170,7 +181,7 @@ public class XSDParser implements DOMErrorHandler {
 				childs.add((ElementMeta)b);
 			}
 		}
-		l = processParticle(item.getParticle());
+		l = processParticle(item.getParticle(), depth);
 		if(l==null) return ret;
 		for (BaseMeta b:l) {
 			if (b instanceof AttributeMeta) {
@@ -181,12 +192,12 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		return ret;
 	}
-	private static List<BaseMeta> processParticle(XSParticle item){
+	private static List<BaseMeta> processParticle(XSParticle item, int depth){
 		if(item == null){
-			System.out.println("Particle{null}");
+			if(debug) System.out.println(getPrefix(depth+1)+"Particle{null}");
 			return null;
 		}
-		List<BaseMeta> l = processTerm(item.getTerm());
+		List<BaseMeta> l = processTerm(item.getTerm(), depth+1);
 		if(l.size() == 1){
 			ElementMeta e = (ElementMeta)l.get(0);
 			int maxOccur = item.getMaxOccurs();
@@ -199,17 +210,21 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		return l;
 	}
-	private static List<BaseMeta> processTerm(XSTerm item){
+	private static List<BaseMeta> processTerm(XSTerm item, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
-		System.out.println("Term{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		if(item instanceof XSModelGroup)
-			ret.addAll(processList(((XSModelGroup)item).getParticles()));
-		else if(item instanceof XSElementDeclaration)
-			ret.add(processElement((XSElementDeclaration)item));
+		if(debug) System.out.print(getPrefix(depth)+"Term{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+		if(item instanceof XSModelGroup){
+			short comp = ((XSModelGroup)item).getCompositor();
+			if(debug) System.out.println(comp==XSModelGroup.COMPOSITOR_ALL?" *ALL* ":(comp==XSModelGroup.COMPOSITOR_CHOICE?" *CHOICE* ":" *SEQ* "));
+			ret.addAll(processList(((XSModelGroup)item).getParticles(), depth));
+		}else if(item instanceof XSElementDeclaration) {
+			if(debug) System.out.println(" *ELEMENT*");
+			ret.add(processElement((XSElementDeclaration)item, depth));
+		}
 		return ret;
 	}
-	private static ElementMeta processElement(XSElementDeclaration item){
-		System.out.println("Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+	private static ElementMeta processElement(XSElementDeclaration item, int depth){
+		if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		ElementMeta ret = null;
 //		if(indent>MAX_INDENT) {
 //			System.out.println("MMMMMMMMM Reached max depth, skipping the lower levels......");
@@ -217,9 +232,9 @@ public class XSDParser implements DOMErrorHandler {
 //		}
 		XSTypeDefinition type = item.getTypeDefinition();
 		if(type instanceof XSComplexTypeDefinition){
-				 ret = processComplexType((XSComplexTypeDefinition)type);
+				 ret = processComplexType((XSComplexTypeDefinition)type, depth);
 		}else if(type instanceof XSSimpleTypeDefinition){
-				processSimpleType((XSSimpleTypeDefinition)type);
+				processSimpleType((XSSimpleTypeDefinition)type, depth);
 		} 
 		if(ret == null) ret = new ElementMeta();
 		ret.setName((item.getNamespace()==null?"":(item.getNamespace()+":"))+item.getName());
@@ -227,9 +242,9 @@ public class XSDParser implements DOMErrorHandler {
 		//processParticle(item.getParticle(), indent+1);
 		return ret;
 	}
-	private static AttributeMeta processAttribute(XSAttributeUse item){
+	private static AttributeMeta processAttribute(XSAttributeUse item, int depth){
 		if(item == null){
-			System.out.println("Attribute {null}");
+			if(debug) System.out.println(getPrefix(depth+1)+"Attribute {null}");
 			return null;
 		}
 		XSAttributeDeclaration 	attr = item.getAttrDeclaration();
@@ -242,10 +257,10 @@ public class XSDParser implements DOMErrorHandler {
 			ret.setIsFixed(true);
 		}
 		
-		System.out.print("AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
+		if(debug) System.out.print(getPrefix(depth+1)+"AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
 				+(item.getRequired()?",":"Required,")
 				+(item.getConstraintType()==XSConstants.VC_NONE?"":((item.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+item.getConstraintValue())));
-		System.out.println(", Attribute{" + attr.getNamespace() + "}" + attr.getName()+"["+attr.getClass()+"]"
+		if(debug) System.out.println(", Attribute{" + attr.getNamespace() + "}" + attr.getName()+"["+attr.getClass()+"]"
 				+("{"+attr.getTypeDefinition().getNamespace()+"}"+attr.getTypeDefinition().getName())
 				+(attr.getConstraintType()==XSConstants.VC_NONE?"":((attr.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+attr.getConstraintValue())));
 		return ret;
@@ -271,6 +286,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/10/08 18:54:42  linc
+ * HISTORY: updated
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/09/30 17:30:41  linc
  * HISTORY: updated.
  * HISTORY:
