@@ -27,8 +27,8 @@ import gov.nih.nci.cbiit.cmps.common.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-10-01 18:59:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-10-08 18:54:42 $
  *
  */
 public class MappingTest {
@@ -68,13 +68,13 @@ public class MappingTest {
 	}
 	
 	@Test
-	public void testParseXSD3() throws Exception {
+	public void testParseHL7v2XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder3.xsd");
-		ElementMeta e = p.getElementMeta(null, "shiporder");
+		p.loadSchema(p.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
+		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", "ADT_A01");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
-		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder3.out.xml"));
+		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/adt.out.xml"));
 	}
 	
 	@Test
@@ -118,6 +118,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/10/01 18:59:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/09/30 17:30:41  linc
  * HISTORY: updated.
  * HISTORY:

@@ -7,6 +7,8 @@
  */
 package gov.nih.nci.cbiit.cmps.common;
 
+import java.math.BigInteger;
+import java.net.URL;
 import java.util.*;
 import org.apache.xerces.xs.*;
 import org.w3c.dom.DOMConfiguration;
@@ -22,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-09-30 17:30:41 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-10-08 18:54:42 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -95,6 +97,19 @@ public class XSDParser implements DOMErrorHandler {
 
     }
     
+	public static URL getResource(String name){
+		URL ret = null;
+		ret = XSDParser.class.getClassLoader().getResource(name);
+		if(ret!=null) return ret;
+		ret = XSDParser.class.getClassLoader().getResource("/"+name);
+		if(ret!=null) return ret;
+		ret = ClassLoader.getSystemResource(name);
+		if(ret!=null) return ret;
+		ret = ClassLoader.getSystemResource("/"+name);
+		return ret;
+	}
+	
+
     private static ElementMeta processXSObject(XSObject item) {
 		if(item instanceof XSComplexTypeDefinition){
 			return processComplexType((XSComplexTypeDefinition)item);
@@ -156,6 +171,7 @@ public class XSDParser implements DOMErrorHandler {
 			}
 		}
 		l = processParticle(item.getParticle());
+		if(l==null) return ret;
 		for (BaseMeta b:l) {
 			if (b instanceof AttributeMeta) {
 				attrs.add((AttributeMeta)b);
@@ -170,7 +186,18 @@ public class XSDParser implements DOMErrorHandler {
 			System.out.println("Particle{null}");
 			return null;
 		}
-		return processTerm(item.getTerm());
+		List<BaseMeta> l = processTerm(item.getTerm());
+		if(l.size() == 1){
+			ElementMeta e = (ElementMeta)l.get(0);
+			int maxOccur = item.getMaxOccurs();
+			int minOccur = item.getMinOccurs();
+			boolean unbound = item.getMaxOccursUnbounded();
+			e.setIsRequired(minOccur>0);
+			e.setMaxOccurs(BigInteger.valueOf(maxOccur));
+			e.setMinOccurs(BigInteger.valueOf(minOccur));
+			if(unbound) e.setMaxOccurs(BigInteger.valueOf(-1));
+		}
+		return l;
 	}
 	private static List<BaseMeta> processTerm(XSTerm item){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
@@ -244,4 +271,7 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/09/30 17:30:41  linc
+ * HISTORY: updated.
+ * HISTORY:
  */
