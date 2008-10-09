@@ -17,6 +17,9 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
+import gov.nih.nci.caadapter.common.csv.meta.impl.CSVFieldMetaImpl;
+import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
+import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -26,6 +29,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.MapParserImpl;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
@@ -35,11 +39,14 @@ import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
 import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.common.nodeloader.SCMMapSourceNodeLoader;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.TargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -68,13 +75,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-09-29 20:29:07 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-10-09 18:11:47 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.10 2008-09-29 20:29:07 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.11 2008-10-09 18:11:47 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -205,7 +212,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			if (SELECT_SOURCE.equals(command))
 			{
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+					Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
 				if (file != null)
 				{
 					everythingGood = processOpenSourceTree(file, true, true);
@@ -236,9 +243,33 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		}
 	}
 
-
+private TreeNode loadV2MetaTree( Object metaInfo, File absoluteFile)
+{
+	
+	ElementMeta e =V2MetaXSDUtil.loadMessageMeta(absoluteFile.getAbsolutePath());
+	DefaultMappableTreeNode rootNode=processElmentMeta(e);
+	V2MetaXSDUtil.resetElementHash(rootNode);
+	return rootNode; 
+}
+	
+private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
+{
+	DefaultMappableTreeNode rtnNode;
+	rtnNode =new DefaultSourceTreeNode(eMeta, true);
+	for(ElementMeta child:eMeta.getChildElement())
+	{
+		DefaultMappableTreeNode childNode=	processElmentMeta(child);
+		rtnNode.add(childNode);
+	}
+	return rtnNode;
+	
+}
 	protected TreeNode loadSourceTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
+		//load XSD (V2Meta) data
+		if (metaInfo==null)
+			return loadV2MetaTree(metaInfo, absoluteFile);
+		
 		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
 		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
 
@@ -249,12 +280,6 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			SCMMapSourceNodeLoader scmMapSourceNodeLoader = new SCMMapSourceNodeLoader();
 			node = scmMapSourceNodeLoader.loadData(metaInfo);
 		}
-//		else if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			// generate GUI nodes from object graph.
-//			DBMMapSourceNodeLoader dbmTreeNodeLoader = new DBMMapSourceNodeLoader();
-//			node = dbmTreeNodeLoader.loadData(metaInfo);
-//		}
 		else
 		{
 			throw new ApplicationException("Unknow Source File Extension:" + absoluteFile,
@@ -276,8 +301,6 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			// generate GUI nodes from object graph.
 	        try
 	        {
-//	        	HSMMapTargetNodeLoader hl7MapTargetNodeLoader = new HSMMapTargetNodeLoader();
-//				nodes = hl7MapTargetNodeLoader.loadData(metaInfo);
 	        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(false);
 	        	if(metaInfo!=null&&metaInfo instanceof MIFClass)
 	        		nodes=newHsmNodeLoader.loadMappingTargetData(metaInfo);
@@ -319,35 +342,23 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		MetaParser parser = null;
 		MetaObject metaInfo = null;
 		BaseResult returnResult = null;
-
-		// parse the file into a meta object graph.
-//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			parser = new DatabaseMetaParserImpl();
-//		}
-//		else
-//		{//default to Config.CSV_METADATA_FILE_DEFAULT_EXTENTION
-			parser = new CSVMetaParserImpl();
-//		}
-		returnResult = parser.parse(new FileReader(file));
-		ValidatorResults validatorResults = returnResult.getValidatorResults();
-		if (validatorResults != null && validatorResults.hasFatal())
+		if(fileExtension.equalsIgnoreCase(Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION))
 		{
-			Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
-			DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
-			return false;
-		}
-//
-//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
-//		}
-//		else
-//		{//default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
+			parser = new CSVMetaParserImpl();
+	
+			returnResult = parser.parse(new FileReader(file));
+			ValidatorResults validatorResults = returnResult.getValidatorResults();
+			if (validatorResults != null && validatorResults.hasFatal())
+			{
+				Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
+				DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
+				return false;
+			}
 			metaInfo = ((CSVMetaResult) returnResult).getCsvMeta();
-//		}
+		}
+		 
 		buildSourceTree(metaInfo, file, isToResetGraph);
-		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
+ 		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
 		return true;
 	}
 
@@ -368,39 +379,6 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
 
 		// parse the file into a meta object graph.
-//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			parser = new DatabaseMetaParserImpl();
-//			returnResult = parser.parse(new FileReader(file));
-//			ValidatorResults validatorResults = returnResult.getValidatorResults();
-//			if (validatorResults != null && validatorResults.hasFatal())
-//			{
-//				Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
-//				DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
-//				return false;
-//			}
-//		}
-//		else
-//		{//default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-//			parser = HL7V3MetaFileParser.instance();
-//		}
-//		returnResult = parser.parse(new FileReader(file));
-//		ValidatorResults validatorResults = returnResult.getValidatorResults();
-//		if (validatorResults != null && validatorResults.hasFatal())
-//		{
-//			Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
-//			DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
-//			return false;
-//		}
-
-//		if (Config.DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
-//		}
-//		else
-//		{//default to Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-//			metaInfo = ((HL7V3MetaResult)returnResult).getHl7V3Meta();
-//		}
 		buildTargetTree(metaInfo, file, isToResetGraph);
 		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
 		return true;
@@ -594,6 +572,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/09/29 20:29:07  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
