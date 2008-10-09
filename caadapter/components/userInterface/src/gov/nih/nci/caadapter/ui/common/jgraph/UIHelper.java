@@ -43,10 +43,10 @@ import java.util.Enumeration;
  * This class utilizes singleton pattern.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-10-09 18:17:18 $
  */
 public final class UIHelper
 {
@@ -72,10 +72,6 @@ public final class UIHelper
 	//used most time for Logging purposes.
 	private static final UIHelper internalInstance = new UIHelper();
 
-	private UIHelper()
-	{
-
-	}
 
 	public static final int getDefaultFunctionalBoxInputOrientation()
 	{
@@ -97,10 +93,6 @@ public final class UIHelper
 		return PORT_OUTPUT_STRING;
 	}
 
-//	public static final void timeMessage(Object sender, String msg, long timeLapse)
-//	{
-//		Log.logInfo(sender, msg + " time(milisec): " + timeLapse);
-//	}
 
 	private static final boolean isPortOrientationMatch(DefaultGraphCell cell, boolean isInputData)
 	{
@@ -126,19 +118,17 @@ public final class UIHelper
 	public static final DefaultPort getFirstUnmappedPort(DefaultGraphCell cell, boolean isInputData)
 	{
 		int size = cell.getChildCount();
-//		Log.logInfo(this, "Cell has " + size + " children. Cell of type '"+cell.getClass().getName() + "'.");
-		DefaultPort port = null;
-		boolean found = false;
+		DefaultPort rtnPort = null;
 		for (int i = 0; i < size; i++)
 		{
 			DefaultGraphCell childCell = (DefaultGraphCell) cell.getChildAt(i);
 			if (childCell instanceof DefaultPort)
 			{
-				port = (DefaultPort) childCell;
+				DefaultPort childPort = (DefaultPort) childCell;
 				boolean portOrientationMatch = isPortOrientationMatch(childCell, isInputData);
-				if (!port.edges().hasNext() && portOrientationMatch)
+				if (!childPort.edges().hasNext() && portOrientationMatch)
 				{//not used port, empty and the port caption matches, ie, input for source, output for target
-					found = true;
+					rtnPort=childPort;
 					break;
 				}
 			}
@@ -148,23 +138,12 @@ public final class UIHelper
 				 * NOTE:
 				 * Since DefaultPort is descendant of DefaultGraphCell, so has to structure this way.
 				 */
-				port = getFirstUnmappedPort(childCell, isInputData);
-				if(port!=null)
-				{
-					found = true;
+				rtnPort = getFirstUnmappedPort(childCell, isInputData);
+				if(rtnPort!=null)
 					break;
-				}
 			}
 		}
-
-		if(found)
-		{
-			return port;
-		}
-		else
-		{
-			return null;
-		}
+		return rtnPort;
 	}
 
 	/**
@@ -425,6 +404,9 @@ public final class UIHelper
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/01/08 18:44:28  wangeug
  * HISTORY      : check null
  * HISTORY      :

@@ -24,22 +24,13 @@ import java.awt.event.MouseEvent;
  * This class defines a custom implementation JGraphUI so as to provide a custom version of JGraphTransferHandler
  * and a custom Root Handle support the link drag-and-drop movement.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-10-09 18:14:05 $
  */
 public class DefaultGraphUI extends BasicGraphUI
 {
-
-	/**
-	 * Creates an instance of TransferHandler. Used for subclassers to provide
-	 * different TransferHandler.
-	 */
-	protected TransferHandler createTransferHandler()
-	{
-		return new MiddlePanelJGraphTransferHandler();
-	}
 
 	/**
 	 * Constructs the "root handle" for <code>context</code>.
@@ -94,7 +85,7 @@ public class DefaultGraphUI extends BasicGraphUI
 				if (graph.isDragEnabled())
 				{
 					//using bit or operation to include both COPY (or MOVE) and LINK so as to accommodate the move out of this graphic application to other applications.
-					int transferHandlerSupportedActions = graph.getTransferHandler().getSourceActions(graph);
+					int transferHandlerSupportedActions =  DnDConstants.ACTION_LINK;//graph.getTransferHandler().getSourceActions(graph);
 					int action = (event.isControlDown() && graph.isCloneable()) ? (DnDConstants.ACTION_COPY | transferHandlerSupportedActions) : (DnDConstants.ACTION_MOVE | transferHandlerSupportedActions);
 					setInsertionLocation(event.getPoint());
 					try
@@ -122,6 +113,9 @@ public class DefaultGraphUI extends BasicGraphUI
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

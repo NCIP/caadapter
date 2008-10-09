@@ -28,10 +28,10 @@ import java.util.ArrayList;
  * As of version 1.0, this class only handles drag from the tree.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.2 $
- * date        $Date: 2008-06-09 19:53:52 $
+ * revision    $Revision: 1.3 $
+ * date        $Date: 2008-10-09 18:19:29 $
  */
 public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 {
@@ -47,13 +47,11 @@ public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDragTransferHandler.java,v 1.2 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDragTransferHandler.java,v 1.3 2008-10-09 18:19:29 wangeug Exp $";
 
 	private JTree mTree;
-	private DragSource dragSource;
 	private HL7SDKDragGestureAdapter dragGestureAdapter;
 	private HL7SDKDragSourceAdapter dragSourceAdapter;
-//	private Color plafSelectionColor;
 	private boolean inDragDropMode;
 
 	//default setting
@@ -82,34 +80,14 @@ public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 	 */
 	protected void initDragAndDrop()
 	{
-//		TreeCellRenderer cellRenderer = this.getTree().getCellRenderer();
-//		if (cellRenderer instanceof DefaultTreeCellRenderer)
-//		{
-//			DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) cellRenderer;
-//			this.plafSelectionColor = renderer.getBackgroundSelectionColor();
-//		}
-//		else
-//		{
-//			this.plafSelectionColor = Color.blue;
-//		}
 		// set up drag stuff
-		this.dragSource = DragSource.getDefaultDragSource();
-		this.dragGestureAdapter = new HL7SDKDragGestureAdapter(this);
-		this.dragSourceAdapter = new HL7SDKDragSourceAdapter(this);
+		
+		dragGestureAdapter = new HL7SDKDragGestureAdapter(this);
+		dragSourceAdapter = new HL7SDKDragSourceAdapter(this);
 		// component, action, listener
-		this.dragSource.createDefaultDragGestureRecognizer(this.getTree(), this.acceptableDragAction, this.dragGestureAdapter);
+		DragSource dragSource= DragSource.getDefaultDragSource();
+		dragSource.createDefaultDragGestureRecognizer(this.getTree(), this.acceptableDragAction, this.dragGestureAdapter);
 	}
-
-	/**
-	 * Called by the DragSourceAdapter in dragDropEnd if the operation
-	 * is DnDConstants.ACTION_MOVE
-	 */
-	public void move()
-	{
-		//do nothing intentionally as of this release. It falls to the
-		//drop component to handle the real remove.
-	}
-
 	/**
 	 * What are the drag actions supported by this component. Could be
 	 * DnDConstants.ACTION_MOVE, DnDConstants.ACTION_COPY or
@@ -230,9 +208,21 @@ public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 		return inDragDropMode;
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.caadapter.ui.common.tree.DragCompatibleComponent#move()
+	 */
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

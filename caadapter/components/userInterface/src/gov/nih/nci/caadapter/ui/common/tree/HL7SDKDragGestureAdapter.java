@@ -19,10 +19,10 @@ import java.awt.dnd.*;
  * support for initiation of Drag action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-10-09 18:17:52 $
  */
 public class HL7SDKDragGestureAdapter
 		implements DragGestureListener
@@ -35,20 +35,6 @@ public class HL7SDKDragGestureAdapter
 	public HL7SDKDragGestureAdapter(DragCompatibleComponent c)
 	{
 		this.dragComponent = c;
-	}
-
-	public HL7SDKDragGestureAdapter(DragCompatibleComponent c, Cursor cur)
-	{
-		this.dragComponent = c;
-		this.cursor = cur;
-	}
-
-	public HL7SDKDragGestureAdapter(DragCompatibleComponent c, Cursor cur, Image image, Point p)
-	{
-		this.dragComponent = c;
-		this.cursor = cur;
-		this.dragImage = image;
-		this.point = p;
 	}
 
 	/**
@@ -110,6 +96,9 @@ public class HL7SDKDragGestureAdapter
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

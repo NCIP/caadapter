@@ -20,6 +20,7 @@ import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.HL7SDKDropTargetAdapter;
 import java.awt.geom.Rectangle2D;
 import gov.nih.nci.caadapter.ui.common.tree.DropCompatibleComponent;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
@@ -42,10 +43,10 @@ import java.util.List;
  * The class defines a customized drop hanlder for middle panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-10-09 18:24:23 $
  */
 public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleComponent
 {
@@ -59,8 +60,6 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 	protected JGraph mGraph;
 	private MappingDataManager mappingDataMananger;
 
-	private boolean drawFeedback;
-
 	private DataFlavor[] acceptableDropFlavors = TransferableNode.transferDataFlavors;
 	private DataFlavor[] preferredLocalFlavors = {TransferableNode.LOCAL_NODE_FLAVOR};
 
@@ -68,11 +67,6 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 	protected int acceptableDropAction = DnDConstants.ACTION_MOVE; //DnDConstants.ACTION_COPY_OR_MOVE;
 	protected DropTarget dropTarget;
 	protected HL7SDKDropTargetAdapter dropTargetAdapter;
-
-	public MiddlePanelJGraphDropTargetHandler(JGraph mGraph, MappingDataManager mappingDataMananger)
-	{
-		this(mGraph, mappingDataMananger, DnDConstants.ACTION_MOVE);//DnDConstants.ACTION_MOVE,
-	}
 
 	public MiddlePanelJGraphDropTargetHandler(JGraph mGraph, MappingDataManager mappingDataMananger, int acceptableDropAction) //int acceptableDragAction,
 	{
@@ -94,13 +88,6 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 	 */
 	protected void initDragAndDrop()
 	{
-//		// set up drag stuff
-//		this.dragSource = DragSource.getDefaultDragSource();
-//		this.dragGestureAdapter = new HL7SDKDragGestureAdapter(this);
-//		this.dragSourceAdapter = new HL7SDKDragSourceAdapter(this);
-//		// component, action, listener
-//		this.dragSource.createDefaultDragGestureRecognizer(this.getGraph(), this.acceptableDragAction, this.dragGestureAdapter);
-
 		//set up drop stuff
 		this.dropTargetAdapter = new HL7SDKDropTargetAdapter(this,
 				acceptableDropAction,
@@ -154,7 +141,8 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 		//check if the enclosed is a function
 		Transferable trans = e.getTransferable();
 		Object data = getTransferedData(trans);
-		if(isDataContainsTargetClassObject(data, FunctionMeta.class) || isDataContainsTargetClassObject(data, DefaultGraphCell.class))
+		if(isDataContainsTargetClassObject(data, FunctionMeta.class) || isDataContainsTargetClassObject(data, DefaultGraphCell.class)
+				||isDataContainsTargetClassObject(data, ElementMeta.class))
 		{
 			return true;
 		}
@@ -199,35 +187,6 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 			}
 		}
 		return false;
-//		if (object instanceof FunctionBoxCell)
-//		{//accept drop if it is on a functional box.
-//			PortView portView = getGraph().getPortViewAt(dropLocation.getX(), dropLocation.getY());
-//			if(portView!=null)
-//			{
-//				Object portObj = portView.getCell();
-//				if(portObj instanceof FunctionBoxDefaultPort)
-//				{
-//					return true;
-//				}
-//			}
-//			return false;
-//		}
-//		if (object instanceof FunctionBoxDefaultPort)
-//		{//accept drop if it is a port of functional box.
-//			Log.logInfo(this, "I am a port of type '" + object.getClass().getName() + "'");
-//			if (((DefaultPort) object).getParent() instanceof FunctionBoxCell)
-//			{
-//				return true;
-//			}
-//			else
-//			{
-//				return false;
-//			}
-//		}
-//		else
-//		{
-//			return false;
-//		}
 	}
 
 	protected boolean isDataContainsTargetClassObject(Object data, Class targetClass)
@@ -289,7 +248,6 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 	public void undoDragUnderFeedback()
 	{
 		this.getGraph().clearSelection();
-		this.drawFeedback = false;
 	}
 
 	/**
@@ -485,6 +443,9 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

@@ -27,10 +27,10 @@ import java.awt.dnd.DropTargetDropEvent;
  * This class defines the handling methods to support drop action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-10-09 18:17:35 $
  */
 public class CSVTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -46,12 +46,7 @@ public class CSVTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/CSVTreeDropTransferHandler.java,v 1.2 2008-06-09 19:53:52 phadkes Exp $";
-
-	public CSVTreeDropTransferHandler(JTree tree)
-	{
-		super(tree);
-	}
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/CSVTreeDropTransferHandler.java,v 1.3 2008-10-09 18:17:35 wangeug Exp $";
 
 	public CSVTreeDropTransferHandler(JTree tree, int action)
 	{
@@ -184,6 +179,9 @@ public class CSVTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
