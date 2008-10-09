@@ -26,8 +26,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Ki Sung Um
  * @author LAST UPDATE $Author: linc $
  * @since caAdapter v1.2
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2008-10-09 20:08:58 $
 */
 public class HelpTopicAction extends AbstractContextAction
 {
@@ -52,6 +52,7 @@ public class HelpTopicAction extends AbstractContextAction
 	 * @param codeBase the codeBase to set
 	 */
 	public static final void setCodeBase(String codeBase) {
+		if(!codeBase.endsWith("/")) codeBase += "/";
 		HelpTopicAction.codeBase = codeBase;
 	}
 
@@ -123,6 +124,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/09/23 15:43:28  linc
  * HISTORY      : modified method to set codebase.
  * HISTORY      :
