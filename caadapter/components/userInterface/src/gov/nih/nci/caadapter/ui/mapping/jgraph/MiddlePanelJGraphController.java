@@ -27,6 +27,7 @@ import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.hl7.map.impl.BaseMapElementImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MapImpl;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
+import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.sdtm.SDTMMetadata;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
@@ -48,6 +49,8 @@ import gov.nih.nci.caadapter.ui.common.tree.MappingBaseTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.sdtm.SDTMMappingGenerator;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
+
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 import javax.swing.JTree;
@@ -79,8 +82,8 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
- * @version Since caAdapter v1.2 revision $Revision: 1.27 $ date $Date: 2008-06-16 15:50:50 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v1.2 revision $Revision: 1.28 $ date $Date: 2008-10-09 18:13:28 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -95,7 +98,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.27 2008-06-16 15:50:50 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.28 2008-10-09 18:13:28 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1177,23 +1180,21 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			else {// either source or target is function
 				BaseComponent sourceComponent = null;
 				BaseComponent targetComponent = null;
-				MetaObject localSourceUserObject = null;
+				Object localSourceUserObject = null;
 				Object localTargetUserObject = null;
 				if ( sourceNode instanceof FunctionBoxDefaultPort ) {
 					localSourceUserObject = (MetaObject) ((FunctionBoxDefaultPort) sourceNode).getUserObject();
 					sourceComponent = findFunctionComponent(cellComponentMap, (FunctionBoxDefaultPort) sourceNode);
 				} else // a tree node
 				{
-					localSourceUserObject = (MetaObject) ((DefaultMutableTreeNode) sourceNode).getUserObject();
-					if ( UIHelper.isDataFromSourceTree((DefaultMutableTreeNode) sourceNode) ) {// from source tree
+					localSourceUserObject =((DefaultMutableTreeNode) sourceNode).getUserObject();
+					if ( UIHelper.isDataFromSourceTree((DefaultMutableTreeNode) sourceNode) )
+					{ 
 						sourceComponent = mappingData.getSourceComponent();
-					}
-					// no else occurs since the MappingViewCommonComponent guarantees the sourceNode is the source of a link and the targetNode is the target of
-					// a link.
-					// else
-					// {//from target tree
-					// sourceComponent = mappingData.getTargetComponent();
-					// }
+						//process V2Meta mapping
+						if (localSourceUserObject instanceof ElementMeta)
+							localSourceUserObject=V2MetaXSDUtil.findNodeXmlPath((DefaultMutableTreeNode) sourceNode);
+					}					 
 				}
 				if ( targetNode instanceof FunctionBoxDefaultPort ) {
 					localTargetUserObject = (MetaObject) ((FunctionBoxDefaultPort) targetNode).getUserObject();
@@ -1202,15 +1203,13 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				{
 //					localTargetUserObject = (MetaObject) ((DefaultMutableTreeNode) targetNode).getUserObject();
 					localTargetUserObject = (Object) ((DefaultMutableTreeNode) targetNode).getUserObject();
-					if ( !UIHelper.isDataFromSourceTree((DefaultMutableTreeNode) targetNode) ) {// from target tree
+					if ( !UIHelper.isDataFromSourceTree((DefaultMutableTreeNode) targetNode) )
+					{// from target tree
 						targetComponent = mappingData.getTargetComponent();
 					}
-					// no else occurs since the MappingViewCommonComponent guarantees the sourceNode is the source of a link and the targetNode is the target of
-					// a link.
-					// else
-					// {//from source tree
-					// targetComponent = mappingData.getSourceComponent();
-					// }
+					if (localTargetUserObject instanceof ElementMeta)
+						localTargetUserObject=V2MetaXSDUtil.findNodeXmlPath((DefaultMutableTreeNode)targetNode);
+
 				}
 				MapImpl mapImpl = new MapImpl();
 				BaseMapElement sourceMapElement = new BaseMapElementImpl(sourceComponent, localSourceUserObject);
@@ -1303,12 +1302,17 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 			localRealTargetNode = (DefaultMutableTreeNode) targetNode;
 		}
 		MapImpl mapImpl = new MapImpl();
-		MetaObject userObject = (MetaObject) ((DefaultSourceTreeNode) localRealSourceNode).getUserObject();
-		BaseMapElement sourceMapElement = new BaseMapElementImpl(sourceComponent, userObject);
+//		MetaObject userObject = (MetaObject) ((DefaultSourceTreeNode) localRealSourceNode).getUserObject();
+		Object baseSrcObj = ((DefaultSourceTreeNode) localRealSourceNode).getUserObject();
+		if (baseSrcObj instanceof ElementMeta)
+			baseSrcObj=V2MetaXSDUtil.findNodeXmlPath(localRealSourceNode);
+		BaseMapElement sourceMapElement = new BaseMapElementImpl(sourceComponent, baseSrcObj);
 		mapImpl.setSourceMapElement(sourceMapElement);
 //		userObject = (MetaObject) ((DefaultTargetTreeNode) localRealTargetNode).getUserObject();
-		Object baseUserObject =((DefaultTargetTreeNode) localRealTargetNode).getUserObject();
-		BaseMapElement targetMapElement = new BaseMapElementImpl(targetComponent, baseUserObject);
+		Object baseTrgtObject =((DefaultTargetTreeNode) localRealTargetNode).getUserObject();
+		if (baseTrgtObject instanceof ElementMeta)
+			baseTrgtObject=V2MetaXSDUtil.findNodeXmlPath(localRealTargetNode);
+		BaseMapElement targetMapElement = new BaseMapElementImpl(targetComponent, baseTrgtObject);
 		mapImpl.setTargetMapElement(targetMapElement);
 		mappingData.addMap(mapImpl);
 	}
@@ -1496,12 +1500,12 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 		// return viewPortVisibleWidth;// - 23;
 		return visibleWidth - 20;
 	}
-//	public Mapping getMappingData() {
-//		return mappingData;
-//	}
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.27  2008/06/16 15:50:50  linc
+ * HISTORY : fixed "deleteAll" action
+ * HISTORY :
  * HISTORY : Revision 1.26  2008/06/09 19:54:06  phadkes
  * HISTORY : New license text replaced for all .java files.
  * HISTORY :

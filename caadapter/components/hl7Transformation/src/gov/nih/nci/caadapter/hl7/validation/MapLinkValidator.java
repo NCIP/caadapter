@@ -27,10 +27,10 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * Future enhancement or refactory may be needed along the expansion of functionality.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2008-10-09 18:09:20 $
  */
 public class MapLinkValidator extends Validator {
 	/**
@@ -45,7 +45,7 @@ public class MapLinkValidator extends Validator {
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.10 2008-06-09 19:53:50 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/validation/MapLinkValidator.java,v 1.11 2008-10-09 18:09:20 wangeug Exp $";
 
 	private transient Object source;
 	private transient Object target;
@@ -133,6 +133,11 @@ public class MapLinkValidator extends Validator {
 				&& (target instanceof   gov.nih.nci.caadapter.common.metadata.AttributeMetadata))
 		{
 		}
+		else if ((source instanceof gov.nih.nci.cbiit.cmps.core.ElementMeta)
+				&& (target instanceof   gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject))
+		{
+		}
+			
 		else
 			foundError=true;
 		
@@ -174,6 +179,9 @@ public class MapLinkValidator extends Validator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/02/20 22:07:25  schroedn
  * HISTORY      : *** empty log message ***
  * HISTORY      :
