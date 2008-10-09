@@ -128,7 +128,7 @@
 		<zip destfile="caadapter_MMS_4_1_Src_${DATE}.zip" basedir="." 
 					excludes="tdms*.doc,lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
 					docs/GME/**, docs/v4.0/**, docs/MMSv4.1/*.zip, docs/v4.1*BETA/**, **/CVS/**,
-					referenceLib/**, run.bat, *.spp, *.mpp,">
+					referenceLib/**, *.spp, *.mpp,">
 		</zip>
     </target>
 
