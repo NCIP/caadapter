@@ -23,19 +23,16 @@ import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.TransferableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.UIHelper;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.util.ArrayList;
@@ -44,18 +41,14 @@ import java.util.ArrayList;
  * This class handles drop-related data manipulation for target tree on the mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-10-14 17:25:04 $
  */
 public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
 	private MappingDataManager mappingDataMananger;
-	public TargetTreeDropTransferHandler(JTree tree, MappingDataManager mappingDataMananger)
-	{
-		this(tree, mappingDataMananger, DnDConstants.ACTION_MOVE);
-	}
 
 	public TargetTreeDropTransferHandler(JTree tree, MappingDataManager mappingDataMananger, int action)
 	{
@@ -63,68 +56,6 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 		this.mappingDataMananger = mappingDataMananger;
 	}
 
-	/**
-	 * set up the drag and drop listeners. This must be called
-	 * after the constructor.
-	 */
-	protected void initDragAndDrop()
-	{
-		TreeCellRenderer cellRenderer = this.getTree().getCellRenderer();
-		if (cellRenderer instanceof DefaultTreeCellRenderer)
-		{
-			DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) cellRenderer;
-			this.plafSelectionColor = renderer.getBackgroundSelectionColor();
-		}
-		else
-		{
-			this.plafSelectionColor = Color.blue;
-		}
-		//set up drop stuff
-		this.dropTargetAdapter = new HL7SDKDropTargetAdapter(this,
-				acceptableDropAction,
-				acceptableDropFlavors,
-				preferredLocalFlavors);
-
-		// component, ops, listener, accepting
-		this.dropTarget = new DropTarget(this.getTree(),
-				acceptableDropAction,
-				this.dropTargetAdapter,
-				true);
-		this.dropTarget.setActive(true);
-	}
-
-	/**
-	 * Called by the DropTargetAdapter in dragEnter, dragOver and
-	 * dragActionChanged
-	 */
-	public void dragUnderFeedback(boolean ok, DropTargetDragEvent e)
-	{
-		TreeCellRenderer cellRenderer = this.getTree().getCellRenderer();
-		if (cellRenderer instanceof DefaultTreeCellRenderer)
-		{
-			DefaultTreeCellRenderer renderer =
-					(DefaultTreeCellRenderer) cellRenderer;
-			if (ok)
-			{
-				renderer.setBackgroundSelectionColor(this.plafSelectionColor);
-				this.drawFeedback = true;
-			}
-			else
-			{
-				renderer.setBackgroundSelectionColor(Color.red);
-			}
-		}
-
-//comments out so that when drag over a folder it will not expand
-		Point p = e.getLocation();
-		TreePath path = this.getTree().getPathForLocation(p.x, p.y);
-		if (path != null)
-		{
-			this.getTree().setSelectionPath(path);
-//	        if(this.getTree().isExpanded(path) == false)
-//		    this.getTree().expandPath(path);
-		}
-	}
 
 	/**
 	 * Called by the DropTargetAdapter in dragEnter, dragOver and
@@ -167,21 +98,6 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 			result = validatorResult.isValid();
 		}
 		return result;
-	}
-
-	/**
-	 * Called by the DropTargetAdapter in dragExit and drop
-	 */
-	public void undoDragUnderFeedback()
-	{
-		this.getTree().clearSelection();
-		TreeCellRenderer cellRenderer = this.getTree().getCellRenderer();
-		if (cellRenderer instanceof DefaultTreeCellRenderer)
-		{
-			DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) cellRenderer;
-			renderer.setBackgroundSelectionColor(this.plafSelectionColor);
-		}
-		this.drawFeedback = false;
 	}
 
 	/**
@@ -251,6 +167,15 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 					    		isAllowedMapping=true;
 					    	else
 					    		errMsg="A CSVSegment can only be mapped to a Clone|MIFAssociation|Complex Datatype";
+						}
+					    else if (srcObj instanceof ElementMeta)
+						{
+					    	if ((trgtObj instanceof MIFAttribute)
+									||(trgtObj instanceof MIFAssociation)
+									||(trgtObj instanceof Attribute))
+					    		isAllowedMapping=true;
+					    	else
+					    		errMsg="An ElementMeta can only be mapped to a MIFAssociation|MIFAttribute|Attribute:"+trgtObj.getClass();
 						}
 						else
 						{
@@ -343,6 +268,9 @@ public class TargetTreeDropTransferHandler extends TreeDefaultDropTransferHandle
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2007/10/25 14:54:54  wangeug
  * HISTORY      : allow mapping from a CSVSegment to Complex datatype;
  * HISTORY      :

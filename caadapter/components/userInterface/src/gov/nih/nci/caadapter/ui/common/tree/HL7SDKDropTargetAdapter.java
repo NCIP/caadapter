@@ -23,17 +23,16 @@ import java.awt.dnd.*;
  * for Drop action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-10-14 17:24:56 $
  */
 public class HL7SDKDropTargetAdapter implements DropTargetListener
 {
 	protected boolean asynchronousAdd = false;
 	protected boolean acceptAnyFlavor = false;
 	protected boolean acceptAnyAction = false;
-	protected boolean showDialogs = false;
 	protected boolean confirmDropFlavors = false;
 	protected DataFlavor selectedDataFlavor;
 	protected DataFlavor[] currentDataFlavors;
@@ -41,7 +40,7 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 	protected DataFlavor[] preferredLocalFlavors;
 	protected int acceptableDropActions = DnDConstants.ACTION_COPY_OR_MOVE;
 	protected DropCompatibleComponent dropComponent;
-	protected SwingWorker worker;
+	private SwingWorker worker;
 
 	/**
 	 * record the point that dragEnter and dragOver regard to
@@ -71,15 +70,6 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 	{
 		if (this.acceptAnyFlavor == true)
 			return true;
-
-		/*if(debug) {
-		System.out.println("current flavors");
-		DataFlavor[] flavors = e.getCurrentDataFlavors();
-		for(int i=0; i< flavors.length; i++)
-		System.out.println( flavors[i].getMimeType() );
-		System.out.println("end current flavors");
-		}
-		*/
 		/**
 		 if(debug) {
 		 System.out.println("acceptable flavors");
@@ -111,7 +101,7 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 	private void displayDropFlavors(final DropTargetDropEvent e,
 									final Transferable trans)
 	{
-		this.worker = new SwingWorker()
+		worker = new SwingWorker()
 		{
 			public Object construct()
 			{
@@ -134,7 +124,7 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 				{
 					if (b.booleanValue() == true)
 					{
-						drop(e, selectedDataFlavor, trans);
+						processDrop(e, selectedDataFlavor, trans);
 					}
 				}//end of finally
 			}//end of function finished()
@@ -146,7 +136,7 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 	 * Popup a modal confirm dialog and block until the user responds.
 	 * Return true unless the user selects "NO".
 	 */
-	boolean waitForUserConfirmation() throws InterruptedException
+	private boolean waitForUserConfirmation() throws InterruptedException
 	{
 
 		/* We're going to show the modal dialog on the event dispatching
@@ -201,7 +191,7 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 	 * Used by the SwingWorker in construct. This return value is what
 	 * is retrieved from the worker's get method.
 	 */
-	Object doWork()
+	private Object doWork()
 	{
 		Boolean b = null;
 		try
@@ -220,13 +210,6 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 	private DataFlavor chooseDropFlavor(DropTargetDropEvent e)
 	{
 		DataFlavor[] flavors = e.getCurrentDataFlavors();
-
-//		for (int i = 0; i < flavors.length; i++)
-//		{
-//			Log.logInfo(this, flavors[i].getMimeType());
-//			String charset = flavors[i].getParameter("charset");
-//			Log.logInfo(this, "charset: " + charset);
-//		}
 
 		// check local transfer first
 		if (e.isLocalTransfer() == true)
@@ -256,7 +239,7 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 		return chosen;
 	}
 
-	boolean checkCharSet(DataFlavor[] flavors, String charset)
+	private boolean checkCharSet(DataFlavor[] flavors, String charset)
 	{
 		for (int i = 0; i < acceptableDropFlavors.length; i++)
 		{
@@ -285,21 +268,12 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 			return false;
 
 		if (isDragFlavorSupported(e) == false)
-		{
-//	    System.out..println( "isDragOk:no flavors chosen" );
 			return false;
-		}
-		else
-		{
-//		System.out..println( "isDragOk:data flavor chosen" );
-		}
 
 
 		// the docs on DropTargetDragEvent rejectDrag says that
 		// the dropAction should be examined
 		int da = e.getDropAction();
-//	    System.out..println("dt drop action " + da);
-//	    System.out..println(" my acceptable actions " + acceptableDropActions);
 
 		if (this.acceptAnyAction == true)
 			return true;
@@ -330,7 +304,6 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 		if (isDragOk(e) == false)
 		{
 			this.dropComponent.dragUnderFeedback(false, e);
-//			this.dropComponent.setInDragDropMode(false);
 			e.rejectDrag();
 			return;
 		}
@@ -406,16 +379,8 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 		// an InputDialog is shown and then the trans retrieved. This
 		// is here for that one special case
 
-		/*if(debug) {
-		Log.logInfo(this, "DropTargetAdapter.drop(DropTargetDropEvent) is called...");
-		}
-		*/
 		Transferable trans = e.getTransferable();
 
-		/*if(debug){
-		Log.logInfo(this, "Transferable is "+trans);
-		}
-		*/
 		this.dropComponent.setInDragDropMode(false);
 
 		this.currentDataFlavors = e.getCurrentDataFlavors();
@@ -426,11 +391,11 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 		else
 		{
 			DataFlavor chosen = chooseDropFlavor(e);
-			drop(e, chosen, trans);
+			processDrop(e, chosen, trans);
 		}
 	}
 
-	public void drop(final DropTargetDropEvent e,
+	private void processDrop(final DropTargetDropEvent e,
 					 final DataFlavor chosen,
 					 Transferable trans)
 	{
@@ -438,42 +403,17 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 		{
 			System.err.println("No flavor match found");
 			e.rejectDrop();
-			Runnable noflavor = new Runnable()
-			{
-				public void run()
-				{
-					JOptionPane.showMessageDialog(null, "No flavor match ");
-				}
-			};
-			if (this.showDialogs)
-				SwingUtilities.invokeLater(noflavor);
 			return;
 		}
 
-		// the actual operation
-		int da = e.getDropAction();
-
 		// the actions that the source has specified with DragGestureRecognizer
 		int sa = e.getSourceActions();
-
-//		Log.logInfo(this, "Chosen data flavor is " + chosen.getMimeType());
-//		Log.logInfo(this, "drop: sourceActions: " + sa);
-//		Log.logInfo(this, "drop: dropAction: " + da);
 
 		if ((sa & this.acceptableDropActions) == 0)
 		{
 			System.err.println("No action match found");
 			e.rejectDrop();
 			this.dropComponent.undoDragUnderFeedback();
-			Runnable noaction = new Runnable()
-			{
-				public void run()
-				{
-					JOptionPane.showMessageDialog(null, "No action match ");
-				}
-			};
-			if (this.showDialogs)
-				SwingUtilities.invokeLater(noaction);
 			return;
 		}
 
@@ -543,84 +483,24 @@ public class HL7SDKDropTargetAdapter implements DropTargetListener
 			isDropSuccess = this.dropComponent.setDropData(data, e, chosen);
 		}
 //		Log.logInfo(this, "component.add() returned. Is drop successful?" + isDropSuccess);
-		Runnable dropped;
 		if (isDropSuccess)
 		{
 			e.dropComplete(true);
 			this.dropComponent.undoDragUnderFeedback();
-
-			// dont do this. causes deadlock
-			// JOptionPane.showMessageDialog(null, "Dropped!");
-			// this is ok
-			dropped = new Runnable()
-			{
-				public void run()
-				{
-					JOptionPane.showMessageDialog(null, "Drop Action Succeeded.");
-				}
-			};
 		}
 		else
 		{
 			e.dropComplete(false);
 			this.dropComponent.undoDragUnderFeedback();
-			dropped = new Runnable()
-			{
-				public void run()
-				{
-					JOptionPane.showMessageDialog(null, "Drop Action Has Been Rejected by Receiver Folder.");
-				}
-			};
 		}
-
-		if (this.showDialogs)
-			SwingUtilities.invokeLater(dropped);
 	}
 
-
-	public void setAcceptableDropActions(int a)
-	{
-		this.acceptableDropActions = a;
-	}
-
-	public void setPreferredLocalFlavors(DataFlavor[] a)
-	{
-		this.preferredLocalFlavors = a;
-	}
-
-	public void setAcceptableDropFlavors(DataFlavor[] a)
-	{
-		Log.logInfo(this, "setting accept drop flavors " + a.length);
-		this.acceptableDropFlavors = a;
-	}
-
-	public void setShowDialog(boolean b)
-	{
-		this.showDialogs = b;
-	}
-
-	public void setConfirmDropFlavors(boolean b)
-	{
-		this.confirmDropFlavors = b;
-	}
-
-	public void setAcceptAnyFlavor(boolean b)
-	{
-		this.acceptAnyFlavor = b;
-	}
-
-	public void setAcceptAnyAction(boolean b)
-	{
-		this.acceptAnyAction = b;
-	}
-
-	public void setAsynchronousAdd(boolean b)
-	{
-		this.asynchronousAdd = b;
-	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:14  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
