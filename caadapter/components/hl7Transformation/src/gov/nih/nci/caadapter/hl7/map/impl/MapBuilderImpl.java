@@ -44,12 +44,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.12 $
+ * @version    $Revision: 1.13 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.12 2008-09-29 15:45:55 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.13 2008-10-14 17:20:07 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -76,6 +76,9 @@ public class MapBuilderImpl {
 
             // process the source and target.
             processComponentAndView(mapping.getSourceComponent(), SOURCE);
+            //reset mapping source type
+            if (mapping.getSourceComponent().getKind().indexOf("xsd")>-1)
+            	cComponents.getC_component(0).setKind("xsd");
             processComponentAndView(mapping.getTargetComponent(), TARGET);
 
             // process the functions.
@@ -208,7 +211,11 @@ public class MapBuilderImpl {
             C_linkpointer sourcePointer = new C_linkpointer();
             sourcePointer.setXmlPath(sourcemap.getDataXmlPath());
             if (sourcemap.isComponentOfSourceType())
+            {
             	sourcePointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
+            	if (cComponents.getC_component(0).getKind().equals("xsd"))
+            		sourcePointer.setKind("v2");
+            }
             else if (sourcemap.isComponentOfTargetType())
             	sourcePointer.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
             else if (sourcemap.isComponentOfFunctionType())
@@ -289,4 +296,7 @@ public class MapBuilderImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.12  2008/09/29 15:45:55  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
