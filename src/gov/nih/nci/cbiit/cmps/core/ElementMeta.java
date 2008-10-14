@@ -350,4 +350,22 @@ public class ElementMeta
         this.maxOccurs = value;
     }
 
+    /**
+     * 
+     */
+    public String toString()
+    {
+    	String rtnSt=getName();
+    	if (rtnSt.indexOf(":")>-1)
+    		rtnSt=rtnSt.substring(rtnSt.lastIndexOf(":")+1); // remove the leading XML namespace value
+    	if (this.getMinOccurs()!= this.getMaxOccurs())
+    	{
+	    	rtnSt=rtnSt+" ["+this.getMinOccurs()+" ... ";
+	    	if (this.getMaxOccurs()!=null&&getMaxOccurs().intValue()==-1)
+	    		rtnSt=rtnSt+"*]";
+	    	else
+	    		rtnSt=rtnSt+getMaxOccurs()+"]";
+    	}
+    	return rtnSt;
+    }
 }
