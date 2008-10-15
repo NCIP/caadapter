@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.43 $
- *          date        $Date: 2008-09-23 15:19:50 $
+ *          revision    $Revision: 1.44 $
+ *          date        $Date: 2008-10-15 20:59:58 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -496,8 +496,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			}
 		}
 	
-		if (MIFUtil.isInlineTextRequired(dtType.getName()))//(CaadapterUtil.getInlineTextAttributes().contains(dtType.getName()))
-		{
+		if (MIFUtil.isInlineTextRequired(dtType.getName())
+				&&dtType.getAttributes().get("inlineText")==null)//(CaadapterUtil.getInlineTextAttributes().contains(dtType.getName()))
+		{ //the "inlineText" should be added only in the first loading....
 			Attribute inlineText=new Attribute();
 			inlineText.setName("inlineText");
 			inlineText.setMax(1);
@@ -507,9 +508,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			//always being selected/mandatory
 			inlineText.setOptionChosen(true);
 			dtType.addAttribute(inlineText.getName(),inlineText);
-			inlineText.setSortKey(dtType.getAttributes().keySet().size());
-			
-	
+			inlineText.setSortKey(dtType.getAttributes().keySet().size());	
 		}
 			
 	}
@@ -581,6 +580,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.43  2008/09/23 15:19:50  wangeug
+ *HISTORY 	:caAdapter 4.2 alpha release
+ *HISTORY 	:
  *Revision 1.42  2008/09/23 15:12:14  wangeug
  *caAdapter 4.2 alpha release
  *
