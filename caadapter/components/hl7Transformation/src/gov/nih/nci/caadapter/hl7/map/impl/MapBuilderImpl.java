@@ -32,6 +32,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -44,12 +45,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.13 $
+ * @version    $Revision: 1.14 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.13 2008-10-14 17:20:07 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.14 2008-10-16 14:34:24 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -76,10 +77,7 @@ public class MapBuilderImpl {
 
             // process the source and target.
             processComponentAndView(mapping.getSourceComponent(), SOURCE);
-            //reset mapping source type
-            if (mapping.getSourceComponent().getKind().indexOf("xsd")>-1)
-            	cComponents.getC_component(0).setKind("xsd");
-            processComponentAndView(mapping.getTargetComponent(), TARGET);
+           	processComponentAndView(mapping.getTargetComponent(), TARGET);
 
             // process the functions.
             List<FunctionComponent> functionComponents = mapping.getFunctionComponent();
@@ -137,7 +135,22 @@ public class MapBuilderImpl {
                 if (mType.indexOf("CSV_TO_XMI")>-1)
                 {
                     cComponent.setKind("xmi");
-                } else {
+                }
+                else  if (mType.indexOf("V2_TO_V3")>-1&&cComponent.getType().equalsIgnoreCase(Config.MAP_COMPONENT_SOURCE_TYPE))
+                {
+                	//figure out v2 version and set it as kind of cComponent
+                	//TBD 
+                	//Hardcode as "2.4"
+                	File srcFile=new File(filePath);
+                	if (srcFile.exists())
+                	{
+                		File pDir=srcFile.getParentFile();
+                		cComponent.setKind(pDir.getName());
+                	}
+                	else
+                		cComponent.setKind("2.4");
+                }              
+                else {
                     cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
                 }
             }
@@ -213,7 +226,7 @@ public class MapBuilderImpl {
             if (sourcemap.isComponentOfSourceType())
             {
             	sourcePointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
-            	if (cComponents.getC_component(0).getKind().equals("xsd"))
+            	if (cMapping.getType().equals("V2_TO_V3"))
             		sourcePointer.setKind("v2");
             }
             else if (sourcemap.isComponentOfTargetType())
@@ -296,6 +309,9 @@ public class MapBuilderImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.13  2008/10/14 17:20:07  wangeug
+ * HISTORY :save mapping between v2Meta to H3S
+ * HISTORY :
  * HISTORY :Revision 1.12  2008/09/29 15:45:55  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
