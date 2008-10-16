@@ -83,7 +83,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.28 $ date $Date: 2008-10-09 18:13:28 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.29 $ date $Date: 2008-10-16 14:38:53 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -98,7 +98,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.28 2008-10-09 18:13:28 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.29 2008-10-16 14:38:53 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1407,6 +1407,13 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 				sourceNode = UIHelper.constructMappableNode(mappingPanel.getSourceTree().getModel().getRoot(), sourceMapComp.getMetaObject());
 			    //if (sourceNode == null) System.out.println("QQQQ3-1 :");
             }
+			else if (sourceMapComp.getMetaObject()==null&&sourceMapComp.getDataXmlPath()!=null)
+			{
+				//build source node with mapped xml path
+				String nodeObjXmlPath=sourceMapComp.getDataXmlPath();
+				sourceNode=(MappableNode)V2MetaXSDUtil.findV2MetaTreeNode(nodeObjXmlPath);
+				
+			}
             else if ( sourceMapComp.isComponentOfFunctionType() )
             {
 				FunctionComponent functionComp = (FunctionComponent) sourceMapComp.getComponent();
@@ -1503,6 +1510,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.28  2008/10/09 18:13:28  wangeug
+ * HISTORY : add data type for link end
+ * HISTORY :
  * HISTORY : Revision 1.27  2008/06/16 15:50:50  linc
  * HISTORY : fixed "deleteAll" action
  * HISTORY :

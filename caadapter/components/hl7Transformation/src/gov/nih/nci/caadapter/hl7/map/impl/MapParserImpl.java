@@ -62,14 +62,14 @@ import java.util.Hashtable;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.17 $
- * @date $Date: 2008-09-29 15:45:55 $
+ * @version $Revision: 1.18 $
+ * @date $Date: 2008-10-16 14:41:27 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.17 2008-09-29 15:45:55 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.18 2008-10-16 14:41:27 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -79,11 +79,7 @@ public class MapParserImpl {
     {
         this.mapping = new MappingImpl();
         this.mapfiledir = mapfiledirectory;
-
-//        MappingResult mappingResult = new MappingResult();
         ValidatorResults validatorResults = new ValidatorResults();
-//        mappingResult.setMapping(mapping);
-//        mappingResult.setValidatorResults(validatorResults);
 
         try {
             C_mapping cMapping = (C_mapping) C_mapping.unmarshalC_mapping(metafile);
@@ -101,10 +97,6 @@ public class MapParserImpl {
             Message msg = MessageResources.getMessage("GEN0", new Object[]{"Could not parse Map file."});
             validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
         }
-
-        // validate the map - coomment out these two lines if you want to make this an *invalidating* parser.
-//        MapValidator mapValidator = new MapValidator(mapping);
-//        validatorResults.addValidatorResults(mapValidator.validate());
 
         return validatorResults;
     }
@@ -126,44 +118,41 @@ public class MapParserImpl {
                     component.setFile(scmFile);
 
                 } else if (Config.HL7_V3_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
-//                	System.out.println("MapParserImpl.processComponents()...HL7v3MIF file loacation:"+cComponent.getLocation());
-                    System.out.println(mapfiledir + "  " + (String) cComponent.getLocation());
-                    System.out.println(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
                     File hsmFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
                     component = new BaseComponent();
                     component.setType(cComponent.getType());
                     component.setXmlPath(BaseMapElementImpl.getCastorComponentID(cComponent));//cComponent.getXmlPath());
                     component.setKind(kind);
                     component.setFile(hsmFile);
-                    MIFClass srcMif;
+                    MIFClass srcMif=null;
                     //read mifclass
                     FileInputStream fis;
-        			try {
+//        			try {
         				if (hsmFile.getName().endsWith(".h3s"))
         				{
-        					fis = new FileInputStream ((File)hsmFile);
-	        				ObjectInputStream ois = new ObjectInputStream(fis);
-	        				srcMif = (MIFClass)ois.readObject();
-	        	    		ois.close();
-	        	    		fis.close();
-        				}
-        				else
-        				{
+//        					fis = new FileInputStream ((File)hsmFile);
+//	        				ObjectInputStream ois = new ObjectInputStream(fis);
+//	        				srcMif = (MIFClass)ois.readObject();
+//	        	    		ois.close();
+//	        	    		fis.close();
+//        				}
+//        				else
+//        				{
         					XmlToMIFImporter xmlImporter=new XmlToMIFImporter();
         					srcMif=xmlImporter.importMifFromXml(hsmFile);
         				}
         	    		component.setMeta(srcMif);
         	    		metaLookupTable.put(component.getKind(), new MifMetaLookup(srcMif));
-        			} catch (FileNotFoundException e) {
-        				// TODO Auto-generated catch block
-        				Log.logException(this, e);
-        			} catch (IOException e) {
-        				// TODO Auto-generated catch block
-        				Log.logException(this, e);
-        			} catch (ClassNotFoundException e) {
-        				// TODO Auto-generated catch block
-        				Log.logException(this, e);
-        			}
+//        			} catch (FileNotFoundException e) {
+//        				// TODO Auto-generated catch block
+//        				Log.logException(this, e);
+//        			} catch (IOException e) {
+//        				// TODO Auto-generated catch block
+//        				Log.logException(this, e);
+//        			} catch (ClassNotFoundException e) {
+//        				// TODO Auto-generated catch block
+//        				Log.logException(this, e);
+//        			}
                 } 
                 else if (Config.FUNCTION_DEFINITION_DEFAULT_KIND.equalsIgnoreCase(kind)) {
                     component = generateFunctionComponent(cComponent, kind);
@@ -177,6 +166,15 @@ public class MapParserImpl {
                     component.setKind(kind);
                     component.setFile(xmiFile);
                 	
+                }
+                else if(kind.indexOf("2.")>-1)
+                {
+                	//create v2Meta component
+                	File xsdFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
+                    component = new BaseComponent();
+                    component.setType(cComponent.getType());                   
+                    component.setKind(kind);
+                    component.setFile(xsdFile);
                 }
                 else {
                     throw new MappingException("Component kind not understood : " + kind, null);
@@ -494,4 +492,7 @@ public class MapParserImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.17  2008/09/29 15:45:55  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
