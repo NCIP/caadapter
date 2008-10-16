@@ -20,20 +20,20 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2008-10-09 17:55:33 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2008-10-16 14:32:28 $
  * @since caAdapter v4.2
  */
 
 public class V2MetaXSDUtil {
-	private static Hashtable <String, DefaultMutableTreeNode>elmentNodehash;
+	private static Hashtable <String, DefaultMutableTreeNode>elementNodehash;
 	
 	/**
 	 * Reset the ElmentMeta hash to load a new ElmentMeta
 	 */
 	public static void resetElementHash( DefaultMutableTreeNode rootNode)
 	{
-		elmentNodehash=new Hashtable<String, DefaultMutableTreeNode>();
+		elementNodehash=new Hashtable<String, DefaultMutableTreeNode>();
 		addElementTreeNode(rootNode, null);
 	}
 	/**
@@ -48,7 +48,7 @@ public class V2MetaXSDUtil {
 		DefaultMutableTreeNode parentNode=(DefaultMutableTreeNode)metaNode.getParent();
 		while(parentNode!=null)
 		{
-			String pXmlPath=findNodeXmlPath(parentNode);
+			String pXmlPath=formatElmentMetaName((ElementMeta)parentNode.getUserObject());
 			xmlPath=pXmlPath+"."+xmlPath;
 			parentNode=(DefaultMutableTreeNode)parentNode.getParent();
 		}
@@ -66,9 +66,9 @@ public class V2MetaXSDUtil {
 		String xmlPath=formatElmentMetaName(elmnt);
 		if (parentPath!=null&&!parentPath.equals(""))
 			xmlPath=parentPath+"."+xmlPath;
- 		elmentNodehash.put(xmlPath, elmntNode);
+ 		elementNodehash.put(xmlPath, elmntNode);
 
-		System.out.println("V2MetaXSDUtil.addElementTreeNode()..add node:"+elmntNode.hashCode()+"___"+xmlPath);
+//		System.out.println("V2MetaXSDUtil.addElementTreeNode()..add node:"+elmntNode.hashCode()+"___"+xmlPath);
  		int chldCnt=elmntNode.getChildCount();
 		for (int i=0;i<chldCnt; i++)
 		{
@@ -111,11 +111,19 @@ public class V2MetaXSDUtil {
 		ElementMeta e = loadMessageMeta(xsdFile);
 		return e;
 	}
+	
+	public static DefaultMutableTreeNode findV2MetaTreeNode(String nodeXmlPath)
+	{
+		return elementNodehash.get(nodeXmlPath);
+	}
 }
 
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2008/10/09 17:55:33  wangeug
+* HISTORY: rename file
+* HISTORY:
 * HISTORY: Revision 1.2  2008/10/06 20:03:03  wangeug
 * HISTORY: set code template
 * HISTORY:
