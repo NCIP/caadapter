@@ -19,8 +19,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
  * @created 11-Aug-2006 8:18:14 AM
  * @author LAST UPDATE $Author: phadkes $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-09-25 19:30:38 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-10-20 16:35:16 $
  */
 public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	
@@ -96,8 +96,11 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 		HashMap objectMap = myModel.getObjectMetadata();
 		return (String)objectMap.get(returnTypeXpath);
 	}
-
-
+	
+// new method added to return already set returnTypeXpath and not from model.
+    public String getreturnTypeXPath() {
+        return returnTypeXpath;
+    }
 	/**
 	 *
 	 * @param multiplicity
@@ -194,4 +197,7 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/25 19:30:38  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
