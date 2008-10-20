@@ -24,15 +24,17 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-10-08 20:05:55 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-10-20 20:46:15 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
 	private XSLoader schemaLoader;
 	private XSModel model;
+	private Stack<String> ctStack;
+	private String defaultNS = "";
 	private static boolean debug = false;
-	private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
+	//private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
 
 	private static String getPrefix(int i){
 		//if(i<prefix.length) return prefix[i];
@@ -64,6 +66,8 @@ public class XSDParser implements DOMErrorHandler {
 
 			// set validation feature
 			config.setParameter("validate", Boolean.TRUE);
+			
+			ctStack = new Stack<String>();
 		} catch (ClassCastException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,6 +102,8 @@ public class XSDParser implements DOMErrorHandler {
         	// element declarations
             XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
             //processMap(map, 0);
+            defaultNS = namespace;
+            ctStack.clear();
             return processXSObject(map.itemByName(namespace, name), 0);
             //map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
             //map = model.getComponents(XSConstants.TYPE_DEFINITION);
@@ -121,7 +127,7 @@ public class XSDParser implements DOMErrorHandler {
 	}
 	
 
-    private static ElementMeta processXSObject(XSObject item, int depth) {
+    private ElementMeta processXSObject(XSObject item, int depth) {
 		if(item instanceof XSComplexTypeDefinition){
 			return processComplexType((XSComplexTypeDefinition)item, depth);
 		}else if(item instanceof XSSimpleTypeDefinition){
@@ -133,7 +139,7 @@ public class XSDParser implements DOMErrorHandler {
 		return null;
     }
     
-	private static List<ElementMeta> processMap(XSNamedMap map, int depth){
+	private List<ElementMeta> processMap(XSNamedMap map, int depth){
 		ArrayList<ElementMeta> ret = new ArrayList<ElementMeta>();
 		for (int i = 0; i < map.getLength(); i++) {
 			XSObject item = map.item(i);
@@ -148,7 +154,7 @@ public class XSDParser implements DOMErrorHandler {
 		return ret;
 	}
 	
-	private static List<BaseMeta> processList(XSObjectList map, int depth){
+	private List<BaseMeta> processList(XSObjectList map, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
 		for (int i = 0; i < map.getLength(); i++) {
 			XSObject item = map.item(i);
@@ -163,36 +169,43 @@ public class XSDParser implements DOMErrorHandler {
 		return ret;
 	}
 	
-	private static void processSimpleType(XSSimpleTypeDefinition item, int depth){
+	private void processSimpleType(XSSimpleTypeDefinition item, int depth){
 		if(debug) System.out.println(getPrefix(depth+1)+"SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		//processParticle(item.getParticle(), indent);
 	}
-	private static ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
+	private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
 		if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		ElementMeta ret = new ElementMeta();
-		ret.setName((item.getNamespace()==null?"":(item.getNamespace()+":"))+item.getName());
-		List<ElementMeta> childs = ret.getChildElement();
-		List<AttributeMeta> attrs = ret.getAttrData(); 
-		List<BaseMeta> l = processList(item.getAttributeUses(), depth);
-		for (BaseMeta b:l) {
-			if (b instanceof AttributeMeta) {
-				attrs.add((AttributeMeta)b);
-			} else if (b instanceof ElementMeta) {
-				childs.add((ElementMeta)b);
+		ctStack.push("{" + item.getNamespace() + "}" + item.getName());
+		ElementMeta ret;
+		try {
+			ret = new ElementMeta();
+			ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
+			List<ElementMeta> childs = ret.getChildElement();
+			List<AttributeMeta> attrs = ret.getAttrData(); 
+			List<BaseMeta> l = processList(item.getAttributeUses(), depth);
+			for (BaseMeta b:l) {
+				if (b instanceof AttributeMeta) {
+					attrs.add((AttributeMeta)b);
+				} else if (b instanceof ElementMeta) {
+					childs.add((ElementMeta)b);
+				}
 			}
-		}
-		l = processParticle(item.getParticle(), depth);
-		if(l==null) return ret;
-		for (BaseMeta b:l) {
-			if (b instanceof AttributeMeta) {
-				attrs.add((AttributeMeta)b);
-			} else if (b instanceof ElementMeta) {
-				childs.add((ElementMeta)b);
+			l = processParticle(item.getParticle(), depth);
+			if(l==null) return ret;
+			for (BaseMeta b:l) {
+				if (b instanceof AttributeMeta) {
+					attrs.add((AttributeMeta)b);
+				} else if (b instanceof ElementMeta) {
+					childs.add((ElementMeta)b);
+				}
 			}
+		} finally {
+			ctStack.pop();
 		}
+		
 		return ret;
 	}
-	private static List<BaseMeta> processParticle(XSParticle item, int depth){
+	private List<BaseMeta> processParticle(XSParticle item, int depth){
 		if(item == null){
 			if(debug) System.out.println(getPrefix(depth+1)+"Particle{null}");
 			return null;
@@ -210,20 +223,25 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		return l;
 	}
-	private static List<BaseMeta> processTerm(XSTerm item, int depth){
+	private List<BaseMeta> processTerm(XSTerm item, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
 		if(debug) System.out.print(getPrefix(depth)+"Term{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		if(item instanceof XSModelGroup){
 			short comp = ((XSModelGroup)item).getCompositor();
 			if(debug) System.out.println(comp==XSModelGroup.COMPOSITOR_ALL?" *ALL* ":(comp==XSModelGroup.COMPOSITOR_CHOICE?" *CHOICE* ":" *SEQ* "));
 			ret.addAll(processList(((XSModelGroup)item).getParticles(), depth));
+			if(comp==XSModelGroup.COMPOSITOR_CHOICE) {
+				for(BaseMeta i:ret) {
+					((ElementMeta)i).setIsChoice(true);
+				}
+			}
 		}else if(item instanceof XSElementDeclaration) {
 			if(debug) System.out.println(" *ELEMENT*");
 			ret.add(processElement((XSElementDeclaration)item, depth));
 		}
 		return ret;
 	}
-	private static ElementMeta processElement(XSElementDeclaration item, int depth){
+	private ElementMeta processElement(XSElementDeclaration item, int depth){
 		if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		ElementMeta ret = null;
 //		if(indent>MAX_INDENT) {
@@ -237,19 +255,19 @@ public class XSDParser implements DOMErrorHandler {
 				processSimpleType((XSSimpleTypeDefinition)type, depth);
 		} 
 		if(ret == null) ret = new ElementMeta();
-		ret.setName((item.getNamespace()==null?"":(item.getNamespace()+":"))+item.getName());
+		ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
 		
 		//processParticle(item.getParticle(), indent+1);
 		return ret;
 	}
-	private static AttributeMeta processAttribute(XSAttributeUse item, int depth){
+	private AttributeMeta processAttribute(XSAttributeUse item, int depth){
 		if(item == null){
 			if(debug) System.out.println(getPrefix(depth+1)+"Attribute {null}");
 			return null;
 		}
 		XSAttributeDeclaration 	attr = item.getAttrDeclaration();
 		AttributeMeta ret = new AttributeMeta();
-		ret.setName((attr.getNamespace()==null?"":(attr.getNamespace()+":"))+attr.getName());
+		ret.setName(((attr.getNamespace()==null || attr.getNamespace().equals(defaultNS))?"":(attr.getNamespace()+":"))+attr.getName());
 		ret.setIsRequired(item.getRequired());
 		if (attr.getConstraintType()==XSConstants.VC_DEFAULT) {
 			ret.setDefaultValue(attr.getConstraintValue());
@@ -286,6 +304,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/10/08 20:05:55  linc
+ * HISTORY: speed up
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/10/08 18:54:42  linc
  * HISTORY: updated
  * HISTORY:

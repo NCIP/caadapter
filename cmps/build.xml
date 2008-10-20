@@ -33,7 +33,7 @@
 		</exec>
 	</target>
 	<target name="compile" depends="clean, prep">
-		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
+		<javac source="1.5" target="1.5" srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
 			<include name="**/*.java" />
 			<classpath refid="project.class.path" />
 		</javac>
