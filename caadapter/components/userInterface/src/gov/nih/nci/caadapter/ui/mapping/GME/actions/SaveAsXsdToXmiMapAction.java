@@ -50,107 +50,107 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-10-09 20:47:31 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-10-20 16:33:10 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
-	/**
-	 * Logging constant used to identify source of log entry, that could be later used to create
-	 * logging mechanism to uniquely identify the logged class.
-	 */
-	private static final String LOGID = "$RCSfile: SaveAsXsdToXmiMapAction.java,v $";
+    /**
+     * Logging constant used to identify source of log entry, that could be later used to create
+     * logging mechanism to uniquely identify the logged class.
+     */
+    private static final String LOGID = "$RCSfile: SaveAsXsdToXmiMapAction.java,v $";
 
-	/**
-	 * String that identifies the class version and solves the serial version UID problem.
-	 * This String is for informational purposes only and MUST not be made final.
-	 *
-	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
-	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.14 2008-10-09 20:47:31 phadkes Exp $";
+    /**
+     * String that identifies the class version and solves the serial version UID problem.
+     * This String is for informational purposes only and MUST not be made final.
+     *
+     * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
+     */
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.15 2008-10-20 16:33:10 phadkes Exp $";
 
-	protected AbstractMappingPanel mappingPanel;
+    protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
-	/**
-	 * Defines an <code>Action</code> object with a default
-	 * description string and default icon.
-	 */
-	public SaveAsXsdToXmiMapAction(AbstractMappingPanel mappingPanel)
-	{
-		this(COMMAND_NAME, mappingPanel);
-	}
+    /**
+     * Defines an <code>Action</code> object with a default
+     * description string and default icon.
+     */
+    public SaveAsXsdToXmiMapAction(AbstractMappingPanel mappingPanel)
+    {
+        this(COMMAND_NAME, mappingPanel);
+    }
 
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public SaveAsXsdToXmiMapAction(String name, AbstractMappingPanel mappingPanel)
-	{
-		this(name, null, mappingPanel);
-	}
+    /**
+     * Defines an <code>Action</code> object with the specified
+     * description string and a default icon.
+     */
+    public SaveAsXsdToXmiMapAction(String name, AbstractMappingPanel mappingPanel)
+    {
+        this(name, null, mappingPanel);
+    }
 
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a the specified icon.
-	 */
-	public SaveAsXsdToXmiMapAction(String name, Icon icon, AbstractMappingPanel mappingPanel)
-	{
-		super(name, icon, null);
-		this.mappingPanel = mappingPanel;
-	}
+    /**
+     * Defines an <code>Action</code> object with the specified
+     * description string and a the specified icon.
+     */
+    public SaveAsXsdToXmiMapAction(String name, Icon icon, AbstractMappingPanel mappingPanel)
+    {
+        super(name, icon, null);
+        this.mappingPanel = mappingPanel;
+    }
 
-	protected boolean doAction(ActionEvent e) throws Exception
-	{
-		if(this.mappingPanel!=null)
-		{
-			if(!mappingPanel.isSourceTreePopulated() || !mappingPanel.isTargetTreePopulated())
-			{
-				String msg = "Enter both source and target information before saving the map specification.";
-				JOptionPane.showMessageDialog(mappingPanel, msg, "Error", JOptionPane.ERROR_MESSAGE);
-				setSuccessfullyPerformed(false);
-				return false;
-			}
-		}
-		
-		//Select file name and type 
-		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
-		if (file != null)
-		{
-			setSuccessfullyPerformed(processSaveFile(file));
+    protected boolean doAction(ActionEvent e) throws Exception
+    {
+        if(this.mappingPanel!=null)
+        {
+            if(!mappingPanel.isSourceTreePopulated() || !mappingPanel.isTargetTreePopulated())
+            {
+                String msg = "Enter both source and target information before saving the map specification.";
+                JOptionPane.showMessageDialog(mappingPanel, msg, "Error", JOptionPane.ERROR_MESSAGE);
+                setSuccessfullyPerformed(false);
+                return false;
+            }
+        }
+        
+        //Select file name and type 
+        File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.TAGGED_MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
+        if (file != null)
+        {
+            setSuccessfullyPerformed(processSaveFile(file));
 
             //holderPane.setSaveFile(file);
-			setDefaultFile(file);
+            setDefaultFile(file);
             mappingPanel.setSaveFile(file);
         }
 
-		return isSuccessfullyPerformed();
-	}
+        return isSuccessfullyPerformed();
+    }
 
-	/**
-	 * 
-	 * @param file
-	 * @return
-	 * @throws Exception
-	 */
-	protected boolean processSaveFile(File file) throws Exception
-	{		
-		preActionPerformed(mappingPanel);
+    /**
+     * 
+     * @param file
+     * @return
+     * @throws Exception
+     */
+    protected boolean processSaveFile(File file) throws Exception
+    {       
+        preActionPerformed(mappingPanel);
 
         MappingDataManager mappingManager = mappingPanel.getMappingDataManager();
-		Mapping mappingData = mappingManager.retrieveMappingData(true);
+        Mapping mappingData = mappingManager.retrieveMappingData(true);
 
         MapBuilderImpl builder = new MapBuilderImpl();
         FileOutputStream fw = null;
-		BufferedOutputStream bw = null;
+        BufferedOutputStream bw = null;
 
         XsdToXmiMappingPanel xsdToXmi = (XsdToXmiMappingPanel)mappingPanel;
-		mappingData.setMappingType(xsdToXmi.getMappingTarget());
+        mappingData.setMappingType(xsdToXmi.getMappingTarget());
         XmiModelMetadata xmiModelMeta = xsdToXmi.getXmiModelMeta();
 
         boolean oldChangeValue = mappingPanel.isChanged();
 
         try
-		{
+        {
             System.out.println("[ Removing annotations ]");
 
             //TODO: Clean XMI.Content Mappings
@@ -168,7 +168,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                   //remove the taggedValue
                   if(umlObject ==null)
                   {
-                	  System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..uml object is missing:"+modelKey);
+                      System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..uml object is missing:"+modelKey);
                   }
                   else  if (umlObject instanceof UMLAttribute)
                   {
@@ -211,33 +211,33 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 MetaObject trgtMeta =tempMap.getTargetMapElement().getMetaObject();
                 if (trgtMeta==null)
                 {
-                	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()...invalidate mapping:"+tempMap.getXmlPath());
+                    System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()...invalidate mapping:"+tempMap.getXmlPath());
                 }
                 else if (trgtMeta instanceof AttributeMetadata)
                 {
-                	//annotate attribute
-                	AttributeMetadata srcAttr=(AttributeMetadata)srcMeta;
-                	AttributeMetadata trgtAttr=(AttributeMetadata)trgtMeta;
-//                	String srcKey=srcAttr.getXPath();
-                	String srcKey=srcAttr.getXmlPath();
-                	
+                    //annotate attribute
+                    AttributeMetadata srcAttr=(AttributeMetadata)srcMeta;
+                    AttributeMetadata trgtAttr=(AttributeMetadata)trgtMeta;
+//                  String srcKey=srcAttr.getXPath();
+                    String srcKey=srcAttr.getXmlPath();
+                    
 
                     //add "EA Model" infront of the xmlPath
-                	String trgtKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAttr.getXmlPath();
-                	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate source:"+srcKey);
-                	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate target:"+trgtKey);
-        	
-                	UMLAttributeBean trgtUmlBean=(UMLAttributeBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtKey);
+                    String trgtKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAttr.getXmlPath();
+                    System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate source:"+srcKey);
+                    System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..annotate target:"+trgtKey);
+            
+                    UMLAttributeBean trgtUmlBean=(UMLAttributeBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtKey);
                     if ( trgtUmlBean ==null)
                     {
-                    	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtKey);
+                        System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtKey);
                     }
                     else
                     {
-                    	if(srcAttr.isChildTag())
-                    		trgtUmlBean.addTaggedValue( "NCI_GME_XML_LOC_REF", srcAttr.getName() );
-                    	else
-                    		trgtUmlBean.addTaggedValue( "NCI_GME_XML_LOC_REF", "@" + srcAttr.getName() );
+                        if(srcAttr.isChildTag())
+                            trgtUmlBean.addTaggedValue( "NCI_GME_XML_LOC_REF", srcAttr.getName() );
+                        else
+                            trgtUmlBean.addTaggedValue( "NCI_GME_XML_LOC_REF", "@" + srcAttr.getName() );
                     }
 
                     //find the class and package of the this attribute
@@ -245,24 +245,24 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                     String classPathKey = trgtKey.substring( 0,trgtKey.lastIndexOf(".") );
                     if (!classList.contains(classPathKey))
                     {
-                    	classList.add(classPathKey);
+                        classList.add(classPathKey);
 
                         //annotate the class at its first attribute
-                    	UMLClassBean trgtClassBean=(UMLClassBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(classPathKey);
-                    	String modelElmentId=trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
+                        UMLClassBean trgtClassBean=(UMLClassBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(classPathKey);
+                        String modelElmentId=trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
 
                         //annotate at the class lvl
                         //trgtClassBean.addTaggedValue("NCI_GME_XML_NAMESPACE", "Testing" );
 
                         //remove class name from xmlPath
-                    	String umlPackageKey=classPathKey.substring(0, classPathKey.lastIndexOf("."));
-                    	UMLPackageBean trgtPkgBean=(UMLPackageBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(umlPackageKey);
+                        String umlPackageKey=classPathKey.substring(0, classPathKey.lastIndexOf("."));
+                        UMLPackageBean trgtPkgBean=(UMLPackageBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(umlPackageKey);
 
                         //look the name space of source package
-                    	String srcClassPath=srcKey.substring(0, srcKey.lastIndexOf("."));
-                    	String srcPkgPath=srcClassPath.substring(0,srcClassPath.lastIndexOf("."));
-                    	String srcGmeNameSpace=xsdToXmi.getXsdModelMeta().findPackageNamespace(srcPkgPath);
-                    	String annoateGmeNamespace=srcGmeNameSpace+"/"+srcPkgPath;
+                        String srcClassPath=srcKey.substring(0, srcKey.lastIndexOf("."));
+                        String srcPkgPath=srcClassPath.substring(0,srcClassPath.lastIndexOf("."));
+                        String srcGmeNameSpace=xsdToXmi.getXsdModelMeta().findPackageNamespace(srcPkgPath);
+                        String annoateGmeNamespace=srcGmeNameSpace+"/"+srcPkgPath;
 
                         //annotate package
                         if( !packageList.contains(trgtPkgBean.getName()))
@@ -272,20 +272,20 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                         }
 
                         //annoate class to add tag at XMI level (xmi.content)
-                    	String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
-                    	xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
-                    }                	
+                        String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
+                        xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
+                    }                   
                 }
                 else if (trgtMeta instanceof AssociationMetadata)
                 {
-                	//annotate association
-                	AssociationMetadata srcAssc=(AssociationMetadata)srcMeta;
-                	AssociationMetadata trgtAssc=(AssociationMetadata)trgtMeta;
+                    //annotate association
+                    AssociationMetadata srcAssc=(AssociationMetadata)srcMeta;
+                    AssociationMetadata trgtAssc=(AssociationMetadata)trgtMeta;
                     String srcAsscKey=srcAssc.getXPath();
 
                     //add "EA Model" infront of the xmlPath
-                	String trgtAsscKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAssc.getXmlPath();
-                	UMLAssociationBean trgtUmlAsscBean=(UMLAssociationBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtAsscKey);
+                    String trgtAsscKey=xsdToXmi.getXmiModelMeta().getHandler().getModel().getName()+"."+ trgtAssc.getXmlPath();
+                    UMLAssociationBean trgtUmlAsscBean=(UMLAssociationBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(trgtAsscKey);
 
                     //find containing class
                     String className = (String) trgtAsscKey;
@@ -295,17 +295,20 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 
                     if ( trgtUmlAsscBean ==null)
                     {
-                    	System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtAsscKey);
+                        System.out.println("SaveAsXsdToXmiMapAction.processSaveFile()..umlBean is not found:"+trgtAsscKey);
                     }
                     else  if( trgtUmlAsscBean.getTaggedValue("ea_sourceName").getValue().equals(classRealName) )
                     {
-//                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getRoleName());
-                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getRoleName()+"/"+srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() ));
+//                      trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getRoleName());
+                        
+//                      trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getRoleName()+"/"+srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() ));
+                      trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getRoleName()+"/"+srcAssc.getreturnTypeXPath().substring(srcAssc.getreturnTypeXPath().lastIndexOf(".")+1 , srcAssc.getreturnTypeXPath().length() ));                      
                     }
                     else  if( trgtUmlAsscBean.getTaggedValue("ea_targetName").getValue().equals(classRealName) )
                     {
-                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getRoleName()+"/" + srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() ));
-//                    	trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getParentXPath());
+//                      trgtUmlAsscBean.addTaggedValue("NCI_GME_SOURCE_XML_LOC_REF",srcAssc.getParentXPath());
+//                        trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getRoleName()+"/" + srcAssc.getParentXPath().substring(srcAssc.getParentXPath().lastIndexOf(".")+1 , srcAssc.getParentXPath().length() ));
+                        trgtUmlAsscBean.addTaggedValue("NCI_GME_TARGET_XML_LOC_REF",srcAssc.getRoleName()+"/"+srcAssc.getreturnTypeXPath().substring(srcAssc.getreturnTypeXPath().lastIndexOf(".")+1 , srcAssc.getreturnTypeXPath().length() ));                        
                     }
 
                     //find the class and package of the this attribute
@@ -313,21 +316,21 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                     String classPathKey = trgtAsscKey.substring( 0,trgtAsscKey.lastIndexOf(".") );
                     if (!classList.contains(classPathKey))
                     {
-                    	classList.add(classPathKey);
+                        classList.add(classPathKey);
 
                         //annotate the class at its first attribute
-                    	UMLClassBean trgtClassBean=(UMLClassBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(classPathKey);
-                    	String modelElmentId=trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
+                        UMLClassBean trgtClassBean=(UMLClassBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(classPathKey);
+                        String modelElmentId=trgtClassBean.getJDomElement().getAttributeValue("xmi.id");
 
                         //remove class name from xmlPath
-                    	String umlPackageKey=classPathKey.substring(0, classPathKey.lastIndexOf("."));
-                    	UMLPackageBean trgtPkgBean=(UMLPackageBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(umlPackageKey);
+                        String umlPackageKey=classPathKey.substring(0, classPathKey.lastIndexOf("."));
+                        UMLPackageBean trgtPkgBean=(UMLPackageBean)xsdToXmi.getXmiModelMeta().getUmlHashMap().get(umlPackageKey);
 
                         //look the name space of source package
-                    	String srcClassPath=srcAsscKey.substring(0, srcAsscKey.lastIndexOf("."));
-                    	String srcPkgPath=srcClassPath.substring(0,srcClassPath.lastIndexOf("."));
-                    	String srcGmeNameSpace=xsdToXmi.getXsdModelMeta().findPackageNamespace(srcPkgPath);
-                    	String annoateGmeNamespace=srcGmeNameSpace+"/"+srcPkgPath;
+                        String srcClassPath=srcAsscKey.substring(0, srcAsscKey.lastIndexOf("."));
+                        String srcPkgPath=srcClassPath.substring(0,srcClassPath.lastIndexOf("."));
+                        String srcGmeNameSpace=xsdToXmi.getXsdModelMeta().findPackageNamespace(srcPkgPath);
+                        String annoateGmeNamespace=srcGmeNameSpace+"/"+srcPkgPath;
 
                         //annotate package
                         if( !packageList.contains(trgtPkgBean.getName()))
@@ -337,8 +340,8 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                         }
 
                         //annoate class to add tag at XMI level
-                    	String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
-                    	xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
+                        String srcClassName=srcClassPath.substring(srcClassPath.lastIndexOf(".")+1);
+                        xsdToXmi.getXmiModelMeta().annotateClassObject(annoateGmeNamespace, modelElmentId, srcClassName, modelElmentId);
                     }
                 }
                 else
@@ -348,7 +351,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
                 //Add Project Namespace
                 if( projectAnnotation == false )
                 {
-                	String projectNamespace=xsdToXmi.getXsdModelMeta().getProjectNamespace();
+                    String projectNamespace=xsdToXmi.getXsdModelMeta().getProjectNamespace();
                     xmiModelMeta.annotateProjectObject(projectNamespace);//srcGmeNameSpace);
                     projectAnnotation = true;
                 }
@@ -358,65 +361,68 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
             xsdToXmi.getXmiModelMeta().getHandler().save( file.getAbsolutePath() );
 
             if (!GeneralUtilities.areEqual(defaultFile, file))
-			{//not equal, change it.
-				removeFileUsageListener(defaultFile, mappingPanel);
-				defaultFile = file;
-			}
+            {//not equal, change it.
+                removeFileUsageListener(defaultFile, mappingPanel);
+                defaultFile = file;
+            }
 
-			//clear the change flag.
-			mappingPanel.setChanged(false);
+            //clear the change flag.
+            mappingPanel.setChanged(false);
 
             //try to notify affected panels
-			postActionPerformed(mappingPanel);
+            postActionPerformed(mappingPanel);
             //xsdToXmi.xsdToXmiGeneration(file.getAbsolutePath());
 
             //generate mapping report:
             File rptFile =null;
             if (xsdToXmi.getReportPanel()!=null)
-            	rptFile=xsdToXmi.getReportPanel().getSaveFile();
+                rptFile=xsdToXmi.getReportPanel().getSaveFile();
             
             if (rptFile!=null)
             {
-//            	rptFile=DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save Mapping Report As...", true, true);
-	            //regenerate reportfile if it is available
-            	MappingBaseTree mappingBaseTree=(MappingBaseTree)xsdToXmi.getSourceTree();
-	            XsdToXmiMappingReporter reporter=new XsdToXmiMappingReporter((MappableNode)mappingBaseTree.getRootTreeNode(), XsdToXmiMappingReporter.REPORT_UNMAPPED);
-	            reporter.setSourceFileName(xsdToXmi.getSourceFileName());
-	            reporter.setTargetFileName(xsdToXmi.getTargetFileName());
-	            reporter.generateReportFile(rptFile);
+//              rptFile=DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, "Save Mapping Report As...", true, true);
+                //regenerate reportfile if it is available
+                MappingBaseTree mappingBaseTree=(MappingBaseTree)xsdToXmi.getSourceTree();
+                XsdToXmiMappingReporter reporter=new XsdToXmiMappingReporter((MappableNode)mappingBaseTree.getRootTreeNode(), XsdToXmiMappingReporter.REPORT_UNMAPPED);
+                reporter.setSourceFileName(xsdToXmi.getSourceFileName());
+                reporter.setTargetFileName(xsdToXmi.getTargetFileName());
+                reporter.generateReportFile(rptFile);
             }
             JOptionPane.showMessageDialog(mappingPanel.getParent(), "Mapping data has been saved successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
-			return true;
+            return true;
 
-		}
-		catch(Throwable e)
-		{
-			//restore the change value since something occurred and believe the save process is aborted.
-			mappingPanel.setChanged(oldChangeValue);
-			//rethrow the exeception
-			e.printStackTrace();
-			throw new Exception(e);
-		}
-		finally
-		{
-			try
-			{
-				//close buffered writer will automatically close enclosed file writer.
-				if(bw!=null)
-				{
-					bw.close();
-					mappingPanel.setSaveFile(file);
-				}
-			}
-			catch(Throwable e)
-			{//intentionally ignored.
-			}
-		}
-	}
+        }
+        catch(Throwable e)
+        {
+            //restore the change value since something occurred and believe the save process is aborted.
+            mappingPanel.setChanged(oldChangeValue);
+            //rethrow the exeception
+            e.printStackTrace();
+            throw new Exception(e);
+        }
+        finally
+        {
+            try
+            {
+                //close buffered writer will automatically close enclosed file writer.
+                if(bw!=null)
+                {
+                    bw.close();
+                    mappingPanel.setSaveFile(file);
+                }
+            }
+            catch(Throwable e)
+            {//intentionally ignored.
+            }
+        }
+    }
 
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/10/09 20:47:31  phadkes
+ * HISTORY      : change the order of GME tag from class/RoleName to RoleName/Class
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/06/26 20:17:39  phadkes
  * HISTORY      : Changes to GME tags.
  * HISTORY      :
