@@ -25,6 +25,7 @@ import java.util.*;
 
 import gov.nih.nci.cbiit.cmps.core.*;
 import gov.nih.nci.cbiit.cmps.common.*;
+import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
 
 /**
@@ -33,8 +34,8 @@ import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-01 18:59:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-10-20 20:46:15 $
  *
  */
 public class TransformTest {
@@ -87,12 +88,32 @@ public class TransformTest {
 			"}</result>";
 		XQueryTransformer tester= new XQueryTransformer();
 		tester.setFilename("etc/data/shiporder.xml");
-		System.out.println(tester.query(queryString));
+		tester.setQuery(queryString);
+		System.out.println(tester.executeQuery());
+	}
+
+	@Test
+	public void testCMPSTransform() throws XQException, JAXBException {
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		Unmarshaller u = jc.createUnmarshaller();
+		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping.xml")), Mapping.class);
+		Mapping map = m.getValue();
+		XQueryBuilder builder = new XQueryBuilder(map);
+		String queryString = builder.getXQuery();
+		System.out.println("$$$$$$ query: \n"+queryString);
+		
+		XQueryTransformer tester= new XQueryTransformer();
+		tester.setFilename("etc/data/shiporder.xml");
+		tester.setQuery(queryString);
+		System.out.println(tester.executeQuery());
 	}
 
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/01 18:59:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */
 

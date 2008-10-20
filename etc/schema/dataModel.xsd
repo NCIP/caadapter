@@ -31,6 +31,7 @@
 				<xsd:attribute name="isSimple" type="xsd:boolean" />
 				<xsd:attribute name="isRequired" type="xsd:boolean" />
 				<xsd:attribute name="isEnabled" type="xsd:boolean" />
+				<xsd:attribute name="isChoice" type="xsd:boolean" />
 				<xsd:attribute name="isValid" type="xsd:boolean" />
 				<xsd:attribute name="isFixed" type="xsd:boolean" />
 				<xsd:attribute name="defaultValue" type="xsd:string" />

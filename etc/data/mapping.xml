@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
-	<components>
-		<component location="etc/data/shiporder3.xsd" kind="xml"
-			type="source" id="file://etc/data/shiporder3.xsd">
-			<rootElement name="shiporder">
-				<attrData isRequired="true" name="orderid" />
-				<childElement name="orderperson" />
-				<childElement name="shipto">
-					<childElement name="name" />
-					<childElement name="address" />
-					<childElement name="city" />
-					<childElement name="country" />
-				</childElement>
-				<childElement name="item">
-					<childElement name="title" />
-					<childElement name="note" />
-					<childElement name="quantity" />
-					<childElement name="price" />
-				</childElement>
-			</rootElement>
-		</component>
-		<component location="etc/data/shiporder3.xsd" kind="xml"
-			type="target" id="file://etc/data/shiporder3.xsd">
-			<rootElement name="shiporder">
-				<attrData isRequired="true" name="orderid" />
-				<childElement name="orderperson" />
-				<childElement name="shipto">
-					<childElement name="name" />
-					<childElement name="address" />
-					<childElement name="city" />
-					<childElement name="country" />
-				</childElement>
-				<childElement name="item">
-					<childElement name="title" />
-					<childElement name="note" />
-					<childElement name="quantity" />
-					<childElement name="price" />
-				</childElement>
-			</rootElement>
-		</component>
-	</components>
+    <components>
+        <component location="etc/data/shiporder3.xsd" kind="xml" type="source" id="file://etc/data/shiporder3.xsd">
+            <rootElement name="shiporder">
+                <attrData isRequired="true" name="orderid"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="orderperson"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="shipto">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="name"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="address"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="city"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="country"/>
+                </childElement>
+                <childElement maxOccurs="-1" minOccurs="1" isRequired="true" name="item">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="title"/>
+                    <childElement maxOccurs="1" minOccurs="0" isRequired="false" name="note"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="quantity"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="price"/>
+                </childElement>
+            </rootElement>
+        </component>
+        <component location="etc/data/printorder.xsd" kind="xml" type="target" id="file://etc/data/printorder.xsd">
+            <rootElement name="printorder">
+                <attrData isRequired="true" name="orderid"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="buyer"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="address">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="name"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="street"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="city"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="country"/>
+                </childElement>
+                <childElement maxOccurs="-1" minOccurs="1" isRequired="true" name="item">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="name"/>
+                    <childElement maxOccurs="1" minOccurs="0" isRequired="false" name="description"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="quantity"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="price"/>
+                </childElement>
+            </rootElement>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/shiporder" componentid="file://etc/data/shiporder3.xsd"/>
+            <target id="/printorder" componentid="file://etc/data/printorder.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto" componentid="file://etc/data/shiporder3.xsd"/>
+            <target id="/printorder/address" componentid="file://etc/data/printorder.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/address" componentid="file://etc/data/shiporder3.xsd"/>
+            <target id="/printorder/address/street" componentid="file://etc/data/printorder.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/item" componentid="file://etc/data/shiporder3.xsd"/>
+            <target id="/printorder/item" componentid="file://etc/data/printorder.xsd"/>
+        </link>
+        
+    </links>
 </mapping>

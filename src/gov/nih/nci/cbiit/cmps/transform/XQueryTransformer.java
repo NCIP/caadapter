@@ -25,20 +25,26 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-01 18:59:13 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-10-20 20:46:15 $
  *
  */
 public class XQueryTransformer {
 	// Filename for XML document to query
 	private String filename;
-
+	
 	// Data Source for querying
 	private SaxonXQDataSource dataSource;
 
 	// Connection for querying
 	private XQConnection conn;
 
+	// Query String
+	private String queryString;
+	
+	// Prepared Query
+	private XQPreparedExpression exp;
+	
 	public XQueryTransformer() throws XQException {
 		dataSource = new SaxonXQDataSource();
 		conn = dataSource.getConnection();
@@ -72,8 +78,12 @@ public class XQueryTransformer {
 		return conn;
 	}
 
-	public String query(String queryString) throws XQException {
-		XQPreparedExpression exp = conn.prepareExpression(queryString);
+	public void setQuery(String queryString) throws XQException {
+		exp = conn.prepareExpression(queryString);
+		this.queryString = queryString;
+	}
+	
+	public String executeQuery() throws XQException {
 		exp.bindString(new QName("docName"), filename,
 				conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
 		XQResultSequence result = exp.executeQuery();
@@ -101,7 +111,8 @@ public class XQueryTransformer {
 				"   return " +
 				"<cd><title>{$cd/TITLE/text()}</title>" +
 				" <year>{$cd/YEAR/text()}</year></cd>";
-			System.out.println(tester.query(queryString));
+			tester.setQuery(queryString);
+			System.out.println(tester.executeQuery());
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 			System.err.println(e.getMessage());
@@ -112,5 +123,8 @@ public class XQueryTransformer {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/01 18:59:13  linc
+ * HISTORY: updated.
+ * HISTORY:
  */
 

@@ -27,8 +27,8 @@ import gov.nih.nci.cbiit.cmps.common.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-10-08 18:54:42 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-10-20 20:46:15 $
  *
  */
 public class MappingTest {
@@ -54,6 +54,7 @@ public class MappingTest {
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
+		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder1.out.xml"));
 	}
 	
@@ -64,6 +65,7 @@ public class MappingTest {
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
+		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder2.out.xml"));
 	}
 	
@@ -74,34 +76,75 @@ public class MappingTest {
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", "ADT_A01");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
+		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/adt.out.xml"));
 	}
 	
 	@Test
 	public void testMarshalMapping() throws Exception {
-		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder3.xsd");
-		ElementMeta e = p.getElementMeta(null, "shiporder");
 		Mapping m = new Mapping();
 		m.setComponents(new Mapping.Components());
-		//add src xsd
+		//add source xsd
 		Component src = new Component();
 		src.setKind(KindType.XML);
 		src.setId("file://"+"etc/data/shiporder3.xsd");
 		src.setLocation("etc/data/shiporder3.xsd");
+		XSDParser p = new XSDParser();
+		p.loadSchema("etc/data/shiporder3.xsd");
+		ElementMeta e = p.getElementMeta(null, "shiporder");
 		src.setRootElement(e);
 		src.setType(ComponentType.SOURCE);
 		m.getComponents().getComponent().add(src);
-		//add src xsd
+		//add destination xsd
 		Component dst = new Component();
 		dst.setKind(KindType.XML);
-		dst.setId("file://"+"etc/data/shiporder3.xsd");
-		dst.setLocation("etc/data/shiporder3.xsd");
-		dst.setRootElement(e);
+		dst.setId("file://"+"etc/data/printorder.xsd");
+		dst.setLocation("etc/data/printorder.xsd");
+		XSDParser p1 = new XSDParser();
+		p1.loadSchema("etc/data/printorder.xsd");
+		ElementMeta e1 = p1.getElementMeta(null, "printorder");
+		dst.setRootElement(e1);
 		dst.setType(ComponentType.TARGET);
 		m.getComponents().getComponent().add(dst);
+		//add links;
+		m.setLinks(new Mapping.Links());
+		LinkType l = new LinkType();
+		LinkpointType lp = new LinkpointType();
+		lp.setComponentid(src.getId());
+		lp.setId("/shiporder");
+		l.setSource(lp);
+		lp = new LinkpointType();
+		lp.setComponentid(dst.getId());
+		lp.setId("/printorder");
+		l.setTarget(lp);
+		m.getLinks().getLink().add(l);
+		
+		l = new LinkType();
+		lp = new LinkpointType();
+		lp.setComponentid(src.getId());
+		lp.setId("/shiporder/shipto");
+		l.setSource(lp);
+		lp = new LinkpointType();
+		lp.setComponentid(dst.getId());
+		lp.setId("/printorder/address");
+		l.setTarget(lp);
+		m.getLinks().getLink().add(l);
+				
+		l = new LinkType();
+		lp = new LinkpointType();
+		lp.setComponentid(src.getId());
+		lp.setId("@address");
+		l.setSource(lp);
+		lp = new LinkpointType();
+		lp.setComponentid(dst.getId());
+		lp.setId("/printorder/address@street");
+		l.setTarget(lp);
+		m.getLinks().getLink().add(l);
+				
+		
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
+		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping.out.xml"));
 	}
 	
@@ -111,6 +154,7 @@ public class MappingTest {
 		Unmarshaller u = jc.createUnmarshaller();
 		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping.xml")), Mapping.class);
 		Marshaller mar = jc.createMarshaller();
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		mar.marshal(m, new File("bin/mapping1.out.xml"));
 		//assertEquals(new File("etc/data/mapping.xml").length(), new File("bin/mapping1.out.xml").length());
 	}
@@ -118,6 +162,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/10/08 18:54:42  linc
+ * HISTORY: updated
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/10/01 18:59:14  linc
  * HISTORY: updated.
  * HISTORY:
