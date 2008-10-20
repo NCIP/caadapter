@@ -56,8 +56,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: linc $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-10-02 19:16:48 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-10-20 15:42:47 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -73,7 +73,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.14 2008-10-02 19:16:48 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.15 2008-10-20 15:42:47 linc Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -605,8 +605,10 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         JMenuItem clobItem = new JMenuItem(clobAction);
         JMenuItem discriminatorItem = new JMenuItem(discriminatorAction);
 
-        popupMenu.add(lazyItem);
+        /* remove clob function from mms, 2008/10/18
+		popupMenu.add(lazyItem);
         popupMenu.add(clobItem);
+        */
         popupMenu.add(discriminatorItem);
 
         lazyEagerAction.setEnabled( false );
@@ -666,6 +668,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/10/02 19:16:48  linc
+ * HISTORY      : updated.
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/10/02 18:59:27  linc
  * HISTORY      : remove "lazy" menu item when not applicable.
  * HISTORY      :
