@@ -20,6 +20,7 @@ import java.util.*;
 
 import gov.nih.nci.cbiit.cmps.core.*;
 import gov.nih.nci.cbiit.cmps.common.*;
+import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 
 /**
  * This class 
@@ -27,8 +28,8 @@ import gov.nih.nci.cbiit.cmps.common.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-10-20 20:46:15 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-10-21 15:56:55 $
  *
  */
 public class MappingTest {
@@ -82,65 +83,14 @@ public class MappingTest {
 	
 	@Test
 	public void testMarshalMapping() throws Exception {
-		Mapping m = new Mapping();
-		m.setComponents(new Mapping.Components());
-		//add source xsd
-		Component src = new Component();
-		src.setKind(KindType.XML);
-		src.setId("file://"+"etc/data/shiporder3.xsd");
-		src.setLocation("etc/data/shiporder3.xsd");
-		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder3.xsd");
-		ElementMeta e = p.getElementMeta(null, "shiporder");
-		src.setRootElement(e);
-		src.setType(ComponentType.SOURCE);
-		m.getComponents().getComponent().add(src);
-		//add destination xsd
-		Component dst = new Component();
-		dst.setKind(KindType.XML);
-		dst.setId("file://"+"etc/data/printorder.xsd");
-		dst.setLocation("etc/data/printorder.xsd");
-		XSDParser p1 = new XSDParser();
-		p1.loadSchema("etc/data/printorder.xsd");
-		ElementMeta e1 = p1.getElementMeta(null, "printorder");
-		dst.setRootElement(e1);
-		dst.setType(ComponentType.TARGET);
-		m.getComponents().getComponent().add(dst);
+		String srcComponentId = "etc/data/shiporder3.xsd";
+		String tgtComponentId = "etc/data/printorder.xsd";
+		Mapping m = MappingFactory.createMappingFromXSD(
+				srcComponentId, "shiporder", tgtComponentId, "printorder");
 		//add links;
 		m.setLinks(new Mapping.Links());
-		LinkType l = new LinkType();
-		LinkpointType lp = new LinkpointType();
-		lp.setComponentid(src.getId());
-		lp.setId("/shiporder");
-		l.setSource(lp);
-		lp = new LinkpointType();
-		lp.setComponentid(dst.getId());
-		lp.setId("/printorder");
-		l.setTarget(lp);
-		m.getLinks().getLink().add(l);
-		
-		l = new LinkType();
-		lp = new LinkpointType();
-		lp.setComponentid(src.getId());
-		lp.setId("/shiporder/shipto");
-		l.setSource(lp);
-		lp = new LinkpointType();
-		lp.setComponentid(dst.getId());
-		lp.setId("/printorder/address");
-		l.setTarget(lp);
-		m.getLinks().getLink().add(l);
-				
-		l = new LinkType();
-		lp = new LinkpointType();
-		lp.setComponentid(src.getId());
-		lp.setId("@address");
-		l.setSource(lp);
-		lp = new LinkpointType();
-		lp.setComponentid(dst.getId());
-		lp.setId("/printorder/address@street");
-		l.setTarget(lp);
-		m.getLinks().getLink().add(l);
-				
+		MappingFactory.addLink(m, srcComponentId, "/shiporder", tgtComponentId, "/printorder");
+		MappingFactory.addLink(m, srcComponentId, "/shiporder/shipto", tgtComponentId, "/printorder/address");
 		
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -162,6 +112,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/10/20 20:46:15  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/10/08 18:54:42  linc
  * HISTORY: updated
  * HISTORY:
