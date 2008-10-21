@@ -46,9 +46,9 @@ import java.util.StringTokenizer;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.18 $
+ *          revision    $Revision: 1.19 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -68,7 +68,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.18 2008-09-29 20:05:06 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.19 2008-10-21 21:18:31 umkis Exp $";
 
     boolean isCode = false;
 
@@ -123,12 +123,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             throw new ApplicationException("null h3s filename");
         }
         h3sFileName = h3sFileName.trim();
-
-        if (!h3sFileName.toLowerCase().endsWith(".h3s"))
+        String h3sExt = Config.HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION;
+        if (!h3sFileName.toLowerCase().endsWith(h3sExt))
         {
 //            System.out.println("File type is mismatch (.h3s) : " +  h3sFileName);
 //            return;
-            throw new ApplicationException("File type is mismatch (.h3s) : " +  h3sFileName);
+            throw new ApplicationException("File type is mismatch ("+h3sExt+") : " +  h3sFileName);
         }
 
         File h3sFile = new File(h3sFileName);
@@ -548,7 +548,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 }
                 catch(NullPointerException ae)
                 {
-                    System.out.println("NullPointerException : GFG");
+                    System.out.println("Not found Domain Attribute : " + codeFieldName);
                 }
                 //if (domainName.equals("")) domainName = "No_domain_Name";
                 String odi = "";
@@ -606,7 +606,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                         }
                         else
                         {
-                            System.err.println("domain name finding failure. 1 : " +domainName);
+                            //System.err.println("domain name finding failure. 1 : " +domainName);
                             codeSystemName = null;
                             codeSystem = null;
                             codeValue = null;
@@ -619,6 +619,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     }
                     else
                     {
+                        System.err.println("domain name finding failure. 1 : " +domainName);
                         codeSystemName = domainName;
                         codeSystem = odi;
                         codeValue = "NotFound";
@@ -661,6 +662,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             if (line.endsWith(".classCode")) gTag = true;
             if (line.endsWith(".contextControlCode")) gTag = true;
 
+            if (gTag) System.out.println("PPPPPPP : " + seg + " : " + userDefault + " : " + hl7Default);
+
             if (line.endsWith(".statusCode.code"))
             {
                 vl = "";
@@ -675,7 +678,8 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 codeSystemName = null;
                 codeDisplayName = null;
                 isCode = false;
-                return line + vl + " => " + val;
+                if (val == null) return "";
+                else return line + vl + " => " + val;
             }
         }
 
@@ -1426,17 +1430,17 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
         if (line.equals("")) throw new ApplicationException("No Content in H3S File : " + filePath);
 
-        if (line.startsWith("<"))
-        {
-            buildWithXMLFormat(h3sFile);
-            inputDataType = INPUT_DATA_TYPE_XML;
-        }
-        else
-        {
+//        if (line.startsWith("<"))
+//        {
+//            buildWithXMLFormat(h3sFile);
+//            inputDataType = INPUT_DATA_TYPE_XML;
+//        }
+//        else
+//        {
             transformH3SFromBinaryToXML(h3sFile);
             this.setNodeIdentifierType(NodeIdentifierType.XPATH);
             inputDataType = INPUT_DATA_TYPE_BINARY;
-        }
+//        }
     }
 
     private void transformH3SFromBinaryToXML(File h3sFile) throws ApplicationException
@@ -1836,13 +1840,26 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         //String fileName = "C:\\projects\\caadapter\\workingspace\\COCT_MT010000\\" + args[0] + ".h3s";
         //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000030.h3s";
         //String fileName = "C:\\caAdapter_Test\\caadapter40\\workingspace\\CDA\\POCD_MT000040.h3s";
-        String fileName = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000040UV02_3.h3s";
-
+    //    String fileName = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000040UV02_3.h3s";
+        //String fileName = "C:\\project\\caadapter\\workingspace\\PORR_MT049006_T.h3s";
+        String fileName = "C:\\project\\caadapter\\workingspace\\PORR_MT040002.h3s";
         //new H3SInstanceMetaTree(args[0]);
+
         String arg = "";
         try
         {
-            if ((arg == null)||(arg.trim().equals(""))) new H3SInstanceMetaTree(fileName);
+            arg = args[0];
+        }
+        catch(Exception ee) {}
+
+        try
+        {
+            if ((arg == null)||(arg.trim().equals("")))
+            {
+                System.out.println("No H3S file has been input");
+                System.out.println("  **Default H3S file : " + fileName);
+                new H3SInstanceMetaTree(fileName);
+            }
             else new H3SInstanceMetaTree(args[0].trim());
         }
         catch(ApplicationException ae)
@@ -1855,6 +1872,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2008/09/29 20:05:06  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
