@@ -24,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-10-20 20:46:15 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-10-21 20:49:08 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -43,13 +43,13 @@ public class XSDParser implements DOMErrorHandler {
 		sb.append("[").append(i<10?((char)('0'+i)):((char)('a'+i-10))).append("]-");
 		return sb.toString();
 	}
-	
+
 	public XSDParser() {
-        try {
+		try {
 			// get DOM Implementation using DOM Registry
 			System.setProperty(
-			    DOMImplementationRegistry.PROPERTY,
-			    "org.apache.xerces.dom.DOMXSImplementationSourceImpl");
+					DOMImplementationRegistry.PROPERTY,
+					"org.apache.xerces.dom.DOMXSImplementationSourceImpl");
 			DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
 
 			XSImplementation impl = (XSImplementation) registry.getDOMImplementation("XS-Loader");
@@ -66,7 +66,7 @@ public class XSDParser implements DOMErrorHandler {
 
 			// set validation feature
 			config.setParameter("validate", Boolean.TRUE);
-			
+
 			ctStack = new Stack<String>();
 		} catch (ClassCastException e) {
 			// TODO Auto-generated catch block
@@ -88,32 +88,48 @@ public class XSDParser implements DOMErrorHandler {
 			e.printStackTrace();
 		}
 	}
-	
-    public void loadSchema(String schemaURI) {
 
-            // parse document
-            if(debug) System.out.println("Parsing " + schemaURI + "...");
-            model = schemaLoader.loadURI(schemaURI);
+	public void loadSchema(String schemaURI) {
 
-    }
-	
-    public ElementMeta getElementMeta(String namespace, String name){
-        if (model != null) {
-        	// element declarations
-            XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
-            //processMap(map, 0);
-            defaultNS = namespace;
-            ctStack.clear();
-            return processXSObject(map.itemByName(namespace, name), 0);
-            //map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
-            //map = model.getComponents(XSConstants.TYPE_DEFINITION);
+		// parse document
+		if(debug) System.out.println("Parsing " + schemaURI + "...");
+		model = schemaLoader.loadURI(schemaURI);
+
+	}
+
+	public ElementMeta getElementMeta(String namespace, String name){
+		if (model != null) {
+			// element declarations
+			XSNamedMap map = model.getComponents(XSConstants.ELEMENT_DECLARATION);
+			//processMap(map, 0);
+			defaultNS = namespace;
+			ctStack.clear();
+			return processXSObject(map.itemByName(namespace, name), 0);
+			//map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
+			//map = model.getComponents(XSConstants.TYPE_DEFINITION);
 			//map = model.getComponents(XSConstants.NOTATION_DECLARATION);
-        } else {
-        	return null;
-        }
+		} else {
+			return null;
+		}
 
-    }
-    
+	}
+
+	public ElementMeta getElementMetaFromComplexType(String namespace, String name){
+		if (model != null) {
+			// element declarations
+			XSNamedMap map = model.getComponents(XSConstants.TYPE_DEFINITION);
+			//processMap(map, 0);
+			defaultNS = namespace;
+			ctStack.clear();
+			return processXSObject(map.itemByName(namespace, name), 0);
+			//map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
+			//map = model.getComponents(XSConstants.NOTATION_DECLARATION);
+		} else {
+			return null;
+		}
+
+	}
+
 	public static URL getResource(String name){
 		URL ret = null;
 		ret = XSDParser.class.getClassLoader().getResource(name);
@@ -125,9 +141,9 @@ public class XSDParser implements DOMErrorHandler {
 		ret = ClassLoader.getSystemResource("/"+name);
 		return ret;
 	}
-	
 
-    private ElementMeta processXSObject(XSObject item, int depth) {
+
+	private ElementMeta processXSObject(XSObject item, int depth) {
 		if(item instanceof XSComplexTypeDefinition){
 			return processComplexType((XSComplexTypeDefinition)item, depth);
 		}else if(item instanceof XSSimpleTypeDefinition){
@@ -137,8 +153,8 @@ public class XSDParser implements DOMErrorHandler {
 			return processElement((XSElementDeclaration)item, depth);
 		}
 		return null;
-    }
-    
+	}
+
 	private List<ElementMeta> processMap(XSNamedMap map, int depth){
 		ArrayList<ElementMeta> ret = new ArrayList<ElementMeta>();
 		for (int i = 0; i < map.getLength(); i++) {
@@ -153,7 +169,7 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		return ret;
 	}
-	
+
 	private List<BaseMeta> processList(XSObjectList map, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
 		for (int i = 0; i < map.getLength(); i++) {
@@ -168,15 +184,17 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		return ret;
 	}
-	
+
 	private void processSimpleType(XSSimpleTypeDefinition item, int depth){
 		if(debug) System.out.println(getPrefix(depth+1)+"SimpleType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		//processParticle(item.getParticle(), indent);
 	}
 	private ElementMeta processComplexType(XSComplexTypeDefinition item, int depth){
 		if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
-		ctStack.push("{" + item.getNamespace() + "}" + item.getName());
 		ElementMeta ret;
+		String qname = "{" + item.getNamespace() + "}" + item.getName();
+		boolean recursive = ctStack.contains(qname);
+		ctStack.push(qname);
 		try {
 			ret = new ElementMeta();
 			ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
@@ -190,6 +208,11 @@ public class XSDParser implements DOMErrorHandler {
 					childs.add((ElementMeta)b);
 				}
 			}
+
+			//if recursive use return here
+			if(recursive){
+				return ret;
+			}
 			l = processParticle(item.getParticle(), depth);
 			if(l==null) return ret;
 			for (BaseMeta b:l) {
@@ -202,7 +225,7 @@ public class XSDParser implements DOMErrorHandler {
 		} finally {
 			ctStack.pop();
 		}
-		
+
 		return ret;
 	}
 	private List<BaseMeta> processParticle(XSParticle item, int depth){
@@ -244,19 +267,19 @@ public class XSDParser implements DOMErrorHandler {
 	private ElementMeta processElement(XSElementDeclaration item, int depth){
 		if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		ElementMeta ret = null;
-//		if(indent>MAX_INDENT) {
-//			System.out.println("MMMMMMMMM Reached max depth, skipping the lower levels......");
-//			return;
-//		}
+		//		if(indent>MAX_INDENT) {
+		//			System.out.println("MMMMMMMMM Reached max depth, skipping the lower levels......");
+		//			return;
+		//		}
 		XSTypeDefinition type = item.getTypeDefinition();
 		if(type instanceof XSComplexTypeDefinition){
-				 ret = processComplexType((XSComplexTypeDefinition)type, depth);
+			ret = processComplexType((XSComplexTypeDefinition)type, depth);
 		}else if(type instanceof XSSimpleTypeDefinition){
-				processSimpleType((XSSimpleTypeDefinition)type, depth);
+			processSimpleType((XSSimpleTypeDefinition)type, depth);
 		} 
 		if(ret == null) ret = new ElementMeta();
 		ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
-		
+
 		//processParticle(item.getParticle(), indent+1);
 		return ret;
 	}
@@ -274,7 +297,7 @@ public class XSDParser implements DOMErrorHandler {
 		} else if (attr.getConstraintType()!=XSConstants.VC_NONE) {
 			ret.setIsFixed(true);
 		}
-		
+
 		if(debug) System.out.print(getPrefix(depth+1)+"AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
 				+(item.getRequired()?",":"Required,")
 				+(item.getConstraintType()==XSConstants.VC_NONE?"":((item.getConstraintType()==XSConstants.VC_DEFAULT?"default=":"fixed=")+item.getConstraintValue())));
@@ -284,26 +307,29 @@ public class XSDParser implements DOMErrorHandler {
 		return ret;
 	}
 
-	
-	
 
-    public boolean handleError(DOMError error){
-        short severity = error.getSeverity();
-        if (severity == DOMError.SEVERITY_ERROR) {
-            System.out.println("[xs-error]: "+error.getMessage());
-        }
 
-        if (severity == DOMError.SEVERITY_WARNING) {
-            System.out.println("[xs-warning]: "+error.getMessage());
-        }
-        return true;
 
-    }
+	public boolean handleError(DOMError error){
+		short severity = error.getSeverity();
+		if (severity == DOMError.SEVERITY_ERROR) {
+			System.out.println("[xs-error]: "+error.getMessage());
+		}
+
+		if (severity == DOMError.SEVERITY_WARNING) {
+			System.out.println("[xs-warning]: "+error.getMessage());
+		}
+		return true;
+
+	}
 
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/10/20 20:46:15  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/10/08 20:05:55  linc
  * HISTORY: speed up
  * HISTORY:
