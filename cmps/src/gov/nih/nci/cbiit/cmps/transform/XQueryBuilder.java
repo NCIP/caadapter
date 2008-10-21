@@ -7,9 +7,18 @@
  */
 package gov.nih.nci.cbiit.cmps.transform;
 
-import java.util.*;
-import gov.nih.nci.cbiit.cmps.core.*;
-import gov.nih.nci.cbiit.cmps.common.*;
+import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmps.core.Component;
+import gov.nih.nci.cbiit.cmps.core.ComponentType;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
+import gov.nih.nci.cbiit.cmps.core.LinkType;
+import gov.nih.nci.cbiit.cmps.core.Mapping;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 /**
  * This class 
@@ -17,8 +26,8 @@ import gov.nih.nci.cbiit.cmps.common.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-10-21 15:56:55 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-10-21 15:59:57 $
  *
  */
 public class XQueryBuilder {
@@ -173,6 +182,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/10/21 15:56:55  linc
+ * HISTORY: updated
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/10/20 20:46:15  linc
  * HISTORY: updated.
  * HISTORY:

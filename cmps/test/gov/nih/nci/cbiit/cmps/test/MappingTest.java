@@ -8,19 +8,23 @@
 package gov.nih.nci.cbiit.cmps.test;
 
 
+import gov.nih.nci.cbiit.cmps.common.XSDParser;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
+import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
+
+import java.io.File;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
+import javax.xml.transform.stream.StreamSource;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import javax.xml.bind.*;
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.util.*;
-
-import gov.nih.nci.cbiit.cmps.core.*;
-import gov.nih.nci.cbiit.cmps.common.*;
-import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 
 /**
  * This class 
@@ -28,8 +32,8 @@ import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-10-21 15:56:55 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-10-21 15:59:57 $
  *
  */
 public class MappingTest {
@@ -73,7 +77,7 @@ public class MappingTest {
 	@Test
 	public void testParseHL7v2XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema(p.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
+		p.loadSchema(XSDParser.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", "ADT_A01");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -112,6 +116,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/10/21 15:56:55  linc
+ * HISTORY: updated
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/10/20 20:46:15  linc
  * HISTORY: updated.
  * HISTORY:
