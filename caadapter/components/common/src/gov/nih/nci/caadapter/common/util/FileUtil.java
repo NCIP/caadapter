@@ -30,8 +30,8 @@ import java.util.logging.FileHandler;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.17 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.18 $
  */
 
 public class FileUtil
@@ -505,6 +505,8 @@ public class FileUtil
 
     public static String findODIWithDomainName(String str) throws IOException
     {
+        if ((str == null)||(str.trim().equals(""))) return "";
+
         if (ODI_FILE == null)
         {
             ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/HL7_ODI.csv");
@@ -1015,6 +1017,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.17  2008/06/09 19:53:50  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.16  2008/05/30 01:00:40  umkis
  * update getV2ResourceMetaDataLoader()
  *
