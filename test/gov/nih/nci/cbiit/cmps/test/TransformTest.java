@@ -7,7 +7,18 @@
  */
 package gov.nih.nci.cbiit.cmps.test;
 
-import static org.junit.Assert.*;
+import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
+import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
+
+import java.io.File;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xquery.XQException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -15,27 +26,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.xml.bind.*;
-import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.xquery.XQException;
-
-import java.io.*;
-import java.util.*;
-
-import gov.nih.nci.cbiit.cmps.core.*;
-import gov.nih.nci.cbiit.cmps.common.*;
-import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
-import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
-
 /**
  * This class 
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-10-20 20:46:15 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-10-21 15:59:57 $
  *
  */
 public class TransformTest {
@@ -112,6 +110,9 @@ public class TransformTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/10/20 20:46:15  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/01 18:59:14  linc
  * HISTORY: updated.
  * HISTORY:
