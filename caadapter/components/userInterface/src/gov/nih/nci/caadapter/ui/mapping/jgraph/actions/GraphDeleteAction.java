@@ -16,6 +16,7 @@ import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
 
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultGraphCell;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -29,8 +30,8 @@ import java.awt.event.KeyEvent;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-29 20:36:23 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-10-21 15:36:40 $
  */
 public class GraphDeleteAction extends DefaultAbstractJgraphAction
 {
@@ -94,21 +95,26 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 			if (userChoice == JOptionPane.YES_OPTION)
 			{
 				Object[] cells = graph.getSelectionCells();
-				DefaultEdge edge = (DefaultEdge) cells[0];
-				MappingViewCommonComponent viewC = (MappingViewCommonComponent) edge.getUserObject();
-				//check if the mapped Table has any mapped column
+				DefaultGraphCell graphCell=(DefaultGraphCell)cells[0];
 				boolean hasMappedColumn=false;
-				DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
-				for(int i=0;i<tableTreeNode.getChildCount(); i++)
-				{
-					DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)tableTreeNode.getChildAt(i);
-					SDKMetaData columnMeta=(SDKMetaData)childNode.getUserObject();
-					if (columnMeta.isMapped())
+				//check if the mapped Table has any mapped column
+				//the following block only apply to MMS mapping
+				//not allow to delete a table mapping if column is mapped
+				if (graphCell instanceof DefaultEdge)
+				{					
+					MappingViewCommonComponent viewC = (MappingViewCommonComponent) graphCell.getUserObject();
+					DefaultMutableTreeNode tableTreeNode=(DefaultMutableTreeNode) viewC.getSourceNode();
+					for(int i=0;i<tableTreeNode.getChildCount(); i++)
 					{
-						hasMappedColumn=true;
-						JOptionPane.showMessageDialog(getMiddlePanel(), "Unable to delete, this mapping has children mapping !", "Children Are Mapped", JOptionPane.WARNING_MESSAGE);
-						break;
-					}					
+						DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)tableTreeNode.getChildAt(i);
+						SDKMetaData columnMeta=(SDKMetaData)childNode.getUserObject();
+						if (columnMeta.isMapped())
+						{
+							hasMappedColumn=true;
+							JOptionPane.showMessageDialog(getMiddlePanel(), "Unable to delete, this mapping has children mapping !", "Children Are Mapped", JOptionPane.WARNING_MESSAGE);
+							break;
+						}					
+					}
 				}
 				if (!hasMappedColumn)
 					getController().handleDelete();
@@ -134,6 +140,9 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/29 20:36:23  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/06/19 17:22:50  wangeug
  * HISTORY      : verify if any child note being mapped before delete a parent tree node
  * HISTORY      :
