@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-10-21 15:59:57 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-10-21 20:49:08 $
  *
  */
 public class XQueryBuilder {
@@ -109,11 +109,11 @@ public class XQueryBuilder {
 		for (String s:xpathStack) {
 			sb.append("/").append(s);
 		}
-		boolean nested = false;
-		if(links.get(sb.toString())!=null) {
-			nested = true;
-			LinkType l = links.get(sb.toString());
-			String srcId = l.getSource().getId();
+		
+		LinkType link = links.get(sb.toString());
+		if(link!=null) {
+			link = links.get(sb.toString());
+			String srcId = link.getSource().getId();
 			String var = "item"+String.valueOf(varStack.size());
 			if(xpathStack.size()>1) {
 				sbQuery.append(sep).append("{");
@@ -132,22 +132,43 @@ public class XQueryBuilder {
 			varStack.push(var);
 			srcIdStack.push(srcId);
 		}
+		
+		//start tag and attributes
 		sbQuery.append("<"+tgt.getName());
 		processAttributes(tgt);
 		sbQuery.append(">");
+		
 		//inline text
-		if( (nested && tgt.getChildElement().size()==0) //map text element
-				|| links.get(sb.toString()+"#inlinetext")!=null //map inline text for mixed node
-				) {
-			String var = varStack.peek();
-			sbQuery.append("{$").append(var).append("/text()").append("}");
+		String srcTextId = null;
+		if(link!=null && (tgt.getChildElement().size()==0)) {//map text element
+			srcTextId = link.getSource().getId();
 		}
+		if(links.get(sb.toString()+"#inlinetext")!=null) { //map inline text for mixed node
+			srcTextId = links.get(sb.toString()+"#inlinetext").getSource().getId();
+		}
+		if(srcTextId!=null) {
+			String localpath = null;
+			if(srcIdStack.size()>0)
+				localpath = getRelativePath(srcIdStack.peek(), srcTextId);
+			if(localpath!=null){
+				String var = varStack.peek();
+				if(localpath.indexOf("@")>0){
+					sbQuery.append("{$").append(var).append(localpath).append("}");
+				}else {
+					sbQuery.append("{$").append(var).append(localpath).append("/text()").append("}");
+				}
+			}
+		}
+		
+		//child elements
 		for(ElementMeta e:tgt.getChildElement()) {
 			processTargetElement(e);
 		}
+		
+		//end tag
 		sbQuery.append("</"+tgt.getName()+">");
-		if(nested && xpathStack.size()>1) sbQuery.append(sep).append("}");
-		if(nested) {
+		if(link!=null && xpathStack.size()>1) sbQuery.append(sep).append("}");
+		if(link!=null) {
 			srcIdStack.pop();
 			varStack.pop();
 		}
@@ -182,6 +203,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/10/21 15:59:57  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/10/21 15:56:55  linc
  * HISTORY: updated
  * HISTORY:

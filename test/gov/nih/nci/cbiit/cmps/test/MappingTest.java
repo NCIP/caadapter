@@ -32,8 +32,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-10-21 15:59:57 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-10-21 20:49:08 $
  *
  */
 public class MappingTest {
@@ -86,6 +86,17 @@ public class MappingTest {
 	}
 	
 	@Test
+	public void testParseHL7v3XSD() throws Exception {
+		XSDParser p = new XSDParser();
+		p.loadSchema("etc/data/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd");
+		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT010000UV01.Encounter");
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		Marshaller u = jc.createMarshaller();
+		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.out.xml"));
+	}
+	
+	@Test
 	public void testMarshalMapping() throws Exception {
 		String srcComponentId = "etc/data/shiporder3.xsd";
 		String tgtComponentId = "etc/data/printorder.xsd";
@@ -116,6 +127,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/10/21 15:59:57  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/10/21 15:56:55  linc
  * HISTORY: updated
  * HISTORY:
