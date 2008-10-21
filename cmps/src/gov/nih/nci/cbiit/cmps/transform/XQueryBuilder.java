@@ -17,8 +17,8 @@ import gov.nih.nci.cbiit.cmps.common.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-10-20 20:46:15 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-10-21 15:56:55 $
  *
  */
 public class XQueryBuilder {
@@ -64,6 +64,35 @@ public class XQueryBuilder {
 		processTargetElement(tgt.getRootElement());
 		return sbQuery.toString();
 	}
+	
+	private static String getRelativePath(String current, String path) {
+		String ret = "";
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer stCur = new StringTokenizer(current, "/");
+		StringTokenizer stNew = new StringTokenizer(path, "/");
+		int count = 0;
+		while(stCur.hasMoreTokens() && stNew.hasMoreTokens()) {
+			String t = stCur.nextToken(); 
+			if (t.equals(stNew.nextToken())) {
+				count++;
+				sb.append("/").append(t);
+			} else {
+				break;
+			}
+		}
+		if(count==0) return null;
+		
+		if(sb.toString().equals(current)){
+			ret = path.substring(current.length());
+		} else {
+			while(stCur.hasMoreTokens()) {
+				ret += "/..";
+			}
+			ret += path.substring(current.length());
+		}		
+		
+		return ret;		
+	}
 
 	private void processTargetElement(ElementMeta tgt) {
 		xpathStack.push(tgt.getName());
@@ -78,17 +107,17 @@ public class XQueryBuilder {
 			String srcId = l.getSource().getId();
 			String var = "item"+String.valueOf(varStack.size());
 			if(xpathStack.size()>1) {
-				sbQuery.append("{").append(sep);
+				sbQuery.append(sep).append("{");
 			}
 			sbQuery.append("for $"+var+" in ");
-			if(varStack.size()==0) {
+			String localpath = null;
+			if(srcIdStack.size()>0)
+				localpath = getRelativePath(srcIdStack.peek(), srcId);
+			if(localpath == null) {
 				sbQuery.append("doc($docName)");
 				sbQuery.append(srcId);
-			}else if(srcIdStack.size()>0 && srcId.indexOf(srcIdStack.peek())==0){
-				String localId = "$"+varStack.peek()+srcId.substring(srcIdStack.peek().length());
-				sbQuery.append(localId);
-			}else{
-				sbQuery.append(srcId);
+			}else {
+				sbQuery.append("$"+varStack.peek()).append(localpath);
 			}
 			sbQuery.append(" return ");
 			varStack.push(var);
@@ -98,7 +127,7 @@ public class XQueryBuilder {
 		processAttributes(tgt);
 		sbQuery.append(">");
 		//inline text
-		if( (nested && tgt.getAttrData().size()==0) //map text element
+		if( (nested && tgt.getChildElement().size()==0) //map text element
 				|| links.get(sb.toString()+"#inlinetext")!=null //map inline text for mixed node
 				) {
 			String var = varStack.peek();
@@ -108,7 +137,7 @@ public class XQueryBuilder {
 			processTargetElement(e);
 		}
 		sbQuery.append("</"+tgt.getName()+">");
-		if(nested && xpathStack.size()>1) sbQuery.append(sep).append("}").append(sep);
+		if(nested && xpathStack.size()>1) sbQuery.append(sep).append("}");
 		if(nested) {
 			srcIdStack.pop();
 			varStack.pop();
@@ -126,8 +155,11 @@ public class XQueryBuilder {
 				LinkType l = links.get(sb.toString()+"@"+a.getName());
 				String srcId = l.getSource().getId();
 				String var = varStack.peek();
+				String localpath = null;
+				if(srcIdStack.size()>0)
+					localpath = getRelativePath(srcIdStack.peek(), srcId);
 				sbQuery.append(" ").append(a.getName()).append("={");
-				sbQuery.append(var).append("@").append(srcId);
+				sbQuery.append(var).append(localpath);
 				sbQuery.append("}");
 			} else if(a.getDefaultValue()!=null) {
 				sbQuery.append(" ").append(a.getName()).append("=");
@@ -141,6 +173,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/10/20 20:46:15  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/10/01 18:59:13  linc
  * HISTORY: updated.
  * HISTORY:
