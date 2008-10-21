@@ -14,6 +14,7 @@ import gov.nih.nci.caadapter.common.standard.impl.MetaTreeMetaImpl;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeParser;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -28,9 +29,9 @@ import java.util.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Apr 24, 2008
  *          Time:       1:10:36 PM $
  */
@@ -262,31 +263,43 @@ public class V3VocabularySeeker
         if (findCode == null) findCode = "";
         findCode = findCode.trim();
 
-        Hashtable datatypes = new Hashtable();
-        try
-        {
-            InputStream is = this.getClass().getResourceAsStream("/datatypes");
-            if (is == null)
-            {
-                is = this.getClass().getClassLoader().getResource("datatypes").openStream();
-            }
-            ObjectInputStream ois = new ObjectInputStream(is);
-            datatypes = (Hashtable)ois.readObject();
-            ois.close();
-            is.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        //Hashtable datatypes = new Hashtable();
 
-            return null;
-        }
+        DatatypeParser datatypeParser1 = new DatatypeParser();
+		datatypeParser1.loadDatatypes();
+		//System.out.println(((Datatype)datatypeParser1.getDatatypes().get("ActClass")).getPredefinedValues());
+
+        //try
+        //{
+        //    InputStream is = this.getClass().getResourceAsStream("/datatypes");
+        //    if (is == null)
+        //    {
+        //        is = this.getClass().getClassLoader().getResource("datatypes").openStream();
+        //    }
+        //    ObjectInputStream ois = new ObjectInputStream(is);
+        //    datatypes = (Hashtable)ois.readObject();
+        //    ois.close();
+        //    is.close();
+        //}
+        //catch(Exception e)
+        //{
+        //    e.printStackTrace();
+        //
+        //    return null;
+        //}
 
         Datatype datatypeItem = null;
         if (domainName!= null && !domainName.equals(""))
-            datatypeItem = (Datatype)datatypes.get(domainName);
+        {
+            //datatypeItem = (Datatype)datatypes.get(domainName);
+            datatypeItem = (Datatype)datatypeParser1.getDatatypes().get(domainName);
+        }
         else
-            datatypeItem = (Datatype)datatypes.get(domainName);
+        {
+            //datatypeItem = (Datatype)datatypes.get(domainName);
+            datatypeItem = (Datatype)datatypeParser1.getDatatypes().get(domainName);
+        }
+
         if (datatypeItem != null)
         {
             HashSet predefinedValues = datatypeItem.getPredefinedValues();
@@ -331,4 +344,7 @@ public class V3VocabularySeeker
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2008/09/29 15:35:41  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
