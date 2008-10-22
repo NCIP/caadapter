@@ -24,11 +24,11 @@ import java.awt.event.KeyEvent;
  * The class defines the about action for the whole HL7SDK application.
  *
  * @author OWNER: Ki Sung Um
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:52 $
- */
+ * @author LAST UPDATE $Author: linc $
+ * @since caAdapter v1.2
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2008-10-09 20:08:58 $
+*/
 public class HelpTopicAction extends AbstractContextAction
 {
 	public static final String COMMAND_NAME = ActionConstants.HELP;
@@ -36,9 +36,25 @@ public class HelpTopicAction extends AbstractContextAction
 	public static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0, false);
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("Help16.gif"));
 	private static final String TOOL_TIP_DESCRIPTION = ActionConstants.HELP;
+	private static String codeBase = null;
     //private static HelpContentViewer helpContentViewer = null;
 
     private JFrame mainFrame = null;
+
+	/**
+	 * @return the codeBase
+	 */
+	public static final String getCodeBase() {
+		return codeBase;
+	}
+
+	/**
+	 * @param codeBase the codeBase to set
+	 */
+	public static final void setCodeBase(String codeBase) {
+		if(!codeBase.endsWith("/")) codeBase += "/";
+		HelpTopicAction.codeBase = codeBase;
+	}
 
 	public HelpTopicAction(JFrame mainFrame)
 	{
@@ -78,8 +94,12 @@ public class HelpTopicAction extends AbstractContextAction
 //        	gov.nih.nci.caadapter.common.BrowserLaunch.openURL("file:///"+System.getProperty("user.dir") + "/docs/help/caAdapter-Help.html");
         	edu.stanford.ejalbert.BrowserLauncher brLauncher = new edu.stanford.ejalbert.BrowserLauncher(null);
 //        	System.out.println(System.getProperty("user.dir"));
-
-        	brLauncher.openURLinBrowser("file:///"+System.getProperty("user.dir") + "/docs/help/index.html");
+        	String location = codeBase;
+        	if(location==null || location.trim().length()==0)
+        		location = "file:///"+System.getProperty("user.dir") + "/docs/help/index.html";
+        	else 
+        		location = location+"caadapter-mms/help/index.html";
+        	brLauncher.openURLinBrowser(location);
         	
         }
         catch(NullPointerException ne)
@@ -104,6 +124,21 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
+ * HISTORY      : Revision 1.6  2008/09/23 15:43:28  linc
+ * HISTORY      : modified method to set codebase.
+ * HISTORY      :
+ * HISTORY      : Revision 1.5  2008/09/10 19:19:34  linc
+ * HISTORY      : updated.
+ * HISTORY      :
+ * HISTORY      : Revision 1.4  2008/09/10 18:08:14  linc
+ * HISTORY      : MMS 4.1 with help enabled.
+ * HISTORY      :
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/09/28 06:41:27  wuye
  * HISTORY      : enable help
  * HISTORY      :
