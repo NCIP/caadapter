@@ -34,7 +34,12 @@ import org.jdom.input.*;
 /**
  * The purpose of this class is to add tagged values and dependencies to
  * an xmi file based on the contents of a source to target mapping file.
- * @version 1.0
+ * 
+ * @author OWNER: Chunqing Lin
+ * @author LAST UPDATE $Author: linc $
+ * @since     caAdatper v4.0
+ * @version    $Revision: 1.36 $
+ * @date       $Date: 2008-10-20 15:42:47 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class XMIGenerator 
@@ -142,6 +147,7 @@ public class XMIGenerator
 //					{
 //						att.removeTaggedValue( "inverse-of" );
 //					}
+					/* remove clob function from mms, 2008/10/18
 					if( tagValue.getName().contains( "type" ))
 					{
                         if( tagValue.getValue().equalsIgnoreCase("CLOB"))
@@ -149,6 +155,7 @@ public class XMIGenerator
                            att.removeTaggedValue( "type" );
                         }                        
 					}
+					*/
 					if( tagValue.getName().contains( "discriminator" ))
 					{
 						att.removeTaggedValue( "discriminator" );
@@ -260,10 +267,13 @@ public class XMIGenerator
 			addLazyKey( lKey );
 		}
 
+		/* remove clob function from mms, 2008/10/18
+		
         for( String cKey : clobKeys )
         {
             addClobKey( cKey );
         }
+		*/
 
         HashMap<String, Integer> tableDiscriminatorCount = new HashMap<String, Integer>();
         for ( String dKey : discriminatorKeys )
@@ -620,12 +630,14 @@ public class XMIGenerator
 	    	corrTag.setValue(targetAttr);
 	   
 	    target.addTaggedValue("implements-association", getCleanPath(attribute.getChildText("source")));
+	    /* remove inverseof function from mms 2008/10/18
 	    // if inverseof already exists do not add again.
 	    if(reciprolRoleHasInverseOfTag(attribute.getChildText("source")) == false && (!inverseofExists) )
 	    {
 	    	addInverseOfTagValue(target,attribute);
 	    	saveModel();
 	    }
+	    */
 	}
 	
 	/**
@@ -975,3 +987,9 @@ public class XMIGenerator
 	   
 	  }
 }
+/**
+ * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.35  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
+ */
