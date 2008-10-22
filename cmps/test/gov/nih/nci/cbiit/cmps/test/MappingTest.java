@@ -24,6 +24,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -32,8 +33,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-10-21 20:49:08 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2008-10-22 15:45:39 $
  *
  */
 public class MappingTest {
@@ -63,7 +64,7 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder1.out.xml"));
 	}
 	
-	@Test
+	@Ignore
 	public void testParseXSD2() throws Exception {
 		XSDParser p = new XSDParser();
 		p.loadSchema("etc/data/shiporder2.xsd");
@@ -74,7 +75,7 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder2.out.xml"));
 	}
 	
-	@Test
+	@Ignore
 	public void testParseHL7v2XSD() throws Exception {
 		XSDParser p = new XSDParser();
 		p.loadSchema(XSDParser.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
@@ -85,7 +86,7 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/adt.out.xml"));
 	}
 	
-	@Test
+	@Ignore
 	public void testParseHL7v3XSD() throws Exception {
 		XSDParser p = new XSDParser();
 		p.loadSchema("etc/data/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd");
@@ -127,6 +128,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2008/10/21 20:49:08  linc
+ * HISTORY: Tested with HL7 v3 schema
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/10/21 15:59:57  linc
  * HISTORY: updated.
  * HISTORY:

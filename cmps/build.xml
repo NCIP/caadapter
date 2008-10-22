@@ -6,8 +6,9 @@
 	<property file="./build.properties" />
 	<property name="build.compiler" value="modern" />
 	<path id="project.class.path">
-		<fileset dir="./lib/">
+		<fileset dir="./lib">
 			<include name="**/*.jar" />
+			<include name="**/*.zip" />
 		</fileset>
 		<pathelement path="${src.dir}" />
 	</path>
@@ -16,7 +17,6 @@
 		<delete dir="${build.dir}" includeEmptyDirs="true" />
 		<delete dir="${dist.dir}" includeEmptyDirs="true" />
 	</target>
-
 
 	<target name="prep">
 		<mkdir dir="${build.dir}" />
@@ -29,14 +29,46 @@
 			<arg value="-d" />
 			<arg value="src" />
 			<arg value="-xmlschema" />
-			<arg value="etc/schema/dataModel.xsd" />						
+			<arg value="etc/schema/dataModel.xsd" />
 		</exec>
 	</target>
 	<target name="compile" depends="clean, prep">
-		<javac source="1.5" target="1.5" srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
 			<include name="**/*.java" />
 			<classpath refid="project.class.path" />
 		</javac>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<javac srcdir="${test.dir}" destdir="${build.dir}" debug="on" deprecation="on">
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${build.dir}" />
+			</classpath>
+		</javac>
+	</target>
+	<target name="test" depends="compile-test">
+		<junit>
+			<classpath>
+				<path refid="project.class.path" />
+				<pathelement location="${build.dir}" />
+			</classpath>
+
+			<formatter type="plain" />
+
+			<!-- test name="gov.nih.nci.cbiit.cmps.test.MappingTest" haltonfailure="no" outfile="result">
+				<formatter type="xml" />
+			</test -->
+
+			<batchtest fork="yes" todir="bin">
+				<formatter type="xml" />
+				<fileset dir="${test.dir}">
+					<include name="**/*Test*.java" />
+					<exclude name="**/AllTests.java" />
+				</fileset>
+			</batchtest>
+		</junit>
 	</target>
 
 	<target name="doc" description="Generate JavaDoc">
