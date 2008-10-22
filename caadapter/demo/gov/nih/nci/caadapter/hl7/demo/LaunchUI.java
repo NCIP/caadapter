@@ -15,18 +15,21 @@ import javax.swing.*;
  * A tiny driver which will launch the HL7SDK Swing Mapping Tool.
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.8 $
+ * @author LAST UPDATE $Author: linc $
+ * @version $Revision: 1.10 $
  * @since caAdapter v1.2
  */
 public class LaunchUI {
     private static final String LOGID = "$RCSfile: LaunchUI.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.8 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java,v 1.10 2008-09-23 15:43:28 linc Exp $";
 
-    public static void main(String[] args)
+	public static void main(String[] args)
     {
-        try
+        try	
             {
+        		if (args!=null && args.length>0 && args[0].startsWith("http:")) {
+        			gov.nih.nci.caadapter.ui.help.actions.HelpTopicAction.setCodeBase(args[0]);
+        		}
 		        UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 	        }
             catch (ClassNotFoundException e1)
