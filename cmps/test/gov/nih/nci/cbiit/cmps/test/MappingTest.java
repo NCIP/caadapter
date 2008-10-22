@@ -28,13 +28,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- * This class 
+ * This class is to test the Mapping functions
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.8 $
- * @date       $Date: 2008-10-22 15:45:39 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-10-22 19:01:17 $
  *
  */
 public class MappingTest {
@@ -53,6 +53,10 @@ public class MappingTest {
 	public void tearDown() throws Exception {
 	}
 	
+	/**
+	 * test XSD parsing and marshaling of the generated Model Object
+	 * @throws Exception
+	 */
 	@Test
 	public void testParseXSD1() throws Exception {
 		XSDParser p = new XSDParser();
@@ -64,6 +68,9 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder1.out.xml"));
 	}
 	
+	/**
+	 * test XSD parsing and marshaling of the generated Model Object
+	 */
 	@Ignore
 	public void testParseXSD2() throws Exception {
 		XSDParser p = new XSDParser();
@@ -75,6 +82,9 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/shiporder2.out.xml"));
 	}
 	
+	/**
+	 * test HL7 v2 XSD parsing and marshaling of the generated Model Object
+	 */
 	@Ignore
 	public void testParseHL7v2XSD() throws Exception {
 		XSDParser p = new XSDParser();
@@ -86,6 +96,9 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/adt.out.xml"));
 	}
 	
+	/**
+	 * test HL7 v3 XSD parsing and marshaling of the generated Model Object
+	 */
 	@Ignore
 	public void testParseHL7v3XSD() throws Exception {
 		XSDParser p = new XSDParser();
@@ -97,6 +110,9 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),ElementMeta.class, e), new File("bin/COCT_MT010000UV01.out.xml"));
 	}
 	
+	/**
+	 * test create Mapping from a pair of XSD and marshaling the Mapping 
+	 */
 	@Test
 	public void testMarshalMapping() throws Exception {
 		String srcComponentId = "etc/data/shiporder3.xsd";
@@ -114,6 +130,9 @@ public class MappingTest {
 		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping.out.xml"));
 	}
 	
+	/**
+	 * test round trip marshaling and unmarshaling of Mapping 
+	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
@@ -128,6 +147,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.8  2008/10/22 15:45:39  linc
+ * HISTORY: unit tested.
+ * HISTORY:
  * HISTORY: Revision 1.7  2008/10/21 20:49:08  linc
  * HISTORY: Tested with HL7 v3 schema
  * HISTORY:

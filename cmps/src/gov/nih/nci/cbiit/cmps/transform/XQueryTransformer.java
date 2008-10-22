@@ -20,13 +20,13 @@ import javax.xml.namespace.QName;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
 /**
- * This class 
+ * This class performs the transformation using XQuery
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-10-20 20:46:15 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-10-22 19:01:17 $
  *
  */
 public class XQueryTransformer {
@@ -45,6 +45,10 @@ public class XQueryTransformer {
 	// Prepared Query
 	private XQPreparedExpression exp;
 	
+	/**
+	 * constructor
+	 * @throws XQException
+	 */
 	public XQueryTransformer() throws XQException {
 		dataSource = new SaxonXQDataSource();
 		conn = dataSource.getConnection();
@@ -78,11 +82,21 @@ public class XQueryTransformer {
 		return conn;
 	}
 
+	/**
+	 * set XQuery
+	 * @param queryString
+	 * @throws XQException
+	 */
 	public void setQuery(String queryString) throws XQException {
 		exp = conn.prepareExpression(queryString);
 		this.queryString = queryString;
 	}
 	
+	/**
+	 * execute XQuery
+	 * @return
+	 * @throws XQException
+	 */
 	public String executeQuery() throws XQException {
 		exp.bindString(new QName("docName"), filename,
 				conn.createAtomicType(XQItemType.XQBASETYPE_STRING));
@@ -90,6 +104,10 @@ public class XQueryTransformer {
 		return result.getSequenceAsString(new Properties());
 	}
 
+	/**
+	 * test method
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		if (args.length != 1) {
 			System.err.println("Usage: java ibm.dw.xqj.XQueryTester [XML filename]");
@@ -123,6 +141,9 @@ public class XQueryTransformer {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/10/20 20:46:15  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/01 18:59:13  linc
  * HISTORY: updated.
  * HISTORY:

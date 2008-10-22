@@ -19,13 +19,13 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmps.core.*; 
 
 /**
- * This class 
+ * This class parses XSD into CMPS Core Model object
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-10-21 20:49:08 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-10-22 19:01:17 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -44,6 +44,9 @@ public class XSDParser implements DOMErrorHandler {
 		return sb.toString();
 	}
 
+	/**
+	 * constructor
+	 */
 	public XSDParser() {
 		try {
 			// get DOM Implementation using DOM Registry
@@ -89,6 +92,10 @@ public class XSDParser implements DOMErrorHandler {
 		}
 	}
 
+	/**
+	 * load XSD schema
+	 * @param schemaURI - XSD URI
+	 */
 	public void loadSchema(String schemaURI) {
 
 		// parse document
@@ -97,6 +104,12 @@ public class XSDParser implements DOMErrorHandler {
 
 	}
 
+	/**
+	 * get CMPS Core Model Object corresponding to the specified root element
+	 * @param namespace - root element namespace
+	 * @param name - root element name
+	 * @return ElementMeta object
+	 */
 	public ElementMeta getElementMeta(String namespace, String name){
 		if (model != null) {
 			// element declarations
@@ -114,6 +127,12 @@ public class XSDParser implements DOMErrorHandler {
 
 	}
 
+	/**
+	 * get CMPS Core Model Object corresponding to the specified complex type
+	 * @param namespace - complex type namespace
+	 * @param name - complex type name
+	 * @return ElementMeta object
+	 */
 	public ElementMeta getElementMetaFromComplexType(String namespace, String name){
 		if (model != null) {
 			// element declarations
@@ -130,6 +149,11 @@ public class XSDParser implements DOMErrorHandler {
 
 	}
 
+	/**
+	 * Utility method to get resource
+	 * @param name - resource name
+	 * @return URL of resource
+	 */
 	public static URL getResource(String name){
 		URL ret = null;
 		ret = XSDParser.class.getClassLoader().getResource(name);
@@ -307,9 +331,6 @@ public class XSDParser implements DOMErrorHandler {
 		return ret;
 	}
 
-
-
-
 	public boolean handleError(DOMError error){
 		short severity = error.getSeverity();
 		if (severity == DOMError.SEVERITY_ERROR) {
@@ -327,6 +348,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/10/21 20:49:08  linc
+ * HISTORY: Tested with HL7 v3 schema
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/10/20 20:46:15  linc
  * HISTORY: updated.
  * HISTORY:
