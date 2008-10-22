@@ -21,13 +21,13 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
- * This class 
+ * This class generates XQuery from Mapping
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-10-21 20:49:08 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-10-22 19:01:17 $
  *
  */
 public class XQueryBuilder {
@@ -40,6 +40,10 @@ public class XQueryBuilder {
 
 	final static String sep = System.getProperty("line.separator");
 
+	/**
+	 * constructor that takes Mapping object
+	 * @param m - Mapping object
+	 */
 	public XQueryBuilder(Mapping m){
 		this.mapping = m;
 		loadLinks();
@@ -56,6 +60,10 @@ public class XQueryBuilder {
 		}
 	}
 
+	/**
+	 * generate XQuery
+	 * @return XQuery String
+	 */
 	public String getXQuery() {
 		List<Component> l = mapping.getComponents().getComponent();
 		Component tgt = null;
@@ -203,6 +211,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/10/21 20:49:08  linc
+ * HISTORY: Tested with HL7 v3 schema
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/10/21 15:59:57  linc
  * HISTORY: updated.
  * HISTORY:
