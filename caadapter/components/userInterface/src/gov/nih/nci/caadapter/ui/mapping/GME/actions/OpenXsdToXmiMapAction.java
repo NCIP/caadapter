@@ -39,8 +39,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-10-23 20:58:06 $
  */
 public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 {
@@ -172,7 +172,7 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 				{
                     JButton xmiButton = (JButton) mappingPanel.getTargetLocationPanel().getComponent(1);
                     xmiButton.setEnabled( false );
-                    JOptionPane.showMessageDialog(null, "Selected file type not valid", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "The target object model(XMI) and its mapped reference(s) to Schema(XSD) could not be found,\nplease make sure you open the correct XSD/XMI files.", "Warning", JOptionPane.ERROR_MESSAGE);
 
 //					reportThrowableToUI(e1, mainFrame);
 					//log the exception, but not report
@@ -239,6 +239,9 @@ public class OpenXsdToXmiMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:54:05  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/03/13 20:09:45  schroedn
  * HISTORY      : Grey'd out XMI if XSD isn't selected correctly and on creating NEW
  * HISTORY      :
