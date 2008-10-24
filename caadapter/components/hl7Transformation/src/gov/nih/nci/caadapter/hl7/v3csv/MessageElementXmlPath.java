@@ -6,15 +6,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
  
-package gov.nih.nci.caadapter.hl7.map;
+package gov.nih.nci.caadapter.hl7.v3csv;
 /**
  * The class defines XML path element.
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-09-29 15:47:19 $
+ *          revision    $Revision: 1.1 $
+ *          date        $Date: 2008-10-24 19:35:04 $
  */
 import java.util.ArrayList;
 
@@ -55,4 +55,7 @@ public class MessageElementXmlPath extends ArrayList<String> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.4  2008/09/29 15:47:19  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

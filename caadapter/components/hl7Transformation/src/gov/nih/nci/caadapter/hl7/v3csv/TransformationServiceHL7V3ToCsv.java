@@ -6,18 +6,19 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
  
-package gov.nih.nci.caadapter.hl7.map;
+package gov.nih.nci.caadapter.hl7.v3csv;
 /**
  * The class defines the engine to transfer a HL7 v3 message into a CSV data set.
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-09-29 15:47:19 $
+ *          revision    $Revision: 1.1 $
+ *          date        $Date: 2008-10-24 19:35:04 $
  */
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.transformation.MapParser;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
@@ -71,7 +72,7 @@ public class TransformationServiceHL7V3ToCsv  {
 	        	return transformationResults;
 	        }
 	        
-	        String fullCsvfilepath = FileUtil.filenameLocate(mapFile.getParent(), mapParser.getSCSFilename());
+	        String fullCsvfilepath = FileUtil.filenameLocate(mapFile.getParent(), mapParser.getSourceSpecFileName());
 	        FileReader fileReader = new FileReader(new File(fullCsvfilepath));
             CSVMetaParserImpl csvParser = new CSVMetaParserImpl();
             CSVMetaResult csvMetaResult = csvParser.parse(fileReader);
@@ -134,4 +135,7 @@ public class TransformationServiceHL7V3ToCsv  {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2008/09/29 15:47:19  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
