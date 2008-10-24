@@ -15,7 +15,6 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
-import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
@@ -28,6 +27,7 @@ import gov.nih.nci.caadapter.ui.common.message.ValidationMessagePane;
 import gov.nih.nci.caadapter.ui.common.nodeloader.HL7V3MessageLoader;
 import gov.nih.nci.caadapter.ui.common.preferences.CaAdapterPref;
 import gov.nih.nci.caadapter.ui.hl7message.actions.RegenerateHL7V3MessageAction;
+import gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv;
 import gov.nih.nci.caadapter.hl7.validation.HL7V3MessageValidator;
 
 import javax.swing.JPanel;
@@ -64,10 +64,10 @@ import java.util.Map;
  * This class is the main entry point to display HL7V3 message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.23 $
- *          date        $Date: 2008-06-26 19:45:51 $
+ *          revision    $Revision: 1.24 $
+ *          date        $Date: 2008-10-24 19:38:29 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -316,7 +316,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
         try
 		{
 			String dataFileName=dataFile.getName();
-			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION))
+			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION)
+					||dataFileName.contains("hl7"))
 			{//transfer CSV to HL7 V3
 				//at first:watch data loading....progress
 				final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog(this, false);
@@ -332,6 +333,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					ts.setOutputFile(this.getSaveFile());
 					listnerPane.isBatchTransform = true;
 				}
+				if (dataFileName.contains("hl7"))
+						listnerPane.isBatchTransform=false;
 		    	progressor.setProgress(100);
 		    	ts.addProgressWatch(progressor);
 				Thread localThread=new Thread(
@@ -669,6 +672,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.23  2008/06/26 19:45:51  linc
+ * HISTORY      : Change HL7 transformation GUI to use batch api.
+ * HISTORY      :
  * HISTORY      : Revision 1.22  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

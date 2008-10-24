@@ -33,14 +33,15 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.8 $
- * @date $Date: 2008-09-29 15:40:38 $
+ * @version $Revision: 1.9 $
+ * @date $Date: 2008-10-24 19:36:58 $
  * @since caAdapter v4.0
  */
 
 public class MapParser {
-	String scsFilename ="";
+	String sourceSpecFileName ="";
 	String h3sFilename ="";
+	String sourceKind="";
 	ValidatorResults theValidatorResults = new ValidatorResults();
 	Hashtable <String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
 	Hashtable mappings = new Hashtable();
@@ -84,7 +85,9 @@ public class MapParser {
 		    	}
 		    		
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("source")) {
-		    		scsFilename = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
+		    		sourceSpecFileName = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
+		    		String cmptType=component.getAttributeValue("kind");
+		    		sourceKind=cmptType;
 		    	}
 		    	if (component.getAttribute("type").getValue().equalsIgnoreCase("target")) {
 		    		h3sFilename = (component.getAttribute("location")==null?"":component.getAttribute("location").getValue());
@@ -250,8 +253,8 @@ public class MapParser {
         }
     }
 
-	public String getSCSFilename() {
-		return scsFilename;
+	public String getSourceSpecFileName() {
+		return sourceSpecFileName;
 	}
 	public String getH3SFilename() {
 		return h3sFilename;
@@ -262,7 +265,17 @@ public class MapParser {
 	public Hashtable getFunctions() {
 		return functions;
 	}
+	/**
+	 * @return the v2Version
+	 */
+	public String getSourceKind() {
+		return sourceKind;
+	}
+	
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2008/09/29 15:40:38  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

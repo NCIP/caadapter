@@ -11,7 +11,7 @@ package gov.nih.nci.caadapter.hl7.junit;
 import static org.junit.Assert.*;
 
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
-import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
+import gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,7 +30,7 @@ public class Hl7V3ToCsvTransformationTest extends TestCase {
 
 	
 	/**
-	 * Test method for {@link gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv#TransformationServiceHL7V3ToCsv(java.lang.String, java.lang.String)}.
+	 * Test method for {@link gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv#TransformationServiceHL7V3ToCsv(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testTransformationServiceHL7V3ToCsvStringString() {
@@ -38,7 +38,7 @@ public class Hl7V3ToCsvTransformationTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv#TransformationServiceHL7V3ToCsv(java.io.File, java.io.File)}.
+	 * Test method for {@link gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv#TransformationServiceHL7V3ToCsv(java.io.File, java.io.File)}.
 	 */
 	@Test
 	public void testTransformationServiceHL7V3ToCsvFileFile() {

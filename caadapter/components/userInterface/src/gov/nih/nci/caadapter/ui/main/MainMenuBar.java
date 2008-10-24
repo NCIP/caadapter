@@ -8,11 +8,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.main;
 
-import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
@@ -28,7 +26,6 @@ import gov.nih.nci.caadapter.ui.mapping.GME.actions.NewXsdToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.GME.actions.OpenXsdToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.NewMapFileAction;
 import gov.nih.nci.caadapter.ui.mapping.OpenMapFileAction;
-import gov.nih.nci.caadapter.ui.mapping.V2V3.actions.V2V3MapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.NewCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.catrend.actions.OpenCsvToXmiMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.DefaultAnotateAction;
@@ -59,10 +56,10 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.40 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.41 $
+ * @date       $Date: 2008-10-24 19:38:38 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -249,15 +246,15 @@ public class MainMenuBar extends AbstractMenuBar
             {
                 newGroup.add(constructNewCSVTOV3Menu());
             }
-            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
-            {
-                newGroup.add(constructNewV3TOCSVMenu());
-            }
-            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
-            {
-                newGroup.add(constructNewV2TOV3Menu());
-                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
-            }
+//            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
+//            {
+//                newGroup.add(constructNewV3TOCSVMenu());
+//            }
+//            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
+//            {
+//                newGroup.add(constructNewV2TOV3Menu());
+//                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
+//            }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewDatabaseTOSDTMMenu());
@@ -386,7 +383,7 @@ public class MainMenuBar extends AbstractMenuBar
     private JMenu constructNewCSVTOV3Menu()
     {
     	//user should be authorized to use HL7 artifacts
-        JMenu newGroup = new JMenu("CSV To HL7 v3 Mapping and Transformation Service");
+        JMenu newGroup = new JMenu("V2/CSV To HL7 V3 Mapping and Transformation Service");
         NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
         newMapAction.setAuthorizationRequired(true);
         JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction);
@@ -414,30 +411,30 @@ public class MainMenuBar extends AbstractMenuBar
         return newGroup;
     }
 
-    private JMenu constructNewV2TOV3Menu()
-    {
-        NewMapFileAction newMapAction1 = new NewMapFileAction(mainFrame);
-        newMapAction1.setAuthorizationRequired(true);
-        JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction1);
-        JMenu newGroup = new JMenu("HL7 v2 to HL7 v3 Conversion Service");
-        V2V3MapAction newV2ToV3MapAction = new V2V3MapAction(mainFrame);
-        newV2ToV3MapAction.setAuthorizationRequired(true);
-        NewHSMAction newHSMAction_1 = new NewHSMAction(mainFrame);
-        newV2ToV3MapAction.setAuthorizationRequired(true);
-        JMenuItem newHSMFileItem_1 = new JMenuItem(newHSMAction_1);
-        NewHL7V3MessageAction newHL7V3MessageAction_1 = new NewHL7V3MessageAction(mainFrame);
-        newHL7V3MessageAction_1.setAuthorizationRequired(true);
-        JMenuItem newHL7V3MessageItem_1 = new JMenuItem(newHL7V3MessageAction_1);
-        newGroup.add(new JMenuItem(newV2ToV3MapAction));
-        newGroup.add(newHSMFileItem_1);
-        newGroup.add(newCsvToV3MapItem);
-        newGroup.add(newHL7V3MessageItem_1);
-        return newGroup;
-    }
+//    private JMenu constructNewV2TOV3Menu()
+//    {
+//        NewMapFileAction newMapAction1 = new NewMapFileAction(mainFrame);
+//        newMapAction1.setAuthorizationRequired(true);
+//        JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction1);
+//        JMenu newGroup = new JMenu("HL7 v2 to HL7 v3 Conversion Service");
+//        V2V3MapAction newV2ToV3MapAction = new V2V3MapAction(mainFrame);
+//        newV2ToV3MapAction.setAuthorizationRequired(true);
+//        NewHSMAction newHSMAction_1 = new NewHSMAction(mainFrame);
+//        newV2ToV3MapAction.setAuthorizationRequired(true);
+//        JMenuItem newHSMFileItem_1 = new JMenuItem(newHSMAction_1);
+//        NewHL7V3MessageAction newHL7V3MessageAction_1 = new NewHL7V3MessageAction(mainFrame);
+//        newHL7V3MessageAction_1.setAuthorizationRequired(true);
+//        JMenuItem newHL7V3MessageItem_1 = new JMenuItem(newHL7V3MessageAction_1);
+//        newGroup.add(new JMenuItem(newV2ToV3MapAction));
+//        newGroup.add(newHSMFileItem_1);
+//        newGroup.add(newCsvToV3MapItem);
+//        newGroup.add(newHL7V3MessageItem_1);
+//        return newGroup;
+//    }
 
     private JMenu constructNewV3TOCSVMenu()
     {
-        JMenu newGroup = new JMenu("HL7 v3 To CSV Transformation Service");
+        JMenu newGroup = new JMenu("HL7 V3 To CSV Transformation Service");
         NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V3_TO_CSV, mainFrame);
         newHL7V3MessageAction.setAuthorizationRequired(true);
         JMenuItem newHL7V3ToCSVItem = new JMenuItem(newHL7V3MessageAction);
@@ -747,6 +744,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.40  2008/09/26 20:35:27  linc
+ * HISTORY : Updated according to code standard.
+ * HISTORY :
  * HISTORY : Revision 1.39  2008/09/23 15:19:42  wangeug
  * HISTORY : caAdapter 4.2 alpha release
  * HISTORY :

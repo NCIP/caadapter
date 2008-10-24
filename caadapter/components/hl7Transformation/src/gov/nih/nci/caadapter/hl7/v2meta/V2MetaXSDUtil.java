@@ -12,6 +12,10 @@ import java.util.Hashtable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
+import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
+import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
+import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
 import gov.nih.nci.cbiit.cmps.common.XSDParser;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
@@ -20,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2008-10-16 14:32:28 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2008-10-24 19:37:17 $
  * @since caAdapter v4.2
  */
 
@@ -116,11 +120,37 @@ public class V2MetaXSDUtil {
 	{
 		return elementNodehash.get(nodeXmlPath);
 	}
+	
+	public static CSVMeta createDefaultCsvMeta(String messageRoot)
+	{
+		CSVMetaImpl csvFileMetaImpl = new CSVMetaImpl();
+//		csvFileMetaImpl.setXmlPath(messageRoot);
+		CSVSegmentMetaImpl rootSeg = new CSVSegmentMetaImpl(messageRoot, null);
+		rootSeg.setXmlPath(messageRoot);
+		rootSeg.setCardinalityType(CardinalityType.VALUE_1);
+		csvFileMetaImpl.setRootSegment(rootSeg);
+		return csvFileMetaImpl;
+	}
+	
+	public static String formatV2MessageType(String inValue)
+	{
+		String rtnSt=inValue;
+		if (rtnSt==null)
+			return rtnSt;
+		if (rtnSt.indexOf("/")>-1)
+			rtnSt=rtnSt.substring(rtnSt.lastIndexOf("/")+1);
+		else if (rtnSt.indexOf("\\")>-1)
+			rtnSt=rtnSt.substring(rtnSt.lastIndexOf("\\")+1);
+		return rtnSt;
+	}
 }
 
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2008/10/16 14:32:28  wangeug
+* HISTORY: add new method to return a V2Meta tree node with xmlPath
+* HISTORY:
 * HISTORY: Revision 1.1  2008/10/09 17:55:33  wangeug
 * HISTORY: rename file
 * HISTORY:

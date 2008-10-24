@@ -23,8 +23,8 @@ import org.junit.Test;
  * The class tests the CSV to HL7v3 transformation service.
  * 
  * @author OWNER: Wang, Eugene
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2008-06-09 19:53:51 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-10-24 19:38:05 $
  */
 
 public class DemoCSV2HL7v3TransformationTests extends TestCase {
@@ -34,8 +34,16 @@ public class DemoCSV2HL7v3TransformationTests extends TestCase {
 	  * Test general transformation
 	  */
 	 @Test public void testTransformation() throws Exception{
-	     String csvSrcFile=System.getProperty("hl7.transformation.src.file");
-	     String mapFile=System.getProperty("hl7.transformation.map.file");
+//	     String csvSrcFile=System.getProperty("hl7.transformation.src.file");
+//	     String mapFile=System.getProperty("hl7.transformation.map.file");
+		 String dataHome="C:\\eclipseJ2ee\\workspace\\caadapter\\workingspace\\V2Meta_to_V3";
+	     String mapFile=dataHome+"\\"+"150003V2.map";		 
+		 String csvSrcFile=dataHome+"\\"+"ADT_A01.hl7";
+		 
+//		 dataHome="C:\\eclipseJ2ee\\workspace\\caadapter\\workingspace\\CSV_to_HL7_V3_Example\\COCT_150001";
+//		 csvSrcFile=dataHome+"\\"+"Copy_ COCT_MT150001.csv";
+//	     mapFile=dataHome+"\\"+"Copy_150001.map";
+	     
 		 System.out.println("DemoCSV2HL7v3TransformationTests..sourceFie:"+csvSrcFile);
 		 System.out.println("DemoCSV2HL7v3TransformationTests..mapFie:"+mapFile);
 		 TransformationService ts = new TransformationService(mapFile, csvSrcFile);//

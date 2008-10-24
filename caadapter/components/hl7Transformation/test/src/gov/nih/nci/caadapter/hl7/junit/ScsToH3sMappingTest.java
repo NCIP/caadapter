@@ -10,12 +10,12 @@ package gov.nih.nci.caadapter.hl7.junit;
 
 import static org.junit.Assert.*;
 import gov.nih.nci.caadapter.hl7.transformation.MapParser;
+import gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
-import gov.nih.nci.caadapter.hl7.map.TransformationServiceHL7V3ToCsv;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,8 +50,8 @@ public class ScsToH3sMappingTest extends TestCase {
 			assertTrue(!mapParser.getFunctions().isEmpty());
 			assertNotNull(mapParser.getH3SFilename());
 			assertNotSame(mapParser.getH3SFilename(), "");
-			assertNotNull(mapParser.getSCSFilename());
-			assertNotSame(mapParser.getSCSFilename(), "");
+			assertNotNull(mapParser.getSourceSpecFileName());
+			assertNotSame(mapParser.getSourceSpecFileName(), "");
         } catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -25,28 +25,42 @@ import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
+import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
+import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
+import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipEntry;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.Source;
+
+import com.sun.encoder.Encoder;
+import com.sun.encoder.EncoderException;
+
 /**
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.20 $
- * @date $Date: 2008-09-23 15:18:14 $
+ * @version $Revision: 1.21 $
+ * @date $Date: 2008-10-24 19:36:58 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.20 2008-09-23 15:18:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.21 2008-10-24 19:36:58 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
@@ -297,18 +311,37 @@ public class TransformationService
         CSVDataResult csvDataResult = null;
         if (isInputStream) 
         {
-        	csvDataResult=parseCsvInputStream(mapParser.getSCSFilename());
+        	csvDataResult=parseCsvInputStream(mapParser.getSourceSpecFileName());
         }
         else if (isCsvString) 
         {
-        	csvDataResult= parseCsvString(mapParser.getSCSFilename());
+        	csvDataResult= parseCsvString(mapParser.getSourceSpecFileName());
         }
-        else 
+        else  if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().startsWith("2."))
         {
-        	csvDataResult= parseCsvfile(mapParser.getSCSFilename());
+        	csvDataResult=pareV2Message(mapParser.getSourceKind(), V2MetaXSDUtil.formatV2MessageType(mapParser.getSourceSpecFileName()));
+        	System.out.println("V2 Message Parsing time" + (System.currentTimeMillis()-csvbegintime));
+        	//reformat mapping link xmlPath
+        	Enumeration enumKey=mappings.keys();
+        	while (enumKey.hasMoreElements())
+        	{
+        		String oneMappingKey=(String)enumKey.nextElement();
+        		String srcXmlPath=(String)mappings.get(oneMappingKey);
+        		if (srcXmlPath.startsWith("function"))
+        			continue;
+        		String leadingSt=srcXmlPath.substring(0, srcXmlPath.indexOf("."));
+        		String endingSt=srcXmlPath.substring(srcXmlPath.indexOf(".")+1);
+        		endingSt=endingSt.replace(".", "__");
+        		srcXmlPath=leadingSt+"."+endingSt;
+        		mappings.put(oneMappingKey, srcXmlPath);
+        	}
+        }
+        else
+        {
+        	csvDataResult= parseCsvfile(mapParser.getSourceSpecFileName());
         }
         
-    	System.out.println("CSV Parsing time" + (System.currentTimeMillis()-csvbegintime));
+    	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
 
         // parse the datafile, if there are errors.. return.
@@ -322,31 +355,16 @@ public class TransformationService
         {
             Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file! : Please check and validate this csv file against the scs file."});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-        	System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
+        	System.out.println("Error parsing source Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
             return null;
         }
         csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
     	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_COUNT_MESSAGE);
         
     	MapProcessor mapProcess = new MapProcessor();
-        
+    	
         List<XMLElement> xmlElements = mapProcess.process(mappings, funcations, csvSegmentedFile, mifClass, transformationWatchList);
-//    	HL7V3MessageValidator validator = new HL7V3MessageValidator();
-/*        for(XMLElement xmlElement:xmlElements) 
-        {
-        	System.out.println("Message:"+xmlElement.toXML());
-//        	xmlElement.validate();
-        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages().size());
-        	for(Message message:xmlElement.getValidatorResults().getAllMessages())
-        	{
-        		System.out.println("Message:" + message+".");
-        	}
-//        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
-        	
-        	System.out.println("XML validation results:");
-//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
-//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
-        }*/
+    	System.out.println("Encode HL7 V3 message__"+this.mifClass.getName()+":" + (System.currentTimeMillis()-csvbegintime));
         System.out.println("total message" + xmlElements.size());
         return xmlElements;
    }
@@ -377,7 +395,7 @@ public class TransformationService
     		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
 
     		boolean batchFinished = false;
-    		File scsFile = new File(FileUtil.filenameLocate(mapfile.getParent(), mapParser.getSCSFilename()));
+    		File scsFile = new File(FileUtil.filenameLocate(mapfile.getParent(), mapParser.getSourceSpecFileName()));
     		this.loadCsvMeta(scsFile);
 
     		if (isCsvString || (!this.isOutputStream && this.outputFile==null && this.outputStream==null)) 
@@ -401,22 +419,6 @@ public class TransformationService
     		while(reader.hasMoreRecord())
     		{
     			List<XMLElement> xmlElements = processNext();
-//  			HL7V3MessageValidator validator = new HL7V3MessageValidator();
-    			/*        for(XMLElement xmlElement:xmlElements) 
-        {
-        	System.out.println("Message:"+xmlElement.toXML());
-//        	xmlElement.validate();
-        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages().size());
-        	for(Message message:xmlElement.getValidatorResults().getAllMessages())
-        	{
-        		System.out.println("Message:" + message+".");
-        	}
-//        	System.out.println("ValiationResults: " + xmlElement.getValidatorResults().getAllMessages());
-
-        	System.out.println("XML validation results:");
-//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT150003UV03.xsd"));
-//        	System.out.println(validator.validate(xmlElement.toXML().toString(), "C:/Projects/caadapter-gforge-2007-May/etc/schemas/multicacheschemas/COCT_MT010000UV01.xsd"));
-        }*/
     			if(xmlElements!=null)
     			{
     				for(int i=0; i<xmlElements.size(); i++)
@@ -536,6 +538,41 @@ public class TransformationService
     	return count;
     }
     
+    private CSVDataResult pareV2Message(String v2Version, String msgType)
+	{	
+    	try {
+
+ 			//Create the encoder instance, HL7Encoder
+			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, msgType);
+    		long csvbegintime = System.currentTimeMillis();
+			Source source = coder.decodeFromStream(new FileInputStream(new File("data/ADT_A01.hl7")));
+
+			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
+			
+			//forward transformed XML to next step
+			HL7V2XmlSaxContentHandler saxHandler= new HL7V2XmlSaxContentHandler();
+			SAXResult saxResult=new SAXResult(saxHandler); 
+			System.out.println("TransformationService.pareV2Message()...decode source message:"+(System.currentTimeMillis()-csvbegintime));
+			transformer.transform(source, saxResult);
+			System.out.println("TransformationService.pareV2Message()...decode/transfer data :"+(System.currentTimeMillis()-csvbegintime));
+			CSVDataResult parsedData= saxHandler.getDataResult();
+			return parsedData;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EncoderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null; 
+    }
+    
     private CSVDataResult parseCsvfile(String scsFilename) throws Exception
     {
         SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
@@ -617,6 +654,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.20  2008/09/23 15:18:14  wangeug
+ * HISTORY      : caAdapter 4.2 alpha release
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2008/06/26 19:45:50  linc
  * HISTORY      : Change HL7 transformation GUI to use batch api.
  * HISTORY      :
