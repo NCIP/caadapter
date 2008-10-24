@@ -39,12 +39,12 @@
 	<property name="dbspec_package" value="gov.nih.nci.caadapter.castor.database.impl"/>
 
 	<path id="module.class.path">
-	<!--	
+		
 		<fileset dir="${module.lib.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
 		</fileset>
-	-->
+ 
 		<fileset dir="${caadapter.project.lib.dir}">
 			<include name="**/*.jar"/>
 			<include name="**/*.zip"/>
@@ -94,6 +94,7 @@
 			<src path="${castor.gencode.dir}"/>
 			<exclude name="test/**"/>
 			<exclude name="gov/nih/nci/caadapter/hl7/v2v3/tools/V2MessageBrowser.java"/>
+			<exclude name="gov/nih/nci/caadapter/common/util/CaadapterUtil.java"/>
 		</javac>
 	</target>
 
