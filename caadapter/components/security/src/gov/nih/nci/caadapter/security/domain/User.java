@@ -4,8 +4,8 @@ package gov.nih.nci.caadapter.security.domain;
  * @author : Sandeep Phadke
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-10-24 20:59:24 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-10-24 21:30:06 $
  *  * @created 24-Oct-2008 
  */
 
@@ -19,6 +19,7 @@ public class User
         private String mobilePhoneNumber;
         private String workPhoneNumber;
         private String organization;
+        private UserEmail userEmail;
         private String userId;
         private String password;
         private UserDateStamp userDateStamp;
@@ -26,18 +27,31 @@ public class User
         
         public User()
         {}
-    /**   Sets the value for variable firstName.
+        /**   Sets the value for variable UserEmail.
          * @param String setValue
          */
-       public void setFirstName(String setValue){
-            this.firstName = setValue;
+       public void setUserEmail(UserEmail setValue){
+            this.userEmail = setValue;
         }
-       /**   gets the value for variable firstName.
-        * @return String firstName
+       /**   gets the value for variable userEmail.
+        * @return String userEmail
         */
-       public String getFirstName(){
-           return this.firstName ;
+       public UserEmail getUserEmail(){
+           return this.userEmail ;
        }
+       /**   Sets the value for variable firstName.
+        * @param String setValue
+        */
+      public void setFirstName(String setValue){
+           this.firstName = setValue;
+       }
+      /**   gets the value for variable firstName.
+       * @return String firstName
+       */
+      public String getFirstName(){
+          return this.firstName ;
+      }
+       
        /**   Sets the value for variable lastName.
         * @param String setValue
         */
