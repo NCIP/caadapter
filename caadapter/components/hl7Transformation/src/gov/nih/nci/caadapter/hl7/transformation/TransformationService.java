@@ -53,21 +53,21 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.21 $
- * @date $Date: 2008-10-24 19:36:58 $
+ * @version $Revision: 1.22 $
+ * @date $Date: 2008-10-24 21:07:28 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.21 2008-10-24 19:36:58 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.22 2008-10-24 21:07:28 wangeug Exp $";
 
     private boolean isCsvString = false;
     private boolean isInputStream = false;
     private boolean isOutputStream = false;
     private String csvString = "";
     private File mapfile = null;
-    private File csvfile = null;
+    private File sourceDataFile = null;
     //private File scsfile = null;
     private File outputFile = null;
     private InputStream csvStream = null;
@@ -101,7 +101,7 @@ public class TransformationService
         }
 
         this.mapfile = new File(mapfilename);
-        this.csvfile = new File(csvfilename);
+        this.sourceDataFile = new File(csvfilename);
     }
 
 	/**
@@ -160,7 +160,7 @@ public class TransformationService
             throw new IllegalArgumentException("Map File or csv File should not be null!");
         }
         this.mapfile = mapfile;
-        this.csvfile = csvfile;
+        this.sourceDataFile = csvfile;
     }
 
     private TransformationService()
@@ -402,9 +402,9 @@ public class TransformationService
     		{
     			throw new Exception("not valid for batch transformation.");
     		}
-    		if(!this.isInputStream && this.csvfile!=null)
+    		if(!this.isInputStream && this.sourceDataFile!=null)
     		{
-    			this.csvStream = new FileInputStream(this.csvfile);
+    			this.csvStream = new FileInputStream(this.sourceDataFile);
     		}
     		if(!this.isOutputStream && this.outputFile!=null)
     		{
@@ -545,8 +545,8 @@ public class TransformationService
  			//Create the encoder instance, HL7Encoder
 			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, msgType);
     		long csvbegintime = System.currentTimeMillis();
-			Source source = coder.decodeFromStream(new FileInputStream(new File("data/ADT_A01.hl7")));
-
+//			Source source = coder.decodeFromStream(new FileInputStream(new File("data/ADT_A01.hl7")));
+    		Source source = coder.decodeFromStream(new FileInputStream(sourceDataFile));
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
 			
 			//forward transformed XML to next step
@@ -577,7 +577,7 @@ public class TransformationService
     {
         SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
         String fullscmfilepath = FileUtil.filenameLocate(mapfile.getParent(), scsFilename);
-        CSVDataResult csvDataResult = parser.parse(csvfile, new File(fullscmfilepath));
+        CSVDataResult csvDataResult = parser.parse(sourceDataFile, new File(fullscmfilepath));
         return csvDataResult;
     }
 
@@ -654,6 +654,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.21  2008/10/24 19:36:58  wangeug
+ * HISTORY      : transfer a v2 message into v3 message using SUN v2 schema
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2008/09/23 15:18:14  wangeug
  * HISTORY      : caAdapter 4.2 alpha release
  * HISTORY      :
