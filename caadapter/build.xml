@@ -712,7 +712,7 @@
         <!-- copy dir="${lib.dir}"/ -->
         <copy todir="${dist.dir}/lib">
             <fileset dir="${common.module.home}/lib"/>
-            <!-- fileset dir="${hl7.module.home}/lib"/ -->
+            <fileset dir="${hl7.module.home}/lib"/>
             <fileset dir="${mms.module.home}/lib"/>
             <!-- fileset dir="${dataview.module.home}/lib"/ -->
             <fileset dir="${sdtm.module.home}/lib"/>
