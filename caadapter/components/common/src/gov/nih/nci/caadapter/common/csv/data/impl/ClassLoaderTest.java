@@ -24,9 +24,9 @@ import java.util.jar.Attributes;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Jul 12, 2007
  *          Time:       4:46:01 PM $
  */
@@ -45,11 +45,37 @@ public class ClassLoaderTest
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.4 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/csv/data/impl/ClassLoaderTest.java,v 1.5 2008-10-28 20:51:56 umkis Exp $";
+
+    private List<DataInputStream> listStream = null;
+    private List<String> listEntryNames = null;
+    private String errorMessage;
+    private boolean success = true;
 
     public ClassLoaderTest(String name)
     {
-        System.out.println("Strat search : " + name);
+        process(name, null, false);
+    }
+    public ClassLoaderTest(String name, String entry)
+    {
+        process(name, entry, false);
+    }
+
+    private ClassLoaderTest(String name, String entry, boolean displayTag)
+    {
+        process(name, entry, displayTag);
+    }
+
+    private void process(String name, String entry, boolean displayTag)
+    {
+        if ((name == null)||(name.trim().equals("")))
+        {
+            processError(displayTag, "Search zip entry name is null.");
+            return;
+        }
+        String entryFile = entry;
+        if (entry == null) entryFile = name;
+        if (displayTag) System.out.println("Start search : " + name + " : " + entryFile);
         Enumeration<URL> fileURLs = null;
         try
         {
@@ -57,14 +83,15 @@ public class ClassLoaderTest
         }
         catch(IOException ie)
         {
-            System.out.println("IOException #1 : " + ie.getMessage());
+            processError(displayTag, "IOException #1 : " + ie.getMessage());
+            return;
         }
         if (fileURLs == null)
         {
-            System.out.println("Result : " + name + " : Not Found");
+            processError(displayTag, "Result : " + name + " : Not Found");
             return;
         }
-        System.out.println("Number of Result : " + fileURLs.toString());
+        if (displayTag) System.out.println("Number of Result : " + fileURLs.toString());
         int n = 0;
         while(fileURLs.hasMoreElements())
         {
@@ -73,74 +100,109 @@ public class ClassLoaderTest
 
             String url = fileURL.toString();
 
-            System.out.println("Result "+n+" : " + name + " : " +  url);
+            if (displayTag) System.out.println("Result "+n+" : " + name + " : " +  url);
             //URLConnection conn = null;
-
+            String jarFileName = null;
             InputStream stream = null;
-
-            if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
+            boolean isZipFileNameDirect = false;
+            if (((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))||
+                ((url.toLowerCase().endsWith(".jar"))||(url.toLowerCase().endsWith(".zip"))))
             {
                 int idx = url.indexOf("!");
                 if (idx < 0)
                 {
-                    System.err.println("Invalid jar file url : " + url);
-                    continue;
+                    if ((url.toLowerCase().endsWith(".jar"))||(url.toLowerCase().endsWith(".zip")))
+                    {
+                        jarFileName = url;
+                        isZipFileNameDirect = true;
+                        if (entry == null) entryFile = null;
+                        //jarFileName = url.substring(6);
+                    }
+                    else
+                    {
+                        processError(displayTag, "Invalid jar file url : " + url);
+                        continue;
+                    }
                 }
-                String jarFileName = url.substring(4, idx);
+                else jarFileName = url.substring(4, idx);
+
                 ZipFile jarFile = null;
                 try
                 {
-                    jarFile = new JarFile(new File(new URI(jarFileName)));
+                    //File file = new File(jarFileName);
+                    //if (file.exists()) jarFile = new JarFile(file);
+                    //else
+                        jarFile = new JarFile(new File(new URI(jarFileName)));
                 }
                 catch(IOException ie)
                 {
-                    System.err.println("IOException - jar file failure : " + jarFileName);
+                    processError(displayTag, "IOException - jar file failure : " + jarFileName);
                     continue;
                 }
                 catch(URISyntaxException ue)
                 {
-                    System.err.println("URISyntaxException - jar file failure : " + jarFileName);
+                    processError(displayTag, "URISyntaxException - jar file failure : " + jarFileName);
+                    continue;
+                }
+                catch(IllegalArgumentException ue)
+                {
+                    processError(displayTag, "IllegalArgumentException - jar file failure : " + jarFileName);
                     continue;
                 }
                 Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
-                List<JarEntry> jarEntryList = new ArrayList<JarEntry>();
+                //List<JarEntry> jarEntryList = new ArrayList<JarEntry>();
+                int m = 0;
                 while(jarEntries.hasMoreElements())
                 {
+                    m++;
                     ZipEntry jarEntry = jarEntries.nextElement();
                     //System.out.println("JarEntry : " + jarEntry.getName());
                     String nameE = jarEntry.getName();
-                    if (nameE.startsWith(name))
+                    boolean check = false;
+                    if (entryFile == null) check = true;
+                    else if (nameE.indexOf(entryFile) >= 0) check = true;
+                    if (check)
                     {
-                        System.out.println("=====================================================================================================================================================================================================================");
-                        System.out.println("JarEntry : " + jarEntry.getName());
+                        if (displayTag) System.out.println("=====================================================================================================================================================================================================================");
+                        if (displayTag) System.out.println("JarEntry ("+m+") : " + nameE);
                         DataInputStream dis = null;
                         try
                         {
-                            stream = jarFile.getInputStream(jarEntry);
-                            dis = new DataInputStream(stream);
+                            InputStream stream2 = jarFile.getInputStream(jarEntry);
+                            dis = new DataInputStream(stream2);
                         }
                         catch(IOException ie)
                         {
-                            System.out.println("Connection IOException : " + ie.getMessage());
+                            processError(displayTag, "Connection IOException : " + ie.getMessage());
+                            continue;
                         }
 
-                        while(true)
+                        if (displayTag)
                         {
-
-                            byte bt = -1;
-                            try
+                            while(true)
                             {
 
-                                bt = dis.readByte();
-                            }
-                            catch(IOException ie) { break; }
-                            catch(NullPointerException ne) { break; }
+                                byte bt = -1;
+                                try
+                                {
+                                    bt = dis.readByte();
+                                }
+                                catch(IOException ie) { break; }
+                                catch(NullPointerException ne) { break; }
 
-                            if (bt < 0) break;
-                            //byte bt = (byte) i;
-                            char ch = (char) bt;
-                            String c = "" + ch;
-                            System.out.print(c);
+                                if (bt < 0) break;
+                                //byte bt = (byte) i;
+                                char ch = (char) bt;
+                                String c = "" + ch;
+                                System.out.print(c);
+                            }
+                        }
+                        else
+                        {
+                            if (listStream == null) listStream = new ArrayList<DataInputStream>();
+                            listStream.add(dis);
+                            if (listEntryNames == null) listEntryNames = new ArrayList<String>();
+                            listEntryNames.add(nameE);
                         }
                     }
                 }
@@ -153,30 +215,33 @@ public class ClassLoaderTest
                 }
                 catch(IOException ie)
                 {
-                    System.out.println("Connection IOException : " + ie.getMessage());
+                    processError(displayTag, "Connection IOException : " + ie.getMessage());
                 }
 
-                try
+                if (displayTag)
                 {
-                    while(true)
+                    try
                     {
-                        int i = stream.read();
+                        while(true)
+                        {
+                            int i = stream.read();
 
-                        if (i < 0) break;
-                        byte bt = (byte) i;
-                        char ch = (char) bt;
-                        String c = "" + ch;
+                            if (i < 0) break;
+                            byte bt = (byte) i;
+                            char ch = (char) bt;
+                            String c = "" + ch;
 
-                        System.out.print(c);
+                            System.out.print(c);
+                        }
                     }
-                }
-                catch(IOException ie)
-                {
-                    System.out.println("IOException : ");
-                }
-                catch(NullPointerException ne)
-                {
-                    System.out.println("NullPointerException : ");
+                    catch(IOException ie)
+                    {
+                        System.out.println("IOException : ");
+                    }
+                    catch(NullPointerException ne)
+                    {
+                        System.out.println("NullPointerException : ");
+                    }
                 }
             }
             try
@@ -185,19 +250,52 @@ public class ClassLoaderTest
             }
             catch(IOException ie)
             {
-                System.out.println("IOException 2 : ");
+                if (displayTag) System.out.println("IOException 2 : ");
             }
         }
+        if (n==0) System.out.println("No item contains : ");
     }
+
+    public List<DataInputStream> getListInputStreams()
+    {
+        return listStream;
+    }
+    public List<String> getListEntryNames()
+    {
+        return listEntryNames;
+    }
+    public String getErrormessage()
+    {
+        return errorMessage;
+    }
+    public boolean wasSuccessful()
+    {
+        return success;
+    }
+    private void processError(boolean displayTag, String msg)
+    {
+        errorMessage = msg;
+        success = false;
+        if (displayTag) System.out.println(errorMessage);
+    }
+
 
     public static void main(String args[])
     {
-        new ClassLoaderTest(args[0]);
+        if (args.length == 0)
+        {
+            System.out.println("No Zip entry name");
+        }
+        else if (args.length == 1) new ClassLoaderTest(args[0], null, true);
+        else if (args.length > 1) new ClassLoaderTest(args[0], args[1], true);
     }
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:53:49  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/06/06 18:53:56  phadkes
  * HISTORY      : Changes for License Text
  * HISTORY      :
