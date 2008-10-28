@@ -21,10 +21,10 @@ import java.util.Calendar;
  * Date: Aug 5, 2005
  * Time: 2:40:11 PM
  * To change this template use File | Settings | File Templates.
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: umkis $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-09-25 18:57:45 $ 
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-10-28 20:41:05 $ 
  */
 public class DateFunction
 {
@@ -292,22 +292,67 @@ public class DateFunction
     }
     public String changeFormat(String fromFormat, String inDate) throws FunctionException
     {
-       //System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYY : Date");
-       //if(fromFormat.equals("DD-MON-YYYY")) fromFormat = "dd-MMM-yyyy";
-       //if (inDate.equals("")) throw new FunctionException("Year, Month or day data is needed(BBBBB). : " + inDate, 511, new Throwable(), ApplicationException.SEVERITY_LEVEL_WARNING);
-       if (inDate.equals("")) return "";
-       if (inDate == null) return "";
-       String filteredFormat = filteringFormat(fromFormat);
-       String arrangedFormat = arrangeMonthFormat(fromFormat);
-       //System.out.println("VVVVVV : " + arrangedFormat + " : " + inDate);
-       SimpleDateFormat objFromFormat = checkSimpleDateFormat(arrangedFormat);
-       //SimpleDateFormat objToFormat = checkSimpleDateFormat(toFormat);
-       java.util.Date objDate = parseDateFromString(objFromFormat, inDate);
+        //System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYY : Date");
+        //if(fromFormat.equals("DD-MON-YYYY")) fromFormat = "dd-MMM-yyyy";
+        //if (inDate.equals("")) throw new FunctionException("Year, Month or day data is needed(BBBBB). : " + inDate, 511, new Throwable(), ApplicationException.SEVERITY_LEVEL_WARNING);
+        String result = "";
+        if (inDate == null) return "";
+        inDate = inDate.trim();
+        if (inDate.equals("")) return "";
+        String filteredFormat = filteringFormat(fromFormat);
+        String arrangedFormat = arrangeMonthFormat(fromFormat);
+        //System.out.println("VVVVVV : " + arrangedFormat + " : " + inDate);
+        SimpleDateFormat objFromFormat = checkSimpleDateFormat(arrangedFormat);
+        //SimpleDateFormat objToFormat = checkSimpleDateFormat(toFormat);
+        java.util.Date objDate = parseDateFromString(objFromFormat, inDate);
 
-       //System.out.println("ASAS : " +filteredFormat+":" + filteredFormat.indexOf("y") );
-       if ((filteredFormat.toUpperCase()).indexOf("Y") < 0) throw new FunctionException("Year, Month or day data is needed. : " + inDate, 511, new Throwable(), ApplicationException.SEVERITY_LEVEL_WARNING);
-       if ((filteredFormat.toUpperCase()).indexOf("H") < 0) return (defaultDateFormat.format(objDate)).substring(0,8) + "000000";
-       return defaultDateFormat.format(objDate);
+        //System.out.println("ASAS : " +filteredFormat+":" + filteredFormat.indexOf("y") );
+        if ((filteredFormat.toUpperCase()).indexOf("Y") < 0) throw new FunctionException("Year, Month or day data is needed. : " + inDate, 511, new Throwable(), ApplicationException.SEVERITY_LEVEL_WARNING);
+        if ((filteredFormat.toUpperCase()).indexOf("H") < 0) result = (defaultDateFormat.format(objDate)).substring(0,8) + "000000";
+        else result = defaultDateFormat.format(objDate);
+
+        int plus = inDate.indexOf("+");
+        int minus = inDate.indexOf("-");
+        //System.out.println("PPPPP : " + plus + " : " + minus);
+        if ((plus > 0)||(minus > 0))
+        {
+            if ((plus > 0)&&(minus > 0)) throw new FunctionException("Invalid Timezones data : duplicate '+/-' : " + inDate);
+            int timezoneS = 0;
+            if (plus > 0) timezoneS = plus;
+            else timezoneS = minus;
+            String timezoneC = inDate.substring(timezoneS, timezoneS+1);
+            String timezoneD = inDate.substring(timezoneS+1).trim();
+            if (timezoneD.length() == 0) return result;
+            else if (timezoneD.length() == 1) timezoneD = "0" + timezoneD + "00";
+            else if (timezoneD.length() == 2) timezoneD = timezoneD + "00";
+            else if (timezoneD.length() == 3) timezoneD = "0" + timezoneD;
+            else if (timezoneD.length() == 4) {}
+            else throw new FunctionException("Invalid Timezones data : higher than four digits : " + inDate);
+
+            int timezoneHour = 0;
+            try
+            {
+                timezoneHour = Integer.parseInt(timezoneD.substring(0,2));
+            }
+            catch(NumberFormatException ne)
+            {
+                throw new FunctionException("Invalid Timezones data : Not number data of timezone (1) : " + inDate);
+            }
+            if (timezoneHour > 12) throw new FunctionException("Invalid Timezones data : more than 12 hour data : " + inDate);
+            int timezoneMinute = 0;
+            try
+            {
+                timezoneMinute = Integer.parseInt(timezoneD.substring(2));
+            }
+            catch(NumberFormatException ne)
+            {
+                throw new FunctionException("Invalid Timezones data : Not number data of timezone (2) : " + inDate);
+            }
+            if (timezoneMinute >= 60) throw new FunctionException("Invalid Timezones data : more than 60 minute data : " + inDate);
+
+            return result + timezoneC + timezoneD;
+        }
+        else return result;//return defaultDateFormat.format(objDate);
     }
     /*
     public Object changeFormat(Object fromFormatO, Object[] inDateO) throws FunctionException
@@ -364,4 +409,7 @@ public class DateFunction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/09/25 18:57:45  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
