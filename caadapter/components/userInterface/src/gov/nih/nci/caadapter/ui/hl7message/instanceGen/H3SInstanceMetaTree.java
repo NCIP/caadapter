@@ -48,7 +48,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.19 $
+ *          revision    $Revision: 1.20 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -68,7 +68,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.19 2008-10-21 21:18:31 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.20 2008-10-28 20:53:26 umkis Exp $";
 
     boolean isCode = false;
 
@@ -476,19 +476,62 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     private String changeLine(String line, List<String> changeList, MetaField field, H3SInstanceMetaSegment seg)
     {
         H3SInstanceMetaSegment parent = null;
-        if (seg == null) parent = (H3SInstanceMetaSegment) field.getParent();
+        if (seg == null)
+        {
+            if (field == null)
+            {
+                System.err.println("This node is neither segment nor field. : " + line);
+                return "";
+            }
+            String vr = getAttributeItemValue(field.getAttributes(), "user-default");
+            if ((vr != null)&&(!vr.trim().equals("")))
+            {
+                //System.out.println("PPPPP  333 : This field has default value. : " + field + " : " + vr);
+                return "";
+            }
+            String en = getAttributeItemValue(field.getAttributes(), "isEnabled");
+            if ((en.trim().equals("false")))
+            {
+                //System.out.println("PPPPP  444 : This field is not enabled. : " + field);
+                return "";
+            }
+            parent = (H3SInstanceMetaSegment) field.getParent();
+        }
         else  parent = seg;
+
+        String en = getAttributeItemValue(parent.getAttributes(), "isEnabled");
+        if ((en.trim().equals("false")))
+        {
+            //System.out.println("PPPPP  445 : This segment is not enabled. : " + parent);
+            return "";
+        }
+
+        //System.out.println("PPPPP 777 : " + seg  +  " : " +field);
+//        try {
+//        for(String attribute:seg.getAttributes().getAttributeItemNames())
+//        {
+//            System.out.println("PPPPP 888 : " + attribute);
+//        }
+//        }
+//        catch(NullPointerException ee) {}
+
         String datatype = getAttributeItemValue(parent.getAttributes(), "datatype");
         String codingStrength = getAttributeItemValue(parent.getAttributes(), "codingStrength");
         String datatypePN = getAttributeItemValue(parent.getParent().getAttributes(), "datatype");
         String hl7Default = getAttributeItemValue(parent.getAttributes(), "hl7-default");
+        String hl7Fixed = getAttributeItemValue(parent.getAttributes(), "hl7-fixed");
         String userDefault = getAttributeItemValue(parent.getAttributes(), "user-default");
         currentDataType = datatypePN;
         //boolean existsDefaultValue = false;
         if (((hl7Default != null)&&(!hl7Default.trim().equals("")))||
-            ((userDefault != null)&&(!userDefault.trim().equals("")))) {}//return "";//existsDefaultValue = true;
+            ((hl7Fixed != null)&&(!hl7Fixed.trim().equals("")))||
+            ((userDefault != null)&&(!userDefault.trim().equals(""))))
+        {
+            //System.out.println("PPPPP 999 : " + seg  +  " : " +field + " : " + " : " +  hl7Default + " : " + userDefault + " : " + hl7Fixed);
+            return "";//existsDefaultValue = true;
+        }
         else
-        {               
+        {
 //            if (line.endsWith("statusCode"))
 //            {
 //                return line + ".noneX => normal";
@@ -501,7 +544,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 //            {
 //                return line + ".noneX => EVN";
 //            }
-            
+
             if ((line.endsWith("addr"))||(line.endsWith("addr00"))||(line.endsWith("addr01")))
             {
                 return line + ".noneX => 1634 Helperton St., Uniline, MD 20919";
@@ -564,7 +607,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 String[] res = null;
                 if ((!userDefault.equals(""))||(!hl7Default.equals("")))
                 {
-                    if (hl7Default.equals("")) hl7Default = userDefault; 
+                    if (hl7Default.equals("")) hl7Default = userDefault;
                     //res = getVocabularyDomainCode(domainName, hl7Default);
                     res = VocabularyGeneralUtilities.getV3VocabularySeeker().getVocabularyDomainCodes(domainName, hl7Default);
                 }
@@ -628,7 +671,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
                         isCode = true;
                         //System.out.println("CVVV7 : is code true : " + codeItems + " : " + parent.getName() + " : " + field.getName());
-                                           
+
                         //codeItems = new String[] {domainName, odi, "Domain Not Found", "NotFound"};
                         //return line + " => " + "%%Not Found";
                     }
@@ -639,7 +682,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         {
             if (isCode)
             {
-                System.err.println("Un-natural Code setting : " + codeFieldName + " : " + field.getName() + " : " + parent.getName() + " : " + datatype);  
+                System.err.println("Un-natural Code setting : " + codeFieldName + " : " + field.getName() + " : " + parent.getName() + " : " + datatype);
                 isCode = false;
                 codeItems = 0;
             }
@@ -662,7 +705,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             if (line.endsWith(".classCode")) gTag = true;
             if (line.endsWith(".contextControlCode")) gTag = true;
 
-            if (gTag) System.out.println("PPPPPPP : " + seg + " : " + userDefault + " : " + hl7Default);
+            //if (gTag) System.out.println("PPPPPPP : " + seg + " : " + userDefault + " : " + hl7Default);
 
             if (line.endsWith(".statusCode.code"))
             {
@@ -839,7 +882,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         {
             if (block.startsWith("NULL")) return null;
         }
-        
+
         if (checkDataType(datatype, "PN"))
         {
             if (block.equals("PERSON_FAMILY_NAME_LIST"))
@@ -1247,7 +1290,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         if (lineArr.length != tailArr.length) return false;
         int index = 0;
         int matchCount = -1;
-        if (tailArr[index].equals("*")) matchCount++; 
+        if (tailArr[index].equals("*")) matchCount++;
         else
         {
             divided = checkStringAndNumberSuffix(lineArr[index]);
@@ -1513,8 +1556,14 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.CLONE.toString(), 1, 1);
 
             //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.CLONE.toString());
+
+            addAttributeItem(tempPar, "type", "MIFClass");
             addAttributeItem(tempPar, "reference-name", mif.getReferenceName());
+            addAttributeItem(tempPar, "title", mif.getTitle());
             addAttributeItem(tempPar, "sortKey", mif.getSortKey());
+
+            if (mif.isEnabled()) addAttributeItem(tempPar, "isEnabled", "true");
+            else addAttributeItem(tempPar, "isEnabled", "false");
 
             nodeName = mif.getName();
             tag = "C:";
@@ -1541,6 +1590,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 //tempPar.setName(att.getName());
 
                 //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.ATTRIBUTE.toString());
+                addAttributeItem(tempPar, "type", "MIFAttribute");
                 addAttributeItem(tempPar, "codingStrength", att.getCodingStrength());
                 addAttributeItem(tempPar, "domainName", att.getDomainName());
                 if (att.getDatatype() != null)
@@ -1550,8 +1600,14 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 }
                 addAttributeItem(tempPar, "conformance", att.getConformance());
                 addAttributeItem(tempPar, "user-default", att.getDefaultValue());
-                addAttributeItem(tempPar, "hl7-default", att.getFixedValue());
+                addAttributeItem(tempPar, "hl7-fixed", att.getFixedValue());
+                //System.out.println("PPPPP 000 " + att.getDefaultValue() + " : " + att.getFixedValue() + " : " + att.findHL7DefaultValueProperty());
+                //addAttributeItem(tempPar, "user-default", att.get);
+                addAttributeItem(tempPar, "hl7-default", att.findHL7DefaultValueProperty());
                 addAttributeItem(tempPar, "sortKey", att.getSortKey());
+
+                if (att.isEnabled()) addAttributeItem(tempPar, "isEnabled", "true");
+                else addAttributeItem(tempPar, "isEnabled", "false");
                 //addAttributeItemCardinality(tempPar, att.getMinimumMultiplicity(), att.getMaximumMultiplicity());
 
                 tag = " A:";
@@ -1576,27 +1632,35 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                         //field.setName(attT.getName());
 
                         setNameAndCardinality(parent, field, xmlPath, MIFObjectClassType.DATAFIELD.toString(), attT.getMin(), attT.getMax());
-
+                        addAttributeItem(field, "type", "attribute");
                         //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.DATAFIELD.toString());
                         addAttributeItem(field, "user-default", attT.getDefaultValue());
                         //if (attT.)
                         //addAttributeItemCardinality(field, attT.getMin(), attT.getMax());
-
+                        //if (!attT.getDefaultValue().equals("")) System.out.println("PPPPP 111 : " + attT.getDefaultValue());
+                        if (attT.isEnabled()) addAttributeItem(field, "isEnabled", "true");
+                        else addAttributeItem(field, "isEnabled", "false");
 
                         field.setParent(parent);
                         parent.addChildNode(field);
                         //field.setXPath(getSimpleXPath(field.generateXPath(".")));
                         field.setXPath(xmlPath);
                         nodeName = attT.getName();
+                        tag = "  d:";
                     }
                     else
                     {
                         tempPar = new H3SInstanceMetaSegment(H3SInstanceSegmentType.ATTRIBUTE);
                         setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.DATA_ATTRIBUTE.toString(), attT.getMin(), attT.getMax());
+                        addAttributeItem(tempPar, "type", "Attribute");
                         addAttributeItem(tempPar, "user-default", attT.getDefaultValue());
+                        if (attT.isEnabled()) addAttributeItem(tempPar, "isEnabled", "true");
+                        else addAttributeItem(tempPar, "isEnabled", "false");
+                        //if (!attT.getDefaultValue().equals("")) System.out.println("PPPPP 112 : " + attT.getDefaultValue());
+                        tag = "  D:";
                     }
 
-                    tag = "  d:";
+
                 }
                 catch(ClassCastException ceee)
                 {
@@ -1616,8 +1680,12 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     setNameAndCardinality(parent, tempPar, xmlPath, MIFObjectClassType.ASSOCIATION.toString(), asso.getMinimumMultiplicity(), asso.getMaximumMultiplicity());
 
                     //addAttributeItem(tempPar, "mif-type", MIFObjectClassType.ASSOCIATION.toString());
+                    addAttributeItem(tempPar, "type", "MIFAssociation");
                     addAttributeItem(tempPar, "conformance", asso.getConformance());
                     addAttributeItem(tempPar, "sortKey", asso.getSortKey());
+
+                    if (asso.isEnabled()) addAttributeItem(tempPar, "isEnabled", "true");
+                    else addAttributeItem(tempPar, "isEnabled", "false");
 
                 }
             }
@@ -1673,7 +1741,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     private CommonNode setNameAndCardinality(H3SInstanceMetaSegment parent, CommonNode tempPar, String xmlPath, String mifType, int min, int max) throws ApplicationException
     {
 
-        if (tempPar == null) throw new ApplicationException("Node for setNane is null.");
+        if (tempPar == null) throw new ApplicationException("Node for setName is null.");
         if (parent == null)
         {
             tempPar.setName(xmlPath);
@@ -1872,6 +1940,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.19  2008/10/21 21:18:31  umkis
+ * HISTORY      : To harmonize with version 4.2
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2008/09/29 20:05:06  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
