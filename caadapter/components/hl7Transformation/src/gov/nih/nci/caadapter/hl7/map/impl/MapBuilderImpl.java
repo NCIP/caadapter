@@ -45,12 +45,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.14 $
+ * @version    $Revision: 1.15 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.14 2008-10-16 14:34:24 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.15 2008-10-29 14:14:50 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -126,8 +126,9 @@ public class MapBuilderImpl {
                 cComponent.setType(Config.MAP_COMPONENT_SOURCE_TYPE);
             }
             String filePath = baseComponent.getFileAbsolutePath();
-            if (filePath.startsWith(FileUtil.getWorkingDirPath())) filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
-            	cComponent.setLocation(filePath);
+            if (filePath.startsWith(FileUtil.getWorkingDirPath())) 
+            	filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
+            cComponent.setLocation(filePath);
             if ( metaObject == null )
             {
                 String mType = cMapping.getType();
@@ -139,16 +140,17 @@ public class MapBuilderImpl {
                 else  if (mType.indexOf("V2_TO_V3")>-1&&cComponent.getType().equalsIgnoreCase(Config.MAP_COMPONENT_SOURCE_TYPE))
                 {
                 	//figure out v2 version and set it as kind of cComponent
-                	//TBD 
-                	//Hardcode as "2.4"
-                	File srcFile=new File(filePath);
+                	//Hardcode as "2.x"
+                	File srcFile=new File(baseComponent.getFileAbsolutePath());
                 	if (srcFile.exists())
                 	{
                 		File pDir=srcFile.getParentFile();
                 		cComponent.setKind(pDir.getName());
+                		//in the future, the source file location will be only message type xsd
+//                		cComponent.setLocation(srcFile.getName());
                 	}
                 	else
-                		cComponent.setKind("2.4");
+                		cComponent.setKind("2.x");
                 }              
                 else {
                     cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
@@ -226,7 +228,7 @@ public class MapBuilderImpl {
             if (sourcemap.isComponentOfSourceType())
             {
             	sourcePointer.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
-            	if (cMapping.getType().equals("V2_TO_V3"))
+            	if (cMapping.getType()!=null&&cMapping.getType().equals("V2_TO_V3"))
             		sourcePointer.setKind("v2");
             }
             else if (sourcemap.isComponentOfTargetType())
@@ -309,6 +311,9 @@ public class MapBuilderImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.14  2008/10/16 14:34:24  wangeug
+ * HISTORY :set sourcecomponent.kind=2.x, linkpointer.kind="v2"
+ * HISTORY :
  * HISTORY :Revision 1.13  2008/10/14 17:20:07  wangeug
  * HISTORY :save mapping between v2Meta to H3S
  * HISTORY :
