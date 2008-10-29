@@ -24,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.3 $
- * @date 	 DATE: $Date: 2008-10-24 19:37:17 $
+ * @version  REVISION: $Revision: 1.4 $
+ * @date 	 DATE: $Date: 2008-10-29 14:16:36 $
  * @since caAdapter v4.2
  */
 
@@ -110,7 +110,7 @@ public class V2MetaXSDUtil {
 	
 	public static ElementMeta loadMessageMeta(String v2Verion,String v2Msg)
 	{
-		String v2XsdHome="C:/eclipseJ2ee/workspace/hl7v2xsd";
+		String v2XsdHome="hl7v2xsd";
 		String xsdFile=v2XsdHome+"/"+v2Verion+"/"+v2Msg+".xsd";
 		ElementMeta e = loadMessageMeta(xsdFile);
 		return e;
@@ -148,6 +148,9 @@ public class V2MetaXSDUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.3  2008/10/24 19:37:17  wangeug
+* HISTORY: transfer a v2 message into v3 message using SUN v2 schema
+* HISTORY:
 * HISTORY: Revision 1.2  2008/10/16 14:32:28  wangeug
 * HISTORY: add new method to return a V2Meta tree node with xmlPath
 * HISTORY:
