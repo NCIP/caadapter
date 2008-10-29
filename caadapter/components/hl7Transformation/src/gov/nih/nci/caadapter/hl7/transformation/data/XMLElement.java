@@ -14,6 +14,7 @@ import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 import java.io.InputStream;
@@ -31,8 +32,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.23 $
- *          date        $Date: 2008-09-29 15:39:06 $
+ *          revision    $Revision: 1.24 $
+ *          date        $Date: 2008-10-29 19:06:08 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -253,15 +254,16 @@ public class XMLElement implements Cloneable{
 
 	public ValidatorResults validate() {
 		try {
-			Hashtable datatypes = new Hashtable();
-			InputStream is = this.getClass().getResourceAsStream("/datatypes");
-			if (is == null) {
-				is = this.getClass().getClassLoader().getResource("datatypes").openStream();
-			}
-			ObjectInputStream ois = new ObjectInputStream(is);
-			datatypes = (Hashtable)ois.readObject();
-			ois.close();
-			is.close();
+//			Hashtable datatypes = new Hashtable();
+//			InputStream is = this.getClass().getResourceAsStream("/datatypes");
+//			if (is == null) {
+//				is = this.getClass().getClassLoader().getResource("datatypes").openStream();
+//			}
+//			ObjectInputStream ois = new ObjectInputStream(is);
+//			datatypes = (Hashtable)ois.readObject();
+//			ois.close();
+//			is.close();
+			Hashtable datatypes=DatatypeParserUtil.getDatatypeParser().getDatatypes();
 			ValidatorResults validatorResults_sub = validate(datatypes, name);
 //			if (validatorResults_sub == null) return validatorResults;
 //			if (validatorResults_sub.getAllMessages().size() == 0) return validatorResults;
@@ -431,4 +433,7 @@ public class XMLElement implements Cloneable{
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.23  2008/09/29 15:39:06  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
