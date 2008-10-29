@@ -17,6 +17,7 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.TransformationResult;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationObserver;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationServiceUtil;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
@@ -66,8 +67,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.24 $
- *          date        $Date: 2008-10-24 19:38:29 $
+ *          revision    $Revision: 1.25 $
+ *          date        $Date: 2008-10-29 19:07:19 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -456,11 +457,11 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		else if(totalNumberOfMessages>0 && isBatchTransform)
 		{
 			try{
-				setMessageText(TransformationService.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml"));
+				setMessageText(TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml"));
 
 				ValidatorResults validatorsToShow=new ValidatorResults();
 				//add structure validation ... level_0
-				validatorsToShow.addValidatorResults((ValidatorResults)TransformationService.readObjFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".ser"));
+				validatorsToShow.addValidatorResults((ValidatorResults)TransformationServiceUtil.readObjFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".ser"));
 //				if(messageValidationLevel!=null&&
 //						!messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0))
 //				{
@@ -672,6 +673,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.24  2008/10/24 19:38:29  wangeug
+ * HISTORY      : transfer a v2 message into v3 message using SUN v2 schema
+ * HISTORY      :
  * HISTORY      : Revision 1.23  2008/06/26 19:45:51  linc
  * HISTORY      : Change HL7 transformation GUI to use batch api.
  * HISTORY      :
