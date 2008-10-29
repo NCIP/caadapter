@@ -33,8 +33,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.9 $
- * @date $Date: 2008-10-24 19:36:58 $
+ * @version $Revision: 1.10 $
+ * @date $Date: 2008-10-29 19:08:20 $
  * @since caAdapter v4.0
  */
 
@@ -44,8 +44,14 @@ public class MapParser {
 	String sourceKind="";
 	ValidatorResults theValidatorResults = new ValidatorResults();
 	Hashtable <String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
-	Hashtable mappings = new Hashtable();
+	Hashtable <String, String>mappings = new Hashtable<String, String>();
 	
+	/**
+	 * @return the mappings
+	 */
+	public Hashtable getMappings() {
+		return mappings;
+	}
 	public Hashtable processOpenMapFile(File file) throws Exception
 	{
 		/*
@@ -275,6 +281,9 @@ public class MapParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2008/10/24 19:36:58  wangeug
+ * HISTORY :transfer a v2 message into v3 message using SUN v2 schema
+ * HISTORY :
  * HISTORY :Revision 1.8  2008/09/29 15:40:38  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
