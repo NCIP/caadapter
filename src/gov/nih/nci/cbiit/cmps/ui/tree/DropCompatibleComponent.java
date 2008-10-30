@@ -21,8 +21,8 @@ import java.awt.dnd.DropTargetDropEvent;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-10-30 16:02:14 $
  *
  */
 public interface DropCompatibleComponent
@@ -69,10 +69,13 @@ public interface DropCompatibleComponent
 	 * Return the drop target adapter.
 	 * @return the drop target adapter.
 	 */
-	public HL7SDKDropTargetAdapter getDropTargetAdapter();
+	public CmpsDropTargetAdapter getDropTargetAdapter();
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 
