@@ -209,9 +209,10 @@
 
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${webstart.deploy.dir}">
+        <copy todir="${webstart.deploy.dir}" includeEmptyDirs="false">
             <fileset dir="${webstart.config.files}">
-                <exclude name="*.zip, *.jar"/>
+                <exclude name="**/.zip"/>
+                <exclude name="**/*.jar"/>
             </fileset>
         </copy>
 
@@ -300,10 +301,11 @@
 
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${hl7.webstart.deploy.dir}">
-            <fileset dir="${webstart.config.files}">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
+        <copy todir="${hl7.webstart.deploy.dir}" includeEmptyDirs="No">
+		   	<fileset dir="${webstart.config.files}">
+		      	<exclude name="**/.zip"/>
+		        <exclude name="**/*.jar"/>
+		     </fileset>
         </copy>
 
         <echo message=""/>
@@ -395,10 +397,11 @@
 
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${rds.webstart.deploy.dir}">
-            <fileset dir="${webstart.config.files}">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
+        <copy todir="${rds.webstart.deploy.dir}" includeEmptyDirs="false">
+		   	<fileset dir="${webstart.config.files}">
+		      	<exclude name="**/.zip"/>
+		        <exclude name="**/*.jar"/>
+		     </fileset>
         </copy>
 
         <echo message=""/>
@@ -492,10 +495,11 @@
 
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${tdms.webstart.deploy.dir}">
-            <fileset dir="${webstart.config.files}">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
+        <copy todir="${tdms.webstart.deploy.dir}" includeEmptyDirs="false">
+		   	<fileset dir="${webstart.config.files}">
+		      	<exclude name="**/.zip"/>
+		        <exclude name="**/*.jar"/>
+		     </fileset>
         </copy>
 
         <echo message=""/>
@@ -596,10 +600,11 @@
 
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${caadapter.webstart.deploy.dir}">
-            <fileset dir="${webstart.config.files}">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
+        <copy todir="${caadapter.webstart.deploy.dir}" includeEmptyDirs="false">
+		   	<fileset dir="${webstart.config.files}">
+		      	<exclude name="**/.zip"/>
+		        <exclude name="**/*.jar"/>
+		     </fileset>
         </copy>
 
         <echo message=""/>
