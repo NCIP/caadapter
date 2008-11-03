@@ -18,6 +18,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -33,8 +34,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-10-07 15:16:55 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2008-11-03 21:38:46 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -60,9 +61,27 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 		Component returnValue = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		if (node.getUserObject() instanceof DatatypeBaseObject)
+		Object usrObj=node.getUserObject();
+		
+		if (usrObj instanceof ElementMeta)
 		{
-			DatatypeBaseObject nodeBase=(DatatypeBaseObject)node.getUserObject();
+			ElementMeta elmntMeta=(ElementMeta)usrObj;
+			String cellText=elmntMeta.getName().replace(".", "_");
+	    	if (cellText.indexOf(":")>-1)
+	    		cellText=cellText.substring(cellText.lastIndexOf(":")+1); // remove the leading XML namespace value
+	    	if (elmntMeta.getMinOccurs()!= elmntMeta.getMaxOccurs())
+	    	{
+		    	cellText=cellText+" ["+elmntMeta.getMinOccurs()+" ... ";
+		    	if (elmntMeta.getMaxOccurs()!=null&&elmntMeta.getMaxOccurs().intValue()==-1)
+		    		cellText=cellText+"*]";
+		    	else
+		    		cellText=cellText+elmntMeta.getMaxOccurs()+"]";
+	    	}
+	    	setText(cellText);
+		}
+		else if (usrObj instanceof DatatypeBaseObject)
+		{
+			DatatypeBaseObject nodeBase=(DatatypeBaseObject)usrObj;
 			returnValue.setEnabled(nodeBase.isEnabled());
 			if (!nodeBase.isEnabled())
 			{
@@ -192,6 +211,9 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/10/07 15:16:55  wangeug
+ * HISTORY      : clean code/remove unnecessary file for 4.2 release
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/09/24 18:00:29  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :

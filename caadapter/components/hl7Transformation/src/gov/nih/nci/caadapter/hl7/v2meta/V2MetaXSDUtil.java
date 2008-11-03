@@ -24,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.4 $
- * @date 	 DATE: $Date: 2008-10-29 14:16:36 $
+ * @version  REVISION: $Revision: 1.5 $
+ * @date 	 DATE: $Date: 2008-11-03 21:38:13 $
  * @since caAdapter v4.2
  */
 
@@ -87,7 +87,7 @@ public class V2MetaXSDUtil {
 	 */
 	private static String formatElmentMetaName(ElementMeta eMeta)
 	{
-		String rtnSt=eMeta.getName();
+		String rtnSt=eMeta.getName().replace(".", "_");
 		if (rtnSt.indexOf(":")>-1)
     		rtnSt=rtnSt.substring(rtnSt.lastIndexOf(":")+1); // remove the leading XML namespace value
 
@@ -100,7 +100,7 @@ public class V2MetaXSDUtil {
 		if (xsdPath.indexOf(File.separatorChar)>-1)
 			rootElmnt=xsdPath.substring(xsdPath.lastIndexOf(File.separatorChar)+1);
 		rootElmnt=rootElmnt.substring(0,rootElmnt.indexOf(".xsd") );
-		System.out.println("XSDUtil.loadMessageMeta()..rootElmnt:"+rootElmnt);
+		System.out.println("V2MetaXSDUtil.loadMessageMeta()..rootElmnt:"+rootElmnt);
 		
 		p.loadSchema(xsdPath);
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", rootElmnt);
@@ -148,6 +148,9 @@ public class V2MetaXSDUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.4  2008/10/29 14:16:36  wangeug
+* HISTORY: load V2 meta from zip file with relative path
+* HISTORY:
 * HISTORY: Revision 1.3  2008/10/24 19:37:17  wangeug
 * HISTORY: transfer a v2 message into v3 message using SUN v2 schema
 * HISTORY:
