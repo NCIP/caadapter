@@ -24,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-11-04 21:19:34 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2008-11-04 21:25:38 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -34,7 +34,7 @@ public class XSDParser implements DOMErrorHandler {
 	private Stack<String> ctStack;
 	private Stack<String> elStack;
 	private String defaultNS = "";
-	private static boolean debug = true;
+	private static boolean debug = false;
 	//private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
 
 	private static String getPrefix(int i){
@@ -361,6 +361,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2008/11/04 21:19:34  linc
+ * HISTORY: core mapping and transform demo.
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/10/22 19:01:17  linc
  * HISTORY: Add comment of public methods.
  * HISTORY:
