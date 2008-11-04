@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-10-22 19:01:17 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2008-11-04 21:19:34 $
  *
  */
 public class XQueryBuilder {
@@ -102,10 +102,11 @@ public class XQueryBuilder {
 		if(sb.toString().equals(current)){
 			ret = path.substring(current.length());
 		} else {
+			ret += "/..";
 			while(stCur.hasMoreTokens()) {
 				ret += "/..";
 			}
-			ret += path.substring(current.length());
+			ret += path.substring(sb.toString().length());
 		}		
 		
 		return ret;		
@@ -139,6 +140,9 @@ public class XQueryBuilder {
 			sbQuery.append(" return ");
 			varStack.push(var);
 			srcIdStack.push(srcId);
+		}else{
+			//xpathStack.pop();
+			//return;
 		}
 		
 		//start tag and attributes
@@ -196,9 +200,11 @@ public class XQueryBuilder {
 				String localpath = null;
 				if(srcIdStack.size()>0)
 					localpath = getRelativePath(srcIdStack.peek(), srcId);
-				sbQuery.append(" ").append(a.getName()).append("={");
-				sbQuery.append(var).append(localpath);
-				sbQuery.append("}");
+				sbQuery.append(" ").append(a.getName()).append("=\"{data(");
+				sbQuery.append("$").append(var).append(localpath);
+//				if(localpath.indexOf("@")<0)
+//					sbQuery.append("/text()");
+				sbQuery.append(")}\"");
 			} else if(a.getDefaultValue()!=null) {
 				sbQuery.append(" ").append(a.getName()).append("=");
 				sbQuery.append(a.getDefaultValue());
@@ -211,6 +217,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2008/10/22 19:01:17  linc
+ * HISTORY: Add comment of public methods.
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/10/21 20:49:08  linc
  * HISTORY: Tested with HL7 v3 schema
  * HISTORY:

@@ -24,16 +24,17 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-10-22 19:01:17 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-11-04 21:19:34 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
 	private XSLoader schemaLoader;
 	private XSModel model;
 	private Stack<String> ctStack;
+	private Stack<String> elStack;
 	private String defaultNS = "";
-	private static boolean debug = false;
+	private static boolean debug = true;
 	//private static final String[] prefix={">", "  =", "    -", "      *", "        %", "          $"};
 
 	private static String getPrefix(int i){
@@ -52,7 +53,7 @@ public class XSDParser implements DOMErrorHandler {
 			// get DOM Implementation using DOM Registry
 			System.setProperty(
 					DOMImplementationRegistry.PROPERTY,
-					"org.apache.xerces.dom.DOMXSImplementationSourceImpl");
+			"org.apache.xerces.dom.DOMXSImplementationSourceImpl");
 			DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
 
 			XSImplementation impl = (XSImplementation) registry.getDOMImplementation("XS-Loader");
@@ -71,6 +72,7 @@ public class XSDParser implements DOMErrorHandler {
 			config.setParameter("validate", Boolean.TRUE);
 
 			ctStack = new Stack<String>();
+			elStack = new Stack<String>();
 		} catch (ClassCastException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,6 +119,7 @@ public class XSDParser implements DOMErrorHandler {
 			//processMap(map, 0);
 			defaultNS = namespace;
 			ctStack.clear();
+			elStack.clear();
 			return processXSObject(map.itemByName(namespace, name), 0);
 			//map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
 			//map = model.getComponents(XSConstants.TYPE_DEFINITION);
@@ -140,6 +143,7 @@ public class XSDParser implements DOMErrorHandler {
 			//processMap(map, 0);
 			defaultNS = namespace;
 			ctStack.clear();
+			elStack.clear();
 			return processXSObject(map.itemByName(namespace, name), 0);
 			//map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
 			//map = model.getComponents(XSConstants.NOTATION_DECLARATION);
@@ -217,6 +221,8 @@ public class XSDParser implements DOMErrorHandler {
 		if(debug) System.out.println(getPrefix(depth)+"ComplexType{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
 		ElementMeta ret;
 		String qname = "{" + item.getNamespace() + "}" + item.getName();
+		if(item.getName()==null)
+			qname = "{" + item.getNamespace() + "}" + elStack.peek();
 		boolean recursive = ctStack.contains(qname);
 		ctStack.push(qname);
 		try {
@@ -290,19 +296,26 @@ public class XSDParser implements DOMErrorHandler {
 	}
 	private ElementMeta processElement(XSElementDeclaration item, int depth){
 		if(debug) System.out.println(getPrefix(depth)+"Element{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]");
+		String qname = "{" + item.getNamespace() + "}" + item.getName();
+		elStack.push(qname);
 		ElementMeta ret = null;
 		//		if(indent>MAX_INDENT) {
 		//			System.out.println("MMMMMMMMM Reached max depth, skipping the lower levels......");
 		//			return;
 		//		}
-		XSTypeDefinition type = item.getTypeDefinition();
-		if(type instanceof XSComplexTypeDefinition){
-			ret = processComplexType((XSComplexTypeDefinition)type, depth);
-		}else if(type instanceof XSSimpleTypeDefinition){
-			processSimpleType((XSSimpleTypeDefinition)type, depth);
-		} 
-		if(ret == null) ret = new ElementMeta();
-		ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
+		try{
+			XSTypeDefinition type = item.getTypeDefinition();
+			if(type instanceof XSComplexTypeDefinition){
+				ret = processComplexType((XSComplexTypeDefinition)type, depth);
+			}else if(type instanceof XSSimpleTypeDefinition){
+				processSimpleType((XSSimpleTypeDefinition)type, depth);
+			}
+
+			if(ret == null) ret = new ElementMeta();
+			ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
+		}finally{
+			elStack.pop();
+		}
 
 		//processParticle(item.getParticle(), indent+1);
 		return ret;
@@ -348,6 +361,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/10/22 19:01:17  linc
+ * HISTORY: Add comment of public methods.
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/10/21 20:49:08  linc
  * HISTORY: Tested with HL7 v3 schema
  * HISTORY:
