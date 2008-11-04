@@ -52,14 +52,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.23 $
- * @date $Date: 2008-10-29 19:09:36 $
+ * @version $Revision: 1.24 $
+ * @date $Date: 2008-11-04 21:08:11 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.23 2008-10-29 19:09:36 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.24 2008-11-04 21:08:11 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -274,21 +274,6 @@ public class TransformationService
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().startsWith("2."))
         {
         	csvDataResult=pareV2Message(mapParser.getSourceKind(), V2MetaXSDUtil.formatV2MessageType(mapParser.getSourceSpecFileName()));
-        	//reformat mapping link xmlPath
-        	Hashtable<String, String>mappings=mapParser.getMappings();
-        	Enumeration enumKey=mappings.keys();
-        	while (enumKey.hasMoreElements())
-        	{
-        		String oneMappingKey=(String)enumKey.nextElement();
-        		String srcXmlPath=(String)mappings.get(oneMappingKey);
-        		if (srcXmlPath.startsWith("function"))
-        			continue;
-        		String leadingSt=srcXmlPath.substring(0, srcXmlPath.indexOf("."));
-        		String endingSt=srcXmlPath.substring(srcXmlPath.indexOf(".")+1);
-        		endingSt=endingSt.replace(".", "__");
-        		srcXmlPath=leadingSt+"."+endingSt;
-        		mappings.put(oneMappingKey, srcXmlPath);
-        	}
         }
         else 
         {
@@ -456,6 +441,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.23  2008/10/29 19:09:36  wangeug
+ * HISTORY      : clean code: remove unnecessary class variables
+ * HISTORY      :
  * HISTORY      : Revision 1.22  2008/10/24 21:07:28  wangeug
  * HISTORY      : read data from dynamic data file
  * HISTORY      :
