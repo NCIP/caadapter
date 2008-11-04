@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
+    <components>
+        <component location="etc/data/shiporder.xsd" kind="xml" type="source" id="etc/data/shiporder.xsd">
+            <rootElement name="shiporder">
+                <attrData isRequired="true" name="orderid"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="orderperson"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="shipto">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="name"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="address"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="city"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="country"/>
+                </childElement>
+                <childElement maxOccurs="-1" minOccurs="1" isRequired="true" name="item">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="title"/>
+                    <childElement maxOccurs="1" minOccurs="0" isRequired="false" name="note"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="quantity"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="price"/>
+                </childElement>
+            </rootElement>
+        </component>
+        <component location="etc/data/item.xsd" kind="xml" type="target" id="etc/data/item.xsd">
+            <rootElement name="item">
+                <attrData isRequired="true" name="orderid"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="name"/>
+                <childElement maxOccurs="1" minOccurs="0" isRequired="false" name="description"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="quantity"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="price"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="buyer"/>
+                <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="address">
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="name"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="street"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="city"/>
+                    <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="country"/>
+                </childElement>
+            </rootElement>
+        </component>
+    </components>
+    <links>
+        <link>
+            <source id="/shiporder/item" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/orderperson" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/buyer" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/address" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/name" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/address/name" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/address" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/address/street" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/city" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/address/city" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/shipto/country" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/address/country" componentid="etc/data/item.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/title" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/name" componentid="etc/data.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/note" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/description" componentid="etc/data.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/quantity" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/quantity" componentid="etc/data.xsd"/>
+        </link>
+        <link>
+            <source id="/shiporder/item/price" componentid="etc/data/shiporder3.xsd"/>
+            <target id="/item/price" componentid="etc/data.xsd"/>
+        </link>
+        
+    </links>
+</mapping>
