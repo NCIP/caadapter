@@ -35,8 +35,8 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author   OWNER: wangeug  $Date: Oct 20, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2008-11-04 21:07:54 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2008-11-05 14:34:20 $
  * @since caAdapter v4.2
  */
 
@@ -52,25 +52,15 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
         csvSegmentStack=new Stack<CSVSegment>();
 	}
 	
- 
-	public void  endElement(String uri, String localName, String qName) throws SAXException 
-	{
-		super.endElement(uri, localName, qName);
-		String xmlName=qName.replace(".","_");
-		pathToRoot.removeLeaf(xmlName);
-		//remove one CSVSegment
-		CSVSegment segment=csvSegmentStack.pop();
-		Log.logInfo(this, "End Element:"+qName +"..."+localName);
-	}
-	
-	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException 
+ 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException 
 	{
 		super.startElement(uri, localName, qName, attributes);
 		String xmlName=qName.replace(".","_");
 		pathToRoot.add(xmlName);
-		Log.logInfo(this, "Start Element:"+qName +"..."+localName);
+//		Log.logInfo(this, "Start Element:"+qName +"..."+localName);
 		if (dataResult==null)
 		{
+			Log.logInfo(this, "Initialize Root Element:"+qName +"..."+localName);
 			//initialize the DataResult for root element
 	        ValidatorResults validatorResults = new ValidatorResults();
 	        //The CVSMeta is required to retrieve the CVS rootSegemt name or message type
@@ -103,12 +93,22 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 	        csvSegmentStack.push(elementSeg);
 		}
 	}
+
+	public void  endElement(String uri, String localName, String qName) throws SAXException 
+	{
+		super.endElement(uri, localName, qName);
+		String xmlName=qName.replace(".","_");
+		pathToRoot.removeLeaf(xmlName);
+		//remove one CSVSegment
+		CSVSegment segment=csvSegmentStack.pop();
+//		Log.logInfo(this, "End Element:"+qName +"..."+localName);
+	}
 	
     public void characters( char[] charSeq, int start, int len )
     {
         String str = new String( charSeq, start, len );
         str = str.trim();
-        addDataField(str);
+        processInlineData(str);
     }
 
 	/**
@@ -118,15 +118,26 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 		return dataResult;
 	}
 	
-	private void addDataField(String value)
+	/**
+	 * Add an inline data to the CSVResult data structure
+	 * @param value
+	 */
+	private void processInlineData(String value)
 	{
-		//assume only the deepest element has inline value
-		//the field should be added to its parent element
-		CSVSegment mySegment=this.csvSegmentStack.pop();
-				
+		/*
+		 	Assumptions:
+		  	1.Only the deepest element has inline value
+		  	2.All data value are carried with inline value; no element has any attribute
+		  	Processing	  	
+		  	1. Create a CSVField to hold the inline value (String)
+		  	2. Add the CSVField to parent CSVSegment
+		  	3. Remove the CSVSegment of the current element from its parent
+		 */
+ 		CSVSegment mySegment=this.csvSegmentStack.peek(); 				
 		//remove current segment from parentSegment	
-		CSVSegment parentSegment=this.csvSegmentStack.peek();
+		CSVSegment parentSegment=mySegment.getParentSegment();
 		parentSegment.getChildSegments().remove(mySegment);
+		
 		//remove current CSVSegmentMeta from parentMeta:not required
 //		CSVSegmentMeta mySegmentMeta=(CSVSegmentMeta)mySegment.getMetaObject();
 //		CSVSegmentMeta parentSegMeta=(CSVSegmentMeta)parentSegment.getMetaObject();
@@ -143,16 +154,16 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 		//create CSVField and add it to parent CSVSegment
 		CSVField csvData=new CSVFieldImpl(null, colCnt, value) ;
 		csvData.setXmlPath(fldXmlPath);
-		parentSegment.getFields().add(csvData);
-		
-		//the current CSV segment will be popped at "endElement"
-		csvSegmentStack.push(mySegment);		
+		parentSegment.getFields().add(csvData);	
 	}
 }
 
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2008/11/04 21:07:54  wangeug
+* HISTORY: set xmlPath name of V2Meta element: replacing "." with "_"
+* HISTORY:
 * HISTORY: Revision 1.1  2008/10/24 19:37:18  wangeug
 * HISTORY: transfer a v2 message into v3 message using SUN v2 schema
 * HISTORY:
