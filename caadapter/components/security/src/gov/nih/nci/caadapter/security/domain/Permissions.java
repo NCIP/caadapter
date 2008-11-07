@@ -5,15 +5,15 @@ package gov.nih.nci.caadapter.security.domain;
  * @author : Sandeep Phadke
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-10-24 20:59:25 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-11-07 23:16:34 $
  *  * @created 24-Oct-2008 
  */
 
 public class Permissions
 {
     private boolean Create;
-    private boolean Update;
+    private boolean Modify;
     private boolean Delete;
     private boolean Read;
     
@@ -34,14 +34,14 @@ public class Permissions
     /**   Sets the value for variable Update.
     * @param String setValue
     */
-    public void setUpdate(boolean setValue){
-       this.Update = setValue;
+    public void setModify(boolean setValue){
+       this.Modify= setValue;
     }
     /**   gets the value for variable Update.
    * @return String Update
    */
-    public boolean getUpdate(){
-      return this.Update ;
+    public boolean getModify(){
+      return this.Modify ;
     }
     /**   Sets the value for variable Delete.
     * @param String setValue

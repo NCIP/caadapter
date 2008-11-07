@@ -4,8 +4,8 @@ package gov.nih.nci.caadapter.security.domain;
  * @author : Sandeep Phadke
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-10-24 20:59:25 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-11-07 23:16:34 $
  *  * @created 24-Oct-2008 
  */
 
@@ -34,13 +34,13 @@ public class UserSecurityObjectMapping
            /**   Sets the value for variable objectPermissions.
             * @param String setValue
             */
-           public void setObjectPermissions(Permissions setValue){
+           public void setPermissions(Permissions setValue){
                 this.objectPermissions = setValue;
            }
            /**   Gets the value for variable objectPermissions.
             * @return String objectPermissions
             */
-           public Permissions getObjectPermissions(){
+           public Permissions getPermissions(){
                return this.objectPermissions;
           }
            /**   Sets the value for variable objectId.

@@ -4,8 +4,8 @@ package gov.nih.nci.caadapter.security.domain;
  * @author : Sandeep Phadke
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-10-24 21:29:44 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-11-07 23:16:34 $
  *  * @created 24-Oct-2008 
  */
 
@@ -85,14 +85,14 @@ public class UserEmail
            /**   Sets the value for variable userEmailId.
             * @param int setValue
             */
-           public void setUserEmailId(int setValue){
+           public void setUseremailid(int setValue){
                this.userEmailId = setValue;
            }
 
            /** Returns the int for the variable userEmailId.
             * @return int userEmailId
                */
-              public int getUserEmailId(){
+              public int getUseremailid(){
                   return this.userEmailId;
               }
 
