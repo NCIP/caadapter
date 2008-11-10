@@ -76,14 +76,14 @@ import org.jdom.Element;
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v3.2 revision $Revision: 1.13 $ date $Date:
+ * @author LAST UPDATE $Author: wangeug $
+ * @version Since caAdapter v3.2 revision $Revision: 1.14 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.13 2008-10-21 18:54:19 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.14 2008-11-10 22:00:38 wangeug Exp $";
     public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
     public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
 
@@ -921,13 +921,13 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 
         action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.ValidateObjectToDbMapAction(
                 this);
-        contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
-                MenuConstants.REPORT_MENU_NAME,
-                ActionConstants.GENERATE_REPORT, action);
-        contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
-                MenuConstants.TOOLBAR_MENU_NAME,
-                ActionConstants.GENERATE_REPORT, action);
-        action.setEnabled(true);
+//        contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
+//                MenuConstants.REPORT_MENU_NAME,
+//                ActionConstants.GENERATE_REPORT, action);
+//        contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
+//                MenuConstants.TOOLBAR_MENU_NAME,
+//                ActionConstants.GENERATE_REPORT, action);
+//        action..setEnabled(true);
 
         action = new RefreshMapAction(this);
         contextManager.addClientMenuAction(MenuConstants.XSD_TO_XMI,
@@ -1103,6 +1103,9 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/10/21 18:54:19  phadkes
+ * HISTORY      : change the order of GME tag from class/RoleName to RoleName/Class.
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2008/09/24 18:02:22  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :
