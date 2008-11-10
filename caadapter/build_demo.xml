@@ -30,17 +30,42 @@
         <tstamp>
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
+        
+        
+        <condition property="caadapter.module.all.zip">	
+						<equals arg1="${caadapter.release.all.modules}" arg2="true"/>
+		</condition>
+
         <condition property="caadapter.module.hl7.zip">	
 				<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
 		</condition>
+		<condition property="caadapter.module.gme.zip">	
+				<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
+		</condition>
+		
 		<!-- conditionally zip the distributed zip file -->
 		<antcall target="zipAllModule"/>
 		<antcall target="zipHL7Module"/>
-		
+		<antcall target="zipGmeModule"/>
         
     </target>
 
-	<target name="zipAllModule" unless="caadapter.module.hl7.zip">
+	<target name="zipGmeModule" if="caadapter.module.gme.zip">
+		<echo message="Build bin distribution for GME modules..."/>
+		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
+			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
+					lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,lib/jgraph.jar,lib/junit*.jar,lib/mysql*.jar,lib/ojdbc*.jar,
+					lib/sqleonardo.jar" />
+
+			<zipfileset dir=".." includes="docs/GME" />
+			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
+			<zipfileset dir="../workingspace" 
+				includes="GME_example/**"
+				prefix="workingspace" />
+		</zip>
+	</target>
+	
+	<target name="zipAllModule" if="caadapter.module.all.zip">
 		<echo message="Build all modules..."/>
 		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
 			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
