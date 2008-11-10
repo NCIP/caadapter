@@ -58,8 +58,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.41 $
- * @date       $Date: 2008-10-24 19:38:38 $
+ * @version    $Revision: 1.42 $
+ * @date       $Date: 2008-11-10 20:13:25 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -246,33 +246,29 @@ public class MainMenuBar extends AbstractMenuBar
             {
                 newGroup.add(constructNewCSVTOV3Menu());
             }
-//            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_CSV_TRANSFORMATION_ACTIVATED))
-//            {
-//                newGroup.add(constructNewV3TOCSVMenu());
-//            }
-//            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
-//            {
-//                newGroup.add(constructNewV2TOV3Menu());
-//                MetaDataLoader loader = FileUtil.getV2ResourceMetaDataLoader();
-//            }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewDatabaseTOSDTMMenu());
             }            
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_MODEL_MAPPING_ACTIVATED)
-            		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED)
-            		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
+            		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
             {
-                newGroup.add(constructNewObjectTODatabaseMenu());
+                newGroup.add(constructNewObjectTODatabaseMenu(false));
+            }
+            if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
+            {
+                newGroup.add(constructNewObjectTODatabaseMenu(true));
             }
             
         }
         return newGroup;
     }
 
-    private JMenu constructNewObjectTODatabaseMenu()
+    private JMenu constructNewObjectTODatabaseMenu(boolean isGME)
     {
         JMenu newGroup = new JMenu("Model Mapping Services");
+        if (isGME)
+        	newGroup=new JMenu("Global Model Exchange Services");
         if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
         {
       	//directly add menuItem
@@ -744,6 +740,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.41  2008/10/24 19:38:38  wangeug
+ * HISTORY : transfer a v2 message into v3 message using SUN v2 schema
+ * HISTORY :
  * HISTORY : Revision 1.40  2008/09/26 20:35:27  linc
  * HISTORY : Updated according to code standard.
  * HISTORY :
