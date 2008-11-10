@@ -35,10 +35,10 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * This class defines the help window.
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.19 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.20 $
+ * @date       $Date: 2008-11-10 20:55:27 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +55,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.19 2008-09-26 20:35:27 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.20 2008-11-10 20:55:27 wangeug Exp $";
 
 
 	private JEditorPane mainView;
@@ -96,7 +96,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 
 	public AboutWindow(JFrame parent)
 	{
-		super(parent, "About caAdapter Model Mapping Service (MMS)", false);
+		super(parent, "About caAdapter Global Model Exchange (GME)", false);
 		this.setResizable(false);
 		dirSeparater = File.separator;
 		thisWindow = this;
@@ -394,10 +394,6 @@ public class AboutWindow extends JDialog //implements ActionListener
 		{
 			return ERROR_TAG + " : Class Loading failure with this path => " + licensePath;
 		}
-//		File licensePathFile = new File(FileUtil.getETCDirPath() + File.separator + licensePath);
-//		if (!licensePathFile.exists()) return ERROR_TAG + " : Not Exist";
-//		if (!licensePathFile.isDirectory()) return ERROR_TAG + " : Not Directory";
-		//String displayFileName = commonPath + Config.HELP_TEMPORARY_FILENAME_SECOND;
 		String displayFileName = FileUtil.getTemporaryFileName(".html");
 		String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> This " +
 		"license information is automatically merged and generated from the following license files in " +
@@ -529,7 +525,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"<td width='8' valign='top'><img id=\"icon\" src=\"../images/caAdapter-icon.gif\" /><!-- caadapter icon --> </td>\n" +
 		"<td valign='top'>\n" +
 		"<font color='black' size='3' face='Arial'><!--&&:Variable Area;Don't touch this Paragraph-->\n" +
-		"     <h2>caAdapter Model Mapping Service (MMS) version 4.1 </h2> " + getNarrativeSentence() + "\n" +
+		"     <h2>caAdapter Global Model Exchange (GME) version 4.2 </h2> " + getNarrativeSentence() + "\n" +
 		"<br>\n" +
 		"\n" +
 		"</font>\n" +
@@ -632,12 +628,15 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String getNarrativeSentence()
 	{
 		return " caAdapter is an open source tool set that provides model mapping services in support of caCORE components and facilitates data mapping and transformation among different kinds of data sources."+
-		"<br>caAdapter MMS is one component of caAdapter. The MMS tool provides Object to Data Model mapping capabilities in support of building caCORE compatible applications."+
+		"<br>caAdapter GME is one component of caAdapter. The GME tool assists the user with creating and correcting mappings between existing namespace names (XSD's) and UML models (represented as XMI files). The tool allows the model owner to define model-specific common values, such as Package Namespace, that will be automatically applied to the model."+
 		"";
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.19  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.18  2008/09/11 16:06:30  linc
  * HISTORY      : read license from jar file.
  * HISTORY      :

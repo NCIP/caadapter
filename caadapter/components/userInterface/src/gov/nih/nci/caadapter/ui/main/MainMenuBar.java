@@ -58,8 +58,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.42 $
- * @date       $Date: 2008-11-10 20:13:25 $
+ * @version    $Revision: 1.43 $
+ * @date       $Date: 2008-11-10 20:55:12 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -304,9 +304,10 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem _menuItem = new JMenuItem(_preference);
         _qb.add(_menuItem);
         
-        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED))
+        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_WEBSTART_ACTIVATED)
+        		||CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_XSD_XMI_MENU_ACTIVATED))
         {       	
-//        	CaadapterUtil.setAuthorizedUser(true);
+        	_menuItem.setEnabled(false);
         	return _qb;
         }
         else 
@@ -740,6 +741,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.42  2008/11/10 20:13:25  wangeug
+ * HISTORY : GME release:version 4.2
+ * HISTORY :
  * HISTORY : Revision 1.41  2008/10/24 19:38:38  wangeug
  * HISTORY : transfer a v2 message into v3 message using SUN v2 schema
  * HISTORY :
