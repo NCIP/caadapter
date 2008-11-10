@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.security.dao.xmlDao;
 import gov.nih.nci.caadapter.security.config.SecurityConfig;
 import gov.nih.nci.caadapter.security.dao.AbstractSecurityDAO;
 import gov.nih.nci.caadapter.security.dao.SecurityAccessIF;
+import gov.nih.nci.caadapter.security.domain.Permissions;
 import gov.nih.nci.caadapter.security.domain.SecurityObject;
 import gov.nih.nci.caadapter.security.domain.User;
 import gov.nih.nci.caadapter.security.domain.UserAddress;
@@ -140,8 +141,11 @@ public List<WebServiceMapping> getAllWebserviceMappings()
 }
 public List<UserSecurityObjectMapping> getAlluserSecObjMappings()
 {
-    if (secXmlDSUsrSecObjMapping!=null)
+    System.out.println("get user mapping for all the users - getAlluserSecObjMappings" );
+    if (secXmlDSUsrSecObjMapping!=null){
+        System.out.println("secXmlDSUsrSecObjMapping.getUserSecurityObjectMapping().size: " + secXmlDSUsrSecObjMapping.getUserSecurityObjectMapping().size() );
         return secXmlDSUsrSecObjMapping.getUserSecurityObjectMapping();
+    }
     return null;
 }
 public List<UserAddress> getUserAddresses(String userId)
@@ -162,16 +166,33 @@ public List<WebServiceMapping> getUserWebserviceMappings(String User)
 public UserSecurityObjectMapping getuserSecObjMapping(String userId)
 {
     List<UserSecurityObjectMapping> allMappings = getAlluserSecObjMappings();
+    System.out.println("No of mapping for user:" + userId + " = " + allMappings.size());
     for( int i=0; i < allMappings.size(); i++)
     {
-        UserSecurityObjectMapping currentMapping = (UserSecurityObjectMapping) allMappings.get(i); 
-    
+        UserSecurityObjectMapping currentMapping = (UserSecurityObjectMapping) allMappings.get(i);
+        System.out.println("Mapping loop " + i );
+        System.out.println(currentMapping);
         if (currentMapping.getUserId().equals(userId)){
+            System.out.println("returning mapping for " + userId );            
                     return currentMapping;
         }
     }
     return null;
 }
+
+public Permissions getUserObjectPermssions(String userId, int object)
+{
+    
+    UserSecurityObjectMapping userObjMapping = getuserSecObjMapping(userId);
+    
+    if (userObjMapping!=null){
+        System.out.println("Returning permission for " + userId );
+        return userObjMapping.getPermissions();
+    }
+    return null;
+}
+
+
 public boolean validateUser(String userId, String password)
 {
     List<User> allUsers = getAllUsers();

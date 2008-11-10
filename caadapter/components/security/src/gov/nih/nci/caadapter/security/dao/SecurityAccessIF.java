@@ -1,5 +1,6 @@
 package gov.nih.nci.caadapter.security.dao;
 
+import gov.nih.nci.caadapter.security.domain.Permissions;
 import gov.nih.nci.caadapter.security.domain.SecurityObject;
 import gov.nih.nci.caadapter.security.domain.User;
 import gov.nih.nci.caadapter.security.domain.UserAddress;
@@ -15,8 +16,8 @@ import java.util.List;
  * @author : Sandeep Phadke
  * @author LAST UPDATE $Author: phadkes $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-11-07 23:16:07 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-11-10 22:40:04 $
  *  * @created 24-Oct-2008 
  */
 //import gov.nih.nci.caadapter.security.DAO.xmldao.XmlDaoImpl;
@@ -81,4 +82,6 @@ public interface SecurityAccessIF  {
      */
     public boolean validateUser(String userId, String password);
 
+    public Permissions getUserObjectPermssions(String userId, int i);
+    
 }
