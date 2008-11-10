@@ -24,10 +24,10 @@ import java.awt.geom.Point2D;
 /**
  * This class defines the add function box action.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-11-10 21:30:38 $
  */
 public class AddFunctionalBoxAction extends DefaultAbstractJgraphAction
 {
@@ -44,14 +44,6 @@ public class AddFunctionalBoxAction extends DefaultAbstractJgraphAction
 		this(COMMAND_NAME, null, middlePanel, controller);
 	}
 
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public AddFunctionalBoxAction(String name, MappingMiddlePanel middlePanel, MiddlePanelJGraphController controller)
-	{
-		this(name, null, middlePanel, controller);
-	}
 
 	/**
 	 * Defines an <code>Action</code> object with the specified
@@ -113,6 +105,9 @@ public class AddFunctionalBoxAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

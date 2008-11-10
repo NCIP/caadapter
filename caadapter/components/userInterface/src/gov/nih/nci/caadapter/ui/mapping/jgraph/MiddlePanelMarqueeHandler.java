@@ -37,10 +37,10 @@ import java.awt.geom.Rectangle2D;
  * and mainly focuses on drag-and-drop and handlings of repaint of graph, for example.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2008-11-10 21:30:52 $
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 {
@@ -353,7 +353,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			}
 		}
 
-		addFunctionalBoxAction.setEnabled(!graphHasSelection);
+		addFunctionalBoxAction.setEnabled(false);//.setEnabled(!graphHasSelection);
 		deleteAction.setEnabled(graphHasSelection);
 
 		return popupMenu;
@@ -397,6 +397,9 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/03/04 16:09:23  schroedn
  * HISTORY      : Added deleteAll jGraph menu item
  * HISTORY      :
