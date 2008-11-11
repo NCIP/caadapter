@@ -58,7 +58,7 @@
 				fork="yes" debug="on">
 			<src path="${module.src.dir}" />
 			<exclude name="test/**"/>
-			<exclude name="gov/nih/nci/caadapter/common/util/CaadapterUtil.java"/>
+			<exclude name="gov/nih/nci/caadapter/common/util/*CaadapterUtil.java"/>
 		</javac>
 	</target>
 
