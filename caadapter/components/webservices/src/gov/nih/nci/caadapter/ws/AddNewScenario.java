@@ -7,12 +7,18 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.ws;
 
+import gov.nih.nci.caadapter.security.dao.AbstractSecurityDAO;
+import gov.nih.nci.caadapter.security.dao.DAOFactory;
+import gov.nih.nci.caadapter.security.dao.SecurityAccessIF;
+import gov.nih.nci.caadapter.security.domain.Permissions;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -21,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -42,8 +49,8 @@ import org.xml.sax.SAXParseException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.4 $
- * @date $$Date: 2008-06-09 19:54:07 $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2008-11-11 17:33:11 $
  * @since caadapter v1.3.1
  */
 
@@ -64,11 +71,30 @@ public class AddNewScenario extends HttpServlet {
 	      FileOutputStream fileOut = null;
 	      String name, filename, type;
 	      long formDatalength = 0;
+          try
+          {
+              HttpSession session = req.getSession(false);
+              
+              if(session==null)
+              {
+                  res.sendRedirect("/caAdapterWS/login.do");
+                  return;
+              }
+    	      
+              String user = (String) session.getAttribute("userid");
+              System.out.println(user);
+              AbstractSecurityDAO abstractDao= DAOFactory.getDAO();
+              SecurityAccessIF getSecurityAccess = abstractDao.getSecurityAccess();
+              Permissions perm = getSecurityAccess.getUserObjectPermssions(user, 1);
+              System.out.println(perm);
+              if (!perm.getCreate()){
+                  System.out.println("No create Permission for user" + user);
+                  res.sendRedirect("/caAdapterWS/permissionmsg.do");
+                  return;
+              }
+                  
+    	      name = filename = type = "EMPTY";
 
-	      
-	      name = filename = type = "EMPTY";
-	      try
-	      {
 	    	  // Create a factory for disk-based file items
 	    	  DiskFileItemFactory  factory = new DiskFileItemFactory();
 
@@ -127,10 +153,15 @@ public class AddNewScenario extends HttpServlet {
 	    	  }
 //	    	  out.println("Complete!");
 	    	  res.sendRedirect("/caAdapterWS/success.do");
-		}catch(Exception e) {
-	            System.out.println("Error in doPost: " + e);
-		    	  res.sendRedirect("/caAdapterWS/error.do");
+	    	  
+		}catch(NullPointerException ne) {
+	            System.out.println("Error in doPost: " + ne);
+		    	  res.sendRedirect("/caAdapterWS/errormsg.do");
 	        }
+		catch(Exception e) {
+            System.out.println("Error in doPost: " + e);
+              res.sendRedirect("/caAdapterWS/error.do");
+        }
 	   }
 	    /**
 	     * Update the reference in .map to the .scs and .h3s files.
