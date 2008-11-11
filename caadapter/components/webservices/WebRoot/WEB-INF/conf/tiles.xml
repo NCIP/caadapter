@@ -20,11 +20,32 @@
 		<put name="content" value="/WEB-INF/jsps/content/login.jsp" />
 	</definition>
 	
+	<definition name="Tiles.Scenario.Page" extends="Base">
+        <put name="mainMenu" value="/WEB-INF/jsps/layouts/loginMenu.jsp" />
+		<put name="content" value="/WEB-INF/jsps/content/createScenario.jsp" />
+	</definition>	
+	
 	<!-- Success Page -->
 	<definition name="Tiles.SuccessAdd.Page" extends="Base">
         <put name="mainMenu" value="/WEB-INF/jsps/layouts/loginMenu.jsp" />
 		<put name="content" value="/WEB-INF/jsps/content/success.jsp" />
 	</definition>
+
+	<definition name="Tiles.SuccessMsg.Page" extends="Base">
+        <put name="mainMenu" value="/WEB-INF/jsps/layouts/loginMenu.jsp" />
+		<put name="content" value="/WEB-INF/jsps/content/successmsg.jsp" />
+	</definition>
+
+	<definition name="Tiles.ErrorMsg.Page" extends="Base">
+        <put name="mainMenu" value="/WEB-INF/jsps/layouts/loginMenu.jsp" />
+		<put name="content" value="/WEB-INF/jsps/content/errormsg.jsp" />
+	</definition>
+
+	<definition name="Tiles.PermissionMsg.Page" extends="Base">
+        <put name="mainMenu" value="/WEB-INF/jsps/layouts/loginMenu.jsp" />
+		<put name="content" value="/WEB-INF/jsps/content/nopermission.jsp" />
+	</definition>
+
 
 	<!-- Error Page -->
 	<definition name="Tiles.ErrorAdd.Page" extends="Base">

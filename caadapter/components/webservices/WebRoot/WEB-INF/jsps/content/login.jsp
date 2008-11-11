@@ -3,31 +3,25 @@
 
 <!-- target of anchor to skip menus -->
 <a name="content" />
-      
+
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="600" height="100%">
       <!-- banner begins -->      
 		<tr>
-			<td width="100%" class="welcomeTitleCopy2" height="20">Welcome to the caAdapter 4.0 Web Services Management Portal</td>
+			<td width="100%" class="welcomeTitleCopy2" height="20">Please login to the caAdapter 4.0 Web Services Management Portal</td>
 		</tr>
 	
 		<tr>
 			<td valign="top">
-				<FORM ACTION="/caAdapterWS/AddNewScenario" ENCTYPE="multipart/form-data" METHOD=POST>
+				<FORM ACTION="/caAdapterWS/validateUser"  METHOD=POST>
 					<table boarder=0>
 					<tr>
-					<td>Mapping Scenario Name:</td><td> <input type=text name="MSName"><br></td>
+					<td>Enter UserId:</td><td> <input type=text name="userid"><br></td>
 					</tr>
 					<tr>
-					<td>Mapping file:</td><td><INPUT TYPE=FILE NAME=mappingFileName></td>
-					</tr>
-					<tr>
-					<td>SCS file:</td><td><INPUT TYPE=FILE NAME=scsFileName></td>
-					</tr>
-					<tr>
-					<td>H3S file:</td><td><INPUT TYPE=FILE NAME=h3sFileName></td>
+					<td>Enter Password:</td><td> <input type=password name="password"><br></td>
 					</tr>
 					<tr><td colspan=2>
-					<input type=submit value="Add Mapping Scenario"></td>
+					<input type=submit value="Login"></td>
 					</tr>
 				</FORM>
 			</td>

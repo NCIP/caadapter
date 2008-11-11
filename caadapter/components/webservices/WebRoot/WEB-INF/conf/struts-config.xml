@@ -19,9 +19,13 @@
   <!-- === forwards === -->
    <action path="/disclaimer" forward="Tiles.Disclaimer.Page"></action>
    <action path="/login" forward="Tiles.Login.Page"></action>
+   <action path="/createScenario" forward="Tiles.Scenario.Page"></action>
    <action path="/home" forward="Tiles.Home.Page"></action>
    <action path="/error" forward="Tiles.ErrorAdd.Page"></action>
    <action path="/success" forward="Tiles.SuccessAdd.Page"></action>
+   <action path="/successmsg" forward="Tiles.SuccessMsg.Page"></action>
+   <action path="/errormsg" forward="Tiles.ErrorMsg.Page"></action>
+   <action path="/permissionmsg" forward="Tiles.PermissionMsg.Page"></action>
  </action-mappings>
   
   <!-- ============= Resources======================================= -->	
