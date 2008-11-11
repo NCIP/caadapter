@@ -65,6 +65,12 @@
         <servlet-class>gov.nih.nci.caadapter.ws.AddNewScenario</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+   <servlet>
+        <servlet-name>validateUser</servlet-name>
+        <servlet-class>gov.nih.nci.caadapter.ws.validateUser</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+     
        <servlet>
         <servlet-name>AxisServlet</servlet-name>
         <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
@@ -88,6 +94,10 @@
     <servlet-mapping>
         <servlet-name>AddNewScenario</servlet-name>
         <url-pattern>/AddNewScenario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>validateUser</servlet-name>
+        <url-pattern>/validateUser</url-pattern>
     </servlet-mapping>
   <servlet-mapping>
     <servlet-name>action</servlet-name>
