@@ -153,9 +153,8 @@
 			<zipfileset dir="components/sdtmTransformation" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/sdtmTransformation"/>
 			<zipfileset dir="components/userInterface" includes="build.xml, conf/**,src/**, resources/**, lib/**" prefix="components/userInterface"/>
 			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
-			<zipfileset dir="demo" includes="gov/**"/>
 			<zipfileset dir="docs/GME" prefix="docs/GME"/>
-			<zipfileset dir="." includes="conf/**, etc/**, lib/** 
+			<zipfileset dir="." includes="conf/**, demo/gov/**, etc/**, lib/**,
 				build*, *.bat, NCICBkey, myKeyStor" />
 			<!-- zipfileset dir="." includes="conf/**, etc/**, lib/** 
 				build*, *.bat, NCICBkey, myKeyStor" / -->
@@ -224,10 +223,10 @@
 	        <echo message="------- copying jar files to webstart deploy directory ------"/>
 	        <copy todir="${webstart.deploy.dir}">
 	            <fileset dir="${lib.dir}">
-	                <include name="commons-collections-3.2.jar"/>
+	                <!-- include name="commons-collections-3.2.jar"/ -->
 	                <include name="commons-logging-1.0.4.jar"/>
 	                <include name="xmi.in.out.jar"/>
-	                <include name="xml-apis.jar"/>
+	                <!-- include name="xml-apis.jar"/ -->
 	                <include name="xercesImpl.jar"/>
 	                <include name="jdom.jar"/>
 	                <include name="castor-0.9.9.jar"/>
@@ -254,8 +253,8 @@
 	        	<fileset dir="${mms.module.home}/lib">
 	        		<include name="jaxen-jdom.jar"/>
 	                <include name="dom4j-1.4.jar"/>
-					<include name="sdk-codegen.jar"/>
-					<include name="spring.jar"/>
+					<!-- include name="sdk-codegen.jar"/ -->
+					<!-- include name="spring.jar"/ -->
 	        	</fileset>
 	        </copy>
 	
