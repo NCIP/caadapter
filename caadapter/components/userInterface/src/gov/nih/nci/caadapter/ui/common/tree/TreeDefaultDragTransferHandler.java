@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
 [caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
@@ -30,8 +30,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.3 $
- * date        $Date: 2008-10-09 18:19:29 $
+ * revision    $Revision: 1.4 $
+ * date        $Date: 2008-11-13 20:22:43 $
  */
 public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 {
@@ -47,7 +47,7 @@ public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDragTransferHandler.java,v 1.3 2008-10-09 18:19:29 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/TreeDefaultDragTransferHandler.java,v 1.4 2008-11-13 20:22:43 wangeug Exp $";
 
 	private JTree mTree;
 	private HL7SDKDragGestureAdapter dragGestureAdapter;
@@ -81,7 +81,7 @@ public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 	protected void initDragAndDrop()
 	{
 		// set up drag stuff
-		
+
 		dragGestureAdapter = new HL7SDKDragGestureAdapter(this);
 		dragSourceAdapter = new HL7SDKDragSourceAdapter(this);
 		// component, action, listener
@@ -211,15 +211,17 @@ public class TreeDefaultDragTransferHandler implements DragCompatibleComponent
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.common.tree.DragCompatibleComponent#move()
 	 */
-	@Override
 	public void move() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/10/09 18:19:29  wangeug
+ * HISTORY      : clean code/remove unnecessary constructor
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
