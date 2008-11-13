@@ -166,7 +166,8 @@
 	</target>
 	
 	<target name="compile.demo"  description="compile the source">
-		<javac destdir="../build" 
+		<echo message="targetVersion=${project.build.target.version}"/>
+		<javac destdir="../build" target="${project.build.target.version}"
 				classpathref="execution.class.path"
 				fork="yes" debug="on">
 			<src path="../demo" />

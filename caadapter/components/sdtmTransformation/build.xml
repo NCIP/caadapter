@@ -56,7 +56,7 @@
 	</target>
 
 	<target name="compile" depends="init" description="compile the source">
-		<javac destdir="${module.build.dir}" 
+		<javac destdir="${module.build.dir}" target="${project.build.target.version}"
 		classpathref="module.class.path"
 		   fork="yes" debug="on">
 		<src path="${module.src.dir}" />

@@ -33,7 +33,7 @@
   </path>
 
   <target name="compile.source" description="compile the source">
-  	<javac destdir="${module.build.dir}" 
+  	<javac destdir="${module.build.dir}" target="${project.build.target.version}"
   		classpathref="module.class.path"
   		   fork="yes" debug="on">
  		<!-- src path="${module.gencode.dir}"/ -->
