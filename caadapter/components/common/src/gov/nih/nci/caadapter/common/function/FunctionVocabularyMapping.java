@@ -6,14 +6,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 * <!-- LICENSE_TEXT_END -->
  */
  
-package gov.nih.nci.caadapter.hl7.map;
+package gov.nih.nci.caadapter.common.function;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.Message;
-import gov.nih.nci.caadapter.common.function.FunctionException;
-import gov.nih.nci.caadapter.common.function.FunctionUtil;
-import gov.nih.nci.caadapter.common.function.FunctionVocabularyMappingEventHandler;
-import gov.nih.nci.caadapter.common.function.FunctionVocabularyXMLMappingEventHandler;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
@@ -37,10 +33,10 @@ import org.xml.sax.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.1 $
+ *          date        $Date: 2008-11-17 20:07:31 $
  */
 public class FunctionVocabularyMapping
 {
@@ -57,7 +53,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.4 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyMapping.java,v 1.1 2008-11-17 20:07:31 wangeug Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -830,6 +826,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/06/06 18:54:55  phadkes
  * HISTORY      : Changes for License Text
  * HISTORY      :
