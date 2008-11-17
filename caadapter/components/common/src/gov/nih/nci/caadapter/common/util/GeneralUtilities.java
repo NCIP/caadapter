@@ -21,17 +21,14 @@ import java.awt.*;
  * This class defines a list general utility methods.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-06-09 19:53:50 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-11-17 20:12:06 $
  */
 public class GeneralUtilities
 {
-    private GeneralUtilities()
-	{//never instantiable
-
-    }
+    public static String CAADAPTER_DATA_FIELD_NULL="NULL_DATA";
 
     /**
 	 * Return true if one is equal to another.
@@ -314,6 +311,9 @@ public class GeneralUtilities
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/04/25 04:45:53  umkis
  * HISTORY      : getVocabularySeeker() was picked out from GeneralUtilities and moved into VocabulraryGeneralUtilities.
  * HISTORY      :

@@ -8,9 +8,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  
 package gov.nih.nci.caadapter.common.csv;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+
 
 /*
  * This class process a string and convert it into CSV fields based on delimiter(s).
@@ -18,11 +17,11 @@ import java.util.StringTokenizer;
  * 1. "," is used as the default delimiter
  * 2. "\"" override the default delimiter
  * 3. User's delimiter is the first choosen one
- * @author OWNER: $Author: phadkes $
- * @author LAST UPDATE $Author: phadkes $
+ * @author OWNER: $Author: wangeug $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-09-24 20:52:36 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-11-17 20:12:51 $
  */
 public class CsvDataStringParser {
 
@@ -87,6 +86,14 @@ public class CsvDataStringParser {
 	 */
 	private void encodeData()
 	{
+		//encode NULL_DOUBLE_QUOTE_ENCODER
+		String doubleQuotedNull=",\"\",";
+		String replaceNull=","+GeneralUtilities.CAADAPTER_DATA_FIELD_NULL+",";
+		if (contentData.contains(doubleQuotedNull))
+		{
+			String encodeContentData=contentData.replace(doubleQuotedNull, replaceNull);
+			contentData=encodeContentData;
+		}
 		//encode DOUBLE_QUOTE -- the "" within a "..."
 		if (contentData.contains("\"\""))
 		{
@@ -114,4 +121,7 @@ public class CsvDataStringParser {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/24 20:52:36  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
