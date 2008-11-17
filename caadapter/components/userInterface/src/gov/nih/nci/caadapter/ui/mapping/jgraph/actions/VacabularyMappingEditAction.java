@@ -9,9 +9,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxMutableViewInterface;
@@ -28,10 +28,10 @@ import org.jgraph.JGraph;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2008-11-17 20:11:16 $
  */
 public class VacabularyMappingEditAction extends DefaultAbstractJgraphAction
 {
@@ -47,7 +47,7 @@ public class VacabularyMappingEditAction extends DefaultAbstractJgraphAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/VacabularyMappingEditAction.java,v 1.2 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/VacabularyMappingEditAction.java,v 1.3 2008-11-17 20:11:16 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Edit Vocabulary Mapping...";
 	private static final Character COMMAND_MNEMONIC = new Character('V');
@@ -194,6 +194,9 @@ public class VacabularyMappingEditAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :

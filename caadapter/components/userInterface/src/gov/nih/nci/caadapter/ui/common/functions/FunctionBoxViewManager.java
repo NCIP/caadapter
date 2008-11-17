@@ -9,10 +9,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.common.functions;
 
+import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.GroupMeta;
-import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 
 import java.util.*;
 
@@ -20,10 +20,10 @@ import java.util.*;
  * This class manages loading the series of functional box definitions identified in the system.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-11-17 20:10:47 $
  */
 public class FunctionBoxViewManager
 {
@@ -175,6 +175,9 @@ public class FunctionBoxViewManager
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/04/01 21:43:14  umkis
  * HISTORY      : minor change
  * HISTORY      :

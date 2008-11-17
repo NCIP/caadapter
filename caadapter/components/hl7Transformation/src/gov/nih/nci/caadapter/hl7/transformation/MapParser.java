@@ -11,13 +11,13 @@ package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionManager;
+import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
-import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
 
 import java.io.File;
@@ -33,8 +33,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.10 $
- * @date $Date: 2008-10-29 19:08:20 $
+ * @version $Revision: 1.11 $
+ * @date $Date: 2008-11-17 20:10:07 $
  * @since caAdapter v4.0
  */
 
@@ -281,6 +281,9 @@ public class MapParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.10  2008/10/29 19:08:20  wangeug
+ * HISTORY :make mapping hashtable accessible publicly
+ * HISTORY :
  * HISTORY :Revision 1.9  2008/10/24 19:36:58  wangeug
  * HISTORY :transfer a v2 message into v3 message using SUN v2 schema
  * HISTORY :

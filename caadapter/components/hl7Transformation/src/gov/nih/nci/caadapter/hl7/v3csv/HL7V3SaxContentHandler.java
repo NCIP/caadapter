@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.v3csv;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2008-10-24 19:35:04 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2008-11-17 20:09:24 $
  */
 
 import java.util.Enumeration;
@@ -27,13 +27,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.csv.data.impl.CSVSegmentedFileExtension;
+import gov.nih.nci.caadapter.common.function.FunctionComponent;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 
 public class HL7V3SaxContentHandler extends DefaultHandler {
 
@@ -206,6 +206,9 @@ public class HL7V3SaxContentHandler extends DefaultHandler {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.1  2008/10/24 19:35:04  wangeug
+ * HISTORY :move file to new folder v3csv...
+ * HISTORY :
  * HISTORY :Revision 1.4  2008/09/29 15:47:19  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

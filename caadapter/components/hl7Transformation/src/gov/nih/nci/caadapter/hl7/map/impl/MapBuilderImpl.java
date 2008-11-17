@@ -12,7 +12,9 @@ package gov.nih.nci.caadapter.hl7.map.impl;
 import gov.nih.nci.caadapter.castor.map.impl.*;
 import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
+import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
+import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
@@ -45,12 +47,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.15 $
+ * @version    $Revision: 1.16 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.15 2008-10-29 14:14:50 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.16 2008-11-17 20:08:53 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -311,6 +313,9 @@ public class MapBuilderImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.15  2008/10/29 14:14:50  wangeug
+ * HISTORY :set "kind' with version for mapping between v2 and v3
+ * HISTORY :
  * HISTORY :Revision 1.14  2008/10/16 14:34:24  wangeug
  * HISTORY :set sourcecomponent.kind=2.x, linkpointer.kind="v2"
  * HISTORY :

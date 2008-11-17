@@ -12,15 +12,15 @@ import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.csv.data.CSVField;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegment;
+import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
-import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
-import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
 import gov.nih.nci.caadapter.hl7.transformation.data.MutableFlag;
 import gov.nih.nci.caadapter.hl7.transformation.data.NullXMLElement;
@@ -37,8 +37,8 @@ import java.util.Set;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-09-29 15:40:38 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2008-11-17 20:10:07 $
  */
 public class DatatypeProcessor {
 	/**
@@ -534,4 +534,7 @@ public class DatatypeProcessor {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2008/09/29 15:40:38  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
