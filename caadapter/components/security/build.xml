@@ -52,7 +52,7 @@
 
 	<target name="compile" depends="init" description="compile the source">
 		<javac destdir="${module.build.dir}" 
-				classpathref="module.class.path"
+				classpathref="module.class.path" target="1.5"
 				fork="yes" debug="on">
 			<src path="${module.src.dir}" />
 			<exclude name="test/**"/>
@@ -60,6 +60,7 @@
 	</target>
 
 	<target name="init">
+		<echo message="...testing....."/>
 		<echo message="-------- initialize ${module.name}  --------"/>
 		<mkdir dir="${module.build.dir}"/>
 		<mkdir dir="${module.dist.dir}"/>

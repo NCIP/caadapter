@@ -887,7 +887,7 @@
         <ant antfile="${dataview.module.build}"/>
         <ant antfile="${sdtm.module.build}"/>
         <ant antfile="${ui.module.build}"/>
-        <!-- ant antfile="${ws.module.build}"/ -->
+        <ant antfile="${ws.module.build}"/>
     </target>
 
     <target name="mms.update">
