@@ -12,13 +12,13 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.csv.meta.CSVFieldMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.ParameterMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.map.BaseComponentFactory;
 import gov.nih.nci.caadapter.common.map.BaseMapElement;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.common.map.ViewImpl;
 import gov.nih.nci.caadapter.common.map.View;
@@ -83,7 +83,7 @@ import java.util.List;
  * 
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v1.2 revision $Revision: 1.30 $ date $Date: 2008-11-17 20:11:04 $
+ * @version Since caAdapter v1.2 revision $Revision: 1.31 $ date $Date: 2008-11-21 16:18:58 $
  */
 public class MiddlePanelJGraphController implements MappingDataManager// , DropTargetListener
 {
@@ -98,7 +98,7 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 	 * 
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.30 2008-11-17 20:11:04 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/MiddlePanelJGraphController.java,v 1.31 2008-11-21 16:18:58 wangeug Exp $";
 
 	private MiddlePanelJGraph graph = null;
 
@@ -1510,6 +1510,9 @@ public class MiddlePanelJGraphController implements MappingDataManager// , DropT
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.30  2008/11/17 20:11:04  wangeug
+ * HISTORY : Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY :
  * HISTORY : Revision 1.29  2008/10/16 14:38:53  wangeug
  * HISTORY : parse mapping between V2Meta and H3S
  * HISTORY :

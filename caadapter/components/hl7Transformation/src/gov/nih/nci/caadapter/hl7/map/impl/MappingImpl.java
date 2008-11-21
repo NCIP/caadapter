@@ -9,8 +9,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.map.impl;
 
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.Map;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 
@@ -22,15 +22,15 @@ import java.util.List;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.6 $
- * @date $Date: 2008-11-17 20:08:52 $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2008-11-21 16:17:33 $
  * @since caAdapter v1.2
  */
 
 public class MappingImpl implements Mapping
 {
 	private static final String LOGID = "$RCSfile: MappingImpl.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.6 2008-11-17 20:08:52 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MappingImpl.java,v 1.7 2008-11-21 16:17:33 wangeug Exp $";
 	private String mappingType="";
 	private List<Map> maps = new ArrayList<Map>();
 	private List<FunctionComponent> functionComponents = new ArrayList<FunctionComponent>();
@@ -165,6 +165,9 @@ public class MappingImpl implements Mapping
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2008/11/17 20:08:52  wangeug
+ * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY :
  * HISTORY :Revision 1.5  2008/09/29 15:45:56  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

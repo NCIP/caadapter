@@ -9,12 +9,12 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.common.functions;
 
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.FunctionException;
-import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
+import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import javax.swing.*;
@@ -32,8 +32,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-11-17 20:10:47 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-11-21 16:18:38 $
  */
 public class FunctionBoxViewUsageManager
 {
@@ -49,7 +49,7 @@ public class FunctionBoxViewUsageManager
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.5 2008-11-17 20:10:47 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionBoxViewUsageManager.java,v 1.6 2008-11-21 16:18:38 wangeug Exp $";
 
     //key: uuid of function instance, function instance.
     private Map functionInstanceMap;
@@ -307,6 +307,9 @@ public class FunctionBoxViewUsageManager
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/11/17 20:10:47  wangeug
+ * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/06/09 19:53:51  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

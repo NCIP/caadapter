@@ -9,7 +9,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.map;
 
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 
 import java.util.List;
@@ -20,8 +19,8 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.5 $
- * @date        $Date: 2008-11-17 20:08:27 $
+ * @version    $Revision: 1.6 $
+ * @date        $Date: 2008-11-21 16:17:15 $
  */
 
 public interface Mapping
@@ -56,6 +55,9 @@ public interface Mapping
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2008/11/17 20:08:27  wangeug
+ * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY :
  * HISTORY :Revision 1.4  2008/09/29 15:47:19  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

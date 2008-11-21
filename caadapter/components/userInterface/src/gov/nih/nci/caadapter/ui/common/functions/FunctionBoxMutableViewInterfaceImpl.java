@@ -11,14 +11,15 @@ package gov.nih.nci.caadapter.ui.common.functions;
 
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
-import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.function.meta.impl.FunctionMetaImpl;
 import gov.nih.nci.caadapter.common.util.PropertiesResult;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.common.map.View;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
+import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
+
 import javax.swing.*;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -30,8 +31,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-11-17 20:10:47 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-11-21 16:18:38 $
  */
 public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implements FunctionBoxMutableViewInterface, MappableNode, Cloneable
 {
@@ -582,6 +583,9 @@ public class FunctionBoxMutableViewInterfaceImpl extends MetaObjectImpl implemen
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/11/17 20:10:47  wangeug
+ * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/06/09 19:53:51  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

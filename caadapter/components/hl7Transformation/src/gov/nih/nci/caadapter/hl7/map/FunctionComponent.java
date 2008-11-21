@@ -7,8 +7,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 
-package gov.nih.nci.caadapter.common.function;
+package gov.nih.nci.caadapter.hl7.map;
 
+import gov.nih.nci.caadapter.common.function.FunctionConstant;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 
@@ -17,14 +18,14 @@ import gov.nih.nci.caadapter.common.map.BaseComponent;
  *
  * @author OWNER: Eric Chen  Date: Jun 8, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2008-11-17 20:07:31 $
+ * @version $Revision: 1.7 $
+ * @date $$Date: 2008-11-21 16:16:49 $
  * @since caAdapter v1.2
  */
 
 public class FunctionComponent extends BaseComponent {
     private static final String LOGID = "$RCSfile: FunctionComponent.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionComponent.java,v 1.1 2008-11-17 20:07:31 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionComponent.java,v 1.7 2008-11-21 16:16:49 wangeug Exp $";
 
     private FunctionConstant functionConstant = null;
     private FunctionVocabularyMapping functionVocabularyMapping = null;
@@ -108,6 +109,9 @@ public class FunctionComponent extends BaseComponent {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/11/17 20:07:31  wangeug
+ * HISTORY      : Move from HL7 module to common module
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/09/29 15:47:18  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :

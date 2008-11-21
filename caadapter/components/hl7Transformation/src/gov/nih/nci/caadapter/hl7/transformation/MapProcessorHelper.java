@@ -9,10 +9,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.transformation;
 
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.function.meta.FunctionMeta;
 import gov.nih.nci.caadapter.hl7.datatype.Attribute;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
@@ -29,8 +29,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.18 $
- * @date $Date: 2008-11-17 20:10:07 $
+ * @version $Revision: 1.19 $
+ * @date $Date: 2008-11-21 16:19:37 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -441,6 +441,9 @@ public class MapProcessorHelper {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.18  2008/11/17 20:10:07  wangeug
+ * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY :
  * HISTORY :Revision 1.17  2008/09/29 15:40:38  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

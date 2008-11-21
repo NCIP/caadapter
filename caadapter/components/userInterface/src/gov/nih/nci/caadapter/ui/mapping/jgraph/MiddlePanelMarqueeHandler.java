@@ -10,7 +10,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.jgraph;
 
 import gov.nih.nci.caadapter.common.function.FunctionConstant;
-import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
+import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxCell;
 import gov.nih.nci.caadapter.ui.common.functions.FunctionBoxMutableViewInterface;
 import gov.nih.nci.caadapter.ui.common.jgraph.MiddlePanelJGraph;
@@ -39,8 +39,8 @@ import java.awt.geom.Rectangle2D;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-11-17 20:11:04 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-11-21 16:18:58 $
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 {
@@ -397,6 +397,9 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/11/17 20:11:04  wangeug
+ * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/11/10 21:30:52  wangeug
  * HISTORY      : GME release:version 4.2
  * HISTORY      :

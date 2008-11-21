@@ -18,10 +18,10 @@ import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
-import gov.nih.nci.caadapter.common.function.FunctionComponent;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
@@ -52,14 +52,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.25 $
- * @date $Date: 2008-11-17 20:10:07 $
+ * @version $Revision: 1.26 $
+ * @date $Date: 2008-11-21 16:19:36 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.25 2008-11-17 20:10:07 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.26 2008-11-21 16:19:36 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -441,6 +441,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.25  2008/11/17 20:10:07  wangeug
+ * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY      :
  * HISTORY      : Revision 1.24  2008/11/04 21:08:11  wangeug
  * HISTORY      : set xmlPath name of V2Meta element: replacing "." with "_"
  * HISTORY      :

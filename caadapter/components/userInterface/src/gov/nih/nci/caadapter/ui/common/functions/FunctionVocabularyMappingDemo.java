@@ -11,8 +11,8 @@ package gov.nih.nci.caadapter.ui.common.functions;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.function.FunctionException;
-import gov.nih.nci.caadapter.common.function.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.preferences.CaWindowClosingListener;
 
@@ -28,7 +28,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Oct 16, 2007
  *          Time:       1:33:31 PM $
  */
@@ -47,7 +47,7 @@ public class FunctionVocabularyMappingDemo extends JFrame implements ActionListe
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDemo.java,v 1.3 2008-11-17 20:10:47 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDemo.java,v 1.4 2008-11-21 16:18:38 wangeug Exp $";
 
 
     private static final String TITLE = "Function Vocabulary Mapping Definition";
@@ -859,6 +859,9 @@ public class FunctionVocabularyMappingDemo extends JFrame implements ActionListe
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/11/17 20:10:47  wangeug
+ * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/06/09 19:53:51  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
