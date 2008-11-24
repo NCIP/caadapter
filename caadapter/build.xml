@@ -147,15 +147,18 @@
 		<echo message="Build source distribution for GME module..."/>
 		<zip destfile="${project.release.version}_Src_${DATE}.zip">
 			<zipfileset dir="components/common" includes="build.xml, conf/**,src/**, lib/**" prefix="components/common"/>
-			<zipfileset dir="components/dataviewer" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/dataviewer"/>
-			<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**,src/**, etc/**, test/**, lib/**" prefix="components/hl7Transformation"/>
+			<zipfileset dir="components/dataviewer" includes="build.xml, src/**, lib/**" prefix="components/dataviewer"/>
+			<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
 			<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
-			<zipfileset dir="components/sdtmTransformation" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/sdtmTransformation"/>
+			<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
 			<zipfileset dir="components/userInterface" includes="build.xml, conf/**,src/**, resources/**, lib/**" prefix="components/userInterface"/>
-			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
-			<zipfileset dir="docs/GME" prefix="docs/GME"/>
-			<zipfileset dir="." includes="conf/**, demo/gov/**, etc/**, lib/**,
+			<!-- zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/ -->
+			<zipfileset dir="docs/GME" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
+			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
+					webstart/webstartconf/**, webstart/caadapter-mms-gme.jnlp, webstart/caadapter-mms-gme.html, webstart/web.xml, webstart/myKeyStore"/>
+			<zipfileset dir="." includes="conf/**, demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java, lib/**,
 				build*, *.bat, NCICBkey, myKeyStor" />
+			
 			<!-- zipfileset dir="." includes="conf/**, etc/**, lib/** 
 				build*, *.bat, NCICBkey, myKeyStor" / -->
 			<zipfileset dir="workingspace" includes="GME_example/**"
@@ -183,19 +186,23 @@
     <target name="dist.bin" depends="compile, dist.src">
 		<ant dir="${dist.dir}" inheritAll="false" target="demo.zip"/>
 	</target>
-
-    <target name="build-all" depends="compile">
-        <copy todir="${dist.dir}">
-            <fileset dir="${ws.module.home}/dist">
-                <include name="**/caAdapterWS.war"/>
-            </fileset>
-        </copy>
+ 
+    <target name="build-all"  depends="compile">
+        <antcall target="copy.built.ws.module"/>
     	<antcall target="mmswebstart"/>
     	<antcall target="mmsGMEwebstart"/>
     	<antcall target="hl7webstart"/>
     	<!-- antcall target="rdswebstart"/ -->
         <!-- antcall target="tdmswebstart"/ -->
         <!-- antcall target="caadapter-webstart"/ -->
+    </target>
+    
+    <target name="copy.built.ws.module" if="caadapter.release.ws.build">
+    	<copy todir="${dist.dir}">
+			<fileset dir="${ws.module.home}/dist">
+				<include name="**/caAdapterWS.war"/>
+			</fileset>
+        </copy>
     </target>
     	
     <target name="mmsGMEwebstart" if="caadapter.release.mms.gme.build">
@@ -877,6 +884,7 @@
 
         </copy>
     </target>
+
     <target name="build.modules" depends="init">
         <echo message="-------- build all modules in ${project.name}  --------"/>
         <mkdir dir="${build.dir}"/>
@@ -886,10 +894,15 @@
         <ant antfile="${mms.module.build}"/>
         <ant antfile="${dataview.module.build}"/>
         <ant antfile="${sdtm.module.build}"/>
-        <ant antfile="${ui.module.build}"/>
-        <ant antfile="${ws.module.build}"/>
+        <ant antfile="${ui.module.build}"/> 
+        <antcall target="ws.module.build.option"/>
     </target>
 
+	<target name="ws.module.build.option" if="caadapter.release.ws.build">
+		<echo message="build ws module--${caadapter.release.ws.include}"/>
+		<ant antfile="${ws.module.build}"/>
+	</target>
+	
     <target name="mms.update">
         <ant antfile="${mms.module.build}" target="clean"/>
         <ant antfile="${ui.module.build}" target="clean"/>
@@ -905,20 +918,6 @@
             </fileset>
         </copy>
     </target>
-	<target name="mif.resource.build" description="Parser MIF and datatype files to build the resource.zip file">
-		<java classname="gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil">
-			<arg value="T:/YeWu/Edition2006"/>
-			<arg value="targetDir"/>
-			<classpath>
-				<pathelement location="${project.ref.lib.dir}/${project.jar.name}"/>
-				<pathelement location="${hl7.module.home}/lib/xercesImpl.jar"/>
-			</classpath>
-		</java>
-	</target>
-    <target name="build.test">
-        <echo message="-------- test ${project.name}  --------"/>
-        <ant antfile="${mms.module.build}" target="init"/>
-    </target>
 
     <target name="init" depends="clean">
         <echo message="-------- initialize ${project.name}  --------"/>
@@ -933,6 +932,9 @@
 		   <available file="${ref_sqleonardo.jar}"/>
 		</condition>
     	
+		 <condition property="caadapter.release.ws.build">	
+				<equals arg1="${caadapter.release.ws.include}" arg2="true"/>
+		</condition>
 		<antcall target="copyRef"></antcall>
 		
 		<!-- if only release MMS module, copy the CaadapterUtil from MMS module -->
@@ -964,10 +966,13 @@
         <ant antfile="${dataview.module.build}" target="init"/>
         <ant antfile="${sdtm.module.build}" target="init"/>
         <ant antfile="${ui.module.build}" target="init"/>
-        <!--ant antfile="${ws.module.build}" target="init"/-->
+        <antcall target="clean.ws.option"/>
     	<delete>
     		<fileset dir="." includes="caadapter*.zip"/>
     	</delete>
+    </target>
+    <target name="clean.ws.option" if="caadapter.release.ws.build">
+    	<ant antfile="${ws.module.build}" target="init"/>
     </target>
     
 	<target name="copyMMSCaadapterUtil" if="caadapter.release.mms.build">
@@ -1008,9 +1013,10 @@
         <ant antfile="${dataview.module.build}" target="clean"/>
         <ant antfile="${sdtm.module.build}" target="clean"/>
         <ant antfile="${ui.module.build}" target="clean"/>
-        <ant antfile="${ws.module.build}" target="clean"/>
+        <!-- ant antfile="${ws.module.build}" target="clean"/ -->
     </target>
 
+ 
 	<!-- ************************************************************************************************-->
 	<!--                                             Add License  			                       -->
 	<!-- ************************************************************************************************-->
