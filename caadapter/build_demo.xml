@@ -6,6 +6,8 @@
 					caAdapter demo
 		************************************************************************** 
 	</description>	
+	<!-- load project properties -->
+	<property file="../build.properties"/>
 
 	<path id="execution.class.path">
 		<fileset dir="lib">
@@ -28,20 +30,77 @@
         <tstamp>
 		       <format property="DATE" pattern="MM-dd-yy" locale="en_us"/>
         </tstamp>
-        <zip destfile="caadapter4_0_Bin_${DATE}.zip">
-			<!-- zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
-				lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,lib/jgraph.jar,
-				lib/sqleonardo.jar, lib/ostermill*,lib/junit*.jar" / -->
-			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
-				lib/caadapterCommon.jar,lib/caAdapter_ui.jar,lib/junit*.jar" />
-			<zipfileset dir=".." includes="docs/help/**, docs/v*BETA/**" />
-			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
-			<zipfileset dir="../workingspace" 
-				excludes="GME_example/**,VocabularyMapping/**"
-				prefix="workingspace" />
-		</zip>
+        
+        
+        <condition property="caadapter.module.all.zip">	
+						<equals arg1="${caadapter.release.all.modules}" arg2="true"/>
+		</condition>
+
+        <condition property="caadapter.module.hl7.zip">	
+				<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
+		</condition>
+	 
+		<condition property="caadapter.module.gme.zip">	
+						<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
+				</condition>
+	 
+		<!-- conditionally zip the distributed zip file -->
+		<antcall target="zipAllModule"/>
+		<antcall target="zipHL7Module"/>
+		<antcall target="zipGmeModule"/>
+        
     </target>
 
+	<target name="zipGmeModule" if="caadapter.module.gme.zip">
+		<echo message="Build bin distribution for GME modules..."/>
+		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
+			<zipfileset dir="lib" prefix="lib" includes="BrowserLauncher2-all-10rc4.jar, caAdapter.jar, castor*.jar, cmps.jar commons-logging*.jar, dom*.jar, jaxen-jdom.jar, jdom.jar,
+					knuHL7V2tree.jar, log*.jar, xercesImpl.jar, xmi.in.out.jar"/>
+			<zipfileset dir="." includes="run.bat, caAdapter_ui.jar, conf/**, docs/help/**"/>
+			<zipfileset dir="../docs/GME" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
+			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
+			<zipfileset dir="../workingspace" 
+				includes="GME_example/**"
+				prefix="workingspace" />
+		</zip>
+	</target>
+	
+	<target name="zipAllModule" if="caadapter.module.all.zip">
+		<echo message="Build all modules..."/>
+		<zip destfile="${project.release.version}_Bin_${DATE}.zip">
+			<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, 
+					lib/*.zip, lib/caadapterCommon.jar,	lib/caAdapter_ui.jar,lib/jgraph.jar,lib/junit*.jar,lib/mysql*.jar,lib/ojdbc*.jar,
+					lib/sqleonardo.jar" />
+
+			<zipfileset dir=".." includes="docs/help/**, docs/MMSv4.1/**" excludes="docs/MMSv4.1/*.zip" />
+			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
+			<zipfileset dir="../workingspace" 
+				includes="GME_example/**,VocabularyMapping/**"
+				prefix="workingspace" />
+		</zip>
+	</target>
+	
+	<target name="zipHL7Module" if="$caadapter.module.hl7.zip">
+			<echo message="Only Build HL7 Modules..."/>
+			<zip destfile="${project.release.version}_Bin_${DATE}.zip">
+				<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, lib/*.*"/>
+	
+				<zipfileset dir="lib" prefix="lib" includes="BrowserLauncher2-all-10rc4.jar, caAdapter.jar, castor*.jar,
+						common*.jar, dom4j*.jar, jdom*.jar, knuHL7V2tree.jar, log4j*.jar,poi*.jar, 
+						saxon*.jar, xercesImpl.jar, xml-apis.jar, 
+						cmps.jar, encoderframework.jar,encoderfrmwk-xsdextension.jar, HL7v2xsd.zip,
+						hl7.jar, hl7encoder-xsdextension.jar,  xbean.jar"/>
+	
+				<zipfileset dir="../docs" prefix="docs" includes="v4.2/**" />
+				<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
+				<zipfileset dir="../workingspace/CSV_to_HL7_V3_Example" 
+					includes="COCT_010000/**,COCT_150003/**, PORR_040002/**.*"
+					prefix="workingspace/CSV_to_HL7_V3_Example"/>
+				<zipfileset dir="../workingspace/V2Meta_to_V3"										 
+					prefix="workingspace/V2Meta_to_V3"/>
+			</zip>
+	</target>
+	
 	<target name="demo.ui.jar"  depends="compile.demo" description="create the distribution jars">
 		<!-- Create an executable jar that runs the UI.-->
 		<echo message="${distribution.manifest.class.property}"/>
@@ -108,7 +167,8 @@
 	</target>
 	
 	<target name="compile.demo"  description="compile the source">
-		<javac destdir="../build" 
+		<echo message="targetVersion=${project.build.target.version}"/>
+		<javac destdir="../build" target="${project.build.target.version}"
 				classpathref="execution.class.path"
 				fork="yes" debug="on">
 			<src path="../demo" />
