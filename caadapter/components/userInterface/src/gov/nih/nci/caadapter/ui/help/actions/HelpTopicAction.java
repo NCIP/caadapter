@@ -24,10 +24,10 @@ import java.awt.event.KeyEvent;
  * The class defines the about action for the whole HL7SDK application.
  *
  * @author OWNER: Ki Sung Um
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.8 $
- * @date       $Date: 2008-10-09 20:08:58 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-11-25 15:45:49 $
 */
 public class HelpTopicAction extends AbstractContextAction
 {
@@ -98,7 +98,8 @@ public class HelpTopicAction extends AbstractContextAction
         	if(location==null || location.trim().length()==0)
         		location = "file:///"+System.getProperty("user.dir") + "/docs/help/index.html";
         	else 
-        		location = location+"caadapter-mms/help/index.html";
+        		location = location+"help/index.html";
+//        		location = location+"caadapter-mms/help/index.html";
         	brLauncher.openURLinBrowser(location);
         	
         }
@@ -124,6 +125,9 @@ public class HelpTopicAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/10/09 20:08:58  linc
+ * HISTORY      : updated.
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/09/26 20:35:27  linc
  * HISTORY      : Updated according to code standard.
  * HISTORY      :
