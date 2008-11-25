@@ -30,7 +30,7 @@
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI">
-       <argument>$WEBSERVER</argument> 
+       <argument>$WEBSERVER/caadapter-gme</argument> 
    </application-desc>
 
 </jnlp>
