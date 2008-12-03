@@ -18,6 +18,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.SwingUtilities;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
@@ -31,8 +32,8 @@ import java.awt.Component;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class MappingTreeScrollPane extends JScrollPane 
@@ -69,16 +70,23 @@ public class MappingTreeScrollPane extends JScrollPane
 	 */
 	protected void paintComponent(Graphics g)
 	{
-		super.paintComponent(g);
-		//paint the tree
-		Component viewComp=this.getViewport().getView();
-		if (viewComp!=null&&viewComp instanceof JTree)
-		{
-			Color dftColor=g.getColor();
-			JTree mappingTree=(JTree)viewComp;
-			DefaultMutableTreeNode treeRoot=(DefaultMutableTreeNode)mappingTree.getModel().getRoot();
-			recursiveDrawLeaf(g, mappingTree, treeRoot);
-			g.setColor(dftColor);
+		try {
+			super.paintComponent(g);
+			//paint the tree
+			System.out.println("enter MappingTreeScrollPane.paintComponent()");
+			Component viewComp=this.getViewport().getView();
+			if (viewComp!=null&&viewComp instanceof JTree)
+			{
+				Color dftColor=g.getColor();
+				JTree mappingTree=(JTree)viewComp;
+				DefaultMutableTreeNode treeRoot=(DefaultMutableTreeNode)mappingTree.getModel().getRoot();
+				recursiveDrawLeaf(g, mappingTree, treeRoot);
+				g.setColor(dftColor);
+			}
+			System.out.println("leave MappingTreeScrollPane.paintComponent()."+viewComp.getClass()+":"+viewComp.getBounds());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -102,38 +110,41 @@ public class MappingTreeScrollPane extends JScrollPane
 			if ((!drawNode)&&(treeNode.getChildCount()>0))
 			{
 				//check the userObject for SDKMeta
-				Object userObject=treeNode.getUserObject();	
-				if (userObject  instanceof ElementMeta )
-				{
-					ElementMeta sdkMeta=(ElementMeta)userObject;
-					if (sdkMeta.isIsEnabled())
-						drawNode=true;
-					else
-					{
-						//For TableMeteData
-						int nodeCnt=treeNode.getChildCount();
-			    		for (int i=0; i<nodeCnt;i++)
-			    		{
-			    			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(i);
-			    			if(childNode instanceof MappableNode)
-			    			{
-				    			MappableNode mappedChild =(MappableNode)childNode;		    				
-			    				if (mappedChild.isMapped())
-					    		{
-				    				//as long as one Column is mapped, the Table is mapped
-					    			drawNode=true;
-					    			break;
-					    		}
-				    		}
-			    		}
-					}
-				}
+				Object userObject=treeNode.getUserObject();
+				if(userObject instanceof ElementMetaLoader.MyTreeObject)
+					userObject = ((ElementMetaLoader.MyTreeObject)userObject).getObj();
+//				if (userObject  instanceof ElementMeta )
+//				{
+//					ElementMeta sdkMeta=(ElementMeta)userObject;
+//					if (sdkMeta.isIsEnabled())
+//						drawNode=true;
+//					else
+//					{
+//						//For TableMeteData
+//						int nodeCnt=treeNode.getChildCount();
+//			    		for (int i=0; i<nodeCnt;i++)
+//			    		{
+//			    			DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)treeNode.getChildAt(i);
+//			    			if(childNode instanceof MappableNode)
+//			    			{
+//				    			MappableNode mappedChild =(MappableNode)childNode;		    				
+//			    				if (mappedChild.isMapped())
+//					    		{
+//				    				//as long as one Column is mapped, the Table is mapped
+//					    			drawNode=true;
+//					    			break;
+//					    		}
+//				    		}
+//			    		}
+//					}
+//				}
 			}
 
 			if (drawNode)
 			{
 				//go following if link-to-border is required
 				Rectangle treeNodeBound =findVisibleTreeNodeOnPath(tree, treeNode);
+				if(treeNodeBound==null) return;
 	    		//convert the position from Tree to ScrollPane
 				Point panelPoint =SwingUtilities.convertPoint(tree, treeNodeBound.getLocation(), this);
 	    		//do not draw if the node is out of view bound
@@ -200,12 +211,12 @@ public class MappingTreeScrollPane extends JScrollPane
 	private Rectangle findVisibleTreeNodeOnPath(JTree tree, DefaultMutableTreeNode treeNode )
 	{
 		DefaultTreeModel treeModel=(DefaultTreeModel)tree.getModel();
-		Rectangle treeNodeBound= tree.getPathBounds(new TreePath(treeModel.getPathToRoot(treeNode)));
+		Rectangle treeNodeBound= null;//tree.getPathBounds(new TreePath(treeModel.getPathToRoot(treeNode)));
 		//recursively find visible ancestor node bound
-		while (treeNodeBound==null)
+		while (treeNodeBound==null && treeNode!=null)
 		{
-			treeNode=(DefaultMutableTreeNode) treeNode.getParent();
 			treeNodeBound=tree.getPathBounds(new TreePath(treeModel.getPathToRoot(treeNode)));
+			treeNode=(DefaultMutableTreeNode) treeNode.getParent();
 		}
 		return treeNodeBound;
 	}
@@ -230,4 +241,7 @@ public class MappingTreeScrollPane extends JScrollPane
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */

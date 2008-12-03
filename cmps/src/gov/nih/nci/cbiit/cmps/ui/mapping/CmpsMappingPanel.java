@@ -8,9 +8,18 @@
 package gov.nih.nci.cbiit.cmps.ui.mapping;
 
 import gov.nih.nci.cbiit.cmps.common.ApplicationException;
+import gov.nih.nci.cbiit.cmps.common.XSDParser;
+import gov.nih.nci.cbiit.cmps.core.Component;
+import gov.nih.nci.cbiit.cmps.core.ComponentType;
+import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
+import gov.nih.nci.cbiit.cmps.ui.common.ContextManager;
+import gov.nih.nci.cbiit.cmps.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmps.ui.common.MenuConstants;
+import gov.nih.nci.cbiit.cmps.ui.common.OpenMapFileAction;
+import gov.nih.nci.cbiit.cmps.ui.common.TestLabel;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
@@ -46,78 +55,68 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeNode;
 
+import org.apache.xerces.xs.XSNamedMap;
+
 /**
  * This class 
  *
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-11-04 15:58:57 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
-public class CmpsMappingPanel extends JPanel implements ActionListener{
+public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
 
 	protected File saveFile = null;
-	
-//	protected FunctionLibraryPane functionPane;
-//	protected DefaultPropertiesPage propertiesPane;
+
+	//	protected FunctionLibraryPane functionPane;
+	//	protected DefaultPropertiesPage propertiesPane;
 	protected MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
 	protected MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
-	
+
 	protected JTextField sourceLocationArea = new JTextField();
 	protected JTextField targetLocationArea = new JTextField();
 	protected MappingMiddlePanel middlePanel = null;
 	protected MappingSourceTree sTree = null;
 	protected MappingTargetTree tTree = null;
-	
-//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
-//	protected TreeExpandAllAction sourceTreeExpandAllAction;
-//	
-//	protected TreeCollapseAllAction targetTreeCollapseAllAction;
-//	protected TreeExpandAllAction targetTreeExpandAllAction;
-//
-//	protected MappingFileSynchronizer fileSynchronizer;
-//	
-//	protected TreeDefaultDragTransferHandler sourceTreeDragTransferHandler = null;
-//	protected abstract TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler();
-	
+
+	//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
+	//	protected TreeExpandAllAction sourceTreeExpandAllAction;
+	//	
+	//	protected TreeCollapseAllAction targetTreeCollapseAllAction;
+	//	protected TreeExpandAllAction targetTreeExpandAllAction;
+	//
+	//	protected MappingFileSynchronizer fileSynchronizer;
+	//	
+	//protected TreeDefaultDragTransferHandler sourceTreeDragTransferHandler = null;
+	//protected abstract TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler();
+
 	protected JPanel sourceButtonPanel = null;
 	protected JPanel sourceLocationPanel = null;
 	protected JPanel targetButtonPanel = null;
 	protected JPanel targetLocationPanel = null;
-	
+
 	protected File mappingSourceFile = null;
 	protected File mappingTargetFile = null;
+	protected File mappingFile = null;
 
+	protected Mapping mapping = null;
 
-	
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_TARGET = "Open Target...";
+	private static final String SELECT_CSV_TIP = "select CSV";
+	private static final String SELECT_HMD_TIP = "select HMD";
+	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = "Open source data schema";
+	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE = "Open target data schema";
+	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
+	private static final String TARGET_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
+	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
+	private static final Object CSV_METADATA_FILE_DEFAULT_EXTENTION = ".xsd";
+	private static final Object HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION = ".xsd";
 
-	private static final int FRAME_DEFAULT_WIDTH = 0;
-
-	private static final String SELECT_CSV_TIP = null;
-
-	private static final double FRAME_DEFAULT_HEIGHT = 0;
-
-	private static final String SELECT_HMD_TIP = null;
-
-	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = null;
-
-	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = null;
-
-	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = null;
-
-	private static final String TARGET_TREE_FILE_DEFAULT_EXTENTION = null;
-
-	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE = null;
-
-	private static final Object CSV_METADATA_FILE_DEFAULT_EXTENTION = null;
-
-	private static final Object HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION = null;
-
-//	private TargetTreeDropTransferHandler targetTreeDropTransferHandler = null;
+	//	private TargetTreeDropTransferHandler targetTreeDropTransferHandler = null;
 
 	private JButton openSourceButton = new JButton(SELECT_SOURCE);
 	private JButton openTargetButton = new JButton(SELECT_TARGET);
@@ -127,35 +126,92 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		this("","calledFromConstructor","");
 	}
 
-    public CmpsMappingPanel(String sourceFile, String _flag) throws Exception
+	public CmpsMappingPanel(String sourceFile, String _flag) throws Exception
 	{
-    	this(sourceFile, "calledFromConstructor", _flag);
+		this(sourceFile, "calledFromConstructor", _flag);
 	}
-    public CmpsMappingPanel(String sourceFile, String targetFile, String _flag) throws Exception
+	public CmpsMappingPanel(String sourceFile, String targetFile, String _flag) throws Exception
 	{
-    	this.setBorder(BorderFactory.createEmptyBorder());
+		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
-//		fileSynchronizer = new MappingFileSynchronizer(this);
+		//		fileSynchronizer = new MappingFileSynchronizer(this);
 
 		if (!sourceFile.equals(""))
 			processOpenSourceTree(new File(sourceFile), false, false);
 
-        if ((targetFile == null)||(targetFile.equals(""))) throw new Exception("Empty Target File");
-        if (!targetFile.equals("calledFromConstructor"))
-        {
-	        File file = new File(targetFile);
-	        if (!file.exists()) throw new Exception("Target File is Not exist. : " + targetFile);
-	        if (!file.isFile()) throw new Exception("Target File is Not a file. : " + targetFile);
-	        boolean success = processOpenTargetTree(file, true, true);
-	        if (!success) throw new Exception("GEN3");
-	    }
+		if ((targetFile == null)||(targetFile.equals(""))) throw new Exception("Empty Target File");
+		if (!targetFile.equals("calledFromConstructor"))
+		{
+			File file = new File(targetFile);
+			if (!file.exists()) throw new Exception("Target File is Not exist. : " + targetFile);
+			if (!file.isFile()) throw new Exception("Target File is Not a file. : " + targetFile);
+			boolean success = processOpenTargetTree(file, true, true);
+			if (!success) throw new Exception("GEN3");
+		}
+	}
+
+	protected JComponent getCenterPanel(boolean functionPaneRequired)
+	{//construct the top level layout of mapping panel
+		/**
+		 * GUI Layout:
+		 * JSplitPane - Horizontal:   --> leftRightSplitPane
+		 *      left: JSplitPane - Horizontal: --> topCenterPanel, centerSplitPane
+		 *				left: source panel; --> sourceButtonPanel
+		 *				right: JSplitPane - Horizontal: --> rightSplitPane
+		 *							left: middle panel for graph; -->middleContainerPanel
+		 *							right: target panel; -->targetButtonPanel
+		 * 		right: JSplitPane - Vertical:  -->topBottomSplitPane
+		 * 				top: functional pane; -->functionPane
+		 *				bottom: properties panel; -->propertiesPane
+		 */
+
+		JSplitPane leftRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
+		leftRightSplitPane.setDividerLocation(0.85);
+		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
+		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
+		return leftRightSplitPane;
+	}
+
+	/**
+	 * This constructs function and properties panels.
+	 *
+	 * @return the top level right pane.
+	 */
+	private JComponent getTopLevelRightPanel(boolean functionPaneRequired)
+	{
+		JSplitPane topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
+		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
+		topBottomSplitPane.setDividerLocation(0.5);
+
+		//			functionPane = new FunctionLibraryPane();
+		//			functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
+		//			if(functionPaneRequired)
+		//			{
+		//				topBottomSplitPane.setTopComponent(functionPane);
+		//			}
+		//			propertiesPane = new DefaultPropertiesPage(this.getMappingDataManager().getPropertiesSwitchController());
+		//			topBottomSplitPane.setBottomComponent(propertiesPane);
+
+		double topCenterFactor = 0.3;
+		Dimension rightMostDim = new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
+		//			propertiesPane.setPreferredSize(rightMostDim);
+		//			functionPane.setPreferredSize(rightMostDim);
+		//			functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+
+		topCenterFactor = 1.5;
+		rightMostDim = new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
+		topBottomSplitPane.setPreferredSize(rightMostDim);
+
+		return topBottomSplitPane;
 	}
 
 	protected JPanel getTopLevelLeftPanel()
 	{
 		JPanel topCenterPanel = new JPanel(new BorderLayout());
-		topCenterPanel.setBorder(BorderFactory.createEmptyBorder());
+		topCenterPanel.setBorder(BorderFactory.createEtchedBorder());
 		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		DefaultSettings.setDefaultFeatureForJSplitPane(centerSplitPane);
 
@@ -164,25 +220,24 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		sourceButtonPanel.setBorder(BorderFactory.createEmptyBorder());
 		sourceLocationPanel = new JPanel(new BorderLayout(2, 0));
 		sourceLocationPanel.setBorder(BorderFactory.createEmptyBorder());
-//		sourceTreeCollapseAllAction = new TreeCollapseAllAction(sTree);
-//		sourceTreeExpandAllAction = new TreeExpandAllAction(sTree);
+		//		sourceTreeCollapseAllAction = new TreeCollapseAllAction(sTree);
+		//		sourceTreeExpandAllAction = new TreeExpandAllAction(sTree);
 
 		JToolBar sourceTreeToolBar = new JToolBar("Source Tree Tool Bar");
 		sourceTreeToolBar.setFloatable(false);
-//		sourceTreeToolBar.add(sourceTreeExpandAllAction);
-//		sourceTreeToolBar.add(sourceTreeCollapseAllAction);
+		//		sourceTreeToolBar.add(sourceTreeExpandAllAction);
+		//		sourceTreeToolBar.add(sourceTreeCollapseAllAction);
 		sourceLocationPanel.add(sourceTreeToolBar, BorderLayout.WEST);
 
 		sourceLocationArea.setEditable(false);
-		sourceLocationArea.setPreferredSize(new Dimension((int) (FRAME_DEFAULT_WIDTH / 10), 24));
+		sourceLocationArea.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
 		sourceLocationPanel.add(sourceLocationArea, BorderLayout.CENTER);
 		sourceLocationPanel.add(openSourceButton, BorderLayout.EAST);
 		openSourceButton.setMnemonic('S');
 		openSourceButton.setToolTipText(SELECT_CSV_TIP);
 		openSourceButton.addActionListener(this);
 		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
-//		sourceScrollPane = DefaultSettings.createScrollPaneWithDefaultFeatures();
-		sourceScrollPane.setSize(new Dimension((int) (FRAME_DEFAULT_WIDTH / 4), (int) (FRAME_DEFAULT_HEIGHT / 1.5)));
+		sourceScrollPane.setSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
 
 		//construct target panel
@@ -190,31 +245,30 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		targetButtonPanel.setBorder(BorderFactory.createEmptyBorder());
 		targetLocationPanel = new JPanel(new BorderLayout(2, 0));
 		targetLocationPanel.setBorder(BorderFactory.createEmptyBorder());
-//		targetTreeCollapseAllAction = new TreeCollapseAllAction(tTree);
-//		targetTreeExpandAllAction = new TreeExpandAllAction(tTree);
+		//		targetTreeCollapseAllAction = new TreeCollapseAllAction(tTree);
+		//		targetTreeExpandAllAction = new TreeExpandAllAction(tTree);
 		JToolBar targetTreeToolBar = new JToolBar("Target Tree Tool Bar");
 		targetTreeToolBar.setFloatable(false);
-//		targetTreeToolBar.add(targetTreeExpandAllAction);
-//		targetTreeToolBar.add(targetTreeCollapseAllAction);
+		//		targetTreeToolBar.add(targetTreeExpandAllAction);
+		//		targetTreeToolBar.add(targetTreeCollapseAllAction);
 		targetLocationPanel.add(targetTreeToolBar, BorderLayout.WEST);
 		targetLocationArea.setEditable(false);
-		targetLocationArea.setPreferredSize(new Dimension((int) (FRAME_DEFAULT_WIDTH / 10), 24));
+		targetLocationArea.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
 		targetLocationPanel.add(targetLocationArea, BorderLayout.CENTER);
 		targetLocationPanel.add(openTargetButton, BorderLayout.EAST);
 		openTargetButton.setMnemonic('T');
 		openTargetButton.setToolTipText(SELECT_HMD_TIP);
 		openTargetButton.addActionListener(this);
 		targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
-//		targetScrollPane = DefaultSettings.createScrollPaneWithDefaultFeatures();
 		targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
-		targetButtonPanel.setPreferredSize(new Dimension((int) (FRAME_DEFAULT_WIDTH / 5), (int) (FRAME_DEFAULT_HEIGHT / 1.5)));
+		targetButtonPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 
 		//construct middle panel
 		JPanel middleContainerPanel = new JPanel(new BorderLayout());
 		JLabel placeHolderLabel = new JLabel();
-		placeHolderLabel.setPreferredSize(new Dimension((int) (FRAME_DEFAULT_WIDTH / 3.5), 24));
+		placeHolderLabel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3.5), 24));
 		middlePanel = new MappingMiddlePanel(this);
-		middlePanel.setSize(new Dimension((int) (FRAME_DEFAULT_WIDTH / 3), (int) (FRAME_DEFAULT_HEIGHT / 1.5)));
+		middlePanel.setSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 		middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
 		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
 
@@ -228,8 +282,11 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		centerSplitPane.setRightComponent(rightSplitPane);
 
 		topCenterPanel.add(centerSplitPane, BorderLayout.CENTER);
-		topCenterPanel.setPreferredSize(new Dimension((int) (FRAME_DEFAULT_WIDTH * 0.8), (int) (FRAME_DEFAULT_HEIGHT / 1.5)));
+		topCenterPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH * 0.8), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+
 		return topCenterPanel;
+
+
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -240,8 +297,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 			boolean everythingGood = true;
 			if (SELECT_SOURCE.equals(command))
 			{
+				//this.sourceButtonPanel.repaint();
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+						SOURCE_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
 				if (file != null)
 				{
 					everythingGood = processOpenSourceTree(file, true, true);
@@ -249,12 +307,13 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 			}
 			else if (SELECT_TARGET.equals(command))
 			{
+				//this.targetButtonPanel.repaint();
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this,
-//						TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+						//						TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 						//FileUtil.getUIWorkingDirectoryPath(),
-//					TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-					//last added fileExtension :.h3s will be set as default
-					Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+						//					TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
+						//last added fileExtension :.h3s will be set as default
+						Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+TARGET_TREE_FILE_DEFAULT_EXTENTION, OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 				if (file != null)
 				{
 					everythingGood = processOpenTargetTree(file, true, true);
@@ -262,39 +321,32 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 			}
 			if (!everythingGood)
 			{
-//				Message msg = MessageResources.getMessage("GEN3", new Object[0]);
-//				JOptionPane.showMessageDialog(this, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+				//				Message msg = MessageResources.getMessage("GEN3", new Object[0]);
+				//				JOptionPane.showMessageDialog(this, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		catch (Exception e1)
 		{
+			e1.printStackTrace();
 			DefaultSettings.reportThrowableToLogAndUI(this, e1, "", this, false, false);
 		}
 	}
 
 
-	protected TreeNode loadSourceTreeData( Object metaInfo, File absoluteFile)throws Exception
+	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
 	{
-		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
 		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
-
 		TreeNode node = null;
-		if (CSV_METADATA_FILE_DEFAULT_EXTENTION.equals(fileExtension))
-		{
-			// generate GUI nodes from object graph.
-//			SCMMapSourceNodeLoader scmMapSourceNodeLoader = new SCMMapSourceNodeLoader();
-//			node = scmMapSourceNodeLoader.loadData(metaInfo);
-		}
-//		else if (DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-//		{
-//			// generate GUI nodes from object graph.
-//			DBMMapSourceNodeLoader dbmTreeNodeLoader = new DBMMapSourceNodeLoader();
-//			node = dbmTreeNodeLoader.loadData(metaInfo);
-//		}
-		else
-		{
-			throw new ApplicationException("Unknow Source File Extension:" + absoluteFile,
-				new IllegalArgumentException());
+		if(metaInfo instanceof Mapping){
+			Mapping.Components components = ((Mapping)metaInfo).getComponents();
+			List<Component> l = components.getComponent();
+			for(Component c:l){
+				if(c.getType().equals(ComponentType.SOURCE))
+					node = new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE).loadData(c.getRootElement());
+			}
+		}else{
+			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
+					"not recognized. " + metaInfo);
 		}
 
 		return node;
@@ -302,37 +354,62 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 
 	protected TreeNode loadTargetTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
-//		 The following is changed by eric for the need of loading dbm file as the source, todo need refactory
 		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
+		TreeNode node = null;
+		if(metaInfo instanceof Mapping){
+			Mapping.Components components = ((Mapping)metaInfo).getComponents();
+			List<Component> l = components.getComponent();
+			for(Component c:l){
+				if(c.getType().equals(ComponentType.TARGET))
+					node = new ElementMetaLoader(ElementMetaLoader.TARGET_MODE).loadData(c.getRootElement());
+			}
+		}else{
+			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
+					"not recognized. " + metaInfo);
+		}
 
-		TreeNode nodes = null;
-		if (HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION.equals(fileExtension)
-				||Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION.equals(fileExtension))
+		return node;
+	}
+
+	protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
+	{
+		TreeNode nodes=loadSourceTreeData(metaInfo,absoluteFile);
+
+		//Build the source tree
+		sTree = new MappingSourceTree(middlePanel, nodes);
+		//		sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+		//		sourceTreeDragTransferHandler = new TreeDefaultDragTransferHandler(sTree, DnDConstants.ACTION_LINK);
+		sourceScrollPane.setViewportView(sTree);
+		sTree.expandAll();
+
+		//register collapse all and expand all actions.
+		//		sourceTreeCollapseAllAction.setTree(sTree);
+		//		sourceTreeExpandAllAction.setTree(sTree);
+		//		sTree.getInputMap().put(sourceTreeCollapseAllAction.getAcceleratorKey(), sourceTreeCollapseAllAction.getName());
+		//		sTree.getActionMap().put(sourceTreeCollapseAllAction.getName(), sourceTreeCollapseAllAction);
+		//		sTree.getInputMap().put(sourceTreeExpandAllAction.getAcceleratorKey(), sourceTreeExpandAllAction.getName());
+		//		sTree.getActionMap().put(sourceTreeExpandAllAction.getName(), sourceTreeExpandAllAction);
+
+		if (tTree != null && isToResetGraph)
 		{
-			// generate GUI nodes from object graph.
-	        try
-	        {
-//	        	HSMMapTargetNodeLoader CmpsMapTargetNodeLoader = new HSMMapTargetNodeLoader();
-//				nodes = CmpsMapTargetNodeLoader.loadData(metaInfo);
-//	        	NewHSMBasicNodeLoader newHsmNodeLoader=new NewHSMBasicNodeLoader(false);
-//	        	if(metaInfo!=null&&metaInfo instanceof MIFClass)
-//	        		nodes=newHsmNodeLoader.loadMappingTargetData(metaInfo);
-//	        	else
-//	        		nodes = newHsmNodeLoader.loadMappingTargetData(absoluteFile);
-	        }
-	        catch(Throwable e)
-	        {
-	            //Log.logException(this.getClass(), "Cannot initialize the tree anymore!", e);
-	            DefaultSettings.reportThrowableToLogAndUI(this, e, "Error occurred during tree initialitation", this, true, true);
-	            return null;
-	        }
+			resetMiddlePanel();
+		}
+		if (absoluteFile != null)
+		{
+			String absoluteFilePath = absoluteFile.getAbsolutePath();
+			sourceLocationArea.setText(absoluteFilePath);
+			sourceLocationArea.setToolTipText(absoluteFilePath);
+			mappingSourceFile = absoluteFile;
 		}
 		else
 		{
-			throw new ApplicationException("Unknow Source File Extension:" + absoluteFile,
-				new IllegalArgumentException());
+			mappingSourceFile = null;
 		}
-		return nodes;
+		if (this.getRootPane() != null)
+		{
+			this.getRootPane().repaint();
+		}
+		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, absoluteFile);
 	}
 
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
@@ -340,22 +417,22 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
-//		tTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+		//		tTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
 		targetScrollPane.setViewportView(tTree);
 		tTree.expandAll();
-		
-//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = null;
-//		drag source for DnD to middle panel.
-//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
-//
-//		//register collapse all and expand all actions.
-//		targetTreeCollapseAllAction.setTree(tTree);
-//		targetTreeExpandAllAction.setTree(tTree);
-//		tTree.getInputMap().put(targetTreeCollapseAllAction.getAcceleratorKey(), targetTreeCollapseAllAction.getName());
-//		tTree.getActionMap().put(targetTreeCollapseAllAction.getName(), targetTreeCollapseAllAction);
-//		tTree.getInputMap().put(targetTreeExpandAllAction.getAcceleratorKey(), targetTreeExpandAllAction.getName());
-//		tTree.getActionMap().put(targetTreeExpandAllAction.getName(), targetTreeExpandAllAction);
-		
+
+		//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = null;
+		//		drag source for DnD to middle panel.
+		//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
+		//
+		//		//register collapse all and expand all actions.
+		//		targetTreeCollapseAllAction.setTree(tTree);
+		//		targetTreeExpandAllAction.setTree(tTree);
+		//		tTree.getInputMap().put(targetTreeCollapseAllAction.getAcceleratorKey(), targetTreeCollapseAllAction.getName());
+		//		tTree.getActionMap().put(targetTreeCollapseAllAction.getName(), targetTreeCollapseAllAction);
+		//		tTree.getInputMap().put(targetTreeExpandAllAction.getAcceleratorKey(), targetTreeExpandAllAction.getName());
+		//		tTree.getActionMap().put(targetTreeExpandAllAction.getName(), targetTreeExpandAllAction);
+
 		if (sTree != null && isToResetGraph)
 		{
 			resetMiddlePanel();
@@ -375,9 +452,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		{
 			this.getRootPane().repaint();
 		}
-//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Target_File, absoluteFile);
-////		drop target for DnD from source tree.
-//		targetTreeDropTransferHandler = new TargetTreeDropTransferHandler(tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
+		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Target_File, absoluteFile);
+		////		drop target for DnD from source tree.
+		//		targetTreeDropTransferHandler = new TargetTreeDropTransferHandler(tTree, getMappingDataManager(), DnDConstants.ACTION_LINK);
 	}
 
 	/**
@@ -389,39 +466,26 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
 	{
 		String fileExtension = FileUtil.getFileExtension(file, true);
+		XSDParser p = new XSDParser();
+		p.loadSchema(file);
 
-//		MetaParser parser = null;
-//		MetaObject metaInfo = null;
-//		BaseResult returnResult = null;
-//
-//		// parse the file into a meta object graph.
-////		if (DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-////		{
-////			parser = new DatabaseMetaParserImpl();
-////		}
-////		else
-////		{//default to CSV_METADATA_FILE_DEFAULT_EXTENTION
-//			parser = new CSVMetaParserImpl();
-////		}
-//		returnResult = parser.parse(new FileReader(file));
-//		ValidatorResults validatorResults = returnResult.getValidatorResults();
-//		if (validatorResults != null && validatorResults.hasFatal())
-//		{
-//			Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
-//			DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
-//			return false;
-//		}
-////
-////		if (DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-////		{
-////			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
-////		}
-////		else
-////		{//default to HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-//			metaInfo = ((CSVMetaResult) returnResult).getCsvMeta();
-////		}
-//		buildSourceTree(metaInfo, file, isToResetGraph);
-//		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
+		XSNamedMap[] map = p.getMappableNames();
+		String[] choices = new String[map[0].getLength()+map[1].getLength()];
+		int pos = 0;
+		for(int i=0; i<map[0].getLength(); i++)
+			choices[pos++] = map[0].item(i).getName();
+		for(int i=0; i<map[1].getLength(); i++)
+			choices[pos++] = map[1].item(i).getName();
+
+		String srcRoot = DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+		if(srcRoot == null || srcRoot.trim().length() == 0)
+			return false;
+		//System.out.println("opened file:"+file+", root="+srcRoot);
+		MappingFactory.loadSourceXSD(getMapping(), p, srcRoot);
+
+
+		buildSourceTree(getMapping(), file, isToResetGraph);
+		//		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
 		return true;
 	}
 
@@ -434,49 +498,25 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
 	{
 		String fileExtension = FileUtil.getFileExtension(file, true);
-		// parse the file into a meta object graph.
-//		MetaParser parser = null;
-//		MetaObject metaInfo = null;
-//		BaseResult returnResult = null;
-//
-//		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
-//
-//		// parse the file into a meta object graph.
-////		if (DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-////		{
-////			parser = new DatabaseMetaParserImpl();
-////			returnResult = parser.parse(new FileReader(file));
-////			ValidatorResults validatorResults = returnResult.getValidatorResults();
-////			if (validatorResults != null && validatorResults.hasFatal())
-////			{
-////				Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
-////				DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
-////				return false;
-////			}
-////		}
-////		else
-////		{//default to HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-////			parser = CmpsV3MetaFileParser.instance();
-////		}
-////		returnResult = parser.parse(new FileReader(file));
-////		ValidatorResults validatorResults = returnResult.getValidatorResults();
-////		if (validatorResults != null && validatorResults.hasFatal())
-////		{
-////			Message msg = validatorResults.getMessages(ValidatorResult.Level.FATAL).get(0);
-////			DefaultSettings.reportThrowableToLogAndUI(this, null, msg.toString(), this, true, supressReportIssuesToUI);
-////			return false;
-////		}
-//
-////		if (DATABASE_META_FILE_DEFAULT_EXTENSION.equals(fileExtension))
-////		{
-////			metaInfo = ((DatabaseMetaResult) returnResult).getDatabaseMeta();
-////		}
-////		else
-////		{//default to HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION
-////			metaInfo = ((CmpsV3MetaResult)returnResult).getCmpsV3Meta();
-////		}
-//		buildTargetTree(metaInfo, file, isToResetGraph);
-//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
+		XSDParser p = new XSDParser();
+		p.loadSchema(file);
+
+		XSNamedMap[] map = p.getMappableNames();
+		String[] choices = new String[map[0].getLength()+map[1].getLength()];
+		int pos = 0;
+		for(int i=0; i<map[0].getLength(); i++)
+			choices[pos++] = map[0].item(i).getName();
+		for(int i=0; i<map[1].getLength(); i++)
+			choices[pos++] = map[1].item(i).getName();
+
+		String srcRoot = DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+		if(srcRoot == null || srcRoot.trim().length() == 0)
+			return false;
+		//System.out.println("opened file:"+file+", root="+srcRoot);
+		MappingFactory.loadTargetXSD(getMapping(), p, srcRoot);
+
+		buildTargetTree(getMapping(), file, isToResetGraph);
+		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
 		return true;
 	}
 
@@ -486,101 +526,48 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	 * @param file
 	 * @throws Exception changed from protected to pulic by sean
 	 */
-//	public ValidatorResults processOpenMapFile(File file) throws Exception
-//	{
-//		System.out.println("CmpsMappingPanel.processOpenMapFile()...:"+file.getAbsolutePath());
-//		long stTime=System.currentTimeMillis();
-//		// parse the file.
-//		MapParserImpl parser = new MapParserImpl();
-//		ValidatorResults validatorResults = parser.parse(file.getParent(), new FileReader(file));
-//		if (validatorResults != null && validatorResults.hasFatal())
-//		{//immediately return if it has fatal errors.
-//			return validatorResults;
-//		}
-//		Mapping mapping = parser.getMapping();//returnResult.getMapping();
-//
-//		//build source tree
-//		BaseComponent sourceComp = mapping.getSourceComponent();
-//		Object sourceMetaInfo = sourceComp.getMeta();
-//		File sourceFile = sourceComp.getFile();
-//		buildSourceTree(sourceMetaInfo, sourceFile, false);
-//		//build target tree
-//		BaseComponent targetComp = mapping.getTargetComponent();
-//		Object targetMetaInfo = targetComp.getMeta();
-//		File targetFile = targetComp.getFile();
-//		buildTargetTree(targetMetaInfo, targetFile, false);
-//
-//		middlePanel.getMappingDataManager().setMappingData(mapping);
-//
-//		//set both invisible since no use to allow user to change while mapping exists.
-//		if (mapping.getFunctionComponent().size() > 0 || mapping.getMaps().size() > 0)
-//		{
-//			openSourceButton.setEnabled(false);
-//			openTargetButton.setEnabled(false);
-//		}
-//		setSaveFile(file);
-//		System.out.println("CmpsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
-//		return validatorResults;
-//	}
+	public void processOpenMapFile(File file) throws Exception
+	{
+		System.out.println("CmpsMappingPanel.processOpenMapFile()...:"+file.getAbsolutePath());
+		long stTime=System.currentTimeMillis();
+		// parse the file.
+		Mapping mapping = MappingFactory.loadMapping(file);
+
+		//build source tree
+		buildSourceTree(mapping, null, false);
+		//build target tree
+		buildTargetTree(mapping, null, false);
+
+		System.out.println("before setMappingData");
+		middlePanel.getGraphController().setMappingData(mapping);
+		System.out.println("after setMappingData");
+
+		setSaveFile(file);
+		System.out.println("CmpsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
+	}
 
 
 	public Map getMenuItems(String menu_name)
 	{
 		Action action = null;
 		Map <String, Action>actionMap = null;
-//		ContextManager contextManager = ContextManager.getContextManager();
-//		Map <String, Action>actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_TO_CmpsV3, menu_name);
+		ContextManager contextManager = ContextManager.getContextManager();
+		actionMap = contextManager.getClientMenuActions("CMPS", menu_name);
 		if (MenuConstants.FILE_MENU_NAME.equals(menu_name))
 		{
 			JRootPane rootPane = this.getRootPane();
 			if (rootPane != null)
 			{//rootpane is not null implies this panel is fully displayed;
 				//on the flip side, if it is null, it implies it is under certain construction.
-//				contextManager.enableAction(ActionConstants.NEW_MAP_FILE, false);
-//				contextManager.enableAction(ActionConstants.OPEN_MAP_FILE, true);
+				contextManager.enableAction(ActionConstants.NEW_MAP_FILE, false);
+				contextManager.enableAction(ActionConstants.OPEN_MAP_FILE, true);
 			}
 		}
-		//since the action depends on the panel instance,
-		//the old action instance should be removed
-//		if (actionMap!=null)
-//			contextManager.removeClientMenuAction(MenuConstants.CSV_SPEC, menu_name, "");
-//
-////		if (actionMap==null)
-////		{
-//				action = new gov.nih.nci.caadapter.ui.mapping.Cmps.actions.SaveMapAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.SAVE, action);
-//				action.setEnabled(true);
-//
-//				action = new gov.nih.nci.caadapter.ui.mapping.Cmps.actions.SaveAsMapAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.SAVE_AS, action);
-//				action.setEnabled(true);
-//
-//				action = new gov.nih.nci.caadapter.ui.mapping.mms.actions.AnotateAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.FILE_MENU_NAME,ActionConstants.ANOTATE, action);
-//				action.setEnabled(true);
-//
-//				action = new gov.nih.nci.caadapter.ui.mapping.Cmps.actions.ValidateMapAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.FILE_MENU_NAME,ActionConstants.VALIDATE, action);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.VALIDATE, action);
-//				action.setEnabled(true);
-//
-//				action = new gov.nih.nci.caadapter.ui.mapping.Cmps.actions.CloseMapAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
-//				action.setEnabled(true);
-//
-//				action = new gov.nih.nci.caadapter.ui.mapping.Cmps.actions.GenerateReportAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.REPORT_MENU_NAME,ActionConstants.GENERATE_REPORT, action);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.GENERATE_REPORT, action);
-//				action.setEnabled(true);
-//
-//				action = new RefreshMapAction(this);
-//				contextManager.addClientMenuAction(MenuConstants.CSV_TO_CmpsV3, MenuConstants.TOOLBAR_MENU_NAME,ActionConstants.REFRESH, action);
-//				action.setEnabled(true);
-//
-//				actionMap = contextManager.getClientMenuActions(MenuConstants.CSV_TO_CmpsV3, menu_name);
-////		}
+		action = new OpenMapFileAction(MainFrame.getInstance());
+		contextManager.addClientMenuAction("CMPS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
+		action.setEnabled(true);
+
+		actionMap = contextManager.getClientMenuActions("CMPS", menu_name);
 		return actionMap;
 	}
 
@@ -589,10 +576,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	 */
 	public Action getDefaultOpenAction()
 	{
-//		ContextManager contextManager = ContextManager.getContextManager();
-//		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_MAP_FILE);
-//		return openAction;
-		return null;
+		ContextManager contextManager = ContextManager.getContextManager();
+		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_MAP_FILE);
+		return openAction;
 	}
 
 	/**
@@ -602,113 +588,89 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	 */
 	public void reload() throws Exception
 	{
-//		processOpenMapFile(getSaveFile());
+		//		processOpenMapFile(getSaveFile());
 	}
 
-//	protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler()
-//	{
-//		return this.targetTreeDropTransferHandler;
-//	}
+	//	protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler()
+	//	{
+	//		return this.targetTreeDropTransferHandler;
+	//	}
 
 	/**
 	 * Reload the file specified in the parameter.
 	 * @param changedFileMap
 	 */
-//	public void reload(Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap)
-//	{
-//		/**
-//		 * Design rationale:
-//		 * 1) if the changedFileMap is null, simply return;
-//		 * 2) if the getSaveFile() method does not return null, it implies current panel associates with a mapping file,
-//		 * just reload the whole mapping file so as to refresh those mapping relationship;
-//		 * 3) if the getSaveFile() returns null, just reload source and/or target file within the changedFileMap,
-//		 * and ignore the checking of MappingFileSynchronizer.FILE_TYPE.Mapping_File item in the map;
-//		 */
-//		if(changedFileMap==null)
-//		{
-//			return;
-//		}
-//		File existMapFile = getSaveFile();
-//		try
-//		{
-//			if(existMapFile!=null)
-//			{
-//				if(existMapFile.exists())
-//				{
-//					processOpenMapFile(existMapFile);
-//				}
-//				else
-//				{//exist map file does not exist anymore
-//					JOptionPane.showMessageDialog(this, existMapFile.getAbsolutePath() + " does not exist or is not accessible anymore", "File Error", JOptionPane.ERROR_MESSAGE);
-//					return;
-//				}
-//			}
-//			else
-//			{//exist map file does not exist, simply reload source and/or target file
-//				Iterator it = changedFileMap.keySet().iterator();
-//				while(it.hasNext())
-//				{
-//					MappingFileSynchronizer.FILE_TYPE key = (MappingFileSynchronizer.FILE_TYPE) it.next();
-//					File file = changedFileMap.get(key);
-//					if(GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Source_File, key))
-//					{
-//						processOpenSourceTree(file, true, true);
-//					}
-//					else if(GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Target_File, key))
-//					{
-//						processOpenTargetTree(file, true, true);
-//					}
-//				}//end of while
-//			}//end of else
-//		}
-//		catch (Exception e)
-//		{
-//			DefaultSettings.reportThrowableToLogAndUI(this, e, "", this, false, false);
-//		}
-//	}
-	
-	
-	protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
-	{
-		TreeNode nodes=loadSourceTreeData(metaInfo,absoluteFile);
+	//	public void reload(Map<MappingFileSynchronizer.FILE_TYPE, File> changedFileMap)
+	//	{
+	//		/**
+	//		 * Design rationale:
+	//		 * 1) if the changedFileMap is null, simply return;
+	//		 * 2) if the getSaveFile() method does not return null, it implies current panel associates with a mapping file,
+	//		 * just reload the whole mapping file so as to refresh those mapping relationship;
+	//		 * 3) if the getSaveFile() returns null, just reload source and/or target file within the changedFileMap,
+	//		 * and ignore the checking of MappingFileSynchronizer.FILE_TYPE.Mapping_File item in the map;
+	//		 */
+	//		if(changedFileMap==null)
+	//		{
+	//			return;
+	//		}
+	//		File existMapFile = getSaveFile();
+	//		try
+	//		{
+	//			if(existMapFile!=null)
+	//			{
+	//				if(existMapFile.exists())
+	//				{
+	//					processOpenMapFile(existMapFile);
+	//				}
+	//				else
+	//				{//exist map file does not exist anymore
+	//					JOptionPane.showMessageDialog(this, existMapFile.getAbsolutePath() + " does not exist or is not accessible anymore", "File Error", JOptionPane.ERROR_MESSAGE);
+	//					return;
+	//				}
+	//			}
+	//			else
+	//			{//exist map file does not exist, simply reload source and/or target file
+	//				Iterator it = changedFileMap.keySet().iterator();
+	//				while(it.hasNext())
+	//				{
+	//					MappingFileSynchronizer.FILE_TYPE key = (MappingFileSynchronizer.FILE_TYPE) it.next();
+	//					File file = changedFileMap.get(key);
+	//					if(GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Source_File, key))
+	//					{
+	//						processOpenSourceTree(file, true, true);
+	//					}
+	//					else if(GeneralUtilities.areEqual(MappingFileSynchronizer.FILE_TYPE.Target_File, key))
+	//					{
+	//						processOpenTargetTree(file, true, true);
+	//					}
+	//				}//end of while
+	//			}//end of else
+	//		}
+	//		catch (Exception e)
+	//		{
+	//			DefaultSettings.reportThrowableToLogAndUI(this, e, "", this, false, false);
+	//		}
+	//	}
 
-		//Build the source tree
-		sTree = new MappingSourceTree(middlePanel, nodes);
-//		sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
-//		sourceTreeDragTransferHandler = new TreeDefaultDragTransferHandler(sTree, DnDConstants.ACTION_LINK);
-		sourceScrollPane.setViewportView(sTree);
-		sTree.expandAll();
- 
-		//register collapse all and expand all actions.
-//		sourceTreeCollapseAllAction.setTree(sTree);
-//		sourceTreeExpandAllAction.setTree(sTree);
-//		sTree.getInputMap().put(sourceTreeCollapseAllAction.getAcceleratorKey(), sourceTreeCollapseAllAction.getName());
-//		sTree.getActionMap().put(sourceTreeCollapseAllAction.getName(), sourceTreeCollapseAllAction);
-//		sTree.getInputMap().put(sourceTreeExpandAllAction.getAcceleratorKey(), sourceTreeExpandAllAction.getName());
-//		sTree.getActionMap().put(sourceTreeExpandAllAction.getName(), sourceTreeExpandAllAction);
 
-		if (tTree != null && isToResetGraph)
-		{
-			resetMiddlePanel();
-		}
-		if (absoluteFile != null)
-		{
-			String absoluteFilePath = absoluteFile.getAbsolutePath();
-			sourceLocationArea.setText(absoluteFilePath);
-			sourceLocationArea.setToolTipText(absoluteFilePath);
-			mappingSourceFile = absoluteFile;//new File(absoluteFilePath);
-		}
-		else
-		{
-			mappingSourceFile = null;
-		}
-		if (this.getRootPane() != null)
-		{
-			this.getRootPane().repaint();
-		}
-//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, absoluteFile);
-    }
-	
+
+	/**
+	 * @return the mapping
+	 */
+	public Mapping getMapping() {
+		if(this.mapping == null) this.mapping = new Mapping();
+		return mapping;
+	}
+
+	/**
+	 * @param mapping the mapping to set
+	 */
+	public void setMapping(Mapping mapping) {
+		this.mapping = mapping;
+	}
+
+
 	protected void resetMiddlePanel()
 	{
 		if (middlePanel != null)
@@ -717,77 +679,20 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 			middlePanel.repaint();
 		}
 	}
-	
-	protected JComponent getCenterPanel(boolean functionPaneRequired)
-		{//construct the top level layout of mapping panel
-			/**
-			 * GUI Layout:
-			 * JSplitPane - Horizontal:
-			 *      left: JSplitPane - Horizontal:
-			 *				left: source panel;
-			 *				right: JSplitPane - Horizontal:
-			 *							left: middle panel for graph;
-			 *							right: target panel;
-			 * 		right: JSplitPane - Vertical:
-			 * 				top: functional pane;
-			 *				bottom: properties panel;
-			 */
 
-			JSplitPane leftRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-			leftRightSplitPane.setOneTouchExpandable(false);
-			DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
-			leftRightSplitPane.setDividerLocation(0.85);
-			leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
-			leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
-			return leftRightSplitPane;
-		}
-
-		/**
-		 * This constructs function and properties panels.
-		 *
-		 * @return the top level right pane.
-		 */
-		private JComponent getTopLevelRightPanel(boolean functionPaneRequired)
-		{
-			JSplitPane topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-			DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
-			topBottomSplitPane.setDividerLocation(0.5);
-			
-//			functionPane = new FunctionLibraryPane();
-//			functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
-//			if(functionPaneRequired)
-//			{
-//				topBottomSplitPane.setTopComponent(functionPane);
-//			}
-//			propertiesPane = new DefaultPropertiesPage(this.getMappingDataManager().getPropertiesSwitchController());
-//			topBottomSplitPane.setBottomComponent(propertiesPane);
-
-			double topCenterFactor = 0.3;
-			Dimension rightMostDim = new Dimension((int) (FRAME_DEFAULT_WIDTH / 11), (int) (FRAME_DEFAULT_HEIGHT * topCenterFactor));
-//			propertiesPane.setPreferredSize(rightMostDim);
-//			functionPane.setPreferredSize(rightMostDim);
-//			functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
-
-			topCenterFactor = 1.5;
-			rightMostDim = new Dimension((int) (FRAME_DEFAULT_WIDTH / 10), (int) (FRAME_DEFAULT_HEIGHT / topCenterFactor));
-			topBottomSplitPane.setSize(rightMostDim);
-
-			return topBottomSplitPane;
-		}
-		
-		/**
+	/**
 	 * Return whether the mapping module is in drag-and-drop mode.
 	 * @return whether the mapping module is in drag-and-drop mode.
 	 */
 	public boolean isInDragDropMode()
 	{
-        boolean checkSourceTreeDragTransferHandler = false;
-        boolean checkTargetTreeDropTransferHandler = false;
-        boolean checkMiddlePanel = false;
-//        checkSourceTreeDragTransferHandler = sourceTreeDragTransferHandler.isInDragDropMode();
-//        checkTargetTreeDropTransferHandler = getTargetTreeDropTransferHandler().isInDragDropMode();
-        checkMiddlePanel = middlePanel.getMiddlePanelDropTransferHandler().isInDragDropMode();       
-        return (checkSourceTreeDragTransferHandler ||
+		boolean checkSourceTreeDragTransferHandler = false;
+		boolean checkTargetTreeDropTransferHandler = false;
+		boolean checkMiddlePanel = false;
+		//        checkSourceTreeDragTransferHandler = sourceTreeDragTransferHandler.isInDragDropMode();
+		//        checkTargetTreeDropTransferHandler = getTargetTreeDropTransferHandler().isInDragDropMode();
+		checkMiddlePanel = middlePanel.getMiddlePanelDropTransferHandler().isInDragDropMode();       
+		return (checkSourceTreeDragTransferHandler ||
 				checkTargetTreeDropTransferHandler ||
 				checkMiddlePanel);
 	}
@@ -798,24 +703,24 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	 */
 	public void setInDragDropMode(boolean newValue)
 	{
-//        if (sourceTreeDragTransferHandler == null)
-//        {
-//            JOptionPane.showMessageDialog(this, "You should input the source file name first.", "No Source file", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//        else 
-//        	sourceTreeDragTransferHandler.setInDragDropMode(newValue);
-//        
-//        if (getTargetTreeDropTransferHandler() == null)
-//        {
-//            JOptionPane.showMessageDialog(this, "You should input the target file name first.", "No Target file", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//        else 
-//        	getTargetTreeDropTransferHandler().setInDragDropMode(newValue);
+		//        if (sourceTreeDragTransferHandler == null)
+		//        {
+		//            JOptionPane.showMessageDialog(this, "You should input the source file name first.", "No Source file", JOptionPane.ERROR_MESSAGE);
+		//            return;
+		//        }
+		//        else 
+		//        	sourceTreeDragTransferHandler.setInDragDropMode(newValue);
+		//        
+		//        if (getTargetTreeDropTransferHandler() == null)
+		//        {
+		//            JOptionPane.showMessageDialog(this, "You should input the target file name first.", "No Target file", JOptionPane.ERROR_MESSAGE);
+		//            return;
+		//        }
+		//        else 
+		//        	getTargetTreeDropTransferHandler().setInDragDropMode(newValue);
 		middlePanel.getMiddlePanelDropTransferHandler().setInDragDropMode(newValue);
 	}
-	
+
 	/**
 	 * Set a new save file.
 	 *
@@ -825,23 +730,23 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	public boolean setSaveFile(File saveFile)
 	{
 		//removed the equal check so as to support explicit refresh or reload call.
-//		ContextManager contextManager = ContextManager.getContextManager();
+		//		ContextManager contextManager = ContextManager.getContextManager();
 		boolean sameFile = GeneralUtilities.areEqual(this.saveFile, saveFile);
 		if(!sameFile)
 		{//remove interest in the context file manager, first for old file
 
-//				contextManager.getContextFileManager().removeFileUsageListener(this);
+			//				contextManager.getContextFileManager().removeFileUsageListener(this);
 		}
 		this.saveFile = saveFile;
-//		if(!sameFile)
-//		{//register interest in the context file manager for new file
-//				contextManager.getContextFileManager().registerFileUsageListener(this);
-//		}
+		//		if(!sameFile)
+		//		{//register interest in the context file manager for new file
+		//				contextManager.getContextFileManager().registerFileUsageListener(this);
+		//		}
 		updateTitle(this.saveFile.getName());
-//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Mapping_File, saveFile);
+		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Mapping_File, saveFile);
 		return true;
 	}
-	
+
 	public JScrollPane getSourceScrollPane() {
 		return sourceScrollPane;
 	}
@@ -853,12 +758,12 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	public MappingMiddlePanel getMiddlePanel() {
 		return middlePanel;
 	}
-	    
+
 	/**
-     * Return the mapping data manager.
-     * 
-     * @return the mapping data manager.
-     */
+	 * Return the mapping data manager.
+	 * 
+	 * @return the mapping data manager.
+	 */
 	public MiddlePanelJGraphController getMappingDataManager() {
 		return middlePanel.getMiddlePanelJGraphController();
 	}
@@ -913,7 +818,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		}
 		return resultList;
 	}
-	
+
 	public void setSize(Dimension newDimension)
 	{
 		setSize((int) newDimension.getWidth(), (int) newDimension.getHeight());
@@ -935,10 +840,10 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 
 		topCenterFactor = 0.5;
 		Dimension rightMostDim = new Dimension((int) (width / 5), (int) (height * topCenterFactor));
-//		propertiesPane.setSize(rightMostDim);
-//		functionPane.setSize(rightMostDim);
+		//		propertiesPane.setSize(rightMostDim);
+		//		functionPane.setSize(rightMostDim);
 	}
-	
+
 
 	/**
 	 * Explicitly set the value.
@@ -974,10 +879,10 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 		if (rootPane != null)
 		{
 			Container container = rootPane.getParent();
-//			if (container instanceof AbstractMainFrame)
-//			{
-//				((AbstractMainFrame)container).setCurrentPanelTitle(newTitle);
-//			}
+			//			if (container instanceof AbstractMainFrame)
+			//			{
+			//				((AbstractMainFrame)container).setCurrentPanelTitle(newTitle);
+			//			}
 		}
 	}
 
@@ -1013,32 +918,41 @@ public class CmpsMappingPanel extends JPanel implements ActionListener{
 	}
 
 
-    /**
+	/**
 	 * Return a list of Action objects that is included in this Context manager.
 	 * @return a list of Action objects that is included in this Context manager.
 	 */
-    public java.util.List<Action> getToolbarActionList()
-    {
-        java.util.List<Action> actions = new ArrayList<Action>();
-        actions.add(getDefaultOpenAction());
-        //the menu bar display its buttons inorder
-        Map <String, Action>actionMap = getMenuItems(MenuConstants.TOOLBAR_MENU_NAME);
+	public java.util.List<Action> getToolbarActionList()
+	{
+		java.util.List<Action> actions = new ArrayList<Action>();
+		actions.add(getDefaultOpenAction());
+		//the menu bar display its buttons inorder
+		Map <String, Action>actionMap = getMenuItems(MenuConstants.TOOLBAR_MENU_NAME);
 		actions.add((Action) actionMap.get(ActionConstants.SAVE));
 		actions.add((Action) actionMap.get(ActionConstants.VALIDATE));
 		//add the "Refresh" menu if exist
 		actions.add((Action) actionMap.get(ActionConstants.REFRESH));
 		return actions;
-    }
+	}
 
 	public MiddlePanelJGraphController getMiddlePanelJGraphController() {
 		return middlePanel.getGraphController();
 	}
-    
+
+	public boolean isChanged() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/11/04 15:58:57  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:

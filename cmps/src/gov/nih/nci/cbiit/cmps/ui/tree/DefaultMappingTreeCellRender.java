@@ -12,6 +12,7 @@ import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmps.core.BaseMeta;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
+import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -27,8 +28,8 @@ import java.awt.Component;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
@@ -40,10 +41,13 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 	private static ImageIcon disableItemIcon = new ImageIcon(DefaultSettings.getImage("blue.png"));
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 	{
-		if (!selected)
-		{
-			setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+		//System.out.println("enter DefaultMappingTreeCellRender.getTreeCellRendererComponent");
+		Component returnValue = null;
+		try {
+			if (!selected)
+			{
+				setBackgroundNonSelectionColor(UIManager.getColor("Tree.textBackground"));
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 //			if (node.getUserObject() instanceof AssociationMetadata) {
 //				AssociationMetadata assoMeta = (AssociationMetadata)node.getUserObject();
 //				if (!assoMeta.getNavigability())
@@ -51,28 +55,32 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 //				if (assoMeta.getNavigability()&&!assoMeta.isBidirectional()&&assoMeta.isManyToOne())
 //					setBackgroundNonSelectionColor(MANYTOONE_COLOR);
 //			}
-		}
-		Component returnValue = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-//		if (value instanceof PseudoRootTreeNode)
-//		{
-//			setIcon(pseudoRootIcon);
-//		}
-		
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-		if (node.getUserObject() instanceof ElementMeta)
-		{
-			ElementMeta nodeBase=(ElementMeta)node.getUserObject();
-			returnValue.setEnabled(nodeBase.isIsEnabled());
-			if (!nodeBase.isIsEnabled())
-			{
-				setIcon(disableItemIcon);
-				returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
 			}
-			String treeCellText=nodeBase.getName();	
-			setText(treeCellText);
-		}else if (node.getUserObject() instanceof AttributeMeta){
-			AttributeMeta nodeBase = (AttributeMeta)node.getUserObject();
+			returnValue = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+			
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+			Object userObj = node.getUserObject();
+			if(userObj instanceof ElementMetaLoader.MyTreeObject)
+				userObj = ((ElementMetaLoader.MyTreeObject)userObj).getObj();
+			if (userObj instanceof ElementMeta)
+			{
+				ElementMeta nodeBase=(ElementMeta)userObj;
+//				returnValue.setEnabled(nodeBase.isIsEnabled());
+//				if (!nodeBase.isIsEnabled())
+//				{
+//					setIcon(disableItemIcon);
+//					returnValue.setBackground(DISABLED_CHOICE_BACK_GROUND_COLOR);
+//				}
+				String treeCellText=nodeBase.getName();	
+				setText(treeCellText);
+			}else if (userObj instanceof AttributeMeta){
+				AttributeMeta nodeBase = (AttributeMeta)userObj;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		//System.out.println("exit DefaultMappingTreeCellRender.getTreeCellRendererComponent");
 		return returnValue;
 	}
 }
@@ -80,6 +88,9 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 
 

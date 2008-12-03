@@ -23,8 +23,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class TransferableNode implements Serializable, ClipboardOwner, Transferable
@@ -41,7 +41,7 @@ public class TransferableNode implements Serializable, ClipboardOwner, Transfera
 	static
 	{
 		NODE_FLAVOR = new DataFlavor(TransferableNode.class, "TransferableNode");
-		LOCAL_NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + "; class=gov.nih.nci.caadapter.ui.common.TransferableNode", "Local TransferableNode");
+		LOCAL_NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + "; class=gov.nih.nci.cbiit.cmps.ui.common.TransferableNode", "Local TransferableNode");
 	}
 
 	public static final DataFlavor[] transferDataFlavors = {NODE_FLAVOR, LOCAL_NODE_FLAVOR};
@@ -122,5 +122,8 @@ public class TransferableNode implements Serializable, ClipboardOwner, Transfera
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 

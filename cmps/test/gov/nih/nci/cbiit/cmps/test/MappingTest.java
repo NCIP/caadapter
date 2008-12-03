@@ -9,6 +9,7 @@ package gov.nih.nci.cbiit.cmps.test;
 
 
 import gov.nih.nci.cbiit.cmps.common.XSDParser;
+import gov.nih.nci.cbiit.cmps.core.BaseMeta;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
 import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
@@ -33,8 +34,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.10 $
- * @date       $Date: 2008-11-04 21:19:34 $
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class MappingTest {
@@ -189,10 +190,30 @@ public class MappingTest {
 		mar.marshal(m, new File("bin/mapping_roundtrip.out.xml"));
 		//assertEquals(new File("etc/data/mapping.xml").length(), new File("bin/mapping1.out.xml").length());
 	}
+	
+	/**
+	 * test find node method 
+	 */
+	@Test
+	public void testFindNodeById() throws Exception {
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
+		Unmarshaller u = jc.createUnmarshaller();
+		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping.xml")), Mapping.class);
+		String cid = "etc/data/printorder.xsd";
+		String id = "/printorder@orderid";
+		BaseMeta b = MappingFactory.findNodeById(m.getValue(), cid, id);
+		Marshaller mar = jc.createMarshaller();
+		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+		mar.marshal(new JAXBElement(new QName("meta"), b.getClass(), b), new File("bin/mapping_findObj.out.xml"));
+	}
+	
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.10  2008/11/04 21:19:34  linc
+ * HISTORY: core mapping and transform demo.
+ * HISTORY:
  * HISTORY: Revision 1.9  2008/10/22 19:01:17  linc
  * HISTORY: Add comment of public methods.
  * HISTORY:

@@ -10,16 +10,21 @@ package gov.nih.nci.cbiit.cmps.ui.jgraph;
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 
+import gov.nih.nci.cbiit.cmps.core.LinkType;
+import gov.nih.nci.cbiit.cmps.core.LinkpointType;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
+import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
 
 import javax.swing.JTree;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
@@ -47,8 +52,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -63,24 +68,24 @@ public class MiddlePanelJGraphController
 	private CmpsMappingPanel mappingPanel = null;
 
 	// a list of MappingViewCommonComponent
-	private List mappingViewList = null;
+	private List<MappingViewCommonComponent> mappingViewList = null;
 
 	private Mapping mappingData = null;
 
 	private boolean isGraphChanged = false;
 
-//	private MappingPanelPropertiesSwitchController propertiesSwitchController;
+	//	private MappingPanelPropertiesSwitchController propertiesSwitchController;
 
 	private Color graphBackgroundColor = new Color(222, 238, 255);
 
-//	private FunctionBoxViewUsageManager usageManager;
+	//	private FunctionBoxViewUsageManager usageManager;
 
 	private LinkSelectionHighlighter linkSelectionHighlighter;
-	
-	
-    public LinkSelectionHighlighter getHighLighter(){
-            return linkSelectionHighlighter;
-    }
+
+
+	public LinkSelectionHighlighter getHighLighter(){
+		return linkSelectionHighlighter;
+	}
 	// 
 	// Construct the Graph using the Model as its Data Source
 	public MiddlePanelJGraphController(MiddlePanelJGraph graph, MappingMiddlePanel middlePanel, CmpsMappingPanel mappingPanel) {
@@ -90,7 +95,7 @@ public class MiddlePanelJGraphController
 		this.mappingPanel = mappingPanel;
 		initialization(false);
 	}
-	
+
 
 
 	public void setJGraph(MiddlePanelJGraph newGraph)
@@ -139,20 +144,20 @@ public class MiddlePanelJGraphController
 		graph.setEditable(false);
 		graph.setMoveable(true);
 		graph.setBackground(graphBackgroundColor);
-//		graph.getSelectionModel().addGraphSelectionListener(getPropertiesSwitchController());
+		//		graph.getSelectionModel().addGraphSelectionListener(getPropertiesSwitchController());
 		// setMappingPairCellMap(Collections.synchronizedMap(new HashMap()));
-		setMappingViewList(Collections.synchronizedList(new ArrayList()));
-//		if ( this.mappingData != null && keepSourceTargetComponent ) {// just to clear graphs but not the source and target component if any.
-//			MappingImpl newMappingImpl = new MappingImpl();
-//			newMappingImpl.setSourceComponent(this.mappingData.getSourceComponent());
-//			newMappingImpl.setTargetComponent(this.mappingData.getTargetComponent());
-//			newMappingImpl.setMappingType(this.mappingData.getMappingType());
-//			setMappingData(newMappingImpl);
-//		} else {// initialize all
-//			setMappingData(new MappingImpl());
-//		}
+		setMappingViewList(Collections.synchronizedList(new ArrayList<MappingViewCommonComponent>()));
+		//		if ( this.mappingData != null && keepSourceTargetComponent ) {// just to clear graphs but not the source and target component if any.
+		//			MappingImpl newMappingImpl = new MappingImpl();
+		//			newMappingImpl.setSourceComponent(this.mappingData.getSourceComponent());
+		//			newMappingImpl.setTargetComponent(this.mappingData.getTargetComponent());
+		//			newMappingImpl.setMappingType(this.mappingData.getMappingType());
+		//			setMappingData(newMappingImpl);
+		//		} else {// initialize all
+		//			setMappingData(new MappingImpl());
+		//		}
 		setGraphChanged(false);
-//		usageManager = null;
+		//		usageManager = null;
 	}
 
 	/**
@@ -220,14 +225,14 @@ public class MiddlePanelJGraphController
 	 * 
 	 * @return MappingPanelPropertiesSwitchController
 	 */
-//	public MappingPanelPropertiesSwitchController getPropertiesSwitchController()
-//	{
-//		if ( propertiesSwitchController == null ) {
-//			// propertiesSwitchController = new MappingPanelPropertiesSwitchController();
-//			propertiesSwitchController = new MappingPanelPropertiesSwitchController(graph);
-//		}
-//		return propertiesSwitchController; // To change body of implemented methods use File | Settings | File Templates.
-//	}
+	//	public MappingPanelPropertiesSwitchController getPropertiesSwitchController()
+	//	{
+	//		if ( propertiesSwitchController == null ) {
+	//			// propertiesSwitchController = new MappingPanelPropertiesSwitchController();
+	//			propertiesSwitchController = new MappingPanelPropertiesSwitchController(graph);
+	//		}
+	//		return propertiesSwitchController; // To change body of implemented methods use File | Settings | File Templates.
+	//	}
 
 	/**
 	 * @param node
@@ -235,10 +240,10 @@ public class MiddlePanelJGraphController
 	 *            any of the SEARCH_BY constants defined above.
 	 * @return a list of MappingViewCommonComponent if any being found; an empty list if nothing is found.
 	 */
-//	public List<MappingViewCommonComponent> findMappingViewCommonComponentList(Object node, String searchMode)
-//	{
-//		return MappingViewCommonComponent.findMappingViewCommonComponentListList(mappingViewList, node, searchMode);
-//	}
+	public List<MappingViewCommonComponent> findMappingViewCommonComponentList(Object node, String searchMode)
+	{
+		return MappingViewCommonComponent.findMappingViewCommonComponentListList(mappingViewList, node, searchMode);
+	}
 
 	public JGraph getGraph()
 	{
@@ -266,10 +271,10 @@ public class MiddlePanelJGraphController
 			int size = this.mappingViewList.size();
 			for (int i = 0; i < size; i++) {
 				Object o = this.mappingViewList.get(i);
-//				if ( o instanceof MappingViewCommonComponent ) {
-//					MappingViewCommonComponent comp = (MappingViewCommonComponent) o;
-//					comp.setMappableFlag(false);
-//				}
+				if ( o instanceof MappingViewCommonComponent ) {
+					MappingViewCommonComponent comp = (MappingViewCommonComponent) o;
+					comp.setMappableFlag(false);
+				}
 			}
 		}
 		this.mappingViewList = mappingViewList;
@@ -283,20 +288,22 @@ public class MiddlePanelJGraphController
 		}
 		this.mappingData = mappingData;
 		if ( mappingData != null ) {
+			constructMappingGraph();
 			// clear the flag so that from this point on, any user change on the graph will be considered as change.
 			setGraphChanged(false);
 			registerLinkHighlighter();
 		}
 	}
 
-    public void setMappingData(Mapping mappingData, boolean flag)
-     {
-         setGraphChanged(false);
-         registerLinkHighlighter();
-     }
-    
+	public void setMappingData(Mapping mappingData, boolean flag)
+	{
+		constructMappingGraph();
+		setGraphChanged(false);
+		registerLinkHighlighter();
+	}
 
-    /**
+
+	/**
 	 * Called by MiddlePanelMarqueeHandler Insert a new Edge between source and target
 	 */
 	public boolean handleConnect(DefaultPort source, DefaultPort target)
@@ -315,53 +322,52 @@ public class MiddlePanelJGraphController
 			JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-//		Log.logInfo(this, getClass().getName() + " will link source and target port.");
+		//Log.logInfo(this, getClass().getName() + " will link source and target port.");
 		// Construct Edge with no label
 		DefaultEdge edge = new DefaultEdge();
 		edge.setSource(source);
 		edge.setTarget(target);
-//		AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(source);
-//		if ( graph.getModel().acceptsSource(edge, source) && graph.getModel().acceptsTarget(edge, target) ) {
-//			// Create a Map that holds the attributes for the edge
-//			edge.getAttributes().applyMap(lineStyle);
-//			MappableNode sourceNode = (MappableNode) source;// getMappableNodeThroughPort(source);
-//			MappableNode targetNode = (MappableNode) target;// getMappableNodeThroughPort(target);
-//			if ( sourceNode == null || targetNode == null ) {
-//				StringBuffer msg = new StringBuffer("Cannot find mappable source or target node.");
-//				JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
-//			}
-//			// Insert the Edge and its Attributes
-//			graph.getGraphLayoutCache().insertEdge(edge, source, target);
-//			MappingViewCommonComponent comp = new MappingViewCommonComponent(sourceNode, targetNode, source, target, edge);
-//			edge.setUserObject(comp);
-//			mappingViewList.add(comp);
-//			setGraphChanged(true);
-//			return true;
-//		} else {
-//			List reasonList = ((MiddlePanelGraphModel) graph.getModel()).getNotAcceptableReasonList();
-//			JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), reasonList.toArray(new Object[0]), "Mapping Error", JOptionPane.ERROR_MESSAGE);
-//			return false;
-//		}
-		return false;
+		AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(source);
+		if ( graph.getModel().acceptsSource(edge, source) && graph.getModel().acceptsTarget(edge, target) ) {
+			// Create a Map that holds the attributes for the edge
+			edge.getAttributes().applyMap(lineStyle);
+			MappableNode sourceNode = (MappableNode) source;// getMappableNodeThroughPort(source);
+			MappableNode targetNode = (MappableNode) target;// getMappableNodeThroughPort(target);
+			if ( sourceNode == null || targetNode == null ) {
+				StringBuffer msg = new StringBuffer("Cannot find mappable source or target node.");
+				JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), msg.toString(), "Mapping Error", JOptionPane.ERROR_MESSAGE);
+			}
+			// Insert the Edge and its Attributes
+			graph.getGraphLayoutCache().insertEdge(edge, source, target);
+			MappingViewCommonComponent comp = new MappingViewCommonComponent(sourceNode, targetNode, source, target, edge);
+			edge.setUserObject(comp);
+			mappingViewList.add(comp);
+			setGraphChanged(true);
+			return true;
+		} else {
+			List reasonList = ((MiddlePanelGraphModel) graph.getModel()).getNotAcceptableReasonList();
+			JOptionPane.showMessageDialog(middlePanel.getRootPane().getParent(), reasonList.toArray(new Object[0]), "Mapping Error", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 	}
 
-      /**
+	/**
 	 * Handle the deletion of all graph cells on the middle panel.
 	 */
-    public synchronized void handleDeleteAll()
-    {     
-        clearAllGraphCells();
+	public synchronized void handleDeleteAll()
+	{     
+		clearAllGraphCells();
 
 		//repaint the source and target scrollPanes
-        mappingPanel.getSourceScrollPane().repaint();
-        mappingPanel.getTargetScrollPane().repaint();
+		mappingPanel.getSourceScrollPane().repaint();
+		mappingPanel.getTargetScrollPane().repaint();
 
-        System.out.println("middlePanel type: " + middlePanel.getKind() );
+		System.out.println("middlePanel type: " + middlePanel.getKind() );
 
-        setGraphChanged(true);
-    }
+		setGraphChanged(true);
+	}
 
-    /**
+	/**
 	 * Handle the deletion of graph cells on the middle panel.
 	 */
 	public synchronized void handleDelete()
@@ -382,21 +388,21 @@ public class MiddlePanelJGraphController
 			DefaultEdge edge = (DefaultEdge) cells[i];
 
 			if ( middlePanel.getKind().equalsIgnoreCase("o2db") ) {
-//				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
-//				SDKMetaData sourceSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
-//				SDKMetaData targetSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
-//				CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-//				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
-//				sourceSDKMetaData.setMapped(false);
+				//				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
+				//				SDKMetaData sourceSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
+				//				SDKMetaData targetSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
+				//				CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
+				//				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
+				//				sourceSDKMetaData.setMapped(false);
 			} else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
-//				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
+				//				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
 				@SuppressWarnings("unused")
 				//SDTMMetadata sourceSDKMetaData = (SDTMMetadata) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
 
 				StringBuffer _sourceDataAsXPath;
-//				DefaultSourceTreeNode _tn0 = (DefaultSourceTreeNode) e.getSourceNode();
+				//				DefaultSourceTreeNode _tn0 = (DefaultSourceTreeNode) e.getSourceNode();
 				TreeNode t = null;
-//				t = _tn0.getParent();
+				//				t = _tn0.getParent();
 				_sourceDataAsXPath = new StringBuffer();
 				ArrayList<String> _tmp = new ArrayList<String>();
 				// System.out.println( " The value is "+t.toString());
@@ -406,6 +412,7 @@ public class MiddlePanelJGraphController
 						t = t.getParent();
 						_tmp.add(t.toString());
 					} catch (Exception ee) {
+						ee.printStackTrace();
 						break;
 					}
 					// System.out.println( " The value is "+t.toString());
@@ -417,12 +424,13 @@ public class MiddlePanelJGraphController
 						int sizeNow = _tmp.size() - l;
 						_sourceDataAsXPath.append("\\" + _tmp.get(sizeNow));
 					} catch (Exception ed) {
+						ed.printStackTrace();
 						// ed.printStackTrace();
 					}
 				}
-//				String _tmpStr = e.getSourceNode().toString();
-//				_tmpStr = _tmpStr.replace("]", "");
-//				_sourceDataAsXPath.append("\\" + _tmpStr);
+				//				String _tmpStr = e.getSourceNode().toString();
+				//				_tmpStr = _tmpStr.replace("]", "");
+				//				_sourceDataAsXPath.append("\\" + _tmpStr);
 
 
 
@@ -430,21 +438,21 @@ public class MiddlePanelJGraphController
 
 
 
-//				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) e.getTargetNode();
-//				SDTMMetadata _sdtmMetadata = (SDTMMetadata) targetNode.getUserObject();
+				//				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) e.getTargetNode();
+				//				SDTMMetadata _sdtmMetadata = (SDTMMetadata) targetNode.getUserObject();
 				// Do a check if the chosen target is DM or not
 
-//				String _targetDataAsXpath = _sdtmMetadata.getXPath();
-//				System.out.println ("");
-//
-//				SDTMMappingGenerator.get_sdtmMappingGeneratorReference().removeObject(_sourceDataAsXPath.toString(), _targetDataAsXpath.toString());
-//				System.out.println ("");
+				//				String _targetDataAsXpath = _sdtmMetadata.getXPath();
+				//				System.out.println ("");
+				//
+				//				SDTMMappingGenerator.get_sdtmMappingGeneratorReference().removeObject(_sourceDataAsXPath.toString(), _targetDataAsXpath.toString());
+				//				System.out.println ("");
 				// CumulativeMappingGenerator cumulativeMappingGenerator=CumulativeMappingGenerator.getInstance();
 				// boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
 			}
 		}
 	}
-	
+
 	/**
 	 * Called by setMappingData() or constructMappingGraph(), and other methods.
 	 */
@@ -455,7 +463,7 @@ public class MiddlePanelJGraphController
 		// call to remove all cells
 		removeCells(cells, false);
 		unmapCells(cells);		
-		setMappingViewList(Collections.synchronizedList(new ArrayList()));
+		setMappingViewList(Collections.synchronizedList(new ArrayList<MappingViewCommonComponent>()));
 		setGraphChanged(false);
 	}
 
@@ -466,10 +474,10 @@ public class MiddlePanelJGraphController
 		if (cells!=null&&cells.length>0)
 		{
 			Object firstToDelete = cells[0];
-//			if (firstToDelete instanceof FunctionBoxCell)
-//				repaintSourceTarget=true;
+			//			if (firstToDelete instanceof FunctionBoxCell)
+			//				repaintSourceTarget=true;
 		}
-		
+
 		cells = DefaultGraphModel.getDescendants(graph.getModel(), cells).toArray();
 		if ( !findAssociatedCells ) {// no need to find associated cells, so directly remove them.
 			graph.getGraphLayoutCache().remove(cells, true, true);
@@ -480,10 +488,10 @@ public class MiddlePanelJGraphController
 		List mappingViewToBeDeletedList = new ArrayList();
 		int size = mappingViewList.size();
 		for (int i = 0; i < size; i++) {
-////			MappingViewCommonComponent comp = (MappingViewCommonComponent) mappingViewList.get(i);
-//			if ( comp.findMatchedCell(cellSelectionList) ) {
-//				mappingViewToBeDeletedList.add(comp);
-//			}
+			////			MappingViewCommonComponent comp = (MappingViewCommonComponent) mappingViewList.get(i);
+			//			if ( comp.findMatchedCell(cellSelectionList) ) {
+			//				mappingViewToBeDeletedList.add(comp);
+			//			}
 		}
 		// reverse back in case some additions are added by calling comp.findMatchedCell() above.
 		cells = cellSelectionList.toArray();
@@ -493,18 +501,18 @@ public class MiddlePanelJGraphController
 			graph.getGraphLayoutCache().remove(cells, true, true);
 			// execute the clean-up of mappingViewList and reset the mappable flag only if after
 			// succesfully removed them from graph above.
-//			for (Iterator it = mappingViewToBeDeletedList.iterator(); it.hasNext();) {
-//				((MappingViewCommonComponent) it.next()).setMappableFlag(false);
-//			}
-//			for (int i = 0; i < cells.length; i++) {
-//				if ( cells[i] instanceof FunctionBoxCell ) {
-//					FunctionBoxMutableViewInterface userObject = (FunctionBoxMutableViewInterface) ((FunctionBoxCell) cells[i]).getUserObject();
-//					getUsageManager().removeFunctionUsage(userObject);
-//				}
-//			}
+			//			for (Iterator it = mappingViewToBeDeletedList.iterator(); it.hasNext();) {
+			//				((MappingViewCommonComponent) it.next()).setMappableFlag(false);
+			//			}
+			//			for (int i = 0; i < cells.length; i++) {
+			//				if ( cells[i] instanceof FunctionBoxCell ) {
+			//					FunctionBoxMutableViewInterface userObject = (FunctionBoxMutableViewInterface) ((FunctionBoxCell) cells[i]).getUserObject();
+			//					getUsageManager().removeFunctionUsage(userObject);
+			//				}
+			//			}
 			mappingViewList.removeAll(mappingViewToBeDeletedList);
 		}
-		
+
 		//repaint the source and target scrollPanes
 		if (repaintSourceTarget)
 		{
@@ -512,17 +520,459 @@ public class MiddlePanelJGraphController
 			mappingPanel.getTargetScrollPane().repaint();
 		}
 	}
-	public boolean createMapping(MappableNode sourceNode,
-			MappableNode targetNode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public void renderInJGraph(Graphics g) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * construct and add graph ports to the given cell with constructed attributes to the map.
+	 * 
+	 * @param function
+	 * @param portAttributes
+	 * @param parentMap
+	 * @param cell
+	 * @param cellAttributes
+	 * @param numberOfPorts
+	 * @param portOrientation
+	 * @param maxPortsOfGivenFunction
+	 *            the max number of input and output ports to help figure out the offset of the title area.
+	 * @return the map of attributes.
+	 */
+	//	protected Map addGraphPorts(FunctionMeta function, Map portAttributes, ParentMap parentMap, DefaultGraphCell cell, Map cellAttributes, int numberOfPorts, int portOrientation, int maxPortsOfGivenFunction)
+	//	{
+	//		// Log.logInfo(this, "numOfPorts: " + numberOfPorts + ",orientation=" + portOrientation);
+	//		// key=port, value=its attribute map of portAttributes
+	////		Rectangle2D bounds = GraphConstants.getBounds(cellAttributes);
+	//		Dimension portDimension = new Dimension(FunctionBoxDefaultPortView.MY_SIZE, FunctionBoxDefaultPortView.MY_SIZE);
+	//		// create ports and need 100 percent unit for relative positioning.
+	//		int unit = GraphConstants.PERMILLE;
+	//		int offsetX = (int) portDimension.getWidth() / 2;
+	//		int offsetY = (int) portDimension.getHeight() / 2;
+	//		int interimFactor = (int) (unit / (numberOfPorts + 1));
+	//		int offsetTitleHeight = ((int) (unit / (maxPortsOfGivenFunction + 1))) - interimFactor / 2;// interimFactor + 10;
+	//		List<ParameterMeta> paramList = (portOrientation == UIHelper.PORT_LEFT) ? function.getInputDefinitionList() : function.getOuputDefinitionList();
+	//		for (int i = 0; i < numberOfPorts; i++) {
+	//			Map attriMap = new Hashtable();
+	//			DefaultPort port = null;
+	//			if ( portOrientation == UIHelper.PORT_LEFT ) {
+	//				attriMap = UIHelper.getDefaultFunctionBoxPortAttributes(attriMap, portDimension);
+	//				// GraphConstants.setOffset(attriMap, new Point2D.Double(bounds.getX() - offsetX, bounds.getY() + (interimFactor * (i + 1)) - offsetY));
+	//				GraphConstants.setOffset(attriMap, new Point2D.Double(-offsetX, (interimFactor * (i + 1)) - offsetY + offsetTitleHeight));
+	//				// port = new FunctionBoxDefaultPort(paramList.get(i));//UIHelper.getDefaultFunctionalBoxInputCaption() + " " + i);
+	//			} else if ( portOrientation == UIHelper.PORT_RIGHT ) {
+	//				attriMap = UIHelper.getDefaultFunctionBoxPortAttributes(attriMap, portDimension);
+	//				// GraphConstants.setOffset(attriMap, new Point2D.Double(bounds.getX() + bounds.getWidth() - portDimension.getWidth() - offsetX, bounds.getY() +
+	//				// (interimFactor * (i + 1)) - offsetY));
+	//				GraphConstants.setOffset(attriMap, new Point2D.Double(unit + offsetX, (interimFactor * (i + 1)) - offsetY + offsetTitleHeight));
+	//				// port = new FunctionBoxDefaultPort(UIHelper.getDefaultFunctionalBoxOutputCaption() + " " + i);
+	//			}
+	//			port = new FunctionBoxDefaultPort(paramList.get(i));// UIHelper.getDefaultFunctionalBoxInputCaption() + " " + i);
+	//			cell.add(port);
+	//			portAttributes.put(port, attriMap);
+	//			parentMap.addEntry(port, cell);
+	//		}
+	//		// Add one Floating Port
+	//		return portAttributes;
+	//	}
+
+	public void renderInJGraph(Graphics g)
+	{
+		System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
+		/** the real renderer */
+		ConnectionSet cs = new ConnectionSet();
+		Map attributes = new Hashtable();
+
+		// render links
+		//		List visibleSrcNodes=new ArrayList<DefaultMutableTreeNode>();
+		//		if(mappingPanel.getSourceTree()!=null)
+		//			visibleSrcNodes=((MappingBaseTree)mappingPanel.getSourceTree()).getAllVisibleMappedNode();
+		//		List visibleTgrtNodes=new ArrayList<DefaultMutableTreeNode>();;
+		//		if (mappingPanel.getTargetTree()!=null)
+		//			visibleTgrtNodes=((MappingBaseTree)mappingPanel.getTargetTree()).getAllVisibleMappedNode();
+		int mappingSize = mappingViewList.size();
+		for (int i = 0; i < mappingSize; i++) {
+			MappingViewCommonComponent mappingComponent = (MappingViewCommonComponent) mappingViewList.get(i);
+			MappableNode sourceNode = mappingComponent.getSourceNode();
+			MappableNode targetNode = mappingComponent.getTargetNode();
+			DefaultGraphCell sourceCell = mappingComponent.getSourceCell();
+			DefaultGraphCell targetCell = mappingComponent.getTargetCell();
+			DefaultEdge linkEdge = mappingComponent.getLinkEdge();
+			AttributeMap lineStyle = linkEdge.getAttributes();
+			AttributeMap sourceNodeCellAttribute = sourceCell.getAttributes();
+			AttributeMap targetNodeCellAttribute = targetCell.getAttributes();
+			//			boolean sourceNodeDisplayed=true;
+			//			boolean targetNodeDisplayed=true;
+			try {
+				//				if ( sourceNode instanceof FunctionBoxDefaultPort ) 
+				//				{
+				//					if ( targetNode instanceof FunctionBoxDefaultPort ) 
+				//					{// todo: consider how to draw functional box movement.
+				//					} 
+				//					else if ( targetNode instanceof DefaultMutableTreeNode ) 
+				//					{
+				//						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
+				////						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
+				//						adjustToNewPosition(treeNode, targetNodeCellAttribute);
+				//					}
+				//				} 
+				if ( sourceNode instanceof DefaultMutableTreeNode ) 
+				{// neither sourceNode nor targetNode is functional box, so this implies a direct map
+					//					if ( !(targetNode instanceof FunctionBoxDefaultPort) && (targetNode instanceof DefaultMutableTreeNode) ) {
+					if ( (targetNode instanceof DefaultMutableTreeNode) ) {
+						// change target node
+						DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
+						//						targetNodeDisplayed=visibleTgrtNodes.contains(treeNode);
+						adjustToNewPosition(treeNode, targetNodeCellAttribute);
+					}
+					// change source node
+					DefaultMutableTreeNode srcNode = (DefaultMutableTreeNode) sourceNode;
+					//					sourceNodeDisplayed=visibleSrcNodes.contains(srcNode);
+					adjustToNewPosition(srcNode, sourceNodeCellAttribute);
+				}// end of else if(sourceNode instanceof DefaultMutableTreeNode)
+				if ( sourceNodeCellAttribute != null
+						&&targetNodeCellAttribute!=null) {// put in attribute if and only if it is constructed.
+					attributes.put(sourceCell, sourceNodeCellAttribute);
+					attributes.put(targetCell, targetNodeCellAttribute);
+					//reset link color
+					//					if (!targetNodeDisplayed||!sourceNodeDisplayed)
+					//					{
+					//						lineStyle.put("linecolor",this.graphBackgroundColor);
+					//					}
+					attributes.put(linkEdge, lineStyle);
+					// cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
+					// Log.logInfo(this, "Drew line for : " + mappingComponent.toString());
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+				//Log.logInfo(this, "Did not draw line for : " + mappingComponent.toString(true));
+			}
+		}// end of for
+		graph.getGraphLayoutCache().edit(attributes, cs, null, null);
+		graph.getGraphLayoutCache().setSelectsAllInsertedCells(false);
+		System.out.println("leave MiddlePanelJGraphController.renderInJGraph.");
 	}
 
+
+	/**
+	 * Adjust the given treenode's display coordinates. If given tree node is null or the root, will simply ignore.
+	 * 
+	 * @param treeNode
+	 *            the tree node
+	 * @param oldAttributeMap
+	 *            the existing attribute on the graph associated with the given tree node
+	 * @return the oldAttributeMap after applying the newly calculated attribute.
+	 */
+	private AttributeMap adjustToNewPosition(DefaultMutableTreeNode treeNode, AttributeMap oldAttributeMap)
+	{
+		if ( treeNode != null && !treeNode.isRoot() ) {// change the render value if and only if neither it is null nor a root.
+			boolean isFromSourceTree = UIHelper.isDataFromSourceTree(treeNode);
+			int sourceYpos = -1;
+			AttributeMap newTreeNodeAttribute = null;
+			if ( isFromSourceTree ) {
+				// Find the Y position for the source for this mappingNode.
+				// find the # of pixels hidden. For example : 30
+				sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), treeNode, true);
+				// To hide the vertex body from the graph
+				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point(0, sourceYpos), true);
+			} else {
+				sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), treeNode, true);
+				newTreeNodeAttribute = UIHelper.getDefaultInvisibleVertexBounds(new Point(getMaximalXValueOnPane(), sourceYpos), false);
+			}
+			if ( oldAttributeMap == null ) {// never return null.
+				oldAttributeMap = new AttributeMap();
+			}
+			oldAttributeMap.applyMap(newTreeNodeAttribute);
+		}
+		return oldAttributeMap;
+	}
+	/**
+	 * Return the number of pixels changed due to scrolling.
+	 * 
+	 * @param treeScrollPane
+	 * @param treeNode
+	 * @param reCalculateToNearestParent
+	 * @return the number of pixels changed due to scrolling.
+	 */
+	private int calculateScrolledDistanceOnY(JScrollPane treeScrollPane, DefaultMutableTreeNode treeNode, boolean reCalculateToNearestParent)
+	{
+		/**
+		 * Design rationale: 1) check the given tree node, if it is null or root, set the nodePositionBasedOnTotalPanel to the default root value, i.e., 8; 2)
+		 * if the tree node is not root or null, proceed with normal calculation.
+		 */
+		final int DEFAULT_ROOT_Y_VALUE = 8;
+		int nodePositionBasedOnTotalPanel = 0;
+		// find the # of pixels hidden. For example : 30
+		if ( treeNode == null || treeNode.getParent() == null ) {
+			// Log.logInfo(this, (treeNode == null ? "Tree node is null." : "Tree node is the root") + " will use default value.");
+			nodePositionBasedOnTotalPanel = DEFAULT_ROOT_Y_VALUE;
+		} else {
+			// System.out.println("To figure out the value via scroll bar positions.");
+			// find the Y coordinate of the node. For example : 300
+			TreePath tp = new TreePath(treeNode.getPath());
+			JTree tree = ((JTree) treeScrollPane.getViewport().getView());
+			int row = tree.getRowForPath(tp);
+			Rectangle pathBounds = tree.getPathBounds(tp);
+			if ( pathBounds == null ) {
+				// Log.logInfo(this, "path bounds is null. tp is '" + tp.toString() + "'.");
+				// System.out.println("The path bounds is null! on '" + treeNode + "' of type " + treeNode.getClass().getName());
+				if ( reCalculateToNearestParent ) {// escape if not reCal or if the treeNode is the root.
+					return calculateScrolledDistanceOnY(treeScrollPane, (DefaultMutableTreeNode) treeNode.getParent(), reCalculateToNearestParent);
+				} else {// default to the root
+					row = 0;
+				}
+			}
+			if ( row == -1 )// (r==null)
+			{
+				// Log.logInfo(this, "tp is '" + tp.toString() + "'.");
+				// System.out.println("the row value is -1! on '" + treeNode + "' of type " + treeNode.getClass().getName());
+				if ( reCalculateToNearestParent && treeNode.getParent() != null ) {// escape if not reCal or if the treeNode is the root.
+					return calculateScrolledDistanceOnY(treeScrollPane, (DefaultMutableTreeNode) treeNode.getParent(), reCalculateToNearestParent);
+				} else {// default to the root
+					// System.out.println("Default set to the root!");
+					row = 0;
+				}
+			}
+			// System.out.println("Row value: " + row);
+			if ( row > 0 ) {
+				Rectangle r = tree.getRowBounds(row);
+				Point point = r.getLocation();
+				int graphHeightHidden = (int) middlePanel.getGraphScrollPane().getViewport().getViewPosition().getY();
+				int treeHeightHidden = (int) treeScrollPane.getViewport().getViewPosition().getY();
+				nodePositionBasedOnTotalPanel = (int) point.getY() + (int) r.getHeight() / 2 + graphHeightHidden - treeHeightHidden;
+			} else {
+				nodePositionBasedOnTotalPanel = DEFAULT_ROOT_Y_VALUE;
+			}
+			// find the Y coordinate based on the *visible* area.
+			// for example : 300 - 30 + 1/2(the node height) = 290
+			// Log.logInfo(this, treeNode.toString() + " view position:' " + treeHeightHidden + "'");
+			// Log.logInfo(this, treeNode.toString() + " tree node Y:' " + nodePositionBasedOnTotalPanel + "'");
+		}
+		int newYpos = nodePositionBasedOnTotalPanel;
+		if ( newYpos < DEFAULT_ROOT_Y_VALUE ) {// never lower than the NOT_FOUND_VALUE
+			newYpos = DEFAULT_ROOT_Y_VALUE;
+		}
+		// Log.logInfo(this, treeNode.toString() + " new YPos: '" + newYpos + "'.");
+		return newYpos;
+	}
+
+	/**
+	 * Create mapping relation between the source and target nodes.
+	 * 
+	 * @param sourceNode
+	 * @param targetNode
+	 * @return if mapping is successfully created.
+	 */
+	public boolean createMapping(MappableNode sourceNode, MappableNode targetNode)
+	{
+		boolean result = false;
+		// to remember the list of cells, edges, etc. that involve in the mapping.
+		List graphCellList = new ArrayList();
+		try {
+			if ( sourceNode == null || targetNode == null ) {
+				String msg = (sourceNode == null) ? "source node is null" : "";
+				if ( targetNode == null ) {
+					if ( msg.length() > 0 ) {
+						msg += " and ";
+					}
+					msg += "target node is null";
+				}
+				msg += "!";
+				System.out.println(msg);
+				result = false;
+				return result;
+			}
+			//			if ( sourceNode instanceof FunctionBoxDefaultPort ) {// drag from FunctionBoxCell
+			//				if ( targetNode instanceof FunctionBoxDefaultPort ) {
+			//					result = createFunctionBoxPortToFunctionBoxPortMapping((FunctionBoxDefaultPort) sourceNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
+			//				} else if ( targetNode instanceof DefaultMutableTreeNode ) {// functional box to tree link
+			//					DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) targetNode;
+			//					result = createTreeToFunctionBoxPortMapping(treeNode, (FunctionBoxDefaultPort) sourceNode, graphCellList);
+			//				}
+			if ( sourceNode instanceof DefaultMutableTreeNode ) {// drag from tree to middle panel
+				// todo: will source tree always stays at left? If not, the implicit logic between source is left and target is right should have been changed.
+				DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) sourceNode;
+				//				if ( targetNode instanceof FunctionBoxDefaultPort ) {
+				//					result = createTreeToFunctionBoxPortMapping(treeNode, (FunctionBoxDefaultPort) targetNode, graphCellList);
+				if ( targetNode instanceof DefaultTargetTreeNode )// targetNode instanceof DefaultMutableTreeNode
+				{// mapping between source and target tree node
+					result = createTreeToTreeDirectMapping((DefaultSourceTreeNode) sourceNode, (DefaultTargetTreeNode) targetNode, graphCellList);
+				} else if ( targetNode instanceof DefaultSourceTreeNode )// targetNode instanceof DefaultMutableTreeNode
+				{// mapping between source and target tree node
+					// reversed drag and drop
+					result = createTreeToTreeDirectMapping((DefaultSourceTreeNode) targetNode, (DefaultTargetTreeNode) sourceNode, graphCellList);
+				} else {
+					System.out.println("Not a graph cell or tree node, what is it? '" + (targetNode == null ? "null" : targetNode.toString() + " " + targetNode.getClass().getName()) + "'");
+				}
+				//System.out.println("object is '" + object.getClass().getName() + "'");
+			} else {
+				System.out.println(sourceNode + " is not accepted by " + getClass().getName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			//Log.logException(this, e);
+		}
+		if ( result ) {// successfully mapped, add to mapping
+			DefaultGraphCell temp1 = (DefaultGraphCell) graphCellList.get(0);
+			DefaultGraphCell temp2 = (DefaultGraphCell) graphCellList.get(1);
+			DefaultEdge edge = (DefaultEdge) graphCellList.get(2);
+			DefaultGraphCell sourceCell = null;
+			DefaultGraphCell targetCell = null;
+			//			if ( sourceNode instanceof FunctionBoxDefaultPort ) {
+			//				sourceCell = temp1 == sourceNode ? temp1 : temp2;
+			//			} else {
+			sourceCell = temp1.getUserObject() == sourceNode ? temp1 : temp2;
+			//			}
+			//			if ( targetNode instanceof FunctionBoxDefaultPort ) {
+			//				targetCell = temp1 == targetNode ? temp1 : temp2;
+			//			} else {
+			targetCell = temp1.getUserObject() == targetNode ? temp1 : temp2;
+			//			}
+			MappingViewCommonComponent viewComp = new MappingViewCommonComponent(sourceNode, targetNode, sourceCell, targetCell, edge);
+			edge.setUserObject(viewComp);
+			//			Log.logInfo(this, "mapped: "+viewComp);
+			mappingViewList.add(viewComp);
+			setGraphChanged(true);
+		}
+		return result;
+	}
+
+	private boolean createTreeToTreeDirectMapping(DefaultSourceTreeNode sourceNode, DefaultTargetTreeNode targetNode, List graphCellList)
+	{
+		// boolean result = sourceNode.isMapped() || targetNode.isMapped();
+		// no longer need to check anymore.
+		boolean result = false;
+		if ( !result ) {// neither one has been mapped before
+			ConnectionSet cs = new ConnectionSet();
+			Map attributes = new Hashtable();
+			AttributeMap lineStyle = UIHelper.getDefaultUnmovableEdgeStyle(((ElementMetaLoader.MyTreeObject)sourceNode.getUserObject()).getObj());//.getDefaultUnmovableEdgeStyle();
+			Dimension cellDimension = UIHelper.getDefaultSourceOrTargetVertexDimension();
+			DefaultGraphCell sourceCell = null;
+			DefaultGraphCell targetCell = null;
+			DefaultEdge linkEdge = null;
+			AttributeMap sourceAttribute = null;
+			AttributeMap targetAttribute = null;
+			// Find the Y position for the source for this mappingNode.
+			// find the # of pixels hidden. For example : 30
+			int sourceYpos = calculateScrolledDistanceOnY(mappingPanel.getSourceScrollPane(), sourceNode, false);
+			// so the same for the Target side.
+			int targetYpos = calculateScrolledDistanceOnY(mappingPanel.getTargetScrollPane(), targetNode, false);
+			// if (!(isOutOfBound(sourceYpos) && isOutOfBound(targetYpos)))
+			// {
+			// process source
+			sourceCell = new DefaultGraphCell(sourceNode);
+			sourceAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(0, sourceYpos), true);
+			// sourceAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), 0 - cellDimension.getWidth(), sourceYpos, cellDimension,
+			// UIHelper.DEFAULT_VERTEX_COLOR, false);
+			sourceCell.add(new DefaultPort());
+			// process target
+			targetCell = new DefaultGraphCell(targetNode);
+			targetAttribute = UIHelper.getDefaultInvisibleVertexAttribute(new Point(getMaximalXValueOnPane(), targetYpos), false);
+			// targetAttribute = (AttributeMap) UIHelper.createBounds(new AttributeMap(), this.middlePanel.getWidth(), targetYpos, cellDimension,
+			// UIHelper.DEFAULT_VERTEX_COLOR, false);
+			targetCell.add(new DefaultPort());
+			// process the edge
+			linkEdge = new DefaultEdge();
+			attributes.put(sourceCell, sourceAttribute);
+			attributes.put(targetCell, targetAttribute);
+			attributes.put(linkEdge, lineStyle);
+			// return back those being affected.
+			graphCellList.add(sourceCell);
+			graphCellList.add(targetCell);
+			graphCellList.add(linkEdge);
+			cs.connect(linkEdge, sourceCell.getChildAt(0), targetCell.getChildAt(0));
+			graph.getGraphLayoutCache().insert(new Object[] { sourceCell, targetCell, linkEdge }, attributes, cs, null, null);
+			// graph.getGraphLayoutCache().edit(attributes, cs, null, null);
+			graph.getGraphLayoutCache().setSelectsAllInsertedCells(false);
+			result = true;
+			//System.out.println("invisible source bounds: '" + GraphConstants.getBounds(sourceCell.getAttributes()) + "'");
+			//System.out.println("invisible target bounds: '" + GraphConstants.getBounds(targetCell.getAttributes()) + "'");
+			// }
+			// else
+			// {
+			// result = false;
+			// }
+		} else {
+			result = false;
+		}
+		if ( result ) {
+			sourceNode.setMapStatus(true);
+			targetNode.setMapStatus(true);
+		}
+		return result;
+	}
+
+
+	/**
+	 * Called to render mapping (functional-box-driven or direct) after setMappingData() is called. When this is called, it assumes the source and target tree
+	 * have been loaded successfully.
+	 */
+	private synchronized void constructMappingGraph()
+	{
+		List<LinkType> mapList = mappingData.getLinks().getLink();
+		int mapSize = mapList.size();
+		if ( mapSize == 0 )
+		{
+			// Log.logInfo(this, "No need to refresh graph.");
+			return;
+		}
+		// render functional box first
+		// Log.logInfo(this, "Total function component: '" + functionSize + "'.");
+		// render map second
+		for (int i = 0; i < mapSize; i++)
+		{
+			LinkType map = mapList.get(i);
+			LinkpointType sourceMapComp = map.getSource();
+			LinkpointType targetMapComp = map.getTarget();
+
+			MappableNode sourceNode = null;
+			MappableNode targetNode = null;
+
+			sourceNode = getSourceMappableNode(sourceMapComp);
+			if (sourceNode == null)
+			{
+				sourceNode = getTargetMappableNode(sourceMapComp);
+				targetNode = getSourceMappableNode(targetMapComp);
+			}
+			else targetNode = getTargetMappableNode(targetMapComp);
+
+			createMapping(sourceNode, targetNode);
+		}
+	}
+
+	private MappableNode getSourceMappableNode(LinkpointType sourceMapComp)
+	{
+		MappableNode sourceNode = null;
+
+		String compId = sourceMapComp.getComponentid();
+		String id = sourceMapComp.getId();
+
+		sourceNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getSourceTree().getModel().getRoot(), id);
+		//if (sourceNode == null) System.out.println("QQQQ3-1 :");
+		return sourceNode;
+	}
+	
+	private MappableNode getTargetMappableNode(LinkpointType targetMapComp)
+	{
+		MappableNode targetNode = null;
+		String compId = targetMapComp.getComponentid();
+		String id = targetMapComp.getId();
+		targetNode = UIHelper.constructMappableNodeObjectXmlPath(mappingPanel.getTargetTree().getModel().getRoot(), id);
+		return targetNode;
+	}
+
+	private int getMaximalXValueOnPane()
+	{
+		int visibleWidth = (int) this.middlePanel.getGraphScrollPane().getVisibleRect().getWidth();
+		int viewPortVisibleWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getVisibleRect().getWidth();
+		int viewPortViewSizeWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getViewSize().getWidth();
+		int viewPortViewRectWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getViewRect().getWidth();
+		int middlePanelWidth = this.middlePanel.getWidth();
+		// Log.logInfo(this, "middlePanelWidth='" + middlePanelWidth + "',visibleWidth='" + visibleWidth + "'.");
+		// Log.logInfo(this, "viewPortVisibleWidth='" + viewPortVisibleWidth + "',viewPortViewSizeWidth='" + viewPortViewSizeWidth + "'," +
+		// "',viewPortViewRectWidth='" + viewPortViewRectWidth + "'.");
+		// return viewPortVisibleWidth;// - 23;
+		return visibleWidth - 20;
+	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */
