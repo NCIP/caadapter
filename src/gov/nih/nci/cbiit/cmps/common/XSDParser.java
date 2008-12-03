@@ -7,6 +7,7 @@
  */
 package gov.nih.nci.cbiit.cmps.common;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.*;
@@ -24,13 +25,14 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.8 $
- * @date       $Date: 2008-11-04 21:25:38 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
 	private XSLoader schemaLoader;
 	private XSModel model;
+	private String schemaURI;
 	private Stack<String> ctStack;
 	private Stack<String> elStack;
 	private String defaultNS = "";
@@ -100,12 +102,40 @@ public class XSDParser implements DOMErrorHandler {
 	 */
 	public void loadSchema(String schemaURI) {
 
+		this.schemaURI = schemaURI;
 		// parse document
 		if(debug) System.out.println("Parsing " + schemaURI + "...");
 		model = schemaLoader.loadURI(schemaURI);
 
 	}
 
+	/**
+	 * load XSD schema
+	 * @param schemaURI - XSD URI
+	 */
+	public void loadSchema(File schemaFile) {
+
+		this.schemaURI = schemaFile.getPath();
+		// parse document
+		if(debug) System.out.println("Parsing " + schemaURI + "...");
+		model = schemaLoader.loadURI(schemaURI);
+	}
+
+	/**
+	 * @return the schemaURI
+	 */
+	public String getSchemaURI() {
+		return schemaURI;
+	}
+
+	public XSNamedMap[] getMappableNames(){
+		XSNamedMap[] map = new XSNamedMap[2];
+		map[0] = model.getComponents(XSConstants.ELEMENT_DECLARATION);
+		map[1] = model.getComponents(XSConstants.TYPE_DEFINITION);
+		
+		return map;
+	}
+	
 	/**
 	 * get CMPS Core Model Object corresponding to the specified root element
 	 * @param namespace - root element namespace
@@ -361,6 +391,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.8  2008/11/04 21:25:38  linc
+ * HISTORY: updated
+ * HISTORY:
  * HISTORY: Revision 1.7  2008/11/04 21:19:34  linc
  * HISTORY: core mapping and transform demo.
  * HISTORY:

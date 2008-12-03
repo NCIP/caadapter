@@ -24,19 +24,19 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class MiddlePanelGraphModel extends DefaultGraphModel
 {
-	private List reasonList;
+	private List<String> reasonList;
 	/**
 	 * Override Superclass Method to provide additional checking.
 	 */
 	public boolean acceptsSource(Object edge, Object port)
 	{
-		reasonList = new ArrayList();
+		reasonList = new ArrayList<String>();
 		Object target = ((Edge) edge).getTarget();
 		boolean result = true;
 		// Source only Valid if not Equal Target
@@ -63,7 +63,7 @@ public class MiddlePanelGraphModel extends DefaultGraphModel
 	 */
 	public boolean acceptsTarget(Object edge, Object port)
 	{
-		reasonList = new ArrayList();
+		reasonList = new ArrayList<String>();
 		Object source = ((Edge) edge).getSource();
 		boolean result = true;
 		// Target only Valid if not Equal Source
@@ -96,5 +96,8 @@ public class MiddlePanelGraphModel extends DefaultGraphModel
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 

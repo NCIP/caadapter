@@ -20,21 +20,21 @@ import java.awt.Graphics;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class MiddlePanelJGraph extends JGraph
 {
-//	private static final String FUNCTION_MERGE = "Merge";
-//	private static final String FUNCTION_SPLIT = "Split";
-//	private static final String FUNCTION_CONNECT = "Connect";
+	private static final String FUNCTION_MERGE = "Merge";
+	private static final String FUNCTION_SPLIT = "Split";
+	private static final String FUNCTION_CONNECT = "Connect";
 
-//	//location of port in cell
-//	private static final int PORT_LEFT = 0;
-//	private static final int PORT_RIGHT = 1;
-//	private static final int PORT_NORTH = 2;
-//	private static final int PORT_SOUTH = 3;
+	//location of port in cell
+	private static final int PORT_LEFT = 0;
+	private static final int PORT_RIGHT = 1;
+	private static final int PORT_NORTH = 2;
+	private static final int PORT_SOUTH = 3;
 
 	// Construct the Graph using the Model as its Data Source
 	public MiddlePanelJGraph(GraphModel model)
@@ -198,5 +198,8 @@ public class MiddlePanelJGraph extends JGraph
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 

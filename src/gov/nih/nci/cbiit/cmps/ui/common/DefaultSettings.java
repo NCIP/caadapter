@@ -33,8 +33,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class DefaultSettings
@@ -51,11 +51,12 @@ public class DefaultSettings
 	};
 
 	private static final UIDefaults newDefaults = new UIDefaults(uiDefaults);
+	public static final String MAP_FILE_DEFAULT_EXTENTION = ".xml";
 	private static JFileChooser defaultFileChooser;
 	private static File lastPathLocation;
-	private static int FRAME_DEFAULT_HEIGHT;
-	private static int FRAME_DEFAULT_WIDTH;
-	private static int DEFAULT_DIVIDER_SIZE;
+	public static int FRAME_DEFAULT_HEIGHT = 780;
+	public static int FRAME_DEFAULT_WIDTH = 1080;
+	public static int DEFAULT_DIVIDER_SIZE = 6;
 
 	static
 	{
@@ -103,6 +104,7 @@ public class DefaultSettings
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			//Log.logException(e, e);
 		}
 	}
@@ -461,6 +463,7 @@ public class DefaultSettings
 				}
 			}
 		}
+		t.printStackTrace();
 		if (t instanceof Error || t instanceof RuntimeException)
 		{//unchecked exception occurred. Just report the nice one
 			//			Log.logError(sender, reportMsg);
@@ -511,8 +514,25 @@ public class DefaultSettings
 			return null;
 		}
 	}
+	
+	public static String showListChoiceDialog(Component parent, String title, String msg, String[] choices){
+		JOptionPane p = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+		JDialog dlg = p.createDialog(parent, title);
+		JComboBox c = new JComboBox(choices);
+		dlg.getContentPane().add(c,BorderLayout.NORTH);
+		dlg.pack();
+		dlg.setVisible(true);
+		if(p.getValue().equals(Integer.valueOf(JOptionPane.OK_OPTION))) {
+			return (String)c.getSelectedItem();
+		}
+		return null;
+				
+	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 

@@ -37,8 +37,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleComponent
@@ -271,6 +271,7 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 			}
 			catch(Throwable e)
 			{//refresh and try next
+				e.printStackTrace();
 				data = null;
 			}
 		}
@@ -479,4 +480,7 @@ public class MiddlePanelJGraphDropTargetHandler implements DropCompatibleCompone
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */

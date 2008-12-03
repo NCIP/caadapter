@@ -15,8 +15,8 @@ package gov.nih.nci.cbiit.cmps.ui.common;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-11-04 15:58:57 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  */
 public interface ActionConstants
 {
@@ -50,8 +50,13 @@ public interface ActionConstants
 	String VALIDATE = "Validate";
 	String ANOTATE = "Anotate";
 	String REFRESH = "Refresh";
+	String NEW_MAP_FILE = "New Map file";
+	String OPEN_MAP_FILE = "Open Map file";
 }
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2008/11/04 15:58:57  linc
+ * HISTORY : updated.
+ * HISTORY :
  */

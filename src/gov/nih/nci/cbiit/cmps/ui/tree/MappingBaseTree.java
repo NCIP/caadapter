@@ -30,8 +30,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-27 20:06:30 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-03 20:46:14 $
  *
  */
 public abstract class MappingBaseTree extends AutoscrollableTree implements TreeExpansionListener
@@ -65,10 +65,10 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 		mappingMiddlePanel.repaint();
 	}
 
-	public void redraw()
-	{
-		mappingMiddlePanel.repaint();
-	}
+//	public void redraw()
+//	{
+//		mappingMiddlePanel.repaint();
+//	}
 	private boolean isNodeMappedOrHasMappedDecendant(MappableNode mappable)
 	{
 		if (mappable.isMapped())
@@ -141,8 +141,10 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 
 	protected void paintComponent(Graphics g)
 	{
+		System.out.println("enter MappingBaseTree.paintComponent.");
 		super.paintComponent(g);
-		mappingMiddlePanel.repaint();		
+		mappingMiddlePanel.repaint();
+		System.out.println("leave MappingBaseTree.paintComponent.");
 	}
 
 	protected abstract void loadData();
@@ -167,5 +169,8 @@ public abstract class MappingBaseTree extends AutoscrollableTree implements Tree
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
+ * HISTORY: GUI first add.
+ * HISTORY:
  */
 
