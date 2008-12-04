@@ -29,11 +29,11 @@ import java.util.List;
  * This class also defines the computational logic as well as defined the number
  * of inputs and outputs, etc.
  *
- * @author OWNER: $Author: phadkes $
- * @author LAST UPDATE $Author: phadkes $
+ * @author OWNER: $Author: wangeug $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-09-25 18:48:58 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-12-04 20:38:36 $
  */
 public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
 
@@ -271,7 +271,10 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
         Object[] parsedData = new Object[data.length];
 
         for (int i = 0; i < data.length; i++) {
-            if (classes[i] == String.class) {
+        	if (data[i]==null)
+        		parsedData[i] =null;
+        	
+        	else if (classes[i] == String.class) {
                 parsedData[i] = data[i].toString();
             } else if (classes[i] == Integer.TYPE) {
                 if ("".equalsIgnoreCase(data[i].toString())) {
@@ -377,4 +380,7 @@ public class FunctionMetaImpl extends MetaObjectImpl implements FunctionMeta {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/09/25 18:48:58  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */

@@ -9,6 +9,12 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.common.function;
 
+import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.NullFlavorSetting;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +22,10 @@ import java.util.List;
  * Perfoms String Functions.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-09-25 18:57:45 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2008-12-04 20:35:27 $
  */
 
 public class StringFunction {
@@ -73,6 +79,71 @@ public class StringFunction {
         return lstStrSplit;  //return a list of Strings
     }
 
+    /**
+     * Examine the input data to determine the output value and its corresponding NullFlavor value
+     * <i>If dataString is NULL or BLANK, the output value is NULL, otherwise the output value 
+     * the same as dataString
+     * 
+     * <i>If nullFlavorInput is NULL or BLANK, use nullFlavorDefault to decide the output nullFlavor
+     * 
+     * @param dataString The input data to determine output data value and nullFlavor value
+     * @param nullFlavorInput The input setting of list of key:value pair of NullFlavor constants
+     * @param nullFlavorDefault The default setting of list of key:value pair of NullFlavor constants
+     * @return
+     */
+    public List<String> nullFlavor(String dataString, String nullFlavorInput, String nullFlavorDefault)
+    {
+    	NullFlavorSetting nullSetting;
+    	if (nullFlavorInput==null||nullFlavorInput.equals(""))
+    		nullSetting=new NullFlavorSetting(nullFlavorDefault);
+    	else
+    		nullSetting=new NullFlavorSetting(nullFlavorInput);
+    	
+    	//retrieve NullFlavor constant based on input data
+    	String rtnNullValue=dataString;
+    	String nullFlavorKey="NULL";
+    	if (dataString==null)
+    		nullFlavorKey="NULL";
+    	else if(dataString.equals(""))
+    		nullFlavorKey="BLANK";
+    	else  if(dataString.equalsIgnoreCase(GeneralUtilities.CAADAPTER_DATA_FIELD_NULL))
+    	{
+    		rtnNullValue=null;
+    		nullFlavorKey="NULL";
+    	}
+    	else
+    		nullFlavorKey=dataString;
+     		
+    	String rtnNullFlavor=(String)nullSetting.get(nullFlavorKey);
+    	    	
+    	String nullifyMissingData=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED);
+		if (nullifyMissingData!=null&&nullifyMissingData.equalsIgnoreCase("true"))
+		 	rtnNullValue=null;
+
+		//verify if it is a valid NULL FLAVOR constant defined by HL7
+		String nfValuesAllowed=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_NULLFLAVOR_VALUES_ALLOWED);
+		if (rtnNullFlavor!=null&&nfValuesAllowed!=null)
+		{
+			String[] valuesAlled=nfValuesAllowed.split(",");
+			boolean isValidNF=false;
+			for (String nfValue:valuesAlled)
+			{
+				if (nfValue!=null&&nfValue.equalsIgnoreCase(rtnNullFlavor))
+				{
+					isValidNF=true;
+					break;
+				}
+			}
+			if (!isValidNF)
+				Log.logWarning(this, "Invalid NullFlavor value is found:"+rtnNullFlavor);
+		}
+		
+		List<String> rtnList=new ArrayList<String>();
+		rtnList.add(rtnNullValue);
+    	rtnList.add(rtnNullFlavor);
+    	return rtnList;
+    }
+   
     /**
      * Accepts a String.
      * Returns an Object containing the numeric length of the String.
@@ -235,4 +306,7 @@ public class StringFunction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/09/25 18:57:45  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
