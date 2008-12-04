@@ -23,6 +23,7 @@ import gov.nih.nci.cbiit.cmps.ui.common.TestLabel;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
+import gov.nih.nci.cbiit.cmps.ui.tree.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmps.ui.util.FileUtil;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
 
@@ -41,6 +42,7 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -54,6 +56,7 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.xerces.xs.XSNamedMap;
 
@@ -63,8 +66,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-12-04 21:34:20 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -82,6 +85,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	protected MappingSourceTree sTree = null;
 	protected MappingTargetTree tTree = null;
 
+	protected TreeTransferHandler dndHandler = null;
 	//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
 	//	protected TreeExpandAllAction sourceTreeExpandAllAction;
 	//	
@@ -90,8 +94,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	//
 	//	protected MappingFileSynchronizer fileSynchronizer;
 	//	
-	//protected TreeDefaultDragTransferHandler sourceTreeDragTransferHandler = null;
-	//protected abstract TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler();
 
 	protected JPanel sourceButtonPanel = null;
 	protected JPanel sourceLocationPanel = null;
@@ -333,6 +335,15 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	}
 
 
+	/**
+	 * @return the dndHandler
+	 */
+	public TreeTransferHandler getDndHandler() {
+		if(this.dndHandler == null)
+			this.dndHandler = new TreeTransferHandler(this);
+		return dndHandler;
+	}
+
 	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
 	{
 		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
@@ -377,8 +388,10 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
-		//		sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
-		//		sourceTreeDragTransferHandler = new TreeDefaultDragTransferHandler(sTree, DnDConstants.ACTION_LINK);
+		//sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+		sTree.setTransferHandler(getDndHandler());
+		sTree.setDragEnabled(true);
+		sTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		sourceScrollPane.setViewportView(sTree);
 		sTree.expandAll();
 
@@ -418,13 +431,12 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
 		//		tTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+		tTree.setTransferHandler(getDndHandler());
+		tTree.setDropMode(DropMode.ON);
 		targetScrollPane.setViewportView(tTree);
 		tTree.expandAll();
-
-		//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = null;
-		//		drag source for DnD to middle panel.
-		//		TargetTreeDragTransferHandler targetTreeDragTransferHandler = new TargetTreeDragTransferHandler(tTree, DnDConstants.ACTION_LINK);
-		//
+		
+		
 		//		//register collapse all and expand all actions.
 		//		targetTreeCollapseAllAction.setTree(tTree);
 		//		targetTreeExpandAllAction.setTree(tTree);
@@ -686,40 +698,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	 */
 	public boolean isInDragDropMode()
 	{
-		boolean checkSourceTreeDragTransferHandler = false;
-		boolean checkTargetTreeDropTransferHandler = false;
-		boolean checkMiddlePanel = false;
-		//        checkSourceTreeDragTransferHandler = sourceTreeDragTransferHandler.isInDragDropMode();
-		//        checkTargetTreeDropTransferHandler = getTargetTreeDropTransferHandler().isInDragDropMode();
-		checkMiddlePanel = middlePanel.getMiddlePanelDropTransferHandler().isInDragDropMode();       
-		return (checkSourceTreeDragTransferHandler ||
-				checkTargetTreeDropTransferHandler ||
-				checkMiddlePanel);
+		return dndHandler.getState()!=TreeTransferHandler.READY;
 	}
 
-	/**
-	 * Set a new value for the mode.
-	 * @param newValue
-	 */
-	public void setInDragDropMode(boolean newValue)
-	{
-		//        if (sourceTreeDragTransferHandler == null)
-		//        {
-		//            JOptionPane.showMessageDialog(this, "You should input the source file name first.", "No Source file", JOptionPane.ERROR_MESSAGE);
-		//            return;
-		//        }
-		//        else 
-		//        	sourceTreeDragTransferHandler.setInDragDropMode(newValue);
-		//        
-		//        if (getTargetTreeDropTransferHandler() == null)
-		//        {
-		//            JOptionPane.showMessageDialog(this, "You should input the target file name first.", "No Target file", JOptionPane.ERROR_MESSAGE);
-		//            return;
-		//        }
-		//        else 
-		//        	getTargetTreeDropTransferHandler().setInDragDropMode(newValue);
-		middlePanel.getMiddlePanelDropTransferHandler().setInDragDropMode(newValue);
-	}
 
 	/**
 	 * Set a new save file.
@@ -950,6 +931,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/11/04 15:58:57  linc
  * HISTORY: updated.
  * HISTORY:

@@ -52,8 +52,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-04 21:34:20 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -573,7 +573,7 @@ public class MiddlePanelJGraphController
 
 	public void renderInJGraph(Graphics g)
 	{
-		System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
+		//System.out.println("enter MiddlePanelJGraphController.renderInJGraph.");
 		/** the real renderer */
 		ConnectionSet cs = new ConnectionSet();
 		Map attributes = new Hashtable();
@@ -645,7 +645,7 @@ public class MiddlePanelJGraphController
 		}// end of for
 		graph.getGraphLayoutCache().edit(attributes, cs, null, null);
 		graph.getGraphLayoutCache().setSelectsAllInsertedCells(false);
-		System.out.println("leave MiddlePanelJGraphController.renderInJGraph.");
+		//System.out.println("leave MiddlePanelJGraphController.renderInJGraph.");
 	}
 
 
@@ -972,6 +972,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:

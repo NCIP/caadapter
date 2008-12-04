@@ -13,7 +13,6 @@ import org.jgraph.graph.GraphModel;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelGraphModel;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraph;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphDropTargetHandler;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphScrollAdjustmentAdapter;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphViewFactory;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
@@ -33,8 +32,8 @@ import java.awt.dnd.DnDConstants;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-04 21:34:20 $
  *
  */
 public class MappingMiddlePanel extends JPanel //implements ActionListener
@@ -42,7 +41,6 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 	private MiddlePanelJGraph graph = null;
 	private MiddlePanelJGraphController graphController = null;
 	private MiddlePanelJGraphViewFactory graphViewFactory = null;
-	private MiddlePanelJGraphDropTargetHandler middlePanelDropTransferHandler = null;
 	private CmpsMappingPanel mappingPanel = null;
 	private String kind ="";
 	private JScrollPane graphScrollPane = new JScrollPane();
@@ -109,7 +107,6 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 		{
 			graphViewFactory = new MiddlePanelJGraphViewFactory();
 			graph.getGraphLayoutCache().setFactory(graphViewFactory);
-			middlePanelDropTransferHandler = new MiddlePanelJGraphDropTargetHandler(graph, graphController, DnDConstants.ACTION_LINK);//DnDConstants.ACTION_LINK,
 		}
 	}
 
@@ -146,15 +143,6 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 		graph.setPreferredSize(new Dimension(preferredSize.width - 4, preferredSize.height - 25));
 	}
 
-	/**
-	 * Return the middlePanelDropTransferHandler.
-	 * @return the middlePanelDropTransferHandler.
-	 */
-	public MiddlePanelJGraphDropTargetHandler getMiddlePanelDropTransferHandler()
-	{
-		return middlePanelDropTransferHandler;
-	}
-
 	public MiddlePanelScrollAdjustmentCoordinator getAdjustmentCoordinator()
 	{
 		return adjustmentCoordinator;
@@ -180,4 +168,7 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */
