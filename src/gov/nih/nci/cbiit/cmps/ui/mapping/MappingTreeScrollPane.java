@@ -32,8 +32,8 @@ import java.awt.Component;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-04 21:34:20 $
  *
  */
 public class MappingTreeScrollPane extends JScrollPane 
@@ -73,7 +73,7 @@ public class MappingTreeScrollPane extends JScrollPane
 		try {
 			super.paintComponent(g);
 			//paint the tree
-			System.out.println("enter MappingTreeScrollPane.paintComponent()");
+			//System.out.println("enter MappingTreeScrollPane.paintComponent()");
 			Component viewComp=this.getViewport().getView();
 			if (viewComp!=null&&viewComp instanceof JTree)
 			{
@@ -83,7 +83,7 @@ public class MappingTreeScrollPane extends JScrollPane
 				recursiveDrawLeaf(g, mappingTree, treeRoot);
 				g.setColor(dftColor);
 			}
-			System.out.println("leave MappingTreeScrollPane.paintComponent()."+viewComp.getClass()+":"+viewComp.getBounds());
+			//System.out.println("leave MappingTreeScrollPane.paintComponent()."+viewComp.getClass()+":"+viewComp.getBounds());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -241,6 +241,9 @@ public class MappingTreeScrollPane extends JScrollPane
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:
