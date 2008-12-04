@@ -13,8 +13,8 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2008-09-29 15:48:57 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2008-12-04 20:39:04 $
  */
 
 
@@ -46,7 +46,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private boolean enabled = false;
 
 	private List<String> csvSegments;
-	private String csvSegment;
+//	private String csvSegment;
 
 	private int attributeCnt=0;
 	public String getNodeXmlName() {
@@ -232,19 +232,19 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 		enabled=enable;
 	}
 
-	/**
-	 * @return the csvSegment
-	 */
-	public String getCsvSegment() {
-		return csvSegment;
-	}
-
-	/**
-	 * @param csvSegment the csvSegment to set
-	 */
-	public void setCsvSegment(String csvSegment) {
-		this.csvSegment = csvSegment;
-	}
+//	/**
+//	 * @return the csvSegment
+//	 */
+//	public String getCsvSegment() {
+//		return csvSegment;
+//	}
+//
+//	/**
+//	 * @param csvSegment the csvSegment to set
+//	 */
+//	public void setCsvSegment(String csvSegment) {
+//		this.csvSegment = csvSegment;
+//	}
 
 	/**
 	 * @return the csvSegments
@@ -294,4 +294,7 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.13  2008/09/29 15:48:57  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
