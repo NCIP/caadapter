@@ -6,19 +6,6 @@
 				<datapoint pos="0" name="constant" datatype="string" xmlPath="constant.constant.outputs.0"/>
 			</outputs>
 		</function>
-        <!--<function name="saveValue" xmlPath="e34f7420-09db-11da-8gd4-io90d451x7h5">
-			<inputs>
-				<datapoint pos="0" name="save" datatype="string" xmlPath="e35g7420-09db-11da-8ge5-io90d451x7k6"/>
-			</inputs>
-            <outputs>
-				<datapoint pos="0" name="dummy" datatype="string" xmlPath="e37i7420-09db-11da-8gg9-io90d451x7m8"/>
-			</outputs>
-        </function>
-        <function name="readValue" xmlPath="e36h7420-09db-11da-8gf6-io90d451x7l7">
-			<outputs>
-				<datapoint pos="0" name="read" datatype="string" xmlPath="e37i7420-09db-11da-8gg7-io90d451x7m8"/>
-			</outputs>
-		</function> -->
     </group>
     <group name="date" xmlPath="date">
 		<function name="changeFormat" xmlPath="date.changeFormat">
@@ -116,7 +103,19 @@
 			</outputs>
 			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="split"/>
 		</function>
-		<function name="Length" xmlPath="string.Length">
+        	<function name="NullFlavor" xmlPath="string.NullFlavor">
+			<inputs>
+				<datapoint pos="0" name="SourceData" datatype="string" xmlPath="string.NullFlavor.inputs.0"/>
+				<datapoint pos="1" name="NullFlavorInput" datatype="string" xmlPath="string.NullFlavor.inputs.1"/>
+				<datapoint pos="2" name="NullFlavorDefault" datatype="string" xmlPath="string.NullFlavor.inputs.2"/>
+			</inputs>
+			<outputs>
+				<datapoint pos="0" name="ValueOut" datatype="string" xmlPath="string.NullFlavor.outputs.0"/>
+				<datapoint pos="1" name="NullFlavorOut" datatype="string" xmlPath="string.NullFlavor.outputs.1"/>
+			</outputs>
+			<implementation classname="gov.nih.nci.caadapter.common.function.StringFunction" method="nullFlavor"/>
+		</function>
+        <function name="Length" xmlPath="string.Length">
 			<inputs>
 				<datapoint pos="0" name="String" datatype="string" xmlPath="string.Length.inputs.0"/>
 			</inputs>

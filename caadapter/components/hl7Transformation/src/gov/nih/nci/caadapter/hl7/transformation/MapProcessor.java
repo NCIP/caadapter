@@ -38,23 +38,19 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.46 $
- *          date        $Date: 2008-11-21 16:19:37 $
+ *          revision    $Revision: 1.47 $
+ *          date        $Date: 2008-12-04 20:42:36 $
  */
 
 public class MapProcessor {
 
     // class variable from constructor
     private Hashtable<String,String> mappings = null;
-    private Hashtable<String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
-    MIFClass mifClass;
     private MapProcssorCSVUtil csvUtil = null;
     private DatatypeProcessor datatypeProcessor = new DatatypeProcessor();
 
     // Class variables used during processing.
-    List<XMLElement> resultsArray = null;
     ValidatorResults theValidatorResults = new ValidatorResults();
-    int indent = -1;
 
 	/**
 	 * This method will process the mapping file and generate a list of HL7 v3 message objects 
@@ -65,14 +61,12 @@ public class MapProcessor {
     public List<XMLElement> process(Hashtable<String,String> mappings, Hashtable<String,FunctionComponent> functions, CSVSegmentedFile csvSegmentedFile, MIFClass mifClass, ArrayList <TransformationObserver>transformationWatchList) throws MappingException,FunctionException{
         // init class variables
         this.mappings = mappings;
-        this.mifClass = mifClass;
-        this.functions = functions;
         MapProcessorHelper mapProcessorHelper = new MapProcessorHelper();
         csvUtil = new MapProcssorCSVUtil();
 
         datatypeProcessor.setEnv(csvUtil, functions, mappings);
         
-        this.resultsArray = new ArrayList<XMLElement>();
+        List<XMLElement> resultsArray = new ArrayList<XMLElement>();
 
         List<CSVSegment> logicalRecords = csvSegmentedFile.getLogicalRecords();
 
@@ -227,9 +221,6 @@ public class MapProcessor {
     					if (attrXmlElements.size()>1) {
     			            Message msg = MessageResources.getMessage("RIM4", new Object[]{mifAttribute.getXmlPath(),mifAttribute.getMinimumMultiplicity() + "..1", mifAttribute.getName(),attrXmlElements.size()});
     			            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
-//    			            for(int i = attrXmlElements.size()-1;i>=1; i--) {
-//    			            	attrXmlElements.remove(i);
-//    			            }
     					}
     				}
     				if (mifAttribute.getMinimumMultiplicity() == 1) {
@@ -355,14 +346,6 @@ public class MapProcessor {
 	    					String datavalue = datatypeProcessor.getFunctionValue(csvSegment,scsPath,data, mutableFlag, mutableFlagDefault);
 	    					if (mutableFlag.hasUserMappedData()) 
 	    					{
-//                                System.out.println("   A : " + mifAttribute.getName());
-//                                System.out.println("   B : " + datavalue);
-//                                System.out.println("   C : " + mifAttribute);
-//                                System.out.println("   D : " + mifAttribute.getDatatype());
-//                                System.out.println("   F : " + mifAttribute.getDomainName());
-//                                System.out.println("   G : " + mifAttribute.getCodingStrength());
-//                                System.out.println("   E : " + mifAttribute.getDatatype().getName().toLowerCase());
-
                                 if (mifAttribute.getDatatype() == null)
                                     xmlElement.addAttribute(mifAttribute.getName(), datavalue, null, mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
 	        					else xmlElement.addAttribute(mifAttribute.getName(), datavalue, mifAttribute.getDatatype().getName().toLowerCase(), mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
@@ -508,8 +491,8 @@ public class MapProcessor {
     	//No mappings
     	if (mifAttribute.getCsvSegments().size()== 0) {
     		if (mifAttribute.isMandatory()) {
-	    	    MutableFlag mutableFlag = new MutableFlag(false);
-    			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(), mutableFlag);
+//	    	    MutableFlag mutableFlag = new MutableFlag(false);
+    			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
     			if (defaultXMLElement != null) 
     			{
     	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
@@ -533,8 +516,8 @@ public class MapProcessor {
    			}
     		else {
     			if (forceGenerate) {
-    	    	    MutableFlag mutableFlag = new MutableFlag(false);
-        			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName(),mutableFlag);
+//    	    	    MutableFlag mutableFlag = new MutableFlag(false);
+        			XMLElement defaultXMLElement = datatypeProcessor.process_default_datatype(mifDt, mifAttribute.getParentXmlPath()+"."+mifAttribute.getNodeXmlName(),mifAttribute.getName());
         			if (defaultXMLElement != null)
         			{
         				Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"No mapping  is available for the required attribute: " + mifAttribute.getXmlPath()});
@@ -579,26 +562,23 @@ public class MapProcessor {
     			return new ArrayList<XMLElement>(); 
     		}
     	}
-    	if (mifAttribute.getDomainName()!= null && !mifAttribute.getDomainName().equals(""))
-    	{
-    		for(XMLElement xmlElement:xmlElements)
-    		{
-    			xmlElement.addAttribute("xsi:type", mifDt.getName(), null, null, null);
-    			xmlElement.setDomainName(mifAttribute.getDomainName());
-    			if (mifAttribute.getCodingStrength()!= null && !mifAttribute.getCodingStrength().equals(""))
-    			{
-    				xmlElement.setCodingStrength(mifAttribute.getCodingStrength());
-    			}
-    		}
-    	}
-    	else {
-    		for(XMLElement xmlElement:xmlElements)
-    			xmlElement.addAttribute("xsi:type", mifDt.getName(), null, null, null);
-    	}
+    	
+		for(XMLElement xmlElement:xmlElements)
+		{
+//			xmlElement.addAttribute("xsi:type", mifDt.getName(), null, null, null);
+			if (mifAttribute.getDomainName()!= null && !mifAttribute.getDomainName().equals(""))
+	    	{
+				xmlElement.setDomainName(mifAttribute.getDomainName());
+	    	}
+			if (mifAttribute.getCodingStrength()!= null && !mifAttribute.getCodingStrength().equals(""))
+			{
+				xmlElement.setCodingStrength(mifAttribute.getCodingStrength());
+			}
+		}
     	return xmlElements;
     }
 
-    public void process_default_empty_choice(MIFAssociation mifAssociation, XMLElement xmlElement, List<List<XMLElement>> choiceHolder, List<MutableFlag> choiceFlag, String choiceString)
+    private void process_default_empty_choice(MIFAssociation mifAssociation, XMLElement xmlElement, List<List<XMLElement>> choiceHolder, List<MutableFlag> choiceFlag, String choiceString)
     {
     	if (mifAssociation.getMinimumMultiplicity() == 0)
     	{
@@ -655,6 +635,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.46  2008/11/21 16:19:37  wangeug
+ * HISTORY      : Move back to HL7 module from common module
+ * HISTORY      :
  * HISTORY      : Revision 1.45  2008/11/17 20:10:07  wangeug
  * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY      :

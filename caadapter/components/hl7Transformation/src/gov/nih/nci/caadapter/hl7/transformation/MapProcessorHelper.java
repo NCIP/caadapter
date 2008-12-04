@@ -29,8 +29,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.19 $
- * @date $Date: 2008-11-21 16:19:37 $
+ * @version $Revision: 1.20 $
+ * @date $Date: 2008-12-04 20:42:19 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -169,7 +169,9 @@ public class MapProcessorHelper {
     	// for each input find it's input value.
     	for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
     		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
-    		if (inputData.startsWith("function.")) { //function mapping to target
+    		if (inputData==null)
+    			strings.add(null);
+    		else if (inputData.startsWith("function.")) { //function mapping to target
     			strings.addAll(preprocess_function(inputData));
     		}
     		else { //direct mapping from source to target
@@ -213,7 +215,14 @@ public class MapProcessorHelper {
     						boolean add = true;
     						for (int i = csvSegments.size()-1; i>=0; i--) {
     							String csvSegment = csvSegments.get(i);
-    							if (csvSegment.contains(newcsvSegment)) {
+    	    					if (csvSegment==null||newcsvSegment==null)
+    	    					{
+    								System.out
+    										.println("MapProcessorHelper.preprocess_datatype()..found null");
+    								add = false;
+    								continue;
+    	    					} 
+    	    					else if (csvSegment.contains(newcsvSegment)) {
     								add = false;
     								break;
     							}
@@ -237,7 +246,14 @@ public class MapProcessorHelper {
 						boolean add = true;
 						for (int i = csvSegments.size()-1; i>=0; i--) {
 							String csvSegment = csvSegments.get(i);
-							if (csvSegment.contains(newcsvSegment)) {
+							if (csvSegment==null||newcsvSegment==null)
+	    					{
+								System.out
+										.println("MapProcessorHelper.preprocess_datatype()..found null");
+								add = false;
+								continue;
+	    					} 
+	    					else if (csvSegment.contains(newcsvSegment)) {
 								add = false;
 								break;
 							}
@@ -252,7 +268,7 @@ public class MapProcessorHelper {
     		}
     	}
     	datatype.setCsvSegments(csvSegments);
-    	datatype.setCsvSegment(findCommonParent(csvSegments));
+//    	datatype.setCsvSegment(findCommonParent(csvSegments));
 //    	System.out.println("--------process dt:"+datatype.getName()+ "csvSgement:"+datatype.getCsvSegment());
     	return csvSegments;
     }
@@ -279,7 +295,14 @@ public class MapProcessorHelper {
     				boolean add = true;
     				for (int i = csvSegments.size()-1; i>=0; i--) {
     					String csvSegment = csvSegments.get(i);
-    					if (csvSegment.contains(newcsvSegment)) {
+    					if (csvSegment==null||newcsvSegment==null)
+    					{
+							System.out
+									.println("MapProcessorHelper.preprocess_datatype()..found null");
+							add = false;
+							continue;
+    					} 
+    					else if (csvSegment.contains(newcsvSegment)) {
     						add = false;
     						break;
     					}
@@ -441,6 +464,9 @@ public class MapProcessorHelper {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.19  2008/11/21 16:19:37  wangeug
+ * HISTORY :Move back to HL7 module from common module
+ * HISTORY :
  * HISTORY :Revision 1.18  2008/11/17 20:10:07  wangeug
  * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY :

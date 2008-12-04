@@ -23,12 +23,12 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-11-17 20:12:06 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-12-04 20:36:09 $
  */
 public class GeneralUtilities
 {
-    public static String CAADAPTER_DATA_FIELD_NULL="NULL_DATA";
+    public static String CAADAPTER_DATA_FIELD_NULL="CAADAPTER_NULL_VALUE";
 
     /**
 	 * Return true if one is equal to another.
@@ -311,6 +311,9 @@ public class GeneralUtilities
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/11/17 20:12:06  wangeug
+ * HISTORY      : Handle NULL in CSVData field:""
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/06/09 19:53:50  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

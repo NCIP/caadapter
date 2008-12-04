@@ -20,6 +20,9 @@
 	    
 	<!-- feature controlling flag -->
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_NULLFLAVOR_ENABLED" type="String" value="caadapter.hl7.specification.nullflavor.enabled"/>
+	<constant name="CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED" type="String" value="caadapter.hl7.missing.data.nullflavor.nullified"/>
+	<constant name="CAADAPTER_COMPONENT_HL7_NULLFLAVOR_VALUES_ALLOWED" type="String" value="caadapter.hl7.nullflavor.values.allowed"/>
+	
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_COMPLEXTYPE_ENABLED" type="String" value="caadapter.hl7.specification.complextype.enabled"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED" type="String" value="caadapter.hl7.specification.odi.enabled"/>
 	<constant name="CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED" type="String" value="caadapter.hl7.attribute.inlinetext.required"/>

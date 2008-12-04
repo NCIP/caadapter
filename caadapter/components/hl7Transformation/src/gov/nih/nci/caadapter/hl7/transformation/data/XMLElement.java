@@ -32,8 +32,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.24 $
- *          date        $Date: 2008-10-29 19:06:08 $
+ *          revision    $Revision: 1.25 $
+ *          date        $Date: 2008-12-04 20:40:39 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -91,7 +91,8 @@ public class XMLElement implements Cloneable{
 	 * @param value the value of the attribute
 	 */
 	public void addAttribute(String name, String value, String datatype, String domainName, String codingStrength) {
-//		System.out.println("name" + name + " type:"+datatype);
+
+//		System.out.println("name:" + name + " value:"+value+ " type:"+datatype);
 		Attribute attribute = new Attribute();
 		attribute.setName(name);
 		attribute.setValue(value);
@@ -204,6 +205,7 @@ public class XMLElement implements Cloneable{
 				output.append("-->\n");
 			}
 		}
+		HL7XMLUtil.cleanNullFlavor(this);
 		output.append(toXMLBody(0));
 		return output;
 	}
@@ -225,9 +227,9 @@ public class XMLElement implements Cloneable{
 				addBody = true;
 				bodyValue = value;
 			}
-			else {
+			else //if (value!=null)
 				output.append(" "+key+"="+"\""+value+"\"");
-			}
+
 		}
 		
 		if (getChildren().size() == 0&&!addBody) {
@@ -433,6 +435,9 @@ public class XMLElement implements Cloneable{
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.24  2008/10/29 19:06:08  wangeug
+ * HISTORY :read Datatype from xsd
+ * HISTORY :
  * HISTORY :Revision 1.23  2008/09/29 15:39:06  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

@@ -37,8 +37,8 @@ import java.util.Set;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-11-21 16:19:37 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-12-04 20:42:36 $
  */
 public class DatatypeProcessor {
 	/**
@@ -58,7 +58,7 @@ public class DatatypeProcessor {
     	this.mappings = mappings;
     }
     
-    public XMLElement process_default_datatype(Datatype datatype,  String parentXPath, String xmlName, MutableFlag hasUserdata) throws MappingException ,FunctionException{
+    public XMLElement process_default_datatype(Datatype datatype,  String parentXPath, String xmlName) throws MappingException ,FunctionException{
 
     	XMLElement xmlElement = new XMLElement();
     	xmlElement.setName(xmlName);
@@ -87,14 +87,12 @@ public class DatatypeProcessor {
     		else { //complexdatatype
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
 //    			XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getName(), attr.getName(), mutableFlag);
-	    	    XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getNodeXmlName(), attr.getName(), mutableFlag);
+	    	    XMLElement attrsXMLElement = process_default_datatype(attr.getReferenceDatatype(), parentXPath+"."+attr.getNodeXmlName(), attr.getName());
 	    	    if (attrsXMLElement != null)
     				xmlElement.addChild(attrsXMLElement);
     		}
     	}
-//    	if (xmlElement.getAttributes().size()!=0) return xmlElement;
-//    	if (xmlElement.getChildren().size()!=0) return xmlElement;
-//    	return null;
+    	xmlElement.addAttribute("xsi:type", datatype.getName(), null, null, null);
     	return xmlElement;
     }    	
 
@@ -194,7 +192,7 @@ public class DatatypeProcessor {
 	 * @parentXPath parent xmlpath to the current datatype, will be used to determine the xmlpath for attributes of the datatype
 	 * @xmlName the name that will used to determine the name of XMLElement 
 	 */
-    public List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException {
+    private List<XMLElement> process_datatype(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException {
     	if (!datatype.isEnabled()) return NullXMLElement.NULL;
     	if (datatype.getCsvSegments() == null)return NullXMLElement.NULL;
     	if (datatype.getCsvSegments().size()==0) return NullXMLElement.NULL;
@@ -216,7 +214,7 @@ public class DatatypeProcessor {
 	    return  returnValue;
     }
 
-    public List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
+    private List<XMLElement> process_datatype_wo_sibling(Datatype datatype, CSVSegment pCsvSegment, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
     	
     	List<XMLElement> resultList = new ArrayList<XMLElement>();
     	String current = datatype.getCsvSegments().get(0);
@@ -308,16 +306,17 @@ public class DatatypeProcessor {
     				xmlElement.addChildren(attrsXMLElement);
     			}
     		}
+    		xmlElement.addAttribute("xsi:type", datatype.getName(), null,null, null);
     		resultList.add(xmlElement);
     	}   	
     	return resultList;
     }
 
-    public XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
+    private XMLElement process_datatype_w_sibling(Datatype datatype, List<CSVSegment> csvSegments, String parentXPath, String xmlName, boolean forceGenerate, MutableFlag hasUserdata, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
     	
 		XMLElement xmlElement = new XMLElement();
 		xmlElement.setName(xmlName);
-
+		
 		Hashtable <String, String> data = new Hashtable<String,String>();
     	for(CSVSegment csvSegment:csvSegments) {
     		List<CSVField> csvFields = csvSegment.getFields();
@@ -402,6 +401,7 @@ public class DatatypeProcessor {
 				xmlElement.addChildren(attrsXMLElement);
 			}
 		}
+		xmlElement.addAttribute("xsi:type", datatype.getName(), null,null, null);
 		return xmlElement;
     }
     public String getFunctionValue(CSVSegment pCsvSegment, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
@@ -410,7 +410,7 @@ public class DatatypeProcessor {
     	return getFunctionValue(csvSegments,scsXmlPath, data, hasUserData, hasDefaultdata);
     }
 
-    public String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException
+    private String getFunctionValue(List<CSVSegment> csvSegments, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException
     {
     	int outputpos = 0;
     	
@@ -438,6 +438,12 @@ public class DatatypeProcessor {
     		String inputvalue = null;
 
     		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
+    		//ignore if no mapping for an input port
+    		if (inputData==null)
+    		{
+    			inputValues.add(inputvalue);
+    			continue;
+    		}
     		if (inputData.startsWith("function.")) { //function mapping to target
     			inputvalue = getFunctionValue(csvSegments,inputData, data, hasUserData, hasDefaultdata);
     		}
@@ -536,6 +542,9 @@ public class DatatypeProcessor {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2008/11/21 16:19:37  wangeug
+ * HISTORY :Move back to HL7 module from common module
+ * HISTORY :
  * HISTORY :Revision 1.8  2008/11/17 20:10:07  wangeug
  * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY :
