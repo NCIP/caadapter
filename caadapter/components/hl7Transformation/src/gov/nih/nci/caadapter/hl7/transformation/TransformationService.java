@@ -27,6 +27,7 @@ import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
+import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 
 import java.io.*;
@@ -52,14 +53,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.26 $
- * @date $Date: 2008-11-21 16:19:36 $
+ * @version $Revision: 1.27 $
+ * @date $Date: 2008-12-08 18:59:22 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.26 2008-11-21 16:19:36 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.27 2008-12-08 18:59:22 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -384,7 +385,10 @@ public class TransformationService
 			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, msgType);
     		long csvbegintime = System.currentTimeMillis();
 //			Source source = coder.decodeFromStream(new FileInputStream(new File("data/ADT_A01.hl7")));
-    		Source source = coder.decodeFromStream(this.sourceDataStream);
+    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(new FileInputStream(new File("data/ADT_A03.hl7")));
+//    		Source source = coder.decodeFromStream(this.sourceDataStream);
+    		InputStream v2In=lfEncoder.getEncodedInputStream();
+    		Source source = coder.decodeFromStream(v2In);
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
 			
 			//forward transformed XML to next step
@@ -393,6 +397,8 @@ public class TransformationService
 			System.out.println("TransformationService.pareV2Message()...decode source message:"+(System.currentTimeMillis()-csvbegintime));
 			transformer.transform(source, saxResult);
 			System.out.println("TransformationService.pareV2Message()...decode/transfer data :"+(System.currentTimeMillis()-csvbegintime));
+			v2In.close();
+ 
 			CSVDataResult parsedData= saxHandler.getDataResult();
 			return parsedData;
 		} catch (EncoderException e) {
@@ -402,6 +408,12 @@ public class TransformationService
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -441,6 +453,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.26  2008/11/21 16:19:36  wangeug
+ * HISTORY      : Move back to HL7 module from common module
+ * HISTORY      :
  * HISTORY      : Revision 1.25  2008/11/17 20:10:07  wangeug
  * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY      :
