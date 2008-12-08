@@ -20,8 +20,8 @@ import java.util.List;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-12-04 20:41:37 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2008-12-08 19:06:06 $
  */
 public class MapProcssorCSVUtil {
     public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) {
@@ -124,6 +124,16 @@ public class MapProcssorCSVUtil {
     				if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
     			}
     		}
+            else if (targetSegmentXmlPath.contains(csvSegment.getXmlPath()))
+            {
+            	//curent Segment is parent of the original Segment
+            	for (CSVSegment childSeg:current.getChildSegments())
+            	{
+            		CSVField chldField=findCSVField(childSeg,targetXmlPath );
+            		if (chldField!=null)
+            			return chldField;
+            	}
+            }
     		current = current.getParentSegment();
     		if (current == null) {
     			System.out.println("Error");
@@ -163,6 +173,9 @@ public class MapProcssorCSVUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2008/12/04 20:41:37  wangeug
+ * HISTORY :support nullFlavor
+ * HISTORY :
  * HISTORY :Revision 1.4  2008/09/29 15:40:38  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
