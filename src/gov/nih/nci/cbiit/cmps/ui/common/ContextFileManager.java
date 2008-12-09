@@ -31,8 +31,8 @@ import java.util.Iterator;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  */
 public class ContextFileManager
 {
@@ -48,7 +48,7 @@ public class ContextFileManager
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/common/ContextFileManager.java,v 1.1 2008-12-03 20:46:14 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/common/ContextFileManager.java,v 1.2 2008-12-09 19:04:17 linc Exp $";
 
 	private Map <File, java.util.Set<ContextManagerClient>> fileUsageMap = null;
 
@@ -216,6 +216,7 @@ public class ContextFileManager
 		{
 			File file = (File) fileList.get(i);
 			Set<ContextManagerClient> contexClientList = this.fileUsageMap.get(file);
+			if(contexClientList == null) return;
 			Iterator it = contexClientList.iterator();
 			while(it.hasNext())
 			{
@@ -242,4 +243,7 @@ public class ContextFileManager
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/03 20:46:14  linc
+ * HISTORY      : UI update.
+ * HISTORY      :
  */

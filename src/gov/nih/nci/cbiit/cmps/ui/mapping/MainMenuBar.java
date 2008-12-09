@@ -9,15 +9,17 @@
 package gov.nih.nci.cbiit.cmps.ui.mapping;
 
 
-import gov.nih.nci.cbiit.cmps.ui.common.AbstractContextAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.AbstractContextAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.CloseAllAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.DefaultCloseAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.DefaultSaveAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.DefaultSaveAsAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.ExitAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.NewMapFileAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.NewMessageAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.OpenMapFileAction;
 import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.CloseAllAction;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultCloseAction;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSaveAction;
-import gov.nih.nci.cbiit.cmps.ui.common.DefaultSaveAsAction;
-import gov.nih.nci.cbiit.cmps.ui.common.ExitAction;
 import gov.nih.nci.cbiit.cmps.ui.common.MenuConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.OpenMapFileAction;
 
 import javax.swing.*;
 
@@ -38,8 +40,8 @@ import java.util.Map;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  */
 public class MainMenuBar extends JMenuBar 
 {
@@ -63,7 +65,7 @@ public class MainMenuBar extends JMenuBar
 		menuMap = Collections.synchronizedMap(new HashMap<String, JMenu>());
 
 		add(constructFileMenu());
-		add(constructReportMenu());
+		//add(constructReportMenu());
 		//		constructActionMap();
 	}
 
@@ -135,7 +137,6 @@ public class MainMenuBar extends JMenuBar
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
 		fileMenu.addSeparator();
-		fileMenu.addSeparator();
 		fileMenu.add(closeMenuItem);
 		fileMenu.add(closeAllMenuItem);
 		fileMenu.addSeparator();
@@ -148,25 +149,27 @@ public class MainMenuBar extends JMenuBar
 		return fileMenu;
 	}
 
-	private JMenu constructReportMenu()
-	{
-		JMenu reportMenu = new JMenu(MenuConstants.REPORT_MENU_NAME);
-		reportMenu.setMnemonic('R');
-		reportMenu.setEnabled(false);
-		// first is just place holder.
-		JMenuItem generateReportMenuItem = new JMenuItem((Action) null);
-		reportMenu.add(generateReportMenuItem);
-		menuItemMap.put(ActionConstants.GENERATE_REPORT, generateReportMenuItem);
-		menuMap.put(MenuConstants.REPORT_MENU_NAME, reportMenu);
-		return reportMenu;
-	}
+//	private JMenu constructReportMenu()
+//	{
+//		JMenu reportMenu = new JMenu(MenuConstants.REPORT_MENU_NAME);
+//		reportMenu.setMnemonic('R');
+//		reportMenu.setEnabled(false);
+//		// first is just place holder.
+//		JMenuItem generateReportMenuItem = new JMenuItem((Action) null);
+//		reportMenu.add(generateReportMenuItem);
+//		menuItemMap.put(ActionConstants.GENERATE_REPORT, generateReportMenuItem);
+//		menuMap.put(MenuConstants.REPORT_MENU_NAME, reportMenu);
+//		return reportMenu;
+//	}
 
 
 	private JMenu constructNewMenu()
 	{
-		JMenu newGroup = new JMenu("      " + MenuConstants.NEW_MENU_NAME);
+		JMenu newGroup = new JMenu("" + MenuConstants.NEW_MENU_NAME);
 		//System.out.println("Activated components:\n" + CaadapterUtil.getAllActivatedComponents());
 		menuMap.put(MenuConstants.NEW_MENU_NAME, newGroup);
+		
+        newGroup.add(constructNewCmpsMenu());
 
 		return newGroup;
 	}
@@ -183,10 +186,11 @@ public class MainMenuBar extends JMenuBar
 		// link them together
 		JMenu openMenu = new JMenu("      " + MenuConstants.OPEN_MENU_NAME);
 		openMenu.setMnemonic('O');
+		openMenu.add(openMapFileItem);
 
 		return openMenu;
 	}
-	private int findKeyStrokeIndex(int indx)
+	private static int findKeyStrokeIndex(int indx)
 	{
 		if (indx==0)
 			return KeyEvent.VK_0;
@@ -210,6 +214,32 @@ public class MainMenuBar extends JMenuBar
 			return KeyEvent.VK_9;
 		return  KeyEvent.VK_0;
 	}
+	
+	
+    private JMenu constructNewCmpsMenu()
+    {
+    	//user should be authorized to use HL7 artifacts
+        JMenu newGroup = new JMenu("CMPS");
+        newGroup.setMnemonic('N');
+
+        NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
+        newMapAction.setAuthorizationRequired(true);
+        JMenuItem newCmpsMapItem = new JMenuItem(newMapAction);
+        actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
+        menuItemMap.put(ActionConstants.NEW_MAP_FILE, newCmpsMapItem);
+        newGroup.add(newCmpsMapItem);
+        
+        NewMessageAction newMessage = new NewMessageAction(mainFrame);
+        newMessage.setAuthorizationRequired(true);
+        JMenuItem newCmpsMessageItem = new JMenuItem(newMessage);
+        actionMap.put(ActionConstants.NEW_MESSAGE_FILE, newMessage);
+        menuItemMap.put(ActionConstants.NEW_MESSAGE_FILE, newCmpsMessageItem);
+        newGroup.add(newCmpsMessageItem);
+        
+        return newGroup;
+    }
+
+	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.caadapter.ui.main.AbstractMenuBar#resetMenus(boolean)
 	 */
@@ -218,7 +248,7 @@ public class MainMenuBar extends JMenuBar
 		// more menus to be
 		// reset
 		resetFileMenu(hasActiveDocument);
-		resetReportMenu(hasActiveDocument);
+//		resetReportMenu(hasActiveDocument);
 	}
 
 	private void resetFileMenu(boolean hasActiveDocument)
@@ -285,13 +315,13 @@ public class MainMenuBar extends JMenuBar
 		}
 	}
 
-	private void resetReportMenu(boolean hasActiveDocument)
-	{
-		if (!hasActiveDocument)
-		{
-			resetMenuItem(ActionConstants.GENERATE_REPORT, false);
-		}
-	}
+//	private void resetReportMenu(boolean hasActiveDocument)
+//	{
+//		if (!hasActiveDocument)
+//		{
+//			resetMenuItem(ActionConstants.GENERATE_REPORT, false);
+//		}
+//	}
 
 	public void enableCloseAllAction(boolean newValue)
 	{
@@ -308,4 +338,7 @@ public class MainMenuBar extends JMenuBar
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2008/12/03 20:46:14  linc
+ * HISTORY : UI update.
+ * HISTORY :
  */

@@ -29,8 +29,8 @@ import java.util.Map;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  */
 public class ContextManager implements ChangeListener
 {
@@ -95,8 +95,8 @@ public class ContextManager implements ChangeListener
     	
     	if (menuName.equalsIgnoreCase(MenuConstants.FILE_MENU_NAME))
     		menuMaps.addFileMenuAction(actionName, action);
-		else if (menuName.equalsIgnoreCase(MenuConstants.REPORT_MENU_NAME))
-			menuMaps.addReportMenuAction(actionName, action);
+//		else if (menuName.equalsIgnoreCase(MenuConstants.REPORT_MENU_NAME))
+//			menuMaps.addReportMenuAction(actionName, action);
 		else if (menuName.equalsIgnoreCase(MenuConstants.TOOLBAR_MENU_NAME))
 			menuMaps.addToolBarMenuAction(actionName, action);
     	clientMenuActions.put(svcName, menuMaps);
@@ -116,8 +116,8 @@ public class ContextManager implements ChangeListener
     		return;
     	if (menuName.equalsIgnoreCase(MenuConstants.FILE_MENU_NAME))
     		menuMaps.getFileMenuActions().remove(actionName);
-		else if (menuName.equalsIgnoreCase(MenuConstants.REPORT_MENU_NAME))
-			menuMaps.getReportMenuActions().remove(actionName);
+//		else if (menuName.equalsIgnoreCase(MenuConstants.REPORT_MENU_NAME))
+//			menuMaps.getReportMenuActions().remove(actionName);
 		else if (menuName.equalsIgnoreCase(MenuConstants.TOOLBAR_MENU_NAME))
 			menuMaps.getToolBarMenuActions().remove(actionName);
     	clientMenuActions.put(svcName, menuMaps);
@@ -231,8 +231,8 @@ public class ContextManager implements ChangeListener
                 menu.resetMenus(true);
                 Map actionMap = contextClient.getMenuItems(MenuConstants.FILE_MENU_NAME);
                 updateMenu(actionMap, MenuConstants.FILE_MENU_NAME);
-                actionMap = contextClient.getMenuItems(MenuConstants.REPORT_MENU_NAME);
-                updateMenu(actionMap, MenuConstants.REPORT_MENU_NAME);
+//                actionMap = contextClient.getMenuItems(MenuConstants.REPORT_MENU_NAME);
+//                updateMenu(actionMap, MenuConstants.REPORT_MENU_NAME);
             }
             else
             {//we could possibly be here b/c user closed the last tab, roll back to menu's original state.
@@ -259,8 +259,6 @@ public class ContextManager implements ChangeListener
             updateMenuAction(actionMap, ActionConstants.SAVE);
             updateMenuAction(actionMap, ActionConstants.SAVE_AS);
             updateMenuAction(actionMap, ActionConstants.VALIDATE);
-            updateMenuAction(actionMap, ActionConstants.ANOTATE);
-            updateMenuAction(actionMap, ActionConstants.NEW_O2DB_MAP_FILE);
             boolean updated = updateMenuAction(actionMap, ActionConstants.CLOSE);
             if (updated)
             {
@@ -406,4 +404,7 @@ public class ContextManager implements ChangeListener
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2008/12/03 20:46:14  linc
+ * HISTORY : UI update.
+ * HISTORY :
  */

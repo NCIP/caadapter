@@ -34,8 +34,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.11 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.12 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class MappingTest {
@@ -171,10 +171,7 @@ public class MappingTest {
 		//add links;
 		m.setLinks(new Mapping.Links());
 		
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
-		Marshaller u = jc.createMarshaller();
-		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), new File("bin/mapping1.out.xml"));
+		MappingFactory.saveMapping(new File("bin/mapping1.out.xml"), m);
 	}
 	
 	/**
@@ -182,12 +179,8 @@ public class MappingTest {
 	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
-		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping.xml")), Mapping.class);
-		Marshaller mar = jc.createMarshaller();
-		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		mar.marshal(m, new File("bin/mapping_roundtrip.out.xml"));
+		Mapping m = MappingFactory.loadMapping(new File("etc/data/mapping.xml"));
+		MappingFactory.saveMapping(new File("bin/mapping_roundtrip.out.xml"), m);
 		//assertEquals(new File("etc/data/mapping.xml").length(), new File("bin/mapping1.out.xml").length());
 	}
 	
@@ -196,12 +189,11 @@ public class MappingTest {
 	 */
 	@Test
 	public void testFindNodeById() throws Exception {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
-		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping.xml")), Mapping.class);
+		Mapping m = MappingFactory.loadMapping(new File("etc/data/mapping.xml"));
 		String cid = "etc/data/printorder.xsd";
 		String id = "/printorder@orderid";
-		BaseMeta b = MappingFactory.findNodeById(m.getValue(), cid, id);
+		BaseMeta b = MappingFactory.findNodeById(m, cid, id);
+		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller mar = jc.createMarshaller();
 		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		mar.marshal(new JAXBElement(new QName("meta"), b.getClass(), b), new File("bin/mapping_findObj.out.xml"));
@@ -211,6 +203,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.11  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.10  2008/11/04 21:19:34  linc
  * HISTORY: core mapping and transform demo.
  * HISTORY:

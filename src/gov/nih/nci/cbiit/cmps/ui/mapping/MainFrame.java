@@ -25,8 +25,8 @@ import java.util.HashMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class MainFrame extends JFrame
@@ -98,14 +98,14 @@ public class MainFrame extends JFrame
 			this.setFocusable(true);
 			this.setFocusableWindowState(true);
 
-			CmpsMappingPanel cp = null;
-			try {
-				cp = new CmpsMappingPanel();
-				addNewTab(cp);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			CmpsMappingPanel cp = null;
+//			try {
+//				cp = new CmpsMappingPanel();
+//				addNewTab(cp);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 
 			//XXX debug
 			//			System.out.println("JPanel bound="+p.getBounds());
@@ -388,4 +388,7 @@ public class MainFrame extends JFrame
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  */

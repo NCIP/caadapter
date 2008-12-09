@@ -9,6 +9,7 @@
 package gov.nih.nci.cbiit.cmps.ui.mapping;
 
 import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
+import gov.nih.nci.cbiit.cmps.core.Component;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultMappableTreeNode;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
@@ -35,8 +36,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class ElementMetaLoader
@@ -44,6 +45,7 @@ public class ElementMetaLoader
 	public static final int SOURCE_MODE = 0;
 	public static final int TARGET_MODE = 1;
 	int mode = SOURCE_MODE;
+	Object obj = null;
 
 	public ElementMetaLoader(int mode){
 		this.mode = mode;
@@ -84,11 +86,13 @@ public class ElementMetaLoader
 		return node;
 	}
 
-	public static class MyTreeObject {
+	public class MyTreeObject {
 		String name;
 		Object obj;
+		Object rootObj;
 		
 		public MyTreeObject(String name, Object obj) {
+			this.rootObj = ElementMetaLoader.this.obj;
 			this.name = name;
 			this.obj = obj;
 		}
@@ -111,10 +115,10 @@ public class ElementMetaLoader
 			return obj;
 		}
 		/**
-		 * @param obj the obj to set
+		 * @return the rootObj
 		 */
-		public void setObj(Object obj) {
-			this.obj = obj;
+		public Object getRootObj() {
+			return rootObj;
 		}
 		
 		public String toString(){
@@ -122,7 +126,7 @@ public class ElementMetaLoader
 		}
 		
 	}
-	private static Object getUserObject(Object userObject) {
+	private Object getUserObject(Object userObject) {
 		if(userObject instanceof ElementMeta){
 			return new MyTreeObject(((ElementMeta)userObject).getName(), userObject);
 		}if(userObject instanceof AttributeMeta){
@@ -171,15 +175,15 @@ public class ElementMetaLoader
 	 */
 	public TreeNode loadData(Object o)
 	{
-			if (o instanceof ElementMeta)
-			{
-				return processElement((ElementMeta)o);
-			}
-			else
-			{
-				throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
-						"not recognized. " + o);
-			}
+		this.obj = o;
+		if (o instanceof ElementMeta){
+			return processElement((ElementMeta)o);
+		}else if(o instanceof Component){
+			return processElement(((Component)o).getRootElement());
+		}else{
+			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
+					"not recognized. " + o);
+		}
 	}
 
 	/**
@@ -214,4 +218,7 @@ public class ElementMetaLoader
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  */

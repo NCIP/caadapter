@@ -15,8 +15,8 @@ package gov.nih.nci.cbiit.cmps.ui.common;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  */
 public interface ActionConstants
 {
@@ -24,15 +24,6 @@ public interface ActionConstants
 	//NEW_MAP_FILE is used as the key to the text, while the NEW_MAP_FILE_TXT is used as the action name;
 	//this is because the action name in display may be the same but we really need to distinguish them in a map
 	//between a new and an open command.
-	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
-	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
-    String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";   
-
-	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
-	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
-	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
-	String OPEN_CSV2XMI_MAP_FILE = "Open CSV Meta To Object/Data Model Mapping";
-    String OPEN_XSD2XMI_MAP_FILE = "Open XSD Meta To XMI Mapping";
 
 	String OPEN = "Open...";
 	String CLOSE = "Close";
@@ -52,10 +43,14 @@ public interface ActionConstants
 	String REFRESH = "Refresh";
 	String NEW_MAP_FILE = "New Map file";
 	String OPEN_MAP_FILE = "Open Map file";
+	String NEW_MESSAGE_FILE = "New message transformation";
 }
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.2  2008/12/03 20:46:14  linc
+ * HISTORY : UI update.
+ * HISTORY :
  * HISTORY : Revision 1.1  2008/11/04 15:58:57  linc
  * HISTORY : updated.
  * HISTORY :
