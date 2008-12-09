@@ -9,35 +9,30 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
-import gov.nih.nci.caadapter.common.SDKMetaData;
+import gov.nih.nci.caadapter.ui.common.MappableNode;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.jgraph.MiddlePanelJGraphController;
-
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
-
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 /**
  * This class defines the action to delete selected graphic cells.
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-10-21 15:36:40 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2008-12-09 16:04:04 $
  */
 public class GraphDeleteAction extends DefaultAbstractJgraphAction
 {
 	private static final String COMMAND_NAME = "Delete";
 	private static final Character COMMAND_MNEMONIC = new Character('D');
-	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
@@ -73,7 +68,6 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 	{
 		super(name, icon, middlePanel, controller);
 		setMnemonic(COMMAND_MNEMONIC);
-//		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
 		setActionCommandType(DOCUMENT_ACTION_TYPE);
 	}
 
@@ -96,10 +90,9 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 			{
 				Object[] cells = graph.getSelectionCells();
 				DefaultGraphCell graphCell=(DefaultGraphCell)cells[0];
-				boolean hasMappedColumn=false;
-				//check if the mapped Table has any mapped column
-				//the following block only apply to MMS mapping
-				//not allow to delete a table mapping if column is mapped
+				boolean hasMappedChild=false;
+				//check if the mapped Table has any mapped child
+				//not allow to delete a table mapping if child is mapped
 				if (graphCell instanceof DefaultEdge)
 				{					
 					MappingViewCommonComponent viewC = (MappingViewCommonComponent) graphCell.getUserObject();
@@ -107,16 +100,16 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 					for(int i=0;i<tableTreeNode.getChildCount(); i++)
 					{
 						DefaultMutableTreeNode childNode=(DefaultMutableTreeNode)tableTreeNode.getChildAt(i);
-						SDKMetaData columnMeta=(SDKMetaData)childNode.getUserObject();
-						if (columnMeta.isMapped())
+						MappableNode mapChildNode=(MappableNode)childNode;
+						if(mapChildNode.isMapped())
 						{
-							hasMappedColumn=true;
+							hasMappedChild=true;
 							JOptionPane.showMessageDialog(getMiddlePanel(), "Unable to delete, this mapping has children mapping !", "Children Are Mapped", JOptionPane.WARNING_MESSAGE);
 							break;
 						}					
 					}
 				}
-				if (!hasMappedColumn)
+				if (!hasMappedChild)
 					getController().handleDelete();
 			}
 		}
@@ -140,6 +133,9 @@ public class GraphDeleteAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/10/21 15:36:40  wangeug
+ * HISTORY      : fix bug: allow user delete a function box
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/09/29 20:36:23  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
