@@ -10,10 +10,13 @@ package gov.nih.nci.cbiit.cmps.ui.jgraph;
 import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 
+import gov.nih.nci.cbiit.cmps.core.Component;
 import gov.nih.nci.cbiit.cmps.core.LinkType;
 import gov.nih.nci.cbiit.cmps.core.LinkpointType;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
@@ -52,8 +55,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-12-04 21:34:20 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -904,6 +907,10 @@ public class MiddlePanelJGraphController
 	 */
 	private synchronized void constructMappingGraph()
 	{
+		if(mappingData.getLinks() == null){
+			mappingData.setLinks(new Mapping.Links());
+		}
+
 		List<LinkType> mapList = mappingData.getLinks().getLink();
 		int mapSize = mapList.size();
 		if ( mapSize == 0 )
@@ -969,9 +976,52 @@ public class MiddlePanelJGraphController
 		// return viewPortVisibleWidth;// - 23;
 		return visibleWidth - 20;
 	}
+	
+	/**
+	 * Get mapping relation consolidated.
+	 * 
+	 * @param refresh
+	 *            if true, the underline implementation will refresh data from user's input; otherwise, it will return what it has now, which may not be
+	 *            up-to-date;
+	 * @return mapping relation consolidated.
+	 */
+	public Mapping retrieveMappingData(boolean refresh) {
+		/**
+		 * Design rationale: 1) for each of functions in the graph, create FunctionComponent; 2) for each of direct mapping, create map object associated with
+		 * it. Caveat: for simplicity, all previous map information is removed. Therefore, new component may carry different UUID then.
+		 */
+		if ( !refresh ) {// return what it is now.
+			return mappingData;
+		}
+		if ( mappingData == null ) {
+			// mappingData = new MappingImpl();
+			throw new IllegalStateException("If refresh is true, the mapping data in " + getClass().getName() + " shall not be null. Please call registerXYZs() to add in soruce and target components.");
+		}
+		// clear out the data before adding.
+		if(mappingData.getLinks() == null){
+			mappingData.setLinks(new Mapping.Links());
+		}else{
+			mappingData.getLinks().getLink().clear();
+		}
+		for (Iterator it = mappingViewList.iterator(); it.hasNext();) {
+			MappingViewCommonComponent comp = (MappingViewCommonComponent) it.next();
+			MappableNode sourceNode = comp.getSourceNode();
+			MappableNode targetNode = comp.getTargetNode();
+			String srcComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) sourceNode).getUserObject()).getRootObj()).getId();
+			String tgtComponentId = ((Component) ((ElementMetaLoader.MyTreeObject) ((DefaultMutableTreeNode) targetNode).getUserObject()).getRootObj()).getId();
+			String srcPath = UIHelper.getPathStringForNode((DefaultMutableTreeNode) sourceNode);
+			String tgtPath = UIHelper.getPathStringForNode((DefaultMutableTreeNode) targetNode);
+
+			MappingFactory.addLink(mappingData, srcComponentId, srcPath, tgtComponentId, tgtPath);
+		}
+		return mappingData;
+	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/12/04 21:34:20  linc
+ * HISTORY: Drap and Drop support with new Swing.
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:

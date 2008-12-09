@@ -8,6 +8,7 @@
 package gov.nih.nci.cbiit.cmps.test;
 
 import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
 
@@ -34,8 +35,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-11-04 21:19:34 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class TransformTest {
@@ -94,10 +95,7 @@ public class TransformTest {
 
 	@Test
 	public void testCMPSTransform() throws XQException, JAXBException, IOException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
-		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping.xml")), Mapping.class);
-		Mapping map = m.getValue();
+		Mapping map = MappingFactory.loadMapping(new File("etc/data/mapping.xml"));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		//System.out.println("$$$$$$ query: \n"+queryString);
@@ -115,10 +113,7 @@ public class TransformTest {
 
 	@Test
 	public void testCMPSTransform1() throws XQException, JAXBException, IOException {
-		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
-		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping1.xml")), Mapping.class);
-		Mapping map = m.getValue();
+		Mapping map = MappingFactory.loadMapping(new File("etc/data/mapping1.xml"));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		//System.out.println("$$$$$$ query: \n"+queryString);
@@ -159,6 +154,9 @@ public class TransformTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/11/04 21:19:34  linc
+ * HISTORY: core mapping and transform demo.
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/10/21 15:59:57  linc
  * HISTORY: updated.
  * HISTORY:

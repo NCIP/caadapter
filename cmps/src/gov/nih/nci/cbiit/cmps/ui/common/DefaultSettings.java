@@ -33,8 +33,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class DefaultSettings
@@ -52,6 +52,10 @@ public class DefaultSettings
 
 	private static final UIDefaults newDefaults = new UIDefaults(uiDefaults);
 	public static final String MAP_FILE_DEFAULT_EXTENTION = ".xml";
+	public static final String CSV_DATA_FILE_DEFAULT_EXTENSTION = ".csv";
+	public static final String CSV_METADATA_FILE_DEFAULT_EXTENTION = ".scs";
+	public static final String OPEN_DIALOG_TITLE_FOR_CSV_FILE = "Open csv file";
+	public static final String OPEN_DIALOG_TITLE_FOR_MAP_FILE = "Open mapping file";
 	private static JFileChooser defaultFileChooser;
 	private static File lastPathLocation;
 	public static int FRAME_DEFAULT_HEIGHT = 780;
@@ -531,6 +535,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
  * HISTORY: GUI first add.
  * HISTORY:

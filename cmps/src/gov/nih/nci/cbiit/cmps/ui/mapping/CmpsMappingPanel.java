@@ -13,12 +13,14 @@ import gov.nih.nci.cbiit.cmps.core.Component;
 import gov.nih.nci.cbiit.cmps.core.ComponentType;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
 import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmps.ui.actions.OpenMapFileAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.SaveAsMapAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.SaveMapAction;
 import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmps.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmps.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmps.ui.common.MenuConstants;
-import gov.nih.nci.cbiit.cmps.ui.common.OpenMapFileAction;
 import gov.nih.nci.cbiit.cmps.ui.common.TestLabel;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
@@ -66,8 +68,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-12-04 21:34:20 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -353,7 +355,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 			List<Component> l = components.getComponent();
 			for(Component c:l){
 				if(c.getType().equals(ComponentType.SOURCE))
-					node = new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE).loadData(c.getRootElement());
+					node = new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE).loadData(c);
 			}
 		}else{
 			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
@@ -372,7 +374,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 			List<Component> l = components.getComponent();
 			for(Component c:l){
 				if(c.getType().equals(ComponentType.TARGET))
-					node = new ElementMetaLoader(ElementMetaLoader.TARGET_MODE).loadData(c.getRootElement());
+					node = new ElementMetaLoader(ElementMetaLoader.TARGET_MODE).loadData(c);
 			}
 		}else{
 			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
@@ -568,15 +570,31 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		if (MenuConstants.FILE_MENU_NAME.equals(menu_name))
 		{
 			JRootPane rootPane = this.getRootPane();
-			if (rootPane != null)
-			{//rootpane is not null implies this panel is fully displayed;
+			if (rootPane == null){
+				//rootpane is not null implies this panel is fully displayed;
 				//on the flip side, if it is null, it implies it is under certain construction.
-				contextManager.enableAction(ActionConstants.NEW_MAP_FILE, false);
+				contextManager.enableAction(ActionConstants.NEW_MAP_FILE, true);
 				contextManager.enableAction(ActionConstants.OPEN_MAP_FILE, true);
+				contextManager.enableAction(ActionConstants.CLOSE, false);
+				contextManager.enableAction(ActionConstants.SAVE, false);
+				contextManager.enableAction(ActionConstants.SAVE_AS, false);
+			}else{
+				contextManager.enableAction(ActionConstants.CLOSE, true);
+				contextManager.enableAction(ActionConstants.SAVE, true);
+				contextManager.enableAction(ActionConstants.SAVE_AS, true);
 			}
 		}
-		action = new OpenMapFileAction(MainFrame.getInstance());
+		
+		//since the action depends on the panel instance,
+		//the old action instance should be removed
+		if (actionMap!=null)
+			contextManager.removeClientMenuAction("CMPS", menu_name, "");
+		
+		action = new SaveMapAction(this);
 		contextManager.addClientMenuAction("CMPS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE, action);
+		action.setEnabled(true);
+		action = new SaveAsMapAction(this);
+		contextManager.addClientMenuAction("CMPS", MenuConstants.FILE_MENU_NAME,ActionConstants.SAVE_AS, action);
 		action.setEnabled(true);
 
 		actionMap = contextManager.getClientMenuActions("CMPS", menu_name);
@@ -671,7 +689,10 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	 * @return the mapping
 	 */
 	public Mapping getMapping() {
-		if(this.mapping == null) this.mapping = new Mapping();
+		if(this.mapping == null){
+			this.mapping = new Mapping();
+			this.getMappingDataManager().setMappingData(mapping);
+		}
 		return mapping;
 	}
 
@@ -701,32 +722,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return dndHandler.getState()!=TreeTransferHandler.READY;
 	}
 
-
-	/**
-	 * Set a new save file.
-	 *
-	 * @param saveFile
-	 * @return true if the value is changed, false otherwise.
-	 */
-	public boolean setSaveFile(File saveFile)
-	{
-		//removed the equal check so as to support explicit refresh or reload call.
-		//		ContextManager contextManager = ContextManager.getContextManager();
-		boolean sameFile = GeneralUtilities.areEqual(this.saveFile, saveFile);
-		if(!sameFile)
-		{//remove interest in the context file manager, first for old file
-
-			//				contextManager.getContextFileManager().removeFileUsageListener(this);
-		}
-		this.saveFile = saveFile;
-		//		if(!sameFile)
-		//		{//register interest in the context file manager for new file
-		//				contextManager.getContextFileManager().registerFileUsageListener(this);
-		//		}
-		updateTitle(this.saveFile.getName());
-		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Mapping_File, saveFile);
-		return true;
-	}
 
 	public JScrollPane getSourceScrollPane() {
 		return sourceScrollPane;
@@ -846,6 +841,33 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return saveFile;
 	}
 
+	/**
+	 * Set a new save file.
+	 *
+	 * @param saveFile
+	 * @return true if the value is changed, false otherwise.
+	 */
+	public boolean setSaveFile(File saveFile)
+	{
+		//removed the equal check so as to support explicit refresh or reload call.
+		//		ContextManager contextManager = ContextManager.getContextManager();
+		boolean sameFile = GeneralUtilities.areEqual(this.saveFile, saveFile);
+		if(!sameFile)
+		{//remove interest in the context file manager, first for old file
+
+			//				contextManager.getContextFileManager().removeFileUsageListener(this);
+		}
+		this.saveFile = saveFile;
+		//		if(!sameFile)
+		//		{//register interest in the context file manager for new file
+		//				contextManager.getContextFileManager().registerFileUsageListener(this);
+		//		}
+		updateTitle(this.saveFile.getName());
+		//		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Mapping_File, saveFile);
+		return true;
+	}
+
+	
 	public void synchronizeRegisteredFile(boolean notigyOberver)
 	{
 		//do nothing, only the "MappingFilePanel" will implement it
@@ -860,10 +882,10 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		if (rootPane != null)
 		{
 			Container container = rootPane.getParent();
-			//			if (container instanceof AbstractMainFrame)
-			//			{
-			//				((AbstractMainFrame)container).setCurrentPanelTitle(newTitle);
-			//			}
+			if (container instanceof MainFrame)
+			{
+				((MainFrame)container).setCurrentPanelTitle(newTitle);
+			}
 		}
 	}
 
@@ -931,6 +953,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/12/04 21:34:20  linc
+ * HISTORY: Drap and Drop support with new Swing.
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:

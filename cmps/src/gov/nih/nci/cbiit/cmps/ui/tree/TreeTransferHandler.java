@@ -10,7 +10,7 @@ package gov.nih.nci.cbiit.cmps.ui.tree;
 import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
-import gov.nih.nci.cbiit.cmps.ui.jgraph.UIHelper;
+import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 
@@ -32,8 +32,8 @@ import javax.swing.tree.TreePath;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-04 21:34:20 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 public class TreeTransferHandler extends TransferHandler {
@@ -95,7 +95,7 @@ public class TreeTransferHandler extends TransferHandler {
 		JTree tree = (JTree)c;
 		TreePath path = tree.getSelectionPath();
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-		String pathString = getPathStringForNode(node);
+		String pathString = UIHelper.getPathStringForNode(node);
         this.state = START;
 		return new StringSelection(pathString);
 	}
@@ -143,7 +143,7 @@ public class TreeTransferHandler extends TransferHandler {
         }
 
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        String targetData = getPathStringForNode(targetNode);
+        String targetData = UIHelper.getPathStringForNode(targetNode);
         DefaultMutableTreeNode sourceNode = UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), data);
         
         boolean ret = this.panel.getMappingDataManager().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
@@ -152,25 +152,11 @@ public class TreeTransferHandler extends TransferHandler {
         return true;
 	}
 
-	public static String getPathStringForNode(DefaultMutableTreeNode node){
-		StringBuilder sb = new StringBuilder();
-		Object[] path = node.getUserObjectPath();
-		for(int i=0; i<path.length; i++){
-			if(path[i] instanceof ElementMetaLoader.MyTreeObject){
-				Object obj = ((ElementMetaLoader.MyTreeObject)path[i]).getObj();
-				if(obj instanceof ElementMeta){
-					sb.append("/").append(((ElementMeta)obj).getName());
-				}else if(obj instanceof AttributeMeta){
-					sb.append("@").append(((AttributeMeta)obj).getName());
-				}else
-					return "";
-			}else
-				return "";
-		}
-		return sb.toString();
-	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/12/04 21:34:20  linc
+ * HISTORY: Drap and Drop support with new Swing.
+ * HISTORY:
  */
 

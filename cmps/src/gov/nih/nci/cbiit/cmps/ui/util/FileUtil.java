@@ -29,8 +29,8 @@ import java.util.logging.FileHandler;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-09 19:04:17 $
  *
  */
 
@@ -233,7 +233,7 @@ public class FileUtil
      */
     public static String getUIWorkingDirectoryPath()
     {
-        File f = new File("./etc/data");
+        File f = new File("./workingspace");
         if ((!f.exists())||(!f.isDirectory()))
         {
             f.mkdirs();
@@ -798,10 +798,26 @@ public class FileUtil
         return true;
     }
 
+    public static String getRelativePath(File f){
+    	String workDir = new File("").getAbsolutePath();
+    	String fPath = f.getAbsolutePath();
+    	String ret = null;
+    	if(fPath.startsWith(workDir)){
+    		ret = fPath.substring(workDir.length());
+    		ret = ret.replace('\\', '/');
+    		while(ret.startsWith("/")){
+    			ret = ret.substring(1);
+    		}
+    	}
+    	return ret;
+    }
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
  * HISTORY: GUI first add.
  * HISTORY:

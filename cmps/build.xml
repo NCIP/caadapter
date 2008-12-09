@@ -10,17 +10,30 @@
 			<include name="**/*.jar" />
 			<include name="**/*.zip" />
 		</fileset>
-		<pathelement path="${src.dir}" />
+		<!-- pathelement path="${src.dir}" /-->
 	</path>
+
+	<pathconvert pathsep=" " targetos="unix" property="distribution.manifest.class.property" refid="project.class.path">
+		<!-- make paths relative-->
+		<map from="${basedir}/lib" to="." />
+		<map from="${basedir}" to="." />
+	</pathconvert>
+
 
 	<target name="clean">
 		<delete dir="${build.dir}" includeEmptyDirs="true" />
 		<delete dir="${dist.dir}" includeEmptyDirs="true" />
+		<delete>
+			<fileset dir="." includes="*.zip" />
+		</delete>
 	</target>
 
 	<target name="prep">
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${dist.dir}" />
+		<tstamp>
+			<format property="DATE" pattern="MM-dd-yy" locale="en_us" />
+		</tstamp>
 	</target>
 
 	<target name="codegen">
@@ -32,7 +45,7 @@
 			<arg value="etc/schema/dataModel.xsd" />
 		</exec>
 	</target>
-	<target name="compile" depends="clean, prep">
+	<target name="compile" depends="prep">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on" deprecation="on">
 			<include name="**/*.java" />
 			<classpath refid="project.class.path" />
@@ -91,12 +104,50 @@
 	</target>
 
 	<target name="jar" depends="compile" description="create the distribution jars">
-		<jar destfile="${dist.dir}/${ucum.server.jar.name}">
-			<fileset dir="${build.dir}" excludes="**/Test.class" />
-			<fileset dir="${basedir}" includes="config/*.*" />
+		<echo> ${distribution.manifest.class.property} </echo>
+		<!-- copy todir="${build.dir}">
+			<fileset dir="resources">
+				<exclude name="**/CVS/**" />
+			</fileset>
+		</copy -->
+		<jar destfile="${dist.dir}/cmps.jar">
+			<fileset dir="${build.dir}" excludes="**/Test.class **/ui/**" />
+			<!-- fileset dir="${basedir}" includes="config/*.*" /-->
 			<!-- fileset dir="${etc.dir}" excludes="**/ucum-expression.xml" /-->
 			<!-- fileset dir="${src.dir}" excludes="**/*.java" /-->
 		</jar>
+		<jar destfile="${dist.dir}/cmps-resources.jar">
+			<fileset dir="resources" excludes="**/CVS/**" />
+		</jar>
+		<jar destfile="${dist.dir}/cmpsUI.jar">
+			<fileset dir="${build.dir}" includes="**/ui/**" />
+			<manifest>
+				<attribute name="Main-Class" value="gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame" />
+				<attribute name="Class-Path" value=". cmps.jar cmps-resources.jar ${distribution.manifest.class.property}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="dist-bin" depends="jar" description="create the binary distribution">
+		<copy todir="${dist.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="**" />
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="workingspace/**" />
+			</fileset>
+		</copy>
+		<zip destfile="cmps__1_0_Bin_${DATE}.zip" basedir="${dist.dir}">
+		</zip>
+	</target>
+	
+	<target name="dist-src" depends="clean, prep" description="create the source distribution">
+		<zip destfile="cmps__1_0_Src_${DATE}.zip" basedir="${basedir}">
+			<exclude name="bin/**" />
+			<exclude name="build/**" />
+			<exclude name="dist/**" />
+			<exclude name="**/CVS/**" />
+		</zip>
 	</target>
 
 	<target name="main" depends="clean, prep, compile, jar" />
