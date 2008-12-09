@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EncounterEvent messageType="PRPA_MT402003" referenceName="" sortKey="" name="EncounterEvent" title="MIF Clone Properties" isEnabled="true">
+  <packageLocation realm="UV" version="02" root="DEFN" artifact="MT-deprecated" subSection="PR" domain="PA" section="AM" id="402003" />
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ENC" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="ENC" />
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" dHL7DefaultValueProperty="EVN" codingStrength="CNE" minimumSupportedLength="0" name="moodCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="EVN" />
+  <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="3" minimumMultiplicity="1" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" isEnabled="true">
+    <type parents="ANY" name="II" isEnabled="true">
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.id00" isOptional="true" isAttribute="true" name="root" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.id00" isOptional="true" isAttribute="true" name="assigningAuthorityName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" parentXmlPath="EncounterEvent.id00" isOptional="true" isAttribute="true" name="displayable" type="bl" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.id00" isOptional="true" isAttribute="true" name="extension" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.id00" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+    </type>
+  </attribute>
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="4" minimumMultiplicity="1" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" codingStrength="CWE" minimumSupportedLength="0" name="code" type="CD" title="MIF Attribute Properties" isEnabled="true">
+    <type parents="ANY" name="CD" isEnabled="true">
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="3" parentXmlPath="EncounterEvent.code" name="translation" type="CD" title="MIF Data Field Properties" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" parentXmlPath="EncounterEvent.code" isOptional="true" isAttribute="true" name="code" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" parentXmlPath="EncounterEvent.code" isOptional="true" isAttribute="true" name="codeSystemName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="1" sortKey="1" parentXmlPath="EncounterEvent.code" name="originalText" type="ED" title="MIF Data Field Properties" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="2" parentXmlPath="EncounterEvent.code" name="qualifier" type="CR" title="MIF Data Field Properties" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="7" parentXmlPath="EncounterEvent.code" isOptional="true" isAttribute="true" name="codeSystemVersion" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="8" parentXmlPath="EncounterEvent.code" isOptional="true" isAttribute="true" name="displayName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.code" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" parentXmlPath="EncounterEvent.code" isOptional="true" isAttribute="true" name="codeSystem" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+    </type>
+  </attribute>
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="5" minimumMultiplicity="1" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" dHL7DefaultValueProperty="completed" codingStrength="CNE" fixedValue="completed" minimumSupportedLength="0" name="statusCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="completed">
+    <type parents="CV" name="CS" isEnabled="true">
+      <dataField multiplicityIndex="0" min="0" max="0" sortKey="3" name="translation" type="CD" title="MIF Data Field Properties" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" parentXmlPath="EncounterEvent.statusCode" isOptional="true" isAttribute="true" name="code" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" isProhibited="true" isAttribute="true" name="codeSystemName" type="st" title="MIF Data Field Properties" isEnabled="true" />
+      <dataField multiplicityIndex="0" min="0" max="1" sortKey="2" parentXmlPath="EncounterEvent.statusCode" name="originalText" type="ED" title="MIF Data Field Properties" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="0" sortKey="1" name="qualifier" type="CR" title="MIF Data Field Properties" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="7" isProhibited="true" isAttribute="true" name="codeSystemVersion" type="st" title="MIF Data Field Properties" isEnabled="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="8" isProhibited="true" isAttribute="true" name="displayName" type="st" title="MIF Data Field Properties" isEnabled="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.statusCode" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" isProhibited="true" isAttribute="true" name="codeSystem" type="uid" title="MIF Data Field Properties" isEnabled="true" />
+    </type>
+  </attribute>
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="6" minimumMultiplicity="1" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" minimumSupportedLength="0" name="effectiveTime" type="IVL_TS" title="MIF Attribute Properties" isEnabled="true">
+    <type parents="SXCM_TS" name="IVL_TS" isEnabled="true">
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="3" isOptionChosen="true" parentXmlPath="EncounterEvent.effectiveTime" name="low" type="IVXB_TS" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+        <type parents="TS" name="IVXB_TS" isEnabled="true">
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.effectiveTime.low" isOptional="true" isAttribute="true" name="inclusive" type="bl" defaultValue="true" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.effectiveTime.low" isOptional="true" isAttribute="true" name="value" type="ts" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.effectiveTime.low" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+        </type>
+      </dataField>
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="6" parentXmlPath="EncounterEvent.effectiveTime" name="center" type="TS" title="MIF Data Field Properties" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.effectiveTime" isOptional="true" isAttribute="true" name="operator" type="SetOperator" defaultValue="I" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="5" parentXmlPath="EncounterEvent.effectiveTime" name="width" type="PQ" title="MIF Data Field Properties" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="4" isOptionChosen="true" parentXmlPath="EncounterEvent.effectiveTime" name="high" type="IVXB_TS" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+        <type parents="TS" name="IVXB_TS" isEnabled="true">
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.effectiveTime.high" isOptional="true" isAttribute="true" name="inclusive" type="bl" defaultValue="true" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.effectiveTime.high" isOptional="true" isAttribute="true" name="value" type="ts" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.effectiveTime.high" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+        </type>
+      </dataField>
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.effectiveTime" isOptional="true" isAttribute="true" name="value" type="ts" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.effectiveTime" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+    </type>
+  </attribute>
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="7" minimumMultiplicity="0" parentXmlPath="EncounterEvent" minimumSupportedLength="0" name="activityTime" type="IVL_TS" title="MIF Attribute Properties" isEnabled="true">
+    <type parents="SXCM_TS" name="IVL_TS" isEnabled="true">
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="3" isOptionChosen="true" parentXmlPath="EncounterEvent.activityTime" name="low" type="IVXB_TS" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+        <type parents="TS" name="IVXB_TS" isEnabled="true">
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.activityTime.low" isOptional="true" isAttribute="true" name="inclusive" type="bl" defaultValue="true" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.activityTime.low" isOptional="true" isAttribute="true" name="value" type="ts" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.activityTime.low" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+        </type>
+      </dataField>
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="6" parentXmlPath="EncounterEvent.activityTime" name="center" type="TS" title="MIF Data Field Properties" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.activityTime" isOptional="true" isAttribute="true" name="operator" type="SetOperator" defaultValue="I" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="5" parentXmlPath="EncounterEvent.activityTime" name="width" type="PQ" title="MIF Data Field Properties" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="4" isOptionChosen="true" parentXmlPath="EncounterEvent.activityTime" name="high" type="IVXB_TS" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+        <type parents="TS" name="IVXB_TS" isEnabled="true">
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.activityTime.high" isOptional="true" isAttribute="true" name="inclusive" type="bl" defaultValue="true" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.activityTime.high" isOptional="true" isAttribute="true" name="value" type="ts" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+          <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.activityTime.high" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+        </type>
+      </dataField>
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.activityTime" isOptional="true" isAttribute="true" name="value" type="ts" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.activityTime" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+    </type>
+  </attribute>
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="8" minimumMultiplicity="0" parentXmlPath="EncounterEvent" minimumSupportedLength="0" name="lengthOfStayQuantity" type="PQ" title="MIF Attribute Properties" isEnabled="true">
+    <type parents="QTY" name="PQ" isEnabled="true">
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.lengthOfStayQuantity" isOptional="true" isAttribute="true" name="unit" type="cs" defaultValue="1" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.lengthOfStayQuantity" isOptional="true" isAttribute="true" name="value" type="real" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="1" parentXmlPath="EncounterEvent.lengthOfStayQuantity" name="translation" type="PQR" title="MIF Data Field Properties" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.lengthOfStayQuantity" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+    </type>
+  </attribute>
+  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="9" minimumMultiplicity="0" parentXmlPath="EncounterEvent" dDomainNameOidProperty="EncounterDischargeDisposition" codingStrength="CWE" minimumSupportedLength="0" domainName="EncounterDischargeDisposition" name="dischargeDispositionCode" type="CE" title="MIF Attribute Properties" isEnabled="true">
+    <type parents="CD" name="CE" isEnabled="true">
+      <dataField multiplicityIndex="0" min="0" max="-1" sortKey="3" parentXmlPath="EncounterEvent.dischargeDispositionCode" name="translation" type="CD" title="MIF Data Field Properties" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" parentXmlPath="EncounterEvent.dischargeDispositionCode" isOptional="true" isAttribute="true" name="code" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" parentXmlPath="EncounterEvent.dischargeDispositionCode" isOptional="true" isAttribute="true" name="codeSystemName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="1" sortKey="1" parentXmlPath="EncounterEvent.dischargeDispositionCode" name="originalText" type="ED" title="MIF Data Field Properties" isValid="true" />
+      <dataField multiplicityIndex="0" min="0" max="0" sortKey="2" name="qualifier" type="CR" title="MIF Data Field Properties" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="7" parentXmlPath="EncounterEvent.dischargeDispositionCode" isOptional="true" isAttribute="true" name="codeSystemVersion" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="8" parentXmlPath="EncounterEvent.dischargeDispositionCode" isOptional="true" isAttribute="true" name="displayName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.dischargeDispositionCode" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+      <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" parentXmlPath="EncounterEvent.dischargeDispositionCode" isOptional="true" isAttribute="true" name="codeSystem" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+    </type>
+  </attribute>
+  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" name="departedBy" title="MIF Association Properties" isEnabled="true">
+    <class referenceName="" sortKey="" name="DepartedBy" title="MIF Clone Properties" isEnabled="true">
+      <packageLocation />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="DEP" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" mnemonic="DEP" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" minimumSupportedLength="0" name="contextConductionInd" type="BL" defaultValue="true" title="MIF Attribute Properties" />
+      <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="8" minimumMultiplicity="1" name="transportationEvent" title="MIF Association Properties" isEnabled="true">
+        <class referenceName="" sortKey="" name="TransportationEvent" title="MIF Clone Properties" isEnabled="true">
+          <packageLocation />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="TRNS" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="TRNS" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="EVN" codingStrength="CNE" minimumSupportedLength="0" name="moodCode" type="CS" title="MIF Attribute Properties" mnemonic="EVN" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="4" minimumMultiplicity="1" conformance="R" dDomainNameOidProperty="ActPatientTransportationModeCode" codingStrength="CWE" minimumSupportedLength="0" domainName="ActPatientTransportationModeCode" name="code" type="CD" title="MIF Attribute Properties" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="5" minimumMultiplicity="0" minimumSupportedLength="0" name="text" type="ED" title="MIF Attribute Properties" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="6" minimumMultiplicity="0" minimumSupportedLength="0" name="effectiveTime" type="IVL_TS" title="MIF Attribute Properties" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="7" minimumMultiplicity="0" dDomainNameOidProperty="ActPriority" codingStrength="CWE" minimumSupportedLength="0" domainName="ActPriority" name="priorityCode" type="CE" title="MIF Attribute Properties" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="8" minimumMultiplicity="0" dDomainNameOidProperty="Confidentiality" codingStrength="CWE" minimumSupportedLength="0" domainName="Confidentiality" name="confidentialityCode" type="CE" title="MIF Attribute Properties" />
+          <association multiplicityIndex="0" maximumMultiplicity="-1" sortKey="10" minimumMultiplicity="0" name="escort" title="MIF Association Properties" isEnabled="true">
+            <class referenceName="" sortKey="" name="Escort" title="MIF Clone Properties" isEnabled="true">
+              <packageLocation />
+              <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ESC" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" mnemonic="ESC" />
+              <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="0" minimumSupportedLength="0" name="time" type="IVL_TS" title="MIF Attribute Properties" />
+              <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="14" minimumMultiplicity="1" name="assignedPerson" title="MIF Association Properties" isEnabled="true">
+                <class referenceName="" sortKey="" name="AssignedPerson" title="MIF Clone Properties" isEnabled="true">
+                  <packageLocation />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ASSIGNED" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="ASSIGNED" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="0" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="telecom" type="TEL" title="MIF Attribute Properties" />
+                  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="15" minimumMultiplicity="0" name="assignedPerson" title="MIF Association Properties" isEnabled="true">
+                    <class referenceName="" sortKey="" name="Person" title="MIF Clone Properties" isEnabled="true">
+                      <packageLocation />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="PSN" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="PSN" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" minimumSupportedLength="0" name="determinerCode" type="CS" title="MIF Attribute Properties" mnemonic="INSTANCE" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="name" type="PN" title="MIF Attribute Properties" />
+                    </class>
+                  </association>
+                  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="16" minimumMultiplicity="0" name="representedOrganization" title="MIF Association Properties" isEnabled="true">
+                    <class referenceName="" sortKey="" name="Organization" title="MIF Clone Properties" isEnabled="true">
+                      <packageLocation />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ORG" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="ORG" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" minimumSupportedLength="0" name="determinerCode" type="CS" title="MIF Attribute Properties" mnemonic="INSTANCE" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="name" type="ON" title="MIF Attribute Properties" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="4" minimumMultiplicity="0" minimumSupportedLength="0" name="telecom" type="TEL" title="MIF Attribute Properties" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="5" minimumMultiplicity="0" minimumSupportedLength="0" name="addr" type="AD" title="MIF Attribute Properties" />
+                    </class>
+                  </association>
+                </class>
+              </association>
+            </class>
+          </association>
+          <association multiplicityIndex="0" maximumMultiplicity="-1" sortKey="11" minimumMultiplicity="0" name="performer" title="MIF Association Properties" isEnabled="true">
+            <class referenceName="" sortKey="" name="Performer" title="MIF Clone Properties" isEnabled="true">
+              <packageLocation />
+              <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="PRF" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" mnemonic="PRF" />
+              <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="0" minimumSupportedLength="0" name="time" type="IVL_TS" title="MIF Attribute Properties" />
+              <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="22" minimumMultiplicity="1" name="assignedPerson" title="MIF Association Properties" isEnabled="true">
+                <class referenceName="" sortKey="" name="AssignedPerson" title="MIF Clone Properties" isEnabled="true">
+                  <packageLocation />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ASSIGNED" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="ASSIGNED" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="0" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="telecom" type="TEL" title="MIF Attribute Properties" />
+                  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="15" minimumMultiplicity="0" name="assignedPerson" title="MIF Association Properties" isEnabled="true">
+                    <class referenceName="" sortKey="" name="Person" title="MIF Clone Properties" isEnabled="true">
+                      <packageLocation />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="PSN" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="PSN" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" minimumSupportedLength="0" name="determinerCode" type="CS" title="MIF Attribute Properties" mnemonic="INSTANCE" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="name" type="PN" title="MIF Attribute Properties" />
+                    </class>
+                  </association>
+                  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="16" minimumMultiplicity="0" name="representedOrganization" title="MIF Association Properties" isEnabled="true">
+                    <class referenceName="" sortKey="" name="Organization" title="MIF Clone Properties" isEnabled="true">
+                      <packageLocation />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ORG" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="ORG" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" minimumSupportedLength="0" name="determinerCode" type="CS" title="MIF Attribute Properties" mnemonic="INSTANCE" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="name" type="ON" title="MIF Attribute Properties" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="4" minimumMultiplicity="0" minimumSupportedLength="0" name="telecom" type="TEL" title="MIF Attribute Properties" />
+                      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="5" minimumMultiplicity="0" minimumSupportedLength="0" name="addr" type="AD" title="MIF Attribute Properties" />
+                    </class>
+                  </association>
+                </class>
+              </association>
+            </class>
+          </association>
+          <association multiplicityIndex="0" maximumMultiplicity="-1" sortKey="12" minimumMultiplicity="0" name="location" title="MIF Association Properties" isEnabled="true">
+            <class referenceName="" sortKey="" name="Location3" title="MIF Clone Properties" isEnabled="true">
+              <packageLocation />
+              <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="LOC" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" mnemonic="LOC" />
+              <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="0" minimumSupportedLength="0" name="sequenceNumber" type="INT" title="MIF Attribute Properties" />
+              <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="24" minimumMultiplicity="1" name="locatedEntity" title="MIF Association Properties" isEnabled="true">
+                <class referenceName="R_LocationLocatedEntityContact" name="R_LocationLocatedEntityContact" title="MIF Clone Properties" isEnabled="true">
+                  <packageLocation />
+                </class>
+              </association>
+            </class>
+          </association>
+        </class>
+      </association>
+    </class>
+  </association>
+  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="4" minimumMultiplicity="1" parentXmlPath="EncounterEvent" isMandatory="true" conformance="R" name="subject" title="MIF Association Properties" isEnabled="true">
+    <class referenceName="" sortKey="" name="Subject" title="MIF Clone Properties" isEnabled="true">
+      <packageLocation />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" parentXmlPath="EncounterEvent.subject" isMandatory="true" conformance="R" dHL7DefaultValueProperty="SBJ" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="SBJ" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" parentXmlPath="EncounterEvent.subject" isMandatory="true" conformance="R" codingStrength="CNE" minimumSupportedLength="0" name="contextControlCode" type="CS" defaultValue="OP" title="MIF Attribute Properties" isEnabled="true" />
+      <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="27" minimumMultiplicity="1" parentXmlPath="EncounterEvent.subject" isMandatory="true" conformance="R" name="patient" title="MIF Association Properties" isEnabled="true">
+        <class messageType="COCT_MT050002" referenceName="" sortKey="" name="Patient" title="MIF Clone Properties" isEnabled="true">
+          <packageLocation realm="UV" version="04" root="DEFN" artifact="MT-deprecated" subSection="CO" domain="CT" section="IM" id="050002" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" parentXmlPath="EncounterEvent.subject.patient00" isMandatory="true" conformance="R" dHL7DefaultValueProperty="PAT" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="PAT" />
+          <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="2" minimumMultiplicity="1" parentXmlPath="EncounterEvent.subject.patient00" isMandatory="true" conformance="R" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" isEnabled="true">
+            <type parents="ANY" name="II" isEnabled="true">
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.subject.patient00.id00" isOptional="true" isAttribute="true" name="root" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.subject.patient00.id00" isOptional="true" isAttribute="true" name="assigningAuthorityName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" parentXmlPath="EncounterEvent.subject.patient00.id00" isOptional="true" isAttribute="true" name="displayable" type="bl" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.subject.patient00.id00" isOptional="true" isAttribute="true" name="extension" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.subject.patient00.id00" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+            </type>
+          </attribute>
+          <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="3" minimumMultiplicity="0" parentXmlPath="EncounterEvent.subject.patient00" minimumSupportedLength="0" name="addr" type="AD" title="MIF Attribute Properties" isEnabled="true">
+            <type parents="ANY" name="AD" isEnabled="true">
+              <dataField isSimple="true" multiplicityIndex="0" min="1" max="1" sortKey="32" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00" isAttribute="true" name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="14" name="additionalLocator" type="adxp.additionalLocator" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="8" name="houseNumber" type="adxp.houseNumber" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="23" name="deliveryMode" type="adxp.deliveryMode" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="13" name="streetNameType" type="adxp.streetNameType" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="24" name="deliveryModeIdentifier" type="adxp.deliveryModeIdentifier" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="3" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00" name="state" type="adxp.state" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+                <type parents="ADXP" name="adxp.state" isEnabled="true">
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="8" name="thumbnail" type="ED" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.subject.patient00.addr00.state" isAttribute="true" name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="7" name="reference" type="TEL" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.subject.patient00.addr00.state" isOptional="true" isAttribute="true" name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="9" parentXmlPath="EncounterEvent.subject.patient00.addr00.state" isAttribute="true" name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" isProhibited="true" isAttribute="true" name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="1" max="1" sortKey="11" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00.state" isAttribute="true" name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.subject.patient00.addr00.state" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.subject.patient00.addr00.state" isAttribute="true" name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" isProhibited="true" isAttribute="true" name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" isProhibited="true" isAttribute="true" name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                </type>
+              </dataField>
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="12" name="streetNameBase" type="adxp.streetNameBase" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="26" name="postBox" type="adxp.postBox" title="MIF Data Field Properties" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="11" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00" name="streetName" type="adxp.streetName" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+                <type parents="ADXP" name="adxp.streetName" isEnabled="true">
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="8" name="thumbnail" type="ED" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetName" isAttribute="true" name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="7" name="reference" type="TEL" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetName" isOptional="true" isAttribute="true" name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="9" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetName" isAttribute="true" name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" isProhibited="true" isAttribute="true" name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="1" max="1" sortKey="11" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetName" isAttribute="true" name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetName" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetName" isAttribute="true" name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" isProhibited="true" isAttribute="true" name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" isProhibited="true" isAttribute="true" name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                </type>
+              </dataField>
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="6" name="postalCode" type="adxp.postalCode" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="21" name="deliveryInstallationArea" type="adxp.deliveryInstallationArea" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="15" name="unitID" type="adxp.unitID" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="17" name="careOf" type="adxp.careOf" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="18" name="censusTract" type="adxp.censusTract" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="25" name="buildingNumberSuffix" type="adxp.buildingNumberSuffix" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="2" name="country" type="adxp.country" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="16" name="unitType" type="adxp.unitType" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="27" name="precinct" type="adxp.precinct" title="MIF Data Field Properties" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="29" isOptional="true" isAttribute="true" name="use" type="set_PostalAddressUse" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="7" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00" name="streetAddressLine" type="adxp.streetAddressLine" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+                <type parents="ADXP" name="adxp.streetAddressLine" isEnabled="true">
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="8" name="thumbnail" type="ED" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetAddressLine" isAttribute="true" name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="7" name="reference" type="TEL" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetAddressLine" isOptional="true" isAttribute="true" name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="9" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetAddressLine" isAttribute="true" name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" isProhibited="true" isAttribute="true" name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="1" max="1" sortKey="11" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetAddressLine" isAttribute="true" name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetAddressLine" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.subject.patient00.addr00.streetAddressLine" isAttribute="true" name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" isProhibited="true" isAttribute="true" name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" isProhibited="true" isAttribute="true" name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                </type>
+              </dataField>
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="5" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00" name="city" type="adxp.city" title="MIF Data Field Properties" isEnabled="true" isValid="true">
+                <type parents="ADXP" name="adxp.city" isEnabled="true">
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="8" name="thumbnail" type="ED" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="1" parentXmlPath="EncounterEvent.subject.patient00.addr00.city" isAttribute="true" name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField multiplicityIndex="0" min="0" max="0" sortKey="7" name="reference" type="TEL" title="MIF Data Field Properties" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="3" parentXmlPath="EncounterEvent.subject.patient00.addr00.city" isOptional="true" isAttribute="true" name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="9" parentXmlPath="EncounterEvent.subject.patient00.addr00.city" isAttribute="true" name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="5" isProhibited="true" isAttribute="true" name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="1" max="1" sortKey="11" isOptionChosen="true" parentXmlPath="EncounterEvent.subject.patient00.addr00.city" isAttribute="true" name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="0" parentXmlPath="EncounterEvent.subject.patient00.addr00.city" isOptional="true" isAttribute="true" name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="2" parentXmlPath="EncounterEvent.subject.patient00.addr00.city" isAttribute="true" name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="4" isProhibited="true" isAttribute="true" name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                  <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="6" isProhibited="true" isAttribute="true" name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" />
+                </type>
+              </dataField>
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="4" name="county" type="adxp.county" title="MIF Data Field Properties" isValid="true" />
+              <dataField isSimple="true" multiplicityIndex="0" min="-2" max="-2" sortKey="30" isOptional="true" isAttribute="true" name="isNotOrdered" type="bl" title="MIF Data Field Properties" isEnabled="true" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="19" name="deliveryAddressLine" type="adxp.deliveryAddressLine" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="20" name="deliveryInstallationType" type="adxp.deliveryInstallationType" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="9" name="houseNumberNumeric" type="adxp.houseNumberNumeric" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="0" max="-1" sortKey="28" name="useablePeriod" type="SXCM_TS" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="10" name="direction" type="adxp.direction" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="22" name="deliveryInstallationQualifier" type="adxp.deliveryInstallationQualifier" title="MIF Data Field Properties" isValid="true" />
+              <dataField multiplicityIndex="0" min="-2" max="-2" sortKey="1" name="delimiter" type="adxp.delimiter" title="MIF Data Field Properties" isValid="true" />
+            </type>
+          </attribute>
+          <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="0" name="patientChoice" title="MIF Association Properties" isEnabled="true">
+            <participantClassSpecialization className="Person" traversalName="patientPerson" />
+            <participantClassSpecialization className="NonPersonLivingSubject" traversalName="patientNonPersonLivingSubject" />
+            <class referenceName="" sortKey="" name="Choice" title="MIF Clone Properties" isEnabled="true">
+              <packageLocation />
+              <choice>
+                <class referenceName="" traversalName="patientNonPersonLivingSubject" name="NonPersonLivingSubject" title="MIF Clone Properties" isEnabled="true">
+                  <packageLocation />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="NLIV" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="NLIV" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" minimumSupportedLength="0" name="determinerCode" type="CS" title="MIF Attribute Properties" mnemonic="INSTANCE" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="4" minimumMultiplicity="0" minimumSupportedLength="0" name="name" type="EN" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="5" minimumMultiplicity="0" dDomainNameOidProperty="AdministrativeGender" codingStrength="CWE" minimumSupportedLength="0" domainName="AdministrativeGender" name="administrativeGenderCode" type="CE" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="6" minimumMultiplicity="0" minimumSupportedLength="0" name="birthTime" type="TS" title="MIF Attribute Properties" />
+                </class>
+                <class referenceName="" traversalName="patientPerson" name="Person" title="MIF Clone Properties" isEnabled="true">
+                  <packageLocation />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="PSN" codingStrength="CNE" minimumSupportedLength="0" name="classCode" type="CS" title="MIF Attribute Properties" mnemonic="PSN" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" minimumSupportedLength="0" name="determinerCode" type="CS" title="MIF Attribute Properties" mnemonic="INSTANCE" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="id" type="II" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="-1" sortKey="4" minimumMultiplicity="0" minimumSupportedLength="0" name="name" type="EN" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="5" minimumMultiplicity="0" dDomainNameOidProperty="AdministrativeGender" codingStrength="CWE" minimumSupportedLength="0" domainName="AdministrativeGender" name="administrativeGenderCode" type="CE" title="MIF Attribute Properties" />
+                  <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="6" minimumMultiplicity="0" minimumSupportedLength="0" name="birthTime" type="TS" title="MIF Attribute Properties" />
+                </class>
+              </choice>
+            </class>
+          </association>
+          <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="0" name="providerOrganization" title="MIF Association Properties" isEnabled="true">
+            <class referenceName="E_OrganizationContact" name="E_OrganizationContact" title="MIF Clone Properties" isEnabled="true">
+              <packageLocation />
+            </class>
+          </association>
+        </class>
+      </association>
+    </class>
+  </association>
+  <association multiplicityIndex="0" maximumMultiplicity="-1" sortKey="5" minimumMultiplicity="0" name="reason" title="MIF Association Properties" isEnabled="true">
+    <class referenceName="" sortKey="" name="Reason1" title="MIF Clone Properties" isEnabled="true">
+      <packageLocation />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="RSON" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" mnemonic="RSON" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" minimumSupportedLength="0" name="contextConductionInd" type="BL" defaultValue="true" title="MIF Attribute Properties" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="0" minimumSupportedLength="0" name="priorityNumber" type="INT" title="MIF Attribute Properties" />
+      <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" name="observationDx" title="MIF Association Properties" isEnabled="true">
+        <class referenceName="A_ObservationDxMinimal" name="A_ObservationDxMinimal" title="MIF Clone Properties" isEnabled="true">
+          <packageLocation />
+        </class>
+      </association>
+    </class>
+  </association>
+  <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="6" minimumMultiplicity="0" name="discharger" title="MIF Association Properties" isEnabled="true">
+    <class referenceName="" sortKey="" name="Discharger" title="MIF Clone Properties" isEnabled="true">
+      <packageLocation />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="1" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" dHL7DefaultValueProperty="DIS" codingStrength="CNE" minimumSupportedLength="0" name="typeCode" type="CS" title="MIF Attribute Properties" mnemonic="DIS" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="2" minimumMultiplicity="1" isStrutural="true" isMandatory="true" conformance="R" codingStrength="CNE" minimumSupportedLength="0" name="contextControlCode" type="CS" defaultValue="ON" title="MIF Attribute Properties" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="3" minimumMultiplicity="1" conformance="R" minimumSupportedLength="0" name="time" type="IVL_TS" title="MIF Attribute Properties" />
+      <attribute multiplicityIndex="0" maximumMultiplicity="1" sortKey="4" minimumMultiplicity="0" dDomainNameOidProperty="ParticipationMode" codingStrength="CWE" minimumSupportedLength="0" domainName="ParticipationMode" name="modeCode" type="CE" title="MIF Attribute Properties" />
+      <association multiplicityIndex="0" maximumMultiplicity="1" sortKey="30" minimumMultiplicity="1" name="assignedPerson" title="MIF Association Properties" isEnabled="true">
+        <class referenceName="R_AssignedPersonUniversal" name="R_AssignedPersonUniversal" title="MIF Clone Properties" isEnabled="true">
+          <packageLocation />
+        </class>
+      </association>
+    </class>
+  </association>
+</EncounterEvent>
+

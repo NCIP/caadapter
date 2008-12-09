@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping type="V2_TO_V3" version="1.2">
+   <components>
+      <component kind="2.5" location="C:\eclipseJ2ee\workspace\hl7v2xsd\2.5\ADT_A01.xsd"
+                 type="source"/>
+      <component kind="h3s" location="{caAdapter_Home}\workingspace\V2Meta_to_V3\COCT_MT150003.h3s"
+                 type="target"/>
+      <component group="constant" kind="core" name="constant" type="function" id="0">
+         <data type="Integer" value="10222008"/>
+      </component>
+      <component group="string" kind="core" name="Concatenate" type="function" id="1"/>
+   </components>
+   <links>
+      <link>
+         <source>
+            <linkpointer kind="function" xmlPath="function.0.outputs.0"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="Organization.id00.extension"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="function" xmlPath="function.1.outputs.0"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="Organization.id00.root"/>
+         </target>
+      </link>
+   </links>
+   <views>
+      <view component-id="source.2.5.0" height="0" width="0" x="0" y="0"/>
+      <view component-id="target.h3s.0" height="0" width="0" x="0" y="0"/>
+      <view component-id="function.0" height="49" width="109" x="132" y="108"/>
+      <view component-id="function.1" height="67" width="91" x="24" y="162"/>
+   </views>
+</mapping>

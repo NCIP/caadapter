@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Organization name="Organization" title="MIF Clone Properties" isEnabled="true" sortKey="" referenceName="" messageType="COCT_MT150003">
+  <packageLocation realm="UV" version="03" root="DEFN" artifact="MT-deprecated" subSection="CO" domain="CT" section="IM" id="150003" />
+  <attribute name="classCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="ORG" parentXmlPath="Organization" minimumMultiplicity="1" maximumMultiplicity="1" isMandatory="true" conformance="R" dHL7DefaultValueProperty="ORG" codingStrength="CNE" multiplicityIndex="0" sortKey="1" minimumSupportedLength="0" isStrutural="true" />
+  <attribute name="determinerCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="INSTANCE" parentXmlPath="Organization" minimumMultiplicity="1" maximumMultiplicity="1" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" multiplicityIndex="0" sortKey="2" minimumSupportedLength="0" isStrutural="true" />
+  <attribute name="id" type="II" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization" minimumMultiplicity="1" maximumMultiplicity="-1" isMandatory="true" conformance="R" multiplicityIndex="0" sortKey="3" minimumSupportedLength="0">
+    <type name="II" isEnabled="true" parents="ANY">
+      <dataField name="root" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+      <dataField name="assigningAuthorityName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+      <dataField name="displayable" type="bl" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="4" isAttribute="true" />
+      <dataField name="extension" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+      <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+    </type>
+  </attribute>
+  <attribute name="code" type="CE" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization" minimumMultiplicity="0" maximumMultiplicity="1" dDomainNameOidProperty="EntityCode" codingStrength="CWE" multiplicityIndex="0" sortKey="4" minimumSupportedLength="0" domainName="EntityCode">
+    <type name="CE" isEnabled="true" parents="CD">
+      <dataField name="translation" type="CD" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.code" min="0" max="-1" multiplicityIndex="0" sortKey="3" />
+      <dataField name="code" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="4" isAttribute="true" />
+      <dataField name="codeSystemName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="6" isAttribute="true" />
+      <dataField name="originalText" type="ED" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.code" min="0" max="1" multiplicityIndex="0" sortKey="1" />
+      <dataField name="qualifier" type="CR" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="2" />
+      <dataField name="codeSystemVersion" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+      <dataField name="displayName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="8" isAttribute="true" />
+      <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+      <dataField name="codeSystem" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="5" isAttribute="true" />
+    </type>
+  </attribute>
+  <attribute name="name" type="ON" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization" minimumMultiplicity="0" maximumMultiplicity="-1" multiplicityIndex="0" sortKey="5" minimumSupportedLength="0">
+    <type name="ON" isEnabled="true" parents="EN">
+      <dataField name="use" type="set_EntityNameUse" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+      <dataField name="delimiter" type="en.delimiter" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="3" />
+      <dataField name="validTime" type="IVL_TS" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.name00" min="0" max="1" multiplicityIndex="0" sortKey="6" />
+      <dataField name="given" type="en.given" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="2" isOptionChosen="true">
+        <type name="en.given" isEnabled="true" parents="ENXP">
+          <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+          <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+          <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+          <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+          <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+          <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+          <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+          <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+          <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+          <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+          <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.given" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+        </type>
+      </dataField>
+      <dataField name="family" type="en.family" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="1" isOptionChosen="true">
+        <type name="en.family" isEnabled="true" parents="ENXP">
+          <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+          <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+          <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+          <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+          <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+          <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+          <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+          <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+          <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+          <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+          <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.family" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+        </type>
+      </dataField>
+      <dataField name="prefix" type="en.prefix" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="4" isOptionChosen="true">
+        <type name="en.prefix" isEnabled="true" parents="ENXP">
+          <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+          <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+          <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+          <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+          <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+          <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+          <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+          <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+          <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+          <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+          <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.prefix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+        </type>
+      </dataField>
+      <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="9" isOptionChosen="true" isAttribute="true" />
+      <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+      <dataField name="suffix" type="en.suffix" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="5" isOptionChosen="true">
+        <type name="en.suffix" isEnabled="true" parents="ENXP">
+          <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+          <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+          <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+          <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+          <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+          <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+          <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+          <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+          <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+          <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+          <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.name00.suffix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+        </type>
+      </dataField>
+    </type>
+  </attribute>
+  <association name="contactParty" title="MIF Association Properties" isEnabled="true" parentXmlPath="Organization" minimumMultiplicity="1" maximumMultiplicity="-1" multiplicityIndex="0" sortKey="0">
+    <class name="ContactParty" title="MIF Clone Properties" isEnabled="true" sortKey="" referenceName="">
+      <packageLocation />
+      <attribute name="classCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="CON" parentXmlPath="Organization.contactParty00" minimumMultiplicity="1" maximumMultiplicity="1" isMandatory="true" conformance="R" dHL7DefaultValueProperty="CON" codingStrength="CNE" multiplicityIndex="0" sortKey="1" minimumSupportedLength="0" isStrutural="true" />
+      <attribute name="id" type="II" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization.contactParty00" minimumMultiplicity="0" maximumMultiplicity="-1" multiplicityIndex="0" sortKey="2" minimumSupportedLength="0">
+        <type name="II" isEnabled="true" parents="ANY">
+          <dataField name="root" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+          <dataField name="assigningAuthorityName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+          <dataField name="displayable" type="bl" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="4" isAttribute="true" />
+          <dataField name="extension" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.id00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+        </type>
+      </attribute>
+      <attribute name="code" type="CE" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization.contactParty00" minimumMultiplicity="0" maximumMultiplicity="1" dDomainNameOidProperty="RoleCode" codingStrength="CWE" multiplicityIndex="0" sortKey="3" minimumSupportedLength="0" domainName="RoleCode">
+        <type name="CE" isEnabled="true" parents="CD">
+          <dataField name="translation" type="CD" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.contactParty00.code" min="0" max="-1" multiplicityIndex="0" sortKey="3" />
+          <dataField name="code" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="4" isAttribute="true" />
+          <dataField name="codeSystemName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="6" isAttribute="true" />
+          <dataField name="originalText" type="ED" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.contactParty00.code" min="0" max="1" multiplicityIndex="0" sortKey="1" />
+          <dataField name="qualifier" type="CR" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="2" />
+          <dataField name="codeSystemVersion" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+          <dataField name="displayName" type="st" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="8" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+          <dataField name="codeSystem" type="uid" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.code" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="5" isAttribute="true" />
+        </type>
+      </attribute>
+      <attribute name="addr" type="AD" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization.contactParty00" minimumMultiplicity="0" maximumMultiplicity="-1" multiplicityIndex="0" sortKey="4" minimumSupportedLength="0">
+        <type name="AD" isEnabled="true" parents="ANY">
+          <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="32" isOptionChosen="true" isAttribute="true" />
+          <dataField name="additionalLocator" type="adxp.additionalLocator" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="14" />
+          <dataField name="houseNumber" type="adxp.houseNumber" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="8" />
+          <dataField name="deliveryMode" type="adxp.deliveryMode" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="23" />
+          <dataField name="streetNameType" type="adxp.streetNameType" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="13" />
+          <dataField name="deliveryModeIdentifier" type="adxp.deliveryModeIdentifier" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="24" />
+          <dataField name="state" type="adxp.state" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00" min="-2" max="-2" multiplicityIndex="0" sortKey="3" isOptionChosen="true">
+            <type name="adxp.state" isEnabled="true" parents="ADXP">
+              <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+              <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.state" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+              <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="7" />
+              <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.state" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+              <dataField name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.state" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="9" isAttribute="true" />
+              <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+              <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.state" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="11" isOptionChosen="true" isAttribute="true" />
+              <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.state" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+              <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.state" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+              <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+              <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+            </type>
+          </dataField>
+          <dataField name="streetNameBase" type="adxp.streetNameBase" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="12" />
+          <dataField name="postBox" type="adxp.postBox" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="26" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+          <dataField name="streetName" type="adxp.streetName" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00" min="-2" max="-2" multiplicityIndex="0" sortKey="11" isOptionChosen="true">
+            <type name="adxp.streetName" isEnabled="true" parents="ADXP">
+              <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+              <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetName" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+              <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="7" />
+              <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetName" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+              <dataField name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetName" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="9" isAttribute="true" />
+              <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+              <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetName" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="11" isOptionChosen="true" isAttribute="true" />
+              <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetName" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+              <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetName" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+              <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+              <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+            </type>
+          </dataField>
+          <dataField name="postalCode" type="adxp.postalCode" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="6" />
+          <dataField name="deliveryInstallationArea" type="adxp.deliveryInstallationArea" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="21" />
+          <dataField name="unitID" type="adxp.unitID" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="15" />
+          <dataField name="careOf" type="adxp.careOf" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="17" />
+          <dataField name="censusTract" type="adxp.censusTract" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="18" />
+          <dataField name="buildingNumberSuffix" type="adxp.buildingNumberSuffix" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="25" />
+          <dataField name="country" type="adxp.country" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="2" />
+          <dataField name="unitType" type="adxp.unitType" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="16" />
+          <dataField name="precinct" type="adxp.precinct" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="27" />
+          <dataField name="use" type="set_PostalAddressUse" title="MIF Data Field Properties" isEnabled="true" isValid="true" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="29" isAttribute="true" />
+          <dataField name="streetAddressLine" type="adxp.streetAddressLine" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00" min="-2" max="-2" multiplicityIndex="0" sortKey="7" isOptionChosen="true">
+            <type name="adxp.streetAddressLine" isEnabled="true" parents="ADXP">
+              <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+              <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetAddressLine" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+              <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="7" />
+              <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetAddressLine" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+              <dataField name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetAddressLine" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="9" isAttribute="true" />
+              <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+              <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetAddressLine" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="11" isOptionChosen="true" isAttribute="true" />
+              <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetAddressLine" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+              <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.streetAddressLine" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+              <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+              <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+            </type>
+          </dataField>
+          <dataField name="city" type="adxp.city" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00" min="-2" max="-2" multiplicityIndex="0" sortKey="5" isOptionChosen="true">
+            <type name="adxp.city" isEnabled="true" parents="ADXP">
+              <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+              <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.city" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+              <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="7" />
+              <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.city" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+              <dataField name="partType" type="AddressPartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.city" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="9" isAttribute="true" />
+              <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+              <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.city" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="11" isOptionChosen="true" isAttribute="true" />
+              <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.city" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+              <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.addr00.city" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+              <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+              <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+            </type>
+          </dataField>
+          <dataField name="county" type="adxp.county" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="4" />
+          <dataField name="isNotOrdered" type="bl" title="MIF Data Field Properties" isEnabled="true" isValid="true" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="30" isAttribute="true" />
+          <dataField name="deliveryAddressLine" type="adxp.deliveryAddressLine" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="19" />
+          <dataField name="deliveryInstallationType" type="adxp.deliveryInstallationType" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="20" />
+          <dataField name="houseNumberNumeric" type="adxp.houseNumberNumeric" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="9" />
+          <dataField name="useablePeriod" type="SXCM_TS" title="MIF Data Field Properties" isValid="true" min="0" max="-1" multiplicityIndex="0" sortKey="28" />
+          <dataField name="direction" type="adxp.direction" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="10" />
+          <dataField name="deliveryInstallationQualifier" type="adxp.deliveryInstallationQualifier" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="22" />
+          <dataField name="delimiter" type="adxp.delimiter" title="MIF Data Field Properties" isValid="true" min="-2" max="-2" multiplicityIndex="0" sortKey="1" />
+        </type>
+      </attribute>
+      <attribute name="telecom" type="TEL" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization.contactParty00" minimumMultiplicity="0" maximumMultiplicity="-1" multiplicityIndex="0" sortKey="5" minimumSupportedLength="0">
+        <type name="TEL" isEnabled="true" parents="URL">
+          <dataField name="use" type="set_TelecommunicationAddressUse" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.telecom00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+          <dataField name="useablePeriod" type="SXCM_TS" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.contactParty00.telecom00" min="0" max="-1" multiplicityIndex="0" sortKey="2" />
+          <dataField name="value" type="url" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.telecom00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+          <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.telecom00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+        </type>
+      </attribute>
+      <association name="contactPerson" title="MIF Association Properties" isEnabled="true" parentXmlPath="Organization.contactParty00" minimumMultiplicity="0" maximumMultiplicity="1" multiplicityIndex="0" sortKey="1" isOptionChosen="true">
+        <class name="Person" title="MIF Clone Properties" isEnabled="true" sortKey="" referenceName="">
+          <packageLocation />
+          <attribute name="classCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="PSN" parentXmlPath="Organization.contactParty00.contactPerson" minimumMultiplicity="1" maximumMultiplicity="1" isMandatory="true" conformance="R" dHL7DefaultValueProperty="PSN" codingStrength="CNE" multiplicityIndex="0" sortKey="1" minimumSupportedLength="0" isStrutural="true" />
+          <attribute name="determinerCode" type="CS" title="MIF Attribute Properties" isEnabled="true" mnemonic="INSTANCE" parentXmlPath="Organization.contactParty00.contactPerson" minimumMultiplicity="1" maximumMultiplicity="1" isMandatory="true" conformance="R" dHL7DefaultValueProperty="INSTANCE" codingStrength="CNE" multiplicityIndex="0" sortKey="2" minimumSupportedLength="0" isStrutural="true" />
+          <attribute name="name" type="EN" title="MIF Attribute Properties" isEnabled="true" parentXmlPath="Organization.contactParty00.contactPerson" minimumMultiplicity="1" maximumMultiplicity="-1" conformance="R" multiplicityIndex="0" sortKey="3" minimumSupportedLength="0">
+            <type name="EN" isEnabled="true" parents="ANY">
+              <dataField name="use" type="set_EntityNameUse" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+              <dataField name="delimiter" type="en.delimiter" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="1" />
+              <dataField name="validTime" type="IVL_TS" title="MIF Data Field Properties" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="0" max="1" multiplicityIndex="0" sortKey="6" />
+              <dataField name="given" type="en.given" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="3" isOptionChosen="true">
+                <type name="en.given" isEnabled="true" parents="ENXP">
+                  <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+                  <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+                  <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+                  <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+                  <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+                  <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+                  <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+                  <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+                  <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+                  <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+                  <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+                  <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.given" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+                </type>
+              </dataField>
+              <dataField name="family" type="en.family" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="2" isOptionChosen="true">
+                <type name="en.family" isEnabled="true" parents="ENXP">
+                  <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+                  <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+                  <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+                  <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+                  <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+                  <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+                  <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+                  <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+                  <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+                  <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+                  <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+                  <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.family" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+                </type>
+              </dataField>
+              <dataField name="prefix" type="en.prefix" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="4" isOptionChosen="true">
+                <type name="en.prefix" isEnabled="true" parents="ENXP">
+                  <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+                  <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+                  <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+                  <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+                  <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+                  <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+                  <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+                  <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+                  <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+                  <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+                  <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+                  <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.prefix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+                </type>
+              </dataField>
+              <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="9" isOptionChosen="true" isAttribute="true" />
+              <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+              <dataField name="suffix" type="en.suffix" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00" min="-2" max="-2" multiplicityIndex="0" sortKey="5" isOptionChosen="true">
+                <type name="en.suffix" isEnabled="true" parents="ENXP">
+                  <dataField name="thumbnail" type="ED" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="9" />
+                  <dataField name="representation" type="BinaryDataEncoding" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="1" isAttribute="true" />
+                  <dataField name="reference" type="TEL" title="MIF Data Field Properties" min="0" max="0" multiplicityIndex="0" sortKey="8" />
+                  <dataField name="language" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="3" isAttribute="true" />
+                  <dataField name="partType" type="EntityNamePartType" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="10" isAttribute="true" />
+                  <dataField name="integrityCheck" type="bin" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="5" isProhibited="true" isAttribute="true" />
+                  <dataField name="inlineText" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="1" max="1" isSimple="true" multiplicityIndex="0" sortKey="12" isOptionChosen="true" isAttribute="true" />
+                  <dataField name="qualifier" type="set_EntityNamePartQualifier" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="7" isAttribute="true" />
+                  <dataField name="nullFlavor" type="NullFlavor" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="-2" max="-2" isOptional="true" isSimple="true" multiplicityIndex="0" sortKey="0" isAttribute="true" />
+                  <dataField name="compression" type="CompressionAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="4" isProhibited="true" isAttribute="true" />
+                  <dataField name="integrityCheckAlgorithm" type="IntegrityCheckAlgorithm" title="MIF Data Field Properties" isEnabled="true" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="6" isProhibited="true" isAttribute="true" />
+                  <dataField name="mediaType" type="cs" title="MIF Data Field Properties" isEnabled="true" isValid="true" parentXmlPath="Organization.contactParty00.contactPerson.name00.suffix" min="-2" max="-2" isSimple="true" multiplicityIndex="0" sortKey="2" isAttribute="true" />
+                </type>
+              </dataField>
+            </type>
+          </attribute>
+        </class>
+      </association>
+    </class>
+  </association>
+</Organization>
+
