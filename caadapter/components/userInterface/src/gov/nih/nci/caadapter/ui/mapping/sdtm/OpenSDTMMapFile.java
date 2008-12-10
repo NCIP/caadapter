@@ -31,10 +31,10 @@ import java.util.*;
  * The class helps in opening a MAP file(both SCS and Database)
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.22 $
- *          $Date: 2008-06-09 19:54:06 $
+ *          $Revision: 1.23 $
+ *          $Date: 2008-12-10 15:38:26 $
  */
 public class OpenSDTMMapFile extends JDialog
 {
@@ -201,13 +201,13 @@ public class OpenSDTMMapFile extends JDialog
             filter.addExtension("xml");
             String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
             directoryLoc = new JFileChooser(_defaultLoc);
-            //directoryLoc.setDialogTitle("Please select the define.xml file …");
+            //directoryLoc.setDialogTitle("Please select the define.xml file ?");
             this.setTitle(_xmlFileName + " not found! Please choose a different file");
             //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
             scsFile = new JFileChooser(_defaultLoc);
             // filter.setDescription("map");
             scsFile.setFileFilter(filter);
-            scsFile.setDialogTitle("Please select the define.xml file …");
+            scsFile.setDialogTitle("Please select the define.xml file ? ");
             int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 scsFileChosen = scsFile.getSelectedFile();
@@ -431,13 +431,13 @@ public class OpenSDTMMapFile extends JDialog
         filter.addExtension("xml");
         String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
         directoryLoc = new JFileChooser(_defaultLoc);
-        //directoryLoc.setDialogTitle("Please select the define.xml file …");
+        //directoryLoc.setDialogTitle("Please select the define.xml file ?");
         this.setTitle(_xmlFileName + " not found! Please choose a different file");
         //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
         scsFile = new JFileChooser(_defaultLoc);
         // filter.setDescription("map");
         scsFile.setFileFilter(filter);
-        scsFile.setDialogTitle("Please select the define.xml file …");
+        scsFile.setDialogTitle("Please select the define.xml file...");
         int returnVal = scsFile.showOpenDialog(_database2SDTMMappingPanel);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             scsFileChosen = scsFile.getSelectedFile();
@@ -450,6 +450,9 @@ public class OpenSDTMMapFile extends JDialog
 }
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2008/06/09 19:54:06  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.21  2007/11/16 17:19:38  wangeug
  * update SDTM module
  *

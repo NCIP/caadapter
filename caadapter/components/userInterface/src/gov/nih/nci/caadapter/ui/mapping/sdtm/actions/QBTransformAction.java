@@ -51,10 +51,10 @@ import java.util.Iterator;
  * The class helps as a helper during transformation
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.23 $
- *          $Date: 2008-06-09 19:54:06 $
+ *          $Revision: 1.24 $
+ *          $Date: 2008-12-10 15:37:27 $
  */
 public class QBTransformAction {
     JFileChooser directoryLoc, saveXLSLocation = null;
@@ -104,7 +104,7 @@ public class QBTransformAction {
             RDSFixedLenghtInput rdsFixedLenghtInput = new RDSFixedLenghtInput(_mainFrame, csvMapFileReader.getTargetKeyList());
             fixedLengthRecords = rdsFixedLenghtInput.getUserValues();
         }
-        directoryLoc.setDialogTitle("Please choose the directory to save text files…");
+        directoryLoc.setDialogTitle("Please choose the directory to save text files? ");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             directory = directoryLoc.getSelectedFile();
             try {
@@ -443,13 +443,13 @@ public class QBTransformAction {
         filter.addExtension("xml");
         String _defaultLoc = FileUtil.getWorkingDirPath() + File.separator + "workingspace" + File.separator + "RDS_Example";
         directoryLoc = new JFileChooser(_defaultLoc);
-        //directoryLoc.setDialogTitle("Please select the define.xml file …");
+        //directoryLoc.setDialogTitle("Please select the define.xml file ?");
         //this.setTitle(_xmlFileName + " not found! Please choose a different file");
         //directoryLoc.setDialogTitle(_scsFileName+" not found! Please choose a different file");
         scsFile = new JFileChooser(_defaultLoc);
         // filter.setDescription("map");
         scsFile.setFileFilter(filter);
-        scsFile.setDialogTitle("Please select the define.xml file …");
+        scsFile.setDialogTitle("Please select the define.xml file...");
         int returnVal = scsFile.showOpenDialog(frame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             return scsFile.getSelectedFile().getAbsolutePath();
@@ -463,6 +463,9 @@ public class QBTransformAction {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2008/06/09 19:54:06  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.22  2007/11/16 19:17:42  wangeug
  * create db_TO_RDS testing program
  *
