@@ -10,6 +10,10 @@ package gov.nih.nci.cbiit.cmps.ui.jgraph;
 
 import org.jgraph.graph.*;
 
+import gov.nih.nci.cbiit.cmps.ui.actions.GraphDeleteAction;
+import gov.nih.nci.cbiit.cmps.ui.actions.GraphDeleteAllAction;
+
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
@@ -31,41 +35,41 @@ import java.awt.geom.Rectangle2D;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 {
-    private MiddlePanelJGraph graph;
+	private MiddlePanelJGraph graph;
 	private MiddlePanelJGraphController controller;
 
 	// Custom MarqueeHandler
 	// MarqueeHandler that Connects Vertices and Displays PopupMenus
 
-//	// Holds the Start and the Current Point
-//	protected Point2D start, current;
-//
+	//	// Holds the Start and the Current Point
+	//	protected Point2D start, current;
+	//
 	// Holds the First and the Current Port
 	protected PortView port, firstPort;
 
-//	private GraphDeleteAction deleteAction;
-//	private AddFunctionalBoxAction addFunctionalBoxAction;
-//	private ConstantEditAction constantEditAction;
-//    private VacabularyMappingEditAction vacabularyMappingEditAction;
-//    private GraphDeleteAllAction deleteAllAction;
-    
-    private JPopupMenu popupMenu = null;
+	private GraphDeleteAction deleteAction;
+	//	private AddFunctionalBoxAction addFunctionalBoxAction;
+	//	private ConstantEditAction constantEditAction;
+	//    private VacabularyMappingEditAction vacabularyMappingEditAction;
+	private GraphDeleteAllAction deleteAllAction;
+
+	private JPopupMenu popupMenu = null;
 
 	public MiddlePanelMarqueeHandler(MiddlePanelJGraph graph, MiddlePanelJGraphController controller)
 	{
 		this.graph = graph;
 		this.controller = controller;
-//		deleteAction = new GraphDeleteAction(controller);
+		deleteAction = new GraphDeleteAction(controller);
 		//register it in graph to map the "Delete" key stroke.
-//			graph.registerKeyboardAction(deleteAction, deleteAction.getAcceleratorKey(), JComponent.WHEN_FOCUSED);
-//		this.graph.getInputMap().put(deleteAction.getAcceleratorKey(), deleteAction.getName());
-//		this.graph.getActionMap().put(deleteAction.getName(), deleteAction);
+		graph.registerKeyboardAction(deleteAction, deleteAction.getAcceleratorKey(), JComponent.WHEN_FOCUSED);
+		this.graph.getInputMap().put(deleteAction.getAcceleratorKey(), deleteAction.getName());
+		this.graph.getActionMap().put(deleteAction.getName(), deleteAction);
 	}
 
 	// Override to Gain Control (for PopupMenu and ConnectMode)
@@ -77,7 +81,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		}
 		// If Right Mouse Button we want to Display the PopupMenu
 		if (SwingUtilities.isRightMouseButton(e))
-		// Return Immediately
+			// Return Immediately
 			return true;
 		// Find and Remember Port
 		port = getSourcePortAt(e.getPoint());
@@ -91,24 +95,24 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			return false;
 		}
 		// Else Call Superclass
-//		return super.isForceMarqueeEvent(e);
+		//		return super.isForceMarqueeEvent(e);
 	}
 
 	// Display PopupMenu or Remember Start Location and First Port
 	public void mousePressed(final MouseEvent e)
 	{
-//		System.out.println("mousePressed().:(x="+e.getX()+",y="+e.getY()+")" );
+		System.out.println("mousePressed().:(x="+e.getX()+",y="+e.getY()+")" );
 
-        // following if block was inserted by umkis   (defect# 196)
-        // For selection clearing when mouse clicking(pressing) on any empty place of middle (JGraph) panel.
-        if (SwingUtilities.isLeftMouseButton(e))
+		// following if block was inserted by umkis   (defect# 196)
+		// For selection clearing when mouse clicking(pressing) on any empty place of middle (JGraph) panel.
+		if (SwingUtilities.isLeftMouseButton(e))
 		{
-            //System.out.println("mouse Left Pressed().");
-            GraphSelectionModel gModel = graph.getSelectionModel();
-            gModel.clearSelection();
-        }
+			//System.out.println("mouse Left Pressed().");
+			GraphSelectionModel gModel = graph.getSelectionModel();
+			gModel.clearSelection();
+		}
 
-        currentPoint = e.getPoint();
+		currentPoint = e.getPoint();
 		// If Right Mouse Button
 		if (SwingUtilities.isRightMouseButton(e))
 		{
@@ -130,14 +134,14 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		else
 		{//do nothing
 			// Call Superclass
-//			super.mousePressed(e);
+			//			super.mousePressed(e);
 		}
 	}
 
 	// Find Port under Mouse and Repaint Connector
 	public void mouseDragged(MouseEvent e)
 	{
-//		System.out.println("mouseDragged().:(x="+e.getX()+",y="+e.getY()+")" );
+		//		System.out.println("mouseDragged().:(x="+e.getX()+",y="+e.getY()+")" );
 		// If remembered Start Point is Valid
 		if (startPoint != null)
 		{
@@ -166,7 +170,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 		}
 		// Call Superclass
-//		super.mouseDragged(e);
+		//		super.mouseDragged(e);
 	}
 
 	public PortView getSourcePortAt(Point2D point)
@@ -196,7 +200,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	// Connect the First Port and the Current Port in the Graph or Repaint
 	public void mouseReleased(MouseEvent e)
 	{
-//		System.out.println("mouseReleased(). :(x="+e.getX()+",y="+e.getY()+")" );
+		//		System.out.println("mouseReleased(). :(x="+e.getX()+",y="+e.getY()+")" );
 		// If Valid Event, Current and First Port
 		if (e != null && port != null && firstPort != null
 				&& firstPort != port)
@@ -208,10 +212,10 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 				e.consume();
 			}
 			// Else Repaint the Graph
-//			else
-//			{
-//				graph.repaint();
-//			}
+			//			else
+			//			{
+			//				graph.repaint();
+			//			}
 		}
 		else
 		{
@@ -227,7 +231,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	// Show Special Cursor if Over Port
 	public void mouseMoved(MouseEvent e)
 	{
-	//	System.out.println("mouseMoved().:(x="+e.getX()+",y="+e.getY()+")" );
+		//	System.out.println("mouseMoved().:(x="+e.getX()+",y="+e.getY()+")" );
 		// Check Mode and Find Port
 		if (e != null && getSourcePortAt(e.getPoint()) != null
 				&& graph.isPortsVisible())
@@ -244,7 +248,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 
 		}
 		// Call Superclass
-//			super.mouseMoved(e);
+		//			super.mouseMoved(e);
 	}
 
 	// Use Xor-Mode on Graphics to Paint Connector
@@ -258,7 +262,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		paintPort(graph.getGraphics());
 		// If Valid First Port, Start and Current Point
 		if (firstPort != null && startPoint != null && currentPoint != null)
-		// Then Draw A Line From Start to Current Point
+			// Then Draw A Line From Start to Current Point
 			g.drawLine((int) startPoint.getX(), (int) startPoint.getY(),
 					(int) currentPoint.getX(), (int) currentPoint.getY());
 	}
@@ -272,8 +276,8 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			// If Not Floating Port...
 			boolean o = (GraphConstants.getOffset(port.getAttributes()) != null);
 			// ...Then use Parent's Bounds
-//			Rectangle2D r = (o) ? port.getBounds() : port.getParentView()
-//					.getBounds();
+			//			Rectangle2D r = (o) ? port.getBounds() : port.getParentView()
+			//					.getBounds();
 			Rectangle2D r = port.getBounds();
 			// Scale from Model to Screen
 			r = graph.toScreen((Rectangle2D) r.clone());
@@ -293,61 +297,61 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		if(popupMenu==null)
 		{
 			popupMenu = new JPopupMenu();
-//			System.out.println("delete action's mnemonic is: " + deleteAction.getMnemonic());
-//			JMenuItem menuItem = new JMenuItem(deleteAction);
-//
-//			popupMenu.add(menuItem);
-//			popupMenu.addSeparator();
-//
-//            // Insert Function
+			System.out.println("delete action's mnemonic is: " + deleteAction.getMnemonic());
+			JMenuItem menuItem = new JMenuItem(deleteAction);
+
+			popupMenu.add(menuItem);
+			popupMenu.addSeparator();
+
+//			// Insert Function
 //			addFunctionalBoxAction = new AddFunctionalBoxAction(controller.getMiddlePanel(), controller);
 //			menuItem = new JMenuItem(addFunctionalBoxAction);
 //			popupMenu.add(menuItem);
 //
-//            //Edit constant
+//			//Edit constant
 //			constantEditAction = new ConstantEditAction(controller.getMiddlePanel(), controller);
 //			menuItem = new JMenuItem(constantEditAction);
 //			popupMenu.add(menuItem);
 //
-//            //Edit constant
+//			//Edit constant
 //			vacabularyMappingEditAction = new VacabularyMappingEditAction(controller.getMiddlePanel(), controller);
 //			menuItem = new JMenuItem(vacabularyMappingEditAction);
 //			popupMenu.add(menuItem);
-//
-//            //Delete All Action
-//            deleteAllAction = new GraphDeleteAllAction(controller.getMiddlePanel(), controller);
-//            menuItem = new JMenuItem(deleteAllAction);
-//            popupMenu.add(menuItem);
 
-        }
+			//Delete All Action
+			deleteAllAction = new GraphDeleteAllAction(controller.getMiddlePanel(), controller);
+			menuItem = new JMenuItem(deleteAllAction);
+			popupMenu.add(menuItem);
 
-//		constantEditAction.setEnabled(false);
-//        vacabularyMappingEditAction.setEnabled(false);
-        boolean graphHasSelection = !graph.isSelectionEmpty();
+		}
+
+		//		constantEditAction.setEnabled(false);
+		//        vacabularyMappingEditAction.setEnabled(false);
+		boolean graphHasSelection = !graph.isSelectionEmpty();
 		if(graphHasSelection)
 		{//context-sensitively enable or disable Constant Edit Action.
 			Object selectedObj = graph.getSelectionCell();
-//			if(selectedObj instanceof FunctionBoxCell)
-//			{
-//				Object userObject = ((FunctionBoxCell) selectedObj).getUserObject();
-//				if(userObject instanceof FunctionBoxMutableViewInterface)
-//				{
-//					FunctionConstant constant = ((FunctionBoxMutableViewInterface)userObject).getFunctionConstant();
-//					if(constant!=null)
-//					{
-//						constantEditAction.setEnabled(true);
-//					}
-//                    FunctionVocabularyMapping vm = ((FunctionBoxMutableViewInterface)userObject).getFunctionVocabularyMapping();
-//					if(vm!=null)
-//					{
-//						vacabularyMappingEditAction.setEnabled(true);
-//					}
-//                }
-//			}
+			//			if(selectedObj instanceof FunctionBoxCell)
+			//			{
+			//				Object userObject = ((FunctionBoxCell) selectedObj).getUserObject();
+			//				if(userObject instanceof FunctionBoxMutableViewInterface)
+			//				{
+			//					FunctionConstant constant = ((FunctionBoxMutableViewInterface)userObject).getFunctionConstant();
+			//					if(constant!=null)
+			//					{
+			//						constantEditAction.setEnabled(true);
+			//					}
+			//                    FunctionVocabularyMapping vm = ((FunctionBoxMutableViewInterface)userObject).getFunctionVocabularyMapping();
+			//					if(vm!=null)
+			//					{
+			//						vacabularyMappingEditAction.setEnabled(true);
+			//					}
+			//                }
+			//			}
 		}
 
-//		addFunctionalBoxAction.setEnabled(!graphHasSelection);
-//		deleteAction.setEnabled(graphHasSelection);
+		//		addFunctionalBoxAction.setEnabled(!graphHasSelection);
+				deleteAction.setEnabled(graphHasSelection);
 
 		return popupMenu;
 	}
@@ -371,15 +375,15 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			{//return false if the port has been linked by edge.
 				return false;
 			}
-//			if (portCell.getParent() instanceof FunctionBoxCell)
-//			{
-////				System.out.println("port " + localPort + "'s parent is FunctionBoxCell. Will return true.");
-//				return true;
-//			}
-//			else
-//			{
-//				return false;
-//			}
+			//			if (portCell.getParent() instanceof FunctionBoxCell)
+			//			{
+			////				System.out.println("port " + localPort + "'s parent is FunctionBoxCell. Will return true.");
+			//				return true;
+			//			}
+			//			else
+			//			{
+			//				return false;
+			//			}
 		}
 		else
 		{
@@ -391,4 +395,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */

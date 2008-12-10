@@ -22,8 +22,8 @@ import java.awt.event.AdjustmentListener;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:13 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
 public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListener
@@ -47,10 +47,11 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 	 */
 	public void adjustmentValueChanged(AdjustmentEvent e)
 	{
-//		if(middlePanel!=null)
-//		{
-//			middlePanel.repaint();
-//		}
+		System.out.println("enter MiddlePanelJGraphScrollAdjustmentAdapter.adjustmentValueChanged:"+e);
+		if(middlePanel!=null)
+		{
+			middlePanel.repaint();
+		}
 
 		if(middlePanel.getAdjustmentCoordinator().isInScrollingMode())
 		{//ignore if the other one is scrolling mode.
@@ -64,8 +65,8 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 		int localMax = localScrollBar.getMaximum();
 		int scrollValue = e.getValue();
 		double ratio = ((double) scrollValue) / ((double) (localMax - localMin));
-//		scrollAffectedScrollPane(middlePanel.getMappingPanel().getSourceScrollPane(), ratio);
-//		scrollAffectedScrollPane(middlePanel.getMappingPanel().getTargetScrollPane(), ratio);
+		scrollAffectedScrollPane(middlePanel.getMappingPanel().getSourceScrollPane(), ratio);
+		scrollAffectedScrollPane(middlePanel.getMappingPanel().getTargetScrollPane(), ratio);
 
 		//end scrolling
 		inScrollingMode = false;
@@ -93,4 +94,7 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:13  linc
+ * HISTORY: updated.
+ * HISTORY:
  */

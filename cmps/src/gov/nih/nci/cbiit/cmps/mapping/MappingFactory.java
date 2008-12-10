@@ -41,8 +41,8 @@ import gov.nih.nci.cbiit.cmps.core.Mapping.Links;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-12-10 15:43:03 $
  *
  */
 public class MappingFactory {
@@ -113,7 +113,7 @@ public class MappingFactory {
 	private static void loadXSD(Mapping m, XSDParser p, String root, ComponentType type) {
 		Component src = new Component();
 		src.setKind(KindType.XML);
-		src.setId(p.getSchemaURI());
+		src.setId(getNewComponentId(m));
 		src.setLocation(p.getSchemaURI());
 		ElementMeta e = p.getElementMeta(null, root);
 		if(e==null) e = p.getElementMetaFromComplexType(null, root);
@@ -123,6 +123,19 @@ public class MappingFactory {
 		m.getComponents().getComponent().add(src);
 	}
 	
+	public static String getNewComponentId(Mapping m){
+		if(m.getComponents() == null) m.setComponents(new Components());
+		int num = 0;
+		for(Component c:m.getComponents().getComponent()){
+			int tmp = -1;
+			try{
+				tmp = Integer.parseInt(c.getId());
+			}catch(Exception ignored){}
+			if(tmp>=num) num = tmp+1;
+			//else num = num+1;
+		}
+		return String.valueOf(num);
+	}
 	/**
 	 * add link to specified Mapping
 	 * @param m - Mapping object to load into
@@ -218,6 +231,9 @@ public class MappingFactory {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:
