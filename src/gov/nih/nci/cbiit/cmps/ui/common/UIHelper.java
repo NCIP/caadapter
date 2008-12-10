@@ -43,8 +43,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  */
 public final class UIHelper
 {
@@ -434,7 +434,7 @@ public final class UIHelper
 				if(obj instanceof ElementMeta){
 					sb.append("/").append(((ElementMeta)obj).getName());
 				}else if(obj instanceof AttributeMeta){
-					sb.append("@").append(((AttributeMeta)obj).getName());
+					sb.append("/@").append(((AttributeMeta)obj).getName());
 				}else
 					return "";
 			}else
@@ -480,6 +480,9 @@ public final class UIHelper
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY : First GUI release
+ * HISTORY :
  * HISTORY : Revision 1.1  2008/12/03 20:46:14  linc
  * HISTORY : UI update.
  * HISTORY :

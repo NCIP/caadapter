@@ -55,8 +55,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -390,69 +390,13 @@ public class MiddlePanelJGraphController
 				continue;
 			DefaultEdge edge = (DefaultEdge) cells[i];
 
-			if ( middlePanel.getKind().equalsIgnoreCase("o2db") ) {
-				//				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
-				//				SDKMetaData sourceSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
-				//				SDKMetaData targetSDKMetaData = (SDKMetaData) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
-				//				CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-				//				boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
-				//				sourceSDKMetaData.setMapped(false);
-			} else if ( middlePanel.getKind().equalsIgnoreCase("SDTM") ) {
-				//				MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
-				@SuppressWarnings("unused")
-				//SDTMMetadata sourceSDKMetaData = (SDTMMetadata) (((DefaultMutableTreeNode) e.getSourceNode()).getUserObject());
-
-				StringBuffer _sourceDataAsXPath;
-				//				DefaultSourceTreeNode _tn0 = (DefaultSourceTreeNode) e.getSourceNode();
-				TreeNode t = null;
-				//				t = _tn0.getParent();
-				_sourceDataAsXPath = new StringBuffer();
-				ArrayList<String> _tmp = new ArrayList<String>();
-				// System.out.println( " The value is "+t.toString());
-				_tmp.add(t.toString());
-				do {
-					try {
-						t = t.getParent();
-						_tmp.add(t.toString());
-					} catch (Exception ee) {
-						ee.printStackTrace();
-						break;
-					}
-					// System.out.println( " The value is "+t.toString());
-				} while (true);
-				// System.out.println( " The value is "+_sb.toString());
-				// harsha perform the LIFO operation
-				for (int l = 1; l < _tmp.size() + 1; l++) {
-					try {
-						int sizeNow = _tmp.size() - l;
-						_sourceDataAsXPath.append("\\" + _tmp.get(sizeNow));
-					} catch (Exception ed) {
-						ed.printStackTrace();
-						// ed.printStackTrace();
-					}
-				}
-				//				String _tmpStr = e.getSourceNode().toString();
-				//				_tmpStr = _tmpStr.replace("]", "");
-				//				_sourceDataAsXPath.append("\\" + _tmpStr);
-
-
-
-				//	SDTMMetadata targetSDKMetaData = (SDTMMetadata) (((DefaultMutableTreeNode) e.getTargetNode()).getUserObject());
-
-
-
-				//				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) e.getTargetNode();
-				//				SDTMMetadata _sdtmMetadata = (SDTMMetadata) targetNode.getUserObject();
-				// Do a check if the chosen target is DM or not
-
-				//				String _targetDataAsXpath = _sdtmMetadata.getXPath();
-				//				System.out.println ("");
-				//
-				//				SDTMMappingGenerator.get_sdtmMappingGeneratorReference().removeObject(_sourceDataAsXPath.toString(), _targetDataAsXpath.toString());
-				//				System.out.println ("");
-				// CumulativeMappingGenerator cumulativeMappingGenerator=CumulativeMappingGenerator.getInstance();
-				// boolean isSuccess = cumulativeMappingGenerator.unmap(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
-			}
+			MappingViewCommonComponent e = (MappingViewCommonComponent) edge.getUserObject();
+			DefaultSourceTreeNode srcNode = (DefaultSourceTreeNode) e.getSourceNode();
+			DefaultTargetTreeNode tgtNode = (DefaultTargetTreeNode) e.getTargetNode();
+			srcNode.setMapStatus(false);
+			tgtNode.setMapStatus(false);
+			mappingViewList.remove(e);
+			
 		}
 	}
 
@@ -1019,6 +963,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/12/04 21:34:20  linc
  * HISTORY: Drap and Drop support with new Swing.
  * HISTORY:

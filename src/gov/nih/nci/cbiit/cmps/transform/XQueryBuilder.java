@@ -26,8 +26,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.8 $
- * @date       $Date: 2008-11-04 21:19:34 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
 public class XQueryBuilder {
@@ -85,8 +85,8 @@ public class XQueryBuilder {
 	private static String getRelativePath(String current, String path) {
 		String ret = "";
 		StringBuilder sb = new StringBuilder();
-		StringTokenizer stCur = new StringTokenizer(current, "/");
-		StringTokenizer stNew = new StringTokenizer(path, "/");
+		StringTokenizer stCur = new StringTokenizer(current, "/@");
+		StringTokenizer stNew = new StringTokenizer(path, "/@");
 		int count = 0;
 		while(stCur.hasMoreTokens() && stNew.hasMoreTokens()) {
 			String t = stCur.nextToken(); 
@@ -193,8 +193,8 @@ public class XQueryBuilder {
 			sb.append("/").append(s);
 		}
 		for(AttributeMeta a:tgt.getAttrData()) {
-			if(links.get(sb.toString()+"@"+a.getName())!=null) {
-				LinkType l = links.get(sb.toString()+"@"+a.getName());
+			if(links.get(sb.toString()+"/@"+a.getName())!=null) {
+				LinkType l = links.get(sb.toString()+"/@"+a.getName());
 				String srcId = l.getSource().getId();
 				String var = varStack.peek();
 				String localpath = null;
@@ -217,6 +217,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.8  2008/11/04 21:19:34  linc
+ * HISTORY: core mapping and transform demo.
+ * HISTORY:
  * HISTORY: Revision 1.7  2008/10/22 19:01:17  linc
  * HISTORY: Add comment of public methods.
  * HISTORY:

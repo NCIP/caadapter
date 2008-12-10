@@ -34,8 +34,8 @@ import java.util.ArrayList;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  */
 public class NewMessageAction extends AbstractContextAction
 		{
@@ -92,7 +92,7 @@ public class NewMessageAction extends AbstractContextAction
 			Mapping map = MappingFactory.loadMapping(w.getMapFile());
 			XQueryBuilder builder = new XQueryBuilder(map);
 			String queryString = builder.getXQuery();
-			//System.out.println("$$$$$$ query: \n"+queryString);
+			System.out.println("$$$$$$ query: \n"+queryString);
 			XQueryTransformer tester= new XQueryTransformer();
 			String srcFile = FileUtil.getRelativePath(w.getDataFile());
 			tester.setFilename(srcFile);
@@ -121,4 +121,7 @@ public class NewMessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY      : First GUI release
+ * HISTORY      :
  */

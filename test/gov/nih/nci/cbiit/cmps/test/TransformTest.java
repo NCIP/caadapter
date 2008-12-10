@@ -35,8 +35,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-12-10 15:43:03 $
  *
  */
 public class TransformTest {
@@ -88,14 +88,14 @@ public class TransformTest {
 			" <quantity>{$item/quantity/text()}</quantity></shipitem>" +
 			"}</result>";
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("etc/data/shiporder.xml");
+		tester.setFilename("workingspace/shiporder.xml");
 		tester.setQuery(queryString);
 		System.out.println(tester.executeQuery());
 	}
 
 	@Test
 	public void testCMPSTransform() throws XQException, JAXBException, IOException {
-		Mapping map = MappingFactory.loadMapping(new File("etc/data/mapping.xml"));
+		Mapping map = MappingFactory.loadMapping(new File("workingspace/mapping.xml"));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		//System.out.println("$$$$$$ query: \n"+queryString);
@@ -104,7 +104,7 @@ public class TransformTest {
 		w.close();
 		
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("etc/data/shiporder.xml");
+		tester.setFilename("workingspace/shiporder.xml");
 		tester.setQuery(queryString);
 		w = new FileWriter("bin/tranform.out.xml");
 		w.write(tester.executeQuery());
@@ -113,7 +113,7 @@ public class TransformTest {
 
 	@Test
 	public void testCMPSTransform1() throws XQException, JAXBException, IOException {
-		Mapping map = MappingFactory.loadMapping(new File("etc/data/mapping1.xml"));
+		Mapping map = MappingFactory.loadMapping(new File("workingspace/mapping1.xml"));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		//System.out.println("$$$$$$ query: \n"+queryString);
@@ -122,7 +122,7 @@ public class TransformTest {
 		w.close();
 		
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("etc/data/shiporder.xml");
+		tester.setFilename("workingspace/shiporder.xml");
 		tester.setQuery(queryString);
 		w = new FileWriter("bin/tranform1.out.xml");
 		w.write(tester.executeQuery());
@@ -133,7 +133,7 @@ public class TransformTest {
 	public void testCMPSTransform2() throws XQException, JAXBException, IOException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("etc/data/mapping2.xml")), Mapping.class);
+		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(new File("workingspace/mapping2.xml")), Mapping.class);
 		Mapping map = m.getValue();
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
@@ -143,7 +143,7 @@ public class TransformTest {
 		w.close();
 		
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("etc/data/shiporder.xml");
+		tester.setFilename("workingspace/shiporder.xml");
 		tester.setQuery(queryString);
 		w = new FileWriter("bin/tranform2.out.xml");
 		w.write(tester.executeQuery());
@@ -154,6 +154,9 @@ public class TransformTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/11/04 21:19:34  linc
  * HISTORY: core mapping and transform demo.
  * HISTORY:

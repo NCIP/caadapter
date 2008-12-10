@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mapping xmlns:ns2="http://cmps.cbiit.nci.nih.gov/core">
     <components>
-        <component location="etc/data/shiporder.xsd" kind="xml" type="source" id="etc/data/shiporder.xsd">
+        <component location="workingspace/shiporder.xsd" kind="xml" type="source" id="0">
             <rootElement name="shiporder">
                 <attrData isRequired="true" name="orderid"/>
                 <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="orderperson"/>
@@ -19,7 +19,7 @@
                 </childElement>
             </rootElement>
         </component>
-        <component location="etc/data/printorder1.xsd" kind="xml" type="target" id="etc/data/printorder1.xsd">
+        <component location="workingspace/printorder1.xsd" kind="xml" type="target" id="1">
             <rootElement name="printorder">
                 <attrData isRequired="true" name="orderid"/>
                 <childElement maxOccurs="1" minOccurs="1" isRequired="true" name="buyer"/>
@@ -40,52 +40,52 @@
     </components>
     <links>
         <link>
-            <source id="/shiporder" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder" componentid="0"/>
+            <target id="/printorder" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/orderperson" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/buyer" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/orderperson" componentid="0"/>
+            <target id="/printorder/buyer" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/shipto" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/address" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/shipto" componentid="0"/>
+            <target id="/printorder/address" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/shipto/name" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/address/name" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/shipto/name" componentid="0"/>
+            <target id="/printorder/address/name" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/shipto/address" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/address/street" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/shipto/address" componentid="0"/>
+            <target id="/printorder/address/street" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/shipto/city" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/address/city" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/shipto/city" componentid="0"/>
+            <target id="/printorder/address/city" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/shipto/country" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/address/country" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/shipto/country" componentid="0"/>
+            <target id="/printorder/address/country" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/item" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/item" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/item" componentid="0"/>
+            <target id="/printorder/item" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/item/title" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/item@name" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/item/title" componentid="0"/>
+            <target id="/printorder/item/@name" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/item/note" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/item/description" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/item/note" componentid="0"/>
+            <target id="/printorder/item/description" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/item/quantity" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/item@quantity" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/item/quantity" componentid="0"/>
+            <target id="/printorder/item/@quantity" componentid="1"/>
         </link>
         <link>
-            <source id="/shiporder/item/price" componentid="etc/data/shiporder3.xsd"/>
-            <target id="/printorder/item@price" componentid="etc/data/printorder1.xsd"/>
+            <source id="/shiporder/item/price" componentid="0"/>
+            <target id="/printorder/item/@price" componentid="1"/>
         </link>
         
     </links>

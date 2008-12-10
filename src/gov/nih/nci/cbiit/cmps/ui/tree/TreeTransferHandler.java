@@ -32,8 +32,8 @@ import javax.swing.tree.TreePath;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-10 15:43:03 $
  *
  */
 public class TreeTransferHandler extends TransferHandler {
@@ -65,7 +65,7 @@ public class TreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean canImport(TransferSupport info) {
-		System.out.println("canImport:"+info);
+		//System.out.println("canImport:"+info);
         if (!info.isDrop()) {
             return false;
         }
@@ -80,6 +80,9 @@ public class TreeTransferHandler extends TransferHandler {
         TreePath path = dl.getPath();
         if (path == null) {
             return false;
+        }
+        if(path.getLastPathComponent() instanceof DefaultSourceTreeNode){
+        	return false;
         }
         this.state = TRANSFER;
         return true;
@@ -155,6 +158,9 @@ public class TreeTransferHandler extends TransferHandler {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/12/04 21:34:20  linc
  * HISTORY: Drap and Drop support with new Swing.
  * HISTORY:

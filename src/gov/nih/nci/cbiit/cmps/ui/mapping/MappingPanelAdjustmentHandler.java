@@ -18,8 +18,8 @@ import javax.swing.JComponent;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
 public class MappingPanelAdjustmentHandler implements AdjustmentListener {
@@ -30,6 +30,7 @@ public class MappingPanelAdjustmentHandler implements AdjustmentListener {
 	 */
 	public void adjustmentValueChanged(AdjustmentEvent arg0) 
 	{
+		//System.out.println("enter MappingPanelAdjustmentHandler.adjustmentValueChanged:"+arg0);
 		if (!arg0.getValueIsAdjusting())
 			return;	
 		for (JComponent obsrvComp: observingComponents)
@@ -48,4 +49,7 @@ public class MappingPanelAdjustmentHandler implements AdjustmentListener {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */

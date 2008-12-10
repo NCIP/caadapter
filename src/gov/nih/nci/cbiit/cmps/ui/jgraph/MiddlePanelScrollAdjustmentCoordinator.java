@@ -27,8 +27,8 @@ import java.awt.event.AdjustmentListener;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-10 15:43:02 $
  *
  */
 public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListener
@@ -64,6 +64,7 @@ public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListene
 	 */
 	public void adjustmentValueChanged(AdjustmentEvent e)
 	{
+		System.out.println("enter MiddlePanelScrollAdjustmentCoordinator.adjustmentValueChanged:"+e);
 		if(middlePanel.getGraphAdjustmentAdapter().isInScrollingMode())
 		{//ignore if the other is scrolling
 			return;
@@ -143,4 +144,7 @@ public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListene
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY      : updated.
+ * HISTORY      :
  */

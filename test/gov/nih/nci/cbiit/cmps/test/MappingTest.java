@@ -34,8 +34,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.12 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.13 $
+ * @date       $Date: 2008-12-10 15:43:03 $
  *
  */
 public class MappingTest {
@@ -60,7 +60,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder.xsd");
+		p.loadSchema("workingspace/shiporder.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -75,7 +75,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD1() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder1.xsd");
+		p.loadSchema("workingspace/shiporder1.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -89,7 +89,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD2() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder2.xsd");
+		p.loadSchema("workingspace/shiporder2.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -103,7 +103,7 @@ public class MappingTest {
 	@Test
 	public void testParseXSD3() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/shiporder3.xsd");
+		p.loadSchema("workingspace/shiporder3.xsd");
 		ElementMeta e = p.getElementMeta(null, "shiporder");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -131,7 +131,7 @@ public class MappingTest {
 	@Ignore
 	public void testParseHL7v3XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema("etc/data/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd");
+		p.loadSchema("workingspace/hl7v3/HL7v3Schema/COCT_MT010000UV01.xsd");
 		ElementMeta e = p.getElementMetaFromComplexType("urn:hl7-org:v3", "COCT_MT010000UV01.Encounter");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -144,14 +144,14 @@ public class MappingTest {
 	 */
 	@Test
 	public void testMarshalMapping() throws Exception {
-		String srcComponentId = "etc/data/shiporder.xsd";
-		String tgtComponentId = "etc/data/printorder.xsd";
+		String srcComponentId = "workingspace/shiporder.xsd";
+		String tgtComponentId = "workingspace/printorder.xsd";
 		Mapping m = MappingFactory.createMappingFromXSD(
 				srcComponentId, "shiporder", tgtComponentId, "printorder");
 		//add links;
 		m.setLinks(new Mapping.Links());
-		MappingFactory.addLink(m, srcComponentId, "/shiporder", tgtComponentId, "/printorder");
-		MappingFactory.addLink(m, srcComponentId, "/shiporder/shipto", tgtComponentId, "/printorder/address");
+		MappingFactory.addLink(m, "0", "/shiporder", "1", "/printorder");
+		MappingFactory.addLink(m, "0", "/shiporder/shipto", "1", "/printorder/address");
 		
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -164,8 +164,8 @@ public class MappingTest {
 	 */
 	@Test
 	public void testMarshalMapping1() throws Exception {
-		String srcComponentId = "etc/data/shiporder.xsd";
-		String tgtComponentId = "etc/data/item.xsd";
+		String srcComponentId = "workingspace/shiporder.xsd";
+		String tgtComponentId = "workingspace/item.xsd";
 		Mapping m = MappingFactory.createMappingFromXSD(
 				srcComponentId, "shiporder", tgtComponentId, "item");
 		//add links;
@@ -179,9 +179,9 @@ public class MappingTest {
 	 */
 	@Test
 	public void testUnmarshalMapping() throws Exception {
-		Mapping m = MappingFactory.loadMapping(new File("etc/data/mapping.xml"));
+		Mapping m = MappingFactory.loadMapping(new File("workingspace/mapping.xml"));
 		MappingFactory.saveMapping(new File("bin/mapping_roundtrip.out.xml"), m);
-		//assertEquals(new File("etc/data/mapping.xml").length(), new File("bin/mapping1.out.xml").length());
+		//assertEquals(new File("workingspace/mapping.xml").length(), new File("bin/mapping1.out.xml").length());
 	}
 	
 	/**
@@ -189,9 +189,9 @@ public class MappingTest {
 	 */
 	@Test
 	public void testFindNodeById() throws Exception {
-		Mapping m = MappingFactory.loadMapping(new File("etc/data/mapping.xml"));
-		String cid = "etc/data/printorder.xsd";
-		String id = "/printorder@orderid";
+		Mapping m = MappingFactory.loadMapping(new File("workingspace/mapping.xml"));
+		String cid = "1";
+		String id = "/printorder/@orderid";
 		BaseMeta b = MappingFactory.findNodeById(m, cid, id);
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller mar = jc.createMarshaller();
@@ -203,6 +203,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.12  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.11  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:
