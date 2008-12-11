@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
@@ -22,7 +23,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-09-29 15:42:44 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2008-12-11 17:05:37 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -49,13 +50,29 @@ public class ClassParser {
         		while (specializedChild != null) {
         			if (specializedChild.getNodeName().equals(prefix+"specializedClass")
         					||specializedChild.getNodeName().equals("specializedClass")) {
-        				SpecializedClassParser specializedClass = new SpecializedClassParser();
-        				MIFClass specializedMIFClass = specializedClass.parseSpecializedClass(specializedChild, prefix,null);
+        				SpecializedClassParser specializedClassParser = new SpecializedClassParser();
+        				System.out.println("ClassParser.parseClass()..traversal:"+participantTraversalName);
+        				MIFClass specializedMIFClass = specializedClassParser.parseSpecializedClass(specializedChild, prefix,null);
         				if (participantTraversalName!=null)
         					specializedMIFClass.setTraversalName(participantTraversalName.get(specializedMIFClass.getName()));
         				
         				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
-        				mifClass.addChoice(specializedMIFClass);
+        				if(specializedMIFClass.getChoices().size()>0)
+        				{
+        					//add child choice item,the specializedMIF class is not longer a choice
+        					//since it is only a list of other choice items
+        					System.out.println("ClassParser.parseClass()..add child choice MIFClasss..name:"+mifClass.getName());
+        					Iterator choiceIt=specializedMIFClass.getSortedChoices().iterator();
+        					while(choiceIt.hasNext())
+        	                {
+        	                	MIFClass choiceable=(MIFClass)choiceIt.next();
+        	                	System.out.println("\t\tClassParser.parseClass()..child choice ..name:"+choiceable.getName()+"..traversal:"+choiceable.getTraversalName());
+        	                	mifClass.addChoice(choiceable);
+        	                }    
+        					specializedMIFClass.getChoices().clear();
+        				}
+        				else
+        					mifClass.addChoice(specializedMIFClass);
         			}
         			specializedChild = specializedChild.getNextSibling();
         		}
@@ -74,4 +91,7 @@ public class ClassParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2008/09/29 15:42:44  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

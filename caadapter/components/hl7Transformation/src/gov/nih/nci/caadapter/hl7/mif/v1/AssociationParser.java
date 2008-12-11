@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2008-09-29 15:42:45 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2008-12-11 17:05:37 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
@@ -65,11 +65,30 @@ public class AssociationParser {
         		{
         			Node itemNode=children.item(childrenIndex);
         			if (itemNode.getNodeName().endsWith("participantClassSpecialization")){//.equals(prefix+"participantClassSpecialization"))	{
-        				String participantClassName=XSDParserUtil.getAttribute(itemNode,"className");
-        				String participantTraversalName=XSDParserUtil.getAttribute(itemNode,"traversalName");
-        				if (participantClassName!=null
+        				if (itemNode.getChildNodes().getLength()==0)
+        				{//The participantClass is a choice item
+        					String participantClassName=XSDParserUtil.getAttribute(itemNode,"className");
+        					String participantTraversalName=XSDParserUtil.getAttribute(itemNode,"traversalName");
+        					if (participantClassName!=null
         						&&participantTraversalName!=null)
-        					participantClassTraversalName.put(participantClassName, participantTraversalName);
+        						participantClassTraversalName.put(participantClassName, participantTraversalName);
+        				}
+        				else
+        				{
+        					//The participantClass is a list, its children are choice items
+        					NodeList chioceChildrenList=itemNode.getChildNodes();
+        					for (int choiceChildrenIndex=0;choiceChildrenIndex<chioceChildrenList.getLength();choiceChildrenIndex++)
+        					{
+        						Node choiceChild=chioceChildrenList.item(choiceChildrenIndex);
+        						if (choiceChild.getNodeName().endsWith("specialization")){//.equals(prefix+"specialization"))	{
+        	        				String participantClassName=XSDParserUtil.getAttribute(choiceChild,"className");
+        	        				String participantTraversalName=XSDParserUtil.getAttribute(choiceChild,"traversalName");
+        	        				if (participantClassName!=null
+        	        						&&participantTraversalName!=null)
+        	        					participantClassTraversalName.put(participantClassName, participantTraversalName);
+        						}
+        					}
+        				}
         			}
         				
         		}
@@ -93,4 +112,7 @@ public class AssociationParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2008/09/29 15:42:45  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

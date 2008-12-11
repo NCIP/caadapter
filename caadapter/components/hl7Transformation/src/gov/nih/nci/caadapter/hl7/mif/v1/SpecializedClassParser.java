@@ -20,9 +20,23 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2008-09-29 15:42:45 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-12-11 17:05:37 $
  */
 public class SpecializedClassParser {
+	/**
+	 * Parse a <specializedClass> or a <participantClass
+	 *  <P>
+	 *  <ul>
+	 *  	<li><node is <participantClass>:AssociationParser
+	 *  	<li>node is <specializedClass> within <ownedEntryPoint>:MIFParser
+	 *  	<li>node is <specializedClass> within <specializedChild>:ClassParser
+	 *  </ul>
+	 *  <P>
+	 * @param node The XML node to be parsed
+	 * @param prefix The possible prefix in the nodeName
+	 * @param participantTraversalNames Hash of traversal names which to refer the current MIFClass or its child MIFClass
+	 * @return MIFClass parsed with given XML node
+	 */
 	public MIFClass parseSpecializedClass(Node node,String prefix, Hashtable<String,String> participantTraversalNames) {
 		
         Node child = node.getFirstChild();
@@ -63,4 +77,7 @@ public class SpecializedClassParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2008/09/29 15:42:45  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

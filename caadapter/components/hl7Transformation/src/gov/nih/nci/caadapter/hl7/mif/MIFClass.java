@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.20 $ date $Date: 2008-09-29 15:44:40 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.21 $ date $Date: 2008-12-11 17:05:25 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -354,10 +354,14 @@ import java.util.Iterator;
 	}
 	public int compareTo(MIFClass mifClass) {
 		// TODO Auto-generated method stub
-		if (this.getSortKey()==null||mifClass.getSortKey()==null)
-			return (this.getName().compareToIgnoreCase(mifClass.getName()));
-		else
-			return (this.getSortKey().compareToIgnoreCase(mifClass.getSortKey()));
+		String myCompareKey=getSortKey();
+		if (myCompareKey==null||myCompareKey.equals(""));
+			myCompareKey=getName();
+		
+		String otherCompareKey=mifClass.getSortKey();
+		if (otherCompareKey==null||otherCompareKey.equals(""));
+			otherCompareKey=mifClass.getName();
+		return (myCompareKey.compareToIgnoreCase(otherCompareKey));
 	}
 	@Override
 	public boolean isOptionChosen() {
@@ -534,4 +538,7 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.20  2008/09/29 15:44:40  wangeug
+  * HISTORY :enforce code standard: license file, file description, changing history
+  * HISTORY :
   */
