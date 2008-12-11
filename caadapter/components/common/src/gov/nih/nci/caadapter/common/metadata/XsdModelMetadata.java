@@ -7,11 +7,11 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.common.metadata;
 /** This class holds XsdModelMetadata during the mapping
- * @author OWNER: $Author: phadkes $
- * @author LAST UPDATE $Author: phadkes $
+ * @author OWNER: $Author: umkis $
+ * @author LAST UPDATE $Author: umkis $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.9 $
- * @date       $Date: 2008-09-25 19:30:39 $
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2008-12-11 00:31:10 $
 */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -32,12 +32,7 @@ import org.exolab.castor.util.NestedIOException;
 import org.exolab.castor.xml.Namespaces;
 import org.exolab.castor.xml.ValidationException;
 import org.exolab.castor.xml.XMLException;
-import org.exolab.castor.xml.schema.AttributeDecl;
-import org.exolab.castor.xml.schema.ComplexType;
-import org.exolab.castor.xml.schema.ElementDecl;
-import org.exolab.castor.xml.schema.Group;
-import org.exolab.castor.xml.schema.Particle;
-import org.exolab.castor.xml.schema.Schema;
+import org.exolab.castor.xml.schema.*;
 import org.exolab.castor.xml.schema.reader.Sax2ComponentReader;
 import org.exolab.castor.xml.schema.reader.SchemaUnmarshaller;
 import org.xml.sax.InputSource;
@@ -326,7 +321,7 @@ private void loadSchemaSource(InputSource source)
 
     SchemaUnmarshaller schemaUnmarshaller = null;
     try {
-       schemaUnmarshaller = new SchemaUnmarshaller();
+       schemaUnmarshaller = new SchemaUnmarshaller(new SchemaContextImpl());
     } catch (XMLException e) {
         //--The default constructor cannot throw exception so this should never happen
         //--just log the exception
@@ -422,4 +417,7 @@ public String getProjectNamespace()
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/09/25 19:30:39  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
