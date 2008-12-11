@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.hl7.junit;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationServiceUtil;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 
 import java.util.List;
@@ -25,8 +26,8 @@ import org.junit.Test;
  * The class will test the CSV to HL7v3 transformation service.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version Since caAdapter v4.0 revision $Revision: 1.4 $ date $Date: 2008-06-09 19:53:51 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version Since caAdapter v4.0 revision $Revision: 1.5 $ date $Date: 2008-12-11 00:33:50 $
  */
 
 public class CSV2HL7v3TransformationTests extends TestCase {
@@ -117,11 +118,12 @@ public class CSV2HL7v3TransformationTests extends TestCase {
 	 
 	 @Test public void testBatchMappingScenario1_Read_200M() throws Exception{
 		 long start = System.currentTimeMillis();
-		 int count = TransformationService.countEntriesInZip(new File("data/Transformation/tmpout2.zip"));
-		 long end1 = System.currentTimeMillis();
+		 //int count = TransformationService.countEntriesInZip(new File("data/Transformation/tmpout2.zip"));
+         int count = TransformationServiceUtil.countEntriesInZip(new File("data/Transformation/tmpout2.zip"));
+         long end1 = System.currentTimeMillis();
 		 System.out.println("counted "+count+" in "+(end1-start)+" ms");
 		 int seq = 59127;
-		 String ret = TransformationService.readFromZip(new File("data/Transformation/tmpout2.zip"), String.valueOf(seq)+".xml");
+		 String ret = TransformationServiceUtil.readFromZip(new File("data/Transformation/tmpout2.zip"), String.valueOf(seq)+".xml");
 		 long end2 = System.currentTimeMillis();
 		 System.out.println("read #"+seq+" in "+(end2-end1)+" ms:["+ret+"]");
 	 }
