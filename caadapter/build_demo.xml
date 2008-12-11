@@ -35,7 +35,7 @@
         <condition property="caadapter.module.all.zip">	
 						<equals arg1="${caadapter.release.all.modules}" arg2="true"/>
 		</condition>
-
+<echo message="caadapter.release.hl7.only=${caadapter.release.hl7.only}"/>
         <condition property="caadapter.module.hl7.zip">	
 				<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
 		</condition>
@@ -80,7 +80,7 @@
 		</zip>
 	</target>
 	
-	<target name="zipHL7Module" if="$caadapter.module.hl7.zip">
+	<target name="zipHL7Module" if="caadapter.module.hl7.zip">
 			<echo message="Only Build HL7 Modules..."/>
 			<zip destfile="${project.release.version}_Bin_${DATE}.zip">
 				<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, lib/*.*"/>
