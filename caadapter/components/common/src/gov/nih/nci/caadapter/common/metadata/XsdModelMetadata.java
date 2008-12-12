@@ -9,9 +9,9 @@ package gov.nih.nci.caadapter.common.metadata;
 /** This class holds XsdModelMetadata during the mapping
  * @author OWNER: $Author: umkis $
  * @author LAST UPDATE $Author: umkis $
- * @since      caAdapter  v4.2    
- * @version    $Revision: 1.10 $
- * @date       $Date: 2008-12-11 00:31:10 $
+ * @since      caAdapter  v4.2
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2008-12-12 18:43:35 $
 */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -63,7 +63,7 @@ public void parseSchema(String filename)
     } else {
         schemaFile = new File(filename);
     }
-  
+
     try {
     	FileReader reader = new FileReader(schemaFile);
         InputSource source = new InputSource(reader);
@@ -81,10 +81,10 @@ public void parseSchema(String filename)
 
 private void initModel()
 {
-	
+
 	if (gmeSchema==null)
 		return;
-	
+
 	//set project name
 	setProjectName(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.name"));
 	setProjectContext(CaadapterUtil.findApplicationConfigValue("caadapter.gme.project.content"));
@@ -96,8 +96,8 @@ private void initModel()
 //	String targetNsURI =gmeSchema.getTargetNamespace();
 //	setProjectName(targetNsURI);
 
-	
-	
+
+
 	//set class mapping
 	buildSchemaClassMapping(gmeSchema);
 	//set class mapping from imported schema(s)
@@ -150,14 +150,14 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 	String pkName=(String)getPackageMap().get(schemaTargetNs);
 	objMeta.setXPath(pkName+"."+clsDecl.getName());
 	objMeta.setXmlPath(pkName+"."+clsDecl.getName());
-	
+
 	//set attribute mapping and association mapping
 	ComplexType complexType =clsDecl.getType().getSchema().getComplexType(clsType);
 	Enumeration contentEnu=complexType.enumerate();
 	while(contentEnu.hasMoreElements())
 	{
 		 Particle particle=( Particle)contentEnu.nextElement();
-		
+
 		 //there is at least one group under each classMapping element
 		 if (particle instanceof Group)
 		 {
@@ -174,7 +174,7 @@ private void buildObjectMetadata(ElementDecl clsDecl)
 		 else
 			 System.out.println("XsdModelMetadata.buildObjectMetadata()..:"+particle);
 	}
-	//process attributes 
+	//process attributes
 	Enumeration attrEnu=complexType.getAttributeDecls();
 	while(attrEnu.hasMoreElements())
 	{
@@ -245,7 +245,7 @@ private void buildObjectContent(ObjectMetadata objMeta, Group complexContent)
 //			 Group contentGroup=(Group)particle;
 //		 }
 	}
- 
+
 }
 
 private void buildAssociation(String roleName, ObjectMetadata xsdObj, ComplexType asscType)
@@ -268,7 +268,7 @@ private void buildAssociation(String roleName, ObjectMetadata xsdObj, ComplexTyp
 				 {
 					 ElementDecl asscElm=(ElementDecl)asscParticle;
 					 asscParticle.getMaxOccurs();
-					 
+
 					 if(asscElm.getReference()!=null)
 						 asscElm=asscElm.getReference();
 					 buildAssociationWithCardinality(roleName, xsdObj, asscElm, asscParticle.getMaxOccurs(), asscParticle.getMinOccurs());
@@ -285,13 +285,13 @@ private void buildAssociationWithCardinality(String roleName, ObjectMetadata xsd
 	asscMeta.setRoleName(roleName);
 	asscMeta.setXPath(xsdObj.getXPath()+"."+roleName);
 	asscMeta.setXmlPath(xsdObj.getXPath()+"."+roleName);
-	
+
 	String returnType=asscElm.getType().getName();
 	String schemaTargetNs=asscElm.getType().getSchema().getTargetNamespace();
 	String pkName=(String)getPackageMap().get(schemaTargetNs);
 
 	asscMeta.setReturnTypeXPath(pkName+"."+returnType);
- 
+
 	if (maxOccurence==1&&minOccurence==1)
 	{
 		asscMeta.setManyToOne(true);
@@ -299,12 +299,12 @@ private void buildAssociationWithCardinality(String roleName, ObjectMetadata xsd
 	}
 	else
 		asscMeta.setMultiplicity(-1);
-	
-	associationMap.put(asscMeta.getXPath(), asscMeta);	
+
+	associationMap.put(asscMeta.getXPath(), asscMeta);
 	xsdObj.addAssociation(asscMeta);
 }
 
-private void loadSchemaSource(InputSource source) 
+private void loadSchemaSource(InputSource source)
 {
     // -- get default parser from Configuration
     Parser parser = null;
@@ -321,7 +321,8 @@ private void loadSchemaSource(InputSource source)
 
     SchemaUnmarshaller schemaUnmarshaller = null;
     try {
-       schemaUnmarshaller = new SchemaUnmarshaller(new SchemaContextImpl());
+       //schemaUnmarshaller = new SchemaUnmarshaller(new SchemaContextImpl());
+        schemaUnmarshaller = new SchemaUnmarshaller();
     } catch (XMLException e) {
         //--The default constructor cannot throw exception so this should never happen
         //--just log the exception
@@ -345,7 +346,7 @@ private void loadSchemaSource(InputSource source)
     }
 
     Schema schema = schemaUnmarshaller.getSchema();
-    
+
     try {
         schema.validate();
     } catch (ValidationException vx) {
@@ -417,6 +418,9 @@ public String getProjectNamespace()
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/12/11 00:31:10  umkis
+ * HISTORY      : bug fixing line 324 : schemaUnmarshaller = new SchemaUnmarshaller(new SchemaContextImpl());
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/09/25 19:30:39  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :
