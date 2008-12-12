@@ -30,8 +30,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.26 $
- * @date $$Date: 2008-10-21 21:14:57 $
+ * @version $Revision: 1.27 $
+ * @date $$Date: 2008-12-12 22:02:14 $
  * @since caAdapter v1.2
  */
 
@@ -46,7 +46,10 @@ public class CaadapterUtil {
 	private static boolean authorizedUser=false;
 	public static final String  LINEFEED_ENCODE="&#x0A;";//html format of UTF-8 unicode value of '\n'
 	public static final String  CARTRIAGE_RETURN_ENCODE="&#x0D;";//html format of UTF-8 unicode value of '\r'
-	public static String HL7_MIF_FILE_PATH;
+    private static String NAME_COMPONENT_PROPERTY_FILE = Config.COMPONENT_PROPERTY_FILE_NAME;
+    private static String PATH_COMPONENT_PROPERTY_FILE = "conf" + File.separator + NAME_COMPONENT_PROPERTY_FILE;
+
+    public static String HL7_MIF_FILE_PATH;
 	public static String getHL7_MIF_FILE_PATH() {
 		return HL7_MIF_FILE_PATH;
 	}
@@ -63,13 +66,13 @@ public class CaadapterUtil {
         Properties properties=new Properties();
         try {
         	 
-        	File srcFile=new  File("conf/caadapter-components.properties");
+        	File srcFile=new  File(PATH_COMPONENT_PROPERTY_FILE);
         	if (srcFile.exists())
         	{
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();	
+        		fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -115,12 +118,12 @@ public class CaadapterUtil {
             }
             fi.close();
             Properties rsrcProp=new Properties();
-            fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-resources.properties").openStream();
+            fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
             rsrcProp.load(fi);
             readResourceRequired(rsrcProp);
                   
         } catch (Exception ex) {
-            Log.logException(CaadapterUtil.class, "caadapter-components.properties is not found", ex);
+            Log.logException(CaadapterUtil.class, PATH_COMPONENT_PROPERTY_FILE +" is not found", ex);
         } finally {
             if (fi != null) try {
                 fi.close();
@@ -333,6 +336,15 @@ public class CaadapterUtil {
 		{
 			return (String)appConfig.get(configKey);
 		}
+
+    public static String getPathOfComponentPropertyFile()
+	{
+	    return PATH_COMPONENT_PROPERTY_FILE;
+	}
+	public static String getNameOfComponentPropertyFile()
+	{
+	    return NAME_COMPONENT_PROPERTY_FILE;
+	}
 }
 
 /**
