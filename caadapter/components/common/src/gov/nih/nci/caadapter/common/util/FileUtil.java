@@ -31,7 +31,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 
 public class FileUtil
@@ -253,6 +253,49 @@ public class FileUtil
         }
         return f.getAbsolutePath();
     }
+
+    public static String getV3XsdFilePath()
+      {
+          String schemaHome = "schemas";
+          //String coreSchemaDir = "coreschemas";
+
+          File dir = new File(schemaHome);
+          boolean xsdDirFoundTag = true;
+          if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
+
+          dir = new File(".."+File.separator+schemaHome);
+          if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
+
+
+          String xsdFilePathTag = Config.V3_XSD_FILE_PATH_TAG;//"v3xsdFilePath";
+          String xsdPathPropFile = "";
+
+          for (int i=0;i<9;i++)
+          {
+              if (i==0) xsdPathPropFile = xsdFilePathTag + ".properties";
+              if (i==1) xsdPathPropFile = xsdFilePathTag + ".property";
+              if (i==2) xsdPathPropFile = ".."+File.separator+xsdFilePathTag + ".properties";
+              if (i==3) xsdPathPropFile = ".."+File.separator+xsdFilePathTag + ".property";
+              if (i==4) xsdPathPropFile = ".."+File.separator+"conf"+File.separator+xsdFilePathTag + ".properties";
+              if (i==5) xsdPathPropFile = ".."+File.separator+"conf"+File.separator+xsdFilePathTag + ".property";
+              if (i==6) xsdPathPropFile = "."+File.separator+"conf"+File.separator+xsdFilePathTag + ".properties";
+              if (i==7) xsdPathPropFile = "."+File.separator+"conf"+File.separator+xsdFilePathTag + ".property";
+              if (i==8) xsdPathPropFile = null;
+
+              String propertyLine = getPropertyFromComponentPropertyFile(xsdPathPropFile, xsdFilePathTag);
+              if (propertyLine == null) continue;
+              dir = new File(propertyLine);
+              if ((dir.exists())||(dir.isDirectory()))
+              {
+                  System.out.println("V3 XSD Directory in the property file("+xsdPathPropFile+") Found: " + propertyLine);
+                  return dir.getAbsolutePath();
+              }
+              else System.err.println("Invalid V3 XSD Directory in the property file("+xsdPathPropFile+") : " + propertyLine);
+          }
+          System.err.println("Not Found V3 XSD Directory...");
+          return null;
+      }
+
 
     public static MetaDataLoader getV2ResourceMetaDataLoader()
     {
@@ -1013,10 +1056,102 @@ public class FileUtil
         return true;
     }
 
+    public static String getPropertyFromComponentPropertyFile(String key)
+    {
+        return getPropertyFromComponentPropertyFile(null, key);
+    }
+    public static String getPropertyFromComponentPropertyFile(String propertyFile, String key)
+    {
+        if (key == null) return null;
+        key = key.trim();
+        if (key.equals("")) return null;
+        String result = "";
+
+        String path = "";
+        String name = "";
+
+        File file = null;
+
+        if ((propertyFile == null)||(propertyFile.trim().equals("")))
+        {
+            path = CaadapterUtil.getPathOfComponentPropertyFile();
+            name = CaadapterUtil.getNameOfComponentPropertyFile();
+        }
+        else
+        {
+            file = new File(propertyFile);
+            if ((!file.exists())||(!file.isFile())) return null;
+            path = propertyFile;
+            name = propertyFile;
+        }
+
+
+        InputStream fi = null;
+        //appConfig=new HashMap();
+        //load caadapter component types to run
+        Properties properties=new Properties();
+        try
+        {
+
+        	File srcFile=new File(path);
+        	if (srcFile.exists())
+        	{
+                //System.out.println("PP1 : " + path);
+                fi =new FileInputStream(srcFile);
+        	}
+        	else
+            {
+                //System.out.println("PP2 : " + name);
+                fi = CaadapterUtil.class.getClassLoader().getResource(name).openStream();
+            }
+            properties.load(fi);
+
+            if (properties == null) return null;
+
+            //read the value for each component and add it into the ActivatedList
+            Enumeration propKeys=properties.keys();
+            while (propKeys.hasMoreElements())
+            {
+                String onePropKey=(String)propKeys.nextElement();
+                String onePropValue=(String)properties.getProperty(onePropKey);
+                //System.out.println("Component Properties ("+path+") : " + onePropKey + " => " + onePropValue);
+                if (onePropKey == null) continue;
+                onePropKey = onePropKey.trim();
+                if (onePropKey.equals("")) continue;
+                if (onePropKey.equals(key))
+                {
+                    result = onePropValue;
+                    //System.out.println("   *** This is the Key!!");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+        finally
+        {
+            if (fi != null) try
+            {
+                fi.close();
+            }
+            catch (IOException ignore)
+            {}
+
+        }
+        if (result == null) return null;
+        result = result.trim();
+        if (result.equals("")) return null;
+        return result;
+    }
+
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.18  2008/10/21 21:07:50  umkis
+ * update ODI to 2008 NE
+ *
  * Revision 1.17  2008/06/09 19:53:50  phadkes
  * New license text replaced for all .java files.
  *
