@@ -129,5 +129,10 @@
     <constant name="LINKED_URL_FOR_SUPPORT" type="String" value="http://ncicb.nci.nih.gov/NCICB/support"/>
     <constant name="LINKED_URL_FOR_MORE_INFORMATION" type="String" value="http://ncicb.nci.nih.gov/NCICB/infrastructure/cacore_overview/caadapter"/>
 
-
+    <!-- Following four items were inserted by umkis 12/12/2008 -->
+    <constant name="COMPONENT_PROPERTY_FILE_NAME" type="String" value="caadapter-components.properties"/>
+    <constant name="V3_XSD_FILE_PATH_TAG" type="String" value="v3xsdFilePath"/>
+    <constant name="V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME" type="String" value="multicacheschemas"/>
+    <constant name="V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME" type="String" value="coreschemas"/>
+    <!-- by umkis 12/12/2008 -->
 </config>
