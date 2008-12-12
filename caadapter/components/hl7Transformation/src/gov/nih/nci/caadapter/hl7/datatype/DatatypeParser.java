@@ -8,12 +8,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
- import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,10 +39,10 @@ import org.xml.sax.SAXException;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2008-09-29 15:48:56 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2008-12-12 22:03:43 $
  */
 
 public class DatatypeParser {
@@ -348,8 +346,16 @@ public class DatatypeParser {
   		DocumentBuilder db;
 		try {
 			db = dbf.newDocumentBuilder();
-			String coreSchemaHome="schemas/coreschemas";
-			String pathVoc=coreSchemaHome+"/voc.xsd";
+            String schemaHome = FileUtil.getV3XsdFilePath();
+            if (schemaHome == null) schemaHome = "schemas";
+            String coreSchemaDir = Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME;// "coreschemas";
+
+            String coreSchemaHome=schemaHome+File.separator+coreSchemaDir;
+
+            File dir = new File(coreSchemaHome);
+            if((!dir.exists())||(!dir.isDirectory())) System.err.println("Invalid V3 Core XSD Directory : " + schemaHome);
+
+            String pathVoc=coreSchemaHome+"/voc.xsd";
 			String pathBase=coreSchemaHome+"/datatypes-base.xsd";
 			String pathDatatype=coreSchemaHome+"/datatypes.xsd";
 //			InputStream isVoc =getClass().getResourceAsStream("/schemas/coreschemas/voc.xsd");
@@ -370,7 +376,9 @@ public class DatatypeParser {
 			parse(allDoc);
 			populateDatatypes();
 			populateSubclasses();
-			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -381,7 +389,7 @@ public class DatatypeParser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+    }
 	
 	public List<String> findSubclassList(String typeName)
 	{
@@ -474,4 +482,7 @@ public class DatatypeParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.16  2008/09/29 15:48:56  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
