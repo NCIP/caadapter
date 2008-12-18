@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.44 $
- *          date        $Date: 2008-10-15 20:59:58 $
+ *          revision    $Revision: 1.45 $
+ *          date        $Date: 2008-12-18 14:20:30 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -255,7 +255,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	
 	private MIFClass loadReferenceMIFClass(String refClassName, Hashtable asscRefTraversalNames)
 	{
-		Log.logError(this,"Loading class reference..className:"+refClassName +"..rootClass:"+rootMIFClass.getName());
+		Log.logInfo(this,"Loading class reference..className:"+refClassName +"..rootClass:"+rootMIFClass.getName());
 		MIFClass rtnMif=null;
 		if (refClassName.equals(rootMIFClass.getName()))
 		{
@@ -580,6 +580,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.44  2008/10/15 20:59:58  wangeug
+ *HISTORY 	:fix bug: only add "inlineText" attribute if not exist
+ *HISTORY 	:
  *HISTORY 	:Revision 1.43  2008/09/23 15:19:50  wangeug
  *HISTORY 	:caAdapter 4.2 alpha release
  *HISTORY 	:
