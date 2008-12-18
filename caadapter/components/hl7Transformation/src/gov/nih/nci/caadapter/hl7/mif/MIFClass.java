@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.21 $ date $Date: 2008-12-11 17:05:25 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.22 $ date $Date: 2008-12-18 17:20:42 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -194,13 +194,25 @@ import java.util.Iterator;
 	 public HashSet<MIFClass> getChoices() {
 	 	return choices;
 	 }
-
+/**
+ * Return all item to be selected.
+ * If an item is a list of other MIFClass, all these children are promoted 
+ * to top level as choice item
+ * @return A list of choice items
+ */
 	 public TreeSet<MIFClass> getSortedChoices ()
 	 {
 		TreeSet<MIFClass> rtnSet =new TreeSet<MIFClass>();
 		Iterator it=getChoices().iterator();
 		while(it.hasNext())
-			rtnSet.add((MIFClass)(it.next()));
+		{
+			MIFClass choiceItem=(MIFClass)it.next();
+			rtnSet.add((MIFClass)(choiceItem));//it.next()));
+			//add the content of a choiceItem if it is a list of other MIFClass
+			if (choiceItem.getChoices().size()>0)
+				rtnSet.addAll(choiceItem.getChoices());
+			
+		}
 		return rtnSet;
 	 }
 	 /**
@@ -402,7 +414,8 @@ import java.util.Iterator;
 			 while (asscIt.hasNext())
 			 {
 				 MIFAssociation oneAssc=(MIFAssociation)asscIt.next();
-				 asscClonnedHash.add((MIFAssociation)oneAssc.clone());
+				 MIFAssociation clonedAssc=(MIFAssociation)oneAssc.clone();
+				 asscClonnedHash.add(clonedAssc);
 			 }
 			 clonnedObj.setAssociation(asscClonnedHash);
 
@@ -413,7 +426,8 @@ import java.util.Iterator;
 			 while (choiceIt.hasNext())
 			 {
 				 MIFClass oneChoice=(MIFClass)choiceIt.next();
-				 choiceClonnedHash.add((MIFClass)oneChoice.clone());
+				 MIFClass clonedChoice=(MIFClass)oneChoice.clone();
+				 choiceClonnedHash.add(clonedChoice);
 			 }
 			 clonnedObj.setChoice(choiceClonnedHash);
              return clonnedObj;
@@ -538,6 +552,9 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.21  2008/12/11 17:05:25  wangeug
+  * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
+  * HISTORY :
   * HISTORY :Revision 1.20  2008/09/29 15:44:40  wangeug
   * HISTORY :enforce code standard: license file, file description, changing history
   * HISTORY :
