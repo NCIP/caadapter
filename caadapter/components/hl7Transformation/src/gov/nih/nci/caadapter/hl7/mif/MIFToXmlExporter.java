@@ -31,8 +31,8 @@ import gov.nih.nci.caadapter.common.Log;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.6 $
- * @date $Date: 2008-09-29 15:44:40 $
+ * @version $Revision: 1.7 $
+ * @date $Date: 2008-12-18 17:19:17 $
  * @since caAdapter v4.0
  */
 public class MIFToXmlExporter {
@@ -152,7 +152,7 @@ public class MIFToXmlExporter {
 			rtnElm.addContent(asscElm);
 		}
 //		add Choice
-		TreeSet<MIFClass> choiceSet=tbBuilt.getSortedChoices();
+		HashSet<MIFClass> choiceSet=tbBuilt.getChoices();//.getSortedChoices();
 		Element choiceElm=new Element("choice");
 		for(MIFClass choice:choiceSet)
 		{
@@ -331,4 +331,7 @@ public class MIFToXmlExporter {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2008/09/29 15:44:40  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
