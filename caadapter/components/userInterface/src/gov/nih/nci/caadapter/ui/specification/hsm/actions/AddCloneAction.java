@@ -37,8 +37,8 @@ import java.util.List;
  * @author OWNER: Eric Chen
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-09-29 20:18:57 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2008-12-18 17:17:46 $
  */
 public class AddCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -54,7 +54,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.9 2008-09-29 20:18:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddCloneAction.java,v 1.10 2008-12-18 17:17:46 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Add Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -141,7 +141,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
                 NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true);
                 for (DatatypeBaseObject oneAssc:userSelectedAssociation)
                 {
-                	oneAssc.setOptionChosen(true);
+
                 	if (obj instanceof DatatypeBaseObject)
                 	{
                 		DatatypeBaseObject targetDt=(DatatypeBaseObject)obj;
@@ -149,6 +149,7 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
                 	}
                 	DefaultHSMTreeMutableTreeNode hsmNode=(DefaultHSMTreeMutableTreeNode)targetNode;
                 	DefaultMutableTreeNode oneAsscNode =mifTreeLoader.buildObjectNode((MIFAssociation)oneAssc, hsmNode.getRootMif());
+                	oneAssc.setOptionChosen(true);
                 	targetNode.add(oneAsscNode);
                 }
                 ((DefaultTreeModel) tree.getModel()).nodeStructureChanged(targetNode);
@@ -166,5 +167,8 @@ public class AddCloneAction extends AbstractHSMContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/09/29 20:18:57  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/
