@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.45 $
- *          date        $Date: 2008-12-18 14:20:30 $
+ *          revision    $Revision: 1.46 $
+ *          date        $Date: 2008-12-18 17:15:29 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -177,7 +177,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
 			if (treeEditable)
 			{
-				for (MIFClass choiceClass:mifClass.getSortedChoices())
+				for (MIFClass choiceClass:mifClass.getChoices())
 				{
 					//load the choice and resolve internal reference
 					if (!choiceClass.getReferenceName().equals(""))
@@ -580,6 +580,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.45  2008/12/18 14:20:30  wangeug
+ *HISTORY 	:correct logging method:use logInfor rather than logError
+ *HISTORY 	:
  *HISTORY 	:Revision 1.44  2008/10/15 20:59:58  wangeug
  *HISTORY 	:fix bug: only add "inlineText" attribute if not exist
  *HISTORY 	:
