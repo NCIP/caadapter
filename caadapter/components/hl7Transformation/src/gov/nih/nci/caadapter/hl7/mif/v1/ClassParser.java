@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2008-12-11 17:05:37 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2008-12-18 17:10:04 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -57,22 +57,11 @@ public class ClassParser {
         					specializedMIFClass.setTraversalName(participantTraversalName.get(specializedMIFClass.getName()));
         				
         				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
-        				if(specializedMIFClass.getChoices().size()>0)
-        				{
-        					//add child choice item,the specializedMIF class is not longer a choice
-        					//since it is only a list of other choice items
-        					System.out.println("ClassParser.parseClass()..add child choice MIFClasss..name:"+mifClass.getName());
-        					Iterator choiceIt=specializedMIFClass.getSortedChoices().iterator();
-        					while(choiceIt.hasNext())
-        	                {
-        	                	MIFClass choiceable=(MIFClass)choiceIt.next();
-        	                	System.out.println("\t\tClassParser.parseClass()..child choice ..name:"+choiceable.getName()+"..traversal:"+choiceable.getTraversalName());
-        	                	mifClass.addChoice(choiceable);
-        	                }    
-        					specializedMIFClass.getChoices().clear();
-        				}
-        				else
-        					mifClass.addChoice(specializedMIFClass);
+
+        				//add all the choice item into holder class since it may 
+        				//be required to resolve undefined class in the future.
+        				//But a item will be able chosen if it is a list of other MIFClass
+       					mifClass.addChoice(specializedMIFClass);
         			}
         			specializedChild = specializedChild.getNextSibling();
         		}
@@ -91,6 +80,9 @@ public class ClassParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2008/12/11 17:05:37  wangeug
+ * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
+ * HISTORY :
  * HISTORY :Revision 1.6  2008/09/29 15:42:44  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
