@@ -18,34 +18,20 @@ import gov.nih.nci.caadapter.common.util.PropertiesResult;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-09-29 15:48:56 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2008-12-18 17:07:12 $
  */
 public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObject{
 
     DatatypeBaseObject parent;
-
     public PropertiesResult getPropertyDescriptors() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	public String getTitle() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	private boolean choiceSelected =false;
-
-	
-	public boolean isChoiceSelected() {
-		return choiceSelected;
-	}
-
-	public void setChoiceSelected(boolean choiceSelected) {
-		this.choiceSelected = choiceSelected;
-	}
-
 	public abstract boolean isEnabled();
 	public abstract void setEnabled(boolean enable) ;
 
@@ -92,4 +78,7 @@ public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObje
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2008/09/29 15:48:56  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

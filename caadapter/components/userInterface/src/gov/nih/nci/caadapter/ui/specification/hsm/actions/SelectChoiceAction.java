@@ -37,8 +37,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2008-09-29 20:18:57 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2008-12-18 17:10:52 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -53,7 +53,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.11 2008-09-29 20:18:57 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.12 2008-12-18 17:10:52 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -106,7 +106,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                 while(choiceIt.hasNext())
                 {
                 	MIFClass choiceable=(MIFClass)choiceIt.next();
-                	if(!choiceable.isChoiceSelected())
+                	if(!choiceable.isChoiceSelected()&&choiceable.getChoices().isEmpty())
                    		baseList.add((DatatypeBaseObject)choiceable);             
                 }
                 AssociationListWizard cloneListWizard =
@@ -136,7 +136,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     	Iterator choiceAllIt=mifClass.getSortedChoices().iterator();
                     	while(choiceAllIt.hasNext())
                     	{
-                    		DatatypeBaseObject oneChoice=(DatatypeBaseObject)choiceAllIt.next();
+                    		MIFClass oneChoice=(MIFClass)choiceAllIt.next();
                     		//clean the MIFAssociation Class
                     		if (oneChoice.isChoiceSelected()&&!mifClass.getAssociations().isEmpty())
                     		{
@@ -186,7 +186,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     	for (DatatypeBaseObject oneChoiceSelected:userSelectedMIFClass)
                     	{
                     		oneChoiceSelected.setParentXmlPath(mifAssc.getParentXmlPath());
-                    		oneChoiceSelected.setChoiceSelected(true);
+                    		((MIFClass)oneChoiceSelected).setChoiceSelected(true);
                     	}
                     	
                     	mifAssc.setChoiceSelected(true);
@@ -213,5 +213,8 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2008/09/29 20:18:57  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/
