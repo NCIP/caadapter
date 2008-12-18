@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.46 $
- *          date        $Date: 2008-12-18 17:15:29 $
+ *          revision    $Revision: 1.47 $
+ *          date        $Date: 2008-12-18 19:11:40 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -218,9 +218,20 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			}
 		}
 		for (MIFClass choiceToNode:mifClass.getSortedChoices())
-		{
+		{	
 			if (choiceToNode.isChoiceSelected())
 			{	
+				if (!mifAssociation.isChoiceSelected())
+				{
+					//If one of the choice MIF class is a list of
+					//other MIFClass, all of these children are promoted to
+					//top level. If these promoted item is cloned from the 
+					//MIFClass choiceSelected=true, it should be set to
+					//choiceSelected=false to make it available 
+					//for future choice action but ignoreed with current treeNode
+					choiceToNode.setChoiceSelected(false);
+					break;
+				}
 				//choiceClassNode
 				DefaultMutableTreeNode choicClassNode=buildMIFClassNode(choiceToNode, null);
 				int choiceChildrenCnt=choicClassNode.getChildCount();
@@ -580,6 +591,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.46  2008/12/18 17:15:29  wangeug
+ *HISTORY 	:MIF Parsing: A item of a choice is a list of other MIFClass.
+ *HISTORY 	:
  *HISTORY 	:Revision 1.45  2008/12/18 14:20:30  wangeug
  *HISTORY 	:correct logging method:use logInfor rather than logError
  *HISTORY 	:
