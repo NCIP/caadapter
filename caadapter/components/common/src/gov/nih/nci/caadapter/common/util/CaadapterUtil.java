@@ -30,8 +30,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.27 $
- * @date $$Date: 2008-12-12 22:02:14 $
+ * @version $Revision: 1.28 $
+ * @date $$Date: 2008-12-19 22:24:28 $
  * @since caAdapter v1.2
  */
 
@@ -66,13 +66,13 @@ public class CaadapterUtil {
         Properties properties=new Properties();
         try {
         	 
-        	File srcFile=new  File(PATH_COMPONENT_PROPERTY_FILE);
+        	File srcFile=new  File("conf/caadapter-components.properties");
         	if (srcFile.exists())
         	{
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
+        		fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();	
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -118,12 +118,12 @@ public class CaadapterUtil {
             }
             fi.close();
             Properties rsrcProp=new Properties();
-            fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
+            fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-resources.properties").openStream();
             rsrcProp.load(fi);
             readResourceRequired(rsrcProp);
                   
         } catch (Exception ex) {
-            Log.logException(CaadapterUtil.class, PATH_COMPONENT_PROPERTY_FILE +" is not found", ex);
+            Log.logException(CaadapterUtil.class, "caadapter-components.properties is not found", ex);
         } finally {
             if (fi != null) try {
                 fi.close();

@@ -28,13 +28,13 @@ import java.util.StringTokenizer;
 /**
  *
  * @author OWNER: Eugene Wang  Date: September 24, 2008
- * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.1 $
- * @date $$Date: 2008-11-10 19:12:26 $
+ * @author LAST UPDATE: $Author: umkis $
+ * @version $Revision: 1.2 $
+ * @date $$Date: 2008-12-19 22:24:38 $
  * @since caAdapter v4.2
  */
 
-public class CaadapterUtil {
+public class GME_CaadapterUtil {
 	private static ArrayList<String> ACTIVATED_CAADAPTER_COMPONENTS =new ArrayList<String>();
 	private static ArrayList<String> INLINETEXT_ATTRIBUTES =new ArrayList<String>();
 	private static ArrayList<String> MANDATORY_SELECTED_ATTRIBUTES =new ArrayList<String>();
@@ -45,7 +45,10 @@ public class CaadapterUtil {
 	private static boolean authorizedUser=false;
 	public static final String  LINEFEED_ENCODE="&#x0A;";//html format of UTF-8 unicode value of '\n'
 	public static final String  CARTRIAGE_RETURN_ENCODE="&#x0D;";//html format of UTF-8 unicode value of '\r'
-	public static String HL7_MIF_FILE_PATH;
+    private static String NAME_COMPONENT_PROPERTY_FILE = Config.COMPONENT_PROPERTY_FILE_NAME;
+    private static String PATH_COMPONENT_PROPERTY_FILE = "conf" + File.separator + NAME_COMPONENT_PROPERTY_FILE;
+
+    public static String HL7_MIF_FILE_PATH;
 	public static String getHL7_MIF_FILE_PATH() {
 		return HL7_MIF_FILE_PATH;
 	}
@@ -323,17 +326,29 @@ public class CaadapterUtil {
 		}
 
 		public static void setAuthorizedUser(boolean authorizedUser) {
-			CaadapterUtil.authorizedUser = authorizedUser;
+			GME_CaadapterUtil.authorizedUser = authorizedUser;
 		}
 
 		public static String findApplicationConfigValue(String configKey)
 		{
 			return (String)appConfig.get(configKey);
 		}
+
+    public static String getPathOfComponentPropertyFile()
+	{
+	    return PATH_COMPONENT_PROPERTY_FILE;
+	}
+	public static String getNameOfComponentPropertyFile()
+	{
+	    return NAME_COMPONENT_PROPERTY_FILE;
+	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/11/10 19:12:26  wangeug
+ * HISTORY      : release 4.2: GME module
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/09/24 15:16:51  wangeug
  * HISTORY      : Keep local copy of the CaadapterUtil.java
  * HISTORY      :
