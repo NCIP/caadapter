@@ -14,9 +14,13 @@ import java.awt.event.*;
 import java.awt.*;
 
 import java.io.IOException;
+import java.io.File;
 
 
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import org.xml.sax.XMLReader;
 import org.xml.sax.InputSource;
@@ -554,7 +558,7 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
 
   public void actionPerformed(ActionEvent e)
     {
-        System.out.println("XXXXXX0");
+        //System.out.println("XXXXXX0");
       if (e.getSource() == jbGoPreviousNode)
         {
 
@@ -601,14 +605,54 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
         }
         if (e.getSource() == jbStart)
         {
-            System.out.println("XXXXXX1");
+            //System.out.println("XXXXXX1");
             treeInitialConstruction(jtFileName.getText());
         }
 
+        if (e.getSource() == jbFileSearch)
+        {
+            File file = DefaultSettings.getUserInputOfFileFromGUI(this, "*.*", "Select XML file", false, false);
+            if (file == null)
+            {
+                JOptionPane.showMessageDialog(this, "File object is null", "Invalid File Object", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            jtFileName.setText(file.getAbsolutePath());
+        }
     }
 
     private void treeInitialConstruction(String path)
     {
+        InputSource is = null;
+        File file = new File(path);
+        if (file.exists())
+        {
+            if (!file.isFile())
+            {
+                JOptionPane.showMessageDialog(this, "This is not a file : " + path, "Invalid File Object", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else
+            {
+                path = "file:///" + path.replace("\\", "/");
+                is = new InputSource(path);
+            }
+        }
+        if (is == null)
+        {
+            try
+            {
+                ClassLoaderUtil loaderUtil = new ClassLoaderUtil(path, false);
+                is = new InputSource(loaderUtil.getInputStreams().get(0));
+            }
+            catch(IOException ie)
+            {
+                System.out.println("XXXXX : " + ie.getMessage());
+            }
+            if (is == null) is = new InputSource(path);
+        }
+
+
         XmlTreeBuildEventHandler handler = null;
         try
         {
@@ -620,8 +664,8 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
 
             producer.setContentHandler(handler);
 
-            //producer.parse(new InputSource("file:///" + path.replaceAll("\\", "/")));
-            producer.parse(new InputSource("file:///" + path));
+
+            producer.parse(is);
             //producer.parse(new InputSource(loaderUtil.getInputStreams().get(0)));
             //headOfMain = handler.getHeadNode();//new MetaTreeMetaImpl(handler.getHeadSegment());
         }
