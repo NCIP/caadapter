@@ -36,6 +36,7 @@ public class XmlTreeBuildEventHandler extends DefaultHandler
     //MetaTreeMeta tree;
 
     boolean justStart = false;
+    DefaultMutableTreeNode toBeContinued = null;
     //boolean hasElement = false;
     //boolean errorOnThisElement = false;
 
@@ -61,7 +62,7 @@ public class XmlTreeBuildEventHandler extends DefaultHandler
     }
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
     {
-
+        toBeContinued = null;
         XmlTreeBrowsingNode node = new XmlTreeBrowsingNode();
         node.setRole(node.getRoleKind()[0]);
         node.setName(qName);
@@ -127,7 +128,6 @@ public class XmlTreeBuildEventHandler extends DefaultHandler
                 if ((name.equals("name"))&&
                     (title.equals("mif:targetConnection"))&&
                     (association != null))
-
                 {
                     nTemp1 = (XmlTreeBrowsingNode) association.getUserObject();
                     String title1 = nTemp1.getName();
@@ -152,18 +152,33 @@ public class XmlTreeBuildEventHandler extends DefaultHandler
         str = str.trim();
         if (!str.equals(""))
         {
-            XmlTreeBrowsingNode xNode = new XmlTreeBrowsingNode((new XmlTreeBrowsingNode()).getRoleKind()[2], "inlineText", str);
-            DefaultMutableTreeNode dNode = new DefaultMutableTreeNode(xNode);
-            //dNode.setAllowsChildren(false);
-            //curr.setAllowsChildren(true);
+            if (toBeContinued != null)
+            {
+                XmlTreeBrowsingNode oNode = (XmlTreeBrowsingNode) toBeContinued.getUserObject();
+                if (oNode.getRole().equals(oNode.getRoleKind()[2]))
+                {
+                    XmlTreeBrowsingNode xNode = new XmlTreeBrowsingNode(oNode.getRoleKind()[2], "inlineText", oNode.getValue()+str);
 
-            curr.add(dNode);
-            //dNode.setParent(curr);
+                    curr.remove(toBeContinued);
+                    toBeContinued = new DefaultMutableTreeNode(xNode);
+                    curr.add(toBeContinued);
+                }
+                else System.err.println("This is a big error ::::");
+            }
+            else
+            {
+                XmlTreeBrowsingNode xNode = new XmlTreeBrowsingNode((new XmlTreeBrowsingNode()).getRoleKind()[2], "inlineText", str);
+                toBeContinued = new DefaultMutableTreeNode(xNode);
+
+                curr.add(toBeContinued);
+            }
         }
+
     }
     public void endElement(String namespaceURI, String localName, String qName)
     {
         curr = (DefaultMutableTreeNode) curr.getParent();
+        toBeContinued = null;
     }
     public void endDocument()
     {
