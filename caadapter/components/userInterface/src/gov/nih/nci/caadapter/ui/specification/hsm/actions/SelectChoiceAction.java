@@ -37,8 +37,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2008-12-23 14:17:14 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2008-12-23 17:37:12 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -53,7 +53,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.13 2008-12-23 14:17:14 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.14 2008-12-23 17:37:12 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -154,7 +154,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     			for(MIFClass concreteChild:oneChoice.getChoices())
             						if (concreteChild.isChoiceSelected())
             						{
-            							chosenItem=oneChoice;
+            							chosenItem=concreteChild;
                             			break;
             						}                    			
                     		}
@@ -238,6 +238,9 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/12/23 14:17:14  wangeug
+ * HISTORY      : Process MIFClass with isAbstract=true
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2008/12/18 17:10:52  wangeug
  * HISTORY      : move the property:choiceSelected to children class
  * HISTORY      :
