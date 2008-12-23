@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.47 $
- *          date        $Date: 2008-12-18 19:11:40 $
+ *          revision    $Revision: 1.48 $
+ *          date        $Date: 2008-12-23 14:36:50 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -172,8 +172,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	private DefaultMutableTreeNode buildMIFClassNode(MIFClass mifClass, MIFAssociation mifAssociation)
 	{
 		DefaultMutableTreeNode rtnNode =constructTreeNodeBasedOnTreeType(mifClass,true);	
-		if(!mifClass.getSortedChoices().isEmpty())
-		{
+//		if(!mifClass.getSortedChoices().isEmpty())
+//		{
 			HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
 			if (treeEditable)
 			{
@@ -216,22 +216,22 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 				}
 				mifClass.setChoice(resolvedChoices);
 			}
-		}
+//		}
 		for (MIFClass choiceToNode:mifClass.getSortedChoices())
 		{	
 			if (choiceToNode.isChoiceSelected())
 			{	
-				if (!mifAssociation.isChoiceSelected())
-				{
-					//If one of the choice MIF class is a list of
-					//other MIFClass, all of these children are promoted to
-					//top level. If these promoted item is cloned from the 
-					//MIFClass choiceSelected=true, it should be set to
-					//choiceSelected=false to make it available 
-					//for future choice action but ignoreed with current treeNode
-					choiceToNode.setChoiceSelected(false);
-					break;
-				}
+//				if (!mifAssociation.isChoiceSelected())
+//				{
+//					//If one of the choice MIF class is a list of
+//					//other MIFClass, all of these children are promoted to
+//					//top level. If these promoted item is cloned from the 
+//					//MIFClass choiceSelected=true, it should be set to
+//					//choiceSelected=false to make it available 
+//					//for future choice action but ignoreed with current treeNode
+//					choiceToNode.setChoiceSelected(false);
+//					break;
+//				}
 				//choiceClassNode
 				DefaultMutableTreeNode choicClassNode=buildMIFClassNode(choiceToNode, null);
 				int choiceChildrenCnt=choicClassNode.getChildCount();
@@ -591,6 +591,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.47  2008/12/18 19:11:40  wangeug
+ *HISTORY 	:Return all item to be selected. If an item is a list of other MIFClass, all these children are promoted to top level as choice item
+ *HISTORY 	:
  *HISTORY 	:Revision 1.46  2008/12/18 17:15:29  wangeug
  *HISTORY 	:MIF Parsing: A item of a choice is a list of other MIFClass.
  *HISTORY 	:
