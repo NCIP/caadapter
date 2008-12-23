@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-09-29 15:44:41 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2008-12-23 14:35:53 $
  */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -326,12 +326,18 @@ public class MIFUtil {
 			}
 		}
 		//process choice class
-		if(mifClass.getSortedChoices()!=null)
-		{
+//		if(mifClass.getSortedChoices()!=null)
+//		{
 			for (MIFClass choiceClass:mifClass.getChoices())
 			{
 				if (choiceClass.getName().equalsIgnoreCase(toLook))
 					 return choiceClass;
+				else if (choiceClass.isAbstractDefined())
+				{
+					for(MIFClass concreteChild:choiceClass.getChoices())
+						if (concreteChild.getName().equalsIgnoreCase(toLook))
+							return concreteChild;
+				}
 				else
 				 {
 					 rtnMif =findLocalRefenceClass(choiceClass, toLook);
@@ -340,10 +346,13 @@ public class MIFUtil {
 				 }
 
 			}
-		}
+//		}
 		return null;
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.15  2008/09/29 15:44:41  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.22 $ date $Date: 2008-12-18 17:20:42 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.23 $ date $Date: 2008-12-23 14:35:03 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -44,6 +44,7 @@ import java.util.Iterator;
 	 private String sortKey;
 	 private boolean optionChosen = false;
 	 private boolean choiceSelected =false;//make this variable serializable
+	 private boolean abstractDefined=false;
 	 private String parentXmlPath;
 	 private boolean mapped;
  	 private List<String> csvSegments;
@@ -359,6 +360,18 @@ import java.util.Iterator;
 		this.isReference = isReference;
 	}
 	/**
+	 * @return the abstractDefined
+	 */
+	public boolean isAbstractDefined() {
+		return abstractDefined;
+	}
+	/**
+	 * @param abstractDefined the abstractDefined to set
+	 */
+	public void setAbstractDefined(boolean abstractDefined) {
+		this.abstractDefined = abstractDefined;
+	}
+	/**
 	 * @return the referenceName
 	 */
 	public String getReferenceName() {
@@ -430,6 +443,8 @@ import java.util.Iterator;
 				 choiceClonnedHash.add(clonedChoice);
 			 }
 			 clonnedObj.setChoice(choiceClonnedHash);
+			 clonnedObj.setChoiceSelected(false);
+			 clonnedObj.setOptionChosen(false);
              return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -552,6 +567,9 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.22  2008/12/18 17:20:42  wangeug
+  * HISTORY :Return all item to be selected. If an item is a list of other MIFClass, all these children are promoted to top level as choice item
+  * HISTORY :
   * HISTORY :Revision 1.21  2008/12/11 17:05:25  wangeug
   * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
   * HISTORY :
