@@ -52,12 +52,12 @@ public class XmlTreeBuildEventHandler extends DefaultHandler
         headNode = head;
         headNode.removeAllChildren();
         justStart = false;
-        System.out.println("XXXXX 888");
+        //System.out.println("XXXXX 888");
     }
 
     public void startDocument()
     {
-        System.out.println("XXXXX 999");
+        //System.out.println("XXXXX 999");
     }
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
     {
@@ -90,7 +90,7 @@ public class XmlTreeBuildEventHandler extends DefaultHandler
         {
             String name = atts.getQName(i).trim();
             String val = atts.getValue(i).trim();
-            System.out.println("XXXX : name=" + name + ", value="+ val);
+            //System.out.println("XXXX : name=" + name + ", value="+ val);
             XmlTreeBrowsingNode xNode = new XmlTreeBrowsingNode(node.getRoleKind()[1], name, val);
             DefaultMutableTreeNode dNode = new DefaultMutableTreeNode(xNode);
             //dNode.setAllowsChildren(false);

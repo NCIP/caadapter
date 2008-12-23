@@ -638,8 +638,18 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
                 is = new InputSource(path);
             }
         }
-        if (is == null)
+        while(is == null)
         {
+            try
+            {
+                MIFClassLoaderUtil loaderUtil = new MIFClassLoaderUtil(path);
+                is = new InputSource(loaderUtil.getInputStreams().get(0));
+            }
+            catch(IOException ie)
+            {
+                //System.out.println("XXXXX : " + ie.getMessage());
+            }
+            if (is != null) break;
             try
             {
                 ClassLoaderUtil loaderUtil = new ClassLoaderUtil(path, false);
@@ -647,7 +657,7 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
             }
             catch(IOException ie)
             {
-                System.out.println("XXXXX : " + ie.getMessage());
+                //System.out.println("XXXXX : " + ie.getMessage());
             }
             if (is == null) is = new InputSource(path);
         }
@@ -672,14 +682,14 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
         catch(IOException e)
         {
             JOptionPane.showMessageDialog(this, e.getMessage(), "XML Parser IOException", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            return;//throw new ApplicationException("H3SVocabTreeBuildEventHandler IOException 1 : " + e.getMessage());
+
+            return;
         }
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(this, e.getMessage(), "XML Parser Other Exception", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            return;//throw new ApplicationException("H3SVocabTreeBuildEventHandler IOException 2 : " + e.getMessage());
+
+            return;
 
             //e.printStackTrace(System.err);
         }
