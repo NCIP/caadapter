@@ -9,7 +9,6 @@ package gov.nih.nci.cbiit.cmps.common;
 
 import java.io.File;
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.*;
 import org.apache.xerces.xs.*;
 import org.w3c.dom.DOMConfiguration;
@@ -25,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.9 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -182,24 +181,6 @@ public class XSDParser implements DOMErrorHandler {
 		}
 
 	}
-
-	/**
-	 * Utility method to get resource
-	 * @param name - resource name
-	 * @return URL of resource
-	 */
-	public static URL getResource(String name){
-		URL ret = null;
-		ret = XSDParser.class.getClassLoader().getResource(name);
-		if(ret!=null) return ret;
-		ret = XSDParser.class.getClassLoader().getResource("/"+name);
-		if(ret!=null) return ret;
-		ret = ClassLoader.getSystemResource(name);
-		if(ret!=null) return ret;
-		ret = ClassLoader.getSystemResource("/"+name);
-		return ret;
-	}
-
 
 	private ElementMeta processXSObject(XSObject item, int depth) {
 		if(item instanceof XSComplexTypeDefinition){
@@ -391,6 +372,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.9  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.8  2008/11/04 21:25:38  linc
  * HISTORY: updated
  * HISTORY:

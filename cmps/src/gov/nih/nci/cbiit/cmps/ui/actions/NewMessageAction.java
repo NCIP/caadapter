@@ -17,7 +17,7 @@ import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame;
 import gov.nih.nci.cbiit.cmps.ui.message.OpenMessageWizard;
-import gov.nih.nci.cbiit.cmps.ui.util.FileUtil;
+import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import javax.swing.*;
 
@@ -34,8 +34,8 @@ import java.util.ArrayList;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-10 15:43:02 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  */
 public class NewMessageAction extends AbstractContextAction
 		{
@@ -121,6 +121,9 @@ public class NewMessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/12/10 15:43:02  linc
+ * HISTORY      : Fixed component id generator and delete link.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
  * HISTORY      : First GUI release
  * HISTORY      :

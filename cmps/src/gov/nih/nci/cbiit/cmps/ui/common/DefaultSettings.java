@@ -9,9 +9,9 @@
 
 package gov.nih.nci.cbiit.cmps.ui.common;
 
-import gov.nih.nci.cbiit.cmps.ui.util.FileUtil;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
 import gov.nih.nci.cbiit.cmps.ui.util.SingleFileFilter;
+import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -33,8 +33,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 public class DefaultSettings
@@ -56,6 +56,8 @@ public class DefaultSettings
 	public static final String CSV_METADATA_FILE_DEFAULT_EXTENTION = ".scs";
 	public static final String OPEN_DIALOG_TITLE_FOR_CSV_FILE = "Open csv file";
 	public static final String OPEN_DIALOG_TITLE_FOR_MAP_FILE = "Open mapping file";
+	public static final Color DEFAULT_READ_ONLY_BACK_GROUND_COLOR = Color.LIGHT_GRAY;
+	public static final String FUNCTION_DEFINITION_FILE_LOCATION = "etc/functions/corefunc.xml";
 	private static JFileChooser defaultFileChooser;
 	private static File lastPathLocation;
 	public static int FRAME_DEFAULT_HEIGHT = 780;
@@ -535,6 +537,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:

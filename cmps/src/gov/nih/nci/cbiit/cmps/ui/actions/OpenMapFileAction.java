@@ -30,8 +30,8 @@ import java.util.ArrayList;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  */
 public class OpenMapFileAction extends DefaultContextOpenAction
 {
@@ -86,91 +86,13 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 		return openFile;
 	}
 
-	protected void launchPanel(final ContextManagerClient panel, final File file)
-	{
-		final CmpsMappingPanel mappingPanel  = (CmpsMappingPanel) panel;
-		//have to add the new tab so as the panel may update its panel title in the tabbed pane.
-		gov.nih.nci.cbiit.cmps.ui.util.SwingWorker worker = new gov.nih.nci.cbiit.cmps.ui.util.SwingWorker()
-		{
-			public Object construct()
-			{
-				try
-				{
-					GeneralUtilities.setCursorWaiting(mainFrame);
-					mainFrame.addNewTab(mappingPanel);
-					setSuccessfullyPerformed(true);
-				}
-				catch(Throwable t)
-				{
-					t.printStackTrace();
-					//Log.logException(getClass(), "May ignore and proceed", t);
-					setSuccessfullyPerformed(false);
-				}
-				finally
-				{
-					//back to normal, in case exception occurred.
-					GeneralUtilities.setCursorDefault(mainFrame);
-					return null;
-				}
-			}
-
-			public void finished()
-			{
-				if (!isSuccessfullyPerformed())
-				{//no need to proceed further
-					return;
-				}
-				//this variable will help determine whether or not to close the created panel in the event of validation errors or exceptions.
-				boolean everythingGood = true;
-				try
-				{
-					GeneralUtilities.setCursorWaiting(mainFrame);
-					mappingPanel.processOpenMapFile(file);
-				}
-				catch (Throwable e1)
-				{
-					e1.printStackTrace();
-					//log the exception, but not report
-					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
-					//report the nice to have message
-					everythingGood = false;
-				}
-				finally
-				{
-					//back to normal.
-					GeneralUtilities.setCursorDefault(mainFrame);
-					setSuccessfullyPerformed(everythingGood);
-
-					if (!everythingGood)
-					{//do the clean up.
-//						Message msg = MessageResources.getMessage("GEN3", new Object[0]);
-//						JOptionPane.showMessageDialog(mainFrame, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
-						if (mappingPanel != null && mainFrame.hasComponentOfGivenClass(getContextClientClass(), false) != null)
-						{
-						//						mainFrame.getTabbedPane().remove(mappingPanel);
-						//use close action instead of removing it from tabbed directly so as to allow main frame to clean up maps.
-//							gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction closeAction = new gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction(mappingPanel);
-//							closeAction.actionPerformed(actionEvent);
-						}
-					}
-				}
-			}
-		};
-		worker.start();
-	}
-	/**
-	 * Launch the context manager client to UI.
-	 *
-	 * @param panel
-	 * @param file
-	 */
 //	protected void launchPanel(final ContextManagerClient panel, final File file)
 //	{
 //		final CmpsMappingPanel mappingPanel  = (CmpsMappingPanel) panel;
 //		//have to add the new tab so as the panel may update its panel title in the tabbed pane.
-//		SwingWorker worker = new SwingWorker()
+//		gov.nih.nci.cbiit.cmps.ui.util.SwingWorker worker = new gov.nih.nci.cbiit.cmps.ui.util.SwingWorker()
 //		{
-//			public Object doInBackground() throws Exception
+//			public Object construct()
 //			{
 //				try
 //				{
@@ -192,10 +114,11 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 //				}
 //			}
 //
-//			protected void done() {
+//			public void finished()
+//			{
 //				if (!isSuccessfullyPerformed())
 //				{//no need to proceed further
-//					return ;
+//					return;
 //				}
 //				//this variable will help determine whether or not to close the created panel in the event of validation errors or exceptions.
 //				boolean everythingGood = true;
@@ -206,6 +129,7 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 //				}
 //				catch (Throwable e1)
 //				{
+//					e1.printStackTrace();
 //					//log the exception, but not report
 //					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
 //					//report the nice to have message
@@ -219,6 +143,8 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 //
 //					if (!everythingGood)
 //					{//do the clean up.
+////						Message msg = MessageResources.getMessage("GEN3", new Object[0]);
+////						JOptionPane.showMessageDialog(mainFrame, msg.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 //						if (mappingPanel != null && mainFrame.hasComponentOfGivenClass(getContextClientClass(), false) != null)
 //						{
 //						//						mainFrame.getTabbedPane().remove(mappingPanel);
@@ -228,11 +154,85 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 //						}
 //					}
 //				}
-//				return ;
 //			}
 //		};
-//		worker.execute();
+//		worker.start();
 //	}
+	/**
+	 * Launch the context manager client to UI.
+	 *
+	 * @param panel
+	 * @param file
+	 */
+	protected void launchPanel(final ContextManagerClient panel, final File file)
+	{
+		final CmpsMappingPanel mappingPanel  = (CmpsMappingPanel) panel;
+		//have to add the new tab so as the panel may update its panel title in the tabbed pane.
+		SwingWorker worker = new SwingWorker()
+		{
+			public Object doInBackground() throws Exception
+			{
+				try
+				{
+					GeneralUtilities.setCursorWaiting(mainFrame);
+					mainFrame.addNewTab(mappingPanel);
+					setSuccessfullyPerformed(true);
+				}
+				catch(Throwable t)
+				{
+					t.printStackTrace();
+					//Log.logException(getClass(), "May ignore and proceed", t);
+					setSuccessfullyPerformed(false);
+				}
+				finally
+				{
+					//back to normal, in case exception occurred.
+					GeneralUtilities.setCursorDefault(mainFrame);
+					return null;
+				}
+			}
+
+			protected void done() {
+				if (!isSuccessfullyPerformed())
+				{//no need to proceed further
+					return ;
+				}
+				//this variable will help determine whether or not to close the created panel in the event of validation errors or exceptions.
+				boolean everythingGood = true;
+				try
+				{
+					GeneralUtilities.setCursorWaiting(mainFrame);
+					mappingPanel.processOpenMapFile(file);
+				}
+				catch (Throwable e1)
+				{
+					//log the exception, but not report
+					DefaultSettings.reportThrowableToLogAndUI(this, e1, "", mainFrame, false, true);
+					//report the nice to have message
+					everythingGood = false;
+				}
+				finally
+				{
+					//back to normal.
+					GeneralUtilities.setCursorDefault(mainFrame);
+					setSuccessfullyPerformed(everythingGood);
+
+					if (!everythingGood)
+					{//do the clean up.
+						if (mappingPanel != null && mainFrame.hasComponentOfGivenClass(getContextClientClass(), false) != null)
+						{
+						//						mainFrame.getTabbedPane().remove(mappingPanel);
+						//use close action instead of removing it from tabbed directly so as to allow main frame to clean up maps.
+//							gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction closeAction = new gov.nih.nci.caadapter.ui.mapping.hl7.actions.CloseMapAction(mappingPanel);
+//							closeAction.actionPerformed(actionEvent);
+						}
+					}
+				}
+				return ;
+			}
+		};
+		worker.execute();
+	}
 
 	/**
 	 * Invoked when an action occurs.
@@ -270,6 +270,9 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY      : First GUI release
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/03 20:46:14  linc
  * HISTORY      : UI update.
  * HISTORY      :

@@ -20,6 +20,7 @@ import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesSwitchController;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
 
@@ -55,8 +56,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-12-10 15:43:02 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -960,9 +961,16 @@ public class MiddlePanelJGraphController
 		}
 		return mappingData;
 	}
+	public PropertiesSwitchController getPropertiesSwitchController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/12/10 15:43:02  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:

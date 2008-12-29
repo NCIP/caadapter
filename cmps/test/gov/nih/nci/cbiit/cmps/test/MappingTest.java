@@ -13,6 +13,7 @@ import gov.nih.nci.cbiit.cmps.core.BaseMeta;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
 import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
+import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import java.io.File;
 
@@ -34,8 +35,8 @@ import org.junit.Test;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.13 $
- * @date       $Date: 2008-12-10 15:43:03 $
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 public class MappingTest {
@@ -117,7 +118,7 @@ public class MappingTest {
 	@Ignore
 	public void testParseHL7v2XSD() throws Exception {
 		XSDParser p = new XSDParser();
-		p.loadSchema(XSDParser.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
+		p.loadSchema(FileUtil.getResource("hl7v2xsd/2.5.1/ADT_A01.xsd").toString());
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", "ADT_A01");
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
@@ -203,6 +204,9 @@ public class MappingTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.13  2008/12/10 15:43:03  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.12  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:

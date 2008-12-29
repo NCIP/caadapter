@@ -7,20 +7,19 @@
  */
 
 
-package gov.nih.nci.cbiit.cmps.ui.util;
+package gov.nih.nci.cbiit.cmps.util;
 
+import gov.nih.nci.cbiit.cmps.common.XSDParser;
 import gov.nih.nci.cbiit.cmps.function.DateFunction;
 import gov.nih.nci.cbiit.cmps.function.FunctionException;
+import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
-import java.util.List;
 import java.util.logging.FileHandler;
 
 /**
@@ -29,8 +28,8 @@ import java.util.logging.FileHandler;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.1 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 
@@ -811,10 +810,53 @@ public class FileUtil
     	}
     	return ret;
     }
+
+	/**
+	 * Utility method to get resource
+	 * @param name - resource name
+	 * @return URL of resource
+	 */
+	public static URL getResource(String name){
+		URL ret = null;
+		ret = XSDParser.class.getClassLoader().getResource(name);
+		if(ret!=null) return ret;
+		ret = XSDParser.class.getClassLoader().getResource("/"+name);
+		if(ret!=null) return ret;
+		ret = ClassLoader.getSystemResource(name);
+		if(ret!=null) return ret;
+		ret = ClassLoader.getSystemResource("/"+name);
+		return ret;
+	}
+	
+	/**
+	 * Utility method to get resource
+	 * @param name
+	 * @return An enumeration of URL objects for the resource
+	 */
+	public static Enumeration<URL> getResources(String name) {
+		Enumeration<URL> ret = null;
+		try {
+			ret = FileUtil.class.getClassLoader().getResources(name);
+			if(ret!=null&&ret.hasMoreElements()) return ret;
+			ret = FileUtil.class.getClassLoader().getResources("/"+name);
+			if(ret!=null&&ret.hasMoreElements()) return ret;
+			ret = ClassLoader.getSystemResources(name);
+			if(ret!=null&&ret.hasMoreElements()) return ret;
+			ret = ClassLoader.getSystemResources("/"+name);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:

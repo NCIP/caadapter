@@ -17,12 +17,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for functionType complex type.
+ * <p>Java class for functionDef complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="functionType">
+ * &lt;complexType name="functionDef">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;/sequence>
  *       &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="group" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="class" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="method" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -38,16 +40,20 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "functionType", propOrder = {
+@XmlType(name = "functionDef", propOrder = {
     "data"
 })
-public class FunctionType {
+public class FunctionDef {
 
     protected List<FunctionData> data;
     @XmlAttribute
     protected String name;
     @XmlAttribute
     protected String group;
+    @XmlAttribute(name = "class")
+    protected String clazz;
+    @XmlAttribute
+    protected String method;
 
     /**
      * Gets the value of the data property.
@@ -124,6 +130,54 @@ public class FunctionType {
      */
     public void setGroup(String value) {
         this.group = value;
+    }
+
+    /**
+     * Gets the value of the clazz property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getClazz() {
+        return clazz;
+    }
+
+    /**
+     * Sets the value of the clazz property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClazz(String value) {
+        this.clazz = value;
+    }
+
+    /**
+     * Gets the value of the method property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getMethod() {
+        return method;
+    }
+
+    /**
+     * Sets the value of the method property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setMethod(String value) {
+        this.method = value;
     }
 
 }
