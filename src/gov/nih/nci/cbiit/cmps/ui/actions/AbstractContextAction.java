@@ -9,8 +9,8 @@
 package gov.nih.nci.cbiit.cmps.ui.actions;
 
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.util.FileUtil;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import javax.swing.JFrame;
 import javax.swing.Action;
@@ -33,8 +33,8 @@ import java.util.ArrayList;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  */
 public abstract class AbstractContextAction extends AbstractAction
 {
@@ -317,6 +317,9 @@ public abstract class AbstractContextAction extends AbstractAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY      : First GUI release
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/03 20:46:14  linc
  * HISTORY      : UI update.
  * HISTORY      :

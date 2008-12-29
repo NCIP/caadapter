@@ -22,12 +22,14 @@ import gov.nih.nci.cbiit.cmps.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmps.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmps.ui.common.TestLabel;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionLibraryPane;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.TreeTransferHandler;
-import gov.nih.nci.cbiit.cmps.ui.util.FileUtil;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
+import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -68,16 +70,16 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
 
 	protected File saveFile = null;
 
-	//	protected FunctionLibraryPane functionPane;
-	//	protected DefaultPropertiesPage propertiesPane;
+	protected FunctionLibraryPane functionPane;
+	protected DefaultPropertiesPage propertiesPane;
 	protected MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
 	protected MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
 
@@ -190,20 +192,20 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
 		topBottomSplitPane.setDividerLocation(0.5);
 
-		//			functionPane = new FunctionLibraryPane();
-		//			functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
-		//			if(functionPaneRequired)
-		//			{
-		//				topBottomSplitPane.setTopComponent(functionPane);
-		//			}
-		//			propertiesPane = new DefaultPropertiesPage(this.getMappingDataManager().getPropertiesSwitchController());
-		//			topBottomSplitPane.setBottomComponent(propertiesPane);
+		functionPane = new FunctionLibraryPane(this);
+		functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
+		if(functionPaneRequired)
+		{
+			topBottomSplitPane.setTopComponent(functionPane);
+		}
+		propertiesPane = new DefaultPropertiesPage(this.getMappingDataManager().getPropertiesSwitchController());
+		topBottomSplitPane.setBottomComponent(propertiesPane);
 
 		double topCenterFactor = 0.3;
 		Dimension rightMostDim = new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
-		//			propertiesPane.setPreferredSize(rightMostDim);
-		//			functionPane.setPreferredSize(rightMostDim);
-		//			functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+		propertiesPane.setPreferredSize(rightMostDim);
+		functionPane.setPreferredSize(rightMostDim);
+		//functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
 
 		topCenterFactor = 1.5;
 		rightMostDim = new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
@@ -393,6 +395,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		//sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
 		sTree.setTransferHandler(getDndHandler());
 		sTree.setDragEnabled(true);
+		sTree.setDropMode(DropMode.ON);
 		sTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		sourceScrollPane.setViewportView(sTree);
 		sTree.expandAll();
@@ -953,6 +956,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/12/09 19:04:17  linc
+ * HISTORY: First GUI release
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/12/04 21:34:20  linc
  * HISTORY: Drap and Drop support with new Swing.
  * HISTORY:

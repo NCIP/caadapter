@@ -9,8 +9,10 @@ package gov.nih.nci.cbiit.cmps.ui.tree;
 
 import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
+import gov.nih.nci.cbiit.cmps.core.FunctionDef;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionTypeNodeLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 
@@ -32,8 +34,8 @@ import javax.swing.tree.TreePath;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-12-10 15:43:03 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2008-12-29 22:18:18 $
  *
  */
 public class TreeTransferHandler extends TransferHandler {
@@ -98,7 +100,14 @@ public class TreeTransferHandler extends TransferHandler {
 		JTree tree = (JTree)c;
 		TreePath path = tree.getSelectionPath();
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-		String pathString = UIHelper.getPathStringForNode(node);
+		String pathString = null;
+		if(node.getUserObject() instanceof ElementMetaLoader.MyTreeObject)
+			pathString = UIHelper.getPathStringForNode(node);
+		else if(node.getUserObject() instanceof FunctionTypeNodeLoader.MyTreeObject){
+			FunctionDef f =((FunctionDef)((FunctionTypeNodeLoader.MyTreeObject)node.getUserObject()).getObj()); 
+			pathString = f.getGroup()+":"+f.getName();
+		}
+		System.out.println("createTransferable: obj="+pathString);
         this.state = START;
 		return new StringSelection(pathString);
 	}
@@ -158,6 +167,9 @@ public class TreeTransferHandler extends TransferHandler {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2008/12/10 15:43:03  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:
