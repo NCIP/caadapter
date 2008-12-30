@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.23 $ date $Date: 2008-12-23 14:35:03 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.24 $ date $Date: 2008-12-30 15:03:11 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -210,8 +210,18 @@ import java.util.Iterator;
 			MIFClass choiceItem=(MIFClass)it.next();
 			rtnSet.add((MIFClass)(choiceItem));//it.next()));
 			//add the content of a choiceItem if it is a list of other MIFClass
-			if (choiceItem.getChoices().size()>0)
-				rtnSet.addAll(choiceItem.getChoices());
+			if (choiceItem.isAbstractDefined())
+			{
+				for (MIFAssociation asbtractAssc:choiceItem.getAssociations())
+				{
+					//the parent Association MIFClass is abstract, push all its association down to its children
+					for (MIFClass childChoice:choiceItem.getChoices())
+					{
+						childChoice.addAssociation(asbtractAssc);
+						rtnSet.add(childChoice);
+					}
+				}
+			}
 			
 		}
 		return rtnSet;
@@ -427,8 +437,15 @@ import java.util.Iterator;
 			 while (asscIt.hasNext())
 			 {
 				 MIFAssociation oneAssc=(MIFAssociation)asscIt.next();
-				 MIFAssociation clonedAssc=(MIFAssociation)oneAssc.clone();
-				 asscClonnedHash.add(clonedAssc);
+				 //clone the abstractAssociation only if the MIFClass is 
+				 //abstract since the concrete MIFClass carries only a 
+				 //reference of the abstract MIFAssociation define by the 
+				 //abstract MIFClass
+				 if (oneAssc.isAbstractDefined()==this.isAbstractDefined())
+				 {
+					 MIFAssociation clonedAssc=(MIFAssociation)oneAssc.clone();
+					 asscClonnedHash.add(clonedAssc);
+				 }
 			 }
 			 clonnedObj.setAssociation(asscClonnedHash);
 
@@ -441,6 +458,17 @@ import java.util.Iterator;
 				 MIFClass oneChoice=(MIFClass)choiceIt.next();
 				 MIFClass clonedChoice=(MIFClass)oneChoice.clone();
 				 choiceClonnedHash.add(clonedChoice);
+			 }
+			 if (clonnedObj.isAbstractDefined())
+			 {
+				for (MIFAssociation asbtractAssc:clonnedObj.getAssociations())
+				{
+ 					//the cloned MIFClass is abstract, push all its association down to its children
+ 					for (MIFClass childChoice:clonnedObj.getChoices())
+ 					{
+							childChoice.addAssociation(asbtractAssc);
+					}
+				}
 			 }
 			 clonnedObj.setChoice(choiceClonnedHash);
 			 clonnedObj.setChoiceSelected(false);
@@ -567,6 +595,9 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.23  2008/12/23 14:35:03  wangeug
+  * HISTORY :Process MIFClass with isAbstract=true
+  * HISTORY :
   * HISTORY :Revision 1.22  2008/12/18 17:20:42  wangeug
   * HISTORY :Return all item to be selected. If an item is a list of other MIFClass, all these children are promoted to top level as choice item
   * HISTORY :

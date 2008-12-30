@@ -20,7 +20,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.20 $ date $Date: 2008-09-29 15:44:40 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.21 $ date $Date: 2008-12-30 15:03:11 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -38,6 +38,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private MIFClass mifClass;
 	private boolean optionChosen = false;
 	private boolean choiceSelected =false;//make it serializable
+	private boolean abstractDefined=false;
 	private String parentXmlPath;
 	private boolean optionForced=false;
 	private List<String> csvSegments;
@@ -144,10 +145,16 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public MIFClass findChoiceSelectedMifClass() {
 		if (!isChoiceSelected())
 			return null;
-		for(MIFClass choiceClass:getMifClass().getSortedChoices())
+		for(MIFClass choiceClass:getMifClass().getChoices())
 		{
 			if (choiceClass.isChoiceSelected())
 				return choiceClass;
+			else if (choiceClass.isAbstractDefined())
+			{
+				for (MIFClass concreteChild:choiceClass.getChoices())
+					if (concreteChild.isChoiceSelected())
+						return concreteChild;
+			}
 		}
 		return null;
 	}
@@ -288,6 +295,18 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		this.choiceSelected = choiceSelected;
 	}
 
+	/**
+	 * @return the abstractDefined
+	 */
+	public boolean isAbstractDefined() {
+		return abstractDefined;
+	}
+	/**
+	 * @param abstractDefined the abstractDefined to set
+	 */
+	public void setAbstractDefined(boolean abstractDefined) {
+		this.abstractDefined = abstractDefined;
+	}
 	public Object clone()
 	{
 		 try {
@@ -304,7 +323,9 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 				}
 				clonnedObj.setParticipantTraversalNames(clonedHT);
 			 }		 
-			 
+			 clonnedObj.setChoiceSelected(false);
+			 clonnedObj.setOptionChosen(false);
+			 clonnedObj.setOptionForced(false);
 			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -387,4 +408,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 }	
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.20  2008/09/29 15:44:40  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
