@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2008-12-18 17:10:04 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2008-12-30 14:54:02 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -36,7 +36,10 @@ public class ClassParser {
 			mifClass.setSortKey(XSDParserUtil.getAttribute(node, "sortKey"));
 		}
 		mifClass.setName(XSDParserUtil.getAttribute(node, "name"));
-		
+		String abstractFlag=XSDParserUtil.getAttribute(node, "isAbstract");
+		if ((abstractFlag!=null)&&(abstractFlag.equalsIgnoreCase("true")))
+				mifClass.setAbstractDefined(true);
+ 
         Node child = node.getFirstChild();
         while (child != null) {
         	if (child.getNodeName().equals(prefix+"attribute")
@@ -57,7 +60,17 @@ public class ClassParser {
         					specializedMIFClass.setTraversalName(participantTraversalName.get(specializedMIFClass.getName()));
         				
         				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
-
+        				if (specializedMIFClass.isAbstractDefined())
+        				{
+        					for (MIFAssociation asbtractAssc:specializedMIFClass.getAssociations())
+    						{
+        						//make the association abstract
+        						//all these abstract MIFAssociation with an abstract MIFClass
+        						//will be push down concrete children MIFClass 
+        						//in MIFClass.getSortChoice();
+        						asbtractAssc.setAbstractDefined(true);
+        					}
+        				}
         				//add all the choice item into holder class since it may 
         				//be required to resolve undefined class in the future.
         				//But a item will be able chosen if it is a list of other MIFClass
@@ -80,6 +93,9 @@ public class ClassParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2008/12/18 17:10:04  wangeug
+ * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
+ * HISTORY :
  * HISTORY :Revision 1.7  2008/12/11 17:05:37  wangeug
  * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
  * HISTORY :
