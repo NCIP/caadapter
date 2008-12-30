@@ -31,8 +31,8 @@ import gov.nih.nci.caadapter.common.Log;
  *
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.7 $
- * @date $Date: 2008-12-18 17:19:17 $
+ * @version $Revision: 1.8 $
+ * @date $Date: 2008-12-30 15:02:10 $
  * @since caAdapter v4.0
  */
 public class MIFToXmlExporter {
@@ -143,13 +143,18 @@ public class MIFToXmlExporter {
 		TreeSet<MIFAssociation> asscSet=tbBuilt.getSortedAssociations();
 		for(MIFAssociation assc:asscSet)
 		{
-			Element asscElm=buildAssociationElement(assc);
-			MIFClass asscMifClass=assc.getMifClass();
-			if (asscMifClass!=null)
+			if (assc.isAbstractDefined()==tbBuilt.isAbstractDefined())
 			{
-				asscElm.addContent(buildMIFClassElement(asscMifClass));
+				//write out an abstract association only if the
+				//holder MIFClass is abstract
+				Element asscElm=buildAssociationElement(assc);
+				MIFClass asscMifClass=assc.getMifClass();
+				if (asscMifClass!=null)
+				{
+					asscElm.addContent(buildMIFClassElement(asscMifClass));
+				}
+				rtnElm.addContent(asscElm);
 			}
-			rtnElm.addContent(asscElm);
 		}
 //		add Choice
 		HashSet<MIFClass> choiceSet=tbBuilt.getChoices();//.getSortedChoices();
@@ -331,6 +336,9 @@ public class MIFToXmlExporter {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2008/12/18 17:19:17  wangeug
+ * HISTORY :	use mifClass.getChoice() rather mifClass.getSortedChoice() to serialize all choice item.
+ * HISTORY :
  * HISTORY :Revision 1.6  2008/09/29 15:44:40  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
