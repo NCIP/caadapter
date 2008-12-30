@@ -19,8 +19,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-09-29 15:44:40 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2008-12-30 15:08:07 $
  */
 
 public class MIFReferenceResolver {
@@ -67,8 +67,6 @@ private  void findReferenceDefinition(MIFClass mifClass)
 		}
 	}
 	//process choice class
-	if(mifClass.getSortedChoices()!=null)
-	{
 		for (MIFClass choiceClass:mifClass.getChoices())
 		{
 			if(choiceClass.getReferenceName().equals(""))
@@ -79,7 +77,6 @@ private  void findReferenceDefinition(MIFClass mifClass)
 			else if (!choiceClass.isReference()) //here is a CMET class
 				 classReferences.put(choiceClass.getName(), choiceClass);
 		}
-	}
 }
 /**
  * Resolve reference of a MIFClass recursively
@@ -107,8 +104,15 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 				 MIFClass referedClass=classReferences.get(asscMifClass.getName());
 				 if (referedClass!=null)
 				 {
-					 MIFClass asscRefMifClass=(MIFClass)referedClass.clone();
-					 assc.setMifClass(asscRefMifClass);
+					 if (referencePath.contains(referedClass.getName()))
+					 {
+						 Log.logInfo(sender,"Recursive reference is not resolved..className:"+asscMifClass.getName() +"..referencePath:"+referencePath);
+					 }
+					 else
+					 {
+						 MIFClass asscRefMifClass=(MIFClass)referedClass.clone();
+						 assc.setMifClass(asscRefMifClass);
+					 }
 				 }
 				 else
 				 {//put the CMET into classReference for later cloning
@@ -117,12 +121,9 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 			 }
 			 //recursively resolve the sub-class
 			 resolveReference(assc.getMifClass(),sender, assc.getParticipantTraversalNames());
-
 		}
 	}
 	//process choice class
-	if(mifClass.getSortedChoices()!=null)
-	{
 		HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
 		for (MIFClass choiceClass:mifClass.getChoices())
 		{
@@ -152,10 +153,12 @@ private  void resolveReference(MIFClass mifClass, Object sender, Hashtable<Strin
 			}
 		}
 		mifClass.setChoice(resolvedChoices);
-	}
 	referencePath.removeLast();
 }
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.12  2008/09/29 15:44:40  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
