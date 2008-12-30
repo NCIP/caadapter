@@ -3,6 +3,7 @@ package gov.nih.nci.caadapter.hl7.v2v3.tools;
 import edu.knu.medinfo.hl7.v2tree.HL7MessageTreeException;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,12 +16,11 @@ import java.awt.*;
 
 import java.io.IOException;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-
-import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+import gov.nih.nci.caadapter.common.util.*;
+//import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import org.xml.sax.XMLReader;
 import org.xml.sax.InputSource;
@@ -611,7 +611,8 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
 
         if (e.getSource() == jbFileSearch)
         {
-            File file = DefaultSettings.getUserInputOfFileFromGUI(this, "*.*", "Select XML file", false, false);
+            File file = findAndSelectFile(this, FileUtil.getUIWorkingDirectoryPath(), "*.*", "Select XML file", false, false);
+
             if (file == null)
             {
                 JOptionPane.showMessageDialog(this, "File object is null", "Invalid File Object", JOptionPane.ERROR_MESSAGE);
@@ -634,22 +635,12 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
             }
             else
             {
-                path = "file:///" + path.replace("\\", "/");
-                is = new InputSource(path);
+                String path1 = "file:///" + path.replace("\\", "/");
+                is = new InputSource(path1);
             }
         }
-        while(is == null)
+        if (is == null)
         {
-            try
-            {
-                MIFClassLoaderUtil loaderUtil = new MIFClassLoaderUtil(path);
-                is = new InputSource(loaderUtil.getInputStreams().get(0));
-            }
-            catch(IOException ie)
-            {
-                //System.out.println("XXXXX : " + ie.getMessage());
-            }
-            if (is != null) break;
             try
             {
                 ClassLoaderUtil loaderUtil = new ClassLoaderUtil(path, false);
@@ -657,7 +648,7 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
             }
             catch(IOException ie)
             {
-                //System.out.println("XXXXX : " + ie.getMessage());
+                System.out.println("XXXXX : " + ie.getMessage());
             }
             if (is == null) is = new InputSource(path);
         }
@@ -682,14 +673,14 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
         catch(IOException e)
         {
             JOptionPane.showMessageDialog(this, e.getMessage(), "XML Parser IOException", JOptionPane.ERROR_MESSAGE);
-
-            return;
+            e.printStackTrace();
+            return;//throw new ApplicationException("H3SVocabTreeBuildEventHandler IOException 1 : " + e.getMessage());
         }
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(this, e.getMessage(), "XML Parser Other Exception", JOptionPane.ERROR_MESSAGE);
-
-            return;
+            e.printStackTrace();
+            return;//throw new ApplicationException("H3SVocabTreeBuildEventHandler IOException 2 : " + e.getMessage());
 
             //e.printStackTrace(System.err);
         }
@@ -801,6 +792,119 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
             frame.setVisible(true);
 
 
+    }
+
+    private File findAndSelectFile(Component parentComponent, String workingDirectoryPath, String fileExtension, String title, boolean saveMode, boolean checkDuplicate)
+    {
+        File file = null;
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(workingDirectoryPath));
+        boolean toSelectedDir=false;
+        ArrayList<FileFilter> fileFilters=new ArrayList<FileFilter>();
+        if ((fileExtension==null)||(fileExtension.trim().equals("")))
+        {
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            toSelectedDir=true;
+        }
+        else if ((fileExtension.equals("*.*"))||(fileExtension.equals(".*")))      //JFileChooser.FILES_AND_DIRECTORIES
+        {
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);//.DIRECTORIES_ONLY);
+            toSelectedDir=true;
+        }
+        else if (fileExtension.equals("*"))      //JFileChooser.FILES_AND_DIRECTORIES
+        {
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);//.DIRECTORIES_ONLY);
+            toSelectedDir=true;
+        }
+        else
+        {
+            StringTokenizer stk=new StringTokenizer(fileExtension,";");
+            while (stk.hasMoreElements())
+            {
+                String nxtExt=(String)stk.nextElement();
+                FileFilter singleFileFilter = new SingleFileFilter(nxtExt);
+                fileFilters.add(singleFileFilter);
+                fileChooser.addChoosableFileFilter(singleFileFilter);
+            }
+        }
+        fileChooser.setDialogTitle(title);
+
+        do
+        {
+            int returnVal = -1;
+            file = null;
+            if (saveMode || (title != null && title.toLowerCase().indexOf("save") != -1))
+            {
+                returnVal = fileChooser.showSaveDialog(parentComponent);
+            }
+            else if (toSelectedDir)
+                returnVal = fileChooser.showDialog(parentComponent, "Select");
+            else
+            {
+                returnVal = fileChooser.showOpenDialog(parentComponent);
+            }
+
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                file = fileChooser.getSelectedFile();
+                if (file == null)
+                {//this condition could happen when a double click occurred in the file selection panel, but did not select anything
+                    JOptionPane.showMessageDialog(parentComponent, "No file is selected. Please select a file.", "No file selected", JOptionPane.ERROR_MESSAGE);
+                    continue;
+                }
+
+                //since this point on, file will not be null.
+                for(FileFilter fileFilter:fileFilters)
+                {
+                if (GeneralUtilities.areEqual(fileFilter, fileChooser.getFileFilter()))
+                {//if and only if the currently used file filter in fileChooser is the same as the given fileFilter.
+                    file = FileUtil.appendFileNameWithGivenExtension(file, ((SingleFileFilter)fileFilter).getExtension(), true);
+                    break;
+                }
+                }
+                if (checkDuplicate)
+                {
+                    if (file.exists())
+                    {
+                        String msg = "'" + file.getName() + "' already exists in the specified directory. Would you like to overwrite it?";
+                        int userChoice = JOptionPane.showConfirmDialog(parentComponent, msg, "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (userChoice == JOptionPane.YES_OPTION)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {//do not check duplicate, then check if file exists for Open mode.
+                    if (!saveMode)
+                    {//if not in save mode, it will be in open mode
+                        if (!file.exists())
+                        {
+                            String msg = "'" + file.getName() + "' does not exist in the specified directory. Please select another file.";
+                            JOptionPane.showMessageDialog(parentComponent, msg, "File does not exist", JOptionPane.ERROR_MESSAGE);
+                            continue;
+                        }
+                    }
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        while (true);
+
+        for(FileFilter fileFilter:fileFilters)
+        fileChooser.removeChoosableFileFilter(fileFilter);
+
+
+        return file;
     }
 
 }
