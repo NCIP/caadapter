@@ -32,8 +32,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-10-30 16:02:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-01-02 16:05:17 $
  *
  */
 public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//TransferHandler
@@ -55,22 +55,22 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 	 */
 	public boolean canImport(JComponent comp, DataFlavor[] transferFlavors)
 	{
-//		System.out.println("MiddlePanelJGraphTransferHandler.canImport() is called.");
+		System.out.println("MiddlePanelJGraphTransferHandler.canImport() is called.");
 		for (int i = 0; i < transferFlavors.length; i++)
 		{
 			if (acceptableFlavorsList.contains(transferFlavors[i]))
 			{
-//				System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
+				System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
 				return true;
 			}
 		}
-//		System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
+		System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
 		return false;
 	}
 
 	protected Transferable createTransferable(JComponent c)
 	 {
-//		System.out.println("MiddlePanelJGraphTransferHandler.createTransferable() is called.");
+		System.out.println("MiddlePanelJGraphTransferHandler.createTransferable() is called.");
 		if (c instanceof JGraph)
 		{
 			JGraph graph = (JGraph) c;
@@ -91,7 +91,7 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 
 			if (nodeArray == null || nodeArray.length < 1)
 			{
-//				System.out.println("Transferable is null in " + getClass().getName() + ".DragStartData!");
+				System.out.println("Transferable is null in " + getClass().getName() + ".DragStartData!");
 				return null;
 			}
 
@@ -106,7 +106,7 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 			}
 			DataTransferActionType actionType = DataTransferActionType.LINK;
 			TransferableNode selection = new TransferableNode(selectionList, actionType, false);
-//			System.out.println("Will return selection '" + selection + "'.");
+			System.out.println("Will return selection '" + selection + "'.");
 			return selection;
 		}
 		return null;
@@ -114,7 +114,7 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 
 	public int getSourceActions(JComponent c)
 	{
-//		System.out.println("MiddlePanelJGraphTransferHandler.getSourceActions() is called.");
+		System.out.println("MiddlePanelJGraphTransferHandler.getSourceActions() is called.");
 		return DnDConstants.ACTION_LINK;
 	}
 
@@ -126,7 +126,7 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 	 */
 	public boolean importDataImpl(JComponent comp, Transferable t)
 	{
-//		System.out.println("MiddlePanelJGraphTransferHandler.importData() is called.");
+		System.out.println("MiddlePanelJGraphTransferHandler.importData() is called.");
 		return true;
 	}
 
@@ -134,4 +134,7 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
+ * HISTORY: updated.
+ * HISTORY:
  */
