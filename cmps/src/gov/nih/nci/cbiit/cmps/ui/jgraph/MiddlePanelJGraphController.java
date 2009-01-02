@@ -11,12 +11,21 @@ import org.jgraph.JGraph;
 import org.jgraph.graph.*;
 
 import gov.nih.nci.cbiit.cmps.core.Component;
+import gov.nih.nci.cbiit.cmps.core.FunctionData;
+import gov.nih.nci.cbiit.cmps.core.FunctionDef;
 import gov.nih.nci.cbiit.cmps.core.LinkType;
 import gov.nih.nci.cbiit.cmps.core.LinkpointType;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
+import gov.nih.nci.cbiit.cmps.core.ViewType;
 import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxCell;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPort;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPortView;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxUserObject;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxView;
+import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewManager;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
@@ -56,8 +65,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-01-02 16:05:17 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -961,6 +970,97 @@ public class MiddlePanelJGraphController
 		}
 		return mappingData;
 	}
+	
+	private boolean addFunctionInstance(FunctionBoxUserObject functionInstance)
+	{
+		FunctionDef function = functionInstance.getFunctionDef();
+		ViewType viewInfo = functionInstance.getViewMeta();
+		Point2D startPoint = new Point(viewInfo.getX().intValue() < 0 ? 25 : viewInfo.getX().intValue(), viewInfo.getY().intValue() < 0 ? 25 : viewInfo.getY().intValue());
+		// Construct Vertex with Label
+		FunctionBoxCell functionBoxVertex = new FunctionBoxCell(functionInstance);// createDefaultGraphCell(function);
+		Dimension functionBoxDimension = new Dimension(viewInfo.getWidth().intValue() <= 0 ? 200 : viewInfo.getWidth().intValue(), viewInfo.getHight().intValue() <= 0 ? 200 : viewInfo.getHight().intValue());
+		// Create a Map that holds the attributes for the functionBoxVertex
+		// functionBoxVertex.getAttributes().applyMap(createCellAttributes(startPoint, functionBoxDimension));
+		//Color backGroundColor = viewInfo.getColor() == null ? UIHelper.DEFAULT_VERTEX_COLOR : viewInfo.getColor();
+		Color backGroundColor = UIHelper.DEFAULT_VERTEX_COLOR;
+		Map funcBoxAttrbutes = UIHelper.createBounds(new AttributeMap(), startPoint, functionBoxDimension, backGroundColor, true);
+		GraphConstants.setSizeable(funcBoxAttrbutes, true);
+		// Insert the functionBoxVertex (including child port and attributes)
+		Map portAttributes = new Hashtable();
+		ParentMap parentMap = new ParentMap();
+		int numOfInputs = FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedInputs(function);
+		int numOfOutputs = FunctionBoxViewManager.getInstance().getTotalNumberOfDefinedOutputs(function);
+		int maximumPorts = Math.max(numOfInputs, numOfOutputs);
+		addGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfInputs, UIHelper.getDefaultFunctionalBoxInputOrientation(), maximumPorts);
+		addGraphPorts(function, portAttributes, parentMap, functionBoxVertex, funcBoxAttrbutes, numOfOutputs, UIHelper.getDefaultFunctionalBoxOutputOrientation(), maximumPorts);
+		// Create a Map that holds the attributes for the Vertex
+		functionBoxVertex.getAttributes().applyMap(funcBoxAttrbutes);
+		graph.getGraphLayoutCache().insert(functionBoxVertex);
+		graph.getGraphLayoutCache().insert(functionBoxVertex.getChildren().toArray(), portAttributes, null, parentMap, null);
+		setGraphChanged(true);
+		return true;
+		// EDIT does not work!
+		// graph.getGraphLayoutCache().edit(functionBoxVertex.getChildren().toArray(), portAttributes);
+		// graph.getGraphLayoutCache().edit(portAttributes);
+		// graph.getGraphLayoutCache().insert(new Object[]{functionBoxVertex}, funcBoxAttrbutes, null, parentMap, null);
+		// Log.logInfo(this, "functionBoxVertex.getChildren().size(): " + functionBoxVertex.getChildren().size());
+		// this.getGraphLayoutCache().insert(functionBoxVertex.getChildren().toArray(), portAttributes, null, parentMap);
+		// following received java.lang.ClassCastException
+		// graph.getModel().insert(new Object[]{functionBoxVertex}, funcBoxAttrbutes, null, null, null);
+		// graph.getModel().edit(portAttributes, null, null, null);
+	}
+
+	/**
+	 * construct and add graph ports to the given cell with constructed attributes to the map.
+	 * 
+	 * @param function
+	 * @param portAttributes
+	 * @param parentMap
+	 * @param cell
+	 * @param cellAttributes
+	 * @param numberOfPorts
+	 * @param portOrientation
+	 * @param maxPortsOfGivenFunction
+	 *            the max number of input and output ports to help figure out the offset of the title area.
+	 * @return the map of attributes.
+	 */
+	protected Map addGraphPorts(FunctionDef function, Map portAttributes, ParentMap parentMap, DefaultGraphCell cell, Map cellAttributes, int numberOfPorts, int portOrientation, int maxPortsOfGivenFunction)
+	{
+		// Log.logInfo(this, "numOfPorts: " + numberOfPorts + ",orientation=" + portOrientation);
+		// key=port, value=its attribute map of portAttributes
+//		Rectangle2D bounds = GraphConstants.getBounds(cellAttributes);
+		Dimension portDimension = new Dimension(FunctionBoxDefaultPortView.MY_SIZE, FunctionBoxDefaultPortView.MY_SIZE);
+		// create ports and need 100 percent unit for relative positioning.
+		int unit = GraphConstants.PERMILLE;
+		int offsetX = (int) portDimension.getWidth() / 2;
+		int offsetY = (int) portDimension.getHeight() / 2;
+		int interimFactor = (int) (unit / (numberOfPorts + 1));
+		int offsetTitleHeight = ((int) (unit / (maxPortsOfGivenFunction + 1))) - interimFactor / 2;// interimFactor + 10;
+		List<FunctionData> paramList = (portOrientation == UIHelper.PORT_LEFT) ? function.getData(): function.getData();
+		for (int i = 0; i < numberOfPorts; i++) {
+			Map attriMap = new Hashtable();
+			DefaultPort port = null;
+			if ( portOrientation == UIHelper.PORT_LEFT ) {
+				attriMap = UIHelper.getDefaultFunctionBoxPortAttributes(attriMap, portDimension);
+				// GraphConstants.setOffset(attriMap, new Point2D.Double(bounds.getX() - offsetX, bounds.getY() + (interimFactor * (i + 1)) - offsetY));
+				GraphConstants.setOffset(attriMap, new Point2D.Double(-offsetX, (interimFactor * (i + 1)) - offsetY + offsetTitleHeight));
+				// port = new FunctionBoxDefaultPort(paramList.get(i));//UIHelper.getDefaultFunctionalBoxInputCaption() + " " + i);
+			} else if ( portOrientation == UIHelper.PORT_RIGHT ) {
+				attriMap = UIHelper.getDefaultFunctionBoxPortAttributes(attriMap, portDimension);
+				// GraphConstants.setOffset(attriMap, new Point2D.Double(bounds.getX() + bounds.getWidth() - portDimension.getWidth() - offsetX, bounds.getY() +
+				// (interimFactor * (i + 1)) - offsetY));
+				GraphConstants.setOffset(attriMap, new Point2D.Double(unit + offsetX, (interimFactor * (i + 1)) - offsetY + offsetTitleHeight));
+				// port = new FunctionBoxDefaultPort(UIHelper.getDefaultFunctionalBoxOutputCaption() + " " + i);
+			}
+			port = new FunctionBoxDefaultPort(paramList.get(i));// UIHelper.getDefaultFunctionalBoxInputCaption() + " " + i);
+			cell.add(port);
+			portAttributes.put(port, attriMap);
+			parentMap.addEntry(port, cell);
+		}
+		// Add one Floating Port
+		return portAttributes;
+	}
+	
 	public PropertiesSwitchController getPropertiesSwitchController() {
 		// TODO Auto-generated method stub
 		return null;
@@ -968,6 +1068,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/12/29 22:18:18  linc
+ * HISTORY: function UI added.
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/12/10 15:43:02  linc
  * HISTORY: Fixed component id generator and delete link.
  * HISTORY:

@@ -25,8 +25,8 @@ import java.awt.event.MouseEvent;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: linc $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-01-02 16:05:17 $
  *
  */
 public class DefaultGraphUI extends BasicGraphUI
@@ -38,8 +38,7 @@ public class DefaultGraphUI extends BasicGraphUI
 	 */
 	protected TransferHandler createTransferHandler()
 	{
-		//return new MiddlePanelJGraphTransferHandler();
-		return null;
+		return new MiddlePanelJGraphTransferHandler();
 	}
 
 	/**
@@ -126,6 +125,9 @@ public class DefaultGraphUI extends BasicGraphUI
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
+ * HISTORY: UI update.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/27 20:06:30  linc
  * HISTORY: GUI first add.
  * HISTORY:
