@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2008-12-30 14:54:02 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2009-01-05 16:40:07 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -60,20 +60,6 @@ public class ClassParser {
         					specializedMIFClass.setTraversalName(participantTraversalName.get(specializedMIFClass.getName()));
         				
         				specializedMIFClass.setSortKey(XSDParserUtil.getAttribute(child, "sortKey"));
-        				if (specializedMIFClass.isAbstractDefined())
-        				{
-        					for (MIFAssociation asbtractAssc:specializedMIFClass.getAssociations())
-    						{
-        						//make the association abstract
-        						//all these abstract MIFAssociation with an abstract MIFClass
-        						//will be push down concrete children MIFClass 
-        						//in MIFClass.getSortChoice();
-        						asbtractAssc.setAbstractDefined(true);
-        					}
-        				}
-        				//add all the choice item into holder class since it may 
-        				//be required to resolve undefined class in the future.
-        				//But a item will be able chosen if it is a list of other MIFClass
        					mifClass.addChoice(specializedMIFClass);
         			}
         			specializedChild = specializedChild.getNextSibling();
@@ -83,6 +69,10 @@ public class ClassParser {
         			||child.getNodeName().equals("association")) {
         		AssociationParser associationParser = new AssociationParser();
         		MIFAssociation mifAssociation = associationParser.parseAttribute(child, prefix);
+        		//If this MIFClass is abstract, make all its association abstract
+        		//these abstract association will be visible with its sub-class (choice item)
+        		if (mifClass.isAbstractDefined())
+        			mifAssociation.setAbstractDefined(true);
         		mifClass.addAssociation(mifAssociation);
         		
         	}
@@ -93,6 +83,9 @@ public class ClassParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2008/12/30 14:54:02  wangeug
+ * HISTORY :Process MIFClass with isAbstract=true: create MIF class as abstract and make all its MIFAssociation abstract
+ * HISTORY :
  * HISTORY :Revision 1.8  2008/12/18 17:10:04  wangeug
  * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
  * HISTORY :

@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.map.impl;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-29 15:45:56 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-01-05 16:39:54 $
  */
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -87,8 +87,8 @@ public class MifMetaLookup implements MetaLookup {
 			processDatatype(attrDt);
 		}
 		//process assocations
-		if(mif.getAssociations()!=null)
-			for(MIFAssociation assc:mif.getAssociations())
+		if(mif.getSortedAssociations()!=null)
+			for(MIFAssociation assc:mif.getSortedAssociations())
 			{
 				MIFClass asscMif=assc.getMifClass();
 				table.put(assc.getXmlPath(), assc);
@@ -102,9 +102,18 @@ public class MifMetaLookup implements MetaLookup {
 			{
 				if (choice.isChoiceSelected())
 					initLookupTable(choice);
+				else if(!choice.getChoices().isEmpty())
+				{
+					for (MIFClass listChoiceItem:choice.getChoices())
+						if (listChoiceItem.isChoiceSelected())
+							initLookupTable(listChoiceItem);
+				}
 			}
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2008/09/29 15:45:56  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
