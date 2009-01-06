@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.map.impl;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2009-01-05 16:39:54 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2009-01-06 17:45:33 $
  */
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -102,8 +102,11 @@ public class MifMetaLookup implements MetaLookup {
 			{
 				if (choice.isChoiceSelected())
 					initLookupTable(choice);
-				else if(!choice.getChoices().isEmpty())
+				//MIFAttribute and MIFAssociation are required 
+				//if the choice item is a list of other choice items 
+				if(choice.getChoices().size()>0)
 				{
+					initLookupTable(choice);
 					for (MIFClass listChoiceItem:choice.getChoices())
 						if (listChoiceItem.isChoiceSelected())
 							initLookupTable(listChoiceItem);
@@ -113,6 +116,9 @@ public class MifMetaLookup implements MetaLookup {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2009/01/05 16:39:54  wangeug
+ * HISTORY :Process MIFClass with isAbstract=true
+ * HISTORY :
  * HISTORY :Revision 1.6  2008/09/29 15:45:56  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
