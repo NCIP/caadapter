@@ -29,8 +29,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.20 $
- * @date $Date: 2008-12-04 20:42:19 $
+ * @version $Revision: 1.21 $
+ * @date $Date: 2009-01-07 15:23:41 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -61,12 +61,8 @@ public class MapProcessorHelper {
 
     	if (isChoice && !mifClass.isChoiceSelected()) return new ArrayList<String>();
 
-    	if (mifClass.getChoices().size()>0) { //it's a choice class,
-
-    		HashSet<MIFClass> choices = mifClass.getChoices();
-
-    		
-    		for(MIFClass mifClassChoice : choices) {
+    	if (mifClass.getSortedChoices().size()>0) { //it's a choice class,  		
+    		for(MIFClass mifClassChoice : mifClass.getSortedChoices()) {
     			if (mifClassChoice.isChoiceSelected()) {
     				combine(csvSegments,preprocess_mifclass(mifClassChoice, true, xmlPath));
     			}
@@ -464,6 +460,9 @@ public class MapProcessorHelper {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.20  2008/12/04 20:42:19  wangeug
+ * HISTORY :support nullFlavor
+ * HISTORY :
  * HISTORY :Revision 1.19  2008/11/21 16:19:37  wangeug
  * HISTORY :Move back to HL7 module from common module
  * HISTORY :

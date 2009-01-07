@@ -38,8 +38,8 @@ import java.util.TreeSet;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.47 $
- *          date        $Date: 2008-12-04 20:42:36 $
+ *          revision    $Revision: 1.48 $
+ *          date        $Date: 2009-01-07 15:24:03 $
  */
 
 public class MapProcessor {
@@ -180,8 +180,8 @@ public class MapProcessor {
     		xmlElement.setName(mifClass.getName());
     		xmlElement.setMessageType(mifClass.getMessageType());
     		//Step 1.1 process Choice 
-        	if (mifClass.getChoices().size() > 0) { //Handle choice
-        		for(MIFClass choiceMIFClass:mifClass.getChoices()) {
+        	if (mifClass.getSortedChoices().size() > 0) { //Handle choice
+        		for(MIFClass choiceMIFClass:mifClass.getSortedChoices()) {
         	    	if (choiceMIFClass.isChoiceSelected()) {
         	    	    MutableFlag mutableFlag = new MutableFlag(false);
         	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
@@ -635,6 +635,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.47  2008/12/04 20:42:36  wangeug
+ * HISTORY      : support nullFlavor
+ * HISTORY      :
  * HISTORY      : Revision 1.46  2008/11/21 16:19:37  wangeug
  * HISTORY      : Move back to HL7 module from common module
  * HISTORY      :
