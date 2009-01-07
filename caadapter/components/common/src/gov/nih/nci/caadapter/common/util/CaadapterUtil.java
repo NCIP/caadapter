@@ -30,8 +30,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.28 $
- * @date $$Date: 2008-12-19 22:24:28 $
+ * @version $Revision: 1.29 $
+ * @date $$Date: 2009-01-07 21:48:04 $
  * @since caAdapter v1.2
  */
 
@@ -65,14 +65,14 @@ public class CaadapterUtil {
         //load caadapter component types to run
         Properties properties=new Properties();
         try {
-        	 
-        	File srcFile=new  File("conf/caadapter-components.properties");
+
+        	File srcFile=new  File(PATH_COMPONENT_PROPERTY_FILE);
         	if (srcFile.exists())
         	{
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();	
+        		fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();	
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -349,6 +349,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/12/19 22:24:49  umkis
+ * HISTORY      : add getPathOfComponentPropertyFile() and getNameOfComponentPropertyFile()
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/09/24 15:18:44  wangeug
  * HISTORY      : Keep local copy of the CaadapterUtil.java
  * HISTORY      :
