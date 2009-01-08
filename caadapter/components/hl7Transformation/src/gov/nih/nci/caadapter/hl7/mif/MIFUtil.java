@@ -12,10 +12,10 @@ package gov.nih.nci.caadapter.hl7.mif;
  * The class defines a Utility class processing MIF information.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2008-12-23 14:35:53 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2009-01-08 21:53:02 $
  */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -71,7 +71,9 @@ public class MIFUtil {
 			return true;
 		
 		//check if domainName is INSTNACE+KIND
-		String domainName=mifAttr.getDomainName().toUpperCase();
+		String domainName = mifAttr.getDomainName();
+        if (domainName == null) domainName = "";
+        else domainName = domainName.toUpperCase();
 		System.out.println("MIFUtil.isEditableMIFAttributeDefault()...domainName:"+domainName);
 		if ((domainName.indexOf("INSTANCE")>-1)
 			&&(domainName.indexOf("KIND")>-1))
@@ -352,6 +354,9 @@ public class MIFUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.16  2008/12/23 14:35:53  wangeug
+ * HISTORY :Process MIFClass with isAbstract=true
+ * HISTORY :
  * HISTORY :Revision 1.15  2008/09/29 15:44:41  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
