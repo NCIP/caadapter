@@ -7,26 +7,216 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.common.util.NullFlavorSetting;
+import gov.nih.nci.caadapter.hl7.datatype.Datatype;
+import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
 
 /**
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2008-12-04 20:41:20 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-01-09 21:33:52 $
  * @since caAdapter v4.2
  */
 
 public class HL7XMLUtil {
 
+	public static String NOT_PRESENT_NULLFLAVOR_DEFAULT="NP";
+	
+	public static void applyNullFlavorDefault(XMLElement element)
+		{
+			//find the HL7 Datatype 
+			String hl7Dt=null;
+			for(Attribute attr:element.getAttributes())
+			{
+				if (attr.getName().startsWith("xsi:type"))
+					hl7Dt=attr.getValue();
+			}
+	//		System.out.println("HL7XMLUtil.applyNullFlavorDefault()...name:"+element.getName()+"...HL7 datatype:"+hl7Dt);
+			//ignore the XMLElement if not HL7 datatype is defined since it is an MIFAttribute type
+			if (hl7Dt==null||hl7Dt.equals(""))
+				return;
+			// find the coreAttribute
+			List<String> dtCores=NullFlavorUtil.findDatatypeCoreAttributes(hl7Dt);
+	//		System.out.println("HL7XMLUtil.applyNullFlavorDefault()..coreAttribute:"+dtCores);
+			if (dtCores==null||dtCores.isEmpty())
+				dtCores=new ArrayList<String>();
+			
+			if (!dtCores.contains("inlineText"))
+				dtCores.add("inlineText");
+			
+			//check value the coreAttribute
+			Attribute coreAttr=null;
+			for (String oneAttrName:dtCores)
+			{
+				Attribute oneAttr =getAttributByName(oneAttrName,element);
+				if (oneAttr!=null)
+				{
+					coreAttr=oneAttr;
+					//stop checking if found one coreAttribute being set
+					break;
+				}
+			}
+			
+			if (isElementNullFlavored(element)&&coreAttr!=null)
+			{
+				//the nullFlavor attribute value may be set with the defaultValue retrieved 
+				//from the Datatype of "nullFlavor" attribute
+				//it may conflict with NullFlavorSetting and value of coreAttribute
+				//reset the nullFlavor value in case the default is a list of key/value pair
+				String coreAttrValue=coreAttr.getValue();
+				if (coreAttrValue!=null&&
+						(coreAttrValue.equalsIgnoreCase(GeneralUtilities.CAADAPTER_DATA_FIELD_NULL)
+							||coreAttrValue.equalsIgnoreCase("\"\"")
+						)
+					)
+				{	
+					coreAttrValue="NULL";
+					coreAttr.setValue(coreAttrValue);
+				}
+				Attribute nullFlavorAttr=getAttributByName("nullFlavor", element);
+				NullFlavorSetting nfSetting=new NullFlavorSetting(nullFlavorAttr.getValue());
+				String nfAttrValue=(String)nfSetting.get(coreAttr.getValue());
+				if (nfAttrValue!=null&&!nfAttrValue.equals(""))
+				{
+					nullFlavorAttr.setValue(nfAttrValue);
+					return;
+				}
+				else 
+					element.getAttributes().remove(nullFlavorAttr);
+				
+				return;
+			}
+			
+			if (coreAttr!=null)
+			{
+				
+				element.addAttribute("nullFlavor", NOT_PRESENT_NULLFLAVOR_DEFAULT,null,null,null);
+				//move the "nullFlavor" as its first attribute
+				int attrSize=element.getAttributes().size();
+				Attribute nullAttr=element.getAttributes().get(attrSize-1);
+				element.getAttributes().remove(nullAttr);
+				element.getAttributes().add(0, nullAttr);
+			}
+		}
+
+	/**
+	 * As the second step of NullFlavor function, set "nullFlavor" attribute of target element
+	  * <ul>
+     *  <li>Case I: The input data is available but NullFlavorSetting is not, then<p> 
+     * 	CAADAPPTER_NULL_FLAVOR_ATTRIBUTE_VALUE:value was set with one attribute<p> 
+     *  Read NullFlavorSetting from H3S file or system default and retrieve value for "nullFlavor" attribute
+     *
+     * <li>Case II: NullFlavorSetting is available but input data is not, then <p>
+     *  CAADAPPTER_NULL_FLAVOR_ATTRIBUTE_MARK:null<p>
+     *  nullFlavor attribute was set NullFlavorSetting<p>
+     *  Read the default value and use is a as key to retrieve value from NullFlavorSetting
+     *  
+     * </ul>
+	 * @param element
+	 * @param datatype
+	 */
+	public static void applyNullFlavorFunctionSecondStep(XMLElement element, Datatype datatype)
+	{
+		//case I:
+		//CAADAPPTER_NULL_FLAVOR_VALUE:value was set with one attribute<p
+		Attribute coreAttr=getAttributByValue(GeneralUtilities.CAADAPTER_NULLFLAVOR_ATTRIBUTE_VALUE, element);
+		if (coreAttr!=null)
+		{
+			
+			String nullFlavorDefault=getDatatypeAttributeDefault(datatype, "nullFlavor");
+			NullFlavorSetting nullFlavorSetting=new NullFlavorSetting(nullFlavorDefault);
+			String nullFlavorKey=coreAttr.getValue();
+			int semicolIndex=nullFlavorKey.indexOf(":");
+			if (semicolIndex>-1)
+				nullFlavorKey=nullFlavorKey.substring(semicolIndex+1);
+			String nullFlavorValue=(String)nullFlavorSetting.get(nullFlavorKey);
+			coreAttr.setValue(nullFlavorKey);
+			Attribute typeAttribute=getAttributByName("xsi:type", element);
+			element.getAttributes().remove(typeAttribute);
+			//add "nullFlavor" attribute after "xsi:type" attribute
+			element.addAttribute("nullFlavor", nullFlavorValue, null, null, null);
+			element.getAttributes().add(typeAttribute);
+			return;
+		}
+		
+		//Case II:
+		//CAADAPTER_NULLFLAVOR_ATTRIBUTE_MARK was set with one attribute
+		Attribute markAttr=getAttributByValue(GeneralUtilities.CAADAPTER_NULLFLAVOR_ATTRIBUTE_MARK, element);	
+		if (markAttr!=null)
+		{
+			Attribute nullFlavorAttribute=getAttributByName("nullFlavor", element);
+			String nullFlavorString=null;
+			if (nullFlavorAttribute!=null)
+				nullFlavorString=nullFlavorAttribute.getValue();
+			
+			if (nullFlavorString==null)
+				nullFlavorString=getDatatypeAttributeDefault(datatype, "nullFlavor");
+			
+			//read the default value of the marked Attribute
+			String defaultAttrValue=getDatatypeAttributeDefault(datatype, markAttr.getName());
+			if (defaultAttrValue==null)
+				defaultAttrValue="NULL";
+			markAttr.setValue(defaultAttrValue);
+			if (defaultAttrValue.equals(""))
+			{
+				//use "BLANK" to retrieve NullFlavor value
+				//but set value as ""
+				defaultAttrValue="BLANK";
+				markAttr.setValue("");
+			}
+			
+			
+			//read NullFlavor value using the defaultValue as key
+			NullFlavorSetting nullFSetting=new NullFlavorSetting(nullFlavorString);
+			String nullFlavorAttributeValue=(String)nullFSetting.get(defaultAttrValue);
+			
+			if (nullFlavorAttribute!=null)
+				nullFlavorAttribute.setValue(nullFlavorAttributeValue);
+			else
+			{
+				element.addAttribute("nullFlavor", nullFlavorAttributeValue, null, null, null);
+			}
+			return;
+		}
+		//Case II:
+		//the nullFlavor attribute value may be set with the defaultValue retrieved 
+		//from the Datatype of "nullFlavor" attribute
+		//it may conflict with NullFlavorSetting and value of coreAttribute
+//		if (isElementNullFlavored(element))
+//		{
+//			String nullFDefautSt=getAttributByName("nullFlavor", element).getValue();
+//			
+//			to be process in cleanNullFlavor()
+//			return;
+//		}
+	}
+	
+	/**
+	 * Clean NullFlavor setting with an XMLElement
+	 * <ul>
+	 * <li>An element without child: 
+	 * set nullFlavor if and only if the value/coreAttribute of this element it null
+	 * <li>An element with one or more children:
+	 * set nullFlavor if its value/coreAttribute is null
+	 * 			and ALL its children have nullFlavore being set
+	 * @param element
+	 */
 	public static void cleanNullFlavor(XMLElement element)
 	{
+		applyNullFlavorDefault(element);
 		//do not re-set "nullFlavor" for leaf element
 		if (element.getChildren().isEmpty())
+		{
 			return;
-		
+		}
 		//re-set the "nullFlavor" based on its children
 		boolean isAllChildrenNullFlavored=true;
 		for(XMLElement child:element.getChildren())
@@ -38,20 +228,77 @@ public class HL7XMLUtil {
 				isAllChildrenNullFlavored=false;
 			}
 		}
-
-		//remove "nullFlavor" attribute if not all children nullFlavored
-		if (isElementNullFlavored(element)&&!isAllChildrenNullFlavored)
+	
+		if (!isElementNullFlavored(element))
+			return;
+		
+		//remove "nullFlavor" attribute if not all children nullFlavored	
+		if (!isAllChildrenNullFlavored)
 		{
 			for (Attribute xmlAttr:element.getAttributes())
 			{
 				String attrName=xmlAttr.getName();
 				if (attrName!=null&&attrName.equalsIgnoreCase("nullFlavor"))
 				{
-					Log.logInfo(element, element.getName()+" remove nullFlavore attribute:"+xmlAttr.getName());
+					Log.logInfo(element, element.getName()+" remove nullFlavore attribute:"+xmlAttr.getValue());
 					element.getAttributes().remove(xmlAttr);
+					break;
 				}
 			}
 		}		
+	}
+
+	private static Attribute getAttributByName(String attributeName, XMLElement element)
+	{
+		if (attributeName==null||attributeName.equals(""))
+			return null;
+		
+		Attribute rtnAttr=null;
+		for (Attribute elmAttr:element.getAttributes())
+		{
+			if (elmAttr.getName().startsWith(attributeName))
+			{
+				rtnAttr=elmAttr;
+				break;
+			}
+		}
+		
+		return rtnAttr;
+	}
+
+	private static Attribute getAttributByValue(String attributeValue, XMLElement element)
+	{
+		if (attributeValue==null||attributeValue.equals(""))
+			return null;
+		
+		Attribute rtnAttr=null;
+		for (Attribute elmAttr:element.getAttributes())
+		{
+			if (elmAttr.getValue().startsWith(attributeValue))
+			{
+				rtnAttr=elmAttr;
+				break;
+			}
+		}
+		
+		return rtnAttr;
+	}
+	/**
+	 * Instantiate a NullFlavorSetting instance using the default value of the "nullFlavor" attribute of a HL7 datatype
+	 * @param datatype
+	 * @return
+	 */
+	private static String getDatatypeAttributeDefault(Datatype datatype, String attributeName)
+	{
+		if (datatype==null)
+			return null;
+		if (attributeName==null||attributeName.equals(""))
+			return null;
+		gov.nih.nci.caadapter.hl7.datatype.Attribute dtAttr=null;
+		dtAttr=(gov.nih.nci.caadapter.hl7.datatype.Attribute)datatype.getAttributes().get(attributeName);
+		
+		String rtnDefaultValue=dtAttr.getDefaultValue();
+		return rtnDefaultValue;
 	}
 	
 	private static boolean isElementNullFlavored(XMLElement element)
@@ -59,12 +306,9 @@ public class HL7XMLUtil {
 		if (element.getAttributes().isEmpty())
 			return false;
 		
-		for (Attribute xmlAttr:element.getAttributes())
-		{
-			String attrName=xmlAttr.getName();
-			if (attrName!=null&&attrName.equalsIgnoreCase("nullFlavor"))
-				return true;
-		}
+		Attribute nullFAttr=getAttributByName("nullFlavor", element);
+		if (nullFAttr!=null)
+			return true;
 		
 		return false;
 	}
@@ -73,4 +317,7 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2008/12/04 20:41:20  wangeug
+* HISTORY: support nullFlavor
+* HISTORY:
 **/
