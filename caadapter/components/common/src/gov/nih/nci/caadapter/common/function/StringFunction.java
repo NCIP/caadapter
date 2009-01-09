@@ -24,8 +24,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-12-04 20:35:27 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-01-09 21:32:02 $
  */
 
 public class StringFunction {
@@ -81,66 +81,124 @@ public class StringFunction {
 
     /**
      * Examine the input data to determine the output value and its corresponding NullFlavor value
-     * <i>If dataString is NULL or BLANK, the output value is NULL, otherwise the output value 
-     * the same as dataString
-     * 
-     * <i>If nullFlavorInput is NULL or BLANK, use nullFlavorDefault to decide the output nullFlavor
+     * The output NullFlavor value is retrieved from NullFlavorSetting using output value as key. 
+     * The NullFlavor default could be either input from source data or user's default setting
+     * <ul>
+     *  <li>Case I: The input data is available but NullFlavorSetting is not, then<p> 
+     * 	set output 1 as CAADAPPTER_NULLFLAVOR_ATTRIBUTE_VALUE:value<p> 
+     *  set output 2 as null, transformation engine will read NullFlavorSetting from H3S file or system default
+     *
+     * <li>Case II: NullFlavorSetting is available but input data is not, then <p>
+     *  set output 1 as CAADAPPTER_NULLFLAVOR_ATTRIBUTE_MARK:NULL <p>
+     *  set output 2 as NullFlavorSetting, transformation engine will read the default value and use is a as key to retrieve
+     *  value from NullFlavorSetting
+     *  
+     *  <li>Case III: Both the input data and NullFlavorSetting are available, then set both the output 1 and output 2
+     * </ul>
+     * If dataString is NULL or BLANK, the output value is NULL, otherwise the output value 
+     * the same as dataString<p>
      * 
      * @param dataString The input data to determine output data value and nullFlavor value
      * @param nullFlavorInput The input setting of list of key:value pair of NullFlavor constants
-     * @param nullFlavorDefault The default setting of list of key:value pair of NullFlavor constants
-     * @return
+     * @param nullFlavorDefaultSetting The default setting of list of key:value pair of NullFlavor constants
+     * @return List of two strings: values of nullFlavor attribute and target data
      */
-    public List<String> nullFlavor(String dataString, String nullFlavorInput, String nullFlavorDefault)
+    public List<String> nullFlavor(String dataString, String nullFlavorInput, String nullFlavorDefaultSetting)
     {
-    	NullFlavorSetting nullSetting;
-    	if (nullFlavorInput==null||nullFlavorInput.equals(""))
-    		nullSetting=new NullFlavorSetting(nullFlavorDefault);
-    	else
-    		nullSetting=new NullFlavorSetting(nullFlavorInput);
-    	
-    	//retrieve NullFlavor constant based on input data
-    	String rtnNullValue=dataString;
-    	String nullFlavorKey="NULL";
-    	if (dataString==null)
-    		nullFlavorKey="NULL";
-    	else if(dataString.equals(""))
-    		nullFlavorKey="BLANK";
-    	else  if(dataString.equalsIgnoreCase(GeneralUtilities.CAADAPTER_DATA_FIELD_NULL))
-    	{
-    		rtnNullValue=null;
-    		nullFlavorKey="NULL";
+    	//process source data value
+    	String rtnValue1=dataString;
+    	if(rtnValue1!=null&&rtnValue1.equalsIgnoreCase(GeneralUtilities.CAADAPTER_DATA_FIELD_NULL))
+    	{//Null read from CSV
+    		rtnValue1=null;
     	}
+    	else if (rtnValue1!=null&&rtnValue1.equals("\"\""))
+    	{
+    		//Null read from constant Function
+    		rtnValue1=null;
+    	}
+    	//set NullFlavorSetting
+    	NullFlavorSetting nullSetting=null;
+    	if (nullFlavorInput!=null&&!nullFlavorInput.equals(""))
+    		nullSetting=new NullFlavorSetting(nullFlavorInput);//use source data input
+    	else if (nullFlavorDefaultSetting!=null&&!nullFlavorDefaultSetting.equals(""))
+    		nullSetting=new NullFlavorSetting(nullFlavorDefaultSetting);//use user's defaultSetting
     	else
-    		nullFlavorKey=dataString;
-     		
-    	String rtnNullFlavor=(String)nullSetting.get(nullFlavorKey);
+    	{
+    		//case I:
+    		//NullFlavorSetting is not available
+    		//mark the output 1 to enable transformation engine setup "nullFlavor"
+    		//transformation engine will retrieve NullFlavorSetting from H3S
+        	//or system default, then set "nullFlavor" attribute of target element based value of "output 1"
+    		List<String> nullSettingRtnList=new ArrayList<String>();
+    		//set value for "output 1"   		
+    		String opt1=GeneralUtilities.CAADAPTER_NULLFLAVOR_ATTRIBUTE_VALUE+":";
+    		if (rtnValue1==null)
+    			opt1=opt1+"NULL";
+    		else
+    			opt1=opt1+rtnValue1;  		
+    		nullSettingRtnList.add(opt1);
+    		
+    		//set "output 2" as null
+    		nullSettingRtnList.add(null);
+        	//return here, 
+        	return nullSettingRtnList;
+    	}
+    	
+    	if (dataString==null)
+    	{
+    		//case II:
+    		//source data is not available,
+    		//forward NullFlavorSetting to transformation engine and mark the "attribute" to
+    		//drive "nullFlavor" setup. Transformation engine will read default value of this
+    		//attribute, then set "nullFlavor" attribute for target element using the NullFlavorSetting
+    		List<String> nullDataRtnList=new ArrayList<String>();
+    		//set "output 1" as CAADAPTER_NULLFLAVOR_SETTING_ATTRIBUTE _MARK to mark it as the attribute to
+    		//set "nullFlavor" of the target element
+    		String optRtn1=GeneralUtilities.CAADAPTER_NULLFLAVOR_ATTRIBUTE_MARK+":"+null;
+    		nullDataRtnList.add(optRtn1);
+    		nullDataRtnList.add(nullSetting.toString());
+    		//return here
+    		return nullDataRtnList;    		
+    	}
+    	
+    	//case III:
+    	//set both "output 1" and "output 2"
+    	//set NullFlavorKey based on input data
+    	String nullFlavorKey=rtnValue1;
+    	if (nullFlavorKey==null)
+    		nullFlavorKey="NULL";
+    	else if(nullFlavorKey.equals(""))
+    		nullFlavorKey="BLANK";
+    	 
+    	//retrieve NullFlavor value from NullFlavorSetting
+    	String rtnValue2=(String)nullSetting.get(nullFlavorKey);
     	    	
-    	String nullifyMissingData=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED);
-		if (nullifyMissingData!=null&&nullifyMissingData.equalsIgnoreCase("true"))
-		 	rtnNullValue=null;
-
 		//verify if it is a valid NULL FLAVOR constant defined by HL7
 		String nfValuesAllowed=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_NULLFLAVOR_VALUES_ALLOWED);
-		if (rtnNullFlavor!=null&&nfValuesAllowed!=null)
+		boolean isValidNF=false;
+		if (rtnValue2!=null&&nfValuesAllowed!=null)
 		{
 			String[] valuesAlled=nfValuesAllowed.split(",");
-			boolean isValidNF=false;
+			
 			for (String nfValue:valuesAlled)
 			{
-				if (nfValue!=null&&nfValue.equalsIgnoreCase(rtnNullFlavor))
+				if (nfValue!=null&&nfValue.equalsIgnoreCase(rtnValue2))
 				{
 					isValidNF=true;
 					break;
 				}
 			}
-			if (!isValidNF)
-				Log.logWarning(this, "Invalid NullFlavor value is found:"+rtnNullFlavor);
 		}
+		if (!isValidNF)
+			Log.logWarning(this, "Invalid NullFlavor value is found:"+rtnValue2);
+
+    	String nullifyMissingData=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED);
+		if (nullifyMissingData!=null&&nullifyMissingData.equalsIgnoreCase("true"))
+		 	rtnValue1=null;
 		
 		List<String> rtnList=new ArrayList<String>();
-		rtnList.add(rtnNullValue);
-    	rtnList.add(rtnNullFlavor);
+		rtnList.add(rtnValue1);
+    	rtnList.add(rtnValue2);
     	return rtnList;
     }
    
@@ -157,21 +215,6 @@ public class StringFunction {
         else
             return strParam.length();
     }
-
-    /**
-     * Removes white space from both ends of this string.
-     * This method may be used to trim whitespace from the beginning and end of a string.
-     * It trims all ASCII control characters as well.
-     *
-     * @param strParam a string
-     * @return an Object containing the trimmed string
-     * @see String
-     */
-
-//    public String trim(String strParam) {
-//        if (strParam == null) return null;
-//        return strParam.trim();
-//    }
 
 
     /**
@@ -306,6 +349,9 @@ public class StringFunction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/12/04 20:35:27  wangeug
+ * HISTORY      : support nullFlavor:implment NullFlavor function
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/09/25 18:57:45  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :
