@@ -29,8 +29,8 @@ import java.util.Set;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.21 $
- * @date $Date: 2009-01-07 15:23:41 $
+ * @version $Revision: 1.22 $
+ * @date $Date: 2009-01-09 21:57:32 $
  * @since caAdapter v4.0
  */
 public class MapProcessorHelper {
@@ -207,6 +207,8 @@ public class MapProcessorHelper {
     					if (csvSegments.size() == 0) {
     						csvSegments.add(newcsvSegment);
     					}
+    					else if (newcsvSegment==null)
+    						csvSegments.add(newcsvSegment);
     					else {
     						boolean add = true;
     						for (int i = csvSegments.size()-1; i>=0; i--) {
@@ -214,7 +216,7 @@ public class MapProcessorHelper {
     	    					if (csvSegment==null||newcsvSegment==null)
     	    					{
     								System.out
-    										.println("MapProcessorHelper.preprocess_datatype()..found null");
+    										.println("MapProcessorHelper.preprocess_datatype()..is Simple..found null__mapping:"+newcsvField);
     								add = false;
     								continue;
     	    					} 
@@ -245,7 +247,7 @@ public class MapProcessorHelper {
 							if (csvSegment==null||newcsvSegment==null)
 	    					{
 								System.out
-										.println("MapProcessorHelper.preprocess_datatype()..found null");
+										.println("MapProcessorHelper.preprocess_datatype()..is complex..found null");
 								add = false;
 								continue;
 	    					} 
@@ -460,6 +462,9 @@ public class MapProcessorHelper {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.21  2009/01/07 15:23:41  wangeug
+ * HISTORY :Use getSortedChoice() to include all subclass for choice item if it is an abstract class
+ * HISTORY :
  * HISTORY :Revision 1.20  2008/12/04 20:42:19  wangeug
  * HISTORY :support nullFlavor
  * HISTORY :
