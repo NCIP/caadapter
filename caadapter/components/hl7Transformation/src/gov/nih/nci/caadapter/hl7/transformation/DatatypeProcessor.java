@@ -22,6 +22,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
 import gov.nih.nci.caadapter.hl7.map.FunctionVocabularyMapping;
 import gov.nih.nci.caadapter.hl7.map.MappingException;
+import gov.nih.nci.caadapter.hl7.transformation.data.HL7XMLUtil;
 import gov.nih.nci.caadapter.hl7.transformation.data.MutableFlag;
 import gov.nih.nci.caadapter.hl7.transformation.data.NullXMLElement;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
@@ -37,8 +38,8 @@ import java.util.Set;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-12-04 20:42:36 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-01-09 21:57:12 $
  */
 public class DatatypeProcessor {
 	/**
@@ -93,6 +94,7 @@ public class DatatypeProcessor {
     		}
     	}
     	xmlElement.addAttribute("xsi:type", datatype.getName(), null, null, null);
+    	HL7XMLUtil.applyNullFlavorFunctionSecondStep(xmlElement,  datatype);
     	return xmlElement;
     }    	
 
@@ -128,8 +130,10 @@ public class DatatypeProcessor {
     			if (allListsCSVSegments.get(i).isEmpty())
     			{
     				System.out.println("DatatypeProcessor.process_datatype()..missed segment:"+pCsvSegment+"."+xmlName);
-    				return null;
+//    				return null;
+    				csvSegmentList.add(null);
     			}
+    			else
     			csvSegmentList.add(allListsCSVSegments.get(i).get(0));
     			csvSegmentSum.add(allListsCSVSegments.get(i).size());
     			csvSegmentIndex.add(0);
@@ -307,6 +311,7 @@ public class DatatypeProcessor {
     			}
     		}
     		xmlElement.addAttribute("xsi:type", datatype.getName(), null,null, null);
+    		HL7XMLUtil.applyNullFlavorFunctionSecondStep(xmlElement,  datatype);
     		resultList.add(xmlElement);
     	}   	
     	return resultList;
@@ -319,6 +324,8 @@ public class DatatypeProcessor {
 		
 		Hashtable <String, String> data = new Hashtable<String,String>();
     	for(CSVSegment csvSegment:csvSegments) {
+    		if (csvSegment==null)
+    			continue;
     		List<CSVField> csvFields = csvSegment.getFields();
     		for (CSVField csvField:csvFields) {
     			data.put(csvField.getXmlPath(),csvField.getValue());
@@ -402,6 +409,7 @@ public class DatatypeProcessor {
 			}
 		}
 		xmlElement.addAttribute("xsi:type", datatype.getName(), null,null, null);
+		HL7XMLUtil.applyNullFlavorFunctionSecondStep(xmlElement,  datatype);
 		return xmlElement;
     }
     public String getFunctionValue(CSVSegment pCsvSegment, String scsXmlPath, Hashtable<String, String> data, MutableFlag hasUserData, MutableFlag hasDefaultdata) throws MappingException ,FunctionException{
@@ -542,6 +550,9 @@ public class DatatypeProcessor {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.10  2008/12/04 20:42:36  wangeug
+ * HISTORY :support nullFlavor
+ * HISTORY :
  * HISTORY :Revision 1.9  2008/11/21 16:19:37  wangeug
  * HISTORY :Move back to HL7 module from common module
  * HISTORY :
