@@ -32,8 +32,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.25 $
- *          date        $Date: 2008-12-04 20:40:39 $
+ *          revision    $Revision: 1.26 $
+ *          date        $Date: 2009-01-09 21:36:02 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -82,6 +82,8 @@ public class XMLElement implements Cloneable{
 	 * @param children the children XMLElements to be added
 	 */
 	public void addChildren(List<XMLElement> children) {
+		if (children==null)
+			return;
 		for(XMLElement child:children)
 			addChild(child);
 //			this.children.add(child);
@@ -435,6 +437,9 @@ public class XMLElement implements Cloneable{
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.25  2008/12/04 20:40:39  wangeug
+ * HISTORY :support nullFlavor
+ * HISTORY :
  * HISTORY :Revision 1.24  2008/10/29 19:06:08  wangeug
  * HISTORY :read Datatype from xsd
  * HISTORY :
