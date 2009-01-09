@@ -8,14 +8,15 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.common.util;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Dec 3, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2008-12-04 20:35:45 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-01-09 21:31:19 $
  * @since caAdapter v4.2
  */
 
@@ -31,10 +32,30 @@ public class NullFlavorSetting   extends HashMap {
 	public NullFlavorSetting(String setting)
 	{
 		super();
-		if (setting!=null)
-			decodeValue(setting);
+		String nullFlavorSetting=setting;
+		
+		//use application default
+		if (nullFlavorSetting==null)
+			nullFlavorSetting=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_NULLFLAVOR_VALUES_DEFAULT_SETTING);
+		
+		if (nullFlavorSetting!=null)
+			decodeValue(nullFlavorSetting);
 	}
 	
+	public String toString()
+	{
+		StringBuffer rtnB=new StringBuffer();
+		Set<String> nullKeys= keySet();
+		for (String oneNullKey:nullKeys)
+		{
+			String oneNullValue=(String)get(oneNullKey);
+			rtnB.append(oneNullKey);
+			rtnB.append(VALUE_KEY_SEPERATOR);
+			rtnB.append(oneNullValue);
+			rtnB.append(VALUE_DELIMITTER);
+		}
+		return rtnB.toString();
+	}
 	
 	private void decodeValue(String pValue)
 	{
@@ -65,4 +86,7 @@ public class NullFlavorSetting   extends HashMap {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2008/12/04 20:35:45  wangeug
+* HISTORY: support nullFlavor:implment NullFlavor function
+* HISTORY:
 **/
