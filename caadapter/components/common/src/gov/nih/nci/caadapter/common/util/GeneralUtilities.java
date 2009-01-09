@@ -23,13 +23,14 @@ import java.awt.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-12-04 20:36:09 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-01-09 21:30:12 $
  */
 public class GeneralUtilities
 {
     public static String CAADAPTER_DATA_FIELD_NULL="CAADAPTER_NULL_VALUE";
-
+    public static String CAADAPTER_NULLFLAVOR_ATTRIBUTE_VALUE="CAADAPPTER_NULLFLAVOR_ATTRIBUTE_VALUE";
+    public static String CAADAPTER_NULLFLAVOR_ATTRIBUTE_MARK="CAADAPTER_NULLFLAVOR_ATTRIBUTE_MARK";
     /**
 	 * Return true if one is equal to another.
 	 * @param one
@@ -311,6 +312,9 @@ public class GeneralUtilities
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/12/04 20:36:09  wangeug
+ * HISTORY      : support nullFlavor
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2008/11/17 20:12:06  wangeug
  * HISTORY      : Handle NULL in CSVData field:""
  * HISTORY      :
