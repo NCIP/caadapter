@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<datatype name="TYPE_1" childrenInclude="true" nullable="true">
+		<coreAttribute name="attribute_1"/>
+		<coreAttribute name="attribute_2"/>
+	</datatype>
+	<datatype name="TYPE_2" nullable="true">
+		<coreAttribute name="attribute_1"/>
+	</datatype>
+	<datatype name="ENXP" nullable="false"/>
+	
+	<datatype name="TS" nullable="true">
+			<coreAttribute name="operator"/>
+	</datatype>
+</root>
