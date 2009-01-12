@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.util.NullFlavorSetting;
 import gov.nih.nci.caadapter.hl7.datatype.Datatype;
@@ -21,8 +23,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-01-09 21:33:52 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-01-12 17:46:57 $
  * @since caAdapter v4.2
  */
 
@@ -87,11 +89,10 @@ public class HL7XMLUtil {
 				if (nfAttrValue!=null&&!nfAttrValue.equals(""))
 				{
 					nullFlavorAttr.setValue(nfAttrValue);
-					return;
 				}
 				else 
 					element.getAttributes().remove(nullFlavorAttr);
-				
+				nullifyCoreAttribute(element, coreAttr.getName());
 				return;
 			}
 			
@@ -104,6 +105,7 @@ public class HL7XMLUtil {
 				Attribute nullAttr=element.getAttributes().get(attrSize-1);
 				element.getAttributes().remove(nullAttr);
 				element.getAttributes().add(0, nullAttr);
+				nullifyCoreAttribute(element, coreAttr.getName());
 			}
 		}
 
@@ -144,6 +146,7 @@ public class HL7XMLUtil {
 			//add "nullFlavor" attribute after "xsi:type" attribute
 			element.addAttribute("nullFlavor", nullFlavorValue, null, null, null);
 			element.getAttributes().add(typeAttribute);
+			nullifyCoreAttribute(element, coreAttr.getName());
 			return;
 		}
 		
@@ -184,6 +187,7 @@ public class HL7XMLUtil {
 			{
 				element.addAttribute("nullFlavor", nullFlavorAttributeValue, null, null, null);
 			}
+			nullifyCoreAttribute(element, markAttr.getName());
 			return;
 		}
 		//Case II:
@@ -199,6 +203,19 @@ public class HL7XMLUtil {
 //		}
 	}
 	
+	private  static void nullifyCoreAttribute(XMLElement element, String coreAttributeName)
+	{
+    	String nullifyMissingData=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED);
+		
+    	if (nullifyMissingData==null)
+    		return;
+    	if(!nullifyMissingData.equalsIgnoreCase("true"))
+		 	return;
+    	Attribute coreAttr=getAttributByName(coreAttributeName, element);
+    	if (coreAttr!=null)
+    		element.getAttributes().remove(coreAttr);
+		
+	}
 	/**
 	 * Clean NullFlavor setting with an XMLElement
 	 * <ul>
@@ -317,6 +334,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/01/09 21:33:52  wangeug
+* HISTORY: apply default value with nullFlavor attributes
+* HISTORY:
 * HISTORY: Revision 1.1  2008/12/04 20:41:20  wangeug
 * HISTORY: support nullFlavor
 * HISTORY:
