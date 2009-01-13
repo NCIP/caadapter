@@ -53,14 +53,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.27 $
- * @date $Date: 2008-12-08 18:59:22 $
+ * @version $Revision: 1.28 $
+ * @date $Date: 2009-01-13 14:53:02 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.27 2008-12-08 18:59:22 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.28 2009-01-13 14:53:02 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -274,7 +274,7 @@ public class TransformationService
 
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().startsWith("2."))
         {
-        	csvDataResult=pareV2Message(mapParser.getSourceKind(), V2MetaXSDUtil.formatV2MessageType(mapParser.getSourceSpecFileName()));
+        	csvDataResult=parseV2Message(mapParser.getSourceKind(), V2MetaXSDUtil.formatV2MessageType(mapParser.getSourceSpecFileName()));
         }
         else 
         {
@@ -377,7 +377,7 @@ public class TransformationService
     	return xmlElements;
     }
 
-    private CSVDataResult pareV2Message(String v2Version, String msgType)
+    private CSVDataResult parseV2Message(String v2Version, String msgType)
 	{	
     	try {
 
@@ -385,8 +385,9 @@ public class TransformationService
 			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, msgType);
     		long csvbegintime = System.currentTimeMillis();
 //			Source source = coder.decodeFromStream(new FileInputStream(new File("data/ADT_A01.hl7")));
-    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(new FileInputStream(new File("data/ADT_A03.hl7")));
+//    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(new FileInputStream(new File("data/ADT_A03.hl7")));
 //    		Source source = coder.decodeFromStream(this.sourceDataStream);
+    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(this.sourceDataStream);
     		InputStream v2In=lfEncoder.getEncodedInputStream();
     		Source source = coder.decodeFromStream(v2In);
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
@@ -453,6 +454,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.27  2008/12/08 18:59:22  wangeug
+ * HISTORY      : pre-process V2 message : attach CTR at end of each message segment
+ * HISTORY      :
  * HISTORY      : Revision 1.26  2008/11/21 16:19:36  wangeug
  * HISTORY      : Move back to HL7 module from common module
  * HISTORY      :
