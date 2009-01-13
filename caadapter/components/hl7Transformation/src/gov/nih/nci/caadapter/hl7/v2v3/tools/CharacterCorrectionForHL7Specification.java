@@ -118,7 +118,7 @@ public class CharacterCorrectionForHL7Specification
         {
 
             FileWriter fw = null;
-            System.out.print(" Saveing Correction ");
+            System.out.print(" Saving the Corrections ");
             try
             {
                 fw = new FileWriter(filename);
