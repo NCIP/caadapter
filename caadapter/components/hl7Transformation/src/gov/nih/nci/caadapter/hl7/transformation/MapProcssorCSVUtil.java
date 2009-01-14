@@ -20,12 +20,12 @@ import java.util.List;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-12-08 19:06:06 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-01-14 19:31:57 $
  */
 public class MapProcssorCSVUtil {
-    public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) {
-//    	System.out.println("CSVSegment "+csvSegment.getXmlPath() + "-->target"+targetXmlPath);
+    public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) 
+    {
     	List<CSVSegment> csvSegments = new ArrayList<CSVSegment>();
     	if (targetXmlPath==null)
     		return csvSegments;
@@ -44,9 +44,6 @@ public class MapProcssorCSVUtil {
     			if (current == null) {
     				System.out.println("Error");
     				break;
-    				/*
-    				 * TODO throw error
-    				 */
     			}
     		}
     	}
@@ -65,7 +62,6 @@ public class MapProcssorCSVUtil {
     				if (current.getChildSegments() == null || current.getChildSegments().size()==0) break;
  
     				for(CSVSegment childSegment:current.getChildSegments()) {
-//  					System.out.println("ChildSegment" + childSegment.getXmlPath());
     					if (childSegment.getXmlPath().equals(targetXmlPath)) {
     						csvSegments.add(childSegment);
     					}
@@ -73,7 +69,6 @@ public class MapProcssorCSVUtil {
     						if (targetXmlPath.contains(childSegment.getXmlPath())) {
     							childHolder.add(childSegment);
     							canStop=false;
-//    							break;
     						}
     					}
     				}
@@ -83,85 +78,75 @@ public class MapProcssorCSVUtil {
 				if (canStop) break;
     		}
     	}
-//    	System.out.println(csvSegments.size());
+
     	return csvSegments;
     }
-/*
-    private CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
-    	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-//    	CSVSegment current = csvSegment.getParentSegment();
+/**
+ * Find CSVField from a CSVSegment 
+ * @param csvSegment
+ * @param targetFieldXmlPath
+ * @return CSVField found or null
+ */
+    public CSVField findCSVField(CSVSegment csvSegment, String targetFieldXmlPath) 
+    {
+    	String targetSegmentXmlPath = targetFieldXmlPath.substring(0,targetFieldXmlPath.lastIndexOf('.'));
     	CSVSegment current = csvSegment;
     	while (true) {
-    		if (current.getXmlPath().equals(targetSegmentXmlPath)) {
+            if (current == null) 
+            	return null;
+            String currentSegmentXmlPath = current.getXmlPath();
+            
+            if (targetSegmentXmlPath.equals(currentSegmentXmlPath)) 
+            {
+            	//the CSVSegment is the holder of the target CSVField
     			for(CSVField csvField:current.getFields()) {
-    				if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
+    				if (csvField.getXmlPath().equals(targetFieldXmlPath)) 
+    					return csvField;
     			}
-    		}
-    		current = current.getParentSegment();
-    		if (current == null) {
-    			System.out.println("Error");
-    			System.out.println("csvSegment="+csvSegment.getXmlPath());
-    			System.out.println("target="+targetXmlPath);
-    	    	return null;  /*
-    			/*
-    			 * TODO throw error
-    			 */
-/*    		}
-    	}
-    }
-*/  
-        public CSVField findCSVField(CSVSegment csvSegment, String targetXmlPath) {
-    	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
-//    	CSVSegment current = csvSegment.getParentSegment();
-    	CSVSegment current = csvSegment;
-    	while (true) {
-            //System.out.println("CCC1 : " +  current + " : " + csvSegment.getName() + " : " + targetXmlPath);
-            if (current == null) return null;
-            String str = current.getXmlPath();
-            //System.out.println("CCC : " +  current.getName() + str);
-            if (str.equals(targetSegmentXmlPath)) {
-    			for(CSVField csvField:current.getFields()) {
-    				if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
-    			}
+    			//the target CSV field is not set as the holder CSVSegment
+    			//was created (V2 message parser)
+    			
+    			//return here since the targetFieldXmlPath is definitely the path
+    			//of a CSVField, so it does not need to search the child CSVSegment
+    			//of the current CSVSegment
+    			return null;
     		}
             else if (targetSegmentXmlPath.contains(csvSegment.getXmlPath()))
             {
             	//curent Segment is parent of the original Segment
             	for (CSVSegment childSeg:current.getChildSegments())
             	{
-            		CSVField chldField=findCSVField(childSeg,targetXmlPath );
+            		CSVField chldField=findCSVField(childSeg,targetFieldXmlPath );
             		if (chldField!=null)
             			return chldField;
             	}
             }
     		current = current.getParentSegment();
-    		if (current == null) {
+    		if (current == null) 
+    		{
     			System.out.println("Error");
     			System.out.println("csvSegment="+csvSegment.getXmlPath());
-    			System.out.println("target="+targetXmlPath);
+    			System.out.println("target="+targetFieldXmlPath);
     	    	return null;
-    			/*
-    			 * TODO throw error
-    			 */
     		}
     	}
-
     }
 
-    public CSVField findCSVField(List<CSVSegment> csvSegments, String targetXmlPath) {
+    public CSVField findCSVField(List<CSVSegment> csvSegmentList, String targetXmlPath) {
     	
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
     	
-    	for (CSVSegment csvSegment: csvSegments) {
-        	CSVSegment current = csvSegment.getParentSegment();
+    	for (CSVSegment csvSegment: csvSegmentList) {
+        	CSVSegment currentParent = csvSegment.getParentSegment();
     		while (true) {
-    			if (current.getXmlPath().equals(targetSegmentXmlPath)) {
-    				for(CSVField csvField:current.getFields()) {
-    					if (csvField.getXmlPath().equals(targetXmlPath)) return csvField;
+    			if (currentParent.getXmlPath().equals(targetSegmentXmlPath)) {
+    				for(CSVField csvField:currentParent.getFields()) {
+    					if (csvField.getXmlPath().equals(targetXmlPath)) 
+    						return csvField;
     				}
     			}
-    			current = current.getParentSegment();
-    			if (current == null) {
+    			currentParent = currentParent.getParentSegment();
+    			if (currentParent == null) {
     				break;
     			}
     		}
@@ -173,6 +158,9 @@ public class MapProcssorCSVUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2008/12/08 19:06:06  wangeug
+ * HISTORY :Search a CSVField from root element with top-down algrithm: V2 message XML
+ * HISTORY :
  * HISTORY :Revision 1.5  2008/12/04 20:41:37  wangeug
  * HISTORY :support nullFlavor
  * HISTORY :
