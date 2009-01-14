@@ -23,8 +23,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.3 $
- * @date 	 DATE: $Date: 2009-01-12 17:46:57 $
+ * @version  REVISION: $Revision: 1.4 $
+ * @date 	 DATE: $Date: 2009-01-14 20:30:24 $
  * @since caAdapter v4.2
  */
 
@@ -51,9 +51,9 @@ public class HL7XMLUtil {
 			if (dtCores==null||dtCores.isEmpty())
 				dtCores=new ArrayList<String>();
 			
-			if (!dtCores.contains("inlineText"))
-				dtCores.add("inlineText");
-			
+//			if (!dtCores.contains("inlineText"))
+//				dtCores.add("inlineText");
+//			
 			//check value the coreAttribute
 			Attribute coreAttr=null;
 			for (String oneAttrName:dtCores)
@@ -334,6 +334,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.3  2009/01/12 17:46:57  wangeug
+* HISTORY: nullify  coreAttribute if nullFlavor is set
+* HISTORY:
 * HISTORY: Revision 1.2  2009/01/09 21:33:52  wangeug
 * HISTORY: apply default value with nullFlavor attributes
 * HISTORY:
