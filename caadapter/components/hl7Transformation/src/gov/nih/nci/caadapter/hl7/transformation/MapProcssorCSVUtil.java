@@ -20,8 +20,8 @@ import java.util.List;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2009-01-14 19:31:57 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2009-01-14 21:01:57 $
  */
 public class MapProcssorCSVUtil {
     public List<CSVSegment> findCSVSegment(CSVSegment csvSegment, String targetXmlPath) 
@@ -137,6 +137,8 @@ public class MapProcssorCSVUtil {
     	String targetSegmentXmlPath = targetXmlPath.substring(0,targetXmlPath.lastIndexOf('.'));
     	
     	for (CSVSegment csvSegment: csvSegmentList) {
+    		if (csvSegment==null)
+    			continue;
         	CSVSegment currentParent = csvSegment.getParentSegment();
     		while (true) {
     			if (currentParent.getXmlPath().equals(targetSegmentXmlPath)) {
@@ -158,6 +160,9 @@ public class MapProcssorCSVUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2009/01/14 19:31:57  wangeug
+ * HISTORY :terminate loop if the target CSV field is not set as the holder CSVSegment which was created (V2 message parser). return null  since the targetFieldXmlPath is definitely the path of a CSVField, so it does not need to search the child CSVSegment of the current CSVSegment
+ * HISTORY :
  * HISTORY :Revision 1.6  2008/12/08 19:06:06  wangeug
  * HISTORY :Search a CSVField from root element with top-down algrithm: V2 message XML
  * HISTORY :
