@@ -38,8 +38,8 @@ import java.util.Set;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2009-01-09 21:57:12 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2009-01-14 21:02:43 $
  */
 public class DatatypeProcessor {
 	/**
@@ -443,28 +443,30 @@ public class DatatypeProcessor {
 
     	// for each input find it's input value.
     	for (int i = 0; i < functionMeta.getInputDefinitionList().size(); i++) {
-    		String inputvalue = null;
-
     		String inputData = mappings.get("function."+functionComponent.getId()+"."+"inputs"+"."+i);
     		//ignore if no mapping for an input port
     		if (inputData==null)
     		{
-    			inputValues.add(inputvalue);
+    			inputValues.add(null);
     			continue;
     		}
+    		String inputvalue = null;
     		if (inputData.startsWith("function.")) { //function mapping to target
     			inputvalue = getFunctionValue(csvSegments,inputData, data, hasUserData, hasDefaultdata);
     		}
     		else { //direct mapping from source to target
-    			if (data.get(inputData) == null) { //inverse relationship
+    			inputvalue = data.get(inputData);
+    			if (inputvalue == null) { //inverse relationship
     				CSVField csvField = csvUtil.findCSVField(csvSegments, inputData);
-    				inputvalue = csvField.getValue();
-    				if (!inputvalue.equals("")) hasUserData.setHasUserMappedData(true);
+    				if (csvField!=null)
+    					inputvalue = csvField.getValue();
+//    				if (inputvalue!=null&&!inputvalue.equals("")) 
+//    					hasUserData.setHasUserMappedData(true);
     			}
-    			else {
-    				inputvalue = data.get(inputData);
-    				if (!inputvalue.equals("")) hasUserData.setHasUserMappedData(true);
-    			}
+    			
+    			if (inputvalue!=null&&!inputvalue.equals("")) 
+   					hasUserData.setHasUserMappedData(true);
+
     		}
     		inputValues.add(inputvalue);
     	}
@@ -550,6 +552,9 @@ public class DatatypeProcessor {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.11  2009/01/09 21:57:12  wangeug
+ * HISTORY :Apply NullFlavor for each XMLElement
+ * HISTORY :
  * HISTORY :Revision 1.10  2008/12/04 20:42:36  wangeug
  * HISTORY :support nullFlavor
  * HISTORY :
