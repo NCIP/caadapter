@@ -8,6 +8,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
@@ -30,8 +31,8 @@ import org.w3c.dom.Node;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-09-29 15:42:44 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-01-16 15:13:32 $
  */
 
 public class MIFParser {
@@ -57,10 +58,26 @@ public class MIFParser {
         prefix="mif:";
         Node child = document.getDocumentElement().getFirstChild();
         Hashtable<String, String> mifPackageLocation=new Hashtable<String, String>();
+        String copyYear=null;
         while (child != null) {
         	if (child.getNodeName().equals(prefix+"packageLocation")
         			||child.getNodeName().equals("packageLocation"))
         		mifPackageLocation=MIFParserUtil.getDocumentElementAttributes(child);
+        	else if (child.getNodeName().equals(prefix+"header")
+        			||child.getNodeName().equals("header"))
+        	{
+        		Node headerChild=child.getFirstChild();
+        		while(headerChild!=null)
+        		{
+        			if (headerChild.getNodeName().equals(prefix+"legalese")
+                			||headerChild.getNodeName().equals("legalese"))
+        			{
+        				copyYear=XSDParserUtil.getAttribute(headerChild, "copyrightYears");
+        				break;
+        			}	
+        			headerChild=headerChild.getNextSibling();
+        		}
+        	}
         	else if (child.getNodeName().equals(prefix+"ownedEntryPoint")
         			||child.getNodeName().equals("ownedEntryPoint")) {
         		Node ownedEntryPointChild = child.getFirstChild();
@@ -78,6 +95,7 @@ public class MIFParser {
         if (mifClass==null)
         	return false;
         mifClass.setPackageLocation(mifPackageLocation);
+        mifClass.setCopyrightYears(copyYear);
         return true;
 	}
 	
@@ -160,4 +178,7 @@ public class MIFParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2008/09/29 15:42:44  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
