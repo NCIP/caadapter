@@ -57,6 +57,7 @@ import javax.swing.JToolBar;
 import javax.swing.JRootPane;
 import javax.swing.JLabel;
 import javax.swing.Action;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import java.awt.Dimension;
@@ -75,13 +76,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2008-10-16 14:35:57 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2009-01-16 15:18:39 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.13 2008-10-16 14:35:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.14 2009-01-16 15:18:39 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -384,7 +385,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 		// parse the file into a meta object graph.
 		buildTargetTree(metaInfo, file, isToResetGraph);
-		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
+		DefaultMutableTreeNode targetMIFTreeNode=(DefaultMutableTreeNode)tTree.getRootTreeNode().getChildAt(0);
+		
+		middlePanel.getMappingDataManager().registerTargetComponent((MIFClass)targetMIFTreeNode.getUserObject(), file);
 		return true;
 	}
 
@@ -576,6 +579,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/10/16 14:35:57  wangeug
+ * HISTORY      : set sourcecomponent.kind=2.x, linkpointer.kind="v2"
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2008/10/14 17:22:32  wangeug
  * HISTORY      : save mapping between v2Meta to H3S
  * HISTORY      :
