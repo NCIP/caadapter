@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.24 $ date $Date: 2008-12-30 15:03:11 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.25 $ date $Date: 2009-01-16 15:11:16 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -39,6 +39,7 @@ import java.util.Iterator;
 	 private HashSet<MIFClass> choices = new HashSet<MIFClass>();
 	 private String referenceName ="";
 	 private String name;
+	 private String copyrightYears;
 	 private boolean isReference = false;
 	 private boolean isDynamic = false;
 	 private String sortKey;
@@ -252,6 +253,18 @@ import java.util.Iterator;
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * @return the copyrightYears
+	 */
+	public String getCopyrightYears() {
+		return copyrightYears;
+	}
+	/**
+	 * @param copyrightYears the copyrightYears to set
+	 */
+	public void setCopyrightYears(String copyrightYears) {
+		this.copyrightYears = copyrightYears;
 	}
 	/**
 	 * @return the sortKey
@@ -595,6 +608,9 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.24  2008/12/30 15:03:11  wangeug
+  * HISTORY :Process MIFClass with isAbstract=true:create new property abstractDefined
+  * HISTORY :
   * HISTORY :Revision 1.23  2008/12/23 14:35:03  wangeug
   * HISTORY :Process MIFClass with isAbstract=true
   * HISTORY :
