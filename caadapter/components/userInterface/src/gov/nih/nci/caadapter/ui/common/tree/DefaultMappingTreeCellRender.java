@@ -34,8 +34,8 @@ import java.awt.Component;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-11-03 21:38:46 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-01-16 15:20:06 $
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
 {
@@ -96,7 +96,6 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 					treeCellText=treeCellText+"  ["+(dtAttr.getMultiplicityIndex()+1) +"]";
 				else if(dtAttr.getReferenceDatatype()!=null&&!MIFUtil.isTreatedAsSimpleType(dtAttr.getType()))
 				{
-//					count the number of duplicate Attribute with the same parent
 					DefaultMutableTreeNode currentNode=(DefaultMutableTreeNode)value;
 					DefaultMutableTreeNode parentNode=	(DefaultMutableTreeNode)currentNode.getParent();
 					Object parentObj=parentNode.getUserObject();
@@ -116,14 +115,13 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 						attrCnt=MIFUtil.findDatatypeAttributeWithName(parentDt, dtAttr.getName()).size();
 					if (attrCnt>1)
 						treeCellText=treeCellText+"  [1]";
-//					else
-//						treeCellText=treeCellText+"  [Multiple]";
-
 				}
 			}
 			else if(nodeBase instanceof MIFClass)
 			{
-				setText(((MIFClass)nodeBase).getMessageType()+":"+((MIFClass)nodeBase).getNodeXmlName());
+				String cpYears=((MIFClass)nodeBase).getCopyrightYears();
+				if (cpYears!=null&&!cpYears.equals(""))
+				treeCellText=treeCellText+" ( copyrightYears: "+cpYears+" )";
 			}
 			else if(nodeBase instanceof MIFAttribute)
 			{
@@ -211,6 +209,9 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/11/03 21:38:46  wangeug
+ * HISTORY      : set xmlPath name of V2Meta element: replacing "." with "_"
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2008/10/07 15:16:55  wangeug
  * HISTORY      : clean code/remove unnecessary file for 4.2 release
  * HISTORY      :

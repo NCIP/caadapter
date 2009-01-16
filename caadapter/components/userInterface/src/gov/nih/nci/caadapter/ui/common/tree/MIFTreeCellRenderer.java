@@ -30,10 +30,10 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * additional look and feel for tree cells in HSMPanel.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2008-09-24 18:00:29 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2009-01-16 15:20:06 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -49,7 +49,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.13 2008-09-24 18:00:29 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.14 2009-01-16 15:20:06 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -84,7 +84,9 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 				String mifCViewName=nodeMIFC.getNodeXmlName();
 				if (nodeMIFC.getMessageType()!=null)
 					mifCViewName=nodeMIFC.getMessageType()+":"+mifCViewName;
-				
+				String mifClassCopyyear=nodeMIFC.getCopyrightYears();
+				if (mifClassCopyyear!=null&&!mifClassCopyyear.equals(""))
+					mifCViewName=mifCViewName+" (copyrightYears: "+mifClassCopyyear+" )";
 				setText(mifCViewName);
 				setIcon(CLONE_IMAGE_ICON);	
 			}
@@ -318,4 +320,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2008/09/24 18:00:29  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
