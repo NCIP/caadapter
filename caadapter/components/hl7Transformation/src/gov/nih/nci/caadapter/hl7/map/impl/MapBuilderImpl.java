@@ -21,6 +21,7 @@ import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeBaseObject;
 import gov.nih.nci.caadapter.hl7.map.*;
+import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
@@ -46,12 +47,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.17 $
+ * @version    $Revision: 1.18 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.17 2008-11-21 16:17:33 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.18 2009-01-16 15:22:44 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -121,11 +122,12 @@ public class MapBuilderImpl {
         MetaObject metaObject = baseComponent.getMeta();
 
         if (componentType == TARGET || componentType == SOURCE) {
-            if(componentType == TARGET){
+            if(componentType == TARGET)
                 cComponent.setType(Config.MAP_COMPONENT_TARGET_TYPE);
-            }else if(componentType == SOURCE){
-                cComponent.setType(Config.MAP_COMPONENT_SOURCE_TYPE);
-            }
+            else if(componentType == SOURCE)
+            	cComponent.setType(Config.MAP_COMPONENT_SOURCE_TYPE);
+            else
+            	throw new MappingException("Invalid mapping component type:"+componentType, null);
             String filePath = baseComponent.getFileAbsolutePath();
             if (filePath.startsWith(FileUtil.getWorkingDirPath())) 
             	filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
@@ -133,7 +135,8 @@ public class MapBuilderImpl {
             if ( metaObject == null )
             {
                 String mType = cMapping.getType();
-                if (mType == null) mType = "";
+                if (mType == null) 
+                	mType = "";
                 if (mType.indexOf("CSV_TO_XMI")>-1)
                 {
                     cComponent.setKind("xmi");
@@ -153,17 +156,22 @@ public class MapBuilderImpl {
                 	else
                 		cComponent.setKind("2.x");
                 }              
-                else {
-                    cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
-                }
+                else 
+                    throw new MappingException("Invalid mapping type:"+mType, null);
             }
-            else if (metaObject instanceof DatatypeBaseObject) {
+            else if (metaObject instanceof DatatypeBaseObject) 
+            {
             	cComponent.setKind(Config.HL7_V3_DEFINITION_DEFAULT_KIND);
+            	if (metaObject instanceof MIFClass)
+            		cComponent.setGroup("copyrightYears_"+((MIFClass)metaObject).getCopyrightYears());
+            	else
+            		throw new MappingException("Invalid mapping meta object type:"+metaObject.getName(), null);
             }
-            else if (metaObject instanceof CSVMeta) {
-                cComponent.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
-            }
-        } else if (componentType == FUNCTION) {
+            else if (metaObject instanceof CSVMeta) 
+                	cComponent.setKind(Config.CSV_DEFINITION_DEFAULT_KIND);
+        } 
+        else if (componentType == FUNCTION) 
+        {
             FunctionMeta functionMeta = ((FunctionComponent)baseComponent).getMeta();
             cComponent.setKind(functionMeta.getKind());
             cComponent.setGroup(functionMeta.getGroupName());
@@ -202,7 +210,8 @@ public class MapBuilderImpl {
 
         // setup the view second.
         View view = baseComponent.getView();
-        if (view != null) {
+        if (view != null) 
+        {
             C_view cView = new C_view();
             if (view.getColor() != null) cView.setColor(view.getColor().toString());
             cView.setComponentId(view.getComponentId());//.setComponentXmlPath(baseComponent.getXmlPath());
@@ -212,9 +221,9 @@ public class MapBuilderImpl {
             cView.setY(view.getY());
             cView.setComponentId(BaseMapElementImpl.getCastorComponentID(cComponent));
             cViews.addC_view(cView);
-        }else{
-            throw new MappingException("All components must have view information", null);
         }
+        else
+            throw new MappingException("All components must have view information", null);
     }
 
     private void processMaps(List<Map> maps) {
@@ -312,6 +321,9 @@ public class MapBuilderImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.17  2008/11/21 16:17:33  wangeug
+ * HISTORY :Move back to HL7 module from common module
+ * HISTORY :
  * HISTORY :Revision 1.16  2008/11/17 20:08:53  wangeug
  * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY :
