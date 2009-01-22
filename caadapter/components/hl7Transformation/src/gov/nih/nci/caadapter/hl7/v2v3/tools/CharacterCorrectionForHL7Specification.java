@@ -103,7 +103,7 @@ public class CharacterCorrectionForHL7Specification
             {
                 int in = (int) ch;
 
-                if (in > 127)
+                if ((in > 127)&&(in < 256))
                 {
                     changed = true;
                     ch = (char)32;
