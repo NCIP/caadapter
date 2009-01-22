@@ -30,8 +30,8 @@ import java.util.StringTokenizer;
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
  * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.29 $
- * @date $$Date: 2009-01-07 21:48:04 $
+ * @version $Revision: 1.30 $
+ * @date $$Date: 2009-01-22 15:22:15 $
  * @since caAdapter v1.2
  */
 
@@ -55,7 +55,7 @@ public class CaadapterUtil {
 	}
 
 	static {
-		//mkdir for logging 
+		//mkdir for logging
 		File logDir=new File("log");
 		if (!logDir.exists())
 			logDir.mkdir();
@@ -72,7 +72,7 @@ public class CaadapterUtil {
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();	
+        		fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -87,7 +87,7 @@ public class CaadapterUtil {
             			ACTIVATED_CAADAPTER_COMPONENTS.add(onePropKey);
             		}
             	}
- 
+
             	//disable all components except HL7 transformation related
     			{
     				ACTIVATED_CAADAPTER_COMPONENTS.clear();
@@ -99,7 +99,7 @@ public class CaadapterUtil {
              }
             //load MIF file path
             HL7_MIF_FILE_PATH=(String)properties.getProperty("caadapter.hl7.mif.path");
- 
+
             //load datatypes require inlineText
             String inlineTextTypes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_INLINETEXT_REQUIRED);
             if (inlineTextTypes!=null)
@@ -108,7 +108,7 @@ public class CaadapterUtil {
             	while(tk.hasMoreElements())
             		INLINETEXT_ATTRIBUTES.add((String)tk.nextElement());
             }
-            
+
             String mandatorySelectedAttributes=(String)properties.getProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ATTRIBUTE_MANDATORY_SELECTED);
             if (mandatorySelectedAttributes!=null)
             {
@@ -120,10 +120,10 @@ public class CaadapterUtil {
             Properties rsrcProp=new Properties();
             fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-resources.properties").openStream();
             rsrcProp.load(fi);
-            readResourceRequired(rsrcProp);
-                  
+            readResourceRequired(rsrcProp);          
+
         } catch (Exception ex) {
-            Log.logException(CaadapterUtil.class, "caadapter-components.properties is not found", ex);
+            Log.logException(CaadapterUtil.class, NAME_COMPONENT_PROPERTY_FILE + " is not found", ex);
         } finally {
             if (fi != null) try {
                 fi.close();
@@ -144,14 +144,14 @@ public class CaadapterUtil {
 		//no additional resource is required except the common ones
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
 			return;
-		
+
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
 			addModuleResource(Config.CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED,prop);
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
 			addModuleResource(Config.CAADAPTER_HL7_V2V3_CONVERSION_RESOURCE_REQUIRED,prop);
 		if (ACTIVATED_CAADAPTER_COMPONENTS.contains(Config.CAADAPTER_QUERYBUILDER_MENU_ACTIVATED))
 			addModuleResource(Config.CAADAPTER_QUERYBUILDER_RESOURCE_REQUIRED,prop);
-	
+
 	}
 	private static void addModuleResource(String moduleName, Properties prop)
 	{
@@ -168,7 +168,7 @@ public class CaadapterUtil {
     	}
     	RESOURCE_MODULE_REQUIRED.put(moduleName, moduleRsc);
 	}
-	
+
 
     // getters.
     public static final ArrayList getInlineTextAttributes() {
@@ -196,7 +196,7 @@ public class CaadapterUtil {
     	}
     	return rtnList;
     }
-    
+
     public static ArrayList<String> getModuleResourceMissed(String moduleName)
     {
     	ArrayList <String> missRsrc=new ArrayList<String>();
@@ -210,7 +210,7 @@ public class CaadapterUtil {
     		requiredRsc=getAllResourceRequired();
     	else
     		requiredRsc=RESOURCE_MODULE_REQUIRED.get(moduleName);
-    	
+
     	if (requiredRsc!=null)
 	    	for (String rsrc:requiredRsc)
 	    	{
@@ -231,7 +231,7 @@ public class CaadapterUtil {
     	}
     	return missRsrc;
     }
-     
+
      /**
       * Move this method from GeneralUtilities
       * @param objectArray
@@ -247,13 +247,13 @@ public class CaadapterUtil {
              }
              return join(stringArray, separator);
          }
-         
+
          //copied the following method from javaSIG source code
          //decouple the dependence of "common" component from javaSIG
          /**
           * Joins a string array into one string with <code>separator</code>
           * between elements.
-          * 
+          *
           * @param as  array of tokens to join
           * @param separator  separator character
           * @return  the joined string
@@ -273,7 +273,7 @@ public class CaadapterUtil {
              return sb.toString();
            }
          }
-         
+
          private static void readPreferencesMap()
          {   prefs=new HashMap();
              try
@@ -287,7 +287,7 @@ public class CaadapterUtil {
                  e.printStackTrace();
              }
          }
-         
+
          public static HashMap getCaAdapterPreferences()
          {
              return prefs;
@@ -296,7 +296,7 @@ public class CaadapterUtil {
          public static void setCaAdapterPreferences(HashMap _prefs){
              prefs = _prefs;
          }
-         
+
          /**
           * Read a preference value given its key as a string
           *
@@ -331,7 +331,7 @@ public class CaadapterUtil {
 		public static void setAuthorizedUser(boolean authorizedUser) {
 			CaadapterUtil.authorizedUser = authorizedUser;
 		}
-		
+
 		public static String findApplicationConfigValue(String configKey)
 		{
 			return (String)appConfig.get(configKey);
