@@ -17,9 +17,6 @@ import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.MetaParser;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
-import gov.nih.nci.caadapter.common.csv.meta.impl.CSVFieldMetaImpl;
-import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
-import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
 import gov.nih.nci.caadapter.common.map.BaseComponent;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -41,7 +38,9 @@ import gov.nih.nci.caadapter.ui.common.nodeloader.NewHSMBasicNodeLoader;
 import gov.nih.nci.caadapter.ui.common.nodeloader.SCMMapSourceNodeLoader;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
+import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
 import gov.nih.nci.caadapter.ui.common.tree.TargetTreeDropTransferHandler;
+import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDragTransferHandler;
 import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
@@ -49,6 +48,7 @@ import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -57,9 +57,12 @@ import javax.swing.JToolBar;
 import javax.swing.JRootPane;
 import javax.swing.JLabel;
 import javax.swing.Action;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.dnd.DnDConstants;
@@ -76,13 +79,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2009-01-16 15:18:39 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2009-01-23 18:22:00 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.14 2009-01-16 15:18:39 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.15 2009-01-23 18:22:00 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -212,11 +215,52 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			boolean everythingGood = true;
 			if (SELECT_SOURCE.equals(command))
 			{
-				File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
-				if (file != null)
+				Container rootContainer=this.getRootContainer();
+				JFrame rootFrame=(JFrame)rootContainer;
+				TransformationSourceSelectionDialog hl7SourceDialog=new TransformationSourceSelectionDialog(rootFrame);
+				String sourceDatatype=hl7SourceDialog.getSourceDatatype();
+				if (sourceDatatype.equalsIgnoreCase(TransformationSourceSelectionDialog.SOURCE_TYPE_CSV))
 				{
-					everythingGood = processOpenSourceTree(file, true, true);
+					File file = DefaultSettings.getUserInputOfFileFromGUI(this,
+							Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+							//Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);					Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+					if (file != null)
+					{
+						everythingGood = processOpenSourceTree(file, true, true);
+					}
+				}
+				else
+				{
+					System.out.println("HL7MappingPanel.actionPerformed()...sourceDatatype:"+sourceDatatype);
+					V2SchemaSelectionDialog wizard = null;
+			        try
+			        {
+			            wizard = new V2SchemaSelectionDialog(rootFrame, "HL7 V2 Schema Selection", true);
+			        }
+			        catch(Exception ee)
+			        {
+			            JOptionPane.showMessageDialog((JFrame)getRootContainer(), "NewHSMWizard Error (1) : " + ee.getMessage(), "New H3S creation failure !! ", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+			        
+//			        wizard.setLocation(400, 300);
+			        String msg = wizard.getErrorMessage();
+
+			        if (msg != null)
+			        {
+			            if (!msg.trim().equals(""))
+			            {
+			                JOptionPane.showMessageDialog((JFrame)getRootContainer(), "NewHSMWizard Error (2) : " + wizard.getErrorMessage(), "New H3S creation failure !! ", JOptionPane.ERROR_MESSAGE);
+			                return;
+			            }
+			        }
+			        if (wizard.isOkButtonClicked())
+					{
+			        	String v2Version=wizard.getFrontPage().getUserSelectedMessageVersion();
+			        	String v2Schema=wizard.getFrontPage().getUserSelectedMessageSchema();
+			        	processV2Meta(v2Version, v2Schema);
+			    
+					}
 				}
 			}
 			else if (SELECT_TARGET.equals(command))
@@ -244,15 +288,44 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		}
 	}
 
-private TreeNode loadV2MetaTree( Object metaInfo, File absoluteFile)
-{
-	
-	ElementMeta e =V2MetaXSDUtil.loadMessageMeta(absoluteFile.getAbsolutePath());
-	DefaultMappableTreeNode rootNode=processElmentMeta(e);
-	V2MetaXSDUtil.resetElementHash(rootNode);
-	return rootNode; 
-}
-	
+	private void processV2Meta(String v2Version, String v2Schema)
+	{
+    	ElementMeta elmMeta =V2MetaXSDUtil.loadMessageMeta(v2Version, v2Schema);
+    	DefaultMappableTreeNode srcNode=processElmentMeta(elmMeta);
+    	V2MetaXSDUtil.resetElementHash(srcNode);
+		//Build the source tree
+		sTree = new MappingSourceTree(middlePanel, srcNode);
+		sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+		sourceTreeDragTransferHandler = new TreeDefaultDragTransferHandler(sTree, DnDConstants.ACTION_LINK);
+		sourceScrollPane.setViewportView(sTree);
+		sTree.expandAll();
+ 
+		//register collapse all and expand all actions.
+		sourceTreeCollapseAllAction.setTree(sTree);
+		sourceTreeExpandAllAction.setTree(sTree);
+		sTree.getInputMap().put(sourceTreeCollapseAllAction.getAcceleratorKey(), sourceTreeCollapseAllAction.getName());
+		sTree.getActionMap().put(sourceTreeCollapseAllAction.getName(), sourceTreeCollapseAllAction);
+		sTree.getInputMap().put(sourceTreeExpandAllAction.getAcceleratorKey(), sourceTreeExpandAllAction.getName());
+		sTree.getActionMap().put(sourceTreeExpandAllAction.getName(), sourceTreeExpandAllAction);
+
+		if (tTree != null)
+		{
+			resetMiddlePanel();
+		}
+ 
+		mappingSourceFile = null;
+ 
+		if (this.getRootPane() != null)
+		{
+			this.getRootPane().repaint();
+		}
+		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, null);
+//		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
+ 		//set the source meta kind to "xsd" for v2Meta
+		middlePanel.getMappingDataManager().retrieveMappingData(false).setMappingType("V2_TO_V3");
+
+	}
+		
 private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 {
 	DefaultMappableTreeNode rtnNode;
@@ -267,10 +340,6 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 }
 	protected TreeNode loadSourceTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
-		//load XSD (V2Meta) data
-		if (metaInfo==null)
-			return loadV2MetaTree(metaInfo, absoluteFile);
-		
 		// The following is changed by eric for the need of loading dbm file as the source, todo need refactory
 		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
 
@@ -579,6 +648,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2009/01/16 15:18:39  wangeug
+ * HISTORY      : register MIFClass as mapping metaobject as opening a target H3S
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/10/16 14:35:57  wangeug
  * HISTORY      : set sourcecomponent.kind=2.x, linkpointer.kind="v2"
  * HISTORY      :
