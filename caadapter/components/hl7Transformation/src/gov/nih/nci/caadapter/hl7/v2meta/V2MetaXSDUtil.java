@@ -24,8 +24,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.5 $
- * @date 	 DATE: $Date: 2008-11-03 21:38:13 $
+ * @version  REVISION: $Revision: 1.6 $
+ * @date 	 DATE: $Date: 2009-01-23 18:17:35 $
  * @since caAdapter v4.2
  */
 
@@ -108,10 +108,10 @@ public class V2MetaXSDUtil {
 	}
 	
 	
-	public static ElementMeta loadMessageMeta(String v2Verion,String v2Msg)
+	public static ElementMeta loadMessageMeta(String v2Version,String v2MessageSchema)
 	{
 		String v2XsdHome="hl7v2xsd";
-		String xsdFile=v2XsdHome+"/"+v2Verion+"/"+v2Msg+".xsd";
+		String xsdFile=v2XsdHome+"/"+v2Version+"/"+v2MessageSchema;//+".xsd";
 		ElementMeta e = loadMessageMeta(xsdFile);
 		return e;
 	}
@@ -148,6 +148,9 @@ public class V2MetaXSDUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.5  2008/11/03 21:38:13  wangeug
+* HISTORY: set xmlPath name of V2Meta element: replacing "." with "_"
+* HISTORY:
 * HISTORY: Revision 1.4  2008/10/29 14:16:36  wangeug
 * HISTORY: load V2 meta from zip file with relative path
 * HISTORY:
