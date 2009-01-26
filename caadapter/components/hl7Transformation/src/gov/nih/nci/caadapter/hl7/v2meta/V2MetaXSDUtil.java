@@ -8,6 +8,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.v2meta;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Hashtable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -24,8 +25,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.6 $
- * @date 	 DATE: $Date: 2009-01-23 18:17:35 $
+ * @version  REVISION: $Revision: 1.7 $
+ * @date 	 DATE: $Date: 2009-01-26 19:02:03 $
  * @since caAdapter v4.2
  */
 
@@ -93,22 +94,28 @@ public class V2MetaXSDUtil {
 
 		return rtnSt;
 	}
-	public static ElementMeta loadMessageMeta(String xsdPath)
+	public static ElementMeta loadMessageMeta(String xsdPath)  
 	{
 		XSDParser p = new XSDParser();
 		String rootElmnt=xsdPath.substring(xsdPath.lastIndexOf("/")+1);
 		if (xsdPath.indexOf(File.separatorChar)>-1)
 			rootElmnt=xsdPath.substring(xsdPath.lastIndexOf(File.separatorChar)+1);
-		rootElmnt=rootElmnt.substring(0,rootElmnt.indexOf(".xsd") );
+		rootElmnt=rootElmnt.substring(0,rootElmnt.indexOf(".xsd") );		
+		try {
+			String xsdRscr = Thread.currentThread().getClass().getResource("/"+xsdPath).toURI().toString();
+			System.out.println("V2MetaXSDUtil.loadMessageMeta()..message schema URI:"+xsdRscr);
+			p.loadSchema(xsdRscr);
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println("V2MetaXSDUtil.loadMessageMeta()..rootElmnt:"+rootElmnt);
-		
-		p.loadSchema(xsdPath);
 		ElementMeta e = p.getElementMeta("urn:hl7-org:v2xml", rootElmnt);
 		return e;
 	}
 	
 	
-	public static ElementMeta loadMessageMeta(String v2Version,String v2MessageSchema)
+	public static ElementMeta loadMessageMeta(String v2Version,String v2MessageSchema)  
 	{
 		String v2XsdHome="hl7v2xsd";
 		String xsdFile=v2XsdHome+"/"+v2Version+"/"+v2MessageSchema;//+".xsd";
@@ -148,6 +155,9 @@ public class V2MetaXSDUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.6  2009/01/23 18:17:35  wangeug
+* HISTORY: load V2 meta with version number and the name of message schema (include .xsd)
+* HISTORY:
 * HISTORY: Revision 1.5  2008/11/03 21:38:13  wangeug
 * HISTORY: set xmlPath name of V2Meta element: replacing "." with "_"
 * HISTORY:
