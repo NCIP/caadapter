@@ -19,6 +19,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Stack;
 
@@ -26,9 +27,9 @@ import java.util.Stack;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Mar 20, 2008
  *          Time:       4:12:07 PM $
  */
@@ -54,6 +55,8 @@ public class ReassignSortKeyToMIF
     boolean realmCode = false;
     boolean typeID = false;
     boolean templateId = false;
+    boolean overWrite = false;
+    boolean wasOverWritten = false;
     /*
     NodeElement head;
     Stack<String> eleName = new Stack<String>();
@@ -144,6 +147,14 @@ public class ReassignSortKeyToMIF
         templateId = false;
         process(fileName, null);
     }
+    public ReassignSortKeyToMIF(String fileName, boolean overW) throws ApplicationException
+    {
+        realmCode = false;
+        typeID = false;
+        templateId = false;
+        this.overWrite = overW;
+        process(fileName, null);
+    }
     public ReassignSortKeyToMIF(java.io.InputStream stream, boolean realmCode, boolean typeID, boolean templateId) throws ApplicationException
     {
         this.realmCode = realmCode;
@@ -156,6 +167,14 @@ public class ReassignSortKeyToMIF
         this.realmCode = realmCode;
         this.typeID = typeID;
         this.templateId = templateId;
+        process(fileName, null);
+    }
+    public ReassignSortKeyToMIF(String fileName, boolean realmCode, boolean typeID, boolean templateId, boolean overW) throws ApplicationException
+    {
+        this.realmCode = realmCode;
+        this.typeID = typeID;
+        this.templateId = templateId;
+        this.overWrite = overW;
         process(fileName, null);
     }
     public ReassignSortKeyToMIF(String fileName, java.io.InputStream stream) throws ApplicationException
@@ -205,12 +224,28 @@ public class ReassignSortKeyToMIF
             throw new ApplicationException("3 : " + e.getMessage());
         }
         if (!handler.checkSuccess()) throw new ApplicationException("Failure");
-        newFileName = handler.gewNewFileName();
+        newFileName = handler.getNewFileName();
+
+        while(overWrite)
+        {
+            File oldF = new File(fileName);
+
+            if (!oldF.delete()) break;
+            File newF = new File(newFileName);
+            if (!newF.renameTo(new File(fileName))) break;
+            newFileName = fileName;
+            wasOverWritten = true;
+            break;
+        }
     }
 
     public String getNewFileName()
     {
         return newFileName;
+    }
+    public boolean wasOverWritten()
+    {
+        return wasOverWritten;
     }
 
     public static void main(String args[])
@@ -256,6 +291,8 @@ class MifFileEventHandler extends DefaultHandler
     boolean realmCode = false;
     boolean typeID = false;
     boolean templateId = false;
+    boolean overWriteFile = false;
+
 
     int addedNum = 0;
 
@@ -510,10 +547,11 @@ class MifFileEventHandler extends DefaultHandler
         {
             System.out.println("A5 : " + ie.getMessage());
         }
+
         success = true;
     }
 
-    public String gewNewFileName()
+    public String getNewFileName()
     {
         return newFileName;
     }
@@ -522,7 +560,11 @@ class MifFileEventHandler extends DefaultHandler
     {
         return success;
     }
+
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.4  2008/09/29 15:42:44  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
