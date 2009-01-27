@@ -70,8 +70,27 @@ public class CheckWeirdCharacter
     public static void main(String[] args)
     {
         //String file = "C:\\hl7\\V3_2008\\disk1\\Edition2008\\help\\backbone\\backbone.htm";
-        String file = "C:\\hl7\\tempTT\\disk1\\Edition2008\\infrastructure\\datatypes\\datatypes.htm";
-        new CheckWeirdCharacter(file);
+        //String file = "C:\\hl7\\tempTT\\disk1\\Edition2008\\infrastructure\\datatypes\\datatypes.htm";
+        String file1 = "C:\\project\\v2v3Instance\\V2Meta_to_V3\\ADT_A03.hl7";
+
+        String file2 = "C:\\project\\v2v3Instance\\V2Meta_to_V3\\ADT_A03_02_2.hl7";
+        new CheckWeirdCharacter(file2);
+        new CheckWeirdCharacter(file1);
+
+        String str1 = FileUtil.readFileIntoString(file1);
+        String str2 = FileUtil.readFileIntoString(file2);
+        char[] chr2 = str1.toCharArray();
+        char[] chr1 = str2.toCharArray();
+
+        int n = 0;
+        for(char ch1:chr1)
+        {
+            int in1 = (int) ch1;
+            int in2 = (int) chr2[n];
+            System.out.print("" + ch1);
+            if (in1 != in2) System.out.print("<<Here:" + chr2[n] + ":" + in1 + ":" + in2 + ">>");
+            n++;
+        }
     }
 
 }
