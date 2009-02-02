@@ -79,13 +79,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2009-01-23 18:22:00 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-02-02 14:53:32 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.15 2009-01-23 18:22:00 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.16 2009-02-02 14:53:32 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -258,7 +258,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 					{
 			        	String v2Version=wizard.getFrontPage().getUserSelectedMessageVersion();
 			        	String v2Schema=wizard.getFrontPage().getUserSelectedMessageSchema();
-			        	processV2Meta(v2Version, v2Schema);
+			        	processV2Meta(v2Version+"/"+v2Schema);
 			    
 					}
 				}
@@ -288,9 +288,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		}
 	}
 
-	private void processV2Meta(String v2Version, String v2Schema)
+	private void processV2Meta(String v2VersionAndSchema)
 	{
-    	ElementMeta elmMeta =V2MetaXSDUtil.loadMessageMeta(v2Version, v2Schema);
+    	ElementMeta elmMeta =V2MetaXSDUtil.loadMessageMeta(v2VersionAndSchema, null);//, v2Schema);
     	DefaultMappableTreeNode srcNode=processElmentMeta(elmMeta);
     	V2MetaXSDUtil.resetElementHash(srcNode);
 		//Build the source tree
@@ -320,10 +320,14 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			this.getRootPane().repaint();
 		}
 		getMappingFileSynchronizer().registerFile(MappingFileSynchronizer.FILE_TYPE.Source_File, null);
-//		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
+		middlePanel.getMappingDataManager().registerSourceComponent(null,null);
  		//set the source meta kind to "xsd" for v2Meta
+		Mapping mappingData=middlePanel.getMappingDataManager().retrieveMappingData(false);
 		middlePanel.getMappingDataManager().retrieveMappingData(false).setMappingType("V2_TO_V3");
-
+		mappingData.setMappingType("V2_TO_V3");
+		BaseComponent srcComp=mappingData.getSourceComponent();
+ 		srcComp.setKind(v2VersionAndSchema); //version and schema are combined
+		
 	}
 		
 private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
@@ -483,7 +487,13 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 		BaseComponent sourceComp = mapping.getSourceComponent();
 		Object sourceMetaInfo = sourceComp.getMeta();
 		File sourceFile = sourceComp.getFile();
-		buildSourceTree(sourceMetaInfo, sourceFile, false);
+		if (sourceFile!=null)
+			buildSourceTree(sourceMetaInfo, sourceFile, false);
+		else
+		{//
+			String v2schema=sourceComp.getKind();
+			processV2Meta(v2schema);
+		}
 		//build target tree
 		BaseComponent targetComp = mapping.getTargetComponent();
 		Object targetMetaInfo = targetComp.getMeta();
@@ -648,6 +658,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2009/01/23 18:22:00  wangeug
+ * HISTORY      : Load V2 meta with version number and message schema name; do not use the absolute path of schema file
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2009/01/16 15:18:39  wangeug
  * HISTORY      : register MIFClass as mapping metaobject as opening a target H3S
  * HISTORY      :

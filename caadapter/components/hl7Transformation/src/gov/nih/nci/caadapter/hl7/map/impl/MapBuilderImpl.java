@@ -47,12 +47,12 @@ import java.util.List;
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdapter v1.2
- * @version    $Revision: 1.18 $
+ * @version    $Revision: 1.19 $
  */
 
 public class MapBuilderImpl {
     private static final String LOGID = "$RCSfile: MapBuilderImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.18 2009-01-16 15:22:44 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapBuilderImpl.java,v 1.19 2009-02-02 14:55:20 wangeug Exp $";
 
     private static int FUNCTION = 0;
     private static int SOURCE = 1;
@@ -128,10 +128,14 @@ public class MapBuilderImpl {
             	cComponent.setType(Config.MAP_COMPONENT_SOURCE_TYPE);
             else
             	throw new MappingException("Invalid mapping component type:"+componentType, null);
-            String filePath = baseComponent.getFileAbsolutePath();
-            if (filePath.startsWith(FileUtil.getWorkingDirPath())) 
-            	filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
-            cComponent.setLocation(filePath);
+            if (baseComponent.getFile()!=null)
+            {
+	            String filePath = baseComponent.getFileAbsolutePath();
+	            if (filePath.startsWith(FileUtil.getWorkingDirPath())) 
+	            	filePath = filePath.replace(FileUtil.getWorkingDirPath(), Config.CAADAPTER_HOME_DIR_TAG);
+	            cComponent.setLocation(filePath);
+            }
+
             if ( metaObject == null )
             {
                 String mType = cMapping.getType();
@@ -143,18 +147,8 @@ public class MapBuilderImpl {
                 }
                 else  if (mType.indexOf("V2_TO_V3")>-1&&cComponent.getType().equalsIgnoreCase(Config.MAP_COMPONENT_SOURCE_TYPE))
                 {
-                	//figure out v2 version and set it as kind of cComponent
-                	//Hardcode as "2.x"
-                	File srcFile=new File(baseComponent.getFileAbsolutePath());
-                	if (srcFile.exists())
-                	{
-                		File pDir=srcFile.getParentFile();
-                		cComponent.setKind(pDir.getName());
-                		//in the future, the source file location will be only message type xsd
-//                		cComponent.setLocation(srcFile.getName());
-                	}
-                	else
-                		cComponent.setKind("2.x");
+                	cComponent.setKind("v2");
+                	cComponent.setLocation(baseComponent.getKind());
                 }              
                 else 
                     throw new MappingException("Invalid mapping type:"+mType, null);
@@ -321,6 +315,9 @@ public class MapBuilderImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.18  2009/01/16 15:22:44  wangeug
+ * HISTORY :set MIFClass.copyrightYears as mapping/components/component.group and persist the MIF.copyrightyears with mapping file
+ * HISTORY :
  * HISTORY :Revision 1.17  2008/11/21 16:17:33  wangeug
  * HISTORY :Move back to HL7 module from common module
  * HISTORY :

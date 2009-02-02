@@ -25,8 +25,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.7 $
- * @date 	 DATE: $Date: 2009-01-26 19:02:03 $
+ * @version  REVISION: $Revision: 1.8 $
+ * @date 	 DATE: $Date: 2009-02-02 14:53:59 $
  * @since caAdapter v4.2
  */
 
@@ -118,7 +118,9 @@ public class V2MetaXSDUtil {
 	public static ElementMeta loadMessageMeta(String v2Version,String v2MessageSchema)  
 	{
 		String v2XsdHome="hl7v2xsd";
-		String xsdFile=v2XsdHome+"/"+v2Version+"/"+v2MessageSchema;//+".xsd";
+		String xsdFile=v2XsdHome+"/"+v2Version;
+		if (v2MessageSchema!=null)
+			xsdFile=xsdFile+"/"+v2MessageSchema;//+".xsd";
 		ElementMeta e = loadMessageMeta(xsdFile);
 		return e;
 	}
@@ -155,6 +157,9 @@ public class V2MetaXSDUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.7  2009/01/26 19:02:03  wangeug
+* HISTORY: load V2 message from zip file
+* HISTORY:
 * HISTORY: Revision 1.6  2009/01/23 18:17:35  wangeug
 * HISTORY: load V2 meta with version number and the name of message schema (include .xsd)
 * HISTORY:

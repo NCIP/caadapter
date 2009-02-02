@@ -52,14 +52,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.29 $
- * @date $Date: 2009-01-13 17:34:01 $
+ * @version $Revision: 1.30 $
+ * @date $Date: 2009-02-02 14:54:18 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.29 2009-01-13 17:34:01 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.30 2009-02-02 14:54:18 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -241,11 +241,7 @@ public class TransformationService
  		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
  		
  		//load CSV meta
- 		if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().startsWith("2."))
- 		{
- 			//v2 message
- 		}
- 		else
+ 		if (mapParser.getSourceKind()!=null&&!mapParser.getSourceKind().equalsIgnoreCase("v2"))
  		{
 			File scsFile = new File(FileUtil.filenameLocate(mapFile.getParent(), mapParser.getSourceSpecFileName()));
 	    	CSVMetaParserImpl parser = new CSVMetaParserImpl();
@@ -270,8 +266,8 @@ public class TransformationService
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
         CSVDataResult csvDataResult = null;
 
-        if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().startsWith("2."))
-        	csvDataResult=parseV2Message(mapParser.getSourceKind(), V2MetaXSDUtil.formatV2MessageType(mapParser.getSourceSpecFileName()));
+        if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().equalsIgnoreCase("v2"))
+        	csvDataResult=parseV2Message(mapParser.getSourceSpecFileName());
         else 
         {
         	//parse CSV stream
@@ -408,11 +404,17 @@ public class TransformationService
     	return xmlElements;
     }
 
-    private CSVDataResult parseV2Message(String v2Version, String msgType)
+    private CSVDataResult parseV2Message(String v2MessageSchema)
 	{	
+    	//format v2 message schema
+    	int spIndx=v2MessageSchema.indexOf("/");
+    	if (v2MessageSchema==null||spIndx<0)
+    		System.out.println("TransformationService.pareV2Message()...invalid V2 message schema:"+v2MessageSchema);
+    	String v2Version = v2MessageSchema.substring(0, spIndx);
+    	String v2Type=v2MessageSchema.substring(spIndx+1);
     	try {
  			//Create the encoder instance, HL7Encoder
-			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, msgType);
+			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, v2Type);
     		long csvbegintime = System.currentTimeMillis();
 //    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(new FileInputStream(new File("data/ADT_A03.hl7")));
     		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(this.sourceDataStream);
@@ -482,6 +484,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.29  2009/01/13 17:34:01  wangeug
+ * HISTORY      : write  generate HL7 message into zip file
+ * HISTORY      :
  * HISTORY      : Revision 1.28  2009/01/13 14:53:02  wangeug
  * HISTORY      : comment out testing code and correct misspelled method name
  * HISTORY      :

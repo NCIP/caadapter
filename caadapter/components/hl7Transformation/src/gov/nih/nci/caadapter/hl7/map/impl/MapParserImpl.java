@@ -62,14 +62,14 @@ import java.util.Hashtable;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.20 $
- * @date $Date: 2008-11-21 16:17:33 $
+ * @version $Revision: 1.21 $
+ * @date $Date: 2009-02-02 14:55:01 $
  * @since caAdapter v1.2
  */
 
 public class MapParserImpl {
     private static final String LOGID = "$RCSfile: MapParserImpl.java,v $";
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.20 2008-11-21 16:17:33 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/impl/MapParserImpl.java,v 1.21 2009-02-02 14:55:01 wangeug Exp $";
     Mapping mapping = new MappingImpl();
     private Hashtable<String, MetaLookup> metaLookupTable = new Hashtable<String, MetaLookup>();
     private Hashtable<String, BaseComponent> componentLookupTable = new Hashtable<String, BaseComponent>();
@@ -167,14 +167,15 @@ public class MapParserImpl {
                     component.setFile(xmiFile);
                 	
                 }
-                else if(kind.indexOf("2.")>-1)
+                else if(kind.equalsIgnoreCase("v2"))
                 {
                 	//create v2Meta component
-                	File xsdFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
+//                	File xsdFile = new File(FileUtil.filenameLocate(mapfiledir, (String) cComponent.getLocation()));
                     component = new BaseComponent();
                     component.setType(cComponent.getType());                   
-                    component.setKind(kind);
-                    component.setFile(xsdFile);
+                    component.setKind(cComponent.getLocation().toString());
+                 
+//                    component.setFile(xsdFile);
                 }
                 else {
                     throw new MappingException("Component kind not understood : " + kind, null);
@@ -492,6 +493,9 @@ public class MapParserImpl {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.20  2008/11/21 16:17:33  wangeug
+ * HISTORY :Move back to HL7 module from common module
+ * HISTORY :
  * HISTORY :Revision 1.19  2008/11/17 20:08:53  wangeug
  * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY :
