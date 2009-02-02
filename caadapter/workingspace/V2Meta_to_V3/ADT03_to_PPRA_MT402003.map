@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping type="V2_TO_V3" version="1.2">
    <components>
-      <component kind="v2" location=".4/ADT_A03.xsd" type="source"/>
+      <component kind="v2" location="2.4/ADT_A03.xsd" type="source"/>
       <component kind="h3s"
                  location="{caAdapter_Home}\workingspace\V2Meta_to_V3\PRPA_MT402003.h3s"
                  type="target"/>
