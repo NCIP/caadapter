@@ -835,6 +835,10 @@
     	            <fileset file="${config.dir}/caadapter-components.properties" />
     	            <fileset file="${config.dir}/CodegenConfig.xml" />
     				<fileset file="${config.dir}/logging.properties" />
+    				<fileset file="${config.dir}/caadapter-resources.properties" />
+    				<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
+    				<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
+    				
     	 </copy>
     	 <mkdir dir="${dist.dir}/workingspace"/>
 		<unzip dest="${dist.dir}/docs">

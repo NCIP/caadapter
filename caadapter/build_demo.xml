@@ -83,12 +83,12 @@
 	<target name="zipHL7Module" if="caadapter.module.hl7.zip">
 			<echo message="Only Build HL7 Modules..."/>
 			<zip destfile="${project.release.version}_Bin_${DATE}.zip">
-				<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, lib/*.*"/>
+				<zipfileset dir="." excludes="build.xml, *.war, *webstart/**, lib/*.*, conf/CodegenConfig.xml"/>
 	
 				<zipfileset dir="lib" prefix="lib" includes="BrowserLauncher2-all-10rc4.jar, caAdapter.jar, castor*.jar,
 						common*.jar, dom4j*.jar, jdom*.jar, knuHL7V2tree.jar, log4j*.jar,poi*.jar, 
 						saxon*.jar, xercesImpl.jar, xml-apis.jar, 
-						cmps.jar, encoderframework.jar,encoderfrmwk-xsdextension.jar, HL7v2xsd.zip,
+						cmps.jar,jaxb-api.jar, jsr173_1.0_api.jar, encoderframework.jar,encoderfrmwk-xsdextension.jar, HL7v2xsd.zip,
 						hl7.jar, hl7encoder-xsdextension.jar,  xbean.jar"/>
 	
 				<zipfileset dir="../docs" prefix="docs" includes="v4.2/**" />
