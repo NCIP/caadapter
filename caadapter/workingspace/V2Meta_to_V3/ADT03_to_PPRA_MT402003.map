@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping type="V2_TO_V3" version="1.2">
    <components>
-      <component kind="2.4" location="{caAdapter_Home}\hl7v2xsd\2.4\ADT_A03.xsd" type="source"/>
+      <component kind="v2" location=".4/ADT_A03.xsd" type="source"/>
       <component kind="h3s"
                  location="{caAdapter_Home}\workingspace\V2Meta_to_V3\PRPA_MT402003.h3s"
                  type="target"/>
@@ -89,7 +89,7 @@
       </link>
    </links>
    <views>
-      <view component-id="source.2.4.0" height="0" width="0" x="0" y="0"/>
+      <view component-id="source.v2.0" height="0" width="0" x="0" y="0"/>
       <view component-id="target.h3s.0" height="0" width="0" x="0" y="0"/>
    </views>
 </mapping>
