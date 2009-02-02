@@ -10,7 +10,6 @@ package gov.nih.nci.caadapter.hl7.v2meta;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-//import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,8 +19,8 @@ import java.io.InputStreamReader;
  *
  * @author   OWNER: wangeug  $Date: Dec 5, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2008-12-08 18:50:32 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-02-02 15:33:50 $
  * @since caAdapter v4.2
  */
 
@@ -40,7 +39,6 @@ public class V2MessageLinefeedEncoder {
  
 	public V2MessageLinefeedEncoder(InputStream in)
 	{
-//		tmpFileName=System.getProperty("user.dir")+File.separator+System.currentTimeMillis();
  		try {
 			processInupt(in);
 		} catch (IOException e) {
@@ -71,7 +69,9 @@ public class V2MessageLinefeedEncoder {
         while ((curLine = br.readLine()) != null) 
         {
             curLine = curLine.trim();
-//			System.out.println("V2MessageLinefeedEncoder.processInupt()..read line:"+curLine);
+            //skip blank line
+            if (curLine.equals(""))
+            	continue;
 			byteOut.write(curLine.getBytes());
 			byteOut.write((byte)crtChar);
 		}
@@ -83,4 +83,7 @@ public class V2MessageLinefeedEncoder {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2008/12/08 18:50:32  wangeug
+* HISTORY: pre-process V2 message : attach CTR at end of each message segment
+* HISTORY:
 **/
