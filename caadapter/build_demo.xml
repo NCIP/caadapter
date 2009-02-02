@@ -98,6 +98,8 @@
 					prefix="workingspace/CSV_to_HL7_V3_Example"/>
 				<zipfileset dir="../workingspace/V2Meta_to_V3"										 
 					prefix="workingspace/V2Meta_to_V3"/>
+					<zipfileset dir="../workingspace/nullFlavor"										 
+					prefix="workingspace/nullFlavor"/>
 			</zip>
 	</target>
 	
