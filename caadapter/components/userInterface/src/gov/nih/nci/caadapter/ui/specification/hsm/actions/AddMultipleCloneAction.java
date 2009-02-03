@@ -30,10 +30,10 @@ import java.awt.event.ActionEvent;
  * This class defines the add multiple action.
  *
  * @author OWNER: Eric Chen
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-09-29 20:18:57 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-02-03 14:20:36 $
  */
 public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -49,7 +49,7 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.8 2008-09-29 20:18:57 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.9 2009-02-03 14:20:36 umkis Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Clone";
     private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -131,7 +131,8 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
             	int exitingAsscCount=MIFUtil.getMaximumAssociationMultiplicityIndexWithName(parentMif, mifAssc.getName());
             	clonnedAssc.setMultiplicityIndex(exitingAsscCount+1);
             	clonnedAssc.setName(clonnedAssc.getName());
-            	parentMif.addAssociation(clonnedAssc);
+                clonnedAssc.setOptionChosen(true);  // inerted by umkis 01/29/2009
+                parentMif.addAssociation(clonnedAssc);
             	
             	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true); 
 
@@ -172,6 +173,9 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/09/29 20:18:57  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/06/09 19:54:07  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
