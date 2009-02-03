@@ -167,7 +167,7 @@ public class XSDValidationTree
             XSDValidationTreeNode headXNode = new XSDValidationTreeNode(0, "Head", "");
             headNode = new DefaultMutableTreeNode(headXNode);
         }
-        
+
         if (!isMain)
         {
             if (isIncludedFile(xsdFile)) return;
@@ -273,5 +273,215 @@ public class XSDValidationTree
         }
         return tempX;
 
+    }
+
+    public DefaultMutableTreeNode searchComplexType(String nodeName)
+    {
+        if (nodeName == null) return null;
+        nodeName = nodeName.trim();
+        if (nodeName.equals("")) return null;
+
+        DefaultMutableTreeNode sNode = getHeadNode();
+
+        while(true)
+        {
+            sNode = sNode.getNextNode();
+            if (sNode != null) break;
+
+            String complexTypeName = getComplexTypeName(sNode);
+
+            if (complexTypeName == null) continue;
+
+            if (complexTypeName.equals(nodeName)) return sNode;
+        }
+
+        return null;
+    }
+
+    public boolean isComplexType(DefaultMutableTreeNode node)
+    {
+        XSDValidationTreeNode xNode = getXnodeFromDnode(node);
+        String eleName = xNode.getName();
+        int role = xNode.getRole();
+        if (role != 3) return false;
+        if (eleName.toLowerCase().indexOf("complextype") < 0) return false;
+        return true;
+    }
+
+    public String getComplexTypeName(DefaultMutableTreeNode node)
+    {
+        if (node == null) return null;
+        if (!isComplexType(node)) return null;
+
+        return getAttributeValueWithName(node);
+    }
+    public String getAttributeValueWithName(DefaultMutableTreeNode node)
+    {
+        return getAttributeValue(node, "name");
+    }
+    public String getAttributeValueWithType(DefaultMutableTreeNode node)
+    {
+        return getAttributeValue(node, "type");
+    }
+    public String getAttributeValue(DefaultMutableTreeNode node, String attName)
+    {
+        if (node == null) return null;
+
+        for (int i=0;i<node.getChildCount();i++)
+        {
+            DefaultMutableTreeNode cNode = (DefaultMutableTreeNode) node.getChildAt(i);
+
+            XSDValidationTreeNode cxNode = getXnodeFromDnode(cNode);
+            String eleNameC = cxNode.getName();
+            int roleC = cxNode.getRole();
+            if (roleC != 4) continue;
+            if (!eleNameC.equals(attName)) continue;
+            return cxNode.getValue();
+        }
+        return null;
+    }
+    public DefaultMutableTreeNode getSequenceElement(DefaultMutableTreeNode node)
+    {
+        if (!isComplexType(node)) return null;
+        List<DefaultMutableTreeNode> list = getChildElementsWithName(node, "sequence");
+        if (list == null) return null;
+        return list.get(0);
+    }
+    public List<DefaultMutableTreeNode> getChildElementsWithName(DefaultMutableTreeNode node, String name)
+    {
+        if (node == null) return null;
+        if (name == null) return null;
+        name = name.trim();
+        if (name.equals("")) return null;
+
+        List<DefaultMutableTreeNode> list = new ArrayList<DefaultMutableTreeNode>();
+        for (int i=0;i<node.getChildCount();i++)
+        {
+            DefaultMutableTreeNode cNode = (DefaultMutableTreeNode) node.getChildAt(i);
+
+            XSDValidationTreeNode cxNode = getXnodeFromDnode(cNode);
+            String eleNameC = cxNode.getName();
+            int roleC = cxNode.getRole();
+            if (roleC != 3) continue;
+            if (eleNameC.equalsIgnoreCase(name))
+            {
+                list.add(cNode);
+                continue;
+            }
+            int idx = eleNameC.indexOf(":");
+            if (idx > 0)
+            {
+                String nodeName = eleNameC.substring(idx + 1);
+                if (nodeName.equalsIgnoreCase(name)) list.add(cNode);
+            }
+        }
+        if (list.size() == 0) return null;
+        return list;
+    }
+
+    public boolean isH3SAssociationType(String name)
+    {
+        if (name == null) return false;
+        name = name.trim();
+        if (name.equals("")) return false;
+
+        int idx = name.indexOf(".");
+        if (idx < 0) return false;
+
+        String str = name.substring(0, idx);
+        int len = str.length();
+        if ((len < 7)||(len > 17)) return false;
+
+        char[] chrs = str.toCharArray();
+        int i = 0;
+        for(char chr:chrs)
+        {
+            int n = (int) chr;
+            boolean isNumeric = false;
+
+            if ((n >= 48)&&(n <= 57)) isNumeric = true;
+            else if ((n >= 65)&&(n <= 90)) {}
+            else return false;
+
+            if ((i==0)||(i==1)||(i==2)||(i==3)||(i==5)||(i==6))
+            {
+                if (isNumeric) return false;
+            }
+            else if ((i==7)||(i==8)||(i==9)||(i==10)||(i==11)||(i==12)||(i==15)||(i==16))
+            {
+                if (!isNumeric) return false;
+            }
+            else if (i==4)
+            {
+                if (n != 95) return false;
+            }
+            else if (i==13)
+            {
+                if (n != 85) return false;
+            }
+            else if (i==14)
+            {
+                if (n != 86) return false;
+            }
+            i++;
+        }
+
+        return true;
+    }
+
+    public List<String> getH3SAssociationNames(DefaultMutableTreeNode node)
+    {
+        return getH3SSequenceTypes(node, "association", true);
+    }
+    public List<String> getH3SAssociationTypes(DefaultMutableTreeNode node)
+    {
+        return getH3SSequenceTypes(node, "association", false);
+    }
+    public List<String> getH3SAttributeNames(DefaultMutableTreeNode node)
+    {
+        return getH3SSequenceTypes(node, "attribute", true);
+    }
+    public List<String> getH3SAttrinbuteTypes(DefaultMutableTreeNode node)
+    {
+        return getH3SSequenceTypes(node, "attribute", false);
+    }
+    public List<String> getH3SSequenceElementsNames(DefaultMutableTreeNode node)
+    {
+        return getH3SSequenceTypes(node, "all", true);
+    }
+    public List<String> getH3SSequenceElementsTypes(DefaultMutableTreeNode node)
+    {
+        return getH3SSequenceTypes(node, "all", false);
+    }
+
+    private List<String> getH3SSequenceTypes(DefaultMutableTreeNode node, String classified, boolean isName)
+    {
+        List<DefaultMutableTreeNode> nList = getChildElementsWithName(getSequenceElement(node), "element");
+        if (nList == null) return null;
+        List<String> sList = new ArrayList<String>();
+        for (DefaultMutableTreeNode aNode:nList)
+        {
+            String type = getAttributeValueWithType(aNode);
+            String data = null;
+
+            if (isName) data = getAttributeValueWithName(aNode);
+            else data = type;
+
+            if (data == null) continue;
+            data = data.trim();
+            if (data.equals("")) continue;
+
+            if (classified.equals("association"))
+            {
+                if (isH3SAssociationType(type)) sList.add(data);
+            }
+            else if (classified.equals("attribute"))
+            {
+                if (!isH3SAssociationType(type)) sList.add(data);
+            }
+            else if (classified.equals("all")) sList.add(data);
+        }
+
+        return sList;
     }
 }

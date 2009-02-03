@@ -649,6 +649,7 @@ public class XmlTreeBrowser extends JPanel implements ActionListener
             catch(IOException ie)
             {
                 System.out.println("XXXXX : " + ie.getMessage());
+                return;
             }
             if (is == null) is = new InputSource(path);
         }
