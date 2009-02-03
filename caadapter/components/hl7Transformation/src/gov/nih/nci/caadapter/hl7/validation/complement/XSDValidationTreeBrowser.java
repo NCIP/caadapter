@@ -645,15 +645,16 @@ public class XSDValidationTreeBrowser extends JPanel implements ActionListener
 
         DefaultMutableTreeNode head = tree.getHeadNode();
         headOfMain.setUserObject(head.getUserObject());
-        System.out.println("  Child Node Count : " + head.getChildCount());
+        //System.out.println("  Child Node Count : " + head.getChildCount());
+        java.util.List<DefaultMutableTreeNode> childs = new ArrayList<DefaultMutableTreeNode>();
         for(int i=0;i<head.getChildCount();i++)
         {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) head.getChildAt(i);
-            //XSDValidationTreeNode xNode = (XSDValidationTreeNode)node.getUserObject();
-            //System.out.println("  Child Node ("+i+") : " + xNode.toString());
-            //DefaultMutableTreeNode dNode = new DefaultMutableTreeNode(xNode);
-            headOfMain.add(node);
+            childs.add(node);
         }
+        for(DefaultMutableTreeNode node:childs)  headOfMain.add(node);  
+
+
 
         //treeMain = new JTree();
         treeInitialConstruction();
