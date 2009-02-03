@@ -33,10 +33,10 @@ import java.util.Map;
  * Manage the context change effect, including notify menus to update.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:51 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class ContextManager implements ChangeListener//, PropertyChangeListener
 {
@@ -52,7 +52,7 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.4 2008-06-09 19:53:51 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/context/ContextManager.java,v 1.5 2009-02-03 15:49:21 wangeug Exp $";
 
     private AbstractMenuBar menu = null;
     private ToolBarHandler toolBarHandler = null;
@@ -284,13 +284,13 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
     {
         if (menu_name == MenuConstants.FILE_MENU_NAME)
         {
-            updateMenuAction(actionMap, ActionConstants.NEW_MAP_FILE);
-            updateMenuAction(actionMap, ActionConstants.OPEN_MAP_FILE);
+            updateMenuAction(actionMap, ActionConstants.NEW_CSV_TO_HL7_MAP_FILE);
+            updateMenuAction(actionMap, ActionConstants.OPEN_V2_TO_V3_MAP_FILE);
             updateMenuAction(actionMap, ActionConstants.NEW_CSV_SPEC);
             updateMenuAction(actionMap, ActionConstants.OPEN_CSV_SPEC);
             updateMenuAction(actionMap, ActionConstants.NEW_HSM_FILE);
             updateMenuAction(actionMap, ActionConstants.OPEN_HSM_FILE);
-            updateMenuAction(actionMap, ActionConstants.NEW_HL7_V3_MESSAGE);
+            updateMenuAction(actionMap, ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE);
             updateMenuAction(actionMap, ActionConstants.OPEN_HL7_V3_MESSAGE);
 
             updateMenuAction(actionMap, ActionConstants.SAVE);
@@ -443,6 +443,9 @@ public class ContextManager implements ChangeListener//, PropertyChangeListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:53:51  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/06/13 18:42:07  schroedn
  * HISTORY      : added option to remove help
  * HISTORY      :

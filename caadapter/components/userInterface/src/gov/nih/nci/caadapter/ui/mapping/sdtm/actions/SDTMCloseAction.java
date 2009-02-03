@@ -20,10 +20,10 @@ import java.awt.event.ActionEvent;
  * The class closes the connection during the time when the panel is closed
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.3 $
- *          $Date: 2008-06-09 19:54:06 $
+ *          $Revision: 1.4 $
+ *          $Date: 2009-02-03 15:49:21 $
  */
 public class SDTMCloseAction extends DefaultContextCloseAction//implements ContextManagerClient
 {
@@ -54,9 +54,9 @@ public class SDTMCloseAction extends DefaultContextCloseAction//implements Conte
                 e1.printStackTrace();//To change body of catch statement use File | Settings | File Templates.
             }
             ContextManager cm = ContextManager.getContextManager();
-            cm.enableAction(ActionConstants.OPEN_MAP_FILE, true);
+            cm.enableAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, true);
             cm.enableAction(ActionConstants.NEW_O2DB_MAP_FILE, true);
-            cm.enableAction(ActionConstants.NEW_MAP_FILE, true);
+            cm.enableAction(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, true);
         }
         return true;
     }
@@ -64,6 +64,9 @@ public class SDTMCloseAction extends DefaultContextCloseAction//implements Conte
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.3  2008/06/09 19:54:06  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.2  2007/08/16 19:39:45  jayannah
  * Reformatted and added the Comments and the log tags for all the files
  *

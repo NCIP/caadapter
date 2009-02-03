@@ -26,14 +26,14 @@ import java.util.ArrayList;
  * This class defines the new Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:53:55 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class NewMapFileAction extends AbstractContextAction
 		{
-	private static final String COMMAND_NAME = ActionConstants.NEW_MAP_FILE_TXT;
+	private static final String COMMAND_NAME = ActionConstants.NEW_CSV_TO_HL7_MAP_FILE;
 	private static final Character COMMAND_MNEMONIC = new Character('M');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK, false);
 
@@ -92,8 +92,10 @@ public class NewMapFileAction extends AbstractContextAction
 			setSuccessfullyPerformed(false);
 			return isSuccessfullyPerformed();
 		}
-		
+
 		HL7MappingPanel mp = new HL7MappingPanel();
+		if (!getName().equalsIgnoreCase(NewMapFileAction.COMMAND_NAME))
+			mp=new HL7MappingPanel(false);
 		mainFrame.addNewTab(mp);
 		setSuccessfullyPerformed(true);
 		return isSuccessfullyPerformed();
@@ -118,6 +120,9 @@ public class NewMapFileAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:53:55  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/10/04 18:08:59  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

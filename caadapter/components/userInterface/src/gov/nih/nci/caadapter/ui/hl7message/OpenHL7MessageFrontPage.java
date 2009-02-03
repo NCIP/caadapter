@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.ui.hl7message;
 
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.hl7message.actions.BrowseHLV3MessageAction;
 
 import javax.swing.*;
@@ -23,8 +24,8 @@ import java.io.File;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-09-25 15:41:31 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class OpenHL7MessageFrontPage extends JPanel
 {
@@ -40,7 +41,7 @@ public class OpenHL7MessageFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageFrontPage.java,v 1.4 2008-09-25 15:41:31 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/OpenHL7MessageFrontPage.java,v 1.5 2009-02-03 15:49:21 wangeug Exp $";
 
 	public static final String DATA_FILE_BROWSE_MODE = "Data File";
 	public static final String MAP_FILE_BROWSE_MODE = "Map Specification";
@@ -111,8 +112,12 @@ public class OpenHL7MessageFrontPage extends JPanel
 		String result = null;
 		if(DATA_FILE_BROWSE_MODE.equals(browseMode))
 		{
-			if (openWizardTitle!=null&&openWizardTitle.contains(Config.HL7_V3_TO_CSV_MODULE_NAME))
+			if (openWizardTitle==null)
+				result="";
+			if (openWizardTitle.contains(Config.HL7_V3_TO_CSV_MODULE_NAME))
 				result=Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION;
+			else if (openWizardTitle.contains(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE))
+				result="hl7";
 			else
 				result = Config.CSV_DATA_FILE_DEFAULT_EXTENSTION;
 		}
@@ -328,6 +333,9 @@ public class OpenHL7MessageFrontPage extends JPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/09/25 15:41:31  wangeug
+ * HISTORY      : check null
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/06/26 19:45:51  linc
  * HISTORY      : Change HL7 transformation GUI to use batch api.
  * HISTORY      :

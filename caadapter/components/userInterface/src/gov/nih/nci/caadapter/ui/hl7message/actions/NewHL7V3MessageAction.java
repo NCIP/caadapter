@@ -35,10 +35,10 @@ import java.util.ArrayList;
  * This class defines the new HL7V3 message panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2008-06-26 19:45:51 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -54,7 +54,7 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.11 2008-06-26 19:45:51 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.12 2009-02-03 15:49:21 wangeug Exp $";
 
 	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
@@ -207,10 +207,15 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 				panel = new HL7MessagePanel();
 			}
 			String msgPaneName="";
-			if (dataFile.getAbsolutePath().contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION))
-				msgPaneName="Hl7 V3 Message";
-			else
-				msgPaneName="CSV Data";
+			if (this.getName() !=null)
+			{
+				if (this.getName().equalsIgnoreCase(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE)||
+						this.getName().equalsIgnoreCase(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE))
+					msgPaneName="Hl7 V3 Message";
+				else
+					msgPaneName="CSV Data";
+			}
+							
 			panel.setName(msgPaneName);
 			panel.setSaveFile(destFile);
 			//launch panel will determine whether the command has been executed successfully.
@@ -242,6 +247,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2008/06/26 19:45:51  linc
+ * HISTORY      : Change HL7 transformation GUI to use batch api.
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2008/06/09 19:53:52  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

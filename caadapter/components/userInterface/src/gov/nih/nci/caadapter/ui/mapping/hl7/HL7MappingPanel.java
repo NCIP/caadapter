@@ -79,13 +79,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2009-02-02 14:53:32 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2009-02-03 15:49:22 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.16 2009-02-02 14:53:32 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.17 2009-02-03 15:49:22 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -97,11 +97,21 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	private JButton openSourceButton = new JButton(SELECT_SOURCE);
 	private JButton openTargetButton = new JButton(SELECT_TARGET);
 
+	private boolean isCSVSource=true;
+	/**
+	 * Create a Mapping panel with CSV as source
+	 * @throws Exception
+	 */
 	public HL7MappingPanel() throws Exception
 	{
-		this("","calledFromConstructor","");
+		this(true);
 	}
 
+	public HL7MappingPanel(boolean isCSVSource) throws Exception
+	{
+		this("","calledFromConstructor","");
+		this.isCSVSource=isCSVSource;
+	}
     public HL7MappingPanel(String sourceFile, String _flag) throws Exception
 	{
     	this(sourceFile, "calledFromConstructor", _flag);
@@ -217,13 +227,14 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			{
 				Container rootContainer=this.getRootContainer();
 				JFrame rootFrame=(JFrame)rootContainer;
-				TransformationSourceSelectionDialog hl7SourceDialog=new TransformationSourceSelectionDialog(rootFrame);
-				String sourceDatatype=hl7SourceDialog.getSourceDatatype();
-				if (sourceDatatype.equalsIgnoreCase(TransformationSourceSelectionDialog.SOURCE_TYPE_CSV))
-				{
+//				TransformationSourceSelectionDialog hl7SourceDialog=new TransformationSourceSelectionDialog(rootFrame);
+//				String sourceDatatype=hl7SourceDialog.getSourceDatatype();
+//				if (sourceDatatype.equalsIgnoreCase(TransformationSourceSelectionDialog.SOURCE_TYPE_CSV))
+//				
+				if ( isCSVSource){
 					File file = DefaultSettings.getUserInputOfFileFromGUI(this,
 							Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
-							//Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);					Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
+							//Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
 					if (file != null)
 					{
 						everythingGood = processOpenSourceTree(file, true, true);
@@ -231,7 +242,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 				}
 				else
 				{
-					System.out.println("HL7MappingPanel.actionPerformed()...sourceDatatype:"+sourceDatatype);
+					System.out.println("HL7MappingPanel.actionPerformed()...sourceDatatype: v2 Schema");
 					V2SchemaSelectionDialog wizard = null;
 			        try
 			        {
@@ -493,6 +504,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 		{//
 			String v2schema=sourceComp.getKind();
 			processV2Meta(v2schema);
+			isCSVSource=false;
 		}
 		//build target tree
 		BaseComponent targetComp = mapping.getTargetComponent();
@@ -525,8 +537,8 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 			if (rootPane != null)
 			{//rootpane is not null implies this panel is fully displayed;
 				//on the flip side, if it is null, it implies it is under certain construction.
-				contextManager.enableAction(ActionConstants.NEW_MAP_FILE, false);
-				contextManager.enableAction(ActionConstants.OPEN_MAP_FILE, true);
+				contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, false);
+				contextManager.enableAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, true);
 			}
 		}
 		//since the action depends on the panel instance,
@@ -579,7 +591,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 	public Action getDefaultOpenAction()
 	{
 		ContextManager contextManager = ContextManager.getContextManager();
-		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_MAP_FILE);
+		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE);
 		return openAction;
 	}
 
@@ -658,6 +670,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16  2009/02/02 14:53:32  wangeug
+ * HISTORY      : Load V2 meta with version number and message schema name; do not use the absolute path of schema file
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2009/01/23 18:22:00  wangeug
  * HISTORY      : Load V2 meta with version number and message schema name; do not use the absolute path of schema file
  * HISTORY      :

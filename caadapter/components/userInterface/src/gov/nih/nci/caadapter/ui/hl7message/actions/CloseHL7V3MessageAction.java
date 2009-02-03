@@ -21,10 +21,10 @@ import java.awt.event.ActionEvent;
  * This class defines the close action of HL7 panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 {
@@ -40,7 +40,7 @@ public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/CloseHL7V3MessageAction.java,v 1.3 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/CloseHL7V3MessageAction.java,v 1.4 2009-02-03 15:49:21 wangeug Exp $";
 
 	private transient HL7MessagePanel hl7Panel;
 
@@ -67,7 +67,7 @@ public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 			//todo: should use some better way to call contextmanager
 			ContextManager cm = ContextManager.getContextManager();
 			cm.enableAction(ActionConstants.OPEN_HL7_V3_MESSAGE, true);
-			cm.enableAction(ActionConstants.NEW_HL7_V3_MESSAGE, true);
+			cm.enableAction(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, true);
 		}
 		hl7Panel.clearDataFromUI();
 		return true;
@@ -76,6 +76,9 @@ public class CloseHL7V3MessageAction extends DefaultContextCloseAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/09/10 16:40:35  wangeug
  * HISTORY      : fix bug: create new actionItem with new Panel
  * HISTORY      :

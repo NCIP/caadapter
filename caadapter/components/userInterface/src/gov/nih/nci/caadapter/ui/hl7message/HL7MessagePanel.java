@@ -67,8 +67,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.25 $
- *          date        $Date: 2008-10-29 19:07:19 $
+ *          revision    $Revision: 1.26 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -511,7 +511,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			if (rootPane != null)
 			{//rootpane is not null implies this panel is fully displayed;
 				//on the flip side, if it is null, it implies it is under certain construction.
-                contextManager.enableAction(ActionConstants.NEW_HL7_V3_MESSAGE, false);
+                contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, false);
 			}
 		}
 		//since the action depends on the panel instance,
@@ -673,6 +673,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.25  2008/10/29 19:07:19  wangeug
+ * HISTORY      : create TransformationServiceUtil.java to hold Util methods
+ * HISTORY      :
  * HISTORY      : Revision 1.24  2008/10/24 19:38:29  wangeug
  * HISTORY      : transfer a v2 message into v3 message using SUN v2 schema
  * HISTORY      :

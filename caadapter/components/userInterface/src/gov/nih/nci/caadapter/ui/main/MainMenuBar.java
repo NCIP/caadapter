@@ -58,8 +58,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.43 $
- * @date       $Date: 2008-11-10 20:55:12 $
+ * @version    $Revision: 1.44 $
+ * @date       $Date: 2009-02-03 15:49:21 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -238,6 +238,7 @@ public class MainMenuBar extends AbstractMenuBar
         {
             //set csvToV3 as default
             newGroup.add(constructNewCSVTOV3Menu());
+            newGroup.add(constructNewV2TOV3Menu());
         } 
         else
         {
@@ -245,6 +246,7 @@ public class MainMenuBar extends AbstractMenuBar
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_ACTIVATED))
             {
                 newGroup.add(constructNewCSVTOV3Menu());
+                newGroup.add(constructNewV2TOV3Menu());
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
@@ -380,12 +382,12 @@ public class MainMenuBar extends AbstractMenuBar
     private JMenu constructNewCSVTOV3Menu()
     {
     	//user should be authorized to use HL7 artifacts
-        JMenu newGroup = new JMenu("V2/CSV To HL7 V3 Mapping and Transformation Service");
+        JMenu newGroup = new JMenu("CSV To HL7 V3 Mapping and Transformation Service");
         NewMapFileAction newMapAction = new NewMapFileAction(mainFrame);
         newMapAction.setAuthorizationRequired(true);
         JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction);
-        actionMap.put(ActionConstants.NEW_MAP_FILE, newMapAction);
-        menuItemMap.put(ActionConstants.NEW_MAP_FILE, newCsvToV3MapItem);
+        actionMap.put(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, newMapAction);
+        menuItemMap.put(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, newCsvToV3MapItem);
         NewCsvSpecificationAction newCSVSpecificationAction = new NewCsvSpecificationAction(mainFrame);
         JMenuItem newCSVSpecificationItem = new JMenuItem(newCSVSpecificationAction);
         actionMap.put(ActionConstants.NEW_CSV_SPEC, newCSVSpecificationAction);
@@ -395,11 +397,11 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem newHSMFileItem = new JMenuItem(newHSMAction);
         actionMap.put(ActionConstants.NEW_HSM_FILE, newHSMAction);
         menuItemMap.put(ActionConstants.NEW_HSM_FILE, newHSMFileItem);
-        NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(mainFrame);
+        NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE,mainFrame);
         newHL7V3MessageAction.setAuthorizationRequired(true);
         JMenuItem newHL7V3MessageItem = new JMenuItem(newHL7V3MessageAction);
-        actionMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageAction);
-        menuItemMap.put(ActionConstants.NEW_HL7_V3_MESSAGE, newHL7V3MessageItem);
+        actionMap.put(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, newHL7V3MessageAction);
+        menuItemMap.put(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, newHL7V3MessageItem);
         newGroup.setMnemonic('N');
         newGroup.add(newCSVSpecificationItem);
         newGroup.add(newHSMFileItem);
@@ -408,26 +410,26 @@ public class MainMenuBar extends AbstractMenuBar
         return newGroup;
     }
 
-//    private JMenu constructNewV2TOV3Menu()
-//    {
-//        NewMapFileAction newMapAction1 = new NewMapFileAction(mainFrame);
-//        newMapAction1.setAuthorizationRequired(true);
-//        JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction1);
-//        JMenu newGroup = new JMenu("HL7 v2 to HL7 v3 Conversion Service");
-//        V2V3MapAction newV2ToV3MapAction = new V2V3MapAction(mainFrame);
-//        newV2ToV3MapAction.setAuthorizationRequired(true);
-//        NewHSMAction newHSMAction_1 = new NewHSMAction(mainFrame);
-//        newV2ToV3MapAction.setAuthorizationRequired(true);
-//        JMenuItem newHSMFileItem_1 = new JMenuItem(newHSMAction_1);
-//        NewHL7V3MessageAction newHL7V3MessageAction_1 = new NewHL7V3MessageAction(mainFrame);
-//        newHL7V3MessageAction_1.setAuthorizationRequired(true);
-//        JMenuItem newHL7V3MessageItem_1 = new JMenuItem(newHL7V3MessageAction_1);
-//        newGroup.add(new JMenuItem(newV2ToV3MapAction));
-//        newGroup.add(newHSMFileItem_1);
-//        newGroup.add(newCsvToV3MapItem);
-//        newGroup.add(newHL7V3MessageItem_1);
-//        return newGroup;
-//    }
+    private JMenu constructNewV2TOV3Menu()
+    {
+    	//user should be authorized to use HL7 artifacts
+        JMenu newGroup = new JMenu("HL7 V2 To HL7 V3 Mapping and Transformation Service");
+        NewMapFileAction newMapAction = new NewMapFileAction(ActionConstants.NEW_V2_TO_V3_MAP_FILE, mainFrame);
+        newMapAction.setAuthorizationRequired(true);
+        JMenuItem newCsvToV3MapItem = new JMenuItem(newMapAction);
+        actionMap.put(ActionConstants.NEW_V2_TO_V3_MAP_FILE, newMapAction);
+        menuItemMap.put(ActionConstants.NEW_V2_TO_V3_MAP_FILE, newCsvToV3MapItem);
+        
+        NewHL7V3MessageAction newHL7V3MessageAction = new NewHL7V3MessageAction(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE, mainFrame);
+        newHL7V3MessageAction.setAuthorizationRequired(true);
+        JMenuItem newHL7V3MessageItem = new JMenuItem(newHL7V3MessageAction);
+        actionMap.put(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE, newHL7V3MessageAction);
+        menuItemMap.put(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE, newHL7V3MessageItem);
+        newGroup.setMnemonic('N');
+        newGroup.add(newCsvToV3MapItem);
+        newGroup.add(newHL7V3MessageItem);
+        return newGroup;
+    }
 
     private JMenu constructNewV3TOCSVMenu()
     {
@@ -465,11 +467,17 @@ public class MainMenuBar extends AbstractMenuBar
     private JMenu constructOpenMenu()
     {
         // construct actions and menu items.
-        OpenMapFileAction openMapAction = new OpenMapFileAction(mainFrame);
+        OpenMapFileAction openMapAction = new OpenMapFileAction(ActionConstants.OPEN_CSV_TO_HL7_MAP_FILE, mainFrame);
 
-        JMenuItem openMapFileItem = new JMenuItem(openMapAction);
-        actionMap.put(ActionConstants.OPEN_MAP_FILE, openMapAction);
-        menuItemMap.put(ActionConstants.OPEN_MAP_FILE, openMapFileItem);
+        JMenuItem openCsvToV3MapFileItem = new JMenuItem(openMapAction);
+        actionMap.put(ActionConstants.OPEN_CSV_TO_HL7_MAP_FILE, openMapAction);
+        menuItemMap.put(ActionConstants.OPEN_CSV_TO_HL7_MAP_FILE, openCsvToV3MapFileItem);
+        
+        OpenMapFileAction openV2ToV3MapAction = new OpenMapFileAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE,mainFrame);
+        JMenuItem openV2ToV3MapFileItem = new JMenuItem(openV2ToV3MapAction);
+        actionMap.put(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, openMapAction);
+        menuItemMap.put(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, openV2ToV3MapFileItem);
+        
         OpenObjectToDbMapAction openO2DBMapAction = new OpenObjectToDbMapAction(mainFrame);
 
         JMenuItem openO2DBMapFileItem = new JMenuItem(openO2DBMapAction);
@@ -499,10 +507,6 @@ public class MainMenuBar extends AbstractMenuBar
         actionMap.put(ActionConstants.OPEN_HSM_FILE, openHSMAction);
         menuItemMap.put(ActionConstants.OPEN_HSM_FILE, openHSMFileItem);
 
-//        OpenHSMAction openXmlHSMAction = new OpenHSMAction(ActionConstants.OPEN_HSM_FILE_TXT +"(.xml)", mainFrame);
-//        actionMap.put(ActionConstants.OPEN_XML_HSM_FILE, openXmlHSMAction);
-//        menuItemMap.put(ActionConstants.OPEN_XML_HSM_FILE, new JMenuItem(openXmlHSMAction));
-
         OpenHL7V3MessageAction openHL7V3MessageAction = new OpenHL7V3MessageAction(mainFrame);
         JMenuItem openHL7V3MessageItem = new JMenuItem(openHL7V3MessageAction);
         actionMap.put(ActionConstants.OPEN_HL7_V3_MESSAGE, openHL7V3MessageAction);
@@ -522,9 +526,11 @@ public class MainMenuBar extends AbstractMenuBar
             openHSMFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK + Event.SHIFT_MASK, false));
             openMenu.add(openHSMFileItem);
             openCsvToXmiMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false));
-            openMenu.add(openCsvToXmiMapFileItem);
-            openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, Event.CTRL_MASK + Event.SHIFT_MASK, false));
-            openMenu.add(openMapFileItem);
+            openMenu.add(openCsvToXmiMapFileItem); 
+            openCsvToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, Event.CTRL_MASK + Event.SHIFT_MASK, false));
+            openMenu.add(openCsvToV3MapFileItem);
+            openV2ToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, Event.CTRL_MASK + Event.SHIFT_MASK, false));
+            openMenu.add(openV2ToV3MapFileItem);
         } 
         else
         {
@@ -536,15 +542,17 @@ public class MainMenuBar extends AbstractMenuBar
                 openMenu.add(openCSVSpecificationItem);
                 isOpenCsvAdded=true;
                 keyStrokeIndex++;
-//                openMenu.add(openXmlHSMAction);
-//                isHSMAdded=true;
-//                keyStrokeIndex++;
+
                 openHSMFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
                 openMenu.add(openHSMFileItem);
                 isHSMAdded=true;
                 keyStrokeIndex++;
-                openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
-                openMenu.add(openMapFileItem);
+                openCsvToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
+                openMenu.add(openCsvToV3MapFileItem);
+                keyStrokeIndex++;
+                
+                openV2ToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
+                openMenu.add(openV2ToV3MapFileItem);
                 keyStrokeIndex++;
             }
             
@@ -562,8 +570,8 @@ public class MainMenuBar extends AbstractMenuBar
 //	                keyStrokeIndex++;
 	                openMenu.add(openHSMFileItem);
 	                keyStrokeIndex++;
-	                openMapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
-	                openMenu.add(openMapFileItem);
+	                openV2ToV3MapFileItem.setAccelerator(KeyStroke.getKeyStroke(findKeyStrokeIndex(keyStrokeIndex), Event.CTRL_MASK + Event.SHIFT_MASK, false));
+	                openMenu.add(openV2ToV3MapFileItem);
 	                keyStrokeIndex++;
             	}
             }
@@ -681,7 +689,7 @@ private int findKeyStrokeIndex(int indx)
         if (!hasActiveDocument)
         {
             //			menuItemMap.get(ActionConstants.NEW_MAP_FILE).getAction().setEnabled(true);
-            resetMenuItem(ActionConstants.NEW_MAP_FILE, true);
+            resetMenuItem(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, true);
             //			newMapFileItem.getAction().setEnabled(true);
             //			newCSVSpecificationItem.getAction().setEnabled(true);
             //			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
@@ -692,7 +700,7 @@ private int findKeyStrokeIndex(int indx)
             resetMenuItem(ActionConstants.NEW_HSM_FILE, true);
             //			newHL7V3MessageItem.getAction().setEnabled(true);
             //			menuItemMap.get(ActionConstants.NEW_HL7_V3_MESSAGE).getAction().setEnabled(true);
-            resetMenuItem(ActionConstants.NEW_HL7_V3_MESSAGE, true);
+            resetMenuItem(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, true);
         }
     }
 
@@ -711,7 +719,7 @@ private int findKeyStrokeIndex(int indx)
     {
         if (!hasActiveDocument)
         {
-        	resetMenuItem(ActionConstants.OPEN_MAP_FILE, true);
+        	resetMenuItem(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, true);
             resetMenuItem(ActionConstants.OPEN_CSV_SPEC, true);
             resetMenuItem(ActionConstants.OPEN_HSM_FILE, true);
             resetMenuItem(ActionConstants.OPEN_HL7_V3_MESSAGE, true);
@@ -741,6 +749,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.43  2008/11/10 20:55:12  wangeug
+ * HISTORY : GME release:version 4.2
+ * HISTORY :
  * HISTORY : Revision 1.42  2008/11/10 20:13:25  wangeug
  * HISTORY : GME release:version 4.2
  * HISTORY :

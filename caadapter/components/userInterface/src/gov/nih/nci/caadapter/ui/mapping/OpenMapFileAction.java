@@ -35,14 +35,14 @@ import java.util.ArrayList;
  * This class defines the open Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:55 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2009-02-03 15:49:22 $
  */
 public class OpenMapFileAction extends DefaultContextOpenAction
 {
-	protected static String COMMAND_NAME = ActionConstants.OPEN_MAP_FILE_TXT;
+	protected static String COMMAND_NAME = ActionConstants.OPEN_CSV_TO_HL7_MAP_FILE;
 	protected static Character COMMAND_MNEMONIC = new Character('M');
 	protected static KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_3, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 //	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
@@ -222,6 +222,9 @@ public class OpenMapFileAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:55  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/10/04 18:08:59  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

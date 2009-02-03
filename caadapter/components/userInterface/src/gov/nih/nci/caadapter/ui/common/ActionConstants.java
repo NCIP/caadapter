@@ -17,8 +17,8 @@ import gov.nih.nci.caadapter.common.util.Config;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-10-24 19:38:20 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public interface ActionConstants
 {
@@ -26,21 +26,23 @@ public interface ActionConstants
 	//NEW_MAP_FILE is used as the key to the text, while the NEW_MAP_FILE_TXT is used as the action name;
 	//this is because the action name in display may be the same but we really need to distinguish them in a map
 	//between a new and an open command.
-	String NEW_MAP_FILE_TXT = "V2/CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
-	String NEW_MAP_FILE = "New " + NEW_MAP_FILE_TXT;
+	
+	String NEW_CSV_TO_HL7_MAP_FILE = "New CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
+	String NEW_V2_TO_V3_MAP_FILE = "New HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME;
 	String NEW_CSV_SPEC_TXT = Config.CSV_MODULE_NAME;
 	String NEW_CSV_SPEC = "New " + NEW_CSV_SPEC_TXT;
 	String NEW_HL7_V3_MESSAGE_TXT = Config.HL7_V3_MESSAGE_MODULE_NAME;
 	String NEW_HL7_V3_TO_CSV= "New "+Config.HL7_V3_TO_CSV_MODULE_NAME;
-	String NEW_HL7_V3_MESSAGE = "New " + NEW_HL7_V3_MESSAGE_TXT;
+	String NEW_CSV_TO_HL7_V3_MESSAGE = "New CSV TO " + NEW_HL7_V3_MESSAGE_TXT;
+	String NEW_HL7_V2_TO_HL7_V3_MESSAGE = "New HL7 V2 TO " + NEW_HL7_V3_MESSAGE_TXT;
 	String NEW_HSM_FILE_TXT = Config.HL7_V3_METADATA_MODULE_NAME;
 	String NEW_HSM_FILE = "New " + NEW_HSM_FILE_TXT;
 	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
 	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
     String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";   
 
-    String OPEN_MAP_FILE_TXT = NEW_MAP_FILE_TXT;
-	String OPEN_MAP_FILE = "Open HL7 V2 to HL7 V3 " + OPEN_MAP_FILE_TXT;
+    String OPEN_CSV_TO_HL7_MAP_FILE = "Open CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
+	String OPEN_V2_TO_V3_MAP_FILE = "Open HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME;
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
 	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
@@ -75,6 +77,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/10/24 19:38:20  wangeug
+ * HISTORY      : transfer a v2 message into v3 message using SUN v2 schema
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/06/09 19:53:51  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

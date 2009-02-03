@@ -21,10 +21,10 @@ import java.awt.event.ActionEvent;
  * This class defines the close action of Mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2009-02-03 15:49:21 $
  */
 public class CloseMapAction extends DefaultContextCloseAction //implements ContextManagerClient
 {
@@ -55,9 +55,9 @@ public class CloseMapAction extends DefaultContextCloseAction //implements Conte
 		if(mainFrame!=null)
 		{
 			ContextManager cm = ContextManager.getContextManager();
-			cm.enableAction(ActionConstants.OPEN_MAP_FILE, true);
+			cm.enableAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, true);
 			cm.enableAction(ActionConstants.NEW_O2DB_MAP_FILE, true);
-			cm.enableAction(ActionConstants.NEW_MAP_FILE, true);
+			cm.enableAction(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, true);
 			cm.enableAction(ActionConstants.NEW_CSV2XMI_MAP_FILE, true);
 		}
 		return true;
@@ -65,6 +65,9 @@ public class CloseMapAction extends DefaultContextCloseAction //implements Conte
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/11/30 14:40:53  wangeug
  * HISTORY      : create CSV_TO_XMI mapping module
  * HISTORY      :
