@@ -42,6 +42,8 @@ public class XmlTreeBrowsingNode
     }
     public String getName()
     {
+        int idx = name.indexOf(";");
+        if (idx > 0) return name.substring(0, idx);
         return name;
     }
     public String getValue()

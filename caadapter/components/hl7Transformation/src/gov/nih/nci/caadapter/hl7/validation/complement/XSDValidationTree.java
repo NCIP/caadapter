@@ -286,7 +286,7 @@ public class XSDValidationTree
         while(true)
         {
             sNode = sNode.getNextNode();
-            if (sNode != null) break;
+            if (sNode == null) break;
 
             String complexTypeName = getComplexTypeName(sNode);
 
@@ -300,6 +300,7 @@ public class XSDValidationTree
 
     public boolean isComplexType(DefaultMutableTreeNode node)
     {
+        if (node == null) return false;
         XSDValidationTreeNode xNode = getXnodeFromDnode(node);
         String eleName = xNode.getName();
         int role = xNode.getRole();
@@ -310,6 +311,7 @@ public class XSDValidationTree
 
     public String getComplexTypeName(DefaultMutableTreeNode node)
     {
+        //System.out.println("FFFFF1 : ");
         if (node == null) return null;
         if (!isComplexType(node)) return null;
 
@@ -334,10 +336,14 @@ public class XSDValidationTree
             XSDValidationTreeNode cxNode = getXnodeFromDnode(cNode);
             String eleNameC = cxNode.getName();
             int roleC = cxNode.getRole();
+            //System.out.println("FFFFF2 : " + attName + ", En:"+eleNameC +", R:"+ roleC + ", V:" + cxNode.getValue());
             if (roleC != 4) continue;
             if (!eleNameC.equals(attName)) continue;
+            //System.out.println("FFFFF3 : " + attName + ", En:"+eleNameC +", R:"+ roleC + ", V:" + cxNode.getValue());
+
             return cxNode.getValue();
         }
+        //System.out.println("FFFFF4 : Not Found : " + attName);
         return null;
     }
     public DefaultMutableTreeNode getSequenceElement(DefaultMutableTreeNode node)
@@ -374,6 +380,14 @@ public class XSDValidationTree
                 String nodeName = eleNameC.substring(idx + 1);
                 if (nodeName.equalsIgnoreCase(name)) list.add(cNode);
             }
+
+            int idx2 = eleNameC.toLowerCase().indexOf("choice");
+            if ((name.equalsIgnoreCase("element"))&&(idx2 >= 0))
+            {
+                List<DefaultMutableTreeNode> li = getChildElementsWithName(cNode, "element");
+                for (DefaultMutableTreeNode nd:li) list.add(nd);
+            }
+
         }
         if (list.size() == 0) return null;
         return list;
@@ -394,35 +408,44 @@ public class XSDValidationTree
 
         char[] chrs = str.toCharArray();
         int i = 0;
+
         for(char chr:chrs)
         {
             int n = (int) chr;
             boolean isNumeric = false;
-
+            int cx = 0;
+            //System.out.print("FFFFF 4 ("+i+"): " + chr + "," + n);
             if ((n >= 48)&&(n <= 57)) isNumeric = true;
-            else if ((n >= 65)&&(n <= 90)) {}
-            else return false;
+            else if (((n >= 65)&&(n <= 90))||(n==95)) {}
+            else cx = 1;
 
             if ((i==0)||(i==1)||(i==2)||(i==3)||(i==5)||(i==6))
             {
-                if (isNumeric) return false;
+                if (isNumeric) cx = 2;
             }
             else if ((i==7)||(i==8)||(i==9)||(i==10)||(i==11)||(i==12)||(i==15)||(i==16))
             {
-                if (!isNumeric) return false;
+                if (!isNumeric) cx = 3;
             }
             else if (i==4)
             {
-                if (n != 95) return false;
+                if (n != 95) cx = 4;
             }
             else if (i==13)
             {
-                if (n != 85) return false;
+                if (n != 85) cx = 5;
             }
             else if (i==14)
             {
-                if (n != 86) return false;
+                if (n != 86) cx = 6;
             }
+            if(cx == 0) {}// System.out.println("");
+            else
+            {
+                //System.out.println(", checked=" + cx);
+                return false;
+            }
+
             i++;
         }
 
@@ -467,10 +490,12 @@ public class XSDValidationTree
             if (isName) data = getAttributeValueWithName(aNode);
             else data = type;
 
+            //System.out.println("FFFFF 5: item read("+isName+") : " + classified + ", " + data);
+
             if (data == null) continue;
             data = data.trim();
             if (data.equals("")) continue;
-
+            int sz = sList.size();
             if (classified.equals("association"))
             {
                 if (isH3SAssociationType(type)) sList.add(data);
@@ -480,6 +505,8 @@ public class XSDValidationTree
                 if (!isH3SAssociationType(type)) sList.add(data);
             }
             else if (classified.equals("all")) sList.add(data);
+
+            //if (sList.size() > sz) System.out.println("FFFFF 6: item added("+isName+") : " + classified + ", " + data);
         }
 
         return sList;
