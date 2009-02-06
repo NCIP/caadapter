@@ -168,7 +168,7 @@ public class XmlReorganizingTree
                 {
                     //continue;
                     //throw new ApplicationException(" any list item cannot be found.. , node=" + x1Node.getName());
-                    System.out.println(" FFFF 15 : any list item cannot be found.. , node=" + x1Node.getName());
+                    //System.out.println(" FFFF 15 : any list item cannot be found.. , node=" + x1Node.getName());
                     return;
                     //return;
                 }
@@ -177,7 +177,7 @@ public class XmlReorganizingTree
         //}
                 if ((node.getChildCount() - n) < 2)
                 {
-                    System.out.println(" FFFF 14 : Too less items. "+x1Node.getName()+" ("+n+"/"+node.getChildCount()+")");
+                    //System.out.println(" FFFF 14 : Too less items. "+x1Node.getName()+" ("+n+"/"+node.getChildCount()+")");
                     return;
                 }
                 for(int i=0;i<n;i++) nodeList.add((DefaultMutableTreeNode) node.getChildAt(i));
@@ -214,23 +214,23 @@ public class XmlReorganizingTree
             throw new ApplicationException("Unmatched size ("+nodeList.size()+"/"+node.getChildCount()+") : " + ((XmlTreeBrowsingNode) node.getUserObject()).getName());
             //return;
         }
-        System.out.println("\nFFFFF 15 : " + x1Node.getName());
-        for(String str:list) System.out.println("  FFF 16 : " + str);
-        for(int i=n;i<node.getChildCount();i++)
-        {
-            DefaultMutableTreeNode aNode = (DefaultMutableTreeNode) node.getChildAt(i);
-            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) aNode.getUserObject();
-            System.out.println("  --FFF 17 : " + xNode.getName());
-        }
+//        System.out.println("\nFFFFF 15 : " + x1Node.getName());
+//        for(String str:list) System.out.println("  FFF 16 : " + str);
+//        for(int i=n;i<node.getChildCount();i++)
+//        {
+//            DefaultMutableTreeNode aNode = (DefaultMutableTreeNode) node.getChildAt(i);
+//            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) aNode.getUserObject();
+//            System.out.println("  --FFF 17 : " + xNode.getName());
+//        }
         node.removeAllChildren();
         for (DefaultMutableTreeNode aNode:nodeList) node.add(aNode);
 
-        for(int i=n;i<node.getChildCount();i++)
-        {
-            DefaultMutableTreeNode aNode = (DefaultMutableTreeNode) node.getChildAt(i);
-            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) aNode.getUserObject();
-            System.out.println("  -+FFF 18 : " + xNode.getName());
-        }
+//        for(int i=n;i<node.getChildCount();i++)
+//        {
+//            DefaultMutableTreeNode aNode = (DefaultMutableTreeNode) node.getChildAt(i);
+//            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) aNode.getUserObject();
+//            System.out.println("  -+FFF 18 : " + xNode.getName());
+//        }
     }
     private int getDepth(DefaultMutableTreeNode node)
     {

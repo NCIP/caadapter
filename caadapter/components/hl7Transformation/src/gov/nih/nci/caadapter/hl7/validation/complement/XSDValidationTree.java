@@ -38,7 +38,7 @@ public class XSDValidationTree
         File file0 = new File(xsdFile);
         if ((!file0.exists())||(!file0.isFile()))
         {
-            throw new ApplicationException("Source schema file is null.");
+            throw new ApplicationException("Source schema file is neither exist nor a file. (main) : " + xsdFile);
         }
         mainXSDFile = file0;
 
@@ -49,7 +49,7 @@ public class XSDValidationTree
         String coreDir = grandParentDir + "coreschemas";
         File file = new File(coreDir);
         if ((!file.exists())||(!file.isDirectory()))
-           throw new ApplicationException("This file is not exist or a file. (include) : " + xsdFile);
+           throw new ApplicationException("This is neither exist nor a directory. (coreschemas) : " + xsdFile);
 
         for(File core:file.listFiles())
         {
@@ -104,7 +104,7 @@ public class XSDValidationTree
                 xsdFile = grandParentDir + "coreschemas" + File.separator + file.getName();
                 file = new File(xsdFile);
                 if ((!file.exists())||(!file.isFile()))
-                   throw new ApplicationException("This file is not exist or a file. (include) : " + xsdFile);
+                   throw new ApplicationException("This xsd file is neither exist nor a file. (include) : " + xsdFile);
             }
         }
 
@@ -121,7 +121,7 @@ public class XSDValidationTree
         if (!cTag)
         {
             includeFileList.add(xsdFile);
-            System.out.println("Inserted Include xsd file : " + xsdFile);
+            //System.out.println("Inserted Include xsd file : " + xsdFile);
         }
     }
     private void parseXSDFile(String xsdFile, boolean isMain) throws ApplicationException
@@ -158,9 +158,9 @@ public class XSDValidationTree
         if (isMain)
         {
             mainXSDFile = file;
-            System.out.println("Main start : " + xsdFile);
+            //System.out.println("Main start : " + xsdFile);
         }
-        else System.out.println("Include start : " + xsdFile);
+        //else System.out.println("Include start : " + xsdFile);
 
         if (headNode == null)
         {
@@ -211,7 +211,7 @@ public class XSDValidationTree
             headMainXNode.setXSDFileName(xsdFile);
             node.setUserObject(headMainXNode);
             headNode.add(node);
-            System.out.println("Added Main ("+headNode.getChildCount()+") : " + ((XSDValidationTreeNode)node.getUserObject()).toString());
+            //System.out.println("Added Main ("+headNode.getChildCount()+") : " + ((XSDValidationTreeNode)node.getUserObject()).toString());
         }
         else
         {
@@ -221,7 +221,7 @@ public class XSDValidationTree
             headIncludeXNode.setXSDFileName(xsdFile);
             node.setUserObject(headIncludeXNode);
             headNode.add(node);
-            System.out.println("Added Include ("+headNode.getChildCount()+") : " + ((XSDValidationTreeNode)node.getUserObject()).toString());
+            //System.out.println("Added Include ("+headNode.getChildCount()+") : " + ((XSDValidationTreeNode)node.getUserObject()).toString());
         }
     }
 

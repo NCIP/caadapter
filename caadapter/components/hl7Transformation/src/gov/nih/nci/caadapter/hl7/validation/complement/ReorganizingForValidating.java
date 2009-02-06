@@ -1,11 +1,15 @@
 package gov.nih.nci.caadapter.hl7.validation.complement;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.function.DateFunction;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBrowsingNode;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -21,6 +25,7 @@ public class ReorganizingForValidating
     private String xmlFileName;
     private String xsdFileName;
     private String messageType;
+    private String rootElementName;
 
     private int ERROR = -1;
     private int ELEMENT = 0;
@@ -70,14 +75,14 @@ public class ReorganizingForValidating
             String nodeName = getName(node);
             int idx = nodeName.indexOf(";");
             if (idx > 0) nodeName = nodeName.substring(0, idx);
-            System.out.println("Node Name : " + nodeName);
+            //System.out.println("Node Name : " + nodeName);
             //depth = node.getDepth();
             if (node == xmlHead)
             {
                 complexType = messageType + "." + nodeName;
                 complexTypeNode = xsdTree.searchComplexType(complexType);
                 if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 1: " + nodeName + ", complexType=" + complexType);
-
+                rootElementName = nodeName;
                 doneXMLNodeList.add(node);
                 doneXSDNodeList.add(complexTypeNode);
             }
@@ -167,7 +172,15 @@ public class ReorganizingForValidating
             //beforeDepth = depth;
         }
 
-        xmlTree.printXML();
+        //xmlTree.printXML();
+    }
+    public XmlReorganizingTree getXMLTree()
+    {
+        return xmlTree;
+    }
+    public XSDValidationTree getXSDTree()
+    {
+        return xsdTree;
     }
 
     private void checkFile(String tag, String fileName) throws ApplicationException
@@ -255,18 +268,138 @@ public class ReorganizingForValidating
         return ERROR;
     }
 
+    public boolean insertRootElmentToXSDFile() throws IOException
+    {
+        return insertRootElmentToXSDFile(xsdFileName);
+    }
+
+    public boolean insertRootElmentToXSDFile(String outFileName) throws IOException
+    {
+        List<String> listLine = FileUtil.readFileIntoList(xsdFileName);
+        String insertedLine = "element name=\"" + rootElementName + "\" type=\"" + messageType + "." + rootElementName + "\"/>";
+        boolean remarkTag = false;
+        boolean includeStartTag = false;
+        boolean finishedTag = false;
+        boolean insertedTag = false;
+        String reserved = "";
+        List<String> tempListLine = new ArrayList<String>();
+
+            for (String str:listLine)
+            {
+                tempListLine.add(str);
+
+                if (finishedTag) continue;
+                if (str.trim().equals("")) continue;
+                int idx = str.indexOf("<!--");
+                if (idx >= 0)
+                {
+                    remarkTag = true;
+                    reserved = str.substring(0, idx);
+                }
+                if (remarkTag)
+                {
+                    idx = str.indexOf("-->");
+                    if (idx >= 0)
+                    {
+                        remarkTag = false;
+                        str = reserved + str.substring(idx + 3);
+                        reserved = "";
+                    }
+                }
+                if (remarkTag) continue;
+
+                idx = str.toLowerCase().indexOf("include schemalocation=\"");
+                if (!includeStartTag)
+                {
+                    if (idx > 0)
+                    {
+                        includeStartTag = true;
+                        insertedLine = str.substring(0, idx) + insertedLine;
+                    }
+                    continue;
+                }
+
+                if (idx > 0) continue;
+                //includeEndTag = true;
+
+                String strLower = str.toLowerCase();
+                String insertedLineLower = insertedLine.toLowerCase();
+
+                for(int i=0;i<2;i++)
+                {
+                    String strL = "";
+                    String buf = "";
+                    if (i == 0) buf = strLower;
+                    else buf = insertedLineLower;
+
+                    int before = 32;
+                    for (char chr:buf.toCharArray())
+                    {
+                        int in = (int) chr;
+                        boolean skip = false;
+                        if (in < 32) continue;
+                        if ((in == 32)&&(before == 32)) {}
+                        else strL = strL + chr;
+
+                        before = in;
+                    }
+                    if (i == 0) strLower = strL;
+                    else insertedLineLower = strL;
+                }
+                System.out.println("FFFF 21 : " + strLower);
+                System.out.println("FFFF 22 : " + insertedLineLower);
+                if (strLower.equals(insertedLineLower))
+                {
+                    finishedTag = true;
+                    continue;
+                }
+                tempListLine.add("                         <!-- This root element line was inserted by ReorganizingForValidating.java on "+(new DateFunction()).getCurrentTime()+"  -->");
+                tempListLine.add(insertedLine);
+                insertedTag = true;
+                finishedTag = true;
+            }
+
+        if (insertedTag)
+        {
+            try
+            {
+                FileWriter fw = new FileWriter(outFileName);
+                for (String str:tempListLine) fw.write(str+"\r\n");
+                fw.close();
+            }
+            catch(Exception ie)
+            {
+                throw new IOException("Failure insert Root Elment To " + outFileName + " : " + ie.getMessage());
+            }
+            return true;
+        }
+        System.out.println("Nothing changed, so No xsd file created or modified. : " + outFileName);
+        return false;
+    }
+
     public static void main(String[] arg)
     {
-        String xml = "C:\\project\\caAdapter_NCI_CVS\\caadapter\\workingspace\\ddd\\0.xml";
-        String xsd = "C:\\project\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+        //String xml = "C:\\project\\caAdapter_NCI_CVS\\caadapter\\workingspace\\ddd\\0.xml";
+        //String xsd = "C:\\project\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+        String xml = "C:\\project\\caadapter2\\caadapter\\workingspace\\ddd\\res.xml";
+        String xsd = "C:\\project\\caadapter\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+
+        ReorganizingForValidating rfv = null;
         try
         {
-            new ReorganizingForValidating(xml, xsd);
+            rfv = new ReorganizingForValidating(xml, xsd);
+            if (rfv.insertRootElmentToXSDFile("c:\\1.xsd"))  System.out.println("saved ==> c:\\1.xsd");
+            else System.out.println("not created ==> c:\\1.xsd");
         }
         catch(ApplicationException ae)
         {
-            System.out.println("Err : " + ae.getMessage());
+            System.out.println("ApplicationException : " + ae.getMessage());
             ae.printStackTrace();
+        }
+        catch(IOException ie)
+        {
+            System.out.println("IOException : " + ie.getMessage());
+            ie.printStackTrace();
         }
     }
 }

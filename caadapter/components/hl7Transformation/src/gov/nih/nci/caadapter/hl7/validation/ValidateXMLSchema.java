@@ -13,10 +13,10 @@ package gov.nih.nci.caadapter.hl7.validation;
  * This class defines XML schema validator 
  * 
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- * revision    $Revision: 1.4 $
- * date        $Date: 2008-09-29 15:37:32 $
+ * revision    $Revision: 1.5 $
+ * date        $Date: 2009-02-06 18:26:05 $
  */
 
 import java.io.StringReader;
@@ -113,14 +113,14 @@ public class ValidateXMLSchema
      */
     public static boolean isValidPath(String strpath)
     {
-        if (strpath.indexOf(File.separator) > 0)
-        {
-            return true; //This is a valid path
-        }
-        else
-        {
-            return false; //This is not a valid path
-        }
+        if (strpath.trim().length() > 1000) return false;
+
+        File file = new File(strpath.trim());
+
+        if (!file.exists()) return false;
+        if (!file.isFile()) return false;
+
+        return true;
     }
 
     /**
@@ -177,4 +177,7 @@ public class ValidateXMLSchema
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.4  2008/09/29 15:37:32  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

@@ -16,19 +16,24 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.validation.complement.ReorganizingForValidating;
+import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
+
+import java.io.File;
 
 /**
  * This class defines XML document validator 
  * 
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- * revision    $Revision: 1.4 $
- * date        $Date: 2008-09-29 15:37:31 $
+ * revision    $Revision: 1.5 $
+ * date        $Date: 2009-02-06 18:26:05 $
  */
 public class XMLValidator extends Validator
 {
     private String xsd = null;
+    private boolean reorganizing = false;
 
     public XMLValidator(String xmlFilename)
     {
@@ -42,6 +47,13 @@ public class XMLValidator extends Validator
         //if (object instanceof String) checkHeadAndTail((String) object);
     }
 
+    public XMLValidator(Object object, String xsd, boolean reorganizing)
+    {
+        super(object);
+        this.xsd = xsd;
+        this.reorganizing = reorganizing;
+    }
+
     public String getXsd()
     {
         return xsd;
@@ -50,6 +62,16 @@ public class XMLValidator extends Validator
     public void setXsd(String xsd)
     {
         this.xsd = xsd;
+    }
+
+    public boolean getReorganizing()
+    {
+        return reorganizing;
+    }
+
+    public void setReorganizing(boolean reorganizing)
+    {
+        this.reorganizing = reorganizing;
     }
 
     public ValidatorResults validate()
@@ -102,7 +124,25 @@ public class XMLValidator extends Validator
                 try
                 {
                     ValidateXMLSchema validateXMLSchema = new ValidateXMLSchema();
-                    boolean validSAX = validateXMLSchema.isValidSAX((String) toBeValidatedObject, xsd);
+                    boolean validSAX = false;
+
+                    if (getReorganizing())
+                    {
+                        String xmlFile = "";
+                        if (validateXMLSchema.isValidPath((String) toBeValidatedObject)) xmlFile = (String) toBeValidatedObject;
+                        else xmlFile = FileUtil.saveStringIntoTemporaryFile((String) toBeValidatedObject);
+                        ReorganizingForValidating rfv = new ReorganizingForValidating(xmlFile, xsd);
+                        String tempFile = FileUtil.getTemporaryFileName();
+                        XmlReorganizingTree xmlTree = rfv.getXMLTree();
+                        xmlTree.generatingXMLFile(tempFile);
+                        validSAX = validateXMLSchema.isValidSAX(tempFile, xsd);
+                        (new File(tempFile)).delete();
+                    }
+                    else
+                    {
+                        validSAX = validateXMLSchema.isValidSAX((String) toBeValidatedObject, xsd);
+                    }
+
                     if (validSAX)
                     {
                         Message msg = MessageResources.getMessage("XML3", new Object[]{xsd});
@@ -132,7 +172,23 @@ public class XMLValidator extends Validator
         }
         return result;
     }
+
+    public static void main(String[] args)
+    {
+        //String xml = "C:\\project\\caAdapter_NCI_CVS\\caadapter\\workingspace\\ddd\\0.xml";
+        //String xsd = "C:\\project\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+        String xml = "C:\\project\\caadapter2\\caadapter\\workingspace\\ddd\\res_gen.xml";
+        String xsd = "C:\\project\\caadapter\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+
+        XMLValidator v = new XMLValidator(xml, xsd, true);
+        //XMLValidator v = new XMLValidator(xml, xsd);
+        ValidatorResults res = v.validate();
+        System.out.println("*** RESULTS:\n" +res.toString());
+    }
   }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.4  2008/09/29 15:37:31  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
