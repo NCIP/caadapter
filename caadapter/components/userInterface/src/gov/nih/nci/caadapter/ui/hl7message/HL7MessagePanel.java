@@ -67,8 +67,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.26 $
- *          date        $Date: 2009-02-03 15:49:21 $
+ *          revision    $Revision: 1.27 $
+ *          date        $Date: 2009-02-06 20:50:00 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -334,8 +334,6 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					ts.setOutputFile(this.getSaveFile());
 					listnerPane.isBatchTransform = true;
 				}
-				if (dataFileName.contains("hl7"))
-						listnerPane.isBatchTransform=false;
 		    	progressor.setProgress(100);
 		    	ts.addProgressWatch(progressor);
 				Thread localThread=new Thread(
@@ -347,12 +345,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					    	try {
 					    		int count = 0;
 					    		List<XMLElement> xmlElements = null;
-								if(listnerPane.isBatchTransform){
-									count = ts.batchProcess();
-								}else{
-									xmlElements =ts.process();
-								}
-								if (count<0 && xmlElements == null)
+								xmlElements =ts.process();
+
+								if (xmlElements == null||xmlElements.isEmpty())
 								{
 									ValidatorResults rs=ts.getValidatorResults();
 									listnerPane.setMessageText(rs.getAllMessages().toString());
@@ -360,14 +355,13 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 								}
 								else
 								{
-									
+									count=xmlElements.size();
 									if(count>0){
 										listnerPane.totalNumberOfMessages = count;
 										listnerPane.currentCount = 1;
 										listnerPane.changeDisplay();
 									}
-									if(xmlElements!=null && !listnerPane.isBatchTransform)
-										listnerPane.setMessageResultList(xmlElements);
+									listnerPane.setMessageResultList(xmlElements);
 								}
 					    	} catch (Exception e) {
 								// TODO Auto-generated catch block
@@ -673,6 +667,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.26  2009/02/03 15:49:21  wangeug
+ * HISTORY      : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
+ * HISTORY      :
  * HISTORY      : Revision 1.25  2008/10/29 19:07:19  wangeug
  * HISTORY      : create TransformationServiceUtil.java to hold Util methods
  * HISTORY      :
