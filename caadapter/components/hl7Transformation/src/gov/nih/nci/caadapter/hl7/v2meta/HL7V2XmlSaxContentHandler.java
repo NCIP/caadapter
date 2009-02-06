@@ -35,19 +35,26 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author   OWNER: wangeug  $Date: Oct 20, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.3 $
- * @date 	 DATE: $Date: 2008-11-05 14:34:20 $
+ * @version  REVISION: $Revision: 1.4 $
+ * @date 	 DATE: $Date: 2009-02-06 20:50:27 $
  * @since caAdapter v4.2
  */
 
 public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 
 	private MessageElementXmlPath pathToRoot;
-	private CSVDataResult dataResult;
+	private CSVDataResult resultData;	
 	private Stack<CSVSegment> csvSegmentStack;
 	public void startDocument() throws SAXException
 	{
 		super.startDocument();
+		if (resultData==null)
+		{
+			//initialize the DataResult 
+			ValidatorResults validatorResults = new ValidatorResults();
+			CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
+			resultData=new CSVDataResult(segmentedFile, validatorResults);
+		}
 		pathToRoot=new MessageElementXmlPath();
         csvSegmentStack=new Stack<CSVSegment>();
 	}
@@ -58,21 +65,19 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 		String xmlName=qName.replace(".","_");
 		pathToRoot.add(xmlName);
 //		Log.logInfo(this, "Start Element:"+qName +"..."+localName);
-		if (dataResult==null)
+		if (csvSegmentStack.isEmpty())
 		{
 			Log.logInfo(this, "Initialize Root Element:"+qName +"..."+localName);
-			//initialize the DataResult for root element
-	        ValidatorResults validatorResults = new ValidatorResults();
+	        
 	        //The CVSMeta is required to retrieve the CVS rootSegemt name or message type
 	        CSVMeta v2CsvMeta=V2MetaXSDUtil.createDefaultCsvMeta(xmlName);
-	        CSVSegmentedFileImpl segmentedFile = new CSVSegmentedFileImpl();
 	        CSVSegmentImpl rootSegment = new CSVSegmentImpl(v2CsvMeta.getRootSegment());
 	        rootSegment.setXmlPath(xmlName);
 	        rootSegment.setCardinalityType(CardinalityType.VALUE_1);
 	        
 	        //add the one and only one  rootSegment to CSVSegmentFile for each message
+	        CSVSegmentedFileImpl segmentedFile = (CSVSegmentedFileImpl)resultData.getCsvSegmentedFile();
 	        segmentedFile.addLogicalRecord(rootSegment);
-	        dataResult = new CSVDataResult(segmentedFile, validatorResults);
 	        csvSegmentStack.push(rootSegment);
 		}		
 		else
@@ -115,7 +120,7 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 	 * @return the dataResult
 	 */
 	public CSVDataResult getDataResult() {
-		return dataResult;
+		return resultData;
 	}
 	
 	/**
@@ -161,6 +166,9 @@ public class HL7V2XmlSaxContentHandler extends DefaultHandler {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.3  2008/11/05 14:34:20  wangeug
+* HISTORY: reorder of processing : clear codes
+* HISTORY:
 * HISTORY: Revision 1.2  2008/11/04 21:07:54  wangeug
 * HISTORY: set xmlPath name of V2Meta element: replacing "." with "_"
 * HISTORY:
