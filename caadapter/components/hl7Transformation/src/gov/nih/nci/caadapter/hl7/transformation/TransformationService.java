@@ -52,14 +52,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.30 $
- * @date $Date: 2009-02-02 14:54:18 $
+ * @version $Revision: 1.31 $
+ * @date $Date: 2009-02-06 20:51:17 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.30 2009-02-02 14:54:18 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.31 2009-02-06 20:51:17 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -252,6 +252,7 @@ public class TransformationService
     }
 
     /**
+     * Process input data as DOM style generating target message for all logical records once
      * @return list of HL7 v3 message object.
      * To get HL7 v3 message of each object, call .toXML() method of each object
      */
@@ -264,28 +265,43 @@ public class TransformationService
         	return null;
         long csvbegintime = System.currentTimeMillis();
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
-        CSVDataResult csvDataResult = null;
+        List<XMLElement> xmlElements=null ;
 
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().equalsIgnoreCase("v2"))
+        {	
+            CSVDataResult csvDataResult = null;
         	csvDataResult=parseV2Message(mapParser.getSourceSpecFileName());
+        	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
+            informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
+        	xmlElements =transferSourceData(csvDataResult);
+        }
         else 
         {
         	//parse CSV stream
-        	csvDataResult=parseCsvSourceData();
+        	CsvReader reader = new CsvReader(this.sourceDataStream, this.csvMeta);
+    		while(reader.hasMoreRecord())
+    		{
+    			List<XMLElement> xmlOneRecord = transferSourceData(reader.getNextRecord());
+
+    			if(xmlOneRecord!=null)
+    			{
+        			if (xmlElements==null)
+        				xmlElements=xmlOneRecord;
+        			else
+        				xmlElements.addAll(xmlOneRecord);
+    			}
+    		}
+        	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
+            informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         }
-        
-    	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
-        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
-   	
-        List<XMLElement> xmlElements =transferSourceData(csvDataResult);   	
+          	
         System.out.println("Encode HL7 V3 message__:" + (System.currentTimeMillis()-csvbegintime));
         System.out.println("total message" + xmlElements.size());
         ZipOutputStream zipOut = prepareZipout();
 		if (xmlElements!=null)
 		{
 			try {
-				int startMessageCount=0;
-				writeOutMessage(xmlElements, startMessageCount, zipOut);
+				writeOutMessage(xmlElements, 0, zipOut);
 			} catch (Exception e) {
 				throw e;
 	    	}finally{
@@ -301,6 +317,13 @@ public class TransformationService
         return xmlElements;
    }
 
+    /**
+     * Process the input data as SAX style generating target data for each logical record one by one
+     * @return
+     * @throws Exception
+     * @deprecated 
+     * @see process()
+     */
     public int batchProcess() throws Exception
     {
     	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
@@ -316,7 +339,7 @@ public class TransformationService
     			throw new Exception("not valid for batch transformation.");    			
 
     		CsvReader reader = new CsvReader(this.sourceDataStream, this.csvMeta);
-    		zipOut = prepareZipout();//new ZipOutputStream(outputStream);
+    		zipOut = prepareZipout();
     		while(reader.hasMoreRecord())
     		{
     			List<XMLElement> xmlElements = transferSourceData(reader.getNextRecord());
@@ -414,24 +437,28 @@ public class TransformationService
     	String v2Type=v2MessageSchema.substring(spIndx+1);
     	try {
  			//Create the encoder instance, HL7Encoder
-			Encoder coder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, v2Type);
-    		long csvbegintime = System.currentTimeMillis();
-//    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(new FileInputStream(new File("data/ADT_A03.hl7")));
+			Encoder encoder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, v2Type);
+    		if (encoder==null)
+    		{
+    			System.out.println("TransformationService.parseV2Message()..coder initialization failed"+ v2MessageSchema);
+    			return null;
+    		}
+			long csvbegintime = System.currentTimeMillis();
     		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(this.sourceDataStream);
-    		InputStream v2In=lfEncoder.getEncodedInputStream();
-    		Source source = coder.decodeFromStream(v2In);
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
 			
 			//forward transformed XML to next step
 			HL7V2XmlSaxContentHandler saxHandler= new HL7V2XmlSaxContentHandler();
 			SAXResult saxResult=new SAXResult(saxHandler); 
 			System.out.println("TransformationService.pareV2Message()...decode source message:"+(System.currentTimeMillis()-csvbegintime));
-			transformer.transform(source, saxResult);
+			ArrayList<byte[]> v2Bytes=lfEncoder.getEncodeByteList();
+			for(byte[] v2MsgByte:v2Bytes)
+			{
+				Source saxSource = encoder.decodeFromBytes(v2MsgByte);
+				transformer.transform(saxSource, saxResult);
+			}
 			System.out.println("TransformationService.pareV2Message()...decode/transfer data :"+(System.currentTimeMillis()-csvbegintime));
-			v2In.close();
- 
-			CSVDataResult parsedData= saxHandler.getDataResult();
-			return parsedData;
+			return saxHandler.getDataResult();
 		} catch (EncoderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -439,12 +466,6 @@ public class TransformationService
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -484,6 +505,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.30  2009/02/02 14:54:18  wangeug
+ * HISTORY      : Load V2 meta with version number and message schema name; do not use the absolute path of schema file
+ * HISTORY      :
  * HISTORY      : Revision 1.29  2009/01/13 17:34:01  wangeug
  * HISTORY      : write  generate HL7 message into zip file
  * HISTORY      :
