@@ -23,8 +23,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.4 $
- * @date 	 DATE: $Date: 2009-01-14 20:30:24 $
+ * @version  REVISION: $Revision: 1.5 $
+ * @date 	 DATE: $Date: 2009-02-09 21:42:45 $
  * @since caAdapter v4.2
  */
 
@@ -33,27 +33,28 @@ public class HL7XMLUtil {
 	public static String NOT_PRESENT_NULLFLAVOR_DEFAULT="NP";
 	
 	public static void applyNullFlavorDefault(XMLElement element)
-		{
-			//find the HL7 Datatype 
-			String hl7Dt=null;
-			for(Attribute attr:element.getAttributes())
-			{
-				if (attr.getName().startsWith("xsi:type"))
-					hl7Dt=attr.getValue();
-			}
-	//		System.out.println("HL7XMLUtil.applyNullFlavorDefault()...name:"+element.getName()+"...HL7 datatype:"+hl7Dt);
-			//ignore the XMLElement if not HL7 datatype is defined since it is an MIFAttribute type
-			if (hl7Dt==null||hl7Dt.equals(""))
-				return;
-			// find the coreAttribute
-			List<String> dtCores=NullFlavorUtil.findDatatypeCoreAttributes(hl7Dt);
-	//		System.out.println("HL7XMLUtil.applyNullFlavorDefault()..coreAttribute:"+dtCores);
-			if (dtCores==null||dtCores.isEmpty())
-				dtCores=new ArrayList<String>();
+	{
+		//as long the "inlineText is non-blank, "nullFlavor" is not required
+		Attribute inlineTextAttr=getAttributByName("inlineText", element);
+		if (inlineTextAttr!=null&&inlineTextAttr.getValue()!=null
+				&&!inlineTextAttr.getValue().equals(""))
+			return;
+		
+		//find the HL7 Datatype 
+		Attribute hl7dtAttr=getAttributByName("xsi:type", element);
+		if (hl7dtAttr==null)
+			return;
+		
+		String hl7Dt=hl7dtAttr.getValue();
+		if (hl7Dt==null||hl7Dt.equals(""))
+			return;
+		
+		// find the coreAttribute
+		List<String> dtCores=NullFlavorUtil.findDatatypeCoreAttributes(hl7Dt);
+		if (dtCores==null||dtCores.isEmpty())
+			return;
+
 			
-//			if (!dtCores.contains("inlineText"))
-//				dtCores.add("inlineText");
-//			
 			//check value the coreAttribute
 			Attribute coreAttr=null;
 			for (String oneAttrName:dtCores)
@@ -65,6 +66,17 @@ public class HL7XMLUtil {
 					//stop checking if found one coreAttribute being set
 					break;
 				}
+			}
+			if (coreAttr==null)
+			{
+				element.addAttribute("nullFlavor", NOT_PRESENT_NULLFLAVOR_DEFAULT,null,null,null);
+				//move the "nullFlavor" as its first attribute
+				int attrSize=element.getAttributes().size();
+				Attribute nullAttr=element.getAttributes().get(attrSize-1);
+				element.getAttributes().remove(nullAttr);
+				element.getAttributes().add(0, nullAttr);
+//				nullifyCoreAttribute(element, coreAttr.getName());
+				return;
 			}
 			
 			if (isElementNullFlavored(element)&&coreAttr!=null)
@@ -94,18 +106,6 @@ public class HL7XMLUtil {
 					element.getAttributes().remove(nullFlavorAttr);
 				nullifyCoreAttribute(element, coreAttr.getName());
 				return;
-			}
-			
-			if (coreAttr!=null)
-			{
-				
-				element.addAttribute("nullFlavor", NOT_PRESENT_NULLFLAVOR_DEFAULT,null,null,null);
-				//move the "nullFlavor" as its first attribute
-				int attrSize=element.getAttributes().size();
-				Attribute nullAttr=element.getAttributes().get(attrSize-1);
-				element.getAttributes().remove(nullAttr);
-				element.getAttributes().add(0, nullAttr);
-				nullifyCoreAttribute(element, coreAttr.getName());
 			}
 		}
 
@@ -334,6 +334,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.4  2009/01/14 20:30:24  wangeug
+* HISTORY: only process "inlineText" as core attribute if defined by user/system for a datatype
+* HISTORY:
 * HISTORY: Revision 1.3  2009/01/12 17:46:57  wangeug
 * HISTORY: nullify  coreAttribute if nullFlavor is set
 * HISTORY:

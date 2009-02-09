@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.25 $ date $Date: 2009-01-16 15:11:16 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.26 $ date $Date: 2009-02-09 21:42:45 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -485,7 +485,7 @@ import java.util.Iterator;
 			 }
 			 clonnedObj.setChoice(choiceClonnedHash);
 			 clonnedObj.setChoiceSelected(false);
-			 clonnedObj.setOptionChosen(false);
+//			 clonnedObj.setOptionChosen(false);
              return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -608,6 +608,9 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.25  2009/01/16 15:11:16  wangeug
+  * HISTORY :add new attribute:copyrightYears
+  * HISTORY :
   * HISTORY :Revision 1.24  2008/12/30 15:03:11  wangeug
   * HISTORY :Process MIFClass with isAbstract=true:create new property abstractDefined
   * HISTORY :
