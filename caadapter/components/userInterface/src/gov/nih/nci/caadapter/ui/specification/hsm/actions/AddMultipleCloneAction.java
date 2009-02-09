@@ -30,10 +30,10 @@ import java.awt.event.ActionEvent;
  * This class defines the add multiple action.
  *
  * @author OWNER: Eric Chen
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2009-02-03 14:20:36 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-02-09 21:43:32 $
  */
 public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -49,7 +49,7 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.9 2009-02-03 14:20:36 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/AddMultipleCloneAction.java,v 1.10 2009-02-09 21:43:32 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Add Multiple Clone";
     private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -131,7 +131,7 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
             	int exitingAsscCount=MIFUtil.getMaximumAssociationMultiplicityIndexWithName(parentMif, mifAssc.getName());
             	clonnedAssc.setMultiplicityIndex(exitingAsscCount+1);
             	clonnedAssc.setName(clonnedAssc.getName());
-                clonnedAssc.setOptionChosen(true);  // inerted by umkis 01/29/2009
+//                clonnedAssc.setOptionChosen(true);  // inerted by umkis 01/29/2009
                 parentMif.addAssociation(clonnedAssc);
             	
             	NewHSMBasicNodeLoader mifTreeLoader=new NewHSMBasicNodeLoader(true); 
@@ -173,6 +173,9 @@ public class AddMultipleCloneAction extends AbstractHSMContextCRUDAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2009/02/03 14:20:36  umkis
+ * HISTORY      : For fixing multiple clonning problem
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2008/09/29 20:18:57  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
