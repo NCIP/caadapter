@@ -24,6 +24,7 @@ public class ReorganizingForValidating
 {
     private String xmlFileName;
     private String xsdFileName;
+    private String tempXSDFileName = null;
     private String messageType;
     private String rootElementName;
 
@@ -42,6 +43,14 @@ public class ReorganizingForValidating
     private DefaultMutableTreeNode xsdHead = null;
 
     public ReorganizingForValidating(String xmlFile, String xsdFile) throws ApplicationException
+    {
+        processReorganizing(xmlFile, xsdFile, false);
+    }
+    public ReorganizingForValidating(String xmlFile, String xsdFile, boolean tempXSDCreating) throws ApplicationException
+    {
+        processReorganizing(xmlFile, xsdFile, tempXSDCreating);
+    }
+    public void processReorganizing(String xmlFile, String xsdFile, boolean tempXSDCreating) throws ApplicationException
     {
         checkFile("xml", xmlFile);
         checkFile("xsd", xsdFile);
@@ -172,6 +181,18 @@ public class ReorganizingForValidating
             //beforeDepth = depth;
         }
 
+        if (tempXSDCreating)
+        {
+            File file = new File(xsdFileName);
+            String dir= file.getParentFile().getAbsolutePath().trim();
+            String fileName = file.getName().trim();
+            String tempFileName = dir + File.separator + fileName.substring(0, fileName.length()-4) + "___TEMP" + fileName.substring(fileName.length()-4);
+            try
+            {
+                insertRootElmentToXSDFile(tempFileName, true);
+            }
+            catch(IOException ie) {}
+        }
         //xmlTree.printXML();
     }
     public XmlReorganizingTree getXMLTree()
@@ -270,11 +291,12 @@ public class ReorganizingForValidating
 
     public boolean insertRootElmentToXSDFile() throws IOException
     {
-        return insertRootElmentToXSDFile(xsdFileName);
+        return insertRootElmentToXSDFile(xsdFileName, false);
     }
 
-    public boolean insertRootElmentToXSDFile(String outFileName) throws IOException
+    public boolean insertRootElmentToXSDFile(String outFileName, boolean isTemp) throws IOException
     {
+        tempXSDFileName = null;
         List<String> listLine = FileUtil.readFileIntoList(xsdFileName);
         String insertedLine = "element name=\"" + rootElementName + "\" type=\"" + messageType + "." + rootElementName + "\"/>";
         boolean remarkTag = false;
@@ -346,8 +368,8 @@ public class ReorganizingForValidating
                     if (i == 0) strLower = strL;
                     else insertedLineLower = strL;
                 }
-                System.out.println("FFFF 21 : " + strLower);
-                System.out.println("FFFF 22 : " + insertedLineLower);
+                //System.out.println("FFFF 21 : " + strLower);
+                //System.out.println("FFFF 22 : " + insertedLineLower);
                 if (strLower.equals(insertedLineLower))
                 {
                     finishedTag = true;
@@ -371,10 +393,24 @@ public class ReorganizingForValidating
             {
                 throw new IOException("Failure insert Root Elment To " + outFileName + " : " + ie.getMessage());
             }
+            File fileOut = new File(outFileName);
+            File fileXSD = new File(xsdFileName);
+            if (!fileOut.getAbsolutePath().equals(fileXSD.getAbsolutePath()))
+            {
+                tempXSDFileName = outFileName;
+                if (isTemp) fileOut.deleteOnExit();
+            }
+
             return true;
         }
-        System.out.println("Nothing changed, so No xsd file created or modified. : " + outFileName);
+        //System.out.println("Nothing changed, so No xsd file created or modified. : " + outFileName);
         return false;
+    }
+
+    public String getActiveXSDFileName()
+    {
+        if (tempXSDFileName == null) return xsdFileName;
+        else return tempXSDFileName;
     }
 
     public static void main(String[] arg)
@@ -388,7 +424,7 @@ public class ReorganizingForValidating
         try
         {
             rfv = new ReorganizingForValidating(xml, xsd);
-            if (rfv.insertRootElmentToXSDFile("c:\\1.xsd"))  System.out.println("saved ==> c:\\1.xsd");
+            if (rfv.insertRootElmentToXSDFile("c:\\1.xsd", false))  System.out.println("saved ==> c:\\1.xsd");
             else System.out.println("not created ==> c:\\1.xsd");
         }
         catch(ApplicationException ae)

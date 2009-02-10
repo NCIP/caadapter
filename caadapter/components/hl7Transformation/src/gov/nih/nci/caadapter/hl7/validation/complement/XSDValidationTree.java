@@ -384,7 +384,7 @@ public class XSDValidationTree
             int idx2 = eleNameC.toLowerCase().indexOf("choice");
             if ((name.equalsIgnoreCase("element"))&&(idx2 >= 0))
             {
-                List<DefaultMutableTreeNode> li = getChildElementsWithName(cNode, "element");
+                List<DefaultMutableTreeNode> li = getChildElementsWithName(cNode, name);
                 for (DefaultMutableTreeNode nd:li) list.add(nd);
             }
 

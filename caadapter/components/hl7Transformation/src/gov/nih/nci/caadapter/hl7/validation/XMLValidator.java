@@ -17,6 +17,7 @@ import gov.nih.nci.caadapter.common.validation.Validator;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.complement.ReorganizingForValidating;
+import gov.nih.nci.caadapter.hl7.validation.complement.XSDValidationTree;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
 
 import java.io.File;
@@ -27,13 +28,15 @@ import java.io.File;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- * revision    $Revision: 1.5 $
- * date        $Date: 2009-02-06 18:26:05 $
+ * revision    $Revision: 1.6 $
+ * date        $Date: 2009-02-10 05:13:55 $
  */
 public class XMLValidator extends Validator
 {
     private String xsd = null;
     private boolean reorganizing = false;
+
+    private String tempReorganizedV3File = null;
 
     public XMLValidator(String xmlFilename)
     {
@@ -73,6 +76,12 @@ public class XMLValidator extends Validator
     {
         this.reorganizing = reorganizing;
     }
+
+    public String getTempReorganizedV3File()
+    {
+        return tempReorganizedV3File;
+    }
+
 
     public ValidatorResults validate()
     {
@@ -131,12 +140,17 @@ public class XMLValidator extends Validator
                         String xmlFile = "";
                         if (validateXMLSchema.isValidPath((String) toBeValidatedObject)) xmlFile = (String) toBeValidatedObject;
                         else xmlFile = FileUtil.saveStringIntoTemporaryFile((String) toBeValidatedObject);
-                        ReorganizingForValidating rfv = new ReorganizingForValidating(xmlFile, xsd);
+                        ReorganizingForValidating rfv = new ReorganizingForValidating(xmlFile, xsd, true);
                         String tempFile = FileUtil.getTemporaryFileName();
                         XmlReorganizingTree xmlTree = rfv.getXMLTree();
+
                         xmlTree.generatingXMLFile(tempFile);
-                        validSAX = validateXMLSchema.isValidSAX(tempFile, xsd);
-                        (new File(tempFile)).delete();
+                        validSAX = validateXMLSchema.isValidSAX(new File(tempFile), rfv.getActiveXSDFileName());
+
+                        tempReorganizedV3File = tempFile;
+
+                        (new File(tempFile)).deleteOnExit();
+
                     }
                     else
                     {
@@ -177,17 +191,21 @@ public class XMLValidator extends Validator
     {
         //String xml = "C:\\project\\caAdapter_NCI_CVS\\caadapter\\workingspace\\ddd\\0.xml";
         //String xsd = "C:\\project\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
-        String xml = "C:\\project\\caadapter2\\caadapter\\workingspace\\ddd\\res_gen.xml";
+        String xml = "C:\\project\\caadapter2\\caadapter\\workingspace\\ddd\\res.xml";
         String xsd = "C:\\project\\caadapter\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
 
         XMLValidator v = new XMLValidator(xml, xsd, true);
         //XMLValidator v = new XMLValidator(xml, xsd);
         ValidatorResults res = v.validate();
-        System.out.println("*** RESULTS:\n" +res.toString());
+        if (res.isValid()) System.out.println("*** RESULTS:\n" +res.toString());
+        else System.out.println("*** ERROR(s):\n" +res.toString());
     }
   }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2009/02/06 18:26:05  umkis
+ * HISTORY :upgrade v3 message validating by referring xsd file
+ * HISTORY :
  * HISTORY :Revision 1.4  2008/09/29 15:37:31  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

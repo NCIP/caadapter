@@ -15,18 +15,20 @@ package gov.nih.nci.caadapter.hl7.validation;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- * revision    $Revision: 1.5 $
- * date        $Date: 2009-02-06 18:26:05 $
+ * revision    $Revision: 1.6 $
+ * date        $Date: 2009-02-10 05:13:55 $
  */
 
-import java.io.StringReader;
-import java.io.File;
+import java.io.*;
+import java.util.List;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
+import org.apache.tools.ant.filters.StringInputStream;
+import org.apache.tools.ant.util.ReaderInputStream;
 
 
 public class ValidateXMLSchema
@@ -51,8 +53,9 @@ public class ValidateXMLSchema
     /**
      * If the exception throws, the source is not valid against the schema
      */
-    public boolean isValidSAX(String source, String schema) throws Exception
+    public boolean isValidSAX(Object sourceObj, String schema) throws Exception
     {
+        if (sourceObj == null) throw new Exception("NULL source XML instance");
         StringReader sr = null;
         InputSource is = null;
 
@@ -64,25 +67,41 @@ public class ValidateXMLSchema
             SAXParser sp = spf.newSAXParser();
             sp.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
             sp.setProperty(JAXP_SCHEMA_SOURCE, schema);
-            ValidateXMLSchemaHandler dh = new ValidateXMLSchemaHandler(errors);
+            ValidateXMLSchemaHandler xmlSchemaHandler = new ValidateXMLSchemaHandler(errors);
 
             //Check the source path to see if the input is a fill path or an XML string
             //If it is a XML file send it directly to the XML parser, else validate an
             //XML snippet against the XMLSchema.
-
-            if (isValidPath(source))
+            if (sourceObj instanceof String)
             {
-                sp.parse(source, dh);
-            }
-            else
-            {
-                //System.err.println("###"+source+"###");
+                String source = (String) sourceObj;
+                if (isValidPath(source))
+                {
+                    sp.parse(source, xmlSchemaHandler);
+                }
+                else
+                {
+                    //System.err.println("###"+source+"###");
 
-                sr = new StringReader(source);
-                is = new InputSource(sr);
-                sp.parse(is, dh);
+                    sr = new StringReader(source);
+                    is = new InputSource(sr);
+
+                    sp.parse(is, xmlSchemaHandler);
+                }
             }
-            return (dh.isValid()) ? true : false;  //If the default handler is valid, return true.  Otherwise, return false.
+            else if (sourceObj instanceof File)
+            {
+                File source = (File) sourceObj;
+
+                FileReader srF = new FileReader(source);
+                is = new InputSource(srF);
+
+                sp.parse(is, xmlSchemaHandler);
+                srF.close();
+
+            }
+            else throw new Exception("Invalid source XML instance ('String' or 'File' only) : " + sourceObj.getClass().getCanonicalName());
+            return (xmlSchemaHandler.isValid()) ? true : false;  //If the default handler is valid, return true.  Otherwise, return false.
 
         }
 
@@ -113,7 +132,7 @@ public class ValidateXMLSchema
      */
     public static boolean isValidPath(String strpath)
     {
-        if (strpath.trim().length() > 1000) return false;
+        if (strpath.trim().length() > 4096) return false;
 
         File file = new File(strpath.trim());
 
@@ -177,6 +196,9 @@ public class ValidateXMLSchema
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2009/02/06 18:26:05  umkis
+ * HISTORY :upgrade v3 message validating by referring xsd file
+ * HISTORY :
  * HISTORY :Revision 1.4  2008/09/29 15:37:32  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
