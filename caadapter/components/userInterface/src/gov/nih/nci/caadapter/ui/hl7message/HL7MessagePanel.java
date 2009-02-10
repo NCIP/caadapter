@@ -52,11 +52,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +63,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.28 $
- *          date        $Date: 2009-02-10 05:34:18 $
+ *          revision    $Revision: 1.29 $
+ *          date        $Date: 2009-02-10 18:42:51 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -319,6 +315,14 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
         if (schemaValidationTag < 0)
         {
             schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
+            if (schemaValidationTag == JOptionPane.YES_OPTION)
+            {
+                if (FileUtil.getV3XsdFilePath() == null)
+                {
+                    JOptionPane.showMessageDialog(this, "Schema directoty cannot be found.", "No XML schema file", JOptionPane.ERROR_MESSAGE);
+                    schemaValidationTag = JOptionPane.NO_OPTION;
+                }
+            }
         }
 
         try
@@ -338,7 +342,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		    	final TransformationService ts=new TransformationService(mapFile, dataFile);
 
                 if (schemaValidationTag == JOptionPane.YES_OPTION) ts.setSchemaValidation(true);
-                
+
                 if(this.getSaveFile()!=null)
 				{
 					ts.setOutputFile(this.getSaveFile());
@@ -461,7 +465,14 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		else if(totalNumberOfMessages>0 && isBatchTransform)
 		{
 			try{
-				setMessageText(TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml"));
+                String ins = "";
+                if (schemaValidationTag == JOptionPane.YES_OPTION) ins = "_Reorganized";
+                
+                String xmlMsg = "";
+                try { xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+ins+".xml"); }
+                catch (IOException ie) { xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml"); }
+
+                setMessageText(xmlMsg);
 
 				ValidatorResults validatorsToShow=new ValidatorResults();
 				//add structure validation ... level_0
@@ -677,6 +688,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.28  2009/02/10 05:34:18  umkis
+ * HISTORY      : Include schema validation against xsd files when V3 message generating.
+ * HISTORY      :
  * HISTORY      : Revision 1.27  2009/02/06 20:50:00  wangeug
  * HISTORY      : call only process() method for all source datatype
  * HISTORY      :

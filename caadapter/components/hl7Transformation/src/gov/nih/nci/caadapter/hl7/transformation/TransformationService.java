@@ -20,6 +20,7 @@ import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -31,6 +32,7 @@ import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
+import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -54,14 +56,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.32 $
- * @date $Date: 2009-02-10 05:34:18 $
+ * @version $Revision: 1.33 $
+ * @date $Date: 2009-02-10 18:42:51 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.32 2009-02-10 05:34:18 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.33 2009-02-10 18:42:51 umkis Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -96,7 +98,7 @@ public class TransformationService
 	 * and transforms into HL7 v3 messages
 	 *
 	 * @param mapfilename the name of the mapping file
-	 * @param csvString the string that contains csv data
+	 * @param csvInString the string that contains csv data
 	 */
 
     public TransformationService(String mapfilename, String csvInString, boolean isDataStringFlag)
@@ -138,7 +140,7 @@ public class TransformationService
 	 * This method will create a transformer that loads csv data from an Java File object
 	 * and transforms into HL7 v3 messages
 	 *
-	 * @param mapfile the Java mapping file object
+	 * @param mF the Java mapping file object
 	 * @param csvFile the csv file object
 	 */
     public TransformationService(File mF, File csvFile)
@@ -198,7 +200,7 @@ public class TransformationService
      * Add an oberver to the tranformation server
      * @param observer
      */
-    public synchronized  void addProgressWatch(TransformationObserver observer)
+    public synchronized void addProgressWatch(TransformationObserver observer)
     {
     	if (transformationWatchList==null)
     		transformationWatchList=new ArrayList<TransformationObserver>();
@@ -416,35 +418,74 @@ public class TransformationService
 			writer.write(v3Message);
 			writer.flush();
 
-            boolean success = false;
+            ValidatorResults validatorsToShow = xmlElements.get(i).getValidatorResults();
+
+            //delete unnecessary message.
+            ValidatorResults newResults = new ValidatorResults();
+            for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
+            {
+                if (!lvl.toString().equalsIgnoreCase("ALL")) continue;
+                for (ValidatorResult result:validatorsToShow.getValidationResult(lvl))
+                {
+                    String msgS = result.getMessage().toString().trim();
+                    if (!msgS.equals(MessageResources.getMessage("XML4", new Object[]{""}).toString().trim()))
+                        newResults.addValidatorResult(result);
+                }
+            }
+            validatorsToShow.removeAll();
+            validatorsToShow.addValidatorResults(newResults);
+
+            boolean isReorganizedMssageGenerated = false;
             while(schemaValidation)
             {
+
+                String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
                 String dirS = FileUtil.getV3XsdFilePath();
-                if (dirS == null) break;
+                if (dirS == null)
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
+                    break;
+                }
                 dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
 
                 File dir = new File(dirS);
-                if ((!dir.exists())||(!dir.isDirectory())) break;
+                if ((!dir.exists())||(!dir.isDirectory()))
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
+                    break;
+                }
                 File[] files = dir.listFiles();
-                if (files.length == 0) break;
+                List<File> listFile = new ArrayList<File>();
+                for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
+                if (listFile.size() == 0)
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
+                    break;
+                }
 
                 String messageType = mifClass.getMessageType();
-                if (messageType == null) break;
+                if ((messageType == null)||(messageType.trim().equals("")))
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
+                    break;
+                }
                 messageType = messageType.trim();
-                if (messageType.equals("")) break;
 
                 String schemaFileName = null;
-                for (File file:files)
+                for (File file:listFile)
                 {
                     String fileName = file.getName();
-                    if (!fileName.toLowerCase().endsWith(".xsd")) continue;
                     if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
                     {
                         schemaFileName = file.getAbsolutePath();
                         break;
                     }
                 }
-                if (schemaFileName == null) break;
+                if (schemaFileName == null)
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
+                    break;
+                }
 
                 XMLValidator v = new XMLValidator(v3Message, schemaFileName, true);
 
@@ -456,49 +497,24 @@ public class TransformationService
                     zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+"_Reorganized.xml"));
                     writer.write(FileUtil.readFileIntoString(reorganizedV3FileName));
                     writer.flush();
+                    isReorganizedMssageGenerated = true;
                 }
+                else validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "The reorganized message ("+(messageCount+i)+"_Reorganized.xml) cannot be generated because of a FATAL or very serious error. Please check the other messages.");
 
-                ValidatorResults validatorsToShow = xmlElements.get(i).getValidatorResults();
-
-                if (!results.isValid())
-                {
-                    if (!results.isValid())
-                    {
-                        ValidatorResults newResults = new ValidatorResults();
-
-                        for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
-                        {
-                            if (!lvl.toString().equalsIgnoreCase("ALL")) continue;
-                            for (ValidatorResult result:validatorsToShow.getValidationResult(lvl))
-                            {
-                                String msgS = result.getMessage().toString().trim();
-                                if (!msgS.equals(MessageResources.getMessage("XML4", new Object[]{""}).toString().trim()))
-                                    newResults.addValidatorResult(result);
-                            }
-                        }
-                        validatorsToShow.removeAll();
-                        validatorsToShow.addValidatorResults(newResults);
-                    }
-                }
                 validatorsToShow.addValidatorResults(results);
 
-                zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
-                ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
-                objOut.writeObject(validatorsToShow);
-                objOut.flush();
 
-                success = true;
                 break;
             }
+            String infoMsg = "";
+            if (isReorganizedMssageGenerated) infoMsg = ", Reorganized v3 message (" +(messageCount+i)+"_Reorganized.xml)";
+            validatorsToShow = GeneralUtilities.addValidatorMessageInfo(validatorsToShow, "Direct message ("+(messageCount+i)+".xml)"+infoMsg+" and validation message object ("+(messageCount+i)+".ser) are successfully generated.");
 
-            if (!success)
-            {
-                zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
-                ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
-                objOut.writeObject(xmlElements.get(i).getValidatorResults());
-                objOut.flush();
-            }
-		}
+            zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
+            ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
+            objOut.writeObject(validatorsToShow);
+            objOut.flush();
+        }
     }
 
     private List<XMLElement> transferSourceData(CSVDataResult csvDataResult) throws Exception
@@ -602,6 +618,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.32  2009/02/10 05:34:18  umkis
+ * HISTORY      : Include schema validation against xsd files when V3 message generating.
+ * HISTORY      :
  * HISTORY      : Revision 1.31  2009/02/06 20:51:17  wangeug
  * HISTORY      : process multiple v2 messages in one source data file; call only process() method for all source datatype
  * HISTORY      :
