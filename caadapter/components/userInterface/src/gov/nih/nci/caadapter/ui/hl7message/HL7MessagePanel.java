@@ -65,10 +65,10 @@ import java.util.Map;
  * This class is the main entry point to display HL7V3 message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.27 $
- *          date        $Date: 2009-02-06 20:50:00 $
+ *          revision    $Revision: 1.28 $
+ *          date        $Date: 2009-02-10 05:34:18 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -81,7 +81,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	private int currentCount = 1;//count from 1...
 	private int totalNumberOfMessages = 0;
 	private boolean isBatchTransform = false;
-	
+
+    private int schemaValidationTag = -1;
+
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
 
@@ -231,7 +233,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     private void setMessageResultList(java.util.List newMessageList)
     {
     	if (newMessageList==null||newMessageList.isEmpty())
-    		return;    		
+    		return;
     	initializeMessageList();
     	for(Object oneMsg:newMessageList)
     	{
@@ -240,7 +242,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     	currentCount = 1;
 		changeDisplay();
 	}
-    
+
     public boolean setSaveFile(File saveFile, boolean refresh) throws Exception
     {
     	System.out.println("HL7MessagePanel.setSaveFile()..refresh:"+refresh);
@@ -287,9 +289,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
             currentCount--;
         else if (NEXT_ITEM.equals(command))
             currentCount++;
-        else 
+        else
         	return;
-        
+
         changeDisplay();
     }
 
@@ -314,11 +316,16 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     	dataFileNameField.setText(dataFile.getAbsolutePath());
     	mapFileNameField.setText(mapFile.getAbsolutePath());
 
+        if (schemaValidationTag < 0)
+        {
+            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
+        }
+
         try
 		{
 			String dataFileName=dataFile.getName();
 			if (dataFileName.contains(Config.CSV_DATA_FILE_DEFAULT_EXTENSTION)
-					||dataFileName.contains("hl7"))
+					||(FileUtil.readFileIntoString(dataFile.getAbsolutePath()).trim().startsWith("MSH")))
 			{//transfer CSV to HL7 V3
 				//at first:watch data loading....progress
 				final HL7TransformationProgressDialog progressor=new HL7TransformationProgressDialog(this, false);
@@ -329,7 +336,10 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 				final HL7MessagePanel listnerPane=this;
 		    	final TransformationService ts=new TransformationService(mapFile, dataFile);
-				if(this.getSaveFile()!=null)
+
+                if (schemaValidationTag == JOptionPane.YES_OPTION) ts.setSchemaValidation(true);
+                
+                if(this.getSaveFile()!=null)
 				{
 					ts.setOutputFile(this.getSaveFile());
 					listnerPane.isBatchTransform = true;
@@ -341,7 +351,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 					{
 						public void run()
 						{
-							
+
 					    	try {
 					    		int count = 0;
 					    		List<XMLElement> xmlElements = null;
@@ -374,7 +384,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 								progressor.close();
 							}
 						}
-					}				
+					}
 				);
 				localThread.start();
 				this.setChanged(!this.isBatchTransform);
@@ -477,7 +487,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			
+
 		}
 		else
 		{//just clean up
@@ -528,12 +538,12 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 				action = new gov.nih.nci.caadapter.ui.hl7message.actions.CloseHL7V3MessageAction(this);
 				contextManager.addClientMenuAction(MenuConstants.HL7_V3_MESSAGE, MenuConstants.FILE_MENU_NAME,ActionConstants.CLOSE, action);
 				action.setEnabled(true);
-				
+
 				actionMap = contextManager.getClientMenuActions(MenuConstants.HL7_V3_MESSAGE, menu_name);
-//		}		
+//		}
 		return actionMap;
 	}
-	
+
 /*	public Map getMenuItems_save(String menu_name)
     {
 //		if (menuMap == null)
@@ -667,6 +677,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.27  2009/02/06 20:50:00  wangeug
+ * HISTORY      : call only process() method for all source datatype
+ * HISTORY      :
  * HISTORY      : Revision 1.26  2009/02/03 15:49:21  wangeug
  * HISTORY      : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
  * HISTORY      :

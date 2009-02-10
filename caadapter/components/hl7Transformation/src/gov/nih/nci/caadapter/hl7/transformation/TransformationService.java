@@ -1,6 +1,6 @@
 /**
  * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
 [caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
  * <!-- LICENSE_TEXT_END -->
@@ -19,6 +19,7 @@ import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -29,6 +30,7 @@ import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
+import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,20 +53,22 @@ import com.sun.encoder.EncoderException;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.31 $
- * @date $Date: 2009-02-06 20:51:17 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.32 $
+ * @date $Date: 2009-02-10 05:34:18 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.31 2009-02-06 20:51:17 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.32 2009-02-10 05:34:18 umkis Exp $";
 
     private String csvString = "";
     private File mapFile = null;
     private File outputFile = null;
     private InputStream sourceDataStream = null;
+
+    private boolean schemaValidation = false;
 
     //intermediate data
     private MapParser mapParser = null;
@@ -75,9 +79,9 @@ public class TransformationService
     private ValidatorResults theValidatorResults = new ValidatorResults();
 
 	/**
-	 * This method will create a transformer that loads csv data from a file 
+	 * This method will create a transformer that loads csv data from a file
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvfilename the name of the csv file
 	 */
@@ -88,9 +92,9 @@ public class TransformationService
     }
 
 	/**
-	 * This method will create a transformer that loads csv data from a String 
+	 * This method will create a transformer that loads csv data from a String
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvString the string that contains csv data
 	 */
@@ -103,7 +107,7 @@ public class TransformationService
             throw new IllegalArgumentException("Map File should not be null!");
         }
         mapFile = new File(mapfilename);
-        
+
         if (isDataStringFlag)
         {
 	        csvString = csvInString;
@@ -112,9 +116,9 @@ public class TransformationService
     }
 
 	/**
-	 * This method will create a transformer that loads csv data from an inputstream  
+	 * This method will create a transformer that loads csv data from an inputstream
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfilename the name of the mapping file
 	 * @param csvStream the inputstream that contains csv data
 	 */
@@ -131,9 +135,9 @@ public class TransformationService
     }
 
 	/**
-	 * This method will create a transformer that loads csv data from an Java File object  
+	 * This method will create a transformer that loads csv data from an Java File object
 	 * and transforms into HL7 v3 messages
-	 * 
+	 *
 	 * @param mapfile the Java mapping file object
 	 * @param csvFile the csv file object
 	 */
@@ -144,7 +148,7 @@ public class TransformationService
         {
             throw new IllegalArgumentException("Map File or csv File should not be null!");
         }
-        
+
         mapFile=mF;
 
         try {
@@ -160,8 +164,23 @@ public class TransformationService
     	transformationWatchList=new ArrayList<TransformationObserver>();
     }
 
+     /**
+	 * @param schemaValidation a boolean tag whether do schema validation or not.
+	 */
+    public void setSchemaValidation(boolean schemaValidation)
+    {
+        this.schemaValidation = schemaValidation;
+    }
 
-	/**
+    /**
+	 * @return the boolean tag whether do schema validation or not.
+	 */
+    public boolean getSchemaValidation()
+    {
+        return schemaValidation;
+    }
+
+    /**
 	 * @return the outputFile
 	 */
 	public File getOutputFile() {
@@ -185,7 +204,7 @@ public class TransformationService
     		transformationWatchList=new ArrayList<TransformationObserver>();
     	transformationWatchList.add(observer);
     }
-    
+
     /**
      * Add an oberver to the tranformation server
      * @param observer
@@ -197,7 +216,7 @@ public class TransformationService
     	if (transformationWatchList.contains(observer))
     			transformationWatchList.remove(observer);
     }
-    
+
     private void informProcessProgress(int steps)
     {
     	if (transformationWatchList.size()!=0) {
@@ -211,8 +230,8 @@ public class TransformationService
 
     private void loadMapAndMetas(File mapFile) throws Exception
     {
-       informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);      
-        
+       informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_MAPPING);
+
     	/*
     	 * TODO Exception handling here
     	 */
@@ -223,7 +242,7 @@ public class TransformationService
 		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_MAPPING);
 
 		if (!mapParser.getValidatorResults().isValid())
-		{	
+		{
 			System.out.println("Invalid .map file");
 			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid MAP file!"});
 			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -232,14 +251,14 @@ public class TransformationService
 
         String h3sFilename = mapParser.getH3SFilename();
         String fullh3sfilepath = FileUtil.filenameLocate(mapFile.getParent(), h3sFilename);
-        
+
         long loadmifbegintime = System.currentTimeMillis();
-        
-       	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter(); 
-       	mifClass = xmlToMIFImporter.importMifFromXml(new File(fullh3sfilepath));        
+
+       	XmlToMIFImporter xmlToMIFImporter = new XmlToMIFImporter();
+       	mifClass = xmlToMIFImporter.importMifFromXml(new File(fullh3sfilepath));
     	System.out.println("loadmif Parsing time" + (System.currentTimeMillis()-loadmifbegintime));
  		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_H3S_FILE);
- 		
+
  		//load CSV meta
  		if (mapParser.getSourceKind()!=null&&!mapParser.getSourceKind().equalsIgnoreCase("v2"))
  		{
@@ -259,7 +278,7 @@ public class TransformationService
 
     public List<XMLElement> process() throws Exception
     {
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START); 
+    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
     	loadMapAndMetas(mapFile);
         if (!theValidatorResults.isValid())
         	return null;
@@ -268,14 +287,14 @@ public class TransformationService
         List<XMLElement> xmlElements=null ;
 
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().equalsIgnoreCase("v2"))
-        {	
+        {
             CSVDataResult csvDataResult = null;
         	csvDataResult=parseV2Message(mapParser.getSourceSpecFileName());
         	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
             informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         	xmlElements =transferSourceData(csvDataResult);
         }
-        else 
+        else
         {
         	//parse CSV stream
         	CsvReader reader = new CsvReader(this.sourceDataStream, this.csvMeta);
@@ -294,7 +313,7 @@ public class TransformationService
         	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
             informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         }
-          	
+
         System.out.println("Encode HL7 V3 message__:" + (System.currentTimeMillis()-csvbegintime));
         System.out.println("total message" + xmlElements.size());
         ZipOutputStream zipOut = prepareZipout();
@@ -321,7 +340,7 @@ public class TransformationService
      * Process the input data as SAX style generating target data for each logical record one by one
      * @return
      * @throws Exception
-     * @deprecated 
+     * @deprecated
      * @see process()
      */
     public int batchProcess() throws Exception
@@ -335,8 +354,8 @@ public class TransformationService
             	return -1;
     		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
 
-    		if (sourceDataStream==null || (outputFile==null )) 	  			
-    			throw new Exception("not valid for batch transformation.");    			
+    		if (sourceDataStream==null || (outputFile==null ))
+    			throw new Exception("not valid for batch transformation.");
 
     		CsvReader reader = new CsvReader(this.sourceDataStream, this.csvMeta);
     		zipOut = prepareZipout();
@@ -353,7 +372,7 @@ public class TransformationService
     				return -1;
     			}
     		}
-    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);    	
+    		informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
     		System.out.println("total message" + messageCount);
     	}finally{
     		try{
@@ -384,26 +403,104 @@ public class TransformationService
      * @param xmlElements
      * @param messageCount
      * @param zipOut
-     * @param writer
      * @throws IOException
      */
-    private void writeOutMessage(List<XMLElement> xmlElements, int messageCount, ZipOutputStream zipOut) throws IOException
+        private void writeOutMessage(List<XMLElement> xmlElements, int messageCount, ZipOutputStream zipOut) throws IOException
     {
     	OutputStreamWriter writer=new OutputStreamWriter(zipOut);
-    	
+
     	for(int i=0; i<xmlElements.size(); i++)
 		{
-			zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
-			writer.write(xmlElements.get(i).toXML().toString());
+            String v3Message = xmlElements.get(i).toXML().toString();
+            zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
+			writer.write(v3Message);
 			writer.flush();
-			
-			zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
-			ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
-			objOut.writeObject(xmlElements.get(i).getValidatorResults());
-			objOut.flush();
 
+            boolean success = false;
+            while(schemaValidation)
+            {
+                String dirS = FileUtil.getV3XsdFilePath();
+                if (dirS == null) break;
+                dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
+
+                File dir = new File(dirS);
+                if ((!dir.exists())||(!dir.isDirectory())) break;
+                File[] files = dir.listFiles();
+                if (files.length == 0) break;
+
+                String messageType = mifClass.getMessageType();
+                if (messageType == null) break;
+                messageType = messageType.trim();
+                if (messageType.equals("")) break;
+
+                String schemaFileName = null;
+                for (File file:files)
+                {
+                    String fileName = file.getName();
+                    if (!fileName.toLowerCase().endsWith(".xsd")) continue;
+                    if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
+                    {
+                        schemaFileName = file.getAbsolutePath();
+                        break;
+                    }
+                }
+                if (schemaFileName == null) break;
+
+                XMLValidator v = new XMLValidator(v3Message, schemaFileName, true);
+
+                ValidatorResults results = v.validate();
+                String reorganizedV3FileName = v.getTempReorganizedV3File();
+
+                if (reorganizedV3FileName != null)
+                {
+                    zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+"_Reorganized.xml"));
+                    writer.write(FileUtil.readFileIntoString(reorganizedV3FileName));
+                    writer.flush();
+                }
+
+                ValidatorResults validatorsToShow = xmlElements.get(i).getValidatorResults();
+
+                if (!results.isValid())
+                {
+                    if (!results.isValid())
+                    {
+                        ValidatorResults newResults = new ValidatorResults();
+
+                        for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
+                        {
+                            if (!lvl.toString().equalsIgnoreCase("ALL")) continue;
+                            for (ValidatorResult result:validatorsToShow.getValidationResult(lvl))
+                            {
+                                String msgS = result.getMessage().toString().trim();
+                                if (!msgS.equals(MessageResources.getMessage("XML4", new Object[]{""}).toString().trim()))
+                                    newResults.addValidatorResult(result);
+                            }
+                        }
+                        validatorsToShow.removeAll();
+                        validatorsToShow.addValidatorResults(newResults);
+                    }
+                }
+                validatorsToShow.addValidatorResults(results);
+
+                zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
+                ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
+                objOut.writeObject(validatorsToShow);
+                objOut.flush();
+
+                success = true;
+                break;
+            }
+
+            if (!success)
+            {
+                zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
+                ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
+                objOut.writeObject(xmlElements.get(i).getValidatorResults());
+                objOut.flush();
+            }
 		}
     }
+
     private List<XMLElement> transferSourceData(CSVDataResult csvDataResult) throws Exception
     {
 		// parse the datafile, if there are errors.. return.
@@ -428,7 +525,7 @@ public class TransformationService
     }
 
     private CSVDataResult parseV2Message(String v2MessageSchema)
-	{	
+	{
     	//format v2 message schema
     	int spIndx=v2MessageSchema.indexOf("/");
     	if (v2MessageSchema==null||spIndx<0)
@@ -446,10 +543,10 @@ public class TransformationService
 			long csvbegintime = System.currentTimeMillis();
     		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(this.sourceDataStream);
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
-			
+
 			//forward transformed XML to next step
 			HL7V2XmlSaxContentHandler saxHandler= new HL7V2XmlSaxContentHandler();
-			SAXResult saxResult=new SAXResult(saxHandler); 
+			SAXResult saxResult=new SAXResult(saxHandler);
 			System.out.println("TransformationService.pareV2Message()...decode source message:"+(System.currentTimeMillis()-csvbegintime));
 			ArrayList<byte[]> v2Bytes=lfEncoder.getEncodeByteList();
 			for(byte[] v2MsgByte:v2Bytes)
@@ -469,14 +566,14 @@ public class TransformationService
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null; 
+		return null;
     }
-    
+
 
     private CSVDataResult parseCsvSourceData()throws Exception
     {
     	SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
-        
+
         CSVDataResult csvDataResult = null;
         if (sourceDataStream==null)
         	csvDataResult = parser.parse(csvString,  csvMeta);
@@ -489,7 +586,7 @@ public class TransformationService
 	public ValidatorResults getValidatorResults() {
 		return theValidatorResults;
 	}
-	
+
 
     public static void main(String[] argv) throws Exception {
         long begintime2 = System.currentTimeMillis();
@@ -505,6 +602,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.31  2009/02/06 20:51:17  wangeug
+ * HISTORY      : process multiple v2 messages in one source data file; call only process() method for all source datatype
+ * HISTORY      :
  * HISTORY      : Revision 1.30  2009/02/02 14:54:18  wangeug
  * HISTORY      : Load V2 meta with version number and message schema name; do not use the absolute path of schema file
  * HISTORY      :
