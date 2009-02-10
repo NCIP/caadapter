@@ -36,10 +36,10 @@ import java.util.TreeSet;
  * The class will process the .map file an genearte HL7 v3 messages.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.48 $
- *          date        $Date: 2009-01-07 15:24:03 $
+ *          revision    $Revision: 1.49 $
+ *          date        $Date: 2009-02-10 05:07:12 $
  */
 
 public class MapProcessor {
@@ -133,7 +133,7 @@ public class MapProcessor {
     	    boolean relaxCardinality=false;
 			List<XMLElement> xmlElementTemp = processMIFclass(mifClass,csvSegment,true,mutableFlag,mutableFlagDefault,relaxCardinality);
     		if (theValidatorResults.getAllMessages().size() == 0) {
-	            Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"HL7 v3 message is successfully generated!"});
+	            Message msg = MessageResources.getMessage("XML4", new Object[]{""});
 	            theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
     		}
     	    localValidatorResults.addValidatorResults(theValidatorResults);
@@ -148,25 +148,25 @@ public class MapProcessor {
     	return xmlElements;
     }
 	/**
-	 * This method will process a MIFClass object and generate a list of HL7 v3 message objects 
-	 * 
+	 * This method will process a MIFClass object and generate a list of HL7 v3 message objects
+	 *
 	 * @param mifClass the MIFClass that will be processed
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
-	 * @param forceGenerate flag to tell the generator to generate XML element even without user mapping data 
-	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass 
+	 * @param forceGenerate flag to tell the generator to generate XML element even without user mapping data
+	 * 		  and data for all MIFAttributes and MIFAssociation of the MIFClass
 	 */
-    
+
     private List<XMLElement> processMIFclass(MIFClass mifClass, CSVSegment pCsvSegment, boolean forceGeneratePassed, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean isCardinalityRelaxed) throws MappingException,FunctionException {
     	boolean forceGenerate = forceGeneratePassed;
-    	List<XMLElement> xmlElements = new ArrayList<XMLElement>(); 
-    	List<XMLElement> choiceXMLElements = new ArrayList<XMLElement>(); 
+    	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
+    	List<XMLElement> choiceXMLElements = new ArrayList<XMLElement>();
 
     	if (mifClass.getCsvSegments().size() == 0 && !forceGenerate) return NullXMLElement.NULL;
 
     	List<CSVSegment> csvSegments = null;
 
     	//Step1: find all the csvSegments for attributes
-    	if (mifClass.isMapped()) 
+    	if (mifClass.isMapped())
     	{
     		csvSegments = csvUtil.findCSVSegment(pCsvSegment, mifClass.getCsvSegment());
     	}
@@ -179,7 +179,7 @@ public class MapProcessor {
     		XMLElement xmlElement = new XMLElement();
     		xmlElement.setName(mifClass.getName());
     		xmlElement.setMessageType(mifClass.getMessageType());
-    		//Step 1.1 process Choice 
+    		//Step 1.1 process Choice
         	if (mifClass.getSortedChoices().size() > 0) { //Handle choice
         		for(MIFClass choiceMIFClass:mifClass.getSortedChoices()) {
         	    	if (choiceMIFClass.isChoiceSelected()) {
@@ -206,14 +206,14 @@ public class MapProcessor {
 
         	TreeSet<MIFAttribute> attributes = mifClass.getSortedAttributes();
 
-    		//Step2: Process non-structural attributes 
+    		//Step2: Process non-structural attributes
     		//Non-structural attributes are child xmlelements vs structural attributes are attributes to xml elements
     		for(MIFAttribute mifAttribute:attributes) {
     			if (!mifAttribute.isStrutural()) {
     	    	    MutableFlag mutableFlag = new MutableFlag(false);
     	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
     				List<XMLElement> attrXmlElements = processAttribute(mifAttribute ,csvSegment, mutableFlag, mutableFlagDefault);
-    				if (mutableFlag.hasUserMappedData()) 
+    				if (mutableFlag.hasUserMappedData())
     				{
     					hasUserdata.setHasUserMappedData(true);
     				}
@@ -269,9 +269,9 @@ public class MapProcessor {
     					choiceAssociation = mifAssociation;
     				}
     			}
-    			else 
+    			else
     			{
-    				if(startChoice) //need to process a set of choices 
+    				if(startChoice) //need to process a set of choices
     				{
     					if (totalChoiceHasData ==0) //no choice has data
     					{
@@ -281,7 +281,7 @@ public class MapProcessor {
     			}
 	    	    MutableFlag mutableFlag = new MutableFlag(false);
 	    	    MutableFlag mutableFlagDefault = new MutableFlag(true);
-	    	    boolean forceGenerateAssociation = (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0); 
+	    	    boolean forceGenerateAssociation = (mifAssociation.isOptionForced() || mifAssociation.getMinimumMultiplicity() > 0);
 	    	    List<XMLElement> choiceXmlElements = new ArrayList<XMLElement>();
     			List<XMLElement> assoXmlElements = processAssociation(mifAssociation ,csvSegment, mutableFlag,mutableFlagDefault, forceGenerateAssociation, startChoice, choiceXmlElements,toRelaxCardinality);
     			if (startChoice) {
@@ -295,7 +295,7 @@ public class MapProcessor {
     				if (totalChoiceHasData > 1)
     				{
     					if (mifAssociation.getMaximumMultiplicity() == 1) {
-    						if (assoXmlElements.size()>1 )//0) 
+    						if (assoXmlElements.size()>1 )//0)
     						{
     							Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"The cardinality of  the choice " + mifAssociation.getXmlPath() + " is specified as "  + mifAssociation.getMinimumMultiplicity() + "..1" + ", but more than 1 choice ("+assoXmlElements.size()+")contains data, and the data is dropped"});
     							theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
@@ -320,7 +320,7 @@ public class MapProcessor {
 					if (!mutableFlagDefault.hasUserMappedData()) hasDefaultdata.setHasUserMappedData(false);
 				}
     		}
-			if(startChoice) //need to process a set of choices 
+			if(startChoice) //need to process a set of choices
 			{
 				if (totalChoiceHasData ==0) //no choice has data
 				{
@@ -339,12 +339,12 @@ public class MapProcessor {
     					for (CSVField csvField:csvFields) {
     						data.put(csvField.getXmlPath(),csvField.getValue());
     					}
-						
+
 	    				if (scsPath.startsWith("function.")) { //function mapping to target
 	    					MutableFlag mutableFlag = new MutableFlag(false);
 	    					MutableFlag mutableFlagDefault = new MutableFlag(true);
 	    					String datavalue = datatypeProcessor.getFunctionValue(csvSegment,scsPath,data, mutableFlag, mutableFlagDefault);
-	    					if (mutableFlag.hasUserMappedData()) 
+	    					if (mutableFlag.hasUserMappedData())
 	    					{
                                 if (mifAttribute.getDatatype() == null)
                                     xmlElement.addAttribute(mifAttribute.getName(), datavalue, null, mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
@@ -352,7 +352,7 @@ public class MapProcessor {
 
                                 hasUserdata.setHasUserMappedData(true);
 	    					}
-	    					else 
+	    					else
 	    					{
 	    						datatypeProcessor.processAttributeDefaultValue(forceGenerate, null, xmlElement,mifAttribute.getName(), hasDefaultdata,null,null);
 	    					}
@@ -364,7 +364,7 @@ public class MapProcessor {
 	    					if (data.get(scsPath) == null) { //inverse relationship
 	    						CSVField csvField = csvUtil.findCSVField(csvSegment, scsPath);
 	    						if (csvField.getValue().equals("")) {
-	    							datatypeProcessor.processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); 
+	    							datatypeProcessor.processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
 	    							break;
 	    						}
 	    						else {
@@ -375,7 +375,7 @@ public class MapProcessor {
 	    					}
 	    					else {
 	    						if (data.get(scsPath).equals("")) {
-	    							datatypeProcessor.processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength()); 
+	    							datatypeProcessor.processAttributeDefaultValue(mifAttribute.getMinimumMultiplicity()>0, null, xmlElement,mifAttribute.getName(), hasDefaultdata,mifAttribute.getDomainName(), mifAttribute.getCodingStrength());
 	    							break;
 	    						}
 	    						else {
@@ -387,7 +387,7 @@ public class MapProcessor {
 	    				}
 					}
 					else {
-						
+
 						if (mifAttribute.getDefaultValue()!=null&&!mifAttribute.getDefaultValue().equals(""))
 						{
 							//if the MIFAttribute is user editable, its value may have been set by user
@@ -415,19 +415,19 @@ public class MapProcessor {
     }
 
 	/**
-	 * This method will process a MIFAssociation object and generate a list of HL7 v3 message objects 
-	 * 
+	 * This method will process a MIFAssociation object and generate a list of HL7 v3 message objects
+	 *
 	 * @param mifAssociation the MIFAssociation object that will be processed
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
-	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation 
+	 * 		  and data for all MIFAttributes and MIFClass of the MIFAssociation
 	 */
-    
+
     private List<XMLElement> processAssociation(MIFAssociation mifAssociation,  CSVSegment csvSegment, MutableFlag hasUserdata, MutableFlag hasDefaultdata, boolean forceGenerate, boolean choiceFlag, List<XMLElement> choiceXmlElements, boolean isCardinalityRelaxed) throws MappingException,FunctionException {
     	List<XMLElement> xmlElements = new ArrayList<XMLElement>();
-    	
+
     	MIFClass mifClass =null;
     	if (mifAssociation.getMifClass()!= null) {
-    		mifClass =  mifAssociation.getMifClass(); 
+    		mifClass =  mifAssociation.getMifClass();
     	}
     	if (mifClass == null) {
     		throw new MappingException("There is an error in your .h3s file, " + mifAssociation.getXmlPath() + " does not have specification", null);
@@ -447,20 +447,20 @@ public class MapProcessor {
     	}
     	for(XMLElement xmlElement:xmlEments) {
     		if (mifAssociation.isChoiceSelected())
-    			xmlElement.setName(mifAssociation.findChoiceSelectedMifClass().getTraversalName());	
+    			xmlElement.setName(mifAssociation.findChoiceSelectedMifClass().getTraversalName());
     		else
     			xmlElement.setName(mifAssociation.getName());
     		xmlElements.add(xmlElement);
     	}
     	if (hasUserdata.hasUserMappedData())
     		return xmlElements;
-    	else 
+    	else
     	{
     		if (forceGenerate&&!choiceFlag) {
     			return xmlElements;
     		}
     		else {
-    			if (choiceFlag) 
+    			if (choiceFlag)
     			{
     				for (XMLElement xElement:xmlElements)
     					choiceXmlElements.add(xElement);
@@ -471,8 +471,8 @@ public class MapProcessor {
     }
 
 	/**
-	 * This method will process a MIFAttribute object and generate a list of HL7 v3 message objects 
-	 * 
+	 * This method will process a MIFAttribute object and generate a list of HL7 v3 message objects
+	 *
 	 * @param mifAttribute the MIFAttribute object that will be processed
 	 * @param pCsvSegment CSV segments that determines the root segments that dominate the cardinality
 	 * 		  and data for all Datatypes of the MIFAttribute 
@@ -635,6 +635,9 @@ public class MapProcessor {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.48  2009/01/07 15:24:03  wangeug
+ * HISTORY      : Use getSortedChoice() to include all subclass for choice item if it is an abstract class
+ * HISTORY      :
  * HISTORY      : Revision 1.47  2008/12/04 20:42:36  wangeug
  * HISTORY      : support nullFlavor
  * HISTORY      :

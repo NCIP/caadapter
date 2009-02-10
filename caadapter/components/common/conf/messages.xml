@@ -476,6 +476,19 @@
         </parameters>
     </message>
 
+    <message id="XML4" level="INFO">
+        <template>HL7 v3 message is successfully generated!</template>
+        <parameters>
+        </parameters>
+    </message>
+
+    <message id="XML5" level="ERROR">
+        <template>HL7 v3 message is generated! But xml validation error(s) found against {0}.</template>
+        <parameters>
+            <parameter number="0" value="XML schema file"/>
+        </parameters>
+    </message>
+
     <message id="TRF1" level="ERROR">
         <template>Transform from CSV to HL7 v3 Data Error:{0}</template>
         <parameters>
