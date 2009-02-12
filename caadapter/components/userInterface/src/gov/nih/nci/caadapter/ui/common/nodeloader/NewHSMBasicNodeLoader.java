@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.49 $
- *          date        $Date: 2008-12-23 17:37:12 $
+ *          revision    $Revision: 1.50 $
+ *          date        $Date: 2009-02-12 20:37:42 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -172,51 +172,12 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	private DefaultMutableTreeNode buildMIFClassNode(MIFClass mifClass, MIFAssociation mifAssociation)
 	{
 		DefaultMutableTreeNode rtnNode =constructTreeNodeBasedOnTreeType(mifClass,true);	
-//		if(!mifClass.getSortedChoices().isEmpty())
-//		{
-			HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
-			if (treeEditable)
-			{
-				for (MIFClass choiceClass:mifClass.getChoices())
-				{
-					//load the choice and resolve internal reference
-					if (!choiceClass.getReferenceName().equals(""))
-					{
-						MIFClass referencedMifClass =loadReferenceMIFClass(choiceClass.getReferenceName(), null);
-						if (referencedMifClass != null) 
-						{
-							//there is not "traversalName" issue to load the CMET class for a choice item
-							referencedMifClass.setChoiceSelected(choiceClass.isChoiceSelected());
-							if (mifAssociation == null)
-							{
-								referencedMifClass.setTraversalName(choiceClass.getTraversalName());
-							}
-							else {
-								Hashtable<String, String> traversalnames = mifAssociation.getParticipantTraversalNames();
-								if (traversalnames.get(choiceClass.getReferenceName())!= null)
-								{
-									referencedMifClass.setTraversalName(traversalnames.get(choiceClass.getReferenceName()));
-								}
-								else 
-								{
-									referencedMifClass.setTraversalName(choiceClass.getTraversalName());
-								}
-							}
-							referencedMifClass.setSortKey(choiceClass.getSortKey());
-							resolvedChoices.add(referencedMifClass);
-						}
-						else
-						{
-							resolvedChoices.add(choiceClass);
-							Log.logError(this, "Not Found..:"+choiceClass.getReferenceName());				
-						}
-					}
-					else
-						resolvedChoices.add(choiceClass);
-				}
-				mifClass.setChoice(resolvedChoices);
-			}
-//		}
+		
+		Hashtable<String, String> traversalnames = new Hashtable<String, String>();
+		if (mifAssociation!=null)
+			traversalnames=mifAssociation.getParticipantTraversalNames();
+		resolveClassAndTraversalName(mifClass, traversalnames);
+		
 		for (MIFClass choiceToNode:mifClass.getSortedChoices())
 		{	
 			if (choiceToNode.isChoiceSelected())
@@ -251,6 +212,60 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			}
 		}
 		return rtnNode;
+	}
+	
+	private void resolveClassAndTraversalName(MIFClass mifClass, Hashtable<String, String> traversalnames)
+	{
+		if (!treeEditable)
+			return;
+
+		HashSet <MIFClass>resolvedChoices=new HashSet<MIFClass>();
+		for (MIFClass choiceClass:mifClass.getChoices())
+		{
+			//load the choice and resolve internal reference
+			if (!choiceClass.getReferenceName().equals(""))
+			{
+				MIFClass referencedMifClass =loadReferenceMIFClass(choiceClass.getReferenceName(), null);
+				if (referencedMifClass != null) 
+				{
+					//there is not "traversalName" issue to load the CMET class for a choice item
+					referencedMifClass.setChoiceSelected(choiceClass.isChoiceSelected());
+					String refTraversal=traversalnames.get(choiceClass.getReferenceName());
+					if (refTraversal!=null)
+						referencedMifClass.setTraversalName(refTraversal);
+					else 
+						referencedMifClass.setTraversalName(choiceClass.getTraversalName());
+										
+					referencedMifClass.setSortKey(choiceClass.getSortKey());
+					resolvedChoices.add(referencedMifClass);
+				}
+				else
+				{
+					if (choiceClass.getTraversalName()==null
+							||choiceClass.getTraversalName().equalsIgnoreCase(""))
+						choiceClass.setTraversalName(traversalnames.get(choiceClass.getName()));
+	
+					resolvedChoices.add(choiceClass);
+					Log.logError(this, "Not Found..:"+choiceClass.getReferenceName());				
+				}
+			}
+			else
+			{
+				if (choiceClass.getTraversalName()==null
+						||choiceClass.getTraversalName().equalsIgnoreCase(""))
+				{
+					choiceClass.setTraversalName(traversalnames.get(choiceClass.getName()));
+					Log.logError(this, "choice class ...:"+ choiceClass.getName()+"...set traversalName..:"+choiceClass.getTraversalName());
+				}
+				resolvedChoices.add(choiceClass);		
+			}
+			if (choiceClass.isAbstractDefined())
+			{
+//				for (MIFClass childChoice:choiceClass.getChoices())
+					resolveClassAndTraversalName(choiceClass, traversalnames);
+			}
+		}
+		mifClass.setChoice(resolvedChoices);
 	}
 	
 	private MIFClass loadReferenceMIFClass(String refClassName, Hashtable asscRefTraversalNames)
@@ -301,8 +316,8 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 //		set traversal name with 
 		if (rtnMif!=null&&asscRefTraversalNames!=null)
 		{
-			if(rtnMif.getChoices()==null
-					||rtnMif.getChoices().isEmpty())
+			if(rtnMif.getSortedChoices()==null
+					||rtnMif.getSortedChoices().isEmpty())
 				Log.logInfo(this, "No choice classes needs to set..:"+rtnMif);
 			else
 			{
@@ -580,6 +595,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.49  2008/12/23 17:37:12  wangeug
+ *HISTORY 	:Process MIFClass with isAbstract=true:clean code
+ *HISTORY 	:
  *HISTORY 	:Revision 1.48  2008/12/23 14:36:50  wangeug
  *HISTORY 	:use MIFClass.getChoice() to replace MIFClass.getSortedChoice()
  *HISTORY 	:

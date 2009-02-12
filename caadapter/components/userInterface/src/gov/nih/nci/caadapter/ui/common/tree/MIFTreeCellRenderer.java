@@ -32,8 +32,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2009-01-16 15:20:06 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2009-02-12 20:34:52 $
  */
 public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -49,7 +49,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.14 2009-01-16 15:20:06 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/tree/MIFTreeCellRenderer.java,v 1.15 2009-02-12 20:34:52 wangeug Exp $";
 
 	private static final Color DISABLED_CHOICE_BACK_GROUND_COLOR = new Color(100, 100, 100);
 
@@ -295,7 +295,7 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 			viewIndex=viewIndex+viewIndexEnd;
 		
 		MIFClass asscMIFClass=mifAssc.getMifClass();
-		if(asscMIFClass.getChoices().size()>0)
+		if(asscMIFClass.getSortedChoices().size()>0)
 		{
 			if (mifAssc.isChoiceSelected())
 			{
@@ -320,6 +320,9 @@ public class MIFTreeCellRenderer extends DefaultTreeCellRenderer
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2009/01/16 15:20:06  wangeug
+ * HISTORY      : 	display MIFclass.copyrightYears on tree node
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/09/24 18:00:29  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :

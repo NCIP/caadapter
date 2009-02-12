@@ -37,8 +37,8 @@ import java.util.Iterator;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-12-23 17:37:12 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2009-02-12 20:37:13 $
  */
 public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
     /**
@@ -53,7 +53,7 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.14 2008-12-23 17:37:12 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/SelectChoiceAction.java,v 1.15 2009-02-12 20:37:13 wangeug Exp $";
 
     private static final String COMMAND_NAME = "Select Choice";
     private static final Character COMMAND_MNEMONIC = new Character('S');
@@ -96,25 +96,32 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
         DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
         Object obj = targetNode.getUserObject();
        
-        if (obj instanceof MIFAssociation) {
+        if (!(obj instanceof MIFAssociation) )
+        	return false;
+ 
         	MIFAssociation mifAssc = (MIFAssociation) obj;
         	MIFClass mifClass=mifAssc.getMifClass();
         	
             try {
-                Iterator choiceIt=mifClass.getChoices().iterator();
+//                Iterator choiceIt=mifClass.getChoices().iterator();
                 List <DatatypeBaseObject>baseList=new ArrayList<DatatypeBaseObject>();
-                while(choiceIt.hasNext())
+                for (MIFClass choiceClass:mifClass.getSortedChoices())
                 {
-                	MIFClass choiceClass=(MIFClass)choiceIt.next();
-                	if (choiceClass.isAbstractDefined())
-    				{
-    					for(MIFClass concreteChild:choiceClass.getChoices())
-    						if (!concreteChild.isChoiceSelected())
-    							baseList.add(concreteChild);
-    				}
-                	else if(!choiceClass.isChoiceSelected())
-                   		baseList.add((DatatypeBaseObject)choiceClass);             
+                	if (!choiceClass.isChoiceSelected())
+                		baseList.add(choiceClass);
                 }
+//                while(choiceIt.hasNext())
+//                {
+//                	MIFClass choiceClass=(MIFClass)choiceIt.next();
+//                	if (choiceClass.isAbstractDefined())
+//    				{
+//    					for(MIFClass concreteChild:choiceClass.getChoices())
+//    						if (!concreteChild.isChoiceSelected())
+//    							baseList.add(concreteChild);
+//    				}
+//                	else if(!choiceClass.isChoiceSelected())
+//                   		baseList.add((DatatypeBaseObject)choiceClass);             
+//                }
                 AssociationListWizard cloneListWizard =
                         new AssociationListWizard(baseList, true, (JFrame) tree.getRootPane().getParent(), "Clone List", true);
                 DefaultSettings.centerWindow(cloneListWizard);
@@ -139,30 +146,35 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                     else
                     {
                     	//remove existing selection
-                    	Iterator choiceAllIt=mifClass.getChoices().iterator();
+//                    	Iterator choiceAllIt=mifClass.getChoices().iterator();
                     	MIFClass chosenItem=null;
-                    	while(choiceAllIt.hasNext())
-                    	{
-                    		MIFClass oneChoice=(MIFClass)choiceAllIt.next();
-                    		if (oneChoice.isChoiceSelected())
-                    		{
-                    			chosenItem=oneChoice;
-                    			break;
-                    		}
-                    		else if (oneChoice.isAbstractDefined())
-                    		{
-                    			for(MIFClass concreteChild:oneChoice.getChoices())
-            						if (concreteChild.isChoiceSelected())
-            						{
-            							chosenItem=concreteChild;
-                            			break;
-            						}                    			
-                    		}
-                    	}
+                    	for (MIFClass choiceClass:mifClass.getSortedChoices())
+                        {
+                        	if (choiceClass.isChoiceSelected())
+                        		chosenItem=choiceClass;
+                        }
+//                    	while(choiceAllIt.hasNext())
+//                    	{
+//                    		MIFClass oneChoice=(MIFClass)choiceAllIt.next();
+//                    		if (oneChoice.isChoiceSelected())
+//                    		{
+//                    			chosenItem=oneChoice;
+//                    			break;
+//                    		}
+//                    		else if (oneChoice.isAbstractDefined())
+//                    		{
+//                    			for(MIFClass concreteChild:oneChoice.getChoices())
+//            						if (concreteChild.isChoiceSelected())
+//            						{
+//            							chosenItem=concreteChild;
+//                            			break;
+//            						}                    			
+//                    		}
+//                    	}
                     	if (chosenItem!=null)
                     	{
                     		//clean the MIFAssociation Class
-                    		if (chosenItem.isChoiceSelected()&&!mifClass.getAssociations().isEmpty())
+                    		if (chosenItem.isChoiceSelected())//&&!mifClass.getAssociations().isEmpty())
                     		{
                     			ArrayList<MIFAssociation> chosenList=new ArrayList<MIFAssociation>();
                     			for(MIFAssociation ass:mifClass.getAssociations())
@@ -232,12 +244,15 @@ public class SelectChoiceAction extends AbstractHSMContextCRUDAction {
                 reportThrowableToUI(e1, parentPanel);
                 setSuccessfullyPerformed(false);
             }
-        }
+
 		return isSuccessfullyPerformed();
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/12/23 17:37:12  wangeug
+ * HISTORY      : Process MIFClass with isAbstract=true:clean code
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/12/23 14:17:14  wangeug
  * HISTORY      : Process MIFClass with isAbstract=true
  * HISTORY      :

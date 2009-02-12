@@ -32,8 +32,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-09-29 20:14:14 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-02-12 20:35:20 $
  */
 public class HSMTreeMouseAdapter extends MouseAdapter
 {
@@ -180,7 +180,7 @@ public class HSMTreeMouseAdapter extends MouseAdapter
                 {
                 	validateHSMAction.setEnabled(true);
                 	MIFAssociation mifAssc = (MIFAssociation) userObj;               	
-                    if (!mifAssc.getMifClass().getChoices().isEmpty())
+                    if (!mifAssc.getMifClass().getSortedChoices().isEmpty())
                     	selectChoiceAction.setEnabled(true);
                 	if (mifAssc.getMaximumMultiplicity()!= 1)
                     {
@@ -209,34 +209,31 @@ public class HSMTreeMouseAdapter extends MouseAdapter
  
                     //check if add/remove clone Item is required
                     MIFClass asscMifClass=mifAssc.getMifClass();
-                    if (asscMifClass.getChoices().isEmpty()
-                    		||mifAssc.isChoiceSelected())
-                    {
-		                final List<MIFAssociation> asscToAdd= MIFUtil.findAddableAssociation(asscMifClass);
-		                if (asscToAdd.size() > 0)
-		                        addCloneAction.setEnabled(true);
-                    }
-	                if (mifAssc.isChoiceSelected())
-                    {
-                    	 //check Assc to added from the choiceSelected class
-                    	final List<MIFAssociation> asscToAddFromChoice= MIFUtil.findAddableAssociation(mifAssc.findChoiceSelectedMifClass());
- 		                if (asscToAddFromChoice.size() > 0)
- 		                        addCloneAction.setEnabled(true);
-                     }
-	                if (asscMifClass.getChoices().isEmpty()
-                    		||mifAssc.isChoiceSelected())
-                    {
-		                final List<MIFAssociation> asscToRemove = MIFUtil.findRemovableAssociation(asscMifClass);	
-		                if (asscToRemove.size() > 0)
+                    List<MIFAssociation> asscToAdd;
+                    asscToAdd= MIFUtil.findAddableAssociation(asscMifClass);
+                  //check Assc to added from the choiceSelected class
+	                if (asscToAdd.size() > 0)
+                        addCloneAction.setEnabled(true);
+//	                else if (mifAssc.isChoiceSelected())
+//	                {
+//	                	//check the selected Choice item
+//                    	asscToAdd= MIFUtil.findAddableAssociation(mifAssc.findChoiceSelectedMifClass());
+//                    	if (asscToAdd.size() > 0)
+//                    		addCloneAction.setEnabled(true);
+//	                }
+ 
+                    List<MIFAssociation> asscToRemove;
+                    asscToRemove= MIFUtil.findRemovableAssociation(asscMifClass);
+                    //check Assc to added from the choiceSelected class
+		            if (asscToRemove.size() > 0)
 		                	removeCloneAction.setEnabled(true);
-                    }
-	                if (mifAssc.isChoiceSelected())
-                    {
-	                   	 //check Assc to added from the choiceSelected class
-	                   	final List<MIFAssociation> asscToRemoveFromChoice= MIFUtil.findRemovableAssociation(mifAssc.findChoiceSelectedMifClass());
-			            if (asscToRemoveFromChoice.size() > 0)
-			                	removeCloneAction.setEnabled(true);
-                    }
+//		            else if (mifAssc.isChoiceSelected())
+//		            {
+//		            	//check the selected Choice item
+//                    	asscToRemove= MIFUtil.findRemovableAssociation(mifAssc.findChoiceSelectedMifClass());
+//                    	if (asscToRemove.size() > 0)
+//		                	removeCloneAction.setEnabled(true);
+//		            }
 	                
                     if (mifAssc.isOptionChosen())
                     {
@@ -327,5 +324,8 @@ public class HSMTreeMouseAdapter extends MouseAdapter
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/09/29 20:14:14  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/
