@@ -12,10 +12,10 @@ package gov.nih.nci.caadapter.hl7.mif;
  * The class defines a Utility class processing MIF information.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2009-01-08 21:53:02 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2009-02-12 19:49:37 $
  */
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
@@ -99,7 +99,7 @@ public class MIFUtil {
 		while(mifAsscIt.hasNext())
 		{
 			MIFAssociation mifAssc=(MIFAssociation)mifAsscIt.next();
-			if (!mifAssc.getMifClass().getChoices().isEmpty())
+			if (!mifAssc.getMifClass().getSortedChoices().isEmpty())
 				return true;
 		}
 		
@@ -109,14 +109,45 @@ public class MIFUtil {
 	public static List<MIFAssociation> findAddableAssociation(MIFClass mifClass)
 	{
 		List<MIFAssociation> rtnList=new ArrayList<MIFAssociation>();
-		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
-		Iterator mifAsscIt=mifAsscs.iterator();
-		while(mifAsscIt.hasNext())
+		for (MIFAssociation mifAssc:mifClass.getSortedAssociations())
 		{
-			MIFAssociation mifAssc=(MIFAssociation)mifAsscIt.next();
 			if (mifAssc.getMinimumMultiplicity()==0&&!mifAssc.isOptionChosen())
 				rtnList.add(mifAssc);
 		}
+ 
+		for(MIFClass choicClass:mifClass.getSortedChoices())
+		{
+			if (choicClass.isChoiceSelected())
+			{
+				for(MIFAssociation choiceAssc:choicClass.getSortedAssociations())
+				{
+					if (choiceAssc.getMinimumMultiplicity()==0&&!choiceAssc.isOptionChosen())
+						rtnList.add(choiceAssc);
+				}
+				break; //one and only one chosen MIFClass
+			}
+		}
+		
+//		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
+//		Iterator mifAsscIt=mifAsscs.iterator();
+//		while(mifAsscIt.hasNext())
+//		{
+//			MIFAssociation mifAssc=(MIFAssociation)mifAsscIt.next();
+//			if (mifAssc.getMinimumMultiplicity()==0&&!mifAssc.isOptionChosen())
+//				rtnList.add(mifAssc);
+//		}
+//		for(MIFClass choicClass:mifClass.getSortedChoices())
+//		{
+//			if (choicClass.isChoiceSelected())
+//			{
+//				for(MIFAssociation choiceAssc:choicClass.getSortedAssociations())
+//				{
+//					if (choiceAssc.getMinimumMultiplicity()==0&&!choiceAssc.isOptionChosen())
+//						rtnList.add(choiceAssc);
+//				}
+//				break; //only and only one chosen MIFClass
+//			}
+//		}
 		return rtnList;
 	}
 	
@@ -126,13 +157,23 @@ public class MIFUtil {
 		if (mifClass==null)
 			return rtnList;
 		
-		TreeSet mifAsscs=mifClass.getSortedAssociations();//.getAssociations();
-		Iterator mifAsscIt=mifAsscs.iterator();
-		while(mifAsscIt.hasNext())
+		for (MIFAssociation mifAssc:mifClass.getSortedAssociations())
 		{
-			MIFAssociation mifAssc=(MIFAssociation)mifAsscIt.next();
 			if (mifAssc.getMinimumMultiplicity()==0&&mifAssc.isOptionChosen())
 				rtnList.add(mifAssc);
+		}
+		
+		for(MIFClass choicClass:mifClass.getSortedChoices())
+		{
+			if (choicClass.isChoiceSelected())
+			{
+				for(MIFAssociation choiceAssc:choicClass.getSortedAssociations())
+				{
+					if (choiceAssc.getMinimumMultiplicity()==0&&choiceAssc.isOptionChosen())
+						rtnList.add(choiceAssc);
+				}
+				break; //only and only one chosen MIFClass
+			}
 		}
 		return rtnList;
 	}
@@ -354,6 +395,9 @@ public class MIFUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.17  2009/01/08 21:53:02  umkis
+ * HISTORY :Protect from NullPointerException at Line 74 mifAttr.getDomainName();
+ * HISTORY :
  * HISTORY :Revision 1.16  2008/12/23 14:35:53  wangeug
  * HISTORY :Process MIFClass with isAbstract=true
  * HISTORY :

@@ -20,7 +20,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.21 $ date $Date: 2008-12-30 15:03:11 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.22 $ date $Date: 2009-02-12 19:46:44 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -44,7 +44,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private List<String> csvSegments;
 	private String csvSegment;
 	private boolean mapped;
-	private Hashtable <String,String> participantTraversalNames;
+	private Hashtable <String,String> participantTraversalNames=new Hashtable<String, String>();
 	
 	/**
 	 * @return the mapped
@@ -145,16 +145,10 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public MIFClass findChoiceSelectedMifClass() {
 		if (!isChoiceSelected())
 			return null;
-		for(MIFClass choiceClass:getMifClass().getChoices())
+		for(MIFClass choiceClass:getMifClass().getSortedChoices())
 		{
 			if (choiceClass.isChoiceSelected())
 				return choiceClass;
-			else if (choiceClass.isAbstractDefined())
-			{
-				for (MIFClass concreteChild:choiceClass.getChoices())
-					if (concreteChild.isChoiceSelected())
-						return concreteChild;
-			}
 		}
 		return null;
 	}
@@ -196,7 +190,7 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	public String getNodeXmlName()
 	{
 		String viewName=getName();
-		if (isChoiceSelected()&&getMifClass().getChoices().size()>0)
+		if (isChoiceSelected())
 		{
 			MIFClass chosenMif=findChoiceSelectedMifClass();
 			if (chosenMif!=null)
@@ -408,6 +402,9 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 }	
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.21  2008/12/30 15:03:11  wangeug
+ * HISTORY :Process MIFClass with isAbstract=true:create new property abstractDefined
+ * HISTORY :
  * HISTORY :Revision 1.20  2008/09/29 15:44:40  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

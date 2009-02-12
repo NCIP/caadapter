@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.map.impl;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-01-06 17:45:33 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-02-12 19:44:11 $
  */
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -97,17 +97,17 @@ public class MifMetaLookup implements MetaLookup {
 			}
 		
 		//process choices
-		if (mif.getChoices()!=null)
-			for(MIFClass choice:mif.getChoices())
+		if (mif.getSortedChoices()!=null)
+			for(MIFClass choice:mif.getSortedChoices())
 			{
 				if (choice.isChoiceSelected())
 					initLookupTable(choice);
 				//MIFAttribute and MIFAssociation are required 
 				//if the choice item is a list of other choice items 
-				if(choice.getChoices().size()>0)
+				if(choice.getSortedChoices().size()>0)
 				{
 					initLookupTable(choice);
-					for (MIFClass listChoiceItem:choice.getChoices())
+					for (MIFClass listChoiceItem:choice.getSortedChoices())
 						if (listChoiceItem.isChoiceSelected())
 							initLookupTable(listChoiceItem);
 				}
@@ -116,6 +116,9 @@ public class MifMetaLookup implements MetaLookup {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2009/01/06 17:45:33  wangeug
+ * HISTORY :add item to MifMetaLookup if it is a chosenItem or it is a list of ohter choice items
+ * HISTORY :
  * HISTORY :Revision 1.7  2009/01/05 16:39:54  wangeug
  * HISTORY :Process MIFClass with isAbstract=true
  * HISTORY :

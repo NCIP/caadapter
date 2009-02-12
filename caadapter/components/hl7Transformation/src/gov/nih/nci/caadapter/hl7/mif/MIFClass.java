@@ -28,7 +28,7 @@ import java.util.Iterator;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.26 $ date $Date: 2009-02-09 21:42:45 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.27 $ date $Date: 2009-02-12 19:48:55 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -205,11 +205,10 @@ import java.util.Iterator;
 	 public TreeSet<MIFClass> getSortedChoices ()
 	 {
 		TreeSet<MIFClass> rtnSet =new TreeSet<MIFClass>();
-		Iterator it=getChoices().iterator();
-		while(it.hasNext())
+
+		for (MIFClass choiceItem:getChoices())
 		{
-			MIFClass choiceItem=(MIFClass)it.next();
-			rtnSet.add((MIFClass)(choiceItem));//it.next()));
+//			rtnSet.add((MIFClass)(choiceItem));//it.next()));
 			//add the content of a choiceItem if it is a list of other MIFClass
 			if (choiceItem.isAbstractDefined())
 			{
@@ -218,11 +217,14 @@ import java.util.Iterator;
 					//the parent Association MIFClass is abstract, push all its association down to its children
 					for (MIFClass childChoice:choiceItem.getChoices())
 					{
-						childChoice.addAssociation(asbtractAssc);
+						if (!childChoice.getAssociations().contains(asbtractAssc))
+							childChoice.addAssociation(asbtractAssc);
 						rtnSet.add(childChoice);
 					}
 				}
 			}
+			else
+				rtnSet.add((MIFClass)(choiceItem));
 			
 		}
 		return rtnSet;
@@ -472,17 +474,17 @@ import java.util.Iterator;
 				 MIFClass clonedChoice=(MIFClass)oneChoice.clone();
 				 choiceClonnedHash.add(clonedChoice);
 			 }
-			 if (clonnedObj.isAbstractDefined())
-			 {
-				for (MIFAssociation asbtractAssc:clonnedObj.getAssociations())
-				{
- 					//the cloned MIFClass is abstract, push all its association down to its children
- 					for (MIFClass childChoice:clonnedObj.getChoices())
- 					{
-							childChoice.addAssociation(asbtractAssc);
-					}
-				}
-			 }
+//			 if (clonnedObj.isAbstractDefined())
+//			 {
+//				for (MIFAssociation asbtractAssc:clonnedObj.getAssociations())
+//				{
+// 					//the cloned MIFClass is abstract, push all its association down to its children
+// 					for (MIFClass childChoice:clonnedObj.getChoices())
+// 					{
+//							childChoice.addAssociation(asbtractAssc);
+//					}
+//				}
+//			 }
 			 clonnedObj.setChoice(choiceClonnedHash);
 			 clonnedObj.setChoiceSelected(false);
 //			 clonnedObj.setOptionChosen(false);
@@ -608,6 +610,9 @@ import java.util.Iterator;
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.26  2009/02/09 21:42:45  wangeug
+  * HISTORY :correct errors in "nullFlavor" setting: set value with "nullFlavor" attribute only if a NULLFLAVOR constant being found with the value of a "coreAttribute"
+  * HISTORY :
   * HISTORY :Revision 1.25  2009/01/16 15:11:16  wangeug
   * HISTORY :add new attribute:copyrightYears
   * HISTORY :
