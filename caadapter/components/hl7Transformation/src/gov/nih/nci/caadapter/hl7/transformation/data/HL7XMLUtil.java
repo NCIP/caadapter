@@ -23,8 +23,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.5 $
- * @date 	 DATE: $Date: 2009-02-09 21:42:45 $
+ * @version  REVISION: $Revision: 1.6 $
+ * @date 	 DATE: $Date: 2009-02-12 19:50:18 $
  * @since caAdapter v4.2
  */
 
@@ -69,6 +69,13 @@ public class HL7XMLUtil {
 			}
 			if (coreAttr==null)
 			{
+				Attribute  nfAttr=getAttributByName("nullFlavor", element);
+				if (nfAttr!=null)
+				{
+					nfAttr.setValue(NOT_PRESENT_NULLFLAVOR_DEFAULT);
+					return;
+				}
+				
 				element.addAttribute("nullFlavor", NOT_PRESENT_NULLFLAVOR_DEFAULT,null,null,null);
 				//move the "nullFlavor" as its first attribute
 				int attrSize=element.getAttributes().size();
@@ -334,6 +341,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.5  2009/02/09 21:42:45  wangeug
+* HISTORY: correct errors in "nullFlavor" setting: set value with "nullFlavor" attribute only if a NULLFLAVOR constant being found with the value of a "coreAttribute"
+* HISTORY:
 * HISTORY: Revision 1.4  2009/01/14 20:30:24  wangeug
 * HISTORY: only process "inlineText" as core attribute if defined by user/system for a datatype
 * HISTORY:
