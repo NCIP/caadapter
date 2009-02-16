@@ -30,9 +30,9 @@ import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
-import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
+//import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
-import gov.nih.nci.caadapter.ui.common.DefaultSettings;
+//import gov.nih.nci.caadapter.ui.common.DefaultSettings;   //deleted on 02/16/2009 by umkis 
 
 import java.io.*;
 import java.util.ArrayList;
@@ -56,14 +56,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.33 $
- * @date $Date: 2009-02-10 18:42:51 $
+ * @version $Revision: 1.34 $
+ * @date $Date: 2009-02-16 16:23:08 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.33 2009-02-10 18:42:51 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.34 2009-02-16 16:23:08 umkis Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -545,7 +545,7 @@ public class TransformationService
     	//format v2 message schema
     	int spIndx=v2MessageSchema.indexOf("/");
     	if (v2MessageSchema==null||spIndx<0)
-    		System.out.println("TransformationService.pareV2Message()...invalid V2 message schema:"+v2MessageSchema);
+    		System.out.println("TransformationService.parseV2Message()...invalid V2 message schema:"+v2MessageSchema);
     	String v2Version = v2MessageSchema.substring(0, spIndx);
     	String v2Type=v2MessageSchema.substring(spIndx+1);
     	try {
@@ -563,14 +563,14 @@ public class TransformationService
 			//forward transformed XML to next step
 			HL7V2XmlSaxContentHandler saxHandler= new HL7V2XmlSaxContentHandler();
 			SAXResult saxResult=new SAXResult(saxHandler);
-			System.out.println("TransformationService.pareV2Message()...decode source message:"+(System.currentTimeMillis()-csvbegintime));
+			System.out.println("TransformationService.parseV2Message()...decode source message:"+(System.currentTimeMillis()-csvbegintime));
 			ArrayList<byte[]> v2Bytes=lfEncoder.getEncodeByteList();
 			for(byte[] v2MsgByte:v2Bytes)
 			{
 				Source saxSource = encoder.decodeFromBytes(v2MsgByte);
 				transformer.transform(saxSource, saxResult);
 			}
-			System.out.println("TransformationService.pareV2Message()...decode/transfer data :"+(System.currentTimeMillis()-csvbegintime));
+			System.out.println("TransformationService.parseV2Message()...decode/transfer data :"+(System.currentTimeMillis()-csvbegintime));
 			return saxHandler.getDataResult();
 		} catch (EncoderException e) {
 			// TODO Auto-generated catch block
@@ -618,6 +618,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.33  2009/02/10 18:42:51  umkis
+ * HISTORY      : Include schema validation against xsd files when V3 message generating. - additional modifying
+ * HISTORY      :
  * HISTORY      : Revision 1.32  2009/02/10 05:34:18  umkis
  * HISTORY      : Include schema validation against xsd files when V3 message generating.
  * HISTORY      :
