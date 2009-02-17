@@ -32,7 +32,7 @@ import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
 //import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
 import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
-//import gov.nih.nci.caadapter.ui.common.DefaultSettings;   //deleted on 02/16/2009 by umkis 
+//import gov.nih.nci.caadapter.ui.common.DefaultSettings;   //deleted on 02/16/2009 by umkis
 
 import java.io.*;
 import java.util.ArrayList;
@@ -56,14 +56,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.34 $
- * @date $Date: 2009-02-16 16:23:08 $
+ * @version $Revision: 1.35 $
+ * @date $Date: 2009-02-17 18:53:10 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.34 2009-02-16 16:23:08 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.35 2009-02-17 18:53:10 umkis Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -71,6 +71,7 @@ public class TransformationService
     private InputStream sourceDataStream = null;
 
     private boolean schemaValidation = false;
+    private String schemaFileName = null;
 
     //intermediate data
     private MapParser mapParser = null;
@@ -181,6 +182,34 @@ public class TransformationService
     {
         return schemaValidation;
     }
+
+    /**
+     * @param schemaFile
+     */
+    public boolean setSchemaFileName(String schemaFile)
+    {
+        if (!schemaFile.toLowerCase().endsWith(".xsd"))
+        {
+            return false;
+        }
+        File file = new File(schemaFile);
+        if ((file.exists())&&(file.isFile()))
+        {
+            this.schemaFileName = schemaFile;
+            schemaValidation = true;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return schemaFileName.
+     */
+    public String getSchemaFileName()
+    {
+        return schemaFileName;
+    }
+
 
     /**
 	 * @return the outputFile
@@ -438,56 +467,60 @@ public class TransformationService
             boolean isReorganizedMssageGenerated = false;
             while(schemaValidation)
             {
-
                 String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
-                String dirS = FileUtil.getV3XsdFilePath();
-                if (dirS == null)
+                String schemaFileNameL = null;
+                if (schemaFileName == null)
                 {
-                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
-                    break;
-                }
-                dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
-
-                File dir = new File(dirS);
-                if ((!dir.exists())||(!dir.isDirectory()))
-                {
-                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
-                    break;
-                }
-                File[] files = dir.listFiles();
-                List<File> listFile = new ArrayList<File>();
-                for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
-                if (listFile.size() == 0)
-                {
-                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
-                    break;
-                }
-
-                String messageType = mifClass.getMessageType();
-                if ((messageType == null)||(messageType.trim().equals("")))
-                {
-                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
-                    break;
-                }
-                messageType = messageType.trim();
-
-                String schemaFileName = null;
-                for (File file:listFile)
-                {
-                    String fileName = file.getName();
-                    if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
+                    String dirS = FileUtil.getV3XsdFilePath();
+                    if (dirS == null)
                     {
-                        schemaFileName = file.getAbsolutePath();
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
+                        break;
+                    }
+                    dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
+
+                    File dir = new File(dirS);
+                    if ((!dir.exists())||(!dir.isDirectory()))
+                    {
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
+                        break;
+                    }
+                    File[] files = dir.listFiles();
+                    List<File> listFile = new ArrayList<File>();
+                    for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
+                    if (listFile.size() == 0)
+                    {
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
+                        break;
+                    }
+
+                    String messageType = mifClass.getMessageType();
+                    if ((messageType == null)||(messageType.trim().equals("")))
+                    {
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
+                        break;
+                    }
+                    messageType = messageType.trim();
+
+                    //String schemaFileName = null;
+                    for (File file:listFile)
+                    {
+                        String fileName = file.getName();
+                        if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
+                        {
+                            schemaFileNameL = file.getAbsolutePath();
+                            break;
+                        }
+                    }
+                    if (schemaFileNameL == null)
+                    {
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
                         break;
                     }
                 }
-                if (schemaFileName == null)
-                {
-                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
-                    break;
-                }
+                else schemaFileNameL = schemaFileName;
 
-                XMLValidator v = new XMLValidator(v3Message, schemaFileName, true);
+                XMLValidator v = new XMLValidator(v3Message, schemaFileNameL, true);
 
                 ValidatorResults results = v.validate();
                 String reorganizedV3FileName = v.getTempReorganizedV3File();
@@ -618,6 +651,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.34  2009/02/16 16:23:08  umkis
+ * HISTORY      : per Eugenes asking, the line "import gov.nih.nci.caadapter.ui.common.DefaultSettings;" was deleted.
+ * HISTORY      :
  * HISTORY      : Revision 1.33  2009/02/10 18:42:51  umkis
  * HISTORY      : Include schema validation against xsd files when V3 message generating. - additional modifying
  * HISTORY      :
