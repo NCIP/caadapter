@@ -31,7 +31,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 
 public class FileUtil
@@ -781,6 +781,19 @@ public class FileUtil
             return f.getAbsolutePath();
         }
 
+        String temp = fileName;
+        while(true)
+        {
+            int idx = temp.indexOf(File.separator);
+            if (idx < 0) break;
+            temp = temp.substring(idx + 1);
+        }
+        f = new File(directory + File.separator + temp);
+        if (f.exists())
+        {
+            return f.getAbsolutePath();
+        }
+
         String fileLocation = null;
         try
         {
@@ -1149,6 +1162,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.19  2008/12/12 22:01:30  umkis
+ * add getV3XsdFilePath() and getPropertyFromComponentPropertyFile(String key)
+ *
  * Revision 1.18  2008/10/21 21:07:50  umkis
  * update ODI to 2008 NE
  *
