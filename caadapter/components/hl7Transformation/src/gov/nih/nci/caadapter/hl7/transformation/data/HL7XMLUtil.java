@@ -23,8 +23,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.6 $
- * @date 	 DATE: $Date: 2009-02-12 19:50:18 $
+ * @version  REVISION: $Revision: 1.7 $
+ * @date 	 DATE: $Date: 2009-02-19 19:48:41 $
  * @since caAdapter v4.2
  */
 
@@ -298,7 +298,7 @@ public class HL7XMLUtil {
 		Attribute rtnAttr=null;
 		for (Attribute elmAttr:element.getAttributes())
 		{
-			if (elmAttr.getValue().startsWith(attributeValue))
+			if (elmAttr.getValue()!=null&&elmAttr.getValue().startsWith(attributeValue))
 			{
 				rtnAttr=elmAttr;
 				break;
@@ -341,6 +341,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.6  2009/02/12 19:50:18  wangeug
+* HISTORY: avoid duplicated "nullFlavor" attribute
+* HISTORY:
 * HISTORY: Revision 1.5  2009/02/09 21:42:45  wangeug
 * HISTORY: correct errors in "nullFlavor" setting: set value with "nullFlavor" attribute only if a NULLFLAVOR constant being found with the value of a "coreAttribute"
 * HISTORY:
