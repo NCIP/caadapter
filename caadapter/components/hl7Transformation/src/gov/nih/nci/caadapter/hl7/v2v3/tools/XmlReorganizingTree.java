@@ -304,7 +304,16 @@ public class XmlReorganizingTree
                 if (xNode.getRole().equals(xNode.getRoleKind()[0])) cntEle++;
                 else if (xNode.getRole().equals(xNode.getRoleKind()[1]))
                 {
-                    att = att + " " + xNode.getName() + "=\"" + xNode.getValue() + "\"";
+                    String nm = xNode.getName();
+                    String vl = xNode.getValue();
+
+                    boolean checked = true;
+                    if ((nm.equalsIgnoreCase("nullFlavor"))&&(vl.equals("NP")))
+                    {
+                        if (hasNodeValue(node)) checked = false;
+                        vl = "NI";
+                    }
+                    if (checked) att = att + " " + nm + "=\"" + vl + "\"";
                 }
                 else if (xNode.getRole().equals(xNode.getRoleKind()[2]))
                 {
@@ -339,6 +348,36 @@ public class XmlReorganizingTree
         }
         return pre;
     }
+
+    private boolean hasNodeValue(DefaultMutableTreeNode node)
+    {
+        for(int i=0;i<node.getChildCount();i++)
+        {
+            DefaultMutableTreeNode aNode = (DefaultMutableTreeNode) node.getChildAt(i);
+            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) aNode.getUserObject();
+            if (xNode.getRole().equals(xNode.getRoleKind()[0]))
+            {
+                if (hasNodeValue(aNode)) return true;
+            }
+            else if (xNode.getRole().equals(xNode.getRoleKind()[1]))
+            {
+                String nm = xNode.getName();
+
+                if ((nm.equalsIgnoreCase("value"))||
+                    (nm.equalsIgnoreCase("code"))||
+                    (nm.equalsIgnoreCase("extension")))
+                {
+                    return true;
+                }
+            }
+            else if (xNode.getRole().equals(xNode.getRoleKind()[2]))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void printXML()
     {
         List<String> pre = prepareXMLList();
