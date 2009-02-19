@@ -9,9 +9,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.help;
 
+import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
@@ -24,8 +24,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URL;
-import java.net.MalformedURLException;
-import java.util.List;
 
 import edu.stanford.ejalbert.exception.UnsupportedOperatingSystemException;
 import edu.stanford.ejalbert.exception.BrowserLaunchingInitializingException;
@@ -37,8 +35,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.20 $
- * @date       $Date: 2008-11-10 20:55:27 $
+ * @version    $Revision: 1.21 $
+ * @date       $Date: 2009-02-19 19:49:58 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -55,7 +53,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.20 2008-11-10 20:55:27 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.21 2009-02-19 19:49:58 wangeug Exp $";
 
 
 	private JEditorPane mainView;
@@ -66,15 +64,12 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String env;
 
 	private String ERROR_TAG = "ERROR";
-	private String ERROR_MESSAGE_FILE_NOT_FOUND = ERROR_TAG + " : File Not Found";
 	private String ERROR_MESSAGE_FILE_READING_ERROR = ERROR_TAG + " : File Reading Error";
 	private String ERROR_MESSAGE_FILE_WRITING_ERROR = ERROR_TAG + " : File Writing Error";
 	private String ERROR_MESSAGE_MALFORMED_URL = ERROR_TAG + " : Malformed URL";
 	private String SYSTEM_PROPERTY_OS_NAME = "os.name";
 	private String SYSTEM_PROPERTY_WINDOWS_OS_NAME = "WINDOWS";
 	private String RUNNING_DIRECTORY_NAME = "etc";
-	//private String IMAGE_DIRECTORY_PATH = "../images/";
-	private String LICENSE_DIRECTORY_PATH = "license/caAdapter_license.txt";
 	private int DEFAULT_SCREEN_WIDTH = 557;
 	private int DEFAULT_SCREEN_HEIGHT = 409;
 	private int DEFAULT_SCREEN_WIDTH_DEFFER = 6;
@@ -92,11 +87,14 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String WINDOWS_MARKER_IN_SOURCE_HTML_FILE = "<!--&&:Variable Area;Don't touch this Paragraph-->";
 	private String EXIT_HYPERLINK_IN_SOURCE_HTML_FILE = "EXIT.HTML";
 	private String LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE = "licenseinformation";
-	private String WEB_BROWSER_COMMAND_ON_WINDOW_OS = "C:/Program Files/Internet Explorer/IEXPLORE.EXE ";
-
+	
 	public AboutWindow(JFrame parent)
 	{
-		super(parent, "About caAdapter Global Model Exchange (GME)", false);
+		super(parent, false);//, "About caAdapter HL7 Mapping and Transformation Service", false);
+		if(CaadapterUtil.findApplicationConfigValue("caadapter.product.name")!=null)
+			this.setTitle(CaadapterUtil.findApplicationConfigValue("caadapter.product.name"));
+		else
+			this.setTitle(Config.PRODUCT_NAME);
 		this.setResizable(false);
 		dirSeparater = File.separator;
 		thisWindow = this;
@@ -123,9 +121,6 @@ public class AboutWindow extends JDialog //implements ActionListener
 		js2.setBounds(0, 0, width, height);
 		mainView.setEditable(false);
 		this.add(js2);
-		//JLabel jlb = new JLabel(" ");
-		//jlb.setBounds(0, 0, 20, 30);
-		//this.add(jlb);
 		setSize(width, height);   
 		String st = setVersionAndBuildNumber(commonPath + Config.DEFAULT_ABOUT_WINDOW_DATA_FILENAME);
 
@@ -189,17 +184,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 									
 									String licenseString = generateLicenseInformationHTMLString();
 									new HTMLViewer(licenseString, 700, 500, "caAdapter License Information", true);
-									
-//									String licenseHTML_URL = "";
-//						        	String location = gov.nih.nci.caadapter.hl7.demo.LaunchUI.getCodebase();
-//						        	if(location!=null && location.trim().length()>0){
-//						        		licenseHTML_URL = location+"caadapter-mms/licenseinformation.html";
-//						        	}
-//
-//									licenseHTML_URL = generateLicenseInformationHTML(LICENSE_DIRECTORY_PATH);
-//									if (licenseHTML_URL.startsWith(ERROR_TAG)) new HTMLViewer(commonURIPath + LICENSE_INFORMATION_HYPERLINK_IN_SOURCE_HTML_FILE + ".html", 700, 500, "caadapter License Information");
-//									else new HTMLViewer(licenseHTML_URL, 700, 500, "caAdapter License Information");
-								}
+																	}
 								else
 								{
 									//System.out.println(" URL -- C");
@@ -222,22 +207,6 @@ public class AboutWindow extends JDialog //implements ActionListener
 									{
 										new HTMLViewer(sURL);
 									}
-
-
-									/*
-                                if (env.toUpperCase().indexOf(SYSTEM_PROPERTY_WINDOWS_OS_NAME) < 0) new HTMLViewer(sURL);
-                                else
-                                  {
-                                    try
-                                      {
-                                        Runtime.getRuntime().exec(WEB_BROWSER_COMMAND_ON_WINDOW_OS + sURL);
-                                      }
-                                    catch(IOException ie)
-                                      {
-                                        new HTMLViewer(sURL);
-                                      }
-                                  }
-									 */
 								}
 							}
 						}
@@ -251,60 +220,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String setVersionAndBuildNumber(String commonPath)
 	{
 		String tot = "";
-
-
-		/*
-        boolean normal = true;
-        FileReader fr = null;
-        BufferedReader br = null;
-        try { fr = new FileReader(commonPath); }
-        catch(FileNotFoundException fe) 
-        { 
-        	//fe.printStackTrace();
-            normal = false;
-            //return ERROR_MESSAGE_FILE_NOT_FOUND+":"+commonPath;
-        }
-
-        if (!normal)
-        {
-            String aboutWinHTMLFileClassPath = "etc/aboutwin.html";
-            ClassLoaderUtil loader = null;
-            try
-            {
-                loader = new ClassLoaderUtil(aboutWinHTMLFileClassPath);
-            }
-            catch(IOException ie)
-            {
-                return ERROR_TAG + " : Class Loading failure with this path => " + aboutWinHTMLFileClassPath;
-            }
-
-            List<String> licenseFileNames = loader.getFileNames();
-
-            if (licenseFileNames.size() == 0) return ERROR_TAG + " : No File in this Class path => " + aboutWinHTMLFileClassPath;
-            for (int i=0;i<licenseFileNames.size();i++)
-            {
-                try
-                {
-                    fr = new FileReader(loader.getFileName(i));
-                    break;
-                }
-                catch(FileNotFoundException fe)
-                {
-                    fr = null;
-                }
-            }
-            if (fr == null) return ERROR_TAG + " : No File Reader Object in this Class path => " + aboutWinHTMLFileClassPath;
-        }
-
-        br = new BufferedReader(fr);
-        String readLineOfFile = "";
-
-        try { while((readLineOfFile=br.readLine())!=null) tot = tot + readLineOfFile + "\r\n"; }
-        catch(IOException ie) { return ERROR_MESSAGE_FILE_READING_ERROR; } // "ERROR : File Reading Error"; }
-		 */
 		tot = getBaseHTML1();
-		
-
 		tot = replaceTaggedContent(tot, VERSION_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_VERSION, VERSION_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, BUILD_TAG_IN_SOURCE_HTML_FILE, Config.CAADAPTER_BUILD_NUMBER, BUILD_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, JDK_VERSION_TAG_IN_SOURCE_HTML_FILE, Config.JDK_VERSION, JDK_VERSION_MARKER_IN_SOURCE_HTML_FILE);
@@ -312,8 +228,6 @@ public class AboutWindow extends JDialog //implements ActionListener
 		//replace background image path
 		URL bkgUrl=getResource("images/"+Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME);
 		URL iconUrl=getResource("images/"+Config.CAADAPTER_ICON_FILENAME);
-		
-		//tot = replaceTaggedContent(tot, BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE, IMAGE_DIRECTORY_PATH + Config.ABOUT_WINDOW_BACKGROUND_IMAGE_FILENAME + "\">", BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, BACKGROUND_FILE_NAME_TAG_IN_SOURCE_HTML_FILE, bkgUrl+ "\">", BACKGROUND_FILE_NAME_MARKER_IN_SOURCE_HTML_FILE);
 		tot = replaceTaggedContent(tot, "<img id=\"icon\" src=\"", iconUrl+ "\" >", "<!-- caadapter icon -->" );
 		//replace ok Button image path
@@ -359,7 +273,6 @@ public class AboutWindow extends JDialog //implements ActionListener
 		String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> <br><hr width=\"80%\"><br>";
 		
 		String readLineOfFile = "";
-		String buffer = "";
 		try
 		{
 			BufferedReader br = new BufferedReader(new InputStreamReader(getResource("license/caAdapter_license.txt").openStream()));
@@ -383,105 +296,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	}
 
 	
-	private String generateLicenseInformationHTML(String licensePath)
-	{
-		ClassLoaderUtil loader = null;
-		try
-		{
-			loader = new ClassLoaderUtil(licensePath);
-		}
-		catch(IOException ie)
-		{
-			return ERROR_TAG + " : Class Loading failure with this path => " + licensePath;
-		}
-		String displayFileName = FileUtil.getTemporaryFileName(".html");
-		String mainContent = "<a name='top'><h2><font color='blue'>caadapter License Information</font></h2></a><br><br> This " +
-		"license information is automatically merged and generated from the following license files in " +
-		licensePath + " directory.<br><br>%%XX<br><br><hr width=\"80%\"><br>";
-		List<String> licenseFileNames = loader.getFileNames();
-		String fileList = "";
-		FileReader fr = null;
-		BufferedReader br = null;
-		int count = 0;
-		if (licenseFileNames.size() == 0) return ERROR_TAG + " : No File";
-		if (licenseFileNames.size() == 1) mainContent = "";
-		for (int i=0;i<licenseFileNames.size();i++)
-		{
-
-			try { fr = new FileReader(loader.getFileName(i)); }
-			catch(FileNotFoundException fe)
-			{
-				continue;
-			}
-
-			br = new BufferedReader(fr);
-
-			count++;
-
-			String readLineOfFile = "";
-			String buffer = "";
-			try
-			{
-				if (licenseFileNames.size() > 1) mainContent = mainContent + "<a name='a" + i + "'><b>Source File</b></a> : " + licensePath + File.separator + loader.getName(i) + "<br><br>";
-				while(true)
-				{
-					readLineOfFile=br.readLine();
-					if (readLineOfFile==null) break;
-
-
-					String c = readLineOfFile.trim();
-					if (c.equals("")) mainContent = mainContent + "<br><br>";
-					else mainContent = mainContent + "<br>" + c;
-				}
-				if (licenseFileNames.size() > 1)
-				{
-					mainContent = mainContent + "<br><br><a href='#top'>go to top</a><br><hr width=\"80%\"><br><br>";
-					fileList = fileList + "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#a"+i+"'>" + licensePath + File.separator + loader.getName(i) + "</a><br>";
-				}
-			}
-			catch(IOException ie)
-			{
-				return ERROR_MESSAGE_FILE_READING_ERROR; // "ERROR : File Reading Error"; }
-			}
-		}
-		if (count == 0) return ERROR_TAG + " : No File";
-		FileWriter fw = null;
-		try
-		{
-			fr.close();
-			br.close();
-		}
-		catch(IOException ie)
-		{}
-		try
-		{
-			fw = new FileWriter(displayFileName);
-
-			if (licenseFileNames.size() > 1)
-			{
-				fw.write("<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent.replace("%%XX", fileList) + "<br></body></html>");
-			}
-			else fw.write("<html><head><title>caadapter Licence Agreement</title></head><body><br><br>" + mainContent + "<br></body></html>");
-
-			fw.close();
-		}
-		catch(IOException ie)
-		{
-
-			return ERROR_MESSAGE_FILE_WRITING_ERROR + " : " + displayFileName; //"ERROR : File Writing Error";
-		}
-		String achar = "";
-		String cc = "";
-		for (int i=0;i<displayFileName.length();i++)
-		{
-			achar = displayFileName.substring(i, i+1);
-			if (achar.equals(File.separator)) cc = cc + "/";
-			else cc = cc + achar;
-		}
-		File aFile = new File(displayFileName);
-		aFile.deleteOnExit();
-		return "file:///" + cc;
-	}
+	
 	private String replaceTaggedContent(String tot, String tagOfContent, String replacingStr, String tagOfTail)
 	{
 		try
@@ -499,14 +314,12 @@ public class AboutWindow extends JDialog //implements ActionListener
 	{
 		AboutWindow tt;
 		WinCloseExit(AboutWindow st) { tt = st; }
-//		public void windowClosing(WindowEvent e)  {}
 		public void windowClosing(WindowEvent e)  {}//System.out.println(" URL -- A1 : windowClosing");}//tt.dispose();}
 		public void windowClosed(WindowEvent e)  {}//System.out.println(" URL -- A2 : windowClosed");}
 		public void windowOpened(WindowEvent e) {}//System.out.println(" URL -- A3 : windowOpened");}
 		public void windowDeiconified(WindowEvent e) {}//System.out.println(" URL -- A4 : windowDeiconified");}
 		public void windowIconified(WindowEvent e) {}//System.out.println(" URL -- A5 : windowIconified");}
 		public void windowActivated(WindowEvent e) {}//System.out.println(" URL -- A6 : windowActivated");}
-		//public void windowDeactivated(WindowEvent e) {}//System.out.println(" URL -- A7 : windowDeactivated");}
 		public void windowLostFocus(WindowEvent e) {}//System.out.println(" URL -- A7 : windowLostFocus");}
 		public void windowGainedFocus(WindowEvent e) {}//System.out.println(" URL -- A7 : windowGainedFocus(");}
 		public void windowDeactivated(WindowEvent e) {tt.dispose();  	}
@@ -525,7 +338,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"<td width='8' valign='top'><img id=\"icon\" src=\"../images/caAdapter-icon.gif\" /><!-- caadapter icon --> </td>\n" +
 		"<td valign='top'>\n" +
 		"<font color='black' size='3' face='Arial'><!--&&:Variable Area;Don't touch this Paragraph-->\n" +
-		"     <h2>caAdapter Global Model Exchange (GME) version 4.2 </h2> " + getNarrativeSentence() + "\n" +
+		"     <h2>"+this.getTitle()+"</h2> " + getNarrativeSentence() + "\n" +
 		"<br>\n" +
 		"\n" +
 		"</font>\n" +
@@ -536,7 +349,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 		"    </font>\n" +
 		"<br>\n" +
 		"    <font color='black' size='3' face='Arial'>\n" +
-		"<br>Copyright © 2004-2008<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph-->  Science Applications International Corporation (\"SAIC\")(\"caBIG™ Participant\").  \n" +
+		"<br>Copyright © 2004-2009<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph-->  Science Applications International Corporation (\"SAIC\")<br>(\"caBIG™ Participant\").  \n" +
 		"All right reserved\n" +
 		"</font>\n" +
 		"    </td>\n" +
@@ -554,86 +367,19 @@ public class AboutWindow extends JDialog //implements ActionListener
 		return htmlS;
 	}
 	
-	private String getBaseHTML()
-	{
-		String htmlS = "";
-		htmlS = "<html><head><title>About Window of caAdapter</title></head>\n" +
-		"<body background=\"../images/aboutwin.png\"><!--$$:BACKGROUND_FILE_NAME_MARKER;Don't touch this Paragraph-->\n" +
-		"<table>\n" +
-		"<tr>\n" +
-		"<td width='8'></td>\n" +
-		"<td width='240' valign='top'>\n" +
-		"    <br><br><br>\n" +
-		"    <font color='#164771' size='7' face='Arial'>\n" +
-		"<b>caAdapter</b><br>\n" +
-		"        </font>\n" +
-		"<font color='#164771' size='5' face='Arial'>\n" +
-		"\n" +
-		"Version 1.2<!--@@:VERSION_MARKER;Don't touch this Paragraph-->\n" +
-		"\n" +
-		"</font>\n" +
-		"<font color='#164771' size='4' face='Arial'>\n" +
-		"<br>" + //"&nbsp;(Build# 121<!--$$:BUILD_MARKER;Don't touch this Paragraph-->)<br><br>\n" +
-		"    JDK 1.5.0_04<!--$$:JDK_VERSION_MARKER;Don't touch this Paragraph--><br>\n" +
-		"\n" +
-		"\n" +
-		"</font>\n" +
-		"\n" +
-		"<font color='#164771' size='3' face='Arial'><br>For NCICB Support, please visit:\n" +
-		"    <a href='" + Config.LINKED_URL_FOR_SUPPORT + "'>" + Config.LINKED_URL_FOR_SUPPORT + "</a><br>\n" +
-		"</font>\n" +
-		"\n" +
-		"\n" +
-		"</td>\n" +
-		"<td width='295' valign='top'>\n" +
-		"<font color='#e1f2de' size='3' face='Arial'><!--&&:Variable Area;Don't touch this Paragraph-->\n" +
-		"     <i><b>caAdapter</b></i> " + getNarrativeSentence() + "\n" +
-		"<br>\n" +
-		"\n" +
-		"</font>\n" +
-		"    <font color='blue' size='3' face='Ariel'>\n" +
-		"    <a href='##LicenseInformation'>\n" +
-		"        License Information</a>\n" +
-		"    </font>\n" +
-		"\n" +
-		"<font color='#e1f2de' size='3' face='Arial'><br><br>\n" +
-		"    Developed by: <br>\n" +
-		"    Center for Bioinformatics,<br>National Cancer Institute,<br>National Institutes of Health\n" +
-		"    </font><br>\n" +
-		"    <font color='#d9ecdc' size='3' face='Arial'>\n" +
-		"<br>Copyright © 2004-2008<!--$$:COPYRIGHT_YEARS_MARKER;Don't touch this Paragraph--><br>National Cancer Institute USA<br>\n" +
-		"All right reserved\n" +
-		"</font>\n" +
-		"    </td>\n" +
-		"\n" +
-		"    <td width='*' valign='top'><br><br></td>\n" +
-		"    </tr></table>\n" +
-		"            <table><tr><td>\n" +
-		"\n" +
-		"                <font color='#164771' size='3' face='Arial'>\n" +
-		"   <br>&nbsp;&nbsp;For more information about caAdapter visit:<br>\n" +
-		"</font>\n" +
-		"<font color='#ffffff' size='3' face='Arial'>\n" +
-		"    &nbsp;&nbsp;<a href='" + Config.LINKED_URL_FOR_MORE_INFORMATION + "'>" + Config.LINKED_URL_FOR_MORE_INFORMATION + "</a>\n" +
-		"</font>\n" +
-		"                </td><td>\n" +
-		"                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='exit.html'><img src='OK_Button.png' border='0'></a><br>\n" +
-		"    </td></tr></table>\n" +
-		"</body>\n" +
-		"</html>";
-
-		return htmlS;
-	}
-
 	private String getNarrativeSentence()
 	{
 		return " caAdapter is an open source tool set that provides model mapping services in support of caCORE components and facilitates data mapping and transformation among different kinds of data sources."+
-		"<br>caAdapter GME is one component of caAdapter. The GME tool assists the user with creating and correcting mappings between existing namespace names (XSD's) and UML models (represented as XMI files). The tool allows the model owner to define model-specific common values, such as Package Namespace, that will be automatically applied to the model."+
+		"<br> caAdapter HL7 mapping and transformation service is one component of caAdapter. The mapping tool assists user with mapping a source data specification to a target HL7 v3 specification. The transformation engine tranfers a source data into a HL7 v3 message with the provided mapping between source and target sepcification. It supports two kind of source data: CSV data or HL7 v2 message."+
+//		"<br>caAdapter GME is one component of caAdapter. The GME tool assists the user with creating and correcting mappings between existing namespace names (XSD's) and UML models (represented as XMI files). The tool allows the model owner to define model-specific common values, such as Package Namespace, that will be automatically applied to the model."+
 		"";
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.20  2008/11/10 20:55:27  wangeug
+ * HISTORY      : GME release:version 4.2
+ * HISTORY      :
  * HISTORY      : Revision 1.19  2008/09/26 20:35:27  linc
  * HISTORY      : Updated according to code standard.
  * HISTORY      :
