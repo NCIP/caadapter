@@ -250,7 +250,7 @@ public class XmlReorganizingTree
         DefaultMutableTreeNode node = null;
         List<String> pre = new ArrayList<String>();
         //List<String> post = new ArrayList<String>();
-
+        pre.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         Stack<String> stack = new Stack<String>();
         int depth = 0;
         int beforeDepth = -1;
