@@ -20,7 +20,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.22 $ date $Date: 2009-02-12 19:46:44 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.23 $ date $Date: 2009-02-23 19:34:37 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -318,7 +318,9 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 				clonnedObj.setParticipantTraversalNames(clonedHT);
 			 }		 
 			 clonnedObj.setChoiceSelected(false);
-			 clonnedObj.setOptionChosen(false);
+			 //if MIFAssociation being cloned is OptionalChosen
+			 //the coloned new MIFAssociation should be same
+//			 clonnedObj.setOptionChosen(false);
 			 clonnedObj.setOptionForced(false);
 			 return clonnedObj;
          }
@@ -402,6 +404,9 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 }	
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.22  2009/02/12 19:46:44  wangeug
+ * HISTORY :use sortedChoice() to include all choiceItems from sub-list
+ * HISTORY :
  * HISTORY :Revision 1.21  2008/12/30 15:03:11  wangeug
  * HISTORY :Process MIFClass with isAbstract=true:create new property abstractDefined
  * HISTORY :
