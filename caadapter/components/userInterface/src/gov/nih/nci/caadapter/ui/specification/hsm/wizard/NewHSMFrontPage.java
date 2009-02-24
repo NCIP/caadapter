@@ -27,8 +27,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.6 $
- * date        $Date: 2008-09-29 20:14:54 $
+ * revision    $Revision: 1.7 $
+ * date        $Date: 2009-02-24 16:00:23 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -43,7 +43,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.6 2008-09-29 20:14:54 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.7 2009-02-24 16:00:23 wangeug Exp $";
 
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
@@ -76,10 +76,13 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
 		centerPanel.add(new JLabel(HL7_MESSAGE_TYPE_LABEL), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-
-		//		hl7MessageTypeComboBox = new JComboBox(CaadapterUtil.getAllSupportedMessageTypes());
+		mifIndex =MIFIndexParser.loadMifIndexObject();
 		try {
-			mifIndex =MIFIndexParser.loadMIFInfos();
+			if (mifIndex==null)
+			{
+				System.out.println("NewHSMFrontPage.initialize()...loadMIFIndex from ZIP file");
+				mifIndex =MIFIndexParser.loadMIFInfos();
+			}
 			hl7MessageTypeComboBox=new JComboBox();
 			hl7MessageTypeComboBox.setEnabled(false);
 			hl7MessageCategoryComboBox = new JComboBox(mifIndex.getMessageCategory().toArray());
@@ -191,5 +194,8 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/29 20:14:54  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/
