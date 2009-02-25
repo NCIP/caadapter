@@ -261,18 +261,18 @@ public class ReorganizingForValidating
     private int getElementType(DefaultMutableTreeNode node)
     {
         if (node == null) return ERROR;
-        Object obj = node.getUserObject();
-        if (obj instanceof XSDValidationTreeNode)
+
+        if (getNodeType(node) == XSD)
         {
-            XSDValidationTreeNode xNode = (XSDValidationTreeNode) obj;
+            XSDValidationTreeNode xNode = (XSDValidationTreeNode) node.getUserObject();
             int role = xNode.getRole();
             if (role <= 3) return ELEMENT;
             else if (role == 4) return ATTRIBUTE;
             else if (role == 5) return INLINE;
         }
-        else if (obj instanceof XmlTreeBrowsingNode)
+        else if (getNodeType(node) == XML)
         {
-            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) obj;
+            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
             String role = xNode.getRole();
             if (role.equals("E:")) return ELEMENT;
             else if (role.equals("A:")) return ATTRIBUTE;
@@ -298,7 +298,9 @@ public class ReorganizingForValidating
     {
         tempXSDFileName = null;
         List<String> listLine = FileUtil.readFileIntoList(xsdFileName);
-        String insertedLine = "element name=\"" + rootElementName + "\" type=\"" + messageType + "." + rootElementName + "\"/>";
+        String elementLine = "element";
+        String nameAttr = "name=\"" + rootElementName + "\"";
+        String typeAttr = "type=\"" + messageType + "." + rootElementName + "\"";
         boolean remarkTag = false;
         boolean includeStartTag = false;
         boolean finishedTag = false;
@@ -306,9 +308,18 @@ public class ReorganizingForValidating
         String reserved = "";
         List<String> tempListLine = new ArrayList<String>();
 
+        String beforeStr = null;
             for (String str:listLine)
             {
-                tempListLine.add(str);
+                if (str == null) str = "";
+                //System.out.println(":::" + str);
+
+                if (beforeStr == null) beforeStr = str;
+                else
+                {
+                    tempListLine.add(beforeStr);
+                    beforeStr = str;
+                }
 
                 if (finishedTag) continue;
                 if (str.trim().equals("")) continue;
@@ -328,58 +339,52 @@ public class ReorganizingForValidating
                         reserved = "";
                     }
                 }
+                if (str.trim().equals("")) continue;
                 if (remarkTag) continue;
 
                 idx = str.toLowerCase().indexOf("include schemalocation=\"");
+                String elementHeader = "";
                 if (!includeStartTag)
                 {
                     if (idx > 0)
                     {
                         includeStartTag = true;
-                        insertedLine = str.substring(0, idx) + insertedLine;
+                        elementHeader = str.substring(0, idx);
+                        elementLine = elementHeader + elementLine;
                     }
                     continue;
                 }
 
                 if (idx > 0) continue;
-                //includeEndTag = true;
 
-                String strLower = str.toLowerCase();
-                String insertedLineLower = insertedLine.toLowerCase();
+                String strLower = makeStringLowerAndSimple(str);
 
-                for(int i=0;i<2;i++)
+                boolean isRootElementLine = false;
+
+                while(true)
                 {
-                    String strL = "";
-                    String buf = "";
-                    if (i == 0) buf = strLower;
-                    else buf = insertedLineLower;
-
-                    int before = 32;
-                    for (char chr:buf.toCharArray())
-                    {
-                        int in = (int) chr;
-                        boolean skip = false;
-                        if (in < 32) continue;
-                        if ((in == 32)&&(before == 32)) {}
-                        else strL = strL + chr;
-
-                        before = in;
-                    }
-                    if (i == 0) strLower = strL;
-                    else insertedLineLower = strL;
+                    if (!strLower.startsWith(elementLine.toLowerCase().trim())) break;
+                    idx = strLower.indexOf(nameAttr.toLowerCase().trim());
+                    if (idx < 0) break;
+                    idx = strLower.indexOf(typeAttr.toLowerCase().trim());
+                    if (idx < 0) break;
+                    if (!strLower.endsWith("/>")) break;
+                    isRootElementLine = true;
+                    break;
                 }
-                //System.out.println("FFFF 21 : " + strLower);
-                //System.out.println("FFFF 22 : " + insertedLineLower);
-                if (strLower.equals(insertedLineLower))
+
+                if (isRootElementLine)
                 {
-                    finishedTag = true;
-                    continue;
+                    return false;
+                    //finishedTag = true;
+                    //continue;
                 }
                 tempListLine.add("                         <!-- This root element line was inserted by ReorganizingForValidating.java on "+(new DateFunction()).getCurrentTime()+"  -->");
-                tempListLine.add(insertedLine);
+                tempListLine.add(elementLine + " " + nameAttr + " " + typeAttr + "/>");
                 insertedTag = true;
                 finishedTag = true;
             }
+        if (beforeStr != null) tempListLine.add(beforeStr);
 
         if (insertedTag)
         {
@@ -405,6 +410,30 @@ public class ReorganizingForValidating
         }
         //System.out.println("Nothing changed, so No xsd file created or modified. : " + outFileName);
         return false;
+    }
+
+    private String makeStringLowerAndSimple(String str)
+    {
+        String strL = "";
+        String buf = "";
+        buf = str.toLowerCase().trim();
+
+        int before = 32;
+        for (char chr:buf.toCharArray())
+        {
+            int in = (int) chr;
+            if (in < 32) continue;
+            if (in == 32)
+            {
+                if (before == 32) {}
+                else strL = strL + chr;
+            }
+            else if (in == 39) strL = strL + "\"";
+            else strL = strL + chr;
+
+            before = in;
+        }
+        return strL;
     }
 
     public String getActiveXSDFileName()
