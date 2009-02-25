@@ -30,8 +30,8 @@ import java.util.logging.FileHandler;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.20 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.21 $
  */
 
 public class FileUtil
@@ -39,9 +39,6 @@ public class FileUtil
     private static final String OUTPUT_DIR_NAME = "out";
     private static File OUTPUT_DIR = null;
     private static File ODI_FILE = null;
-
-    //private static String dateFormat = "yyyyMMddHHmmssSSS";
-
     private static MetaDataLoader v2Loader = null;
 
     /**
@@ -1158,10 +1155,30 @@ public class FileUtil
         return result;
     }
 
+    /**
+     * Retrieve a resource URL: work for both standealone and Webstart deployment
+     * @param rscName
+     * @return
+     */
+    public static URL retrieveResourceURL(String rscName)
+    {
+    	URL rtnURL=null;
+    	System.out.println("FileUtil.retrieveResourceURL()..resourceName:"+rscName);
+    	rtnURL=Thread.currentThread().getClass().getResource("/"+rscName);
+		System.out.println("FileUtil.retrieveResourceURL()..standalone URL:"+rtnURL);
+		//load resource for webstart deployment
+		if (rtnURL==null)
+			rtnURL=FileUtil.class.getClassLoader().getResource(rscName);
+		System.out.println("FileUtil.retrieveResourceURL()..webstart URL:"+rtnURL);
+    	return rtnURL;
+    }
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.20  2009/02/18 02:27:50  umkis
+ * update filenameLocate()
+ *
  * Revision 1.19  2008/12/12 22:01:30  umkis
  * add getV3XsdFilePath() and getPropertyFromComponentPropertyFile(String key)
  *

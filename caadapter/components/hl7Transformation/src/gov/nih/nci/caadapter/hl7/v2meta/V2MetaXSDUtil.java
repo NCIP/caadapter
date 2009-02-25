@@ -9,6 +9,7 @@ package gov.nih.nci.caadapter.hl7.v2meta;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Hashtable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -17,6 +18,7 @@ import gov.nih.nci.caadapter.castor.csv.meta.impl.types.CardinalityType;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVMetaImpl;
 import gov.nih.nci.caadapter.common.csv.meta.impl.CSVSegmentMetaImpl;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.cbiit.cmps.common.XSDParser;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
@@ -25,8 +27,8 @@ import gov.nih.nci.cbiit.cmps.core.ElementMeta;
  *
  * @author   OWNER: wangeug  $Date: Oct 6, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.8 $
- * @date 	 DATE: $Date: 2009-02-02 14:53:59 $
+ * @version  REVISION: $Revision: 1.9 $
+ * @date 	 DATE: $Date: 2009-02-25 15:58:36 $
  * @since caAdapter v4.2
  */
 
@@ -102,9 +104,16 @@ public class V2MetaXSDUtil {
 			rootElmnt=xsdPath.substring(xsdPath.lastIndexOf(File.separatorChar)+1);
 		rootElmnt=rootElmnt.substring(0,rootElmnt.indexOf(".xsd") );		
 		try {
-			String xsdRscr = Thread.currentThread().getClass().getResource("/"+xsdPath).toURI().toString();
+			System.out.println("V2MetaXSDUtil.loadMessageMeta()..xsdPath:"+xsdPath);
+			URL xsdURL=FileUtil.retrieveResourceURL(xsdPath);
+			System.out.println("V2MetaXSDUtil.loadMessageMeta()..URL:"+xsdURL);
+			if (xsdURL==null)
+				return null;
+			String xsdRscr = xsdURL.toURI().toString();
 			System.out.println("V2MetaXSDUtil.loadMessageMeta()..message schema URI:"+xsdRscr);
 			p.loadSchema(xsdRscr);
+			
+//			V2MetaXSDUtil.class.getClassLoader().getResource("mifIndex.obj").openStream();
 		} catch (URISyntaxException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -141,22 +150,14 @@ public class V2MetaXSDUtil {
 		return csvFileMetaImpl;
 	}
 	
-	public static String formatV2MessageType(String inValue)
-	{
-		String rtnSt=inValue;
-		if (rtnSt==null)
-			return rtnSt;
-		if (rtnSt.indexOf("/")>-1)
-			rtnSt=rtnSt.substring(rtnSt.lastIndexOf("/")+1);
-		else if (rtnSt.indexOf("\\")>-1)
-			rtnSt=rtnSt.substring(rtnSt.lastIndexOf("\\")+1);
-		return rtnSt;
-	}
 }
 
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.8  2009/02/02 14:53:59  wangeug
+* HISTORY: Load V2 meta with version number and message schema name; do not use the absolute path of schema file
+* HISTORY:
 * HISTORY: Revision 1.7  2009/01/26 19:02:03  wangeug
 * HISTORY: load V2 message from zip file
 * HISTORY:

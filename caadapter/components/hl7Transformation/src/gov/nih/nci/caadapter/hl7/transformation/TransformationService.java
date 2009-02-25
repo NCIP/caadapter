@@ -55,15 +55,15 @@ import com.sun.encoder.EncoderException;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.35 $
- * @date $Date: 2009-02-17 18:53:10 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.36 $
+ * @date $Date: 2009-02-25 15:57:41 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.35 2009-02-17 18:53:10 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.36 2009-02-25 15:57:41 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -583,7 +583,7 @@ public class TransformationService
     	String v2Type=v2MessageSchema.substring(spIndx+1);
     	try {
  			//Create the encoder instance, HL7Encoder
-			Encoder encoder = V2MessageEncoderFactory.getV3MessageEncoder(v2Version, v2Type);
+			Encoder encoder = V2MessageEncoderFactory.getV2MessageEncoder(v2Version, v2Type);
     		if (encoder==null)
     		{
     			System.out.println("TransformationService.parseV2Message()..coder initialization failed"+ v2MessageSchema);
@@ -651,6 +651,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.35  2009/02/17 18:53:10  umkis
+ * HISTORY      : schemaFileName is inserted for specialized schema validation
+ * HISTORY      :
  * HISTORY      : Revision 1.34  2009/02/16 16:23:08  umkis
  * HISTORY      : per Eugenes asking, the line "import gov.nih.nci.caadapter.ui.common.DefaultSettings;" was deleted.
  * HISTORY      :

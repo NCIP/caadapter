@@ -12,6 +12,7 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,10 +40,10 @@ import org.xml.sax.SAXException;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2008-12-12 22:03:43 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2009-02-25 15:56:50 $
  */
 
 public class DatatypeParser {
@@ -347,28 +348,40 @@ public class DatatypeParser {
 		try {
 			db = dbf.newDocumentBuilder();
             String schemaHome = FileUtil.getV3XsdFilePath();
-            if (schemaHome == null) schemaHome = "schemas";
+            if (schemaHome == null) 
+            	schemaHome = "schemas";
             String coreSchemaDir = Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME;// "coreschemas";
 
             String coreSchemaHome=schemaHome+File.separator+coreSchemaDir;
-
+            Document vocDoc = null;
+			Document baseDoc = null;
+			Document allDoc = null;
             File dir = new File(coreSchemaHome);
-            if((!dir.exists())||(!dir.isDirectory())) System.err.println("Invalid V3 Core XSD Directory : " + schemaHome);
+            if(!dir.exists()||!dir.isDirectory()) 
+            {
+            	System.err.println("Invalid V3 Core XSD Directory : " + coreSchemaHome);
 
-            String pathVoc=coreSchemaHome+"/voc.xsd";
-			String pathBase=coreSchemaHome+"/datatypes-base.xsd";
-			String pathDatatype=coreSchemaHome+"/datatypes.xsd";
-//			InputStream isVoc =getClass().getResourceAsStream("/schemas/coreschemas/voc.xsd");
-//			InputStream isDatatypeBase =getClass().getResourceAsStream("/schemas/coreschemas/datatypes-base.xsd");
-//			InputStream isDatatype =getClass().getResourceAsStream("/schemas/coreschemas/datatypes.xsd");
-//			
-//			Document vocDoc = db.parse(isVoc);
-//			Document baseDoc = db.parse(isDatatypeBase);
-//			Document allDoc = db.parse(isDatatype);	
-			
-			Document vocDoc = db.parse(new File(pathVoc));
-			Document baseDoc = db.parse(new File(pathBase));
-			Document allDoc = db.parse(new File(pathDatatype));
+            	String nameVoc=schemaHome+"/"+coreSchemaDir+"/voc.xsd";
+            	URL urlVoc=FileUtil.retrieveResourceURL(nameVoc);
+            	vocDoc = db.parse(urlVoc.openStream());
+            	String nameDatatypeBase=schemaHome+"/"+coreSchemaDir+"/datatypes-base.xsd";
+            	URL urlDtBase=FileUtil.retrieveResourceURL(nameDatatypeBase);
+            	baseDoc = db.parse(urlDtBase.openStream());
+            	String nameDatatype=schemaHome+"/"+coreSchemaDir+"/datatypes.xsd";
+            	URL urlDt=FileUtil.retrieveResourceURL(nameDatatype);
+            	allDoc = db.parse(urlDt.openStream());
+            	
+            }
+            else
+            {
+	            String pathVoc=coreSchemaHome+"/voc.xsd";
+				String pathBase=coreSchemaHome+"/datatypes-base.xsd";
+				String pathDatatype=coreSchemaHome+"/datatypes.xsd";
+
+				vocDoc = db.parse(new File(pathVoc));
+				baseDoc = db.parse(new File(pathBase));
+				allDoc = db.parse(new File(pathDatatype));
+            }
 			
 			handleGTS();
 			parse(vocDoc);
@@ -482,6 +495,9 @@ public class DatatypeParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.17  2008/12/12 22:03:43  umkis
+ * HISTORY :use FileUtil.getV3XsdFilePath() at the loadDatatypeRawdata()
+ * HISTORY :
  * HISTORY :Revision 1.16  2008/09/29 15:48:56  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

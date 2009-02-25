@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -24,8 +25,8 @@ import java.util.zip.ZipFile;
  *
  * @author   OWNER: wangeug  $Date: Jan 22, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-02-24 16:00:40 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-02-25 15:58:16 $
  * @since caAdapter v4.2
  */
 
@@ -62,10 +63,10 @@ public class V2MessageSchemaIndexLoader {
 		try {
 			System.out
 					.println("V2MessageSchemaIndexLoader.loadV2MessageIndexObject()...:v2MessageIndex.obj");
-			
-			InputStream is =V2MessageSchemaIndexLoader.class.getClassLoader().getResource("v2MessageIndex.obj").openStream();
-//				ClassLoader.getSystemClassLoader().getResource("v2MessageIndex.obj").openStream();
-//			.getSystemResourceAsStream("/v2MessageIndex.obj");
+			URL isURL =V2MessageSchemaIndexLoader.class.getClassLoader().getResource("v2MessageIndex.obj");
+			if (isURL==null)
+				return null;
+			InputStream is =isURL.openStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
 			V2MessageIndex v2Index= (V2MessageIndex)ois.readObject();
 			ois.close();
@@ -91,6 +92,9 @@ public class V2MessageSchemaIndexLoader {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/02/24 16:00:40  wangeug
+* HISTORY: move from other package
+* HISTORY:
 * HISTORY: Revision 1.1  2009/01/23 18:22:00  wangeug
 * HISTORY: Load V2 meta with version number and message schema name; do not use the absolute path of schema file
 * HISTORY:

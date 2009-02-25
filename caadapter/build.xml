@@ -25,7 +25,7 @@
     <property name="rds.webstart.deploy.dir" value="${basedir}/dist/rdswebstart"/>
     <property name="tdms.webstart.deploy.dir" value="${basedir}/dist/tdmswebstart"/>
     <property name="caadapter.webstart.deploy.dir" value="${basedir}/dist/caadapter-webstart"/>
-    <property name="webstart.config.files" value="${basedir}/etc/webstart"/>
+    <property name="webstart.home.files" value="${basedir}/etc/webstart"/>
     <property name="webstart.warfile.name" value="caadapter-mms.war"/>
     <property name="hl7.webstart.warfile.name" value="caadapter-hl7.war"/>
     <property name="rds.webstart.warfile.name" value="caadapter-rds.war"/>
@@ -46,7 +46,7 @@
     <property name="signjar.alias" value="myAlias"/>
     <property name="signjar.storepass" value="saic123"/>
     <property name="signjar.keystore" value="NCICBkey"/>
-    <property name="tomcat.dir" value="C:\jboss-4.2.2.GA\server\default\deploy"/>
+    <property name="tomcat.dir" value="C:\devWeb\jboss-4.0.5.GA\server\default\deploy"/>
 
 	<property name="sqleonardo.jar" value="${basedir}/lib/sqleonardo.jar"/>
 	<property name="ref_sqleonardo.jar" value="${basedir}/referenceLib/sqleonardo.jar"/>
@@ -268,13 +268,13 @@
 	        <echo message=""/>
 	        <echo message="------ copying webstart files to webstart deploy directory ------"/>
 	        <!-- copy todir="${webstart.deploy.dir}" includeEmptyDirs="false">
-	            <fileset dir="${webstart.config.files}">
+	            <fileset dir="${webstart.home.files}">
 	                <include name="caadapter-mms-gme.jnlp"/>
 					<include name="index-mms-gme.html"/>
 	            </fileset>
 	        </copy -->
-	        <copy file="${webstart.config.files}/caadapter-mms-gme.jnlp" tofile="${webstart.deploy.dir}/caadapter-gme.jnlp"/>
-			<copy file="${webstart.config.files}/index-mms-gme.html" tofile="${webstart.deploy.dir}/index.html"/>
+	        <copy file="${webstart.home.files}/caadapter-mms-gme.jnlp" tofile="${webstart.deploy.dir}/caadapter-gme.jnlp"/>
+			<copy file="${webstart.home.files}/index-mms-gme.html" tofile="${webstart.deploy.dir}/index.html"/>
 	        <echo message=""/>
 	        <echo message="-------- Applying Webserver replacement --------"/>
 	        <replace file="${webstart.deploy.dir}/caadapter-gme.jnlp" token="$WEBSERVER" value="${webserver}"/>
@@ -364,7 +364,7 @@
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${webstart.deploy.dir}" includeEmptyDirs="false">
-            <fileset dir="${webstart.config.files}">
+            <fileset dir="${webstart.home.files}">
                 <exclude name="**/.zip"/>
                 <exclude name="**/*.jar"/>
             </fileset>
@@ -418,7 +418,14 @@
 		</unzip>
 
     	<copy file="${webstart.config.dir}/caadapter-components.hl7.properties" tofile="${hl7.webstart.deploy.dir}/tmp/caadapter-components.properties"/>
-
+		<echo message="copy MIFIndex and V2MessageIndex" />
+		<copy todir="${hl7.webstart.deploy.dir}/tmp">
+			<fileset dir="${webstart.home.files}">
+            	<include name="mifIndex.obj"/>
+				<include name="v2MessageIndex.obj"/>
+        	</fileset>
+		</copy>
+		
 		<zip destfile="${hl7.webstart.deploy.dir}/caAdapter.jar">
 			<fileset dir="${hl7.webstart.deploy.dir}/tmp"/>
 		</zip>
@@ -431,18 +438,29 @@
             <fileset dir="${lib.dir}">
             	<include name="commons-collections-3.2.jar"/>
 				<include name="commons-logging-1.0.4.jar"/>
-				<include name="xmi.in.out.jar"/>
+				<!-- include name="xmi.in.out.jar"/ -->
 				<include name="xml-apis.jar"/>
 				<include name="xercesImpl.jar"/>
 				<include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
             	<include name="knuHL7V2tree.jar"/>
                	<include name="poi-2.5.1-final-20040804.jar"/>
+               	<include name="mif.zip"/>               	
+               	<include name="jaxb-api.jar"/>
+               	<include name="jsr173_1.0_api.jar"/>
+               	<include name="cmps.jar"/>
+        	</fileset>
+        	<fileset dir="${hl7.module.home}/lib">
+        		 <include name="HL7v2xsd.zip"/>
+			     <include name="encoderframework.jar"/>
+			     <include name="encoderfrmwk-xsdextension.jar"/>
+			     <include name="hl7.jar"/>
+			     <include name="hl7encoder-xsdextension.jar"/>
+			     <include name="xbean.jar"/>      
         	</fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
-            	<include name="resource.zip"/>
-        		<include name="resourceV2.zip"/>
+               	<include name="schemas.zip"/>
                 <include name="jgraph.jar"/>      
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
@@ -456,24 +474,15 @@
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${hl7.webstart.deploy.dir}" includeEmptyDirs="No">
-		   	<fileset dir="${webstart.config.files}">
-		      	<exclude name="**/.zip"/>
-		        <exclude name="**/*.jar"/>
+		   	<fileset dir="${webstart.home.files}">
+		      	<include name="caadapter-hl7.jnlp"/>
+				<include name="index-hl7.html"/>
 		     </fileset>
         </copy>
 
-        <echo message=""/>
+        <echo message="set webserver as $WEBSERVER, index.html..."/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${hl7.webstart.deploy.dir}/caadapter-hl7.jnlp" token="$WEBSERVER" value="${webserver}"/>
-		<delete file="${hl7.webstart.deploy.dir}/caadapter-rds.jnlp"/>
-		<delete file="${hl7.webstart.deploy.dir}/caadapter-mms.jnlp"/>
-        <delete file="${hl7.webstart.deploy.dir}/caadapter-tdms.jnlp"/>
-        <delete file="${hl7.webstart.deploy.dir}/caadapter.jnlp"/>
-
-        <delete file="${hl7.webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${hl7.webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${hl7.webstart.deploy.dir}/index-tdms.html"/>
-        <delete file="${hl7.webstart.deploy.dir}/index-ws.html"/>
         <move file="${hl7.webstart.deploy.dir}/index-hl7.html" tofile="${hl7.webstart.deploy.dir}/index.html" />
 
         <antcall target="generate-keys"/>
@@ -485,8 +494,8 @@
         </signjar>
 
         <echo message=""/>
-        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
-        <war destfile="${dist.dir}/${hl7.webstart.warfile.name}" webxml="">
+        <echo message="-------- creating ${hl7.webstart.warfile.name} file (copied to deploy/webstart) --------"/>
+        <war destfile="${dist.dir}/${hl7.webstart.warfile.name}" webxml="${webstart.home.files}/web.xml">
             <fileset dir="${hl7.webstart.deploy.dir}">
                 <exclude name="myKeyStore"/>
             </fileset>
@@ -494,7 +503,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
+        <copy file="${dist.dir}/${hl7.webstart.warfile.name}" tofile="${tomcat.dir}/${hl7.webstart.warfile.name}"/>
     </target>
 
     <target name="rdswebstart">
@@ -552,7 +561,7 @@
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${rds.webstart.deploy.dir}" includeEmptyDirs="false">
-		   	<fileset dir="${webstart.config.files}">
+		   	<fileset dir="${webstart.home.files}">
 		      	<exclude name="**/.zip"/>
 		        <exclude name="**/*.jar"/>
 		     </fileset>
@@ -650,7 +659,7 @@
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${tdms.webstart.deploy.dir}" includeEmptyDirs="false">
-		   	<fileset dir="${webstart.config.files}">
+		   	<fileset dir="${webstart.home.files}">
 		      	<exclude name="**/.zip"/>
 		        <exclude name="**/*.jar"/>
 		     </fileset>
@@ -755,7 +764,7 @@
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${caadapter.webstart.deploy.dir}" includeEmptyDirs="false">
-		   	<fileset dir="${webstart.config.files}">
+		   	<fileset dir="${webstart.home.files}">
 		      	<exclude name="**/.zip"/>
 		        <exclude name="**/*.jar"/>
 		     </fileset>

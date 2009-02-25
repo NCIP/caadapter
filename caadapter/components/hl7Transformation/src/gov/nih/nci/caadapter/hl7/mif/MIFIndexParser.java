@@ -14,13 +14,16 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-09-29 15:44:41 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2009-02-25 15:59:04 $
  */
 
 
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.FileUtil;
+
 import java.io.*;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Set;
@@ -109,27 +112,51 @@ public class MIFIndexParser {
 	}
 	public  static MIFIndex loadMIFInfos() throws Exception {
 		return loadMIFInfosZip();
-//		InputStream is = Thread.currentThread().getClass().getResourceAsStream("/mifIndexInfos");
-//	    if (is == null)
-//	    	throw new Exception("Loading MIF index information failure : Check the location of mif index file");
-//		ObjectInputStream ois = new ObjectInputStream(is);
-//		MIFIndex mifIndex = (MIFIndex)ois.readObject();
-//		ois.close();
-//		is.close();
-//		return mifIndex;
+	}
+	
+	public static MIFIndex loadMifIndexObject() {
+		try {
+			System.out.println("MIFIndexParser.loadMifIndexObject()...mifIndex.obj");
+			URL isURL=FileUtil.retrieveResourceURL("mifIndex.obj");
+
+			if (isURL==null)
+				return null;
+			InputStream is =isURL.openStream();
+			ObjectInputStream ois = new ObjectInputStream(is);
+			MIFIndex mifIndex= (MIFIndex)ois.readObject();
+			ois.close();
+			is.close();
+			return mifIndex;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void saveV2MessageIndexObject() throws Exception {
+		OutputStream os = new FileOutputStream("mifIndex.obj");
+		ObjectOutputStream oos = new ObjectOutputStream(os); 
+		MIFIndex mifIndex= loadMIFInfosZip() ;
+		oos.writeObject(mifIndex);
+		oos.close();
+		os.close();
 	}
 
     public static void main(String[] args) throws Exception {
-		MIFIndexParser mifInfoParser = new MIFIndexParser();
+//		MIFIndexParser mifInfoParser = new MIFIndexParser();
 //		MIFIndex mifIndexInfos= mifInfoParser.parseMIFIndexInfo();
 //		MIFIndex mifIndexInfos=mifInfoParser.readMIFIndexInfo();
 //		mifInfoParser.saveMIFIndex("c:/temp/mifIndexInfos",mifIndexInfos);
 
 //		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfos();
-		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfosZip();
-		mifInfoParser.printMIFIndex(mifIndexInfos);
+//		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfosZip();
+//		mifInfoParser.printMIFIndex(mifIndexInfos);
+    	MIFIndexParser.saveV2MessageIndexObject();
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.14  2008/09/29 15:44:41  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

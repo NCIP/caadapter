@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<jnlp spec="1.0+" codebase="$WEBSERVER/caadapter-hl7" href="caadapter-hl7.jnlp">
+<jnlp spec="1.0+" codebase="http://localhost:8080/caadapter-hl7" href="caadapter-hl7.jnlp">
 
    <information>
       <title>caAdapter Webstart</title>
@@ -23,12 +23,19 @@
 	<jar href="log4j-1.2.8.jar"/>
 	<jar href="xercesImpl.jar"/>
 	<jar href="castor-0.9.9.jar"/>
-   	<jar href="resource.zip"/>
-    <jar href="resourceV2.zip"/>   
+   	<jar href="mif.zip"/>
+   	<jar href="schemas.zip"/>
+    <jar href="HL7v2xsd.zip"/>
+    <jar href="encoderframework.jar"/>
+	<jar href="encoderfrmwk-xsdextension.jar"/>
+   	<jar href="hl7.jar"/>
+   	<jar href="hl7encoder-xsdextension.jar"/>
+   	<jar href="xbean.jar"/>
     <jar href="poi-2.5.1-final-20040804.jar"/>
 	<jar href="knuHL7V2tree.jar"/>
-	<jar href="sdk-codegen.jar"/>
-	<jar href="spring.jar"/>
+	<jar href="jaxb-api.jar"/>
+	<jar href="jsr173_1.0_api.jar"/>
+	<jar href="cmps.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />

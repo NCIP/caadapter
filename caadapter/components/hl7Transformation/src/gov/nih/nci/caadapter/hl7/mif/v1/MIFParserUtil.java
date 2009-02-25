@@ -9,6 +9,7 @@ package gov.nih.nci.caadapter.hl7.mif.v1;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Hashtable;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -20,6 +21,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
 
@@ -29,8 +31,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2008-09-29 15:42:45 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2009-02-25 15:57:28 $
  */
 public class MIFParserUtil {
 
@@ -39,10 +41,12 @@ public class MIFParserUtil {
 		try
         {
 			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
-        	InputStream mifIs =Thread.currentThread().getClass().getResourceAsStream("/mif/" + mifFileName);
+			String mifPath="mif/" + mifFileName;
+			URL mifURL=FileUtil.retrieveResourceURL(mifPath);
         	//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
-        	if (mifIs==null)
-        		mifIs =Thread.currentThread().getClass().getResourceAsStream("/" + mifFileName);
+			if (mifURL==null)
+				mifURL=FileUtil.retrieveResourceURL(mifFileName);
+			InputStream mifIs =mifURL.openStream();
         	//this.getClass().getResourceAsStream("/mif/" + mifFileName);
         	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         	DocumentBuilder db = dbf.newDocumentBuilder();
@@ -81,7 +85,6 @@ public class MIFParserUtil {
 	}
 	public static MIFClass getMIFClass(String mifFileName)
 	{
-		MIFParser mifParser = new MIFParser();
 		MIFClass mifClass = null;
 
         System.out.println("MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
@@ -96,37 +99,6 @@ public class MIFParserUtil {
 			e.printStackTrace();
 		}
 		return mifClass;
-//		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-//  		DocumentBuilder db;
-//  		MIFParser mifParser = new MIFParser();
-//		try {
-//			db = dbf.newDocumentBuilder();
-//			System.out.println("MIFParserUtil.getMIFClass()...build document:"+mifFileName);
-//			InputStream is =mifParser.getClass().getResourceAsStream("/"+mifFileName);
-//			Document mifDoc = db.parse(is);
-//		    mifParser.parse(mifDoc);
-//		} catch (ParserConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SAXException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-// 		String msgType=mifFileName;
-//		if (msgType.indexOf("UV")>-1)
-//			msgType=msgType.substring(0, msgType.indexOf("UV"));
-//		else if (msgType.indexOf(".mif")>-1)
-//			msgType=msgType.substring(0, msgType.indexOf(".mif"));
-//					
-//		MIFClass rtnClass=mifParser.getMIFClass();
-//		rtnClass.setMessageType(msgType);
-//		MIFReferenceResolver refResolver=new MIFReferenceResolver();
-//		refResolver.getReferenceResolved(rtnClass);
-//		return rtnClass;
 	}
 
 	/**
@@ -153,4 +125,7 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.12  2008/09/29 15:42:45  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
