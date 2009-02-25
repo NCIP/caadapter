@@ -7,7 +7,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.v2meta;
 
-import gov.nih.nci.caadapter.ui.mapping.hl7.V2MessageIndex;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -25,8 +24,8 @@ import java.util.zip.ZipFile;
  *
  * @author   OWNER: wangeug  $Date: Jan 22, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-02-25 15:58:16 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-02-25 16:52:29 $
  * @since caAdapter v4.2
  */
 
@@ -92,6 +91,9 @@ public class V2MessageSchemaIndexLoader {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/02/25 15:58:16  wangeug
+* HISTORY: enable webstart
+* HISTORY:
 * HISTORY: Revision 1.1  2009/02/24 16:00:40  wangeug
 * HISTORY: move from other package
 * HISTORY:
