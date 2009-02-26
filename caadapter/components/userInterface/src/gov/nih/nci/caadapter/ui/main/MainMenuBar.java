@@ -58,8 +58,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.45 $
- * @date       $Date: 2009-02-03 19:02:07 $
+ * @version    $Revision: 1.46 $
+ * @date       $Date: 2009-02-26 19:43:53 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -251,6 +251,9 @@ public class MainMenuBar extends AbstractMenuBar
             newV2ToHL7.insert(newHSMAction, 0);
             newGroup.add(newV2ToHL7);
             
+            JMenu newHL7ToCsv=constructNewV3TOCSVMenu();
+            newGroup.add(newHL7ToCsv);
+            
         } 
         else
         {
@@ -270,6 +273,9 @@ public class MainMenuBar extends AbstractMenuBar
                 JMenu newV2ToHL7=constructNewV2TOV3Menu();
                 newV2ToHL7.insert(newHSMAction, 0);
                 newGroup.add(newV2ToHL7);
+                
+                JMenu newHL7ToCsv=constructNewV3TOCSVMenu();
+                newGroup.add(newHL7ToCsv);
             }
             if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_SDTM_TRANSFORMATION_ACTIVATED))
             {
@@ -712,19 +718,14 @@ private int findKeyStrokeIndex(int indx)
     {
         if (!hasActiveDocument)
         {
-            //			menuItemMap.get(ActionConstants.NEW_MAP_FILE).getAction().setEnabled(true);
             resetMenuItem(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, true);
-            //			newMapFileItem.getAction().setEnabled(true);
-            //			newCSVSpecificationItem.getAction().setEnabled(true);
-            //			menuItemMap.get(ActionConstants.NEW_CSV_SPEC).getAction().setEnabled(true);
+            resetMenuItem(ActionConstants.NEW_V2_TO_V3_MAP_FILE, true);
             resetMenuItem(ActionConstants.NEW_CSV_SPEC, true);
             resetMenuItem(ActionConstants.NEW_XSD2XMI_MAP_FILE, true);
-            //			newHSMFileItem.getAction().setEnabled(true);
-            //			menuItemMap.get(ActionConstants.NEW_HSM_FILE).getAction().setEnabled(true);
             resetMenuItem(ActionConstants.NEW_HSM_FILE, true);
-            //			newHL7V3MessageItem.getAction().setEnabled(true);
-            //			menuItemMap.get(ActionConstants.NEW_HL7_V3_MESSAGE).getAction().setEnabled(true);
             resetMenuItem(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, true);
+            resetMenuItem(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE, true);
+            resetMenuItem(ActionConstants.NEW_HL7_V3_TO_CSV, true);
         }
     }
 
@@ -773,6 +774,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.45  2009/02/03 19:02:07  wangeug
+ * HISTORY : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
+ * HISTORY :
  * HISTORY : Revision 1.44  2009/02/03 15:49:21  wangeug
  * HISTORY : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
  * HISTORY :
