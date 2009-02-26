@@ -63,8 +63,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.30 $
- *          date        $Date: 2009-02-26 17:07:09 $
+ *          revision    $Revision: 1.31 $
+ *          date        $Date: 2009-02-26 19:41:58 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -528,7 +528,14 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			if (rootPane != null)
 			{//rootpane is not null implies this panel is fully displayed;
 				//on the flip side, if it is null, it implies it is under certain construction.
-                contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, false);
+                String msgPaneName=this.getName();
+                if (msgPaneName!=null&&msgPaneName.equals("CSV To HL7 V3 Message"))
+                	contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_V3_MESSAGE, false);
+                else if (msgPaneName!=null&&msgPaneName.equals("HL7 V2 To HL7 V3 Message"))
+                		contextManager.enableAction(ActionConstants.NEW_HL7_V2_TO_HL7_V3_MESSAGE, false);
+                else if (msgPaneName!=null&&msgPaneName.equals("HL7 V3 To CSV Data"))
+            		contextManager.enableAction(ActionConstants.NEW_HL7_V3_TO_CSV, false);
+
 			}
 		}
 		//since the action depends on the panel instance,
@@ -690,6 +697,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.30  2009/02/26 17:07:09  wangeug
+ * HISTORY      : hide XSD validation
+ * HISTORY      :
  * HISTORY      : Revision 1.29  2009/02/10 18:42:51  umkis
  * HISTORY      : Include schema validation against xsd files when V3 message generating. - additional modifying
  * HISTORY      :
