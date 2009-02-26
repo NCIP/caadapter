@@ -79,13 +79,13 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2009-02-03 15:49:22 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2009-02-26 19:42:27 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.17 2009-02-03 15:49:22 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.18 2009-02-26 19:42:27 wangeug Exp $";
 
 	private static final String SELECT_SOURCE = "Open Source...";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
@@ -537,7 +537,11 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 			if (rootPane != null)
 			{//rootpane is not null implies this panel is fully displayed;
 				//on the flip side, if it is null, it implies it is under certain construction.
-				contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, false);
+				if (isCSVSource)
+					contextManager.enableAction(ActionConstants.NEW_CSV_TO_HL7_MAP_FILE, false);
+				else
+					contextManager.enableAction(ActionConstants.NEW_V2_TO_V3_MAP_FILE, false);
+				
 				contextManager.enableAction(ActionConstants.OPEN_V2_TO_V3_MAP_FILE, true);
 			}
 		}
@@ -670,6 +674,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2009/02/03 15:49:22  wangeug
+ * HISTORY      : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2009/02/02 14:53:32  wangeug
  * HISTORY      : Load V2 meta with version number and message schema name; do not use the absolute path of schema file
  * HISTORY      :
