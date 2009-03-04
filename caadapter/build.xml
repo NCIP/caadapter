@@ -691,7 +691,7 @@
             <fileset dir="${lib.dir}">
                 <exclude name="delete.jar"/>
             </fileset>
-            <fileset dir="${project.ref.lib.dir}" includes="jgraph.jar,caAdapter.jar, client.jar, sqleonardo.jar, mif.zip"/>
+            <fileset dir="${project.ref.lib.dir}" includes="jgraph.jar,caAdapter.jar, client.jar, sqleonardo.jar,schemas.zip, mif.zip"/>
 
         </copy>
     </target>
