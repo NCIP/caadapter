@@ -46,7 +46,7 @@
     <property name="signjar.alias" value="myAlias"/>
     <property name="signjar.storepass" value="saic123"/>
     <property name="signjar.keystore" value="NCICBkey"/>
-    <property name="tomcat.dir" value="C:\devWeb\jboss-4.0.5.GA\server\default\deploy"/>
+    <property name="j2ee.server.deploy.dir" value="C:\devWeb\jboss-4.0.5.GA\server\default\deploy"/>
 
 	<property name="sqleonardo.jar" value="${basedir}/lib/sqleonardo.jar"/>
 	<property name="ref_sqleonardo.jar" value="${basedir}/referenceLib/sqleonardo.jar"/>
@@ -183,9 +183,21 @@
 			</zip>
 	</target>
 	
+    <target name="test.ws" >
+    	<echo message="build ws module--${caadapter.release.ws.include}"/>
+    	<ant antfile="${hl7.module.build}"/>
+    	<ant antfile="${ws.module.build}"/>
+    	<copy todir="${j2ee.server.deploy.dir}">
+    	    <fileset dir="${ws.module.home}/dist">
+    	    	<include name="**/caAdapterWS.war"/>
+    	    </fileset>
+    	 </copy>
+    </target>
+	
     <target name="dist.bin" depends="compile, dist.src">
 		<ant dir="${dist.dir}" inheritAll="false" target="demo.zip"/>
-	</target>
+    	<antcall target="copy.built.ws.module"/>
+    </target>
  
     <target name="build-all"  depends="compile">
         <antcall target="copy.built.ws.module"/>
@@ -201,6 +213,11 @@
 				<include name="**/caAdapterWS.war"/>
 			</fileset>
         </copy>
+    	<copy todir="${j2ee.server.deploy.dir}">
+    		<fileset dir="${ws.module.home}/dist">
+    			<include name="**/caAdapterWS.war"/>
+    		</fileset>
+    	</copy>
     </target>
     	
     <target name="mmsGMEwebstart" if="caadapter.release.mms.gme.build">
@@ -296,7 +313,7 @@
 	
 	        <echo message=""/>
 	        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-	        <copy file="${dist.dir}/${webstart.warfile.mms.gme.name}" tofile="${tomcat.dir}/${webstart.warfile.mms.gme.name}"/>
+	        <copy file="${dist.dir}/${webstart.warfile.mms.gme.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.mms.gme.name}"/>
 	</target>
 
 
@@ -399,7 +416,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.name}"/>
     </target>
 
     <target name="hl7webstart" if="caadapter.release.hl7.build">
@@ -501,7 +518,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <copy file="${dist.dir}/${hl7.webstart.warfile.name}" tofile="${tomcat.dir}/${hl7.webstart.warfile.name}"/>
+        <copy file="${dist.dir}/${hl7.webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${hl7.webstart.warfile.name}"/>
     </target>
 
     <target name="rdswebstart">
@@ -598,7 +615,7 @@
 
         <echo message=""/>
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${tomcat.dir}/${webstart.warfile.name}"/>
+        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.name}"/>
     </target>
 
 	
