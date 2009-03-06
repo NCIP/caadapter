@@ -17,8 +17,6 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
 import gov.nih.nci.caadapter.hl7.datatype.DatatypeParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -32,8 +30,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.26 $
- *          date        $Date: 2009-01-09 21:36:02 $
+ *          revision    $Revision: 1.27 $
+ *          date        $Date: 2009-03-06 18:31:39 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -437,6 +435,9 @@ public class XMLElement implements Cloneable{
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.26  2009/01/09 21:36:02  wangeug
+ * HISTORY :check null as adding children
+ * HISTORY :
  * HISTORY :Revision 1.25  2008/12/04 20:40:39  wangeug
  * HISTORY :support nullFlavor
  * HISTORY :

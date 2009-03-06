@@ -72,9 +72,11 @@
 	<zipfileset dir="${ws.module.home}/build/" prefix="WEB-INF/classes" id="dist.ws.webclasses">
 		<include name="**/ws/*.class"/>
 	</zipfileset>
+
 	<zipfileset dir="${module.lib.dir}" prefix="WEB-INF/lib" id="dist.ws.caAdapter.libs">
 		<include name="**/*.jar"/>
 		<include name="**/*.zip"/>
+		<exclude name="servlet.jar"/>
 	</zipfileset>
 	<zipfileset dir="${root}/component/hl7Transformation/dist" prefix="WEB-INF/lib" id="dist.ws.caAdapter.classes">
 		<include name="**/*.jar"/>
@@ -82,21 +84,27 @@
 	</zipfileset>
 	<zipfileset dir="${root}/lib/" prefix="WEB-INF/lib" id="dist.ws.mif.libs">
 		<include name="castor-0.9.9.jar"/>
+		<include name="knuHL7V2tree.jar"/>
 	</zipfileset>
-	<zipfileset dir="${ws.module.home}/WebRoot/WEB-INF/lib/axis/lib" prefix="WEB-INF/lib" id="dist.ws.axis.libs">
+	<zipfileset dir="${ws.module.home}/axislib" prefix="WEB-INF/lib" id="dist.ws.axis.libs">
 		<include name="**/*.jar"/>
 		<exclude name="**/log4*.*"/>
 	</zipfileset>
 	<zipfileset dir="${root}/components/hl7Transformation/dist/" prefix="WEB-INF/lib" id="dist.ws.hl7.libs">
-		<include name="**/*.jar"/>
+		<include name="caadapter*.jar"/>
 	</zipfileset>
+	<zipfileset dir="${root}/components/hl7Transformation/lib/" prefix="WEB-INF/lib" id="module.hl7.libs">
+			<include name="*.jar"/>
+			<include name="*.zip"/>
+		</zipfileset>
 	<zipfileset dir="${root}/referenceLib" prefix="WEB-INF/lib" id="dist.ws.ref.libs">
-		<include name="**/*.jar"/>
-		<exclude name="caAdapter.jar"/>
+		<!-- include name="mif.zip"/ -->
+		<include name="schemas.zip"/>
+		<!-- exclude name="caAdapter.jar"/>
+		<exclude name="caAdapter_ui.jar"/>
 		<exclude name="jgraph.jar"/>
 		<exclude name="mif.zip"/>
-		<exclude name="sqleonardo.jar"/>
-		<include name="resource.zip"/>
+		<exclude name="sqleonardo.jar"/ -->
 	</zipfileset>
 	<zipfileset dir="${root}/components/common/dist/" prefix="WEB-INF/lib" id="dist.ws.common.libs">
 		<include name="**/*.jar"/>
@@ -142,10 +150,12 @@
 			<!-- Common to both source and binary distribution. -->
 			<zipfileset refid="dist.ws.WEB"/>
 			<zipfileset refid="dist.ws.webclasses"/>
+			<!-- zipfileset refid="dist.hl7.webclasses"/ -->
 			<zipfileset refid="dist.ws.caAdapter.libs"/>
 			<zipfileset refid="dist.ws.mif.libs"/>
 			<zipfileset refid="dist.ws.ref.libs"/>
 			<zipfileset refid="dist.ws.hl7.libs"/>
+			<zipfileset refid="module.hl7.libs"/>
 			<zipfileset refid="dist.ws.common.libs"/>
 			<zipfileset refid="dist.ws.axis.libs"/>
 			<zipfileset refid="dist.ws.functionsfile"/>

@@ -15,7 +15,7 @@ import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.CsvReader;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
-//import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
+import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -28,8 +28,6 @@ import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
-//import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
-
 
 import java.io.*;
 import java.util.ArrayList;
@@ -53,14 +51,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.37 $
- * @date $Date: 2009-02-26 17:04:46 $
+ * @version $Revision: 1.38 $
+ * @date $Date: 2009-03-06 18:29:03 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.37 2009-02-26 17:04:46 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.38 2009-03-06 18:29:03 wangeug Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -321,6 +319,15 @@ public class TransformationService
         	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
             informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         	xmlElements =transferSourceData(csvDataResult);
+        }
+        else if (sourceDataStream==null)
+        {
+        	//parse CSV string, invoked from WebService    
+   	        System.out.println("TransformationService.process()...Transfer data: invoked by Webservice client");
+        	CSVDataResult csvDataResult = SegmentedCSVParserImpl.parse(csvString,  csvMeta);
+   	        xmlElements=transferSourceData(csvDataResult);
+   	        //return here to web service client
+   	        return xmlElements;
         }
         else
         {
@@ -648,6 +655,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.37  2009/02/26 17:04:46  wangeug
+ * HISTORY      : hide XSD validation
+ * HISTORY      :
  * HISTORY      : Revision 1.36  2009/02/25 15:57:41  wangeug
  * HISTORY      : enable webstart
  * HISTORY      :

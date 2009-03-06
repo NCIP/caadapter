@@ -7,9 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.transformation.data;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
@@ -23,8 +21,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.7 $
- * @date 	 DATE: $Date: 2009-02-19 19:48:41 $
+ * @version  REVISION: $Revision: 1.8 $
+ * @date 	 DATE: $Date: 2009-03-06 18:32:02 $
  * @since caAdapter v4.2
  */
 
@@ -341,6 +339,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.7  2009/02/19 19:48:41  wangeug
+* HISTORY: check null value with  "nullFlavor" attribute
+* HISTORY:
 * HISTORY: Revision 1.6  2009/02/12 19:50:18  wangeug
 * HISTORY: avoid duplicated "nullFlavor" attribute
 * HISTORY:

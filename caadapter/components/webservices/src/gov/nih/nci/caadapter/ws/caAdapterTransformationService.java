@@ -6,23 +6,21 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  * <!-- LICENSE_TEXT_END -->
  */
 package gov.nih.nci.caadapter.ws;
-import gov.nih.nci.caadapter.hl7.map.TransformationResult;
+
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
-//import gov.nih.nci.caadapter.hl7.map.TransformationServiceCsvToHL7V3;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * caadapter Web Service to provide transformation service
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.5 $
- * @date $$Date: 2008-06-09 19:54:07 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.6 $
+ * @date $$Date: 2009-03-06 18:32:52 $
  * @since caadapter v1.3.1
  */
 
@@ -38,35 +36,41 @@ public class caAdapterTransformationService {
 
 	public ArrayList<String> transformationService(String mappingScenario, String csvString) {
 
-		  Properties caadapterProperties = new Properties();
 		  String path = System.getProperty("gov.nih.nci.caadapter.path");
 		  ArrayList<String> result = new ArrayList<String>();
 
 		  try {
 		  boolean exists = (new File(path+mappingScenario)).exists();
 		  if (exists) {
-
+			  System.out.println("caAdapterTransformationService.transformationService()..path:"+path);
 			  String mappingFileName = path+mappingScenario+"/"+mappingScenario + ".map";
-			  System.out.println(mappingFileName);
-			  System.out.println(csvString);
+			  System.out.println("mapping file:"+mappingFileName);
+
 			  TransformationService transformationService = 
 				  new TransformationService(mappingFileName,csvString,true);
-			  System.out.println("start process");
+			  System.out.println("caAdapterTransformationService.transformationService()..start transformation");
 			  List<XMLElement> mapGenerateResults = transformationService.process();
-			  System.out.println(mapGenerateResults);
+			  System.out
+					.println("caAdapterTransformationService.transformationService()..generated message count:"+mapGenerateResults.size());
 			  for (int i = 0; i < mapGenerateResults.size(); i++)
 			  {
-				  XMLElement mapGenerateResult = mapGenerateResults.get(i);
-				  result.add(mapGenerateResult.toXML().toString());
+				  XMLElement hl7Xml = mapGenerateResults.get(i);
+				  System.out
+						.println("caAdapterTransformationService.transformationService()..message:\n"+hl7Xml.toXML().toString());
+				  result.add(hl7Xml.toXML().toString());
 			  }
+			  result.add("\n\nprocessed");
 			  return result;
 		  } else {
-			  return null;
+			  result.add("scenario files are not found");
+			  return result;
 		  }
 		  }catch(Exception e)
 		  {
+			  result.add(e.getStackTrace().toString());
 			  e.printStackTrace();
 		  }
-		  return null;
+		  result.add("no HL7 message");
+		  return result;
 	}
 }
