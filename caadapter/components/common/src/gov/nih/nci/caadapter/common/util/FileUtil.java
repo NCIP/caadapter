@@ -31,7 +31,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 
 public class FileUtil
@@ -52,7 +52,7 @@ public class FileUtil
             OUTPUT_DIR.mkdir();
         }
     }
-    
+
     public static String getAssociatedFileAbsolutePath(String holderFile, String associatedFile)
     {
     	if(associatedFile.indexOf(File.separator)>-1)
@@ -67,7 +67,7 @@ public class FileUtil
     	String holderParent=holder.getParent();
 
     	String rntPath=holderParent+File.separator+associatedFile;
-    	
+
     	return rntPath;
     }
 /**
@@ -94,7 +94,7 @@ public class FileUtil
     	String associateParent=associted.getParent();
     	if (!holderParent.equals(associateParent))
     		return associatedFile;
-    	
+
     	return associted.getName();
     }
     /**
@@ -121,7 +121,7 @@ public class FileUtil
 
     public static String getCommonDirPath()
     {
-        return getComponentsDirPath() + File.separator + "common"; 
+        return getComponentsDirPath() + File.separator + "common";
     }
 
     public static String getDataViewerDirPath()
@@ -291,7 +291,8 @@ public class FileUtil
                     {
                         if (isFilePath)
                         {
-                            if (isValidFilePath(res)) return res;
+                            String path = checkValidFilePath(res);
+                            if (path != null) return path;
                         }
                         else return res;
                     }
@@ -316,33 +317,34 @@ public class FileUtil
                     if (idx <= 0) continue;
                     String keyS = line.substring(0, idx).trim();
                     if (!keyS.equals(key.trim())) continue;
-                    String res1 = line.substring(idx+1).trim();
+                    res = line.substring(idx+1).trim();
                     if (isFilePath)
                     {
-                        if (isValidFilePath(res1)) return res1;
+                        String path = checkValidFilePath(res);
+                        if (path != null) return path;
                     }
-                    else return res1;
+                    else return res;
                 }
 
             }
             else if (file.isDirectory())
             {
-                //if (dir != null) continue;
                 if ((fName.equalsIgnoreCase("conf"))||
                     (fName.equalsIgnoreCase("etc"))) res = searchProperty(file, key, useProperty, isFilePath);
                 if (res != null) return res;
             }
         }
+        res = null;
         if (sDir.getName().equalsIgnoreCase("dist")) res = searchProperty(sDir.getParentFile(), key, useProperty, isFilePath);
         if (res != null) return res;
         return null;
     }
 
-    public static boolean isValidFilePath(String data)
+    public static String checkValidFilePath(String data)
     {
-        if (data == null) return false;
+        if (data == null) return null;
         data = data.trim();
-        if (data.equals("")) return false;
+        if (data.equals("")) return null;
 
         while(true)
         {
@@ -350,10 +352,10 @@ public class FileUtil
             if (idx < 0) break;
             data = data.substring(0, idx) + data.substring(idx + 1);
         }
-        File dir = new File(data);
-        if (dir.exists()) return true;
+        File file = new File(data);
+        if (file.exists()) return file.getAbsolutePath();
 
-        return false;
+        return null;
     }
 
 
@@ -419,7 +421,7 @@ public class FileUtil
 
         //if (v2Loader == null) System.out.println("CCC v3 meta loader (1) : " + resourceFile);
         //else System.out.println("CCC v3 meta loader (2) : " + v2Loader.getPath() + ", " + resourceFile);
-        
+
         if (!resourceFile.equals(""))
         {
             MetaDataLoader loader = null;
@@ -785,7 +787,7 @@ public class FileUtil
         }
         return in1;
     }
-   
+
     /**
      * Delete a lck file from the output directory.  A lck file is a temporary file that is
      * created by the logger.
@@ -1125,7 +1127,7 @@ public class FileUtil
         byte bt = 0;
 
         boolean started = false;
-        
+
 
         while(true)
         {
@@ -1290,6 +1292,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.22  2009/03/09 18:02:29  umkis
+ * add searchPropertyAsFilePath() and searchProperty()
+ *
  * Revision 1.21  2009/02/25 15:56:25  wangeug
  * enable webstart
  *
