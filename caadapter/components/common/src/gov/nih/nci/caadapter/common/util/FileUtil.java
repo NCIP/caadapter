@@ -31,7 +31,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 
 public class FileUtil
@@ -312,6 +312,8 @@ public class FileUtil
                 for (String line:list)
                 {
                     line = line.trim();
+                    if (line.startsWith("#")) continue;
+                    if (line.startsWith("!")) continue;
                     int idx = line.indexOf("=");
                     if (idx < 0) idx = line.indexOf(":");
                     if (idx <= 0) continue;
@@ -1292,6 +1294,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.23  2009/03/09 18:10:31  umkis
+ * add searchPropertyAsFilePath() and searchProperty()
+ *
  * Revision 1.22  2009/03/09 18:02:29  umkis
  * add searchPropertyAsFilePath() and searchProperty()
  *
