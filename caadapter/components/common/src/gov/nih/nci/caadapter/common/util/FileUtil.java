@@ -30,8 +30,8 @@ import java.util.logging.FileHandler;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.21 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.22 $
  */
 
 public class FileUtil
@@ -251,20 +251,133 @@ public class FileUtil
         return f.getAbsolutePath();
     }
 
+    public static String searchPropertyAsFilePath(String key)
+    {
+        return searchProperty(null, key, false, true);
+    }
+    public static String searchProperty(String key)
+    {
+        return searchProperty(null, key, false, false);
+    }
+    public static String searchProperty(String key, boolean useProperty)
+    {
+        return searchProperty(null, key, useProperty, false);
+    }
+    private static String searchProperty(File dir, String key, boolean useProperty, boolean isFilePath)
+    {
+        File sDir = null;
+        if (dir == null) sDir = new File(getWorkingDirPath());
+        else
+        {
+            if (!dir.isDirectory()) return null;
+            sDir = dir;
+        }
+
+        String res = null;
+        File[] files = sDir.listFiles();
+        for(File file:files)
+        {
+            String fName = file.getName();
+            if (file.isFile())
+            {
+                if ((fName.toLowerCase().endsWith(".properties"))||
+                    (fName.toLowerCase().endsWith(".property"))) {}
+                else continue;
+
+                if (useProperty)
+                {
+                    res = getPropertyFromComponentPropertyFile(file.getAbsolutePath(), key);
+                    if (res != null)
+                    {
+                        if (isFilePath)
+                        {
+                            if (isValidFilePath(res)) return res;
+                        }
+                        else return res;
+                    }
+                    continue;
+                }
+
+                List<String> list = null;
+                try
+                {
+                    list = readFileIntoList(file.getAbsolutePath());
+                }
+                catch(IOException ie)
+                {
+                    continue;
+                }
+
+                for (String line:list)
+                {
+                    line = line.trim();
+                    int idx = line.indexOf("=");
+                    if (idx < 0) idx = line.indexOf(":");
+                    if (idx <= 0) continue;
+                    String keyS = line.substring(0, idx).trim();
+                    if (!keyS.equals(key.trim())) continue;
+                    String res1 = line.substring(idx+1).trim();
+                    if (isFilePath)
+                    {
+                        if (isValidFilePath(res1)) return res1;
+                    }
+                    else return res1;
+                }
+
+            }
+            else if (file.isDirectory())
+            {
+                //if (dir != null) continue;
+                if ((fName.equalsIgnoreCase("conf"))||
+                    (fName.equalsIgnoreCase("etc"))) res = searchProperty(file, key, useProperty, isFilePath);
+                if (res != null) return res;
+            }
+        }
+        if (sDir.getName().equalsIgnoreCase("dist")) res = searchProperty(sDir.getParentFile(), key, useProperty, isFilePath);
+        if (res != null) return res;
+        return null;
+    }
+
+    public static boolean isValidFilePath(String data)
+    {
+        if (data == null) return false;
+        data = data.trim();
+        if (data.equals("")) return false;
+
+        while(true)
+        {
+            int idx = data.indexOf("\\\\");
+            if (idx < 0) break;
+            data = data.substring(0, idx) + data.substring(idx + 1);
+        }
+        File dir = new File(data);
+        if (dir.exists()) return true;
+
+        return false;
+    }
+
+
     public static String getV3XsdFilePath()
       {
           String schemaHome = "schemas";
-          //String coreSchemaDir = "coreschemas";
 
           File dir = new File(schemaHome);
-          boolean xsdDirFoundTag = true;
           if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
 
           dir = new File(".."+File.separator+schemaHome);
           if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
 
-
           String xsdFilePathTag = Config.V3_XSD_FILE_PATH_TAG;//"v3xsdFilePath";
+
+          String res = searchPropertyAsFilePath(xsdFilePathTag);
+
+          if (res != null)
+          {
+              System.out.println("V3 XSD Directory is found : " + res);
+              return res;
+          }
+
+          /*
           String xsdPathPropFile = "";
 
           for (int i=0;i<9;i++)
@@ -289,6 +402,7 @@ public class FileUtil
               }
               else System.err.println("Invalid V3 XSD Directory in the property file("+xsdPathPropFile+") : " + propertyLine);
           }
+          */
           System.err.println("Not Found V3 XSD Directory...");
           return null;
       }
@@ -1104,7 +1218,7 @@ public class FileUtil
         {
 
         	File srcFile=new File(path);
-        	if (srcFile.exists())
+        	if ((srcFile.exists())&&(srcFile.isFile()))
         	{
                 //System.out.println("PP1 : " + path);
                 fi =new FileInputStream(srcFile);
@@ -1176,6 +1290,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.21  2009/02/25 15:56:25  wangeug
+ * enable webstart
+ *
  * Revision 1.20  2009/02/18 02:27:50  umkis
  * update filenameLocate()
  *
