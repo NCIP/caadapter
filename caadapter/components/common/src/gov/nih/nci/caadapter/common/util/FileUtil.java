@@ -31,7 +31,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 
 public class FileUtil
@@ -184,7 +184,7 @@ public class FileUtil
 
             String display = "HL7 v2 meta Directory isn't created yet.\nPress 'Yes' button if you want to create directory.\nIt may takes some minutes.";
             //JOptionPane.showMessageDialog(parent, "Making V2 Meta Directory", display, JOptionPane.WARNING_MESSAGE);
-            System.out.println("CCCCV : " + display);
+            //System.out.println("CCCCV : " + display);
             int res = JOptionPane.showConfirmDialog(parent, display, "Create v2 Meta Directory", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
             if (res != JOptionPane.YES_OPTION) return "";
@@ -651,14 +651,21 @@ public class FileUtil
         catch(IOException ie) { throw new IOException("File Closing Error in FileUtil.readFileIntoList() : " + fileName); }
         return list;
     }
-    public static String readFileIntoString(String fileName)
+    public static String readFileIntoStringAllowException(String fileName) throws IOException
     {
         List<String> list = null;
-        try { list = readFileIntoList(fileName); }
-        catch(IOException ie) { return null; }
+        list = readFileIntoList(fileName);
+
         String output = "";
         for(int i=0;i<list.size();i++) output = output + list.get(i) + "\r\n";
         return output.trim();
+    }
+    public static String readFileIntoString(String fileName)
+    {
+        String out = "";
+        try { out = readFileIntoStringAllowException(fileName); }
+        catch(IOException ie) { return null; }
+        return out;
     }
 
     public static String findODIWithDomainName(String str) throws IOException
@@ -1294,6 +1301,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.24  2009/03/09 20:21:49  umkis
+ * minor change
+ *
  * Revision 1.23  2009/03/09 18:10:31  umkis
  * add searchPropertyAsFilePath() and searchProperty()
  *
