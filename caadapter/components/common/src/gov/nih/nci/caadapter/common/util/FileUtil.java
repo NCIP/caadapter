@@ -31,7 +31,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 
 public class FileUtil
@@ -339,6 +339,53 @@ public class FileUtil
         res = null;
         if (sDir.getName().equalsIgnoreCase("dist")) res = searchProperty(sDir.getParentFile(), key, useProperty, isFilePath);
         if (res != null) return res;
+        return null;
+    }
+
+    public static String searchFile(String fileName)
+    {
+        return searchFile(null, fileName);
+    }
+    public static String searchFile(File dir, String fileName)
+    {
+        if (fileName == null) return null;
+        fileName = fileName.trim();
+        if (fileName.equals("")) return null;
+
+        if (fileName.endsWith(File.separator)) fileName = fileName.substring(0, fileName.length()-File.separator.length());
+        if (fileName.endsWith("/")) fileName = fileName.substring(0, fileName.length()-1);
+        while(true)
+        {
+            int idx = fileName.indexOf(File.separator);
+            int len = 0;
+            if (idx >= 0) len = File.separator.length();
+            else
+            {
+                idx = fileName.indexOf("/");
+                if (idx >= 0) len = 1;
+            }
+            if (idx < 0) break;
+            fileName = fileName.substring(idx + len);
+        }
+
+        if (dir == null)
+        {
+            File wDir = new File(getWorkingDirPath());
+            if (wDir.getName().equals("dist")) dir = wDir.getParentFile();
+            else dir = wDir;
+        }
+        if ((!dir.exists())||(!dir.isDirectory())) return null;
+
+        File[] files = dir.listFiles();
+        for(File file:files)
+        {
+            if (file.getName().equals(fileName)) return file.getAbsolutePath();
+            if (file.isDirectory())
+            {
+                String res = searchFile(file, fileName);
+                if (res != null) return res;
+            }
+        }
         return null;
     }
 
@@ -887,34 +934,56 @@ public class FileUtil
     public static String filenameLocate(String directory, String fileName)
             throws FileNotFoundException
     {
-        if (directory.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) directory = directory.replace(Config.CAADAPTER_HOME_DIR_TAG, getWorkingDirPath());
+        if ((fileName == null)||(fileName.trim().equals(""))) throw new FileNotFoundException("Null file name...");
+        else fileName = fileName.trim();
         if (fileName.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) fileName = fileName.replace(Config.CAADAPTER_HOME_DIR_TAG, getWorkingDirPath());
 
-        // check directory + filename
-        File f = new File(directory + File.separator + fileName);
+        // check just the filename
+        File f = new File(fileName);
         if (f.exists())
         {
             return f.getAbsolutePath();
         }
-        // check just the filename
-        f = new File(fileName);
+
+        if ((directory == null)||(directory.trim().equals(""))) throw new FileNotFoundException("Null Dirctory...");
+        else directory = directory.trim();
+        if (directory.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) directory = directory.replace(Config.CAADAPTER_HOME_DIR_TAG, getWorkingDirPath());
+
+        if (!directory.endsWith(File.separator)) directory = directory + File.separator;
+
+        // check directory + filename
+        f = new File(directory + fileName);
         if (f.exists())
         {
             return f.getAbsolutePath();
         }
 
         String temp = fileName;
+
+        if (fileName.endsWith(File.separator)) fileName = fileName.substring(0, fileName.length()-File.separator.length());
+        if (fileName.endsWith("/")) fileName = fileName.substring(0, fileName.length()-1);
         while(true)
         {
-            int idx = temp.indexOf(File.separator);
+            int idx = fileName.indexOf(File.separator);
+            int len = 0;
+            if (idx >= 0) len = File.separator.length();
+            else
+            {
+                idx = fileName.indexOf("/");
+                if (idx >= 0) len = 1;
+            }
             if (idx < 0) break;
-            temp = temp.substring(idx + 1);
+            fileName = fileName.substring(idx + len);
         }
-        f = new File(directory + File.separator + temp);
+
+        f = new File(directory + fileName);
         if (f.exists())
         {
+            //System.out.println("DDD : " + temp +" ; "+ fileName +" ; "+ f.getAbsolutePath());
             return f.getAbsolutePath();
         }
+
+        fileName = temp;
 
         String fileLocation = null;
         try
@@ -1301,6 +1370,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.25  2009/03/10 01:28:32  umkis
+ * minor change
+ *
  * Revision 1.24  2009/03/09 20:21:49  umkis
  * minor change
  *
