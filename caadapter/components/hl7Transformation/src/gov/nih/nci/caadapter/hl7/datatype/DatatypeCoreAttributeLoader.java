@@ -7,8 +7,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
-import gov.nih.nci.caadapter.hl7.mif.MIFClass;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,8 +28,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author   OWNER: wangeug  $Date: Dec 12, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-01-09 21:32:59 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-03-12 13:25:54 $
  * @since caAdapter v4.2
  */
 
@@ -107,4 +105,7 @@ public class DatatypeCoreAttributeLoader {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/01/09 21:32:59  wangeug
+* HISTORY: process core attribute seting with HL7 datatypes
+* HISTORY:
 **/
