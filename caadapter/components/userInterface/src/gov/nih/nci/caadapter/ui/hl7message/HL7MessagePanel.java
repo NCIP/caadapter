@@ -61,10 +61,10 @@ import java.util.Map;
  * This class is the main entry point to display HL7V3 message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.31 $
- *          date        $Date: 2009-02-26 19:41:58 $
+ *          revision    $Revision: 1.32 $
+ *          date        $Date: 2009-03-12 03:42:00 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -77,9 +77,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	private int currentCount = 1;//count from 1...
 	private int totalNumberOfMessages = 0;
 	private boolean isBatchTransform = false;
-//
-//    private int schemaValidationTag = -1;
-//
+
+    private int schemaValidationTag = -1;
+
     private JTextField mapFileNameField;
     private JTextField dataFileNameField;
 
@@ -312,19 +312,8 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
     	dataFileNameField.setText(dataFile.getAbsolutePath());
     	mapFileNameField.setText(mapFile.getAbsolutePath());
 
-//        if (schemaValidationTag < 0)
-//        {
-//            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
-//            if (schemaValidationTag == JOptionPane.YES_OPTION)
-//            {
-//                if (FileUtil.getV3XsdFilePath() == null)
-//                {
-//                    JOptionPane.showMessageDialog(this, "Schema directoty cannot be found.", "No XML schema file", JOptionPane.ERROR_MESSAGE);
-//                    schemaValidationTag = JOptionPane.NO_OPTION;
-//                }
-//            }
-//        }
-//
+        confirmSchemaValidation();
+
         try
 		{
 			String dataFileName=dataFile.getName();
@@ -340,9 +329,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 				final HL7MessagePanel listnerPane=this;
 		    	final TransformationService ts=new TransformationService(mapFile, dataFile);
-//
-//                if (schemaValidationTag == JOptionPane.YES_OPTION) ts.setSchemaValidation(true);
-//
+
+                if (schemaValidationTag == JOptionPane.YES_OPTION) ts.setSchemaValidation(true);
+
                 if(this.getSaveFile()!=null)
 				{
 					ts.setOutputFile(this.getSaveFile());
@@ -686,6 +675,25 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		return result;
 	}
 
+    private void confirmSchemaValidation()
+    {
+        String prop = FileUtil.searchProperty("SchemaValidation");
+        if (prop == null) return;
+        if (!prop.trim().equalsIgnoreCase("true")) return;
+        if (schemaValidationTag < 0)
+        {
+            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
+            if (schemaValidationTag == JOptionPane.YES_OPTION)
+            {
+                if (FileUtil.getV3XsdFilePath() == null)
+                {
+                    JOptionPane.showMessageDialog(this, "Schema directoty cannot be found.", "No XML schema file", JOptionPane.ERROR_MESSAGE);
+                    schemaValidationTag = JOptionPane.NO_OPTION;
+                }
+            }
+        }
+    }
+
 	public int getMessageFileType() {
 		return messageFileType;
 	}
@@ -697,6 +705,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.31  2009/02/26 19:41:58  wangeug
+ * HISTORY      : Disable action based on Message data type
+ * HISTORY      :
  * HISTORY      : Revision 1.30  2009/02/26 17:07:09  wangeug
  * HISTORY      : hide XSD validation
  * HISTORY      :
