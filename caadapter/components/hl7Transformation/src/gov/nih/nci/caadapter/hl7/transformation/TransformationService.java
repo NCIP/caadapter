@@ -19,6 +19,8 @@ import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -28,6 +30,7 @@ import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
+import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -50,23 +53,23 @@ import com.sun.encoder.EncoderException;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.38 $
- * @date $Date: 2009-03-06 18:29:03 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.39 $
+ * @date $Date: 2009-03-12 03:59:21 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.38 2009-03-06 18:29:03 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.39 2009-03-12 03:59:21 umkis Exp $";
 
     private String csvString = "";
     private File mapFile = null;
     private File outputFile = null;
     private InputStream sourceDataStream = null;
 
-//    private boolean schemaValidation = false;
-//    private String schemaFileName = null;
+    private boolean schemaValidation = false;
+    private String schemaFileName = null;
 
     //intermediate data
     private MapParser mapParser = null;
@@ -161,50 +164,6 @@ public class TransformationService
     {
     	transformationWatchList=new ArrayList<TransformationObserver>();
     }
-
-//     /**
-//	 * @param schemaValidation a boolean tag whether do schema validation or not.
-//	 */
-//    public void setSchemaValidation(boolean schemaValidation)
-//    {
-//        this.schemaValidation = schemaValidation;
-//    }
-//
-//    /**
-//	 * @return the boolean tag whether do schema validation or not.
-//	 */
-//    public boolean getSchemaValidation()
-//    {
-//        return schemaValidation;
-//    }
-//
-//    /**
-//     * @param schemaFile
-//     */
-//    public boolean setSchemaFileName(String schemaFile)
-//    {
-//        if (!schemaFile.toLowerCase().endsWith(".xsd"))
-//        {
-//            return false;
-//        }
-//        File file = new File(schemaFile);
-//        if ((file.exists())&&(file.isFile()))
-//        {
-//            this.schemaFileName = schemaFile;
-//            schemaValidation = true;
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    /**
-//     * @return schemaFileName.
-//     */
-//    public String getSchemaFileName()
-//    {
-//        return schemaFileName;
-//    }
-
 
     /**
 	 * @return the outputFile
@@ -322,7 +281,7 @@ public class TransformationService
         }
         else if (sourceDataStream==null)
         {
-        	//parse CSV string, invoked from WebService    
+        	//parse CSV string, invoked from WebService
    	        System.out.println("TransformationService.process()...Transfer data: invoked by Webservice client");
         	CSVDataResult csvDataResult = SegmentedCSVParserImpl.parse(csvString,  csvMeta);
    	        xmlElements=transferSourceData(csvDataResult);
@@ -440,7 +399,7 @@ public class TransformationService
      * @param zipOut
      * @throws IOException
      */
-        private void writeOutMessage(List<XMLElement> xmlElements, int messageCount, ZipOutputStream zipOut) throws IOException
+    private void writeOutMessage(List<XMLElement> xmlElements, int messageCount, ZipOutputStream zipOut) throws IOException
     {
     	OutputStreamWriter writer=new OutputStreamWriter(zipOut);
 
@@ -453,99 +412,7 @@ public class TransformationService
 
             ValidatorResults validatorsToShow = xmlElements.get(i).getValidatorResults();
 
-            //delete unnecessary message.
-            ValidatorResults newResults = new ValidatorResults();
-            for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
-            {
-                if (!lvl.toString().equalsIgnoreCase("ALL")) continue;
-                for (ValidatorResult result:validatorsToShow.getValidationResult(lvl))
-                {
-                    String msgS = result.getMessage().toString().trim();
-                    if (!msgS.equals(MessageResources.getMessage("XML4", new Object[]{""}).toString().trim()))
-                        newResults.addValidatorResult(result);
-                }
-            }
-            validatorsToShow.removeAll();
-            validatorsToShow.addValidatorResults(newResults);
-
-//            boolean isReorganizedMssageGenerated = false;
-//            while(schemaValidation)
-//            {
-//                String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
-//                String schemaFileNameL = null;
-//                if (schemaFileName == null)
-//                {
-//                    String dirS = FileUtil.getV3XsdFilePath();
-//                    if (dirS == null)
-//                    {
-//                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
-//                        break;
-//                    }
-//                    dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
-//
-//                    File dir = new File(dirS);
-//                    if ((!dir.exists())||(!dir.isDirectory()))
-//                    {
-//                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
-//                        break;
-//                    }
-//                    File[] files = dir.listFiles();
-//                    List<File> listFile = new ArrayList<File>();
-//                    for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
-//                    if (listFile.size() == 0)
-//                    {
-//                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
-//                        break;
-//                    }
-//
-//                    String messageType = mifClass.getMessageType();
-//                    if ((messageType == null)||(messageType.trim().equals("")))
-//                    {
-//                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
-//                        break;
-//                    }
-//                    messageType = messageType.trim();
-//
-//                    //String schemaFileName = null;
-//                    for (File file:listFile)
-//                    {
-//                        String fileName = file.getName();
-//                        if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
-//                        {
-//                            schemaFileNameL = file.getAbsolutePath();
-//                            break;
-//                        }
-//                    }
-//                    if (schemaFileNameL == null)
-//                    {
-//                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
-//                        break;
-//                    }
-//                }
-//                else schemaFileNameL = schemaFileName;
-//
-//                XMLValidator v = new XMLValidator(v3Message, schemaFileNameL, true);
-//
-//                ValidatorResults results = v.validate();
-//                String reorganizedV3FileName = v.getTempReorganizedV3File();
-//
-//                if (reorganizedV3FileName != null)
-//                {
-//                    zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+"_Reorganized.xml"));
-//                    writer.write(FileUtil.readFileIntoString(reorganizedV3FileName));
-//                    writer.flush();
-//                    isReorganizedMssageGenerated = true;
-//                }
-//                else validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "The reorganized message ("+(messageCount+i)+"_Reorganized.xml) cannot be generated because of a FATAL or very serious error. Please check the other messages.");
-//
-//                validatorsToShow.addValidatorResults(results);
-//
-//
-//                break;
-//            }
-//            String infoMsg = "";
-//            if (isReorganizedMssageGenerated) infoMsg = ", Reorganized v3 message (" +(messageCount+i)+"_Reorganized.xml)";
-//            validatorsToShow = GeneralUtilities.addValidatorMessageInfo(validatorsToShow, "Direct message ("+(messageCount+i)+".xml)"+infoMsg+" and validation message object ("+(messageCount+i)+".ser) are successfully generated.");
+            if (getSchemaValidation()) validatorsToShow = excuteXSDValidation(validatorsToShow, messageCount, i, v3Message, zipOut, writer);
 
             zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
             ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
@@ -636,10 +503,181 @@ public class TransformationService
 //        return csvDataResult;
 //    }
 
-	public ValidatorResults getValidatorResults() {
+        private ValidatorResults excuteXSDValidation(ValidatorResults validatorsToShow, int messageCount, int i, String v3Message, ZipOutputStream zipOut, OutputStreamWriter writer) throws IOException
+    {
+        //delete unnecessary message.
+        ValidatorResults newResults = new ValidatorResults();
+        for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
+        {
+            if (!lvl.toString().equalsIgnoreCase("ALL")) continue;
+            for (ValidatorResult result:validatorsToShow.getValidationResult(lvl))
+            {
+                String msgS = result.getMessage().toString().trim();
+                if (!msgS.equals(MessageResources.getMessage("XML4", new Object[]{""}).toString().trim()))
+                    newResults.addValidatorResult(result);
+            }
+        }
+        validatorsToShow.removeAll();
+        validatorsToShow.addValidatorResults(newResults);
+
+        boolean isReorganizedMssageGenerated = false;
+        while(true)
+        {
+            String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
+            String schemaFileNameL = null;
+
+            String dirS = FileUtil.getV3XsdFilePath();
+            if (dirS == null)
+            {
+                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
+                break;
+            }
+            dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
+
+            File dir = new File(dirS);
+            if ((!dir.exists())||(!dir.isDirectory()))
+            {
+                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
+                break;
+            }
+            else dirS = dir.getAbsolutePath();
+
+            if (getSchemaFileName() == null)
+            {
+                File[] files = dir.listFiles();
+                List<File> listFile = new ArrayList<File>();
+                for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
+                if (listFile.size() == 0)
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
+                    break;
+                }
+
+                String messageType = mifClass.getMessageType();
+                if ((messageType == null)||(messageType.trim().equals("")))
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
+                    break;
+                }
+                messageType = messageType.trim();
+
+                //String schemaFileName = null;
+                for (File file:listFile)
+                {
+                    String fileName = file.getName();
+                    if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
+                    {
+                        schemaFileNameL = file.getAbsolutePath();
+                        break;
+                    }
+                }
+                if (schemaFileNameL == null)
+                {
+                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
+                    break;
+                }
+            }
+            else
+            {
+                if (schemaFileName.startsWith(dirS)) schemaFileNameL = schemaFileName;
+                else
+                {
+                    if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
+                    String xsdFileNameS = (new File(schemaFileName)).getName();
+
+                    String xsdC = FileUtil.readFileIntoString(schemaFileName);
+                    if ((xsdC == null)||(xsdC.trim().equals("")))
+                    {
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Null or empty xsd file. : " + schemaFileName);
+                        break;
+                    }
+                    String tempFileName = dirS + "Temp_" + FileUtil.getRandomNumber(5) + "_" + xsdFileNameS;
+
+                    try
+                    {
+                        FileUtil.saveStringIntoTemporaryFile(tempFileName , xsdC);
+                    }
+                    catch(IOException ie)
+                    {
+                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "IOException during xsd file copying. : " + schemaFileName);
+                        break;
+                    }
+                    schemaFileNameL = tempFileName;
+                }
+            }
+
+            XMLValidator v = new XMLValidator(v3Message, schemaFileNameL, true);
+
+            ValidatorResults results = v.validate();
+            String reorganizedV3FileName = v.getTempReorganizedV3File();
+
+            if (reorganizedV3FileName != null)
+            {
+                zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+"_Reorganized.xml"));
+                writer.write(FileUtil.readFileIntoString(reorganizedV3FileName));
+                writer.flush();
+                isReorganizedMssageGenerated = true;
+            }
+            else validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "The reorganized message ("+(messageCount+i)+"_Reorganized.xml) cannot be generated because of a FATAL or very serious error. Please check the other messages.");
+
+            validatorsToShow.addValidatorResults(results);
+
+            break;
+        }
+        String infoMsg = "";
+        if (isReorganizedMssageGenerated) infoMsg = ", Reorganized v3 message (" +(messageCount+i)+"_Reorganized.xml)";
+        validatorsToShow = GeneralUtilities.addValidatorMessageInfo(validatorsToShow, "Direct message ("+(messageCount+i)+".xml)"+infoMsg+" and validation message object ("+(messageCount+i)+".ser) are successfully generated.");
+
+        return validatorsToShow;
+    }
+
+    /**
+	 * @param schemaValidation a boolean tag whether do schema validation or not.
+	 */
+    public void setSchemaValidation(boolean schemaValidation)
+    {
+        this.schemaValidation = schemaValidation;
+    }
+
+    /**
+	 * @return the boolean tag whether do schema validation or not.
+	 */
+    public boolean getSchemaValidation()
+    {
+        return schemaValidation;
+    }
+
+    /**
+     * @param schemaFile
+     */
+    public boolean setSchemaFileName(String schemaFile)
+    {
+        if (!schemaFile.toLowerCase().endsWith(".xsd"))
+        {
+            return false;
+        }
+        File file = new File(schemaFile);
+        if ((file.exists())&&(file.isFile()))
+        {
+            schemaFileName = file.getAbsolutePath().trim();
+            schemaValidation = true;
+            return true;
+        }
+        //schemaFileName = null;
+        return false;
+    }
+
+    /**
+     * @return schemaFileName.
+     */
+    public String getSchemaFileName()
+    {
+        return schemaFileName;
+    }
+
+    public ValidatorResults getValidatorResults() {
 		return theValidatorResults;
 	}
-
 
     public static void main(String[] argv) throws Exception {
         long begintime2 = System.currentTimeMillis();
@@ -655,6 +693,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.38  2009/03/06 18:29:03  wangeug
+ * HISTORY      : enable web services
+ * HISTORY      :
  * HISTORY      : Revision 1.37  2009/02/26 17:04:46  wangeug
  * HISTORY      : hide XSD validation
  * HISTORY      :
