@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-09-29 15:44:40 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2009-03-12 15:00:46 $
  */
 
 import java.io.Serializable;
@@ -28,7 +28,52 @@ public class MIFIndex implements Serializable {
 
 	private TreeSet<String> messageCategory =new TreeSet<String>();
 	private Hashtable <String, String> mifNames=new Hashtable<String, String>();
-	
+	private String copyrightYears;
+	private String schemaPath;
+	private String normativeDescription;
+	 
+	/**
+	 * @return the normativeDescription
+	 */
+	public String getNormativeDescription() {
+		return normativeDescription;
+	}
+
+	/**
+	 * @param normativeDescription the normativeDescription to set
+	 */
+	public void setNormativeDescription(String normativeDescription) {
+		this.normativeDescription = normativeDescription;
+	}
+
+	/**
+	 * @return the schemaPath
+	 */
+	public String getSchemaPath() {
+		return schemaPath;
+	}
+
+	/**
+	 * @param schemaPath the schemaPath to set
+	 */
+	public void setSchemaPath(String schemaPath) {
+		this.schemaPath = schemaPath;
+	}
+
+	/**
+	 * @return the copyrightYears
+	 */
+	public String getCopyrightYears() {
+		return copyrightYears;
+	}
+
+	/**
+	 * @param copyrightYears the copyrightYears to set
+	 */
+	public void setCopyrightYears(String copyrightYears) {
+		this.copyrightYears = copyrightYears;
+	}
+
 	public void addMessageType(String mifFileName)
 	{
 		Enumeration mifEnum=mifNames.elements();
@@ -82,7 +127,14 @@ public class MIFIndex implements Serializable {
 	{
 		return (String)mifNames.get(messageType);
 	}
+	@Override public String toString()
+	{
+		return this.getNormativeDescription();
+	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.4  2008/09/29 15:44:40  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

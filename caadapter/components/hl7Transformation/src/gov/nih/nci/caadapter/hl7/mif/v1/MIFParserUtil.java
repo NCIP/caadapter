@@ -7,6 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -31,8 +32,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2009-02-25 15:57:28 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2009-03-12 15:01:18 $
  */
 public class MIFParserUtil {
 
@@ -83,6 +84,31 @@ public class MIFParserUtil {
    
 		return null;
 	}
+	
+	public static MIFClass loadMIFClassWithVersion(String mifFileName, String version)
+	{
+		String mifParent="hl7_home";
+		File mifParentDir=new File(mifParent);
+		
+		if (mifParentDir.exists()&&mifParentDir.isDirectory())
+		{
+			File[] childFiles=mifParentDir.listFiles();
+			for (File childFile:childFiles)
+			{
+				System.out.println("MIFParserUtil.loadMIFClassWithVersion()...fileName:"+childFile.getName());
+				if (childFile.getName().equalsIgnoreCase(version))
+				{
+					File[] hl7Files=childFile.listFiles();
+					for (File hl7File:hl7Files)
+					{
+						System.out.println("MIFParserUtil.loadMIFClassWithVersion()...hl7 fileName:"+hl7File);
+					}
+				}
+			}
+		}
+		
+		return null;
+	}
 	public static MIFClass getMIFClass(String mifFileName)
 	{
 		MIFClass mifClass = null;
@@ -122,9 +148,17 @@ public class MIFParserUtil {
 		}
 		return rtnHash;
 	}
+	
+	public static void main(String[] args) throws Exception {
+		MIFParserUtil.loadMIFClassWithVersion("mif","Normative_2006");
+		
+	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.13  2009/02/25 15:57:28  wangeug
+ * HISTORY :enable webstart
+ * HISTORY :
  * HISTORY :Revision 1.12  2008/09/29 15:42:45  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

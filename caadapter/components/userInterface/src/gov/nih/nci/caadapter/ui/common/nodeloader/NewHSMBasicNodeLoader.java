@@ -59,8 +59,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.50 $
- *          date        $Date: 2009-02-12 20:37:42 $
+ *          revision    $Revision: 1.51 $
+ *          date        $Date: 2009-03-12 15:02:12 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -278,7 +278,7 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 			//05-20-2008, this section may never be visited.
 				try {
 					Log.logInfo(this, "Root class message type:"+rootMIFClass.getMessageType());
-					String refClassMIFFileName=MIFIndexParser.loadMIFInfos().findMIFFileName(rootMIFClass.getMessageType());
+					String refClassMIFFileName=MIFIndexParser.loadMIFIndex().findMIFFileName(rootMIFClass.getMessageType());
 					Log.logInfo(this, "Resolving root class referenece:"+refClassName);
 					rtnMif=(MIFClass)MIFParserUtil.getMIFClass(refClassMIFFileName).clone();
 				} catch (Exception e) {
@@ -595,6 +595,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.50  2009/02/12 20:37:42  wangeug
+ *HISTORY 	:use sortedChoice() to include all choiceItems from sub-list
+ *HISTORY 	:
  *HISTORY 	:Revision 1.49  2008/12/23 17:37:12  wangeug
  *HISTORY 	:Process MIFClass with isAbstract=true:clean code
  *HISTORY 	:

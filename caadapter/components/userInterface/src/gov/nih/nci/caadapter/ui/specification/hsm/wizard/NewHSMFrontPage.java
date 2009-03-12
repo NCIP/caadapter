@@ -15,6 +15,8 @@ import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,8 +29,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.7 $
- * date        $Date: 2009-02-24 16:00:23 $
+ * revision    $Revision: 1.8 $
+ * date        $Date: 2009-03-12 15:01:40 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -43,14 +45,15 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.7 2009-02-24 16:00:23 wangeug Exp $";
-
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.8 2009-03-12 15:01:40 wangeug Exp $";
+	private static final String HL7_NORMATIVE_LABEL = "Select an HL7 Nomative:";
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
 	private static final String BROWSE_COMMAND = "Browse...";
 
 	private File userSelectionFile;
 	private JComboBox hl7MessageTypeComboBox;
+	private JComboBox hl7NormativeComboBox;
 	private JTextField userInputField;
 	private MIFIndex mifIndex;
 	private JComboBox hl7MessageCategoryComboBox;
@@ -72,22 +75,41 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 		this.setLayout(new FlowLayout(FlowLayout.LEADING));
 		JPanel centerPanel = new JPanel(new GridBagLayout());
 		Insets insets = new Insets(5, 5, 5, 5);
-		centerPanel.add(new JLabel(HL7_MESSAGE_CATEGORY_LABEL), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+
+		centerPanel.add(new JLabel(HL7_NORMATIVE_LABEL), new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		centerPanel.add(new JLabel(HL7_MESSAGE_TYPE_LABEL), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+		
+		centerPanel.add(new JLabel(HL7_MESSAGE_CATEGORY_LABEL), new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-		mifIndex =MIFIndexParser.loadMifIndexObject();
+		
+		centerPanel.add(new JLabel(HL7_MESSAGE_TYPE_LABEL), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+//		mifIndex =MIFIndexParser.loadMifIndexObject();
 		try {
 			if (mifIndex==null)
+//			{
+//				System.out.println("NewHSMFrontPage.initialize()...loadMIFIndex from ZIP file");
+//				mifIndex =MIFIndexParser.loadMIFIndex();
+//			}
+				hl7NormativeComboBox =new JComboBox();
+			for (String cpYear:NormativeVersionUtil.loadNormativeSetting().keySet())
 			{
-				System.out.println("NewHSMFrontPage.initialize()...loadMIFIndex from ZIP file");
-				mifIndex =MIFIndexParser.loadMIFInfos();
+				 
+				 hl7NormativeComboBox.addItem(NormativeVersionUtil.loadMIFIndex(cpYear));
 			}
+		
+			hl7NormativeComboBox.setSelectedIndex(-1);
+			hl7NormativeComboBox.addActionListener(this);
+			
+
+			hl7MessageCategoryComboBox = new JComboBox();
+			hl7MessageCategoryComboBox.setEnabled(false);
+//			hl7MessageCategoryComboBox = new JComboBox(mifIndex.getMessageCategory().toArray());			
+			hl7MessageCategoryComboBox.addActionListener(this);
+			
 			hl7MessageTypeComboBox=new JComboBox();
 			hl7MessageTypeComboBox.setEnabled(false);
-			hl7MessageCategoryComboBox = new JComboBox(mifIndex.getMessageCategory().toArray());
-			hl7MessageCategoryComboBox.addActionListener(this);
-			hl7MessageCategoryComboBox.setSelectedIndex(-1);
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -97,9 +119,12 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
             return;
         }
 		
-		centerPanel.add(hl7MessageCategoryComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+		centerPanel.add(hl7NormativeComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		centerPanel.add(hl7MessageTypeComboBox, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+		
+		centerPanel.add(hl7MessageCategoryComboBox, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+		centerPanel.add(hl7MessageTypeComboBox, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 		
 		this.add(centerPanel);
@@ -165,7 +190,21 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 */
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getSource()==hl7MessageCategoryComboBox)
+		if (e.getSource()==hl7NormativeComboBox)
+		{
+			mifIndex=(MIFIndex)hl7NormativeComboBox.getSelectedItem();
+			System.out.println("NewHSMFrontPage.actionPerformed()..select MIFIndex:"+mifIndex);
+			hl7MessageCategoryComboBox.removeAllItems();
+			for(Object msgOneCat:mifIndex.getMessageCategory().toArray())
+				hl7MessageCategoryComboBox.addItem(msgOneCat);
+			hl7MessageCategoryComboBox.setSelectedIndex(-1);
+			hl7MessageCategoryComboBox.setEnabled(true);
+			
+			hl7MessageTypeComboBox.removeAllItems();
+			hl7MessageTypeComboBox.setEnabled(false);
+			
+		}
+		else if (e.getSource()==hl7MessageCategoryComboBox)
 		{
 			hl7MessageTypeComboBox.removeAllItems();
 			String slctMsgCat=(String)hl7MessageCategoryComboBox.getSelectedItem();
@@ -194,6 +233,9 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2009/02/24 16:00:23  wangeug
+ * HISTORY      : enable webstart
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/09/29 20:14:54  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
