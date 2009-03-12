@@ -37,10 +37,10 @@ import org.xml.sax.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: umkis $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-11-21 16:17:00 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-03-12 01:40:52 $
  */
 public class FunctionVocabularyMapping
 {
@@ -57,7 +57,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.6 2008-11-21 16:17:00 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.7 2009-03-12 01:40:52 umkis Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -69,6 +69,7 @@ public class FunctionVocabularyMapping
     private String defaultDomainName = "defaultDomain";
     private String pathNameJustBeforeValidated = "";
     private boolean inverseTag = false;
+    private File defaultWorkDirectory = null;
 
     public FunctionVocabularyMapping()
     {
@@ -85,6 +86,16 @@ public class FunctionVocabularyMapping
     }
     */
     public FunctionVocabularyMapping(String typ, String fileName, boolean inverse) throws FunctionException
+    {
+        setup(typ, fileName, inverse);
+    }
+    public FunctionVocabularyMapping(String typ, String fileName, boolean inverse, File workDir) throws FunctionException
+    {
+        setDefaultWorkDirectory(workDir);
+        setup(typ, fileName, inverse);
+    }
+    
+    private void setup(String typ, String fileName, boolean inverse) throws FunctionException
     {
         if ((inverse)&&(typ.trim().equals(typeNamePossibleList[1])))
             throw new FunctionException("URL cannot be applied in case of inverse mapping : " + type, 720, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
@@ -159,13 +170,15 @@ public class FunctionVocabularyMapping
         String[] arrayRes = extractDomainAndFileName(fileNameSrc);
         String domain = arrayRes[0];
         String fileName = arrayRes[1];
+
+        fileName = verifyFileName(fileName);
+
         File file = new File(fileName);
 
         if (type.equals(typeNamePossibleList[2]))
         {
             return getDomains(fileName).get(0);
         }
-
 
         if (file.exists())
         {
@@ -422,8 +435,7 @@ public class FunctionVocabularyMapping
         boolean domainTag = false;
         boolean findTag = false;
 
-        if (fileName.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) fileName = fileName.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
-
+        fileName = verifyFileName(fileName);
         File file = new File(fileName);
         if (file.exists())
         {
@@ -541,12 +553,14 @@ public class FunctionVocabularyMapping
     private void validateVOMdataFile(String path) throws FunctionException
     {
         if (path.equals(pathNameJustBeforeValidated)) return;
-        if (path.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) path = path.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
+        //if (path.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) path = path.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
         String[] arrayRes = extractDomainAndFileName(path);
-        String domain = arrayRes[0];
+        //String domain = arrayRes[0];
         String pathName = arrayRes[1];
         String targetPath = "";
         if (pathName.equals(pathNameJustBeforeValidated)) return;
+
+        pathName = verifyFileName(pathName);
         File file = new File(pathName);
         if (file.exists())
         {
@@ -560,7 +574,7 @@ public class FunctionVocabularyMapping
             }
             catch(IOException ie)
             {
-                throw new FunctionException("Invalid URL address of vom file ("+pathName+"). : " + ie.getMessage());
+                throw new FunctionException("Invalid path or URL address of vom file ("+pathName+"). : " + ie.getMessage());
             }
         }
         String xsdFilePath = "";
@@ -571,21 +585,31 @@ public class FunctionVocabularyMapping
 
         String xsdFileClassPath = Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION;
         ClassLoaderUtil loader = null;
+        FunctionException fe = null;
         try
         {
             loader = new ClassLoaderUtil(xsdFileClassPath);
         }
         catch(IOException ie)
         {
-            throw new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage());
+            fe =  new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage());
         }
         if (loader.getFileNames().size() == 0)
         {
-            throw new FunctionException("Not Found xml schema file () " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")");
+            fe =  new FunctionException("Not Found xml schema file () " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")");
         }
-        aFile = new File(loader.getFileNames().get(0));
-        xsdFilePath = aFile.getAbsolutePath();
 
+        if (fe != null)
+        {
+            String res = FileUtil.searchFile(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
+            if (res == null) throw fe;
+            xsdFilePath = res;
+        }
+        else
+        {
+            aFile = new File(loader.getFileNames().get(0));
+            xsdFilePath = aFile.getAbsolutePath();
+        }
 
         /*
         try
@@ -650,7 +674,10 @@ public class FunctionVocabularyMapping
         List<String> list = new ArrayList<String>();
         //if (domain.equals("")) domain = defaultDomainName;
 
-        if (pathName.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) pathName = pathName.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
+        //if (pathName.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) pathName = pathName.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
+
+        pathName = verifyFileName(pathName);
+
         File file = new File(pathName);
 
         if (file.exists())
@@ -784,7 +811,17 @@ public class FunctionVocabularyMapping
         }
         else throw new FunctionException("Vocabulary mapping type must be either" + msg + ". : " + typ, 707, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
     }
-
+    public void setDefaultWorkDirectory(File dir) throws FunctionException
+    {
+        if (dir == null) throw new FunctionException("setDefaultWorkDirectory NULL directory");
+        if ((!dir.exists())||(!dir.isDirectory())) throw new FunctionException("setDefaultWorkDirectory invalid directory : " + dir.getName());
+        defaultWorkDirectory = dir;
+    }
+    public void setDefaultWorkDirectory(String dir) throws FunctionException
+    {
+        if (dir == null) throw new FunctionException("setDefaultWorkDirectory NULL directory (String)");
+        setDefaultWorkDirectory(new File(dir));
+    }
     public String getValue()
     {
         return value;
@@ -810,6 +847,23 @@ public class FunctionVocabularyMapping
         return methodNamePossibleList;
     }
 
+    private String verifyFileName(String fileName)
+    {
+
+        try
+        {
+            if (defaultWorkDirectory != null) fileName = FileUtil.filenameLocate(defaultWorkDirectory.getAbsolutePath(), fileName);
+            else
+            {
+                if (fileName.startsWith(Config.CAADAPTER_HOME_DIR_TAG)) fileName = fileName.replace(Config.CAADAPTER_HOME_DIR_TAG, FileUtil.getWorkingDirPath());
+            }
+
+        }
+        catch(FileNotFoundException fe)
+        {}
+        return fileName;
+    }
+
     private String modifyURLForSearch(String val, String str)
     {
         String sharpChar = Config.VOCABULARY_MAP_URL_SEARCH_DATA_INPUT_POINT_CHARACTER;
@@ -830,6 +884,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/11/21 16:17:00  wangeug
+ * HISTORY      : Move back to HL7 module from common module
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/11/17 20:07:31  wangeug
  * HISTORY      : Move from HL7 module to common module
  * HISTORY      :

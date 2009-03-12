@@ -32,9 +32,9 @@ import org.jdom.input.SAXBuilder;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.12 $
- * @date $Date: 2008-11-21 16:19:36 $
+ * @author LAST UPDATE $Author: umkis $
+ * @version $Revision: 1.13 $
+ * @date $Date: 2009-03-12 01:41:30 $
  * @since caAdapter v4.0
  */
 
@@ -42,10 +42,12 @@ public class MapParser {
 	String sourceSpecFileName ="";
 	String h3sFilename ="";
 	String sourceKind="";
-	ValidatorResults theValidatorResults = new ValidatorResults();
+
+    File sourceMapFile = null;
+    ValidatorResults theValidatorResults = new ValidatorResults();
 	Hashtable <String, FunctionComponent> functions = new Hashtable<String, FunctionComponent>();
 	Hashtable <String, String>mappings = new Hashtable<String, String>();
-	
+
 	/**
 	 * @return the mappings
 	 */
@@ -62,8 +64,10 @@ public class MapParser {
 	    SAXBuilder builder = new SAXBuilder(false);
 	    Document document = builder.build(new File(file.getAbsolutePath()));
 	    Element root = document.getRootElement();
-	    
-	    if (!root.getName().equalsIgnoreCase("mapping")) {
+
+        sourceMapFile = new File(file.getAbsolutePath());
+
+        if (!root.getName().equalsIgnoreCase("mapping")) {
             Message msg = MessageResources.getMessage("MAP10", new Object[]{"SCS and H3S"});
             theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.FATAL, msg));
             return null;	    	
@@ -240,11 +244,13 @@ public class MapParser {
     	            return;
             	}
                 FunctionVocabularyMapping vocabularyMapping = new FunctionVocabularyMapping();
-                if(vocabularyMapping.getMethodNamePossibleList()[1].equalsIgnoreCase(functionMeta.getFunctionName()))
-                    vocabularyMapping = new FunctionVocabularyMapping(datatype, datavalue, true);
-                else if(vocabularyMapping.getMethodNamePossibleList()[0].equalsIgnoreCase(functionMeta.getFunctionName()))
-                    vocabularyMapping = new FunctionVocabularyMapping(datatype, datavalue, false);
+                boolean isInverse = false;
+                if(vocabularyMapping.getMethodNamePossibleList()[1].equalsIgnoreCase(functionMeta.getFunctionName())) isInverse = true;
+                else if(vocabularyMapping.getMethodNamePossibleList()[0].equalsIgnoreCase(functionMeta.getFunctionName())) isInverse = false;
                 else throw new MappingException("Invalid method name of 'Vocabulary' function group", new Throwable());
+
+                vocabularyMapping = new FunctionVocabularyMapping(datatype, datavalue, isInverse, sourceMapFile.getParentFile());
+                
                 functionComponent.setFunctionVocabularyMapping(vocabularyMapping);
             }
 
@@ -281,6 +287,9 @@ public class MapParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.12  2008/11/21 16:19:36  wangeug
+ * HISTORY :Move back to HL7 module from common module
+ * HISTORY :
  * HISTORY :Revision 1.11  2008/11/17 20:10:07  wangeug
  * HISTORY :Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY :
