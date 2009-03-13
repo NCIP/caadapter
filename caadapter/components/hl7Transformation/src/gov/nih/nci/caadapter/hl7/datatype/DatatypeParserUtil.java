@@ -16,12 +16,11 @@ import java.util.List;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-29 15:48:57 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-03-13 14:50:54 $
  */
 public class DatatypeParserUtil {
 	private static DatatypeParser datatypeParser = null;
-	private DatatypeParserUtil() {}
 	public static DatatypeParser getDatatypeParser() {
 	  try {
 		if (datatypeParser == null) {
@@ -58,4 +57,7 @@ public class DatatypeParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2008/09/29 15:48:57  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

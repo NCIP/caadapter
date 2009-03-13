@@ -30,8 +30,8 @@ import java.util.Vector;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.27 $
- *          date        $Date: 2009-03-06 18:31:39 $
+ *          revision    $Revision: 1.28 $
+ *          date        $Date: 2009-03-13 14:53:28 $
  */
 public class XMLElement implements Cloneable{
 	
@@ -256,15 +256,6 @@ public class XMLElement implements Cloneable{
 
 	public ValidatorResults validate() {
 		try {
-//			Hashtable datatypes = new Hashtable();
-//			InputStream is = this.getClass().getResourceAsStream("/datatypes");
-//			if (is == null) {
-//				is = this.getClass().getClassLoader().getResource("datatypes").openStream();
-//			}
-//			ObjectInputStream ois = new ObjectInputStream(is);
-//			datatypes = (Hashtable)ois.readObject();
-//			ois.close();
-//			is.close();
 			Hashtable datatypes=DatatypeParserUtil.getDatatypeParser().getDatatypes();
 			ValidatorResults validatorResults_sub = validate(datatypes, name);
 //			if (validatorResults_sub == null) return validatorResults;
@@ -435,6 +426,9 @@ public class XMLElement implements Cloneable{
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.27  2009/03/06 18:31:39  wangeug
+ * HISTORY :enable web services
+ * HISTORY :
  * HISTORY :Revision 1.26  2009/01/09 21:36:02  wangeug
  * HISTORY :check null as adding children
  * HISTORY :

@@ -15,13 +15,13 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-09-29 15:42:44 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2009-03-13 14:54:43 $
  */
 public class CMETUtil {
 	private static CMETInfoParser cmetInfoParser = null;
-	private CMETUtil() {}
-	public static CMETInfoParser getCMETInfoParser() {
+//	private CMETUtil() {}
+	private static CMETInfoParser getCMETInfoParser() {
 	  try {
 		if (cmetInfoParser == null) {
 			cmetInfoParser = new CMETInfoParser();
@@ -40,16 +40,10 @@ public class CMETUtil {
 		}
 		return null;
 	}
-
-	public static CMETRef getCMETClass(String className) {
-		CMETInfoParser cmetInfoParser = getCMETInfoParser();
-		for(CMETRef cmetRef:cmetInfoParser.getCMETRefs()) {
-			if (cmetRef.getClassName().equals(className)) return cmetRef;
-			if (cmetRef.getName().equals(className)) return cmetRef;
-		}
-		return null;
-	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.3  2008/09/29 15:42:44  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */
