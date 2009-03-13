@@ -8,6 +8,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.datatype;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 
@@ -25,12 +26,13 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -42,8 +44,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2009-02-25 15:56:50 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2009-03-13 14:50:39 $
  */
 
 public class DatatypeParser {
@@ -326,16 +328,6 @@ public class DatatypeParser {
 			loadDatatypeRawdata();
 			dataLoaded=true;
 		}
-//		try {
-//			InputStream is = this.getClass().getResourceAsStream("/datatypes");
-//			ObjectInputStream ois = new ObjectInputStream(is);
-//			datatypes = (Hashtable)ois.readObject();
-//			populateSubclasses();
-//			ois.close();
-//			is.close();
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 	/**
 	 * Load datatype data from original HL7 schema data
@@ -346,8 +338,9 @@ public class DatatypeParser {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   		DocumentBuilder db;
 		try {
-			db = dbf.newDocumentBuilder();
-            String schemaHome = FileUtil.getV3XsdFilePath();
+			db = dbf.newDocumentBuilder();            
+            String schemaHome=FileUtil.getV3XsdFilePath();
+            System.out.println("DatatypeParser.loadDatatypeRawdata()..schema file:"+schemaHome);
             if (schemaHome == null) 
             	schemaHome = "schemas";
             String coreSchemaDir = Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME;// "coreschemas";
@@ -363,13 +356,33 @@ public class DatatypeParser {
 
             	String nameVoc=schemaHome+"/"+coreSchemaDir+"/voc.xsd";
             	URL urlVoc=FileUtil.retrieveResourceURL(nameVoc);
-            	vocDoc = db.parse(urlVoc.openStream());
             	String nameDatatypeBase=schemaHome+"/"+coreSchemaDir+"/datatypes-base.xsd";
             	URL urlDtBase=FileUtil.retrieveResourceURL(nameDatatypeBase);
-            	baseDoc = db.parse(urlDtBase.openStream());
             	String nameDatatype=schemaHome+"/"+coreSchemaDir+"/datatypes.xsd";
             	URL urlDt=FileUtil.retrieveResourceURL(nameDatatype);
-            	allDoc = db.parse(urlDt.openStream());
+            	if (urlVoc!=null)
+            	{
+	            	vocDoc = db.parse(urlVoc.openStream());
+	            	baseDoc = db.parse(urlDtBase.openStream());
+	            	allDoc = db.parse(urlDt.openStream());
+            	}
+            	else
+            	{
+            		ZipFile xsdZipFile=new ZipFile(NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath());
+            		if (xsdZipFile!=null)
+            		{
+	            		String coreSchemaPrefix="schemas/coreschemas";
+	            		ZipEntry vocEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/voc.xsd");
+	            		ZipEntry baseEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes-base.xsd");
+	            		ZipEntry allEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes.xsd");
+	            		vocDoc = db.parse(xsdZipFile.getInputStream(vocEntry));
+		            	baseDoc= db.parse(xsdZipFile.getInputStream(baseEntry));
+		            	allDoc = db.parse(xsdZipFile.getInputStream(allEntry));
+	            	}
+            		else
+            			System.out.println("DatatypeParser.loadDatatypeRawdata()...failed load datatype type");
+            	}       
+            	
             	
             }
             else
@@ -495,6 +508,9 @@ public class DatatypeParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.18  2009/02/25 15:56:50  wangeug
+ * HISTORY :enable webstart
+ * HISTORY :
  * HISTORY :Revision 1.17  2008/12/12 22:03:43  umkis
  * HISTORY :use FileUtil.getV3XsdFilePath() at the loadDatatypeRawdata()
  * HISTORY :

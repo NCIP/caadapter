@@ -8,10 +8,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,6 +29,7 @@ import org.xml.sax.SAXException;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 /**
  * The class provides Utilities to access the MIF info.
@@ -32,8 +37,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFReferenceResolver;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2009-03-12 15:01:18 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2009-03-13 14:55:45 $
  */
 public class MIFParserUtil {
 
@@ -47,8 +52,21 @@ public class MIFParserUtil {
         	//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
 			if (mifURL==null)
 				mifURL=FileUtil.retrieveResourceURL(mifFileName);
-			InputStream mifIs =mifURL.openStream();
-        	//this.getClass().getResourceAsStream("/mif/" + mifFileName);
+			InputStream mifIs =null;
+			if (mifURL!=null)
+				mifIs=mifURL.openStream();
+			else
+			{
+				String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
+				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifZip path:"+mifZipFilePath);
+				ZipFile mifZipFile=new ZipFile(mifZipFilePath);
+				ZipEntry mifEntry=mifZipFile.getEntry(mifFileName);
+				if (mifEntry==null)
+					mifEntry=mifZipFile.getEntry(mifPath);
+				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifEntry:"+mifEntry.getName());
+				mifIs=mifZipFile.getInputStream(mifEntry);
+			}
+			//this.getClass().getResourceAsStream("/mif/" + mifFileName);
         	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         	DocumentBuilder db = dbf.newDocumentBuilder();
         	Document mifDoc = db.parse(mifIs);
@@ -156,6 +174,9 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.14  2009/03/12 15:01:18  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.13  2009/02/25 15:57:28  wangeug
  * HISTORY :enable webstart
  * HISTORY :

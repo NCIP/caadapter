@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2009-03-12 15:00:46 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-03-13 14:51:17 $
  */
 
 import java.io.Serializable;
@@ -24,12 +24,26 @@ import java.util.Set;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-public class MIFIndex implements Serializable {
+public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 
 	private TreeSet<String> messageCategory =new TreeSet<String>();
 	private Hashtable <String, String> mifNames=new Hashtable<String, String>();
 	private String copyrightYears;
 	private String schemaPath;
+	private String mifPath;
+	/**
+	 * @return the mifPath
+	 */
+	public String getMifPath() {
+		return mifPath;
+	}
+
+	/**
+	 * @param mifPath the mifPath to set
+	 */
+	public void setMifPath(String mifPath) {
+		this.mifPath = mifPath;
+	}
 	private String normativeDescription;
 	 
 	/**
@@ -131,9 +145,23 @@ public class MIFIndex implements Serializable {
 	{
 		return this.getNormativeDescription();
 	}
+	public int compareTo(MIFIndex index) {
+		// TODO Auto-generated method stub
+		String myCompareKey=getCopyrightYears();
+		if (myCompareKey==null||myCompareKey.equals(""));
+			myCompareKey=getNormativeDescription();
+		
+		String otherCompareKey=index.getCopyrightYears();
+		if (otherCompareKey==null||otherCompareKey.equals(""));
+			otherCompareKey=index.getNormativeDescription();
+		return (myCompareKey.compareToIgnoreCase(otherCompareKey));
+	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.5  2009/03/12 15:00:46  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.4  2008/09/29 15:44:40  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

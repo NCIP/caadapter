@@ -13,8 +13,8 @@ package gov.nih.nci.caadapter.hl7.mif.v1;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-02-25 15:57:20 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-03-13 14:54:01 $
  */
 
 import java.io.FileOutputStream;
@@ -23,6 +23,9 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -32,6 +35,7 @@ import org.w3c.dom.Node;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.datatype.XSDParserUtil;
 import gov.nih.nci.caadapter.hl7.mif.CMETRef;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 /**
  * The class load a MIF document into the MIF class object.
@@ -39,8 +43,8 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-02-25 15:57:20 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-03-13 14:54:01 $
  */
 
 public class CMETInfoParser {
@@ -115,7 +119,17 @@ public class CMETInfoParser {
 		//working for Normative 2006
 		if (cmetURL==null)
 			cmetURL=FileUtil.retrieveResourceURL("cmetinfo.coremif");
-		InputStream cmetIs=cmetURL.openStream();
+		InputStream cmetIs=null;
+		if (cmetURL!=null)
+			cmetURL.openStream();
+		{
+			String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
+			ZipFile mifZipFile=new ZipFile(mifZipFilePath);
+			ZipEntry cmetEntry=mifZipFile.getEntry("cmetinfo.coremif");
+			if (cmetEntry==null)
+				cmetEntry=mifZipFile.getEntry("mif/cmetinfo.coremif");
+			cmetIs=mifZipFile.getInputStream(cmetEntry);
+		}
 		parserCMETInfoWithStream(cmetIs);
 	}
  
@@ -132,6 +146,9 @@ public class CMETInfoParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2009/02/25 15:57:20  wangeug
+ * HISTORY :enable webstart
+ * HISTORY :
  * HISTORY :Revision 1.7  2008/09/29 15:42:44  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
