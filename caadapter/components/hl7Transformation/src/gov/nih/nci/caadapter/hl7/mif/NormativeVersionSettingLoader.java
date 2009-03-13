@@ -28,8 +28,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author   OWNER: wangeug  $Date: Dec 12, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-03-12 15:00:46 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-03-13 14:52:17 $
  * @since caAdapter v4.2
  */
 
@@ -88,10 +88,11 @@ public class NormativeVersionSettingLoader {
 			try {
 				MIFIndex mifIndexInfos=MIFIndexParser.loadMIFIndexFromZipFile(mifFilePath);
 				mifIndexInfos.setCopyrightYears(copyrightYear);
+				mifIndexInfos.setMifPath(mifFilePath);
 				mifIndexInfos.setSchemaPath(schemaFilePath);
 				mifIndexInfos.setNormativeDescription(description);
 				nomativeSetting.put(copyrightYear, mifIndexInfos);
-				MIFIndexParser.printMIFIndex(mifIndexInfos);
+//				MIFIndexParser.printMIFIndex(mifIndexInfos);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -113,6 +114,9 @@ public class NormativeVersionSettingLoader {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/03/12 15:00:46  wangeug
+* HISTORY: support multiple HL& normatives
+* HISTORY:
 * HISTORY: Revision 1.1  2009/01/09 21:32:59  wangeug
 * HISTORY: process core attribute seting with HL7 datatypes
 * HISTORY:
