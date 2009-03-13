@@ -23,14 +23,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Define the first page in the open wizard.
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.8 $
- * date        $Date: 2009-03-12 15:01:40 $
+ * revision    $Revision: 1.9 $
+ * date        $Date: 2009-03-13 14:56:21 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -45,7 +46,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.8 2009-03-12 15:01:40 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.9 2009-03-13 14:56:21 wangeug Exp $";
 	private static final String HL7_NORMATIVE_LABEL = "Select an HL7 Nomative:";
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
@@ -66,7 +67,6 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 */
 	public NewHSMFrontPage(NewHSMWizard wizard)
 	{
-//		this.wizard = wizard;
 		initialize();
 	}
 
@@ -92,12 +92,13 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 //				mifIndex =MIFIndexParser.loadMIFIndex();
 //			}
 				hl7NormativeComboBox =new JComboBox();
+			TreeMap<String, MIFIndex> indxSortMap=new TreeMap<String, MIFIndex>();
+			//sort MIFIndex
 			for (String cpYear:NormativeVersionUtil.loadNormativeSetting().keySet())
-			{
-				 
-				 hl7NormativeComboBox.addItem(NormativeVersionUtil.loadMIFIndex(cpYear));
-			}
-		
+				indxSortMap.put(cpYear, NormativeVersionUtil.loadMIFIndex(cpYear));
+			for(MIFIndex indxItem:indxSortMap.values())
+				hl7NormativeComboBox.addItem(indxItem);
+			
 			hl7NormativeComboBox.setSelectedIndex(-1);
 			hl7NormativeComboBox.addActionListener(this);
 			
@@ -194,6 +195,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 		{
 			mifIndex=(MIFIndex)hl7NormativeComboBox.getSelectedItem();
 			System.out.println("NewHSMFrontPage.actionPerformed()..select MIFIndex:"+mifIndex);
+			NormativeVersionUtil.setCurrentMIFIndex(mifIndex);
 			hl7MessageCategoryComboBox.removeAllItems();
 			for(Object msgOneCat:mifIndex.getMessageCategory().toArray())
 				hl7MessageCategoryComboBox.addItem(msgOneCat);
@@ -233,6 +235,9 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2009/03/12 15:01:40  wangeug
+ * HISTORY      : support multiple HL& normatives
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2009/02/24 16:00:23  wangeug
  * HISTORY      : enable webstart
  * HISTORY      :

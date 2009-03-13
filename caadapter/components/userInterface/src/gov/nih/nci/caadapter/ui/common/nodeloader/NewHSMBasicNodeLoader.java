@@ -20,13 +20,13 @@ import gov.nih.nci.caadapter.hl7.mif.CMETRef;
 import gov.nih.nci.caadapter.hl7.mif.MIFAssociation;
 import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
+import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 import gov.nih.nci.caadapter.hl7.mif.XmlToMIFImporter;
 import gov.nih.nci.caadapter.hl7.mif.v1.CMETUtil;
 import gov.nih.nci.caadapter.hl7.mif.v1.MIFParserUtil;
-import gov.nih.nci.caadapter.ui.common.preferences.PreferenceManager;
-//import gov.nih.nci.caadapter.ui.common.tree.DefaultMappableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultHSMTreeMutableTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
@@ -34,13 +34,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import java.io.FileInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -59,8 +53,8 @@ import java.util.TreeSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.51 $
- *          date        $Date: 2009-03-12 15:02:12 $
+ *          revision    $Revision: 1.52 $
+ *          date        $Date: 2009-03-13 14:57:08 $
  */
 public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 {
@@ -96,7 +90,6 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 	{
 		isMappingTree=true;
 		TreeNode realRoot=loadData(o);
-//		DefaultMappableTreeNode node = new DefaultMappableTreeNode("Target Tree", true);
 		DefaultTargetTreeNode node = new DefaultTargetTreeNode("Target Tree", true);
 		node.add((MutableTreeNode) realRoot);
 		return node; 
@@ -112,36 +105,18 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 		else if (o instanceof File)
 		{
 			System.out.println("NewHSMBasicNodeLoader.loadData()..with file:"+((File)o).getAbsolutePath());
-			FileInputStream fis;
-//			try {
-				File file=(File)o;
-//				if (file.getName().endsWith(".xml"))
-//				{
-					XmlToMIFImporter mifImport=new XmlToMIFImporter();
-					rootMIFClass=mifImport.importMifFromXml(file);
-//				}
-//				else
-//				{
-//				fis = new FileInputStream ((File)o);
-//				ObjectInputStream ois = new ObjectInputStream(fis);
-//				rootMIFClass = (MIFClass)ois.readObject();
-//	    		ois.close();
-//	    		fis.close();
-//				}
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				Log.logException(this, e);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				Log.logException(this, e);
-//			} catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				Log.logException(this, e);
-//			}
-        	
+			File file=(File)o;
+			XmlToMIFImporter mifImport=new XmlToMIFImporter();
+			rootMIFClass=mifImport.importMifFromXml(file);
+       	
 		}
 		if (rootMIFClass!=null)
+		{
+			String currentMIFVersion=rootMIFClass.getCopyrightYears();
+			MIFIndex currentMIFIndex=NormativeVersionUtil.loadMIFIndex(currentMIFVersion);
+			NormativeVersionUtil.setCurrentMIFIndex(currentMIFIndex);
 			root = buildObjectNode(rootMIFClass, null);
+		}
 		else
 			Log.logError(this, "Unable to intialized tree root with object:"+o.toString());
 		return root;
@@ -595,6 +570,9 @@ public class NewHSMBasicNodeLoader extends DefaultNodeLoader
 }
 /**
  *HISTORY 	:$Log: not supported by cvs2svn $
+ *HISTORY 	:Revision 1.51  2009/03/12 15:02:12  wangeug
+ *HISTORY 	:support multiple HL& normatives
+ *HISTORY 	:
  *HISTORY 	:Revision 1.50  2009/02/12 20:37:42  wangeug
  *HISTORY 	:use sortedChoice() to include all choiceItems from sub-list
  *HISTORY 	:

@@ -15,13 +15,29 @@ import java.util.HashMap;
  *
  * @author   OWNER: wangeug  $Date: Mar 9, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-03-12 15:00:46 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-03-13 14:53:09 $
  * @since caAdapter v4.2
  */
 
 public class NormativeVersionUtil {
 	private static HashMap <String, MIFIndex>normativeSetting;
+	private static MIFIndex currentMIFIndex;
+	/**
+	 * @return the currentMIFIndex
+	 */
+	public static MIFIndex getCurrentMIFIndex() {
+		return currentMIFIndex;
+	}
+
+	/**
+	 * @param currentMIFIndex the currentMIFIndex to set
+	 */
+	public static void setCurrentMIFIndex(MIFIndex currentMIFIndex) {
+		NormativeVersionUtil.currentMIFIndex = currentMIFIndex;
+		System.out.println("NormativeVersionUtil.setCurrentMIFIndex()..curent MIFIndex:"+currentMIFIndex.getCopyrightYears());
+	}
+
 	public static   HashMap <String, MIFIndex> loadNormativeSetting()
 	{
 		if (normativeSetting==null)
@@ -51,4 +67,7 @@ public class NormativeVersionUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/03/12 15:00:46  wangeug
+* HISTORY: support multiple HL& normatives
+* HISTORY:
 **/
