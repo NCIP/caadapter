@@ -15,8 +15,8 @@ import java.util.HashMap;
  *
  * @author   OWNER: wangeug  $Date: Mar 9, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-03-13 14:53:09 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-03-13 16:29:04 $
  * @since caAdapter v4.2
  */
 
@@ -50,6 +50,9 @@ public class NormativeVersionUtil {
 	{
 		if (normativeSetting==null)
 			loadSetting();
+		if (copyrightYear==null||copyrightYear.equals(""))
+			copyrightYear=MIFIndex.DEFAULT_COPYRIGHT_YEAR;
+
 		if (normativeSetting!=null)
 			return normativeSetting.get(copyrightYear);
 		return null;
@@ -67,6 +70,9 @@ public class NormativeVersionUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/03/13 14:53:09  wangeug
+* HISTORY: support multiple HL& normatives: remember the current version
+* HISTORY:
 * HISTORY: Revision 1.1  2009/03/12 15:00:46  wangeug
 * HISTORY: support multiple HL& normatives
 * HISTORY:

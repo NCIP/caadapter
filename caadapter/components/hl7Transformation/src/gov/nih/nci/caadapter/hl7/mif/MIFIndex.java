@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2009-03-13 14:51:17 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-03-13 16:28:50 $
  */
 
 import java.io.Serializable;
@@ -31,6 +31,7 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	private String copyrightYears;
 	private String schemaPath;
 	private String mifPath;
+	public final static String DEFAULT_COPYRIGHT_YEAR="2008";
 	/**
 	 * @return the mifPath
 	 */
@@ -159,6 +160,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2009/03/13 14:51:17  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.5  2009/03/12 15:00:46  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :
