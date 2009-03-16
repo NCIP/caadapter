@@ -26,8 +26,8 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-11-21 16:18:38 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-03-16 20:25:42 $
  */
 public class FunctionVocabularyMappingDefinitionDialog extends JDialog implements ActionListener
 {
@@ -44,7 +44,7 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDefinitionDialog.java,v 1.5 2008-11-21 16:18:38 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDefinitionDialog.java,v 1.6 2009-03-16 20:25:42 wangeug Exp $";
 
 
     private static final String TITLE = "Function Vocabulary Mapping Definition";
@@ -274,8 +274,10 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
         JPanel radioButtonPanel = wrappingBorder("Select Type of Vocabulary Mapping Resource", (JPanel) ob[0]);
         fileLocal = (JRadioButton) ob[1];
         fileURL = (JRadioButton) ob[2];
+        fileURL.setEnabled(false);
         serviceURL = (JRadioButton) ob[3];
-
+        serviceURL.setEnabled(false);
+        
         okButton = new JButton("    " + OK_COMMAND + "   ");
         okButton.setActionCommand(OK_COMMAND);
         okButton.addActionListener(this);
@@ -854,6 +856,9 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/11/21 16:18:38  wangeug
+ * HISTORY      : Move back to HL7 module from common module
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/11/17 20:10:47  wangeug
  * HISTORY      : Move FunctionComponent and VocabularyMap from HL7 module to common module
  * HISTORY      :
