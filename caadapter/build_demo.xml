@@ -35,7 +35,7 @@
         <condition property="caadapter.module.all.zip">	
 						<equals arg1="${caadapter.release.all.modules}" arg2="true"/>
 		</condition>
-<echo message="caadapter.release.hl7.only=${caadapter.release.hl7.only}"/>
+		<echo message="caadapter.release.hl7.only=${caadapter.release.hl7.only}"/>
         <condition property="caadapter.module.hl7.zip">	
 				<equals arg1="${caadapter.release.hl7.only}" arg2="true"/>
 		</condition>
@@ -130,32 +130,6 @@
 			<delete dir="../test"/>
 	</target>
 	
-	<target name="testCsvToRds.jar" description="create testing jar: CSV to RDS">
-		<mkdir dir="../test"/>
-		<javac destdir="../test" 
-			classpath="lib/caAdapter.jar"
-			fork="yes" debug="on">
-			<src path="../components/sdtmTransformation/test/src" />
-			<include name="**/TestCSVAPITransform4RDS.java"/>
-		</javac>
-		<jar destfile="csvToRdsTest.jar">
-			<fileset dir="../test" />
-		</jar>
-		<delete dir="../test"/>
-	</target>	
-	<target name="testDbToRds.jar" description="create testing jar: Database to RDS">
-			<mkdir dir="../test"/>
-			<javac destdir="../test" 
-				classpath="lib/caAdapter.jar"
-				fork="yes" debug="on">
-				<src path="../components/sdtmTransformation/test/src" />
-				<include name="**/TestDBAPITransform4RDS.java"/>
-			</javac>
-			<jar destfile="dbToRdsTest.jar">
-				<fileset dir="../test" />
-			</jar>
-			<delete dir="../test"/>
-	</target>
 	
 	<target name="ws.client.jar" description="create testing jar: web service client">
 		<javac destdir="../build" 
