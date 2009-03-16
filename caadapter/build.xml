@@ -662,6 +662,7 @@
     				<fileset file="${config.dir}/caadapter-resources.properties" />
     				<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
     				<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
+    				<fileset file="${config.dir}/hl7-normative-setting.xml" />
     				
     	 </copy>
     	 <mkdir dir="${dist.dir}/workingspace"/>
