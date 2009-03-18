@@ -16,8 +16,8 @@ import java.util.List;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2009-03-13 14:50:54 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-03-18 15:49:45 $
  */
 public class DatatypeParserUtil {
 	private static DatatypeParser datatypeParser = null;
@@ -36,7 +36,8 @@ public class DatatypeParserUtil {
 		if (name==null||name.equals(""))
 			return null;
 		DatatypeParser datatypeParser = getDatatypeParser();
-		if (datatypeParser.getDatatypes().get(name) == null) return null;
+		if (datatypeParser.getDatatypes().get(name) == null) 
+			return CustomerDatatypeUtil.getCustomerDatatype(name);
 		return (Datatype)datatypeParser.getDatatypes().get(name);
 	}
 	public static List <String>findSubclassListWithTypeName(String className)
@@ -57,6 +58,9 @@ public class DatatypeParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2009/03/13 14:50:54  wangeug
+ * HISTORY :clean code
+ * HISTORY :
  * HISTORY :Revision 1.5  2008/09/29 15:48:57  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
