@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2009-03-12 15:00:46 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2009-03-18 15:50:36 $
  */
 
 
@@ -85,7 +85,15 @@ public class MIFIndexParser {
 //		String zipFilePath = System.getProperty("caadapter.hl7.mif.path");
 		
 		System.out.println("MIFIndexParser.loadMIFInfosZip()..zipFilePath"+zipFilePath);
-		ZipFile zip = new ZipFile(zipFilePath);
+		File zipFile=new File(zipFilePath);
+		if (!zipFile.exists())
+		{
+			String mifOjbPath=zipFilePath.substring(0, zipFilePath.lastIndexOf("/"))+"/mifIndex.obj";
+			return loadMifIndexObject(mifOjbPath);
+		}
+		
+		
+		ZipFile zip = new ZipFile(zipFile);
 		Enumeration entryEnum=zip.entries();
 
 		MIFIndex mifIndexInfos = new MIFIndex();
@@ -115,10 +123,10 @@ public class MIFIndexParser {
 		return loadMIFIndexFromZipFile(zipFilePath);
 	}
 	
-	public static MIFIndex loadMifIndexObject() {
+	public static MIFIndex loadMifIndexObject(String objPath) {
 		try {
-			System.out.println("MIFIndexParser.loadMifIndexObject()...mifIndex.obj");
-			URL isURL=FileUtil.retrieveResourceURL("mifIndex.obj");
+			System.out.println("MIFIndexParser.loadMifIndexObject()...:"+objPath);
+			URL isURL=FileUtil.retrieveResourceURL(objPath);
 
 			if (isURL==null)
 				return null;
@@ -134,10 +142,10 @@ public class MIFIndexParser {
 		return null;
 	}
 	
-	public static void saveV2MessageIndexObject() throws Exception {
+	public static void saveV2MessageIndexObject(MIFIndex mifIndex) throws Exception {
 		OutputStream os = new FileOutputStream("mifIndex.obj");
 		ObjectOutputStream oos = new ObjectOutputStream(os); 
-		MIFIndex mifIndex= loadMIFIndex() ;
+//		MIFIndex mifIndex= loadMIFIndex() ;
 		oos.writeObject(mifIndex);
 		oos.close();
 		os.close();
@@ -150,15 +158,18 @@ public class MIFIndexParser {
 //		mifInfoParser.saveMIFIndex("c:/temp/mifIndexInfos",mifIndexInfos);
 
 //		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfos();
-    	String mifFilePath="hl7_home/Normative_2006/mif_2006.zip";
+    	String mifFilePath="hl7_home/Normative_2005/mif_2005.zip";
     	
 		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFIndexFromZipFile(mifFilePath);
 		MIFIndexParser.printMIFIndex(mifIndexInfos);
-//    	MIFIndexParser.saveV2MessageIndexObject();
+    	MIFIndexParser.saveV2MessageIndexObject(mifIndexInfos);
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.16  2009/03/12 15:00:46  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.15  2009/02/25 15:59:04  wangeug
  * HISTORY :enable webstart
  * HISTORY :

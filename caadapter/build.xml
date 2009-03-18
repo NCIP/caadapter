@@ -419,6 +419,44 @@
         <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.name}"/>
     </target>
 
+	<target name="build.hl7.specification">
+		<mkdir dir="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/"/>
+		<unzip dest="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/${normative.year}">
+		     <fileset dir="${basedir}/hl7_home/${normative.year}" >
+		         <include name="${hl7.mif.file}"/>
+		         <include name="${hl7.datatype.file}"/>
+		      </fileset>
+		</unzip>
+		<copy file="${basedir}/hl7_home/${normative.year}/mifIndex.obj" 
+			tofile="${hl7.webstart.deploy.dir}/tmp/hl7spec/hl7_home/${normative.year}/mifIndex.obj"/>
+	</target>
+	
+	<target name="hl7.spec.process">
+		<antcall target="build.hl7.specification">
+			<param name="param1" value="value"/>
+		  	<param name="normative.year" value="Normative_2008"/>
+		  	<param name="hl7.mif.file" value="mif_2008.zip"/>
+		  	<param name="hl7.datatype.file" value="schemas.zip"/>
+		 </antcall>
+  		<antcall target="build.hl7.specification">
+					<param name="param1" value="value"/>
+				  	<param name="normative.year" value="Normative_2006"/>
+				  	<param name="hl7.mif.file" value="mif_2006.zip"/>
+				  	<param name="hl7.datatype.file" value="schemas.zip"/>
+		</antcall>
+		<antcall target="build.hl7.specification">
+					<param name="param1" value="value"/>
+				  	<param name="normative.year" value="Normative_2005"/>
+				  	<param name="hl7.mif.file" value="mif_2005.zip"/>
+				  	<param name="hl7.datatype.file" value="schemas.zip"/>
+		 </antcall>
+		
+	     <zip destfile="${hl7.webstart.deploy.dir}/hl7Specfication.zip">
+			<fileset dir="${hl7.webstart.deploy.dir}/tmp/hl7spec"/>
+		</zip>
+		<delete dir="${hl7.webstart.deploy.dir}/tmp"/>
+	</target>
+	
     <target name="hl7webstart" if="caadapter.release.hl7.build">
         <echo message="------- cleaning webstart deploy directory ------"/>
         <delete dir="${hl7.webstart.deploy.dir}"/>
@@ -433,7 +471,15 @@
 		</unzip>
 
     	<copy file="${webstart.config.dir}/caadapter-components.hl7.properties" tofile="${hl7.webstart.deploy.dir}/tmp/caadapter-components.properties"/>
-		<echo message="copy MIFIndex and V2MessageIndex" />
+    	<copy todir="${hl7.webstart.deploy.dir}/tmp/conf"> 
+    		<fileset dir="${config.dir}">
+		        <include name="datatype-core-attributes-default.xml"/>
+				<include name="datatype-core-attributes-setting.xml"/>
+    			<include name="hl7-normative-setting.xml"/>
+   				<include name="hl7-customer-datatype-setting.xml"/>
+    		</fileset>
+		</copy>
+    	<echo message="copy MIFIndex and V2MessageIndex" />
 		<copy todir="${hl7.webstart.deploy.dir}/tmp">
 			<fileset dir="${webstart.home.files}">
             	<include name="mifIndex.obj"/>
@@ -474,8 +520,8 @@
         	</fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
-            	<include name="mif.zip"/>
-               	<include name="schemas.zip"/>
+            	<!-- include name="mif.zip"/ -->
+               	<!-- include name="schemas.zip"/ -->
                 <include name="jgraph.jar"/>      
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
@@ -485,7 +531,8 @@
                 <include name="log4j-1.2.8.jar"/>
         	</fileset>
         </copy>
-
+		<antcall target="hl7.spec.process"/>
+        
         <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${hl7.webstart.deploy.dir}" includeEmptyDirs="No">

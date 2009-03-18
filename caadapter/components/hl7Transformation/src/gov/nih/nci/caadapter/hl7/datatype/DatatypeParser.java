@@ -44,8 +44,8 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2009-03-13 14:50:39 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2009-03-18 15:49:54 $
  */
 
 public class DatatypeParser {
@@ -255,14 +255,6 @@ public class DatatypeParser {
 							MIFUtil.addDatatypeAttributeOnTop(currentDatatype, (Attribute)onePAttr.clone());
 						}
 			    	}
-//					while (pAttrIt.hasNext()) {
-//						Attribute pAttribute = (Attribute)pAttrIt.next();
-//						if (attributes.get(pAttribute.getName()) == null) {
-////							currentDatatype.addAttribute(pAttribute.getName(), pAttribute);
-//							MIFUtil.addDatatypeAttributeOnTop(currentDatatype, (Attribute)pAttribute.clone());
-//						}
-//					}
-
 					datatypes_check.put(currentDatatypeString,COMPLETE);
 				}
 			}
@@ -353,12 +345,20 @@ public class DatatypeParser {
             if(!dir.exists()||!dir.isDirectory()) 
             {
             	System.err.println("Invalid V3 Core XSD Directory : " + coreSchemaHome);
-
-            	String nameVoc=schemaHome+"/"+coreSchemaDir+"/voc.xsd";
+            	String coreXsdPath=schemaHome+"/"+coreSchemaDir;
+            	String nameVoc=coreXsdPath+"/voc.xsd";
             	URL urlVoc=FileUtil.retrieveResourceURL(nameVoc);
-            	String nameDatatypeBase=schemaHome+"/"+coreSchemaDir+"/datatypes-base.xsd";
+            	if (urlVoc==null)
+            	{
+            		//webStart deployment
+        			String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
+        			coreXsdPath=specHome+"/schemas/coreschemas";
+        			nameVoc=coreXsdPath+"/voc.xsd";
+                	urlVoc=FileUtil.retrieveResourceURL(nameVoc);
+            	}
+            	String nameDatatypeBase=coreXsdPath+"/datatypes-base.xsd";
             	URL urlDtBase=FileUtil.retrieveResourceURL(nameDatatypeBase);
-            	String nameDatatype=schemaHome+"/"+coreSchemaDir+"/datatypes.xsd";
+            	String nameDatatype=coreXsdPath+"/datatypes.xsd";
             	URL urlDt=FileUtil.retrieveResourceURL(nameDatatype);
             	if (urlVoc!=null)
             	{
@@ -508,6 +508,9 @@ public class DatatypeParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.19  2009/03/13 14:50:39  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.18  2009/02/25 15:56:50  wangeug
  * HISTORY :enable webstart
  * HISTORY :

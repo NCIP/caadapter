@@ -23,8 +23,7 @@
 	<jar href="log4j-1.2.8.jar"/>
 	<jar href="xercesImpl.jar"/>
 	<jar href="castor-0.9.9.jar"/>
-   	<jar href="mif.zip"/>
-   	<jar href="schemas.zip"/>
+   	<jar href="hl7Specfication.zip"/>
     <jar href="HL7v2xsd.zip"/>
     <jar href="encoderframework.jar"/>
 	<jar href="encoderfrmwk-xsdextension.jar"/>
@@ -39,7 +38,9 @@
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />
-
+		<argument>$WEBSERVER</argument> 
+   </application-desc>
+   
 </jnlp>
 
 

@@ -28,8 +28,8 @@ import org.jdom.input.SAXBuilder;
  *
  * @author   OWNER: wangeug  $Date: Dec 12, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-03-13 14:52:17 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-03-18 15:50:36 $
  * @since caAdapter v4.2
  */
 
@@ -87,11 +87,14 @@ public class NormativeVersionSettingLoader {
 			String schemaFilePath=normative.getChild("schemaFile").getValue();
 			try {
 				MIFIndex mifIndexInfos=MIFIndexParser.loadMIFIndexFromZipFile(mifFilePath);
-				mifIndexInfos.setCopyrightYears(copyrightYear);
-				mifIndexInfos.setMifPath(mifFilePath);
-				mifIndexInfos.setSchemaPath(schemaFilePath);
-				mifIndexInfos.setNormativeDescription(description);
-				nomativeSetting.put(copyrightYear, mifIndexInfos);
+				if (mifIndexInfos!=null)
+				{
+					mifIndexInfos.setCopyrightYears(copyrightYear);
+					mifIndexInfos.setMifPath(mifFilePath);
+					mifIndexInfos.setSchemaPath(schemaFilePath);
+					mifIndexInfos.setNormativeDescription(description);
+					nomativeSetting.put(copyrightYear, mifIndexInfos);
+				}
 //				MIFIndexParser.printMIFIndex(mifIndexInfos);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -114,6 +117,9 @@ public class NormativeVersionSettingLoader {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/03/13 14:52:17  wangeug
+* HISTORY: support multiple HL& normatives: reload a H3S/Map
+* HISTORY:
 * HISTORY: Revision 1.1  2009/03/12 15:00:46  wangeug
 * HISTORY: support multiple HL& normatives
 * HISTORY:

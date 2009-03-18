@@ -37,8 +37,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2009-03-13 14:55:45 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-03-18 15:50:53 $
  */
 public class MIFParserUtil {
 
@@ -52,6 +52,17 @@ public class MIFParserUtil {
         	//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
 			if (mifURL==null)
 				mifURL=FileUtil.retrieveResourceURL(mifFileName);
+			if (mifURL==null)
+			{
+				//webStart deployment
+				String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
+				//normative 2008 structure
+				mifURL=FileUtil.retrieveResourceURL(specHome+"/mif/"+mifFileName);
+				//normative 2006 structure
+				if (mifURL==null)
+					mifURL=FileUtil.retrieveResourceURL(specHome+"/"+mifFileName);				
+			}
+			
 			InputStream mifIs =null;
 			if (mifURL!=null)
 				mifIs=mifURL.openStream();
@@ -59,6 +70,9 @@ public class MIFParserUtil {
 			{
 				String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
 				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifZip path:"+mifZipFilePath);
+				File zipFile=new File(mifZipFilePath);
+				if (!zipFile.exists())
+					return null;
 				ZipFile mifZipFile=new ZipFile(mifZipFilePath);
 				ZipEntry mifEntry=mifZipFile.getEntry(mifFileName);
 				if (mifEntry==null)
@@ -174,6 +188,9 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.15  2009/03/13 14:55:45  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.14  2009/03/12 15:01:18  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :

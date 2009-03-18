@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2009-03-13 16:28:50 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2009-03-18 15:50:36 $
  */
 
 import java.io.Serializable;
@@ -138,6 +138,13 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 		return rtnSet;
 	}
 	
+	public String findSpecificationHome()
+	{
+		String rtnSt=null;
+		if (this.getMifPath()!=null)
+			rtnSt=getMifPath().substring(0, getMifPath().lastIndexOf("/"));
+		return rtnSt;
+	}
 	public String findMIFFileName(String messageType)
 	{
 		return (String)mifNames.get(messageType);
@@ -160,6 +167,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2009/03/13 16:28:50  wangeug
+ * HISTORY :support multiple HL& normatives: set default as 2008
+ * HISTORY :
  * HISTORY :Revision 1.6  2009/03/13 14:51:17  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :

@@ -13,8 +13,8 @@ package gov.nih.nci.caadapter.hl7.mif.v1;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2009-03-13 14:54:01 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-03-18 15:50:53 $
  */
 
 import java.io.FileOutputStream;
@@ -43,8 +43,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2009-03-13 14:54:01 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-03-18 15:50:53 $
  */
 
 public class CMETInfoParser {
@@ -112,16 +112,26 @@ public class CMETInfoParser {
 	}
 	
 	public void loadCMETInofs() throws Exception {
-//		//always load from mif.zip/
 		//normative 2008 structure /mif/cmetinfo.coremif
 		//normative 2006 structure /cmetinfo.coremif
 		URL cmetURL=FileUtil.retrieveResourceURL("mif/cmetinfo.coremif");
 		//working for Normative 2006
 		if (cmetURL==null)
 			cmetURL=FileUtil.retrieveResourceURL("cmetinfo.coremif");
+		if (cmetURL==null)
+		{
+			//webStart deployment
+			String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
+			//normative 2008 structure
+			cmetURL=FileUtil.retrieveResourceURL(specHome+"/mif/cmetinfo.coremif");
+			//normative 2006 structure
+			if (cmetURL==null)
+				cmetURL=FileUtil.retrieveResourceURL(specHome+"/cmetinfo.coremif");				
+		}
 		InputStream cmetIs=null;
 		if (cmetURL!=null)
-			cmetURL.openStream();
+			cmetIs=cmetURL.openStream();
+		else
 		{
 			String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
 			ZipFile mifZipFile=new ZipFile(mifZipFilePath);
@@ -146,6 +156,9 @@ public class CMETInfoParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2009/03/13 14:54:01  wangeug
+ * HISTORY :support multiple HL& normatives
+ * HISTORY :
  * HISTORY :Revision 1.8  2009/02/25 15:57:20  wangeug
  * HISTORY :enable webstart
  * HISTORY :
