@@ -37,10 +37,10 @@ import org.xml.sax.*;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2009-03-12 01:40:52 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2009-03-19 02:12:18 $
  */
 public class FunctionVocabularyMapping
 {
@@ -57,7 +57,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.7 2009-03-12 01:40:52 umkis Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.8 2009-03-19 02:12:18 altturbo Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -682,7 +682,10 @@ public class FunctionVocabularyMapping
 
         if (file.exists())
         {
-            pathName = file.toURI().toString().replace("file:/", "file:///");
+            String uri = file.toURI().toString();
+            if (uri.toLowerCase().startsWith("file:///")) pathName = uri;
+            else if (uri.toLowerCase().startsWith("file://")) pathName = file.toURI().toString().replace("file://", "file:///");
+            else if (uri.toLowerCase().startsWith("file:/")) pathName = file.toURI().toString().replace("file:/", "file:///");
         }
 
         FunctionVocabularyXMLMappingEventHandler handler = null;
@@ -884,6 +887,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2009/03/12 01:40:52  umkis
+ * HISTORY      : upgrade for flexibility of vom file location (same directory with the map file)
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/11/21 16:17:00  wangeug
  * HISTORY      : Move back to HL7 module from common module
  * HISTORY      :
