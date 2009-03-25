@@ -10,8 +10,8 @@ package gov.nih.nci.caadapter.ui.common.resource;
  * @author OWNER: $Author: wangeug $
  * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.15 $
- * @date       $Date: 2008-09-25 19:25:59 $
+ * @version    $Revision: 1.16 $
+ * @date       $Date: 2009-03-25 13:57:35 $
 */
 
 import gov.nih.nci.caadapter.hl7.mif.v1.BuildResourceUtil;
@@ -74,7 +74,10 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     	if (getName().equals(COMMAND_BUILD_V2))
     		resourceName=RESOURCE_NAME_V2;
     	else if (getName().equals(COMMAND_BUILD_V3))
-    		resourceName=RESOURCE_NAME_V3;
+    	{
+    		new BuildHL7ResourceDialog(mainFrame,getName(),true, "").setVisible(true);
+    		return true;
+    	}
     	
     	String resorcePath=BuildResourceUtil.findResourceFile(resourceName);
     	boolean toContinue=false;
@@ -96,9 +99,7 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
     	}
     	if (toContinue)
     	{
-    		if (getName().equals( COMMAND_BUILD_V3))
-    			new BuildHL7ResourceDialog(mainFrame,getName(),true, resorcePath).setVisible(true);
-    		else if (getName().equals( COMMAND_BUILD_V2))
+    		if (getName().equals( COMMAND_BUILD_V2))
     		{
 //		        V2MetaCollectorDialog dialog = new V2MetaCollectorDialog(mainFrame);
     			HL7AuthorizationDialog dialog=	new HL7AuthorizationDialog (mainFrame,"Notice: Loading HL7 V2 Specification"
@@ -141,6 +142,9 @@ public class BuildHL7ResourceAction extends AbstractContextAction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/09/25 19:25:59  wangeug
+ * HISTORY      : check null
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2008/09/24 17:55:15  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :

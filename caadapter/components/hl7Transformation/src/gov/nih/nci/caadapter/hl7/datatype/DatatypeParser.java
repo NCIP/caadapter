@@ -10,7 +10,6 @@ package gov.nih.nci.caadapter.hl7.datatype;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.Config;
 
 import java.io.*;
 import java.net.URL;
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -44,22 +42,114 @@ import org.xml.sax.SAXException;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.20 $
- *          date        $Date: 2009-03-18 15:49:54 $
+ *          revision    $Revision: 1.21 $
+ *          date        $Date: 2009-03-25 14:01:30 $
  */
 
 public class DatatypeParser {
     private String prefix; //prefix for each element
-    private Hashtable datatypes = new Hashtable();
+    private Hashtable<String, Datatype> datatypes = new Hashtable<String, Datatype>();
     private final int COMPLETE = 1;
     private final int NONCOMPLETE = 0; 
     private Hashtable<String, List<String>> datatypeSubclass=new Hashtable<String, List<String>>();
     private boolean dataLoaded=false;
-    public Hashtable getDatatypes() {
+    public Hashtable<String, Datatype> getDatatypes() 
+    {
     	return datatypes;
     }
-	public boolean parse(Node node) {
-	
+	//
+	//	private HashSet getEnums(String datatypeString) {
+	//		HashSet enums = new HashSet();
+	//		Datatype datatype = (Datatype)datatypes.get(datatypeString);
+	//		if (datatype == null) return enums; 
+	//		return datatype.getPredefinedValues();
+	//	}
+	//	
+		public void loadDatatypes() {
+			if(!dataLoaded)
+			{
+				loadDatatypeRawdata();
+				dataLoaded=true;
+			}
+		}
+	public List<String> findSubclassList(String typeName)
+	{
+		return datatypeSubclass.get(typeName);
+	}
+	/**
+	 * Load datatype data from original HL7 schema data
+	 */
+	private void loadDatatypeRawdata()
+	{
+		System.out.println("DatatypeParser.loadDatatypeRawdata()");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db;
+		try {
+			db = dbf.newDocumentBuilder();            
+	        Document vocDoc = null;
+			Document baseDoc = null;
+			Document allDoc = null;
+			String schemaFilePath=NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
+	        File schemaFile = new File(schemaFilePath);
+	        String coreSchemaPrefix="coreschemas";
+	        if(!schemaFile.exists()) 
+	        {
+	        	//webStart deployment, the schemas.zip file INVISIBLE
+	        	System.err.println("Webstart deployment: " + schemaFilePath);
+	        	String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
+	        	String coreXsdPath=specHome+"/"+coreSchemaPrefix;
+	        	String nameVoc=coreXsdPath+"/voc.xsd";
+	        	
+	            URL urlVoc=FileUtil.retrieveResourceURL(nameVoc);
+	        	String nameDatatypeBase=coreXsdPath+"/datatypes-base.xsd";
+	        	URL urlDtBase=FileUtil.retrieveResourceURL(nameDatatypeBase);
+	        	String nameDatatype=coreXsdPath+"/datatypes.xsd";
+	        	URL urlDt=FileUtil.retrieveResourceURL(nameDatatype);
+	            	
+	        	vocDoc = db.parse(urlVoc.openStream());
+	            baseDoc = db.parse(urlDtBase.openStream());
+	            allDoc = db.parse(urlDt.openStream());
+	        	     
+	        }
+	        else
+	    	{
+	        	//standalone deployment, the schemas.zip file is VISIBLE
+	    		ZipFile xsdZipFile=new ZipFile(schemaFile);
+	    		if (xsdZipFile!=null)
+	    		{
+	        		ZipEntry vocEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/voc.xsd");
+	        		ZipEntry baseEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes-base.xsd");
+	        		ZipEntry allEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes.xsd");
+	        		vocDoc = db.parse(xsdZipFile.getInputStream(vocEntry));
+	            	baseDoc= db.parse(xsdZipFile.getInputStream(baseEntry));
+	            	allDoc = db.parse(xsdZipFile.getInputStream(allEntry));
+	        	}
+	    		else
+	    			System.out.println("DatatypeParser.loadDatatypeRawdata()...failed load datatype type");
+	    	}  
+			
+			handleGTS();
+			parse(vocDoc);
+			parse(baseDoc);
+			parse(allDoc);
+			populateDatatypes();
+			populateSubclasses();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private boolean parse(Node node) 
+	{
         if (node == null) {
             return true;
         }
@@ -97,34 +187,34 @@ public class DatatypeParser {
         }
         return true;
 	}
-	public void populateUnion(Datatype datatype) {
-		if (datatype.getUnions()!= null)
-		{
-//			System.out.println("Unions for:"+datatype.getName());
-			String unions = datatype.getUnions();
-			StringTokenizer st = new StringTokenizer(unions);
-			while (st.hasMoreTokens()) {
-			   String union = st.nextToken();
-			   Datatype uDT = ((Datatype)datatypes.get(union));
-			   if (uDT!=null)
-			   {
-				   
-				   if (uDT.getPatterns().size()>0) {
-					   for(String p:uDT.getPatterns()) {
-						   datatype.addPattern(p);
-					   }
-				   }
-				   
-				   for (String enumValue:(HashSet<String>)getEnums(union))
-				   {
-					   datatype.addPredefinedValue(enumValue);
-				   }
-			   }
-			} 
-		}
-		
-	}
-	public void populateDatatypes()
+//	public void populateUnion(Datatype datatype) {
+//		if (datatype.getUnions()!= null)
+//		{
+////			System.out.println("Unions for:"+datatype.getName());
+//			String unions = datatype.getUnions();
+//			StringTokenizer st = new StringTokenizer(unions);
+//			while (st.hasMoreTokens()) {
+//			   String union = st.nextToken();
+//			   Datatype uDT = ((Datatype)datatypes.get(union));
+//			   if (uDT!=null)
+//			   {
+//				   
+//				   if (uDT.getPatterns().size()>0) {
+//					   for(String p:uDT.getPatterns()) {
+//						   datatype.addPattern(p);
+//					   }
+//				   }
+//				   
+//				   for (String enumValue:(HashSet<String>)getEnums(union))
+//				   {
+//					   datatype.addPredefinedValue(enumValue);
+//				   }
+//			   }
+//			} 
+//		}
+//		
+//	}
+	private void populateDatatypes()
     {
 		Hashtable datatypes_check = new Hashtable();
 		Stack<String> processingStack = new Stack(); 
@@ -261,166 +351,6 @@ public class DatatypeParser {
 		}
 	}
 	
-	public void printDatatypes(boolean isSimple, boolean isComplex) {
-		System.out.println("Size"+datatypes.size());
-	    Vector v = new Vector(datatypes.keySet());
-	    Collections.sort(v);
-	    Iterator it = v.iterator();
-	    while (it.hasNext()) {
-	       String datatypeName =  (String)it.next();
-	       Datatype datatype = (Datatype)datatypes.get(datatypeName);
-	       if ((datatype.isSimple() && isSimple) || (!datatype.isSimple() && isComplex)) {
-	    	   System.out.println("\nDatatype Name: " + datatypeName + "    Parent Type Name: " + datatype.getParents() + " Abstract?" + datatype.isAbstract());
-	    	   System.out.println("         type: " + ((datatype.isSimple()) ? "Simple" : "Complex"));
-	    	   Vector a = new Vector(datatype.getAttributes().keySet());
-	    	   Collections.sort(a);
-	    	   Iterator attriIt = a.iterator();
-	    	   while (attriIt.hasNext()) {
-	    		   String attributeName = (String)attriIt.next();
-	    		   Attribute attr = (Attribute)datatype.getAttributes().get(attributeName);
-	    		   if (attr.isValid())
-	    			   System.out.format("%-30s,%s","    attribute: " + attr.getName(), "type = " + attr.getType() + "\n");
-	    	   }
-	    	   for(String p:datatype.getPatterns()) {
-		    	   System.out.println("      Pattern: " + p);
-	    	   }
-
-	    	   for(String p:(HashSet<String>)datatype.getPredefinedValues()) {
-		    	   System.out.println("      PredefinedValue: '" + p + "'");
-	    	   }
-	       }
-	    }
-
-	}
-
-	private HashSet getEnums(String datatypeString) {
-		HashSet enums = new HashSet();
-		Datatype datatype = (Datatype)datatypes.get(datatypeString);
-		if (datatype == null) return enums; 
-		return datatype.getPredefinedValues();
-	}
-	/*
-	 * This method will serialize the datatype objects into a file. 
-	 *
-	 * @param filenNme the name of the file to save all the info
-	 *
-	 */
-
-	public void saveDatatypes(String fileName) throws Exception {
-		OutputStream os = new FileOutputStream(fileName);
-		ObjectOutputStream oos = new ObjectOutputStream(os); 
-		oos.writeObject(datatypes);
-		oos.close();
-		os.close();
-	}
-	
-	public void loadDatatypes() {
-		if(!dataLoaded)
-		{
-			loadDatatypeRawdata();
-			dataLoaded=true;
-		}
-	}
-	/**
-	 * Load datatype data from original HL7 schema data
-	 */
-	private void loadDatatypeRawdata()
-	{
-		System.out.println("DatatypeParser.loadDatatypeRawdata()");
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-  		DocumentBuilder db;
-		try {
-			db = dbf.newDocumentBuilder();            
-            String schemaHome=FileUtil.getV3XsdFilePath();
-            System.out.println("DatatypeParser.loadDatatypeRawdata()..schema file:"+schemaHome);
-            if (schemaHome == null) 
-            	schemaHome = "schemas";
-            String coreSchemaDir = Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME;// "coreschemas";
-
-            String coreSchemaHome=schemaHome+File.separator+coreSchemaDir;
-            Document vocDoc = null;
-			Document baseDoc = null;
-			Document allDoc = null;
-            File dir = new File(coreSchemaHome);
-            if(!dir.exists()||!dir.isDirectory()) 
-            {
-            	System.err.println("Invalid V3 Core XSD Directory : " + coreSchemaHome);
-            	String coreXsdPath=schemaHome+"/"+coreSchemaDir;
-            	String nameVoc=coreXsdPath+"/voc.xsd";
-            	URL urlVoc=FileUtil.retrieveResourceURL(nameVoc);
-            	if (urlVoc==null)
-            	{
-            		//webStart deployment
-        			String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
-        			coreXsdPath=specHome+"/schemas/coreschemas";
-        			nameVoc=coreXsdPath+"/voc.xsd";
-                	urlVoc=FileUtil.retrieveResourceURL(nameVoc);
-            	}
-            	String nameDatatypeBase=coreXsdPath+"/datatypes-base.xsd";
-            	URL urlDtBase=FileUtil.retrieveResourceURL(nameDatatypeBase);
-            	String nameDatatype=coreXsdPath+"/datatypes.xsd";
-            	URL urlDt=FileUtil.retrieveResourceURL(nameDatatype);
-            	if (urlVoc!=null)
-            	{
-	            	vocDoc = db.parse(urlVoc.openStream());
-	            	baseDoc = db.parse(urlDtBase.openStream());
-	            	allDoc = db.parse(urlDt.openStream());
-            	}
-            	else
-            	{
-            		ZipFile xsdZipFile=new ZipFile(NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath());
-            		if (xsdZipFile!=null)
-            		{
-	            		String coreSchemaPrefix="schemas/coreschemas";
-	            		ZipEntry vocEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/voc.xsd");
-	            		ZipEntry baseEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes-base.xsd");
-	            		ZipEntry allEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes.xsd");
-	            		vocDoc = db.parse(xsdZipFile.getInputStream(vocEntry));
-		            	baseDoc= db.parse(xsdZipFile.getInputStream(baseEntry));
-		            	allDoc = db.parse(xsdZipFile.getInputStream(allEntry));
-	            	}
-            		else
-            			System.out.println("DatatypeParser.loadDatatypeRawdata()...failed load datatype type");
-            	}       
-            	
-            	
-            }
-            else
-            {
-	            String pathVoc=coreSchemaHome+"/voc.xsd";
-				String pathBase=coreSchemaHome+"/datatypes-base.xsd";
-				String pathDatatype=coreSchemaHome+"/datatypes.xsd";
-
-				vocDoc = db.parse(new File(pathVoc));
-				baseDoc = db.parse(new File(pathBase));
-				allDoc = db.parse(new File(pathDatatype));
-            }
-			
-			handleGTS();
-			parse(vocDoc);
-			parse(baseDoc);
-			parse(allDoc);
-			populateDatatypes();
-			populateSubclasses();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-	
-	public List<String> findSubclassList(String typeName)
-	{
-		return datatypeSubclass.get(typeName);
-	}
 	private void populateSubclasses()
 	{
 		Enumeration dtKeys=datatypes.keys();
@@ -463,7 +393,7 @@ public class DatatypeParser {
 			 
 	}
 
-	public void handleGTS() {
+	private void handleGTS() {
 		Datatype datatype = new Datatype();
 		datatype.setName("GTS");
 		datatype.setParents("ANY");
@@ -508,6 +438,9 @@ public class DatatypeParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.20  2009/03/18 15:49:54  wangeug
+ * HISTORY :enable wesstart to support multiple normatives
+ * HISTORY :
  * HISTORY :Revision 1.19  2009/03/13 14:50:39  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :

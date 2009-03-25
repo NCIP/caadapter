@@ -22,10 +22,10 @@ import java.io.File;
  * This class defines the Browse action used across the message wisard.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-24 17:55:15 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-03-25 13:57:19 $
  */
 public class BrowseHL7ResourceAction extends AbstractContextAction
 {
@@ -41,7 +41,7 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BrowseHL7ResourceAction.java,v 1.5 2008-09-24 17:55:15 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BrowseHL7ResourceAction.java,v 1.6 2009-03-25 13:57:19 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Browse...";
 	private static final Character COMMAND_MNEMONIC = new Character('B');
@@ -98,8 +98,14 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 		String fileExtension = fileExt;// frontPage.getFileExtension(browseMode);
  
 		//get user's input of resource directory
-        File file = DefaultSettings.getUserInputOfFileFromGUI(frontPage, //FileUtil.getUIWorkingDirectoryPath(),
+        File file = null;
+        if (inputTargetField.getText()==null
+        		||inputTargetField.getText().equals(""))
+        	file=DefaultSettings.getUserInputOfFileFromGUI(frontPage, //FileUtil.getUIWorkingDirectoryPath(),
         		fileExtension, "Select Resource", false, false);
+        else
+        	file=DefaultSettings.getUserInputOfFileFromGUI(frontPage,this.inputTargetField.getText(),
+            		fileExtension, "Select Resource", false, false);
 		if (file != null)
 		{
 //			frontPage.setUserSelectionFile(file, browseMode);
@@ -129,4 +135,7 @@ public class BrowseHL7ResourceAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/24 17:55:15  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */

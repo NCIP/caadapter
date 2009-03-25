@@ -13,13 +13,12 @@ package gov.nih.nci.caadapter.hl7.mif.v1;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-29 15:42:45 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-03-25 14:00:09 $
  */
 
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.hl7.datatype.DatatypeParser;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.v1.ReassignSortKeyToMIF;
@@ -310,62 +309,22 @@ public class BuildResourceUtil {
         	  mifParser.saveMIFs(RESOURCE_DIR+"/" + fileName,msgType);
         }
 	}
-
-	public static void loadDatatypes(String coreSchemaHome) throws Exception
-	{
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-  		DocumentBuilder db;
-//  		System.out.println("BuildResourceUtil.loadDatatypes()..coreSchemaHome:"+coreSchemaHome);
-			db = dbf.newDocumentBuilder();	
-			DatatypeParser datatypeParser = new DatatypeParser();
-			String pathVoc=coreSchemaHome+"/voc.xsd";
-			String pathBase=coreSchemaHome+"/datatypes-base.xsd";
-			String pathDatatype=coreSchemaHome+"/datatypes.xsd";
-            //String pathNarrativeBlock=coreSchemaHome+"/NarrativeBlock.xsd";
-			
-//			InputStream isVoc =datatypeParser.getClass().getResourceAsStream(pathVoc);
-//			InputStream isDatatypeBase =datatypeParser.getClass().getResourceAsStream(pathBase);
-//			InputStream isDatatype =datatypeParser.getClass().getResourceAsStream(pathDatatype);
-//			
-//			Document vocDoc = db.parse(isVoc);
-//			Document baseDoc = db.parse(isDatatypeBase);
-//			Document allDoc = db.parse(isDatatype);	
-			
-			Document vocDoc = db.parse(new File(pathVoc));
-			Document baseDoc = db.parse(new File(pathBase));
-			Document allDoc = db.parse(new File(pathDatatype));
-            //Document narrativeDoc = db.parse(new File(pathNarrativeBlock));
-            datatypeParser.handleGTS();
-			datatypeParser.parse(vocDoc);
-			datatypeParser.parse(baseDoc);
-			datatypeParser.parse(allDoc);
-            //datatypeParser.parse(narrativeDoc);
-            datatypeParser.populateDatatypes();
-			datatypeParser.saveDatatypes(RESOURCE_DIR+"/"+DATATYPE_FILE);
-//			populateSubclasses();
-	}
 	
-
-    public static void zipDir(String zipFileName, String dir) throws Exception
+    public static void zipDir(ZipOutputStream zipFileOut, String dir, String extension) throws Exception
     {
-        zipDir(zipFileName, dir, false);
+        zipDir(zipFileOut, dir, extension, false);
     }
-    public static void zipDir(String zipFileName, String dir, boolean isSortKeyReassigning) throws Exception
+    public static void zipDir(ZipOutputStream zipFileOut, String dir, String extension, boolean isSortKeyReassigning) throws Exception
     {
         File dirObj = new File(dir); 
         if(!dirObj.isDirectory()) 
         { 
-            throw new Exception(zipFileName +"is not a directory");
+            throw new Exception(dir +"is not a directory");
         } 
-
-        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName)); 
-        addDir(dirObj, out,"", isSortKeyReassigning);
-        // Complete the ZIP file 
-        out.close(); 
-        dirObj.delete();
+        addDir(dirObj,extension, zipFileOut,dirObj.getName(), isSortKeyReassigning);
     } 
 
-    private static void addDir(File dirObj, ZipOutputStream out,String parentPath, boolean isSortKeyReassigning) throws IOException
+    private static void addDir(File dirObj, String extension, ZipOutputStream out,String parentPath, boolean isSortKeyReassigning) throws IOException
     { 
         File[] files = dirObj.listFiles(); 
         byte[] tmpBuf = new byte[1024]; 
@@ -377,16 +336,19 @@ public class BuildResourceUtil {
             	String subDirPath=files[i].getName();
             	if (parentPath!=null&&!parentPath.equals(""))
             		subDirPath=parentPath+"/"+subDirPath;
-                addDir(files[i], out, subDirPath, isSortKeyReassigning);
+                addDir(files[i], extension, out, subDirPath, isSortKeyReassigning);
                 continue; 
             } 
-            if(!files[i].isFile()) continue;
+//            if(!files[i].isFile()) continue;
 
             String pathName = files[i].getAbsolutePath();
-
+            //verify file extension if required
+            if (extension!=null&&!extension.equals("")&&!pathName.endsWith(extension))
+            	continue;
             while(isSortKeyReassigning)
             {
-                if (!pathName.toLowerCase().endsWith(".mif")) break;
+                if (!pathName.toLowerCase().endsWith(".mif"))
+                	break;
                 ReassignSortKeyToMIF rs = null;
 
                 try
@@ -425,9 +387,7 @@ public class BuildResourceUtil {
             // Complete the entry 
             out.closeEntry(); 
             in.close(); 
-            files[i].delete();
         } 
-        dirObj.delete();
     } 
 
 	public static void copyFiles(String strPath, String dstPath, String srcExtension) throws IOException
@@ -479,26 +439,11 @@ public class BuildResourceUtil {
 			System.out.println("BuildResourceUtil.main()..parameter:"+args);
 			System.exit(-1);
 		}
-		for(String arg:args)
-			System.out.println("BuildResourceUtil.main()..parameter:"+arg);
-		String tempFileHome=System.getProperty("user.dir")+File.separator+"tempMifSerialized";
-		if(args.length>1)
-			tempFileHome=args[1];
-	
-		BuildResourceUtil.RESOURCE_DIR=tempFileHome;
-		String mifZipPath=args[0]+"/processable/mif/mif.zip";
-		String datatypeHomePath=args[0]+"/processable/coreschemas";
-		try {
-			BuildResourceUtil.parserMifFromZipFile(mifZipPath,false);
-			BuildResourceUtil.parerMifIndexFromZipFile(mifZipPath);
-			BuildResourceUtil.loadDatatypes(datatypeHomePath);
-			BuildResourceUtil.zipDir("resource.zip",BuildResourceUtil.RESOURCE_DIR);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2008/09/29 15:42:45  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

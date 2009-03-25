@@ -18,10 +18,10 @@ import java.io.File;
  * The front page of open HL7 Message panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-24 17:55:16 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-03-25 13:59:15 $
  */
 public class OpenHL7ResourceFrontPage extends JPanel
 {
@@ -37,12 +37,13 @@ public class OpenHL7ResourceFrontPage extends JPanel
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.6 2008-09-24 17:55:16 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/OpenHL7ResourceFrontPage.java,v 1.7 2009-03-25 13:59:15 wangeug Exp $";
 
-	public static final String HL7_RESOURCE_SITE = "caAdapter Home:";
+	public static final String HL7_RESOURCE_SITE = "HL7 Specification Home:";
 	private JTextField mifFileInputField;
 	private JTextField coreSchemaInputField;
 	private JTextField messageSchemaInputField;
+	private JTextField hl7HomeInputField;
     private String openWizardType;
 	private String targetSite;
 	/**
@@ -108,12 +109,18 @@ public class OpenHL7ResourceFrontPage extends JPanel
 		JLabel mapFileLabel = new JLabel(HL7_RESOURCE_SITE);
 		centerPanel.add(mapFileLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-//		JLabel targetSit = new JLabel(targetSite);
-		JLabel caAdapterHome=new JLabel(System.getProperty("user.dir"));
-		caAdapterHome.setPreferredSize(new Dimension(350, 25));
-		centerPanel.add(caAdapterHome, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
 
+		hl7HomeInputField=new JTextField();;
+		hl7HomeInputField.setPreferredSize(new Dimension(350, 25));
+		hl7HomeInputField.setText(System.getProperty("user.dir"));
+//		JLabel caAdapterHome=new JLabel(System.getProperty("user.dir"));	
+//		caAdapterHome.setPreferredSize(new Dimension(350, 25));
+		centerPanel.add(hl7HomeInputField, new GridBagConstraints(1, 4, 2, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+		JButton hl7HomeBrowseButton=new JButton(new BrowseHL7ResourceAction(this, hl7HomeInputField, "Browser", null));
+		centerPanel.add(hl7HomeBrowseButton, new GridBagConstraints(3,4, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+		
         this.add(centerPanel, BorderLayout.CENTER);
 	}
 
@@ -133,6 +140,8 @@ public class OpenHL7ResourceFrontPage extends JPanel
 //    }
 
 	public String getTargetSite() {
+		if (targetSite==null||targetSite.equals(""))
+			targetSite=hl7HomeInputField.getText();
 		return targetSite;
 	}
 
@@ -148,4 +157,7 @@ public class OpenHL7ResourceFrontPage extends JPanel
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/24 17:55:16  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
