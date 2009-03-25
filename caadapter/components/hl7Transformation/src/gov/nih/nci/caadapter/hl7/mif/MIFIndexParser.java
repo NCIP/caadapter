@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2009-03-18 15:50:36 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2009-03-25 14:00:32 $
  */
 
 
@@ -152,11 +152,6 @@ public class MIFIndexParser {
 	}
 
     public static void main(String[] args) throws Exception {
-//		MIFIndexParser mifInfoParser = new MIFIndexParser();
-//		MIFIndex mifIndexInfos= mifInfoParser.parseMIFIndexInfo();
-//		MIFIndex mifIndexInfos=mifInfoParser.readMIFIndexInfo();
-//		mifInfoParser.saveMIFIndex("c:/temp/mifIndexInfos",mifIndexInfos);
-
 //		MIFIndex mifIndexInfos=MIFIndexParser.loadMIFInfos();
     	String mifFilePath="hl7_home/Normative_2005/mif_2005.zip";
     	
@@ -167,6 +162,9 @@ public class MIFIndexParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.17  2009/03/18 15:50:36  wangeug
+ * HISTORY :enable wesstart to support multiple normatives
+ * HISTORY :
  * HISTORY :Revision 1.16  2009/03/12 15:00:46  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :
