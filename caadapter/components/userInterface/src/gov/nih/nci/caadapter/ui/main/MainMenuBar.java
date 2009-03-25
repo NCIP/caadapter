@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.ui.main;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.WebstartUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
@@ -58,8 +59,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.46 $
- * @date       $Date: 2009-02-26 19:43:53 $
+ * @version    $Revision: 1.47 $
+ * @date       $Date: 2009-03-25 18:00:25 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -211,10 +212,6 @@ public class MainMenuBar extends AbstractMenuBar
     {
         AboutAction aboutAction = new AboutAction(mainFrame);
         HelpTopicAction helpTopicAction = new HelpTopicAction(mainFrame);
-//        if (CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_CSV_XMI_MENU_ACTIVATED))
-//        {
-//        	helpTopicAction.setEnabled(false);
-//        }
         JMenu helpMenu = new JMenu(MenuConstants.HELP_MENU_NAME);
         helpMenu.setMnemonic('H');
         JMenuItem helpAboutItem = new JMenuItem(aboutAction);
@@ -357,18 +354,13 @@ public class MainMenuBar extends AbstractMenuBar
         {
         	buildV3.setEnabled(false);
         }
+        if (WebstartUtil.isWebstartDeployed())
+        	buildV3.setEnabled(false);
+        
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
 
-        //the following section setup V2 meta from v2 manuals
-
-        //BuildHL7ResourceAction buildV2=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2, mainFrame);
-        //if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
-        //	buildV2.setEnabled(false);
-        //JMenuItem _buildV2Item = new JMenuItem(buildV2);
-        //_qb.add(_buildV2Item);
-
-
+ 
         Enumeration<URL> fileURLs = null;
         try
         {
@@ -398,13 +390,6 @@ public class MainMenuBar extends AbstractMenuBar
                 break;
             }
         }
-//        JMenu v2Menu=new JMenu(BuildHL7ResourceAction.COMMAND_BUILD_V2);
-//        BuildHL7ResourceAction buildV2Core=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V2_CORE, mainFrame);
-//        v2Menu.add(buildV2Core);
-//        BuildHL7ResourceAction buildV2Msg=new BuildHL7ResourceAction(BuildHL7ResourceAction.COMMAND_BUILD_V_MESSAGE, mainFrame);
-//        v2Menu.add(buildV2Msg);
-//        _qb.add(v2Menu);
-
         return _qb;
     }
 
@@ -774,6 +759,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.46  2009/02/26 19:43:53  wangeug
+ * HISTORY : enable action based on  mapping  type; activate "HL7 V3 to CSV" menu items
+ * HISTORY :
  * HISTORY : Revision 1.45  2009/02/03 19:02:07  wangeug
  * HISTORY : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
  * HISTORY :
