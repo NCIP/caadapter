@@ -710,7 +710,7 @@
     				<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
     				<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
     				<fileset file="${config.dir}/hl7-normative-setting.xml" />
-    				
+    				<fileset file="${config.dir}/hl7-customer-datatype-setting.xml" />	
     	 </copy>
     	 <mkdir dir="${dist.dir}/workingspace"/>
 		<unzip dest="${dist.dir}/docs">
