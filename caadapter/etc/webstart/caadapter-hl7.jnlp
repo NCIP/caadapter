@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<jnlp spec="1.0+" codebase="http://localhost:8080/caadapter-hl7" href="caadapter-hl7.jnlp">
+<jnlp spec="1.0+" codebase="$WEBSERVER/caadapter-hl7" href="caadapter-hl7.jnlp">
 
    <information>
       <title>caAdapter Webstart</title>
@@ -36,7 +36,7 @@
 	<jar href="cmps.jar"/>
    </resources>
 
-   <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI" />
+   <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI">
 		<argument>$WEBSERVER</argument> 
    </application-desc>
    
