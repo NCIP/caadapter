@@ -59,8 +59,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.47 $
- * @date       $Date: 2009-03-25 18:00:25 $
+ * @version    $Revision: 1.48 $
+ * @date       $Date: 2009-03-26 13:50:52 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -354,6 +354,7 @@ public class MainMenuBar extends AbstractMenuBar
         {
         	buildV3.setEnabled(false);
         }
+        System.out.println("MainMenuBar.constructPreferenceMenu()...WebstartUtil.isWebstartDeployed():"+WebstartUtil.isWebstartDeployed());
         if (WebstartUtil.isWebstartDeployed())
         	buildV3.setEnabled(false);
         
@@ -759,6 +760,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.47  2009/03/25 18:00:25  wangeug
+ * HISTORY : VOM integration
+ * HISTORY :
  * HISTORY : Revision 1.46  2009/02/26 19:43:53  wangeug
  * HISTORY : enable action based on  mapping  type; activate "HL7 V3 to CSV" menu items
  * HISTORY :

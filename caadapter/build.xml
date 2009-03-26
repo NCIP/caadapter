@@ -485,6 +485,9 @@
 			<fileset dir="${webstart.home.files}">
 				<include name="v2MessageIndex.obj"/>
         	</fileset>
+			<fileset dir="${basedir}/etc/map">
+			    <include name="V2_to_V3.vom"/>
+			</fileset>
 		</copy>
 		
 		<zip destfile="${hl7.webstart.deploy.dir}/caAdapter.jar">
