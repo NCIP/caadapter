@@ -438,6 +438,7 @@
 		  	<param name="hl7.mif.file" value="mif_2008.zip"/>
 		  	<param name="hl7.datatype.file" value="schemas.zip"/>
 		 </antcall>
+ 
   		<antcall target="build.hl7.specification">
 					<param name="param1" value="value"/>
 				  	<param name="normative.year" value="Normative_2006"/>
@@ -450,7 +451,7 @@
 				  	<param name="hl7.mif.file" value="mif_2005.zip"/>
 				  	<param name="hl7.datatype.file" value="schemas.zip"/>
 		 </antcall>
-		
+ 
 	     <zip destfile="${hl7.webstart.deploy.dir}/hl7Specfication.zip">
 			<fileset dir="${hl7.webstart.deploy.dir}/tmp/hl7spec"/>
 		</zip>
@@ -479,10 +480,9 @@
    				<include name="hl7-customer-datatype-setting.xml"/>
     		</fileset>
 		</copy>
-    	<echo message="copy MIFIndex and V2MessageIndex" />
+    	<echo message="copy V2MessageIndex" />
 		<copy todir="${hl7.webstart.deploy.dir}/tmp">
 			<fileset dir="${webstart.home.files}">
-            	<include name="mifIndex.obj"/>
 				<include name="v2MessageIndex.obj"/>
         	</fileset>
 		</copy>
@@ -499,7 +499,6 @@
             <fileset dir="${lib.dir}">
             	<include name="commons-collections-3.2.jar"/>
 				<include name="commons-logging-1.0.4.jar"/>
-				<!-- include name="xmi.in.out.jar"/ -->
 				<include name="xml-apis.jar"/>
 				<include name="xercesImpl.jar"/>
 				<include name="jdom.jar"/>
@@ -519,9 +518,6 @@
 			     <include name="xbean.jar"/>      
         	</fileset>
         	<fileset dir="${reference.dir}">
-            	<include name="caAdapter_ui.jar"/>
-            	<!-- include name="mif.zip"/ -->
-               	<!-- include name="schemas.zip"/ -->
                 <include name="jgraph.jar"/>      
         	</fileset>
         	<fileset dir="${ui.module.home}/lib">
