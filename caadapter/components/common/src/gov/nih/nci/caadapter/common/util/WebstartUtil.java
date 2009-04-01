@@ -12,6 +12,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -21,8 +22,8 @@ import java.net.URL;
  *
  * @author   OWNER: wangeug  $Date: Mar 25, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-03-25 18:00:46 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-04-01 17:38:50 $
  * @since caAdapter v4.2
  */
 
@@ -51,7 +52,12 @@ public class WebstartUtil {
 			if (isURL==null)
 				return;
 			InputStream fis =isURL.openStream();
-			DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));     
+			DataInputStream dis = new DataInputStream(new BufferedInputStream(fis));  
+			File outFile=new File(targetFile);
+			//create the path folders
+			if (!outFile.exists())
+				outFile.getParentFile().mkdirs();
+			
 			FileOutputStream fos = new FileOutputStream(targetFile);   
 			DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(fos));   
 			byte b;  
@@ -79,4 +85,7 @@ public class WebstartUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/03/25 18:00:46  wangeug
+* HISTORY: VOM integration
+* HISTORY:
 **/
