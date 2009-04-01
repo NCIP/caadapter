@@ -24,8 +24,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2009-01-09 21:32:02 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-04-01 15:12:40 $
  */
 
 public class StringFunction {
@@ -190,7 +190,7 @@ public class StringFunction {
 			}
 		}
 		if (!isValidNF)
-			Log.logWarning(this, "Invalid NullFlavor value is found:"+rtnValue2);
+			Log.logWarning(this, "Invalid NullFlavor value is found...key:value="+nullFlavorKey+":"+rtnValue2);
 
     	String nullifyMissingData=CaadapterUtil.findApplicationConfigValue(Config.CAADAPTER_COMPONENT_HL7_MISSING_DATA_NULLFLAVOR_NULLIFIED);
 		if (nullifyMissingData!=null&&nullifyMissingData.equalsIgnoreCase("true"))
@@ -349,6 +349,9 @@ public class StringFunction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2009/01/09 21:32:02  wangeug
+ * HISTORY      : Implementation NullFlavor function with three cases
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/12/04 20:35:27  wangeug
  * HISTORY      : support nullFlavor:implment NullFlavor function
  * HISTORY      :

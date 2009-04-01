@@ -21,8 +21,8 @@ import gov.nih.nci.caadapter.hl7.datatype.NullFlavorUtil;
  *
  * @author   OWNER: wangeug  $Date: Dec 4, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.8 $
- * @date 	 DATE: $Date: 2009-03-06 18:32:02 $
+ * @version  REVISION: $Revision: 1.9 $
+ * @date 	 DATE: $Date: 2009-04-01 15:13:14 $
  * @since caAdapter v4.2
  */
 
@@ -252,7 +252,18 @@ public class HL7XMLUtil {
 		}
 	
 		if (!isElementNullFlavored(element))
+		{
+			for (Attribute xmlAttr:element.getAttributes())
+			{
+				String attrValueTemp=xmlAttr.getValue();
+				if(attrValueTemp!=null&&attrValueTemp.equalsIgnoreCase(GeneralUtilities.CAADAPTER_DATA_FIELD_NULL))
+		    	{//Null read from CSV
+		    		xmlAttr.setValue(null);
+		    	}
+			}
 			return;
+		}
+			
 		
 		//remove "nullFlavor" attribute if not all children nullFlavored	
 		if (!isAllChildrenNullFlavored)
@@ -339,6 +350,9 @@ public class HL7XMLUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.8  2009/03/06 18:32:02  wangeug
+* HISTORY: enable web services
+* HISTORY:
 * HISTORY: Revision 1.7  2009/02/19 19:48:41  wangeug
 * HISTORY: check null value with  "nullFlavor" attribute
 * HISTORY:
