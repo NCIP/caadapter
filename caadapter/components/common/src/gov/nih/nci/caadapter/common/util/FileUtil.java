@@ -14,7 +14,7 @@ import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.function.FunctionException;
-import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
+//import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 
 public class FileUtil
@@ -408,7 +408,7 @@ public class FileUtil
         return null;
     }
 
-
+   /*
     public static String getV3XsdFilePath()
     {
         String schemaPath= NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
@@ -432,7 +432,7 @@ public class FileUtil
         System.err.println("Not Found V3 XSD Directory...");
         return null;
     }
-
+    */
 
     public static MetaDataLoader getV2ResourceMetaDataLoader()
     {
@@ -1345,6 +1345,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.28  2009/04/02 04:16:57  altturbo
+ * modify getV3XsdFilePath()
+ *
  * Revision 1.27  2009/04/02 04:10:23  altturbo
  * modify getV3XsdFilePath()
  *
