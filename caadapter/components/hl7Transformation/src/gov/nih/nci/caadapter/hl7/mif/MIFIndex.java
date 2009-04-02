@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2009-04-02 04:22:33 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-04-02 19:17:08 $
  */
 
 import java.io.Serializable;
@@ -38,17 +38,17 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	 */
 	public String getMifPath()
     {
-		File f = new File(mifPath);
-        if (f.exists())
-           return mifPath;
-        else return "../" + mifPath;  // in case of 'dist' directory.
+		 return mifPath;
     }
 
 	/**
 	 * @param mifPath the mifPath to set
 	 */
-	public void setMifPath(String mifPath) {
-		this.mifPath = mifPath;
+	public void setMifPath(String mifPath)
+    {
+        File path = new File(mifPath);
+        if (path.exists()) this.mifPath = mifPath;
+        else this.mifPath = "../"+mifPath;     // in case of 'dist' directory.
 	}
 	private String normativeDescription;
 
@@ -71,18 +71,18 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	 */
 	public String getSchemaPath()
     {
-        File f = new File(schemaPath);
-        if (f.exists())
-           return schemaPath;
-        else return "../" + schemaPath;  // in case of 'dist' directory.
+         return schemaPath;
     }
 
 	/**
 	 * @param schemaPath the schemaPath to set
 	 */
-	public void setSchemaPath(String schemaPath) {
-		this.schemaPath = schemaPath;
-	}
+	public void setSchemaPath(String schemaPath)
+    {
+        File path = new File(schemaPath);
+        if (path.exists()) this.schemaPath = schemaPath;
+        else this.schemaPath = "../"+schemaPath;  // in case of 'dist' directory.
+    }
 
 	/**
 	 * @return the copyrightYears
@@ -176,6 +176,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.10  2009/04/02 04:22:33  altturbo
+ * HISTORY :in case of 'dist' directory.
+ * HISTORY :
  * HISTORY :Revision 1.9  2009/04/02 03:12:22  altturbo
  * HISTORY :For protecting FileNotFoundException in case of 'dist' directory and can process in case of schema directory.
  * HISTORY :
