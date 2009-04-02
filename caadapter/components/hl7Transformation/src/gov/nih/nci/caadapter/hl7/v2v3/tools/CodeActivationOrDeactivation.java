@@ -6,6 +6,9 @@ import gov.nih.nci.caadapter.common.util.FileUtil;
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,14 +27,14 @@ public class CodeActivationOrDeactivation
     private String CODE_TAG_SOURCE_ACTIVATE =   "/*#umk*/";
     private String CODE_TAG_TARGET_DEACTIVATE = "//#umkis";
 
-    private boolean simpleTag = false;
+    private boolean schemaTag = false;
     CodeActivationOrDeactivation(String dirS)
     {
         doMain(dirS);
     }
-    CodeActivationOrDeactivation(String dirS, boolean simpleTag)
+    CodeActivationOrDeactivation(String dirS, boolean schemaTag)
     {
-        this.simpleTag = simpleTag;
+        this.schemaTag = schemaTag;
         doMain(dirS);
     }
     private void doMain(String dirS)
@@ -121,8 +124,8 @@ public class CodeActivationOrDeactivation
             if (dirName.equalsIgnoreCase("classes")) continue;
             if (dirName.equalsIgnoreCase("gencode")) continue;
             if (dirName.equalsIgnoreCase("log")) continue;
-            if ((simpleTag)&&(dirName.equalsIgnoreCase("docs"))) continue;
-            if ((simpleTag)&&(dirName.equalsIgnoreCase("demo"))) continue;
+            //if ((simpleTag)&&(dirName.equalsIgnoreCase("docs"))) continue;
+            //if ((simpleTag)&&(dirName.equalsIgnoreCase("demo"))) continue;
 
             File newDir = new File(targetDirName + dirName);
             if (!newDir.mkdir()) throw new IOException("Sub-Directory creation Failure! : " + targetDirName + dirName);
@@ -199,25 +202,25 @@ public class CodeActivationOrDeactivation
 
         String fileName = file.getName();
         System.out.print("Copy file (binary) : " + targetDirName + fileName);
-    	//DataInputStream distr = null;
-		FileInputStream fis = null;
+        //DataInputStream distr = null;
+        FileInputStream fis = null;
 
         FileOutputStream fos = null;
-		//DataOutputStream dos2 = null;
+        //DataOutputStream dos2 = null;
         try
-		{
-		    fis = new FileInputStream(file);
-			//distr = new DataInputStream(fis);
+        {
+            fis = new FileInputStream(file);
+            //distr = new DataInputStream(fis);
 
             fos = new FileOutputStream(targetDirName + fileName);
-			//dos2 = new DataOutputStream(fos);
+            //dos2 = new DataOutputStream(fos);
 
-			byte nn = 0;
-			boolean endSig = false;
+            byte nn = 0;
+            boolean endSig = false;
             byte[] bytes = new byte[fis.available()];
             int n = 0;
             while(true)
-			{
+            {
                 int q = -1;
 
 
@@ -232,48 +235,133 @@ public class CodeActivationOrDeactivation
                 fos.write(bytes);
                 break;
             }
-		}
-		catch(IOException cse)
-		{
-		    throw new IOException("Binary File Input failure... (IOException) " + cse.getMessage());
-		}
-		catch(Exception ne)
-		{
+        }
+        catch(IOException cse)
+        {
+            throw new IOException("Binary File Input failure... (IOException) " + cse.getMessage());
+        }
+        catch(Exception ne)
+        {
             throw new IOException("Binary File Input failure... (Excep) " + ne.getMessage());
         }
         finally
         {
             if (fis != null) fis.close();
-			//if (distr != null) distr.close();
-			if (fos != null) fos.close();
-			//if (dos2 != null) dos2.close();
+            //if (distr != null) distr.close();
+            if (fos != null) fos.close();
+            //if (dos2 != null) dos2.close();
         }
+        if ((schemaTag)&&(fileName.equalsIgnoreCase("schemas.zip"))) extractSchemaZipFile(file, targetDirName);
     }
+    private void extractSchemaZipFile(File file, String targetDirName) throws IOException
+    {
+        File f = new File(targetDirName + "schemas");
+        if (!f.mkdir()) throw new IOException("Schema directory creation failure : " + targetDirName);
 
+        String schemaDir = targetDirName + "schemas" + File.separator;
+
+        ZipFile xsdZipFile=new ZipFile(file);
+        if (xsdZipFile == null) throw new IOException("Schema zip file object creation failure : " + targetDirName);
+
+        Enumeration<? extends ZipEntry> enumer = xsdZipFile.entries();
+
+        while(enumer.hasMoreElements())
+        {
+            ZipEntry entry = enumer.nextElement();
+            String entryName = entry.getName();
+            if (!File.separator.equals("/"))
+            {
+                entryName = entryName.replace("/", File.separator);
+            }
+            String name = schemaDir + entryName;
+            if (entry.isDirectory())
+            {
+                File fl = new File(name);
+                if (!fl.mkdirs()) throw new IOException("Schema zip entry directory creation failure : " + schemaDir + entryName);
+                else System.out.println("    Success sub directory creation for Schema zip entry 1 : " + schemaDir + entryName);
+
+                continue;
+            }
+
+            int idx = name.lastIndexOf(File.separator);
+            String par = name.substring(0, idx);
+
+            File fl = new File(par);
+            if ((!fl.exists())||(!fl.isDirectory()))
+            {
+                if (!fl.mkdirs()) throw new IOException("Schema sub directory creation failure : " + par);
+                else System.out.println("    Success sub directory creation for Schema zip entry 2 : " + par);
+            }
+
+
+            FileOutputStream fos = null;
+            //DataOutputStream dos2 = null;
+            int cnt =0;
+            try
+            {
+                //byte[] bytes = new byte[(int)entry.getSize()];
+                InputStream stream = xsdZipFile.getInputStream(entry);
+                //byte[] bytes = new byte[stream.available()];
+                //cnt = stream.read(bytes);
+                //if (cnt != bytes.length) throw new IOException("Unmatched entry size ("+cnt+" : "+bytes.length+") : " + name);
+                fos = new FileOutputStream(name);
+                while(true)
+                {
+                    int bt = 0;
+                    try
+                    {
+                        bt = stream.read();
+                    }
+                    catch(java.io.EOFException ee)
+                    {
+                        break;
+                    }
+                    if (bt < 0) break;
+                    fos.write(bt);
+                }
+            }
+            catch(IOException cse)
+            {
+                throw new IOException("Schema zip entry write failure... (IOException) " + cse.getMessage());
+            }
+            catch(Exception ne)
+            {
+                ne.printStackTrace();
+                throw new IOException("Schema zip entry write failure... (Excep) " + ne.getMessage());
+            }
+            finally
+            {
+                if (fos != null) fos.close();
+            }
+            System.out.println("    Success writing Schema zip entry : " + name);
+
+        }
+
+    }
     private void copyBinaryFileWithDataStream(File file, String targetDirName) throws IOException
     {
 
         String fileName = file.getName();
         System.out.println("Copy file (binary) : " + targetDirName + fileName);
-    	DataInputStream distr = null;
-		FileInputStream fis = null;
+        DataInputStream distr = null;
+        FileInputStream fis = null;
 
         FileOutputStream fos = null;
-		DataOutputStream dos2 = null;
+        DataOutputStream dos2 = null;
         try
-		{
-		    fis = new FileInputStream(file);
-			distr = new DataInputStream(fis);
+        {
+            fis = new FileInputStream(file);
+            distr = new DataInputStream(fis);
 
             fos = new FileOutputStream(targetDirName + fileName);
-			dos2 = new DataOutputStream(fos);
+            dos2 = new DataOutputStream(fos);
 
-			byte nn = 0;
-			boolean endSig = false;
+            byte nn = 0;
+            boolean endSig = false;
             byte[] bytes = new byte[fis.available()];
             int n = 0;
             while(true)
-			{
+            {
                 int q = -1;
                 for(int i=0;i<bytes.length;i++)
                 {
@@ -290,27 +378,27 @@ public class CodeActivationOrDeactivation
                     if (endSig) break;
                     q = i;
                 }
-				if (q == (bytes.length - 1)) dos2.write(bytes);
+                if (q == (bytes.length - 1)) dos2.write(bytes);
                 else for(int i=0;i<q;i++) dos2.writeByte(bytes[i]);
 
                 //dos2.writeByte(nn);
                 if (endSig) break;
             }
-		}
-		catch(IOException cse)
-		{
-		    throw new IOException("Binary File Input failure... (IOException) " + cse.getMessage());
-		}
-		catch(Exception ne)
-		{
+        }
+        catch(IOException cse)
+        {
+            throw new IOException("Binary File Input failure... (IOException) " + cse.getMessage());
+        }
+        catch(Exception ne)
+        {
             throw new IOException("Binary File Input failure... (Excep) " + ne.getMessage());
         }
         finally
         {
             if (fis != null) fis.close();
-			if (distr != null) distr.close();
-			if (fos != null) fos.close();
-			if (dos2 != null) dos2.close();
+            if (distr != null) distr.close();
+            if (fos != null) fos.close();
+            if (dos2 != null) dos2.close();
         }
     }
     private void saveStringIntoFile(String fileName, String string) throws IOException
@@ -369,6 +457,7 @@ public class CodeActivationOrDeactivation
     public static void main(String[] arg)
     {
         new CodeActivationOrDeactivation("c:\\clone_caAdapter");
+        //new CodeActivationOrDeactivation("c:\\clone_caAdapter", true);
     }
 
 }
