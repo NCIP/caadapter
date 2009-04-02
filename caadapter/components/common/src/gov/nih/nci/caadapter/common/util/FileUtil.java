@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 
 public class FileUtil
@@ -410,18 +410,28 @@ public class FileUtil
 
 
     public static String getV3XsdFilePath()
-      {
-          String schemaHome= NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
+    {
+        String schemaPath= NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
 
-          File dir = new File(schemaHome);
-          if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
+        File f = new File(schemaPath);
+        if (!f.exists()) f = new File("../" + schemaPath);
 
-          dir = new File(".."+File.separator+schemaHome);
-          if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
+        if (!f.exists())
+        {
+            System.err.println("Not Found V3 XSD Directory...");
+            return null;
+        }
 
-          System.err.println("Not Found V3 XSD Directory...");
-          return null;
-      }
+        if (f.isDirectory()) return f.getAbsolutePath();
+
+        String parent = f.getParent();
+        if (!parent.endsWith(File.separator)) parent = parent + File.separator;
+        File sdir = new File(parent + "schemas");
+        if ((sdir.exists())&&(sdir.isDirectory())) return sdir.getAbsolutePath();
+
+        System.err.println("Not Found V3 XSD Directory...");
+        return null;
+    }
 
 
     public static MetaDataLoader getV2ResourceMetaDataLoader()
@@ -1335,6 +1345,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.27  2009/04/02 04:10:23  altturbo
+ * modify getV3XsdFilePath()
+ *
  * Revision 1.26  2009/03/12 01:43:18  umkis
  * update filenameLocate()
  *
