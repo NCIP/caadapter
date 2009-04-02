@@ -30,6 +30,7 @@ import gov.nih.nci.caadapter.ui.common.preferences.CaAdapterPref;
 import gov.nih.nci.caadapter.ui.hl7message.actions.RegenerateHL7V3MessageAction;
 import gov.nih.nci.caadapter.hl7.v3csv.TransformationServiceHL7V3ToCsv;
 import gov.nih.nci.caadapter.hl7.validation.HL7V3MessageValidator;
+//&umkis import gov.nih.nci.caadapter.hl7.v2v3.tools.SchemaDirUtil;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -63,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.35 $
- *          date        $Date: 2009-04-02 06:03:28 $
+ *          revision    $Revision: 1.36 $
+ *          date        $Date: 2009-04-02 06:34:24 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -688,7 +689,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 //&umkis            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
 //&umkis            if (schemaValidationTag == JOptionPane.YES_OPTION)
 //&umkis            {
-//&umkis                if (SchemaDirUtil.getV3XsdFilePath() == null)
+//&umkis                if ((new SchemaDirUtil()).getV3XsdFilePath() == null)
 //&umkis                {
 //&umkis                    JOptionPane.showMessageDialog(this, "Schema directoty cannot be found.", "No XML schema file", JOptionPane.ERROR_MESSAGE);
 //&umkis                    schemaValidationTag = JOptionPane.NO_OPTION;
@@ -708,6 +709,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.35  2009/04/02 06:03:28  altturbo
+ * HISTORY      : minor change - remark
+ * HISTORY      :
  * HISTORY      : Revision 1.34  2009/04/02 04:36:33  altturbo
  * HISTORY      : add '//&umkis' tag to several lines
  * HISTORY      :
