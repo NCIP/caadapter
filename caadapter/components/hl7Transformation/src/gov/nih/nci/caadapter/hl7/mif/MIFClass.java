@@ -27,8 +27,8 @@ import java.util.Iterator;
  * The class defines a MIF Class.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.27 $ date $Date: 2009-02-12 19:48:55 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version Since caAdapter v4.0 revision $Revision: 1.28 $ date $Date: 2009-04-02 20:34:40 $
  */
 
  public class MIFClass extends DatatypeBaseObject implements Serializable, Comparable <MIFClass>, Cloneable {
@@ -52,7 +52,10 @@ import java.util.Iterator;
  	 private String csvSegment;
  	 private String messageType;
  	private String traversalName;
-	 /**
+
+//&umkis    private String annotation;
+//&umkis	private String comment;
+     /**
 	  * This method will add an attribute object to a given MIF object.
 	  *
 	  *
@@ -607,9 +610,27 @@ import java.util.Iterator;
 	public void setPackageLocation(Hashtable<String, String> packageLocation) {
 		this.packageLocation = packageLocation;
 	}
+
+//&umkis    public String getAnnotation() {
+//&umkis		return annotation;
+//&umkis	}
+
+//&umkis	public void setAnnotation(String annotation) {
+//&umkis		this.annotation = annotation;
+//&umkis	}
+
+//&umkis	public String getComment() {
+//&umkis		return comment;
+//&umkis	}
+//&umkis	public void setComment(String comment) {
+//&umkis		this.comment = comment;
+//&umkis    }
  }
  /**
   * HISTORY :$Log: not supported by cvs2svn $
+  * HISTORY :Revision 1.27  2009/02/12 19:48:55  wangeug
+  * HISTORY :use sortedChoice() to include all choiceItems from sub-list
+  * HISTORY :
   * HISTORY :Revision 1.26  2009/02/09 21:42:45  wangeug
   * HISTORY :correct errors in "nullFlavor" setting: set value with "nullFlavor" attribute only if a NULLFLAVOR constant being found with the value of a "coreAttribute"
   * HISTORY :

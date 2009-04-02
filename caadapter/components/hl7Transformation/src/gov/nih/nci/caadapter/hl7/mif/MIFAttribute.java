@@ -26,8 +26,8 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * The class defines attributes of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.19 $ date $Date: 2008-09-29 15:44:40 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version Since caAdapter v4.0 revision $Revision: 1.20 $ date $Date: 2009-04-02 20:34:40 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -45,8 +45,11 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	private int maximumMultiplicity;
 	private int multiplicityIndex=0;
 	private String name;
-	
-	private String domainName;
+
+//&umkis    private String annotation;
+//&umkis	private String comment;
+
+    private String domainName;
 	private String mnemonic;
 	private String codingStrength;
 	private String type;
@@ -419,8 +422,13 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null));
 		propList.add(new PropertyDescriptor("Name", beanClass, "getNodeXmlName", null));
 		propList.add(new PropertyDescriptor("Type", beanClass, "findTypeProperty", null));
-		
-		propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
+
+//&umkis        PropertyDescriptor _annotation = new PropertyDescriptor("Annotation", beanClass, "getAnnotation", null);
+//&umkis		PropertyDescriptor _comment = new PropertyDescriptor("Comment", beanClass, "getComment", null);
+//&umkis		propList.add(_annotation);
+//&umkis		propList.add(_comment);
+
+        propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
 		propList.add(new PropertyDescriptor("isMultiple", beanClass, "findIsMultiple", null));
 		propList.add(new PropertyDescriptor("Mandatory", beanClass, "isMandatory", null));
 		propList.add(new PropertyDescriptor("Conformance", beanClass, "getConformance", null));
@@ -501,7 +509,25 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 			return getFixedValue();
 		return getMnemonic();
 	}
+
+//&umkis    public String getAnnotation() {
+//&umkis		return annotation;
+//&umkis	}
+
+//&umkis	public void setAnnotation(String annotation) {
+//&umkis		this.annotation = annotation;
+//&umkis	}
+
+//&umkis	public String getComment() {
+//&umkis		return comment;
+//&umkis	}
+//&umkis	public void setComment(String comment) {
+//&umkis		this.comment = comment;
+//&umkis    }
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.19  2008/09/29 15:44:40  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

@@ -11,10 +11,10 @@ package gov.nih.nci.caadapter.hl7.datatype;
  * The class defines HL7 Datatypes.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.14 $
- *          date        $Date: 2008-12-04 20:39:04 $
+ *          revision    $Revision: 1.15 $
+ *          date        $Date: 2009-04-02 20:34:40 $
  */
 
 
@@ -45,7 +45,10 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	private String parentXmlPath;
 	private boolean enabled = false;
 
-	private List<String> csvSegments;
+//&umkis    private String annotation;
+//&umkis	private String comment;
+
+    private List<String> csvSegments;
 //	private String csvSegment;
 
 	private int attributeCnt=0;
@@ -290,10 +293,29 @@ public class Datatype extends DatatypeBaseObject implements Serializable, Clonea
 	 */
 	public void setUnions(String unions) {
 		this.unions = new String(unions);
-	}	
+	}
+
+//&umkis    public String getAnnotation() {
+//&umkis        return annotation;
+//&umkis    }
+
+//&umkis    public void setAnnotation(String annotation) {
+//&umkis        this.annotation = annotation;
+//&umkis    }
+
+//&umkis    public String getComment() {
+//&umkis        return comment;
+//&umkis    }
+
+//&umkis    public void setComment(String comment) {
+//&umkis        this.comment = comment;
+//&umkis    }
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.14  2008/12/04 20:39:04  wangeug
+ * HISTORY :clean code
+ * HISTORY :
  * HISTORY :Revision 1.13  2008/09/29 15:48:57  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

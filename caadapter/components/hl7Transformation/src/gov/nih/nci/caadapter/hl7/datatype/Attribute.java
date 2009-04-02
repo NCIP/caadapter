@@ -20,8 +20,8 @@ import java.util.List;
  * The class defines attributes of a HL7 Datatype.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.15 $ date $Date: 2008-09-29 15:48:56 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version Since caAdapter v4.0 revision $Revision: 1.16 $ date $Date: 2009-04-02 20:34:40 $
  */
 
 public class Attribute extends DatatypeBaseObject implements Serializable, Comparable <Attribute>, Cloneable  {
@@ -31,7 +31,10 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 
 	private String type;
 
-	private int min;
+//&umkis    private String annotation;
+//&umkis	private String comment;
+
+    private int min;
 
 	private int max;
 	private int multiplicityIndex=0;
@@ -209,7 +212,9 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 		return prohibited;
 	}
 
-	/**
+
+
+    /**
 	 * @param prohibited the prohibited to set
 	 */
 	public void setProhibited(boolean prohibited) {
@@ -284,10 +289,13 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 		PropertyDescriptor _name = new PropertyDescriptor("Name", beanClass, "getName", null);
 		PropertyDescriptor _parentPath = new PropertyDescriptor("Parent", beanClass, "getParentXmlPath", null);
 		PropertyDescriptor _class = new PropertyDescriptor("Type", beanClass, "findTypeProperty", null);
-		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+//&umkis        //PropertyDescriptor _annotation = new PropertyDescriptor("Annotation", beanClass, "getAnnotation", null);
+//&umkis        PropertyDescriptor _comment = new PropertyDescriptor("Comment", beanClass, "getComment", null);
+	    List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
 		propList.add(_name);
 		propList.add(_parentPath);
 		propList.add(_class);
+//&umkis        propList.add(_comment);
 //		propList.add(new PropertyDescriptor("HL7 Default Value", beanClass, "getDefaultValue", null));
 		propList.add(new PropertyDescriptor("User Default Value", beanClass, "getDefaultValue", null));
 		propList.add(new PropertyDescriptor("Cardinality", beanClass, "findCardinality", null));
@@ -326,7 +334,25 @@ public class Attribute extends DatatypeBaseObject implements Serializable, Compa
 	public void setSortKey(int sortKey) {
 		this.sortKey = sortKey;
 	}
+
+//&umkis    public String getAnnotation() {
+//&umkis		return annotation;
+//&umkis	}
+
+//&umkis	public void setAnnotation(String annotation) {
+//&umkis		this.annotation = annotation;
+//&umkis	}
+
+//&umkis	public String getComment() {
+//&umkis		return comment;
+//&umkis	}
+//&umkis	public void setComment(String comment) {
+//&umkis		this.comment = comment;
+//&umkis	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.15  2008/09/29 15:48:56  wangeug
+ * HISTORY :enforce code standard: license file, file description, changing history
+ * HISTORY :
  */

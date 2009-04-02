@@ -19,8 +19,8 @@ import java.util.Hashtable;
  * The class defines an MIF association of a HL7 Mif class.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.23 $ date $Date: 2009-02-23 19:34:37 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version Since caAdapter v4.0 revision $Revision: 1.24 $ date $Date: 2009-04-02 20:34:40 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -33,8 +33,11 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 	private int minimumMultiplicity;
 	private int maximumMultiplicity;
 	private int multiplicityIndex=0;
-	
-	private String name;
+
+//&umkis    private String annotation;
+//&umkis	private String comment;
+
+    private String name;
 	private MIFClass mifClass;
 	private boolean optionChosen = false;
 	private boolean choiceSelected =false;//make it serializable
@@ -401,9 +404,27 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 			Hashtable<String, String> participantTraversalNames) {
 		this.participantTraversalNames = participantTraversalNames;
 	}
+
+//&umkis    public String getAnnotation() {
+//&umkis		return annotation;
+//&umkis	}
+
+//&umkis	public void setAnnotation(String annotation) {
+//&umkis		this.annotation = annotation;
+//&umkis	}
+
+//&umkis	public String getComment() {
+//&umkis		return comment;
+//&umkis	}
+//&umkis	public void setComment(String comment) {
+//&umkis		this.comment = comment;
+//&umkis    }
 }	
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.23  2009/02/23 19:34:37  wangeug
+ * HISTORY :if MIFAssociation being cloned is OptionalChosen, the coloned new MIFAssociation should be same
+ * HISTORY :
  * HISTORY :Revision 1.22  2009/02/12 19:46:44  wangeug
  * HISTORY :use sortedChoice() to include all choiceItems from sub-list
  * HISTORY :

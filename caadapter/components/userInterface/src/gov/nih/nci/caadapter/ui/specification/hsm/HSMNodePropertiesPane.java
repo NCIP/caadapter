@@ -23,16 +23,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFCardinality;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
 
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JComponent;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.BorderFactory;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -53,10 +44,10 @@ import java.util.List;
  * This class defines the layout and some of data handling of the properties pane resided in HSMPanel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.22 $
- *          date        $Date: 2008-09-29 20:14:14 $
+ *          revision    $Revision: 1.23 $
+ *          date        $Date: 2009-04-02 20:35:25 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -71,7 +62,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.22 2008-09-29 20:14:14 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.23 2009-04-02 20:35:25 altturbo Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -96,7 +87,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	private JTextField cmetField;
 	private JTextField userDefaultValueField;
 
-	private DatatypeBaseObject seletedBaseObject;
+//&umkis    private JTextArea annotationField;
+//&umkis	private JTextArea commentField;
+
+    private DatatypeBaseObject seletedBaseObject;
 	private HSMPanel parentPanel;
 
 	/**
@@ -136,7 +130,37 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		elementNameField.setPreferredSize(fieldDimension);//titleLabel.getPreferredSize());
 		centerPanel.add(elementNameField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0,
 				GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
-		posY++;
+
+//&umkis        // For annotation - don't modify these remarks
+//&umkis        posY++;
+//&umkis        JLabel elementAnnotationLabel = new JLabel("Annotation:");
+//&umkis        centerPanel.add(elementAnnotationLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0,
+//&umkis                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+
+//&umkis        annotationField = new JTextArea();
+//&umkis        annotationField.setLineWrap(true);
+//&umkis        annotationField.setRows(3);
+//&umkis        annotationField.setWrapStyleWord(true);
+//&umkis        annotationField.setEditable(true);
+//&umkis        annotationField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
+//&umkis        centerPanel.add(annotationField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0,
+//&umkis                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+//&umkis        // For comment - don't modify these remarks
+//&umkis        posY++;
+//&umkis        JLabel elementCommentsLabel = new JLabel("Comment:");
+//&umkis        centerPanel.add(elementCommentsLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0,
+//&umkis                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+//&umkis        commentField = new JTextArea();
+//&umkis        commentField.setLineWrap(true);
+//&umkis        commentField.setRows(3);
+//&umkis        commentField.setWrapStyleWord(true);
+//&umkis        commentField.setEditable(true);
+//&umkis        //commentField.setBackground(Config.DEFAULT_READ_ONLY_BACK_GROUND_COLOR);
+//&umkis        centerPanel.add(commentField, new GridBagConstraints(1, posY, 1, 1, 1.0, 0.0,
+//&umkis                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+        posY++;
 		JLabel elementTypeLabel = new JLabel("Element Type:");
 		centerPanel.add(elementTypeLabel, new GridBagConstraints(0, posY, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
@@ -322,7 +346,10 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				}
 			}
 		}
-		return seletedBaseObject;
+
+//&umkis        if(commentField.getText()!=null) seletedBaseObject.setComment(commentField.getText());
+
+        return seletedBaseObject;
 	}
 
 
@@ -383,8 +410,13 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			//set parent name form xmlPath
 			String parentXmlPath=userDatatypeObj.getParentXmlPath();//xmlPath.substring(0, xmlPath.lastIndexOf("."));
 			elementParentField.setText(parentXmlPath);
- 
-			if (userDatatypeObj instanceof Attribute )
+
+//&umkis            annotationField.setText(userDatatypeObj.getAnnotation());
+//&umkis			annotationField.setEditable(true);
+//&umkis			commentField.setText(userDatatypeObj.getComment());
+//&umkis			commentField.setEditable(true);
+
+            if (userDatatypeObj instanceof Attribute )
 			{
 				//userDefaultValue  is editable
 				Attribute dtAttr=(Attribute)userDatatypeObj;
@@ -554,7 +586,11 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		elementNameField.setText("");
 		elementTypeField.setText("");
 		elementParentField.setText("");
-		cardinalityField.setText("");
+
+//&umkis        annotationField.setText("");
+//&umkis		commentField.setText("");
+
+        cardinalityField.setText("");
 		mandatoryField.setText("");
 		conformanceField.setText("");
 		abstractField.setText("");
@@ -673,5 +709,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.22  2008/09/29 20:14:14  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/

@@ -16,10 +16,10 @@ import gov.nih.nci.caadapter.common.util.PropertiesResult;
  * The class defines HL7 DatatypesBaseObject.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-12-18 17:07:12 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-04-02 20:34:40 $
  */
 public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObject{
 
@@ -65,6 +65,11 @@ public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObje
         return parent;
     }
 
+//&umkis    public abstract String getAnnotation();
+//&umkis    public abstract void setAnnotation(String annotation);
+//&umkis    public abstract String getComment();
+//&umkis    public abstract void setComment(String comment);
+
 
     /**
 	 * This method is called to set tree icon if the object being
@@ -78,6 +83,9 @@ public abstract class DatatypeBaseObject implements PropertiesProvider, MetaObje
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2008/12/18 17:07:12  wangeug
+ * HISTORY :move the property:choiceSelected to children class
+ * HISTORY :
  * HISTORY :Revision 1.8  2008/09/29 15:48:56  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
