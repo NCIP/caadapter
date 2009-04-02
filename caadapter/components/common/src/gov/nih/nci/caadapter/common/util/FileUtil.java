@@ -14,6 +14,7 @@ import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.function.FunctionException;
+import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,8 +31,8 @@ import java.util.logging.FileHandler;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.26 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version $Revision: 1.27 $
  */
 
 public class FileUtil
@@ -410,7 +411,7 @@ public class FileUtil
 
     public static String getV3XsdFilePath()
       {
-          String schemaHome = "schemas";
+          String schemaHome= NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
 
           File dir = new File(schemaHome);
           if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
@@ -418,42 +419,6 @@ public class FileUtil
           dir = new File(".."+File.separator+schemaHome);
           if((dir.exists())&&(dir.isDirectory())) return dir.getAbsolutePath();
 
-          String xsdFilePathTag = Config.V3_XSD_FILE_PATH_TAG;//"v3xsdFilePath";
-
-          String res = searchPropertyAsFilePath(xsdFilePathTag);
-
-          if (res != null)
-          {
-              System.out.println("V3 XSD Directory is found : " + res);
-              return res;
-          }
-
-          /*
-          String xsdPathPropFile = "";
-
-          for (int i=0;i<9;i++)
-          {
-              if (i==0) xsdPathPropFile = xsdFilePathTag + ".properties";
-              if (i==1) xsdPathPropFile = xsdFilePathTag + ".property";
-              if (i==2) xsdPathPropFile = ".."+File.separator+xsdFilePathTag + ".properties";
-              if (i==3) xsdPathPropFile = ".."+File.separator+xsdFilePathTag + ".property";
-              if (i==4) xsdPathPropFile = ".."+File.separator+"conf"+File.separator+xsdFilePathTag + ".properties";
-              if (i==5) xsdPathPropFile = ".."+File.separator+"conf"+File.separator+xsdFilePathTag + ".property";
-              if (i==6) xsdPathPropFile = "."+File.separator+"conf"+File.separator+xsdFilePathTag + ".properties";
-              if (i==7) xsdPathPropFile = "."+File.separator+"conf"+File.separator+xsdFilePathTag + ".property";
-              if (i==8) xsdPathPropFile = null;
-
-              String propertyLine = getPropertyFromComponentPropertyFile(xsdPathPropFile, xsdFilePathTag);
-              if (propertyLine == null) continue;
-              dir = new File(propertyLine);
-              if ((dir.exists())||(dir.isDirectory()))
-              {
-                  System.out.println("V3 XSD Directory in the property file("+xsdPathPropFile+") Found: " + propertyLine);
-                  return dir.getAbsolutePath();
-              }
-              else System.err.println("Invalid V3 XSD Directory in the property file("+xsdPathPropFile+") : " + propertyLine);
-          }
-          */
           System.err.println("Not Found V3 XSD Directory...");
           return null;
       }
@@ -1370,6 +1335,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.26  2009/03/12 01:43:18  umkis
+ * update filenameLocate()
+ *
  * Revision 1.25  2009/03/10 01:28:32  umkis
  * minor change
  *
