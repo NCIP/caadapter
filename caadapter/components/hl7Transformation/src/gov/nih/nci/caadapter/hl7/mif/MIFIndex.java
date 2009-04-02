@@ -12,13 +12,14 @@ package gov.nih.nci.caadapter.hl7.mif;
  * The class defines an object containing the index of HL7 message MIF.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-03-18 15:50:36 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-04-02 03:12:22 $
  */
 
 import java.io.Serializable;
+import java.io.File;
 import java.util.TreeSet;
 import java.util.Set;
 import java.util.Enumeration;
@@ -35,9 +36,13 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	/**
 	 * @return the mifPath
 	 */
-	public String getMifPath() {
-		return mifPath;
-	}
+	public String getMifPath()
+    {
+		File f = new File(mifPath);
+        if (f.exists())
+           return mifPath;
+        else return "../" + mifPath;  // in case of 'dist' directory.
+    }
 
 	/**
 	 * @param mifPath the mifPath to set
@@ -64,9 +69,22 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	/**
 	 * @return the schemaPath
 	 */
-	public String getSchemaPath() {
-		return schemaPath;
-	}
+	public String getSchemaPath()
+    {
+        File f = new File(schemaPath);
+        if (!f.exists()) f = new File("../" + schemaPath);
+
+        if (!f.exists())
+            return schemaPath;
+
+        if (f.isDirectory()) return f.getAbsolutePath();
+
+        String parent = f.getParent();
+        if (!parent.endsWith(File.separator)) parent = parent + File.separator;
+        File sdir = new File(parent + "schemas");
+        if ((sdir.exists())&&(sdir.isDirectory())) return sdir.getAbsolutePath();
+        return f.getAbsolutePath();
+    }
 
 	/**
 	 * @param schemaPath the schemaPath to set
@@ -167,6 +185,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2009/03/18 15:50:36  wangeug
+ * HISTORY :enable wesstart to support multiple normatives
+ * HISTORY :
  * HISTORY :Revision 1.7  2009/03/13 16:28:50  wangeug
  * HISTORY :support multiple HL& normatives: set default as 2008
  * HISTORY :
