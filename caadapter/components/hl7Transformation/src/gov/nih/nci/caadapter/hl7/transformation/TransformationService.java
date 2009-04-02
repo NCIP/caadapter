@@ -54,14 +54,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.40 $
- * @date $Date: 2009-03-19 02:26:28 $
+ * @version $Revision: 1.41 $
+ * @date $Date: 2009-04-02 06:03:42 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.40 2009-03-19 02:26:28 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.41 2009-04-02 06:03:42 altturbo Exp $";
 
     private String csvString = "";
     private File mapFile = null;
@@ -526,7 +526,7 @@ public class TransformationService
 //&umkis            String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
 //&umkis            String schemaFileNameL = null;
 //&umkis
-//&umkis            String dirS = FileUtil.getV3XsdFilePath();
+//&umkis            String dirS = SchemaDirUtil.getV3XsdFilePath();
 //&umkis            if (dirS == null)
 //&umkis            {
 //&umkis                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
@@ -693,6 +693,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.40  2009/03/19 02:26:28  altturbo
+ * HISTORY      : XSD validation codes are hidden and marked with "//&umkis".
+ * HISTORY      :
  * HISTORY      : Revision 1.39  2009/03/12 03:59:21  umkis
  * HISTORY      : XSD validation codes are unremarked but deactivated
  * HISTORY      :

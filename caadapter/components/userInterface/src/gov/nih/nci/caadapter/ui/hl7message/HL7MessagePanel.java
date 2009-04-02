@@ -63,8 +63,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.34 $
- *          date        $Date: 2009-04-02 04:36:33 $
+ *          revision    $Revision: 1.35 $
+ *          date        $Date: 2009-04-02 06:03:28 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -456,12 +456,12 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 			try{
 //&umkis                String ins = "";
 //&umkis                if (schemaValidationTag == JOptionPane.YES_OPTION) ins = "_Reorganized";
-//                
+//
                 String xmlMsg = "";
 //&umkis                try { xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+ins+".xml"); }
 //&umkis                catch (IOException ie)
 //&umkis                {
-                xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml"); 
+                xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml");
 //&umkis                }
 //
                 setMessageText(xmlMsg);
@@ -688,7 +688,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 //&umkis            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
 //&umkis            if (schemaValidationTag == JOptionPane.YES_OPTION)
 //&umkis            {
-//&umkis                if (FileUtil.getV3XsdFilePath() == null)
+//&umkis                if (SchemaDirUtil.getV3XsdFilePath() == null)
 //&umkis                {
 //&umkis                    JOptionPane.showMessageDialog(this, "Schema directoty cannot be found.", "No XML schema file", JOptionPane.ERROR_MESSAGE);
 //&umkis                    schemaValidationTag = JOptionPane.NO_OPTION;
@@ -708,6 +708,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.34  2009/04/02 04:36:33  altturbo
+ * HISTORY      : add '//&umkis' tag to several lines
+ * HISTORY      :
  * HISTORY      : Revision 1.33  2009/03/19 02:26:13  altturbo
  * HISTORY      : XSD validation codes are hidden and marked with "//&umkis".
  * HISTORY      :
