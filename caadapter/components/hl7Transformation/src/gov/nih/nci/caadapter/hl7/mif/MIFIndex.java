@@ -14,8 +14,8 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2009-04-02 03:12:22 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-04-02 04:22:33 $
  */
 
 import java.io.Serializable;
@@ -51,7 +51,7 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 		this.mifPath = mifPath;
 	}
 	private String normativeDescription;
-	 
+
 	/**
 	 * @return the normativeDescription
 	 */
@@ -72,18 +72,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	public String getSchemaPath()
     {
         File f = new File(schemaPath);
-        if (!f.exists()) f = new File("../" + schemaPath);
-
-        if (!f.exists())
-            return schemaPath;
-
-        if (f.isDirectory()) return f.getAbsolutePath();
-
-        String parent = f.getParent();
-        if (!parent.endsWith(File.separator)) parent = parent + File.separator;
-        File sdir = new File(parent + "schemas");
-        if ((sdir.exists())&&(sdir.isDirectory())) return sdir.getAbsolutePath();
-        return f.getAbsolutePath();
+        if (f.exists())
+           return schemaPath;
+        else return "../" + schemaPath;  // in case of 'dist' directory.
     }
 
 	/**
@@ -117,31 +108,31 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 				return ;
 		}
 		//only the _MT MIFs are implemented artificates
-		//the _HD MIFs "hierachicalmessage defineitionthat serialize the 
+		//the _HD MIFs "hierachicalmessage defineitionthat serialize the
 		//elements in RMMI
 		if (mifFileName.indexOf("_HD")>-1)
 			return;
 		if (mifFileName.indexOf(".mif")<0)
 			return;
-		
+
 		//new MIF file name being added
 		String msgType=mifFileName.substring(0, mifFileName.indexOf(".mif"));
 		//remove "UVxx" from the message type string
 		if (msgType.indexOf("UV")>-1)
 			msgType=msgType.substring(0, msgType.indexOf("UV"));
-		
+
 		String msgCat=msgType.substring(0,7);
 		if (!messageCategory.contains(msgCat))
 			messageCategory.add(msgCat);
-		
+
 		mifNames.put(msgType, mifFileName);
 	}
-	
+
 	public Set<String> getMessageCategory()
 	{
 		return messageCategory;
 	}
-	
+
 
 	public Set fingMessageTypesWithCategory(String msgCat)
 	{
@@ -155,7 +146,7 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 		}
 		return rtnSet;
 	}
-	
+
 	public String findSpecificationHome()
 	{
 		String rtnSt=null;
@@ -176,7 +167,7 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 		String myCompareKey=getCopyrightYears();
 		if (myCompareKey==null||myCompareKey.equals(""));
 			myCompareKey=getNormativeDescription();
-		
+
 		String otherCompareKey=index.getCopyrightYears();
 		if (otherCompareKey==null||otherCompareKey.equals(""));
 			otherCompareKey=index.getNormativeDescription();
@@ -185,6 +176,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2009/04/02 03:12:22  altturbo
+ * HISTORY :For protecting FileNotFoundException in case of 'dist' directory and can process in case of schema directory.
+ * HISTORY :
  * HISTORY :Revision 1.8  2009/03/18 15:50:36  wangeug
  * HISTORY :enable wesstart to support multiple normatives
  * HISTORY :
