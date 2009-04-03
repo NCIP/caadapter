@@ -30,10 +30,10 @@ import java.util.ArrayList;
  * This class defines the remove optional clone action.
  *
  * @author OWNER: Eric Chen
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-02-12 20:36:45 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-04-03 15:42:09 $
  */
 public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 {
@@ -49,7 +49,7 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.8 2009-02-12 20:36:45 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/RemoveCloneAction.java,v 1.9 2009-04-03 15:42:09 altturbo Exp $";
 
 	private static final String COMMAND_NAME = "Remove Optional Clone";
 	private static final Character COMMAND_MNEMONIC = new Character('C');
@@ -132,7 +132,7 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 //            }
             
             AssociationListWizard cloneListWizard =
-                new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Reomved", true);
+                new AssociationListWizard(baseList, false, (JFrame)tree.getRootPane().getParent(), "Clone(s) To Be Removed", true);
             DefaultSettings.centerWindow(cloneListWizard);
             cloneListWizard.setVisible(true);
             if (cloneListWizard.isOkButtonClicked())
@@ -172,6 +172,9 @@ public class RemoveCloneAction extends AbstractHSMContextCRUDAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2009/02/12 20:36:45  wangeug
+ * HISTORY      : use sortedChoice() to include all choiceItems from sub-list
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/09/29 20:18:56  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
