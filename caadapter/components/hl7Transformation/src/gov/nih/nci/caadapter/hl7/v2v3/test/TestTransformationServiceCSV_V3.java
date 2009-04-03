@@ -12,14 +12,15 @@ import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 
 import java.util.List;
+import java.io.File;
 
 /**
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.3 $
+ *          revision    $Revision: 1.4 $
  *          date        Mar 6, 2008
  *          Time:       12:39:01 PM $
  */
@@ -43,6 +44,9 @@ public class TestTransformationServiceCSV_V3
     public TestTransformationServiceCSV_V3(String csv, String map)
     {
         TransformationService ts = new TransformationService(csv, map);
+
+//&umkis        ts.setSchemaValidation(true);
+        ts.setOutputFile(new File("output.zip"));
         List<XMLElement> msgs = null;
         try
         {
@@ -70,7 +74,23 @@ public class TestTransformationServiceCSV_V3
     {
         String csv = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000030.csv";
         String map = "C:\\projects\\caadapter\\workingspace\\CDA\\POCD_MT000030.map";
-        new TestTransformationServiceCSV_V3(map, csv);
+
+        String v1 = "";
+        String v2 = "";
+        String v3 = "";
+
+        try
+        {
+            v1 = args[0];
+            v2 = args[1];
+        }
+        catch(Exception ee)
+        {
+            System.out.println("Usage : <command> [CSV File] [MAP File]");
+            v1 = csv;
+            v2 = map;
+        }
+        new TestTransformationServiceCSV_V3(v2, v1);
     }
 }
 
