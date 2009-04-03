@@ -46,8 +46,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.23 $
- *          date        $Date: 2009-04-02 20:35:25 $
+ *          revision    $Revision: 1.24 $
+ *          date        $Date: 2009-04-03 15:51:35 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -62,7 +62,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.23 2009-04-02 20:35:25 altturbo Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.24 2009-04-03 15:51:35 altturbo Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -634,8 +634,11 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			return false;
 		}
 		boolean result = false;
-			
-		if (seletedBaseObject instanceof MIFClass)
+
+//&umkis        result=!GeneralUtilities.areEqual(this.seletedBaseObject.getComment(), commentField.getText().trim(), true);
+//&umkis        if (result) return true;
+
+        if (seletedBaseObject instanceof MIFClass)
 		{
 			result=false;
 		}
@@ -709,6 +712,9 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.23  2009/04/02 20:35:25  altturbo
+ * HISTORY      : add comment and annotation items but deactivated
+ * HISTORY      :
  * HISTORY      : Revision 1.22  2008/09/29 20:14:14  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :
