@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.37 $
- *          date        $Date: 2009-04-06 18:31:36 $
+ *          revision    $Revision: 1.38 $
+ *          date        $Date: 2009-04-06 19:07:56 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -682,7 +682,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 //&umkis    private void confirmSchemaValidation()
 //&umkis    {
 //&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
-//&umkis        if ((prop != null)&&(!prop.trim().equalsIgnoreCase("true")))
+//&umkis        if ((prop != null)&&(prop.trim().equalsIgnoreCase("true")))
 //&umkis        {
 //&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
 //&umkis            return;
@@ -705,6 +705,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.37  2009/04/06 18:31:36  altturbo
+ * HISTORY      : minor change - edit remarks
+ * HISTORY      :
  * HISTORY      : Revision 1.36  2009/04/02 06:34:24  altturbo
  * HISTORY      : minor change - remark
  * HISTORY      :
