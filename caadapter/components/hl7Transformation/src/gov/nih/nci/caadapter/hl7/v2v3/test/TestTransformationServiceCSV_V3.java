@@ -9,10 +9,14 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.hl7.v2v3.test;
 
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
+import gov.nih.nci.caadapter.hl7.transformation.TransformationServiceUtil;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
+import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 
+import javax.swing.*;
 import java.util.List;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * This class defines ...
@@ -20,7 +24,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Mar 6, 2008
  *          Time:       12:39:01 PM $
  */
@@ -57,7 +61,7 @@ public class TestTransformationServiceCSV_V3
 
 //&umkis        ts.setSchemaValidation(true);
 
-        if ((out == null)||(out.trim().equals(""))) out = "output.zip";
+        if ((out == null)||(out.trim().equals(""))) out = "testOutput.zip";
         else out = out.trim();
         ts.setOutputFile(new File(out));
         List<XMLElement> msgs = null;
@@ -71,15 +75,47 @@ public class TestTransformationServiceCSV_V3
             ee.printStackTrace();
             return;
         }
-        int n = 0;
-        for(XMLElement msg:msgs)
+        int currentCount = 0;
+        while(true)
         {
-            n++;
-            System.out.println("#### MESSAGE " + n + " #####");
-            System.out.println(msg.toXML().toString());
+            currentCount++;
+
+            try{
+                String xmlMsg1 = "";
+                try { xmlMsg1 = TransformationServiceUtil.readFromZip(new File(out) ,String.valueOf(currentCount-1)+"_Reorganized.xml"); }
+                catch (IOException ie)
+                { xmlMsg1 = null;  }
+
+                String xmlMsg2 = "";
+                try { xmlMsg2 = TransformationServiceUtil.readFromZip(new File(out) ,String.valueOf(currentCount-1)+".xml"); }
+                catch (IOException ie)
+                {  xmlMsg2 = null; }
+
+                if ((xmlMsg1 == null)&&((xmlMsg2 == null))) break;
+
+                ValidatorResults validatorsToShow=new ValidatorResults();
+                //add structure validation ... level_0
+                try { validatorsToShow.addValidatorResults((ValidatorResults)TransformationServiceUtil.readObjFromZip(new File(out),String.valueOf(currentCount-1)+".ser"));   }
+                catch (IOException ie)
+                { validatorsToShow = null; }
+
+                if (xmlMsg1 != null)
+                {
+                    System.out.println("###############  Reorganized Message : \n" + xmlMsg1);
+                }
+                if (xmlMsg2 != null)
+                {
+                    System.out.println("###############  Original Message : \n" + xmlMsg2);
+                }
+                if (validatorsToShow != null)
+                {
+                    System.out.println("###############  Validator Result : \n" + validatorsToShow.toString());
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
-        System.out.println("\n#### Validation Results #####");
-        System.out.println(ts.getValidatorResults().toString());
 
     }
 
