@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.36 $
- *          date        $Date: 2009-04-02 06:34:24 $
+ *          revision    $Revision: 1.37 $
+ *          date        $Date: 2009-04-06 18:31:36 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -681,22 +681,18 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 //&umkis    private void confirmSchemaValidation()
 //&umkis    {
-//&umkis        //String prop = FileUtil.searchProperty("SchemaValidation");
-//&umkis        //if (prop == null) return;
-//&umkis        //if (!prop.trim().equalsIgnoreCase("true")) return;
+//&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
+//&umkis        if ((prop != null)&&(!prop.trim().equalsIgnoreCase("true")))
+//&umkis        {
+//&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
+//&umkis            return;
+//&umkis        }
 //&umkis        if (schemaValidationTag < 0)
 //&umkis        {
 //&umkis            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
-//&umkis            if (schemaValidationTag == JOptionPane.YES_OPTION)
-//&umkis            {
-//&umkis                if ((new SchemaDirUtil()).getV3XsdFilePath() == null)
-//&umkis                {
-//&umkis                    JOptionPane.showMessageDialog(this, "Schema directoty cannot be found.", "No XML schema file", JOptionPane.ERROR_MESSAGE);
-//&umkis                    schemaValidationTag = JOptionPane.NO_OPTION;
-//&umkis                }
-//&umkis            }
 //&umkis        }
 //&umkis    }
+
 
 	public int getMessageFileType() {
 		return messageFileType;
@@ -709,6 +705,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.36  2009/04/02 06:34:24  altturbo
+ * HISTORY      : minor change - remark
+ * HISTORY      :
  * HISTORY      : Revision 1.35  2009/04/02 06:03:28  altturbo
  * HISTORY      : minor change - remark
  * HISTORY      :
