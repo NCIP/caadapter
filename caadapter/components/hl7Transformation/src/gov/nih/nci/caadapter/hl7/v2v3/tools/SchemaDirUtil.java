@@ -1,8 +1,10 @@
 package gov.nih.nci.caadapter.hl7.v2v3.tools;
 
 import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
+import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,15 +13,43 @@ import java.io.File;
  * Time: 1:59:19 AM
  * To change this template use File | Settings | File Templates.
  */
+
 public class SchemaDirUtil
 {
+    MIFIndex mifIndex = null;
     public SchemaDirUtil()
     {
 
     }
-    public String getV3XsdFilePath()
+    public SchemaDirUtil(MIFIndex mifIndex2) throws IOException
     {
-        String schemaPath= NormativeVersionUtil.getCurrentMIFIndex().getSchemaPath();
+        setMIFIndex(mifIndex2);
+    }
+    public void setMIFIndex(MIFIndex mifIndex2) throws IOException
+    {
+        if (mifIndex2 == null) throw new IOException("Not found mif index object.");
+        mifIndex = mifIndex2;
+    }
+    public String getV3XsdFilePath(String copyRightYear)
+    {
+        MIFIndex mifIndex2 =  NormativeVersionUtil.loadMIFIndex(copyRightYear);
+        if (mifIndex2 == null) return null;
+        mifIndex = mifIndex2;
+        return getMifIndex(mifIndex2);
+    }
+    public String getV3XsdFilePath() throws IOException
+    {
+        MIFIndex mifIndex2 = mifIndex;
+        if (mifIndex2 == null)
+        {
+            mifIndex2 = NormativeVersionUtil.getCurrentMIFIndex();
+            if (mifIndex2 == null) throw new IOException("Not found mif index object.");
+        }
+        return getMifIndex(mifIndex2);
+    }
+    private String getMifIndex(MIFIndex mifIndex)
+    {
+        String schemaPath= mifIndex.getSchemaPath();
 
         File f = new File(schemaPath);
         if (!f.exists()) f = new File("../" + schemaPath);

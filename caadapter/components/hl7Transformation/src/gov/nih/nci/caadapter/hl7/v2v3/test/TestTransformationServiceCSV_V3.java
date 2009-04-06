@@ -20,7 +20,7 @@ import java.io.File;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.4 $
+ *          revision    $Revision: 1.5 $
  *          date        Mar 6, 2008
  *          Time:       12:39:01 PM $
  */
@@ -43,10 +43,23 @@ public class TestTransformationServiceCSV_V3
 
     public TestTransformationServiceCSV_V3(String csv, String map)
     {
+        mainTest(csv, map, null);
+    }
+
+    public TestTransformationServiceCSV_V3(String csv, String map, String out)
+    {
+        mainTest(csv, map, out);
+    }
+
+    private void mainTest(String csv, String map, String out)
+    {
         TransformationService ts = new TransformationService(csv, map);
 
 //&umkis        ts.setSchemaValidation(true);
-        ts.setOutputFile(new File("output.zip"));
+
+        if ((out == null)||(out.trim().equals(""))) out = "output.zip";
+        else out = out.trim();
+        ts.setOutputFile(new File(out));
         List<XMLElement> msgs = null;
         try
         {
@@ -86,11 +99,20 @@ public class TestTransformationServiceCSV_V3
         }
         catch(Exception ee)
         {
-            System.out.println("Usage : <command> [CSV File] [MAP File]");
+            System.out.println("Usage : <command> [CSV File] [MAP File] [optional:output]");
             v1 = csv;
             v2 = map;
         }
-        new TestTransformationServiceCSV_V3(v2, v1);
+
+        try
+        {
+            v3 = args[3];
+        }
+        catch(Exception ee)
+        {
+            v3 = null;
+        }
+        new TestTransformationServiceCSV_V3(v2, v1, v3);
     }
 }
 
