@@ -40,10 +40,10 @@ import org.xml.sax.SAXException;
  * The class load HL7 datatypes into Datatype object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.21 $
- *          date        $Date: 2009-03-25 14:01:30 $
+ *          revision    $Revision: 1.22 $
+ *          date        $Date: 2009-04-06 15:06:09 $
  */
 
 public class DatatypeParser {
@@ -117,9 +117,13 @@ public class DatatypeParser {
 	    		ZipFile xsdZipFile=new ZipFile(schemaFile);
 	    		if (xsdZipFile!=null)
 	    		{
-	        		ZipEntry vocEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/voc.xsd");
-	        		ZipEntry baseEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes-base.xsd");
-	        		ZipEntry allEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes.xsd");
+                    ZipEntry vocEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/voc.xsd");
+                    if (vocEntry==null) vocEntry=xsdZipFile.getEntry("schemas/" + coreSchemaPrefix+"/voc.xsd");
+                    ZipEntry baseEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes-base.xsd");
+                    if (baseEntry==null) baseEntry=xsdZipFile.getEntry("schemas/" + coreSchemaPrefix+"/datatypes-base.xsd");
+                    ZipEntry allEntry=xsdZipFile.getEntry(coreSchemaPrefix+"/datatypes.xsd");
+                    if (allEntry==null) allEntry=xsdZipFile.getEntry("schemas/" + coreSchemaPrefix+"/datatypes.xsd");
+
 	        		vocDoc = db.parse(xsdZipFile.getInputStream(vocEntry));
 	            	baseDoc= db.parse(xsdZipFile.getInputStream(baseEntry));
 	            	allDoc = db.parse(xsdZipFile.getInputStream(allEntry));
@@ -438,6 +442,9 @@ public class DatatypeParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.21  2009/03/25 14:01:30  wangeug
+ * HISTORY :load HL7 artifacts with new procedure
+ * HISTORY :
  * HISTORY :Revision 1.20  2009/03/18 15:49:54  wangeug
  * HISTORY :enable wesstart to support multiple normatives
  * HISTORY :
