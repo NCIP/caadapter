@@ -12,16 +12,13 @@ import gov.nih.nci.caadapter.security.dao.DAOFactory;
 import gov.nih.nci.caadapter.security.dao.SecurityAccessIF;
 import gov.nih.nci.caadapter.security.domain.Permissions;
 
-import java.io.DataInputStream;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +37,7 @@ import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -48,9 +46,9 @@ import org.xml.sax.SAXParseException;
  * Add Web Service Mapping Secnario class
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: phadkes $
- * @version $Revision: 1.5 $
- * @date $$Date: 2008-11-11 17:33:11 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.6 $
+ * @date $$Date: 2009-04-13 15:25:25 $
  * @since caadapter v1.3.1
  */
 
@@ -67,13 +65,10 @@ public class AddNewScenario extends HttpServlet {
 	   public void doPost (HttpServletRequest req, HttpServletResponse res)
 	      throws ServletException, IOException
 	   {
-	      DataInputStream in = null;
-	      FileOutputStream fileOut = null;
-	      String name, filename, type;
-	      long formDatalength = 0;
           try
           {
-              HttpSession session = req.getSession(false);
+            /* disable security for caAdatper 4.3 release 03-31-2009 
+             HttpSession session = req.getSession(false);
               
               if(session==null)
               {
@@ -92,8 +87,8 @@ public class AddNewScenario extends HttpServlet {
                   res.sendRedirect("/caAdapterWS/permissionmsg.do");
                   return;
               }
-                  
-    	      name = filename = type = "EMPTY";
+              */    
+        	  String name = "EMPTY";
 
 	    	  // Create a factory for disk-based file items
 	    	  DiskFileItemFactory  factory = new DiskFileItemFactory();
@@ -112,14 +107,23 @@ public class AddNewScenario extends HttpServlet {
 	    		  if (item.isFormField()) {
 	    			  if (item.getFieldName().equals("MSName")) {
 	    				  MSName = item.getString();
-	    				  Properties caadapterProperties = new Properties();
 	    				  path = System.getProperty("gov.nih.nci.caadapter.path");
+	    				  if (path==null)
+	    					  path=ScenarioUtil.SCENARIO_HOME;
+	    				  File scnHome=new File(path);
+	    				  if (!scnHome.exists())
+	    					  scnHome.mkdir();
+	    				  path=path+"/";
 	    				  System.out.println(path);
-	    				  boolean exists = (new File(path + MSName)).exists();
+	    				  boolean exists = (new File(path+ MSName)).exists();
 	    				    if (exists) {
 	    				    	System.out.println("Scenario exists, overwriting ... ...");
+	    				    	String errMsg="Scenario exists, not able to save:"+MSName;
+	    				    	req.setAttribute("rtnMessage", errMsg);
+	    				    	 res.sendRedirect("/caAdapterWS/errormsg.do");
+	    				    	 return;
 	    				    } else {
-	    				    	boolean success = (new File(path + MSName)).mkdir();
+	    				    	boolean success = (new File(path+MSName)).mkdir();
 	    				        if (!success) {
 		    				    	System.out.println("New scenario, Creating ... ...");
 	    				        }
@@ -129,64 +133,116 @@ public class AddNewScenario extends HttpServlet {
 	    		  } else {
 	    			  System.out.println(item.getFieldName());
 	    			  name = item.getFieldName();
-	    			  if (name.equals("scsFileName")) {
-	    				  File uploadedFile = new File(path + MSName+ "/" + MSName + ".scs");
-	    				  item.write(uploadedFile);
-	    			  }
-	    			  if (name.equals("h3sFileName")) {
-	    				  if (item.getName().endsWith("h3s"))
-	    				  {
-	    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".h3s");
-	    					  item.write(uploadedFile);
-	    				  }
-	    				  else {
-	    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".xml");
-	    					  item.write(uploadedFile);
-	    				  }
-	    			  }
+	    			  
+	    			  String filePath = item.getName();
+	    			  String fileName=extractOriginalFileName(filePath);
+	    			  System.out.println("AddNewScenario.doPost()..original file Name:"+fileName);
+	    			  if (fileName==null||fileName.equals(""))
+	    				  continue;
+	    			  String uploadedFilePath=path+MSName+"/"+ fileName;
+	    			  System.out.println("AddNewScenario.doPost()...write data to file:"+uploadedFilePath);
+	    			  File uploadedFile = new File(uploadedFilePath);
 	    			  if (name.equals("mappingFileName")) {
-	    				  File uploadedFile = new File(path + MSName+ "/" + MSName + ".bak");
-	    				  item.write(uploadedFile);
-	    				  updateMapping(path + MSName+ "/" + MSName + ".bak");
+	    				  String uploadedMapBak=uploadedFilePath+ ".bak";
+	    				  //write bak of Mapping file
+	    				  item.write(new File(uploadedMapBak));
+	    				  updateMapping(uploadedMapBak);
 	    			  }
+	    			  else
+	    				  item.write(uploadedFile);
+ //	    			  if (name.equals("scsFileName")) {
+//	    				  File uploadedFile = new File(path + MSName+ "/" + MSName + ".scs");
+//	    				  item.write(uploadedFile);
+//	    			  }
+//	    			  if (name.equals("h3sFileName")) {
+// 
+//	    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".h3s");
+//	    					  item.write(uploadedFile);
+//	    			  }
+//	    			  if (name.equals("vocabularyMappingFileName")) {
+//	    				  
+//    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".vom");
+//    					  item.write(uploadedFile);
+//	    			  }
+//	    			  if (name.equals("mappingFileName")) {
+//	    				  File uploadedFileBak = new File(uploadedFilePath+ ".bak");
+//	    				  item.write(uploadedFile);
+//	    				  updateMapping(uploadedFilePath);
+//	    			  }
 	    		  }
 	    	  }
-//	    	  out.println("Complete!");
+	    	  ScenarioUtil.addNewScenarioRegistration(MSName);
 	    	  res.sendRedirect("/caAdapterWS/success.do");
 	    	  
 		}catch(NullPointerException ne) {
 	            System.out.println("Error in doPost: " + ne);
+	            req.setAttribute("rtnMessage", ne.getMessage());
 		    	  res.sendRedirect("/caAdapterWS/errormsg.do");
 	        }
 		catch(Exception e) {
             System.out.println("Error in doPost: " + e);
+            req.setAttribute("rtnMessage", e.getMessage());
               res.sendRedirect("/caAdapterWS/error.do");
         }
+	   }
+	   
+	   private String extractOriginalFileName(String filePath)
+	   {
+		   if (filePath==null||filePath.equalsIgnoreCase(""))
+			   return null;
+		   int subIndx=0;
+		   if (filePath.lastIndexOf("/")>-1)
+			   subIndx=filePath.lastIndexOf("/");
+		   else if (filePath.lastIndexOf("\\")>-1)
+			   subIndx=filePath.lastIndexOf("\\");
+		   
+		   if (subIndx>0)
+			   return filePath.substring(subIndx+1);
+		   
+		   //the original string is file name
+		   return filePath;
+		   
 	   }
 	    /**
 	     * Update the reference in .map to the .scs and .h3s files.
 	     *
 	     * @param  mapplingFileName  mapping file name
 	     */
-	    public void updateMapping(String mapplingFileName) throws Exception{
-	    	Document xmlDOM = readFile(mapplingFileName);
+	    public void updateMapping(String mapplingBakFileName) throws Exception{
+	    	Document xmlDOM = readFile(mapplingBakFileName);
+	    	
 	    	NodeList components = xmlDOM.getElementsByTagName("component");
 	    	for(int i = 0; i< components.getLength();i++) {
 	    		Element component = (Element)components.item(i);
-	    		Attr attr = component.getAttributeNode("kind");
-	    		if (attr.getValue().equals("scs")) {
-		    		Attr locationAttr = component.getAttributeNode("location");
-		    		locationAttr.setValue(MSName+".scs");
+	    		//update location of SCS, H3S 
+	    		Attr locationAttr = component.getAttributeNode("location");
+	    		if (locationAttr!=null)
+	    		{
+			    	String localName=extractOriginalFileName(locationAttr.getValue());
+			    	locationAttr.setValue(localName);
 	    		}
-	    		if (attr.getValue().equals("HL7v3")||attr.getValue().equals("h3s")) {
-		    		Attr locationAttr = component.getAttributeNode("location");
-		    		if (locationAttr.getValue().endsWith("h3s"))
-		    			locationAttr.setValue(MSName+".h3s");
-		    		else 
-		    			locationAttr.setValue(MSName+".xml");
+	    		//update VOM reference
+	    		Attr groupAttr = component.getAttributeNode("group");
+	    		if (groupAttr!=null
+	    				&&groupAttr.getValue()!=null
+	    				&&groupAttr.getValue().equalsIgnoreCase("vocabulary"))
+	    		{
+	    			NodeList chldComps = component.getElementsByTagName("data");
+	    			for(int j=0;j<chldComps.getLength();j++)
+	    			{
+	    				Element chldElement = (Element)chldComps.item(j);
+	    				Attr valueAttr=chldElement.getAttributeNode("value");
+	    				if (valueAttr!=null)
+	    				{
+	    					String localFileName=extractOriginalFileName(valueAttr.getValue());
+	    					valueAttr.setValue(localFileName);
+	    				}
+	    			}			    	
 	    		}
 	    	}
-	    	outputXML(xmlDOM,path + MSName+ "/" + MSName + ".map");
+	    	System.out.println("AddNewScenario.updateMapping()..mapbakfile:"+mapplingBakFileName);
+	    	
+	    	outputXML(xmlDOM,mapplingBakFileName.substring(0, mapplingBakFileName.lastIndexOf(".bak"))  );
 	    }
 	    /**
 	     * Parse a XML document into DOM Tree
@@ -194,7 +250,7 @@ public class AddNewScenario extends HttpServlet {
 	     * @param file File name 
 	     * @return XML DOM Tree
 	     */
-		public Document readFile(String fileName) throws Exception {
+		private Document readFile(String fileName) throws Exception {
 	        if (fileName == null) {
 	                throw new Exception("Wrong filename for readFile()");
 	        }
@@ -206,7 +262,7 @@ public class AddNewScenario extends HttpServlet {
 	     * @param file The input File handler 
 	     * @return XML DOM Tree
 	     */
-		public Document readFile(File file) throws Exception {
+		private Document readFile(File file) throws Exception {
 		    org.w3c.dom.Document doc;
 	 
 	        try {
@@ -232,7 +288,7 @@ public class AddNewScenario extends HttpServlet {
 	     * @param domDoc .map file's dom tree
 	     * @param outputFileName the target .map file you want save
 	     */
-		public void outputXML(org.w3c.dom.Document domDoc, String outputFileName) 
+		private void outputXML(Document domDoc, String outputFileName) 
 	       throws JDOMException, IOException {
 	       // Create new DOMBuilder, using default parser
 	       DOMBuilder builder = new DOMBuilder();
