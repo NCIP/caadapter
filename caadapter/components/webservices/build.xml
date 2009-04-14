@@ -27,6 +27,10 @@
   		<include name="**/*.jar"/>
   		<include name="**/*.zip"/>
   	</fileset>
+  	<fileset dir="${ws.module.home}/WebRoot/WEB-INF/lib">
+	  		<include name="**/*.jar"/>
+	  		<include name="**/*.zip"/>
+  	</fileset>
   	<fileset dir="${root}/components/hl7Transformation/dist/">
   		<include name="**/*.jar"/>
   	</fileset>
@@ -70,7 +74,10 @@
 		<exclude name="**/*server-config.wsdd.template"/>
 	</zipfileset>
 	<zipfileset dir="${ws.module.home}/build/" prefix="WEB-INF/classes" id="dist.ws.webclasses">
-		<include name="**/ws/*.class"/>
+		<include name="**/*.class"/>
+	</zipfileset>
+	<zipfileset dir="${ws.module.home}/src/" prefix="WEB-INF/classes" id="dist.ws.web.properties">
+			<include name="**/*.properties"/>
 	</zipfileset>
 
 	<zipfileset dir="${module.lib.dir}" prefix="WEB-INF/lib" id="dist.ws.caAdapter.libs">
@@ -98,13 +105,7 @@
 			<include name="*.zip"/>
 		</zipfileset>
 	<zipfileset dir="${root}/referenceLib" prefix="WEB-INF/lib" id="dist.ws.ref.libs">
-		<!-- include name="mif.zip"/ -->
-		<include name="schemas.zip"/>
-		<!-- exclude name="caAdapter.jar"/>
-		<exclude name="caAdapter_ui.jar"/>
-		<exclude name="jgraph.jar"/>
-		<exclude name="mif.zip"/>
-		<exclude name="sqleonardo.jar"/ -->
+		<include name="caAdapter.jar"/>
 	</zipfileset>
 	<zipfileset dir="${root}/components/common/dist/" prefix="WEB-INF/lib" id="dist.ws.common.libs">
 		<include name="**/*.jar"/>
@@ -150,13 +151,13 @@
 			<!-- Common to both source and binary distribution. -->
 			<zipfileset refid="dist.ws.WEB"/>
 			<zipfileset refid="dist.ws.webclasses"/>
-			<!-- zipfileset refid="dist.hl7.webclasses"/ -->
+			<zipfileset refid="dist.ws.web.properties"/>
 			<zipfileset refid="dist.ws.caAdapter.libs"/>
 			<zipfileset refid="dist.ws.mif.libs"/>
 			<zipfileset refid="dist.ws.ref.libs"/>
-			<zipfileset refid="dist.ws.hl7.libs"/>
+			<!-- zipfileset refid="dist.ws.hl7.libs"/ -->
 			<zipfileset refid="module.hl7.libs"/>
-			<zipfileset refid="dist.ws.common.libs"/>
+			<!-- zipfileset refid="dist.ws.common.libs"/ -->
 			<zipfileset refid="dist.ws.axis.libs"/>
 			<zipfileset refid="dist.ws.functionsfile"/>
 		</zip>
