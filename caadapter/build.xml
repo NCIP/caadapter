@@ -36,9 +36,9 @@
 
     <!-- Mailer properties begin-->
     <property name="MailLogger.from" value="caAdapter.build.notifier"/>
-    <property name="MailLogger.failure.to" value="wuye@mail.nih.gov,wangeug@mail.nih.gov,linc3@mail.nih.gov"/>
+    <property name="MailLogger.failure.to" value="wangeug@mail.nih.gov"/>
     <property name="MailLogger.mailhost" value="mailfwd.nih.gov"/>
-    <property name="MailLogger.success.to" value="wuye@mail.nih.gov,wangeug@mail.nih.gov,linc3@mail.nih.gov"/>
+    <property name="MailLogger.success.to" value="wangeug@mail.nih.gov"/>
     <property name="MailLogger.success.subject" value="Build successful"/>
     <property name="MailLogger.failure.subject" value="Build failed"/>
     <property name="MailLogger.success.notify" value="on"/>
@@ -208,6 +208,7 @@
     </target>
     
     <target name="copy.built.ws.module" if="caadapter.release.ws.build">
+    	<ant antfile="${ws.module.build}"/>
     	<copy todir="${dist.dir}">
 			<fileset dir="${ws.module.home}/dist">
 				<include name="**/caAdapterWS.war"/>
