@@ -20,8 +20,8 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.7 $
- * @date $$Date: 2009-04-13 15:25:25 $
+ * @version $Revision: 1.8 $
+ * @date $$Date: 2009-04-14 20:02:40 $
  * @since caadapter v1.3.1
  */
 
@@ -32,7 +32,7 @@ public class caAdapterTransformationService {
      *
      * @param mappingScenario The name of the mapping scenario 
      * @param csvString csv data in String format 
-     * @return A collection of the tranformed HL7 v3 message
+     * @return A collection of the transformed HL7 v3 message
      */
 
 	public ArrayList<String> transformationService(String mappingScenario, String csvString) {
@@ -64,10 +64,7 @@ public class caAdapterTransformationService {
 				  for (int i = 0; i < mapGenerateResults.size(); i++)
 				  {
 					  XMLElement hl7Xml = mapGenerateResults.get(i);
-					  System.out
-							.println("caAdapterTransformationService.transformationService()..message toString:"+hl7Xml);
-					  System.out
-							.println("caAdapterTransformationService.transformationService()..message xml:\n"+hl7Xml.toXML().toString());
+					  System.out.println("caAdapterTransformationService.transformationService()..message toString:"+hl7Xml);
 					  result.add(hl7Xml.toXML().toString());
 				  }
 				  result.add("\n\nprocessed");

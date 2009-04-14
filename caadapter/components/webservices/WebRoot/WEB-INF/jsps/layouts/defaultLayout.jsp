@@ -41,52 +41,47 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%">
 	
 	<!-- nci hdr begins -->
-  <tr><td><tiles:insert attribute="header"/></td></tr>
-  <!-- nci hdr ends -->
+    <tr><td><tiles:insert attribute="header"/></td></tr>
+  	<!-- nci hdr ends -->
   
-  <tr><td height="100%" valign="top">
-      <table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
-        <tr><td colspan="2" height="50"><tiles:insert attribute="applicationHeader"/></td></tr>
-        <tr>
-            <td width="190" valign="top" class="subMenu"><tiles:insert attribute="subMenu"/></td> 
-            <td valign="top" width="100%">
+  	<tr><td height="100%" valign="top">
+      	<table summary="" cellpadding="0" cellspacing="0" border="0" height="100%">
+        	<tr><td colspan="2" height="50"><tiles:insert attribute="applicationHeader"/></td></tr>
+        	<tr>
+            	<td width="190" valign="top" class="subMenu"><tiles:insert attribute="subMenu"/></td> 
+            	<td valign="top" width="100%">
                 <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%"> 
-
-                  <tr><td height="20" width="100%" class="mainMenu"><tiles:insert attribute="mainMenu"/>
-
-				<table width="295" height="100%" border="0" align="left" cellspacing="0">
-                   <tr>
-                     <td width="295" height="100%">
-                       <!-- removed div align="right"class="loginStatus">
-                              <%
-                                if(user != null){
-					          %>
-                                You are logged in as <em><%= user%></em>
-					          <%
-                               }else{
-                              %>
-					  				You are not logged in
-                               <%}%>
-                        </div -->
-                      </td>                      
-                   </tr>
-                 </table>
-					
-			</td></tr>
-
-                  <tr><td width="100%" valign="top"><tiles:insert attribute="content"/></td></tr>
-
-                  <tr><td height="20" width="100%" class="footerMenu"><tiles:insert attribute="applicationFooter"/></td></tr>
-
-                </table>
-            </td>
-         </tr>
-       </table>
-   </td></tr>
-   
-   <tr><td><tiles:insert attribute="footer"/></td></tr>
-   
-</table>   
-   
+                	<tr>
+                  		<td height="20" width="100%" class="mainMenu">
+                  			<tiles:insert attribute="mainMenu"/>
+                  		<!-- disable security for caAdapter 4.3 release -->
+							<!-- table width="100%" height="100%" border="0" align="left" cellspacing="0">
+								<tr>
+									<td width="100%" height="100%">
+										<!-- removed div align="right"class="loginStatus">
+										<%
+											if(user != null){
+										%>
+											You are logged in as <em><%= user%></em>
+										<%
+										}else{
+										%>
+											You are not logged in
+										<%}%>
+									</td>                      
+								</tr>
+							</table -->
+						</td>
+					</tr>
+					<tr></td><td width="100%" valign="top"><tiles:insert attribute="content"/></td></tr>
+       				<tr><td height="20" width="100%" class="footerMenu"><tiles:insert attribute="applicationFooter"/></td></tr>
+       			</table>
+       			</td>
+			</tr>
+   	  	</table>
+      	</td>
+  	</tr>  
+</table>  
+<tiles:insert attribute="footer"/> 
 </body>
 </html>

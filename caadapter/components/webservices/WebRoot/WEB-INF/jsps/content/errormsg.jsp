@@ -6,6 +6,11 @@
       
 <table summary="" cellpadding="0" cellspacing="0" border="0" width="600" height="100%">
 		<tr>
-			Unable to Login. Please try again.
+			<logic:present name="rtnMessage">
+				<h2><bean:write name="rtnMessage"/></h2>
+			</logic:present>
+			<logic:notPresent name="rtnMessage">
+						Unable to Login. Please try again.
+			</logic:notPresent>
 		</tr>												
  </table>

@@ -47,8 +47,8 @@ import org.xml.sax.SAXParseException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.6 $
- * @date $$Date: 2009-04-13 15:25:25 $
+ * @version $Revision: 1.7 $
+ * @date $$Date: 2009-04-14 20:02:40 $
  * @since caadapter v1.3.1
  */
 
@@ -150,25 +150,6 @@ public class AddNewScenario extends HttpServlet {
 	    			  }
 	    			  else
 	    				  item.write(uploadedFile);
- //	    			  if (name.equals("scsFileName")) {
-//	    				  File uploadedFile = new File(path + MSName+ "/" + MSName + ".scs");
-//	    				  item.write(uploadedFile);
-//	    			  }
-//	    			  if (name.equals("h3sFileName")) {
-// 
-//	    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".h3s");
-//	    					  item.write(uploadedFile);
-//	    			  }
-//	    			  if (name.equals("vocabularyMappingFileName")) {
-//	    				  
-//    					  File uploadedFile = new File(path + MSName+ "/" + MSName + ".vom");
-//    					  item.write(uploadedFile);
-//	    			  }
-//	    			  if (name.equals("mappingFileName")) {
-//	    				  File uploadedFileBak = new File(uploadedFilePath+ ".bak");
-//	    				  item.write(uploadedFile);
-//	    				  updateMapping(uploadedFilePath);
-//	    			  }
 	    		  }
 	    	  }
 	    	  ScenarioUtil.addNewScenarioRegistration(MSName);
@@ -216,8 +197,14 @@ public class AddNewScenario extends HttpServlet {
 	    		Element component = (Element)components.item(i);
 	    		//update location of SCS, H3S 
 	    		Attr locationAttr = component.getAttributeNode("location");
+	    		Attr kindAttr = component.getAttributeNode("kind");
 	    		if (locationAttr!=null)
 	    		{
+	    			String cmpKind="";
+	    			if (kindAttr!=null)
+	    				cmpKind=kindAttr.getValue();
+	    			if (cmpKind!=null&&cmpKind.equalsIgnoreCase("v2"))
+	    				continue;
 			    	String localName=extractOriginalFileName(locationAttr.getValue());
 			    	locationAttr.setValue(localName);
 	    		}

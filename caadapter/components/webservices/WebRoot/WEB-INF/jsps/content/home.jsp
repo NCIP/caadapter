@@ -3,7 +3,7 @@
 
 <DIV id="TipLayer" style="visibility:hidden;position:absolute;z-index:1000;top:-100;"></DIV>
 
- <table summary="" cellpadding="0" cellspacing="0" border="0" width="600" height="100%">
+ <table summary="" cellpadding="0" cellspacing="0" border="0" width="100%" height="100%">
 
 	  <!-- banner begins -->
 	  <tr>
@@ -26,7 +26,7 @@
 	              <tr>
 	                <td class="welcomeTitleCopy2" height="20">Welcome to the caAdapter Portal</td>
 	              </tr>
-	              
+	              <!-- disable the following section for caAdapter 4.3 release 
 	              <tr>
 	                <td valign="top"><br>                                
 
@@ -63,7 +63,10 @@
 	                      </tr>
 	                  </table>
 	                  	                  
-        	  </td></tr></table>	
+        	  	</td>
+        	  </tr>
+        	  -->
+        	  </table>	
 			<!-- welcome ends -->	            
 		</td></tr></table>
 </td></tr></table>

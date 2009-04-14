@@ -6,6 +6,10 @@
 
   <!-- ========== Form Bean Definitions =================================== -->
   <form-beans type="org.apache.struts.action.ActionFormBean">
+  		<form-bean name="listScenarioRegistrationForm" type="org.apache.struts.validator.DynaValidatorForm">
+  			<form-property name="itemType" type="java.lang.String"/>
+  			<form-property name="results" type="java.lang.String"/>
+        </form-bean>
   </form-beans>
 
 <global-forwards type="org.apache.struts.action.ActionForward">
@@ -17,10 +21,26 @@
 
 <action-mappings type="org.apache.struts.action.ActionMapping">
   <!-- === forwards === -->
-   <action path="/disclaimer" forward="Tiles.Disclaimer.Page"></action>
-   <action path="/login" forward="Tiles.Login.Page"></action>
-   <action path="/createScenario" forward="Tiles.Scenario.Page"></action>
-   <action path="/home" forward="Tiles.Home.Page"></action>
+   <action path="/disclaimer" forward="Tiles.Disclaimer.Page"/>
+   <action path="/login" forward="Tiles.Login.Page"/> 
+   
+   <action path="/home" forward="Tiles.Home.Page"/> 
+   <action path="/searchScenario" forward="Tiles.Scenario.Search.Page"/>
+   <action path="/addScenario" forward="Tiles.Scenario.Add.Page"/> 
+   
+   
+   <!-- action path="/browseUcumEssence" forward="tile.ucum.essence.browse"/ -->
+   <action path="/browseScenario" 
+   		type="gov.nih.nci.caadapter.ws.action.ScenarioManagerAction" 
+   		name="listScenarioRegistrationForm" 
+   		scope="request" 
+   		parameter="method"> 
+   		<!-- input="/browseEssence/essenceListing.jsp"  -->		
+   		<forward name="success"
+   			path="Tiles.Scenario.Browse.Page"/>
+   		<forward name="failure" path="Tiles.ErrorMsg.Page"/>
+   </action>
+
    <action path="/error" forward="Tiles.ErrorAdd.Page"></action>
    <action path="/success" forward="Tiles.SuccessAdd.Page"></action>
    <action path="/successmsg" forward="Tiles.SuccessMsg.Page"></action>
@@ -28,8 +48,10 @@
    <action path="/permissionmsg" forward="Tiles.PermissionMsg.Page"></action>
  </action-mappings>
   
-  <!-- ============= Resources======================================= -->	
-	<message-resources parameter="ApplicationResources" />	
+ <!-- ========== Message Resources Definitions ========================== -->
+	<message-resources parameter="ApplicationResources" />
+	<message-resources parameter="MessageResources"/>
+    <message-resources parameter="gov.nih.nci.caadapter.ws.MessageResources" />
 	  
   <!-- ============= plug ins ======================================= -->
 
