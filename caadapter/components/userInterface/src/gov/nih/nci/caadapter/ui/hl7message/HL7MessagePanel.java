@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.39 $
- *          date        $Date: 2009-04-15 21:53:08 $
+ *          revision    $Revision: 1.40 $
+ *          date        $Date: 2009-04-15 21:55:47 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -691,12 +691,12 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 //&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
 //&umkis        if (prop == null) prop = "";
 //&umkis        prop = prop.trim();
-//&umkis        if (prop.trim().equalsIgnoreCase("true"))
+//&umkis        if ((prop.trim().equalsIgnoreCase("true"))||(prop.trim().equalsIgnoreCase("yes")))
 //&umkis        {
 //&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
 //&umkis            return;
 //&umkis        }
-//&umkis        if ((prop.trim().equalsIgnoreCase("no"))||(prop.trim().equalsIgnoreCase("none")))
+//&umkis        if ((prop.trim().equalsIgnoreCase("no"))||(prop.trim().equalsIgnoreCase("none"))||(prop.trim().equalsIgnoreCase("false")))
 //&umkis        {
 //&umkis            schemaValidationTag = -1;
 //&umkis            return;
@@ -720,6 +720,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.39  2009/04/15 21:53:08  altturbo
+ * HISTORY      : add remarks
+ * HISTORY      :
  * HISTORY      : Revision 1.38  2009/04/06 19:07:56  altturbo
  * HISTORY      : minor change
  * HISTORY      :
