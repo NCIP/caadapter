@@ -17,17 +17,17 @@ import java.util.HashMap;
  * This class implements preferences in caAdapter
  *
  * @author OWNER: Harsha Jayanna
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0 revision
- *          $Revision: 1.5 $
- *          $Date: 2008-06-09 19:53:51 $
+ *          $Revision: 1.6 $
+ *          $Date: 2009-04-15 21:39:58 $
  */
 public class CaAdapterPref {
     private static CaAdapterPref caAdapterPref=null;
     private HashMap caAdapterPropHashMap = null;
 
     public static String VALIDATION_PERFORMANCE_LEVLE_0="level 0";
-    public static String VALIDATION_PERFORMANCE_LEVLE_1="leve 1";
+    public static String VALIDATION_PERFORMANCE_LEVLE_1="level 1";
     public static String VALIDATION_PERFORMANCE_LEVLE_2="level 2";
     
     private HashMap getcaAdapterPref() {
@@ -67,6 +67,9 @@ public class CaAdapterPref {
 /**
  * Change History
  * $Log: not supported by cvs2svn $
+ * Revision 1.5  2008/06/09 19:53:51  phadkes
+ * New license text replaced for all .java files.
+ *
  * Revision 1.4  2007/08/24 21:15:14  wangeug
  * add validation level constants
  *
