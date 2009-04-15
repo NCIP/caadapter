@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.38 $
- *          date        $Date: 2009-04-06 19:07:56 $
+ *          revision    $Revision: 1.39 $
+ *          date        $Date: 2009-04-15 21:53:08 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -681,12 +681,27 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 //&umkis    private void confirmSchemaValidation()
 //&umkis    {
-//&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
-//&umkis        if ((prop != null)&&(prop.trim().equalsIgnoreCase("true")))
+//&umkis    	String validationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
+//&umkis		if ((validationLevel != null)&&(!validationLevel.equalsIgnoreCase(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2)))
 //&umkis        {
 //&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
 //&umkis            return;
 //&umkis        }
+
+//&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
+//&umkis        if (prop == null) prop = "";
+//&umkis        prop = prop.trim();
+//&umkis        if (prop.trim().equalsIgnoreCase("true"))
+//&umkis        {
+//&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
+//&umkis            return;
+//&umkis        }
+//&umkis        if ((prop.trim().equalsIgnoreCase("no"))||(prop.trim().equalsIgnoreCase("none")))
+//&umkis        {
+//&umkis            schemaValidationTag = -1;
+//&umkis            return;
+//&umkis        }
+
 //&umkis        if (schemaValidationTag < 0)
 //&umkis        {
 //&umkis            schemaValidationTag = JOptionPane.showConfirmDialog(this, "Do you want to include xml schema validation to output validation?", "Including XSL Schema validation?", JOptionPane.YES_NO_OPTION);
@@ -705,6 +720,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.38  2009/04/06 19:07:56  altturbo
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.37  2009/04/06 18:31:36  altturbo
  * HISTORY      : minor change - edit remarks
  * HISTORY      :
