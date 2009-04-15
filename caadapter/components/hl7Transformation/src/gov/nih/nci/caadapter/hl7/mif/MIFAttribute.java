@@ -27,7 +27,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version Since caAdapter v4.0 revision $Revision: 1.20 $ date $Date: 2009-04-02 20:34:40 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.21 $ date $Date: 2009-04-15 21:20:09 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -483,19 +483,24 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 			return dmName;
 		String odiSetting=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
 		if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
-			return dmName;
-		
+        {
+            odiSetting=FileUtil.searchProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
+            if (odiSetting==null||!odiSetting.equalsIgnoreCase("true")) return dmName; 
+        }
+
 		long sTime=System.currentTimeMillis();
 		String oid="";
 		try {
 			oid= FileUtil.findODIWithDomainName(dmName);
 			if (oid!=null&&!oid.equals(""))
-				dmName=dmName+" ("+oid +")";
-		} catch (IOException e) {
+            {
+                dmName=dmName+" ("+oid +")";
+                System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
+            }
+        } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
 		return dmName;
 	}
 	/**
@@ -527,6 +532,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.20  2009/04/02 20:34:40  altturbo
+ * HISTORY :add comment and annotation items but deactivated
+ * HISTORY :
  * HISTORY :Revision 1.19  2008/09/29 15:44:40  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :
