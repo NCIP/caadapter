@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import gov.nih.nci.caadapter.common.MetaException;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
@@ -21,8 +23,11 @@ import gov.nih.nci.caadapter.common.csv.data.impl.CSVSegmentImpl;
 import gov.nih.nci.caadapter.common.csv.data.impl.CSVSegmentedFileImpl;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.csv.meta.CSVSegmentMeta;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MetaXSDUtil;
+import gov.nih.nci.cbiit.cmps.common.XSDParser;
+import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
@@ -48,13 +53,35 @@ import junit.framework.TestCase;
  *
  * @author   OWNER: wangeug  $Date: Oct 20, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2008-10-24 19:38:05 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-04-16 13:29:51 $
  * @since caAdapter v4.2
  */
 
 public class V2XmlParserTest extends TestCase {
 
+	public void testParseMeta()
+	{
+		XSDParser p = new XSDParser();
+		String xsdPath="C:/eclipseJ2ee/workspace/caadapter/C32_CCD/C32_CCD_schema.xsd";
+//		String xsdPath="/C32_CCD/C32_CCD_schema.xsd";
+		String rootElmnt="ClinicalDocument";
+//		try {
+			System.out.println("V2MetaXSDUtil.testParseMeta()..xsdPath:"+xsdPath);
+			URL xsdURL=FileUtil.retrieveResourceURL(xsdPath);
+			System.out.println("V2MetaXSDUtil.testParseMeta()..URL:"+xsdURL);
+
+			String xsdRscr ="file://"+xsdPath; //xsdURL.toURI().toString();
+			System.out.println("V2MetaXSDUtil.testParseMeta()..message schema URI:"+xsdRscr);
+			p.loadSchema(xsdRscr);
+			
+//			V2MetaXSDUtil.class.getClassLoader().getResource("mifIndex.obj").openStream();
+//		} catch (URISyntaxException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		ElementMeta e = p.getElementMeta("urn:hl7-org:v3", rootElmnt);
+	}
 	public void testParseV2Stream()
 	{
    			
@@ -66,10 +93,9 @@ public class V2XmlParserTest extends TestCase {
 			EncoderType type = factory.makeType("hl7encoder-1.0");
 
 			//Specify a top element
-			QName topElem = new QName("urn:hl7-org:v2xml", "ADT_A01");
-
-			//Construct the metadata instance
-			MetaRef meta = factory.makeMeta(this.getClass().getClassLoader().getResource("hl7v2xsd/2.5/ADT_A01.xsd"),topElem);
+//			QName topElem = new QName("urn:hl7-org:v2xml", "ADT_A01");
+			QName topElem = new QName("urn:hl7-org:v3", "ClinicalDocument");			//Construct the metadata instance
+			MetaRef meta = factory.makeMeta(this.getClass().getClassLoader().getResource("C:/eclipseJ2ee/workspace/caadapter/C32_CCD/C32_CCD_schema.xsd"),topElem);
 					//.getResource("C:/eclipseJ2ee/workspace/HL7V2Decoder/hl7v2xsd/2.5/ADT_A03.xsd"), topElem);
 
 			//Create the encoder instance, HL7Encoder
@@ -86,14 +112,9 @@ public class V2XmlParserTest extends TestCase {
 			CSVDataResult parsedData= saxHandler.getDataResult();
 			System.out.println("V2XmlParserTest.testParseV2Stream().."+parsedData);
 			CSVMetaBuilder builder = CSVMetaBuilder.getInstance();
-//			fw = new FileOutputStream(file);
-//			bw = new BufferedOutputStream(fw);
-//			builder.build(bw, existMeta);
 			File metaOut=new File("metaOut.scs");
 			CSVSegment rootSeg=(CSVSegment)parsedData.getCsvSegmentedFile().getLogicalRecords().get(0);
 			CSVMeta v2CsvMeta=V2MetaXSDUtil.createDefaultCsvMeta("ADT_A01");
-//			CSVMeta v2CsvMeta= (CSVMeta)((CSVSegmentImpl)rootSeg).getMetaObject();
-//			CSVSegmentedFileImpl segFile=(CSVSegmentedFileImpl)parsedData.getCsvSegmentedFile();
 			v2CsvMeta.setRootSegment((CSVSegmentMeta)rootSeg.getMetaObject());
 			try {
 				builder.build(metaOut, v2CsvMeta);
@@ -128,4 +149,7 @@ public class V2XmlParserTest extends TestCase {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2008/10/24 19:38:05  wangeug
+* HISTORY: transfer a v2 message into v3 message using SUN v2 schema
+* HISTORY:
 **/

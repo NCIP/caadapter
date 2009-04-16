@@ -24,7 +24,7 @@ import org.junit.Test;
  * 
  * @author OWNER: Wang, Eugene
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.6 $ date $Date: 2008-10-24 19:38:05 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.7 $ date $Date: 2009-04-16 13:29:51 $
  */
 
 public class DemoCSV2HL7v3TransformationTests extends TestCase {
@@ -37,7 +37,7 @@ public class DemoCSV2HL7v3TransformationTests extends TestCase {
 //	     String csvSrcFile=System.getProperty("hl7.transformation.src.file");
 //	     String mapFile=System.getProperty("hl7.transformation.map.file");
 		 String dataHome="C:\\eclipseJ2ee\\workspace\\caadapter\\workingspace\\V2Meta_to_V3";
-	     String mapFile=dataHome+"\\"+"150003V2.map";		 
+	     String mapFile=dataHome+"\\"+"test.map";		 
 		 String csvSrcFile=dataHome+"\\"+"ADT_A01.hl7";
 		 
 //		 dataHome="C:\\eclipseJ2ee\\workspace\\caadapter\\workingspace\\CSV_to_HL7_V3_Example\\COCT_150001";
