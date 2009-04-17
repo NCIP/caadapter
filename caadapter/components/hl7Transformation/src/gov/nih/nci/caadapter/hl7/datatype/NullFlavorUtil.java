@@ -7,7 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.datatype;
 
-import gov.nih.nci.caadapter.common.util.CaadapterUtil;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,8 +22,8 @@ import java.util.List;
  *
  * @author   OWNER: wangeug  $Date: Dec 12, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-01-09 21:32:59 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-04-17 14:14:01 $
  * @since caAdapter v4.2
  */
 
@@ -42,7 +42,11 @@ public class NullFlavorUtil {
 			if (srcFile.exists())
 				defaultFi =new FileInputStream(srcFile);
 			else
-				defaultFi = CaadapterUtil.class.getClassLoader().getResource(DATA_TYPE_CORE_ATTRIBUTE_DEFAULT).openStream();	
+			{
+				defaultFi=FileUtil.retrieveResourceURL(DATA_TYPE_CORE_ATTRIBUTE_DEFAULT).openStream();
+//				defaultFi = CaadapterUtil.class.getClassLoader().getResource(DATA_TYPE_CORE_ATTRIBUTE_DEFAULT).openStream();	
+			
+			}
 			DatatypeCoreAttributeLoader dtLoader=new DatatypeCoreAttributeLoader();
 			dtLoader.loadCoreAttributeConfig(defaultFi);
 			nullFlavorDatypes_Default=dtLoader.getDatatypeCoreAttributes();
@@ -62,7 +66,8 @@ public class NullFlavorUtil {
 			if (srcFile.exists())
 				userSettingFi =new FileInputStream(srcFile);
 			else
-				userSettingFi = CaadapterUtil.class.getClassLoader().getResource(DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING).openStream();	
+				userSettingFi =FileUtil.retrieveResourceURL(DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING).openStream();
+				//CaadapterUtil.class.getClassLoader().getResource(DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING).openStream();	
 			DatatypeCoreAttributeLoader dtLoader=new DatatypeCoreAttributeLoader();
 			dtLoader.loadCoreAttributeConfig(userSettingFi);
 			nullFlavorDatypes_UserSetting=dtLoader.getDatatypeCoreAttributes();
@@ -94,4 +99,7 @@ public class NullFlavorUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/01/09 21:32:59  wangeug
+* HISTORY: process core attribute seting with HL7 datatypes
+* HISTORY:
 **/
