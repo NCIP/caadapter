@@ -25,8 +25,8 @@ import com.sun.encoder.MetaRef;
  *
  * @author   OWNER: wangeug  $Date: Oct 23, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-02-25 15:58:03 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-04-17 20:07:39 $
  * @since caAdapter v4.2
  */
 
@@ -41,7 +41,7 @@ public class V2MessageEncoderFactory {
 		if (rtnEncoder==null)
 		{
 			//first time loading this kind of v2 message
-			System.out.println("V2MessageEncoderFactory.getV3MessageEncoder()..intializer v2 message encoder:"+v2Version+"/"+msgXsd);
+			System.out.println("V2MessageEncoderFactory.getV2MessageEncoder()..intializer v2 message encoder:"+v2Version+"/"+msgXsd);
     		long csvbegintime = System.currentTimeMillis();
 			//Get the encoder factory instance
 			EncoderFactory factory;
@@ -57,20 +57,21 @@ public class V2MessageEncoderFactory {
 				//Construct the metadata instance
 				URL metaURL=null;
 				metaURL=FileUtil.retrieveResourceURL(v2XsdFile);
+				System.out
+						.println("V2MessageEncoderFactory.getV2MessageEncoder()...metatURL:"+metaURL);
 				MetaRef meta = factory.makeMeta(metaURL,topElem);
 //				MetaRef meta = factory.makeMeta(ClassLoader.getSystemResource(v2XsdFile),topElem);			
-				System.out.println("V2MessageEncoderFactory.getV3MessageEncoder()...load V2Meta:"+(System.currentTimeMillis()-csvbegintime));
+				System.out.println("V2MessageEncoderFactory.getV2MessageEncoder()...load V2Meta:"+meta+"..time:"+(System.currentTimeMillis()-csvbegintime));
 								
 				//Create the encoder instance, HL7Encoder
 				rtnEncoder = factory.newEncoder(type, meta);
-				System.out.println("V2MessageEncoderFactory.getV3MessageEncoder()...initialize encoder:"+(System.currentTimeMillis()-csvbegintime));
+				System.out.println("V2MessageEncoderFactory.getV2MessageEncoder()...initialize encoder:"+(System.currentTimeMillis()-csvbegintime));
 				encoderHash.put(encoderKey, rtnEncoder);
 			} catch (EncoderConfigurationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-		}
-		
+		}	
 		return rtnEncoder;
 	}
 
@@ -79,6 +80,9 @@ public class V2MessageEncoderFactory {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/02/25 15:58:03  wangeug
+* HISTORY: enable webstart
+* HISTORY:
 * HISTORY: Revision 1.1  2008/10/24 19:37:15  wangeug
 * HISTORY: transfer a v2 message into v3 message using SUN v2 schema
 * HISTORY:
