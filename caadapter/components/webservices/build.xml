@@ -102,7 +102,7 @@
 	</zipfileset>
 	<zipfileset dir="${root}/components/hl7Transformation/lib/" prefix="WEB-INF/lib" id="module.hl7.libs">
 			<include name="*.jar"/>
-			<include name="*.zip"/>
+			<!-- include name="*.zip"/ -->
 		</zipfileset>
 	<zipfileset dir="${root}/referenceLib" prefix="WEB-INF/lib" id="dist.ws.ref.libs">
 		<include name="caAdapter.jar"/>
