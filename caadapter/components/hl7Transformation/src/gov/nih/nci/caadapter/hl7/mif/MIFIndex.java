@@ -12,14 +12,13 @@ package gov.nih.nci.caadapter.hl7.mif;
  * The class defines an object containing the index of HL7 message MIF.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: altturbo $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2009-04-02 19:17:08 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2009-04-17 14:14:45 $
  */
 
 import java.io.Serializable;
-import java.io.File;
 import java.util.TreeSet;
 import java.util.Set;
 import java.util.Enumeration;
@@ -46,9 +45,7 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	 */
 	public void setMifPath(String mifPath)
     {
-        File path = new File(mifPath);
-        if (path.exists()) this.mifPath = mifPath;
-        else this.mifPath = "../"+mifPath;     // in case of 'dist' directory.
+        this.mifPath = mifPath;
 	}
 	private String normativeDescription;
 
@@ -79,9 +76,7 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	 */
 	public void setSchemaPath(String schemaPath)
     {
-        File path = new File(schemaPath);
-        if (path.exists()) this.schemaPath = schemaPath;
-        else this.schemaPath = "../"+schemaPath;  // in case of 'dist' directory.
+		this.schemaPath = schemaPath;
     }
 
 	/**
@@ -176,6 +171,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.11  2009/04/02 19:17:08  altturbo
+ * HISTORY :Protect from 'resource not found error' in case of 'dist' directory
+ * HISTORY :
  * HISTORY :Revision 1.10  2009/04/02 04:22:33  altturbo
  * HISTORY :in case of 'dist' directory.
  * HISTORY :
