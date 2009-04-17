@@ -31,8 +31,8 @@ import java.util.logging.FileHandler;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.29 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.30 $
  */
 
 public class FileUtil
@@ -1334,17 +1334,32 @@ public class FileUtil
     	URL rtnURL=null;
     	System.out.println("FileUtil.retrieveResourceURL()..resourceName:"+rscName);
     	rtnURL=Thread.currentThread().getClass().getResource("/"+rscName);
-		System.out.println("FileUtil.retrieveResourceURL()..standalone URL:"+rtnURL);
+		System.out.println("FileUtil.retrieveResourceURL()..Thread.currentThread().getClass().getResource..standalone URL:/"+rscName+"="+rtnURL);
+		if (rtnURL==null)
+		{
+			rtnURL=Thread.currentThread().getClass().getResource(rscName);
+			System.out.println("FileUtil.retrieveResourceURL()..Thread.currentThread().getClass().getResource..standalone URL:"+rscName+"="+rtnURL);
+		}
 		//load resource for webstart deployment
 		if (rtnURL==null)
+		{
 			rtnURL=FileUtil.class.getClassLoader().getResource(rscName);
-		System.out.println("FileUtil.retrieveResourceURL()..webstart URL:"+rtnURL);
-    	return rtnURL;
+			System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..webstart URL:"+rscName+"="+rtnURL);
+			if (rtnURL==null)
+			{
+				rtnURL=FileUtil.class.getClassLoader().getResource("/"+rscName);
+				System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
+			}
+		}
+		return rtnURL;
     }
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.29  2009/04/02 06:45:30  altturbo
+ * move getV3XsdFilePath() out to SchemaDirUtil.java
+ *
  * Revision 1.28  2009/04/02 04:16:57  altturbo
  * modify getV3XsdFilePath()
  *
