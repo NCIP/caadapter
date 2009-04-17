@@ -15,12 +15,9 @@ import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.CsvReader;
 import gov.nih.nci.caadapter.common.csv.CSVDataResult;
-import gov.nih.nci.caadapter.common.csv.SegmentedCSVParserImpl;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
-import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -30,8 +27,10 @@ import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
-import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
+//import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 //&umkis import gov.nih.nci.caadapter.hl7.v2v3.tools.SchemaDirUtil;
+//import gov.nih.nci.caadapter.common.util.Config;
+//import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -54,17 +53,18 @@ import com.sun.encoder.EncoderException;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.43 $
- * @date $Date: 2009-04-06 18:39:34 $
+ * @author LAST UPDATE $Author: wangeug $
+ * @version $Revision: 1.44 $
+ * @date $Date: 2009-04-17 20:08:17 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.43 2009-04-06 18:39:34 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.44 2009-04-17 20:08:17 wangeug Exp $";
 
-    private String csvString = "";
+//    private String dataString = "";
+    private boolean isStringData=false;
     private File mapFile = null;
     private File outputFile = null;
     private InputStream sourceDataStream = null;
@@ -101,39 +101,11 @@ public class TransformationService
 	 * @param csvInString the string that contains csv data
 	 */
 
-    public TransformationService(String mapfilename, String csvInString, boolean isDataStringFlag)
+    public TransformationService(String mapfilename, String dataInString, boolean isDataStringFlag)
     {
-    	this();
-        if (mapfilename == null)
-        {
-            throw new IllegalArgumentException("Map File should not be null!");
-        }
-        mapFile = new File(mapfilename);
-
-        if (isDataStringFlag)
-        {
-	        csvString = csvInString;
-	        sourceDataStream=null;
-        }
-    }
-
-	/**
-	 * This method will create a transformer that loads csv data from an inputstream
-	 * and transforms into HL7 v3 messages
-	 *
-	 * @param mapfilename the name of the mapping file
-	 * @param csvStream the inputstream that contains csv data
-	 */
-    public TransformationService(String mapfilename, InputStream csvStream)
-    {
-    	this();
-        if (mapfilename == null)
-        {
-            throw new IllegalArgumentException("Map File should not be null!");
-        }
-
-        mapFile = new File(mapfilename);
-        sourceDataStream = csvStream;
+    	this(mapfilename, new StringBufferInputStream(dataInString));
+    	isStringData=isDataStringFlag;
+       	System.out.println("TransformationService.TransformationService()..invoked by webservice client..");
     }
 
 	/**
@@ -167,6 +139,24 @@ public class TransformationService
     }
 
     /**
+	 * This method will create a transformer that loads csv data from an inputstream
+	 * and transforms into HL7 v3 messages
+	 *
+	 * @param mapfilename the name of the mapping file
+	 * @param csvStream the inputstream that contains csv data
+	 */
+	private TransformationService(String mapfilename, InputStream csvStream)
+	{
+		this();
+	    if (mapfilename == null)
+	    {
+	        throw new IllegalArgumentException("Map File should not be null!");
+	    }
+	    mapFile = new File(mapfilename);
+	    sourceDataStream = csvStream;
+	}
+
+	/**
 	 * @return the outputFile
 	 */
 	public File getOutputFile() {
@@ -280,15 +270,6 @@ public class TransformationService
             informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         	xmlElements =transferSourceData(csvDataResult);
         }
-        else if (sourceDataStream==null)
-        {
-        	//parse CSV string, invoked from WebService
-   	        System.out.println("TransformationService.process()...Transfer data: invoked by Webservice client");
-        	CSVDataResult csvDataResult = SegmentedCSVParserImpl.parse(csvString,  csvMeta);
-   	        xmlElements=transferSourceData(csvDataResult);
-   	        //return here to web service client
-   	        return xmlElements;
-        }
         else
         {
         	//parse CSV stream
@@ -296,7 +277,6 @@ public class TransformationService
     		while(reader.hasMoreRecord())
     		{
     			List<XMLElement> xmlOneRecord = transferSourceData(reader.getNextRecord());
-
     			if(xmlOneRecord!=null)
     			{
         			if (xmlElements==null)
@@ -309,6 +289,14 @@ public class TransformationService
             informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         }
 
+        if (isStringData)
+        {
+        	//innvoked from WebService
+   	        System.out.println("TransformationService.process()...Transfer data: invoked by Webservice client");
+   	        //return here to web service client
+   	        return xmlElements;
+        }
+        
         System.out.println("Encode HL7 V3 message__:" + (System.currentTimeMillis()-csvbegintime));
         System.out.println("total message" + xmlElements.size());
         ZipOutputStream zipOut = prepareZipout();
@@ -462,7 +450,7 @@ public class TransformationService
     			return null;
     		}
 			long csvbegintime = System.currentTimeMillis();
-    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(this.sourceDataStream);
+    		V2MessageLinefeedEncoder lfEncoder= new V2MessageLinefeedEncoder(sourceDataStream);
 			Transformer transformer =  TransformerFactory.newInstance().newTransformer();
 
 			//forward transformed XML to next step
@@ -694,6 +682,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.43  2009/04/06 18:39:34  altturbo
+ * HISTORY      : minor change - edit remarks
+ * HISTORY      :
  * HISTORY      : Revision 1.42  2009/04/02 06:34:52  altturbo
  * HISTORY      : minor change - remark
  * HISTORY      :
