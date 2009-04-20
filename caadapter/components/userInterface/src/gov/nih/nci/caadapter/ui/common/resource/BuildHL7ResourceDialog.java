@@ -25,8 +25,8 @@ import java.util.zip.ZipOutputStream;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-03-25 13:58:22 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-04-20 18:26:18 $
  */
 public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 {
@@ -42,7 +42,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.8 2009-03-25 13:58:22 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/resource/BuildHL7ResourceDialog.java,v 1.9 2009-04-20 18:26:18 wangeug Exp $";
 
 	private static final String OK_COMMAND = "OK";
 	private static final String CANCEL_COMMAND = "Cancel";
@@ -85,7 +85,6 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     	
     	monitor.setProgress(step);
     	monitor.setNote(note);
-//    	System.out.println("BuildHL7ResourceDialog.updateMonitor()..."+monitor.getNote());
     }
     private String buildHL7V3Resource(final String mifFilePath, final String coreschemaHome, final String msgSchemaHome, final String hl7Home, 
     		final boolean isSortKeyReassigning)
@@ -97,7 +96,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     	monitor.setMillisToPopup(0);
     	updateMonitor(monitor, 1, "start");
     	final JDialog owner=this;
-    	Thread localThread=new Thread
+    	Thread controlThread=new Thread
     	(
     			new Runnable()
     			{
@@ -111,7 +110,12 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 								.println("BuildHL7ResourceDialog.buildHL7V3Resource()...Hl7 home:"+hl7Home);
 				    	String  mifTarget=hl7Home+File.separator+mifSrc.getName();
 				    	BuildResourceUtil.copyFiles(mifFilePath, mifTarget, ".zip");
-						
+						if(monitor.isCanceled())
+						{
+							File fDelte=new File(mifTarget);
+							fDelte.delete();
+							return;
+						}
 				    	//create oupput zip file stream
 						String targetSchema=hl7Home+File.separator+"schemas.zip";//+File.separator+"coreschemas";
 						ZipOutputStream outZip = new ZipOutputStream(new FileOutputStream(targetSchema));
@@ -119,11 +123,23 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 						//copy core schemas:
 						updateMonitor(monitor, stepCount++, "Copy coreschema files "+coreschemaHome);
 						BuildResourceUtil.zipDir(outZip, coreschemaHome,"");
-					
+						if(monitor.isCanceled())
+						{
+							outZip.close();
+							File fDelte=new File(targetSchema);
+							fDelte.delete();
+							return;
+						}
 						//copy Message schemas
 						updateMonitor(monitor, stepCount++, "Copy MIF schema files "+msgSchemaHome+File.separator+"multicacheschemas");
 						BuildResourceUtil.zipDir(outZip, msgSchemaHome,"xsd");
-						
+						if(monitor.isCanceled())
+						{
+							outZip.close();
+							File fDelte=new File(targetSchema);
+							fDelte.delete();
+							return;
+						}
 						monitor.close();
 						outZip.close();
 						
@@ -141,7 +157,7 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
     			}
     		}
     	);
-    	localThread.start();
+    	controlThread.start();
 		return rtnMsg;
     }
     
@@ -202,12 +218,15 @@ public class BuildHL7ResourceDialog extends JDialog implements ActionListener
 				int userReply=JOptionPane.showConfirmDialog(this, confirmMsg,"Confirm",JOptionPane.YES_NO_OPTION);
 			}
 		}
- 			setVisible(false);
-			dispose();
+ 		setVisible(false);
+		dispose();
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2009/03/25 13:58:22  wangeug
+ * HISTORY      : load HL7 artifacts with new procedure
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/09/24 17:55:16  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :
