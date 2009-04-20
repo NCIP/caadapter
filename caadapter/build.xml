@@ -183,17 +183,6 @@
 			</zip>
 	</target>
 	
-    <target name="test.ws" >
-    	<echo message="build ws module--${caadapter.release.ws.include}"/>
-    	<ant antfile="${hl7.module.build}"/>
-    	<ant antfile="${ws.module.build}"/>
-    	<copy todir="${j2ee.server.deploy.dir}">
-    	    <fileset dir="${ws.module.home}/dist">
-    	    	<include name="**/caAdapterWS.war"/>
-    	    </fileset>
-    	 </copy>
-    </target>
-	
     <target name="dist.bin" depends="compile, dist.src">
 		<ant dir="${dist.dir}" inheritAll="false" target="demo.zip"/>
     	<antcall target="copy.built.ws.module"/>
@@ -209,11 +198,13 @@
     
     <target name="copy.built.ws.module" if="caadapter.release.ws.build">
     	<ant antfile="${ws.module.build}"/>
+    	<echo message="copy ws...."/>
     	<copy todir="${dist.dir}">
 			<fileset dir="${ws.module.home}/dist">
 				<include name="**/caAdapterWS.war"/>
 			</fileset>
         </copy>
+        <echo message="deploy ws....:{j2ee.server.deploy.dir}"/>
     	<copy todir="${j2ee.server.deploy.dir}">
     		<fileset dir="${ws.module.home}/dist">
     			<include name="**/caAdapterWS.war"/>
@@ -771,13 +762,8 @@
         <ant antfile="${dataview.module.build}"/>
         <ant antfile="${sdtm.module.build}"/>
         <ant antfile="${ui.module.build}"/> 
-        <antcall target="ws.module.build.option"/>
     </target>
 
-	<target name="ws.module.build.option" if="caadapter.release.ws.build">
-		<echo message="build ws module--${caadapter.release.ws.include}"/>
-		<ant antfile="${ws.module.build}"/>
-	</target>
 	
     <target name="mms.update">
         <ant antfile="${mms.module.build}" target="clean"/>
