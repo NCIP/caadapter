@@ -27,10 +27,10 @@ import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
-//import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
+//&umkis import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 //&umkis import gov.nih.nci.caadapter.hl7.v2v3.tools.SchemaDirUtil;
-//import gov.nih.nci.caadapter.common.util.Config;
-//import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+//&umkis import gov.nih.nci.caadapter.common.util.Config;
+//&umkis import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -53,15 +53,15 @@ import com.sun.encoder.EncoderException;
  * By given csv file and mapping file, call generate method which will return the list of TransformationResult.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.44 $
- * @date $Date: 2009-04-17 20:08:17 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version $Revision: 1.45 $
+ * @date $Date: 2009-04-21 17:40:48 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.44 2009-04-17 20:08:17 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.45 2009-04-21 17:40:48 altturbo Exp $";
 
 //    private String dataString = "";
     private boolean isStringData=false;
@@ -682,6 +682,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.44  2009/04/17 20:08:17  wangeug
+ * HISTORY      : enable web service:process V2 messages
+ * HISTORY      :
  * HISTORY      : Revision 1.43  2009/04/06 18:39:34  altturbo
  * HISTORY      : minor change - edit remarks
  * HISTORY      :
