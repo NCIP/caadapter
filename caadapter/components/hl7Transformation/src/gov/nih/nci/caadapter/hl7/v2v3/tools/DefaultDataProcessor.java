@@ -94,7 +94,7 @@ public class DefaultDataProcessor
             }
             if ((key.equalsIgnoreCase("when_null"))&&(nodeVal.equals(""))) return val;
 
-            //if (!res.equals("")) continue;
+            if (!res.equals("")) continue;
 
             if (nodeVal.equals("")) continue;
 
