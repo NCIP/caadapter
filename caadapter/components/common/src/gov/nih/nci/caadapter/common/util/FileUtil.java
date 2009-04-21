@@ -31,8 +31,8 @@ import java.util.logging.FileHandler;
  * File related utility class
  *
  * @author OWNER: Matthew Giordano
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.30 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version $Revision: 1.31 $
  */
 
 public class FileUtil
@@ -1120,13 +1120,19 @@ public class FileUtil
         if ((addr == null)||(addr.trim().equals(""))) throw new IOException("Null address.");
         URL ur = null;
         InputStream is = null;
-		FileOutputStream fos = null;
+		//FileOutputStream fos = null;
 
         addr = addr.trim();
         String tempFile = "";
-        if ((addr.length() >= 5)&&(addr.substring(addr.length()-4, addr.length()-3).equals(".")))
-             tempFile = getTemporaryFileName(addr.substring(addr.length()-4));
-        else tempFile = getTemporaryFileName();
+
+        int idx = -1;
+        for(int i=0;i<addr.length();i++)
+        {
+            String achar = addr.substring(i, i+1);
+            if (achar.equals(".")) idx = i;
+        }
+        if (idx <= 0) tempFile = getTemporaryFileName();
+        else tempFile = getTemporaryFileName(addr.substring(idx));
 
         try
         {
@@ -1357,6 +1363,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.30  2009/04/17 14:24:20  wangeug
+ * clean code:provide meaningful printout messages
+ *
  * Revision 1.29  2009/04/02 06:45:30  altturbo
  * move getV3XsdFilePath() out to SchemaDirUtil.java
  *

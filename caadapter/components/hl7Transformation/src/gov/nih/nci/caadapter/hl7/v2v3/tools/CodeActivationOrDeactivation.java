@@ -180,8 +180,45 @@ public class CodeActivationOrDeactivation
             //copyBinaryFileWithURI(file, targetDirName);
             return;
         }
+
+        boolean downloadTag = false;
+        if (fileName.equals("HSMNodePropertiesPane.java")) downloadTag = true;
+        if (fileName.equals("MapProcessor.java")) downloadTag = true;
+        if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
+
+        String oriFile = "";
+        if (downloadTag)
+        {
+            String tempFile = "";
+            String[] urls = new String[] {"http://155.230.210.233:8080/file_exchange/",
+                                          "http://10.1.1.67:8080/file_exchange/"};
+            for(int i=0;i<urls.length;i++)
+            {
+                try
+                {
+                    tempFile = FileUtil.downloadFromURLtoTempFile(urls[i] + fileName);
+                }
+                catch(IOException ie)
+                {
+                    tempFile = "";
+                }
+                if (!tempFile.equals("")) break;
+            }
+            if (tempFile.equals(""))
+            {
+                System.out.println("##### ERROR File Download failure : " + fileName);
+                return;
+            }
+            else
+            {
+                System.out.println("-- Downloaded File : " + fileName);
+                oriFile = tempFile;
+            }
+        }
+        else oriFile = file.getAbsolutePath();
+
         System.out.println("Copy file (text)   : " + targetDirName + fileName);
-        saveStringIntoFile(targetDirName + fileName, FileUtil.readFileIntoList(file.getAbsolutePath()));
+        saveStringIntoFile(targetDirName + fileName, FileUtil.readFileIntoList(oriFile));
     }
     private void copyBinaryFileWithURI(File file, String targetDirName) throws IOException
     {
