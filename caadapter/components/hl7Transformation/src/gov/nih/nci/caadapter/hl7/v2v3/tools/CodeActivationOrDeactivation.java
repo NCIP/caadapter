@@ -182,7 +182,7 @@ public class CodeActivationOrDeactivation
         }
 
         boolean downloadTag = false;
-        if (fileName.equals("HSMNodePropertiesPane.java")) downloadTag = true;
+        //if (fileName.equals("HSMNodePropertiesPane.java")) downloadTag = true;
         if (fileName.equals("MapProcessor.java")) downloadTag = true;
         if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
 
