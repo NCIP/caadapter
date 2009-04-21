@@ -10,6 +10,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.specification.hsm;
 
 import gov.nih.nci.caadapter.common.Log;
+import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 
@@ -22,6 +23,8 @@ import gov.nih.nci.caadapter.hl7.mif.MIFAttribute;
 import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.mif.MIFCardinality;
 import gov.nih.nci.caadapter.hl7.mif.MIFUtil;
+
+import gov.nih.nci.caadapter.hl7.v2v3.tools.DefaultDataProcessor;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -46,8 +49,8 @@ import java.util.List;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.24 $
- *          date        $Date: 2009-04-03 15:51:35 $
+ *          revision    $Revision: 1.25 $
+ *          date        $Date: 2009-04-21 17:16:58 $
  */
 public class HSMNodePropertiesPane extends JPanel implements ActionListener
 {
@@ -62,7 +65,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.24 2009-04-03 15:51:35 altturbo Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/HSMNodePropertiesPane.java,v 1.25 2009-04-21 17:16:58 altturbo Exp $";
 
 	private static final String APPLY_BUTTON_COMMAND_NAME = "Apply";
 	private static final String APPLY_BUTTON_COMMAND_MNEMONIC = "A";
@@ -339,7 +342,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				Datatype dtType=updtdDatatypeAttr.getReferenceDatatype();
 				String slctdTypeName=(String)dataTypeField.getSelectedItem();
 				if (dtType!=null&&!slctdTypeName.equalsIgnoreCase(""))
-				{	
+				{
 					if (dtType.isAbstract()
 							||(!dtType.getName().equals(slctdTypeName)))
 						updtdDatatypeAttr.setReferenceDatatype((Datatype)DatatypeParserUtil.getDatatype(slctdTypeName).clone());
@@ -393,14 +396,14 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		{//no need to update
 			return;
 		}
-		
+
 		Object userObj = treeNode.getUserObject();
 		if (!(userObj instanceof DatatypeBaseObject))
 		{
 			Log.logWarning(this,"Invalid data type being selectd:"+userObj.getClass().getName());
 			return;
 		}
-		
+
 		DatatypeBaseObject userDatatypeObj=(DatatypeBaseObject)userObj;
 		if (refresh || !GeneralUtilities.areEqual(this.seletedBaseObject, userDatatypeObj))
 		{
@@ -428,8 +431,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					mandatoryField.setText("Y");
 				//conformance is not present
 				if (dtAttr.getType()!=null&&DatatypeParserUtil.isAbstractDatatypeWithName(dtAttr.getType()))
-				{					
-					abstractField.setText("Y"); 
+				{
+					abstractField.setText("Y");
 					Datatype dtRefClass=dtAttr.getReferenceDatatype();
 //					if (dtAttr.isEnabled())
 //					{
@@ -450,8 +453,8 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 							dataTypeField.addItem("No subclass is found");
 //					}
 				}
-				else 
-					abstractField.setText("N"); 
+				else
+					abstractField.setText("N");
 				dataTypeField.addItem(dtAttr.getType());
 				if (dtAttr.getReferenceDatatype()==null)
 					setEditableField(userDefaultValueField, dtAttr.isEnabled());
@@ -481,7 +484,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				{
 					Datatype subClass=mifAttr.getConcreteDatatype();
 					dataTypeField.setEditable(true);
-					abstractField.setText("Y"); 
+					abstractField.setText("Y");
 					List<String> subClassList=DatatypeParserUtil.findSubclassListWithTypeName(mifAttr.getType());
 					if (subClassList!=null)
 					{
@@ -502,13 +505,13 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					abstractField.setText("N");
 					dataTypeField.addItem(mifAttr.getType());
 				}
-				
+
 				//use fixedValue as default value if available
 				hl7DefaultValueField.setText(mifAttr.findHL7DefaultValueProperty());
 				hl7DomainField.setText(mifAttr.findDomainNameOidProperty());//.getDomainName());
 				codingStrengthField.setText(mifAttr.getCodingStrength());
 				userDefaultValueField.setText(mifAttr.getDefaultValue());
-				
+
 				if (MIFUtil.isEditableMIFAttributeDefault(mifAttr))
 					setEditableField(userDefaultValueField,true);
 			}
@@ -535,7 +538,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 					else
 						mandatoryField.setText("N");
 					conformanceField.setText(parentMifAssc.getConformance());
-						
+
 				}
 				//Abstract is not present
 //				dataTypeField.addItem(mifClass.getName());
@@ -559,7 +562,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				else
 					mandatoryField.setText("N");
 				conformanceField.setText(mifAssc.getConformance());
-				
+
 //				abstractField.setText(mifAssc.getMifClass().isDynamic()); //Abstract is not presentt
 				MIFClass asscClass=mifAssc.getMifClass();
 //				if(asscClass.getChoices().isEmpty())
@@ -578,7 +581,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				Log.logWarning(this,"Invalid data type being selectd:"+userDatatypeObj.getClass().getName());
 		}
 	}
-	
+
 
 	private void clearAndEditableFields(boolean editableValue)
 	{
@@ -644,7 +647,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		}
 		else if (seletedBaseObject instanceof MIFAssociation)
 		{
-			result=false;		
+			result=false;
 		}
 		else if (seletedBaseObject instanceof MIFAttribute)
 		{
@@ -658,7 +661,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 				Datatype subClass=mifAttr.getConcreteDatatype();
 				if (subClass==null)
 					result=!GeneralUtilities.areEqual(subClass, dataTypeField.getSelectedItem(), true);
-				else 
+				else
 					result = !GeneralUtilities.areEqual(subClass.getName(), dataTypeField.getSelectedItem(), true);
 			}
 			else if (userDefaultValueField.isEditable())
@@ -676,7 +679,7 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 			String slectdDt=(String)dataTypeField.getSelectedItem();
 			if (slectdDt==null||slectdDt.equalsIgnoreCase(""))
 				return result;
-			
+
 			if (attrDataType!=null&&attrDataType.isAbstract())
 			{
 				//compare the selected concrete class
@@ -692,13 +695,14 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 	 */
 	private void applyUserChanges()
 	{
-		DatatypeBaseObject userDatatypeObj= this.getDatatypeObject(true);//getHl7V3Meta(true);
+//&umkis        validateDefaultData();
+        DatatypeBaseObject userDatatypeObj= this.getDatatypeObject(true);//getHl7V3Meta(true);
 		parentPanel.getController().updateCurrentNodeWithUserObject(userDatatypeObj);
 		//explicitly redisplay the property pane, because user could continue to work on it
-		parentPanel.setPropertiesPaneVisible(true);		 
+		parentPanel.setPropertiesPaneVisible(true);
 	}
 
-	
+
 	/**
 	 * Reload the data.
 	 */
@@ -709,9 +713,54 @@ public class HSMNodePropertiesPane extends JPanel implements ActionListener
 		DefaultMutableTreeNode slctdNode = (DefaultMutableTreeNode) treePath.getLastPathComponent();
 		this.setDisplayData(slctdNode,true);
 	}
+
+
+//&umkis    /*   inserted by umkis 04/21/2009
+//&umkis     *   validate new default value
+//&umkis     */
+//&umkis    private void validateDefaultData()
+//&umkis    {
+//&umkis        if (!(seletedBaseObject instanceof Attribute)) return;
+
+//&umkis        Attribute mifDatatypeAttr=(Attribute)seletedBaseObject;
+//&umkis        if (GeneralUtilities.areEqual(mifDatatypeAttr.getDefaultValue(), userDefaultValueField.getText(), true)) return;
+
+//&umkis        String newDefaultData = userDefaultValueField.getText();
+//&umkis        if (newDefaultData == null) return;
+//&umkis        newDefaultData = newDefaultData.trim();
+//&umkis        if (newDefaultData.equals("")) return;
+//&umkis        DefaultDataProcessor defProc = new DefaultDataProcessor();
+//&umkis        if (mifDatatypeAttr.getName().equalsIgnoreCase("nullFlavor"))
+//&umkis        {
+//&umkis            if (!defProc.isValidNullFlavorValue(newDefaultData))
+//&umkis            {
+//&umkis                JOptionPane.showMessageDialog(this, "Invalid Null Flavor value : "+newDefaultData, "Invalid Null Flavor value", JOptionPane.ERROR_MESSAGE);
+//&umkis                userDefaultValueField.setText(mifDatatypeAttr.getDefaultValue());
+//&umkis            }
+//&umkis            return;
+//&umkis        }
+//&umkis        if (!newDefaultData.startsWith(defProc.getDefaultTagSymbol())) return;
+//&umkis        String res = "";
+//&umkis        try
+//&umkis        {
+//&umkis            res = defProc.processDefaultValueTag(newDefaultData, "50");
+//&umkis            if ((res == null)||(res.trim().equals(""))) throw new ApplicationException("Null Result default Tag : " + newDefaultData);
+//&umkis        }
+//&umkis        catch(ApplicationException ae)
+//&umkis        {
+//&umkis            JOptionPane.showMessageDialog(this, ae.getMessage(), "Invalid Functional Default Tag", JOptionPane.ERROR_MESSAGE);
+//&umkis            res = "";
+//&umkis        }
+//&umkis        if (!res.equals("")) return;
+//&umkis        userDefaultValueField.setText(mifDatatypeAttr.getDefaultValue());
+//&umkis    }
+
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.24  2009/04/03 15:51:35  altturbo
+ * HISTORY      : minor change - add remarks
+ * HISTORY      :
  * HISTORY      : Revision 1.23  2009/04/02 20:35:25  altturbo
  * HISTORY      : add comment and annotation items but deactivated
  * HISTORY      :
