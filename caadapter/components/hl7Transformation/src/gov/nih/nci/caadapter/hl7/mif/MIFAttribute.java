@@ -27,7 +27,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version Since caAdapter v4.0 revision $Revision: 1.21 $ date $Date: 2009-04-15 21:20:09 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.22 $ date $Date: 2009-04-21 17:06:58 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -495,7 +495,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 			if (oid!=null&&!oid.equals(""))
             {
                 dmName=dmName+" ("+oid +")";
-                System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
+/*#umk*/        System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
             }
         } catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -532,6 +532,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.21  2009/04/15 21:20:09  altturbo
+ * HISTORY :Upgrade findDomainNameOdiProperty()
+ * HISTORY :
  * HISTORY :Revision 1.20  2009/04/02 20:34:40  altturbo
  * HISTORY :add comment and annotation items but deactivated
  * HISTORY :
