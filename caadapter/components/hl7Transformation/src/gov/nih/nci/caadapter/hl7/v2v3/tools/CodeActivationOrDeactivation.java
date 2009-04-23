@@ -141,7 +141,7 @@ public class CodeActivationOrDeactivation
         if (fileName.equalsIgnoreCase("CodeActivationOrDeactivation.java")) return;
         if ((fileName.toLowerCase().startsWith("caadapter_hl7_src"))&&(fileName.toLowerCase().endsWith(".zip"))) return;
         if ((fileName.toLowerCase().startsWith("caadapter_hl7_bin"))&&(fileName.toLowerCase().endsWith(".zip"))) return;
-        
+
         boolean textTag = false;
 
         if (fileName.toLowerCase().endsWith(".java")) textTag = true;
@@ -186,6 +186,7 @@ public class CodeActivationOrDeactivation
         //if (fileName.equals("HSMNodePropertiesPane.java")) downloadTag = true;
         if (fileName.equals("MapProcessor.java")) downloadTag = true;
         if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
+        if (fileName.equals("XMLElement.java")) downloadTag = true;
 
         String oriFile = "";
         if (downloadTag)
