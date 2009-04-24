@@ -79,16 +79,17 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2009-02-26 19:42:27 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2009-04-24 18:22:49 $
  */
 public class HL7MappingPanel extends AbstractMappingPanel
 {
 	private static final String LOGID = "$RCSfile: HL7MappingPanel.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.18 2009-02-26 19:42:27 wangeug Exp $";
-
-	private static final String SELECT_SOURCE = "Open Source...";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/HL7MappingPanel.java,v 1.19 2009-04-24 18:22:49 wangeug Exp $";
 	private static final String SELECT_CSV_TIP = "Select a " + Config.CSV_MODULE_NAME;//CSV Specification";
+	private static final String SELECT_SOURCE = "Open Source...";
+	private static final String SELECT_V2_TIP = "Select an HL7 V2 Message Type";
+	
 	private static final String SELECT_TARGET = "Open Target...";
 	private static final String SELECT_HMD_TIP = "Select an " + Config.HL7_V3_METADATA_MODULE_NAME;//HL7 v3 Specification";
 
@@ -111,11 +112,10 @@ public class HL7MappingPanel extends AbstractMappingPanel
 	{
 		this("","calledFromConstructor","");
 		this.isCSVSource=isCSVSource;
+		if (!isCSVSource)
+			openSourceButton.setToolTipText(SELECT_V2_TIP);
 	}
-    public HL7MappingPanel(String sourceFile, String _flag) throws Exception
-	{
-    	this(sourceFile, "calledFromConstructor", _flag);
-	}
+
     public HL7MappingPanel(String sourceFile, String targetFile, String _flag) throws Exception
 	{
     	this.setBorder(BorderFactory.createEmptyBorder());
@@ -166,7 +166,6 @@ public class HL7MappingPanel extends AbstractMappingPanel
 		openSourceButton.setToolTipText(SELECT_CSV_TIP);
 		openSourceButton.addActionListener(this);
 		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
-//		sourceScrollPane = DefaultSettings.createScrollPaneWithDefaultFeatures();
 		sourceScrollPane.setSize(new Dimension((int) (Config.FRAME_DEFAULT_WIDTH / 4), (int) (Config.FRAME_DEFAULT_HEIGHT / 1.5)));
 		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
 
@@ -227,14 +226,9 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			{
 				Container rootContainer=this.getRootContainer();
 				JFrame rootFrame=(JFrame)rootContainer;
-//				TransformationSourceSelectionDialog hl7SourceDialog=new TransformationSourceSelectionDialog(rootFrame);
-//				String sourceDatatype=hl7SourceDialog.getSourceDatatype();
-//				if (sourceDatatype.equalsIgnoreCase(TransformationSourceSelectionDialog.SOURCE_TYPE_CSV))
-//				
 				if ( isCSVSource){
 					File file = DefaultSettings.getUserInputOfFileFromGUI(this,
 							Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
-							//Config.SOURCE_TREE_FILE_DEFAULT_EXTENTION+";"+".xsd", Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE, false, false);
 					if (file != null)
 					{
 						everythingGood = processOpenSourceTree(file, true, true);
@@ -253,10 +247,7 @@ public class HL7MappingPanel extends AbstractMappingPanel
 			            JOptionPane.showMessageDialog((JFrame)getRootContainer(), "NewHSMWizard Error (1) : " + ee.getMessage(), "New H3S creation failure !! ", JOptionPane.ERROR_MESSAGE);
 			            return;
 			        }
-			        
-//			        wizard.setLocation(400, 300);
 			        String msg = wizard.getErrorMessage();
-
 			        if (msg != null)
 			        {
 			            if (!msg.trim().equals(""))
@@ -269,17 +260,13 @@ public class HL7MappingPanel extends AbstractMappingPanel
 					{
 			        	String v2Version=wizard.getFrontPage().getUserSelectedMessageVersion();
 			        	String v2Schema=wizard.getFrontPage().getUserSelectedMessageSchema();
-			        	processV2Meta(v2Version+"/"+v2Schema);
-			    
+			        	processV2Meta(v2Version+"/"+v2Schema);		    
 					}
 				}
 			}
 			else if (SELECT_TARGET.equals(command))
 			{
 				File file = DefaultSettings.getUserInputOfFileFromGUI(this,
-//						Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-						//FileUtil.getUIWorkingDirectoryPath(),
-//					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION+";"+Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 					//last added fileExtension :.h3s will be set as default
 					Config.HL7_V3_MESSAGE_FILE_DEFAULT_EXTENSION+";"+Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
 				if (file != null)
@@ -504,6 +491,7 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 		{//
 			String v2schema=sourceComp.getKind();
 			processV2Meta(v2schema);
+			openSourceButton.setToolTipText(SELECT_V2_TIP);
 			isCSVSource=false;
 		}
 		//build target tree
@@ -674,6 +662,9 @@ private DefaultMappableTreeNode processElmentMeta(ElementMeta eMeta)
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.18  2009/02/26 19:42:27  wangeug
+ * HISTORY      : Disable action based on  mapping  type
+ * HISTORY      :
  * HISTORY      : Revision 1.17  2009/02/03 15:49:22  wangeug
  * HISTORY      : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
  * HISTORY      :
