@@ -23,14 +23,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jan 21, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.3 $
- * @date 	 DATE: $Date: 2009-02-25 16:53:09 $
+ * @version  REVISION: $Revision: 1.4 $
+ * @date 	 DATE: $Date: 2009-04-24 18:20:34 $
  * @since caAdapter v4.2
  */
 
@@ -47,7 +48,7 @@ public class V2SchemaSelectionPanel extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/V2SchemaSelectionPanel.java,v 1.3 2009-02-25 16:53:09 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/hl7/V2SchemaSelectionPanel.java,v 1.4 2009-04-24 18:20:34 wangeug Exp $";
 
 	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 V2 Message Version:";
 	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 V2 Message Schema:";
@@ -85,7 +86,8 @@ public class V2SchemaSelectionPanel extends JPanel implements ActionListener
 				v2MessageIndex =V2MessageSchemaIndexLoader.loadMessageInfos();			
 			}hl7MessageTypeComboBox=new JComboBox();
 			hl7MessageTypeComboBox.setEnabled(false);
-			hl7MessageCategoryComboBox = new JComboBox(v2MessageIndex.getMessageCategory().toArray());
+			TreeSet<String> sortV2Index=new TreeSet<String>(v2MessageIndex.getMessageCategory());
+			hl7MessageCategoryComboBox = new JComboBox(sortV2Index.toArray());
 			hl7MessageCategoryComboBox.addActionListener(this);
 			hl7MessageCategoryComboBox.setSelectedIndex(-1);
 			
@@ -148,6 +150,9 @@ public class V2SchemaSelectionPanel extends JPanel implements ActionListener
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.3  2009/02/25 16:53:09  wangeug
+* HISTORY: move V2MessageIndex to other package
+* HISTORY:
 * HISTORY: Revision 1.2  2009/02/24 16:00:05  wangeug
 * HISTORY: enable webstart
 * HISTORY:
