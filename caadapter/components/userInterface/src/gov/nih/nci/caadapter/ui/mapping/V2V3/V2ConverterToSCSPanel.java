@@ -40,10 +40,10 @@ import java.util.StringTokenizer;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v3.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2008-06-09 19:54:05 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2009-04-24 18:17:55 $
  */
 public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 {
@@ -60,7 +60,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.11 2008-06-09 19:54:05 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/V2V3/V2ConverterToSCSPanel.java,v 1.12 2009-04-24 18:17:55 wangeug Exp $";
 
     private JRadioButton jrStrictValidationYes;
     private JRadioButton jrStrictValidationNo;
@@ -1467,7 +1467,7 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
             try
             {
                 if (nextDialog.getH3SFileName().equals(""))
-                    mp = new gov.nih.nci.caadapter.ui.mapping.hl7.HL7MappingPanel(converter.getSCSFileName(), null);
+                    mp = new gov.nih.nci.caadapter.ui.mapping.hl7.HL7MappingPanel(converter.getSCSFileName(), " ", null);
 			    else if (!nextDialog.getH3SFileName().equals(""))
                     mp = new gov.nih.nci.caadapter.ui.mapping.hl7.HL7MappingPanel(converter.getSCSFileName(), nextDialog.getH3SFileName(), null);
 //	                   mp = new gov.nih.nci.caadapter.ui.mapping.hl7.NewHL7MappingPanel(converter.getSCSFileName(), nextDialog.getH3SFileName(), null);
@@ -1900,6 +1900,9 @@ public class V2ConverterToSCSPanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2008/06/09 19:54:05  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2008/05/30 04:50:08  umkis
  * HISTORY      : frame size adjusted
  * HISTORY      :
