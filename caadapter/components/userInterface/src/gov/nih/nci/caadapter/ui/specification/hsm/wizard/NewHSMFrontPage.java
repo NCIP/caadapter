@@ -14,7 +14,6 @@ import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import gov.nih.nci.caadapter.hl7.mif.MIFIndex;
-import gov.nih.nci.caadapter.hl7.mif.MIFIndexParser;
 import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 import javax.swing.*;
@@ -28,10 +27,10 @@ import java.util.TreeMap;
 /**
  * Define the first page in the open wizard.
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: altturbo $
+ * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.10 $
- * date        $Date: 2009-04-06 16:09:09 $
+ * revision    $Revision: 1.11 $
+ * date        $Date: 2009-04-24 18:58:56 $
  */
 public class NewHSMFrontPage extends JPanel implements ActionListener
 {
@@ -46,16 +45,13 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 * This String is for informational purposes only and MUST not be made final.
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.10 2009-04-06 16:09:09 altturbo Exp $";
-	private static final String HL7_NORMATIVE_LABEL = "Select an HL7 Nomative:";
-	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 Message Category:";
-	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 Message Type:";
-	private static final String BROWSE_COMMAND = "Browse...";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMFrontPage.java,v 1.11 2009-04-24 18:58:56 wangeug Exp $";
+	private static final String HL7_NORMATIVE_LABEL = "Select an HL7 V3 Nomative Edition:";
+	private static final String HL7_MESSAGE_CATEGORY_LABEL = "Select an HL7 V3 Message Category:";
+	private static final String HL7_MESSAGE_TYPE_LABEL = "Select an HL7 V3 Message Type:";
 
-	private File userSelectionFile;
 	private JComboBox hl7MessageTypeComboBox;
 	private JComboBox hl7NormativeComboBox;
-	private JTextField userInputField;
 	private MIFIndex mifIndex;
 	private JComboBox hl7MessageCategoryComboBox;
 
@@ -67,6 +63,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 	 */
 	public NewHSMFrontPage(NewHSMWizard wizard)
 	{
+		super();
 		initialize();
 	}
 
@@ -84,13 +81,8 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 		
 		centerPanel.add(new JLabel(HL7_MESSAGE_TYPE_LABEL), new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
-//		mifIndex =MIFIndexParser.loadMifIndexObject();
 		try {
 			if (mifIndex==null)
-//			{
-//				System.out.println("NewHSMFrontPage.initialize()...loadMIFIndex from ZIP file");
-//				mifIndex =MIFIndexParser.loadMIFIndex();
-//			}
 				hl7NormativeComboBox =new JComboBox();
 			TreeMap<String, MIFIndex> indxSortMap=new TreeMap<String, MIFIndex>();
 			//sort MIFIndex
@@ -105,8 +97,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
             if (hl7NormativeComboBox.getItemCount() == 0) throw new Exception("Not found MIF files. Please check '"+NormativeVersionUtil.getNormativeSettingXmlFileName()+"' file.");
 
             hl7MessageCategoryComboBox = new JComboBox();
-			hl7MessageCategoryComboBox.setEnabled(false);
-//			hl7MessageCategoryComboBox = new JComboBox(mifIndex.getMessageCategory().toArray());			
+			hl7MessageCategoryComboBox.setEnabled(false);		
 			hl7MessageCategoryComboBox.addActionListener(this);
 			
 			hl7MessageTypeComboBox=new JComboBox();
@@ -142,44 +133,7 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
     {
         return errorMessage;
     }
-    private String getUserInputFromEnabledField()
-	{
-		return userInputField.getText();
-	}
 
-	private void setUserInputToEnabledField(String newValue)
-	{
-		userInputField.setText(newValue);
-	}
-
-	public File getUserSelectionFile()
-	{
-		String userInputText = getUserInputFromEnabledField();
-		if (userInputText != null && userInputText.length() > 0)
-		{
-			File tempFile = new File(userInputText);
-			if (!GeneralUtilities.areEqual(userSelectionFile, tempFile))
-			{//user input supersedes browsed value.
-				userSelectionFile = tempFile;
-			}
-		}
-		return userSelectionFile;
-	}
-
-	public void setUserSelectionFile(File userSelectionFile)
-	{
-		this.userSelectionFile = userSelectionFile;
-		if (userSelectionFile != null)
-		{
-			setUserInputToEnabledField(userSelectionFile.getAbsolutePath());
-		}
-	}
-
-//	public MessageType getUserSelectedMessageType() throws Exception
-//	{
-//		MessageType messageType = HL7Util.getMessageType(hl7MessageTypeComboBox.getSelectedItem());
-//		return messageType;
-//	}
 	public String getUserSelectedMIFFileName ()
 	{
 		String slctMsgType= (String)hl7MessageTypeComboBox.getSelectedItem().toString();
@@ -221,21 +175,14 @@ public class NewHSMFrontPage extends JPanel implements ActionListener
 					hl7MessageTypeComboBox.addItem(msgOneType);
 			}
 		}
-		String command = e.getActionCommand();
-		if(BROWSE_COMMAND.equals(command))
-		{
-			File file = DefaultSettings.getUserInputOfFileFromGUI(this, //FileUtil.getUIWorkingDirectoryPath(),
-					Config.TARGET_TREE_FILE_DEFAULT_EXTENTION, Config.OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE, false, false);
-			if (file != null)
-			{
-				setUserSelectionFile(file);
-			}
-		}
 	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2009/04/06 16:09:09  altturbo
+ * HISTORY      : Pop up error message dialog when any mif file is not found.
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2009/03/13 14:56:21  wangeug
  * HISTORY      : support multiple HL& normatives: remember the current version
  * HISTORY      :

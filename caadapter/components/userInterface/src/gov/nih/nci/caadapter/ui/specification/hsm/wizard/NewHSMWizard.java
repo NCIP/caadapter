@@ -19,10 +19,10 @@ import java.awt.event.ActionListener;
  * Handles the selection of HL7 V3 type and file source.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version     Since caAdapter v1.2
- * revision    $Revision: 1.6 $
- * date        $Date: 2008-06-09 19:54:07 $
+ * revision    $Revision: 1.7 $
+ * date        $Date: 2009-04-24 18:58:56 $
  */
 public class NewHSMWizard extends JDialog implements ActionListener
 {
@@ -37,7 +37,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
      * This String is for informational purposes only and MUST not be made final.
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.6 2008-06-09 19:54:07 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/wizard/NewHSMWizard.java,v 1.7 2009-04-24 18:58:56 wangeug Exp $";
 
     private static final String OK_COMMAND = "OK";
     private static final String CANCEL_COMMAND = "Cancel";
@@ -62,7 +62,7 @@ public class NewHSMWizard extends JDialog implements ActionListener
 
     private void initialize()
     {
-    	setSize(400, 280);
+    	setSize(480, 300);
         userSelectedMessageType = null;
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
@@ -182,6 +182,9 @@ public class NewHSMWizard extends JDialog implements ActionListener
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2007/10/03 18:47:03  umkis
  * HISTORY      : Protect from crashing and display a fit message when resouce.zip is absent.
  * HISTORY      :
