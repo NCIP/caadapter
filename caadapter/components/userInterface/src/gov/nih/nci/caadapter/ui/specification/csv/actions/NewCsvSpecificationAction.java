@@ -28,14 +28,14 @@ import java.util.ArrayList;
  * This class defines the New CSV Specification panel Action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2009-04-24 18:19:46 $
  */
 public class NewCsvSpecificationAction extends AbstractContextAction
 {
-	private static final String COMMAND_NAME = ActionConstants.NEW_CSV_SPEC_TXT;
+	private static final String COMMAND_NAME = Config.CSV_MODULE_NAME;
 	private static final Character COMMAND_MNEMONIC = new Character('C');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, false);
 
@@ -121,6 +121,9 @@ public class NewCsvSpecificationAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/10/04 18:09:57  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :

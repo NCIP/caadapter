@@ -37,8 +37,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.13 $
- *          date        $Date: 2009-02-26 19:42:57 $
+ *          revision    $Revision: 1.14 $
+ *          date        $Date: 2009-04-24 18:20:10 $
  */
 public class NewHL7V3MessageAction extends AbstractContextAction
 {
@@ -54,9 +54,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.13 2009-02-26 19:42:57 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/NewHL7V3MessageAction.java,v 1.14 2009-04-24 18:20:10 wangeug Exp $";
 
-	private static final String COMMAND_NAME = ActionConstants.NEW_HL7_V3_MESSAGE_TXT;
+	private static final String COMMAND_NAME = Config.HL7_V3_MESSAGE_MODULE_NAME;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, false);
 
@@ -248,6 +248,9 @@ public class NewHL7V3MessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2009/02/26 19:42:57  wangeug
+ * HISTORY      : Set name of message panel based on Message data type
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2009/02/03 15:49:21  wangeug
  * HISTORY      : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
  * HISTORY      :

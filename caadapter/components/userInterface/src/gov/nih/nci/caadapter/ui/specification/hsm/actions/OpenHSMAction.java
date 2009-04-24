@@ -38,8 +38,8 @@ import java.util.ArrayList;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.6 $
- *          date        $Date: 2008-09-23 15:19:34 $
+ *          revision    $Revision: 1.7 $
+ *          date        $Date: 2009-04-24 18:19:24 $
  */
 public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextAction
 {
@@ -61,9 +61,9 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.6 2008-09-23 15:19:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/OpenHSMAction.java,v 1.7 2009-04-24 18:19:24 wangeug Exp $";
 
-	private static final String COMMAND_NAME_H3S = ActionConstants.OPEN_HSM_FILE_TXT +"(.h3s)";
+	private static final String COMMAND_NAME_H3S = ActionConstants.OPEN_HSM_FILE;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE_H3S = KeyStroke.getKeyStroke(KeyEvent.VK_2, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
@@ -248,6 +248,9 @@ public class OpenHSMAction extends DefaultContextOpenAction//AbstractContextActi
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/23 15:19:34  wangeug
+ * HISTORY      : caAdapter 4.2 alpha release
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/06/09 19:54:07  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

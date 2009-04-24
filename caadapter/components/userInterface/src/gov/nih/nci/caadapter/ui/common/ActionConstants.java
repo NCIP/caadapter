@@ -17,8 +17,8 @@ import gov.nih.nci.caadapter.common.util.Config;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.11 $
- *          date        $Date: 2009-02-03 15:49:21 $
+ *          revision    $Revision: 1.12 $
+ *          date        $Date: 2009-04-24 18:23:57 $
  */
 public interface ActionConstants
 {
@@ -27,34 +27,35 @@ public interface ActionConstants
 	//this is because the action name in display may be the same but we really need to distinguish them in a map
 	//between a new and an open command.
 	
-	String NEW_CSV_TO_HL7_MAP_FILE = "New CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
-	String NEW_V2_TO_V3_MAP_FILE = "New HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME;
-	String NEW_CSV_SPEC_TXT = Config.CSV_MODULE_NAME;
-	String NEW_CSV_SPEC = "New " + NEW_CSV_SPEC_TXT;
-	String NEW_HL7_V3_MESSAGE_TXT = Config.HL7_V3_MESSAGE_MODULE_NAME;
-	String NEW_HL7_V3_TO_CSV= "New "+Config.HL7_V3_TO_CSV_MODULE_NAME;
-	String NEW_CSV_TO_HL7_V3_MESSAGE = "New CSV TO " + NEW_HL7_V3_MESSAGE_TXT;
-	String NEW_HL7_V2_TO_HL7_V3_MESSAGE = "New HL7 V2 TO " + NEW_HL7_V3_MESSAGE_TXT;
-	String NEW_HSM_FILE_TXT = Config.HL7_V3_METADATA_MODULE_NAME;
-	String NEW_HSM_FILE = "New " + NEW_HSM_FILE_TXT;
+	String NEW_CSV_SPEC = Config.CSV_MODULE_NAME;
+	String NEW_HSM_FILE = Config.HL7_V3_METADATA_MODULE_NAME;
+	String NEW_CSV_TO_HL7_MAP_FILE = "CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
+	
+	String NEW_CSV_TO_HL7_V3_MESSAGE = "CSV to " + Config.HL7_V3_MESSAGE_MODULE_NAME;
+	String NEW_HL7_V2_TO_HL7_V3_MESSAGE = "HL7 V2 to " + Config.HL7_V3_MESSAGE_MODULE_NAME;
+	String NEW_V2_TO_V3_MAP_FILE = "HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME;
+	
+	String NEW_HL7_V3_TO_CSV= Config.HL7_V3_TO_CSV_MODULE_NAME;
+	
 	String NEW_O2DB_MAP_FILE = "Object Model to Data Model Map Specification";
 	String NEW_CSV2XMI_MAP_FILE = "New Csv Meta To Xmi Mapping";
     String NEW_XSD2XMI_MAP_FILE = "New Xsd To Xmi Mapping (GME)";   
 
-    String OPEN_CSV_TO_HL7_MAP_FILE = "Open CSV to HL7 V3 " + Config.MAP_MODULE_NAME;
-	String OPEN_V2_TO_V3_MAP_FILE = "Open HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME;
+	String OPEN_CSV_SPEC = Config.CSV_MODULE_NAME +" (.scs)";
+	String OPEN_HSM_FILE =Config.HL7_V3_METADATA_MODULE_NAME +" (.h3s)";
+	String OPEN_CSV_TO_HL7_MAP_FILE = "CSV to HL7 V3 " + Config.MAP_MODULE_NAME + " (.map)";
+	
+	String OPEN_V2_TO_V3_MAP_FILE = "HL7 V2 to HL7 V3 " + Config.MAP_MODULE_NAME + " (.map)";
+	
+	String OPEN_HL7_V3_MESSAGE = Config.HL7_V3_MESSAGE_MODULE_NAME +" (.xml)";
+	
 	String OPEN_O2DB_MAP_FILE_TXT = "Object Model to Data Model Map Specification";
 	String OPEN_CSV2SDTM_MAP_FILE_TXT = "CSV/Database to RDS Map Specification";
 	String OPEN_O2DB_MAP_FILE = "Open " + OPEN_O2DB_MAP_FILE_TXT;
 	String OPEN_CSV2XMI_MAP_FILE = "Open CSV Meta To Object/Data Model Mapping";
     String OPEN_XSD2XMI_MAP_FILE = "Open XSD Meta To XMI Mapping";
-    String OPEN_CSV_SPEC_TXT = NEW_CSV_SPEC_TXT;
-	String OPEN_CSV_SPEC = "Open " + OPEN_CSV_SPEC_TXT;
-	String OPEN_HL7_V3_MESSAGE_TXT = NEW_HL7_V3_MESSAGE_TXT;
-	String OPEN_HL7_V3_MESSAGE = "Open " + OPEN_HL7_V3_MESSAGE_TXT;
-	String OPEN_HSM_FILE_TXT = NEW_HSM_FILE_TXT;
-	String OPEN_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT +"(.h3s)";
-	String OPEN_XML_HSM_FILE = "Open " + OPEN_HSM_FILE_TXT +"(.xml)";
+
+	
 
 	String OPEN = "Open...";
 	String CLOSE = "Close";
@@ -66,9 +67,6 @@ public interface ActionConstants
 	String HELP_TOPIC = "HELP_TOPIC";
 
 	String HELP = "Help - Contents and Index...";
-	//String HELP_MANAGER = "Help Mgr";
-	//String HELP_MANAGER2 = "Help Content Manager";   // For Tool Tip
-
 	String GENERATE_REPORT = "Generate Report...";
 	String VALIDATE = "Validate";
 	String ANOTATE = "Anotate";
@@ -77,6 +75,9 @@ public interface ActionConstants
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2009/02/03 15:49:21  wangeug
+ * HISTORY      : separate menu item group: csv to HL7 V3 and HL7 V2 to HL7 V3
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2008/10/24 19:38:20  wangeug
  * HISTORY      : transfer a v2 message into v3 message using SUN v2 schema
  * HISTORY      :

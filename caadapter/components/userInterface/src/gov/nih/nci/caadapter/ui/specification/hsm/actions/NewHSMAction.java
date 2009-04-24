@@ -33,10 +33,10 @@ import java.util.ArrayList;
  * This class defines the new HSM panel action
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-04-24 18:18:39 $
  */
 public class NewHSMAction extends AbstractContextAction
 {
@@ -51,9 +51,9 @@ public class NewHSMAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.8 2008-06-09 19:54:07 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/specification/hsm/actions/NewHSMAction.java,v 1.9 2009-04-24 18:18:39 wangeug Exp $";
 
-	private static final String COMMAND_NAME = ActionConstants.NEW_HSM_FILE_TXT;
+	private static final String COMMAND_NAME = Config.HL7_V3_METADATA_MODULE_NAME;
 	private static final Character COMMAND_MNEMONIC = new Character('S');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_H, Event.CTRL_MASK, false);
 
@@ -192,7 +192,7 @@ public class NewHSMAction extends AbstractContextAction
         NewHSMWizard wizard = null;
         try
         {
-            wizard = new NewHSMWizard(mainFrame, ActionConstants.NEW_HSM_FILE_TXT, true);
+            wizard = new NewHSMWizard(mainFrame,Config.HL7_V3_METADATA_MODULE_NAME, true);
         }
         catch(Exception ee)
         {
@@ -243,6 +243,9 @@ public class NewHSMAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/03/26 14:42:15  umkis
  * HISTORY      : Re-assigning sortkey
  * HISTORY      :

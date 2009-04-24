@@ -32,17 +32,17 @@ import java.io.File;
  * This class defines the open HL7V3 message panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:53:52 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2009-04-24 18:20:10 $
  */
 public class OpenHL7V3MessageAction extends DefaultContextOpenAction//AbstractContextAction
 {
 	private static final String LOGID = "$RCSfile: OpenHL7V3MessageAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/OpenHL7V3MessageAction.java,v 1.2 2008-06-09 19:53:52 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/actions/OpenHL7V3MessageAction.java,v 1.3 2009-04-24 18:20:10 wangeug Exp $";
 
-	private static final String COMMAND_NAME = ActionConstants.OPEN_HL7_V3_MESSAGE_TXT;
+	private static final String COMMAND_NAME = Config.HL7_V3_MESSAGE_MODULE_NAME;
 	private static final Character COMMAND_MNEMONIC = new Character('H');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_4, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 //	private static final ImageIcon IMAGE_ICON = new ImageIcon(DefaultSettings.getImage("fileOpen.gif"));
@@ -209,6 +209,9 @@ public class OpenHL7V3MessageAction extends DefaultContextOpenAction//AbstractCo
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/07/03 19:33:17  wangeug
  * HISTORY      : initila loading
  * HISTORY      :

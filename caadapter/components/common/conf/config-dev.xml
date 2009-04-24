@@ -114,7 +114,7 @@
 	<constant name="CSV_MODULE_NAME" type="String" value="CSV Specification"/>
 	<constant name="HL7_V3_METADATA_MODULE_NAME" type="String" value="HL7 V3 Specification"/>
 	<constant name="HL7_V3_MESSAGE_MODULE_NAME" type="String" value="HL7 V3 Message"/>
-	<constant name="HL7_V3_TO_CSV_MODULE_NAME" type="String" value="HL7 V3 To CSV"/>
+	<constant name="HL7_V3_TO_CSV_MODULE_NAME" type="String" value="HL7 V3 to CSV Data"/>
 
     <constant name="FUNCTION_DEFINITION_DEFAULT_KIND" type="String" value="core"/>
     <constant name="CSV_DEFINITION_DEFAULT_KIND" type="String" value="scs"/>

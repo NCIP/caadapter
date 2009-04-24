@@ -35,14 +35,14 @@ import java.util.ArrayList;
  * This class defines the open CSV specification panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.4 $
- *          date        $Date: 2008-06-09 19:54:07 $
+ *          revision    $Revision: 1.5 $
+ *          date        $Date: 2009-04-24 18:19:46 $
  */
 public class OpenCsvSpecificationAction extends DefaultContextOpenAction//AbstractContextAction
 {
-	public static final String COMMAND_NAME = ActionConstants.OPEN_CSV_SPEC_TXT;
+	public static final String COMMAND_NAME =ActionConstants.OPEN_CSV_SPEC;
 	private static final Character COMMAND_MNEMONIC = new Character('C');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_0, Event.CTRL_MASK + Event.SHIFT_MASK, false);
 	private static final String TOOL_TIP_DESCRIPTION = "Open CSV Specification";
@@ -209,6 +209,9 @@ public class OpenCsvSpecificationAction extends DefaultContextOpenAction//Abstra
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/06/09 19:54:07  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2007/10/04 18:09:57  wangeug
  * HISTORY      : verify resource based on module
  * HISTORY      :
