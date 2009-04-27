@@ -247,6 +247,11 @@ public class XmlReorganizingTree
     }
     private List<String> prepareXMLList()
     {
+        return prepareXMLList(0);
+    }
+
+    private List<String> prepareXMLList(int levelOfDatatypeOutputValue)
+    {
         DefaultMutableTreeNode node = null;
         List<String> pre = new ArrayList<String>();
         //List<String> post = new ArrayList<String>();
@@ -281,6 +286,12 @@ public class XmlReorganizingTree
             XmlTreeBrowsingNode xNode0 = (XmlTreeBrowsingNode) node.getUserObject();
             if (!xNode0.getRole().equals(xNode0.getRoleKind()[0])) continue;
 
+            if (node.getChildCount() == 0)
+            {
+                XmlTreeBrowsingNode xNode1 = new XmlTreeBrowsingNode(xNode0.getRoleKind()[1], "_dummy__", "_dummy__");
+                DefaultMutableTreeNode aNode = new DefaultMutableTreeNode(xNode1);
+                node.add(aNode);
+            }
 
             String spaces = "";
             for (int i=0;i<depth;i++) spaces = spaces + "    ";
@@ -291,7 +302,6 @@ public class XmlReorganizingTree
 
             String startE = spaces + "<" + eName;
             String endE = spaces + "</" + eName + ">";
-
 
             int cntEle = 0;
             String att = "";
@@ -313,7 +323,23 @@ public class XmlReorganizingTree
                         if (hasNodeValue(node)) checked = false;
                         vl = "NI";
                     }
-                    if (checked) att = att + " " + nm + "=\"" + vl + "\"";
+                    if (nm.equalsIgnoreCase("_dummy__")) checked = false;
+                    if (nm.equalsIgnoreCase("xsi:type"))
+                    {
+                        if (levelOfDatatypeOutputValue == 2) checked = false;
+
+                        int idx1 = vl.indexOf(":");
+
+                        if ((levelOfDatatypeOutputValue == 1)&&(idx1 < 0)) checked = false;
+
+                        while(idx1 >= 0)
+                        {
+                            vl = vl.substring(idx1 + 1);
+                            idx1 = vl.indexOf(":");
+                        }
+                    }
+                    if (checked)
+                        att = att + " " + nm + "=\"" + vl + "\"";
                 }
                 else if (xNode.getRole().equals(xNode.getRoleKind()[2]))
                 {
@@ -365,6 +391,7 @@ public class XmlReorganizingTree
 
                 if ((nm.equalsIgnoreCase("value"))||
                     (nm.equalsIgnoreCase("code"))||
+                    (nm.equalsIgnoreCase("inlinetext"))||
                     (nm.equalsIgnoreCase("extension")))
                 {
                     return true;
@@ -377,16 +404,25 @@ public class XmlReorganizingTree
         }
         return false;
     }
-
     public void printXML()
     {
-        List<String> pre = prepareXMLList();
+        printXML(-1);
+    }
+    public void printXML(int levelOfDatatypeOutputValue)
+    {
+        int levelOfDatatypeValue = getLevelOfDatatypeOutputValue(levelOfDatatypeOutputValue);
+        List<String> pre = prepareXMLList(levelOfDatatypeValue);
         if ((pre == null)||(pre.size() == 0)) System.err.println("Failure building xml element list : ");
         for (String string:pre) System.out.println(string);
     }
     public void generatingXMLFile(String fileName) throws IOException
     {
-        List<String> pre = prepareXMLList();
+        generatingXMLFile(fileName, -1);
+    }
+    public void generatingXMLFile(String fileName, int levelOfDatatypeOutputValue) throws IOException
+    {
+        int levelOfDatatypeValue = getLevelOfDatatypeOutputValue(levelOfDatatypeOutputValue);
+        List<String> pre = prepareXMLList(levelOfDatatypeValue);
         if ((pre == null)||(pre.size() == 0)) throw new IOException("Failure building xml element list for saving (" + fileName + ") : ");
         try
         {
@@ -398,5 +434,26 @@ public class XmlReorganizingTree
         {
             throw new IOException("File Writing Error(" + fileName + ") : " + ie.getMessage());
         }
+    }
+
+    private int getLevelOfDatatypeOutputValue(int levelOfDatatypeOutputValue)
+    {
+        int levelOfDatatypeValue = 0;
+        if (levelOfDatatypeOutputValue < 0)
+        {
+            String levelOfDatatype = FileUtil.searchProperty("levelOfDatatypeOutput");
+            if (levelOfDatatype == null) levelOfDatatype = "";
+
+            try
+            {
+                levelOfDatatypeValue = Integer.parseInt(levelOfDatatype);
+            }
+            catch(NumberFormatException ne)
+            {
+                levelOfDatatypeValue = 0;
+            }
+        }
+        else levelOfDatatypeValue = levelOfDatatypeOutputValue;
+        return levelOfDatatypeValue;
     }
 }
