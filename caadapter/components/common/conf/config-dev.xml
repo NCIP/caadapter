@@ -32,7 +32,7 @@
 	<constant name="CAADAPTER_VERSION" type="String" value="V4.1"/>
     <constant name="CAADAPTER_BUILD_NUMBER" type="String" value="#410"/>
     <constant name="JDK_VERSION" type="String" value="1.5.0_15"/>
-    <constant name="COPYRIGHT_YEARS" type="String" value="2004-2008"/>
+    <constant name="COPYRIGHT_YEARS" type="String" value="2004-2009"/>
     <!-- required resource for each module -->
     <constant name="CAADAPTER_COMMON_RESOURCE_REQUIRED" type="String" value="caadapter.common.resource.required"/>
     <constant name="CAADAPTER_HL7_TRANSFORMATION_RESOURCE_REQUIRED" type="String" value="caadapter.hl7.transformation.resource.required"/>
