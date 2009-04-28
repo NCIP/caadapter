@@ -1,7 +1,0 @@
-SUBSTANCEADMINISTRATIONEVENT_HEAD,DISPACT,DEF,2.16.840.1.113883.3.26.811,79234-906,NCI,This is a sample text for test data generating...,AKSU,"",0,ORMUC,2.16.840.1.113883.5.112,RouteOfAdministration,"Topical application, oromucosal",54,[in_i]
-SUBJECT00_1,SPC
-ASSOCIATEDPERSON_11,PRS,2.16.840.1.113883.3.26.872,45573-649,NCI
-PERTINENTINFORMATION100_2,EXPL,AN,61,[in_i]
-OBSERVATION_21,EXP,EVN,2.16.840.1.113883.3.26.123,39983-871,NCI,FNAINT,2.16.840.1.113883.11.16226,ObservationType,Food Non-Allergy Intolerance,This is a sample text for test data generating...,new,20081020155848,EM,2.16.840.1.113883.5.7,ActPriority,emergency,NoData,D,2.16.840.1.113883.5.83,ObservationInterpretation,decreased,ALGM,2.16.840.1.113883.5.84,ObservationMethod,algorithm,TID18a,2.16.840.1.113883.5.1052,ActSite,18a
-AUTHOR00_211,SPRF,OP,yyyy/MM/dd,2008/11/11,20081020155849,VIDEOCONF,2.16.840.1.113883.5.1064,ParticipationMode,videoconferencing,I,2.16.840.1.113883.5.89,ParticipationSignature,intended,This is a sample text for test data generating...
-ASSOCIATEDPERSON_2111,SUBSCR,2.16.840.1.113883.3.26.592,80178-893,NCI
