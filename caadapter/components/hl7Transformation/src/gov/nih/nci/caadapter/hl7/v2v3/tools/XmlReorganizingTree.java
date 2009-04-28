@@ -94,7 +94,7 @@ public class XmlReorganizingTree
             }
             catch(IOException ie)
             {
-                System.out.println("XXXXX : " + ie.getMessage());
+                //System.out.println("XXXXX : " + ie.getMessage());
                 return;
             }
             if (is == null) is = new InputSource(path);
@@ -249,7 +249,9 @@ public class XmlReorganizingTree
     {
         return prepareXMLList(0);
     }
-
+    /*
+     *   int levelOfDatatypeOutputValue is always zero because it's role was alredy done by XMLElement.java.
+     */
     private List<String> prepareXMLList(int levelOfDatatypeOutputValue)
     {
         DefaultMutableTreeNode node = null;
@@ -436,8 +438,13 @@ public class XmlReorganizingTree
         }
     }
 
+    /*
+     *   int levelOfDatatypeOutputValue is always zero because it's role was alredy done by XMLElement.java.
+     */
     private int getLevelOfDatatypeOutputValue(int levelOfDatatypeOutputValue)
     {
+        return 0;
+        /*
         int levelOfDatatypeValue = 0;
         if (levelOfDatatypeOutputValue < 0)
         {
@@ -455,5 +462,7 @@ public class XmlReorganizingTree
         }
         else levelOfDatatypeValue = levelOfDatatypeOutputValue;
         return levelOfDatatypeValue;
+        */
     }
+
 }
