@@ -111,8 +111,8 @@
 				</zipfileset>
 	
 				<zipfileset dir="../docs" prefix="docs">
-					<include name="4.3/*4.3*.pdf"/>
-					<include name="4.3/*4.3*.txt"/>
+					<include name="v4.3/*4.3*.pdf"/>
+					<include name="v4.3/*4.3*.txt"/>
 				</zipfileset>	
 				<zipfileset src="../docs/help_4.3.zip" prefix="docs/help"/>
 				<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
