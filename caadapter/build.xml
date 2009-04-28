@@ -96,15 +96,18 @@
 
         <copy todir="${build.dir}">
             <fileset dir="${ui.module.home}/resources">
-                <exclude name="CSV/**"/>
+                <exclude name="images/help_images/**"/>
             </fileset>
-            <fileset dir="${basedir}/etc" excludes="*.html, schemas/**"/>
+            <fileset dir="${basedir}/etc">
+            	<include name="*Notes.txt"/>
+            	<include name="warning/**"/>
+            	<include name="license/**"/>
+            	<include name="map/functions/**"/>
+            </fileset>
+            <fileset dir="${basedir}/docs/4.3">
+            	<include name="*Notes.txt"/>
+            </fileset>
         </copy>
-    	<copy todir="${build.dir}/etc" >
-    		<fileset dir="${basedir}/etc" includes="*.html"/>
-    	</copy>
-    	<!-- copy todir="${build.dir}/etc" file="etc/aboutwin.html"/ -->
-    	<!-- copy todir="${build.dir}/etc" file="etc/licenseinformation.html"/-->
         
         <delete includeemptydirs="true">
             <fileset dir="${dist.dir}" includes="**/*"/>
@@ -151,8 +154,14 @@
 			<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
 			<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
 			<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
-			<zipfileset dir="components/userInterface" includes="build.xml, conf/**,src/**, resources/**, lib/**" prefix="components/userInterface"/>
-			<!-- zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/ -->
+			<zipfileset dir="components/userInterface" prefix="components/userInterface">
+				<include name="build.xml"/>
+				<include name="conf/**"/>
+				<include name="src/**"/>
+				<include name="resources/images/*.*"/>
+				<include name="lib/**"/>
+			</zipfileset>	
+			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
 			<zipfileset dir="docs/GME" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
 			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
 					webstart/webstartconf/**, webstart/caadapter-mms-gme.jnlp, webstart/caadapter-mms-gme.html, webstart/web.xml, webstart/myKeyStore"/>
@@ -168,11 +177,54 @@
 	
 	<target name="zipHl7ModuleSrc" if="caadapter.module.hl7.zip">
 			<echo message="Build source distribution for HL7 module..."/>
-			<zip destfile="${project.release.version}_Src_${DATE}.zip" basedir="." 
-				excludes="tdms*.doc,lib/mysql*.jar,lib/ojdbc*.jar, **/*.class, **/build/**, **/dist/**, **/gencode/**, etc/schemas/**, 
-				docs/GME/**, docs/v4.0/**, docs/MMSv4.1/*.zip, docs/v4.1*BETA/**, **/CVS/**,
-				referenceLib/**, run.bat, *.spp, *.mpp,">
-			</zip>
+			<available property="zip.hl7.v2tov3.example.present" file="./workingspace/V2Meta_to_V3" type="dir"/>
+			<available property="zip.hl7.csvtov3.example.present" file="./workingspace/CSV_to_HL7_V3_Example" type="dir"/>
+			<zip destfile="${project.release.version}_Src_${DATE}.zip">
+				<zipfileset dir="components/common" includes="build.xml, conf/**,src/**, lib/**" prefix="components/common"/>
+				<zipfileset dir="components/dataviewer" includes="build.xml, src/**, lib/**" prefix="components/dataviewer"/>
+				<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
+				<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
+				<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
+				<zipfileset dir="components/userInterface" prefix="components/userInterface">
+					<include name="build.xml"/>
+					<include name="conf/**"/>
+					<include name="src/**"/>
+					<include name="resources/images/*.*"/>
+					<include name="lib/**"/>
+			    </zipfileset>
+				<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, axislib/**, lib/**" prefix="components/webservices"/>
+				<zipfileset dir="docs" prefix="docs">
+					<include name="4.3/*4.3*.pdf"/>
+					<include name="*4.3*.zip"/>
+					<include name="4.3/4.3*.txt"/>
+				</zipfileset>
+				<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
+					webstartconf/**, webstart/WEB-INF/**, webstart/caadapter-hl7.jnlp,webstart/index-hl7.html, webstart/index-ws.html, webstart/myKeyStore, webstart/v2MessageIndex.obj,webstart/web.xml"/>
+				<zipfileset dir=".">
+					<include name="conf/**"/>
+					<include name="demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java"/>
+					<include name="lib/**"/>
+					<include name="referenceLib/client.jar"/>
+					<include name="referenceLib/hl7v2xsd.jar"/>
+					<include name="build*"/>
+					<include name="*.bat"/>
+					<include name="NCICBkey"/>
+					<include name="myKeyStor"/>
+				</zipfileset>			 
+			</zip> 
+			<echo message="copy HL7 MTS example files..."/>
+			<ant antfile="build_demo.xml" target="zip.hl7.example">
+				<property name="release.zip.file.name" value="${project.release.version}_Src_${DATE}.zip"/>
+				<property name="example.src.dir" value="./workingspace/V2Meta_to_V3"/>
+				<property name="example.tgrt.prefix" value="workingspace/v2Tov3_example"/>
+				<property name="example.exist.flag" value="zip.hl7.v2tov3.example.present"/>
+			</ant>
+			<ant antfile="build_demo.xml" target="zip.hl7.example">
+				<property name="release.zip.file.name" value="${project.release.version}_Src_${DATE}.zip"/>
+				<property name="example.src.dir" value="./workingspace/CSV_to_HL7_V3_Example"/>
+				<property name="example.tgrt.prefix" value="workingspace/csvTov3_example"/>
+				<property name="example.exist.flag" value="zip.hl7.csvtov3.example.present"/>
+			</ant>
 	</target>
 	<target name="zipAllModuleSrc" if="caadapter.module.all.zip">
 			<echo message="Build source distribution for ALL module..."/>
@@ -552,6 +604,7 @@
             <fileset dir="${hl7.webstart.deploy.dir}">
                 <exclude name="myKeyStore"/>
             </fileset>
+			<zipfileset src="./docs/help_4.3.zip" prefix="help"/>
         </war>
 
         <echo message=""/>
@@ -684,7 +737,7 @@
     </target>
 	
     <target name="dist.prepare" depends="copy.modules.lib">
-
+ 
         <echo message="build demo_ui.jar...."/>
         <copy tofile="${dist.dir}/build.xml" flatten="true">
             <fileset file="build_demo.xml"></fileset>
@@ -694,22 +747,17 @@
         </copy>
         <mkdir dir="dist/conf"/>
     	<copy todir="${dist.dir}/conf">
-    	            <fileset file="${config.dir}/caadapter-components.properties" />
-    	            <fileset file="${config.dir}/CodegenConfig.xml" />
-    				<fileset file="${config.dir}/logging.properties" />
-    				<fileset file="${config.dir}/caadapter-resources.properties" />
-    				<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
-    				<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
-    				<fileset file="${config.dir}/hl7-normative-setting.xml" />
-    				<fileset file="${config.dir}/hl7-customer-datatype-setting.xml" />	
-    	 </copy>
-    	 <mkdir dir="${dist.dir}/workingspace"/>
-		<unzip dest="${dist.dir}/docs">
-        	<fileset dir="docs/">
-            	<include name="help.zip"/>
-        	</fileset>
-		</unzip>
-    	 
+			<fileset file="${config.dir}/caadapter-components.properties" />
+			<fileset file="${config.dir}/CodegenConfig.xml" />
+			<fileset file="${config.dir}/logging.properties" />
+			<fileset file="${config.dir}/caadapter-resources.properties" />
+			<fileset file="${config.dir}/datatype-core-attributes-default.xml" />
+			<fileset file="${config.dir}/datatype-core-attributes-setting.xml" />
+			<fileset file="${config.dir}/hl7-normative-setting.xml" />
+			<fileset file="${config.dir}/hl7-customer-datatype-setting.xml"/>	
+    	</copy>
+    	<!-- mkdir dir="${dist.dir}/workingspace"/ -->
+    	<mkdir dir="${dist.dir}/hl7_home"/>   	 
         <delete file="${lib.dir}\sqleonardo.jar"/>
         <delete dir="${lib.dir}\delete.jar"/>
     </target>
@@ -858,7 +906,7 @@
 				overwrite="true">
 			<fileset dir="${hl7.module.home}/src" includes="**/CaadapterUtil.java"/>
 		</copy>
-
+		
 	</target>
 	
 	<target name="copyRef" if="ref.sqleonardo">
@@ -868,14 +916,14 @@
     <target name="clean">
         <echo message="-------- clean ${project.name}  --------"/>
         <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
+        <delete dir="${dist.dir}" failonerror="false"/>
         <ant antfile="${common.module.build}" target="clean"/>
         <ant antfile="${hl7.module.build}" target="clean"/>
         <ant antfile="${mms.module.build}" target="clean"/>
         <ant antfile="${dataview.module.build}" target="clean"/>
         <ant antfile="${sdtm.module.build}" target="clean"/>
         <ant antfile="${ui.module.build}" target="clean"/>
-        <!-- ant antfile="${ws.module.build}" target="clean"/ -->
+        <ant antfile="${ws.module.build}" target="clean"/>
     </target>
 
  
