@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping type="V2_TO_V3" version="1.2">
+   <components>
+      <component kind="v2" location="2.4/ADT_A03.xsd" type="source"/>
+      <component kind="h3s"
+                 location="{caAdapter_Home}\workingspace\V2Meta_to_V3\PRPA_MT402003.h3s"
+                 type="target"/>
+   </components>
+   <links>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.EVN.EVN_2.TS_1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.classCode"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.EVN.EVN_4"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.moodCode"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.PID.PID_3.CX_1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.id00.root"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.PID.PID_3.CX_4.HD_1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.id00.assigningAuthorityName"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.PID.PID_3.CX_4.HD_2"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.id00.extension"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.PID.PID_3.CX_4.HD_3"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.id00.displayable"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.ADT_A03_PROCEDURE.PR1.PR1_1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.dischargeDispositionCode.code"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.ADT_A03_PROCEDURE.PR1.PR1_3.CE_1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.dischargeDispositionCode.codeSystem"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.ADT_A03_PROCEDURE.PR1.PR1_15.CE_2"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.dischargeDispositionCode.displayName"/>
+         </target>
+      </link>
+      <link>
+         <source>
+            <linkpointer kind="v2" xmlPath="ADT_A03.ADT_A03_PROCEDURE.PR1"/>
+         </source>
+         <target>
+            <linkpointer kind="h3s" xmlPath="EncounterEvent.dischargeDispositionCode"/>
+         </target>
+      </link>
+   </links>
+   <views>
+      <view component-id="source.v2.0" height="0" width="0" x="0" y="0"/>
+      <view component-id="target.h3s.0" height="0" width="0" x="0" y="0"/>
+   </views>
+</mapping>
