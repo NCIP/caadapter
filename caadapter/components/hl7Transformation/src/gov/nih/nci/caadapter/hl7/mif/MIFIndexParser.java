@@ -12,10 +12,10 @@ package gov.nih.nci.caadapter.hl7.mif;
  * The class defines an object parsing the index of HL7 message MIF.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: altturbo $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2009-04-06 16:10:32 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2009-05-05 19:01:26 $
  */
 
 
@@ -83,21 +83,14 @@ public class MIFIndexParser {
 	public static MIFIndex loadMIFIndexFromZipFile(String zipFilePath) throws IOException
 	{
 //		String zipFilePath = System.getProperty("caadapter.hl7.mif.path");
-
-		System.out.println("MIFIndexParser.loadMIFInfosZip()..zipFilePath"+zipFilePath);
+		
+		System.out.println("MIFIndexParser.loadMIFIndexFromZipFile()..zipFilePath"+zipFilePath);
 		File zipFile=new File(zipFilePath);
 		if (!zipFile.exists())
 		{
-            zipFile=new File(".." + File.separator + zipFilePath);
-            if (!zipFile.exists())
-            {
-                String mifOjbPath=zipFilePath.substring(0, zipFilePath.lastIndexOf("/"))+"/mifIndex.obj";
-
-                MIFIndex mifIndexObj = loadMifIndexObject(mifOjbPath);
-                if (mifIndexObj == null) throw new IOException("Not found mif zip file or mif index object : " + zipFilePath);
-                else return mifIndexObj;
-            }
-        }
+			String mifOjbPath=zipFilePath.substring(0, zipFilePath.lastIndexOf("/"))+"/mifIndex.obj";
+			return loadMifIndexObject(mifOjbPath);
+		}
 		
 		
 		ZipFile zip = new ZipFile(zipFile);
@@ -126,6 +119,8 @@ public class MIFIndexParser {
 		 return mifIndexInfos;
 	}
 	public  static MIFIndex loadMIFIndex() throws Exception {
+		if (NormativeVersionUtil.getCurrentMIFIndex()!=null)
+			return NormativeVersionUtil.getCurrentMIFIndex();
 		String zipFilePath=CaadapterUtil.getHL7_MIF_FILE_PATH();
 		return loadMIFIndexFromZipFile(zipFilePath);
 	}
