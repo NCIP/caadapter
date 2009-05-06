@@ -14,10 +14,11 @@ package gov.nih.nci.caadapter.hl7.mif;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.12 $
- *          date        $Date: 2009-04-17 14:14:45 $
+ *          revision    $Revision: 1.13 $
+ *          date        $Date: 2009-05-06 15:27:48 $
  */
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.TreeSet;
 import java.util.Set;
@@ -145,8 +146,17 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 	public String findSpecificationHome()
 	{
 		String rtnSt=null;
+		System.out.println("MIFIndex.findSpecificationHome()..mifPath:"+ getMifPath());
+		
 		if (this.getMifPath()!=null)
-			rtnSt=getMifPath().substring(0, getMifPath().lastIndexOf("/"));
+		{
+			File mifFile=new File(this.getMifPath());
+			if (mifFile.exists())
+				rtnSt= mifFile.getParent();
+			else
+				rtnSt=getMifPath().substring(0, getMifPath().lastIndexOf("/"));
+		}
+		System.out.println("MIFIndex.findSpecificationHome()..mifHome:"+rtnSt);
 		return rtnSt;
 	}
 	public String findMIFFileName(String messageType)
@@ -171,6 +181,9 @@ public class MIFIndex implements Serializable, Comparable<MIFIndex> {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.12  2009/04/17 14:14:45  wangeug
+ * HISTORY :Roll back changes regarding MifPath and SchemaPath
+ * HISTORY :
  * HISTORY :Revision 1.11  2009/04/02 19:17:08  altturbo
  * HISTORY :Protect from 'resource not found error' in case of 'dist' directory
  * HISTORY :
