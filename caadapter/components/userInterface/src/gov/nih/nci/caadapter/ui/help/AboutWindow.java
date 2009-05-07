@@ -35,8 +35,8 @@ import edu.stanford.ejalbert.exception.BrowserLaunchingExecutionException;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.21 $
- * @date       $Date: 2009-02-19 19:49:58 $
+ * @version    $Revision: 1.22 $
+ * @date       $Date: 2009-05-07 15:00:23 $
  */
 public class AboutWindow extends JDialog //implements ActionListener
 {
@@ -53,7 +53,7 @@ public class AboutWindow extends JDialog //implements ActionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.21 2009-02-19 19:49:58 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/help/AboutWindow.java,v 1.22 2009-05-07 15:00:23 wangeug Exp $";
 
 
 	private JEditorPane mainView;
@@ -370,13 +370,16 @@ public class AboutWindow extends JDialog //implements ActionListener
 	private String getNarrativeSentence()
 	{
 		return " caAdapter is an open source tool set that provides model mapping services in support of caCORE components and facilitates data mapping and transformation among different kinds of data sources."+
-		"<br> caAdapter HL7 mapping and transformation service is one component of caAdapter. The mapping tool assists user with mapping a source data specification to a target HL7 v3 specification. The transformation engine tranfers a source data into a HL7 v3 message with the provided mapping between source and target sepcification. It supports two kind of source data: CSV data or HL7 v2 message."+
+		"<p>caAdapter HL7 Mapping and Transformation Services is one component of caAdapter implementing with mapping tool and transformation engine. The mapping tool assists user with mapping a source data specification to a target HL7 v3 specification. The transformation engine tranfers a source data into an HL7 v3 message using the provided mapping between source and target sepcification. It supports two kind of source data: CSV data or HL7 v2 message."+
 //		"<br>caAdapter GME is one component of caAdapter. The GME tool assists the user with creating and correcting mappings between existing namespace names (XSD's) and UML models (represented as XMI files). The tool allows the model owner to define model-specific common values, such as Package Namespace, that will be automatically applied to the model."+
 		"";
 	}
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.21  2009/02/19 19:49:58  wangeug
+ * HISTORY      : update information with the aboutWindow
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2008/11/10 20:55:27  wangeug
  * HISTORY      : GME release:version 4.2
  * HISTORY      :
