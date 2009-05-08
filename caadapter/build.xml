@@ -104,7 +104,7 @@
             	<include name="license/**"/>
             	<include name="map/functions/**"/>
             </fileset>
-            <fileset dir="${basedir}/docs/v4.3">
+            <fileset dir="${basedir}/docs/4.3">
             	<include name="*Notes.txt"/>
             </fileset>
         </copy>
@@ -194,9 +194,9 @@
 			    </zipfileset>
 				<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, axislib/**, lib/**" prefix="components/webservices"/>
 				<zipfileset dir="docs" prefix="docs">
-					<include name="v4.3/*4.3*.pdf"/>
+					<include name="4.3/*v4.3*.pdf"/>
 					<include name="*4.3*.zip"/>
-					<include name="v4.3/*4.3*.txt"/>
+					<include name="4.3/*v4.3*.txt"/>
 				</zipfileset>
 				<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
 					webstartconf/**, webstart/WEB-INF/**, webstart/caadapter-hl7.jnlp,webstart/index-hl7.html, webstart/index-ws.html, webstart/myKeyStore, webstart/v2MessageIndex.obj,webstart/web.xml"/>
