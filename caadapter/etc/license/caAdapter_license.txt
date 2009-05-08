@@ -1,6 +1,6 @@
 caBIG® Open Source Software License
 
-caAdapter 4.0, caAdapter 4.1 MMS, caAdapter 4.2 GME, caAdapter 4.3 HL7 v3 Transformation Services
+caAdapter 4.0, caAdapter MMS 4.1, caAdapter GME 4.2, caAdapter HL7 MTS 4.3
 Copyright Notice.
 
 Copyright 2007-2009 Science Applications International Corporation (SAIC) (“caBIG™ Participant”). caAdapter was created with NCI funding and is part of the caBIG® initiative. The software subject to this notice and license includes both human readable source code form and machine readable, binary, object code form (the “caBIG® Software”).
