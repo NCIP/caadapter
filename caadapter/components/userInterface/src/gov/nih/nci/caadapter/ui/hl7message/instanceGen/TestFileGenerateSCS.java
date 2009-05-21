@@ -22,9 +22,9 @@ import java.util.StringTokenizer;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.5 $
+ *          revision    $Revision: 1.6 $
  *          date        Jul 6, 2007
  *          Time:       4:02:14 PM $
  */
@@ -43,7 +43,7 @@ public class TestFileGenerateSCS
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.5 2008-06-09 19:53:53 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/TestFileGenerateSCS.java,v 1.6 2009-05-21 14:13:43 altturbo Exp $";
 
     //private List<String> list = new ArrayList<String>();
     DataNode head;
@@ -185,7 +185,7 @@ public class TestFileGenerateSCS
                 if (!temp.isLeafNode())
                 {
                     System.out.println("SSS: This node is not a leaf node : " + readLineOfFile + " : " + temp.getNodeName() + " : " + this.getSegmentName(temp) + " : " + list.get(list.size()-3));
-                    temp = this.getChildNodeWithName(temp, list.get(list.size()));
+                    temp = this.getChildNodeWithName(temp, list.get(list.size()-1));
                 }
                 if (temp == null)
                     System.out.println("SSS: This node is null : " + readLineOfFile);// + " : " + this.getSegmentName(temp));
@@ -753,6 +753,9 @@ class DataNode
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/06/09 19:53:53  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/03/26 14:43:30  umkis
  * HISTORY      : Re-assigning sortkey
  * HISTORY      :
