@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 
 public class FileUtil
@@ -464,7 +464,7 @@ public class FileUtil
 
         if (v2Loader == null)
         {
-            String name = "v2Meta";
+            String name = "v2Meta/version2.4/MessageStructure/ADT_A01.dat";
 
             Enumeration<URL> fileURLs = null;
             try
@@ -1333,7 +1333,7 @@ public class FileUtil
     /**
      * Retrieve a resource URL: work for both standealone and Webstart deployment
      * @param rscName
-     * @return
+     * @return URL
      */
     public static URL retrieveResourceURL(String rscName)
     {
@@ -1363,6 +1363,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.31  2009/04/21 16:55:48  altturbo
+ * update downloadFromURLtoTempFile()
+ *
  * Revision 1.30  2009/04/17 14:24:20  wangeug
  * clean code:provide meaningful printout messages
  *
