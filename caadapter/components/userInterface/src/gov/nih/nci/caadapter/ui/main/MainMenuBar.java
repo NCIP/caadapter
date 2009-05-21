@@ -12,6 +12,7 @@ import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.WebstartUtil;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.ui.common.AbstractMenuBar;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.actions.*;
@@ -57,10 +58,10 @@ import java.util.Map;
  * switches.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @since caAdapter v1.2
- * @version    $Revision: 1.49 $
- * @date       $Date: 2009-04-24 18:25:10 $
+ * @version    $Revision: 1.50 $
+ * @date       $Date: 2009-05-21 14:07:57 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -361,34 +362,38 @@ public class MainMenuBar extends AbstractMenuBar
         JMenuItem _buildV3Item = new JMenuItem(buildV3);
         _qb.add(_buildV3Item);
 
- 
-        Enumeration<URL> fileURLs = null;
-        try
-        {
-            String name = "instanceGen";
-            fileURLs= ClassLoader.getSystemResources(name);
-        }
-        catch(IOException ie)
-        {
-            fileURLs = null;
-        }
-        if (fileURLs != null)
-        {
 
-            while(fileURLs.hasMoreElements())
+        String property = FileUtil.searchProperty("MainMenuIncludesGeneratingInstance");
+        if (property.trim().equalsIgnoreCase("true"))
+        {
+            Enumeration<URL> fileURLs = null;
+            try
             {
-                URL fileURL = fileURLs.nextElement();
+                String name = "instanceGen/changeList.txt";
+                fileURLs= ClassLoader.getSystemResources(name);
+            }
+            catch(IOException ie)
+            {
+                fileURLs = null;
+            }
+            if (fileURLs != null)
+            {
 
-                String url = fileURL.toString().trim();
+                while(fileURLs.hasMoreElements())
+                {
+                    URL fileURL = fileURLs.nextElement();
 
-                if (url.equals("")) continue;
+                    String url = fileURL.toString().trim();
 
-                BuildGenerateHL7TestInstanceAction buildTestInstance=new BuildGenerateHL7TestInstanceAction(BuildGenerateHL7TestInstanceAction.COMMAND_Generate_Test_Instance, mainFrame);
-                //if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
-                //	buildTestInstance.setEnabled(false);
-                JMenuItem _buildTestInstance = new JMenuItem(buildTestInstance);
-                _qb.add(_buildTestInstance);
-                break;
+                    if (url.equals("")) continue;
+
+                    BuildGenerateHL7TestInstanceAction buildTestInstance=new BuildGenerateHL7TestInstanceAction(BuildGenerateHL7TestInstanceAction.COMMAND_Generate_Test_Instance, mainFrame);
+                    //if (!CaadapterUtil.getAllActivatedComponents().contains(Config.CAADAPTER_COMPONENT_HL7_V2V3_CONVERSION_ACTIVATED))
+                    //	buildTestInstance.setEnabled(false);
+                    JMenuItem _buildTestInstance = new JMenuItem(buildTestInstance);
+                    _qb.add(_buildTestInstance);
+                    break;
+                }
             }
         }
         return _qb;
@@ -751,6 +756,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.49  2009/04/24 18:25:10  wangeug
+ * HISTORY : clean ActionConstants class
+ * HISTORY :
  * HISTORY : Revision 1.48  2009/03/26 13:50:52  wangeug
  * HISTORY : include VOM for webstart release
  * HISTORY :
