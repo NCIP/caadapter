@@ -54,14 +54,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.45 $
- * @date $Date: 2009-04-21 17:40:48 $
+ * @version $Revision: 1.46 $
+ * @date $Date: 2009-05-28 19:37:59 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.45 2009-04-21 17:40:48 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.46 2009-05-28 19:37:59 altturbo Exp $";
 
 //    private String dataString = "";
     private boolean isStringData=false;
@@ -70,7 +70,10 @@ public class TransformationService
     private InputStream sourceDataStream = null;
 
 //&umkis    private boolean schemaValidation = false;
+//&umkis    private int levelOfDatatypeIncluding = -1;
 //&umkis    private String schemaFileName = null;
+//&umkis    private String nameSpacePrefix = "";
+//&umkis    private boolean makeLowercaseHeadElement = false;
 
     //intermediate data
     private MapParser mapParser = null;
@@ -296,9 +299,11 @@ public class TransformationService
    	        //return here to web service client
    	        return xmlElements;
         }
-        
+
         System.out.println("Encode HL7 V3 message__:" + (System.currentTimeMillis()-csvbegintime));
-        System.out.println("total message" + xmlElements.size());
+        int c = -1;
+        if (xmlElements != null) c=xmlElements.size();
+        System.out.println("total message" + c);
         ZipOutputStream zipOut = prepareZipout();
 		if (xmlElements!=null)
 		{
@@ -394,7 +399,15 @@ public class TransformationService
 
     	for(int i=0; i<xmlElements.size(); i++)
 		{
-            String v3Message = xmlElements.get(i).toXML().toString();
+            String v3Message = null;
+
+//&umkis            if ((getLevelOfDatatypeIncluding() > 0)||
+//&umkis                (getMakeLowercaseHeadElement())||
+//&umkis                (!getNameSpacePrefix().equals("")))
+//&umkis                v3Message = xmlElements.get(i).toXML(getLevelOfDatatypeIncluding(), getMakeLowercaseHeadElement(), getNameSpacePrefix()).toString();
+//&umkis            else
+            v3Message = xmlElements.get(i).toXML().toString();
+
             zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
 			writer.write(v3Message);
 			writer.flush();
@@ -423,7 +436,10 @@ public class TransformationService
 			Message msg = MessageResources.getMessage("EMP_IN", new Object[]{"Invalid CSV file! : Please check and validate this csv file against the scs file."});
 			theValidatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 			System.out.println("Error parsing csv Data" + csvDataResult.getCsvSegmentedFile().getLogicalRecords().size());
-			return null;
+
+            theValidatorResults.addValidatorResults(csvDataValidatorResults);
+
+            return null;
 		}
 		CSVSegmentedFile csvSegmentedFile = csvDataResult.getCsvSegmentedFile();
 		Hashtable<String, String>mappings=mapParser.getMappings();
@@ -637,6 +653,24 @@ public class TransformationService
 //&umkis    }
 
 //&umkis    /**
+//&umkis	 * @return a integer value for level of data type including.
+//&umkis     *      0 or less = all data type attribute are shown, 1=concreted data type from abstract data type only, 2=all data type cannot be shown.
+//&umkis     *      -1 or less = the value of FileUtil.searchProperty("levelOfDatatypeOutput") will be used.
+//&umkis	 */
+//&umkis    public int getLevelOfDatatypeIncluding()
+//&umkis    {
+//&umkis        return levelOfDatatypeIncluding;
+//&umkis    }
+
+//&umkis    /**
+//&umkis	 * @param levelOfDatatypeInclude a integer value for level of data type including..
+//&umkis	 */
+//&umkis    public void setLevelOfDatatypeIncluding(int levelOfDatatypeInclude)
+//&umkis    {
+//&umkis        levelOfDatatypeIncluding = levelOfDatatypeInclude;
+//&umkis    }
+
+//&umkis    /**
 //&umkis     * @param schemaFile
 //&umkis     */
 //&umkis    public boolean setSchemaFileName(String schemaFile)
@@ -664,6 +698,41 @@ public class TransformationService
 //&umkis        return schemaFileName;
 //&umkis    }
 
+//&umkis    /**
+//&umkis	 * @return a string value xml name space prefix ex) <v3:Patient.
+//&umkis	 */
+//&umkis    public String getNameSpacePrefix()
+//&umkis    {
+//&umkis        if (nameSpacePrefix == null) return "";
+//&umkis        return nameSpacePrefix.trim();
+//&umkis    }
+
+//&umkis    /**
+//&umkis	 * @param nameSpace xml name space prefix ex) <v3:Patient.
+//&umkis	 */
+//&umkis    public void setNameSpacePrefix(String nameSpace)
+//&umkis    {
+//&umkis        nameSpacePrefix = nameSpace;
+//&umkis    }
+
+//&umkis    /**
+//&umkis	 * @return if true, message will starts with a lowercase character ex) <patient
+//&umkis     *         if false, message will starts with a capital character ex) <Patient
+//&umkis	 */
+//&umkis    public boolean getMakeLowercaseHeadElement()
+//&umkis    {
+//&umkis        return makeLowercaseHeadElement;
+//&umkis    }
+
+//&umkis    /**
+//&umkis	 * @param lowerCase : if true, message will starts with a lowercase character ex) <patient
+//&umkis     *                    if false (default value), message will starts with a capital character ex) <Patient
+//&umkis	 */
+//&umkis    public void setMakeLowercaseHeadElement(boolean lowerCase)
+//&umkis    {
+//&umkis        makeLowercaseHeadElement = lowerCase;
+//&umkis    }
+
     public ValidatorResults getValidatorResults() {
 		return theValidatorResults;
 	}
@@ -682,6 +751,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.45  2009/04/21 17:40:48  altturbo
+ * HISTORY      : minor change -- add comment
+ * HISTORY      :
  * HISTORY      : Revision 1.44  2009/04/17 20:08:17  wangeug
  * HISTORY      : enable web service:process V2 messages
  * HISTORY      :

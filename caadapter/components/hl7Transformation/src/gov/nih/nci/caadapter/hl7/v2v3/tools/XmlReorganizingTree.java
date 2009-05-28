@@ -326,20 +326,20 @@ public class XmlReorganizingTree
                         vl = "NI";
                     }
                     if (nm.equalsIgnoreCase("_dummy__")) checked = false;
-                    if (nm.equalsIgnoreCase("xsi:type"))
-                    {
-                        if (levelOfDatatypeOutputValue == 2) checked = false;
-
-                        int idx1 = vl.indexOf(":");
-
-                        if ((levelOfDatatypeOutputValue == 1)&&(idx1 < 0)) checked = false;
-
-                        while(idx1 >= 0)
-                        {
-                            vl = vl.substring(idx1 + 1);
-                            idx1 = vl.indexOf(":");
-                        }
-                    }
+//                    if (nm.equalsIgnoreCase("xsi:type"))
+//                    {
+//                        if (levelOfDatatypeOutputValue == 2) checked = false;
+//
+//                        int idx1 = vl.indexOf(":");
+//
+//                        if ((levelOfDatatypeOutputValue == 1)&&(idx1 < 0)) checked = false;
+//
+//                        while(idx1 >= 0)
+//                        {
+//                            vl = vl.substring(idx1 + 1);
+//                            idx1 = vl.indexOf(":");
+//                        }
+//                    }
                     if (checked)
                         att = att + " " + nm + "=\"" + vl + "\"";
                 }
