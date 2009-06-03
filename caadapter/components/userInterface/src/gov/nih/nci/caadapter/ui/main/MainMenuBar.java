@@ -60,8 +60,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @since caAdapter v1.2
- * @version    $Revision: 1.50 $
- * @date       $Date: 2009-05-21 14:07:57 $
+ * @version    $Revision: 1.51 $
+ * @date       $Date: 2009-06-03 20:39:58 $
  */
 public class MainMenuBar extends AbstractMenuBar
 {
@@ -364,7 +364,7 @@ public class MainMenuBar extends AbstractMenuBar
 
 
         String property = FileUtil.searchProperty("MainMenuIncludesGeneratingInstance");
-        if (property.trim().equalsIgnoreCase("true"))
+        if ((property != null)&&(property.trim().equalsIgnoreCase("true")))
         {
             Enumeration<URL> fileURLs = null;
             try
@@ -756,6 +756,9 @@ private int findKeyStrokeIndex(int indx)
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.50  2009/05/21 14:07:57  altturbo
+ * HISTORY : add property MainMenuIncludesGeneratingInstance
+ * HISTORY :
  * HISTORY : Revision 1.49  2009/04/24 18:25:10  wangeug
  * HISTORY : clean ActionConstants class
  * HISTORY :
