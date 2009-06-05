@@ -49,7 +49,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.21 $
+ *          revision    $Revision: 1.22 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -69,7 +69,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.21 2009-05-21 14:06:16 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.22 2009-06-05 21:27:34 altturbo Exp $";
 
     boolean isCode = false;
 
@@ -499,6 +499,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
     private String changeLine(String line, List<String> changeList, MetaField field, H3SInstanceMetaSegment seg)
     {
+        //if (line.toLowerCase().indexOf("quantity") > 0) System.out.println(" GGGG FF1 : " + line + " : ");
         H3SInstanceMetaSegment parent = null;
         if (seg == null)
         {
@@ -508,7 +509,11 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                 return "";
             }
             String vr = getAttributeItemValue(field.getAttributes(), "user-default");
-            if ((vr != null)&&(!vr.trim().equals(""))) return "";
+            if ((vr != null)&&(!vr.trim().equals("")))
+            {
+                if ((line.toLowerCase().endsWith("quantity.unit"))&&(vr.trim().equals("1"))) {}
+                else return "";
+            }
 
             String en = getAttributeItemValue(field.getAttributes(), "isEnabled");
             if ((en.trim().equals("false"))) return "";
@@ -868,7 +873,6 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
     }
     private String changeLineExe(String line, String lin, String datatype)
     {
-
         int idx = lin.indexOf("%");
         if (idx < 0)
         {
@@ -1170,7 +1174,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
         }
         else
         {
-            System.err.println("Invalid block : " + block);
+            System.out.println(" GGGG : Invalid block : " + block + " : " + datatype);
             return "ERROR";
         }
     }
@@ -2043,10 +2047,15 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
                     (name.equalsIgnoreCase("usablePeriod"))||(name.equalsIgnoreCase("thumbnail")))
                     isAvoidElement = true;
             }
+            else if (type.equals("PQ"))
+            {
+                if (name.equalsIgnoreCase("translation"))
+                    isAvoidElement = true;
+            }
 
             if (isAvoidElement)
             {
-                System.out.println(" GGGGG : This is Avoid Element : " + type + " : " + name);
+                //System.out.println(" GGGGG : This is Avoid Element : " + type + " : " + name);
                 return true;
             }
             n++;
@@ -2151,6 +2160,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.21  2009/05/21 14:06:16  altturbo
+ * HISTORY      : update and add checkExceptionCaseOfLine()
+ * HISTORY      :
  * HISTORY      : Revision 1.20  2008/10/28 20:53:26  umkis
  * HISTORY      : upgrade
  * HISTORY      :
