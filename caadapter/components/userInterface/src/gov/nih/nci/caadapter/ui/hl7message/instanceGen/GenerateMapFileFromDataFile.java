@@ -33,9 +33,9 @@ import gov.nih.nci.caadapter.ui.hl7message.instanceGen.type.H3SInstanceSegmentTy
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.7 $
+ *          revision    $Revision: 1.8 $
  *          date        Jul 6, 2007
  *          Time:       3:57:59 PM $
  */
@@ -54,7 +54,7 @@ public class GenerateMapFileFromDataFile
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.7 2008-06-09 19:53:52 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/GenerateMapFileFromDataFile.java,v 1.8 2009-06-05 21:28:06 altturbo Exp $";
 
 
     private boolean success = false;
@@ -1521,7 +1521,7 @@ class DataTree
 
     public NodeElement searchSCSPath(String str)
     {
-
+        if (str.startsWith(".")) str = str.substring(1);
         if (str.equals(header)) return scsHead;
         if (!str.startsWith(header)) str = header + "." + str;
 
@@ -1702,6 +1702,7 @@ class DataTree
 
     public NodeElement searchBothPath(String str, NodeElement headNode)
     {
+        if (str.startsWith(".")) str = str.substring(1);
         if (!str.startsWith(header)) str = header + "." + str;
         //System.out.println("Search : " + str);
         List<String> li = new ArrayList<String>();
@@ -1711,11 +1712,36 @@ class DataTree
         {
             String stt = li.get(li.size()-1);
             li.remove(li.size()-1);
-            String st1 = stt.substring(0, stt.indexOf("_"));
-            String st2 = stt.substring(stt.indexOf("_")+1);
-            li.add(st1);
-            if (st2.equals("in")) li.add("inlineText");
-            else li.add(st2);
+            String st1 = "";
+            String st2 = "";
+            while(true)
+            {
+                st1 = stt.substring(0, stt.indexOf("_"));
+                st2 = stt.substring(stt.indexOf("_")+1);
+                li.add(st1);
+                if (st2.equals("in"))
+                {
+                    li.add("inlineText");
+                    break;
+                }
+                else if (st2.equals("val"))
+                {
+                    li.add("value");
+                    break;
+                }
+                else
+                {
+                    if (st2.indexOf("_") > 0)
+                    {
+                        stt = st2;
+                    }
+                    else
+                    {
+                        li.add(st2);
+                        break;
+                    }
+                }
+            }
         }
         //String segmentName = "";
         //String fieldName = "";
@@ -2381,6 +2407,9 @@ class FunctionItemList
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/06/09 19:53:52  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/03/26 14:43:30  umkis
  * HISTORY      : Re-assigning sortkey
  * HISTORY      :
