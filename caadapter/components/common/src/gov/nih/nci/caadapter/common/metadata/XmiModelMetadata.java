@@ -21,9 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.jdom.Element;
-import org.jdom.Namespace;
 
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
@@ -36,7 +34,6 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAttributeBean;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLModelBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLPackageBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
@@ -58,10 +55,10 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * LinkedHashMap can be used to construct the Object and Data model portions of
  * the caAdapter JTree mapping UI.
 
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.14 $
- * @date       $Date: 2008-09-25 19:30:39 $
+ * @version    $Revision: 1.15 $
+ * @date       $Date: 2009-06-12 15:14:21 $
  * */
 
 public class XmiModelMetadata {
@@ -699,4 +696,7 @@ class XmiXPathComparator implements Comparator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/09/25 19:30:39  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */
