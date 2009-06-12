@@ -10,13 +10,13 @@ package gov.nih.nci.caadapter.mms.validator;
 import java.util.Iterator;
 import java.util.List;
 
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 import gov.nih.nci.caadapter.mms.map.SingleAssociationMapping;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
-import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 
 /**
@@ -24,10 +24,10 @@ import gov.nih.nci.caadapter.common.metadata.TableMetadata;
  * name mapping to a foreign key column of a dependant table.
  *
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-06-12 15:52:30 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class SingleAssociationMappingValidator {
@@ -48,7 +48,7 @@ public class SingleAssociationMappingValidator {
     public boolean isAssociationEndObjectDependencyMapped() {
 		boolean associationEndObjectDependencyMapped = false;
 		try {
-			cumulativeMapping = CumulativeMapping.getInstance();
+			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
 			
 		}
@@ -88,7 +88,7 @@ public class SingleAssociationMappingValidator {
 	public boolean isColumnPreviouslyMapped(){
 		boolean previouslyMapped = false;
 		try {
-		cumulativeMapping = CumulativeMapping.getInstance();
+		cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e){
 			
 		}
@@ -133,7 +133,7 @@ public class SingleAssociationMappingValidator {
 		String parentXPath = getParentXPath(associationMapping.getColumnMetadata().getXPath());
 		//Get the table dependency mapping associated with Taxon
 		try {
-			cumulativeMapping = CumulativeMapping.getInstance();
+			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e){
 			
 		}
@@ -190,7 +190,7 @@ public class SingleAssociationMappingValidator {
 		String parentXPath = getParentXPath(associationMapping.getAssociationEndMetadata().getXPath());
 		//Get the table dependency mapping associated with Taxon
 		try {
-			cumulativeMapping = CumulativeMapping.getInstance();
+			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
 			//Add logging here
 		}
@@ -350,4 +350,7 @@ public class SingleAssociationMappingValidator {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

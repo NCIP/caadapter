@@ -10,12 +10,12 @@ package gov.nih.nci.caadapter.ui.mapping.mms;
 
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.XmiModelMetadata;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
 
 import java.awt.Component;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -26,10 +26,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  * TreeCellRenderer for MMS
  *
  * @author OWNER: wuye
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.10 $
- * @date       $Date: 2008-09-26 20:35:27 $ 
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2009-06-12 15:53:49 $ 
  *
  */
 public class MMSRenderer extends DefaultTreeCellRenderer
@@ -54,7 +54,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
         }
         else
         {
-        	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+        	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
         	lazyKeys = modelMetadata.getLazyKeys();
         	clobKeys = modelMetadata.getClobKeys();
         	discriminatorKeys = modelMetadata.getDiscriminatorKeys();
@@ -196,4 +196,7 @@ public class MMSRenderer extends DefaultTreeCellRenderer
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.10  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

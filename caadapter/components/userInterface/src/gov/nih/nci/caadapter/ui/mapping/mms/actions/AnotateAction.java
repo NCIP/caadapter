@@ -10,10 +10,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
 
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -22,10 +19,10 @@ import java.io.File;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2009-06-12 15:53:01 $
  */
 public class AnotateAction extends SaveAsObjectToDbMapAction
 {
@@ -41,7 +38,7 @@ public class AnotateAction extends SaveAsObjectToDbMapAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/AnotateAction.java,v 1.3 2008-09-26 20:35:27 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/AnotateAction.java,v 1.4 2009-06-12 15:53:01 wangeug Exp $";
 
 	/**
 	 * Defines an <code>Action</code> object with a default
@@ -88,21 +85,15 @@ public class AnotateAction extends SaveAsObjectToDbMapAction
 		{
 			results = processSaveFile(fileFromPanel);
 		}
-		try {
-			fileFromPanel = mappingPanel.getSaveFile();
-			String xmiFile = CumulativeMappingGenerator.getXmiFileName();
-			XMIGenerator generator = new XMIGenerator(fileFromPanel.getAbsolutePath(),xmiFile);
-			generator.annotateXMI();
-		}catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
 		return results;
 	}
 
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

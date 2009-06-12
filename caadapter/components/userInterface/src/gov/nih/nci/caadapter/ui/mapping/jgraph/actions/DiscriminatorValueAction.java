@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
@@ -28,15 +29,15 @@ import javax.swing.tree.*;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.5 $
- *          date        $Date: 2008-09-29 20:36:23 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-06-12 15:53:58 $
  */
 public class DiscriminatorValueAction extends AbstractContextAction
 {
 	private static final String COMMAND_NAME = "Set Discriminator Value";
 	
 	private static final String LOGID = "$RCSfile: DiscriminatorValueAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorValueAction.java,v 1.5 2008-09-29 20:36:23 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorValueAction.java,v 1.6 2009-06-12 15:53:58 wangeug Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('D');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
@@ -83,7 +84,7 @@ public class DiscriminatorValueAction extends AbstractContextAction
 			JTree sourceTree = absMappingPanel.getSourceTree();			
 			JTree targetTree = absMappingPanel.getTargetTree();
 
-			ModelMetadata modelMetadata = ModelMetadata.getInstance();				    	
+			ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();				    	
 			HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
 			//System.out.println( "targetTree: " + targetTree.getSelectionPath() );
@@ -176,6 +177,9 @@ public class DiscriminatorValueAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/29 20:36:23  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/09/29 20:32:34  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :

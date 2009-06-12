@@ -30,19 +30,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
  * This class defines the open Map panel action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-06-12 15:53:01 $
  */
 public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 {
@@ -153,24 +150,9 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 				try
 				{
                     GeneralUtilities.setCursorWaiting(mainFrame);
-					if( file.getAbsolutePath().contains(".map") || file.getAbsolutePath().contains(".MAP"))
-					{
-						validatorResults = mappingPanel.processOpenOldMapFile(file);
-						mappingPanel.setChanged(false);
-					}
-					else
-					{
-						validatorResults = mappingPanel.processOpenMapFile(file);
-						mappingPanel.setChanged(false);
-					}
+					validatorResults = mappingPanel.processOpenMapFile(file);
+					mappingPanel.setChanged(false);
 					Thread.sleep(1);
-					
-//					everythingGood = handleValidatorResults(validatorResults);
-					/*
-					 * TODO verify whether needs to call the validator
-					 */
-					
-//					mainFrame.getMainContextManager().getContextFileManager().registerFileUsageListener(mappingPanel);
 				}
 				catch (Throwable e1)
 				{
@@ -242,6 +224,9 @@ public class OpenObjectToDbMapAction extends DefaultContextOpenAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

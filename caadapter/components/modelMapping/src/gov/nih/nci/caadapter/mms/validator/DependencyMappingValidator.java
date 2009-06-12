@@ -10,6 +10,7 @@ package gov.nih.nci.caadapter.mms.validator;
 import java.util.Iterator;
 import java.util.List;
 
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
 
@@ -18,10 +19,10 @@ import gov.nih.nci.caadapter.mms.map.DependencyMapping;
  * correcltly mapped to a database table.
  *
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-06-12 15:52:30 $
  * @created 11-Aug-2006 8:18:16 AM
  */
 
@@ -53,7 +54,7 @@ public class DependencyMappingValidator {
 	public boolean areAlreadyMapped(){
 		boolean hasBeenMapped = false;
 		try {
-			cummulativeMapping = CumulativeMapping.getInstance();
+			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		}catch (Exception e){
 			//Add logging here
 		}
@@ -118,4 +119,7 @@ public class DependencyMappingValidator {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

@@ -8,9 +8,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.mms.map;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 
 /**
  * As the user maps objects and attributes to tables and columns this
@@ -20,10 +18,10 @@ import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
  * mapped.
  * 
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-06-12 15:51:50 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class CumulativeMapping {
@@ -32,29 +30,7 @@ public class CumulativeMapping {
 	private List<DependencyMapping> dependencyMappings = new ArrayList<DependencyMapping>();
 	private List<ManyToManyMapping> manyToManyMappings = new ArrayList<ManyToManyMapping>();
 	private List<SingleAssociationMapping> singleAssociationMappings = new ArrayList<SingleAssociationMapping>();
-
     private List<SemanticMapping> semanticMappings = new ArrayList<SemanticMapping>();
-
-    private static CumulativeMapping instance;
-
-	public CumulativeMapping(){
-	}
-
-    public synchronized static CumulativeMapping getInstance() throws Exception
-	{
-		if (instance == null)
-		{
-			instance = new CumulativeMapping();
-		}
-		return instance;
-	}
-    public synchronized static void reset() 
-    {
-    	if (instance != null) {
-    		instance = null;
-    		System.gc();
-    	}
-    }
 
 	/**
 	 *
@@ -94,60 +70,6 @@ public class CumulativeMapping {
 	 */
 	public void addSingleAssociationMapping(SingleAssociationMapping singleAssociationMapping){
    		singleAssociationMappings.add(singleAssociationMapping);
-	}
-
-	/**
-	 *
-	 * @param attributeMapping
-	 */
-	public boolean containsAttributeMapping(AttributeMapping attributeMapping){
-		return attributeMappings.contains(attributeMapping);
-	}
-
-	/**
-	 *
-	 * @param dependencyMapping
-	 */
-	public boolean containsDependencyMapping(DependencyMapping dependencyMapping){
-		return dependencyMappings.contains(dependencyMapping);
-	}
-	
-	/**
-	 *
-	 * @param associationEndMetadata
-	 */
-	public boolean isDependencyMapped(AssociationMetadata associationEndMetadata){
-		boolean isDependencyMapped = false;
-		List dependencyMappings = this.getAttributeMappings();
-		Iterator i = dependencyMappings.iterator();
-		while (i.hasNext()) {
-			try {
-				AssociationMetadata m = (AssociationMetadata)i.next();
-				if (m.getXPath().equals(associationEndMetadata)){
-					isDependencyMapped = true;
-				}
-
-			} catch (Exception e) {
-		            //LOGGER.fine(e.getMessage());
-		            e.printStackTrace();
-			}
-		}
-		return dependencyMappings.contains(associationEndMetadata);
-	}
-	/**
-	 *
-	 * @param manyToManyMapping
-	 */
-	public boolean containsManyToManyMapping(ManyToManyMapping manyToManyMapping){
-		return manyToManyMappings.contains(manyToManyMapping);
-	}
-
-	/**
-	 *
-	 * @param singleAssociationMapping
-	 */
-	public boolean containsSingleAssociationMapping(SingleAssociationMapping singleAssociationMapping){
-		return singleAssociationMappings.contains(singleAssociationMapping);
 	}
 
 	public List<AttributeMapping> getAttributeMappings(){
@@ -213,4 +135,7 @@ public class CumulativeMapping {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

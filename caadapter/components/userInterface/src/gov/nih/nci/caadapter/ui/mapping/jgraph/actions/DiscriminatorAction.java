@@ -7,6 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
@@ -27,12 +28,12 @@ import java.util.HashSet;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2008-09-29 20:36:23 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-06-12 15:53:58 $
  */
 public class DiscriminatorAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: DiscriminatorAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.9 2008-09-29 20:36:23 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/DiscriminatorAction.java,v 1.10 2009-06-12 15:53:58 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Disciminator";
 	private static final Character COMMAND_MNEMONIC = new Character('D');
@@ -77,7 +78,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 				    try {
 						JTree targetTree = absMappingPanel.getTargetTree();
 
-				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+				    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 				    	HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
 						if ( targetTree.getSelectionRows() != null )
@@ -120,7 +121,7 @@ public class DiscriminatorAction extends AbstractContextAction {
 			    	JTree targetTree = absMappingPanel.getTargetTree();
 			    	TreePath leadingPath = targetTree.getLeadSelectionPath();
 
-                    ModelMetadata modelMetadata = ModelMetadata.getInstance();
+                    ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
                     HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
 
 			        if ( discriminatorKeys.contains( parseNode( leadingPath.toString() ) ) )
@@ -224,6 +225,9 @@ public class DiscriminatorAction extends AbstractContextAction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/09/29 20:36:23  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2008/09/29 20:32:34  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :

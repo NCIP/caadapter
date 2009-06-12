@@ -30,7 +30,6 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
@@ -51,37 +50,38 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * LinkedHashMap can be used to construct the Object and Data model portions of
  * the caAdapter JTree mapping UI. This class is designed to be a singleton because
  * there should never be more than one instance of it in the runtime environment.
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.9 $
- * @date       $Date: 2008-09-25 19:30:39 $
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2009-06-12 15:49:58 $
  */
 public class ModelMetadata {
 	private static ModelMetadata modelMetadata = null;
-	private static XmiInOutHandler handler = null;
-	private static UMLModel model = null;
-	private static LinkedHashMap modelHashMap = new LinkedHashMap();
-	private static HashMap objectHashMap = new HashMap();
-	private static HashMap inheritanceHashMap = new HashMap();
-	private static TreeSet sortedModel = new TreeSet(new XPathComparator());
-	private static String xmiFileName;
-	private static HashSet<String> primaryKeys = new HashSet<String>();
-	private static HashSet<String> lazyKeys = new HashSet<String>();
-    private static HashSet<String> discriminatorKeys = new HashSet<String>();
-    private static HashSet<String> clobKeys = new HashSet<String>();
-    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
+
+	private XmiInOutHandler handler = null;
+	private LinkedHashMap modelHashMap = new LinkedHashMap();
+	private HashMap objectHashMap = new HashMap();
+	private HashMap inheritanceHashMap = new HashMap();
+	private TreeSet sortedModel = new TreeSet(new XPathComparator());
+	private String xmiFileName;
+	private HashSet<String> primaryKeys = new HashSet<String>();
+	private HashSet<String> lazyKeys = new HashSet<String>();
+    private HashSet<String> discriminatorKeys = new HashSet<String>();
+    private HashSet<String> clobKeys = new HashSet<String>();
+    private Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
     
-    private static String mmsPrefixObjectModel = "Logical View.Logical Model";
-    private static String mmsPrefixDataModel = "Logical View.Data Model";
+    private String mmsPrefixObjectModel = "Logical View.Logical Model";
+    private String mmsPrefixDataModel = "Logical View.Data Model";
     //define a list to hold "tag:value" of the UMLTaggedValue for the mapped attributes 
-    private static List <String>preservedMappedTag=new ArrayList<String>();
-    public ModelMetadata(){}
+    private List <String>preservedMappedTag=new ArrayList<String>();
 	
 	public ModelMetadata(String xmiFileName){
 		this.xmiFileName = xmiFileName;
+		init();
 	}
 	
-	public static void init(String xmiFileName) {
+	private  void init() 
+	{
 	    try {
             // Check for the agrUML or EA XMI
             // Decide which parser to use to open this XMI file
@@ -111,40 +111,17 @@ public class ModelMetadata {
             }
 
             handler.load(xmiFileName);
-	    	model = handler.getModel();
+            for( UMLPackage pkg :handler.getModel().getPackages() )
+            {
+                initProcessPackage(pkg);
+            }
 	    	preservedMappedTag.clear();
 	    } catch (XmiException e) {
 	    	e.printStackTrace();
 	    } catch (IOException e) {
 	    	e.printStackTrace();
 	    }
-	  }
-	public static ModelMetadata getInstance() {
-		return modelMetadata;
-	}
-	
-	public static XmiInOutHandler getHandler() {
-		return handler;
-	}
-	
-	public static ModelMetadata createModel(String xmiFileName) 
-	{
-		 if ( modelMetadata != null )
-		 {
-			sortedModel = null;
-			modelHashMap = null;
-			modelMetadata = null;
-			System.gc();
-		 }
-
-		 sortedModel = new TreeSet(new XPathComparator());
-		 modelHashMap = new LinkedHashMap();
-    	 modelMetadata = new ModelMetadata(xmiFileName);
-
-		 init(xmiFileName);
-		 createModel(model);
-		 Object[] sortedArray  = sortedModel.toArray();
-		 
+	   	 Object[] sortedArray  = sortedModel.toArray();	 
 		 for( int i=0; i < sortedModel.size(); i++ )
 		 {
 			 modelHashMap.put(((MetaObjectImpl)sortedArray[i]).getXPath(),sortedArray[i]);
@@ -182,24 +159,23 @@ public class ModelMetadata {
 				 }
 			 }
 		 }
-		 return modelMetadata; 
-	}
-	
-    private static void createModel(UMLModel model)
-    {
-        for( UMLPackage pkg : model.getPackages() )
-        {
-            printPackage(pkg);
-        }
-    }
+	  }
+//	public static ModelMetadata getInstance() {
+//		return modelMetadata;
+//	}
+//	
+//	public static void createModel(String xmiFileName) 
+//	{
+//		 modelMetadata = new ModelMetadata(xmiFileName);
+//	}
 
-    private static void printPackage(UMLPackage pkg)
+	private void initProcessPackage(UMLPackage pkg)
     {
         for(UMLClass clazz : pkg.getClasses())
         {
 
             StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
-            if (pathKey.toString().contains(  modelMetadata.getMmsPrefixDataModel() )) {
+            if (pathKey.toString().contains(mmsPrefixDataModel )) {
                 //create a TableMetadata object
                 TableMetadata table = new TableMetadata();
                 table.setName(clazz.getName());
@@ -209,9 +185,9 @@ public class ModelMetadata {
 
                 sortedModel.add(table);
                 for(UMLAttribute att : clazz.getAttributes()) {
-                    printColumnAttribute(att, table, pathKey);
+                	initProcessColumnAttribute(att, table, pathKey);
                 }
-            } else if (pathKey.toString().contains( modelMetadata.getMmsPrefixObjectModel() ) && !pathKey.toString().contains("java")) {
+            } else if (pathKey.toString().contains( mmsPrefixObjectModel) && !pathKey.toString().contains("java")) {
 
                 ObjectMetadata object = new ObjectMetadata();
                 object.setUmlClass(clazz);
@@ -259,26 +235,25 @@ public class ModelMetadata {
                     }
                     for(UMLClass p : parents) {
                         for(UMLAttribute att : p.getAttributes()) {
-                            printAttribute(att, object, pathKey, true);
+                        	initProcessAttribute(att, object, pathKey, true);
                         }
                     }
                 }
                 for(UMLAttribute att : clazz.getAttributes()) {
-                    printAttribute(att, object, pathKey, false);
+                	initProcessAttribute(att, object, pathKey, false);
                 }
                 for(UMLAssociation assoc : clazz.getAssociations()) {
-                     printAssociation(assoc, object, pathKey, clazz);
-             }
-                //create an object metadata object
+                	initProcessAssociation(assoc, object, pathKey, clazz);
+                }
             }
         }
         for(UMLPackage _pkg : pkg.getPackages()) {
-          printPackage(_pkg);
+          initProcessPackage(_pkg);
         }
       }
 
 
-	  private static void printAssociation(UMLAssociation assoc, ObjectMetadata object, StringBuffer keyPath, UMLClass clazz) {
+	  private void initProcessAssociation(UMLAssociation assoc, ObjectMetadata object, StringBuffer keyPath, UMLClass clazz) {
 		  	boolean isOneToMany = false;
 		  	boolean isManyToMany = false;
 	    	UMLAssociationEnd assocEndA = (UMLAssociationEnd)assoc.getAssociationEnds().get(0);
@@ -314,7 +289,7 @@ public class ModelMetadata {
 	    			if (assocEnd.isNavigable()||isOneToMany || isManyToMany) {
 	    				thisEnd.setRoleName(assocEnd.getRoleName());
 	    				thisEnd.setMultiplicity(assocEnd.getHighMultiplicity());
-	    				thisEnd.setReciprocalMultiplity(getReciprocalMultiplicity(assocEnd));
+	    				thisEnd.setReciprocalMultiplity(findReciprocalMultiplicity(assocEnd));
 	    				thisEnd.setXPath(associationKeyPath.toString());
 	    				thisEnd.setReturnTypeXPath(clazz1.toString());
 	    				thisEnd.setNavigability(assocEnd.isNavigable());
@@ -325,7 +300,26 @@ public class ModelMetadata {
 	    	}
 	  }	  	  
 	  
-	  private static void printAttribute(UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
+	  private int findReciprocalMultiplicity(UMLAssociationEnd assocEnd) {
+		int otherEndMultiplicity = 0;
+		otherEndMultiplicity = findOtherAssociationEnd(assocEnd).getHighMultiplicity();
+		return otherEndMultiplicity;
+	}
+
+	private UMLAssociationEnd findOtherAssociationEnd(UMLAssociationEnd assocEnd) {
+		UMLAssociation assoc = assocEnd.getOwningAssociation();
+		UMLAssociationEnd otherAssocEnd = null;
+		for (Iterator i = assoc.getAssociationEnds().iterator(); i.hasNext();) {
+			UMLAssociationEnd ae = (UMLAssociationEnd) i.next();
+			if (ae != assocEnd) {
+				otherAssocEnd = ae;
+				break;
+			}
+		}
+		return otherAssocEnd;
+	}
+
+	private  void initProcessAttribute(UMLAttribute att, ObjectMetadata object, StringBuffer pathKey, boolean derived) {
 		    StringBuffer attributePath = new StringBuffer();
 		    attributePath.append(pathKey);
 	        AttributeMetadata attMetadata = new AttributeMetadata();
@@ -340,7 +334,7 @@ public class ModelMetadata {
 	        //attMetadata.setSemanticConcept(att.getTaggedValue("conceptId").getValue());   
 	  }
 	  
-	  private static void printColumnAttribute(UMLAttribute att, TableMetadata object, StringBuffer pathKey) 
+	  private void initProcessColumnAttribute(UMLAttribute att, TableMetadata object, StringBuffer pathKey) 
 	  {
 	        ColumnMetadata attMetadata = new ColumnMetadata();
 	        StringBuffer colPathKey = new StringBuffer();
@@ -354,7 +348,11 @@ public class ModelMetadata {
 	        sortedModel.add(attMetadata);
 //	        System.out.println("xxxxxxxxxxxxxxx COLUMN: " + colPathKey);
 	  }
-	  	public HashMap getInheritanceMetadata() {
+	  	public XmiInOutHandler getHandler() {
+		return handler;
+	}
+
+		public HashMap getInheritanceMetadata() {
 	  		return inheritanceHashMap;		
 	  	}	  
 
@@ -402,104 +400,78 @@ public class ModelMetadata {
 		 * @return Returns the model.
 		 */
 		public UMLModel getModel() {
-			return model;
+			return handler.getModel();
 		}
 		
-		/**
-		 * @param model The model to set.
-		 */
-		public void setModel(UMLModel model) {
-			this.model = model;
-		}
-
-        public static String getMmsPrefixObjectModel() {
+        public String getMmsPrefixObjectModel() {
             return mmsPrefixObjectModel;
         }
 
-        public static void setMmsPrefixObjectModel(String mmsPrefixObjectModel) {
-            ModelMetadata.mmsPrefixObjectModel = mmsPrefixObjectModel;
+        public void setMmsPrefixObjectModel(String mmsPrefixObjectModelSet) {
+            mmsPrefixObjectModel = mmsPrefixObjectModelSet;
         }
 
-        public static String getMmsPrefixDataModel() {
+        public String getMmsPrefixDataModel() {
             return mmsPrefixDataModel;
         }
 
-        public static void setMmsPrefixDataModel(String mmsPrefixDataModel) {
-            ModelMetadata.mmsPrefixDataModel = mmsPrefixDataModel;
+        public void setMmsPrefixDataModel(String mmsPrefixDataModelSet) {
+        	mmsPrefixDataModel = mmsPrefixDataModelSet;
         }
 
-        public static HashSet<String> getClobKeys() {
+        public HashSet<String> getClobKeys() {
             return clobKeys;
         }
 
-        public static void setClobKeys(HashSet<String> clobKeys) {
-            ModelMetadata.clobKeys = clobKeys;
+        public void setClobKeys(HashSet<String> clobKeysSet) {
+            clobKeys = clobKeysSet;
         }
 
-        public static HashSet<String> getDiscriminatorKeys() {
+        public HashSet<String> getDiscriminatorKeys() {
             return discriminatorKeys;
         }
 
-        public static void setDiscriminatorKeys(HashSet<String> discriminatorKeys) {
-            ModelMetadata.discriminatorKeys = discriminatorKeys;
+        public void setDiscriminatorKeys(HashSet<String> discriminatorKeysSet) {
+            discriminatorKeys = discriminatorKeysSet;
         }
 
-        private static int getReciprocalMultiplicity(UMLAssociationEnd assocEnd) {
-			int otherEndMultiplicity = 0;
-			otherEndMultiplicity = getOtherAssociationEnd(assocEnd).getHighMultiplicity();
-			return otherEndMultiplicity;
-		}
-		  
-		public static UMLAssociationEnd getOtherAssociationEnd(UMLAssociationEnd assocEnd) {
-			UMLAssociation assoc = assocEnd.getOwningAssociation();
-			UMLAssociationEnd otherAssocEnd = null;
-			for (Iterator i = assoc.getAssociationEnds().iterator(); i.hasNext();) {
-				UMLAssociationEnd ae = (UMLAssociationEnd) i.next();
-				if (ae != assocEnd) {
-					otherAssocEnd = ae;
-					break;
-				}
-			}
-			return otherAssocEnd;
-		}
-		
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-//		ModelMetadata myModel = new ModelMetadata("C:/sample.xmi");
-		//myModel.setXmiFileName("C:/sample.xmi");
-//		ModelMetadata myModel1 = ModelMetadata.createModel("D:/projects/hl7sdk-new/workingspace/cacore.xmi");
-		ModelMetadata myModel1 = ModelMetadata.createModel("D:/projects/hl7sdk-new/workingspace/sample.xmi");
-		ModelMetadata myModel = ModelMetadata.getInstance();
-		LinkedHashMap myMap = myModel.getModelMetadata();
-		Set mySet = myMap.keySet();
-		for (Iterator i = mySet.iterator(); i.hasNext();) {
-		   String key = (String)i.next();
-		   //System.out.println(key);
-		   Object x = myMap.get(key);
-		   //System.out.println(x);
-		}
-	}
-
-	/**
+        /**
 	 * @return the discriminatorValues
 	 */
-	public static Hashtable<String, String> getDiscriminatorValues() {
+	public Hashtable<String, String> getDiscriminatorValues() {
 		return discriminatorValues;
 	}
 
 	/**
 	 * @param discriminatorValues the discriminatorValues to set
 	 */
-	public static void setDiscriminatorValues(
-			Hashtable<String, String> discriminatorValues) {
-		ModelMetadata.discriminatorValues = discriminatorValues;
+	public void setDiscriminatorValues(
+			Hashtable<String, String> discriminatorValuesSet) {
+		discriminatorValues = discriminatorValuesSet;
 	}
 
-	public static List<String> getPreservedMappedTag() {
+	public List<String> getPreservedMappedTag() {
 		return preservedMappedTag;
 	}
+
+	/**
+		 * @param args
+		 */
+		public static void main(String[] args) {
+	//		ModelMetadata myModel = new ModelMetadata("C:/sample.xmi");
+			//myModel.setXmiFileName("C:/sample.xmi");
+	//		ModelMetadata myModel1 = ModelMetadata.createModel("D:/projects/hl7sdk-new/workingspace/cacore.xmi");
+			
+			ModelMetadata myModel = new ModelMetadata("D:/projects/hl7sdk-new/workingspace/sample.xmi");
+			LinkedHashMap myMap = myModel.getModelMetadata();
+			Set mySet = myMap.keySet();
+			for (Iterator i = mySet.iterator(); i.hasNext();) {
+			   String key = (String)i.next();
+			   //System.out.println(key);
+			   Object x = myMap.get(key);
+			   //System.out.println(x);
+			}
+		}
 }
 
 class XPathComparator implements Comparator {
@@ -513,4 +485,7 @@ class XPathComparator implements Comparator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/09/25 19:30:39  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */

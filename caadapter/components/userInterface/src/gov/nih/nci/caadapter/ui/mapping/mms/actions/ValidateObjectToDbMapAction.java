@@ -18,6 +18,7 @@ import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultValidateAction;
@@ -36,10 +37,10 @@ import java.util.Set;
  * This class defines the action to invoke validation of HSM.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-06-12 15:53:01 $
  */
 public class ValidateObjectToDbMapAction extends AbstractContextAction
 {
@@ -55,7 +56,7 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.6 2008-09-26 20:35:27 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.7 2009-06-12 15:53:01 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -110,12 +111,12 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 */
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
-		if( ModelMetadata.getInstance() != null )
+		if( CumulativeMappingGenerator.getInstance().getMetaModel()!= null )
 		{
 
         ValidatorResults validatorResults = new ValidatorResults();
 
-        ModelMetadata myModel = ModelMetadata.getInstance();
+        ModelMetadata myModel = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
 		LinkedHashMap myMap = myModel.getModelMetadata();
 
 		Set keySet = myMap.keySet();
@@ -188,6 +189,9 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

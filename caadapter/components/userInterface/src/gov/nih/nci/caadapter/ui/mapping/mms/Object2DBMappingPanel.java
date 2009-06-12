@@ -26,7 +26,6 @@ import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerateCacoreIntegrator;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappableNode;
@@ -42,14 +41,13 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.MmsTargetTreeDropTransferHandler;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLDependency;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLInterface;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.JDomDomainObject;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.awt.BorderLayout;
@@ -57,14 +55,11 @@ import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,43 +75,30 @@ import javax.swing.JRootPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 /**
  * The class is the main panel to construct the UI and initialize the utilities
  * to facilitate mapping functions.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
- * @version    $Revision: 1.37 $
- * @date       $Date: 2008-09-26 20:35:27 $ 
+ * @version    $Revision: 1.38 $
+ * @date       $Date: 2009-06-12 15:53:49 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.37 2008-09-26 20:35:27 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.38 2009-06-12 15:53:49 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
 	private static final String SELECT_XMI = "Open XMI file...";
     private static final String SELECT_XSD = "Open XSD file...";
-    private static final String ANNOTATE_XMI = "Tag XMI File";
-	private static final String GENERATE_HBM = "Generate HBM Files";
+    private static final String GENERATE_HBM = "Generate HBM Files";
 	
-	private static HashSet<String> primaryKeys = new HashSet<String>();
-	private static HashSet<String> lazyKeys = new HashSet<String>();
-    private static HashSet<String> clobKeys = new HashSet<String>();
-    private static HashSet<String> discriminatorKeys = new HashSet<String>();
-    private static Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
-
 	public Object2DBMappingPanel() {
 		this("defaultObjectToDatabaseMapping");
 	}
@@ -243,12 +225,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 						".xmi", "Open XMI file ...", false, false);
 				if (file != null) {
 					// everythingGood = processOpenSourceTree(file, true, true);
-					if (file.getAbsolutePath().contains(".map")
-							|| file.getAbsolutePath().contains(".MAP")) {
-						ValidatorResults results = processOpenOldMapFile(file);
-					} else {
-						ValidatorResults results = processOpenMapFile(file);
-					}
+					ValidatorResults results = processOpenMapFile(file);
 				}
 			}
 			else if (GENERATE_HBM.equals(command)) {
@@ -289,15 +266,12 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 					case JFileChooser.ERROR_OPTION:
 						return;
 					}
-										
-					saveMappingFile();			
+					saveMappingFile();						
 					String outputDir=fileChooser.getSelectedFile().getAbsolutePath();
-					UMLModel model=ModelMetadata.getHandler().getModel();
+					UMLModel model=CumulativeMappingGenerator.getInstance().getMetaModel().getHandler().getModel();
 					HBMGenerateCacoreIntegrator.getInstance().generateMapping(model,outputDir);
 					JOptionPane.showMessageDialog(getParent(),
-							"HBM files are generated at "
-									+ fileChooser.getSelectedFile()
-											.getAbsolutePath(),
+							"HBM files are generated at "+ fileChooser.getSelectedFile().getAbsolutePath(),
 							"HBM Generation Complete",
 							JOptionPane.INFORMATION_MESSAGE);							
 					
@@ -318,10 +292,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 	}
 
-	public void saveMappingFile() {
+	private void saveMappingFile() {
 		File file = getSaveFile();		
-		File mapFile = new File(file.getAbsolutePath().replaceAll(".xmi", ".map"));
-		
+			
 		if (file == null) {
 			file = DefaultSettings
 					.getUserInputOfFileFromGUI(this,
@@ -332,28 +305,14 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 				return;
 			}
 		}
-
+		String mapFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
 		try {
-			CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
-			myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName().replaceAll(".xmi", ".map"));
-			// Creating mapping file		
-			myGenerator.createLocalMappingFile();
-			XMLOutputter outp = new XMLOutputter();
-			outp.setFormat(Format.getPrettyFormat());
-
-			try {
-				FileOutputStream myStream = new FileOutputStream(mapFile);
-				outp.output(myGenerator.getDocument(), myStream);
-				myStream.close();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			// clear the change flag.
+			CumulativeMappingToMappingFileGenerator.writeMappingFile(new File(mapFileName), file.getAbsolutePath());
 			setChanged(false);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
-			setSaveFile(mapFile);
+			setSaveFile(file);
 		}
 	}
 
@@ -361,7 +320,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			throws Exception {
 		TreeNode nodes = new DefaultMutableTreeNode("Object Model");
 		CumulativeMappingGenerator.init(file.getAbsolutePath());
-		ModelMetadata myModel = gov.nih.nci.caadapter.common.metadata.ModelMetadata.getInstance();
+		ModelMetadata myModel = CumulativeMappingGenerator.getInstance().getMetaModel();
 		LinkedHashMap myMap = myModel.getModelMetadata();
 
 		Set keySet = myMap.keySet();
@@ -384,7 +343,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		String name = fullName.substring(prefixLen, fullName.length());
 		String[] pks = name.split("\\.");
 
-		ModelMetadata myModel = ModelMetadata.getInstance();
+		ModelMetadata myModel = CumulativeMappingGenerator.getInstance().getMetaModel();
 		LinkedHashMap myMap = myModel.getModelMetadata();
 
 		if (pks.length <= 0)
@@ -433,7 +392,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	protected TreeNode loadTargetTreeData(Object metaInfo, File absoluteFile)
 			throws Exception {
 		TreeNode nodes = new DefaultMutableTreeNode("Data Model");
-		ModelMetadata myModel = ModelMetadata.getInstance();
+		ModelMetadata myModel = CumulativeMappingGenerator.getInstance().getMetaModel();
 		LinkedHashMap myMap = myModel.getModelMetadata();
 
 		Set keySet = myMap.keySet();
@@ -526,34 +485,21 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 	 * @throws Exception
 	 *             changed from protected to pulic by sean
 	 */
-	public ValidatorResults processOpenMapFile(File file) throws Exception {
-		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-
+	public ValidatorResults processOpenMapFile(File file) throws Exception 
+	{
 		// Read the XMI Mapping attributes
 		String fileName = file.getAbsolutePath();
-
 		boolean success = CumulativeMappingGenerator.init(fileName);
-
 		if (success) {
-			ModelMetadata myModel = ModelMetadata.getInstance();
-
-			if (myModel == null) {
+			ModelMetadata xmiModelMeta = CumulativeMappingGenerator.getInstance().getMetaModel();
+			if (xmiModelMeta == null) {
 				JOptionPane.showMessageDialog(null, "Error opening XMI file");
 			}
 			boolean isSuccess;
-			boolean status = false;
-			String xmiFileName = "";
-
 			// Read XMI File and construct Target and Source Trees
-			status = processOpenSourceTree(file, true, true);
-
-			TreeModel sModel = sTree.getModel();
-			DefaultMutableTreeNode rootSTree = (DefaultMutableTreeNode) sModel
-					.getRoot();
-
-			TreeModel tModel = tTree.getModel();
-			DefaultMutableTreeNode rootTTree = (DefaultMutableTreeNode) tModel
-					.getRoot();
+			processOpenSourceTree(file, true, true);
+			DefaultMutableTreeNode rootSTree = (DefaultMutableTreeNode) sTree.getModel().getRoot();
+			DefaultMutableTreeNode rootTTree = (DefaultMutableTreeNode) tTree.getModel().getRoot();
 
 			Hashtable sourceNodes = new Hashtable();
 			Hashtable targetNodes = new Hashtable();
@@ -567,330 +513,127 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 			middlePanel.getMappingDataManager().setMappingData(newMappingImpl);
 			middlePanel.getMappingDataManager().clearAllGraphCells();
-
 			setSaveFile(file);
-
-			// Lets try to get all the details
-			UMLModel myUMLModel = myModel.getModel();
-			UMLClass client = null;
-			UMLClass supplier = null;
-
-			for (UMLDependency dep : myUMLModel.getDependencies()) {
-				String sourceXpath = "";
-				String targetXpath = "";
-
-				client = (UMLClass) dep.getClient();
-				supplier = (UMLClass) dep.getSupplier();
-
-				StringBuffer pathKey = new StringBuffer(ModelUtil
-						.getFullPackageName(client));
-				targetXpath = pathKey + "." + client.getName();
-
-				pathKey = new StringBuffer(ModelUtil
-						.getFullPackageName(supplier));
-				sourceXpath = pathKey + "." + supplier.getName();
-
-				DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
-						.get(sourceXpath);
-				DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
-						.get(targetXpath);
-
-				if (sourceNode == null || targetNode == null)
-					continue;
-
-				SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
-						.getUserObject();
-				SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
-						.getUserObject();
-
-				sourceSDKMetaData.setMapped(true);
-				isSuccess = cumulativeMappingGenerator.map(sourceXpath,
-						targetXpath);
-				isSuccess = isSuccess
-						&& getMappingDataManager().createMapping(
-								(MappableNode) sourceNode,
-								(MappableNode) targetNode);
-			}
-			ModelMetadata.getPreservedMappedTag().clear();
-			for (UMLPackage pkg : myUMLModel.getPackages()) {
-				for (UMLPackage pkg2 : pkg.getPackages()) {
-					for (UMLClass clazz : pkg2.getClasses()) {
-						StringBuffer pathKey = new StringBuffer(ModelUtil
-								.getFullPackageName(clazz));
-
-						for (UMLAttribute att : clazz.getAttributes()) {
-							for (UMLTaggedValue tagValue : att
-									.getTaggedValues()) {
-								String sourceXpath = "";
-								String targetXpath = "";
-
-								if (tagValue.getName().contains(
-										"mapped-attribute")
-										|| tagValue.getName().contains(
-												"implements-association")) {
-									targetXpath = pathKey + "."
-											+ clazz.getName() + "."
-											+ att.getName();
-									sourceXpath = CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
-											+ tagValue.getValue();
-									DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
-											.get(sourceXpath);
-									DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
-											.get(targetXpath);
-
-									if (sourceNode == null
-											|| targetNode == null)
-										continue;
-
-									SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
-											.getUserObject();
-									SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
-											.getUserObject();
-
-									sourceSDKMetaData.setMapped(true);
-									isSuccess = cumulativeMappingGenerator.map(
-											sourceXpath, targetXpath);
-									isSuccess = isSuccess
-											&& getMappingDataManager()
-													.createMapping(
-															(MappableNode) sourceNode,
-															(MappableNode) targetNode);
-									if (!isSuccess)
-									{
-										//no UI link is created for the mapped table.column 
-										//"mapped-attributes"/"implements-association"
-										String prvdTag=tagValue.getName()+":"+tagValue.getValue();
-										ModelMetadata.getPreservedMappedTag().add(prvdTag);
-										logger.logInfo(this, "No UI link is created, preserve the mapping:"+prvdTag);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			primaryKeys = new HashSet<String>();
-			lazyKeys = new HashSet<String>();
-			discriminatorKeys = new HashSet<String>();
-            clobKeys = new HashSet<String>();
-			
-			//Retrieve all the primaryKeys & lazyKeys saved as TaggedValues
-			for( UMLPackage pkg : myUMLModel.getPackages() ) 
-			{
-				getPackages( pkg );
-			}				
-
-            myModel.setPrimaryKeys( primaryKeys );
-			myModel.setLazyKeys( lazyKeys );
-            myModel.setClobKeys( clobKeys );
-            myModel.setDiscriminatorKeys( discriminatorKeys );
-            myModel.setDiscriminatorValues(discriminatorValues);
-
-            if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
-            {
-                myModel.setMmsPrefixDataModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
-            } else {
-                myModel.setMmsPrefixDataModel( "Logical View.Data Model" );
-            }
-            if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
-            {
-                myModel.setMmsPrefixObjectModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-            } else {
-                myModel.setMmsPrefixObjectModel( "Logical View.Logical Model" );
-            }
-
+			processXmiModel(xmiModelMeta,sourceNodes, targetNodes);
         } else {
-			JOptionPane
-					.showMessageDialog(	null, "The .map or .xmi file selected is not valid. Please check the export settings in EA and try again.");
+			JOptionPane.showMessageDialog(	null, "The .map or .xmi file selected is not valid. Please check the export settings in EA and try again.");
 		}
 		return null;
-	}
-
-	//Recursive loop required to find all primaryKeys
-	public void getPackages( UMLPackage pkg )
-	{
-		for ( UMLClass clazz : pkg.getClasses() )
-		{
-			for( UMLTaggedValue tagValue : clazz.getTaggedValues() )
-			{
-				if( tagValue.getName().contains( "discriminator" ))
-				{	
-					String packageName = "";
-					UMLPackage umlPackage = clazz.getPackage();
-					while (umlPackage != null)
-					{
-						packageName = umlPackage.getName() + "." + packageName;
-						umlPackage = umlPackage.getParent();
-					}
-		            packageName =  packageName + clazz.getName();
-		            
-	    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_OBJECTMODEL).length();
-	    			String dvalue = (packageName).substring(preLen+1);
-
-	    			discriminatorValues.put(dvalue, tagValue.getValue() );
-				}
-			}			
-            for( UMLAttribute att : clazz.getAttributes() )
-			{	
-				for( UMLTaggedValue tagValue : att.getTaggedValues() )
-				{
-					if( tagValue.getName().contains( "id-attribute" ))
-					{																						
-						String pkValue=ModelMetadata.getMmsPrefixObjectModel() + "."+tagValue.getValue();
-						UMLAttribute column = ModelUtil.findAttribute(ModelMetadata.getHandler().getModel(), pkValue);
-						if (column==null)
-						{
-							logger.logInfo(this,"No Attribute being found for primary key, preserve the primary key mapping:" + tagValue.getName()+":"+tagValue.getValue());
-							ModelMetadata.getPreservedMappedTag().add(tagValue.getName()+":"+tagValue.getValue());
-						}
-						else
-							primaryKeys.add( tagValue.getValue() );
-					}
-                    if( tagValue.getName().contains( "discriminator" ) )
-                    {
-                        discriminatorKeys.add(clazz.getName()+"." + att.getName());
-                    }
-                    if( tagValue.getName().contains( "type" ) )
-                    {
-                        if( tagValue.getValue().equals( "CLOB") )
-                        {
-                            String fieldName = clazz.getName() + "." + att.getName();
-                            clobKeys.add( fieldName );                            
-                        }
-                    }
-                }
-			}		
-    		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-
-			for( UMLAssociation assc : clazz.getAssociations()) 
-			{
-				for( UMLTaggedValue tagValue : assc.getTaggedValues() )
-				{
-					if( tagValue.getName().contains( "lazy-load" ) && tagValue.getValue().equalsIgnoreCase("no"))
-					{
-			    		String fieldName = cumulativeMappingGenerator.getColumnFromAssociation(assc);
-			    		if (fieldName!=null)
-			    		{
-			    			int preLen = CaadapterUtil.readPrefParams(Config.MMS_PREFIX_DATAMODEL).length();
-			    			lazyKeys.add(fieldName.substring(preLen+1));
-			    		}
-					}
-				}
-			}				
-		}
-		
-		for ( UMLPackage pkg2 : pkg.getPackages() )
-		{
-			getPackages( pkg2 );
-		}
 	}
 	
-	/**
-	 * Called by actionPerformed() and overridable by descendant classes.
-	 * 
-	 * @param file
-	 * @throws Exception
-	 *             changed from protected to pulic by sean
-	 */
-	public ValidatorResults processOpenOldMapFile(File file) throws Exception {
-		String xmiFileName = "";
-		SAXBuilder builder = new SAXBuilder(false);
-		Document doc = builder.build(new File(file.getAbsolutePath()));
-		Element root = doc.getRootElement();
-		Element components = root.getChild("components");
-		if (components == null) {
-			xmiFileName = "";
-		} else {
-			Element component = components.getChild("component");
-			if (component == null) {
-				xmiFileName = "";
-			} else {
-				xmiFileName = component.getAttributeValue("location");
-			}
-		}
-		File newXmiFile = null;
-		if (xmiFileName.equals("")) {
-			newXmiFile = DefaultSettings.getUserInputOfFileFromGUI(
-					(AbstractMainFrame) (this.getRootPane().getParent()),
-					".xmi", "Select XMI file", false, false);
-		} else {
-			newXmiFile = new File(xmiFileName);
-			if (!(newXmiFile.exists())) {
-				newXmiFile = DefaultSettings.getUserInputOfFileFromGUI(
-						(AbstractMainFrame) (this.getRootPane().getParent()),
-						".xmi", "Select XMI file", false, false);
-			}
-		}
+	private void processXmiModel(ModelMetadata myModelMeta, Hashtable sourceNodes, Hashtable targetNodes)
+	{
+		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
+		// Lets try to get all the details
+		UMLModel myUMLModel = myModelMeta.getModel();
+		//read and set model prefix
+        if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ) != null )
+        {
+            myModelMeta.setMmsPrefixDataModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
+        } else {
+            myModelMeta.setMmsPrefixDataModel( "Logical View.Data Model" );
+        }
+        if ( CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) != null )
+        {
+            myModelMeta.setMmsPrefixObjectModel(CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
+        } else {
+            myModelMeta.setMmsPrefixObjectModel( "Logical View.Logical Model" );
+        }
 
-		if (newXmiFile == null) {
-			return null;
-		}
-		boolean status = processOpenSourceTree(newXmiFile, true, true);
-
-		TreeModel sModel = sTree.getModel();
-		DefaultMutableTreeNode rootSTree = (DefaultMutableTreeNode) sModel
-				.getRoot();
-		TreeModel tModel = tTree.getModel();
-		DefaultMutableTreeNode rootTTree = (DefaultMutableTreeNode) tModel
-				.getRoot();
-		Hashtable sourceNodes = new Hashtable();
-		Hashtable targetNodes = new Hashtable();
-		buildHash(sourceNodes, rootSTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ));
-		buildHash(targetNodes, rootTTree, CaadapterUtil.readPrefParams( Config.MMS_PREFIX_DATAMODEL ));
-
-		MappingImpl newMappingImpl = new MappingImpl();
-		newMappingImpl.setSourceComponent(null);
-		newMappingImpl.setTargetComponent(null);
-		middlePanel.getMappingDataManager().setMappingData(newMappingImpl);
-
-		middlePanel.getMappingDataManager().clearAllGraphCells();
-
-		setSaveFile(file);
-
-		List elements = root.getChildren("link");
-		Iterator i = elements.iterator();
-		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator
-				.getInstance();
-		boolean isSuccess;
-		while (i.hasNext()) {
+        boolean isSuccess;
+		// create Object-table dependency mapping UI
+		for (UMLDependency dep : myUMLModel.getDependencies()) 
+		{
 			String sourceXpath = "";
 			String targetXpath = "";
-			Element link = (Element) i.next();
-			Element sourceElement = link.getChild("source");
-			if (sourceElement == null) {
-				/* TODO
-				* */
-			}
-			sourceXpath = sourceElement.getValue();
 
-			Element targetElement = link.getChild("target");
-			if (targetElement == null) {
-				/* TODO
-				* */
-			}
-			targetXpath = targetElement.getValue();
-			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
-					.get(sourceXpath);
-			DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
-					.get(targetXpath);
-			if (sourceNode == null || targetNode == null)
+			UMLClass client = (UMLClass) dep.getClient();
+			if (dep.getSupplier() instanceof UMLInterface)
+			{
+				logger.logInfo(this, "found UMLInterface:"+((UMLInterface)dep.getSupplier()).getName());
 				continue;
-			SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode
-					.getUserObject();
-			SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode
-					.getUserObject();
+			}
+			UMLClass supplier = (UMLClass) dep.getSupplier();
+
+			StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(client));
+			targetXpath = pathKey + "." + client.getName();
+
+			pathKey = new StringBuffer(ModelUtil.getFullPackageName(supplier));
+			sourceXpath = pathKey + "." + supplier.getName();
+
+			DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes.get(sourceXpath);
+			DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes.get(targetXpath);
+
+			if (sourceNode == null || targetNode == null)
+			{
+				logger.logInfo(this, "Dependency missing--- source:"+sourceXpath +" ; target:"+targetXpath);
+				continue;
+			}
+
+			SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
+			SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode.getUserObject();
+
 			sourceSDKMetaData.setMapped(true);
-			isSuccess = cumulativeMappingGenerator
-					.map(sourceXpath, targetXpath);
-			isSuccess = isSuccess
-					&& getMappingDataManager().createMapping(
+			isSuccess = cumulativeMappingGenerator.map(sourceXpath,	targetXpath);
+			isSuccess = isSuccess&& getMappingDataManager().createMapping(
 							(MappableNode) sourceNode,
 							(MappableNode) targetNode);
+			if (!isSuccess)
+			{
+				logger.logInfo(this, "No UI link is created for Dependency--- source:"+sourceXpath +" ; target:"+targetXpath);
+			}
 		}
-		return null;
-	}
+		//create class.attribute--table.column mapping
+		myModelMeta.getPreservedMappedTag().clear();
+		for (UMLPackage pkg : myUMLModel.getPackages()) 
+		{
+			for (UMLPackage pkg2 : pkg.getPackages()) {
+				for (UMLClass clazz : pkg2.getClasses()) {
+					StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
 
+					for (UMLAttribute att : clazz.getAttributes()) {
+						for (UMLTaggedValue tagValue : att.getTaggedValues()) {
+							String sourceXpath = "";
+							String targetXpath = "";
+
+							if (tagValue.getName().contains("mapped-attribute")
+									|| tagValue.getName().contains("implements-association")) {
+								targetXpath = pathKey + "."
+									+ clazz.getName() + "."
+									+ att.getName();
+								sourceXpath = CaadapterUtil.readPrefParams( Config.MMS_PREFIX_OBJECTMODEL ) + "."
+										+ tagValue.getValue();
+								DefaultMutableTreeNode sourceNode = (DefaultMutableTreeNode) sourceNodes
+										.get(sourceXpath);
+								DefaultMutableTreeNode targetNode = (DefaultMutableTreeNode) targetNodes
+										.get(targetXpath);
+
+								if (sourceNode == null||targetNode == null)
+								{
+									logger.logInfo(this, "Mapping missing--- source:"+sourceXpath +" ; target:"+targetXpath);
+									continue;
+								}
+								SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
+								sourceSDKMetaData.setMapped(true);
+								isSuccess = cumulativeMappingGenerator.map(sourceXpath, targetXpath);
+								isSuccess = isSuccess&& 
+										getMappingDataManager().createMapping((MappableNode) sourceNode,(MappableNode) targetNode);
+								if (!isSuccess)
+								{
+									//no UI link is created for the mapped table.column 
+									//"mapped-attributes"/"implements-association"
+									String prvdTag=tagValue.getName()+":"+tagValue.getValue();
+									CumulativeMappingGenerator.getInstance().getMetaModel().getPreservedMappedTag().add(prvdTag);
+									logger.logInfo(this, "No UI link is created, preserve the mapping:"+prvdTag);
+								}
+							}//tag level loop
+						}//tag list level loop
+					}//attribute level loop
+				}//table level loop
+			}//data model package level loop
+		}//model level package level loop
+	}
+		
 	private void buildHash(Hashtable hashtable, DefaultMutableTreeNode root,
 			String parent) {
 		if ((root.getUserObject().toString().equals("Object Model") && parent
@@ -1093,6 +836,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.37  2008/09/26 20:35:27  linc
+ * HISTORY : Updated according to code standard.
+ * HISTORY :
  * HISTORY : Revision 1.36  2008/06/09 19:54:06  phadkes
  * HISTORY : New license text replaced for all .java files.
  * HISTORY :

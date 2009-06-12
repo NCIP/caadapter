@@ -10,6 +10,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
@@ -27,15 +28,15 @@ import javax.swing.tree.*;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-09-29 20:36:23 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-06-12 15:53:58 $
  */
 public class PrimaryKeyAction extends AbstractContextAction
 {
 	private static final String COMMAND_NAME = "Make Primary Key";
 	
 	private static final String LOGID = "$RCSfile: PrimaryKeyAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.10 2008-09-29 20:36:23 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/PrimaryKeyAction.java,v 1.11 2009-06-12 15:53:58 wangeug Exp $";
 	
 	private static final Character COMMAND_MNEMONIC = new Character('P');
 	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
@@ -91,7 +92,7 @@ public class PrimaryKeyAction extends AbstractContextAction
                 try {
                     JTree sourceTree = absMappingPanel.getSourceTree();
 
-                    ModelMetadata modelMetadata = ModelMetadata.getInstance();
+                    ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
                     HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
                     if ( sourceTree.getSelectionRows() != null )
@@ -147,7 +148,7 @@ public class PrimaryKeyAction extends AbstractContextAction
 			    	JTree sourceTree = absMappingPanel.getSourceTree();
 			    	TreePath leadingPath = sourceTree.getLeadSelectionPath();
                       
-                    ModelMetadata modelMetadata = ModelMetadata.getInstance();
+                    ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 			    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
 			        if ( primaryKeys.contains( parseNode( leadingPath.toString() ) ) )
@@ -247,6 +248,9 @@ public class PrimaryKeyAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/09/29 20:36:23  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/09/29 20:32:34  wangeug
  * HISTORY      : enforce code standard: license file, file description, changing history
  * HISTORY      :

@@ -14,7 +14,6 @@ import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
 import gov.nih.nci.caadapter.ui.common.tree.MappingTargetTree;
-import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
@@ -54,10 +53,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-10-20 15:42:47 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-06-12 15:54:08 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -73,7 +72,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.15 2008-10-20 15:42:47 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.16 2009-06-12 15:54:08 wangeug Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -480,7 +479,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         //Primary Key Function
         String primaryKeyText = "Set as Primary Key";
 
-        ModelMetadata modelMetadata = ModelMetadata.getInstance();
+        ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
     	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
 		TreePath leadingPath = sourceTree.getLeadSelectionPath();
@@ -531,7 +530,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             	
             	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
 
-            	modelMetadata = ModelMetadata.getInstance();
+            	modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
 		    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
 		    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
 		    	
@@ -553,7 +552,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         String discriminatorText = "Set as Discrimator";
 
         //Could change this depending on whether lazy/eager
-    	ModelMetadata modelMetadata = ModelMetadata.getInstance();    	
+    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();    	
     	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
     	HashSet<String> clobKeys = modelMetadata.getClobKeys();
     	HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
@@ -668,6 +667,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/10/20 15:42:47  linc
+ * HISTORY      : remove clob, inverse-of, lazy/eager functionality from mms.
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2008/10/02 19:16:48  linc
  * HISTORY      : updated.
  * HISTORY      :

@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
@@ -25,10 +26,10 @@ import gov.nih.nci.caadapter.mms.util.DatatypeCompatablityProperties;
  * correlation table.
  *
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-06-12 15:52:30 $
  * @created 11-Aug-2006 8:18:17 AM
  */
 public class ManyToManyMappingValidator {
@@ -84,7 +85,7 @@ public class ManyToManyMappingValidator {
 		AssociationMetadata thisEnd = associationMapping.getAssociationEndMetadata();
 		String parentXPath = getParentXPath(associationMapping.getAssociationEndMetadata().getXPath());
 		try {
-			cumulativeMapping = CumulativeMapping.getInstance();
+			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
 			
 		}
@@ -117,7 +118,7 @@ public class ManyToManyMappingValidator {
 		AssociationMetadata otherEnd = associationMapping.getOtherAssociationEndMetadata();
 		String parentXPath = getParentXPath(associationMapping.getOtherAssociationEndMetadata().getXPath());
 		try {
-			cumulativeMapping = CumulativeMapping.getInstance();
+			cumulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
 			
 		}
@@ -222,4 +223,7 @@ public class ManyToManyMappingValidator {
 	
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.mms;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.AbstractMainFrame;
 
 import javax.swing.*;
@@ -18,17 +19,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
  * Dialog for adding discriminator Values
  *
  * @author OWNER: wuye
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-06-12 15:53:49 $
  *
  */
 @SuppressWarnings("serial")
@@ -38,8 +38,8 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 
 	/**
 	 * @author OWNER: Ye Wu
-	 * @author LAST UPDATE $Author: linc $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.7 $
+	 * @author LAST UPDATE $Author: wangeug $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.8 $
 	 */
 	    String curDir;
 	    String sourceName1 = "";
@@ -102,7 +102,7 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	        centerPan.setBorder(new TitledBorder("Please Define Discriminator Value...."));
 	        centerPan.add(new JLabel("Discriminator Value:"));
 	        final JTextField textField = new JTextField();
-	    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+	    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 	    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
 	    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
 
@@ -120,7 +120,7 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	            public void actionPerformed(ActionEvent event) {
 	                preFrame.dispose();
 	                try {
-				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+				    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 				    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
 				    	System.out.println("AAAAAAAAAAAAAAAA:"+objectMetadata.getXPath()+"   " + textField.getText());
 				    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
@@ -163,4 +163,7 @@ public class AddDiscriminatorValue extends JDialog implements ActionListener {
 	}
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

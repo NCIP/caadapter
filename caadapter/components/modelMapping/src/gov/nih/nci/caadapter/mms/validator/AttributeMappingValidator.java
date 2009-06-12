@@ -7,6 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 package gov.nih.nci.caadapter.mms.validator;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
@@ -23,10 +24,10 @@ import java.util.Properties;
  * datatypes.
  *
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-06-12 15:52:30 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class AttributeMappingValidator {
@@ -58,7 +59,7 @@ public class AttributeMappingValidator {
 	public boolean hasBeenMapped(){
 		boolean beenMapped = false;
 		try {
-			cummulativeMapping = CumulativeMapping.getInstance();
+			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
 			
 		}
@@ -82,7 +83,7 @@ public class AttributeMappingValidator {
     public boolean hasDependencyMapping(){
 		boolean dependencyMapped = false;
 		try {
-			cummulativeMapping = CumulativeMapping.getInstance();
+			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
 		} catch (Exception e) {
 			
 		}
@@ -174,4 +175,7 @@ public class AttributeMappingValidator {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

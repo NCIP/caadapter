@@ -9,33 +9,24 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
-import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 
 import java.awt.event.ActionEvent;
-import java.awt.*;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-
 import javax.swing.*;
-
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 
 /**
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-06-12 15:53:01 $
  */
 public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 {
@@ -51,7 +42,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.5 2008-09-26 20:35:27 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.6 2009-06-12 15:53:01 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -138,13 +129,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 			// Create .MAP file with Mapping attribute tagged values			
 			success = saveMappingFile( mappingFile );			
 						
-			// Create .XMI file with Mapping attribute tagged values
-			String xmiFileName = file.getAbsolutePath().replaceAll(".map", ".xmi");
-			XMIGenerator generator = new XMIGenerator( mappingFile.getAbsolutePath(), xmiFileName );
-			generator.annotateXMI();
-
 			mappingPanel.setSaveFile(file);
-
             frame.setVisible( false );
             frame.dispose();
 
@@ -164,30 +149,14 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	 * @return
 	 * @throws Exception
 	 */
-	public boolean saveMappingFile(File file) throws Exception 
+	public boolean saveMappingFile(File mappingFile) throws Exception 
 	{		
 		preActionPerformed(mappingPanel);
-		BufferedOutputStream bw = null;
 		boolean oldChangeValue = mappingPanel.isChanged();
-		
 		try
 		{
-        	 CumulativeMappingToMappingFileGenerator myGenerator = new CumulativeMappingToMappingFileGenerator();
-        	 myGenerator.setXmiFileName(CumulativeMappingGenerator.getXmiFileName());
-        	
-        	//Creating mapping file        
-        	 myGenerator.createLocalMappingFile(); 
-        	 XMLOutputter outp = new XMLOutputter();
-     	     outp.setFormat(Format.getPrettyFormat());
-
-     	     try {
-     	    	FileOutputStream myStream = new FileOutputStream(file);
-     	    	outp.output(myGenerator.getDocument(), myStream);
-     	    	myStream.close();
-     	     } catch (Exception ex) {
-     	    	ex.printStackTrace();
-     	     }
-     	         	   
+			String xmiFileName = mappingFile.getAbsolutePath().replaceAll(".map", ".xmi");
+			CumulativeMappingToMappingFileGenerator.writeMappingFile(mappingFile, xmiFileName);
 			//clear the change flag.
      	    mappingPanel.setChanged(false);
      	   return true;   
@@ -196,31 +165,16 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 		{
 			//restore the change value since something occurred and believe the save process is aborted.
 			mappingPanel.setChanged(oldChangeValue);
-			
 			//rethrow the exeception
 			throw new Exception(e);
-		}
-		finally
-		{
-			try
-			{
-				//close buffered writer will automatically close enclosed file writer.
-				if(bw!=null)
-				{
-					bw.close();
-					//the output stream will flush and assign the timestamp upon closure.
-					//moved the setSaveFile() call here so as to record the right timestamp of last modified.
-				}
-				//mappingPanel.setSaveFile(file);
-			}
-			catch(Throwable e)
-			{//intentionally ignored.
-			}
 		}
 	}	
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.5  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.4  2008/06/09 19:54:06  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

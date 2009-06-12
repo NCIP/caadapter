@@ -36,71 +36,34 @@ import org.jdom.input.*;
  * an xmi file based on the contents of a source to target mapping file.
  * 
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.36 $
- * @date       $Date: 2008-10-20 15:42:47 $
+ * @version    $Revision: 1.37 $
+ * @date       $Date: 2009-06-12 15:51:06 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class XMIGenerator 
 {
     private String mappingFileName;
-    private String xmiFileName;
+    private String xmiOutputName;
     
     private List dependencies = null;
     private List attributes = null;
     private List associations = null;
     private List manytomanys = null;
-    
-    private XmiInOutHandler handler = null;
-	private UMLModel model = null;
-	private Document doc = null;
 	private ModelMetadata modelMetadata = null;
-	private LinkedHashMap myMap = null;
-
-    private HashSet<String> primaryKeys = new HashSet<String>();
-	private HashSet<String> lazyKeys = new HashSet<String>();
-	private HashSet<String> clobKeys = new HashSet<String>();
-    private HashSet<String> discriminatorKeys = new HashSet<String>();
-    private Hashtable<String, String> discriminatorValues = new Hashtable<String, String>();
     private Log logger =new Log();
-    public XMIGenerator(){
-	}
-    
 	
 	public XMIGenerator(String mappingFile, String xmiFile)
 	{
 		this.mappingFileName = mappingFile;
-		this.xmiFileName = xmiFile;
-	}
-	
-	private void init() 
-	{
+		this.xmiOutputName = xmiFile;
 	    try {
-		    modelMetadata = ModelMetadata.getInstance();
-
-		    if (modelMetadata == null) 
-		    {
-		    	ModelMetadata.createModel(xmiFileName);
-			    modelMetadata = ModelMetadata.getInstance();			    
-		    }
-					    
-		    myMap = modelMetadata.getModelMetadata();					    
-		    model = modelMetadata.getModel();
-		    
-		    //load all primaryKeys
-		    primaryKeys = modelMetadata.getPrimaryKeys();
-		    lazyKeys = modelMetadata.getLazyKeys();
-		    clobKeys = modelMetadata.getClobKeys();
-            discriminatorKeys = modelMetadata.getDiscriminatorKeys();
-            discriminatorValues = modelMetadata.getDiscriminatorValues();       
-		    
-			for( UMLPackage pkg : model.getPackages() ) 
+		    modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();				        
+			for( UMLPackage pkg : modelMetadata.getModel().getPackages() ) 
 			{
 				getPackages( pkg );
 			}								
-			
-			handler = modelMetadata.getHandler();
 	    } 
 	    catch (Exception e) 
 	    {
@@ -128,18 +91,18 @@ public class XMIGenerator
                     if( tagValue.getName().equals( "id-attribute" ))
 					{
                     	//only removed if not preserved
-                    	if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
+                    	if (!modelMetadata.getPreservedMappedTag().contains(tagPrvdkey))
                     		att.removeTaggedValue( "id-attribute" );
 					}
                     if( tagValue.getName().contains( "mapped-attributes" ))
 					{
                     	//only removed if not preserved
-                    	if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
+                    	if (!modelMetadata.getPreservedMappedTag().contains(tagPrvdkey))
                     		att.removeTaggedValue( "mapped-attributes" );
 					}
 					if( tagValue.getName().contains( "implements-association" ))
 					{
-						if (!ModelMetadata.getInstance().getPreservedMappedTag().contains(tagPrvdkey))
+						if (!modelMetadata.getPreservedMappedTag().contains(tagPrvdkey))
 							att.removeTaggedValue( "implements-association" );
 					}											
 					// commented by Sandeep on 5/8/08 for bug id 12958 per Eugene's instructions.
@@ -243,26 +206,16 @@ public class XMIGenerator
 	 */
 	public void annotateXMI()
 	{
-        init();
-		annotateXMIFile();
-		saveModel();
-    }
-	
-	/**
-	 * 
-	 */
-	private void annotateXMIFile()
-	{
 		loadLinks();
 		
 //		//Add the Primary Keys
-		for( String pKey : primaryKeys )
+		for( String pKey : (HashSet<String>)modelMetadata.getPrimaryKeys() )
 		{
 			addPrimaryKey( pKey );
 		}
 //		
 //		//Add the Lazy Keys
-		for( String lKey : lazyKeys )
+		for( String lKey :(HashSet<String>)modelMetadata.getLazyKeys())// lazyKeys )
 		{
 			addLazyKey( lKey );
 		}
@@ -276,12 +229,12 @@ public class XMIGenerator
 		*/
 
         HashMap<String, Integer> tableDiscriminatorCount = new HashMap<String, Integer>();
-        for ( String dKey : discriminatorKeys )
+        for ( String dKey : modelMetadata.getDiscriminatorKeys())//discriminatorKeys )
         {
             addDiscriminatorKey( dKey, tableDiscriminatorCount );
         }
 
-        for ( String dKey : discriminatorValues.keySet() )
+        for ( String dKey : modelMetadata.getDiscriminatorValues().keySet() )
         {
             addDiscriminatorValues( dKey );
         }
@@ -290,23 +243,16 @@ public class XMIGenerator
 		addAttributeTaggedValues(this.attributes);
 		addAssociationTaggedValues(this.associations);
 		addManyToManyTaggedValues(this.manytomanys);
-		deleteMappingFile();
+		//save xmi file
+	    try 
+	    {	
+	    	modelMetadata.getHandler().save(xmiOutputName);
+    
+	    } catch (Exception e){
+	      e.printStackTrace();
+	    } 
 	}
 	
-	/**
-	 * 
-	 *
-	 */
-	private void deleteMappingFile()
-	{
-	    boolean success = (new File(this.mappingFileName)).delete();
-	    if (!success) 
-	    {
-	    	// Deletion failed
-	        System.out.println( "Error, Deletion of " + this.mappingFileName + " Failed!");
-	    }
-	    
-	}
 	
 	/**
 	 * @param attributes
@@ -316,7 +262,7 @@ public class XMIGenerator
 		for (int i = 0; i < attributes.size(); i++)
 		{			 
 			Element attribute = (Element)attributes.get(i);	
-			addAttributeTaggedValue(this.model, attribute);
+			addAttributeTaggedValue(modelMetadata.getModel(), attribute);
 		}
 	}
 	
@@ -328,7 +274,7 @@ public class XMIGenerator
 		for (int i = 0; i < associations.size(); i++)
 		{
 			Element association = (Element)associations.get(i);
-			addAssociatonTaggedValue(this.model, association);
+			addAssociatonTaggedValue(this.modelMetadata.getModel(), association);
 		}
 	}
 	
@@ -340,7 +286,7 @@ public class XMIGenerator
 		for (int i = 0; i < manytomanys.size(); i++)
 		{
 			Element manytomany = (Element)manytomanys.get(i);
-			addManyToManyTaggedValue(this.model, manytomany);
+			addManyToManyTaggedValue(this.modelMetadata.getModel(), manytomany);
 		}
 	}
 	
@@ -354,7 +300,7 @@ public class XMIGenerator
 		//its corresponding UI must be removed
 		//compare the existing dependency of the model and the list
 		//remove the "deleted" one.
-		List<UMLDependency>allExistingDep=model.getDependencies();
+		List<UMLDependency>allExistingDep=modelMetadata.getModel().getDependencies();
 		for (int dpcyIndx=allExistingDep.size();dpcyIndx>0;dpcyIndx--)
 		{
 			UMLDependency dpcy=allExistingDep.get(dpcyIndx-1);
@@ -373,8 +319,8 @@ public class XMIGenerator
 			{
 				Element dependLink=(Element)objDependency;
 			    
-			    UMLClass uiClient = ModelUtil.findClass(model, dependLink.getChildText("target"));
-			    UMLClass uiSupplier = ModelUtil.findClass(model, dependLink.getChildText("source"));
+			    UMLClass uiClient = ModelUtil.findClass(modelMetadata.getModel(), dependLink.getChildText("target"));
+			    UMLClass uiSupplier = ModelUtil.findClass(modelMetadata.getModel(), dependLink.getChildText("source"));
 				if (uiClient==null || uiSupplier==null)
 					continue;
 				String uiClientXmiId=((UMLClassBean)uiClient).getModelId();
@@ -396,14 +342,14 @@ public class XMIGenerator
 			    logger.logInfo(this, "Remove dependency section from XMI file....Logical Model.Object:"+supplierEnd.getName() +"... Data Model.Table:"+clientEnd.getName());
 			    depElt.getParentElement().removeContent(depElt);//childElmnt);
 			    //remove the dependency from list of dependency associated with model
-			    model.getDependencies().remove(dpcyIndx-1);
+			    modelMetadata.getModel().getDependencies().remove(dpcyIndx-1);
 			}
 		}
   
 		for (int i = 0; i < this.dependencies.size(); i++)
 		{
 			Element dependency = (Element)this.dependencies.get(i);
-			addDependency(this.model,dependency);
+			addDependency(this.modelMetadata.getModel(),dependency);
 		}
 	}
 		
@@ -617,7 +563,7 @@ public class XMIGenerator
 	    targetAttr = targetAttr.substring(0, targetAttr.lastIndexOf("."));
 	    targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());	   
 	    
-	    AssociationMetadata assoMeta = (AssociationMetadata)myMap.get(sourceAttr);
+	    AssociationMetadata assoMeta = (AssociationMetadata) modelMetadata.getModelMetadata().get(sourceAttr);
 	    UMLAssociation asso = assoMeta.getUMLAssociation();
 		UMLTaggedValue corrTag=asso.getTaggedValue("correlation-table");
 		targetAttr = targetAttr.substring(targetAttr.lastIndexOf(".")+1,targetAttr.length());
@@ -647,8 +593,7 @@ public class XMIGenerator
 	private void addInverseOfTagValue(UMLAttribute Target, Element attribute) 
 	{
 		//check to see if this Tag Value already exists
-			Target.addTaggedValue( "inverse-of", getInverseRoleName(attribute.getChildText("source")) );
-			saveModel();
+		Target.addTaggedValue( "inverse-of", getInverseRoleName(attribute.getChildText("source")) );
 	}
 	
 	/**
@@ -689,7 +634,7 @@ public class XMIGenerator
 	private boolean checkInverseOfTagValue(String pathToColumnName)
 	{
 		boolean hasInverseOfTaggedValue = false;
-		UMLAttribute column = ModelUtil.findAttribute(this.model, pathToColumnName);
+		UMLAttribute column = ModelUtil.findAttribute(this.modelMetadata.getModel(), pathToColumnName);
 		for(UMLTaggedValue taggedValue : column.getTaggedValues()) 
 		{
 			if (taggedValue.getName().equals("inverse-of")) 
@@ -703,7 +648,7 @@ public class XMIGenerator
 	private void addPrimaryKey( String pKey )
 	{
         String primaryKey = modelMetadata.getMmsPrefixObjectModel() + "." + pKey;
-		UMLAttribute column = ModelUtil.findAttribute(this.model, primaryKey);
+		UMLAttribute column = ModelUtil.findAttribute(this.modelMetadata.getModel(), primaryKey);
 		logger.logInfo(this,"Add primary id for Attribute " + primaryKey);   
         if ( column != null )
 		{		
@@ -738,7 +683,7 @@ public class XMIGenerator
     private void addClobKey( String cKey )
 	{
 		String clobKey = modelMetadata.getMmsPrefixDataModel() + "." + cKey;
-		UMLAttribute column = ModelUtil.findAttribute(this.model, clobKey);
+		UMLAttribute column = ModelUtil.findAttribute(this.modelMetadata.getModel(), clobKey);
 		logger.logInfo(this,"Add Clob key " + column.getName());
         if( column != null)
         	column.addTaggedValue( "type", "CLOB" );
@@ -752,7 +697,7 @@ public class XMIGenerator
     private void addDiscriminatorKey( String dKey, HashMap<String, Integer> tableDiscriminatorCount)
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixDataModel() + "." + dKey;
-		UMLAttribute column = ModelUtil.findAttribute(this.model, discriminatorKey);
+		UMLAttribute column = ModelUtil.findAttribute(this.modelMetadata.getModel(), discriminatorKey);
 		String tableName = "."+dKey.substring(0, dKey.lastIndexOf('.'));
 		
 		int count = 0;
@@ -773,7 +718,7 @@ public class XMIGenerator
 		
         if (objectName!=null && column != null) {
 
-			UMLClass clazz = ModelUtil.findClass(this.model, objectName);
+			UMLClass clazz = ModelUtil.findClass(this.modelMetadata.getModel(), objectName);
 			
 			if (clazz == null) return;
  			
@@ -826,15 +771,15 @@ public class XMIGenerator
     private void addDiscriminatorValues( String dKey )
 	{
 		String discriminatorKey = modelMetadata.getMmsPrefixObjectModel() + "." + dKey;
-		UMLClass clazz = ModelUtil.findClass(this.model, discriminatorKey);
-        //UMLClass umlClass = ModelUtil.findClass(this.model, discriminatorKey);
+		UMLClass clazz = ModelUtil.findClass(this.modelMetadata.getModel(), discriminatorKey);
+        //UMLClass umlClass = ModelUtil.findClass(this.modelMetadata.getModel(), discriminatorKey);
 
         if( clazz != null)
 		{
         	System.out.println("XMIGenerator.addDiscriminatorValues()... class:"+clazz.getName());
         	if (clazz.getTaggedValue("discriminator")!=null)
         		clazz.removeTaggedValue("discriminator");
-            clazz.addTaggedValue( "discriminator", discriminatorValues.get(dKey) );
+            clazz.addTaggedValue( "discriminator", modelMetadata.getDiscriminatorValues().get(dKey) );
             //umlClass.addTaggedValue( "discriminator", dKey );
         }
 	}
@@ -850,7 +795,7 @@ public class XMIGenerator
 		int end = pathToThisEnd.lastIndexOf(".");
 		String roleName = pathToThisEnd.substring(end+1);
 		String umlClassNamePath = pathToThisEnd.substring(0,end);
-		UMLClass clazz = ModelUtil.findClass(this.model,umlClassNamePath);
+		UMLClass clazz = ModelUtil.findClass(this.modelMetadata.getModel(),umlClassNamePath);
 		UMLAssociation correctAssociation = null;
 		
 		for(UMLAssociation assoc : clazz.getAssociations()) 
@@ -893,14 +838,6 @@ public class XMIGenerator
 		return cleanPath;
 	}
 	
-	private void saveModel() {
-	    try 
-	    {		  
-	      handler.save(xmiFileName);      
-	    } catch (Exception e){
-	      e.printStackTrace();
-	    } 
-	  }
 	
 	/**
 	 * This class reads the mapping file and adds Elements to 4 lists depending on the type of link.
@@ -911,10 +848,10 @@ public class XMIGenerator
 		 {
 		      // Request document building without validation
 		      SAXBuilder builder = new SAXBuilder( false );
-		      this.doc = builder.build( new File( this.mappingFileName ) );
-		      
+
+		      Document docLocal= builder.build( new File(this.mappingFileName ) );
 		      // Get the root element
-		      Element root = doc.getRootElement();
+		      Element root = docLocal.getRootElement();
 		      ElementFilter links = new ElementFilter( "link" );
 		      
 		      List elements = root.getContent( links );
@@ -945,42 +882,21 @@ public class XMIGenerator
 		        	this.manytomanys.add(link);
 		        }
 		      }
+			//delete mapping file
+			boolean success = (new File(this.mappingFileName)).delete();
+			if (!success) 
+			{
+			    	// Deletion failed
+			        System.out.println( "Error, Deletion of " + this.mappingFileName + " Failed!");
+			}
 		    } catch (Exception e) {
 		      e.printStackTrace();
 		    }	
 	}
 	
-	/**
-	 * @return Returns the mappingFile.
-	 */
-	public String getMappingFile() {
-		return mappingFileName;
-	}
-	
-	/**
-	 * @param mappingFile The mappingFile to set.
-	 */
-	public void setMappingFile(String mappingFile) {
-		this.mappingFileName = mappingFile;
-	}
-	
-	/**
-	 * @return Returns the xmiFileName.
-	 */
-	public String getXmiFileName() {
-		return xmiFileName;
-	}
-	
-	/**
-	 * @param xmiFileName The xmiFileName to set.
-	 */
-	public void setXmiFileName(String xmiFileName) {
-		this.xmiFileName = xmiFileName;
-	}
 	  public static void main(String[] args) {
 		  try {
 			    XMIGenerator generator = new XMIGenerator("C:/Documents and Settings/Administrator/My Documents/MMs Example XMI/All_Mappings_test_validator.map","C:/Documents and Settings/Administrator/My Documents/MMs Example XMI/All_Mappings_test_validator.xmi");
-		        generator.init();
 		  } catch (Exception e){
 			  e.printStackTrace();
 		  }
@@ -989,6 +905,9 @@ public class XMIGenerator
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.36  2008/10/20 15:42:47  linc
+ * HISTORY: remove clob, inverse-of, lazy/eager functionality from mms.
+ * HISTORY:
  * HISTORY: Revision 1.35  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

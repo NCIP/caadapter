@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.jgraph.actions;
 
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.common.actions.AbstractContextAction;
@@ -28,12 +29,12 @@ import java.util.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2008-09-29 20:32:34 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-06-12 15:53:58 $
  */
 public class LazyEagerAction extends AbstractContextAction {
 	private static final String LOGID = "$RCSfile: LazyEagerAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.10 2008-09-29 20:32:34 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/LazyEagerAction.java,v 1.11 2009-06-12 15:53:58 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Set as Eager";
 	private static final Character COMMAND_MNEMONIC = new Character('L');
@@ -78,7 +79,7 @@ public class LazyEagerAction extends AbstractContextAction {
 						JTree sourceTree = absMappingPanel.getSourceTree();
 						JTree targetTree = absMappingPanel.getTargetTree();
 
-				    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+				    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 				    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 
 						//System.out.println( "targetTree: " + targetTree.getSelectionPath() );
@@ -122,7 +123,7 @@ public class LazyEagerAction extends AbstractContextAction {
 
 			    	JTree targetTree = absMappingPanel.getTargetTree();
 			    	TreePath leadingPath = targetTree.getLeadSelectionPath();
-			    	ModelMetadata modelMetadata = ModelMetadata.getInstance();
+			    	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();
 			    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
 
 			        if ( lazyKeys.contains( parseNode( leadingPath.toString() ) ) )
@@ -206,4 +207,7 @@ public class LazyEagerAction extends AbstractContextAction {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2008/09/29 20:32:34  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  **/
