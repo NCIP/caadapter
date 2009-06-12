@@ -8,7 +8,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.common.metadata;
 
-import java.util.HashMap;
 import gov.nih.nci.caadapter.common.SDKMetaData;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
@@ -17,10 +16,10 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
  * This class holds the associationMetaData during mapping
  * @version 1.0
  * @created 11-Aug-2006 8:18:14 AM
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-10-20 16:35:16 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-06-12 15:21:36 $
  */
 public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	
@@ -89,12 +88,6 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	}
 	public String getXPath(){
 		return xPath;
-	}
-
-	public String getReturnTypeXPath() {
-		ModelMetadata myModel = ModelMetadata.getInstance();
-		HashMap objectMap = myModel.getObjectMetadata();
-		return (String)objectMap.get(returnTypeXpath);
 	}
 	
 // new method added to return already set returnTypeXpath and not from model.
@@ -197,6 +190,9 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/10/20 16:35:16  phadkes
+ * HISTORY      : Added new method to return returnTypeXPath. GME changes for correctly referencing RoleName/Class fom xsd.
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/09/25 19:30:38  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :
