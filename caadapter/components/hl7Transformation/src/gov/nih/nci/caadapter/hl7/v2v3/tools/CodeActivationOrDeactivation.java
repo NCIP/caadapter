@@ -121,6 +121,7 @@ public class CodeActivationOrDeactivation
             if (dirName.equalsIgnoreCase("cvs")) continue;
             if (dirName.equalsIgnoreCase("build")) continue;
             if (dirName.equalsIgnoreCase("dist")) continue;
+            if (dirName.equalsIgnoreCase("dist2")) continue;
             if (dirName.equalsIgnoreCase("classes")) continue;
             if (dirName.equalsIgnoreCase("gencode")) continue;
             if (dirName.equalsIgnoreCase("log")) continue;
@@ -191,6 +192,31 @@ public class CodeActivationOrDeactivation
         {
             if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
         }
+        if (fileName.equals("web.xml")) downloadTag = true;
+        if (fileName.equals("AddNewScenario.java"))
+        {
+            List<String> list = new ArrayList<String>();
+            String d = targetDirName + "stellar" + File.separator;
+
+            list.add("CaAdapterUserWorks.java");
+            list.add("CaadapterWSUtil.java");
+            list.add("DeleteOutputFile.java");
+            list.add("DosFileHandler.java");
+            list.add("FileUploaderWS.java");
+            list.add("GeneralUtilitiesWS.java");
+            list.add("ManageCaadapterWSUser.java");
+            list.add("MultipartRequest.java");
+            list.add("ScenarioFileRegistration.java");
+            list.add("TestIPAddress.java");
+            list.add("TransformationServiceOnWeb.java");
+
+            for(String line:list)
+            {
+                File f = new File(d + line);
+                copyFile(f, d);
+            }
+        }
+        if ((!file.exists())||(!file.isFile())) downloadTag = true;
 
         String oriFile = "";
         if (downloadTag)
