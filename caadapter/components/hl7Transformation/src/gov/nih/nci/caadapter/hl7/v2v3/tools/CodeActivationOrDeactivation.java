@@ -197,7 +197,15 @@ public class CodeActivationOrDeactivation
         {
             List<String> list = new ArrayList<String>();
             String d = targetDirName + "stellar" + File.separator;
-
+            File dD = new File(d);
+            if ((!dD.exists())||(!dD.isDirectory()))
+            {
+                if (!dD.mkdirs())
+                {
+                    System.out.println("##### New Directory creation failure : " + d);
+                    return;
+                }
+            }
             list.add("CaAdapterUserWorks.java");
             list.add("CaadapterWSUtil.java");
             list.add("DeleteOutputFile.java");
@@ -216,7 +224,10 @@ public class CodeActivationOrDeactivation
                 copyFile(f, d);
             }
         }
-        if ((!file.exists())||(!file.isFile())) downloadTag = true;
+        if ((!file.exists())||(!file.isFile()))
+        {
+            downloadTag = true;
+        }
 
         String oriFile = "";
         if (downloadTag)
