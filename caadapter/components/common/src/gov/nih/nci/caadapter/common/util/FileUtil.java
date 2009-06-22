@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 
 public class FileUtil
@@ -266,6 +266,21 @@ public class FileUtil
     }
     private static String searchProperty(File dir, String key, boolean useProperty, boolean isFilePath)
     {
+        String rr = searchPropertyExe(dir, key, useProperty, isFilePath);
+        if (dir == null)
+        {
+            if (rr != null) return rr;
+
+            String dir2 = searchDir("caAdapterWS" + File.separator + "META-INF");
+            if (dir2 != null)
+            {
+                rr = searchPropertyExe(new File(dir2), key, useProperty, isFilePath);
+            }
+        }
+        return rr;
+    }
+    private static String searchPropertyExe(File dir, String key, boolean useProperty, boolean isFilePath)
+    {
         File sDir = null;
         if (dir == null) sDir = new File(getWorkingDirPath());
         else
@@ -345,47 +360,100 @@ public class FileUtil
 
     public static String searchFile(String fileName)
     {
-        return searchFile(null, fileName);
+        return searchFile(null, null, fileName, null, true);
     }
-    public static String searchFile(File dir, String fileName)
+    public static String searchDir(String dirName)
     {
+        return searchFile(null, null, dirName, null, false);
+    }
+    public static String searchFile(String fileName, File startDir)
+    {
+        return searchFile(startDir, null, fileName, null, true);
+    }
+    public static String searchDir(String dirName, File startDir)
+    {
+        return searchFile(startDir, null, dirName, null, false);
+    }
+    private static String searchFile(File startDir, File dir, String fileName, List<String> searchedDirList, boolean isFile)
+    {
+        boolean isStart = false;
+        if (searchedDirList == null)
+        {
+            isStart = true;
+            searchedDirList = new ArrayList<String>();
+        }
         if (fileName == null) return null;
         fileName = fileName.trim();
         if (fileName.equals("")) return null;
 
-        if (fileName.endsWith(File.separator)) fileName = fileName.substring(0, fileName.length()-File.separator.length());
-        if (fileName.endsWith("/")) fileName = fileName.substring(0, fileName.length()-1);
-        while(true)
+        String c = "";
+
+        for (int i=0;i<fileName.length();i++)
         {
-            int idx = fileName.indexOf(File.separator);
-            int len = 0;
-            if (idx >= 0) len = File.separator.length();
-            else
-            {
-                idx = fileName.indexOf("/");
-                if (idx >= 0) len = 1;
-            }
-            if (idx < 0) break;
-            fileName = fileName.substring(idx + len);
+            String achar = fileName.substring(i, i+1);
+
+            if (achar.equals("/")) c = c + File.separator;
+            else c = c + achar;
         }
+        fileName = c;
+
+        if (fileName.endsWith(File.separator)) fileName = fileName.substring(0, fileName.length()-File.separator.length());
+        if (fileName.startsWith(File.separator)) fileName = fileName.substring(File.separator.length());
 
         if (dir == null)
         {
-            File wDir = new File(getWorkingDirPath());
-            if (wDir.getName().equals("dist")) dir = wDir.getParentFile();
-            else dir = wDir;
+            if (startDir != null)
+            {
+                dir = startDir;
+            }
+            else
+            {
+                File f = new File(fileName);
+                if (f.exists())
+                {
+                    if ((isFile)&&(f.isFile())) return f.getAbsolutePath();
+                    if ((!isFile)&&(f.isDirectory())) return f.getAbsolutePath();
+                }
+                dir = new File(getWorkingDirPath());
+            }
         }
+
         if ((!dir.exists())||(!dir.isDirectory())) return null;
 
+        String dirName = dir.getAbsolutePath();
+        if (!dirName.endsWith(File.separator)) dirName = dirName + File.separator;
+        File f = new File(dirName + fileName);
+        if (f.exists())
+        {
+            if ((isFile)&&(f.isFile())) return f.getAbsolutePath();
+            if ((!isFile)&&(f.isDirectory())) return f.getAbsolutePath();
+        }
+        searchedDirList.add(dir.getAbsolutePath());
         File[] files = dir.listFiles();
         for(File file:files)
         {
-            if (file.getName().equals(fileName)) return file.getAbsolutePath();
+            String abFileName = file.getAbsolutePath();
+
             if (file.isDirectory())
             {
-                String res = searchFile(file, fileName);
-                if (res != null) return res;
+                boolean isSearchedDir = false;
+                for(String line:searchedDirList)
+                {
+                    if (line.equals(abFileName)) isSearchedDir = true;
+                }
+                if (!isSearchedDir)
+                {
+                    String res = searchFile(startDir, file, fileName, searchedDirList, isFile);
+                    if (res != null) return res;
+                }
             }
+        }
+        if (isStart)
+        {
+            if (dir.getParentFile() == null) return null;
+            dir = dir.getParentFile();
+            String res = searchFile(startDir, dir, fileName, searchedDirList, isFile);
+            if (res != null) return res;
         }
         return null;
     }
@@ -1357,12 +1425,38 @@ public class FileUtil
 				System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
 			}
 		}
-		return rtnURL;
+
+        String path = FileUtil.searchFile(rscName);
+        if (path != null)
+        {
+            File pathF = new File(path);
+
+            if (pathF.exists())
+            {
+                try
+                {
+                    rtnURL = pathF.toURI().toURL();
+                }
+                catch(MalformedURLException me)
+                {
+                    System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..MalformedURLException:/"+rscName+"="+rtnURL + " : " + me.getMessage());
+                }
+            }
+            else System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..searchFile Failure1:/"+rscName+"="+rtnURL);
+        }
+        else System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..searchFile Failure2:/"+rscName+"="+rtnURL);
+                    
+        return rtnURL;
     }
+
+
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.32  2009/05/21 14:12:19  altturbo
+ * upgreade searchProperties()
+ *
  * Revision 1.31  2009/04/21 16:55:48  altturbo
  * update downloadFromURLtoTempFile()
  *

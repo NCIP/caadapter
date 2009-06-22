@@ -28,9 +28,9 @@ import java.util.StringTokenizer;
 /**
  *
  * @author OWNER: Eugene Wang  Date: September 24, 2008
- * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.2 $
- * @date $$Date: 2008-12-19 22:24:38 $
+ * @author LAST UPDATE: $Author: altturbo $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2009-06-22 23:04:24 $
  * @since caAdapter v4.2
  */
 
@@ -71,7 +71,13 @@ public class GME_CaadapterUtil {
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();
+            {
+                String path = FileUtil.searchFile("conf/caadapter-components.properties");
+
+                if (path != null) fi =new FileInputStream(path);
+                else fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();
+            }
+
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -346,6 +352,9 @@ public class GME_CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/12/19 22:24:38  umkis
+ * HISTORY      : add getPathOfComponentPropertyFile() and getNameOfComponentPropertyFile()
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/11/10 19:12:26  wangeug
  * HISTORY      : release 4.2: GME module
  * HISTORY      :

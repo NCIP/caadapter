@@ -89,6 +89,15 @@ public class CodeActivationOrDeactivation
         try
         {
             cloneDirectory(new File(FileUtil.getWorkingDirPath()), dirNew);
+            String metaInf = FileUtil.searchDir("META-INF", dirNew);
+            if (metaInf != null)
+            {
+                if (!metaInf.endsWith(File.separator)) metaInf = metaInf + File.separator;
+                File dirNew2 = new File(metaInf + "hl7_home");
+                if (dirNew2.mkdir()) cloneDirectory(new File(FileUtil.searchDir("hl7_home")), dirNew2);
+                File dirNew3 = new File(metaInf + "conf");
+                if (dirNew3.mkdir()) cloneDirectory(new File(FileUtil.searchDir("conf")), dirNew3);
+            }
         }
         catch(Exception ie)
         {
