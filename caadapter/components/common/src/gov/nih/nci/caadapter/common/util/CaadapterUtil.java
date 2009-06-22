@@ -29,9 +29,9 @@ import java.util.StringTokenizer;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.30 $
- * @date $$Date: 2009-01-22 15:22:15 $
+ * @author LAST UPDATE: $Author: altturbo $
+ * @version $Revision: 1.31 $
+ * @date $$Date: 2009-06-22 19:30:23 $
  * @since caAdapter v1.2
  */
 
@@ -48,6 +48,7 @@ public class CaadapterUtil {
 	public static final String  CARTRIAGE_RETURN_ENCODE="&#x0D;";//html format of UTF-8 unicode value of '\r'
     private static String NAME_COMPONENT_PROPERTY_FILE = Config.COMPONENT_PROPERTY_FILE_NAME;
     private static String PATH_COMPONENT_PROPERTY_FILE = "conf" + File.separator + NAME_COMPONENT_PROPERTY_FILE;
+    private static String ROOT_WORK_DIR = "";
 
     public static String HL7_MIF_FILE_PATH;
 	public static String getHL7_MIF_FILE_PATH() {
@@ -72,8 +73,15 @@ public class CaadapterUtil {
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
-        	properties.load(fi);
+            {
+                String path = FileUtil.searchFile(NAME_COMPONENT_PROPERTY_FILE);
+
+                if (path != null) fi =new FileInputStream(path);
+                else fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
+            }
+
+
+            properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
             	Enumeration propKeys=properties.keys();
@@ -120,7 +128,7 @@ public class CaadapterUtil {
             Properties rsrcProp=new Properties();
             fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-resources.properties").openStream();
             rsrcProp.load(fi);
-            readResourceRequired(rsrcProp);          
+            readResourceRequired(rsrcProp);
 
         } catch (Exception ex) {
             Log.logException(CaadapterUtil.class, NAME_COMPONENT_PROPERTY_FILE + " is not found", ex);
@@ -349,6 +357,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.30  2009/01/22 15:22:15  umkis
+ * HISTORY      : Replace the hard-code 'caadapter-components.properties' to a static variable NAME_COMPONENT_PROPERTY_FILE
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/12/19 22:24:49  umkis
  * HISTORY      : add getPathOfComponentPropertyFile() and getNameOfComponentPropertyFile()
  * HISTORY      :
