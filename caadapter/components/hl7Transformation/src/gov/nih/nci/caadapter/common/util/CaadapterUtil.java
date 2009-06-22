@@ -29,9 +29,9 @@ import java.util.StringTokenizer;
  * HL7 v3 Related utility class.
  *
  * @author OWNER: Eric Chen  Date: Jun 4, 2005
- * @author LAST UPDATE: $Author: umkis $
- * @version $Revision: 1.2 $
- * @date $$Date: 2008-12-19 22:24:49 $
+ * @author LAST UPDATE: $Author: altturbo $
+ * @version $Revision: 1.3 $
+ * @date $$Date: 2009-06-22 19:43:29 $
  * @since caAdapter v1.2
  */
 
@@ -72,7 +72,13 @@ public class CaadapterUtil {
         		fi =new FileInputStream(srcFile);
         	}
         	else
-        		fi = CaadapterUtil.class.getClassLoader().getResource("caadapter-components.properties").openStream();	
+            {
+                String path = FileUtil.searchFile(NAME_COMPONENT_PROPERTY_FILE);
+
+                if (path != null) fi =new FileInputStream(path);
+                else fi = CaadapterUtil.class.getClassLoader().getResource(NAME_COMPONENT_PROPERTY_FILE).openStream();
+            }
+                	
         	properties.load(fi);
             if (properties != null) {
             	//read the value for each component and add it into the ActivatedList
@@ -349,6 +355,9 @@ public class CaadapterUtil {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/12/19 22:24:49  umkis
+ * HISTORY      : add getPathOfComponentPropertyFile() and getNameOfComponentPropertyFile()
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/09/24 15:18:44  wangeug
  * HISTORY      : Keep local copy of the CaadapterUtil.java
  * HISTORY      :
