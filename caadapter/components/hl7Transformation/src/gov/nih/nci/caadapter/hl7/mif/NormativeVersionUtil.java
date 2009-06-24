@@ -20,8 +20,8 @@ import java.util.HashMap;
  *
  * @author   OWNER: wangeug  $Date: Mar 9, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.5 $
- * @date 	 DATE: $Date: 2009-04-06 16:07:01 $
+ * @version  REVISION: $Revision: 1.6 $
+ * @date 	 DATE: $Date: 2009-06-24 18:00:04 $
  * @since caAdapter v4.2
  */
 
@@ -29,6 +29,14 @@ public class NormativeVersionUtil {
 	private static HashMap <String, MIFIndex>normativeSetting;
 	private static MIFIndex currentMIFIndex;
     private static String HL7_NORMATIVE_SETTNG_XML_FILE_NAME = "conf/hl7-normative-setting.xml";
+    {
+        File setFile = new File(HL7_NORMATIVE_SETTNG_XML_FILE_NAME);
+        if ((!setFile.exists())||(!setFile.isFile()))
+        {
+            String path = FileUtil.searchFile(HL7_NORMATIVE_SETTNG_XML_FILE_NAME);
+            if (path!=null) HL7_NORMATIVE_SETTNG_XML_FILE_NAME = path;
+        }
+    }
     /**
 	 * @return the currentMIFIndex
 	 */
@@ -95,6 +103,9 @@ public class NormativeVersionUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.5  2009/04/06 16:07:01  altturbo
+* HISTORY: add getNormativeSettingXmlFileName()
+* HISTORY:
 * HISTORY: Revision 1.4  2009/03/18 15:50:36  wangeug
 * HISTORY: enable wesstart to support multiple normatives
 * HISTORY:

@@ -22,8 +22,8 @@ import java.util.List;
  *
  * @author   OWNER: wangeug  $Date: Dec 12, 2008
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-04-17 14:14:01 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-06-24 17:58:56 $
  * @since caAdapter v4.2
  */
 
@@ -43,7 +43,9 @@ public class NullFlavorUtil {
 				defaultFi =new FileInputStream(srcFile);
 			else
 			{
-				defaultFi=FileUtil.retrieveResourceURL(DATA_TYPE_CORE_ATTRIBUTE_DEFAULT).openStream();
+                String path = FileUtil.searchFile("conf/"+DATA_TYPE_CORE_ATTRIBUTE_DEFAULT);
+                if (path!=null) defaultFi = new FileInputStream(path);
+                else defaultFi=FileUtil.retrieveResourceURL(DATA_TYPE_CORE_ATTRIBUTE_DEFAULT).openStream();
 //				defaultFi = CaadapterUtil.class.getClassLoader().getResource(DATA_TYPE_CORE_ATTRIBUTE_DEFAULT).openStream();	
 			
 			}
@@ -66,9 +68,13 @@ public class NullFlavorUtil {
 			if (srcFile.exists())
 				userSettingFi =new FileInputStream(srcFile);
 			else
-				userSettingFi =FileUtil.retrieveResourceURL(DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING).openStream();
+            {
+                String path = FileUtil.searchFile("conf/"+DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING);
+                if (path!=null) userSettingFi = new FileInputStream(path);
+                else userSettingFi =FileUtil.retrieveResourceURL(DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING).openStream();
 				//CaadapterUtil.class.getClassLoader().getResource(DATA_TYPE_CORE_ATTRIBUTE_USER_SETTING).openStream();	
-			DatatypeCoreAttributeLoader dtLoader=new DatatypeCoreAttributeLoader();
+            }
+            DatatypeCoreAttributeLoader dtLoader=new DatatypeCoreAttributeLoader();
 			dtLoader.loadCoreAttributeConfig(userSettingFi);
 			nullFlavorDatypes_UserSetting=dtLoader.getDatatypeCoreAttributes();
 		} catch (FileNotFoundException e) {
@@ -99,6 +105,9 @@ public class NullFlavorUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/04/17 14:14:01  wangeug
+* HISTORY: clean code:use FileUitl to retrieve resource URL
+* HISTORY:
 * HISTORY: Revision 1.1  2009/01/09 21:32:59  wangeug
 * HISTORY: process core attribute seting with HL7 datatypes
 * HISTORY:
