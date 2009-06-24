@@ -226,6 +226,7 @@ public class CodeActivationOrDeactivation
             list.add("ScenarioFileRegistration.java");
             list.add("TestIPAddress.java");
             list.add("TransformationServiceOnWeb.java");
+            list.add("MenuStart.java");
 
             for(String line:list)
             {
