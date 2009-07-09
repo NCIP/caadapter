@@ -197,6 +197,7 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("MapProcessor.java")) downloadTag = true;
         if (fileName.equals("DatatypeProcessor.java")) downloadTag = true;
         if (fileName.equals("XMLElement.java")) downloadTag = true;
+        if (fileName.equals("StringFunction.java")) downloadTag = true;
         if (fileName.equals("Attribute.java"))
         {
             if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
