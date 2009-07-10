@@ -44,10 +44,10 @@ import java.util.List;
  * This class handles drop-related data manipulation for target tree on the mapping panel.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.9 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2009-07-10 19:58:05 $
  */
 public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHandler
 {
@@ -233,7 +233,8 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 						SDKMetaData sourceSDKMetaData = (SDKMetaData)sourceNode.getUserObject();
 						SDKMetaData targetSDKMetaData = (SDKMetaData)targetNode.getUserObject();
 						sourceSDKMetaData.setMapped(true);
-						isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath());
+						//create a mapping UI and update the underneath UML model
+						isSuccess = cumulativeMappingGenerator.map(sourceSDKMetaData.getXPath(), targetSDKMetaData.getXPath(), true);
 						if (!isSuccess) {
 							sourceSDKMetaData.setMapped(false);
 							JOptionPane.showMessageDialog(getTree().getRootPane().getParent(),
@@ -343,6 +344,9 @@ public class MmsTargetTreeDropTransferHandler extends TreeDefaultDropTransferHan
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/09/26 20:35:27  linc
+ * HISTORY      : Updated according to code standard.
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2008/06/16 21:28:15  linc
  * HISTORY      : updated.
  * HISTORY      :

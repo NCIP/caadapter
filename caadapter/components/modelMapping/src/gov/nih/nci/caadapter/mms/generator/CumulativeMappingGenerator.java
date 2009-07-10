@@ -23,6 +23,8 @@ import gov.nih.nci.caadapter.mms.validator.DependencyMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.ManyToManyMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.SingleAssociationMappingValidator;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
+import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -37,8 +39,8 @@ import java.util.List;
  * @author OWNER: connellm
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.16 $
- * @date       $Date: 2009-06-12 15:50:34 $
+ * @version    $Revision: 1.17 $
+ * @date       $Date: 2009-07-10 19:55:34 $
  */
 public class CumulativeMappingGenerator {
 
@@ -99,22 +101,24 @@ public boolean unmap(String source, String target){
 		successfullyUnmapped = unmapDependency(sourceClass, source, targetClass, target);
 	} else if (sourceMappingType .equals("attribute") && targetMappingType.equals("attribute")) {
 		successfullyUnmapped = unmapAttribute(source, target);
-	} else if (sourceMappingType.equals("singleassociation")&& targetMappingType.equals("attribute")) {
-		successfullyUnmapped = unmapSingleAssociation(source, target);
-	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
-		successfullyUnmapped = unmapManyToManyAssociation(source, target);
+	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
+		successfullyUnmapped = unmapAssociation(source, target);
+//	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
+//		successfullyUnmapped = unmapManyToManyAssociation(source, target);
 	} else {
 		setErrorMessage(source.substring(source.lastIndexOf(".")+1) + "  to " + target.substring(target.lastIndexOf(".")+1) + " is invalid/not_supported");
 	}
 	return successfullyUnmapped;
 }
+ 
 
 /**
  * @param source Source element to be mapped.
  * @param target Target element to be mapped.
+ * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean 
  */
-public boolean map(String source, String target){
+public boolean map(String source, String target, boolean updateModel){
 	
 	boolean successfullyMapped = false;
 	// The first thing that needs to be determined is what type of mapping is being attempted, i.e. Dependency, Attribute, Associatin, etc.
@@ -127,17 +131,17 @@ public boolean map(String source, String target){
 		//Then the actual components from the UML model are realized
 		UMLClass sourceClass = getClass(source);
 		UMLClass targetClass = getClass(target);
-		successfullyMapped = mapDependency(sourceClass, source, targetClass, target);
+		successfullyMapped = mapDependency(sourceClass, source, targetClass, target, updateModel);		
 	} else if (sourceMappingType.equals("attribute") && targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
-		successfullyMapped = mapAttribute(source, target);
-	} else if (sourceMappingType.equals("singleassociation")&& targetMappingType.equals("attribute")) {
+		successfullyMapped = mapAttribute(source, target, updateModel);
+	} else if (sourceMappingType.equals("association")&& targetMappingType.equals("attribute")) {
 		//Then the actual components from the UML model are realized
-		successfullyMapped = mapSingleAssociation(source, target);
-	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
-		//Then the actual components from the UML model are realized
-		UMLAssociationEnd sourceEnd = getAssociationEnd(source);
-		successfullyMapped = mapManyToManyAssociation(sourceEnd, source, target);
+		successfullyMapped = mapAssociation(source, target, updateModel);
+//	} else if (sourceMappingType.equals("manytomanyassociation")&& targetMappingType.equals("attribute")){
+//		//Then the actual components from the UML model are realized
+//		UMLAssociationEnd sourceEnd = getAssociationEnd(source);
+//		successfullyMapped = mapManyToManyAssociation(sourceEnd, source, target);
 	}else {
 		setErrorMessage(source.substring(source.lastIndexOf(".")+1) + "  to " + target.substring(target.lastIndexOf(".")+1) + " is invalid/not_supported");
 	}
@@ -158,14 +162,16 @@ private String determineSourceMappingType(String source){
 	} else if (isAttribute(source)){
 		mappingType = "attribute";
 	//} //TO_DO else if (isSingleAssociation(source)&& isManyToManyAssociation(source)){
-	} else if (isSingleAssociation(source)){	
-		mappingType = "singleassociation";
-	} else if (isOneToManyAssociation(source)){
-		mappingType = "singleassociation";
-//		mappingType = "onetomanyassociation";
-	} else if (isManyToManyAssociation(source)){
-		mappingType = "manytomanyassociation";
-	}
+	} else 
+		mappingType="association";
+//		if (isSingleAssociation(source)){	
+//		mappingType = "singleassociation";
+//	} else if (isOneToManyAssociation(source)){
+//		mappingType = "singleassociation";
+////		mappingType = "onetomanyassociation";
+//	} else if (isManyToManyAssociation(source)){
+//		mappingType = "manytomanyassociation";
+//	}
 	return mappingType;
 }
 
@@ -266,9 +272,10 @@ private  UMLAssociationEnd getOtherAssociationEnd(UMLAssociationEnd associatonEn
  * @param sourceXPath
  * @param target
  * @param targetXPath
+ * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean
  */
-public  boolean mapDependency(UMLClass source, String sourceXPath, UMLClass target, String targetXPath){
+private  boolean mapDependency(UMLClass source, String sourceXPath, UMLClass target, String targetXPath, boolean updateModel){
 	boolean successfullyMapped = false;
 	DependencyMapping mapping = new DependencyMapping();
 	ObjectMetadata sourceMetadata = new ObjectMetadata();
@@ -283,6 +290,9 @@ public  boolean mapDependency(UMLClass source, String sourceXPath, UMLClass targ
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped){
 		cumulativeMapping.addDependencyMapping(mapping);
+		//add dependency to UMLModel
+		if (updateModel)
+			XMIAnnotationUtil.addDataObjectDependency(metaModel.getModel(), targetXPath, sourceXPath);
 	}
 	else {
 		setErrorMessage(validator.getValidationErrorMessage());
@@ -298,12 +308,13 @@ public  boolean mapDependency(UMLClass source, String sourceXPath, UMLClass targ
  * @param targetXPath
  * @return
  */
-public boolean unmapDependency(UMLClass source, String sourceXPath, UMLClass target, String targetXPath){
+private boolean unmapDependency(UMLClass source, String sourceXPath, UMLClass target, String targetXPath){
 	List<DependencyMapping> dependencyMapping = cumulativeMapping.getDependencyMappings();
 	for (DependencyMapping d : dependencyMapping) {
 		if (d.getSourceDependency().getXPath().equals(sourceXPath) && d.getTargetDependency().getXPath().equals(targetXPath)) {
 			cumulativeMapping.removeDependencyMapping(d);
-			return true;
+			//remove dependency from UMLModel
+			return XMIAnnotationUtil.removeDataObjectDependency(metaModel.getModel(), sourceXPath);
 		}
 	}
 	return false;
@@ -312,9 +323,10 @@ public boolean unmapDependency(UMLClass source, String sourceXPath, UMLClass tar
 /**
  * @param sourcePath
  * @param targetPath
+ * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean
  */
-public boolean mapAttribute(String sourcePath, String targetPath){
+public boolean mapAttribute(String sourcePath, String targetPath, boolean updateModel){
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	AttributeMetadata attributeMetadata = (AttributeMetadata)modelMeta.get(sourcePath);
@@ -330,6 +342,14 @@ public boolean mapAttribute(String sourcePath, String targetPath){
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
 		cumulativeMapping.addAttributeMapping(mapping);
+		//add the tag to the UMLAttribute
+		if (updateModel)
+		{
+			UMLAttribute xpathUMLAttribute=ModelUtil.findAttribute(metaModel.getModel(),columnMetadata.getXPath());
+			//remove the leading string:"Logical View.Logical Model." from source path
+			String pureSrcPath=XMIAnnotationUtil.getCleanPath(metaModel.getMmsPrefixObjectModel(),  sourcePath);
+			XMIAnnotationUtil.addTagValue(xpathUMLAttribute, "mapped-attributes", pureSrcPath);
+		}
 	}
 	else {
 		setErrorMessage(validator.getValidationErrorMessage());
@@ -348,7 +368,9 @@ public boolean unmapAttribute(String sourcePath, String targetPath){
 	for (AttributeMapping attr : attributeMapping) {
 		if (attr.getAttributeMetadata().getXPath().equals(sourcePath) && attr.getColumnMetadata().getXPath().equals(targetPath)) {
 			cumulativeMapping.removeAttributeMapping(attr);
-			return true;
+			//remove "mapped-attributes" tag from UMLModel
+			UMLAttribute xpathAttr=ModelUtil.findAttribute(metaModel.getModel(),attr.getColumnMetadata().getXPath());
+			return XMIAnnotationUtil.removeTagValue(xpathAttr, "mapped-attributes");
 		}
 	}
 	return false;
@@ -359,9 +381,10 @@ public boolean unmapAttribute(String sourcePath, String targetPath){
 /**
  * @param sourceXPath
  * @param targetXPath
+ * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean
  */
-public boolean mapSingleAssociation(String sourceXPath, String targetXPath){
+private boolean mapAssociation(String sourceXPath, String targetXPath, boolean updateModel){
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	AssociationMetadata sourceMetadata = (AssociationMetadata)modelMeta.get(sourceXPath);
@@ -377,6 +400,8 @@ public boolean mapSingleAssociation(String sourceXPath, String targetXPath){
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
 		cumulativeMapping.addSingleAssociationMapping(mapping);
+		if (updateModel)
+			XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),sourceXPath, targetXPath);
 	}
 	else {
 		setErrorMessage(validator.getValidationErrorMessage());
@@ -388,12 +413,12 @@ public boolean mapSingleAssociation(String sourceXPath, String targetXPath){
  * @param targetXPath String
  * @return boolean
  */
-public boolean unmapSingleAssociation(String sourceXPath, String targetXPath){
+public boolean unmapAssociation(String sourceXPath, String targetXPath){
 	List<SingleAssociationMapping> singleAssociationMapping = cumulativeMapping.getSingleAssociationMappings();
 	for (SingleAssociationMapping assoS : singleAssociationMapping) {
 		if (assoS.getAssociationEndMetadata().getXPath().equals(sourceXPath) && assoS.getColumnMetadata().getXPath().equals(targetXPath)) {
 			cumulativeMapping.removeSingleAssociationMapping(assoS);
-			return true;
+			return XMIAnnotationUtil.deAnnotateAssociationMapping(metaModel.getModel(), sourceXPath, targetXPath);
 		}
 	}
 	return false;
@@ -739,30 +764,30 @@ public  String getColumnFromAssociation(UMLAssociation association)
 		CumulativeMappingGenerator.init("C:/sample.xmi");
       CumulativeMappingGenerator x =CumulativeMappingGenerator.getInstance();
     
-      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE" );
-      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon","Logical View.Data Model.TAXON");
-      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone","Logical View.Data Model.CLONE");
-      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome","Logical View.Data Model.CHROMOSOME");
-      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence","Logical View.Data Model.SEQUENCE");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target","Logical View.Data Model.TARGET");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library","Logical View.Data Model.LIBRARY");
-  	  
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon.id","Logical View.Data Model.TAXON.TAXON_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.id","Logical View.Data Model.CLONE.CLONE_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library.id","Logical View.Data Model.LIBRARY.LIBRARY_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target.id","Logical View.Data Model.TARGET.TARGET_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.id","Logical View.Data Model.GENE.GENE_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.id","Logical View.Data Model.SEQUENCE.SEQUENCE_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.id","Logical View.Data Model.CHROMOSOME.CHROMOSOME_ID");
-  
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.chromosome","Logical View.Data Model.GENE.CHROMOSOME_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.taxon","Logical View.Data Model.CHROMOSOME.TAXON_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.clone","Logical View.Data Model.SEQUENCE.CLONE_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.library","Logical View.Data Model.CLONE.LIBRARY_ID");
-  	  
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.sequenceCollection","Logical View.Data Model.GENE_SEQUENCE.GENE_ID");
-  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.geneCollection","Logical View.Data Model.GENE_SEQUENCE.SEQUENCE_ID");
-  	  
+      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene","Logical View.Data Model.GENE", true );
+//      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon","Logical View.Data Model.TAXON");
+//      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone","Logical View.Data Model.CLONE");
+//      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome","Logical View.Data Model.CHROMOSOME");
+//      x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence","Logical View.Data Model.SEQUENCE");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target","Logical View.Data Model.TARGET");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library","Logical View.Data Model.LIBRARY");
+//  	  
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Taxon.id","Logical View.Data Model.TAXON.TAXON_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.id","Logical View.Data Model.CLONE.CLONE_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Library.id","Logical View.Data Model.LIBRARY.LIBRARY_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Target.id","Logical View.Data Model.TARGET.TARGET_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.id","Logical View.Data Model.GENE.GENE_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.id","Logical View.Data Model.SEQUENCE.SEQUENCE_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.id","Logical View.Data Model.CHROMOSOME.CHROMOSOME_ID");
+//  
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.chromosome","Logical View.Data Model.GENE.CHROMOSOME_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Chromosome.taxon","Logical View.Data Model.CHROMOSOME.TAXON_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.clone","Logical View.Data Model.SEQUENCE.CLONE_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Clone.library","Logical View.Data Model.CLONE.LIBRARY_ID");
+//  	  
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Gene.sequenceCollection","Logical View.Data Model.GENE_SEQUENCE.GENE_ID");
+//  	  x.map("Logical View.Logical Model.gov.nih.nci.cabio.domain.Sequence.geneCollection","Logical View.Data Model.GENE_SEQUENCE.SEQUENCE_ID");
+//  	  
   	  CumulativeMapping y = x.getCumulativeMapping();
 	}
 
@@ -776,6 +801,9 @@ public  String getColumnFromAssociation(UMLAssociation association)
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.16  2009/06/12 15:50:34  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.15  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

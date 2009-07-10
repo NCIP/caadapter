@@ -17,18 +17,25 @@ import gov.nih.nci.caadapter.ui.common.tree.MappingTargetTree;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
-import gov.nih.nci.caadapter.ui.mapping.jgraph.actions.*;
+import gov.nih.nci.caadapter.ui.mapping.mms.actions.AssociationAnnotationAction;
+import gov.nih.nci.caadapter.ui.mapping.mms.actions.ColumnAnnotationAction;
+import gov.nih.nci.caadapter.ui.mapping.mms.actions.ObjectAnnotationAction;
+import gov.nih.nci.caadapter.common.MetaObject;
+import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
+import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
+import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -55,8 +62,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2009-06-12 15:54:08 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2009-07-10 19:57:37 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -72,26 +79,17 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.16 2009-06-12 15:54:08 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.17 2009-07-10 19:57:37 wangeug Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
 	private MappingMiddlePanel middlePanel;
-	
-    //private TestAction testAction;
-    private LazyEagerAction lazyEagerAction;
-    private PrimaryKeyAction primaryKeyAction;
-    private DiscriminatorValueAction discriminatorValueAction;
-    private ClobAction clobAction;
-    private DiscriminatorAction discriminatorAction;
-    private JPopupMenu popupMenu = null;
-    
+	    
 	private boolean graphInSelection = false;
 	private boolean graphInClearSelectionMode = false;
 	private boolean sourceTreeInSelection = false;
 	private boolean targetTreeInSelection = false;
 
-	//private String selectedNode; 
 	
 	public LinkSelectionHighlighter(AbstractMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
@@ -105,8 +103,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		if(mappingPanel!=null)
 		{
-//			mappingPanel.removeMouseListener(this);
-//			mappingPanel.addMouseListener(this);
 			JTree tree = mappingPanel.getSourceTree();
 			if(tree!=null)
 			{
@@ -125,28 +121,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			graph.addMouseListener(this);
 		}
 	}
-
-//	public LinkSelectionHighlighter(HL7MappingPanel mappingPanel)
-//	{
-//		this.mappingPanel = mappingPanel;
-//	}
-//
-//	void setGraph(JGraph newGraph)
-//	{
-//		graph = newGraph;
-//	}
-
-//	private void clearSelections(short clearWhichSelection)
-//	{
-//		switch(clearWhichSelection)
-//		{
-//			case CLEAR_SELECTION_GRAPH:
-//				graph.clearSelection();
-//				break;
-//		}
-//		mappingPanel.getSourceTree().clearSelection();
-//		mappingPanel.getTargetTree().clearSelection();
-//	}
 
 	/**
 	 * Called whenever the value of the selection changes.
@@ -467,172 +441,187 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			}
 		}
 	}
-	
-	//
-	// PopupMenu
-	//
+	/**
+	 * Set popup menu for the nodes of source tree 
+	 * @return sourceNodePopup
+	 */
 	protected JPopupMenu createSourcePopupMenu()
 	{
         JTree sourceTree = mappingPanel.getSourceTree();
         JPopupMenu popupMenu = new JPopupMenu();
 
-        //Primary Key Function
-        String primaryKeyText = "Set as Primary Key";
-
         ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
-    	HashSet<String> primaryKeys = modelMetadata.getPrimaryKeys();
 
-		TreePath leadingPath = sourceTree.getLeadSelectionPath();
-
-		System.out.println( "primaryKeys: " + primaryKeys + "  " + parseNode(leadingPath.toString()) );
-        if ( primaryKeys.contains( parseNode( leadingPath.toString() ) ) )
-        {
-        	primaryKeyText = "Unset Primary Key";
-        }
-        else
-        {
-        	primaryKeyText = "Set as Primary Key";
-        }
-
-        primaryKeyAction = new PrimaryKeyAction( mappingPanel, middlePanel, primaryKeyText );
-		discriminatorValueAction = new DiscriminatorValueAction(mappingPanel, middlePanel);
-        
-        JMenuItem menuItem = new JMenuItem(primaryKeyAction);
-		JMenuItem menuItemDiscriminator = new JMenuItem(discriminatorValueAction);
-
-		popupMenu.add(menuItem);
-		popupMenu.add(menuItemDiscriminator);
-
-		// Disable PK function if selected node has children
-		primaryKeyAction.setEnabled( false );
-		discriminatorValueAction.setEnabled(false);
-        
+		TreePath leadingPath = sourceTree.getLeadSelectionPath();    
         //Check to see if anything is selected
 		if( sourceTree.getLeadSelectionPath() != null )
 		{
-			leadingPath = sourceTree.getLeadSelectionPath();
-			
+			leadingPath = sourceTree.getLeadSelectionPath();	
 			//TreePath paths[] = sourceTree.getSelectionPaths();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();			
-		
-			if( mutNode.getChildCount() == 0 )
-			{
-				primaryKeyAction.setEnabled( true );
-			}
-
-            //todo: check for (Many to 1), (Many to Many), (1 to Many) set to false
-            if ( mutNode.getUserObject() instanceof AssociationMetadata )
-            {
-                primaryKeyAction.setEnabled( false );
-            }
+			
+			
+			MetaObject metaObj=(MetaObject)mutNode.getUserObject();
+			if (metaObj instanceof AttributeMetadata)
+				return null; //no popup for object.attribute
+			
+			//the following two actions apply to object metadata
+			ObjectAnnotationAction discValueSettingAction=new ObjectAnnotationAction("Set Discriminator Value", ObjectAnnotationAction.SET_DISCRIMINATOR_VALUE,middlePanel);
+            popupMenu.add(new JMenuItem(discValueSettingAction));
+            ObjectAnnotationAction discValueRemoveAction=new ObjectAnnotationAction("Remove Discriminator Value", ObjectAnnotationAction.REMOVE_DISCRIMINATOR_VALUE,middlePanel);
+            popupMenu.add(new JMenuItem(discValueRemoveAction));
+        	
+            popupMenu.addSeparator();
+        	
+        	//The following actions apply for association metadata
+        	AssociationAnnotationAction cascadeSettingAction=new AssociationAnnotationAction("Set Cascade Value", AssociationAnnotationAction.SET_CASCADE_SETTING,middlePanel);
+            popupMenu.add(new JMenuItem(cascadeSettingAction));
+            AssociationAnnotationAction cascadeRemoveAction=new AssociationAnnotationAction("Remove Cascade Value",  AssociationAnnotationAction.REMOVE_CASCADE_SETTING,middlePanel);
+            popupMenu.add(new JMenuItem(cascadeRemoveAction));
+          
+            AssociationAnnotationAction inverseSettingAction=new AssociationAnnotationAction("Set as Inverse Side",  AssociationAnnotationAction.SET_INVERSEOF,middlePanel);
+            popupMenu.add(new JMenuItem(inverseSettingAction));
+            AssociationAnnotationAction inverseRemoveAction=new AssociationAnnotationAction("Unset as Inverse Side",  AssociationAnnotationAction.REMOVE_INVERSEOF, middlePanel);
+            popupMenu.add(new JMenuItem(inverseRemoveAction));
             
-            if (mutNode.getUserObject() instanceof ObjectMetadata) {
+            if ( metaObj instanceof AssociationMetadata )
+            {
+            	AssociationMetadata asscMetadata = (AssociationMetadata)mutNode.getUserObject();
+            	if (!asscMetadata.isMapped())
+            		return popupMenu;
+            	//check if correlation table exist  
+            	UMLAssociation umlAssc=asscMetadata.getUMLAssociation();
+    			UMLTaggedValue tagValue=umlAssc.getTaggedValue("correlation-table");
+    			if (tagValue!=null)
+    			{
+    				inverseSettingAction.setMetaAnnoted(asscMetadata);
+    				inverseSettingAction.setEnabled(true);
+    				inverseRemoveAction.setMetaAnnoted(asscMetadata);
+    				inverseRemoveAction.setEnabled(true);
+    			}
+    			
+    			//check if NCI_CASCADE_ASSOCIATION exist 
+    			UMLTaggedValue cascadeTagValue=null;
+    			for (UMLTaggedValue tagV:umlAssc.getTaggedValues())
+    			{
+    				if (tagV.getName().startsWith("NCI_CASCADE_ASSOCIATION"))
+    				{
+    					cascadeTagValue=tagV;
+    					break;
+    				}
+    			}
+    			//remove "Logical View.Logical Model." from the association path
+    			cascadeSettingAction.setMetaAnnoted(asscMetadata);
+   				cascadeSettingAction.setEnabled(true);  				
+    			if (cascadeTagValue!=null)
+    			{	
+    				cascadeRemoveAction.setMetaAnnoted(asscMetadata);
+    				cascadeRemoveAction.setEnabled(true);
+    			}
+            }
+            else  if (metaObj instanceof ObjectMetadata) {
             	
             	ObjectMetadata objectMetadata = (ObjectMetadata)mutNode.getUserObject();
-
-            	modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();
-		    	Hashtable<String, String> discriminatorValues = modelMetadata.getDiscriminatorValues();
-		    	int startpos = modelMetadata.getMmsPrefixObjectModel().length();
-		    	
-		    	if (discriminatorValues.get(objectMetadata.getXPath().substring(startpos+1))!= null)
-		    		discriminatorValueAction.setEnabled(true);
+            	if (!objectMetadata.isMapped())
+            		return popupMenu;
+            	
+            	discValueSettingAction.setMetaAnnoted(objectMetadata);
+            	discValueSettingAction.setEnabled(true);
+            	           	
+            	//check if discrimniator value exists
+            	UMLClass objClass=ModelUtil.findClass(modelMetadata.getModel(), objectMetadata.getXPath());
+            	UMLTaggedValue discTag=objClass.getTaggedValue("discriminator");
+            	if (discTag!=null)
+            	{
+            		discValueRemoveAction.setMetaAnnoted(objectMetadata);
+            		discValueRemoveAction.setEnabled(true);
+            	}           	            	
             }
         }
 		return popupMenu;
 	}
-	//
-	// PopupMenu
-	//
+
+	/**
+	 * Create the Popup menu for a target tree node
+	 * @return
+	 */
 	protected JPopupMenu createTargetPopupMenu()
 	{
 		JPopupMenu popupMenu = new JPopupMenu();
-		
-		String lazyText = "Set as Eager";
-        String clobText = "Set as CLOB";
-        String discriminatorText = "Set as Discrimator";
-
         //Could change this depending on whether lazy/eager
     	ModelMetadata modelMetadata = CumulativeMappingGenerator.getInstance().getMetaModel();//ModelMetadata.getInstance();    	
-    	HashSet<String> lazyKeys = modelMetadata.getLazyKeys();
-    	HashSet<String> clobKeys = modelMetadata.getClobKeys();
-    	HashSet<String> discriminatorKeys = modelMetadata.getDiscriminatorKeys();
-
+ 
         JTree targetTree = mappingPanel.getTargetTree();
 		TreePath leadingPath = targetTree.getLeadSelectionPath();														
-		
-		System.out.println( "Lazy Keys: " + lazyKeys );
-		String lKey = parseNode( leadingPath.toString() );
-		String lazyKey = modelMetadata.getMmsPrefixDataModel() + "." + lKey;
-		CumulativeMappingGenerator cumulativeMappingGenerator = CumulativeMappingGenerator.getInstance();
-		UMLAssociation umlAssociation = cumulativeMappingGenerator.getAssociationFromColumn(lazyKey);
-
-		if (umlAssociation != null) {
-			if ( lazyKeys.contains( lKey ) )
-			{
-				lazyText = "Set as Lazy";
-			}
-			else {
-				lazyText = "Set as Eager";
-			}
-		} else {
-			lazyText = "";
-		}
-
-        System.out.println( "Clob Keys: " + clobKeys );
-        if ( clobKeys.contains( parseNode( leadingPath.toString() ) ) )
-        {
-        	clobText = "Unset Clob";
-        }
-        else {
-        	clobText = "Set as Clob";
-        }
-
-        System.out.println( "Discriminator Keys: " + discriminatorKeys );
-        if ( discriminatorKeys.contains( parseNode( leadingPath.toString() ) ) )
-        {
-        	discriminatorText = "Unset Discriminator";
-        }
-        else {
-        	discriminatorText = "Set as Discriminator";
-        }
-
-        lazyEagerAction = new LazyEagerAction( mappingPanel, middlePanel, lazyText );
-        clobAction = new ClobAction( mappingPanel, middlePanel, clobText );
-        discriminatorAction = new DiscriminatorAction( mappingPanel, middlePanel, discriminatorText );
-
-        JMenuItem lazyItem = new JMenuItem(lazyEagerAction);
-        JMenuItem clobItem = new JMenuItem(clobAction);
-        JMenuItem discriminatorItem = new JMenuItem(discriminatorAction);
-
-        /* remove clob function from mms, 2008/10/18
-		popupMenu.add(lazyItem);
-        popupMenu.add(clobItem);
-        */
-        popupMenu.add(discriminatorItem);
-
-        lazyEagerAction.setEnabled( false );
-        clobAction.setEnabled( false );
-        discriminatorAction.setEnabled( false );
-        
-        if(lazyText==null || lazyText.trim().length()==0) {
-        	popupMenu.remove(lazyItem);
-        	//lazyItem.setEnabled(false);
-        }
+	
+		//the following two actions apply to table metadata
+		ColumnAnnotationAction pkSettingAction=new ColumnAnnotationAction("Set Primary Key Generator", ColumnAnnotationAction.SET_PK_GENERATOR,middlePanel);
+        popupMenu.add(new JMenuItem(pkSettingAction));
+        ColumnAnnotationAction pkRemoveAction=new ColumnAnnotationAction("Remove Primary Key Generator", ColumnAnnotationAction.REMOVE_PK_GENERATOR,middlePanel);
+        popupMenu.add(new JMenuItem(pkRemoveAction));
+    	
+        popupMenu.addSeparator();
+    	
+    	//The following actions apply for association metadata
+        ColumnAnnotationAction discKeySettingAction=new ColumnAnnotationAction("Set as Discriminator Key", ColumnAnnotationAction.SET_DISCRIMINATOR_KEY,middlePanel);
+        popupMenu.add(new JMenuItem(discKeySettingAction));
+        ColumnAnnotationAction discKeyRemoveAction=new ColumnAnnotationAction("Unset as Discriminator Key",  ColumnAnnotationAction.REMOVE_DISCRIMINATOR_KEY,middlePanel);
+        popupMenu.add(new JMenuItem(discKeyRemoveAction));
 
         //Check to see if anything is selected
 		if( targetTree.getLeadSelectionPath() != null )
 		{
 			leadingPath = targetTree.getLeadSelectionPath();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();
-			
-			// Disable PK function if selected node has children		
-			if( mutNode.getChildCount() == 0 )
+			MetaObject metaObj=(MetaObject)mutNode.getUserObject();
+			if (metaObj instanceof ColumnMetadata)
 			{
-				if (lazyEagerAction !=null) lazyEagerAction.setEnabled( true );
-                clobAction.setEnabled( true );
-                discriminatorAction.setEnabled( true );
-            }
-		}		
+				ColumnMetadata columnMeta=(ColumnMetadata)metaObj;
+				UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),columnMeta.getXPath());
+				//check the column is mapped
+				UMLTaggedValue mappingAsscTag=xpathAttr.getTaggedValue("implements-association");
+				if (mappingAsscTag!=null)
+					return popupMenu;
+				
+				UMLTaggedValue mappingAttrTag=xpathAttr.getTaggedValue("mapped-attributes");
+				if (mappingAttrTag!=null)
+				{
+					//it is allowed to have more than one primary key generator setting
+					pkSettingAction.setMetaAnnoted(columnMeta);
+					pkSettingAction.setEnabled(true);
+					//check if primary key column
+					UMLTaggedValue pkGeneratorTag=null;
+					for (UMLTaggedValue attrTag:xpathAttr.getTaggedValues())
+					{
+						if (attrTag.getName().startsWith("NCI_GENERATOR"))
+						{
+							pkGeneratorTag=attrTag;
+							break;
+						}
+					}
+					if (pkGeneratorTag!=null)
+					{
+						pkRemoveAction.setMetaAnnoted(columnMeta);
+						pkRemoveAction.setEnabled(true);
+					}
+				}
+				else
+				{
+					//the discriminator key column will not map to any thing
+					UMLTaggedValue discKeyTag=xpathAttr.getTaggedValue("discriminator");
+					if (discKeyTag!=null)
+					{
+						discKeyRemoveAction.setMetaAnnoted(columnMeta);
+						discKeyRemoveAction.setEnabled(true);
+					}
+					else
+					{
+						discKeySettingAction.setMetaAnnoted(columnMeta);
+						discKeySettingAction.setEnabled(true);
+					}
+				}
+			}		
+		}
 	
 		return popupMenu;
 	}
@@ -667,6 +656,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.16  2009/06/12 15:54:08  wangeug
+ * HISTORY      : clean code: caAdapter MMS 4.1.1
+ * HISTORY      :
  * HISTORY      : Revision 1.15  2008/10/20 15:42:47  linc
  * HISTORY      : remove clob, inverse-of, lazy/eager functionality from mms.
  * HISTORY      :

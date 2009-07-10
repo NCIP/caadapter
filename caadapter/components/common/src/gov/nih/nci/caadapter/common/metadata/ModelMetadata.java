@@ -30,6 +30,7 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
@@ -52,8 +53,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * there should never be more than one instance of it in the runtime environment.
  * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.10 $
- * @date       $Date: 2009-06-12 15:49:58 $
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2009-07-10 19:53:12 $
  */
 public class ModelMetadata {
 	private static ModelMetadata modelMetadata = null;
@@ -73,7 +74,7 @@ public class ModelMetadata {
     private String mmsPrefixObjectModel = "Logical View.Logical Model";
     private String mmsPrefixDataModel = "Logical View.Data Model";
     //define a list to hold "tag:value" of the UMLTaggedValue for the mapped attributes 
-    private List <String>preservedMappedTag=new ArrayList<String>();
+//    private List <String>preservedMappedTag=new ArrayList<String>();
 	
 	public ModelMetadata(String xmiFileName){
 		this.xmiFileName = xmiFileName;
@@ -115,7 +116,7 @@ public class ModelMetadata {
             {
                 initProcessPackage(pkg);
             }
-	    	preservedMappedTag.clear();
+//	    	preservedMappedTag.clear();
 	    } catch (XmiException e) {
 	    	e.printStackTrace();
 	    } catch (IOException e) {
@@ -197,7 +198,6 @@ public class ModelMetadata {
                 object.setXPath(pathKey.toString());
                 object.setId(clazz.toString());
                 objectHashMap.put(clazz.toString(), pathKey.toString());
-
                 sortedModel.add(object);
 
                 /* The following code look through the inheritance hierachy and populate
@@ -376,26 +376,16 @@ public class ModelMetadata {
 			this.xmiFileName = xmiFileName;
 		}
 		
-		public HashSet getPrimaryKeys()
-		{
-			return primaryKeys;
-		}
+		//		public void setPrimaryKeys( HashSet keyList )		
+//		{
+//			primaryKeys = keyList;	
+//		}
 		
-		public void setPrimaryKeys( HashSet keyList )		
-		{
-			primaryKeys = keyList;	
-		}
-		
-		public HashSet getLazyKeys()
-		{
-			return lazyKeys;
-		}
-		
-		public void setLazyKeys( HashSet lazyKeyList )		
-		{
-			lazyKeys = lazyKeyList;
-		}
-		
+		//		public void setLazyKeys( HashSet lazyKeyList )		
+//		{
+//			lazyKeys = lazyKeyList;
+//		}
+//		
 		/**
 		 * @return Returns the model.
 		 */
@@ -419,21 +409,36 @@ public class ModelMetadata {
         	mmsPrefixDataModel = mmsPrefixDataModelSet;
         }
 
-        public HashSet<String> getClobKeys() {
+        public HashSet getPrimaryKeys()
+		{
+			return primaryKeys;
+		}
+
+		//		public void setPrimaryKeys( HashSet keyList )		
+		//		{
+		//			primaryKeys = keyList;	
+		//		}
+				
+				public HashSet getLazyKeys()
+				{
+					return lazyKeys;
+				}
+
+		public HashSet<String> getClobKeys() {
             return clobKeys;
         }
 
-        public void setClobKeys(HashSet<String> clobKeysSet) {
-            clobKeys = clobKeysSet;
-        }
+//        public void setClobKeys(HashSet<String> clobKeysSet) {
+//            clobKeys = clobKeysSet;
+//        }
 
         public HashSet<String> getDiscriminatorKeys() {
             return discriminatorKeys;
         }
-
-        public void setDiscriminatorKeys(HashSet<String> discriminatorKeysSet) {
-            discriminatorKeys = discriminatorKeysSet;
-        }
+//
+//        public void setDiscriminatorKeys(HashSet<String> discriminatorKeysSet) {
+//            discriminatorKeys = discriminatorKeysSet;
+//        }
 
         /**
 	 * @return the discriminatorValues
@@ -445,14 +450,14 @@ public class ModelMetadata {
 	/**
 	 * @param discriminatorValues the discriminatorValues to set
 	 */
-	public void setDiscriminatorValues(
-			Hashtable<String, String> discriminatorValuesSet) {
-		discriminatorValues = discriminatorValuesSet;
-	}
+//	public void setDiscriminatorValues(
+//			Hashtable<String, String> discriminatorValuesSet) {
+//		discriminatorValues = discriminatorValuesSet;
+//	}
 
-	public List<String> getPreservedMappedTag() {
-		return preservedMappedTag;
-	}
+//	public List<String> getPreservedMappedTag() {
+//		return preservedMappedTag;
+//	}
 
 	/**
 		 * @param args
@@ -485,6 +490,9 @@ class XPathComparator implements Comparator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2009/06/12 15:49:58  wangeug
+ * HISTORY      : clean code: caAdapter MMS 4.1.1
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/09/25 19:30:39  phadkes
  * HISTORY      : Changes for code standards
  * HISTORY      :

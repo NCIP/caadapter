@@ -85,13 +85,13 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
- * @version    $Revision: 1.38 $
- * @date       $Date: 2009-06-12 15:53:49 $ 
+ * @version    $Revision: 1.39 $
+ * @date       $Date: 2009-07-10 19:57:04 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.38 2009-06-12 15:53:49 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.39 2009-07-10 19:57:04 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -574,7 +574,8 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			SDKMetaData targetSDKMetaData = (SDKMetaData) targetNode.getUserObject();
 
 			sourceSDKMetaData.setMapped(true);
-			isSuccess = cumulativeMappingGenerator.map(sourceXpath,	targetXpath);
+			//loading XMI and create mapping UI
+			isSuccess = cumulativeMappingGenerator.map(sourceXpath,	targetXpath, false);
 			isSuccess = isSuccess&& getMappingDataManager().createMapping(
 							(MappableNode) sourceNode,
 							(MappableNode) targetNode);
@@ -584,7 +585,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			}
 		}
 		//create class.attribute--table.column mapping
-		myModelMeta.getPreservedMappedTag().clear();
+//		myModelMeta.getPreservedMappedTag().clear();
 		for (UMLPackage pkg : myUMLModel.getPackages()) 
 		{
 			for (UMLPackage pkg2 : pkg.getPackages()) {
@@ -615,17 +616,17 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 								}
 								SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
 								sourceSDKMetaData.setMapped(true);
-								isSuccess = cumulativeMappingGenerator.map(sourceXpath, targetXpath);
+								isSuccess = cumulativeMappingGenerator.map(sourceXpath, targetXpath, false);
 								isSuccess = isSuccess&& 
 										getMappingDataManager().createMapping((MappableNode) sourceNode,(MappableNode) targetNode);
-								if (!isSuccess)
-								{
-									//no UI link is created for the mapped table.column 
-									//"mapped-attributes"/"implements-association"
-									String prvdTag=tagValue.getName()+":"+tagValue.getValue();
-									CumulativeMappingGenerator.getInstance().getMetaModel().getPreservedMappedTag().add(prvdTag);
-									logger.logInfo(this, "No UI link is created, preserve the mapping:"+prvdTag);
-								}
+//								if (!isSuccess)
+//								{
+//									//no UI link is created for the mapped table.column 
+//									//"mapped-attributes"/"implements-association"
+//									String prvdTag=tagValue.getName()+":"+tagValue.getValue();
+//									CumulativeMappingGenerator.getInstance().getMetaModel().getPreservedMappedTag().add(prvdTag);
+//									logger.logInfo(this, "No UI link is created, preserve the mapping:"+prvdTag);
+//								}
 							}//tag level loop
 						}//tag list level loop
 					}//attribute level loop
@@ -836,6 +837,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.38  2009/06/12 15:53:49  wangeug
+ * HISTORY : clean code: caAdapter MMS 4.1.1
+ * HISTORY :
  * HISTORY : Revision 1.37  2008/09/26 20:35:27  linc
  * HISTORY : Updated according to code standard.
  * HISTORY :

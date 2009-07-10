@@ -28,10 +28,10 @@ import java.awt.event.ActionEvent;
  * This class defines the edit constant action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.2 $
- *          date        $Date: 2008-06-09 19:54:06 $
+ *          revision    $Revision: 1.3 $
+ *          date        $Date: 2009-07-10 19:56:23 $
  */
 public class ConstantEditAction extends DefaultAbstractJgraphAction
 {
@@ -47,12 +47,10 @@ public class ConstantEditAction extends DefaultAbstractJgraphAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ConstantEditAction.java,v 1.2 2008-06-09 19:54:06 phadkes Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/actions/ConstantEditAction.java,v 1.3 2009-07-10 19:56:23 wangeug Exp $";
 
 	private static final String COMMAND_NAME = "Edit Constant...";
-	private static final Character COMMAND_MNEMONIC = new Character('E');
-//	private static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0, false);
-
+	
 	/**
 	 * Defines an <code>Action</code> object with a default
 	 * description string and default icon.
@@ -62,26 +60,6 @@ public class ConstantEditAction extends DefaultAbstractJgraphAction
 		super(COMMAND_NAME, middlePanel, controller);
 	}
 
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a default icon.
-	 */
-	public ConstantEditAction(String name, MappingMiddlePanel middlePanel, MiddlePanelJGraphController controller)
-	{
-		this(name, null, middlePanel, controller);
-	}
-
-	/**
-	 * Defines an <code>Action</code> object with the specified
-	 * description string and a the specified icon.
-	 */
-	public ConstantEditAction(String name, Icon icon, MappingMiddlePanel middlePanel, MiddlePanelJGraphController controller)
-	{
-		super(name, icon, middlePanel, controller);
-		setMnemonic(COMMAND_MNEMONIC);
-		//		setAcceleratorKey(ACCELERATOR_KEY_STROKE);
-		setActionCommandType(DOCUMENT_ACTION_TYPE);
-	}
 
 	/**
 	 * The abstract function that descendant classes must be overridden to provide customsized handling.
@@ -149,6 +127,9 @@ public class ConstantEditAction extends DefaultAbstractJgraphAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/06/09 19:54:06  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2007/04/03 16:17:57  wangeug
  * HISTORY      : initial loading
  * HISTORY      :
