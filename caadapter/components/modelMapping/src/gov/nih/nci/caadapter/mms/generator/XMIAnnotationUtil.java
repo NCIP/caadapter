@@ -32,8 +32,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  *
  * @author   OWNER: wangeug  $Date: Jul 9, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.1 $
- * @date 	 DATE: $Date: 2009-07-10 19:53:51 $
+ * @version  REVISION: $Revision: 1.2 $
+ * @date 	 DATE: $Date: 2009-07-10 21:20:40 $
  * @since caAdapter v4.2
  */
 
@@ -108,7 +108,8 @@ public class XMIAnnotationUtil {
 	    }
 		UMLDependency dep =umlModel.createDependency(client, supplier, "dependency");
 		annotatationLogger.logInfo(dep, "...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());		
-		dep = umlModel.addDependency( dep );	    
+		//persist this dependency to UML model
+		dep=umlModel.addDependency( dep );	
 	    dep.addStereotype("DataSource");
 	    dep.addTaggedValue("stereotype", "DataSource");
 	    dep.addTaggedValue("ea_type", "Dependency");
@@ -117,6 +118,10 @@ public class XMIAnnotationUtil {
 	    dep.addTaggedValue("ea_sourceName", client.getName());
 	    dep.addTaggedValue("ea_targetName", supplier.getName());
 	    
+	    //add this dependency to cache data of its ends
+	    dep.getSupplier().getDependencies().add(dep);
+		dep.getClient().getDependencies().add(dep);
+		
 	    //check if any column of the target has been mapped to
 	    //an association end in the Logical Model, the target table could
 	    //be used as "correlation-table" of the association. 
@@ -300,11 +305,18 @@ public class XMIAnnotationUtil {
 	    UMLClass client=null;
 	    for(UMLDependency existDep:supplier.getDependencies())
 	    {
-	    	if (existDep.getStereotype().equalsIgnoreCase("DataSource"))
+	    	String stereoType=existDep.getStereotype();
+	    	//there is a bug in XMI handler in creating Dependency, 
+	    	//the stereotype is not set correctly.    	
+	    	if (stereoType==null&&existDep.getTaggedValues().isEmpty())
+	    			continue;
+	    	else if(stereoType.equalsIgnoreCase("DataSource"))
 	    	{
 	    		client=(UMLClass)existDep.getClient();
 	    		foundDep=existDep;
+	    		break;
 	    	}
+	    	
 	    }
 	    if (foundDep==null)
 	    	return false;
@@ -340,4 +352,7 @@ public class XMIAnnotationUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.1  2009/07/10 19:53:51  wangeug
+* HISTORY: MMS re-engineering
+* HISTORY:
 **/
