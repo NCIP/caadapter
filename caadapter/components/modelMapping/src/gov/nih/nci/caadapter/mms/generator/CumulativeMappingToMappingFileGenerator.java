@@ -18,10 +18,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
-import gov.nih.nci.caadapter.mms.map.ManyToManyMapping;
-import gov.nih.nci.caadapter.mms.map.SingleAssociationMapping;
+import gov.nih.nci.caadapter.mms.map.AssociationMapping;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -33,8 +31,8 @@ import org.jdom.output.XMLOutputter;
  * @author OWNER: Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2009-06-12 15:51:06 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-07-14 16:35:49 $
  * @created 11-Aug-2006 8:18:16 AM
  */
 public class CumulativeMappingToMappingFileGenerator {
@@ -103,10 +101,10 @@ public class CumulativeMappingToMappingFileGenerator {
 				 e.printStackTrace();
 			}
 		}
-		Iterator k = cumulativeMapping.getSingleAssociationMappings().iterator();
+		Iterator k = cumulativeMapping.getAssociationMappings().iterator();
 		while (k.hasNext()) {
 			try {
-				SingleAssociationMapping o = (SingleAssociationMapping) k.next();
+				AssociationMapping o = (AssociationMapping) k.next();
 				Element link = new Element("link");
 				link.setAttribute("type", "association");
 				Element source = new Element("source");
@@ -120,42 +118,7 @@ public class CumulativeMappingToMappingFileGenerator {
 				 e.printStackTrace();
 			}
 		}
-		Iterator l = cumulativeMapping.getManyToManyMappings().iterator();
-		while (l.hasNext()) {
-			try {
-				ManyToManyMapping p = (ManyToManyMapping) l.next();
-				Element link = new Element("link");
-				link.setAttribute("type", "manytomany");
-				Element source = new Element("source");
-				source.addContent(p.getAssociationEndMetadata().getXPath());
-				link.addContent(source);
-				Element target = new Element("target");
-				target.addContent(p.getThisEndColumn().getXPath());
-				link.addContent(target);
-				mapping.addContent(link);
-				
-			} catch (Exception e) {
-				 e.printStackTrace();
-			}
-			Iterator m = xmiMetada.getModelMetadata().values().iterator();
-			while (m.hasNext()) {
-				try {
-					Object p = m.next();
-					if (p.getClass().getName().equals("TableMetadata")) {
-						TableMetadata table = (TableMetadata)p;
-						if (table.getType().equals("correlation")) {
-							Element link = new Element("correlationTable");
-							link.setAttribute("name", table.getName());
-							link.setAttribute("path", table.getXPath());
-							mapping.addContent(link);
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-		}	
+
 		Document mappingDoc= new Document();
 		mappingDoc.setRootElement(mapping);
 	    XMLOutputter outp = new XMLOutputter();
@@ -163,10 +126,6 @@ public class CumulativeMappingToMappingFileGenerator {
     	FileOutputStream myStream = new FileOutputStream(mappingFile);
     	outp.output(mappingDoc, myStream);
     	myStream.close();
-		// Create .XMI file with Mapping attribute tagged values
-		
-		XMIGenerator generator = new XMIGenerator( mappingFile.getAbsolutePath(), xmiOutFile );
-		generator.annotateXMI();
 	}
 	
 	/**
@@ -219,6 +178,9 @@ public class CumulativeMappingToMappingFileGenerator {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2009/06/12 15:51:06  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

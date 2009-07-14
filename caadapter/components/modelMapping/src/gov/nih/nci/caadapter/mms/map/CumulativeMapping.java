@@ -20,18 +20,16 @@ import java.util.List;
  * @author OWNER: Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.8 $
- * @date       $Date: 2009-06-12 15:51:50 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2009-07-14 16:36:00 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class CumulativeMapping {
 
 	private List<AttributeMapping> attributeMappings = new ArrayList<AttributeMapping>();
-	private List<DependencyMapping> dependencyMappings = new ArrayList<DependencyMapping>();
-	private List<ManyToManyMapping> manyToManyMappings = new ArrayList<ManyToManyMapping>();
-	private List<SingleAssociationMapping> singleAssociationMappings = new ArrayList<SingleAssociationMapping>();
-    private List<SemanticMapping> semanticMappings = new ArrayList<SemanticMapping>();
-
+	private List<DependencyMapping> dependencyMappings = new ArrayList<DependencyMapping>();	
+	private List<AssociationMapping> singleAssociationMappings = new ArrayList<AssociationMapping>();
+    
 	/**
 	 *
 	 * @param attributeMapping
@@ -50,25 +48,9 @@ public class CumulativeMapping {
 
 	/**
 	 *
-	 * @param manyToManyMapping
-	 */
-	public void addManyToManyMapping(ManyToManyMapping manyToManyMapping){
-		manyToManyMappings.add(manyToManyMapping);
-	}
-
-	/**
-	 *
-	 * @param semanticMapping
-	 */
-	public void addSemanticMapping(SemanticMapping semanticMapping){
-		semanticMappings.add(semanticMapping);
-	}
-
-	/**
-	 *
 	 * @param singleAssociationMapping
 	 */
-	public void addSingleAssociationMapping(SingleAssociationMapping singleAssociationMapping){
+	public void addAssociationMapping(AssociationMapping singleAssociationMapping){
    		singleAssociationMappings.add(singleAssociationMapping);
 	}
 
@@ -80,15 +62,7 @@ public class CumulativeMapping {
 		return dependencyMappings;
 	}
 
-	public List<ManyToManyMapping> getManyToManyMappings(){
-		return manyToManyMappings;
-	}
-
-	public List<SemanticMapping> getSemanticMappings(){
-		return semanticMappings;
-	}
-
-	public List<SingleAssociationMapping> getSingleAssociationMappings(){
+	public List<AssociationMapping> getAssociationMappings(){
 		return singleAssociationMappings;
 	}
 
@@ -110,31 +84,17 @@ public class CumulativeMapping {
 
 	/**
 	 *
-	 * @param semanticMapping
-	 */
-	public void removeSemanticMapping(SemanticMapping semanticMapping){
-		semanticMappings.remove(semanticMapping);
-	}
-
-	/**
-	 *
 	 * @param singleAssociationMapping
 	 */
-	public void removeSingleAssociationMapping(SingleAssociationMapping singleAssociationMapping){
+	public void removeAssociationMapping(AssociationMapping singleAssociationMapping){
 		singleAssociationMappings.remove(singleAssociationMapping);
 	}
-
-	/**
-	 *
-	 * @param manyToManyMapping
-	 */
-	public void removeManyToManyMapping(ManyToManyMapping manyToManyMapping){
-		manyToManyMappings.remove(manyToManyMapping);
-	}
-
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.8  2009/06/12 15:51:50  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.7  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

@@ -85,13 +85,13 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
- * @version    $Revision: 1.39 $
- * @date       $Date: 2009-07-10 19:57:04 $ 
+ * @version    $Revision: 1.40 $
+ * @date       $Date: 2009-07-14 16:36:48 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.39 2009-07-10 19:57:04 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.40 2009-07-14 16:36:48 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -307,7 +307,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 		}
 		String mapFileName = file.getAbsolutePath().replaceAll(".xmi", ".map");
 		try {
-			CumulativeMappingToMappingFileGenerator.writeMappingFile(new File(mapFileName), file.getAbsolutePath());
+//			CumulativeMappingToMappingFileGenerator.writeMappingFile(new File(mapFileName), file.getAbsolutePath());
+			ModelMetadata xmiMetada = CumulativeMappingGenerator.getInstance().getMetaModel();
+			xmiMetada.getHandler().save( file.getAbsolutePath());
 			setChanged(false);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -837,6 +839,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.39  2009/07/10 19:57:04  wangeug
+ * HISTORY : MMS re-engineering
+ * HISTORY :
  * HISTORY : Revision 1.38  2009/06/12 15:53:49  wangeug
  * HISTORY : clean code: caAdapter MMS 4.1.1
  * HISTORY :

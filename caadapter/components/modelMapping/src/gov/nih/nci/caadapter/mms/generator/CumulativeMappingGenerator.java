@@ -10,8 +10,7 @@ package gov.nih.nci.caadapter.mms.generator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
-import gov.nih.nci.caadapter.mms.map.ManyToManyMapping;
-import gov.nih.nci.caadapter.mms.map.SingleAssociationMapping;
+import gov.nih.nci.caadapter.mms.map.AssociationMapping;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.AttributeMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
@@ -20,7 +19,6 @@ import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 import gov.nih.nci.caadapter.mms.validator.AttributeMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.DependencyMappingValidator;
-import gov.nih.nci.caadapter.mms.validator.ManyToManyMappingValidator;
 import gov.nih.nci.caadapter.mms.validator.SingleAssociationMappingValidator;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
@@ -39,8 +37,8 @@ import java.util.List;
  * @author OWNER: connellm
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.17 $
- * @date       $Date: 2009-07-10 19:55:34 $
+ * @version    $Revision: 1.18 $
+ * @date       $Date: 2009-07-14 16:35:49 $
  */
 public class CumulativeMappingGenerator {
 
@@ -81,6 +79,28 @@ public static CumulativeMappingGenerator getInstance()
  */
 public ModelMetadata getMetaModel() {
 	return metaModel;
+}
+
+/**
+ * @return CumulativeMapping
+ */
+public  CumulativeMapping getCumulativeMapping() {
+	return cumulativeMapping;
+}
+
+/**
+ * @param cumulativeMapping
+ */
+public void setCumulativeMapping(CumulativeMapping cMapping) {
+	cumulativeMapping = cMapping;
+}
+
+public String getErrorMessage() {
+	return errorMessage;
+}
+
+public void setErrorMessage(String eMessage) {
+	errorMessage = eMessage;
 }
 
 /**
@@ -164,14 +184,7 @@ private String determineSourceMappingType(String source){
 	//} //TO_DO else if (isSingleAssociation(source)&& isManyToManyAssociation(source)){
 	} else 
 		mappingType="association";
-//		if (isSingleAssociation(source)){	
-//		mappingType = "singleassociation";
-//	} else if (isOneToManyAssociation(source)){
-//		mappingType = "singleassociation";
-////		mappingType = "onetomanyassociation";
-//	} else if (isManyToManyAssociation(source)){
-//		mappingType = "manytomanyassociation";
-//	}
+
 	return mappingType;
 }
 
@@ -187,20 +200,6 @@ private String determineTargetMappingType(String target){
 	
 	if (isClass(target) && !isCorrelationTable(target)){
 		mappingType = "dependency";
-		//TO_DO if you want to make the mapping tool "fool proof" you would need to determine if the 
-		//columns the user is mapping are foregein keys, primary keys, correct datatypes, etc. at
-		//this point we are assuming the user is going to have a correctly designed database
-		//and knows what needs to be mapped to what. In my experience though users don't always 
-		//know enough about their data and object oriented program, so you may want to implment some
-		//checking.
-		/*  if we need to validate whether or not the column is a foreign key uncomment this code
-		 * however, the UI must be made to change the column type in the model metadata object
-		 * for the appropriate ColumnMetadata object to "foreignKey"
-	} else if (isAttribute(target) && !isForeignKey(target)){
-		mappingType = "attribute";
-	} else if (isAttribute(target) && isForeignKey(target)){
-		mappingType = "foreignkey";
-		*/
 	} else if (isAttribute(target)){
 		mappingType = "attribute";
 	} else if (isCorrelationTable(target)){
@@ -223,46 +222,6 @@ private  UMLClass getClass(String pathToClass){
 	return clazz;
 }
 
-/**
- * This method uses the path to the rolename (association) being mapped to retrieve the actual UMLAssociationEnd entity from the UML model(xmi file)
- * @param pathToAssociation
- * @return UMLAssociationEnd
- */
-private  UMLAssociationEnd getAssociationEnd(String pathToAssociation){
-	UMLAssociationEnd end = null;
-	UMLClass clazz = null;
-	String[] modelElements = pathToAssociation.split("\\.");
-	clazz = findClass(metaModel.getModel(), modelElements, 0, modelElements.length-2);
-	if (clazz!=null){
-		 for(UMLAssociation association : clazz.getAssociations()) {
-			 for(UMLAssociationEnd associationEnd : association.getAssociationEnds()) {
-			  if (associationEnd.getRoleName().equals(modelElements[modelElements.length-1]) && associationEnd.getHighMultiplicity()< 2) {
-				  end = associationEnd;
-			  }
-		    }
-		 }
-	}
-	return end;
-}
-
-/**
- * This method finds the other end (UMLAssociationEnd)of a UMLAssociation based on a starting UMLAssociatonEnd obejct.
- * @param associatonEnd
- * @return UMLAssociationEnd
- */
-private  UMLAssociationEnd getOtherAssociationEnd(UMLAssociationEnd associatonEnd){
-	UMLAssociation association = associatonEnd.getOwningAssociation();
-    UMLAssociationEnd otherEnd = null;
-	if (association!=null){
-		for (UMLAssociationEnd end : association.getAssociationEnds()){
-			if (!end.getRoleName().equals(associatonEnd.getRoleName())){
-				otherEnd = end;
-			}
-			
-		}
-	}
-	return otherEnd;
-}
 
 /**
  * This method creates a dependency mapping by extracting values from target and source UMLClasses as well as the paths to
@@ -326,7 +285,7 @@ private boolean unmapDependency(UMLClass source, String sourceXPath, UMLClass ta
  * @param updateModel If the underneath UML should be updated as creating a new mapping
  * @return boolean
  */
-public boolean mapAttribute(String sourcePath, String targetPath, boolean updateModel){
+private boolean mapAttribute(String sourcePath, String targetPath, boolean updateModel){
 
 	LinkedHashMap modelMeta = metaModel.getModelMetadata();
 	AttributeMetadata attributeMetadata = (AttributeMetadata)modelMeta.get(sourcePath);
@@ -363,7 +322,7 @@ public boolean mapAttribute(String sourcePath, String targetPath, boolean update
  * @param targetPath
  * @return boolean
  */
-public boolean unmapAttribute(String sourcePath, String targetPath){
+private boolean unmapAttribute(String sourcePath, String targetPath){
 	List<AttributeMapping> attributeMapping = cumulativeMapping.getAttributeMappings();
 	for (AttributeMapping attr : attributeMapping) {
 		if (attr.getAttributeMetadata().getXPath().equals(sourcePath) && attr.getColumnMetadata().getXPath().equals(targetPath)) {
@@ -390,7 +349,7 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, boolean u
 	AssociationMetadata sourceMetadata = (AssociationMetadata)modelMeta.get(sourceXPath);
 	ColumnMetadata targetMetadata = (ColumnMetadata)modelMeta.get(targetXPath);
 	boolean successfullyMapped = false;
-	SingleAssociationMapping mapping = new SingleAssociationMapping();
+	AssociationMapping mapping = new AssociationMapping();
 		
 	targetMetadata.setType(targetMetadata.TYPE_ASSOCIATION);	
 	mapping.setAssociationEndMetadata(sourceMetadata);
@@ -399,7 +358,7 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, boolean u
 	SingleAssociationMappingValidator validator = new SingleAssociationMappingValidator(mapping);
 	successfullyMapped = validator.isValid();
 	if (successfullyMapped) {
-		cumulativeMapping.addSingleAssociationMapping(mapping);
+		cumulativeMapping.addAssociationMapping(mapping);
 		if (updateModel)
 			XMIAnnotationUtil.annotateAssociationMapping(metaModel.getModel(),sourceXPath, targetXPath);
 	}
@@ -413,90 +372,24 @@ private boolean mapAssociation(String sourceXPath, String targetXPath, boolean u
  * @param targetXPath String
  * @return boolean
  */
-public boolean unmapAssociation(String sourceXPath, String targetXPath){
-	List<SingleAssociationMapping> singleAssociationMapping = cumulativeMapping.getSingleAssociationMappings();
-	for (SingleAssociationMapping assoS : singleAssociationMapping) {
+private boolean unmapAssociation(String sourceXPath, String targetXPath){
+	List<AssociationMapping> singleAssociationMapping = cumulativeMapping.getAssociationMappings();
+	for (AssociationMapping assoS : singleAssociationMapping) {
 		if (assoS.getAssociationEndMetadata().getXPath().equals(sourceXPath) && assoS.getColumnMetadata().getXPath().equals(targetXPath)) {
-			cumulativeMapping.removeSingleAssociationMapping(assoS);
+			cumulativeMapping.removeAssociationMapping(assoS);
 			return XMIAnnotationUtil.deAnnotateAssociationMapping(metaModel.getModel(), sourceXPath, targetXPath);
 		}
 	}
 	return false;
 }
 
-/**
- * @param source UMLAssociationEnd
- * @param sourceXPath String
- * @param targetXPath String
- * @return boolean
- */
-public boolean mapManyToManyAssociation(UMLAssociationEnd source, String sourceXPath, String targetXPath) {
-	boolean successfullyMapped = false;
-	ManyToManyMapping mapping = new ManyToManyMapping();
-	AssociationMetadata thisEnd = new AssociationMetadata();
-	thisEnd.setUMLAssociation(source.getOwningAssociation());
-	UMLAssociationEnd end = getOtherAssociationEnd(source);
-	AssociationMetadata otherEnd = new AssociationMetadata();
-	otherEnd.setUMLAssociation(end.getOwningAssociation());
-	otherEnd.setRoleName(end.getRoleName());
-	otherEnd.setMultiplicity(end.getHighMultiplicity());
-	otherEnd.setNavigability(end.isNavigable());
-	otherEnd.setReciprocolRoleName(thisEnd.getRoleName());
-	otherEnd.setXPath(targetXPath);
 
-	LinkedHashMap modelMeta = metaModel.getModelMetadata();
-	ColumnMetadata col = (ColumnMetadata)modelMeta.get(targetXPath);
-	col.setType(col.TYPE_ASSOCIATION);
-	
-	thisEnd.setRoleName(source.getRoleName());
-	thisEnd.setMultiplicity(source.getHighMultiplicity());
-	thisEnd.setNavigability(source.isNavigable());
-	thisEnd.setXPath(sourceXPath);
-	thisEnd.setReciprocolRoleName(end.getRoleName());
-	mapping.setAssociationEndMetadata(thisEnd);
-	mapping.setOtherAssociationEndMetadata(otherEnd);
-	mapping.setThisEndColumn(col);
-	ManyToManyMappingValidator validator = new ManyToManyMappingValidator(mapping);
-	successfullyMapped = validator.isValid();
-	if (successfullyMapped) {
-		cumulativeMapping.addManyToManyMapping(mapping);
-	}
-	else {
-		setErrorMessage(validator.getValidationErrorMessage());
-	}
-	return successfullyMapped;
-}
-/**
- * @param sourceXPath String
- * @param targetXPath String
- * @return boolean 
- */
-public boolean unmapManyToManyAssociation(String sourceXPath, String targetXPath) {
-	List<ManyToManyMapping> manyToManyMapping = cumulativeMapping.getManyToManyMappings();
-	for (ManyToManyMapping assoM : manyToManyMapping) {
-		if (assoM.getAssociationEndMetadata().getXPath().equals(sourceXPath) && assoM.getOtherAssociationEndMetadata().getXPath().equals(targetXPath)) {
-			cumulativeMapping.removeManyToManyMapping(assoM);
-			return true;
-		}
-	}
-	return false;
-}
-/**
- * @param pathToAttribute
- * @return TableMetadata
- */
-public TableMetadata getParentTableMetadata(String pathToAttribute){
-	TableMetadata table = null;
-	int end = pathToAttribute.lastIndexOf(".");
-	table = (TableMetadata)metaModel.getModelMetadata().get(pathToAttribute.substring(0,end));
-	return table;
-}
 
 /**
  * @param element
  * @return boolean
  */
-public boolean isClass(String element){
+private boolean isClass(String element){
 	UMLClass clazz = null;
 	boolean isClass = false;
 	String[] modelElements = element.split("\\.");
@@ -512,7 +405,7 @@ public boolean isClass(String element){
  * @param element
  * @return boolean
  */
-public boolean isAttribute(String element){
+private boolean isAttribute(String element){
 	boolean isAttribute = false;
 	UMLAttribute attribute = null;
 	UMLClass clazz = null;
@@ -533,102 +426,7 @@ public boolean isAttribute(String element){
  * @param element
  * @return boolean
  */
-public boolean isSingleAssociation(String element) {
-	boolean isSingleAssociation = false;
-	UMLAssociationEnd end = null;
-	UMLClass clazz = null;
-	String[] modelElements = element.split("\\.");
-	clazz = findClass(metaModel.getModel(), modelElements, 0, modelElements.length-2);
-	if (clazz!=null){
-		 for(UMLAssociation association : clazz.getAssociations()) {
-			 for(UMLAssociationEnd associationEnd : association.getAssociationEnds()) {
-			  if (associationEnd.getRoleName().equals(modelElements[modelElements.length-1]) && associationEnd.getHighMultiplicity()< 2 && associationEnd.getHighMultiplicity()!= -1) {
-				  end = associationEnd;
-			  }
-		    }
-		 }
-	}
-    if (end !=null){
-    	isSingleAssociation = true;
-    }
-	return isSingleAssociation;
-	}
-
-/**
- * @param element
- * @return boolean
- */
-public boolean isOneToManyAssociation(String element){
-	boolean isManyToManyAssociation = false;
-	UMLAssociationEnd end = null;
-	UMLClass clazz = null;
-	String[] modelElements = element.split("\\.");
-	String thisEndRoleName = modelElements[modelElements.length-1];
-	clazz = findClass(metaModel.getModel(), modelElements, 0, modelElements.length-2);
-	if (clazz!=null){
-		 for(UMLAssociation association : clazz.getAssociations()) {
-			 for(UMLAssociationEnd associationEnd : association.getAssociationEnds()) {
-				 if (associationEnd.getRoleName().equals(thisEndRoleName) && getOtherAssociationEnd(associationEnd).getHighMultiplicity()>=0) {
-				  end = associationEnd;
-			  }
-		    }
-		 }
-	}
-    if (end !=null){
-    	isManyToManyAssociation = true;
-    }
-	return isManyToManyAssociation;
-	}
-
-/**
- * @param element
- * @return boolean
- */
-public boolean isManyToManyAssociation(String element){
-	boolean isManyToManyAssociation = false;
-	UMLAssociationEnd end = null;
-	UMLClass clazz = null;
-	String[] modelElements = element.split("\\.");
-	String thisEndRoleName = modelElements[modelElements.length-1];
-	clazz = findClass(metaModel.getModel(), modelElements, 0, modelElements.length-2);
-	if (clazz!=null){
-		 for(UMLAssociation association : clazz.getAssociations()) {
-			 for(UMLAssociationEnd associationEnd : association.getAssociationEnds()) {
-				 if (associationEnd.getRoleName().equals(thisEndRoleName) && getOtherAssociationEnd(associationEnd).getHighMultiplicity()==-1) {
-				  end = associationEnd;
-			  }
-		    }
-		 }
-	}
-    if (end !=null){
-    	isManyToManyAssociation = true;
-    }
-	return isManyToManyAssociation;
-	}
-
-/**
- * @param element
- * @return boolean
- */
-public boolean isForeignKey(String element){
-	boolean isForeignKey = false;
-	if (metaModel.getModelMetadata().get(element)!=null){
-		
-	}
-	if (metaModel.getModelMetadata().get(element).getClass().getName().equals("ColumnMetadata")) {
-		ColumnMetadata col = (ColumnMetadata)metaModel.getModelMetadata().get(element);
-		if (col.isForeignKey()) {
-			isForeignKey = true;
-		}
-	}
-	return isForeignKey;
-}
-
-/**
- * @param element
- * @return boolean
- */
-public boolean isCorrelationTable(String element){
+private boolean isCorrelationTable(String element){
 	boolean isCorrelationTable = false;
 	UMLClass clazz = null;
 	String[] modelElements = element.split("\\.");
@@ -687,77 +485,6 @@ private UMLClass findClass(UMLPackage pkg, String[] className, int start, int en
     return null;
   }
 /**
- * @return CumulativeMapping
- */
-public  CumulativeMapping getCumulativeMapping() {
-	return cumulativeMapping;
-}
-
-/**
- * @param cumulativeMapping
- */
-public void setCumulativeMapping(CumulativeMapping cMapping) {
-	cumulativeMapping = cMapping;
-}
-
-
-public  UMLAssociation getAssociationFromColumn(String column)
-{
-	List<SingleAssociationMapping> singleAssocs = cumulativeMapping.getSingleAssociationMappings();
-	for (SingleAssociationMapping singleAssoc : singleAssocs)
-	{
-		String name = singleAssoc.getColumnMetadata().getParentXPath() + "." + singleAssoc.getColumnMetadata().getName();
-		if (name.equals(column))
-		{
-			return singleAssoc.getAssociationEndMetadata().getUMLAssociation();
-		}
-	}
-	List <ManyToManyMapping> many2manys = cumulativeMapping.getManyToManyMappings();
-	for(ManyToManyMapping many2many : many2manys)
-	{
-		String name = many2many.getThisEndColumn().getParentXPath() + "." + many2many.getThisEndColumn().getName();
-		if (name.equals(column))
-		{
-			return many2many.getAssociationEndMetadata().getUMLAssociation();
-		}
-		if ( many2many.getOtherEndColumn() == null ) continue;
-		name = many2many.getOtherEndColumn().getParentXPath() + "." + many2many.getOtherEndColumn().getName();
-		if (name.equals(column))
-		{
-			return many2many.getOtherAssociationEndMetadata().getUMLAssociation();
-		}
-	}
-	return null;
-}
-
-public  String getColumnFromAssociation(UMLAssociation association)
-{
-	List<SingleAssociationMapping> singleAssocs = cumulativeMapping.getSingleAssociationMappings();
-	for (SingleAssociationMapping singleAssoc : singleAssocs)
-	{
-		if (singleAssoc.getAssociationEndMetadata().getUMLAssociation() == association)
-		{
-			return singleAssoc.getColumnMetadata().getParentXPath() + "." + singleAssoc.getColumnMetadata().getName();
-		}
-	}
-	List <ManyToManyMapping> many2manys = cumulativeMapping.getManyToManyMappings();
-	for(ManyToManyMapping many2many : many2manys)
-	{
-		if (many2many.getAssociationEndMetadata().getUMLAssociation()==association)
-		{
-			return many2many.getThisEndColumn().getParentXPath() + "." + many2many.getThisEndColumn().getName();
-		}
-
-		if (many2many.getOtherAssociationEndMetadata().getUMLAssociation() == association)
-		{
-			return many2many.getOtherEndColumn().getParentXPath() + "." + many2many.getOtherEndColumn().getName();
-		}
-	}
-	return null;
-}
-
-
-/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -790,17 +517,12 @@ public  String getColumnFromAssociation(UMLAssociation association)
 //  	  
   	  CumulativeMapping y = x.getCumulativeMapping();
 	}
-
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String eMessage) {
-		errorMessage = eMessage;
-	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.17  2009/07/10 19:55:34  wangeug
+ * HISTORY: MMS re-engineering
+ * HISTORY:
  * HISTORY: Revision 1.16  2009/06/12 15:50:34  wangeug
  * HISTORY: clean code: caAdapter MMS 4.1.1
  * HISTORY:

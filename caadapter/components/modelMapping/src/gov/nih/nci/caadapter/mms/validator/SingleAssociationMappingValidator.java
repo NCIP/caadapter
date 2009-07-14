@@ -14,7 +14,7 @@ import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.map.AttributeMapping;
 import gov.nih.nci.caadapter.mms.map.CumulativeMapping;
 import gov.nih.nci.caadapter.mms.map.DependencyMapping;
-import gov.nih.nci.caadapter.mms.map.SingleAssociationMapping;
+import gov.nih.nci.caadapter.mms.map.AssociationMapping;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.TableMetadata;
@@ -26,17 +26,17 @@ import gov.nih.nci.caadapter.common.metadata.TableMetadata;
  * @author OWNER: Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2009-06-12 15:52:30 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-07-14 16:36:13 $
  * @created 11-Aug-2006 8:18:19 AM
  */
 public class SingleAssociationMappingValidator {
 	
 	private String validationErrorMessage;
 	private CumulativeMapping cumulativeMapping;
-	private SingleAssociationMapping associationMapping;
+	private AssociationMapping associationMapping;
 	
-	public SingleAssociationMappingValidator(SingleAssociationMapping mapping){
+	public SingleAssociationMappingValidator(AssociationMapping mapping){
          this.associationMapping = mapping;
 	}
    /**
@@ -92,12 +92,12 @@ public class SingleAssociationMappingValidator {
 		} catch (Exception e){
 			
 		}
-		List singleAssociationMappings = cumulativeMapping.getSingleAssociationMappings();
+		List singleAssociationMappings = cumulativeMapping.getAssociationMappings();
 		ColumnMetadata colMetadata = associationMapping.getColumnMetadata();
 		Iterator i = singleAssociationMappings.iterator();
 		while (i.hasNext()) {
 			try {
-				SingleAssociationMapping m = (SingleAssociationMapping) i.next();
+				AssociationMapping m = (AssociationMapping) i.next();
 				if(m.containsColumnMetadata(colMetadata)) {
 					previouslyMapped = true;
 				}
@@ -350,6 +350,9 @@ public class SingleAssociationMappingValidator {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2009/06/12 15:52:30  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

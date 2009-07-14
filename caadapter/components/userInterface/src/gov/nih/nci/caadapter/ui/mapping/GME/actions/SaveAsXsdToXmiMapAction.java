@@ -25,14 +25,11 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.GME.XsdToXmiMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.GME.XsdToXmiMappingReporter;
 import gov.nih.nci.caadapter.ui.mapping.GME.XsdToXmiMappingReportPanel;
-import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingPanel;
-import gov.nih.nci.caadapter.ui.mapping.catrend.CsvToXmiMappingReporter;
-import gov.nih.nci.caadapter.mms.generator.XMIGenerator;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAttributeBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLModelBean;
+
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLPackageBean;
 
 import javax.swing.*;
@@ -48,10 +45,10 @@ import java.util.Iterator;
  * This class defines a concrete "Save As" action.
  *
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.15 $
- *          date        $Date: 2008-10-20 16:33:10 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-07-14 16:36:40 $
  */
 public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 {
@@ -67,7 +64,7 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.15 2008-10-20 16:33:10 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/actions/SaveAsXsdToXmiMapAction.java,v 1.16 2009-07-14 16:36:40 wangeug Exp $";
 
     protected AbstractMappingPanel mappingPanel;
     private XsdToXmiMappingReportPanel holderPane;
@@ -420,6 +417,9 @@ public class SaveAsXsdToXmiMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.15  2008/10/20 16:33:10  phadkes
+ * HISTORY      : GME changes for correctly referencing RoleName/Class fom xsd.
+ * HISTORY      :
  * HISTORY      : Revision 1.14  2008/10/09 20:47:31  phadkes
  * HISTORY      : change the order of GME tag from class/RoleName to RoleName/Class
  * HISTORY      :

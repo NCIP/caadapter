@@ -9,8 +9,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
+import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.util.Config;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
+import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.actions.DefaultSaveAsAction;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
@@ -25,8 +26,8 @@ import javax.swing.*;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.6 $
- * @date       $Date: 2009-06-12 15:53:01 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-07-14 16:36:57 $
  */
 public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 {
@@ -42,7 +43,7 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.6 2009-06-12 15:53:01 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/SaveAsObjectToDbMapAction.java,v 1.7 2009-07-14 16:36:57 wangeug Exp $";
 
 	protected AbstractMappingPanel mappingPanel;
 
@@ -156,7 +157,9 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 		try
 		{
 			String xmiFileName = mappingFile.getAbsolutePath().replaceAll(".map", ".xmi");
-			CumulativeMappingToMappingFileGenerator.writeMappingFile(mappingFile, xmiFileName);
+//			CumulativeMappingToMappingFileGenerator.writeMappingFile(mappingFile, xmiFileName);
+			ModelMetadata xmiMetada = CumulativeMappingGenerator.getInstance().getMetaModel();
+			xmiMetada.getHandler().save( xmiFileName);
 			//clear the change flag.
      	    mappingPanel.setChanged(false);
      	   return true;   
@@ -172,6 +175,9 @@ public class SaveAsObjectToDbMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2009/06/12 15:53:01  wangeug
+ * HISTORY      : clean code: caAdapter MMS 4.1.1
+ * HISTORY      :
  * HISTORY      : Revision 1.5  2008/09/26 20:35:27  linc
  * HISTORY      : Updated according to code standard.
  * HISTORY      :

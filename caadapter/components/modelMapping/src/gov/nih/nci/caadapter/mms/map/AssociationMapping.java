@@ -16,25 +16,25 @@ import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
  * name and a foregeign key column of a table.
  *
  * @author OWNER: Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-09-26 20:35:27 $
+ * @version    $Revision: 1.1 $
+ * @date       $Date: 2009-07-14 16:36:00 $
  * @created 11-Aug-2006 8:18:19 AM
  */
-public class SingleAssociationMapping {
+public class AssociationMapping {
 
 	private AssociationMetadata associationEndMetadata;
 	private ColumnMetadata columnMetadata;
 
-	public SingleAssociationMapping(){
+	public AssociationMapping(){
 	}
 
 	/**
 	 *
 	 * @param columnMetadata
 	 */
-	public SingleAssociationMapping(ColumnMetadata columnMetadata, AssociationMetadata associationEndMetadata, AssociationMetadata otherAssociationEndMetadata){
+	public AssociationMapping(ColumnMetadata columnMetadata, AssociationMetadata associationEndMetadata, AssociationMetadata otherAssociationEndMetadata){
 		this.associationEndMetadata = associationEndMetadata;
 		this.columnMetadata = columnMetadata;
 	}
@@ -75,4 +75,7 @@ public class SingleAssociationMapping {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/09/26 20:35:27  linc
+ * HISTORY: Updated according to code standard.
+ * HISTORY:
  */

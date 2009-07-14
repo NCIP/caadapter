@@ -12,15 +12,11 @@ import gov.nih.nci.caadapter.common.BaseResult;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaObject;
-import gov.nih.nci.caadapter.common.MetaParser;
-import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
-import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
+
 import gov.nih.nci.caadapter.common.map.BaseComponent;
-import gov.nih.nci.caadapter.common.map.BaseMapElement;
 import gov.nih.nci.caadapter.common.util.CaadapterUtil;
 import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.common.util.GeneralUtilities;
-import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.Mapping;
 import gov.nih.nci.caadapter.hl7.map.impl.*;
@@ -31,12 +27,10 @@ import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 import gov.nih.nci.caadapter.ui.common.MappingFileSynchronizer;
-import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.actions.TreeCollapseAllAction;
 import gov.nih.nci.caadapter.ui.common.actions.TreeExpandAllAction;
 import gov.nih.nci.caadapter.ui.common.context.ContextManager;
 import gov.nih.nci.caadapter.ui.common.context.MenuConstants;
-import gov.nih.nci.caadapter.ui.common.nodeloader.SCMMapSourceNodeLoader;
 import gov.nih.nci.caadapter.ui.common.nodeloader.XsdTreeNodeLoader;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultSourceTreeNode;
 import gov.nih.nci.caadapter.ui.common.tree.DefaultTargetTreeNode;
@@ -44,13 +38,10 @@ import gov.nih.nci.caadapter.ui.common.tree.TreeDefaultDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.GME.actions.XsdToXmiTargetTreeDropTransferHandler;
-import gov.nih.nci.caadapter.ui.mapping.catrend.actions.CsvToXmiTargetTreeDropTransferHandler;
 import gov.nih.nci.caadapter.ui.mapping.hl7.actions.RefreshMapAction;
-import gov.nih.nci.caadapter.ui.mapping.mms.MMSRenderer;
 import gov.nih.nci.caadapter.ui.mapping.mms.MMSRendererPK;
 import gov.nih.nci.ncicb.xmiinout.domain.*;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLClassBean;
-import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationBean;
 
 import gov.nih.nci.ncicb.xmiinout.handler.XmiInOutHandler;
@@ -61,7 +52,6 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.awt.*;
-import java.awt.List;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -77,13 +67,13 @@ import org.jdom.Element;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v3.2 revision $Revision: 1.14 $ date $Date:
+ * @version Since caAdapter v3.2 revision $Revision: 1.15 $ date $Date:
  *          2007/04/03 16:17:57 $
  */
 public class XsdToXmiMappingPanel extends AbstractMappingPanel {
     private static final String LOGID = "$RCSfile: XsdToXmiMappingPanel.java,v $";
 
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.14 2008-11-10 22:00:38 wangeug Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/GME/XsdToXmiMappingPanel.java,v 1.15 2009-07-14 16:36:31 wangeug Exp $";
     public static String MAPPING_TARGET_DATA_MODEL="XSD_TO_XMI_DATA_MODEL";
     public static String MAPPING_TARGET_OBJECT_MODEL="XSD_TO_XMI_OBJECT_MODEL";
 
@@ -1103,6 +1093,9 @@ public class XsdToXmiMappingPanel extends AbstractMappingPanel {
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.14  2008/11/10 22:00:38  wangeug
+ * HISTORY      : GME release:version 4.2
+ * HISTORY      :
  * HISTORY      : Revision 1.13  2008/10/21 18:54:19  phadkes
  * HISTORY      : change the order of GME tag from class/RoleName to RoleName/Class.
  * HISTORY      :
