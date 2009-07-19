@@ -32,9 +32,9 @@ import org.jdom.input.SAXBuilder;
  * Parse csv to HL7 v3 .
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: umkis $
- * @version $Revision: 1.13 $
- * @date $Date: 2009-03-12 01:41:30 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version $Revision: 1.14 $
+ * @date $Date: 2009-07-19 07:10:40 $
  * @since caAdapter v4.0
  */
 
@@ -261,7 +261,8 @@ public class MapParser {
             //System.out.println(" ***** function. (1) : "+id);
         } catch (Exception e) {
             //System.out.println(" ***** function. (2) : "+id);
-            throw new MappingException(e.getMessage(), e);
+            e.printStackTrace();
+            throw new MappingException(e.getClass().getCanonicalName()+" : " + e.getMessage(), e);
         }
     }
 
@@ -287,6 +288,9 @@ public class MapParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.13  2009/03/12 01:41:30  umkis
+ * HISTORY :upgrade for flexibility of vom file location (same directory with the map file)
+ * HISTORY :
  * HISTORY :Revision 1.12  2008/11/21 16:19:36  wangeug
  * HISTORY :Move back to HL7 module from common module
  * HISTORY :
