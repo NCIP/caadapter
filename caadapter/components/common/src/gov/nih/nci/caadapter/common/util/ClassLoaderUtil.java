@@ -8,6 +8,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 
 package gov.nih.nci.caadapter.common.util;
 
+import gov.nih.nci.caadapter.common.function.FunctionException;
+
 import java.net.URL;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,7 +31,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.10 $
+ *          revision    $Revision: 1.11 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -48,7 +50,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.10 2009-07-19 05:51:40 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.11 2009-07-19 08:22:54 altturbo Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -94,14 +96,17 @@ public class ClassLoaderUtil
 
     private void initialWorkWithoutZipFile(String name, boolean transformYNStreamsToFiles) throws IOException
     {
+        if (streams == null) streams = new ArrayList<InputStream>();
         Enumeration<URL> fileURLs = null;
         String messages = "";
         fileURLs = ClassLoader.getSystemResources(name);
 
         if (fileURLs == null) throw new IOException("Class loader search Result : " + name + " : Not Found");
-
+        int count = 0;
+        //System.out.println("&&& 11 URL for ZIP: " + name);
         while(fileURLs.hasMoreElements())
         {
+            count++;
             URL fileURL = fileURLs.nextElement();
             String url = fileURL.toString();
             urls.add(url);
@@ -174,15 +179,62 @@ public class ClassLoaderUtil
                 }
             }
         }
+        //System.out.println("&&& 12 URL for ZIP: " + count + " : " + streams.size());
 
-        if (streams.size() == 0)
+        if ((count == 0)||(streams.size() == 0))
         {
-            if (messages.equals("")) throw new IOException("Not found any InputStream : " + name);
+            String res1 = FileUtil.searchFile("caAdapter.jar");
+            if (res1 == null) throw new IOException("Class loader search Result (2) : " + name + " : Not Found (caAdapter.jar)");
+            //System.out.println("&&& 12-1  URL for ZIP: " + res1);
+
+            try
+            {
+                initialWorkWithZipFile(name, res1, transformYNStreamsToFiles);
+            }
+            catch(Exception e)
+            {
+                System.out.println("&&& 12-2  ERROR (caAapter.jar)  : " + e.getMessage());
+                streams = null;
+            }
+            if (streams == null) streams = new ArrayList<InputStream>();
+            if ((streams.size() == 0)&&(fileNames.size() == 0))
+            {
+                File file = new File(res1);
+                File parent = file.getParentFile();
+                File[] list = parent.listFiles();
+                for(File f:list)
+                {
+                    try
+                    {
+                        if (!f.isFile()) continue;
+                        String fName = f.getName();
+                        ///System.out.println("&&& 12-1-1  FNAME  : " + f.getAbsolutePath());
+                        if ((fName.toLowerCase().trim().endsWith(".zip"))||(fName.toLowerCase().trim().endsWith(".jar"))) {}
+                        else continue;
+                        initialWorkWithZipFile(name, f.getAbsolutePath(), transformYNStreamsToFiles);
+                    }
+                    catch(Exception e)
+                    {
+                        //System.out.println("&&& 12-1-3  ERROR  : " + e.getMessage());
+                        streams = null;
+                    }
+                    if (streams == null) streams = new ArrayList<InputStream>();
+                    //System.out.println("&&& 12-1-2 SIZE : " + streams.size());
+                    if ((streams.size() > 0)||(fileNames.size() > 0)) break;
+                }
+            }
+        }
+
+        if (streams == null) streams = new ArrayList<InputStream>();
+        //System.out.println("&&& 13 URL for ZIP: "  + streams.size());
+        if ((streams.size() == 0)&&(fileNames.size() == 0))
+        {
+            if (messages.equals("")) throw new IOException("Not found any InputStream (1) : " + name);
             else throw new IOException(messages);
         }
 
 
-        if (transformYNStreamsToFiles)
+        if ((transformYNStreamsToFiles)&&(fileNames.size() == 0))
         {
             List<InputStream> Tstreams = new ArrayList<InputStream>();
             List<String> Tnames = new ArrayList<String>();
@@ -221,6 +273,7 @@ public class ClassLoaderUtil
 
     private void initialWorkWithZipFile(String name, String zipF, boolean transformYNStreamsToFiles) throws IOException
     {
+        if (streams == null) streams = new ArrayList<InputStream>();
         InputStream stream1 = null;
         String messages = "";
             urls.add((new File(zipF)).toURI().toURL().toString());
@@ -263,9 +316,10 @@ public class ClassLoaderUtil
                 }
 
 
+        if (streams == null) streams = new ArrayList<InputStream>();
         if (streams.size() == 0)
         {
-            if (messages.equals("")) throw new IOException("Not found any InputStream : " + name);
+            if (messages.equals("")) throw new IOException("Not found any InputStream (2) : " + name);
             else throw new IOException(messages);
         }
 
