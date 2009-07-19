@@ -1,11 +1,11 @@
 /*
  * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
 [caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
 * <!-- LICENSE_TEXT_END -->
  */
- 
+
 package gov.nih.nci.caadapter.hl7.map;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -24,6 +24,9 @@ import java.io.*;
 import java.util.StringTokenizer;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
 import java.net.ConnectException;
 import java.net.URL;
 
@@ -39,8 +42,8 @@ import org.xml.sax.*;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.8 $
- *          date        $Date: 2009-03-19 02:12:18 $
+ *          revision    $Revision: 1.9 $
+ *          date        $Date: 2009-07-19 05:54:11 $
  */
 public class FunctionVocabularyMapping
 {
@@ -57,7 +60,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.8 2009-03-19 02:12:18 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.9 2009-07-19 05:54:11 altturbo Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -94,7 +97,7 @@ public class FunctionVocabularyMapping
         setDefaultWorkDirectory(workDir);
         setup(typ, fileName, inverse);
     }
-    
+
     private void setup(String typ, String fileName, boolean inverse) throws FunctionException
     {
         if ((inverse)&&(typ.trim().equals(typeNamePossibleList[1])))
@@ -416,7 +419,7 @@ public class FunctionVocabularyMapping
             try {  mapData = checkMappingFileAndExtractData(fileNameSCR); }
             catch(FunctionException fe)
             {
-                if (fe.getErrorNumber() == 708) mapData = ""; 
+                if (fe.getErrorNumber() == 708) mapData = "";
                 else throw fe;
             }
 
@@ -580,30 +583,48 @@ public class FunctionVocabularyMapping
         String xsdFilePath = "";
         File aFile = null;
 
-
-
-
         String xsdFileClassPath = Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION;
         ClassLoaderUtil loader = null;
-        FunctionException fe = null;
+        String fe = null;
         try
         {
             loader = new ClassLoaderUtil(xsdFileClassPath);
         }
         catch(IOException ie)
         {
-            fe =  new FunctionException("Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage());
+            fe = "Not Found xml schema file " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
         }
-        if (loader.getFileNames().size() == 0)
+        if ((loader == null)||(loader.getFileNames().size() == 0))
         {
-            fe =  new FunctionException("Not Found xml schema file () " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")");
+            fe = "Not Found xml schema file (2) " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")";
         }
 
         if (fe != null)
         {
             String res = FileUtil.searchFile(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
-            if (res == null) throw fe;
-            xsdFilePath = res;
+            if (res == null)
+            {
+                String res1 = FileUtil.searchFile("caAdapter.jar");
+                if (res1 == null) throw new FunctionException(fe);
+                fe = null;
+                try
+                {
+                    loader = new ClassLoaderUtil(xsdFileClassPath, res1);
+                }
+                catch(IOException ie)
+                {
+                    fe = "Not Found xml schema file (3)" + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+") : " + ie.getMessage();
+                }
+                if ((loader == null)||(loader.getFileNames().size() == 0))
+                {
+                    fe = "Not Found xml schema file (4) " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION + " for vom file ("+path+")";
+                }
+                if (fe != null) throw new FunctionException(fe);
+
+                aFile = new File(loader.getFileNames().get(0));
+                xsdFilePath = aFile.getAbsolutePath();
+            }
+            else xsdFilePath = res;
         }
         else
         {
@@ -617,7 +638,7 @@ public class FunctionVocabularyMapping
         	URL fileURL= ClassLoader.getSystemResource(Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
         	String filePath=fileURL.getFile();
         	System.out.println("function spec file Path:"+filePath + " : " + Config.VOCABULARY_MAP_XML_FILE_DEFINITION_FILE_LOCATION);
-            
+
             aFile = new File(filePath);
 //            new FileReader(aFile);
         }
@@ -703,7 +724,7 @@ public class FunctionVocabularyMapping
             producer.setContentHandler(handler);
 
             producer.parse(new InputSource(pathName));
-            
+
         }
         catch(SAXException e)
         {
@@ -887,6 +908,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2009/03/19 02:12:18  altturbo
+ * HISTORY      : avoid from occurring errors caused by 'file:/'
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2009/03/12 01:40:52  umkis
  * HISTORY      : upgrade for flexibility of vom file location (same directory with the map file)
  * HISTORY      :
