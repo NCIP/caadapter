@@ -1,11 +1,11 @@
 /*
  * <!-- LICENSE_TEXT_START -->
-The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location: 
+The contents of this file are subject to the caAdapter Software License (the "License"). You may obtain a copy of the License at the following location:
 [caAdapter Home Directory]\docs\caAdapter_license.txt, or at:
 http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/docs/caAdapter_License
 * <!-- LICENSE_TEXT_END -->
  */
- 
+
 package gov.nih.nci.caadapter.common.util;
 
 import java.net.URL;
@@ -27,9 +27,9 @@ import java.io.DataInputStream;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.9 $
+ *          revision    $Revision: 1.10 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -48,7 +48,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.9 2008-06-09 19:53:50 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.10 2009-07-19 05:51:40 altturbo Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -57,18 +57,43 @@ public class ClassLoaderUtil
 
     public ClassLoaderUtil(String name) throws IOException
     {
-        initialWork(name, true);
+        initialWork(name, null, true);
     }
     public ClassLoaderUtil(String name, boolean transformYNStreamsToFiles) throws IOException
     {
-        initialWork(name, transformYNStreamsToFiles);
+        initialWork(name, null, transformYNStreamsToFiles);
     }
-    private void initialWork(String name, boolean transformYNStreamsToFiles) throws IOException
+    public ClassLoaderUtil(String name, String zipF) throws IOException
+    {
+        initialWork(name, zipF, true);
+    }
+    public ClassLoaderUtil(String name, String zipF, boolean transformYNStreamsToFiles) throws IOException
+    {
+        initialWork(name, zipF, transformYNStreamsToFiles);
+    }
+    private void initialWork(String name, String zipF, boolean transformYNStreamsToFiles) throws IOException
     {
         if (!transformYNStreamsToFiles) fileNames = null;
         if ((name == null)||(name.trim().equals(""))) throw new IOException("Class loader Path is null");
         name = name.trim();
 
+        if (zipF != null)
+        {
+            File file = new File(zipF);
+            if ((!file.exists())||(!file.isFile())) zipF = null;
+            else
+            {
+                if ((zipF.toLowerCase().trim().endsWith(".zip"))||(zipF.toLowerCase().trim().endsWith(".jar"))) {}
+                else zipF = null;
+            }
+        }
+
+        if (zipF == null) initialWorkWithoutZipFile(name, transformYNStreamsToFiles);
+        else initialWorkWithZipFile(name, zipF, transformYNStreamsToFiles);
+    }
+
+    private void initialWorkWithoutZipFile(String name, boolean transformYNStreamsToFiles) throws IOException
+    {
         Enumeration<URL> fileURLs = null;
         String messages = "";
         fileURLs = ClassLoader.getSystemResources(name);
@@ -81,9 +106,10 @@ public class ClassLoaderUtil
             String url = fileURL.toString();
             urls.add(url);
             InputStream stream = null;
-
+            //System.out.println("&&& 22 URL for ZIP: " + url);
             if ((url.toLowerCase().startsWith("jar:"))||(url.toLowerCase().startsWith("zip:")))
             {
+
                 int idx = url.indexOf("!");
                 if (idx < 0)
                 {
@@ -192,6 +218,95 @@ public class ClassLoaderUtil
             streams = null;
         }
     }
+
+    private void initialWorkWithZipFile(String name, String zipF, boolean transformYNStreamsToFiles) throws IOException
+    {
+        InputStream stream1 = null;
+        String messages = "";
+            urls.add((new File(zipF)).toURI().toURL().toString());
+
+                ZipFile jarFile = null;
+                try
+                {
+                    jarFile = new JarFile(new File(zipF));
+                }
+                catch(IOException ie)
+                {
+                    messages = messages + "IOException - jar file failure : " + zipF + "\r\n";
+                    //continue;
+                }
+
+                Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
+
+                while(jarEntries.hasMoreElements())
+                {
+                    ZipEntry jarEntry = jarEntries.nextElement();
+
+                    String nameE = jarEntry.getName();
+                    if (nameE.startsWith(name))
+                    {
+                        //System.out.println("JarEntry : " + jarEntry.getName());
+                        DataInputStream dis = null;
+                        try
+                        {
+                            stream1 = jarFile.getInputStream(jarEntry);
+                            streams.add(stream1);
+                            names.add(nameE);
+                            //System.out.println("WWWZZ : " + getFileName(nameE) + " : " + nameE);
+                        }
+                        catch(IOException ie)
+                        {
+                            messages = messages + "Connection IOException : " + ie.getMessage() + "\r\n";
+                            continue;
+                        }
+                    }
+                }
+
+
+        if (streams.size() == 0)
+        {
+            if (messages.equals("")) throw new IOException("Not found any InputStream : " + name);
+            else throw new IOException(messages);
+        }
+
+
+        if (transformYNStreamsToFiles)
+        {
+            List<InputStream> Tstreams = new ArrayList<InputStream>();
+            List<String> Tnames = new ArrayList<String>();
+            for (int i=0;i<streams.size();i++)
+            {
+                InputStream stream = streams.get(i);
+                String nameS = names.get(i);
+
+
+                String fileName = FileUtil.getTemporaryFileName();
+                if ((nameS.length() > 5)&&(nameS.substring(nameS.length()-4, nameS.length()-3).equals(".")))
+                {
+                    fileName = fileName.substring(0, fileName.length()-4) + "." + nameS.substring(nameS.length()-3);
+                }
+
+                try
+                {
+                    fileName = FileUtil.downloadFromInputStreamToFile(stream, fileName);
+                }
+                catch(IOException ie)
+                {
+                    continue;
+                }
+                Tstreams.add(stream);
+                Tnames.add(nameS);
+                fileNames.add(fileName);
+                File file = new File(fileName);
+                file.deleteOnExit();
+            }
+
+            if (streams.size() != Tstreams.size()) names = Tnames;
+
+            streams = null;
+        }
+    }
+
 
     public List<InputStream> getInputStreams()
     {
@@ -337,6 +452,9 @@ public class ClassLoaderUtil
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2008/06/09 19:53:50  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2008/06/06 18:54:28  phadkes
  * HISTORY      : Changes for License Text
  * HISTORY      :
