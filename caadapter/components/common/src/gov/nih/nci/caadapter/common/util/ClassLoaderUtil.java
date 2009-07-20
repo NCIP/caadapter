@@ -31,7 +31,7 @@ import java.io.DataInputStream;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.11 $
+ *          revision    $Revision: 1.12 $
  *          date        Jul 13, 2007
  *          Time:       5:31:06 PM $
  */
@@ -50,7 +50,7 @@ public class ClassLoaderUtil
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.11 2009-07-19 08:22:54 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/util/ClassLoaderUtil.java,v 1.12 2009-07-20 14:03:36 altturbo Exp $";
 
     private List<InputStream> streams = new ArrayList<InputStream>();
     private List<String> names = new ArrayList<String>();
@@ -193,7 +193,7 @@ public class ClassLoaderUtil
             }
             catch(Exception e)
             {
-                System.out.println("&&& 12-2  ERROR (caAapter.jar)  : " + e.getMessage());
+                //System.out.println("&&& 12-2  ERROR (caAapter.jar)  : " + e.getMessage());
                 streams = null;
             }
             if (streams == null) streams = new ArrayList<InputStream>();
@@ -506,6 +506,9 @@ public class ClassLoaderUtil
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2009/07/19 08:22:54  altturbo
+ * HISTORY      : minor change
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/06/09 19:53:50  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :
