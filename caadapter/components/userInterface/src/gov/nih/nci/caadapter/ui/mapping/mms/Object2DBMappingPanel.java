@@ -23,7 +23,6 @@ import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.impl.MappingImpl;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
-import gov.nih.nci.caadapter.mms.generator.CumulativeMappingToMappingFileGenerator;
 import gov.nih.nci.caadapter.mms.generator.HBMGenerateCacoreIntegrator;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.ui.common.ActionConstants;
@@ -85,13 +84,13 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
- * @version    $Revision: 1.40 $
- * @date       $Date: 2009-07-14 16:36:48 $ 
+ * @version    $Revision: 1.41 $
+ * @date       $Date: 2009-07-30 17:37:31 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.40 2009-07-14 16:36:48 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.41 2009-07-30 17:37:31 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -652,7 +651,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			if (root.getUserObject() instanceof String) {
 				treeString = (String) root.getUserObject();
 			} else {
-				treeString = ((MetaObjectImpl) root.getUserObject()).getTitle();
+				treeString = ((MetaObjectImpl) root.getUserObject()).getName();
 			}
 			hashtable.put(parent + "." + treeString, root);
 			if (root.isLeaf())
@@ -839,6 +838,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.40  2009/07/14 16:36:48  wangeug
+ * HISTORY : clean codes
+ * HISTORY :
  * HISTORY : Revision 1.39  2009/07/10 19:57:04  wangeug
  * HISTORY : MMS re-engineering
  * HISTORY :

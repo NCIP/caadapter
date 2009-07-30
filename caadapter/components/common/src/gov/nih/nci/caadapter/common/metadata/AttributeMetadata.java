@@ -14,10 +14,10 @@ import gov.nih.nci.caadapter.common.SDKMetaData;
  * This class holds attributemetadata during the mapping.
  * @version 1.0
  * @created 11-Aug-2006 8:18:15 AM
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-09-25 19:30:38 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-07-30 17:31:55 $
  */
 public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 
@@ -29,14 +29,10 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 	 */
 	private String name;
 	private String xPath;
-	private String semanticConcept;
 	private boolean derived;
 	private boolean childTag=true; //define if a child tag is required to represent this the attribute
 									//as GME present a object metadata as an XML
 	
-	public String getSemanticConcept(){
-		return semanticConcept;
-	}
 	public String getDatatype(){
 		return datatype;
 	}
@@ -80,13 +76,6 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
  		this.datatype = datatype;
 	}
 	
-	/**
-	 *
-	 * @param semanticConcept
-	 */
-	public void setSemanticConcept(String semanticConcept){
-		this.semanticConcept = semanticConcept;
-	}
 	
 	/**
 	 *
@@ -122,4 +111,7 @@ public class AttributeMetadata extends MetaObjectImpl implements SDKMetaData{
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.6  2008/09/25 19:30:38  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */

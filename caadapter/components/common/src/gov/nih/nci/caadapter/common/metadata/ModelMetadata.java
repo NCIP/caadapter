@@ -30,7 +30,6 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLPackage;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.handler.HandlerEnum;
 import gov.nih.nci.ncicb.xmiinout.handler.XmiException;
@@ -53,15 +52,14 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * there should never be more than one instance of it in the runtime environment.
  * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.11 $
- * @date       $Date: 2009-07-10 19:53:12 $
+ * @version    $Revision: 1.12 $
+ * @date       $Date: 2009-07-30 17:32:27 $
  */
 public class ModelMetadata {
 	private static ModelMetadata modelMetadata = null;
 
 	private XmiInOutHandler handler = null;
 	private LinkedHashMap modelHashMap = new LinkedHashMap();
-	private HashMap objectHashMap = new HashMap();
 	private HashMap inheritanceHashMap = new HashMap();
 	private TreeSet sortedModel = new TreeSet(new XPathComparator());
 	private String xmiFileName;
@@ -73,9 +71,7 @@ public class ModelMetadata {
     
     private String mmsPrefixObjectModel = "Logical View.Logical Model";
     private String mmsPrefixDataModel = "Logical View.Data Model";
-    //define a list to hold "tag:value" of the UMLTaggedValue for the mapped attributes 
-//    private List <String>preservedMappedTag=new ArrayList<String>();
-	
+
 	public ModelMetadata(String xmiFileName){
 		this.xmiFileName = xmiFileName;
 		init();
@@ -116,7 +112,6 @@ public class ModelMetadata {
             {
                 initProcessPackage(pkg);
             }
-//	    	preservedMappedTag.clear();
 	    } catch (XmiException e) {
 	    	e.printStackTrace();
 	    } catch (IOException e) {
@@ -161,14 +156,6 @@ public class ModelMetadata {
 			 }
 		 }
 	  }
-//	public static ModelMetadata getInstance() {
-//		return modelMetadata;
-//	}
-//	
-//	public static void createModel(String xmiFileName) 
-//	{
-//		 modelMetadata = new ModelMetadata(xmiFileName);
-//	}
 
 	private void initProcessPackage(UMLPackage pkg)
     {
@@ -197,7 +184,6 @@ public class ModelMetadata {
                 pathKey.append(clazz.getName());
                 object.setXPath(pathKey.toString());
                 object.setId(clazz.toString());
-                objectHashMap.put(clazz.toString(), pathKey.toString());
                 sortedModel.add(object);
 
                 /* The following code look through the inheritance hierachy and populate
@@ -217,7 +203,7 @@ public class ModelMetadata {
                 for (UMLGeneralization clazzG : clazzGs) {
                     parent =(UMLClass) clazzG.getSupertype();
                     if (parent != clazz) {
-                        inheritanceHashMap.put(clazz.toString(),parent.toString());
+                        inheritanceHashMap.put(object.getXPath(),parent.getName());
                         break;
                     }
                 }
@@ -346,6 +332,7 @@ public class ModelMetadata {
 	        attMetadata.setXPath(colPathKey.toString());
 	        attMetadata.setTableMetadata(object);
 	        sortedModel.add(attMetadata);
+	        object.addColumn(attMetadata);
 //	        System.out.println("xxxxxxxxxxxxxxx COLUMN: " + colPathKey);
 	  }
 	  	public XmiInOutHandler getHandler() {
@@ -354,10 +341,6 @@ public class ModelMetadata {
 
 		public HashMap getInheritanceMetadata() {
 	  		return inheritanceHashMap;		
-	  	}	  
-
-	  	public HashMap getObjectMetadata() {
-	  		return objectHashMap;		
 	  	}	  
 
 	  	public LinkedHashMap getModelMetadata() {
@@ -419,10 +402,10 @@ public class ModelMetadata {
 		//			primaryKeys = keyList;	
 		//		}
 				
-				public HashSet getLazyKeys()
-				{
-					return lazyKeys;
-				}
+		public HashSet getLazyKeys()
+		{
+			return lazyKeys;
+		}
 
 		public HashSet<String> getClobKeys() {
             return clobKeys;
@@ -490,6 +473,9 @@ class XPathComparator implements Comparator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.11  2009/07/10 19:53:12  wangeug
+ * HISTORY      : MMS re-engineering
+ * HISTORY      :
  * HISTORY      : Revision 1.10  2009/06/12 15:49:58  wangeug
  * HISTORY      : clean code: caAdapter MMS 4.1.1
  * HISTORY      :

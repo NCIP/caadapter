@@ -16,10 +16,10 @@ import java.util.List;
 /**
  * @version 1.0
  * @created 11-Aug-2006 8:18:19 AM
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-09-25 19:30:38 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-07-30 17:32:54 $
  */
 public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 
@@ -40,18 +40,6 @@ public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 		columns.add(column);
 	}
 
-	/**
-	 *
-	 * @param columnMetadata
-	 */
-	public boolean containsColumn(ColumnMetadata columnMetadata){
-		boolean containsColumn = false;
-		if (columns.contains(columnMetadata)) {
-			containsColumn = true;
-		}
-		return containsColumn;
-	}
-
 	public List<ColumnMetadata> getColumns(){
 		return columns;
 	}
@@ -66,13 +54,6 @@ public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 
 	public String getName(){
 		return name;
-	}
-	/**
-	 *
-	 * @param columnMetadata
-	 */
-	public void removeColumn(ColumnMetadata columnMetadata){
-        columns.remove(columnMetadata);
 	}
 
 	/**
@@ -149,4 +130,7 @@ public class TableMetadata extends MetaObjectImpl implements SDKMetaData{
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2008/09/25 19:30:38  phadkes
+ * HISTORY      : Changes for code standards
+ * HISTORY      :
 */

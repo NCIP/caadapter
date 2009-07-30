@@ -10,6 +10,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.jgraph;
 
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
+import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
+import gov.nih.nci.caadapter.mms.map.AssociationMapping;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingDataManager;
 import gov.nih.nci.caadapter.ui.common.jgraph.MappingViewCommonComponent;
 import gov.nih.nci.caadapter.ui.common.tree.MappingSourceTree;
@@ -18,6 +20,7 @@ import gov.nih.nci.caadapter.ui.mapping.AbstractMappingPanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.caadapter.ui.mapping.MappingTreeScrollPane;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.AssociationAnnotationAction;
+import gov.nih.nci.caadapter.ui.mapping.mms.actions.AttributeAnnotationAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.ColumnAnnotationAction;
 import gov.nih.nci.caadapter.ui.mapping.mms.actions.ObjectAnnotationAction;
 import gov.nih.nci.caadapter.common.MetaObject;
@@ -26,9 +29,11 @@ import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
+import gov.nih.nci.caadapter.common.metadata.TableMetadata;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
+import gov.nih.nci.ncicb.xmiinout.domain.UMLGeneralization;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
@@ -36,6 +41,7 @@ import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -62,8 +68,8 @@ import org.jgraph.graph.DefaultPort;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2009-07-10 19:57:37 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2009-07-30 17:37:05 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -79,7 +85,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.17 2009-07-10 19:57:37 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/jgraph/LinkSelectionHighlighter.java,v 1.18 2009-07-30 17:37:05 wangeug Exp $";
 
 	private AbstractMappingPanel mappingPanel;
 	private JGraph graph;
@@ -460,11 +466,13 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			//TreePath paths[] = sourceTree.getSelectionPaths();
 			DefaultMutableTreeNode mutNode = (DefaultMutableTreeNode)leadingPath.getLastPathComponent();			
 			
-			
-			MetaObject metaObj=(MetaObject)mutNode.getUserObject();
-			if (metaObj instanceof AttributeMetadata)
-				return null; //no popup for object.attribute
-			
+			Object nodeObj=mutNode.getUserObject();
+			if (!(nodeObj instanceof MetaObject))
+				return popupMenu;
+			MetaObject metaObj=(MetaObject)nodeObj;
+//			if (metaObj instanceof AttributeMetadata)
+//				return popupMenu; //no popup for object.attribute
+//			
 			//the following two actions apply to object metadata
 			ObjectAnnotationAction discValueSettingAction=new ObjectAnnotationAction("Set Discriminator Value", ObjectAnnotationAction.SET_DISCRIMINATOR_VALUE,middlePanel);
             popupMenu.add(new JMenuItem(discValueSettingAction));
@@ -473,6 +481,14 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         	
             popupMenu.addSeparator();
         	
+            //add action for attribute
+            AttributeAnnotationAction pkSetAction=new AttributeAnnotationAction("Set as Primary Key", AttributeAnnotationAction.SET_AS_PK,middlePanel);
+            popupMenu.add(new JMenuItem(pkSetAction));
+            AttributeAnnotationAction pkUnsetAction=new AttributeAnnotationAction("Unset as Primary Key", AttributeAnnotationAction.REMOVE_PK,middlePanel);
+            popupMenu.add(new JMenuItem(pkUnsetAction));
+        	
+            popupMenu.addSeparator();
+            
         	//The following actions apply for association metadata
         	AssociationAnnotationAction cascadeSettingAction=new AssociationAnnotationAction("Set Cascade Value", AssociationAnnotationAction.SET_CASCADE_SETTING,middlePanel);
             popupMenu.add(new JMenuItem(cascadeSettingAction));
@@ -489,35 +505,65 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             	AssociationMetadata asscMetadata = (AssociationMetadata)mutNode.getUserObject();
             	if (!asscMetadata.isMapped())
             		return popupMenu;
-            	//check if correlation table exist  
+            	//check if "inverse-of" exist  
             	UMLAssociation umlAssc=asscMetadata.getUMLAssociation();
-    			UMLTaggedValue tagValue=umlAssc.getTaggedValue("correlation-table");
-    			if (tagValue!=null)
+            	String pureAssciationEndPath=XMIAnnotationUtil.getCleanPath(modelMetadata.getMmsPrefixObjectModel(),  asscMetadata.getXPath());
+            	UMLTaggedValue correlationTagValue=umlAssc.getTaggedValue("correlation-table");
+            	
+            	if (correlationTagValue!=null)
     			{
-    				inverseSettingAction.setMetaAnnoted(asscMetadata);
-    				inverseSettingAction.setEnabled(true);
-    				inverseRemoveAction.setMetaAnnoted(asscMetadata);
-    				inverseRemoveAction.setEnabled(true);
+            		ColumnMetadata columnMapped=(ColumnMetadata)CumulativeMappingGenerator.getInstance().getCumulativeMapping().findMappedTarget(asscMetadata.getXPath());
+                	UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),columnMapped.getXPath());
+                	UMLTaggedValue inverseTagValue=xpathAttr.getTaggedValue("inverse-of");
+                	if (inverseTagValue!=null)//&&inverseTagValue.getValue().equals(pureAssciationEndPath))
+	    			{
+	    				inverseRemoveAction.setMetaAnnoted(asscMetadata);
+	    				inverseRemoveAction.setEnabled(true);
+	    			}
+	    			else
+	    			{
+	    				inverseSettingAction.setMetaAnnoted(asscMetadata);
+	    				inverseSettingAction.setEnabled(true);
+	    			}
     			}
-    			
     			//check if NCI_CASCADE_ASSOCIATION exist 
-    			UMLTaggedValue cascadeTagValue=null;
-    			for (UMLTaggedValue tagV:umlAssc.getTaggedValues())
-    			{
-    				if (tagV.getName().startsWith("NCI_CASCADE_ASSOCIATION"))
-    				{
-    					cascadeTagValue=tagV;
-    					break;
-    				}
-    			}
-    			//remove "Logical View.Logical Model." from the association path
-    			cascadeSettingAction.setMetaAnnoted(asscMetadata);
+    			
+    			String fullCascadeTagName="NCI_CASCADE_ASSOCIATION#"+pureAssciationEndPath;
+    			UMLTaggedValue cascadeTagValue=umlAssc.getTaggedValue(fullCascadeTagName);
+     			cascadeSettingAction.setMetaAnnoted(asscMetadata);
    				cascadeSettingAction.setEnabled(true);  				
     			if (cascadeTagValue!=null)
     			{	
-    				cascadeRemoveAction.setMetaAnnoted(asscMetadata);
-    				cascadeRemoveAction.setEnabled(true);
+     	   			System.out.println("AssociationAnnotationAction.doAction()..existing value:"+cascadeTagValue.getName()+"="+cascadeTagValue.getValue());
+   					cascadeRemoveAction.setMetaAnnoted(asscMetadata);
+   					cascadeRemoveAction.setEnabled(true);
     			}
+            }
+            else 	if (metaObj instanceof AttributeMetadata)
+            {
+            	
+            	AttributeMetadata attrMetadata = (AttributeMetadata)mutNode.getUserObject();
+            	if (!attrMetadata.isMapped())
+            		return popupMenu;
+            	
+        		UMLAttribute xpathAttr=ModelUtil.findAttribute(modelMetadata.getModel(),attrMetadata.getXPath());
+            	UMLTaggedValue pkTag=xpathAttr.getTaggedValue("id-attribute");
+            	if (pkTag!=null)
+            	{
+            		pkUnsetAction.setMetaAnnoted(attrMetadata);
+            		pkUnsetAction.setEnabled(true);
+            	} 
+            	else
+            	{
+            		UMLClass parentClass=ModelUtil.findClass(modelMetadata.getModel(), attrMetadata.getParentXPath());
+            		for (UMLAttribute sblAttribute:parentClass.getAttributes())
+        			{
+        				if (sblAttribute.getTaggedValue("id-attribute")!=null)
+        					return popupMenu;
+        			}	
+                	pkSetAction.setMetaAnnoted(attrMetadata);
+                	pkSetAction.setEnabled(true);
+            	}
             }
             else  if (metaObj instanceof ObjectMetadata) {
             	
@@ -525,17 +571,30 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
             	if (!objectMetadata.isMapped())
             		return popupMenu;
             	
-            	discValueSettingAction.setMetaAnnoted(objectMetadata);
-            	discValueSettingAction.setEnabled(true);
-            	           	
+            	//check if this class is a sub-class
+            	UMLClass objClass=(UMLClass)ModelUtil.findClass(modelMetadata.getModel(), objectMetadata.getXPath());
+				List<UMLGeneralization> clazzGs = objClass.getGeneralizations();
+				boolean isRoot=true;
+                for (UMLGeneralization clazzG : clazzGs) {
+                    UMLClass parent =(UMLClass) clazzG.getSupertype();
+                    if (parent != objClass) {
+                    	isRoot = false;
+                        break;
+                    }
+                }
+                if (isRoot)
+            		return popupMenu;
+           
+            	//The class is a sub-class, continue
             	//check if discrimniator value exists
-            	UMLClass objClass=ModelUtil.findClass(modelMetadata.getModel(), objectMetadata.getXPath());
             	UMLTaggedValue discTag=objClass.getTaggedValue("discriminator");
             	if (discTag!=null)
             	{
             		discValueRemoveAction.setMetaAnnoted(objectMetadata);
             		discValueRemoveAction.setEnabled(true);
-            	}           	            	
+            	}  
+               	discValueSettingAction.setMetaAnnoted(objectMetadata);
+               	discValueSettingAction.setEnabled(true);                    		
             }
         }
 		return popupMenu;
@@ -586,23 +645,36 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 				UMLTaggedValue mappingAttrTag=xpathAttr.getTaggedValue("mapped-attributes");
 				if (mappingAttrTag!=null)
 				{
-					//it is allowed to have more than one primary key generator setting
-					pkSettingAction.setMetaAnnoted(columnMeta);
-					pkSettingAction.setEnabled(true);
 					//check if primary key column
-					UMLTaggedValue pkGeneratorTag=null;
-					for (UMLTaggedValue attrTag:xpathAttr.getTaggedValues())
-					{
-						if (attrTag.getName().startsWith("NCI_GENERATOR"))
-						{
-							pkGeneratorTag=attrTag;
-							break;
-						}
-					}
-					if (pkGeneratorTag!=null)
+					HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);			
+					if (!pkSetting.isEmpty())
 					{
 						pkRemoveAction.setMetaAnnoted(columnMeta);
 						pkRemoveAction.setEnabled(true);
+						pkSettingAction.setMetaAnnoted(columnMeta);
+						pkSettingAction.setEnabled(true);
+					} 
+					else
+					{
+						//enable pkSettingAction if no attribute has "primaryKey Generator"
+						boolean pkSet=false;
+						TableMetadata tblMeta=columnMeta.getTableMetadata();
+						for(ColumnMetadata anyCol:tblMeta.getColumns())
+						{						
+							UMLAttribute anyUmlAttr=ModelUtil.findAttribute(modelMetadata.getModel(),anyCol.getXPath());
+							HashMap<String, HashMap<String, String>> pkAnySetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(anyUmlAttr);			
+							if (!pkAnySetting.isEmpty())
+							{
+								pkSet=true;
+								break;
+							}
+						}
+						if (!pkSet)
+						{
+							//enable pkSettingAction since no attribute has "primaryKey Generator"
+							pkSettingAction.setMetaAnnoted(columnMeta);
+							pkSettingAction.setEnabled(true);
+						}
 					}
 				}
 				else
@@ -620,7 +692,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 						discKeySettingAction.setEnabled(true);
 					}
 				}
-			}		
+			}	
 		}
 	
 		return popupMenu;
@@ -639,7 +711,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		return node; 
 	}
 	
-    static String replace(String str, String pattern, String replace) {
+    private static String replace(String str, String pattern, String replace) {
         int s = 0;
         int e = 0;
         StringBuffer result = new StringBuffer();
@@ -656,6 +728,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.17  2009/07/10 19:57:37  wangeug
+ * HISTORY      : MMS re-engineering
+ * HISTORY      :
  * HISTORY      : Revision 1.16  2009/06/12 15:54:08  wangeug
  * HISTORY      : clean code: caAdapter MMS 4.1.1
  * HISTORY      :

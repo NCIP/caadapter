@@ -521,7 +521,7 @@
     </message>
 
     <message id="O2DB4" level="INFO">
-        <template>Inherited Attribute {0} is not mapped.</template>
+        <template>Inherited Attribute {0} is not mapped, please verify its mapping in super class: {1}.</template>
         <parameters>
         </parameters>
     </message>

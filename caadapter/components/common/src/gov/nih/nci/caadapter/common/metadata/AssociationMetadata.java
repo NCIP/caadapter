@@ -18,8 +18,8 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
  * @created 11-Aug-2006 8:18:14 AM
  * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.8 $
- * @date       $Date: 2009-06-12 15:21:36 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2009-07-30 17:31:38 $
  */
 public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	
@@ -54,10 +54,6 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 	public String getTitle() {
 		return getRoleName();
 	}
-	/**
-	 * This value represents the rolename of the other end of the association
-	 */
-	private String recipricolRoleName;
 
 	/**
 	 *This value represents the location of the association within the XMI file
@@ -83,9 +79,6 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 		return roleName;
 	}
 
-	public String getReciprocolRoleName(){
-		return recipricolRoleName;
-	}
 	public String getXPath(){
 		return xPath;
 	}
@@ -121,14 +114,6 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
     public String getName(){
 		return this.roleName;
 	}
-    /**
-	 *
-	 * @param reciprocolRoleName
-	 */
-	public void setReciprocolRoleName(String reciprocolRoleName){
-		this.recipricolRoleName = reciprocolRoleName;
-	}
-
 	/**
 	 *
 	 * @param xPath
@@ -190,6 +175,9 @@ public class AssociationMetadata extends MetaObjectImpl implements SDKMetaData{
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2009/06/12 15:21:36  wangeug
+ * HISTORY      : clean code: caAdapter MMS 4.1.1
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2008/10/20 16:35:16  phadkes
  * HISTORY      : Added new method to return returnTypeXPath. GME changes for correctly referencing RoleName/Class fom xsd.
  * HISTORY      :

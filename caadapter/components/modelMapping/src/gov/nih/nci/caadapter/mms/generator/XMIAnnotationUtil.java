@@ -7,6 +7,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.mms.generator;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.jdom.Element;
@@ -32,14 +34,15 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  *
  * @author   OWNER: wangeug  $Date: Jul 9, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-07-10 21:20:40 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-07-30 17:35:30 $
  * @since caAdapter v4.2
  */
 
 public class XMIAnnotationUtil {
 
 	private static Log annotatationLogger=new Log();
+	
 	/**
 	 * Add/update a tag value with a UMLTaggedElement<br>
 	 * <ul>
@@ -346,12 +349,72 @@ public class XMIAnnotationUtil {
 		}
 		return cleanPath;
 	}
+    
+    public static HashMap<String, HashMap<String, String>> findPrimaryKeyGenerrator(UMLTaggableElement tableAttribute)
+    {
+    	HashMap<String, HashMap<String, String>> rtnHash=new HashMap<String, HashMap<String, String>>();
+    	for (UMLTaggedValue oneTag:tableAttribute.getTaggedValues())
+    	{
+    		if(oneTag.getName().startsWith("NCI_GENERATOR."))
+    		{
+    			HashMap<String, String> oneDbPK=new HashMap<String, String>();
+    			String dbName=oneTag.getName().substring(14);
+    			oneDbPK.put("NCI_GENERATOR", oneTag.getValue());
+    			rtnHash.put(dbName, oneDbPK);
+    		}
+    	}
+    	
+    	Iterator<String> keyIt=rtnHash.keySet().iterator();
+    	while(keyIt.hasNext())
+    	{
+    		String dbName=keyIt.next();
+    		HashMap<String, String> oneDbPK=rtnHash.get(dbName);
+    		//read property tags
+    		String pp1="NCI_GENERATOR_PROPERTY1";
+    		String pp2="NCI_GENERATOR_PROPERTY2";
+    		String pp3="NCI_GENERATOR_PROPERTY3";
+    		UMLTaggedValue pTag1=tableAttribute.getTaggedValue(pp1+"."+dbName);
+    		if (pTag1!=null)
+    			oneDbPK.put(pp1, pTag1.getValue());
+    		
+    		UMLTaggedValue pTag2=tableAttribute.getTaggedValue(pp2+"."+dbName);
+    		if (pTag2!=null)
+    			oneDbPK.put(pp2, pTag2.getValue());
+    		UMLTaggedValue pTag3=tableAttribute.getTaggedValue(pp3+"."+dbName);
+    		if (pTag3!=null)
+    			oneDbPK.put(pp3, pTag3.getValue());
+    	}
+    	return rtnHash;
+    }
+    
+    public static void removePrimaryKey( UMLTaggableElement tableAttribute , String dbName)
+    {
+    	removeTagValue(tableAttribute, "NCI_GENERATOR."+dbName);
+    	removeTagValue(tableAttribute, "NCI_GENERATOR_PROPERTY1."+dbName);
+    	removeTagValue(tableAttribute, "NCI_GENERATOR_PROPERTY2."+dbName);
+    	removeTagValue(tableAttribute, "NCI_GENERATOR_PROPERTY3."+dbName);
+    }
+    
+    public static void addPrimaryKey( UMLTaggableElement tableAttribute , String dbName, HashMap<String, String>keyParameters)
+    {
+    	Iterator<String> paramKeys=keyParameters.keySet().iterator();
+    	while (paramKeys.hasNext())
+    	{
+    		String paraKeyName=paramKeys.next();
+    		String tagName=paraKeyName+"."+dbName;
+    		String tagValue=keyParameters.get(paraKeyName);
+    		addTagValue(tableAttribute, tagName, tagValue);
+    	}
+    }
 }
 
 
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/07/10 21:20:40  wangeug
+* HISTORY: remove the unsaved  dependency
+* HISTORY:
 * HISTORY: Revision 1.1  2009/07/10 19:53:51  wangeug
 * HISTORY: MMS re-engineering
 * HISTORY:

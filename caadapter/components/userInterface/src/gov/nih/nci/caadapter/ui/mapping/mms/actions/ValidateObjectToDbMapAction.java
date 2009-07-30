@@ -39,8 +39,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.7 $
- * @date       $Date: 2009-06-12 15:53:01 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-07-30 17:38:06 $
  */
 public class ValidateObjectToDbMapAction extends AbstractContextAction
 {
@@ -56,7 +56,7 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.7 2009-06-12 15:53:01 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.8 2009-07-30 17:38:06 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -131,13 +131,20 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 			}
 			
 			if (!metaO.isMapped()) {
+				//skip item in "Model.ValueDomains"
+				if (metaO.getXPath().indexOf("Model.ValueDomain")>-1)
+					continue;
+				
 				if (metaO instanceof ObjectMetadata) {
 					Message msg = MessageResources.getMessage("O2DB3", new Object[]{metaO.getXPath()});
 					validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
 				}
 				if (metaO instanceof AttributeMetadata) {
 					if (((AttributeMetadata)metaO).isDerived()) {
-						Message msg = MessageResources.getMessage("O2DB4", new Object[]{metaO.getXPath()});
+						 
+						String superClassName=(String)myModel.getInheritanceMetadata().get(((AttributeMetadata)metaO).getParentXPath());
+						
+						Message msg = MessageResources.getMessage("O2DB4", new Object[]{metaO.getXPath(), superClassName});
 						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));						
 					}else {
 						Message msg = MessageResources.getMessage("O2DB1", new Object[]{metaO.getXPath()});
@@ -189,6 +196,9 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2009/06/12 15:53:01  wangeug
+ * HISTORY      : clean code: caAdapter MMS 4.1.1
+ * HISTORY      :
  * HISTORY      : Revision 1.6  2008/09/26 20:35:27  linc
  * HISTORY      : Updated according to code standard.
  * HISTORY      :

@@ -7,7 +7,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 package gov.nih.nci.caadapter.mms.map;
+import gov.nih.nci.caadapter.common.MetaObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,8 +23,8 @@ import java.util.List;
  * @author OWNER: Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.9 $
- * @date       $Date: 2009-07-14 16:36:00 $
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2009-07-30 17:35:46 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class CumulativeMapping {
@@ -29,13 +32,22 @@ public class CumulativeMapping {
 	private List<AttributeMapping> attributeMappings = new ArrayList<AttributeMapping>();
 	private List<DependencyMapping> dependencyMappings = new ArrayList<DependencyMapping>();	
 	private List<AssociationMapping> singleAssociationMappings = new ArrayList<AssociationMapping>();
-    
+    private HashMap<String,MetaObject> sourceHashmap=new HashMap<String, MetaObject>();
+    private HashMap<String, MetaObject> targetHashmap=new HashMap<String, MetaObject>();
 	/**
 	 *
 	 * @param attributeMapping
 	 */
 	public void addAttributeMapping(AttributeMapping attributeMapping){
 		attributeMappings.add(attributeMapping);
+		if (attributeMapping!=null)
+		{
+			sourceHashmap.put(attributeMapping.getAttributeMetadata().getXPath(),
+					attributeMapping.getColumnMetadata());
+			targetHashmap.put(attributeMapping.getColumnMetadata().getXPath(),
+					attributeMapping.getAttributeMetadata());
+		}
+		
 	}
 
 	/**
@@ -44,14 +56,28 @@ public class CumulativeMapping {
 	 */
 	public void addDependencyMapping(DependencyMapping dependencyMapping){
         dependencyMappings.add(dependencyMapping);
+		if (dependencyMapping!=null)
+		{
+			sourceHashmap.put(dependencyMapping.getSourceDependency().getXPath(),
+					dependencyMapping.getTargetDependency());
+			targetHashmap.put(dependencyMapping.getTargetDependency().getXPath(),
+					dependencyMapping.getSourceDependency());
+		}
 	}
 
 	/**
 	 *
 	 * @param singleAssociationMapping
 	 */
-	public void addAssociationMapping(AssociationMapping singleAssociationMapping){
-   		singleAssociationMappings.add(singleAssociationMapping);
+	public void addAssociationMapping(AssociationMapping associationMapping){
+   		singleAssociationMappings.add(associationMapping);
+		if (associationMapping!=null)
+		{
+			sourceHashmap.put(associationMapping.getAssociationEndMetadata().getXPath(),
+					associationMapping.getColumnMetadata());
+			targetHashmap.put(associationMapping.getColumnMetadata().getXPath(),
+					associationMapping.getAssociationEndMetadata());
+		}
 	}
 
 	public List<AttributeMapping> getAttributeMappings(){
@@ -72,6 +98,11 @@ public class CumulativeMapping {
 	 */
 	public void removeAttributeMapping(AttributeMapping attributeMapping){
 		attributeMappings.remove(attributeMapping);
+		if (attributeMapping!=null)
+		{
+			sourceHashmap.remove(attributeMapping.getAttributeMetadata().getXPath());
+			targetHashmap.remove(attributeMapping.getColumnMetadata().getXPath());
+		}
 	}
 
 	/**
@@ -80,18 +111,41 @@ public class CumulativeMapping {
 	 */
 	public void removeDependencyMapping(DependencyMapping dependencyMapping){
 		dependencyMappings.remove(dependencyMapping);
+		if (dependencyMapping!=null)
+		{
+			sourceHashmap.remove(dependencyMapping.getSourceDependency().getXPath());
+			targetHashmap.remove(dependencyMapping.getTargetDependency().getXPath());
+		}
 	}
 
 	/**
 	 *
 	 * @param singleAssociationMapping
 	 */
-	public void removeAssociationMapping(AssociationMapping singleAssociationMapping){
-		singleAssociationMappings.remove(singleAssociationMapping);
+	public void removeAssociationMapping(AssociationMapping associationMapping){
+		singleAssociationMappings.remove(associationMapping);
+		if (associationMapping!=null)
+		{
+			sourceHashmap.remove(associationMapping.getAssociationEndMetadata().getXPath());
+			targetHashmap.remove(associationMapping.getColumnMetadata().getXPath());
+		}
+	}
+	
+	public MetaObject findMappedTarget(String srcPath)
+	{
+		return sourceHashmap.get(srcPath);
+	}
+	
+	public MetaObject findMappedSource(String tgrtPath)
+	{
+		return targetHashmap.get(tgrtPath);
 	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.9  2009/07/14 16:36:00  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.8  2009/06/12 15:51:50  wangeug
  * HISTORY: clean code: caAdapter MMS 4.1.1
  * HISTORY:
