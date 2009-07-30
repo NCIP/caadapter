@@ -138,14 +138,46 @@
 		<condition property="caadapter.module.gme.zip">	
 				<equals arg1="${caadapter.release.mms.gme.only}" arg2="true"/>
 		</condition>
-
+		<condition property="caadapter.module.mms.zip">	
+			 	<equals arg1="${caadapter.release.mms.only}" arg2="true"/>
+		</condition>
 		<!-- conditionally zip the distributed zip file -->
 		<antcall target="zipAllModuleSrc"/>
 		<antcall target="zipHl7ModuleSrc"/>
 		<antcall target="zipGmeModuleSrc"/>
+		<antcall target="zipMMSModuleSrc"/>
 		
     </target>
 
+	<target name="zipMMSModuleSrc" if="caadapter.module.mms.zip">
+		<echo message="Build source distribution for MMS module..."/>
+		<zip destfile="${project.release.version}_Src_${DATE}.zip">
+			<zipfileset dir="components/common" includes="build.xml, conf/**,src/**, lib/**" prefix="components/common"/>
+			<zipfileset dir="components/dataviewer" includes="build.xml, src/**, lib/**" prefix="components/dataviewer"/>
+			<zipfileset dir="components/hl7Transformation" includes="build.xml, conf/**, etc/**, src/**, lib/**" prefix="components/hl7Transformation"/>
+			<zipfileset dir="components/modelMapping" includes="build.xml, conf/**,src/**, test/**, lib/**" prefix="components/modelMapping"/>
+			<zipfileset dir="components/sdtmTransformation" includes="build.xml, src/**, lib/**" prefix="components/sdtmTransformation"/>
+			<zipfileset dir="components/userInterface" prefix="components/userInterface">
+				<include name="build.xml"/>
+				<include name="conf/**"/>
+				<include name="src/**"/>
+				<include name="resources/images/*.*"/>
+				<include name="lib/**"/>
+			</zipfileset>	
+			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
+			<zipfileset dir="docs/MMSv4.1" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
+			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
+					webstart/webstartconf/**, webstart/caadapter-mms-gme.jnlp, webstart/caadapter-mms-gme.html, webstart/web.xml, webstart/myKeyStore"/>
+			<zipfileset dir="." includes="conf/**, demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java, lib/**,
+				build*, *.bat, NCICBkey, myKeyStor" />
+			
+			<!-- zipfileset dir="." includes="conf/**, etc/**, lib/** 
+				build*, *.bat, NCICBkey, myKeyStor" / -->
+			<zipfileset dir="workingspace" includes="Object_to_DB_Example/**"
+				prefix="workingspace"/>
+		</zip> 
+	</target>
+	
 	<target name="zipGmeModuleSrc" if="caadapter.module.gme.zip">
 		<echo message="Build source distribution for GME module..."/>
 		<zip destfile="${project.release.version}_Src_${DATE}.zip">
