@@ -30,8 +30,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  *
  * @author   OWNER: wangeug  $Date: Jul 7, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-07-30 17:38:06 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-07-30 19:06:33 $
  * @since caAdapter v4.2
  */
 
@@ -113,15 +113,17 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 		{
 			HashMap<String, HashMap<String, String>> pkSetting=XMIAnnotationUtil.findPrimaryKeyGenerrator(xpathAttr);
 			DialogUserInput dialog = new DialogUserInput(null, pkSetting, "Primary Key Generator",DialogUserInput.INPUT_TYPE_TABBED );
-
-			HashMap<String, HashMap<String, String>> pkSettingInputs=(HashMap<String, HashMap<String, String>> )dialog.getUserInput();
-			Iterator<String> dbNameKeys=pkSettingInputs.keySet().iterator();
-	    	while (dbNameKeys.hasNext())
-	    	{
-	    		String paraDbName=dbNameKeys.next();
-	    		HashMap<String, String>pkOneDbSetting=(HashMap<String, String>)pkSettingInputs.get(paraDbName);
-	    		XMIAnnotationUtil.addPrimaryKey(xpathAttr, paraDbName, pkOneDbSetting);
-	    	}
+			if (dialog.getUserInput()!=null)
+			{
+				HashMap<String, HashMap<String, String>> pkSettingInputs=(HashMap<String, HashMap<String, String>> )dialog.getUserInput();
+				Iterator<String> dbNameKeys=pkSettingInputs.keySet().iterator();
+		    	while (dbNameKeys.hasNext())
+		    	{
+		    		String paraDbName=dbNameKeys.next();
+		    		HashMap<String, String>pkOneDbSetting=(HashMap<String, String>)pkSettingInputs.get(paraDbName);
+		    		XMIAnnotationUtil.addPrimaryKey(xpathAttr, paraDbName, pkOneDbSetting);
+		    	}
+			}
 		}
 		
 			
@@ -134,6 +136,9 @@ public class ColumnAnnotationAction extends ItemAnnotationAction {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/07/30 17:38:06  wangeug
+* HISTORY: clean codes: implement 4.1.1 requirements
+* HISTORY:
 * HISTORY: Revision 1.1  2009/07/10 19:58:16  wangeug
 * HISTORY: MMS re-engineering
 * HISTORY:
