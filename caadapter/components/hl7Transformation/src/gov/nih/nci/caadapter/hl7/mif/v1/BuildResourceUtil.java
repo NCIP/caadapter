@@ -11,10 +11,10 @@ package gov.nih.nci.caadapter.hl7.mif.v1;
  * The class defines the Utiliy object loading HL7 v3 normative artifacts
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2009-03-25 14:00:09 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2009-08-07 21:45:14 $
  */
 
 import gov.nih.nci.caadapter.common.ApplicationException;
@@ -260,6 +260,7 @@ public class BuildResourceUtil {
 //			if (msgType.equalsIgnoreCase("cmetList.mif"))
 //				continue;
 			InputStream mifIs = null;
+            InputStream mifIs2 = null;
             File newFile = null;
             while(isSortKeyReassigning)
             {
@@ -277,11 +278,16 @@ public class BuildResourceUtil {
                 newFile = new File(rs.getNewFileName());
 
                 mifIs = new FileInputStream(newFile);
+                mifIs2 = new FileInputStream(newFile);
                 newFile.deleteOnExit();
                 break;
             }
 
-            if (mifIs == null) mifIs = zip.getInputStream(zipEntry);
+            if (mifIs == null)
+            {
+                mifIs = zip.getInputStream(zipEntry);
+                mifIs2 = zip.getInputStream(zipEntry);
+            }
 
             Document mifDoc = null;
             try
@@ -290,8 +296,41 @@ public class BuildResourceUtil {
             }
             catch(org.xml.sax.SAXParseException se)
             {
-                System.out.println("######### ERROR : "+se.getMessage()+"\n" + FileUtil.readFileIntoString(newFile.getAbsolutePath()));
-                return;
+                //This block is for error protecting from Invalid byte 3 of 3-byte UTF-8 sequence.
+                String tempName = FileUtil.getTemporaryFileName(".mif");
+
+                try
+                {
+                    FileOutputStream fos = new FileOutputStream(tempName);
+                    DataOutputStream dos = new DataOutputStream(fos);
+
+                    while(true)
+                    {
+                        int i = -1;
+                        try
+                        {
+                            i = mifIs2.read();
+                        }
+                        catch(Exception ee)
+                        {
+                            break;
+                        }
+                        if (i < 0) break;
+                        if (i > 127) continue;
+
+                        dos.writeByte((byte)i);
+                    }
+                    dos.close();
+                    fos.close();
+                    mifDoc = db.parse(new FileInputStream(tempName));
+                }
+                catch(Exception fe)
+                {
+                    System.out.println("######### ERROR : "+se.getMessage()+"\n" + FileUtil.readFileIntoString(newFile.getAbsolutePath()));
+                    return;
+                }
+                File ff = new File(tempName);
+                if ((ff.exists())&&(ff.isFile())) ff.delete();
             }
             if (newFile != null) newFile.delete();
             MIFParser mifParser = new MIFParser();
@@ -443,6 +482,9 @@ public class BuildResourceUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.7  2009/03/25 14:00:09  wangeug
+ * HISTORY :load HL7 artifacts with new procedure
+ * HISTORY :
  * HISTORY :Revision 1.6  2008/09/29 15:42:45  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

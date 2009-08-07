@@ -7,10 +7,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -35,10 +32,10 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * The class provides Utilities to access the MIF info.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.16 $
- *          date        $Date: 2009-03-18 15:50:53 $
+ *          revision    $Revision: 1.17 $
+ *          date        $Date: 2009-08-07 21:45:02 $
  */
 public class MIFParserUtil {
 
@@ -64,9 +61,13 @@ public class MIFParserUtil {
 			}
 			
 			InputStream mifIs =null;
-			if (mifURL!=null)
-				mifIs=mifURL.openStream();
-			else
+            InputStream mifIs2 =null;
+            if (mifURL!=null)
+            {
+                mifIs=mifURL.openStream();
+                mifIs2=mifURL.openStream();
+            }
+            else
 			{
 				String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
 				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifZip path:"+mifZipFilePath);
@@ -79,12 +80,57 @@ public class MIFParserUtil {
 					mifEntry=mifZipFile.getEntry(mifPath);
 				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifEntry:"+mifEntry.getName());
 				mifIs=mifZipFile.getInputStream(mifEntry);
-			}
+                mifIs2=mifZipFile.getInputStream(mifEntry);
+            }
 			//this.getClass().getResourceAsStream("/mif/" + mifFileName);
         	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         	DocumentBuilder db = dbf.newDocumentBuilder();
-        	Document mifDoc = db.parse(mifIs);
-        	MIFParser mifParser=new MIFParser();
+        	Document mifDoc = null;
+
+            try
+            {
+                mifDoc = db.parse(mifIs);
+            }
+            catch(org.xml.sax.SAXParseException se)
+            {
+                //This block is for error protecting from Invalid byte 3 of 3-byte UTF-8 sequence.
+                String tempName = FileUtil.getTemporaryFileName(".mif");
+
+                try
+                {
+                    FileOutputStream fos = new FileOutputStream(tempName);
+                    DataOutputStream dos = new DataOutputStream(fos);
+
+                    while(true)
+                    {
+                        int i = -1;
+                        try
+                        {
+                            i = mifIs2.read();
+                        }
+                        catch(Exception ee)
+                        {
+                            break;
+                        }
+                        if (i < 0) break;
+                        if (i > 127) continue;
+
+                        dos.writeByte((byte)i);
+                    }
+                    dos.close();
+                    fos.close();
+                    mifDoc = db.parse(new FileInputStream(tempName));
+                    System.out.println(" ### This [Fatal Error] is Completely recovered -- " + se.getMessage());
+                }
+                catch(Exception fe)
+                {
+                    throw se;
+                }
+                File ff = new File(tempName);
+                if ((ff.exists())&&(ff.isFile())) ff.delete();
+            }
+
+            MIFParser mifParser=new MIFParser();
         	boolean mifParsed=mifParser.parse(mifDoc);
       		if (!mifParsed)
       		{
@@ -188,6 +234,9 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.16  2009/03/18 15:50:53  wangeug
+ * HISTORY :enable wesstart to support multiple normatives
+ * HISTORY :
  * HISTORY :Revision 1.15  2009/03/13 14:55:45  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :
