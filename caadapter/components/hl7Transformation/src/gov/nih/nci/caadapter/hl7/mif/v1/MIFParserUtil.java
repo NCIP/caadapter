@@ -34,8 +34,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.17 $
- *          date        $Date: 2009-08-07 21:45:02 $
+ *          revision    $Revision: 1.18 $
+ *          date        $Date: 2009-08-14 21:44:49 $
  */
 public class MIFParserUtil {
 
@@ -43,24 +43,34 @@ public class MIFParserUtil {
 	{
 		try
         {
-			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
-			String mifPath="mif/" + mifFileName;
-			URL mifURL=FileUtil.retrieveResourceURL(mifPath);
-        	//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
-			if (mifURL==null)
-				mifURL=FileUtil.retrieveResourceURL(mifFileName);
+			String mifPath=null;
+        	URL mifURL=null;
+
 			if (mifURL==null)
 			{
 				//webStart deployment
 				String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
 				//normative 2008 structure
-				mifURL=FileUtil.retrieveResourceURL(specHome+"/mif/"+mifFileName);
+                mifPath=specHome+"/mif/"+mifFileName;
+                mifURL=FileUtil.retrieveResourceURL(mifPath);
 				//normative 2006 structure
 				if (mifURL==null)
-					mifURL=FileUtil.retrieveResourceURL(specHome+"/"+mifFileName);				
-			}
-			
-			InputStream mifIs =null;
+                {
+                    mifPath=specHome+"/"+mifFileName;
+                    mifURL=FileUtil.retrieveResourceURL(mifPath);
+                }
+            }
+            //normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
+            if (mifURL==null)
+				mifURL=FileUtil.retrieveResourceURL(mifFileName);
+            //normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
+            if (mifURL==null)
+            {
+                mifPath="mif/" + mifFileName;
+			    mifURL=FileUtil.retrieveResourceURL(mifPath);
+            }
+
+            InputStream mifIs =null;
             InputStream mifIs2 =null;
             if (mifURL!=null)
             {
@@ -159,15 +169,15 @@ public class MIFParserUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-   
+
 		return null;
 	}
-	
+
 	public static MIFClass loadMIFClassWithVersion(String mifFileName, String version)
 	{
 		String mifParent="hl7_home";
 		File mifParentDir=new File(mifParent);
-		
+
 		if (mifParentDir.exists()&&mifParentDir.isDirectory())
 		{
 			File[] childFiles=mifParentDir.listFiles();
@@ -184,15 +194,15 @@ public class MIFParserUtil {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 	public static MIFClass getMIFClass(String mifFileName)
 	{
 		MIFClass mifClass = null;
 
-        System.out.println("MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
-        if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
+        System.out.println("## MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
+        //if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
         try {
 //			mifClass = mifParser.loadMIF(mifFileName);
 			mifClass=loadUnprocessedMIF(mifFileName);
@@ -206,7 +216,7 @@ public class MIFParserUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public static Hashtable<String, String> getDocumentElementAttributes( Node docNode )
@@ -214,9 +224,9 @@ public class MIFParserUtil {
 		Hashtable<String, String> rtnHash=new Hashtable<String, String>();
 		if (docNode==null)
 			return rtnHash;
-			
+
 		NamedNodeMap attrMap=docNode.getAttributes();
-		if (attrMap != null) 
+		if (attrMap != null)
 		{
 			for (int i=0;i<attrMap.getLength();i++)
 			{
@@ -226,14 +236,17 @@ public class MIFParserUtil {
 		}
 		return rtnHash;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
 		MIFParserUtil.loadMIFClassWithVersion("mif","Normative_2006");
-		
+
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.17  2009/08/07 21:45:02  altturbo
+ * HISTORY :protecting from Invalid byte 3 of 3-byte UTF-8 sequence.
+ * HISTORY :
  * HISTORY :Revision 1.16  2009/03/18 15:50:53  wangeug
  * HISTORY :enable wesstart to support multiple normatives
  * HISTORY :
