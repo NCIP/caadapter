@@ -34,8 +34,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.18 $
- *          date        $Date: 2009-08-14 21:44:49 $
+ *          revision    $Revision: 1.19 $
+ *          date        $Date: 2009-08-17 20:26:50 $
  */
 public class MIFParserUtil {
 
@@ -46,19 +46,39 @@ public class MIFParserUtil {
 			String mifPath=null;
         	URL mifURL=null;
 
-			if (mifURL==null)
+			while(mifURL==null)
 			{
 				//webStart deployment
 				String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
-				//normative 2008 structure
-                mifPath=specHome+"/mif/"+mifFileName;
-                mifURL=FileUtil.retrieveResourceURL(mifPath);
-				//normative 2006 structure
-				if (mifURL==null)
+                File temp = new File(specHome);
+                if (!temp.exists()) break;
+                //normative 2008 structure
+                for (int i=0;i<2;i++)
                 {
-                    mifPath=specHome+"/"+mifFileName;
-                    mifURL=FileUtil.retrieveResourceURL(mifPath);
+                    if (mifURL!=null) break;
+                    String specHome2 = "";
+                    if (i == 0)
+                    {
+                        if (temp.isDirectory()) specHome2 = temp.getName();
+                        else
+                        {
+                            File parent = temp.getParentFile();
+                            if (parent != null) specHome2 = parent.getName() + File.separator +temp.getName();
+                            else specHome2 = temp.getName();
+                        }
+                    }
+                    else specHome2 = specHome;
+                    mifPath=specHome2+"/mif/"+mifFileName;
+
+                    mifURL=FileUtil.retrieveResourceURL(specHome2, "mif", mifFileName);
+                    //normative 2006 structure
+                    if (mifURL==null)
+                    {
+                        mifPath=specHome2+"/"+mifFileName;
+                        mifURL=FileUtil.retrieveResourceURL(specHome2, null, mifFileName);
+                    }
                 }
+                break;
             }
             //normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
             if (mifURL==null)
@@ -244,6 +264,9 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.18  2009/08/14 21:44:49  altturbo
+ * HISTORY :When search mifURL, First priority is spechome+mif+mifFilename
+ * HISTORY :
  * HISTORY :Revision 1.17  2009/08/07 21:45:02  altturbo
  * HISTORY :protecting from Invalid byte 3 of 3-byte UTF-8 sequence.
  * HISTORY :

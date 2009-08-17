@@ -19,12 +19,12 @@ import gov.nih.nci.caadapter.common.function.FunctionException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.util.*;
 import java.util.List;
+import java.util.jar.JarFile;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
 import java.util.logging.FileHandler;
 
 /**
@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 
 public class FileUtil
@@ -386,6 +386,9 @@ public class FileUtil
         fileName = fileName.trim();
         if (fileName.equals("")) return null;
 
+        File ff = new File(fileName);
+        if ((ff.exists())&&(ff.isFile())) return ff.getAbsolutePath();
+
         String c = "";
 
         for (int i=0;i<fileName.length();i++)
@@ -415,6 +418,7 @@ public class FileUtil
                     if ((!isFile)&&(f.isDirectory())) return f.getAbsolutePath();
                 }
                 dir = new File(getWorkingDirPath());
+                startDir = dir;
             }
         }
 
@@ -423,6 +427,8 @@ public class FileUtil
         String dirName = dir.getAbsolutePath();
         if (!dirName.endsWith(File.separator)) dirName = dirName + File.separator;
         File f = new File(dirName + fileName);
+        //System.out.println("BBBB File search ("+fileName + ") :" + (isFile) + ":" + (f.isFile()) + " : "+ f.getAbsolutePath());
+
         if (f.exists())
         {
             if ((isFile)&&(f.isFile())) return f.getAbsolutePath();
@@ -1405,24 +1411,28 @@ public class FileUtil
      */
     public static URL retrieveResourceURL(String rscName)
     {
-    	URL rtnURL=null;
-    	System.out.println("FileUtil.retrieveResourceURL()..resourceName:"+rscName);
+        if (rscName == null) return null;
+        rscName = rscName.trim();
+        if (rscName.equals("")) return null;
+
+        URL rtnURL=null;
+    	//System.out.println("FileUtil.retrieveResourceURL().1.resourceName:"+rscName);
     	rtnURL=Thread.currentThread().getClass().getResource("/"+rscName);
-		System.out.println("FileUtil.retrieveResourceURL()..Thread.currentThread().getClass().getResource..standalone URL:/"+rscName+"="+rtnURL);
+		//System.out.println("FileUtil.retrieveResourceURL().2.Thread.currentThread().getClass().getResource..standalone URL:/"+rscName+"="+rtnURL);
 		if (rtnURL==null)
 		{
 			rtnURL=Thread.currentThread().getClass().getResource(rscName);
-			System.out.println("FileUtil.retrieveResourceURL()..Thread.currentThread().getClass().getResource..standalone URL:"+rscName+"="+rtnURL);
+			//System.out.println("FileUtil.retrieveResourceURL().3.Thread.currentThread().getClass().getResource..standalone URL:"+rscName+"="+rtnURL);
 		}
 		//load resource for webstart deployment
 		if (rtnURL==null)
 		{
 			rtnURL=FileUtil.class.getClassLoader().getResource(rscName);
-			System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..webstart URL:"+rscName+"="+rtnURL);
+			//System.out.println("FileUtil.retrieveResourceURL().4.FileUtil.class.getClassLoader().getResource..webstart URL:"+rscName+"="+rtnURL);
 			if (rtnURL==null)
 			{
 				rtnURL=FileUtil.class.getClassLoader().getResource("/"+rscName);
-				System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
+				//System.out.println("FileUtil.retrieveResourceURL().5.FileUtil.class.getClassLoader().getResource..webstart URL:/"+rscName+"="+rtnURL);
 			}
 		}
 
@@ -1439,21 +1449,121 @@ public class FileUtil
                 }
                 catch(MalformedURLException me)
                 {
-                    System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..MalformedURLException:/"+rscName+"="+rtnURL + " : " + me.getMessage());
+                    System.out.println("FileUtil.retrieveResourceURL().6. MalformedURLException : " + me.getMessage());
                 }
             }
-            else System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..searchFile Failure1:/"+rscName+"="+rtnURL);
+            //else System.out.println("FileUtil.retrieveResourceURL().7.");
         }
-        else System.out.println("FileUtil.retrieveResourceURL()..FileUtil.class.getClassLoader().getResource..searchFile Failure2:/"+rscName+"="+rtnURL);
-                    
+        //else System.out.println("FileUtil.retrieveResourceURL().8.");
+        if (rtnURL == null) System.out.println("This resource file cannot be found : " + rtnURL);
         return rtnURL;
     }
+    public static URL retrieveResourceURL(String rscName, String middle, String fileName)
+    {
+        if (rscName == null) rscName = "";
+        else rscName = rscName.trim();
 
+        if (rscName.equals("")) return null;
+
+        if (middle == null) middle = "";
+        else middle = middle.trim();
+        if (fileName == null) fileName = "";
+        else fileName = fileName.trim();
+
+        String tt = fileName;
+        if (!middle.equals("")) tt = middle + "/" + fileName;
+
+        System.out.println("## Searching Resource ("+tt+") to file : " + rscName);
+        if ((fileName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(rscName);
+        URL url = null;
+
+        while(true)
+        {
+            File ff = new File(rscName);
+
+            if (!ff.exists()) break;
+
+            if (ff.isDirectory())
+            {
+                File[] list = ff.listFiles();
+                for (File f:list)
+                {
+                    String fN = f.getAbsolutePath();
+                    if ((fN.toLowerCase().endsWith(".zip"))||(fN.toLowerCase().endsWith(".jar")))
+                    {
+                        URL res = retrieveResourceURL(fN, middle, fileName);
+                        if (res != null)
+                        {
+                            url = res;
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+            if (!ff.isFile()) break;
+
+            try
+            {
+                String fN = ff.getAbsolutePath();
+                ZipFile zip = null;
+                //String pref = "";
+                if (fN.toLowerCase().endsWith(".zip"))
+                {
+                    zip = new ZipFile(ff);
+                    //pref = "zip:";
+                }
+                else if (fN.toLowerCase().endsWith(".jar"))
+                {
+                    zip = new JarFile(ff);
+                    //pref = "jar:";
+                }
+                else break;
+
+                ZipEntry ee = zip.getEntry(tt);
+                if (ee == null) break;
+
+                InputStream stream = zip.getInputStream(ee);
+
+                String fileName2 = FileUtil.getTemporaryFileName();
+                if ((fileName.length() > 5)&&(fileName.substring(fileName.length()-4, fileName.length()-3).equals(".")))
+                {
+                    fileName2 = fileName2.substring(0, fileName2.length()-4) + "." + fileName.substring(fileName.length()-3);
+                }
+
+                try
+                {
+                    fileName2 = downloadFromInputStreamToFile(stream, fileName2);
+                }
+                catch(IOException ie)
+                {
+                    System.out.println("Error 99756 FileUtil.downloadFromInputStreamToFile() for resource searching ("+tt+") : " + ie.getMessage());
+                    break;
+                }
+
+                File file = new File(fileName2);
+                file.deleteOnExit();
+                url = file.toURI().toURL();
+            }
+            catch(Exception ee)
+            {
+                System.out.println("Error 98246 at FileUtil.retrieveResourceURL() : " + ee.getMessage());
+            }
+            break;
+        }
+
+        if (url == null) url = retrieveResourceURL(rscName + "/" + tt);
+        if (url != null) System.out.println("## Find this resource file : " + url.toString());
+        return url;
+    }
 
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.33  2009/06/22 23:05:41  altturbo
+ * File location search if target file not found
+ *
  * Revision 1.32  2009/05/21 14:12:19  altturbo
  * upgreade searchProperties()
  *
