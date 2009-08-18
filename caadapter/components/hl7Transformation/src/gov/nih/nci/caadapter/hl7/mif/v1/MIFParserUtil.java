@@ -34,8 +34,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.19 $
- *          date        $Date: 2009-08-17 20:26:50 $
+ *          revision    $Revision: 1.20 $
+ *          date        $Date: 2009-08-18 15:18:41 $
  */
 public class MIFParserUtil {
 
@@ -50,8 +50,19 @@ public class MIFParserUtil {
 			{
 				//webStart deployment
 				String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
+
                 File temp = new File(specHome);
                 if (!temp.exists()) break;
+
+                String specHome1 = null;
+
+                if (specHome.startsWith(FileUtil.getWorkingDirPath()))
+                {
+                    specHome1 = specHome.substring(FileUtil.getWorkingDirPath().length()).trim();
+                    if (specHome1.startsWith(File.separator)) specHome1 = specHome1.substring(File.separator.length());
+                }
+
+
                 //normative 2008 structure
                 for (int i=0;i<2;i++)
                 {
@@ -59,12 +70,16 @@ public class MIFParserUtil {
                     String specHome2 = "";
                     if (i == 0)
                     {
-                        if (temp.isDirectory()) specHome2 = temp.getName();
+                        if (temp.isDirectory())
+                        {
+                            if (specHome1 != null) specHome2 = specHome1;
+                            else specHome2 = temp.getName();
+                        }
                         else
                         {
                             File parent = temp.getParentFile();
-                            if (parent != null) specHome2 = parent.getName() + File.separator +temp.getName();
-                            else specHome2 = temp.getName();
+                            if (specHome1 != null) specHome2 = specHome1;
+                            else specHome2 = parent.getName() + File.separator +temp.getName();
                         }
                     }
                     else specHome2 = specHome;
@@ -264,6 +279,9 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.19  2009/08/17 20:26:50  altturbo
+ * HISTORY :Change the searching priority for resource file
+ * HISTORY :
  * HISTORY :Revision 1.18  2009/08/14 21:44:49  altturbo
  * HISTORY :When search mifURL, First priority is spechome+mif+mifFilename
  * HISTORY :
