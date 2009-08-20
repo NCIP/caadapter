@@ -42,8 +42,8 @@ import org.xml.sax.*;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2009-07-19 05:54:11 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-08-20 00:24:59 $
  */
 public class FunctionVocabularyMapping
 {
@@ -60,7 +60,7 @@ public class FunctionVocabularyMapping
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.9 2009-07-19 05:54:11 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/map/FunctionVocabularyMapping.java,v 1.10 2009-08-20 00:24:59 altturbo Exp $";
 
     //private String domain = "";
     private String[] typeNamePossibleList = {"VOM_File_Local", "URL", "VOM_File_URL"};
@@ -73,6 +73,7 @@ public class FunctionVocabularyMapping
     private String pathNameJustBeforeValidated = "";
     private boolean inverseTag = false;
     private File defaultWorkDirectory = null;
+    private List<String[]> domainList = null;
 
     public FunctionVocabularyMapping()
     {
@@ -220,13 +221,22 @@ public class FunctionVocabularyMapping
                 }
                 n++;
                 if (readLineOfFile.startsWith("#")) continue;
-
+                
+                boolean inverseAllowed = true;
                 String startDomain = "&StartDomain:";
                 String endDomain = "&EndDomain";
                 if (readLineOfFile.toUpperCase().startsWith(startDomain.toUpperCase()))
                 {
                     if (domain.equals("")) throw new FunctionException("Domain name is not given. : " + value + " : "+fileNameSrc, 708, new Throwable(), ApplicationException.SEVERITY_LEVEL_ERROR);
                     readLineOfFile = readLineOfFile.substring(startDomain.length()).trim();
+
+                    String inverseNotAllowed = "&InverseNotAllowed:";
+                    if (readLineOfFile.toUpperCase().startsWith(inverseNotAllowed.toUpperCase()))
+                    {
+                        inverseAllowed = false;
+                        readLineOfFile = readLineOfFile.substring(inverseNotAllowed.length()).trim();
+                    }
+
                     String domainName = "";
                     String achar = "";
                     for (int i=0;i<readLineOfFile.length();i++)
@@ -235,6 +245,7 @@ public class FunctionVocabularyMapping
                         if ((achar.equals(" "))||(achar.equals(";"))||(achar.equals("\t"))) break;
                         domainName = domainName + achar;
                     }
+
                     if (domainName.equalsIgnoreCase(domain))
                     {
                         findTag = true;
@@ -403,12 +414,12 @@ public class FunctionVocabularyMapping
 
     public List<String> checkMappingFileAndGatheringDomainName(String fileNameSCR) throws FunctionException
     {
-        String domain = "";
+        //String domain = "";
         String fileName = "";
         if (fileNameSCR.indexOf(Config.VOCABULARY_MAP_FILE_NAME_DOMAIN_SEPARATOR) > 0)
         {
             String[] arrayRes = extractDomainAndFileName(fileNameSCR);
-            domain = arrayRes[0];
+            //domain = arrayRes[0];
             fileName = arrayRes[1];
         }
         else fileName = fileNameSCR;
@@ -433,7 +444,7 @@ public class FunctionVocabularyMapping
             return getDomains(fileName);
         }
 
-
+        List<String[]> listDomainW = new ArrayList<String[]>();
         List<String> listDomain = new ArrayList<String>();
         boolean domainTag = false;
         boolean findTag = false;
@@ -449,6 +460,7 @@ public class FunctionVocabularyMapping
 
         String readLineOfFile = "";
 
+        domainList = null;
         try
         {
             FileReader fr = new FileReader(fileName);
@@ -458,11 +470,21 @@ public class FunctionVocabularyMapping
             {
                 readLineOfFile = readLineOfFile.trim();
                 if (readLineOfFile.startsWith("#")) continue;
+
+
                 String startDomain = "&StartDomain:";
                 String endDomain = "&EndDomain";
                 if (readLineOfFile.toUpperCase().startsWith(startDomain.toUpperCase()))
                 {
                     readLineOfFile = readLineOfFile.substring(startDomain.length()).trim();
+                    boolean inverseAllowed = true;
+                    String inverseNotAllowed = "&InverseNotAllowed:";
+                    if (readLineOfFile.toUpperCase().startsWith(inverseNotAllowed.toUpperCase()))
+                    {
+                        inverseAllowed = false;
+                        readLineOfFile = readLineOfFile.substring(inverseNotAllowed.length()).trim();
+                    }
+
                     String domainName = "";
                     String achar = "";
                     for (int i=0;i<readLineOfFile.length();i++)
@@ -471,7 +493,18 @@ public class FunctionVocabularyMapping
                         if ((achar.equals(" "))||(achar.equals(";"))||(achar.equals("\t"))) break;
                         domainName = domainName + achar;
                     }
-                    if (!domainTag) listDomain.add(domainName);
+                    if (!domainTag)
+                    {
+                        if (!domainName.equals(""))
+                        {
+                            listDomain.add(domainName);
+
+                            if (domainList == null) domainList = new ArrayList<String[]>();
+                            String inverse = "true";
+                            if (!inverseAllowed) inverse = "false";
+                            domainList.add(new String[] {domainName, inverse});
+                        }
+                    }
                     domainTag = true;
                 }
                 if (readLineOfFile.toUpperCase().startsWith(endDomain.toUpperCase()))
@@ -754,7 +787,12 @@ public class FunctionVocabularyMapping
         }
         else if (jobTag == 1)
         {
-            list = handler.getDomains();
+            domainList = handler.getDomains();
+
+            for (String[] strs:domainList)
+            {
+                list.add(strs[0]);
+            }
         }
         else if (jobTag == 2)
         {
@@ -762,7 +800,10 @@ public class FunctionVocabularyMapping
         }
         return list;
     }
-
+    public List<String[]> getDomainList()
+    {
+        return domainList;
+    }
     public String searchMappingURL(String searchStr) throws FunctionException
     {
         String message = "";
@@ -908,6 +949,9 @@ public class FunctionVocabularyMapping
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.9  2009/07/19 05:54:11  altturbo
+ * HISTORY      : searching "caAdapter.jar" if not found vom.xsd
+ * HISTORY      :
  * HISTORY      : Revision 1.8  2009/03/19 02:12:18  altturbo
  * HISTORY      : avoid from occurring errors caused by 'file:/'
  * HISTORY      :

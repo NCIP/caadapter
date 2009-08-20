@@ -21,10 +21,10 @@ import java.util.ArrayList;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: phadkes $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.3 $
- *          date        $Date: 2008-06-09 19:53:49 $
+ *          revision    $Revision: 1.4 $
+ *          date        $Date: 2009-08-20 00:25:26 $
  */
 public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
 {
@@ -41,7 +41,7 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyXMLMappingEventHandler.java,v 1.3 2008-06-09 19:53:49 phadkes Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/common/src/gov/nih/nci/caadapter/common/function/FunctionVocabularyXMLMappingEventHandler.java,v 1.4 2009-08-20 00:25:26 altturbo Exp $";
 
     private FunctionVocabularyEventHandlerNode head = null;
     private FunctionVocabularyEventHandlerNode current = null;
@@ -224,15 +224,20 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
         return null;
     }
 
-    public List<String> getDomains()
+    public List<String[]> getDomains()
     {
         FunctionVocabularyEventHandlerNode temp = head;
-        List<String> list = new ArrayList<String>();
+        List<String[]> list = new ArrayList<String[]>();
         while(temp!=null)
         {
             if (temp.getName().equalsIgnoreCase("domain"))
             {
-                list.add(getAttributeValue(temp, "name"));
+                String name = getAttributeValue(temp, "name");
+                String inverseAllowed = getAttributeValue(temp, "inverseAllowed");
+                if (inverseAllowed == null) inverseAllowed = "";
+                if (inverseAllowed.equalsIgnoreCase("false")) inverseAllowed = "false";
+                else inverseAllowed = "true";
+                list.add(new String[] {name, inverseAllowed});
             }
 
             temp = nextTraverse(temp);
@@ -248,7 +253,7 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
         String lines = "";
         while(temp!=null)
         {
-            if (temp.getName().equalsIgnoreCase("domain"))
+            if (temp.getName().equalsIgnoreCase("domain"))  
             {
                 if ((domain.equals(""))&&(getDomains().size() == 1)) domain = getAttributeValue(temp, "name");
                 if (getAttributeValue(temp, "name").equalsIgnoreCase(domain)) domainTag = true;
@@ -339,6 +344,9 @@ public class FunctionVocabularyXMLMappingEventHandler extends DefaultHandler
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:49  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2008/06/06 18:54:28  phadkes
  * HISTORY      : Changes for License Text
  * HISTORY      :
