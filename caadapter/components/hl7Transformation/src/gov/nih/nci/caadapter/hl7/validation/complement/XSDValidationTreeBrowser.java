@@ -640,6 +640,7 @@ public class XSDValidationTreeBrowser extends JPanel implements ActionListener
         catch(ApplicationException ae)
         {
             JOptionPane.showMessageDialog(this, ae.getMessage(), "Parsing XSD file error", JOptionPane.ERROR_MESSAGE);
+            ae.printStackTrace();
             return;
         }
 

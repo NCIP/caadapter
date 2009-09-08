@@ -417,6 +417,20 @@ public class XmlReorganizingTree
         if ((pre == null)||(pre.size() == 0)) System.err.println("Failure building xml element list : ");
         for (String string:pre) System.out.println(string);
     }
+    public String printStringXML()
+    {
+        return printStringXML(-1);
+    }
+    public String printStringXML(int levelOfDatatypeOutputValue)
+    {
+        int levelOfDatatypeValue = getLevelOfDatatypeOutputValue(levelOfDatatypeOutputValue);
+        List<String> pre = prepareXMLList(levelOfDatatypeValue);
+        if ((pre == null)||(pre.size() == 0)) System.err.println("Failure building xml element list : ");
+
+        String res = "";
+        for (String string:pre) res = res + string + "\r\n";
+        return res;
+    }
     public void generatingXMLFile(String fileName) throws IOException
     {
         generatingXMLFile(fileName, -1);

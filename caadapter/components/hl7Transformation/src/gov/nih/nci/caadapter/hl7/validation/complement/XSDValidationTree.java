@@ -274,8 +274,15 @@ public class XSDValidationTree
         return tempX;
 
     }
-
     public DefaultMutableTreeNode searchComplexType(String nodeName)
+    {
+        return searchComplexType(nodeName, true);
+    }
+    public DefaultMutableTreeNode searchMessageHeadType(String nodeName)
+    {
+        return searchComplexType(nodeName, false);
+    }
+    private DefaultMutableTreeNode searchComplexType(String nodeName, boolean complexTag)
     {
         if (nodeName == null) return null;
         nodeName = nodeName.trim();
@@ -288,16 +295,63 @@ public class XSDValidationTree
             sNode = sNode.getNextNode();
             if (sNode == null) break;
 
+
             String complexTypeName = getComplexTypeName(sNode);
 
             if (complexTypeName == null) continue;
 
-            if (complexTypeName.equals(nodeName)) return sNode;
+            if (complexTag)
+            {
+                if (complexTypeName.equals(nodeName)) return sNode;
+            }
+            else
+            {  // only for searching control message type
+                if ((complexTypeName.startsWith(nodeName))&&(complexTypeName.endsWith("Message"))) return sNode;
+            }
         }
 
         return null;
     }
+    /*
+    public DefaultMutableTreeNode searchNodeName(String nodeName)
+    {
+        if (nodeName == null) return null;
+        nodeName = nodeName.trim();
+        if (nodeName.equals("")) return null;
+        return searchNodeName(new String[] {nodeName});
+    }
+    public DefaultMutableTreeNode searchNodeName(String[] nodeNames)
+    {
+        if (nodeNames == null) return null;
+        nodeName = nodeName.trim();
+        if (nodeName.equals("")) return null;
 
+        DefaultMutableTreeNode sNode = getHeadNode();
+
+        while(true)
+        {
+            sNode = sNode.getNextNode();
+            if (sNode == null) break;
+
+
+            String complexTypeName = getComplexTypeName(sNode);
+
+            if (complexTypeName == null) continue;
+
+            if (complexTag)
+            {
+                if (complexTypeName.equals(nodeName)) return sNode;
+            }
+            else
+            {
+                if ((complexTypeName.startsWith(nodeName))&&(complexTypeName.endsWith("Message"))) return sNode;
+            }
+
+        }
+
+        return null;
+    }
+    */
     public boolean isComplexType(DefaultMutableTreeNode node)
     {
         if (node == null) return false;
