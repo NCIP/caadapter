@@ -17,6 +17,8 @@ import java.util.Stack;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.validation.ValidatorResults;
+import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,7 +29,9 @@ import gov.nih.nci.caadapter.common.ApplicationException;
  */
 public class XmlReorganizingTree
 {
-    DefaultMutableTreeNode headOfMain;
+    private DefaultMutableTreeNode headOfMain;
+    private DefaultMutableTreeNode current = null;
+    private String schemaFileName = null;
 
     public XmlReorganizingTree(String source) throws ApplicationException
     {
@@ -479,4 +483,42 @@ public class XmlReorganizingTree
         */
     }
 
+    public void setSchemaFileName(String fileName) throws ApplicationException
+    {
+        if (fileName == null) fileName = "";
+        else fileName = fileName.trim();
+        if (fileName.equals("")) throw new ApplicationException("Schema file name is null or empty.");
+        if (!fileName.toLowerCase().endsWith(".xsd")) throw new ApplicationException("This file is not a XML schema file. : " + fileName);
+        File file = new File(fileName);
+        if ((!file.exists())||(!file.isFile())) throw new ApplicationException("This Schema file is not exist. : " + fileName);
+
+        schemaFileName = fileName;
+    }
+    public String getSchemaFileName(String fileName)
+    {
+        return schemaFileName;
+    }
+    public ValidatorResults validate()
+    {
+        return validate(true);
+    }
+    public ValidatorResults validate(boolean reorganize)
+    {
+        if (schemaFileName == null) return null;
+        String msg = printStringXML();
+        if ((msg == null)||(msg.trim().equals(""))) return null;
+        XMLValidator v = new XMLValidator(msg, schemaFileName, reorganize);
+
+        ValidatorResults results = v.validate();
+        return results;
+    }
+
+    public void setCurrentNode(DefaultMutableTreeNode node)
+    {
+        current = node;
+    }
+    public DefaultMutableTreeNode getCurrentNode()
+    {
+        return current;
+    }
 }
