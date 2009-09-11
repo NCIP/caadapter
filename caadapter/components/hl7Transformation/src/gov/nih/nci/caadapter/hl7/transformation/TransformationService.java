@@ -11,6 +11,7 @@ package gov.nih.nci.caadapter.hl7.transformation;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+//import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.csv.CSVMetaParserImpl;
 import gov.nih.nci.caadapter.common.csv.CSVMetaResult;
 import gov.nih.nci.caadapter.common.csv.CsvReader;
@@ -18,6 +19,9 @@ import gov.nih.nci.caadapter.common.csv.CSVDataResult;
 import gov.nih.nci.caadapter.common.csv.data.CSVSegmentedFile;
 import gov.nih.nci.caadapter.common.csv.meta.CSVMeta;
 import gov.nih.nci.caadapter.common.util.FileUtil;
+import gov.nih.nci.caadapter.common.util.GeneralUtilities;
+//import gov.nih.nci.caadapter.common.util.Config;
+//import gov.nih.nci.caadapter.common.util.GeneralUtilities;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.map.FunctionComponent;
@@ -27,6 +31,12 @@ import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.hl7.v2meta.HL7V2XmlSaxContentHandler;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageEncoderFactory;
 import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
+//import gov.nih.nci.caadapter.hl7.validation.complement.ReorganizingForValidating;
+//import gov.nih.nci.caadapter.hl7.validation.complement.XSDValidationTree;
+//import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
+import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
+//import gov.nih.nci.caadapter.hl7.v2v3.tools.SchemaDirUtil;
+//import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBrowsingNode;
 //&umkis import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 //&umkis import gov.nih.nci.caadapter.hl7.v2v3.tools.SchemaDirUtil;
 //&umkis import gov.nih.nci.caadapter.common.util.Config;
@@ -45,6 +55,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.Source;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.sun.encoder.Encoder;
 import com.sun.encoder.EncoderException;
@@ -54,14 +65,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.46 $
- * @date $Date: 2009-05-28 19:37:59 $
+ * @version $Revision: 1.47 $
+ * @date $Date: 2009-09-11 18:21:51 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.46 2009-05-28 19:37:59 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.47 2009-09-11 18:21:51 altturbo Exp $";
 
 //    private String dataString = "";
     private boolean isStringData=false;
@@ -83,7 +94,9 @@ public class TransformationService
     private ArrayList <TransformationObserver>transformationWatchList;
     private ValidatorResults theValidatorResults = new ValidatorResults();
 
-	/**
+    private XmlReorganizingTree controlMessageTemplate = null;
+
+    /**
 	 * This method will create a transformer that loads csv data from a file
 	 * and transforms into HL7 v3 messages
 	 *
@@ -265,6 +278,9 @@ public class TransformationService
         informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_READ_SOURCE);
         List<XMLElement> xmlElements=null ;
 
+        // search Control message file
+        controlMessageTemplate = ControlMessageRelatedUtil.searchControlMessage(mifClass);
+
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().equalsIgnoreCase("v2"))
         {
             CSVDataResult csvDataResult = null;
@@ -275,7 +291,7 @@ public class TransformationService
         }
         else
         {
-        	//parse CSV stream
+            //parse CSV stream
         	CsvReader reader = new CsvReader(this.sourceDataStream, this.csvMeta);
     		while(reader.hasMoreRecord())
     		{
@@ -386,7 +402,8 @@ public class TransformationService
 		rtnOut = new ZipOutputStream(outputStream);
     	return rtnOut;
     }
-    /**
+
+     /**
      * Write a list of HL7 message into a zipOutput
      * @param xmlElements
      * @param messageCount
@@ -397,7 +414,10 @@ public class TransformationService
     {
     	OutputStreamWriter writer=new OutputStreamWriter(zipOut);
 
-    	for(int i=0; i<xmlElements.size(); i++)
+        int wrappedMessageCount = 0;
+        ValidatorResults controlValidator = null;
+
+        for(int i=0; i<xmlElements.size(); i++)
 		{
             String v3Message = null;
 
@@ -414,14 +434,44 @@ public class TransformationService
 
             ValidatorResults validatorsToShow = xmlElements.get(i).getValidatorResults();
 
-//&umkis            if (getSchemaValidation()) validatorsToShow = excuteXSDValidation(validatorsToShow, messageCount, i, v3Message, zipOut, writer);
+//&umkis            if (getSchemaValidation()) v3Message = ControlMessageRelatedUtil.excuteXSDValidationForTransformationService(validatorsToShow, messageCount, i, v3Message, zipOut, writer, schemaFileName ,mifClass);
+
+            if (controlMessageTemplate != null)
+            {
+                if (ControlMessageRelatedUtil.insertV3IntoControlMessage(controlMessageTemplate, v3Message, mifClass, controlValidator, i)) wrappedMessageCount++;
+            }
 
             zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".ser"));
             ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
             objOut.writeObject(validatorsToShow);
             objOut.flush();
         }
-    }
+
+        if(controlMessageTemplate != null)
+        {
+            String integratedMessage = controlMessageTemplate.printStringXML();
+            controlValidator = controlMessageTemplate.validate(false);
+            zipOut.putNextEntry(new ZipEntry("i.xml"));
+            writer.write(integratedMessage);
+            writer.flush();
+        }
+        if(controlValidator != null)
+        {
+            if (xmlElements.size() == wrappedMessageCount)
+            {
+                if (wrappedMessageCount == 1) controlValidator = GeneralUtilities.addValidatorMessageInfo(controlValidator, "The payload message was inserted to the control message(i.xml).");
+                else controlValidator = GeneralUtilities.addValidatorMessageInfo(controlValidator, "The All " + wrappedMessageCount + "payload messages were inserted to the control message(i.xml).");
+            }
+            else if (wrappedMessageCount > 0) controlValidator = GeneralUtilities.addValidatorMessageInfo(controlValidator, "" + wrappedMessageCount + "payload message(s) was(were) inserted to the control message(i.xml).");
+            else controlValidator = GeneralUtilities.addValidatorMessage(controlValidator, "The control message is not generated.");
+
+            zipOut.putNextEntry(new ZipEntry("i.ser"));
+            ObjectOutputStream objOut = new ObjectOutputStream(zipOut);
+            objOut.writeObject(controlValidator);
+            objOut.flush();
+        }
+}
+
 
     private List<XMLElement> transferSourceData(CSVDataResult csvDataResult) throws Exception
     {
@@ -495,6 +545,8 @@ public class TransformationService
     }
 
 
+
+
 //    private CSVDataResult parseCsvSourceData()throws Exception
 //    {
 //    	SegmentedCSVParserImpl parser = new SegmentedCSVParserImpl();
@@ -508,135 +560,8 @@ public class TransformationService
 //        return csvDataResult;
 //    }
 
-//&umkis    private ValidatorResults excuteXSDValidation(ValidatorResults validatorsToShow, int messageCount, int i, String v3Message, ZipOutputStream zipOut, OutputStreamWriter writer) throws IOException
-//&umkis    {
-//&umkis        //delete unnecessary message.
-//&umkis        ValidatorResults newResults = new ValidatorResults();
-//&umkis        for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
-//&umkis        {
-//&umkis            if (!lvl.toString().equalsIgnoreCase("ALL")) continue;
-//&umkis            for (ValidatorResult result:validatorsToShow.getValidationResult(lvl))
-//&umkis            {
-//&umkis                String msgS = result.getMessage().toString().trim();
-//&umkis                if (!msgS.equals(MessageResources.getMessage("XML4", new Object[]{""}).toString().trim()))
-//&umkis                    newResults.addValidatorResult(result);
-//&umkis            }
-//&umkis        }
-//&umkis        validatorsToShow.removeAll();
-//&umkis        validatorsToShow.addValidatorResults(newResults);
-//&umkis
-//&umkis        boolean isReorganizedMssageGenerated = false;
-//&umkis        while(true)
-//&umkis        {
-//&umkis            String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
-//&umkis            String schemaFileNameL = null;
-//&umkis
-//&umkis            String dirS = (new SchemaDirUtil()).getV3XsdFilePath(mifClass.getCopyrightYears());
-//&umkis            if (dirS == null)
-//&umkis            {
-//&umkis                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No xml schema directroy");
-//&umkis                break;
-//&umkis            }
-//&umkis            dirS = dirS + File.separator + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME;
-//&umkis
-//&umkis            File dir = new File(dirS);
-//&umkis            if ((!dir.exists())||(!dir.isDirectory()))
-//&umkis            {
-//&umkis                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
-//&umkis                break;
-//&umkis            }
-//&umkis            else dirS = dir.getAbsolutePath();
-//&umkis
-//&umkis            if (getSchemaFileName() == null)
-//&umkis            {
-//&umkis                File[] files = dir.listFiles();
-//&umkis                List<File> listFile = new ArrayList<File>();
-//&umkis                for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
-//&umkis                if (listFile.size() == 0)
-//&umkis                {
-//&umkis                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
-//&umkis                    break;
-//&umkis                }
-//&umkis
-//&umkis                String messageType = mifClass.getMessageType();
-//&umkis                if ((messageType == null)||(messageType.trim().equals("")))
-//&umkis                {
-//&umkis                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
-//&umkis                    break;
-//&umkis                }
-//&umkis                messageType = messageType.trim();
-//&umkis
-//&umkis                //String schemaFileName = null;
-//&umkis                for (File file:listFile)
-//&umkis                {
-//&umkis                    String fileName = file.getName();
-//&umkis                    if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
-//&umkis                    {
-//&umkis                        schemaFileNameL = file.getAbsolutePath();
-//&umkis                        break;
-//&umkis                    }
-//&umkis                }
-//&umkis                if (schemaFileNameL == null)
-//&umkis                {
-//&umkis                    validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
-//&umkis                    break;
-//&umkis                }
-//&umkis            }
-//&umkis            else
-//&umkis            {
-//&umkis                if (schemaFileName.startsWith(dirS)) schemaFileNameL = schemaFileName;
-//&umkis                else
-//&umkis                {
-//&umkis                    if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
-//&umkis                    String xsdFileNameS = (new File(schemaFileName)).getName();
-//&umkis
-//&umkis                    String xsdC = FileUtil.readFileIntoString(schemaFileName);
-//&umkis                    if ((xsdC == null)||(xsdC.trim().equals("")))
-//&umkis                    {
-//&umkis                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Null or empty xsd file. : " + schemaFileName);
-//&umkis                        break;
-//&umkis                    }
-//&umkis                    String tempFileName = dirS + "Temp_" + FileUtil.getRandomNumber(5) + "_" + xsdFileNameS;
-//&umkis
-//&umkis                    try
-//&umkis                    {
-//&umkis                        FileUtil.saveStringIntoTemporaryFile(tempFileName , xsdC);
-//&umkis                    }
-//&umkis                    catch(IOException ie)
-//&umkis                    {
-//&umkis                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "IOException during xsd file copying. : " + schemaFileName);
-//&umkis                        break;
-//&umkis                    }
-//&umkis                    schemaFileNameL = tempFileName;
-//&umkis                }
-//&umkis            }
-//&umkis
-//&umkis            XMLValidator v = new XMLValidator(v3Message, schemaFileNameL, true);
-//&umkis
-//&umkis            ValidatorResults results = v.validate();
-//&umkis            String reorganizedV3FileName = v.getTempReorganizedV3File();
-//&umkis
-//&umkis            if (reorganizedV3FileName != null)
-//&umkis            {
-//&umkis                zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+"_Reorganized.xml"));
-//&umkis                writer.write(FileUtil.readFileIntoString(reorganizedV3FileName));
-//&umkis                writer.flush();
-//&umkis                isReorganizedMssageGenerated = true;
-//&umkis            }
-//&umkis            else validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "The reorganized message ("+(messageCount+i)+"_Reorganized.xml) cannot be generated because of a FATAL or very serious error. Please check the other messages.");
-//&umkis
-//&umkis            validatorsToShow.addValidatorResults(results);
-//&umkis
-//&umkis            break;
-//&umkis        }
-//&umkis        String infoMsg = "";
-//&umkis        if (isReorganizedMssageGenerated) infoMsg = ", Reorganized v3 message (" +(messageCount+i)+"_Reorganized.xml)";
-//&umkis        validatorsToShow = GeneralUtilities.addValidatorMessageInfo(validatorsToShow, "Direct message ("+(messageCount+i)+".xml)"+infoMsg+" and validation message object ("+(messageCount+i)+".ser) are successfully generated.");
-//&umkis
-//&umkis        return validatorsToShow;
-//&umkis    }
 
-//&umkis    /**
+   /**
 //&umkis	 * @param schemaValidation a boolean tag whether do schema validation or not.
 //&umkis	 */
 //&umkis    public void setSchemaValidation(boolean schemaValidation)
@@ -751,6 +676,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.46  2009/05/28 19:37:59  altturbo
+ * HISTORY      : upgrade for nameSpace and lowercase Head Element
+ * HISTORY      :
  * HISTORY      : Revision 1.45  2009/04/21 17:40:48  altturbo
  * HISTORY      : minor change -- add comment
  * HISTORY      :

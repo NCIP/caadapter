@@ -159,7 +159,7 @@ public class ControlMessageRelatedUtil
         return controlMessageTemplate;
     }
 
-    public static ValidatorResults excuteXSDValidationForTransformationService(ValidatorResults validatorsToShow, int messageCount, int i, String v3Message, ZipOutputStream zipOut, OutputStreamWriter writer, String schemaFileName, MIFClass mifClass) throws IOException
+    public static String excuteXSDValidationForTransformationService(ValidatorResults validatorsToShow, int messageCount, int i, String v3Message, ZipOutputStream zipOut, OutputStreamWriter writer, String schemaFileName, MIFClass mifClass) throws IOException
     {
         //delete unnecessary message.
         ValidatorResults newResults = new ValidatorResults();
@@ -270,7 +270,7 @@ public class ControlMessageRelatedUtil
             if (reorganizedV3FileName != null)
             {
                 zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+"_Reorganized.xml"));
-                v3Message = FileUtil.readFileIntoString(reorganizedV3FileName) + "<!-- End TAG -->";
+                v3Message = FileUtil.readFileIntoString(reorganizedV3FileName);
                 writer.write(v3Message);
                 writer.flush();
 
@@ -286,94 +286,96 @@ public class ControlMessageRelatedUtil
         if (isReorganizedMssageGenerated) infoMsg = ", Reorganized v3 message (" +(messageCount+i)+"_Reorganized.xml)";
         validatorsToShow = GeneralUtilities.addValidatorMessageInfo(validatorsToShow, "Direct message ("+(messageCount+i)+".xml)"+infoMsg+" and validation message object ("+(messageCount+i)+".ser) are successfully generated.");
 
-        return validatorsToShow;
+        return v3Message;
     }
 
-    public static void insertV3IntoControlMessage(XmlReorganizingTree controlMessageTemplate, String v3Message, MIFClass mifClass, ValidatorResults controlValidator)
+    public static boolean insertV3IntoControlMessage(XmlReorganizingTree controlMessageTemplate, String v3Message, MIFClass mifClass, ValidatorResults validatorsToShow, int i)
     {
-        if (controlMessageTemplate == null) return;
+        if (validatorsToShow == null) validatorsToShow = new ValidatorResults();
+        if (controlMessageTemplate == null)
+        {
+            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "XmlReorganizingTree object is null. The '"+i+".xml' message cannot be wrapped with the control message");
+            return false;
+        }
 
         DefaultMutableTreeNode current = controlMessageTemplate.getCurrentNode();
 
-                XmlReorganizingTree xmlTree = null;
-                try
+        XmlReorganizingTree xmlTree = null;
+        try
+        {
+            xmlTree = new XmlReorganizingTree(v3Message);
+        }
+        catch(ApplicationException ae)
+        {
+            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "The payload message cannot be parsed. The '"+i+".xml' message cannot be wrapped with the control message");
+            return false;
+        }
+        DefaultMutableTreeNode head = controlMessageTemplate.getHeadNode();
+
+        if (current == null)
+        {
+            DefaultMutableTreeNode sNode = head;
+            while(true)
+            {
+                sNode = sNode.getNextNode();
+                if (sNode == null) break;
+                DefaultMutableTreeNode parent = (DefaultMutableTreeNode) sNode.getParent();
+                if (parent == null) continue;
+                XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) sNode.getUserObject();
+                String name = xNode.getName();
+                String role = xNode.getRole();
+                if ((role.equals(xNode.getRoleKind()[0]))&&(name.equalsIgnoreCase(mifClass.getName())))
                 {
-                    xmlTree = new XmlReorganizingTree(v3Message);
+                    current = parent;
+                    break;
                 }
-                catch(ApplicationException ae)
-                {
-                    //todo error insert
-                    return;
-                }
-                DefaultMutableTreeNode head = controlMessageTemplate.getHeadNode();
+            }
+        }
+        else
+        {
+            DefaultMutableTreeNode tNode = (DefaultMutableTreeNode) current.getParent();
+            if (tNode == null)
+            {
+                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "A Null parent node of the current node. The '"+i+".xml' message cannot be wrapped with the control message");
+                return false;
+            }
+            DefaultMutableTreeNode lNode = (DefaultMutableTreeNode) tNode.getLastChild();
+            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) lNode.getUserObject();
+            XmlTreeBrowsingNode newXnode = new XmlTreeBrowsingNode(xNode.getRole(), xNode.getName(), xNode.getValue());
+            DefaultMutableTreeNode newDnode = new DefaultMutableTreeNode(newXnode);
+            tNode.add(newDnode);
+            for(int j=0;j<lNode.getChildCount();j++)
+            {
+                DefaultMutableTreeNode cNode = (DefaultMutableTreeNode) lNode.getChildAt(j);
+                XmlTreeBrowsingNode x1Node = (XmlTreeBrowsingNode) cNode.getUserObject();
+                XmlTreeBrowsingNode newX1node = new XmlTreeBrowsingNode(x1Node.getRole(), x1Node.getName(), x1Node.getValue());
+                DefaultMutableTreeNode newD1node = new DefaultMutableTreeNode(newX1node);
+                newDnode.add(newD1node);
+            }
+            current = newDnode;
+        }
+        if (current == null)
+        {
+            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, "The payload element pointer is null. The '"+i+".xml' message cannot be wrapped with the control message");
+            return false;
+        }
+        controlMessageTemplate.setCurrentNode(current);
 
-                if (current == null)
-                {
-                    DefaultMutableTreeNode sNode = head;
-                    while(true)
-                    {
-                        sNode = sNode.getNextNode();
-                        if (sNode == null) break;
-                        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) sNode.getParent();
-                        if (parent == null) continue;
-                        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) sNode.getUserObject();
-                        String name = xNode.getName();
-                        String role = xNode.getRole();
-                        if ((role.equals(xNode.getRoleKind()[0]))&&(name.equalsIgnoreCase(mifClass.getName())))
-                        {
-                            current = parent;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    DefaultMutableTreeNode tNode = (DefaultMutableTreeNode) current.getParent();
-                    if (tNode == null)
-                    {
-                        // todo error insert
-                        return;
-                    }
-                    DefaultMutableTreeNode lNode = (DefaultMutableTreeNode) tNode.getLastChild();
-                    XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) lNode.getUserObject();
-                    XmlTreeBrowsingNode newXnode = new XmlTreeBrowsingNode(xNode.getRole(), xNode.getName(), xNode.getValue());
-                    DefaultMutableTreeNode newDnode = new DefaultMutableTreeNode(newXnode);
-                    tNode.add(newDnode);
-                    for(int j=0;j<lNode.getChildCount();j++)
-                    {
-                        DefaultMutableTreeNode cNode = (DefaultMutableTreeNode) lNode.getChildAt(j);
-                        XmlTreeBrowsingNode x1Node = (XmlTreeBrowsingNode) cNode.getUserObject();
-                        XmlTreeBrowsingNode newX1node = new XmlTreeBrowsingNode(x1Node.getRole(), x1Node.getName(), x1Node.getValue());
-                        DefaultMutableTreeNode newD1node = new DefaultMutableTreeNode(newX1node);
-                        newDnode.add(newD1node);
-                    }
-                    current = newDnode;
-                }
-                if (current == null)
-                {
-                    //todo error insert
-                    return;
-                }
-                controlMessageTemplate.setCurrentNode(current);
+        for(int j=0;j<current.getChildCount();j++)
+        {
+            DefaultMutableTreeNode cNode = (DefaultMutableTreeNode) current.getChildAt(j);
+            XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) cNode.getUserObject();
+            String name = xNode.getName();
+            String role = xNode.getRole();
+            if ((role.equals(xNode.getRoleKind()[0]))&&(name.equalsIgnoreCase(mifClass.getName())))
+            {
+                current.remove(cNode);
+                DefaultMutableTreeNode xmlHeadNode = xmlTree.getHeadNode();
+                ((XmlTreeBrowsingNode) xmlHeadNode.getUserObject()).setName(name);
+                current.add(xmlHeadNode);
+            }
+        }
 
-                for(int j=0;j<current.getChildCount();j++)
-                {
-                    DefaultMutableTreeNode cNode = (DefaultMutableTreeNode) current.getChildAt(j);
-                    XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) cNode.getUserObject();
-                    String name = xNode.getName();
-                    String role = xNode.getRole();
-                    if ((role.equals(xNode.getRoleKind()[0]))&&(name.equalsIgnoreCase(mifClass.getName())))
-                    {
-                        current.remove(cNode);
-                        DefaultMutableTreeNode xmlHeadNode = xmlTree.getHeadNode();
-                        ((XmlTreeBrowsingNode) xmlHeadNode.getUserObject()).setName(name);
-                        current.add(xmlHeadNode);
-                    }
-                }
-
-
-
-}
-
-
+        return true;
+    }
 }
