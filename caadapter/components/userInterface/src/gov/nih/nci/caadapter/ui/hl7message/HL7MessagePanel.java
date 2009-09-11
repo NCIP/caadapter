@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.40 $
- *          date        $Date: 2009-04-15 21:55:47 $
+ *          revision    $Revision: 1.41 $
+ *          date        $Date: 2009-09-11 16:42:46 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -76,8 +76,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 	private JTextField currentMessageField = new JTextField("");
 	private JTextField totalNumberOfMessageField = new JTextField();
 	private int currentCount = 1;//count from 1...
-	private int totalNumberOfMessages = 0;
-	private boolean isBatchTransform = false;
+	//private int totalNumberOfMessages = 0;
+    private List<String> outputEntryNames = null;
+    private boolean isBatchTransform = false;
 
 //&umkis    private int schemaValidationTag = -1;
 
@@ -361,8 +362,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 								{
 									count=xmlElements.size();
 									if(count>0){
-										listnerPane.totalNumberOfMessages = count;
-										listnerPane.currentCount = 1;
+										//listnerPane.totalNumberOfMessages = count;
+                                        listnerPane.outputEntryNames = TransformationServiceUtil.getNamesOfEntriesInZip(listnerPane.getSaveFile(), ".ser");
+                                        listnerPane.currentCount = 1;
 										listnerPane.changeDisplay();
 									}
 									listnerPane.setMessageResultList(xmlElements);
@@ -407,15 +409,52 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
     private void changeDisplay()
     {
-    	if (!isBatchTransform && (messageList==null||messageList.isEmpty()))
+        if (outputEntryNames == null)
+        {
+            currentMessageField.setText("[No Generated V3 Message Instance]");
+            return;
+        }
+        int totalNumberOfMessages = outputEntryNames.size();
+
+        boolean existControlMessage = false;
+        for(String str:outputEntryNames)
+        {
+            int idx = str.indexOf("i.ser");
+            if (idx >= 0) existControlMessage = true;
+        }
+        if (!isBatchTransform && (messageList==null||messageList.isEmpty()))
     		return;
     	if(!isBatchTransform)
     		totalNumberOfMessages = messageList.size();
 		nextButton.setEnabled(currentCount < totalNumberOfMessages);
         previousButton.setEnabled(currentCount > 1);
-        currentMessageField.setText(String.valueOf(currentCount));
-		totalNumberOfMessageField.setText(String.valueOf(totalNumberOfMessages));
-		String messageValidationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
+
+        String displayedV3Entry = "" + (currentCount-1) + ".xml";
+        String displayedValidateResultsEntry = "" + (currentCount-1) + ".ser";
+
+        if (existControlMessage)
+        {
+            if (currentCount == 1)
+            {
+                displayedV3Entry = "i.xml";
+                displayedValidateResultsEntry = "i.ser";
+                currentMessageField.setText("Integrated");
+            }
+            else
+            {
+                displayedV3Entry = "" + (currentCount-2) + ".xml";
+                displayedValidateResultsEntry = "" + (currentCount-2) + ".ser";
+                currentMessageField.setText(""+(currentCount-1));
+
+            }
+            totalNumberOfMessageField.setText("" + (totalNumberOfMessages-1) + "and Integrated");
+        }
+        else
+        {
+            currentMessageField.setText(""+currentCount);
+		    totalNumberOfMessageField.setText(String.valueOf(totalNumberOfMessages));
+        }
+        String messageValidationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
 		if(totalNumberOfMessages > 0 && !isBatchTransform)
 		{
 			Object generalMssg= messageList.get(currentCount - 1);
@@ -456,13 +495,21 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		{
 			try{
 //&umkis                String ins = "";
-//&umkis                if (schemaValidationTag == JOptionPane.YES_OPTION) ins = "_Reorganized";
+//&umkis                int idx = displayedV3Entry.indexOf(".");
+//&umkis                if (schemaValidationTag == JOptionPane.YES_OPTION) ins = displayedV3Entry.substring(0, idx) + "_Reorganized" + displayedV3Entry.substring(idx);
 //
                 String xmlMsg = "";
-//&umkis                try { xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+ins+".xml"); }
+//&umkis                try { xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),ins); }
 //&umkis                catch (IOException ie)
 //&umkis                {
-                xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".xml");
+                try
+                {
+                    xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(), displayedV3Entry);
+                }
+                catch(IOException iee)
+                {
+                    xmlMsg = "[This V3 Message Instance is not generated]";
+                }
 //&umkis                }
 //
                 setMessageText(xmlMsg);
@@ -471,7 +518,7 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 				ValidatorResults validatorsToShow=new ValidatorResults();
 				//add structure validation ... level_0
-				validatorsToShow.addValidatorResults((ValidatorResults)TransformationServiceUtil.readObjFromZip(this.getSaveFile(),String.valueOf(currentCount-1)+".ser"));
+				validatorsToShow.addValidatorResults((ValidatorResults)TransformationServiceUtil.readObjFromZip(this.getSaveFile(), displayedValidateResultsEntry));
 //				if(messageValidationLevel!=null&&
 //						!messageValidationLevel.equals(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_0))
 //				{
@@ -720,6 +767,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.40  2009/04/15 21:55:47  altturbo
+ * HISTORY      : add remarks
+ * HISTORY      :
  * HISTORY      : Revision 1.39  2009/04/15 21:53:08  altturbo
  * HISTORY      : add remarks
  * HISTORY      :
