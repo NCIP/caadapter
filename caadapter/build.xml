@@ -313,7 +313,7 @@
 	
 	        <echo message=""/>
 	        <echo message="------- copying jar files to webstart deploy directory ------"/>
-	        <copy todir="${webstart.deploy.dir}">
+	        <copy todir="${webstart.deploy.dir}" failonerror="false">
 	            <fileset dir="${lib.dir}">
 	                <!-- include name="commons-collections-3.2.jar"/ -->
 	                <include name="commons-logging-1.0.4.jar"/>
@@ -409,7 +409,7 @@
 
         <echo message=""/>
         <echo message="------- copying jar files to webstart deploy directory ------"/>
-        <copy todir="${webstart.deploy.dir}">
+        <copy todir="${webstart.deploy.dir}" failonerror="false">
             <fileset dir="${lib.dir}">
                 <include name="commons-collections-3.2.jar"/>
                 <include name="commons-logging-1.0.4.jar"/>
