@@ -419,6 +419,7 @@
                 <include name="jdom.jar"/>
                 <include name="castor-0.9.9.jar"/>
             	<include name="knuHL7V2tree.jar"/>
+            	<include name="cmps.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
             	<include name="caAdapter_ui.jar"/>
@@ -445,28 +446,17 @@
         	</fileset>
         </copy>
 
-        <echo message=""/>
         <echo message="------ copying webstart files to webstart deploy directory ------"/>
         <copy todir="${webstart.deploy.dir}" includeEmptyDirs="false">
             <fileset dir="${webstart.home.files}">
-                <exclude name="**/.zip"/>
-                <exclude name="**/*.jar"/>
-                <exclude name="**/*.xml"/>
+                <include name="caadapter-mms.jnlp"/>
+                <include name="index-mms.html"/>
             </fileset>
         </copy>
 
         <echo message=""/>
         <echo message="-------- Applying Webserver replacement --------"/>
         <replace file="${webstart.deploy.dir}/caadapter-mms.jnlp" token="$WEBSERVER" value="${webserver}"/>
-		<delete file="${webstart.deploy.dir}/caadapter-hl7.jnlp"/>
-		<delete file="${webstart.deploy.dir}/caadapter-rds.jnlp"/>
-        <delete file="${webstart.deploy.dir}/caadapter-tdms.jnlp"/>
-        <delete file="${webstart.deploy.dir}/caadapter.jnlp"/>
-
-        <delete file="${webstart.deploy.dir}/index-hl7.html"/>
-        <delete file="${webstart.deploy.dir}/index-rds.html"/>
-        <delete file="${webstart.deploy.dir}/index-tdms.html"/>
-        <delete file="${webstart.deploy.dir}/index-ws.html"/>
         <move file="${webstart.deploy.dir}/index-mms.html" tofile="${webstart.deploy.dir}/index.html" />
 
         <antcall target="generate-keys"/>
@@ -482,6 +472,7 @@
             <fileset dir="${webstart.deploy.dir}">
                 <exclude name="myKeyStore"/>
             </fileset>
+            <zipfileset src="./docs/help.zip" prefix="help"/>
         </war>
 
         <echo message=""/>
@@ -636,103 +627,6 @@
         <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
         <copy file="${dist.dir}/${hl7.webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${hl7.webstart.warfile.name}"/>
     </target>
-
-    <target name="rdswebstart">
-        <echo message="------- cleaning webstart deploy directory ------"/>
-        <delete dir="${rds.webstart.deploy.dir}"/>
-        <delete file="${dist.dir}/${rds.webstart.warfile.name}"/>
-        <!--delete file="${lib.dir}/${project.jar.name}"/-->
-		<mkdir dir="${rds.webstart.deploy.dir}/tmp"/>
-		<unzip dest="${rds.webstart.deploy.dir}/tmp">
-        	<fileset dir="${dist.dir}/lib">
-            	<include name="caAdapter.jar"/>
-        	</fileset>
-		</unzip>
-
-    	<copy file="${webstart.config.dir}/caadapter-components.rds.properties" tofile="${rds.webstart.deploy.dir}/tmp/caadapter-components.properties"/>
-
-		<zip destfile="${rds.webstart.deploy.dir}/caAdapter.jar">
-			<fileset dir="${rds.webstart.deploy.dir}/tmp"/>
-		</zip>
-
-        <delete dir="${rds.webstart.deploy.dir}/tmp"/>
-    	
-        <echo message=""/>
-        <echo message="------- copying jar files to webstart deploy directory ------"/>
-        <copy todir="${rds.webstart.deploy.dir}">
-            <fileset dir="${lib.dir}">
-            	<include name="ojdbc14.jar"/>
-                <include name="mysql-connector-java-3.1.13-bin.jar"/>
-                
-                <include name="commons-collections-3.2.jar"/>
-				<include name="commons-logging-1.0.4.jar"/>
-				<include name="xmi.in.out.jar"/>
-				<include name="xml-apis.jar"/>
-				<include name="xercesImpl.jar"/>
-				<include name="jdom.jar"/>
-                <include name="castor-0.9.9.jar"/>
-            	<include name="knuHL7V2tree.jar"/>
-            </fileset>
-        	<fileset dir="${reference.dir}">
-            	<include name="caAdapter_ui.jar"/>
-                <include name="jgraph.jar"/>
-        	  	<include name="sqleonardo.jar"/>
-        	</fileset>
-        	<fileset dir="${ui.module.home}/lib">
-            	<include name="BrowserLauncher2-all-10rc4.jar"/>
-        	</fileset>
-
-        	<fileset dir="${common.module.home}/lib">
-                <include name="log4j-1.2.8.jar"/>
-        	</fileset>
-
-        </copy>
-
-        <echo message=""/>
-        <echo message="------ copying webstart files to webstart deploy directory ------"/>
-        <copy todir="${rds.webstart.deploy.dir}" includeEmptyDirs="false">
-		   	<fileset dir="${webstart.home.files}">
-		      	<exclude name="**/.zip"/>
-		        <exclude name="**/*.jar"/>
-		     </fileset>
-        </copy>
-
-        <echo message=""/>
-        <echo message="-------- Applying Webserver replacement --------"/>
-        <replace file="${rds.webstart.deploy.dir}/caadapter-rds.jnlp" token="$WEBSERVER" value="${webserver}"/>
-		<delete file="${rds.webstart.deploy.dir}/caadapter-hl7.jnlp"/>
-		<delete file="${rds.webstart.deploy.dir}/caadapter-mms.jnlp"/>
-        <delete file="${rds.webstart.deploy.dir}/caadapter-tdms.jnlp"/>
-        <delete file="${rds.webstart.deploy.dir}/caadapter.jnlp"/>
-        <delete file="${rds.webstart.deploy.dir}/hl7sdk.jnlp"/>
-        
-        <delete file="${rds.webstart.deploy.dir}/index-mms.html"/>
-        <delete file="${rds.webstart.deploy.dir}/index-hl7.html"/>
-        <delete file="${rds.webstart.deploy.dir}/index-tdms.html"/>
-        <delete file="${rds.webstart.deploy.dir}/index-ws.html"/>
-        <move file="${rds.webstart.deploy.dir}/index-rds.html" tofile="${rds.webstart.deploy.dir}/index.html" />
-
-        <antcall target="generate-keys"/>
-
-        <echo message=""/>
-        <echo message="-------- Signing all jar files --------"/>
-        <signjar alias="${signjar.alias}" storepass="${signjar.storepass}" keystore="${signjar.keystore}" lazy="false">
-            <fileset dir="${rds.webstart.deploy.dir}" includes="*.jar, *.zip"/>
-        </signjar>
-
-        <echo message=""/>
-        <echo message="-------- creating ${webstart.warfile.name} file (copied to deploy/webstart) --------"/>
-        <war destfile="${dist.dir}/${rds.webstart.warfile.name}" webxml="">
-            <fileset dir="${rds.webstart.deploy.dir}">
-                <exclude name="myKeyStore"/>
-            </fileset>
-        </war>
-
-        <echo message=""/>
-        <echo message="-------- Auto-Deploying to Apache **disabled--------"/>
-        <copy file="${dist.dir}/${webstart.warfile.name}" tofile="${j2ee.server.deploy.dir}/${webstart.warfile.name}"/>
-    </target>
-
 	
 	<!-- target name="demo.dist"  -->
     <target name="demo.dist">
@@ -837,21 +731,6 @@
     </target>
 
 	
-    <target name="mms.update">
-        <ant antfile="${mms.module.build}" target="clean"/>
-        <ant antfile="${ui.module.build}" target="clean"/>
-        <ant antfile="${mms.module.build}" target="init"/>
-        <ant antfile="${ui.module.build}" target="init"/>
-        <ant antfile="${mms.module.build}"/>
-        <ant antfile="${ui.module.build}"/>
-
-        <echo message="-------- updating demo.dist  --------"/>
-        <copy todir="C:/distBin/testCaAdapter/dist">
-            <fileset dir="${dist.dir}">
-                <exclude name="*.zip, *.jar"/>
-            </fileset>
-        </copy>
-    </target>
 
     <target name="init" depends="clean">
         <echo message="-------- initialize ${project.name}  --------"/>

@@ -59,7 +59,7 @@
 			<zipfileset dir="lib" prefix="lib" includes="BrowserLauncher2-all-10rc4.jar, caAdapter.jar, castor*.jar, cmps.jar commons-logging*.jar, dom*.jar, jaxen-jdom.jar, jdom.jar,
 					knuHL7V2tree.jar, log*.jar, sdk-codegen.jar, spring.jar, xercesImpl.jar, xmi.in.out.jar"/>
 			<zipfileset dir="." includes="run.bat, caAdapter_ui.jar, conf/**, docs/help/**"/>
-			<zipfileset dir="../docs/MMSv4.1" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
+			<zipfileset dir="../docs/MMSv4.1" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, helpzip" prefix="docs/MMS4.1.1"/>
 			<zipfileset dir="../etc/license" includes="caAdapter_license.txt" prefix="docs" />
 			<zipfileset dir="../workingspace" 
 				includes="Object_to_DB_Example/**"
