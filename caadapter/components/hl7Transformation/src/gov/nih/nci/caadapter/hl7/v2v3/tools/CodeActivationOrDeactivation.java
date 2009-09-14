@@ -149,8 +149,8 @@ public class CodeActivationOrDeactivation
 
         String fileName = file.getName();
         if (fileName.equalsIgnoreCase("CodeActivationOrDeactivation.java")) return;
-        if ((fileName.toLowerCase().startsWith("caadapter_hl7_src"))&&(fileName.toLowerCase().endsWith(".zip"))) return;
-        if ((fileName.toLowerCase().startsWith("caadapter_hl7_bin"))&&(fileName.toLowerCase().endsWith(".zip"))) return;
+        if ((fileName.toLowerCase().startsWith("caadapter"))&&(fileName.toLowerCase().indexOf("_src") > 0)&&(fileName.toLowerCase().endsWith(".zip"))) return;
+        if ((fileName.toLowerCase().startsWith("caadapter"))&&(fileName.toLowerCase().indexOf("_bin") > 0)&&(fileName.toLowerCase().endsWith(".zip"))) return;
 
         boolean textTag = false;
 
