@@ -2,9 +2,9 @@
 <jnlp spec="1.0+" codebase="$WEBSERVER/caadapter-mms" href="caadapter-mms.jnlp">
 
    <information>
-      <title>caAdapter Webstart</title>
+      <title>caAdapter Webstart Model Mapping Services 4.1.1</title>
       <vendor>ncicb</vendor>
-      <description>caAdapter Webstart test</description>
+      <description>caAdapter Webstart Model Mapping Service 4.1.1</description>
    </information>
 
    <security>
@@ -29,10 +29,11 @@
 	<jar href="knuHL7V2tree.jar"/>
 	<jar href="sdk-codegen.jar"/>
 	<jar href="spring.jar"/>
+	<jar href="cmps.jar"/>
    </resources>
 
    <application-desc main-class="gov.nih.nci.caadapter.hl7.demo.LaunchUI">
-       <argument>$WEBSERVER</argument> 
+       <argument>$WEBSERVER/caadapter-mms</argument> 
    </application-desc>
 
 </jnlp>
