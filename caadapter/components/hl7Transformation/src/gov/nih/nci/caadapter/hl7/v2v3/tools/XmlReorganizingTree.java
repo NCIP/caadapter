@@ -17,6 +17,8 @@ import java.util.Stack;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.function.DateFunction;
+import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 
@@ -327,7 +329,7 @@ public class XmlReorganizingTree
                     if ((nm.equalsIgnoreCase("nullFlavor"))&&(vl.equals("NP")))
                     {
                         if (hasNodeValue(node)) checked = false;
-                        vl = "NI";
+                        //vl = "NI";
                     }
                     if (nm.equalsIgnoreCase("_dummy__")) checked = false;
 //                    if (nm.equalsIgnoreCase("xsi:type"))
@@ -345,11 +347,11 @@ public class XmlReorganizingTree
 //                        }
 //                    }
                     if (checked)
-                        att = att + " " + nm + "=\"" + vl + "\"";
+                        att = att + " " + nm + "=\"" + convertValue(vl) + "\"";
                 }
                 else if (xNode.getRole().equals(xNode.getRoleKind()[2]))
                 {
-                    line = line + xNode.getValue();
+                    line = line + convertValue(xNode.getValue());
                 }
             }
 
@@ -520,5 +522,104 @@ public class XmlReorganizingTree
     public DefaultMutableTreeNode getCurrentNode()
     {
         return current;
+    }
+
+    private String convertValue(String value)
+    {
+        String STARTING_TAG = "%!";
+        String ENDING_TAG = "!%";
+
+        if (value == null) return "";
+        //int idx = value.indexOf(STARTING_TAG);
+        //if (idx < 0) return value;
+
+        String str = "";
+        String val1 = value;
+        String val2 = "";
+        String val = "";
+        while(true)
+        {
+            int idx = val1.indexOf(STARTING_TAG);
+
+            if (idx > 0)
+            {
+                str = str + val1.substring(0, idx);
+                val2 = val2 + val1.substring(0, idx + STARTING_TAG.length());
+                val1 = val1.substring(idx + STARTING_TAG.length());
+            }
+            else if (idx == 0)
+            {
+                val2 = val2 + val1.substring(0, STARTING_TAG.length());
+                val1 = val1.substring(STARTING_TAG.length());
+            }
+            else
+            {
+                str = str + val1;
+                break;
+            }
+
+            int idx1 = val1.indexOf(ENDING_TAG);
+
+            if (idx1 >= 0)
+            {
+                val = val1.substring(0, idx1);
+                val2 = val2 + val1.substring(0, idx1 + ENDING_TAG.length());
+                val1 = val1.substring(idx1 + ENDING_TAG.length());
+            }
+            else
+            {
+                val = val1;
+                val2 = val2 + val1;
+                val1 = "";
+            }
+
+            System.out.println("FFFFF1 val=" + val);
+            if ((val.trim().toLowerCase().startsWith("currenttime"))||
+                (val.trim().toLowerCase().startsWith("current_time")))
+            {
+                val = val.trim();
+                DateFunction df = new DateFunction();
+                String format = df.getDefaultDateFormatString();
+                int idx2 = val.indexOf(":");
+                if (idx2 > 0) format = val.substring(idx2+1);
+                String dt = "";
+
+                try
+                {
+                    dt = df.getCurrentTime(format);
+                }
+                catch(FunctionException fe)
+                {
+                    dt = df.getCurrentTime();
+                }
+                System.out.println("FFFFF2 foramt=" + format + ", date=" + dt + ", df.getDefaultDateFormatString()=" + df.getDefaultDateFormatString());
+                str = str + dt;
+            }
+            else if (val.trim().toLowerCase().startsWith("random"))
+            {
+                int digit = 0;
+                String digitO = "";
+                int idx2 = val.indexOf(":");
+                if (idx2 > 0) digitO = val.substring(idx2+1);
+                else digitO = "x";
+
+                try
+                {
+                    digit = Integer.parseInt(digitO);
+                }
+                catch(NumberFormatException fe)
+                {
+                    digit = 5;
+                }
+                int vl = FileUtil.getRandomNumber(digit);
+                System.out.println("FFFFF2 digitO=" + digitO + ", digit=" + digit + ", value=" + vl);
+                str = str + vl;
+            }
+            else str = str + val2;
+
+            val2 = "";
+        }
+
+        return str;
     }
 }
