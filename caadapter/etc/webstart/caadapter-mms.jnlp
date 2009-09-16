@@ -2,9 +2,9 @@
 <jnlp spec="1.0+" codebase="$WEBSERVER/caadapter-mms" href="caadapter-mms.jnlp">
 
    <information>
-      <title>caAdapter Webstart Model Mapping Services 4.1.1</title>
+      <title>caAdapter Model Mapping Services 4.1.1</title>
       <vendor>ncicb</vendor>
-      <description>caAdapter Webstart Model Mapping Service 4.1.1</description>
+      <description>caAdapter Model Mapping Service 4.1.1</description>
    </information>
 
    <security>
