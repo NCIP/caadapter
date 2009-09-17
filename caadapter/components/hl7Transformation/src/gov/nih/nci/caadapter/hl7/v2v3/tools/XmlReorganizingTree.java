@@ -573,7 +573,7 @@ public class XmlReorganizingTree
                 val1 = "";
             }
 
-            System.out.println("FFFFF1 val=" + val);
+            //System.out.println("FFFFF1 val=" + val);
             if ((val.trim().toLowerCase().startsWith("currenttime"))||
                 (val.trim().toLowerCase().startsWith("current_time")))
             {
@@ -592,7 +592,7 @@ public class XmlReorganizingTree
                 {
                     dt = df.getCurrentTime();
                 }
-                System.out.println("FFFFF2 foramt=" + format + ", date=" + dt + ", df.getDefaultDateFormatString()=" + df.getDefaultDateFormatString());
+                //System.out.println("FFFFF2 foramt=" + format + ", date=" + dt + ", df.getDefaultDateFormatString()=" + df.getDefaultDateFormatString());
                 str = str + dt;
             }
             else if (val.trim().toLowerCase().startsWith("random"))
@@ -612,7 +612,7 @@ public class XmlReorganizingTree
                     digit = 5;
                 }
                 int vl = FileUtil.getRandomNumber(digit);
-                System.out.println("FFFFF2 digitO=" + digitO + ", digit=" + digit + ", value=" + vl);
+                //System.out.println("FFFFF2 digitO=" + digitO + ", digit=" + digit + ", value=" + vl);
                 str = str + vl;
             }
             else str = str + val2;
