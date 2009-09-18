@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 
 public class FileUtil
@@ -1562,6 +1562,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.35  2009/09/18 16:39:59  altturbo
+ * minor change
+ *
  * Revision 1.34  2009/08/17 20:26:32  altturbo
  * Change the searching priority for resource file
  *
