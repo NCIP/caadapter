@@ -422,7 +422,7 @@
             	<include name="cmps.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
-            	<include name="caAdapter_ui.jar"/>
+            	<!-- include name="caAdapter_ui.jar"/ -->
                 <include name="jgraph.jar"/>
         	</fileset>
         	<!-- fileset dir="${dist.dir}/docs">
