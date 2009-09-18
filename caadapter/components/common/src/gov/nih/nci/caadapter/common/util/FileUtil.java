@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 
 public class FileUtil
@@ -436,6 +436,7 @@ public class FileUtil
         }
         searchedDirList.add(dir.getAbsolutePath());
         File[] files = dir.listFiles();
+        if ((files == null)||(files.length == 0)) return null;
         for(File file:files)
         {
             String abFileName = file.getAbsolutePath();
@@ -1561,6 +1562,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.34  2009/08/17 20:26:32  altturbo
+ * Change the searching priority for resource file
+ *
  * Revision 1.33  2009/06/22 23:05:41  altturbo
  * File location search if target file not found
  *
