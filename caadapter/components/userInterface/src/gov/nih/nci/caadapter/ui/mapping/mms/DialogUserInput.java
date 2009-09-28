@@ -7,7 +7,6 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 
 package gov.nih.nci.caadapter.ui.mapping.mms;
-import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.common.DefaultSettings;
 
 import javax.swing.BorderFactory;
@@ -38,8 +37,8 @@ import java.util.Vector;
  * @author OWNER: wuye
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2009-09-28 20:09:53 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-09-28 20:12:19 $
  *
  */
 @SuppressWarnings("serial")
@@ -56,7 +55,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	/**
 	 * @author OWNER: Ye Wu
 	 * @author LAST UPDATE $Author: wangeug $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.2 $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.3 $
 	 */
 
 	public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject) {
@@ -229,6 +228,9 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	}
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2009/09/28 20:09:53  wangeug
+ * HISTORY: fix bug: display empty PK generator window
+ * HISTORY:
  * HISTORY: Revision 1.1  2009/07/30 17:37:44  wangeug
  * HISTORY: clean codes: implement 4.1.1 requirements
  * HISTORY:
