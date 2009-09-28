@@ -38,8 +38,8 @@ import java.util.Vector;
  * @author OWNER: wuye
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2009-07-30 17:37:44 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-09-28 20:09:53 $
  *
  */
 @SuppressWarnings("serial")
@@ -56,7 +56,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	/**
 	 * @author OWNER: Ye Wu
 	 * @author LAST UPDATE $Author: wangeug $
-	 * @version Since caAdapter v3.2 revision $Revision: 1.1 $
+	 * @version Since caAdapter v3.2 revision $Revision: 1.2 $
 	 */
 
 	public DialogUserInput(final JFrame _callingFrame, final Object  DefaultObject) {
@@ -82,7 +82,7 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        mainPanel.setLayout(new BorderLayout());
 
 	        JPanel centerPan = new JPanel(new GridLayout(1, 3));
-	        
+	        boolean packView=true;
 	        //add left label if it not tabbedPane
 	        if (inputType!=INPUT_TYPE_TABBED)
 	        	centerPan.add(new JLabel(titleParameter+" :"));
@@ -107,6 +107,8 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        else  if (inputType==INPUT_TYPE_TABBED)
 	        {
 	        	inputField=initPKGeneratorSelection(DefaultObject);
+	        	if (((JTabbedPane)inputField).getTabCount()==0)
+	        		packView=false;
 	        }
 	        else
 	        	inputField=new JLabel("Undefined Input Type");
@@ -131,7 +133,8 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	        mainPanel.add(butPan, BorderLayout.SOUTH);
 
 	        this.add(mainPanel);
-	        this.pack();
+	        if(packView)
+	        	this.pack();
 	        DefaultSettings.centerWindow(this);
 	        this.setVisible(true);
 	    }
@@ -211,6 +214,8 @@ public class DialogUserInput extends JDialog implements ActionListener {
 					pkgSettings.addTab(dbInputName, new PanelPrimaryKeyGenerator(new HashMap<String,String>()));
 					//leave the setting panel visible
 					pkgSettings.setSelectedIndex(pkgSettings.getTabCount()-1);
+					//pack the tabbed pane of multiple PK generators
+					this.pack();
 					return;
 		        }
 	    	}
@@ -224,6 +229,9 @@ public class DialogUserInput extends JDialog implements ActionListener {
 	}
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.1  2009/07/30 17:37:44  wangeug
+ * HISTORY: clean codes: implement 4.1.1 requirements
+ * HISTORY:
  * HISTORY: Revision 1.8  2009/06/12 15:53:49  wangeug
  * HISTORY: clean code: caAdapter MMS 4.1.1
  * HISTORY:

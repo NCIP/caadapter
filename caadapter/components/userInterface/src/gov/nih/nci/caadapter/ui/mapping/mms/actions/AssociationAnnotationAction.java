@@ -7,11 +7,9 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.ui.mapping.mms.actions;
 
-import gov.nih.nci.caadapter.common.MetaObject;
 import gov.nih.nci.caadapter.common.metadata.AssociationMetadata;
 import gov.nih.nci.caadapter.common.metadata.ColumnMetadata;
 import gov.nih.nci.caadapter.common.metadata.ModelMetadata;
-import gov.nih.nci.caadapter.common.metadata.ObjectMetadata;
 import gov.nih.nci.caadapter.mms.generator.CumulativeMappingGenerator;
 import gov.nih.nci.caadapter.mms.generator.XMIAnnotationUtil;
 import gov.nih.nci.caadapter.ui.mapping.MappingMiddlePanel;
@@ -20,21 +18,19 @@ import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAttribute;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLClass;
-import gov.nih.nci.ncicb.xmiinout.domain.UMLModel;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLTaggedValue;
 import gov.nih.nci.ncicb.xmiinout.domain.bean.UMLAssociationEndBean;
 import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
 
 /**
  * Description of class definition
  *
  * @author   OWNER: wangeug  $Date: Jul 2, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.2 $
- * @date 	 DATE: $Date: 2009-07-30 17:38:06 $
+ * @version  REVISION: $Revision: 1.3 $
+ * @date 	 DATE: $Date: 2009-09-28 20:09:39 $
  * @since caAdapter v4.2
  */
 
@@ -134,6 +130,9 @@ public class AssociationAnnotationAction extends ItemAnnotationAction {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.2  2009/07/30 17:38:06  wangeug
+* HISTORY: clean codes: implement 4.1.1 requirements
+* HISTORY:
 * HISTORY: Revision 1.1  2009/07/10 19:58:16  wangeug
 * HISTORY: MMS re-engineering
 * HISTORY:
