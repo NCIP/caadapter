@@ -35,7 +35,7 @@ import java.util.zip.ZipEntry;
  */
 public class ControlMessageRelatedUtil
 {
-    public static XmlReorganizingTree searchControlMessage(MIFClass mifClass)
+    public static XmlReorganizingTree searchControlMessage(MIFClass mifClass, String controlFile)
     {
         XmlReorganizingTree controlMessageTemplate = null;
 
@@ -46,17 +46,6 @@ public class ControlMessageRelatedUtil
         if ((mifType == null)||(mifType.trim().equals(""))) return null;
         mifName = mifName.trim();
         mifType = mifType.trim();
-
-        String dirName = FileUtil.searchProperty("ControlMessageTemplateDirectory");
-
-        if (dirName == null) dirName = FileUtil.getWorkingDirPath() + "\\demo\\contTemplate";
-
-//        if (dirName == null) dirName = "";
-//        else dirName = dirName.trim();
-        if (dirName.equals("")) return null;
-
-        File f = new File(dirName);
-        if ((!f.exists())||(!f.isDirectory())) return null;
 
         String dirS = (new SchemaDirUtil()).getV3XsdFilePath(mifClass.getCopyrightYears());
         if (dirS == null) return null;
@@ -69,11 +58,49 @@ public class ControlMessageRelatedUtil
 
         if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
 
+        if ((controlFile != null)&&(!controlFile.trim().equals("")))
+        {
+            controlMessageTemplate = searchControlMessageFile(mifName, mifType, (new File(controlFile)), dirS);
+            if (controlMessageTemplate == null)
+            {
+                System.err.println("Invalid Control message File : " + controlFile);
+                return null;
+            }
+            else return controlMessageTemplate;
+        }
+
+        String dirName = FileUtil.searchProperty("ControlMessageTemplateDirectory");
+
+        if (dirName == null) dirName = FileUtil.getWorkingDirPath() + "\\demo\\contTemplate";
+
+//        if (dirName == null) dirName = "";
+//        else dirName = dirName.trim();
+        if (dirName.equals("")) return null;
+
+        File f = new File(dirName);
+        if ((!f.exists())||(!f.isDirectory())) return null;
+
         File[] fList = f.listFiles();
 
         for (File ff:fList)
         {
-            if ((!ff.exists())||(!ff.isFile())) continue;
+            XmlReorganizingTree xrt = searchControlMessageFile(mifName, mifType, ff, dirS);
+            if (xrt != null)
+            {
+                controlMessageTemplate = xrt;
+                break;
+            }
+        }
+        //if (controlMessageTemplate == null) System.err.println("Invalid Control message File : " + controlFile);
+
+        return controlMessageTemplate;
+    }
+
+    private static XmlReorganizingTree searchControlMessageFile(String mifName, String mifType, File ff, String dirS)
+    {
+
+            if (ff == null) return null;
+            if ((!ff.exists())||(!ff.isFile())) return null;
             List<String> lines = null;
             try
             {
@@ -83,7 +110,7 @@ public class ControlMessageRelatedUtil
             {
                 lines = null;
             }
-            if ((lines == null)||(lines.size() == 0)) continue;
+            if ((lines == null)||(lines.size() == 0)) return null;
 
             String type = null;
             boolean found = false;
@@ -102,12 +129,12 @@ public class ControlMessageRelatedUtil
                 if (idx3 > 0) found = true;
                 if ((found)&&(type != null)) break;
             }
-            if ((!found)||(type == null)) continue;
+            if ((!found)||(type == null)) return null;
 
             String schemaF = dirS + type + ".xsd";
 
             File f2 = new File(schemaF);
-            if ((!f2.exists())||(!f2.isFile())) continue;
+            if ((!f2.exists())||(!f2.isFile())) return null;
 
             ReorganizingForValidating rfv = null;
             String schemaFileNameL = f2.getAbsolutePath();
@@ -118,7 +145,7 @@ public class ControlMessageRelatedUtil
             catch(ApplicationException ae)
             {
                 System.out.println("ApplicationException in ReorganizingForValidating object during TransformationService : " + ae.getMessage());
-                continue;
+                return null;
             }
 
             XSDValidationTree xsdTree = rfv.getXSDTree();
@@ -144,19 +171,18 @@ public class ControlMessageRelatedUtil
                 if (found2) break;
             }
 
-            if (!found) continue;
-            controlMessageTemplate = rfv.getXMLTree();
+            if (!found2) return null;
+            XmlReorganizingTree controlMessageTemplate = rfv.getXMLTree();
             try
             {
                 controlMessageTemplate.setSchemaFileName(schemaFileNameL);
             }
             catch(ApplicationException ae)
             {
-
+                System.err.println("controlMessageTemplate ERROR at the last stage (controlMessageTemplate.setSchemaFileName(schemaFileNameL)) : " + ae.getMessage());
+                return null;
             }
-            break;
-        }
-        return controlMessageTemplate;
+            return controlMessageTemplate;
     }
 
     public static String excuteXSDValidationForTransformationService(ValidatorResults validatorsToShow, int messageCount, int i, String v3Message, ZipOutputStream zipOut, OutputStreamWriter writer, String schemaFileName, MIFClass mifClass) throws IOException
