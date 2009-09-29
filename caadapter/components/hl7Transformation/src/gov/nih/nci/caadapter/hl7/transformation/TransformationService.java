@@ -65,14 +65,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.47 $
- * @date $Date: 2009-09-11 18:21:51 $
+ * @version $Revision: 1.48 $
+ * @date $Date: 2009-09-29 15:55:42 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.47 2009-09-11 18:21:51 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.48 2009-09-29 15:55:42 altturbo Exp $";
 
 //    private String dataString = "";
     private boolean isStringData=false;
@@ -267,8 +267,11 @@ public class TransformationService
      * @return list of HL7 v3 message object.
      * To get HL7 v3 message of each object, call .toXML() method of each object
      */
-
     public List<XMLElement> process() throws Exception
+    {
+        return process(null);
+    }
+    public List<XMLElement> process(String controlFile) throws Exception
     {
     	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
     	loadMapAndMetas(mapFile);
@@ -279,7 +282,7 @@ public class TransformationService
         List<XMLElement> xmlElements=null ;
 
         // search Control message file
-        controlMessageTemplate = ControlMessageRelatedUtil.searchControlMessage(mifClass);
+        controlMessageTemplate = ControlMessageRelatedUtil.searchControlMessage(mifClass, controlFile);
 
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().equalsIgnoreCase("v2"))
         {
@@ -676,6 +679,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.47  2009/09/11 18:21:51  altturbo
+ * HISTORY      : for control message wrapper
+ * HISTORY      :
  * HISTORY      : Revision 1.46  2009/05/28 19:37:59  altturbo
  * HISTORY      : upgrade for nameSpace and lowercase Head Element
  * HISTORY      :
