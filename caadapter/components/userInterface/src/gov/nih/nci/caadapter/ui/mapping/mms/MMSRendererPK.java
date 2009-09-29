@@ -27,8 +27,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  * @author OWNER: wuye
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.9 $
- * @date       $Date: 2009-06-12 15:53:49 $ 
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2009-09-29 17:39:16 $ 
  *
  */
 public class MMSRendererPK extends DefaultTreeCellRenderer
@@ -69,7 +69,6 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
             if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.common.metadata.AttributeMetadata )
             {
                 gov.nih.nci.caadapter.common.metadata.AttributeMetadata attMeta = (gov.nih.nci.caadapter.common.metadata.AttributeMetadata) ((DefaultSourceTreeNode) value).getUserObject();
-                System.out.println("attMeta" + attMeta );
                 boolean primaryKeyFound = false;
 
                 for( String key : primaryKeys )
@@ -91,7 +90,6 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
             if( ((DefaultSourceTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.common.metadata.AssociationMetadata )
             {
                 gov.nih.nci.caadapter.common.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.common.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
-                System.out.println("attMeta" + attMeta );
                 boolean primaryKeyFound = false;
 
                 for( String key : primaryKeys )
@@ -112,7 +110,6 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
             if( ((DefaultMutableTreeNode) value).getUserObject() instanceof  gov.nih.nci.caadapter.common.metadata.AssociationMetadata )
             {
                 gov.nih.nci.caadapter.common.metadata.AssociationMetadata attMeta = (gov.nih.nci.caadapter.common.metadata.AssociationMetadata) ((DefaultSourceTreeNode) value).getUserObject();
-                System.out.println("attMeta" + attMeta );
                 boolean primaryKeyFound = false;
 
                 for( String key : primaryKeys )
@@ -132,15 +129,7 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
             }
         } catch (Exception eee )
         {
-//            try
-//            {
-//                //String queryBuilderMeta = (String) ((DefaultSourceTreeNode) value).getUserObject();
-//                tutorialIcon = createImageIcon("load.gif");
-//                setIcon(tutorialIcon);
-//            } catch (Exception e1)
-//            {
-//                setToolTipText(null);
-//            }
+        	eee.printStackTrace();
         }
 
         return this;
@@ -171,6 +160,9 @@ public class MMSRendererPK extends DefaultTreeCellRenderer
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.9  2009/06/12 15:53:49  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.8  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

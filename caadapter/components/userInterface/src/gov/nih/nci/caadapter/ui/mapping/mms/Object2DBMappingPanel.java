@@ -84,13 +84,13 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
- * @version    $Revision: 1.41 $
- * @date       $Date: 2009-07-30 17:37:31 $ 
+ * @version    $Revision: 1.42 $
+ * @date       $Date: 2009-09-29 17:39:28 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.41 2009-07-30 17:37:31 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.42 2009-09-29 17:39:28 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -582,7 +582,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 							(MappableNode) targetNode);
 			if (!isSuccess)
 			{
-				logger.logInfo(this, "No UI link is created for Dependency--- source:"+sourceXpath +" ; target:"+targetXpath);
+				logger.logInfo(this, "No UI link is created for Dependency--- source:"+sourceXpath +" ; target:"+targetXpath +"...:"+CumulativeMappingGenerator.getInstance().getErrorMessage());
 			}
 		}
 		//create class.attribute--table.column mapping
@@ -838,6 +838,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.41  2009/07/30 17:37:31  wangeug
+ * HISTORY : clean codes: implement 4.1.1 requirements
+ * HISTORY :
  * HISTORY : Revision 1.40  2009/07/14 16:36:48  wangeug
  * HISTORY : clean codes
  * HISTORY :

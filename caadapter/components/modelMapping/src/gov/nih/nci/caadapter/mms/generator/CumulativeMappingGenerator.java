@@ -37,8 +37,8 @@ import java.util.List;
  * @author OWNER: connellm
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.18 $
- * @date       $Date: 2009-07-14 16:35:49 $
+ * @version    $Revision: 1.19 $
+ * @date       $Date: 2009-09-29 17:39:07 $
  */
 public class CumulativeMappingGenerator {
 
@@ -195,7 +195,7 @@ private String determineSourceMappingType(String source){
  * @return String target mapping type
  */
 private String determineTargetMappingType(String target){
-	String mappingType = null;
+	String mappingType = "undefinedTarget";
 	//We need to determine if the target is a table for a dependency mapping or a many to many mapping.
 	
 	if (isClass(target) && !isCorrelationTable(target)){
@@ -520,6 +520,9 @@ private UMLClass findClass(UMLPackage pkg, String[] className, int start, int en
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.18  2009/07/14 16:35:49  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.17  2009/07/10 19:55:34  wangeug
  * HISTORY: MMS re-engineering
  * HISTORY:

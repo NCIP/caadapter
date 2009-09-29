@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.MetaObjectImpl;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociation;
 import gov.nih.nci.ncicb.xmiinout.domain.UMLAssociationEnd;
@@ -52,8 +53,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * there should never be more than one instance of it in the runtime environment.
  * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.12 $
- * @date       $Date: 2009-07-30 17:32:27 $
+ * @version    $Revision: 1.13 $
+ * @date       $Date: 2009-09-29 17:39:44 $
  */
 public class ModelMetadata {
 	private static ModelMetadata modelMetadata = null;
@@ -161,7 +162,18 @@ public class ModelMetadata {
     {
         for(UMLClass clazz : pkg.getClasses())
         {
-
+			String clzStereoType=clazz.getStereotype();
+			if(clzStereoType!=null&&
+					(clzStereoType.equalsIgnoreCase("enumeration")
+							||clzStereoType.contains("Value")
+							||clzStereoType.contains("value")
+							||clzStereoType.contains("Domain")
+							||clzStereoType.contains("Domain")))
+			{
+				Log.getInstance().logInfo(this, "Ignore valueDomain...Name="+clazz.getName()+"...Stereotype="+clzStereoType);
+				continue;
+			}
+			
             StringBuffer pathKey = new StringBuffer(ModelUtil.getFullPackageName(clazz));
             if (pathKey.toString().contains(mmsPrefixDataModel )) {
                 //create a TableMetadata object
@@ -473,6 +485,9 @@ class XPathComparator implements Comparator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.12  2009/07/30 17:32:27  wangeug
+ * HISTORY      : clean codes: implement 4.1.1 requirements
+ * HISTORY      :
  * HISTORY      : Revision 1.11  2009/07/10 19:53:12  wangeug
  * HISTORY      : MMS re-engineering
  * HISTORY      :

@@ -23,16 +23,27 @@ import java.util.logging.Logger;
  * The wrapper of logging class.
  *
  * @author OWNER: Eric Chen, Scott Jiang Date: Jul 18, 2005
- * @author LAST UPDATE: $Author: phadkes $
- * @version $Revision: 1.3 $
- * @date $$Date: 2008-06-09 19:53:49 $
+ * @author LAST UPDATE: $Author: wangeug $
+ * @version $Revision: 1.4 $
+ * @date $$Date: 2009-09-29 17:40:00 $
  * @since caAdapter v1.2
  */
 
 public class Log
 {
 	public static final String MAP_LOG = "map";
+	private static Log localInstance;
 
+	/**
+	 * Implement Singleton 
+	 * @return log instance
+	 */
+	public static Log getInstance()
+	{
+		if (localInstance==null)
+			localInstance=new Log();
+		return localInstance;
+	}
 	/**
 	 * Call this function to log a serious exception.
 	 *
@@ -428,6 +439,9 @@ class LogCallerFinder
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2008/06/09 19:53:49  phadkes
+ * HISTORY      : New license text replaced for all .java files.
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2007/09/11 19:02:12  wangeug
  * HISTORY      : create log file if not exist
  * HISTORY      :
