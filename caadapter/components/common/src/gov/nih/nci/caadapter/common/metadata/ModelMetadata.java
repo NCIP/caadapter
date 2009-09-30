@@ -53,8 +53,8 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  * there should never be more than one instance of it in the runtime environment.
  * @author LAST UPDATE $Author: wangeug $
  * @since      caAdapter  v4.2    
- * @version    $Revision: 1.13 $
- * @date       $Date: 2009-09-29 17:39:44 $
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2009-09-30 17:10:49 $
  */
 public class ModelMetadata {
 	private static ModelMetadata modelMetadata = null;
@@ -160,6 +160,14 @@ public class ModelMetadata {
 
 	private void initProcessPackage(UMLPackage pkg)
     {
+		if(pkg.getName().contains("valueDomain")
+				||pkg.getName().contains("ValueDomain")
+				||pkg.getName().contains("valuedomain"))
+		{
+			Log.logInfo(this, "Ignore package...Name="+pkg.getName());
+			return;
+		}
+		
         for(UMLClass clazz : pkg.getClasses())
         {
 			String clzStereoType=clazz.getStereotype();
@@ -170,7 +178,7 @@ public class ModelMetadata {
 							||clzStereoType.contains("Domain")
 							||clzStereoType.contains("Domain")))
 			{
-				Log.getInstance().logInfo(this, "Ignore valueDomain...Name="+clazz.getName()+"...Stereotype="+clzStereoType);
+				Log.logInfo(this, "Ignore valueDomain...Name="+clazz.getName()+"...Stereotype="+clzStereoType);
 				continue;
 			}
 			
@@ -485,6 +493,9 @@ class XPathComparator implements Comparator {
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.13  2009/09/29 17:39:44  wangeug
+ * HISTORY      : exclude valueDomain from mapping panel view
+ * HISTORY      :
  * HISTORY      : Revision 1.12  2009/07/30 17:32:27  wangeug
  * HISTORY      : clean codes: implement 4.1.1 requirements
  * HISTORY      :
