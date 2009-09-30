@@ -526,6 +526,16 @@
         </parameters>
     </message>
     
+    <message id="O2DB5" level="INFO">
+        <template>Super class {0} is not mapped, please verify the mapping of its child class(es).</template>
+        <parameters>
+        </parameters>
+    </message>
+    <message id="O2DB6" level="INFO">
+        <template>Attribute {0} is not mapped, but the super class {1} is extended. Please verify the mapping of derived attribute in child class(es).</template>
+        <parameters>
+        </parameters>
+    </message>
     <!-- validate transformation service: from HL7V3 to CSV -->
     <message id="HL7TOCSV0" level="INFO">
 		<template>Transformation service ... {0}.</template>

@@ -39,8 +39,8 @@ import java.util.Set;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @since caAdapter v1.2
- * @version    $Revision: 1.8 $
- * @date       $Date: 2009-07-30 17:38:06 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2009-09-30 17:07:45 $
  */
 public class ValidateObjectToDbMapAction extends AbstractContextAction
 {
@@ -56,7 +56,7 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.8 2009-07-30 17:38:06 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/actions/ValidateObjectToDbMapAction.java,v 1.9 2009-09-30 17:07:45 wangeug Exp $";
 
 	private static final String COMMAND_NAME = DefaultValidateAction.COMMAND_NAME;
 	private static final Character COMMAND_MNEMONIC = DefaultValidateAction.COMMAND_MNEMONIC;
@@ -136,8 +136,18 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 					continue;
 				
 				if (metaO instanceof ObjectMetadata) {
-					Message msg = MessageResources.getMessage("O2DB3", new Object[]{metaO.getXPath()});
-					validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+					//if the object is a super class and is extended-- INFO
+					//else -- ERROR
+					if (((ObjectMetadata)metaO).getUmlClass().getGeneralizations().isEmpty())
+					{
+						Message msg = MessageResources.getMessage("O2DB3", new Object[]{metaO.getXPath()});
+						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));						
+					}
+					else
+					{
+						Message msg = MessageResources.getMessage("O2DB5", new Object[]{metaO.getXPath()});
+						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+					}
 				}
 				if (metaO instanceof AttributeMetadata) {
 					if (((AttributeMetadata)metaO).isDerived()) {
@@ -147,8 +157,22 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 						Message msg = MessageResources.getMessage("O2DB4", new Object[]{metaO.getXPath(), superClassName});
 						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));						
 					}else {
-						Message msg = MessageResources.getMessage("O2DB1", new Object[]{metaO.getXPath()});
-						validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+						ObjectMetadata holderClass= (ObjectMetadata)myMap.get(((AttributeMetadata)metaO).getParentXPath());
+						if (holderClass.isMapped())
+						{
+							Message msg = MessageResources.getMessage("O2DB1", new Object[]{metaO.getXPath()});
+							validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+						}
+						else if (!holderClass.getUmlClass().getGeneralizations().isEmpty())
+						{
+							Message msg = MessageResources.getMessage("O2DB6", new Object[]{metaO.getXPath(), holderClass.getName()});
+							validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.INFO, msg));
+						}
+						else
+						{
+							Message msg = MessageResources.getMessage("O2DB1", new Object[]{metaO.getXPath()});
+							validatorResults.addValidatorResult(new ValidatorResult(ValidatorResult.Level.ERROR, msg));
+						}
 					}
 				}
 				if (metaO instanceof AssociationMetadata) {
@@ -196,6 +220,9 @@ public class ValidateObjectToDbMapAction extends AbstractContextAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.8  2009/07/30 17:38:06  wangeug
+ * HISTORY      : clean codes: implement 4.1.1 requirements
+ * HISTORY      :
  * HISTORY      : Revision 1.7  2009/06/12 15:53:01  wangeug
  * HISTORY      : clean code: caAdapter MMS 4.1.1
  * HISTORY      :
