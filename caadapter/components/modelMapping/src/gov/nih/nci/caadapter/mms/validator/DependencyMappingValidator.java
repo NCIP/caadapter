@@ -21,15 +21,12 @@ import gov.nih.nci.caadapter.mms.map.DependencyMapping;
  * @author OWNER: Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2009-06-12 15:52:30 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-09-30 17:09:34 $
  * @created 11-Aug-2006 8:18:16 AM
  */
 
 public class DependencyMappingValidator {
-
-	public DependencyMappingValidator(){
-	}
 
 	private String validationErrorMessage;
 	private DependencyMapping mapping;
@@ -51,7 +48,7 @@ public class DependencyMappingValidator {
 	 * 2. These two objects have been mapped to some other objects.
 	 *
 	 */
-	public boolean areAlreadyMapped(){
+	private boolean areAlreadyMapped(){
 		boolean hasBeenMapped = false;
 		try {
 			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
@@ -75,19 +72,6 @@ public class DependencyMappingValidator {
  		return hasBeenMapped;
 	}
 
-/*
-    public boolean containsCorrelationTable(){
-			boolean containsCorrelationTable = false;
-			if (mapping.getTargetDependency() != null){
-				
-			}
-			if (mapping.getTargetDependency().getType().equalsIgnoreCase("Correlation") ){
-				containsCorrelationTable = true;
-				this.validationErrorMessage = "Target table is a correlation table.";
-			}
-			return containsCorrelationTable;
-	}
-	*/
 	/**
 	 * This method checks to see that these two elements can legally be
 	 * mapped first by checking that neither of the two elements have
@@ -99,9 +83,7 @@ public class DependencyMappingValidator {
 	public boolean isValid(){
 			// This method returns "True" unless any of the following tests fail:
 		    // The object and/or table have already been mapped
-		    // The table being mapped is a correlation table and shouldn't be mapped as a dependency table
 			boolean isValidMapping = true;
-//			if (areAlreadyMapped() || containsCorrelationTable()) {
 			if (areAlreadyMapped()) {
 				isValidMapping = false;
 			}
@@ -119,6 +101,9 @@ public class DependencyMappingValidator {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2009/06/12 15:52:30  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:

@@ -24,26 +24,15 @@ import java.util.logging.Logger;
  *
  * @author OWNER: Eric Chen, Scott Jiang Date: Jul 18, 2005
  * @author LAST UPDATE: $Author: wangeug $
- * @version $Revision: 1.4 $
- * @date $$Date: 2009-09-29 17:40:00 $
+ * @version $Revision: 1.5 $
+ * @date $$Date: 2009-09-30 17:10:24 $
  * @since caAdapter v1.2
  */
 
 public class Log
 {
 	public static final String MAP_LOG = "map";
-	private static Log localInstance;
 
-	/**
-	 * Implement Singleton 
-	 * @return log instance
-	 */
-	public static Log getInstance()
-	{
-		if (localInstance==null)
-			localInstance=new Log();
-		return localInstance;
-	}
 	/**
 	 * Call this function to log a serious exception.
 	 *
@@ -439,6 +428,9 @@ class LogCallerFinder
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2009/09/29 17:40:00  wangeug
+ * HISTORY      : exclude valueDomain from mapping panel view
+ * HISTORY      :
  * HISTORY      : Revision 1.3  2008/06/09 19:53:49  phadkes
  * HISTORY      : New license text replaced for all .java files.
  * HISTORY      :

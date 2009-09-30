@@ -9,6 +9,7 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.caadapter.ui.mapping.mms;
 
 import gov.nih.nci.caadapter.common.BaseResult;
+import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
 import gov.nih.nci.caadapter.common.MetaObject;
@@ -84,13 +85,13 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v3.2
- * @version    $Revision: 1.42 $
- * @date       $Date: 2009-09-29 17:39:28 $ 
+ * @version    $Revision: 1.43 $
+ * @date       $Date: 2009-09-30 17:08:26 $ 
  */
 public class Object2DBMappingPanel extends AbstractMappingPanel {
 	private static final String LOGID = "$RCSfile: Object2DBMappingPanel.java,v $";
 
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.42 2009-09-29 17:39:28 wangeug Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/mapping/mms/Object2DBMappingPanel.java,v 1.43 2009-09-30 17:08:26 wangeug Exp $";
 
     private MmsTargetTreeDropTransferHandler mmsTargetTreeDropTransferHandler = null;
 
@@ -551,7 +552,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 			UMLClass client = (UMLClass) dep.getClient();
 			if (dep.getSupplier() instanceof UMLInterface)
 			{
-				logger.logInfo(this, "found UMLInterface:"+((UMLInterface)dep.getSupplier()).getName());
+				Log.logInfo(this, "found UMLInterface:"+((UMLInterface)dep.getSupplier()).getName());
 				continue;
 			}
 			UMLClass supplier = (UMLClass) dep.getSupplier();
@@ -567,7 +568,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 			if (sourceNode == null || targetNode == null)
 			{
-				logger.logInfo(this, "Dependency missing--- source:"+sourceXpath +" ; target:"+targetXpath);
+				Log.logInfo(this, "Dependency missing--- source:"+sourceXpath +" ; target:"+targetXpath);
 				continue;
 			}
 
@@ -582,7 +583,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 							(MappableNode) targetNode);
 			if (!isSuccess)
 			{
-				logger.logInfo(this, "No UI link is created for Dependency--- source:"+sourceXpath +" ; target:"+targetXpath +"...:"+CumulativeMappingGenerator.getInstance().getErrorMessage());
+				Log.logInfo(this, "No UI link is created for Dependency--- source:"+sourceXpath +" ; target:"+targetXpath +"...:"+CumulativeMappingGenerator.getInstance().getErrorMessage());
 			}
 		}
 		//create class.attribute--table.column mapping
@@ -612,7 +613,7 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 								if (sourceNode == null||targetNode == null)
 								{
-									logger.logInfo(this, "Mapping missing--- source:"+sourceXpath +" ; target:"+targetXpath);
+									Log.logInfo(this, "Mapping missing--- source:"+sourceXpath +" ; target:"+targetXpath);
 									continue;
 								}
 								SDKMetaData sourceSDKMetaData = (SDKMetaData) sourceNode.getUserObject();
@@ -838,6 +839,9 @@ public class Object2DBMappingPanel extends AbstractMappingPanel {
 
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.42  2009/09/29 17:39:28  wangeug
+ * HISTORY : exclude valueDomain from mapping panel view
+ * HISTORY :
  * HISTORY : Revision 1.41  2009/07/30 17:37:31  wangeug
  * HISTORY : clean codes: implement 4.1.1 requirements
  * HISTORY :

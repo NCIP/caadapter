@@ -49,8 +49,8 @@ import javax.swing.tree.TreeNode;
  * @author OWNER: Eugene Wang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2008-09-29 20:21:31 $
+ *          revision    $Revision: 1.8 $
+ *          date        $Date: 2009-09-30 17:09:02 $
  */
 public abstract class AbstractMappingPanel extends DefaultContextManagerClientPanel  implements ActionListener
 {
@@ -83,7 +83,7 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 	
 	protected File mappingSourceFile = null;
 	protected File mappingTargetFile = null;
-	protected static Log logger =new Log();
+
 	// ??? Not Sure the behavior difference of build target tree and source tree besides we have MappingSourceTree TargerTree -Eric
 	protected void buildTargetTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{		
@@ -437,5 +437,8 @@ public abstract class AbstractMappingPanel extends DefaultContextManagerClientPa
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.7  2008/09/29 20:21:31  wangeug
+ * HISTORY      : enforce code standard: license file, file description, changing history
+ * HISTORY      :
  * 
  * **/

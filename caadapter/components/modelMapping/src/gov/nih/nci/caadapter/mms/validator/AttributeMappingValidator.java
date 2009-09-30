@@ -26,8 +26,8 @@ import java.util.Properties;
  * @author OWNER: Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     caAdatper v4.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2009-06-12 15:52:30 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-09-30 17:09:58 $
  * @created 11-Aug-2006 8:18:15 AM
  */
 public class AttributeMappingValidator {
@@ -52,11 +52,8 @@ public class AttributeMappingValidator {
 		this.mapping = mapping;
 	}
 
-	public void checkSemanticMapping(){
-		//Add semantic mapping here
-	}
 
-	public boolean hasBeenMapped(){
+	private boolean hasBeenMapped(){
 		boolean beenMapped = false;
 		try {
 			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
@@ -80,7 +77,7 @@ public class AttributeMappingValidator {
  		return beenMapped;
 	}
 
-    public boolean hasDependencyMapping(){
+    private boolean hasDependencyMapping(){
 		boolean dependencyMapped = false;
 		try {
 			cummulativeMapping = CumulativeMappingGenerator.getInstance().getCumulativeMapping();
@@ -106,57 +103,15 @@ public class AttributeMappingValidator {
  		return dependencyMapped;
 	}
 
-	public boolean areCompatibleDatatypes(){
-		String datatype = datatypeCompatabilityProp.getProperty(mapping.getColumnMetadata().getDatatype());
-		if (datatype.equals(mapping.getAttributeMetadata().getDatatype())) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isObjectId(){
-		AttributeMetadata attributeMetadata = mapping.getAttributeMetadata();
-		if (attributeMetadata.getName().equals("id")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-    public boolean isCorrectObjectIdToPrimaryKeyMapping() {
-		boolean isCorrectMapping = false;
-		ColumnMetadata columnMetadata = mapping.getColumnMetadata();
-		if (columnMetadata.isPrimaryKey()) {
-			isCorrectMapping = true;
-		}
-		return isCorrectMapping;
-	}
-
-
 	public boolean isValid(){
 		// This method returns "True" unless any of the following tests fail:
 		// the parent object and parent table have not been mapped as a dependency
-		// if the attribute is an "id" attribute but the column is not a primary key column
-		// if the attribute datatype is not compatible with the column datatype
 		// if the attribute has been previously mapped
 		boolean isValidMapping = true;
 		if (!hasDependencyMapping()) {
 			isValidMapping = false;
 		} 
-		/*
-		if (isObjectId()) {
-			if (!isCorrectObjectIdToPrimaryKeyMapping()) {
-				validationErrorMessage = "Selected column is not a primary key.";
-				isValidMapping = false;
-			}
-		} */
-		/*
-		if (!areCompatibleDatatypes()) {
-			isValidMapping = false;
-			this.validationErrorMessage = "Datatypes are not compatible.";
-		}
-		*/
+
 		if (hasBeenMapped()) {
 		   isValidMapping = false;
 
@@ -175,6 +130,9 @@ public class AttributeMappingValidator {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2009/06/12 15:52:30  wangeug
+ * HISTORY: clean code: caAdapter MMS 4.1.1
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/09/26 20:35:27  linc
  * HISTORY: Updated according to code standard.
  * HISTORY:
