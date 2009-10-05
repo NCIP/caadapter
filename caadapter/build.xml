@@ -101,7 +101,7 @@
             	<include name="license/**"/>
             	<include name="map/functions/**"/>
             </fileset>
-            <fileset dir="${basedir}/docs/4.3">
+            <fileset dir="${basedir}/${project.docs.home}">
             	<include name="*Notes.txt"/>
             </fileset>
         </copy>
@@ -162,14 +162,12 @@
 				<include name="lib/**"/>
 			</zipfileset>	
 			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
-			<zipfileset dir="docs/MMSv4.1" includes="*.pdf, *Installation*, *Cases.doc, Design*.doc, help_gme.zip" prefix="docs/GME"/>
+			<zipfileset dir="./${project.docs.home}" includes="*.pdf,*.doc, *Help.zip" prefix="${project.docs.home}"/>
 			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
 					webstart/webstartconf/**, webstart/caadapter-mms-gme.jnlp, webstart/caadapter-mms-gme.html, webstart/web.xml, webstart/myKeyStore"/>
 			<zipfileset dir="." includes="conf/**, demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java, lib/**,
 				build*, *.bat" />
-			
-			<!-- zipfileset dir="." includes="conf/**, etc/**, lib/** 
-				build*, *.bat" / -->
+
 			<zipfileset dir="workingspace" includes="Object_to_DB_Example/**"
 				prefix="workingspace"/>
 		</zip> 
@@ -422,16 +420,9 @@
             	<include name="cmps.jar"/>
             </fileset>
         	<fileset dir="${reference.dir}">
-            	<!-- include name="caAdapter_ui.jar"/ -->
                 <include name="jgraph.jar"/>
         	</fileset>
-        	<!-- fileset dir="${dist.dir}/docs">
-        	    <include name="help/**"/>
-        	</fileset -->
-        	        	
-        	<!-- fileset dir="${dist.dir}/lib">
-            	<include name="caAdapter.jar"/>
-        	</fileset -->
+
         	<fileset dir="${ui.module.home}/lib">
             	<include name="BrowserLauncher2-all-10rc4.jar"/>
         	</fileset>
@@ -472,7 +463,7 @@
             <fileset dir="${webstart.deploy.dir}">
                 <exclude name="myKeyStore"/>
             </fileset>
-            <zipfileset src="./docs/help.zip" prefix="help"/>
+            <zipfileset src="./${project.docs.home}/${proejct.online.help}" prefix="help"/>
         </war>
 
         <echo message=""/>
