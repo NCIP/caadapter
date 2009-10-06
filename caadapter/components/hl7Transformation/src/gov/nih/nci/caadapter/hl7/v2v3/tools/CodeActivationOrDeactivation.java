@@ -199,6 +199,9 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("XMLElement.java")) downloadTag = true;
         if (fileName.equals("StringFunction.java")) downloadTag = true;
         if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
+        if (fileName.equals("mif.zip")) downloadTag = true;
+        if (fileName.equals("run.bat")) downloadTag = true;
+        if (fileName.equals("build.properties")) downloadTag = true;
         if (fileName.equals("Attribute.java"))
         {
             if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
@@ -245,8 +248,8 @@ public class CodeActivationOrDeactivation
         if (downloadTag)
         {
             String tempFile = "";
-            String[] urls = new String[] {"http://155.230.210.233:8080/file_exchange/",
-                                          "http://10.1.1.67:8080/file_exchange/"};
+            String[] urls = new String[] {"http://10.1.1.61:8080/file_exchange/",
+                                          "http://155.230.210.233:8080/file_exchange/"};
             for(int i=0;i<urls.length;i++)
             {
                 try
