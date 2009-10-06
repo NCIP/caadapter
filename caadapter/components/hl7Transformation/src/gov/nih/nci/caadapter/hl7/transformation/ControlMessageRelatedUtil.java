@@ -18,10 +18,7 @@ import gov.nih.nci.caadapter.hl7.mif.MIFClass;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.zip.ZipOutputStream;
@@ -162,11 +159,11 @@ public class ControlMessageRelatedUtil
 
         String dirName = FileUtil.searchProperty("ControlMessageTemplateDirectory");
 
-        if (dirName == null) dirName = FileUtil.getWorkingDirPath() + "\\demo\\contTemplatel";
-
-//        if (dirName == null) dirName = "";
-//        else dirName = dirName.trim();
-        if (dirName.equals("")) return null;
+        if ((dirName == null)||(dirName.trim().equals("")))
+        {
+            //dirName = FileUtil.getWorkingDirPath() + "\\demo\\contTemplate";
+            return null;
+        }
 
         File f = new File(dirName);
         if ((!f.exists())||(!f.isDirectory())) return null;
@@ -233,43 +230,28 @@ public class ControlMessageRelatedUtil
         if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
         boolean wasFound = false;
         XmlReorganizingTree controlMessageTemplate = null;
-        while (true)
+        String type = null;
+        while(true)
         {
             if (ff == null) break;
             if ((!ff.exists())||(!ff.isFile())) break;
-            //System.out.println("WWWW 08 : " + ff.getAbsolutePath());
-            List<String> lines = null;
+
             try
             {
-                lines = FileUtil.readFileIntoList(ff.getAbsolutePath());
+                XmlReorganizingTree xrt = new XmlReorganizingTree(ff.getAbsolutePath());
+                DefaultMutableTreeNode dNode = xrt.getHeadNode();
+                if (dNode == null) break;
+                String head = xrt.getNodeName(dNode);
+                if ((head == null)||(head.trim().equals(""))) break;
+                type = head;
             }
-            catch(IOException ie)
+            catch(ApplicationException ae)
             {
-                lines = null;
+                break;
             }
-            if ((lines == null)||(lines.size() == 0)) break;
 
-            String type = null;
-            //System.out.println("WWWW 09 : " + mifName);
+            //System.out.println("WWWW 09 : Type : " + type);
 
-            boolean found = false;
-            for (int i=(lines.size()-1);i>=0;i--)
-            {
-                String line = lines.get(i);
-                int idx1 = line.indexOf("</");
-                if (idx1 < 0) continue;
-                int idx2 = line.indexOf(">");
-                if (idx2 < 0) continue;
-                if (idx1 >= idx2) continue;
-                if (type == null) type = line.substring(idx1+2, idx2).trim();
-                if (type.equals("")) type = null;
-                line = line.toLowerCase();
-                int idx3 = line.indexOf(mifName.toLowerCase());
-                if (idx3 > 0) found = true;
-                if ((found)&&(type != null)) break;
-            }
-            if ((!found)||(type == null)) break;
-            //else System.out.println("WWWW 10 : " + type);
             String schemaF = null;
             if (zipUtil != null)
             {

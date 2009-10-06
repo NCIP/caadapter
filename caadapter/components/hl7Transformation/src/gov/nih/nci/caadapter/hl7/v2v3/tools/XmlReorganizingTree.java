@@ -49,7 +49,7 @@ public class XmlReorganizingTree
 
         boolean isFileObject = true;
 
-        if (source.length() > 500) isFileObject = false;
+        if (source.length() > 1000) isFileObject = false;
 
         headOfMain = new DefaultMutableTreeNode("Empty") ;
         if (isFileObject)
@@ -540,6 +540,31 @@ public class XmlReorganizingTree
     public void setZipUtil(ZipUtil zUtil)
     {
         zipUtil = zUtil;
+    }
+
+    public String getNodeName(DefaultMutableTreeNode node)
+    {
+        if (node == null) return null;
+        if (node.getUserObject() == null) return null;
+        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
+        if (xNode == null) return null;
+        return xNode.getName();
+    }
+    public String getNodeValue(DefaultMutableTreeNode node)
+    {
+        if (node == null) return null;
+        if (node.getUserObject() == null) return null;
+        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
+        if (xNode == null) return null;
+        return xNode.getValue();
+    }
+    public String getNodeRole(DefaultMutableTreeNode node)
+    {
+        if (node == null) return null;
+        if (node.getUserObject() == null) return null;
+        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
+        if (xNode == null) return null;
+        return xNode.getRole();
     }
 
     private String convertValue(String value)
