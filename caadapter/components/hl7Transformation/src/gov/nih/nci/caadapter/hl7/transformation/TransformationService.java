@@ -35,6 +35,7 @@ import gov.nih.nci.caadapter.hl7.v2meta.V2MessageLinefeedEncoder;
 //import gov.nih.nci.caadapter.hl7.validation.complement.XSDValidationTree;
 //import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
+import gov.nih.nci.caadapter.hl7.v2v3.tools.ZipUtil;
 //import gov.nih.nci.caadapter.hl7.v2v3.tools.SchemaDirUtil;
 //import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBrowsingNode;
 //&umkis import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
@@ -65,14 +66,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.48 $
- * @date $Date: 2009-09-29 15:55:42 $
+ * @version $Revision: 1.49 $
+ * @date $Date: 2009-10-06 06:19:23 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.48 2009-09-29 15:55:42 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.49 2009-10-06 06:19:23 altturbo Exp $";
 
 //    private String dataString = "";
     private boolean isStringData=false;
@@ -273,6 +274,22 @@ public class TransformationService
     }
     public List<XMLElement> process(String controlFile) throws Exception
     {
+        try
+        {
+            return processWithException(controlFile);
+        }
+        catch(Exception ee)
+        {
+            if (controlMessageTemplate != null)
+            {
+                ZipUtil zipUtil = controlMessageTemplate.getZipUtil();
+                if (zipUtil != null) zipUtil.deleteDirectory();
+            }
+            throw ee;
+        }
+    }
+    private List<XMLElement> processWithException(String controlFile) throws Exception
+    {
     	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
     	loadMapAndMetas(mapFile);
         if (!theValidatorResults.isValid())
@@ -340,6 +357,13 @@ public class TransformationService
 		{
 			System.out.println("[WARNING] got no message...");
 		}
+
+        if (controlMessageTemplate != null)
+        {
+            ZipUtil zipUtil = controlMessageTemplate.getZipUtil();
+            if (zipUtil != null) zipUtil.deleteDirectory();
+        }
+
         return xmlElements;
    }
 
@@ -436,10 +460,19 @@ public class TransformationService
 			writer.flush();
 
             ValidatorResults validatorsToShow = xmlElements.get(i).getValidatorResults();
+             
+//&umkis            if (getSchemaValidation())
+//&umkis            {
+//&umkis                Object[] obs = ControlMessageRelatedUtil.excuteXSDValidationForTransformationService(validatorsToShow, messageCount, i, v3Message, zipOut, writer, schemaFileName , mifClass, controlMessageTemplate);     //&umkis
+//&umkis                if (obs != null)
+//&umkis                {
+//&umkis                    v3Message = (String) obs[0];
+//&umkis                    controlMessageTemplate = (XmlReorganizingTree) obs[1];
+//&umkis                    validatorsToShow = (ValidatorResults) obs[2];
+//&umkis                }
+//&umkis            }
 
-//&umkis            if (getSchemaValidation()) v3Message = ControlMessageRelatedUtil.excuteXSDValidationForTransformationService(validatorsToShow, messageCount, i, v3Message, zipOut, writer, schemaFileName ,mifClass);
-
-            if (controlMessageTemplate != null)
+            if ((controlMessageTemplate != null)&&(controlMessageTemplate.getHeadNode() != null))
             {
                 if (ControlMessageRelatedUtil.insertV3IntoControlMessage(controlMessageTemplate, v3Message, mifClass, controlValidator, i)) wrappedMessageCount++;
             }
@@ -450,7 +483,7 @@ public class TransformationService
             objOut.flush();
         }
 
-        if(controlMessageTemplate != null)
+        if ((controlMessageTemplate != null)&&(controlMessageTemplate.getHeadNode() != null))
         {
             String integratedMessage = controlMessageTemplate.printStringXML();
             controlValidator = controlMessageTemplate.validate(false);
@@ -679,6 +712,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.48  2009/09/29 15:55:42  altturbo
+ * HISTORY      : update the part of control message wrapping - process(String wrappingControlMessageFileName)
+ * HISTORY      :
  * HISTORY      : Revision 1.47  2009/09/11 18:21:51  altturbo
  * HISTORY      : for control message wrapper
  * HISTORY      :

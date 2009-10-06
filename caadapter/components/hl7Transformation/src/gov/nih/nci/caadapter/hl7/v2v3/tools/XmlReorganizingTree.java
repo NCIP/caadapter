@@ -34,7 +34,12 @@ public class XmlReorganizingTree
     private DefaultMutableTreeNode headOfMain;
     private DefaultMutableTreeNode current = null;
     private String schemaFileName = null;
+    private ZipUtil zipUtil = null;
 
+    public XmlReorganizingTree()
+    {
+
+    }
     public XmlReorganizingTree(String source) throws ApplicationException
     {
         if ((source == null)||(source.trim().equals("")))
@@ -506,12 +511,17 @@ public class XmlReorganizingTree
     }
     public ValidatorResults validate(boolean reorganize)
     {
+        ValidatorResults results = null;
+
         if (schemaFileName == null) return null;
         String msg = printStringXML();
         if ((msg == null)||(msg.trim().equals(""))) return null;
-        XMLValidator v = new XMLValidator(msg, schemaFileName, reorganize);
+        String s = schemaFileName;
+        if (this.getZipUtil() != null) s = this.getZipUtil().getInitialFile();
+        XMLValidator v = new XMLValidator(msg, s, reorganize);
 
-        ValidatorResults results = v.validate();
+        results = v.validate();
+
         return results;
     }
 
@@ -522,6 +532,14 @@ public class XmlReorganizingTree
     public DefaultMutableTreeNode getCurrentNode()
     {
         return current;
+    }
+    public ZipUtil getZipUtil()
+    {
+        return zipUtil;
+    }
+    public void setZipUtil(ZipUtil zUtil)
+    {
+        zipUtil = zUtil;
     }
 
     private String convertValue(String value)
