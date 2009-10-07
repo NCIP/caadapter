@@ -24,10 +24,10 @@ import java.io.File;
  * This class defines ...
  *
  * @author OWNER: Kisung Um
- * @author LAST UPDATE $Author: altturbo $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since HL7 SDK v1.2
- *          revision    $Revision: 1.7 $
- *          date        $Date: 2009-08-20 00:25:15 $
+ *          revision    $Revision: 1.6 $
+ *          date        $Date: 2009-03-16 20:25:42 $
  */
 public class FunctionVocabularyMappingDefinitionDialog extends JDialog implements ActionListener
 {
@@ -44,7 +44,7 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDefinitionDialog.java,v 1.7 2009-08-20 00:25:15 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/common/functions/FunctionVocabularyMappingDefinitionDialog.java,v 1.6 2009-03-16 20:25:42 wangeug Exp $";
 
 
     private static final String TITLE = "Function Vocabulary Mapping Definition";
@@ -88,8 +88,6 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
     //private boolean foundDomain;
     //private boolean isFileSearched;
     private boolean okButtonEnabled;
-
-    private java.util.List<String[]> domainList = null;
 
     private JDialog dialog;
     /**
@@ -136,6 +134,84 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 
     private void initialize()
     {
+
+
+        /*
+        setLayout(new BorderLayout());
+        centerPanel = new JPanel(new GridBagLayout());
+        Dimension inputFieldSize = computeFieldSize(false);
+        valueField.setPreferredSize(inputFieldSize);
+
+
+        //typeField.setPreferredSize(computeFieldSize(true));
+        Insets insets = new Insets(5, 5, 5, 5);
+
+        searchButton = new JButton(SEARCH_COMMAND);
+        searchButton.setMnemonic(SEARCH_COMMAND_MNENOMIC.charAt(0));
+        searchButton.addActionListener(this);
+
+        centerPanel.add(typeLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(new JLabel(""), new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(typeField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        centerPanel.add(valueLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(searchButton, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(valueField, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+        centerPanel.add(domainLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.WEST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(new JLabel(""), new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0));
+        centerPanel.add(domainField, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0,
+                GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL, insets, 0, 0));
+
+        this.add(centerPanel, BorderLayout.CENTER);
+
+        okButton = new JButton(OK_COMMAND);
+        //okButton.setMnemonic(OK_COMMAND_MNENOMIC.charAt(0));
+        okButton.addActionListener(this);
+        checkButton = new JButton(CHECK_COMMAND);
+        //checkButton.setMnemonic(CHECK_COMMAND_MNENOMIC.charAt(0));
+        checkButton.addActionListener(this);
+
+        cancelButton = new JButton(CANCEL_COMMAND);
+        //cancelButton.setMnemonic(CANCEL_COMMAND_MNENOMIC.charAt(0));
+        cancelButton.addActionListener(this);
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING));
+        buttonPanel.add(checkButton);
+        buttonPanel.add(okButton);
+        buttonPanel.add(cancelButton);
+        this.add(buttonPanel, BorderLayout.SOUTH);
+        this.setSize(460, 200);
+        searchButton.setEnabled(true);
+        domainField.setEnabled(false);
+        checkButton.setEnabled(false);
+
+        selectedItem = functionVocabularyMapping.getTypeNamePossibleList()[0];
+        valueField.setText("");
+        valueField.setEditable(false);
+        typeField.setSelectedIndex(0);
+
+        typeField.addItemListener(
+                new ItemListener()
+                {
+                    public void itemStateChanged(ItemEvent e)
+                    {
+                        String type = (String)typeField.getSelectedItem();
+                        if (!type.equals(selectedItem))
+                        {
+                            selectedItem = type;
+                            doItemChanged(type);
+                        }
+
+                    }
+                }
+        );
+        */
 
         Object[] ob = inputFileNameCommon("", valueField, searchButton, "   " + SEARCH_COMMAND + "   ", SEARCH_COMMAND);
 
@@ -245,35 +321,15 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
         if (inverseTag) serviceURL.setVisible(false);
 
         //else typeField = new JComboBox(functionVocabularyMapping.getTypeNamePossibleList());
-        final FunctionVocabularyMappingDefinitionDialog thisDialog = this;
         domainField.addItemListener(
                 new ItemListener()
                 {
                     public void itemStateChanged(ItemEvent e)
                     {
-                        while(domainField.getSelectedIndex() > 0)
+                        if (domainField.getSelectedIndex() > 0)
                         {
-                            boolean cTag = true;
-                            String domainName = "";
-                            if (inverseTag)
-                            {
-                                domainName = (String) domainField.getItemAt(domainField.getSelectedIndex());
-                                for (String[] strs:domainList)
-                                {
-                                    String name = strs[0];
-                                    String inverseAllowed = strs[1];
-                                    if ((name.equals(domainName))&&(!inverseAllowed.equals("true"))) cTag = false;
-                                }
-                            }
-                            if (!cTag)
-                            {
-                                JOptionPane.showMessageDialog(thisDialog, "Domain '"+domainName+"' is not allowed to applying inverse translation.", "Not Allowing Inverse", JOptionPane.ERROR_MESSAGE);
-                                domainField.setSelectedIndex(0);
-                                break;
-                            }
                             okButtonEnabled = true;
                             setupComponentState();
-                            break;
                         }
                     }
                 }
@@ -585,7 +641,6 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
             //listDomain = functionVocabularyMapping.checkMappingFileAndGatheringDomainName(pathValue);
             //functionVocabularyMapping.setType(functionVocabularyMapping.getTypeNamePossibleList()[0]);
             functionVocabularyMapping.setType(selectS);
-            domainList = functionVocabularyMapping.getDomainList();
         }
         catch(FunctionException fe)
         {
@@ -801,9 +856,6 @@ public class FunctionVocabularyMappingDefinitionDialog extends JDialog implement
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.6  2009/03/16 20:25:42  wangeug
- * HISTORY      : disable remote VOM functionalities
- * HISTORY      :
  * HISTORY      : Revision 1.5  2008/11/21 16:18:38  wangeug
  * HISTORY      : Move back to HL7 module from common module
  * HISTORY      :
