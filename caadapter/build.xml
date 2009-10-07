@@ -164,7 +164,7 @@
 			<zipfileset dir="components/webservices" includes="build.xml, WebRoot/**,src/**, lib/**" prefix="components/webservices"/>
 			<zipfileset dir="./${project.docs.home}" includes="*.pdf,*.doc, *Help.zip" prefix="${project.docs.home}"/>
 			<zipfileset dir="etc" prefix="etc" includes="license/**, warning/**, map/MappingV4.0.xsd, map/csv/**, map/functions/**, 
-					webstart/webstartconf/**, webstart/caadapter-mms-gme.jnlp, webstart/caadapter-mms-gme.html, webstart/web.xml, webstart/myKeyStore"/>
+					webstartconf/**, webstart/caadapter-mms.jnlp, webstart/index-mms.html, webstart/web.xml, webstart/myKeyStore"/>
 			<zipfileset dir="." includes="conf/**, demo/gov/nih/nci/caadapter/hl7/demo/LaunchUI.java, lib/**,
 				build*, *.bat" />
 
