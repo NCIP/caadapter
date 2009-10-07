@@ -34,14 +34,12 @@ import gov.nih.nci.ncicb.xmiinout.util.ModelUtil;
  *
  * @author   OWNER: wangeug  $Date: Jul 9, 2009
  * @author   LAST UPDATE: $Author: wangeug 
- * @version  REVISION: $Revision: 1.3 $
- * @date 	 DATE: $Date: 2009-07-30 17:35:30 $
+ * @version  REVISION: $Revision: 1.4 $
+ * @date 	 DATE: $Date: 2009-10-07 16:44:34 $
  * @since caAdapter v4.2
  */
 
 public class XMIAnnotationUtil {
-
-	private static Log annotatationLogger=new Log();
 	
 	/**
 	 * Add/update a tag value with a UMLTaggedElement<br>
@@ -59,12 +57,12 @@ public class XMIAnnotationUtil {
 		if (discValueTag!=null)
 		{
 			discValueTag.setValue(tagValue);
-			annotatationLogger.logInfo(taggedElement, "...update existing tag...tagName:"+tagName +"... tagValue:"+tagValue);
+			Log.logInfo(taggedElement, "Update existing tag...tagName:"+tagName +"... tagValue:"+tagValue);
 		}
 		else
 		{
 			taggedElement.addTaggedValue(tagName, tagValue);
-			annotatationLogger.logInfo(taggedElement, "...create new tag...tagName:"+tagName +"... tagValue:"+tagValue);
+			Log.logInfo(taggedElement, "Create new tag...tagName:"+tagName +"... tagValue:"+tagValue);
 		}
 	}
 	/**
@@ -95,22 +93,22 @@ public class XMIAnnotationUtil {
 		UMLClass client = ModelUtil.findClass(umlModel,tablePath);
 	    UMLClass supplier = ModelUtil.findClass(umlModel,objectPath);
 	    
-	    System.out.println("XMIAnnotationUtil.addDataObjectDependency()..table:"+tablePath);
-	    System.out.println("XMIAnnotationUtil.addDataObjectDependency()..object:"+objectPath);
 	    if (client==null||supplier==null)
 	    	return false;
 	    
 	    //check if a dependency exist for the object
 	    for(UMLDependency existDep:supplier.getDependencies())
 	    {
-	    	if (existDep.getStereotype().equalsIgnoreCase("DataSource"))
+	    	if (existDep.getStereotype()==null)
+	    		Log.logInfo(existDep, "Dependency stereotype is NULL...target table:"+((UMLClass)existDep.getClient()).getName()+" is the datasource of object:"+((UMLClass)existDep.getSupplier()).getName());
+	    	else if (existDep.getStereotype().equalsIgnoreCase("DataSource"))
 	    	{
-	    		annotatationLogger.logWarning(supplier,"...DataSource link exists..Logical Model.Object:"+supplier.getName()+"..Data Model.Table:"+client.getName());
+	    		Log.logWarning(supplier,"DataSource link exists..Logical Model.Object:"+supplier.getName()+"..Data Model.Table:"+client.getName());
 	    		return false;
 	    	}
 	    }
 		UMLDependency dep =umlModel.createDependency(client, supplier, "dependency");
-		annotatationLogger.logInfo(dep, "...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());		
+		Log.logInfo(dep, "Add dataSource link...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());		
 		//persist this dependency to UML model
 		dep=umlModel.addDependency( dep );	
 	    dep.addStereotype("DataSource");
@@ -164,11 +162,11 @@ public class XMIAnnotationUtil {
 		if (discValueTag!=null)
 		{
 			taggedElement.removeTaggedValue(tagName);
- 			annotatationLogger.logInfo(taggedElement, "...remove tag...tagName:"+tagName +"... tagValue:"+discValueTag.getValue());
+			Log.logInfo(taggedElement, "Remove tag...tagName:"+tagName +"... tagValue:"+discValueTag.getValue());
  			return true;
 		}
 		else
-			annotatationLogger.logInfo(taggedElement, "...missing tag...tagName:"+tagName );
+			Log.logInfo(taggedElement, "Missing tag...tagName:"+tagName );
 
 		return false;
 	}
@@ -221,7 +219,7 @@ public class XMIAnnotationUtil {
 		UMLClass targetTbl=ModelUtil.findClass(umlModel, targetColumn.getParentXPath());
 		if (targetTbl==null)
 			return false;
-		System.out.println("XMIAnnotationUtil.deAnnotateAssociationMapping()..the other end:"+otherEndFullPath);
+		Log.logInfo(targetColumn, "XMIAnnotationUtil.deAnnotateAssociationMapping()..the other end:"+otherEndFullPath);
 		String otherEndClearPath=getCleanPath(modelMeta.getMmsPrefixObjectModel(), otherEndFullPath);
 		for(UMLAttribute tblColumnAttr:targetTbl.getAttributes())
 		{
@@ -229,7 +227,7 @@ public class XMIAnnotationUtil {
 
 			if (oneAttrAsscTag!=null &&oneAttrAsscTag.getValue().equalsIgnoreCase(otherEndClearPath))
 			{
-				annotatationLogger.logInfo(oneAttrAsscTag, "..the other end is mapped:"+otherEndClearPath+"..."+tblColumnAttr.getName());
+				Log.logInfo(oneAttrAsscTag, "The other end is mapped:"+otherEndClearPath+"..."+tblColumnAttr.getName());
 				return false;
 			}
 		}
@@ -274,11 +272,14 @@ public class XMIAnnotationUtil {
 		
 		UMLClass tblClass=ModelUtil.findClass(umlModel, tblPath);
 		//check if table is the data source of any object
+		//to determine if it is a correlation-table
 		for(UMLDependency existDep:tblClass.getDependencies())
 	    {
-	    	if (existDep.getStereotype().equalsIgnoreCase("DataSource"))
+			if (existDep.getStereotype()==null)
+				Log.logInfo(existDep, "...Dependency stereotype is NULL...target table:"+((UMLClass)existDep.getClient()).getName()+" is the datasource of object:"+((UMLClass)existDep.getSupplier()).getName());
+			else if (existDep.getStereotype().equalsIgnoreCase("DataSource"))
 	    	{
-	    		annotatationLogger.logInfo(existDep, "...DataSource link exist...target table:"+((UMLClass)existDep.getClient()).getName()+" is the datasource of object:"+((UMLClass)existDep.getSupplier()).getName());
+				Log.logInfo(existDep, "Target can not be a correlation table...DataSource link exist...target table:"+((UMLClass)existDep.getClient()).getName()+" is the datasource of object:"+((UMLClass)existDep.getSupplier()).getName());
 	    		return false;
 	    	}
 	    }	
@@ -324,13 +325,13 @@ public class XMIAnnotationUtil {
 	    if (foundDep==null)
 	    	return false;
 	    //remove the dependency from list of dependency associated with model
-	    annotatationLogger.logInfo(foundDep, "Dependency deleted from model...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());   		
+	    Log.logInfo(foundDep, "Dependency deleted from model...Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());   		
 	    supplier.getDependencies().remove(foundDep);
 	    client.getDependencies().remove(foundDep);
 	    umlModel.getDependencies().remove(foundDep); 
 	    //remove the JDomElement from Model 	    
 	    Element depElt=((UMLDependencyBean)foundDep).getJDomElement();
-	    annotatationLogger.logInfo(foundDep, "Remove dependency section from XMI file....Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
+	    Log.logInfo(foundDep, "Remove dependency section from XMI file....Logical Model.Object:"+supplier.getName() +"... Data Model.Table:"+client.getName());
 	    depElt.getParentElement().removeContent(depElt);//childElmnt);
    
 		return true;
@@ -412,6 +413,9 @@ public class XMIAnnotationUtil {
 
 /**
 * HISTORY: $Log: not supported by cvs2svn $
+* HISTORY: Revision 1.3  2009/07/30 17:35:30  wangeug
+* HISTORY: clean codes: implement 4.1.1 requirements
+* HISTORY:
 * HISTORY: Revision 1.2  2009/07/10 21:20:40  wangeug
 * HISTORY: remove the unsaved  dependency
 * HISTORY:
