@@ -7,7 +7,10 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
  */
 package gov.nih.nci.caadapter.hl7.mif.v1;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -32,10 +35,10 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * The class provides Utilities to access the MIF info.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: altturbo $
+ * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.20 $
- *          date        $Date: 2009-08-18 15:18:41 $
+ *          revision    $Revision: 1.16 $
+ *          date        $Date: 2009-03-18 15:50:53 $
  */
 public class MIFParserUtil {
 
@@ -43,76 +46,27 @@ public class MIFParserUtil {
 	{
 		try
         {
-			String mifPath=null;
-        	URL mifURL=null;
-
-			while(mifURL==null)
+			//normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
+			String mifPath="mif/" + mifFileName;
+			URL mifURL=FileUtil.retrieveResourceURL(mifPath);
+        	//normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
+			if (mifURL==null)
+				mifURL=FileUtil.retrieveResourceURL(mifFileName);
+			if (mifURL==null)
 			{
 				//webStart deployment
 				String specHome=NormativeVersionUtil.getCurrentMIFIndex().findSpecificationHome();
-
-                File temp = new File(specHome);
-                if (!temp.exists()) break;
-
-                String specHome1 = null;
-
-                if (specHome.startsWith(FileUtil.getWorkingDirPath()))
-                {
-                    specHome1 = specHome.substring(FileUtil.getWorkingDirPath().length()).trim();
-                    if (specHome1.startsWith(File.separator)) specHome1 = specHome1.substring(File.separator.length());
-                }
-
-
-                //normative 2008 structure
-                for (int i=0;i<2;i++)
-                {
-                    if (mifURL!=null) break;
-                    String specHome2 = "";
-                    if (i == 0)
-                    {
-                        if (temp.isDirectory())
-                        {
-                            if (specHome1 != null) specHome2 = specHome1;
-                            else specHome2 = temp.getName();
-                        }
-                        else
-                        {
-                            File parent = temp.getParentFile();
-                            if (specHome1 != null) specHome2 = specHome1;
-                            else specHome2 = parent.getName() + File.separator +temp.getName();
-                        }
-                    }
-                    else specHome2 = specHome;
-                    mifPath=specHome2+"/mif/"+mifFileName;
-
-                    mifURL=FileUtil.retrieveResourceURL(specHome2, "mif", mifFileName);
-                    //normative 2006 structure
-                    if (mifURL==null)
-                    {
-                        mifPath=specHome2+"/"+mifFileName;
-                        mifURL=FileUtil.retrieveResourceURL(specHome2, null, mifFileName);
-                    }
-                }
-                break;
-            }
-            //normative 2006 structure /COCT_MTxxxxxxxUVxx.mif
-            if (mifURL==null)
-				mifURL=FileUtil.retrieveResourceURL(mifFileName);
-            //normative 2008 structure /mif/COCT_MTxxxxxxxUVxx.mif
-            if (mifURL==null)
-            {
-                mifPath="mif/" + mifFileName;
-			    mifURL=FileUtil.retrieveResourceURL(mifPath);
-            }
-
-            InputStream mifIs =null;
-            InputStream mifIs2 =null;
-            if (mifURL!=null)
-            {
-                mifIs=mifURL.openStream();
-                mifIs2=mifURL.openStream();
-            }
-            else
+				//normative 2008 structure
+				mifURL=FileUtil.retrieveResourceURL(specHome+"/mif/"+mifFileName);
+				//normative 2006 structure
+				if (mifURL==null)
+					mifURL=FileUtil.retrieveResourceURL(specHome+"/"+mifFileName);				
+			}
+			
+			InputStream mifIs =null;
+			if (mifURL!=null)
+				mifIs=mifURL.openStream();
+			else
 			{
 				String mifZipFilePath= NormativeVersionUtil.getCurrentMIFIndex().getMifPath();
 				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifZip path:"+mifZipFilePath);
@@ -125,57 +79,12 @@ public class MIFParserUtil {
 					mifEntry=mifZipFile.getEntry(mifPath);
 				System.out.println("MIFParserUtil.loadUnprocessedMIF()..mifEntry:"+mifEntry.getName());
 				mifIs=mifZipFile.getInputStream(mifEntry);
-                mifIs2=mifZipFile.getInputStream(mifEntry);
-            }
+			}
 			//this.getClass().getResourceAsStream("/mif/" + mifFileName);
         	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         	DocumentBuilder db = dbf.newDocumentBuilder();
-        	Document mifDoc = null;
-
-            try
-            {
-                mifDoc = db.parse(mifIs);
-            }
-            catch(org.xml.sax.SAXParseException se)
-            {
-                //This block is for error protecting from Invalid byte 3 of 3-byte UTF-8 sequence.
-                String tempName = FileUtil.getTemporaryFileName(".mif");
-
-                try
-                {
-                    FileOutputStream fos = new FileOutputStream(tempName);
-                    DataOutputStream dos = new DataOutputStream(fos);
-
-                    while(true)
-                    {
-                        int i = -1;
-                        try
-                        {
-                            i = mifIs2.read();
-                        }
-                        catch(Exception ee)
-                        {
-                            break;
-                        }
-                        if (i < 0) break;
-                        if (i > 127) continue;
-
-                        dos.writeByte((byte)i);
-                    }
-                    dos.close();
-                    fos.close();
-                    mifDoc = db.parse(new FileInputStream(tempName));
-                    System.out.println(" ### This [Fatal Error] is Completely recovered -- " + se.getMessage());
-                }
-                catch(Exception fe)
-                {
-                    throw se;
-                }
-                File ff = new File(tempName);
-                if ((ff.exists())&&(ff.isFile())) ff.delete();
-            }
-
-            MIFParser mifParser=new MIFParser();
+        	Document mifDoc = db.parse(mifIs);
+        	MIFParser mifParser=new MIFParser();
         	boolean mifParsed=mifParser.parse(mifDoc);
       		if (!mifParsed)
       		{
@@ -204,15 +113,15 @@ public class MIFParserUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+   
 		return null;
 	}
-
+	
 	public static MIFClass loadMIFClassWithVersion(String mifFileName, String version)
 	{
 		String mifParent="hl7_home";
 		File mifParentDir=new File(mifParent);
-
+		
 		if (mifParentDir.exists()&&mifParentDir.isDirectory())
 		{
 			File[] childFiles=mifParentDir.listFiles();
@@ -229,15 +138,15 @@ public class MIFParserUtil {
 				}
 			}
 		}
-
+		
 		return null;
 	}
 	public static MIFClass getMIFClass(String mifFileName)
 	{
 		MIFClass mifClass = null;
 
-        System.out.println("## MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
-        //if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
+        System.out.println("MIFParserUtil.getMIFClass() ... mif file name : " + mifFileName);
+        if (mifFileName.trim().endsWith("QQQ")) mifFileName = mifFileName.substring(0, mifFileName.length()-4);
         try {
 //			mifClass = mifParser.loadMIF(mifFileName);
 			mifClass=loadUnprocessedMIF(mifFileName);
@@ -251,7 +160,7 @@ public class MIFParserUtil {
 	}
 
 	/**
-	 *
+	 * 
 	 * @return
 	 */
 	public static Hashtable<String, String> getDocumentElementAttributes( Node docNode )
@@ -259,9 +168,9 @@ public class MIFParserUtil {
 		Hashtable<String, String> rtnHash=new Hashtable<String, String>();
 		if (docNode==null)
 			return rtnHash;
-
+			
 		NamedNodeMap attrMap=docNode.getAttributes();
-		if (attrMap != null)
+		if (attrMap != null) 
 		{
 			for (int i=0;i<attrMap.getLength();i++)
 			{
@@ -271,26 +180,14 @@ public class MIFParserUtil {
 		}
 		return rtnHash;
 	}
-
+	
 	public static void main(String[] args) throws Exception {
 		MIFParserUtil.loadMIFClassWithVersion("mif","Normative_2006");
-
+		
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
- * HISTORY :Revision 1.19  2009/08/17 20:26:50  altturbo
- * HISTORY :Change the searching priority for resource file
- * HISTORY :
- * HISTORY :Revision 1.18  2009/08/14 21:44:49  altturbo
- * HISTORY :When search mifURL, First priority is spechome+mif+mifFilename
- * HISTORY :
- * HISTORY :Revision 1.17  2009/08/07 21:45:02  altturbo
- * HISTORY :protecting from Invalid byte 3 of 3-byte UTF-8 sequence.
- * HISTORY :
- * HISTORY :Revision 1.16  2009/03/18 15:50:53  wangeug
- * HISTORY :enable wesstart to support multiple normatives
- * HISTORY :
  * HISTORY :Revision 1.15  2009/03/13 14:55:45  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :

@@ -1,7 +1,6 @@
 package gov.nih.nci.caadapter.hl7.validation.complement;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
@@ -89,16 +88,8 @@ public class ReorganizingForValidating
             //depth = node.getDepth();
             if (node == xmlHead)
             {
-                if (messageType.equals(nodeName))
-                {
-                    complexType = messageType;
-                    complexTypeNode = xsdTree.searchMessageHeadType(complexType);
-                }
-                else
-                {
-                    complexType = messageType + "." + nodeName;
-                    complexTypeNode = xsdTree.searchComplexType(complexType);
-                }
+                complexType = messageType + "." + nodeName;
+                complexTypeNode = xsdTree.searchComplexType(complexType);
                 if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 1: " + nodeName + ", complexType=" + complexType);
                 rootElementName = nodeName;
                 doneXMLNodeList.add(node);
@@ -450,11 +441,6 @@ public class ReorganizingForValidating
         if (tempXSDFileName == null) return xsdFileName;
         else return tempXSDFileName;
     }
-    //
-    //public ValidatorResults validate()
-    //{
-    //
-    //}
 
     public static void main(String[] arg)
     {
