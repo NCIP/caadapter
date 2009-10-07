@@ -50,32 +50,24 @@ public class SchemaDirUtil
     private String getMifIndex(MIFIndex mifIndex)
     {
         String schemaPath= mifIndex.getSchemaPath();
-        //System.out.println("WWWW search...(0) : " + schemaPath);
+
         File f = new File(schemaPath);
-        if (f.exists())
+        if (!f.exists()) f = new File("../" + schemaPath);
+
+        if (!f.exists())
         {
-            if (f.isFile()) return f.getParentFile().getAbsolutePath();
-            if (f.isDirectory()) return f.getAbsolutePath();
+            System.err.println("Not Found V3 XSD Directory...");
+            return null;
         }
 
-        //if (!f.exists())
-        //{
-        //    System.err.println("Not Found V3 XSD Directory...(1) : " + schemaPath);
-        //    return null;
-        //}
-
-        //if (f.isDirectory()) return f.getAbsolutePath();
+        if (f.isDirectory()) return f.getAbsolutePath();
 
         String parent = f.getParent();
         if (!parent.endsWith(File.separator)) parent = parent + File.separator;
-
         File sdir = new File(parent + "schemas");
         if ((sdir.exists())&&(sdir.isDirectory())) return sdir.getAbsolutePath();
 
-        File sdir2 = new File(parent + "schemas.zip");
-        if ((sdir2.exists())&&(sdir2.isFile())) return sdir.getParentFile().getAbsolutePath();
-
-        System.err.println("Not Found V3 XSD Directory...(2) : " + parent + "schemas");
+        System.err.println("Not Found V3 XSD Directory...");
         return null;
     }
 }

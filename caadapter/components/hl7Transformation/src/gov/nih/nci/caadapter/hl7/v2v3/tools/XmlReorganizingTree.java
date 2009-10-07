@@ -17,10 +17,6 @@ import java.util.Stack;
 import gov.nih.nci.caadapter.common.util.ClassLoaderUtil;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.common.ApplicationException;
-import gov.nih.nci.caadapter.common.function.DateFunction;
-import gov.nih.nci.caadapter.common.function.FunctionException;
-import gov.nih.nci.caadapter.common.validation.ValidatorResults;
-import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,15 +27,8 @@ import gov.nih.nci.caadapter.hl7.validation.XMLValidator;
  */
 public class XmlReorganizingTree
 {
-    private DefaultMutableTreeNode headOfMain;
-    private DefaultMutableTreeNode current = null;
-    private String schemaFileName = null;
-    private ZipUtil zipUtil = null;
+    DefaultMutableTreeNode headOfMain;
 
-    public XmlReorganizingTree()
-    {
-
-    }
     public XmlReorganizingTree(String source) throws ApplicationException
     {
         if ((source == null)||(source.trim().equals("")))
@@ -49,7 +38,7 @@ public class XmlReorganizingTree
 
         boolean isFileObject = true;
 
-        if (source.length() > 1000) isFileObject = false;
+        if (source.length() > 500) isFileObject = false;
 
         headOfMain = new DefaultMutableTreeNode("Empty") ;
         if (isFileObject)
@@ -334,7 +323,7 @@ public class XmlReorganizingTree
                     if ((nm.equalsIgnoreCase("nullFlavor"))&&(vl.equals("NP")))
                     {
                         if (hasNodeValue(node)) checked = false;
-                        //vl = "NI";
+                        vl = "NI";
                     }
                     if (nm.equalsIgnoreCase("_dummy__")) checked = false;
 //                    if (nm.equalsIgnoreCase("xsi:type"))
@@ -352,11 +341,11 @@ public class XmlReorganizingTree
 //                        }
 //                    }
                     if (checked)
-                        att = att + " " + nm + "=\"" + convertValue(vl) + "\"";
+                        att = att + " " + nm + "=\"" + vl + "\"";
                 }
                 else if (xNode.getRole().equals(xNode.getRoleKind()[2]))
                 {
-                    line = line + convertValue(xNode.getValue());
+                    line = line + xNode.getValue();
                 }
             }
 
@@ -428,20 +417,6 @@ public class XmlReorganizingTree
         if ((pre == null)||(pre.size() == 0)) System.err.println("Failure building xml element list : ");
         for (String string:pre) System.out.println(string);
     }
-    public String printStringXML()
-    {
-        return printStringXML(-1);
-    }
-    public String printStringXML(int levelOfDatatypeOutputValue)
-    {
-        int levelOfDatatypeValue = getLevelOfDatatypeOutputValue(levelOfDatatypeOutputValue);
-        List<String> pre = prepareXMLList(levelOfDatatypeValue);
-        if ((pre == null)||(pre.size() == 0)) System.err.println("Failure building xml element list : ");
-
-        String res = "";
-        for (String string:pre) res = res + string + "\r\n";
-        return res;
-    }
     public void generatingXMLFile(String fileName) throws IOException
     {
         generatingXMLFile(fileName, -1);
@@ -490,179 +465,4 @@ public class XmlReorganizingTree
         */
     }
 
-    public void setSchemaFileName(String fileName) throws ApplicationException
-    {
-        if (fileName == null) fileName = "";
-        else fileName = fileName.trim();
-        if (fileName.equals("")) throw new ApplicationException("Schema file name is null or empty.");
-        if (!fileName.toLowerCase().endsWith(".xsd")) throw new ApplicationException("This file is not a XML schema file. : " + fileName);
-        File file = new File(fileName);
-        if ((!file.exists())||(!file.isFile())) throw new ApplicationException("This Schema file is not exist. : " + fileName);
-
-        schemaFileName = fileName;
-    }
-    public String getSchemaFileName(String fileName)
-    {
-        return schemaFileName;
-    }
-    public ValidatorResults validate()
-    {
-        return validate(true);
-    }
-    public ValidatorResults validate(boolean reorganize)
-    {
-        ValidatorResults results = null;
-
-        if (schemaFileName == null) return null;
-        String msg = printStringXML();
-        if ((msg == null)||(msg.trim().equals(""))) return null;
-        String s = schemaFileName;
-        if (this.getZipUtil() != null) s = this.getZipUtil().getInitialFile();
-        XMLValidator v = new XMLValidator(msg, s, reorganize);
-
-        results = v.validate();
-
-        return results;
-    }
-
-    public void setCurrentNode(DefaultMutableTreeNode node)
-    {
-        current = node;
-    }
-    public DefaultMutableTreeNode getCurrentNode()
-    {
-        return current;
-    }
-    public ZipUtil getZipUtil()
-    {
-        return zipUtil;
-    }
-    public void setZipUtil(ZipUtil zUtil)
-    {
-        zipUtil = zUtil;
-    }
-
-    public String getNodeName(DefaultMutableTreeNode node)
-    {
-        if (node == null) return null;
-        if (node.getUserObject() == null) return null;
-        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
-        if (xNode == null) return null;
-        return xNode.getName();
-    }
-    public String getNodeValue(DefaultMutableTreeNode node)
-    {
-        if (node == null) return null;
-        if (node.getUserObject() == null) return null;
-        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
-        if (xNode == null) return null;
-        return xNode.getValue();
-    }
-    public String getNodeRole(DefaultMutableTreeNode node)
-    {
-        if (node == null) return null;
-        if (node.getUserObject() == null) return null;
-        XmlTreeBrowsingNode xNode = (XmlTreeBrowsingNode) node.getUserObject();
-        if (xNode == null) return null;
-        return xNode.getRole();
-    }
-
-    private String convertValue(String value)
-    {
-        String STARTING_TAG = "%!";
-        String ENDING_TAG = "!%";
-
-        if (value == null) return "";
-        //int idx = value.indexOf(STARTING_TAG);
-        //if (idx < 0) return value;
-
-        String str = "";
-        String val1 = value;
-        String val2 = "";
-        String val = "";
-        while(true)
-        {
-            int idx = val1.indexOf(STARTING_TAG);
-
-            if (idx > 0)
-            {
-                str = str + val1.substring(0, idx);
-                val2 = val2 + val1.substring(0, idx + STARTING_TAG.length());
-                val1 = val1.substring(idx + STARTING_TAG.length());
-            }
-            else if (idx == 0)
-            {
-                val2 = val2 + val1.substring(0, STARTING_TAG.length());
-                val1 = val1.substring(STARTING_TAG.length());
-            }
-            else
-            {
-                str = str + val1;
-                break;
-            }
-
-            int idx1 = val1.indexOf(ENDING_TAG);
-
-            if (idx1 >= 0)
-            {
-                val = val1.substring(0, idx1);
-                val2 = val2 + val1.substring(0, idx1 + ENDING_TAG.length());
-                val1 = val1.substring(idx1 + ENDING_TAG.length());
-            }
-            else
-            {
-                val = val1;
-                val2 = val2 + val1;
-                val1 = "";
-            }
-
-            //System.out.println("FFFFF1 val=" + val);
-            if ((val.trim().toLowerCase().startsWith("currenttime"))||
-                (val.trim().toLowerCase().startsWith("current_time")))
-            {
-                val = val.trim();
-                DateFunction df = new DateFunction();
-                String format = df.getDefaultDateFormatString();
-                int idx2 = val.indexOf(":");
-                if (idx2 > 0) format = val.substring(idx2+1);
-                String dt = "";
-
-                try
-                {
-                    dt = df.getCurrentTime(format);
-                }
-                catch(FunctionException fe)
-                {
-                    dt = df.getCurrentTime();
-                }
-                //System.out.println("FFFFF2 foramt=" + format + ", date=" + dt + ", df.getDefaultDateFormatString()=" + df.getDefaultDateFormatString());
-                str = str + dt;
-            }
-            else if (val.trim().toLowerCase().startsWith("random"))
-            {
-                int digit = 0;
-                String digitO = "";
-                int idx2 = val.indexOf(":");
-                if (idx2 > 0) digitO = val.substring(idx2+1);
-                else digitO = "x";
-
-                try
-                {
-                    digit = Integer.parseInt(digitO);
-                }
-                catch(NumberFormatException fe)
-                {
-                    digit = 5;
-                }
-                int vl = FileUtil.getRandomNumber(digit);
-                //System.out.println("FFFFF2 digitO=" + digitO + ", digit=" + digit + ", value=" + vl);
-                str = str + vl;
-            }
-            else str = str + val2;
-
-            val2 = "";
-        }
-
-        return str;
-    }
 }
