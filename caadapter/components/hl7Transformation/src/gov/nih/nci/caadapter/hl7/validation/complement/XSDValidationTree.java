@@ -2,6 +2,7 @@ package gov.nih.nci.caadapter.hl7.validation.complement;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
 import gov.nih.nci.caadapter.common.util.Config;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBuildEventHandler;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -29,10 +30,12 @@ public class XSDValidationTree
     private String mainXSDFile = null;
     private List<String> includeFileList = new ArrayList<String>();
     private List<String> finished = new ArrayList<String>();
+    //private boolean isHL7TypeOnly = false;
 
 
     public XSDValidationTree(String xsdFile) throws ApplicationException
     {
+
         if ((xsdFile == null)||(xsdFile.trim().equals("")))
             throw new ApplicationException("Source schema file is null.");
         xsdFile = xsdFile.trim();
@@ -53,41 +56,12 @@ public class XSDValidationTree
         }
         else fileName = xsdFile;
 
-        int idx = fileName.indexOf(Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
-        if (idx < 0) throw new ApplicationException("This file is not an HL7 schema. : " + xsdFile + ", " + fileName + ", " + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
+        String baseUri = null;
 
-        String baseUri = fileName.substring(0, idx);
+            int idx = fileName.indexOf(Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
+            //if (idx < 0) throw new ApplicationException("This file is not an HL7 schema. : " + xsdFile + ", " + fileName + ", " + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
+            baseUri = fileName.substring(0, idx);
 
-
-
-
-
-
-
-
-        //File file0 = new File(xsdFile);
-        //if ((!file0.exists())||(!file0.isFile()))
-        //{
-        //    throw new ApplicationException("Source schema file is neither exist nor a file. (main) : " + xsdFile);
-        //}
-//        mainXSDFile = fileName;
-//
-//        String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
-//        //String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
-//        if (!grandParentDir.endsWith(File.separator)) grandParentDir = grandParentDir + File.separator;
-//
-//        String coreDir = grandParentDir + "coreschemas";
-//        File file = new File(coreDir);
-//        if ((!file.exists())||(!file.isDirectory()))
-//           throw new ApplicationException("This is neither exist nor a directory. (coreschemas) : " + xsdFile);
-//
-//        for(File core:file.listFiles())
-//        {
-//            if (!core.isFile()) continue;
-//            String path = core.getAbsolutePath().trim();
-//            if (!path.toLowerCase().endsWith(".xsd")) continue;
-//            includeFileList.add(path);
-//        }
 
         parseXSDFile(fileName, true);
 
@@ -97,10 +71,16 @@ public class XSDValidationTree
         while(true)
         {
             String str = null;
+            String parentXSD = null;
             for(int i=0;i<includeFileList.size();i++)
             {
                 String str1 = includeFileList.get(i);
-
+                int index = str1.indexOf("|");
+                if (index > 0)
+                {
+                    parentXSD = str1.substring(0, index);
+                    str1 = str1.substring(index+1);
+                }
                 boolean cTag2 = false;
                 for(String str2:finished)
                 {
@@ -115,17 +95,21 @@ public class XSDValidationTree
                     break;
                 }
             }
-            str = assembleURI(baseUri, str);
-            if (str == null) break;
+            String str3 = assembleURI(baseUri, str, parentXSD);
+            System.out.println("WWWWW FFFF : " + str3 + ", " + baseUri + ", " + str + ", " + parentXSD);
+            if (str3 == null) break;
 
-            parseXSDFile(str, false);
-            System.out.println("WWWW parsed : " + str);
-            finished.add(str);
+            parseXSDFile(str3, false);
+            //System.out.println("WWWW parsed : " + str3);
+            finished.add(str3);
             if (finished.size() == includeFileList.size()) break;
         }
     }
-
-    private String getTypeName(String str)
+    public List<String> getFinishedSchemaList()
+    {
+        return finished;
+    }
+    public String getTypeName(String str)
     {
         String msgType = "";
         for (int i=str.length();i>0;i--)
@@ -138,17 +122,61 @@ public class XSDValidationTree
         return msgType;
     }
 
-    private String assembleURI(String baseUri, String str)
+    private String assembleURI(String baseUri, String xsdFile, String parentXSD)
     {
-        if (str == null) return null;
-        str = str.trim();
-        if (str.equals("")) return null;
-        String msgType = getTypeName(str);
 
-        if (isV3MessageType(msgType)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
+        String finalPath = null;
+        boolean isLocalFile = false;
+
+        if (xsdFile == null) return null;
+        xsdFile = xsdFile.trim();
+        if (xsdFile.equals("")) return null;
+        String str = xsdFile;
+        String msgType = getTypeName(str);
+        while(true)
+        {
+            File file = new File(str);
+
+            if ((file.exists())&&(file.isFile()))
+            {
+                finalPath = file.getAbsolutePath();
+
+                isLocalFile = true;
+                break;
+            }
+            else if (str.toLowerCase().startsWith("file:/"))
+            {
+                str = str.substring(("file:/").length());
+                while(true)
+                {
+                    String achar = str.substring(0, 1);
+                    if (achar.equals("/")) str = str.substring(1);
+                    else break;
+                }
+                if (!File.separator.equals("/")) str = str.replace("/", File.separator);
+            }
+            else break;
+        }
+        if (finalPath != null) return finalPath;
+
+        if ((xsdFile.toLowerCase().startsWith("jar:file:/"))&&(xsdFile.indexOf("!") > 0)) return xsdFile;
+
+        if (parentXSD == null) parentXSD = "";
+        else parentXSD = parentXSD.trim();
+        while(!parentXSD.equals(""))
+        {
+            int idx = parentXSD.indexOf(Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME);
+            if (idx < 0) idx = parentXSD.indexOf(Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
+            if (idx < 0) break;
+            baseUri = parentXSD.substring(0, idx);
+            break;
+        }
+
+        if (isH3SAssociationType(msgType)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
         else baseUri = baseUri + Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
         return baseUri;
     }
+    /*
     private boolean isV3MessageType(String str)
     {
         int idx = str.indexOf(".");
@@ -186,7 +214,7 @@ public class XSDValidationTree
         }
         return true;
     }
-
+    */
     public void insertIncludeFileList(String xsdFile) throws ApplicationException
     {
 //        if ((xsdFile == null)||(xsdFile.trim().equals("")))
@@ -287,7 +315,7 @@ public class XSDValidationTree
             SAXParser parser = factory.newSAXParser();
 
             XMLReader producer = parser.getXMLReader();
-            handler = new XSDValidationEventHandler(this);
+            handler = new XSDValidationEventHandler(this, xsdFile);
 
             producer.setContentHandler(handler);
 
@@ -560,12 +588,14 @@ public class XSDValidationTree
         name = name.trim();
         if (name.equals("")) return false;
 
+        name = this.getTypeName(name);
+
         int idx = name.indexOf(".");
         if (idx < 0) return false;
 
         String str = name.substring(0, idx);
         int len = str.length();
-        if ((len < 7)||(len > 17)) return false;
+        if ((len < 13)||(len > 17)) return false;
 
         char[] chrs = str.toCharArray();
         int i = 0;
@@ -574,15 +604,17 @@ public class XSDValidationTree
         {
             int n = (int) chr;
             boolean isNumeric = false;
+            boolean isCapital = false;
             int cx = 0;
             //System.out.print("FFFFF 4 ("+i+"): " + chr + "," + n);
             if ((n >= 48)&&(n <= 57)) isNumeric = true;
-            else if (((n >= 65)&&(n <= 90))||(n==95)) {}
+            else if ((n >= 65)&&(n <= 90)) isCapital = true;
+            else if (n == 95) {}
             else cx = 1;
 
             if ((i==0)||(i==1)||(i==2)||(i==3)||(i==5)||(i==6))
             {
-                if (isNumeric) cx = 2;
+                if (!isCapital) cx = 2;
             }
             else if ((i==7)||(i==8)||(i==9)||(i==10)||(i==11)||(i==12)||(i==15)||(i==16))
             {
@@ -600,12 +632,9 @@ public class XSDValidationTree
             {
                 if (n != 86) cx = 6;
             }
+
             if(cx == 0) {}// System.out.println("");
-            else
-            {
-                //System.out.println(", checked=" + cx);
-                return false;
-            }
+            else return false;
 
             i++;
         }

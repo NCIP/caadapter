@@ -30,12 +30,14 @@ public class XSDValidationEventHandler extends DefaultHandler
 
     boolean justStart = false;
     DefaultMutableTreeNode toBeContinued = null;
+    String xsdFileName = "";
 
-    public XSDValidationEventHandler(XSDValidationTree treeN)
+    public XSDValidationEventHandler(XSDValidationTree treeN, String xsdFile)
     {
         super();
         tree = treeN;
         headNode = null;
+        xsdFileName = xsdFile;
         //headNode.removeAllChildren();
         //justStart = false;
         //System.out.println("XXXXX 888");
@@ -90,7 +92,9 @@ public class XSDValidationEventHandler extends DefaultHandler
             {
                 try
                 {
-                    tree.insertIncludeFileList(val);
+                    //System.out.println("WWWW xsdFileName : " + xsdFileName);
+                    if ((xsdFileName == null)||(xsdFileName.trim().equals(""))) tree.insertIncludeFileList(val);
+                    else tree.insertIncludeFileList(xsdFileName.trim() + "|" + val);
                 }
                 catch(ApplicationException ae)
                 {

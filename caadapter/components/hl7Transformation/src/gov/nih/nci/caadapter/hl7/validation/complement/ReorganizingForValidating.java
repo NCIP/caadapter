@@ -6,13 +6,18 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBrowsingNode;
-
+                                            
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+//import org.apache.tools.zip.ZipFile;
+//import org.apache.tools.zip.ZipOutputStream;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,6 +48,8 @@ public class ReorganizingForValidating
     private DefaultMutableTreeNode xmlHead = null;
     private DefaultMutableTreeNode xsdHead = null;
 
+    private boolean isZipFileEntry = false;
+
     public ReorganizingForValidating(String xmlFile, String xsdFile) throws ApplicationException
     {
         processReorganizing(xmlFile, xsdFile, false);
@@ -61,6 +68,9 @@ public class ReorganizingForValidating
         //System.out.println("WWWWW X2");
         xsdTree = new XSDValidationTree(xsdFile);
         xsdHead = xsdTree.getHeadNode();
+
+        if (!xsdTree.isH3SAssociationType(xsdFile)) throw new ApplicationException("This xsd File is not an HL7 schema. : " + xsdFile);
+
         //System.out.println("WWWWW X3");
         DefaultMutableTreeNode node = null;
         String complexType = "";
@@ -109,7 +119,7 @@ public class ReorganizingForValidating
                 //doneXMLNodeList.add(node);
                 //doneXSDNodeList.add(complexTypeNode);
                 ((XmlTreeBrowsingNode)node.getUserObject()).setXSDNode(complexTypeNode);
-
+                //System.out.println("Node Name : " + nodeName + ", " + ((XmlTreeBrowsingNode)node.getUserObject()).getXSDNode());
             }
             else
             {
@@ -131,8 +141,8 @@ public class ReorganizingForValidating
 //                }
 //                else
 //                {
-                    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-                    int n = -1;
+
+
 
 
                     /*
@@ -148,7 +158,9 @@ public class ReorganizingForValidating
 //                    }
                     DefaultMutableTreeNode jNode = doneXSDNodeList.get(n);
                     */
-                    DefaultMutableTreeNode jNode = ((XmlTreeBrowsingNode)node.getUserObject()).getXSDNode();
+                    DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+                    DefaultMutableTreeNode jNode = ((XmlTreeBrowsingNode)parent.getUserObject()).getXSDNode();
+                    if (jNode == null) throw new ApplicationException("No match ready-accessed node name 1: " + nodeName + ", parent: " + getName(parent));
                     if (!xsdTree.isComplexType(jNode)) continue;
                     //if (!xsdTree.isH3SAssociationType(getName(jNode))) continue;
                     List<String> tempNameList = xsdTree.getH3SSequenceElementsNames(jNode);
@@ -157,9 +169,9 @@ public class ReorganizingForValidating
                         //throw new ApplicationException("null item found association number between xml and xsd 1: " + nodeName + ", parent: " + getName(parent) + " (" + tempTypeList +"/"+ tempNameList + ")");
                         continue;
                     if (tempTypeList.size() != tempNameList.size())
-                               throw new ApplicationException("unmatched child association number between xml and xsd 1: " + nodeName + ", parent: " + getName(parent) + " (" + tempTypeList.size() +"/"+ tempNameList.size() + ")");
+                               throw new ApplicationException("Unmatched number of child associations between name and type of XSD 1: " + nodeName + ", parent: " + getName(parent) + " (" + tempTypeList.size() +"/"+ tempNameList.size() + ")");
 
-                    n = -1;
+                    int n = -1;
                     //System.out.println("WWWWW X4-1-2 : tempNameList.size()" + tempNameList.size());
                     for(int i=0;i<tempNameList.size();i++)
                     {
@@ -208,15 +220,14 @@ public class ReorganizingForValidating
         //System.out.println("WWWWW X5");
         if (tempXSDCreating)
         {
-            File file = new File(xsdFileName);
-            String dir= file.getParentFile().getAbsolutePath().trim();
-            String fileName = file.getName().trim();
-            String tempFileName = dir + File.separator + fileName.substring(0, fileName.length()-4) + "___TEMP" + fileName.substring(fileName.length()-4);
             try
             {
-                insertRootElmentToXSDFile(tempFileName, true);
+                if (!insertRootElmentToXSDFile(null, true)) System.out.println("WWWWW Inserting Element : false");
             }
-            catch(IOException ie) {}
+            catch(IOException ie)
+            {
+                System.out.println("WWWWW Inserting Element IOException : " + ie.getMessage());
+            }
         }
         //System.out.println("WWWWW X6");
         //xmlTree.printXML();
@@ -343,7 +354,91 @@ public class ReorganizingForValidating
     public boolean insertRootElmentToXSDFile(String outFileName, boolean isTemp) throws IOException
     {
         tempXSDFileName = null;
-        List<String> listLine = FileUtil.readFileIntoList(xsdFileName);
+        List<String> listLine = null;
+
+        if (outFileName == null) outFileName = "";
+        else outFileName = outFileName.trim();
+
+        String xsdFile = xsdFileName;
+
+        if (xsdTree.getTypeName(xsdFile).indexOf("_IN") > 0) return false;
+        boolean isLocalFile = false;
+        while(true)
+        {
+            File file = new File(xsdFile);
+
+            if ((file.exists())&&(file.isFile()))
+            {
+                String dir= file.getParentFile().getAbsolutePath().trim();
+                String fileName = file.getName().trim();
+                if (outFileName.equals(""))
+                {
+                    while(true)
+                    {
+                        outFileName = dir + File.separator + fileName.substring(0, fileName.length()-4) + "_TEMP" + FileUtil.getRandomNumber(5) + fileName.substring(fileName.length()-4);
+                        File file2 = new File(outFileName);
+                        if ((!file2.exists())||(!file2.isFile())) break;
+                    }
+                }
+                xsdFile = file.getAbsolutePath();
+                listLine = FileUtil.readFileIntoList(xsdFile);
+                isLocalFile = true;
+                break;
+            }
+            else if (xsdFile.toLowerCase().startsWith("file:/"))
+            {
+                xsdFile = xsdFile.substring(("file:/").length());
+                while(true)
+                {
+                    String achar = xsdFile.substring(0, 1);
+                    if (achar.equals("/")) xsdFile = xsdFile.substring(1);
+                    else break;
+                }
+                if (!File.separator.equals("/")) xsdFile = xsdFile.replace("/", File.separator);
+            }
+            else
+            {
+                xsdFile = null;
+                break;
+            }
+        }
+
+        String zipFileName = null;
+        //String entryName = null;
+        if (xsdFile == null)
+        {
+            xsdFile = xsdFileName;
+            if (xsdFile.toLowerCase().startsWith("jar:file:/"))
+            {
+                xsdFile = xsdFile.substring(("jar:file:/").length());
+
+                while(true)
+                {
+                    String achar = xsdFile.substring(0, 1);
+                    if (achar.equals("/")) xsdFile = xsdFile.substring(1);
+                    else break;
+                }
+            }
+            else throw new IOException("This schema file cannot be transformed. : " + xsdFile);
+
+
+
+            int idx = xsdFile.indexOf("!");
+            if (idx < 0) throw new IOException("Invalid zip file URL : " + xsdFile);
+            zipFileName = xsdFile.substring(0, idx);
+            //entryName = xsdFile.substring(idx+1);
+            if (!zipFileName.toLowerCase().endsWith(".zip")) throw new IOException("This is not a zip file. : " + zipFileName);
+            if (!File.separator.equals("/")) zipFileName = zipFileName.replace("/", File.separator);
+
+            File file = new File(zipFileName);
+
+            if ((!file.exists())||(!file.isFile())) throw new IOException("This zip file is not exist : " + zipFileName);
+
+
+            String tempF = FileUtil.downloadFromURLtoTempFile(xsdFileName);
+            listLine = FileUtil.readFileIntoList(tempF);
+        }
+
         String elementLine = "element";
         String nameAttr = "name=\"" + rootElementName + "\"";
         String typeAttr = "type=\"" + messageType + "." + rootElementName + "\"";
@@ -354,6 +449,7 @@ public class ReorganizingForValidating
         String reserved = "";
         List<String> tempListLine = new ArrayList<String>();
 
+        String searchIncludeKey = "include schemalocation=\"";
         String beforeStr = null;
             for (String str:listLine)
             {
@@ -363,6 +459,28 @@ public class ReorganizingForValidating
                 if (beforeStr == null) beforeStr = str;
                 else
                 {
+                    int index = beforeStr.toLowerCase().indexOf(searchIncludeKey);
+                    while((!isLocalFile)&&(index > 0))
+                    {
+                        String beforeStr2 = beforeStr;
+                        String line = "";
+                        line = line + beforeStr2.substring(0, index + (searchIncludeKey).length());
+                        beforeStr2 = beforeStr2.substring(index + (searchIncludeKey).length());
+                        index = beforeStr2.indexOf("\"");
+                        String fileL = beforeStr2.substring(0, index);
+                        String tail = beforeStr2.substring(index);
+                        if (index < 0) break;
+                        List<String> list = xsdTree.getFinishedSchemaList();
+                        String url = null;
+                        for (String sst:list)
+                        {
+                            if (xsdTree.getTypeName(sst).equals(xsdTree.getTypeName(fileL))) url = sst;
+                        }
+                        if (url == null) break;
+                        beforeStr = line + url + tail;
+
+                        break;
+                    }
                     tempListLine.add(beforeStr);
                     beforeStr = str;
                 }
@@ -388,7 +506,7 @@ public class ReorganizingForValidating
                 if (str.trim().equals("")) continue;
                 if (remarkTag) continue;
 
-                idx = str.toLowerCase().indexOf("include schemalocation=\"");
+                idx = str.toLowerCase().indexOf(searchIncludeKey);
                 String elementHeader = "";
                 if (!includeStartTag)
                 {
@@ -432,30 +550,82 @@ public class ReorganizingForValidating
             }
         if (beforeStr != null) tempListLine.add(beforeStr);
 
-        if (insertedTag)
-        {
+        if (!insertedTag) return false;
+        if ((tempListLine == null)||(tempListLine.size() == 0)) throw new IOException("inserted string list creation failure.");
+
+        if (!isLocalFile) outFileName = FileUtil.getTemporaryFileName(".xsd");
+
             try
             {
                 FileWriter fw = new FileWriter(outFileName);
-                for (String str:tempListLine) fw.write(str+"\r\n");
+                for (String str:tempListLine)
+                {
+                    System.out.println(str);
+                    fw.write(str+"\r\n");
+                }
                 fw.close();
             }
             catch(Exception ie)
             {
                 throw new IOException("Failure insert Root Elment To " + outFileName + " : " + ie.getMessage());
             }
-            File fileOut = new File(outFileName);
-            File fileXSD = new File(xsdFileName);
-            if (!fileOut.getAbsolutePath().equals(fileXSD.getAbsolutePath()))
-            {
+
                 tempXSDFileName = outFileName;
-                if (isTemp) fileOut.deleteOnExit();
-            }
+                if (isTemp) (new File(outFileName)).deleteOnExit();
+
 
             return true;
+
+
+
+
+
+        /*
+        if(zipFileName == null) throw new IOException("Zip File name is null. : " + xsdFile);
+
+        ZipFile zipFile = new ZipFile(zipFileName);
+        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+        OutputStream outputStream = new FileOutputStream(zipFileName);
+        ZipOutputStream zipOut = new ZipOutputStream(outputStream);
+
+        OutputStreamWriter writer=new OutputStreamWriter(zipOut);
+        String entryName2 = null;
+        while(true)
+        {
+            entryName2 = entryName.substring(0, entryName.length()-4) + "_TEMP" + FileUtil.getRandomNumber(5) + entryName.substring(entryName.length()-4);
+            if (zipFile.getEntry(entryName2) == null) break;
         }
-        //System.out.println("Nothing changed, so No xsd file created or modified. : " + outFileName);
-        return false;
+
+        try
+        {
+
+            while(entries.hasMoreElements())
+            {
+                ZipEntry entry = entries.nextElement();
+                System.out.println("WWWWW Entry : " + entry.getName());
+                zipOut.putNextEntry(entry);
+                zipOut.closeEntry();
+            }
+            zipOut.putNextEntry(new ZipEntry(entryName2));
+            for (String str:tempListLine) writer.write(str+"\r\n");
+            zipOut.closeEntry();
+            writer.flush();
+            zipOut.finish();
+        }
+        catch(Exception ie)
+        {
+            throw new IOException("Failure insert Root Elment To zip file " + outFileName + " : " + ie.getMessage());
+        }
+
+        tempXSDFileName = xsdFileName.substring(0, xsdFileName.indexOf("!") + 1) + entryName2;
+        isZipFileEntry = true;
+        return true;
+        */
+    }
+
+    public boolean isZipFileEntry()
+    {
+        return isZipFileEntry;
     }
 
     private String makeStringLowerAndSimple(String str)
