@@ -55,13 +55,13 @@ public class ReorganizingForValidating
     {
         checkFile("xml", xmlFile);
         checkFile("xsd", xsdFile);
-
+        //System.out.println("WWWWW X1");
         xmlTree = new XmlReorganizingTree(xmlFile);
         xmlHead = xmlTree.getHeadNode();
-
+        //System.out.println("WWWWW X2");
         xsdTree = new XSDValidationTree(xsdFile);
         xsdHead = xsdTree.getHeadNode();
-
+        //System.out.println("WWWWW X3");
         DefaultMutableTreeNode node = null;
         String complexType = "";
         DefaultMutableTreeNode complexTypeNode = null;
@@ -69,18 +69,23 @@ public class ReorganizingForValidating
         List<String> nameList = null;
         List<String> typeList = null;
 
-        List<DefaultMutableTreeNode> doneXMLNodeList = new ArrayList<DefaultMutableTreeNode>();
-        List<DefaultMutableTreeNode> doneXSDNodeList = new ArrayList<DefaultMutableTreeNode>();
+        //List<DefaultMutableTreeNode> doneXMLNodeList = new ArrayList<DefaultMutableTreeNode>();
+        //List<DefaultMutableTreeNode> doneXSDNodeList = new ArrayList<DefaultMutableTreeNode>();
 
         //int depth = 0;
         //int beforeDepth = 0;
+        //System.out.println("WWWWW X4");
+        int t = 0;
         while(true)
         {
+            t++;
+
             if (node == null) node = xmlHead;
             else node = node.getNextNode();
 
             if (node == null) break;
             if (getElementType(node) != ELEMENT) continue;
+            //System.out.println("WWWWW X4-1 : " + t + ", elementName=" + this.getName(node));
 
             String nodeName = getName(node);
             int idx = nodeName.indexOf(";");
@@ -101,8 +106,10 @@ public class ReorganizingForValidating
                 }
                 if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 1: " + nodeName + ", complexType=" + complexType);
                 rootElementName = nodeName;
-                doneXMLNodeList.add(node);
-                doneXSDNodeList.add(complexTypeNode);
+                //doneXMLNodeList.add(node);
+                //doneXSDNodeList.add(complexTypeNode);
+                ((XmlTreeBrowsingNode)node.getUserObject()).setXSDNode(complexTypeNode);
+
             }
             else
             {
@@ -126,6 +133,10 @@ public class ReorganizingForValidating
 //                {
                     DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
                     int n = -1;
+
+
+                    /*
+                    System.out.println("WWWWW X4-1-1 : doneXMLNodeList.size()" + doneXMLNodeList.size());
                     for(int i=0;i<doneXMLNodeList.size();i++)
                     {
                         if (parent == doneXMLNodeList.get(i)) n = i;
@@ -136,6 +147,8 @@ public class ReorganizingForValidating
 //                        continue;
 //                    }
                     DefaultMutableTreeNode jNode = doneXSDNodeList.get(n);
+                    */
+                    DefaultMutableTreeNode jNode = ((XmlTreeBrowsingNode)node.getUserObject()).getXSDNode();
                     if (!xsdTree.isComplexType(jNode)) continue;
                     //if (!xsdTree.isH3SAssociationType(getName(jNode))) continue;
                     List<String> tempNameList = xsdTree.getH3SSequenceElementsNames(jNode);
@@ -147,6 +160,7 @@ public class ReorganizingForValidating
                                throw new ApplicationException("unmatched child association number between xml and xsd 1: " + nodeName + ", parent: " + getName(parent) + " (" + tempTypeList.size() +"/"+ tempNameList.size() + ")");
 
                     n = -1;
+                    //System.out.println("WWWWW X4-1-2 : tempNameList.size()" + tempNameList.size());
                     for(int i=0;i<tempNameList.size();i++)
                     {
                         //System.out.println("FFFFF 7 : "  + nodeName + ", parent: " + getName(parent) +" => " + tempNameList.get(i));
@@ -157,17 +171,18 @@ public class ReorganizingForValidating
                     complexType = tempTypeList.get(n);
 
                     complexTypeNode = xsdTree.searchComplexType(complexType);
-                    if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 3: " + nodeName + ", parent: " + getName(parent));
+                    if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 3: " + nodeName + ", parent: " + getName(parent) + ", complexType=" + complexType);
 
-                    doneXMLNodeList.add(node);
-                    doneXSDNodeList.add(complexTypeNode);
+                    ((XmlTreeBrowsingNode)node.getUserObject()).setXSDNode(complexTypeNode);
+                    //doneXMLNodeList.add(node);
+                    //doneXSDNodeList.add(complexTypeNode);
                     if (!xsdTree.isH3SAssociationType(complexType)) continue;
                     if ((tempTypeList.size() == 0)&&(tempNameList.size() == 0)) continue;
                     if ((tempTypeList.size() == 1)&&(tempNameList.size() == 1)) continue;
 
 //                }
             }
-
+            //System.out.println("WWWWW X4-2 : ");
 
 
             nameList = xsdTree.getH3SAssociationNames(complexTypeNode);
@@ -183,13 +198,14 @@ public class ReorganizingForValidating
             //for (String sr:nameList) System.out.println("FFFFF 8 : " + sr);
             //for(int i=0;i<node.getChildCount();i++)  System.out.println("FFFFF 9 : " + getName((DefaultMutableTreeNode)node.getChildAt(i)));
 
-
+            //System.out.println("WWWWW X4-3 : ");
             xmlTree.reorderingChildNodes(node, nameList);
+            //System.out.println("WWWWW X4-4 : ");
             //for(int i=0;i<node.getChildCount();i++)  System.out.println("FFFFF 10 : " + getName((DefaultMutableTreeNode)node.getChildAt(i)));
 
             //beforeDepth = depth;
         }
-
+        //System.out.println("WWWWW X5");
         if (tempXSDCreating)
         {
             File file = new File(xsdFileName);
@@ -202,6 +218,7 @@ public class ReorganizingForValidating
             }
             catch(IOException ie) {}
         }
+        //System.out.println("WWWWW X6");
         //xmlTree.printXML();
     }
     public XmlReorganizingTree getXMLTree()
@@ -216,22 +233,42 @@ public class ReorganizingForValidating
     private void checkFile(String tag, String fileName) throws ApplicationException
     {
         if ((fileName == null)||(fileName.trim().equals("")))
-            throw new ApplicationException(tag + "File name is null.");
+            throw new ApplicationException(tag + " File name is null.");
         fileName = fileName.trim();
 
         File file = new File(fileName);
 
-        if (!file.exists()) throw new ApplicationException("This "+tag+" file is not exist. : " + fileName);
-        if (!file.isFile()) throw new ApplicationException("This "+tag+" is not a file. : " + fileName);
-
-        if (tag.equals("xml")) xmlFileName = file.getAbsolutePath();
+        if (tag.equals("xml"))
+        {
+            if (!file.exists()) throw new ApplicationException("This "+tag+" file is not exist. : " + fileName);
+            if (!file.isFile()) throw new ApplicationException("This "+tag+" is not a file. : " + fileName);
+            xmlFileName = file.getAbsolutePath();
+        }
         if (tag.equals("xsd"))
         {
-            String msgType = file.getName();
+            if ((file.exists())&&(file.isFile()))
+            {
+                String xsdFile = file.getAbsolutePath();
+
+                if ((!File.separator.equals("/"))&&(xsdFile.indexOf(File.separator) >= 0))
+                {
+                    xsdFile = xsdFile.replace(File.separator, "/");
+                    System.out.println("WWWW 91 : " + xsdFile);
+                }
+                fileName = "file:///" + xsdFile;
+            }
+
+            String msgType = "";
+            for (int i=fileName.length();i>0;i--)
+            {
+                String achar = fileName.substring(i-1, i);
+                if (achar.equals("/")) break;
+                msgType = achar + msgType;
+            }
 
             if (!msgType.toLowerCase().endsWith("."+tag)) throw new ApplicationException("This is not a schema file. : " + fileName);
             messageType = msgType.substring(0, msgType.length()-4);
-            xsdFileName = file.getAbsolutePath();
+            xsdFileName = fileName;
         }
     }
 

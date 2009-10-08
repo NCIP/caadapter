@@ -73,7 +73,7 @@ public class XSDValidationTreeNode
     {
         return xsdFileName;
     }
-    public String getXSDMessageType()
+    public String getXSDMessageType_DEPRE()
     {
         if (xsdFileName == null) return null;
         File file = new File(xsdFileName);

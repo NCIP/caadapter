@@ -1,5 +1,9 @@
 package gov.nih.nci.caadapter.hl7.v2v3.tools;
 
+import gov.nih.nci.caadapter.hl7.validation.complement.XSDValidationTreeNode;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /**
  * Created by IntelliJ IDEA.
  * User: umkis
@@ -13,6 +17,7 @@ public class XmlTreeBrowsingNode
     private String name = null;
     private String value = null;
     private String[] roleKind = new String[] {"E:", "A:", "L:"};
+    private DefaultMutableTreeNode xsdNode = null;
 
     public XmlTreeBrowsingNode(String rolE, String namE, String valuE)
     {
@@ -53,6 +58,14 @@ public class XmlTreeBrowsingNode
     public String[] getRoleKind()
     {
         return roleKind;
+    }
+    public void setXSDNode(DefaultMutableTreeNode node)
+    {
+        xsdNode = node;
+    }
+    public DefaultMutableTreeNode getXSDNode()
+    {
+        return xsdNode;
     }
     public String toString()
     {

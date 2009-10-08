@@ -26,10 +26,10 @@ import java.io.File;
  * This class defines XML document validator 
  * 
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: umkis $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- * revision    $Revision: 1.6 $
- * date        $Date: 2009-02-10 05:13:55 $
+ * revision    $Revision: 1.7 $
+ * date        $Date: 2009-10-08 01:23:07 $
  */
 public class XMLValidator extends Validator
 {
@@ -140,8 +140,10 @@ public class XMLValidator extends Validator
                         String xmlFile = "";
                         if (validateXMLSchema.isValidPath((String) toBeValidatedObject)) xmlFile = (String) toBeValidatedObject;
                         else xmlFile = FileUtil.saveStringIntoTemporaryFile((String) toBeValidatedObject);
+
                         ReorganizingForValidating rfv = new ReorganizingForValidating(xmlFile, xsd, true);
                         String tempFile = FileUtil.getTemporaryFileName();
+
                         XmlReorganizingTree xmlTree = rfv.getXMLTree();
 
                         xmlTree.generatingXMLFile(tempFile);
@@ -191,8 +193,22 @@ public class XMLValidator extends Validator
     {
         //String xml = "C:\\project\\caAdapter_NCI_CVS\\caadapter\\workingspace\\ddd\\0.xml";
         //String xsd = "C:\\project\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
-        String xml = "C:\\project\\caadapter2\\caadapter\\workingspace\\ddd\\res.xml";
-        String xsd = "C:\\project\\caadapter\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+        //String xml = "C:\\project\\caadapter2\\caadapter\\workingspace\\ddd\\res.xml";
+
+        //String xml = "jar:file:///E:/testInstance/aa.zip!/i.xml";
+
+        //String xsd = "file:/C:/project/caadapter/hl7_home/Normative_2009_ICSR/schemas.zip/multicacheschemas/PORR_IN049006UV.xsd";
+        //String xsd = "file:/C:/project/caadapter/hl7_home/Normative_2009_ICSR/schemas/multicacheschemas/PORR_IN049006UV.xsd";
+        //String xsd = "C:\\project\\caadapter\\hl7_home\\Normative_2009_ICSR\\schemas\\multicacheschemas\\PORR_IN049006UV.xsd";
+        //String xsd = "C:\\project\\caadapter\\schemas\\multicacheschemas\\PORR_MT049006UV01.xsd";
+
+        String xml = "E:\\testInstance\\i.xml";
+        //String xsd = "jar:file:///C:/project/caadapter/hl7_home/Normative_2009_ICSR/schemas.zip!/multicacheschemas/PORR_IN049006UV.xsd";
+        String xsd = "C:\\project\\caadapter\\hl7_home\\Normative_2009_ICSR\\schemas\\multicacheschemas\\PORR_IN049006UV.xsd";
+
+        //String xml = "E:\\testInstance\\0.xml";
+        //String xsd = "jar:file:///C:/project/caadapter/hl7_home/Normative_2009_ICSR/schemas.zip!/multicacheschemas/PORR_MT049006UV.xsd";
+
 
         XMLValidator v = new XMLValidator(xml, xsd, true);
         //XMLValidator v = new XMLValidator(xml, xsd);
@@ -203,6 +219,9 @@ public class XMLValidator extends Validator
   }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.6  2009/02/10 05:13:55  umkis
+ * HISTORY :Include schema validation against xsd files when V3 message generating.
+ * HISTORY :
  * HISTORY :Revision 1.5  2009/02/06 18:26:05  umkis
  * HISTORY :upgrade v3 message validating by referring xsd file
  * HISTORY :

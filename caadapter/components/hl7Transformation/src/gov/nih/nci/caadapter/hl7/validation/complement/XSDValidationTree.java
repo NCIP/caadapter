@@ -1,6 +1,7 @@
 package gov.nih.nci.caadapter.hl7.validation.complement;
 
 import gov.nih.nci.caadapter.common.ApplicationException;
+import gov.nih.nci.caadapter.common.util.Config;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBuildEventHandler;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -25,7 +26,7 @@ import org.xml.sax.InputSource;
 public class XSDValidationTree
 {
     private DefaultMutableTreeNode headNode = null;
-    private File mainXSDFile = null;
+    private String mainXSDFile = null;
     private List<String> includeFileList = new ArrayList<String>();
     private List<String> finished = new ArrayList<String>();
 
@@ -35,84 +36,190 @@ public class XSDValidationTree
         if ((xsdFile == null)||(xsdFile.trim().equals("")))
             throw new ApplicationException("Source schema file is null.");
         xsdFile = xsdFile.trim();
-        File file0 = new File(xsdFile);
-        if ((!file0.exists())||(!file0.isFile()))
+
+        String fileName = "";
+        File file = new File(xsdFile);
+        if ((file.exists())&&(file.isFile()))
         {
-            throw new ApplicationException("Source schema file is neither exist nor a file. (main) : " + xsdFile);
+            xsdFile = file.getAbsolutePath();
+
+            if ((!File.separator.equals("/"))&&(xsdFile.indexOf(File.separator) >= 0))
+            {
+                xsdFile = xsdFile.replace(File.separator, "/");
+                System.out.println("WWWW 91 : " + xsdFile);
+            }
+            if (xsdFile.toLowerCase().startsWith("file:/")) fileName = xsdFile;
+            else fileName = "file:///" + xsdFile;
         }
-        mainXSDFile = file0;
+        else fileName = xsdFile;
 
-        String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
-        //String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
-        if (!grandParentDir.endsWith(File.separator)) grandParentDir = grandParentDir + File.separator;
+        int idx = fileName.indexOf(Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
+        if (idx < 0) throw new ApplicationException("This file is not an HL7 schema. : " + xsdFile + ", " + fileName + ", " + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME);
 
-        String coreDir = grandParentDir + "coreschemas";
-        File file = new File(coreDir);
-        if ((!file.exists())||(!file.isDirectory()))
-           throw new ApplicationException("This is neither exist nor a directory. (coreschemas) : " + xsdFile);
+        String baseUri = fileName.substring(0, idx);
 
-        for(File core:file.listFiles())
-        {
-            if (!core.isFile()) continue;
-            String path = core.getAbsolutePath().trim();
-            if (!path.toLowerCase().endsWith(".xsd")) continue;
-            includeFileList.add(path);
-        }
 
-        parseXSDFile(xsdFile, true);
+
+
+
+
+
+
+        //File file0 = new File(xsdFile);
+        //if ((!file0.exists())||(!file0.isFile()))
+        //{
+        //    throw new ApplicationException("Source schema file is neither exist nor a file. (main) : " + xsdFile);
+        //}
+//        mainXSDFile = fileName;
+//
+//        String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
+//        //String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
+//        if (!grandParentDir.endsWith(File.separator)) grandParentDir = grandParentDir + File.separator;
+//
+//        String coreDir = grandParentDir + "coreschemas";
+//        File file = new File(coreDir);
+//        if ((!file.exists())||(!file.isDirectory()))
+//           throw new ApplicationException("This is neither exist nor a directory. (coreschemas) : " + xsdFile);
+//
+//        for(File core:file.listFiles())
+//        {
+//            if (!core.isFile()) continue;
+//            String path = core.getAbsolutePath().trim();
+//            if (!path.toLowerCase().endsWith(".xsd")) continue;
+//            includeFileList.add(path);
+//        }
+
+        parseXSDFile(fileName, true);
+
+
+
 
         while(true)
         {
-            boolean cTag = false;
             String str = null;
             for(int i=0;i<includeFileList.size();i++)
             {
-                str = includeFileList.get(i);
+                String str1 = includeFileList.get(i);
+
                 boolean cTag2 = false;
                 for(String str2:finished)
                 {
-                    if (str.equals(str2)) cTag2 = true;
+                    if (getTypeName(str1).equals(getTypeName(str2)))
+                    {
+                        cTag2 = true;
+                    }
                 }
-                if (cTag2) continue;
-                break;
+                if (!cTag2)
+                {
+                    str = str1;
+                    break;
+                }
             }
+            str = assembleURI(baseUri, str);
+            if (str == null) break;
+
             parseXSDFile(str, false);
+            System.out.println("WWWW parsed : " + str);
             finished.add(str);
             if (finished.size() == includeFileList.size()) break;
         }
+    }
 
+    private String getTypeName(String str)
+    {
+        String msgType = "";
+        for (int i=str.length();i>0;i--)
+        {
+            String achar = str.substring(i-1, i);
+            if (achar.equals("/")) break;
+            if (achar.equals(File.separator)) break;
+            msgType = achar + msgType;
+        }
+        return msgType;
+    }
+
+    private String assembleURI(String baseUri, String str)
+    {
+        if (str == null) return null;
+        str = str.trim();
+        if (str.equals("")) return null;
+        String msgType = getTypeName(str);
+
+        if (isV3MessageType(msgType)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
+        else baseUri = baseUri + Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
+        return baseUri;
+    }
+    private boolean isV3MessageType(String str)
+    {
+        int idx = str.indexOf(".");
+        if (idx > 0) str = str.substring(0, idx);
+
+        int len = str.length();
+        if (len < 13) return false;
+        if (len > 17) return false;
+        if ((len == 16)||(len == 14)) return false;
+        char[] charArr = str.toCharArray();
+        for (int i=0;i<len;i++)
+        {
+            String achar = str.substring(i, i+1);
+            int it = (int) charArr[i];
+            if ((i==0)||(i==1)||(i==2)||(i==3)||(i==5)||(i==6))
+            {
+                if ((it < 65)||(it > 90)) return false;
+            }
+            else if(i == 4)
+            {
+                if (!achar.equals("_")) return false;
+            }
+            else if ((i==7)||(i==8)||(i==9)||(i==10)||(i==11)||(i==12)||(i==15)||(i==16))
+            {
+                if ((it < 48)||(it > 57)) return false;
+            }
+            else if (i==13)
+            {
+                if (!achar.equals("U")) return false;
+            }
+            else if (i==14)
+            {
+                if (!achar.equals("V")) return false;
+            }
+        }
+        return true;
     }
 
     public void insertIncludeFileList(String xsdFile) throws ApplicationException
     {
-        if ((xsdFile == null)||(xsdFile.trim().equals("")))
-            throw new ApplicationException("Source schema file is null.");
+//        if ((xsdFile == null)||(xsdFile.trim().equals("")))
+//            throw new ApplicationException("Source schema file is null.");
+//        xsdFile = xsdFile.trim();
+//        File file = new File(xsdFile);
+//        if ((!file.exists())||(!file.isFile()))
+//        {
+//            String parentDir = mainXSDFile.getParent().trim();
+//            if (!parentDir.endsWith(File.separator)) parentDir = parentDir + File.separator;
+//
+//            xsdFile = parentDir + xsdFile;
+//            file = new File(xsdFile);
+//            if ((!file.exists())||(!file.isFile()))
+//            {
+//                String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
+//                if (!grandParentDir.endsWith(File.separator)) grandParentDir = grandParentDir + File.separator;
+//
+//                xsdFile = grandParentDir + "coreschemas" + File.separator + file.getName();
+//                file = new File(xsdFile);
+//                if ((!file.exists())||(!file.isFile()))
+//                   throw new ApplicationException("This xsd file is neither exist nor a file. (include) : " + xsdFile);
+//            }
+//        }
+//
+//        if (!xsdFile.toLowerCase().endsWith(".xsd"))
+//            throw new ApplicationException("This is not a schema file. : " + xsdFile);
+//
+//        if (file.getAbsolutePath().trim().toLowerCase().indexOf("coreschemas") > 0) return;
+
+        if (xsdFile == null) return;
         xsdFile = xsdFile.trim();
-        File file = new File(xsdFile);
-        if ((!file.exists())||(!file.isFile()))
-        {
-            String parentDir = mainXSDFile.getParent().trim();
-            if (!parentDir.endsWith(File.separator)) parentDir = parentDir + File.separator;
-
-            xsdFile = parentDir + xsdFile;
-            file = new File(xsdFile);
-            if ((!file.exists())||(!file.isFile()))
-            {
-                String grandParentDir = mainXSDFile.getParentFile().getParent().trim();
-                if (!grandParentDir.endsWith(File.separator)) grandParentDir = grandParentDir + File.separator;
-
-                xsdFile = grandParentDir + "coreschemas" + File.separator + file.getName();
-                file = new File(xsdFile);
-                if ((!file.exists())||(!file.isFile()))
-                   throw new ApplicationException("This xsd file is neither exist nor a file. (include) : " + xsdFile);
-            }
-        }
-
-        if (!xsdFile.toLowerCase().endsWith(".xsd"))
-            throw new ApplicationException("This is not a schema file. : " + xsdFile);
-
-        if (file.getAbsolutePath().trim().toLowerCase().indexOf("coreschemas") > 0) return;
-
+        if (xsdFile.equals("")) return;
         boolean cTag = false;
         for(String str:includeFileList)
         {
@@ -130,10 +237,10 @@ public class XSDValidationTree
         if ((xsdFile == null)||(xsdFile.trim().equals("")))
             throw new ApplicationException("Source schema file is null.");
         xsdFile = xsdFile.trim();
-        File file = new File(xsdFile);
-        if ((!file.exists())||(!file.isFile()))
-        {
-            if (isMain) throw new ApplicationException("This file is not exist or a file. (main) : " + xsdFile);
+        //File file = new File(xsdFile);
+        //if ((!file.exists())||(!file.isFile()))
+        //{
+        //    if (isMain) throw new ApplicationException("This file is not exist or a file. (main) : " + xsdFile);
 
 //            String parentDir = mainXSDFile.getParent().trim();
 //            if (!parentDir.endsWith(File.separator)) parentDir = parentDir + File.separator;
@@ -150,14 +257,14 @@ public class XSDValidationTree
 //                if ((!file.exists())||(!file.isFile()))
 //                   throw new ApplicationException("This file is not exist or a file. (include) : " + xsdFile);
 //            }
-        }
+        //}
 
         if (!xsdFile.toLowerCase().endsWith(".xsd"))
             throw new ApplicationException("This is not a schema file. : " + xsdFile);
 
         if (isMain)
         {
-            mainXSDFile = file;
+            mainXSDFile = xsdFile;
             //System.out.println("Main start : " + xsdFile);
         }
         //else System.out.println("Include start : " + xsdFile);
@@ -168,10 +275,10 @@ public class XSDValidationTree
             headNode = new DefaultMutableTreeNode(headXNode);
         }
 
-        if (!isMain)
-        {
-            if (isIncludedFile(xsdFile)) return;
-        }
+        //if (!isMain)
+        //{
+        //    if (isIncludedFile(xsdFile)) return;
+        //}
 
         XSDValidationEventHandler handler = null;
         try
@@ -184,8 +291,8 @@ public class XSDValidationTree
 
             producer.setContentHandler(handler);
 
-            String path1 = "file:///" + xsdFile.replace(File.separator, "/");
-            InputSource is = new InputSource(path1);
+            //String path1 = "file:///" + xsdFile.replace(File.separator, "/");
+            InputSource is = new InputSource(xsdFile);
 
             producer.parse(is);
         }
@@ -229,22 +336,22 @@ public class XSDValidationTree
     {
         return headNode;
     }
-    public File getMainXSDFile()
+    public String getMainXSDFile()
     {
         return mainXSDFile;
     }
-    public boolean isIncludedFile(String fileName)
-    {
-        int childCount = headNode.getChildCount();
-        if (childCount == 0) return false;
-        for (int i=0;i<childCount;i++)
-        {
-            XSDValidationTreeNode tempX = getXnodeFromDnodeChild(headNode, i);
-            if (tempX == null) continue;
-            if (fileName.indexOf(tempX.getXSDMessageType()) >= 0) return true;
-        }
-        return false;
-    }
+    //public boolean isIncludedFile_DEPRE(String fileName)
+    //{
+    //    int childCount = headNode.getChildCount();
+    //    if (childCount == 0) return false;
+    //    for (int i=0;i<childCount;i++)
+    //    {
+    //        XSDValidationTreeNode tempX = getXnodeFromDnodeChild(headNode, i);
+    //        if (tempX == null) continue;
+    //        if (fileName.indexOf(tempX.getXSDMessageType()) >= 0) return true;
+    //    }
+    //    return false;
+    //}
     private XSDValidationTreeNode getXnodeFromDnode(DefaultMutableTreeNode dNode)
     {
         XSDValidationTreeNode tempX = null;
