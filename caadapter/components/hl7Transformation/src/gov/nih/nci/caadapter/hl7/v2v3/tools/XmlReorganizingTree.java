@@ -334,7 +334,17 @@ public class XmlReorganizingTree
                     if ((nm.equalsIgnoreCase("nullFlavor"))&&(vl.equals("NP")))
                     {
                         if (hasNodeValue(node)) checked = false;
-                        //vl = "NI";
+                        String replaceNP_value = FileUtil.searchProperty("replaceNullFlavorNP");
+                        if (replaceNP_value != null)
+                        {
+                            replaceNP_value = replaceNP_value.trim();
+                            String[] NULL_FLAVOR_VALUES = new String[] {"NI", "OTH", "NINF", "PINF", "UNK", "ASKU", "NAV", "NASK", "TRC", "MSK", "NA"};
+
+                            for(String nullF:NULL_FLAVOR_VALUES)
+                            {
+                                if (nullF.equals(replaceNP_value)) vl = nullF;
+                            }
+                        }
                     }
                     if (nm.equalsIgnoreCase("_dummy__")) checked = false;
 //                    if (nm.equalsIgnoreCase("xsi:type"))

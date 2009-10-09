@@ -613,7 +613,7 @@ public class ControlMessageRelatedUtil
         if (isReorganizedMssageGenerated) infoMsg = ", Reorganized v3 message (" +(messageCount+i)+"_Reorganized.xml)";
         validatorsToShow = GeneralUtilities.addValidatorMessageInfo(validatorsToShow, "Direct message ("+(messageCount+i)+".xml)"+infoMsg+" and validation message object ("+(messageCount+i)+".ser) are successfully generated.");
 
-        return new Object[] {v3Message, controlMessageTemplate};
+        return new Object[] {v3Message, controlMessageTemplate, validatorsToShow};
     }
 
     public static boolean insertV3IntoControlMessage(XmlReorganizingTree controlMessageTemplate, String v3Message, MIFClass mifClass, ValidatorResults validatorsToShow, int i)

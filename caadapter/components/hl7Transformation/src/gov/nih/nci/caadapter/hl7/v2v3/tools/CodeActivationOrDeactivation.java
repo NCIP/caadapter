@@ -201,7 +201,7 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
         if (fileName.equals("mif.zip")) downloadTag = true;
         if (fileName.equals("run.bat")) downloadTag = true;
-        if (fileName.equals("build.properties")) downloadTag = true;
+        //if (fileName.equals("build.properties")) downloadTag = true;
         if (fileName.equals("Attribute.java"))
         {
             if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
