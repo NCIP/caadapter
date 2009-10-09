@@ -69,7 +69,7 @@ public class ReorganizingForValidating
         xsdTree = new XSDValidationTree(xsdFile);
         xsdHead = xsdTree.getHeadNode();
 
-        if (!xsdTree.isH3SAssociationType(xsdFile, 5)) throw new ApplicationException("This xsd File is not an HL7 schema. : " + xsdFile);
+        if (!xsdTree.isH3SAssociationType(xsdFile)) throw new ApplicationException("This xsd File is not an HL7 schema. : " + xsdFile);
 
         //System.out.println("WWWWW X3");
         DefaultMutableTreeNode node = null;
@@ -201,7 +201,7 @@ public class ReorganizingForValidating
                     ((XmlTreeBrowsingNode)node.getUserObject()).setXSDNode(complexTypeNode);
                     //doneXMLNodeList.add(node);
                     //doneXSDNodeList.add(complexTypeNode);
-                    if (!xsdTree.isH3SAssociationType(complexType, 6)) continue;
+                    if (!xsdTree.isH3SAssociationType(complexType)) continue;
                     if ((tempTypeList.size() == 0)&&(tempNameList.size() == 0)) continue;
                     if ((tempTypeList.size() == 1)&&(tempNameList.size() == 1)) continue;
 

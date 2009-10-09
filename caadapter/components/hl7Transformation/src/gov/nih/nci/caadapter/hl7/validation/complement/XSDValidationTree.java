@@ -176,7 +176,7 @@ public class XSDValidationTree
             break;
         }
 
-        if (isH3SAssociationType(msgType, 1)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
+        if (isH3SAssociationType(msgType)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
         else baseUri = baseUri + Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
         return baseUri;
     }
@@ -600,7 +600,7 @@ public class XSDValidationTree
         return list;
     }
 
-    public boolean isH3SAssociationType(String name, int nn)
+    public boolean isH3SAssociationType(String name)
     {
 
         if (name == null) return false;
@@ -721,7 +721,7 @@ public class XSDValidationTree
             while(st.hasMoreTokens())
             {
                 String token = st.nextToken();
-                if (isH3SAssociationType(token, 2)) typeP = token;
+                if (isH3SAssociationType(token)) typeP = token;
                 //System.out.println("WWWWW 99 token=" + token + ", typeP=" + typeP);
             }
         }
@@ -761,11 +761,11 @@ public class XSDValidationTree
             int sz = sList.size();
             if (classified.equals("association"))
             {
-                if (isH3SAssociationType(type, 3)) sList.add(data);
+                if (isH3SAssociationType(type)) sList.add(data);
             }
             else if (classified.equals("attribute"))
             {
-                if (!isH3SAssociationType(type, 4)) sList.add(data);
+                if (!isH3SAssociationType(type)) sList.add(data);
             }
             else if (classified.equals("all")) sList.add(data);
 
