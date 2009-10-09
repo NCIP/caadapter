@@ -60,6 +60,7 @@ public class XSDValidationEventHandler extends DefaultHandler
             headNode = new DefaultMutableTreeNode(node);
             curr = headNode;
             justStart = true;
+            tree.registerTypeHeadPointer(headNode, xsdFileName);
         }
         else
         {

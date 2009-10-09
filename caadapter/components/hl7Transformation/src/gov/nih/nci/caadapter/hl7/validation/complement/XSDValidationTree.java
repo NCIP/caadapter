@@ -11,6 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,6 +31,9 @@ public class XSDValidationTree
     private String mainXSDFile = null;
     private List<String> includeFileList = new ArrayList<String>();
     private List<String> finished = new ArrayList<String>();
+
+    private List<String> typeList = new ArrayList<String>();
+    private List<DefaultMutableTreeNode> nodeList = new ArrayList<DefaultMutableTreeNode>();
     //private boolean isHL7TypeOnly = false;
 
 
@@ -49,7 +53,7 @@ public class XSDValidationTree
             if ((!File.separator.equals("/"))&&(xsdFile.indexOf(File.separator) >= 0))
             {
                 xsdFile = xsdFile.replace(File.separator, "/");
-                System.out.println("WWWW 91 : " + xsdFile);
+                //System.out.println("WWWW 91 : " + xsdFile);
             }
             if (xsdFile.toLowerCase().startsWith("file:/")) fileName = xsdFile;
             else fileName = "file:///" + xsdFile;
@@ -96,7 +100,7 @@ public class XSDValidationTree
                 }
             }
             String str3 = assembleURI(baseUri, str, parentXSD);
-            System.out.println("WWWWW FFFF : " + str3 + ", " + baseUri + ", " + str + ", " + parentXSD);
+            //System.out.println("WWWWW FFFF : " + str3 + ", " + baseUri + ", " + str + ", " + parentXSD);
             if (str3 == null) break;
 
             parseXSDFile(str3, false);
@@ -172,7 +176,7 @@ public class XSDValidationTree
             break;
         }
 
-        if (isH3SAssociationType(msgType)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
+        if (isH3SAssociationType(msgType, 1)) baseUri = baseUri + Config.V3_XSD_MULTI_CACHE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
         else baseUri = baseUri + Config.V3_XSD_CORE_SCHEMAS_DIRECTORY_NAME + "/" + msgType;
         return baseUri;
     }
@@ -409,21 +413,35 @@ public class XSDValidationTree
         return tempX;
 
     }
+    //public DefaultMutableTreeNode searchChildComplexType(DefaultMutableTreeNode parent, String nodeName)
+    //{
+    //    return searchComplexType(nodeName, true);
+    //}
+    public DefaultMutableTreeNode searchComplexType(DefaultMutableTreeNode startNode, String nodeName)
+    {
+        return searchComplexType(startNode, nodeName, true);
+    }
     public DefaultMutableTreeNode searchComplexType(String nodeName)
     {
-        return searchComplexType(nodeName, true);
+        return searchComplexType(null, nodeName, true);
+    }
+    public DefaultMutableTreeNode searchMessageHeadType(DefaultMutableTreeNode startNode, String nodeName)
+    {
+        return searchComplexType(startNode, nodeName, false);
     }
     public DefaultMutableTreeNode searchMessageHeadType(String nodeName)
     {
-        return searchComplexType(nodeName, false);
+        return searchComplexType(null, nodeName, false);
     }
-    private DefaultMutableTreeNode searchComplexType(String nodeName, boolean complexTag)
+    private DefaultMutableTreeNode searchComplexType(DefaultMutableTreeNode startNode, String nodeName, boolean complexTag)
     {
         if (nodeName == null) return null;
         nodeName = nodeName.trim();
         if (nodeName.equals("")) return null;
 
-        DefaultMutableTreeNode sNode = getHeadNode();
+        DefaultMutableTreeNode sNode = null;
+        if (startNode == null ) sNode = getHeadNode();
+        else sNode = startNode;
 
         while(true)
         {
@@ -582,18 +600,23 @@ public class XSDValidationTree
         return list;
     }
 
-    public boolean isH3SAssociationType(String name)
+    public boolean isH3SAssociationType(String name, int nn)
     {
+
         if (name == null) return false;
         name = name.trim();
         if (name.equals("")) return false;
 
         name = this.getTypeName(name);
 
-        int idx = name.indexOf(".");
-        if (idx < 0) return false;
+        if (name.toLowerCase().endsWith(".xsd")) name = name.substring(0, name.length()-4);
 
-        String str = name.substring(0, idx);
+        int idx = name.indexOf(".");
+        if (idx > 0) name = name.substring(0, idx);
+        //System.out.println("WWWWW RERERE  name=" + name + ", int=" + nn);
+
+        //String str = name.substring(0, idx);
+        String str = name;
         int len = str.length();
         if ((len < 13)||(len > 17)) return false;
 
@@ -634,7 +657,11 @@ public class XSDValidationTree
             }
 
             if(cx == 0) {}// System.out.println("");
-            else return false;
+            else
+            {
+                //System.out.println("WWWWW RERERE  cx=" + cx + ", name=" + name );
+                return false;
+            }
 
             i++;
         }
@@ -666,7 +693,53 @@ public class XSDValidationTree
     {
         return getH3SSequenceTypes(node, "all", false);
     }
+    public void registerTypeHeadPointer(DefaultMutableTreeNode node, String type)
+    {
+        nodeList.add(node);
+        if (type.toLowerCase().endsWith(".xsd")) type = type.substring(0, type.length()-4);
+        type = getTypeName(type);
+        typeList.add(type);
+        //System.out.println("WWWWW insert type=" + type + ", node=" + this.getComplexTypeName(node));
+    }
+    public DefaultMutableTreeNode searchTypeHeadPointer(String type)
+    {
+        //if (type.toLowerCase().endsWith(".xsd")) type = type.substring(0, type.length()-4);
+        //type = getTypeName(type);
+        String rec = type;
+        if (type == null) return null;
 
+        String typeP = null;
+        int idx = type.indexOf(".");
+
+        if (idx < 0)
+        {
+            typeP = "datatypes";
+        }
+        else
+        {
+            StringTokenizer st = new StringTokenizer(type, ".");
+            while(st.hasMoreTokens())
+            {
+                String token = st.nextToken();
+                if (isH3SAssociationType(token, 2)) typeP = token;
+                //System.out.println("WWWWW 99 token=" + token + ", typeP=" + typeP);
+            }
+        }
+        //System.out.println("WWWWW 01 type=" + type + ", rec=" + rec + ", typeP=" + typeP);
+        if (typeP == null) return null;
+
+        int n = -1;
+        for (int i=0;i<typeList.size();i++)
+        {
+            if (typeList.get(i).equals(typeP))
+            {
+                //System.out.println("WWWWW  ---->>  typeList.get(i)=" + typeList.get(i) + ", typeP=" + typeP);
+                n = i;
+            }
+        }
+        if (n < 0) return null;
+        return nodeList.get(n);
+    }
     private List<String> getH3SSequenceTypes(DefaultMutableTreeNode node, String classified, boolean isName)
     {
         List<DefaultMutableTreeNode> nList = getChildElementsWithName(getSequenceElement(node), "element");
@@ -688,11 +761,11 @@ public class XSDValidationTree
             int sz = sList.size();
             if (classified.equals("association"))
             {
-                if (isH3SAssociationType(type)) sList.add(data);
+                if (isH3SAssociationType(type, 3)) sList.add(data);
             }
             else if (classified.equals("attribute"))
             {
-                if (!isH3SAssociationType(type)) sList.add(data);
+                if (!isH3SAssociationType(type, 4)) sList.add(data);
             }
             else if (classified.equals("all")) sList.add(data);
 

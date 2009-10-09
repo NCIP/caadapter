@@ -6,7 +6,7 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.util.FileUtil;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlReorganizingTree;
 import gov.nih.nci.caadapter.hl7.v2v3.tools.XmlTreeBrowsingNode;
-                                            
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.*;
 import java.util.List;
@@ -69,7 +69,7 @@ public class ReorganizingForValidating
         xsdTree = new XSDValidationTree(xsdFile);
         xsdHead = xsdTree.getHeadNode();
 
-        if (!xsdTree.isH3SAssociationType(xsdFile)) throw new ApplicationException("This xsd File is not an HL7 schema. : " + xsdFile);
+        if (!xsdTree.isH3SAssociationType(xsdFile, 5)) throw new ApplicationException("This xsd File is not an HL7 schema. : " + xsdFile);
 
         //System.out.println("WWWWW X3");
         DefaultMutableTreeNode node = null;
@@ -182,13 +182,26 @@ public class ReorganizingForValidating
 
                     complexType = tempTypeList.get(n);
 
-                    complexTypeNode = xsdTree.searchComplexType(complexType);
-                    if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 3: " + nodeName + ", parent: " + getName(parent) + ", complexType=" + complexType);
-
+                    //complexTypeNode = xsdTree.searchComplexType(jNode, complexType);
+                    //System.out.print("WWWW jNode=" + xsdTree.getComplexTypeName(jNode) + ", " + complexType);
+                    //if (complexTypeNode == null)
+                    //{
+                        DefaultMutableTreeNode snode = xsdTree.searchTypeHeadPointer(complexType);
+                        complexTypeNode = xsdTree.searchComplexType(snode, complexType);
+                        //String sss = "";
+                        //if (snode == null) sss = " ******";
+                        //System.out.println(", complexTypeNode(2nd)=" + xsdTree.getComplexTypeName(complexTypeNode) + sss);
+                        if (complexTypeNode == null)
+                        {
+                            complexTypeNode = xsdTree.searchComplexType(complexType);
+                            if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 3: " + nodeName + ", parent: " + getName(parent) + ", complexType=" + complexType);
+                        }
+                    //}
+                    //else System.out.println(", complexTypeNode(1st)" + xsdTree.getComplexTypeName(complexTypeNode));
                     ((XmlTreeBrowsingNode)node.getUserObject()).setXSDNode(complexTypeNode);
                     //doneXMLNodeList.add(node);
                     //doneXSDNodeList.add(complexTypeNode);
-                    if (!xsdTree.isH3SAssociationType(complexType)) continue;
+                    if (!xsdTree.isH3SAssociationType(complexType, 6)) continue;
                     if ((tempTypeList.size() == 0)&&(tempNameList.size() == 0)) continue;
                     if ((tempTypeList.size() == 1)&&(tempNameList.size() == 1)) continue;
 
@@ -264,7 +277,7 @@ public class ReorganizingForValidating
                 if ((!File.separator.equals("/"))&&(xsdFile.indexOf(File.separator) >= 0))
                 {
                     xsdFile = xsdFile.replace(File.separator, "/");
-                    System.out.println("WWWW 91 : " + xsdFile);
+                    //System.out.println("WWWW 91 : " + xsdFile);
                 }
                 fileName = "file:///" + xsdFile;
             }
@@ -557,10 +570,11 @@ public class ReorganizingForValidating
 
             try
             {
+                //System.out.println("WWWW outFileName=" + outFileName);
                 FileWriter fw = new FileWriter(outFileName);
                 for (String str:tempListLine)
                 {
-                    System.out.println(str);
+                    //System.out.println(str);
                     fw.write(str+"\r\n");
                 }
                 fw.close();
