@@ -11,6 +11,8 @@ package gov.nih.nci.caadapter.common.util;
 
 import gov.nih.nci.caadapter.common.Message;
 import gov.nih.nci.caadapter.common.MessageResources;
+import gov.nih.nci.caadapter.common.function.DateFunction;
+import gov.nih.nci.caadapter.common.function.FunctionException;
 import gov.nih.nci.caadapter.common.validation.ValidatorResults;
 import gov.nih.nci.caadapter.common.validation.ValidatorResult;
 
@@ -21,10 +23,10 @@ import java.awt.*;
  * This class defines a list general utility methods.
  * 
  * @author OWNER: Scott Jiang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2009-01-09 21:30:12 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-10-12 19:56:04 $
  */
 public class GeneralUtilities
 {
@@ -309,9 +311,31 @@ public class GeneralUtilities
 
         return null;
     }
+    public static final String getCurrentTime()
+    {
+        return getCurrentTime(null);
+    }
+    public static final String getCurrentTime(String format)
+    {
+        DateFunction df = new DateFunction();
+        if (format == null) format = "";
+        else format = format.trim();
+        if (format.equals("")) format = df.getDefaultDateFormatString();
+        try
+        {
+            return df.getCurrentTime(format);
+        }
+        catch(FunctionException fe)
+        {
+            return df.getCurrentTime();
+        }
+    }
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.10  2009/01/09 21:30:12  wangeug
+ * HISTORY      : define CAADAPTER_NULLFLAVOR_ATTRIBUTE_MARK/VALUE
+ * HISTORY      :
  * HISTORY      : Revision 1.9  2008/12/04 20:36:09  wangeug
  * HISTORY      : support nullFlavor
  * HISTORY      :
