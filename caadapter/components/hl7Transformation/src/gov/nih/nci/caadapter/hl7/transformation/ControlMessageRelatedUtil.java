@@ -41,12 +41,12 @@ public class ControlMessageRelatedUtil
 
         boolean zipUtility = useZipUtil();
 
-        String schemaF = service.getSchemaFileName();     //&umkis
-        if ((schemaF != null)&&(!schemaF.trim().equals("")))     //&umkis
-        {     //&umkis
-            File f3 = new File(schemaF);     //&umkis
-            if ((f3.exists())&&(f3.isFile())) zipUtility = true;     //&umkis
-        }     //&umkis
+//&umkis        String schemaF = service.getSchemaFileName();
+//&umkis        if ((schemaF != null)&&(!schemaF.trim().equals("")))
+//&umkis        {
+//&umkis            File f3 = new File(schemaF);
+//&umkis            if ((f3.exists())&&(f3.isFile())) zipUtility = true;
+//&umkis        }
 
         if (mifClass == null) return null;
         String mifName = mifClass.getName();
