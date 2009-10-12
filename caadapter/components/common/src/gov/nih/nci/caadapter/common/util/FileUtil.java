@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 
 public class FileUtil
@@ -269,12 +269,22 @@ public class FileUtil
         String rr = searchPropertyExe(dir, key, useProperty, isFilePath);
         if (dir == null)
         {
-            if (rr != null) return rr;
-
-            String dir2 = searchDir("caAdapterWS" + File.separator + "META-INF");
-            if (dir2 != null)
+            if (rr == null)
             {
-                rr = searchPropertyExe(new File(dir2), key, useProperty, isFilePath);
+                String dir2 = searchDir("caAdapterWS" + File.separator + "META-INF");
+                if (dir2 != null) rr = searchPropertyExe(new File(dir2), key, useProperty, isFilePath);
+            }
+        }
+        if (rr != null)
+        {
+            if (rr.toLowerCase().startsWith(Config.CAADAPTER_HOME_DIR_TAG.toLowerCase()))
+            {
+                String homeDir = getWorkingDirPath().trim();
+                String subDir = rr.substring(Config.CAADAPTER_HOME_DIR_TAG.length()).trim();
+                if (!File.separator.equals("/")) subDir = subDir.replace("/", File.separator);
+                if ((!homeDir.endsWith(File.separator))&&(!subDir.startsWith(File.separator))) rr = homeDir + File.separator + subDir;
+                else if ((homeDir.endsWith(File.separator))&&(subDir.startsWith(File.separator))) rr = homeDir + subDir.substring(File.separator.length());
+                else rr = homeDir + subDir;
             }
         }
         return rr;
@@ -1562,6 +1572,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.36  2009/09/18 16:40:36  altturbo
+ * minor change
+ *
  * Revision 1.35  2009/09/18 16:39:59  altturbo
  * minor change
  *
