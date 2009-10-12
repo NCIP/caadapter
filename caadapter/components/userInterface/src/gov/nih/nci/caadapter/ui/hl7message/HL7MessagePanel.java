@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.41 $
- *          date        $Date: 2009-09-11 16:42:46 $
+ *          revision    $Revision: 1.42 $
+ *          date        $Date: 2009-10-12 22:45:07 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -728,24 +728,24 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 //&umkis    private void confirmSchemaValidation()
 //&umkis    {
+//&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
+//&umkis        if (prop == null) prop = "";
+//&umkis        prop = prop.trim();
+//&umkis        if ((prop.equalsIgnoreCase("true"))||(prop.equalsIgnoreCase("yes"))||(prop.equalsIgnoreCase("y"))||(prop.equalsIgnoreCase("t")))
+//&umkis        {
+//&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
+//&umkis            return;
+//&umkis        }
+//&umkis        if ((prop.equalsIgnoreCase("no"))||(prop.equalsIgnoreCase("none"))||(prop.equalsIgnoreCase("false"))||(prop.equalsIgnoreCase("f"))||(prop.equalsIgnoreCase("n")))
+//&umkis        {
+//&umkis            schemaValidationTag = JOptionPane.NO_OPTION;
+//&umkis            return;
+//&umkis        }
+
 //&umkis    	String validationLevel=CaadapterUtil.readPrefParams(Config.CAADAPTER_COMPONENT_HL7_TRANSFORMATION_VALIDATION_LEVEL);
 //&umkis		if ((validationLevel != null)&&(!validationLevel.equalsIgnoreCase(CaAdapterPref.VALIDATION_PERFORMANCE_LEVLE_2)))
 //&umkis        {
 //&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
-//&umkis            return;
-//&umkis        }
-
-//&umkis        String prop = FileUtil.searchProperty("SchemaValidation");
-//&umkis        if (prop == null) prop = "";
-//&umkis        prop = prop.trim();
-//&umkis        if ((prop.trim().equalsIgnoreCase("true"))||(prop.trim().equalsIgnoreCase("yes")))
-//&umkis        {
-//&umkis            schemaValidationTag = JOptionPane.YES_OPTION;
-//&umkis            return;
-//&umkis        }
-//&umkis        if ((prop.trim().equalsIgnoreCase("no"))||(prop.trim().equalsIgnoreCase("none"))||(prop.trim().equalsIgnoreCase("false")))
-//&umkis        {
-//&umkis            schemaValidationTag = -1;
 //&umkis            return;
 //&umkis        }
 
@@ -767,6 +767,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.41  2009/09/11 16:42:46  altturbo
+ * HISTORY      : for control message wrapper
+ * HISTORY      :
  * HISTORY      : Revision 1.40  2009/04/15 21:55:47  altturbo
  * HISTORY      : add remarks
  * HISTORY      :
