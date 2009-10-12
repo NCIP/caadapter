@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.zip.ZipOutputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,11 +34,19 @@ import java.util.zip.ZipEntry;
  */
 public class ControlMessageRelatedUtil
 {
-    public static XmlReorganizingTree searchControlMessage(MIFClass mifClass, String controlFile)
+
+    public static XmlReorganizingTree searchControlMessage(MIFClass mifClass, String controlFile, TransformationService service)
     {
         XmlReorganizingTree controlMessageTemplate = null;
 
-        //ZipUtil zipUtil = null;
+        boolean zipUtility = useZipUtil();
+
+        String schemaF = service.getSchemaFileName();     //&umkis
+        if ((schemaF != null)&&(!schemaF.trim().equals("")))     //&umkis
+        {     //&umkis
+            File f3 = new File(schemaF);     //&umkis
+            if ((f3.exists())&&(f3.isFile())) zipUtility = true;     //&umkis
+        }     //&umkis
 
         if (mifClass == null) return null;
         String mifName = mifClass.getName();
@@ -143,7 +152,7 @@ public class ControlMessageRelatedUtil
             //if (schemaZipFileName != null)
             //    controlMessageTemplate = searchControlMessageFile(mifName, mifType, (new File(controlFile)), schemaZipFileName);
             //else
-                controlMessageTemplate = searchControlMessageFile(mifName, mifType, (new File(controlFile)), dirS);
+                controlMessageTemplate = searchControlMessageFile(mifName, mifType, (new File(controlFile)), dirS, zipUtility);
 
             if (controlMessageTemplate == null)
             {
@@ -179,7 +188,7 @@ public class ControlMessageRelatedUtil
             //if (schemaZipFileName != null)
             //    xrt = searchControlMessageFile(mifName, mifType, (new File(controlFile)), schemaZipFileName);
             //else
-                xrt = searchControlMessageFile(mifName, mifType, ff, dirS);
+                xrt = searchControlMessageFile(mifName, mifType, ff, dirS, zipUtility);
 
             if (xrt != null)
             {
@@ -199,33 +208,62 @@ public class ControlMessageRelatedUtil
         return controlMessageTemplate;
     }
 
-    private static XmlReorganizingTree searchControlMessageFile(String mifName, String mifType, File ff, String dirS)
+    private static XmlReorganizingTree searchControlMessageFile(String mifName, String mifType, File ff, String dirS, boolean zipUtility)
     {
         ZipUtil zipUtil = null;
         ZipEntry zipEntry = null;
 
         File fileZ = new File(dirS);
 
+        String xsdURL = null;
+
         if (!fileZ.exists()) return null;
         if (fileZ.isFile())
         {
             if ((fileZ.isFile())||(dirS.toLowerCase().endsWith(".zip")))
             {
+                ZipUtil zUtil = null;
+                ZipEntry zEntry = null;
                 try
                 {
-                    zipUtil = new ZipUtil(fileZ.getAbsolutePath());
+                    zUtil = new ZipUtil(fileZ.getAbsolutePath());
                 }
                 catch(IOException ie)
                 {
+                    System.out.println("WWWWW 123 " + ie.getMessage());
+                    ie.printStackTrace();
                     return null;
                 }
-                //List<ZipEntry> list = zipUtil.searchEntryWithNameAsPart(mifType, ".xsd");
-                //if ((list == null)||(list.size() != 1)) return null;
-                //zipEntry = list.get(0);
+                List<ZipEntry> entries = zUtil.searchEntryWithNameAsPart(mifType, ".xsd");
+
+                if ((entries != null)&&(entries.size() == 1)) zEntry = entries.get(0);
+                else return null;
+
+                if (zipUtility)
+                {
+                    zipUtil = zUtil;
+                    zipEntry = zEntry;
+                }
+                else
+                {
+                    dirS = fileZ.getAbsolutePath();
+                    xsdURL = zUtil.getAccessURL(zEntry);
+                    //xsdURL = "jar:file:///" + filePath + "!/" + zEntry.getName();
+
+                    System.out.println("WWWW 124 xsdURL : " + xsdURL +", entryName=" + zEntry.getName());
+                }
             }
             else return null;
         }
-        else dirS = fileZ.getAbsolutePath();
+        else
+        {
+            dirS = fileZ.getAbsolutePath();
+            if (dirS.endsWith(File.separator)) dirS = dirS.substring(0, dirS.length()-File.separator.length());
+//            String filePath = dirS;
+//
+//            if (!File.separator.equals("/")) filePath = filePath.replace(File.separator, "/");
+//            xsdURL = "file:///" + filePath + "/" + mifType + ".xsd";
+        }
         //System.out.println("WWWW 07 : " + dirS);
         if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
         boolean wasFound = false;
@@ -255,9 +293,9 @@ public class ControlMessageRelatedUtil
             String schemaF = null;
             if (zipUtil != null)
             {
-                List<ZipEntry> list = zipUtil.searchEntryWithNameAsPart(type, ".xsd");
-                if ((list == null)||(list.size() != 1)) break;
-                zipEntry = list.get(0);
+//                List<ZipEntry> list = zipUtil.searchEntryWithNameAsPart(type, ".xsd");
+//                if ((list == null)||(list.size() != 1)) break;
+//                zipEntry = list.get(0);
                 try
                 {
                     schemaF = zipUtil.copyIncludedFiles(zipEntry);
@@ -270,15 +308,18 @@ public class ControlMessageRelatedUtil
             }
             else schemaF = dirS + type + ".xsd";
             //System.out.println("WWWW 11 : " + schemaF);
-
-            File f2 = new File(schemaF);
-            if ((!f2.exists())||(!f2.isFile())) break;
-            //else System.out.println("WWWW 11-1 : " + schemaF);
-
+            String schemaFileNameL = null;
+            if (zipUtility)
+            {
+                File f2 = new File(schemaF);
+                if ((!f2.exists())||(!f2.isFile())) break;
+                schemaFileNameL = f2.getAbsolutePath();
+            }
             ReorganizingForValidating rfv = null;
-            String schemaFileNameL = f2.getAbsolutePath();
+
             try
             {
+                if (xsdURL != null) schemaFileNameL = xsdURL;
                 rfv = new ReorganizingForValidating(ff.getAbsolutePath(), schemaFileNameL);
             }
             catch(ApplicationException ae)
@@ -352,6 +393,7 @@ public class ControlMessageRelatedUtil
 
     public static Object[] excuteXSDValidationForTransformationService(ValidatorResults validatorsToShow, int messageCount, int i, String v3Message, ZipOutputStream zipOut, OutputStreamWriter writer, String schemaFileName, MIFClass mifClass, XmlReorganizingTree controlMessageTemplate) throws IOException
     {
+
         //delete unnecessary message.
         ValidatorResults newResults = new ValidatorResults();
         for (ValidatorResult.Level lvl:validatorsToShow.getLevels())
@@ -369,6 +411,18 @@ public class ControlMessageRelatedUtil
 
         boolean isReorganizedMssageGenerated = false;
 
+        boolean useZipUtility = useZipUtil();
+        File schemaSS = null;
+        if (schemaFileName == null) schemaFileName = "";
+        else schemaFileName = schemaFileName.trim();
+        if (!schemaFileName.equals(""))
+        {
+            schemaSS = new File(schemaFileName);
+            if ((schemaSS.exists())&&(schemaSS.isFile())) useZipUtility = true;
+            else schemaSS = null;
+        }
+
+
         while(true)
         {
             String errM = "Not generating " + (messageCount+i)+"_Reorganized.xml : ";
@@ -378,7 +432,10 @@ public class ControlMessageRelatedUtil
             ZipUtil zipUtil = null;
             ZipEntry entry = null;
 
+            String xsdURL = null;
+
             String dirS = null;
+
             if (controlMessageTemplate != null)
             {
                 zipUtil = controlMessageTemplate.getZipUtil();
@@ -393,6 +450,7 @@ public class ControlMessageRelatedUtil
                             dirS = file2.getParentFile().getAbsolutePath();
                         }
                     }
+                    useZipUtility = false;
                 }
             }
             if (dirS == null)
@@ -439,119 +497,156 @@ public class ControlMessageRelatedUtil
                     for(File ff:fList)
                     {
                         if (!ff.isFile()) continue;
+
                         if ((ff.getName().toLowerCase().trim().startsWith("schema"))&&(ff.getName().toLowerCase().trim().endsWith(".zip")))
                         {
                             dirS2 = ff.getAbsolutePath();
                         }
                         else continue;
-                        //if (!ff.isFile()) continue;
-                        //if (!ff.getName().toLowerCase().trim().endsWith(".zip")) continue;
 
+                        ZipUtil zUtil = null;
+                        ZipEntry zEntry = null;
                         try
                         {
-                            zipUtil = new ZipUtil(dirS2);
+                            zUtil = new ZipUtil(dirS2);
                         }
                         catch(IOException ie)
                         {
+                            System.out.println("WWWWW 113 " + ie.getMessage());
+                            ie.printStackTrace();
                             continue;
                         }
-                        List<ZipEntry> entries = zipUtil.searchEntryWithNameAsPart(mifClass.getMessageType(), ".xsd");
-                        if ((entries != null)&&(entries.size() == 1))
+                        List<ZipEntry> entries = zUtil.searchEntryWithNameAsPart(mifClass.getMessageType(), ".xsd");
+
+                        if ((entries != null)&&(entries.size() == 1)) zEntry = entries.get(0);
+                        else continue;
+
+                        if (useZipUtility)
                         {
-                            entry = entries.get(0);
-                            break;
+                            zipUtil = zUtil;
+                            entry = zEntry;
                         }
+                        else
+                        {
+                            String filePath = dirS2;
+                            if (!File.separator.equals("/")) filePath = filePath.replace(File.separator, "/");
+                            xsdURL = zUtil.getAccessURL(zEntry);
+                            //xsdURL = "jar:file:///" + filePath + "!/" + zEntry.getName();
+
+                            System.out.println("WWWW 149 xsdURL : " + xsdURL +", entryName=" + zEntry.getName());
+                        }
+                        break;
                     }
-                    if (entry != null) break;
+                    if ((entry != null)||(xsdURL != null)) break;
+                    {
+
+                        break;
+                    }
                 }
-                if (entry == null)
+                if ((entry == null)&&(xsdURL == null))
                 {
                     validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Not found this xml schema directroy : " + dirS);
                     break;
                 }
                 else
                 {
-                    String xsdFileS = zipUtil.copyIncludedFiles(entry, schemaFileName);
-                    File file2 = new File(xsdFileS);
-                    if ((file2.exists())&&(file2.isFile()))
+                    if (entry != null)
                     {
-                        dirS = file2.getParentFile().getAbsolutePath();
-                    }
-                    else
-                    {
-                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Xsd file saving failure : " + xsdFileS);
-                        break;
+                        String xsdFileS = zipUtil.copyIncludedFiles(entry, schemaFileName);
+                        File file2 = new File(xsdFileS);
+                        if ((file2.exists())&&(file2.isFile()))
+                        {
+                            dirS = file2.getParentFile().getAbsolutePath();
+                        }
+                        else
+                        {
+                            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Xsd file saving failure : " + xsdFileS);
+                            break;
+                        }
                     }
                 }
             }
-            else dirS = dir.getAbsolutePath();
+            else
+            {
+                dirS = dir.getAbsolutePath();
+
+                //if (dirS.endsWith(File.separator)) dirS = dirS.substring(0, dirS.length()-File.separator.length());
+                //String filePath = dirS;
+
+                //if (!File.separator.equals("/")) filePath = filePath.replace(File.separator, "/");
+                //xsdURL = "file:///" + filePath + "/" + mifClass.getMessageType() + ".xsd";
+            }
             //XMLValidator v = null;
 
             if (zipUtil == null)
             {
-                if (schemaFileName == null)
+                if (xsdURL == null)
                 {
-                    File[] files = dir.listFiles();
-                    List<File> listFile = new ArrayList<File>();
-                    for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
-                    if (listFile.size() == 0)
+                    if (schemaSS == null)
                     {
-                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
-                        break;
-                    }
-
-                    String messageType = mifClass.getMessageType();
-                    if ((messageType == null)||(messageType.trim().equals("")))
-                    {
-                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
-                        break;
-                    }
-                    messageType = messageType.trim();
-
-                    //String schemaFileName = null;
-                    for (File file:listFile)
-                    {
-                        String fileName = file.getName();
-                        if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
+                        File[] files = dir.listFiles();
+                        List<File> listFile = new ArrayList<File>();
+                        for(File file:files) if (file.getName().trim().toLowerCase().endsWith(".xsd")) listFile.add(file);
+                        if (listFile.size() == 0)
                         {
-                            schemaFileNameL = file.getAbsolutePath();
+                            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file in this directroy : " + dirS);
+                            break;
+                        }
+
+                        String messageType = mifClass.getMessageType();
+                        if ((messageType == null)||(messageType.trim().equals("")))
+                        {
+                            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "V3 Message type is not specified.");
+                            break;
+                        }
+                        messageType = messageType.trim();
+
+                        //String schemaFileName = null;
+                        for (File file:listFile)
+                        {
+                            String fileName = file.getName();
+                            if (fileName.toLowerCase().indexOf(messageType.toLowerCase()) >= 0)
+                            {
+                                schemaFileNameL = file.getAbsolutePath();
+                                break;
+                            }
+                        }
+                        if (schemaFileNameL == null)
+                        {
+                            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
                             break;
                         }
                     }
-                    if (schemaFileNameL == null)
-                    {
-                        validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "No schema file for the V3 Message type. : " + messageType);
-                        break;
-                    }
-                }
-                else
-                {
-                    if (schemaFileName.startsWith(dirS)) schemaFileNameL = schemaFileName;
                     else
                     {
-                        if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
-                        String xsdFileNameS = (new File(schemaFileName)).getName();
+                        if (schemaFileName.startsWith(dirS)) schemaFileNameL = schemaFileName;
+                        else
+                        {
+                            if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
+                            String xsdFileNameS = (new File(schemaFileName)).getName();
 
-                        String xsdC = FileUtil.readFileIntoString(schemaFileName);
-                        if ((xsdC == null)||(xsdC.trim().equals("")))
-                        {
-                            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Null or empty xsd file. : " + schemaFileName);
-                            break;
-                        }
-                        String tempFileName = dirS + "Temp_" + FileUtil.getRandomNumber(5) + "_" + xsdFileNameS;
+                            String xsdC = FileUtil.readFileIntoString(schemaFileName);
+                            if ((xsdC == null)||(xsdC.trim().equals("")))
+                            {
+                                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "Null or empty xsd file. : " + schemaFileName);
+                                break;
+                            }
+                            String tempFileName = dirS + "Temp_" + FileUtil.getRandomNumber(5) + "_" + xsdFileNameS;
 
-                        try
-                        {
-                            FileUtil.saveStringIntoTemporaryFile(tempFileName , xsdC);
+                            try
+                            {
+                                FileUtil.saveStringIntoTemporaryFile(tempFileName , xsdC);
+                            }
+                            catch(IOException ie)
+                            {
+                                validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "IOException during xsd file copying. : " + schemaFileName);
+                                break;
+                            }
+                            schemaFileNameL = tempFileName;
                         }
-                        catch(IOException ie)
-                        {
-                            validatorsToShow = GeneralUtilities.addValidatorMessage(validatorsToShow, errM + "IOException during xsd file copying. : " + schemaFileName);
-                            break;
-                        }
-                        schemaFileNameL = tempFileName;
                     }
                 }
+                else  schemaFileNameL = xsdURL;
             }
             else
             {
@@ -705,5 +800,22 @@ public class ControlMessageRelatedUtil
         }
 
         return true;
+    }
+
+    private static boolean useZipUtil()
+    {
+        String sr = FileUtil.searchProperty("useZipUtil");
+        if (sr == null) return false;
+        sr = sr.toLowerCase().trim();
+        if ((sr.equals("true"))||(sr.equals("yes"))) return true;
+        return false;
+    }
+    private static boolean checkTime()
+    {
+        String sr = FileUtil.searchProperty("checkTimeTransformationService");
+        if (sr == null) return false;
+        sr = sr.toLowerCase().trim();
+        if ((sr.equals("true"))||(sr.equals("yes"))) return true;
+        return false;
     }
 }
