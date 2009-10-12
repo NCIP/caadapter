@@ -6,6 +6,7 @@ import gov.nih.nci.caadapter.common.function.DateFunction;
 
 import java.io.IOException;
 import java.io.File;
+import java.io.InputStream;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import java.util.List;
@@ -160,6 +161,23 @@ public class ZipUtil
     public ZipFile getZipFile()
     {
         return zipFile;
+    }
+    public String getAccessURL(ZipEntry entry)
+    {
+        if (entry == null) return null;
+        if (zipFile == null) return null;
+        String filePath = zipFile.getName();
+        try
+        {
+            InputStream is = zipFile.getInputStream(entry);
+            if (is == null) return null;
+        }
+        catch(Exception ee)
+        {
+            return null;
+        }
+        if (!File.separator.equals("/")) filePath = filePath.replace(File.separator, "/");
+        return "jar:file:///" + filePath + "!/" + entry.getName();
     }
     public String getPivotDirectory()
     {
