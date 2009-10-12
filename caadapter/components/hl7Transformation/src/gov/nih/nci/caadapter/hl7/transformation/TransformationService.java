@@ -66,14 +66,14 @@ import com.sun.encoder.EncoderException;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.49 $
- * @date $Date: 2009-10-06 06:19:23 $
+ * @version $Revision: 1.50 $
+ * @date $Date: 2009-10-12 16:57:28 $
  * @since caAdapter v1.2
  */
 
 public class TransformationService
 {
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.49 2009-10-06 06:19:23 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/hl7Transformation/src/gov/nih/nci/caadapter/hl7/transformation/TransformationService.java,v 1.50 2009-10-12 16:57:28 altturbo Exp $";
 
 //    private String dataString = "";
     private boolean isStringData=false;
@@ -115,7 +115,8 @@ public class TransformationService
 	 * and transforms into HL7 v3 messages
 	 *
 	 * @param mapfilename the name of the mapping file
-	 * @param csvInString the string that contains csv data
+	 * @param dataInString the string that contains csv data
+     * @param isDataStringFlag true if dataInString is string csv data, false is dataInString is file path.
 	 */
 
     public TransformationService(String mapfilename, String dataInString, boolean isDataStringFlag)
@@ -290,7 +291,8 @@ public class TransformationService
     }
     private List<XMLElement> processWithException(String controlFile) throws Exception
     {
-    	informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
+//&umkis        if (checkTime()) System.out.println("checkTime() 1001 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
+        informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_START);
     	loadMapAndMetas(mapFile);
         if (!theValidatorResults.isValid())
         	return null;
@@ -299,7 +301,9 @@ public class TransformationService
         List<XMLElement> xmlElements=null ;
 
         // search Control message file
-        controlMessageTemplate = ControlMessageRelatedUtil.searchControlMessage(mifClass, controlFile);
+//&umkis        if (checkTime()) System.out.println("checkTime() 1002 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
+        controlMessageTemplate = ControlMessageRelatedUtil.searchControlMessage(mifClass, controlFile, this);
+//&umkis        if (checkTime()) System.out.println("checkTime() 1003 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
 
         if (mapParser.getSourceKind()!=null&&mapParser.getSourceKind().equalsIgnoreCase("v2"))
         {
@@ -327,6 +331,7 @@ public class TransformationService
         	System.out.println("Source data parsing time" + (System.currentTimeMillis()-csvbegintime));
             informProcessProgress(TransformationObserver.TRANSFORMATION_DATA_LOADING_PARSER_SOURCE);
         }
+//&umkis        if (checkTime()) System.out.println("checkTime() 1004 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
 
         if (isStringData)
         {
@@ -439,7 +444,8 @@ public class TransformationService
      */
     private void writeOutMessage(List<XMLElement> xmlElements, int messageCount, ZipOutputStream zipOut) throws IOException
     {
-    	OutputStreamWriter writer=new OutputStreamWriter(zipOut);
+//&umkis        if (checkTime()) System.out.println("checkTime() 2001 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
+        OutputStreamWriter writer=new OutputStreamWriter(zipOut);
 
         int wrappedMessageCount = 0;
         ValidatorResults controlValidator = null;
@@ -453,6 +459,7 @@ public class TransformationService
 //&umkis                (!getNameSpacePrefix().equals("")))
 //&umkis                v3Message = xmlElements.get(i).toXML(getLevelOfDatatypeIncluding(), getMakeLowercaseHeadElement(), getNameSpacePrefix()).toString();
 //&umkis            else
+//&umkis            if (checkTime()) System.out.println(" --checkTime() 210"+i+" : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
             v3Message = xmlElements.get(i).toXML().toString();
 
             zipOut.putNextEntry(new ZipEntry(String.valueOf(messageCount+i)+".xml"));
@@ -482,7 +489,7 @@ public class TransformationService
             objOut.writeObject(validatorsToShow);
             objOut.flush();
         }
-
+//&umkis        if (checkTime()) System.out.println("checkTime() 2002 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
         if ((controlMessageTemplate != null)&&(controlMessageTemplate.getHeadNode() != null))
         {
             String integratedMessage = controlMessageTemplate.printStringXML();
@@ -506,6 +513,7 @@ public class TransformationService
             objOut.writeObject(controlValidator);
             objOut.flush();
         }
+//&umkis        if (checkTime()) System.out.println("checkTime() 2003 : " + GeneralUtilities.getCurrentTime("yyyyMMdd-hh:mm:ss.SSS"));
 }
 
 
@@ -697,6 +705,14 @@ public class TransformationService
     public ValidatorResults getValidatorResults() {
 		return theValidatorResults;
 	}
+//&umkis    private boolean checkTime()
+//&umkis    {
+//&umkis        String sr = FileUtil.searchProperty("checkTimeTransformationService");
+//&umkis        if (sr == null) return false;
+//&umkis        sr = sr.toLowerCase().trim();
+//&umkis        if ((sr.equals("true"))||(sr.equals("yes"))) return true;
+//&umkis        return false;
+//&umkis    }
 
     public static void main(String[] argv) throws Exception {
         long begintime2 = System.currentTimeMillis();
@@ -712,6 +728,9 @@ public class TransformationService
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.49  2009/10/06 06:19:23  altturbo
+ * HISTORY      : Using schemas.zip file for xml validation.
+ * HISTORY      :
  * HISTORY      : Revision 1.48  2009/09/29 15:55:42  altturbo
  * HISTORY      : update the part of control message wrapping - process(String wrappingControlMessageFileName)
  * HISTORY      :
