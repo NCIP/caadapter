@@ -64,8 +64,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v1.2
- *          revision    $Revision: 1.42 $
- *          date        $Date: 2009-10-12 22:45:07 $
+ *          revision    $Revision: 1.43 $
+ *          date        $Date: 2009-10-13 18:03:23 $
  */
 public class HL7MessagePanel extends DefaultContextManagerClientPanel implements ActionListener
 {
@@ -494,23 +494,25 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 		else if(totalNumberOfMessages>0 && isBatchTransform)
 		{
 			try{
-//&umkis                String ins = "";
+//&umkis                String ins = displayedV3Entry;
 //&umkis                int idx = displayedV3Entry.indexOf(".");
-//&umkis                if (schemaValidationTag == JOptionPane.YES_OPTION) ins = displayedV3Entry.substring(0, idx) + "_Reorganized" + displayedV3Entry.substring(idx);
+//&umkis                if ((schemaValidationTag == JOptionPane.YES_OPTION)&&(idx > 0)) ins = displayedV3Entry.substring(0, idx) + "_Reorganized" + displayedV3Entry.substring(idx);
 //
                 String xmlMsg = "";
 //&umkis                try { xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(),ins); }
 //&umkis                catch (IOException ie)
-//&umkis                {
-                try
+//&umkis                { xmlMsg = ""; }
+                if ((xmlMsg == null)||(xmlMsg.trim().equals("")))
                 {
-                    xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(), displayedV3Entry);
+                    try
+                    {
+                        xmlMsg = TransformationServiceUtil.readFromZip(this.getSaveFile(), displayedV3Entry);
+                    }
+                    catch(IOException iee)
+                    {
+                        xmlMsg = "[This V3 Message Instance is not generated]";
+                    }
                 }
-                catch(IOException iee)
-                {
-                    xmlMsg = "[This V3 Message Instance is not generated]";
-                }
-//&umkis                }
 //
                 setMessageText(xmlMsg);
 //
@@ -767,6 +769,9 @@ public class HL7MessagePanel extends DefaultContextManagerClientPanel implements
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.42  2009/10/12 22:45:07  altturbo
+ * HISTORY      : add some remark lines.
+ * HISTORY      :
  * HISTORY      : Revision 1.41  2009/09/11 16:42:46  altturbo
  * HISTORY      : for control message wrapper
  * HISTORY      :
