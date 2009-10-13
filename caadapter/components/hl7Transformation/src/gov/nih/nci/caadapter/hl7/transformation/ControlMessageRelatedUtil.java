@@ -166,7 +166,7 @@ public class ControlMessageRelatedUtil
             }
         }
 
-        String dirName = FileUtil.searchProperty("ControlMessageTemplateDirectory");
+        String dirName = FileUtil.searchPropertyAsFilePath("ControlMessageTemplateDirectory");
 
         if ((dirName == null)||(dirName.trim().equals("")))
         {
@@ -210,6 +210,27 @@ public class ControlMessageRelatedUtil
 
     private static XmlReorganizingTree searchControlMessageFile(String mifName, String mifType, File ff, String dirS, boolean zipUtility)
     {
+        XmlReorganizingTree controlMessageTemplate = null;
+        String type = null;
+
+        if (ff == null) return null;
+        if ((!ff.exists())||(!ff.isFile())) return null;
+
+        try
+        {
+            XmlReorganizingTree xrt = new XmlReorganizingTree(ff.getAbsolutePath());
+            DefaultMutableTreeNode dNode = xrt.getHeadNode();
+            if (dNode == null) return null;
+            String head = xrt.getNodeName(dNode);
+            if ((head == null)||(head.trim().equals(""))) return null;
+            type = head;
+        }
+        catch(ApplicationException ae)
+        {
+            System.err.println("XmlReorganizingTree error ("+ff.getAbsolutePath()+") : " + ae.getMessage());
+            return null;
+        }
+
         ZipUtil zipUtil = null;
         ZipEntry zipEntry = null;
 
@@ -230,11 +251,10 @@ public class ControlMessageRelatedUtil
                 }
                 catch(IOException ie)
                 {
-                    System.out.println("WWWWW 123 " + ie.getMessage());
                     ie.printStackTrace();
                     return null;
                 }
-                List<ZipEntry> entries = zUtil.searchEntryWithNameAsPart(mifType, ".xsd");
+                List<ZipEntry> entries = zUtil.searchEntryWithNameAsPart(type, ".xsd");
 
                 if ((entries != null)&&(entries.size() == 1)) zEntry = entries.get(0);
                 else return null;
@@ -250,7 +270,7 @@ public class ControlMessageRelatedUtil
                     xsdURL = zUtil.getAccessURL(zEntry);
                     //xsdURL = "jar:file:///" + filePath + "!/" + zEntry.getName();
 
-                    System.out.println("WWWW 124 xsdURL : " + xsdURL +", entryName=" + zEntry.getName());
+                    //System.out.println("WWWW 124 xsdURL : " + xsdURL +", entryName=" + zEntry.getName());
                 }
             }
             else return null;
@@ -259,36 +279,14 @@ public class ControlMessageRelatedUtil
         {
             dirS = fileZ.getAbsolutePath();
             if (dirS.endsWith(File.separator)) dirS = dirS.substring(0, dirS.length()-File.separator.length());
-//            String filePath = dirS;
-//
-//            if (!File.separator.equals("/")) filePath = filePath.replace(File.separator, "/");
-//            xsdURL = "file:///" + filePath + "/" + mifType + ".xsd";
         }
         //System.out.println("WWWW 07 : " + dirS);
         if (!dirS.endsWith(File.separator)) dirS = dirS + File.separator;
         boolean wasFound = false;
-        XmlReorganizingTree controlMessageTemplate = null;
-        String type = null;
+
         while(true)
         {
-            if (ff == null) break;
-            if ((!ff.exists())||(!ff.isFile())) break;
-
-            try
-            {
-                XmlReorganizingTree xrt = new XmlReorganizingTree(ff.getAbsolutePath());
-                DefaultMutableTreeNode dNode = xrt.getHeadNode();
-                if (dNode == null) break;
-                String head = xrt.getNodeName(dNode);
-                if ((head == null)||(head.trim().equals(""))) break;
-                type = head;
-            }
-            catch(ApplicationException ae)
-            {
-                break;
-            }
-
-            //System.out.println("WWWW 09 : Type : " + type);
+            //System.out.println("WWWW 09 : Type : " + type + ", control xml file=" + ff.getAbsolutePath());
 
             String schemaF = null;
             if (zipUtil != null)
@@ -370,24 +368,14 @@ public class ControlMessageRelatedUtil
         if (!wasFound) return null;
         if (zipUtil != null)
         {
-            if (zipEntry == null) return null;
-//            {
-//                List<ZipEntry> list = zipUtil.searchEntryWithNameAsPart(mifType, ".xsd");
-//                if ((list == null)||(list.size() != 1)) return null;
-//                zipEntry = list.get(0);
-//                try
-//                {
-//                    zipUtil.copyIncludedFiles(zipEntry);
-//                }
-//                catch(IOException ie)
-//                {
-//                    System.out.println("WWWW 14 : " + ie.getMessage());
-//                    return null;
-//                }
-//            }
-            //System.out.println("WWWW 15 : ");
+            if (zipEntry == null)
+            {
+                System.err.println("zipUtil error : not found zip entry object.");
+                return null;
+            }
             controlMessageTemplate.setZipUtil(zipUtil);
         }
+        if (controlMessageTemplate != null) System.out.println("Control Message Template file is found : " + ff.getAbsolutePath());
         return controlMessageTemplate;
     }
 
@@ -512,7 +500,7 @@ public class ControlMessageRelatedUtil
                         }
                         catch(IOException ie)
                         {
-                            System.out.println("WWWWW 113 " + ie.getMessage());
+                            //System.out.println("WWWWW 113 " + ie.getMessage());
                             ie.printStackTrace();
                             continue;
                         }
@@ -533,7 +521,7 @@ public class ControlMessageRelatedUtil
                             xsdURL = zUtil.getAccessURL(zEntry);
                             //xsdURL = "jar:file:///" + filePath + "!/" + zEntry.getName();
 
-                            System.out.println("WWWW 149 xsdURL : " + xsdURL +", entryName=" + zEntry.getName());
+                            //System.out.println("WWWW 149 xsdURL : " + xsdURL +", entryName=" + zEntry.getName());
                         }
                         break;
                     }

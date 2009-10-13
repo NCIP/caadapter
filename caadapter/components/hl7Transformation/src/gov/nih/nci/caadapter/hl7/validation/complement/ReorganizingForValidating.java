@@ -114,7 +114,15 @@ public class ReorganizingForValidating
                     complexType = messageType + "." + nodeName;
                     complexTypeNode = xsdTree.searchComplexType(complexType);
                 }
-                if (complexTypeNode == null) throw new ApplicationException("unmatched between xml and xsd 1: " + nodeName + ", complexType=" + complexType);
+                if (complexTypeNode == null)
+                {
+                    //if (nodeName.indexOf("_IN") > 0)
+                    //{
+                    //    complexType = nodeName + ".MCCI_MT000100UV01.Message";
+                    //    complexTypeNode = xsdTree.searchComplexType(complexType);
+                    //}
+                    throw new ApplicationException("unmatched between xml and xsd 1: " + nodeName + ", complexType=" + complexType);
+                }
                 rootElementName = nodeName;
                 //doneXMLNodeList.add(node);
                 //doneXSDNodeList.add(complexTypeNode);

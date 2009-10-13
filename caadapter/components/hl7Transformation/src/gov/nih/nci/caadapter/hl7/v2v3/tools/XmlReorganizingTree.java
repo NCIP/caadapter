@@ -507,7 +507,11 @@ public class XmlReorganizingTree
         if (fileName.equals("")) throw new ApplicationException("Schema file name is null or empty.");
         if (!fileName.toLowerCase().endsWith(".xsd")) throw new ApplicationException("This file is not a XML schema file. : " + fileName);
         File file = new File(fileName);
-        if ((!file.exists())||(!file.isFile())) throw new ApplicationException("This Schema file is not exist. : " + fileName);
+        if ((!file.exists())||(!file.isFile()))
+        {
+            if ((fileName.toLowerCase().startsWith("jar:file:/"))&&(fileName.indexOf("!/") > 0)) {}
+            else throw new ApplicationException("This Schema file is not exist. : " + fileName);
+        }
 
         schemaFileName = fileName;
     }
