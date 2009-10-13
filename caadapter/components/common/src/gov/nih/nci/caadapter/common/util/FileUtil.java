@@ -32,7 +32,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 
 public class FileUtil
@@ -277,11 +277,12 @@ public class FileUtil
         }
         if (rr != null)
         {
-            if (rr.toLowerCase().startsWith(Config.CAADAPTER_HOME_DIR_TAG.toLowerCase()))
+            if ((rr.toLowerCase().startsWith(Config.CAADAPTER_HOME_DIR_TAG.toLowerCase()))&&(!isFilePath))
             {
                 String homeDir = getWorkingDirPath().trim();
                 String subDir = rr.substring(Config.CAADAPTER_HOME_DIR_TAG.length()).trim();
                 if (!File.separator.equals("/")) subDir = subDir.replace("/", File.separator);
+                else subDir = subDir.replace("\\", File.separator);
                 if ((!homeDir.endsWith(File.separator))&&(!subDir.startsWith(File.separator))) rr = homeDir + File.separator + subDir;
                 else if ((homeDir.endsWith(File.separator))&&(subDir.startsWith(File.separator))) rr = homeDir + subDir.substring(File.separator.length());
                 else rr = homeDir + subDir;
@@ -481,11 +482,22 @@ public class FileUtil
         data = data.trim();
         if (data.equals("")) return null;
 
+        if (data.toLowerCase().startsWith(Config.CAADAPTER_HOME_DIR_TAG.toLowerCase()))
+        {   
+            String homeDir = getWorkingDirPath().trim();
+            String subDir = data.substring(Config.CAADAPTER_HOME_DIR_TAG.length()).trim();
+            if (!File.separator.equals("/")) subDir = subDir.replace("/", File.separator);
+            else subDir = subDir.replace("\\", File.separator);
+            if ((!homeDir.endsWith(File.separator))&&(!subDir.startsWith(File.separator))) data = homeDir + File.separator + subDir;
+            else if ((homeDir.endsWith(File.separator))&&(subDir.startsWith(File.separator))) data = homeDir + subDir.substring(File.separator.length());
+            else data = homeDir + subDir;
+        }
+
         while(true)
         {
-            int idx = data.indexOf("\\\\");
+            int idx = data.indexOf(File.separator + File.separator);
             if (idx < 0) break;
-            data = data.substring(0, idx) + data.substring(idx + 1);
+            data = data.substring(0, idx) + data.substring(idx + File.separator.length());
         }
         File file = new File(data);
         if (file.exists()) return file.getAbsolutePath();
@@ -1572,6 +1584,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.37  2009/10/12 21:06:11  altturbo
+ * change searchProperty()
+ *
  * Revision 1.36  2009/09/18 16:40:36  altturbo
  * minor change
  *
