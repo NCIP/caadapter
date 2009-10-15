@@ -9,20 +9,22 @@ package gov.nih.nci.cbiit.cmps.test;
 
 
 import gov.nih.nci.cbiit.cmps.common.XSDParser;
+import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmps.core.BaseMeta;
+import gov.nih.nci.cbiit.cmps.core.Component;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.core.Mapping;
 import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
-import javax.xml.transform.stream.StreamSource;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,10 +35,10 @@ import org.junit.Test;
  * This class is to test the Mapping functions
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.14 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.15 $
+ * @date       $Date: 2009-10-15 18:33:55 $
  *
  */
 public class MappingTest {
@@ -147,8 +149,19 @@ public class MappingTest {
 	public void testMarshalMapping() throws Exception {
 		String srcComponentId = "workingspace/shiporder.xsd";
 		String tgtComponentId = "workingspace/printorder.xsd";
-		Mapping m = MappingFactory.createMappingFromXSD(
-				srcComponentId, "shiporder", tgtComponentId, "printorder");
+//		Mapping m = MappingFactory.createMappingFromXSD(
+//				srcComponentId, "shiporder", tgtComponentId, "printorder");
+		Mapping m = new Mapping();
+		m.setComponents(new Mapping.Components());
+		m.setLinks(new Mapping.Links());
+		XSDParser srcP = new XSDParser();
+		srcP.loadSchema(srcComponentId);
+		MappingFactory.loadMetaSourceXSD(m, srcP, null,"shiporder");
+		
+		XSDParser trgtP = new XSDParser();
+		trgtP.loadSchema(tgtComponentId);
+		MappingFactory.loadMetaTargetXSD(m, trgtP,null, "printorder");
+		
 		//add links;
 		m.setLinks(new Mapping.Links());
 		MappingFactory.addLink(m, "0", "/shiporder", "1", "/printorder");
@@ -167,8 +180,19 @@ public class MappingTest {
 	public void testMarshalMapping1() throws Exception {
 		String srcComponentId = "workingspace/shiporder.xsd";
 		String tgtComponentId = "workingspace/item.xsd";
-		Mapping m = MappingFactory.createMappingFromXSD(
-				srcComponentId, "shiporder", tgtComponentId, "item");
+//		Mapping m = MappingFactory.createMappingFromXSD(
+//				srcComponentId, "shiporder", tgtComponentId, "item");
+		Mapping m = new Mapping();
+		m.setComponents(new Mapping.Components());
+		m.setLinks(new Mapping.Links());
+		XSDParser srcP = new XSDParser();
+		srcP.loadSchema(srcComponentId);
+		MappingFactory.loadMetaSourceXSD(m, srcP, null,"shiporder");
+		
+		XSDParser trgtP = new XSDParser();
+		trgtP.loadSchema(tgtComponentId);
+		MappingFactory.loadMetaTargetXSD(m, trgtP,null, "printorder");
+
 		//add links;
 		m.setLinks(new Mapping.Links());
 		
@@ -193,17 +217,27 @@ public class MappingTest {
 		Mapping m = MappingFactory.loadMapping(new File("workingspace/mapping.xml"));
 		String cid = "1";
 		String id = "/printorder/@orderid";
-		BaseMeta b = MappingFactory.findNodeById(m, cid, id);
+
+		HashMap<String,Component> map = new HashMap<String,Component>();
+		List<Component> l = m.getComponents().getComponent();
+		for(Component c:l)
+			map.put(c.getId(), c);
+		Component c = map.get(cid);
+		BaseMeta b = MappingFactory.findNodeById(c, id);
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller mar = jc.createMarshaller();
 		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 		mar.marshal(new JAXBElement(new QName("meta"), b.getClass(), b), new File("bin/mapping_findObj.out.xml"));
 	}
+
 	
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.14  2008/12/29 22:18:18  linc
+ * HISTORY: function UI added.
+ * HISTORY:
  * HISTORY: Revision 1.13  2008/12/10 15:43:03  linc
  * HISTORY: Fixed component id generator and delete link.
  * HISTORY:

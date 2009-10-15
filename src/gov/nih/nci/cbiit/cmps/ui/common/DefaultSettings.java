@@ -25,16 +25,17 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
  * This class defines a list of default settings for GUI Settings.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-10-15 18:35:41 $
  *
  */
 public class DefaultSettings
@@ -521,15 +522,17 @@ public class DefaultSettings
 		}
 	}
 	
-	public static String showListChoiceDialog(Component parent, String title, String msg, String[] choices){
+	public static Object showListChoiceDialog(Component parent, String title, String msg, Object[] choices){
 		JOptionPane p = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		JDialog dlg = p.createDialog(parent, title);
-		JComboBox c = new JComboBox(choices);
+//		Arrays.sort(choices);
+		JComboBox c = new JComboBox( choices);
 		dlg.getContentPane().add(c,BorderLayout.NORTH);
 		dlg.pack();
 		dlg.setVisible(true);
 		if(p.getValue().equals(Integer.valueOf(JOptionPane.OK_OPTION))) {
-			return (String)c.getSelectedItem();
+			return c.getSelectedItem();
+//			return (String)c.getSelectedItem();
 		}
 		return null;
 				
@@ -537,6 +540,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/12/29 22:18:18  linc
+ * HISTORY: function UI added.
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:

@@ -63,15 +63,17 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.xerces.xs.XSNamedMap;
+import org.apache.xerces.xs.XSObject;
+
 
 /**
  * This class 
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-10-15 18:35:33 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -487,18 +489,18 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		p.loadSchema(file);
 
 		XSNamedMap[] map = p.getMappableNames();
-		String[] choices = new String[map[0].getLength()+map[1].getLength()];
+		XSObject[] choices = new XSObject[map[0].getLength()+map[1].getLength()];
 		int pos = 0;
 		for(int i=0; i<map[0].getLength(); i++)
-			choices[pos++] = map[0].item(i).getName();
+			choices[pos++] =map[0].item(i);//.getName();
 		for(int i=0; i<map[1].getLength(); i++)
-			choices[pos++] = map[1].item(i).getName();
+			choices[pos++] = map[1].item(i);//.getNamespace() +":" +map[1].item(i).getName();
 
-		String srcRoot = DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
-		if(srcRoot == null || srcRoot.trim().length() == 0)
+		XSObject srcRoot = (XSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+		if(srcRoot == null || srcRoot.getName().trim().length() == 0)
 			return false;
 		//System.out.println("opened file:"+file+", root="+srcRoot);
-		MappingFactory.loadSourceXSD(getMapping(), p, srcRoot);
+		MappingFactory.loadMetaSourceXSD(getMapping(), p,srcRoot.getNamespace(), srcRoot.getName());
 
 
 		buildSourceTree(getMapping(), file, isToResetGraph);
@@ -519,18 +521,18 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		p.loadSchema(file);
 
 		XSNamedMap[] map = p.getMappableNames();
-		String[] choices = new String[map[0].getLength()+map[1].getLength()];
+		XSObject[] choices = new XSObject[map[0].getLength()+map[1].getLength()];
 		int pos = 0;
 		for(int i=0; i<map[0].getLength(); i++)
-			choices[pos++] = map[0].item(i).getName();
+			choices[pos++] = map[0].item(i);//.getName();
 		for(int i=0; i<map[1].getLength(); i++)
-			choices[pos++] = map[1].item(i).getName();
+			choices[pos++] = map[1].item(i);//.getName();
 
-		String srcRoot = DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
-		if(srcRoot == null || srcRoot.trim().length() == 0)
+		XSObject trgtRoot = (XSObject) DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+		if(trgtRoot == null || trgtRoot.getName().trim().length() == 0)
 			return false;
 		//System.out.println("opened file:"+file+", root="+srcRoot);
-		MappingFactory.loadTargetXSD(getMapping(), p, srcRoot);
+		MappingFactory.loadMetaTargetXSD(getMapping(), p, trgtRoot.getNamespace(), trgtRoot.getName());
 
 		buildTargetTree(getMapping(), file, isToResetGraph);
 		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
@@ -956,6 +958,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2008/12/29 22:18:18  linc
+ * HISTORY: function UI added.
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:

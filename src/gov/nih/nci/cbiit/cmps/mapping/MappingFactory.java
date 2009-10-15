@@ -8,12 +8,9 @@
 package gov.nih.nci.cbiit.cmps.mapping;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.swing.text.html.parser.Element;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -39,100 +36,62 @@ import gov.nih.nci.cbiit.cmps.core.Mapping.Links;
  * This class is used to generate CMPS Mapping
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2008-12-10 15:43:03 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-10-15 18:36:23 $
  *
  */
 public class MappingFactory {
-	/**
-	 * create Mapping from a pair of XSD
-	 * @param srcX - source XSD
-	 * @param srcRoot - source root element
-	 * @param tgtX - target XSD
-	 * @param tgtRoot - target root element
-	 * @return Mapping
-	 */
-	public static Mapping createMappingFromXSD(String srcX, String srcRoot, String tgtX, String tgtRoot) {
-		Mapping m = new Mapping();
-		m.setComponents(new Mapping.Components());
-		m.setLinks(new Mapping.Links());
-		
-		loadSourceXSD(m, srcX, srcRoot);
-		loadTargetXSD(m, tgtX, tgtRoot);
-		return m;		
-	}
 
 	/**
 	 * load additional source XSD into specified Mapping
 	 * @param m - Mapping object to load into
 	 * @param srcX - source XSD
+	 * @param srcRootNS -- source root element namespace
 	 * @param srcRoot - source root element
 	 */
-	public static void loadSourceXSD(Mapping m, XSDParser srcX, String srcRoot) {
-		loadXSD(m, srcX, srcRoot, ComponentType.SOURCE);
+	public static void loadMetaSourceXSD(Mapping m, XSDParser srcX, String srcRootNS, String srcRootName) {
+		loadXSD(m, srcX,srcRootNS, srcRootName, ComponentType.SOURCE);
 	}
 
 	/**
 	 * load additional target XSD into specified Mapping
 	 * @param m - Mapping object to load into
 	 * @param tgtX - target XSD
-	 * @param tgtRoot - target root element
+	 * @param tgtRootNS -- target root element namespace
+	 * @param tgtRootName - target root element name
 	 */
-	public static void loadTargetXSD(Mapping m, XSDParser tgtX, String tgtRoot) {
-		loadXSD(m, tgtX, tgtRoot, ComponentType.TARGET);
+	public static void loadMetaTargetXSD(Mapping m, XSDParser tgtX, String tgtRootNS, String tgtRootName) {
+		loadXSD(m, tgtX, tgtRootNS, tgtRootName, ComponentType.TARGET);
 	}
 
-	/**
-	 * load additional source XSD into specified Mapping
-	 * @param m - Mapping object to load into
-	 * @param srcX - source XSD
-	 * @param srcRoot - source root element
-	 */
-	public static void loadSourceXSD(Mapping m, String srcX, String srcRoot) {
-		loadXSD(m, srcX, srcRoot, ComponentType.SOURCE);
-	}
+	private static void loadXSD(Mapping m, XSDParser schemaParser,String rootNS, String root, ComponentType type) {
 
-	/**
-	 * load additional target XSD into specified Mapping
-	 * @param m - Mapping object to load into
-	 * @param tgtX - target XSD
-	 * @param tgtRoot - target root element
-	 */
-	public static void loadTargetXSD(Mapping m, String tgtX, String tgtRoot) {
-		loadXSD(m, tgtX, tgtRoot, ComponentType.TARGET);
-	}
-
-	private static void loadXSD(Mapping m, String schema, String root, ComponentType type) {
-		XSDParser p = new XSDParser();
-		p.loadSchema(schema);
-		loadXSD(m, p, root, type);
+		Component endComp = new Component();
+		endComp.setKind(KindType.XML);
+		endComp.setId(getNewComponentId(m));
+		endComp.setLocation(schemaParser.getSchemaURI());
+		ElementMeta e = schemaParser.getElementMeta(rootNS, root);
+		if(e==null) 
+			e = schemaParser.getElementMetaFromComplexType(rootNS, root);
+		endComp.setRootElement(e);
+		endComp.setType(type);
+//		if(m.getComponents() == null) m.setComponents(new Components());
+		m.getComponents().getComponent().add(endComp);
 	}
 	
-	private static void loadXSD(Mapping m, XSDParser p, String root, ComponentType type) {
-		Component src = new Component();
-		src.setKind(KindType.XML);
-		src.setId(getNewComponentId(m));
-		src.setLocation(p.getSchemaURI());
-		ElementMeta e = p.getElementMeta(null, root);
-		if(e==null) e = p.getElementMetaFromComplexType(null, root);
-		src.setRootElement(e);
-		src.setType(type);
-		if(m.getComponents() == null) m.setComponents(new Components());
-		m.getComponents().getComponent().add(src);
-	}
-	
-	public static String getNewComponentId(Mapping m){
-		if(m.getComponents() == null) m.setComponents(new Components());
+	private static String getNewComponentId(Mapping m){
+		if(m.getComponents() == null) 
+			m.setComponents(new Components());
 		int num = 0;
 		for(Component c:m.getComponents().getComponent()){
 			int tmp = -1;
 			try{
 				tmp = Integer.parseInt(c.getId());
 			}catch(Exception ignored){}
-			if(tmp>=num) num = tmp+1;
-			//else num = num+1;
+			if(tmp>=num) 
+				num = tmp+1;
 		}
 		return String.valueOf(num);
 	}
@@ -161,24 +120,17 @@ public class MappingFactory {
 	public static Mapping loadMapping(File f) throws JAXBException{
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Unmarshaller u = jc.createUnmarshaller();
-		JAXBElement<Mapping> m = u.unmarshal(new StreamSource(f), Mapping.class);
-		return  m.getValue();
+		JAXBElement<Mapping> jaxbElmt = u.unmarshal(new StreamSource(f), Mapping.class);
+		return  jaxbElmt.getValue();
 	}
 	
 	public static void saveMapping(File f, Mapping m) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance( "gov.nih.nci.cbiit.cmps.core" );
 		Marshaller u = jc.createMarshaller();
 		u.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		u.marshal(new JAXBElement(new QName("mapping"),Mapping.class, m), f);
+		u.marshal(new JAXBElement<Mapping>(new QName("mapping"),Mapping.class, m), f);
 	}
 	
-	public static Map<String,Component> getComponentMap(Mapping m){
-		HashMap<String,Component> ret = new HashMap<String,Component>();
-		List<Component> l = m.getComponents().getComponent();
-		for(Component c:l)
-			ret.put(c.getId(), c);
-		return ret;
-	}
 	
 	public static BaseMeta findNodeById(Component c, String id){
 		StringTokenizer st = new StringTokenizer(id, "/@");
@@ -221,16 +173,13 @@ public class MappingFactory {
 		return e;
 	}
 	
-	public static BaseMeta findNodeById(Mapping m, String componentId, String id){
-		Map<String,Component> map = getComponentMap(m);
-		Component c = map.get(componentId);
-		return findNodeById(c, id);
-	}
-	
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2008/12/10 15:43:03  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:
