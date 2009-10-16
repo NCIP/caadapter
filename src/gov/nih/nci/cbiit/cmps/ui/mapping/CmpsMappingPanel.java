@@ -72,8 +72,8 @@ import org.apache.xerces.xs.XSObject;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.8 $
- * @date       $Date: 2009-10-15 18:35:33 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2009-10-16 17:36:34 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -484,30 +484,37 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	 */
 	protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
 	{
-		String fileExtension = FileUtil.getFileExtension(file, true);
+//		String fileExtension = FileUtil.getFileExtension(file, true);
 		XSDParser p = new XSDParser();
 		p.loadSchema(file);
-
-		XSNamedMap[] map = p.getMappableNames();
-		XSObject[] choices = new XSObject[map[0].getLength()+map[1].getLength()];
-		int pos = 0;
-		for(int i=0; i<map[0].getLength(); i++)
-			choices[pos++] =map[0].item(i);//.getName();
-		for(int i=0; i<map[1].getLength(); i++)
-			choices[pos++] = map[1].item(i);//.getNamespace() +":" +map[1].item(i).getName();
-
-		XSObject srcRoot = (XSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
-		if(srcRoot == null || srcRoot.getName().trim().length() == 0)
+		CellRenderXSObject srcRoot = userSelectRoot(p);
+		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
-		//System.out.println("opened file:"+file+", root="+srcRoot);
-		MappingFactory.loadMetaSourceXSD(getMapping(), p,srcRoot.getNamespace(), srcRoot.getName());
-
+		 
+		MappingFactory.loadMetaSourceXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName());
 
 		buildSourceTree(getMapping(), file, isToResetGraph);
-		//		middlePanel.getMappingDataManager().registerSourceComponent(metaInfo, file);
 		return true;
 	}
 
+	/**
+	 * Promote user to select a root node:Element or Complex type
+	 * @param xsdParser
+	 * @return
+	 */
+	private CellRenderXSObject userSelectRoot(XSDParser xsdParser)
+	{
+		XSNamedMap[] map = xsdParser.getMappableNames();
+		CellRenderXSObject[] choices = new CellRenderXSObject[map[0].getLength()+map[1].getLength()];
+		int pos = 0;
+		for(int i=0; i<map[0].getLength(); i++)
+			choices[pos++] =new CellRenderXSObject(map[0].item(i));//.getName();
+		for(int i=0; i<map[1].getLength(); i++)
+			choices[pos++] = new CellRenderXSObject(map[1].item(i));//.getNamespace() +":" +map[1].item(i).getName();
+
+		CellRenderXSObject chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+		return chosenRoot;
+	}
 	/**
 	 * Called by actionPerformed() and overridable by descendant classes.
 	 *
@@ -516,23 +523,13 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	 */
 	protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
 	{
-		String fileExtension = FileUtil.getFileExtension(file, true);
+//		String fileExtension = FileUtil.getFileExtension(file, true);
 		XSDParser p = new XSDParser();
 		p.loadSchema(file);
-
-		XSNamedMap[] map = p.getMappableNames();
-		XSObject[] choices = new XSObject[map[0].getLength()+map[1].getLength()];
-		int pos = 0;
-		for(int i=0; i<map[0].getLength(); i++)
-			choices[pos++] = map[0].item(i);//.getName();
-		for(int i=0; i<map[1].getLength(); i++)
-			choices[pos++] = map[1].item(i);//.getName();
-
-		XSObject trgtRoot = (XSObject) DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
-		if(trgtRoot == null || trgtRoot.getName().trim().length() == 0)
+		CellRenderXSObject trgtRoot = userSelectRoot(p);
+		if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
 			return false;
-		//System.out.println("opened file:"+file+", root="+srcRoot);
-		MappingFactory.loadMetaTargetXSD(getMapping(), p, trgtRoot.getNamespace(), trgtRoot.getName());
+		MappingFactory.loadMetaTargetXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName());
 
 		buildTargetTree(getMapping(), file, isToResetGraph);
 		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
@@ -958,6 +955,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.8  2009/10/15 18:35:33  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.7  2008/12/29 22:18:18  linc
  * HISTORY: function UI added.
  * HISTORY:
