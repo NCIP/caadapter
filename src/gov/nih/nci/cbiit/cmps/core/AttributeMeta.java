@@ -51,8 +51,23 @@ public class AttributeMeta
     protected Boolean isFixed;
     @XmlAttribute
     protected String defaultValue;
+    protected String fixedValue;
 
     /**
+	 * @return the fixedValue
+	 */
+	public String getFixedValue() {
+		return fixedValue;
+	}
+
+	/**
+	 * @param fixedValue the fixedValue to set
+	 */
+	public void setFixedValue(String fixedValue) {
+		this.fixedValue = fixedValue;
+	}
+
+	/**
      * Gets the value of the isRequired property.
      * 
      * @return
@@ -171,5 +186,23 @@ public class AttributeMeta
     public void setDefaultValue(String value) {
         this.defaultValue = value;
     }
-
+    
+    public String toString()
+    {
+    	StringBuffer rtBuffer=new StringBuffer();
+    	rtBuffer.append(getName());
+ 
+    	if (isIsRequired())
+    		rtBuffer.append(" [Required");
+    	else
+    		rtBuffer.append(" [Optional");
+    	
+    	if (getFixedValue()!=null)
+    		rtBuffer.append(":fixed/"+getFixedValue());
+    	else if (getDefaultValue()!=null)
+    		rtBuffer.append(":default/"+getDefaultValue());
+    	
+    	rtBuffer.append("]");
+    	return rtBuffer.toString();
+    }
 }

@@ -16,6 +16,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.xerces.impl.dv.xs.XSSimpleTypeDecl;
+import org.apache.xerces.impl.xs.XSComplexTypeDecl;
+import org.apache.xerces.impl.xs.XSElementDecl;
+
 
 /**
  * <p>Java class for elementMeta complex type.
@@ -404,4 +408,18 @@ public class ElementMeta
         this.maxOccurs = value;
     }
 
+    public String toString()
+    {
+    	StringBuffer rtBuffer=new StringBuffer();
+    	rtBuffer.append(getName());
+    	if (getMinOccurs()==null)
+    		return rtBuffer.toString();
+    	
+    	rtBuffer.append("["+getMinOccurs()+"...");
+    	if (getMaxOccurs()!=null&&getMaxOccurs().intValue()==-1)
+    		rtBuffer.append("*]");
+    	else
+    		rtBuffer.append(getMaxOccurs()+"]");
+    	return rtBuffer.toString();
+    }
 }
