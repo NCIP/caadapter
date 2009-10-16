@@ -22,10 +22,10 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * This class parses XSD into CMPS Core Model object
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.10 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2009-10-16 17:37:39 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -194,20 +194,20 @@ public class XSDParser implements DOMErrorHandler {
 		return null;
 	}
 
-	private List<ElementMeta> processMap(XSNamedMap map, int depth){
-		ArrayList<ElementMeta> ret = new ArrayList<ElementMeta>();
-		for (int i = 0; i < map.getLength(); i++) {
-			XSObject item = map.item(i);
-			if(item instanceof XSComplexTypeDefinition){
-				ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
-			}else if(item instanceof XSSimpleTypeDefinition){
-				processSimpleType((XSSimpleTypeDefinition)item, depth);
-			}else if(item instanceof XSElementDeclaration){
-				ret.add(processElement((XSElementDeclaration)item, depth));
-			}
-		}
-		return ret;
-	}
+//	private List<ElementMeta> processMap(XSNamedMap map, int depth){
+//		ArrayList<ElementMeta> ret = new ArrayList<ElementMeta>();
+//		for (int i = 0; i < map.getLength(); i++) {
+//			XSObject item = map.item(i);
+//			if(item instanceof XSComplexTypeDefinition){
+//				ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
+//			}else if(item instanceof XSSimpleTypeDefinition){
+//				processSimpleType((XSSimpleTypeDefinition)item, depth);
+//			}else if(item instanceof XSElementDeclaration){
+//				ret.add(processElement((XSElementDeclaration)item, depth));
+//			}
+//		}
+//		return ret;
+//	}
 
 	private List<BaseMeta> processList(XSObjectList map, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
@@ -340,10 +340,12 @@ public class XSDParser implements DOMErrorHandler {
 		AttributeMeta ret = new AttributeMeta();
 		ret.setName(((attr.getNamespace()==null || attr.getNamespace().equals(defaultNS))?"":(attr.getNamespace()+":"))+attr.getName());
 		ret.setIsRequired(item.getRequired());
-		if (attr.getConstraintType()==XSConstants.VC_DEFAULT) {
-			ret.setDefaultValue(attr.getConstraintValue());
-		} else if (attr.getConstraintType()!=XSConstants.VC_NONE) {
+
+		if (item.getConstraintType()==XSConstants.VC_DEFAULT) {
+			ret.setDefaultValue(item.getConstraintValue());
+		} else if (item.getConstraintType()==XSConstants.VC_FIXED) {
 			ret.setIsFixed(true);
+			ret.setFixedValue(item.getConstraintValue());
 		}
 
 		if(debug) System.out.print(getPrefix(depth+1)+"AttributeUse{" + item.getNamespace() + "}" + item.getName()+"["+item.getClass()+"]"
@@ -372,6 +374,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.10  2008/12/29 22:18:18  linc
+ * HISTORY: function UI added.
+ * HISTORY:
  * HISTORY: Revision 1.9  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:
