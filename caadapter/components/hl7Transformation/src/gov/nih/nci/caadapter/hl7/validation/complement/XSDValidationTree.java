@@ -36,8 +36,15 @@ public class XSDValidationTree
     private List<DefaultMutableTreeNode> nodeList = new ArrayList<DefaultMutableTreeNode>();
     //private boolean isHL7TypeOnly = false;
 
-
     public XSDValidationTree(String xsdFile) throws ApplicationException
+    {
+        doMainProcess(xsdFile, false);
+    }
+    public XSDValidationTree(String xsdFile, boolean forOneFile) throws ApplicationException
+    {
+        doMainProcess(xsdFile, forOneFile);
+    }
+    private void doMainProcess(String xsdFile, boolean forOneFile) throws ApplicationException
     {
 
         if ((xsdFile == null)||(xsdFile.trim().equals("")))
@@ -70,7 +77,7 @@ public class XSDValidationTree
         parseXSDFile(fileName, true);
 
 
-
+        if (forOneFile) return;
 
         while(true)
         {
