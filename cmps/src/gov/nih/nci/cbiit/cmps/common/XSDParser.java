@@ -10,11 +10,17 @@ package gov.nih.nci.cbiit.cmps.common;
 import java.io.File;
 import java.math.BigInteger;
 import java.util.*;
+
+import org.apache.xerces.impl.xs.SchemaGrammar;
+import org.apache.xerces.impl.xs.XSImplementationImpl;
+import org.apache.xerces.impl.xs.XSLoaderImpl;
+import org.apache.xerces.util.JAXPNamespaceContextWrapper;
 import org.apache.xerces.xs.*;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.DOMStringList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmps.core.*; 
 
@@ -24,8 +30,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.11 $
- * @date       $Date: 2009-10-16 17:37:39 $
+ * @version    $Revision: 1.12 $
+ * @date       $Date: 2009-10-27 18:21:12 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -114,10 +120,7 @@ public class XSDParser implements DOMErrorHandler {
 	 */
 	public void loadSchema(File schemaFile) {
 
-		this.schemaURI = schemaFile.getPath();
-		// parse document
-		if(debug) System.out.println("Parsing " + schemaURI + "...");
-		model = schemaLoader.loadURI(schemaURI);
+		loadSchema(schemaFile.getPath());
 	}
 
 	/**
@@ -374,6 +377,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.11  2009/10/16 17:37:39  wangeug
+ * HISTORY: parse default value or fixed value for an Attribute
+ * HISTORY:
  * HISTORY: Revision 1.10  2008/12/29 22:18:18  linc
  * HISTORY: function UI added.
  * HISTORY:

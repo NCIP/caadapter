@@ -32,10 +32,10 @@ import javax.swing.tree.TreePath;
  * This class 
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-10-27 18:23:10 $
  *
  */
 public class TreeTransferHandler extends TransferHandler {
@@ -158,7 +158,7 @@ public class TreeTransferHandler extends TransferHandler {
         String targetData = UIHelper.getPathStringForNode(targetNode);
         DefaultMutableTreeNode sourceNode = UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), data);
         
-        boolean ret = this.panel.getMappingDataManager().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
+        boolean ret = this.panel.getMiddlePanel().getMiddlePanelJGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);//.getMappingDataManager().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
         this.state = IMPORT;
 
         return true;
@@ -167,6 +167,9 @@ public class TreeTransferHandler extends TransferHandler {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2008/12/29 22:18:18  linc
+ * HISTORY: function UI added.
+ * HISTORY:
  * HISTORY: Revision 1.3  2008/12/10 15:43:03  linc
  * HISTORY: Fixed component id generator and delete link.
  * HISTORY:

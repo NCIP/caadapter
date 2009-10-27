@@ -26,10 +26,10 @@ import java.io.FileOutputStream;
  * This class defines a concrete "Save As" action.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-10-27 18:22:05 $
  */
 public class SaveAsMapAction extends DefaultSaveAsAction
 {
@@ -96,7 +96,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	protected boolean processSaveFile(File file) throws Exception
 	{
 		preActionPerformed(mappingPanel);
-		MiddlePanelJGraphController mappingManager = mappingPanel.getMappingDataManager();
+		MiddlePanelJGraphController mappingManager = mappingPanel.getMiddlePanel().getMiddlePanelJGraphController();//.getMappingDataManager();
 		Mapping mappingData = mappingManager.retrieveMappingData(true);
 		MappingFactory.saveMapping(file, mappingData);
 		boolean oldChangeValue = mappingPanel.isChanged();
@@ -131,4 +131,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY      : First GUI release
+ * HISTORY      :
  */
