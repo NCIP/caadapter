@@ -199,6 +199,7 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("XMLElement.java")) downloadTag = true;
         if (fileName.equals("StringFunction.java")) downloadTag = true;
         if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
+        if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
         if (fileName.equals("mif.zip")) downloadTag = true;
         if (fileName.equals("run.bat")) downloadTag = true;
         //if (fileName.equals("build.properties")) downloadTag = true;
@@ -232,6 +233,9 @@ public class CodeActivationOrDeactivation
             list.add("TestIPAddress.java");
             list.add("TransformationServiceOnWeb.java");
             list.add("MenuStart.java");
+            list.add("TransformationServiceMain.java");
+            list.add("TransformationServiceWithWSDL.java");
+
 
             for(String line:list)
             {
