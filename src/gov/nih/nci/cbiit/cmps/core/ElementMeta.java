@@ -8,6 +8,9 @@
 
 package gov.nih.nci.cbiit.cmps.core;
 
+import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
+
+import java.beans.PropertyDescriptor;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +18,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.xerces.impl.dv.xs.XSSimpleTypeDecl;
-import org.apache.xerces.impl.xs.XSComplexTypeDecl;
-import org.apache.xerces.impl.xs.XSElementDecl;
 
 
 /**
@@ -422,4 +421,23 @@ public class ElementMeta
     		rtBuffer.append(getMaxOccurs()+"]");
     	return rtBuffer.toString();
     }
+
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class beanClass = this.getClass();
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+	
+		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));	
+		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
+		propList.add(new PropertyDescriptor("minOccurs", beanClass, "getMinOccurs", null));
+		propList.add(new PropertyDescriptor("maxOccurs", beanClass, "getMaxOccurs", null));
+		
+		PropertiesResult result = super.getPropertyDescriptors();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Element Properties";
+	}
 }
