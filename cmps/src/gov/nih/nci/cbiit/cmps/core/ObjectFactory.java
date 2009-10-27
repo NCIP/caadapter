@@ -122,14 +122,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link BaseMeta }
-     * 
-     */
-    public BaseMeta createBaseMeta() {
-        return new BaseMeta();
-    }
-
-    /**
      * Create an instance of {@link FunctionData }
      * 
      */
