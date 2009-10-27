@@ -10,6 +10,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.cbiit.cmps.ui.properties;
 
 
+import gov.nih.nci.cbiit.cmps.common.PropertiesProvider;
+import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
 
 import javax.swing.event.ChangeEvent;
@@ -24,10 +26,10 @@ import java.awt.event.FocusListener;
  * This class provides basic functions to help update properties information along user's selection.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-10-27 18:23:57 $
  */
 public class DefaultPropertiesSwitchController implements PropertiesSwitchController, TreeSelectionListener, FocusListener
 {
@@ -60,6 +62,9 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 		{
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) newPath.getLastPathComponent();
 			Object newSelection = treeNode.getUserObject();
+			if(newSelection instanceof ElementMetaLoader.MyTreeObject)
+				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getObj();
+			
 			setSelectedItem(newSelection);
 			ChangeEvent changeEvent = new ChangeEvent(this);
 			notifyPropertiesPageSelectionChanged(changeEvent);
@@ -68,7 +73,7 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 
 	protected void notifyPropertiesPageSelectionChanged(ChangeEvent e)
 	{
-		 propertiesPage.updateProptiesDisplay(e);
+		propertiesPage.updateProptiesDisplay(e);
 	}
 
 	public DefaultPropertiesPage getPropertiesPage()
@@ -170,4 +175,7 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
+ * HISTORY      : function UI added.
+ * HISTORY      :
  */

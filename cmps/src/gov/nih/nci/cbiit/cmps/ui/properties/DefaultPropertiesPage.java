@@ -10,27 +10,28 @@
 package gov.nih.nci.cbiit.cmps.ui.properties;
 
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
-import java.awt.*;
 
 /**
  * This class defines the default properties pane view.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-10-27 18:23:25 $
  */
 public class DefaultPropertiesPage extends JPanel
 {
-
-	private JTable propertiesTable;
-	private JScrollPane scrollPane = null;
 	private TitledBorder titledBorder = null;
 	private PropertiesSwitchController propertiesController;
 	private DefaultPropertiesTableModel tableModel;
@@ -50,9 +51,9 @@ public class DefaultPropertiesPage extends JPanel
 	private void initialize()
 	{
         setLayout(new BorderLayout());
-		scrollPane = new JScrollPane();
+        JScrollPane scrollPane = new JScrollPane();
 		tableModel = new DefaultPropertiesTableModel(propertiesController);
-		propertiesTable = new JTable(tableModel);
+		JTable propertiesTable = new JTable(tableModel);
 		propertiesTable.setShowGrid(true);
 		ListSelectionModel tableListSelectionModel = propertiesTable.getSelectionModel();
 		tableListSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -66,11 +67,13 @@ public class DefaultPropertiesPage extends JPanel
 	public void updateProptiesDisplay(ChangeEvent e)
 	{
 		titledBorder.setTitle(propertiesController.getTitleOfPropertiesPage());
-		scrollPane.repaint();
-		//tableModel.setPropertiesResult(propertiesController.getPropertyDescriptors());
+		tableModel.setPropertiesResult(propertiesController.getPropertyDescriptors());
 	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
+ * HISTORY      : function UI added.
+ * HISTORY      :
  */

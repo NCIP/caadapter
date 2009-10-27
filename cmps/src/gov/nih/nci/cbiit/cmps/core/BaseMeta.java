@@ -8,6 +8,13 @@
 
 package gov.nih.nci.cbiit.cmps.core;
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
+
+import gov.nih.nci.cbiit.cmps.common.PropertiesProvider;
+import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -41,12 +48,10 @@ import javax.xml.bind.annotation.XmlType;
     AttributeMeta.class,
     ElementMeta.class
 })
-public class BaseMeta {
+public abstract class BaseMeta implements PropertiesProvider{
 
     @XmlAttribute
     protected String name;
-    @XmlAttribute
-    protected String type;
     @XmlAttribute
     protected String id;
     @XmlAttribute
@@ -74,30 +79,6 @@ public class BaseMeta {
      */
     public void setName(String value) {
         this.name = value;
-    }
-
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setType(String value) {
-        this.type = value;
     }
 
     /**
@@ -151,5 +132,15 @@ public class BaseMeta {
     public void setIdSpec(String value) {
         this.idSpec = value;
     }
-
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class beanClass = this.getClass();
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
+		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
+		propList.add(new PropertyDescriptor("IdSpec", beanClass, "getIdSpec", null));
+		
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
 }

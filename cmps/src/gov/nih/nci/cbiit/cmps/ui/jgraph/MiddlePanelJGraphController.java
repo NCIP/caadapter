@@ -29,6 +29,7 @@ import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewManager;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
+import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesSwitchController;
 import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesSwitchController;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
@@ -63,10 +64,10 @@ import java.util.List;
  * will help handle key and mouse driven events such as display pop menus, etc.
  * 
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.7 $
- * @date       $Date: 2009-01-02 16:05:17 $
+ * @version    $Revision: 1.8 $
+ * @date       $Date: 2009-10-27 18:22:44 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -79,7 +80,8 @@ public class MiddlePanelJGraphController
 	private MappingMiddlePanel middlePanel = null;
 
 	private CmpsMappingPanel mappingPanel = null;
-
+	private DefaultPropertiesSwitchController propertiesSwitchController;
+	
 	// a list of MappingViewCommonComponent
 	private List<MappingViewCommonComponent> mappingViewList = null;
 
@@ -1062,12 +1064,18 @@ public class MiddlePanelJGraphController
 	}
 	
 	public PropertiesSwitchController getPropertiesSwitchController() {
-		// TODO Auto-generated method stub
-		return null;
+		if ( propertiesSwitchController == null ) {
+			// propertiesSwitchController = new MappingPanelPropertiesSwitchController();
+			propertiesSwitchController = new DefaultPropertiesSwitchController();//graph);
+		}
+		return propertiesSwitchController; // To change body of implemented methods use File | Settings | File Templates.
 	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.7  2009/01/02 16:05:17  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.6  2008/12/29 22:18:18  linc
  * HISTORY: function UI added.
  * HISTORY:

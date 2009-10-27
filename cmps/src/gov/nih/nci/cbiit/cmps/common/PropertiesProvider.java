@@ -6,7 +6,9 @@
  * /docs/caAdapter_License
  */
 
-package gov.nih.nci.cbiit.cmps.ui.properties;
+package gov.nih.nci.cbiit.cmps.common;
+
+import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
 
 
 
@@ -15,10 +17,10 @@ package gov.nih.nci.cbiit.cmps.ui.properties;
  * Define the interface to provide underline data or meta bean's properties information
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
  * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @date       $Date: 2009-10-27 18:20:31 $
  */
 public interface PropertiesProvider
 {
@@ -37,4 +39,7 @@ public interface PropertiesProvider
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
+ * HISTORY      : function UI added.
+ * HISTORY      :
  */

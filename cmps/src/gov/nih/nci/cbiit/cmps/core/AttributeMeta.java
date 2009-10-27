@@ -8,6 +8,12 @@
 
 package gov.nih.nci.cbiit.cmps.core;
 
+import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
+import java.util.List;
+
+import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -205,4 +211,27 @@ public class AttributeMeta
     	rtBuffer.append("]");
     	return rtBuffer.toString();
     }
+
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class beanClass = this.getClass();
+
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+//		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));	
+//		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
+//		propList.add(new PropertyDescriptor("IdSpec", beanClass, "getIdSpec", null));
+//		
+		propList.add(new PropertyDescriptor("Required", beanClass, "isIsRequired", null));	
+		propList.add( new PropertyDescriptor("Default Value", beanClass, "getDefaultValue", null));
+		propList.add( new PropertyDescriptor("Fixed Value", beanClass, "getFixedValue", null));
+		propList.add(new PropertyDescriptor("Valid", beanClass, "isIsValid", null));
+
+		PropertiesResult result =super.getPropertyDescriptors();// new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return "Attribute Properties";
+	}
 }
