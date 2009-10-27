@@ -63,8 +63,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.10 $
- * @date       $Date: 2009-10-27 18:25:08 $
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2009-10-27 19:26:16 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -690,7 +690,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	}
 
 
-	protected void resetMiddlePanel()
+	private void resetMiddlePanel()
 	{
 		if (middlePanel != null)
 		{
@@ -730,24 +730,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	{
 		return tTree;
 	}
-	/**
-	 * Return if the source tree has been populated.
-	 * @return if the source tree has been populated.
-	 */
-	public boolean isSourceTreePopulated()
-	{
-		return sTree!=null;
-	}
-
-	/**
-	 * Return if the target tree has been populated.
-	 * @return if the target tree has been populated.
-	 */
-	public boolean isTargetTreePopulated()
-	{
-		return tTree!=null;
-	}
-
 
 	/**
 	 * Provide the extended implementation of this method by adding additional files of source and target;
@@ -772,17 +754,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return resultList;
 	}
 
-	public void setSize(Dimension newDimension)
-	{
-		setSize((int) newDimension.getWidth(), (int) newDimension.getHeight());
-	}
-
 	public void setSize(int width, int height)
-	{
-		this.resize(width, height);
-	}
-
-	public void resize(int width, int height)
 	{
 		double topCenterFactor = 1;
 		sourceLocationArea.setSize(new Dimension((int) (width / 6), 25));
@@ -930,6 +902,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.10  2009/10/27 18:25:08  wangeug
+ * HISTORY: hook property panel with tree nodes
+ * HISTORY:
  * HISTORY: Revision 1.9  2009/10/16 17:36:34  wangeug
  * HISTORY: use cell renderer
  * HISTORY:

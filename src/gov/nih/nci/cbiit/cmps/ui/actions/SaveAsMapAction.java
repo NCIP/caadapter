@@ -28,8 +28,8 @@ import java.io.FileOutputStream;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2009-10-27 18:22:05 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-10-27 19:25:33 $
  */
 public class SaveAsMapAction extends DefaultSaveAsAction
 {
@@ -73,7 +73,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 //		File file = DefaultSettings.getUserInputOfFileFromGUI(this.mappingPanel, getUIWorkingDirectoryPath(), Config.MAP_FILE_DEFAULT_EXTENTION, "Save As...", true, true);
 		if(this.mappingPanel!=null)
 		{
-			if(!mappingPanel.isSourceTreePopulated() || !mappingPanel.isTargetTreePopulated())
+			if(mappingPanel.getSourceTree()==null || mappingPanel.getTargetTree()==null)
 			{
 				String msg = "Enter both source and target information before saving the map specification.";
 				JOptionPane.showMessageDialog(mappingPanel, msg, "Error", JOptionPane.ERROR_MESSAGE);
@@ -131,6 +131,9 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2009/10/27 18:22:05  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
  * HISTORY      : First GUI release
  * HISTORY      :
