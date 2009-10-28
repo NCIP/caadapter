@@ -24,6 +24,7 @@ import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
+import gov.nih.nci.cbiit.cmps.ui.tree.TreeSelectionHandler;
 import gov.nih.nci.cbiit.cmps.ui.tree.TreeTransferHandler;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
 import gov.nih.nci.cbiit.cmps.util.FileUtil;
@@ -63,8 +64,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.11 $
- * @date       $Date: 2009-10-27 19:26:16 $
+ * @version    $Revision: 1.12 $
+ * @date       $Date: 2009-10-28 16:47:06 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -82,6 +83,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	private MappingTargetTree tTree = null;
 
 	private TreeTransferHandler dndHandler = null;
+	private TreeSelectionHandler treeSelectionHanderl=null;
 	//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
 	//	protected TreeExpandAllAction sourceTreeExpandAllAction;
 	//	
@@ -355,7 +357,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 	protected TreeNode loadTargetTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
-		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
 		TreeNode node = null;
 		if(metaInfo instanceof Mapping){
 			Mapping.Components components = ((Mapping)metaInfo).getComponents();
@@ -371,14 +372,20 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 		return node;
 	}
-
+	
+ private TreeSelectionHandler getTreeSelectionHandler()
+ {
+	 if (treeSelectionHanderl==null)
+			treeSelectionHanderl=new TreeSelectionHandler (getMiddlePanelJGraphController().getPropertiesSwitchController());
+	 return treeSelectionHanderl;
+ }
 	protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{
 		TreeNode nodes=loadSourceTreeData(metaInfo,absoluteFile);
 
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
-		sTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (this.getMiddlePanelJGraphController().getPropertiesSwitchController()));
+		sTree.getSelectionModel().addTreeSelectionListener(getTreeSelectionHandler());
 		sTree.setTransferHandler(getDndHandler());
 		sTree.setDragEnabled(true);
 		sTree.setDropMode(DropMode.ON);
@@ -421,7 +428,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
-		tTree.getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMiddlePanelJGraphController().getPropertiesSwitchController()));
+		tTree.getSelectionModel().addTreeSelectionListener(this.getTreeSelectionHandler());
 		tTree.setTransferHandler(getDndHandler());
 		tTree.setDropMode(DropMode.ON);
 		targetScrollPane.setViewportView(tTree);
@@ -902,6 +909,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.11  2009/10/27 19:26:16  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.10  2009/10/27 18:25:08  wangeug
  * HISTORY: hook property panel with tree nodes
  * HISTORY:

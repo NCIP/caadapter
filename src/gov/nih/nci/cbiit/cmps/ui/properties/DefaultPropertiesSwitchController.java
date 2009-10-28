@@ -11,17 +11,7 @@ package gov.nih.nci.cbiit.cmps.ui.properties;
 
 
 import gov.nih.nci.cbiit.cmps.common.PropertiesProvider;
-import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 /**
  * This class provides basic functions to help update properties information along user's selection.
@@ -29,47 +19,18 @@ import java.awt.event.FocusListener;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2009-10-28 15:05:31 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2009-10-28 16:49:45 $
  */
-public class DefaultPropertiesSwitchController implements PropertiesSwitchController, TreeSelectionListener, FocusListener
+public class DefaultPropertiesSwitchController implements PropertiesSwitchController
 {
-
 	private static final String DEFAULT_TITLE = "Properties";
-
 	private Object selectedItem;
-
 	private DefaultPropertiesPage propertiesPage;
-
  
-	/**
-	 * Called whenever the value of the selection changes.
-	 *
-	 * @param e the event that characterizes the change.
-	 */
-	public void valueChanged(TreeSelectionEvent e)
-	{
-		TreePath newPath = e.getNewLeadSelectionPath();
-		if(newPath==null)
-		{
-			setSelectedItem(null);
-		}
-		else
-		{
-			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) newPath.getLastPathComponent();
-			Object newSelection = treeNode.getUserObject();
-			if(newSelection instanceof ElementMetaLoader.MyTreeObject)
-				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getObj();
-			
-			setSelectedItem(newSelection);
-		}
-		ChangeEvent changeEvent = new ChangeEvent(this);
-		propertiesPage.updateProptiesDisplay(changeEvent);
-	}
-
 	public DefaultPropertiesPage getPropertiesPage()
 	{
-		return propertiesPage;  //To change body of implemented methods use File | Settings | File Templates.
+		return propertiesPage; 
 	}
 
 	public void setPropertiesPage(DefaultPropertiesPage newProperitesView)
@@ -91,15 +52,11 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 			{
 				PropertiesResult localResult = ((PropertiesProvider) selectedItem).getPropertyDescriptors();
 				if(localResult!=null)
-				{
 					result = localResult;
-				}
 			}
 			catch(Throwable e)
 			{
-				//Log.logException(this, e);
 				e.printStackTrace();
-				System.out.println("getPropertyDescriptors() received: '" + e + "'.");
 			}
 		}
 		return result;
@@ -124,7 +81,7 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 
 	public String getTitleOfPropertiesPage()
 	{
-		String result = null;
+		String result = DEFAULT_TITLE;
 		if (selectedItem instanceof PropertiesProvider)
 		{
 			try
@@ -133,34 +90,19 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 			}
 			catch (Exception e)
 			{
-//				System.out.println("getPropertyDescriptors() received: '" + e + "'. I will continue...");
 				e.printStackTrace();
-				//Log.logException(this, "I will continue...", e);
-				result = null;
+				result = DEFAULT_TITLE;
 			}
-		}
-
-		if(result==null)
-		{
-			result = DEFAULT_TITLE;
 		}
 		return result;
 	}
-
-	public void focusGained(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void focusLost(FocusEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2009/10/28 15:05:31  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2009/10/27 18:23:57  wangeug
  * HISTORY      : hook property panel with tree nodes
  * HISTORY      :
