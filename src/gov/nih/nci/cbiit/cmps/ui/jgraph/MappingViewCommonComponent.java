@@ -13,9 +13,11 @@ import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.DefaultGraphCell;
 import org.jgraph.graph.DefaultPort;
 
+import gov.nih.nci.cbiit.cmps.common.PropertiesProvider;
 import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
 import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
+import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesResult;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultSourceTreeNode;
 import gov.nih.nci.cbiit.cmps.ui.tree.DefaultTargetTreeNode;
 import gov.nih.nci.cbiit.cmps.ui.util.GeneralUtilities;
@@ -40,12 +42,12 @@ import javax.swing.tree.TreeNode;
  * This is an immutable class and mainly participate in the mapping cache for rendering purpose.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-03 20:46:14 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-10-28 15:02:07 $
  */
-public class MappingViewCommonComponent implements Comparable, java.io.Serializable
+public class MappingViewCommonComponent implements Comparable, java.io.Serializable, PropertiesProvider
 {
 
 	public static final String SEARCH_BY_SOURCE_NODE = "sourceNode";
@@ -430,23 +432,26 @@ public class MappingViewCommonComponent implements Comparable, java.io.Serializa
 	 * help reflection and/or introspection to figure out what information would be
 	 * presented to the user.
 	 */
-//	public PropertiesResult getPropertyDescriptors() throws Exception
-//	{
-//		Class beanClass = this.getClass();
-//		PropertyDescriptor sourceProp = new PropertyDescriptor("Source", beanClass, "getSourceNode", null);
-//		PropertyDescriptor sourceParent = new PropertyDescriptor("SourceParent", beanClass, "getSourceNodeParent", null);
-//		PropertyDescriptor targetProp = new PropertyDescriptor("Target", beanClass, "getTargetNode", null);
-//		PropertyDescriptor targetParent = new PropertyDescriptor("TargetParent", beanClass, "getTargetNodeParent", null);
-//		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-//		propList.add(sourceProp);
-//		propList.add(sourceParent);
-//		propList.add(targetProp);
-//		propList.add(targetParent);
-//		PropertiesResult result = new PropertiesResult();
-//		result.addPropertyDescriptors(this, propList);
-//		return result;
-//	}
+	public PropertiesResult getPropertyDescriptors() throws Exception
+	{
+		Class beanClass = this.getClass();
+		PropertyDescriptor sourceProp = new PropertyDescriptor("Source", beanClass, "getSourceNode", null);
+		PropertyDescriptor sourceParent = new PropertyDescriptor("SourceParent", beanClass, "getSourceNodeParent", null);
+		PropertyDescriptor targetProp = new PropertyDescriptor("Target", beanClass, "getTargetNode", null);
+		PropertyDescriptor targetParent = new PropertyDescriptor("TargetParent", beanClass, "getTargetNodeParent", null);
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add(sourceProp);
+		propList.add(sourceParent);
+		propList.add(targetProp);
+		propList.add(targetParent);
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
 }
 /**
  * HISTORY : $Log: not supported by cvs2svn $
+ * HISTORY : Revision 1.1  2008/12/03 20:46:14  linc
+ * HISTORY : UI update.
+ * HISTORY :
  */

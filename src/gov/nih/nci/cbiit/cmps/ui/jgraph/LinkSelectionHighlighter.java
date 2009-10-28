@@ -12,6 +12,7 @@ package gov.nih.nci.cbiit.cmps.ui.jgraph;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MappingTreeScrollPane;
+import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesSwitchController;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
 
@@ -19,16 +20,13 @@ import java.awt.Container;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EventObject;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
 
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -45,10 +43,10 @@ import org.jgraph.graph.DefaultPort;
  * This class defines a highlighter class for graph presentation.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-04 21:34:20 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-10-28 15:02:44 $
  */
 public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelectionListener, TreeSelectionListener
 {
@@ -64,21 +62,17 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.2 2008-12-04 21:34:20 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.3 2009-10-28 15:02:44 wangeug Exp $";
 
 	private CmpsMappingPanel mappingPanel;
 	private JGraph graph;
 	private MappingMiddlePanel middlePanel;
-	
-    //private TestAction testAction;
-    private JPopupMenu popupMenu = null;
-    
+	  
 	private boolean graphInSelection = false;
 	private boolean graphInClearSelectionMode = false;
 	private boolean sourceTreeInSelection = false;
 	private boolean targetTreeInSelection = false;
 
-	//private String selectedNode; 
 	
 	public LinkSelectionHighlighter(CmpsMappingPanel mappingPanel, JGraph graph, MappingMiddlePanel middlePanel)
 	{
@@ -92,8 +86,6 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	{
 		if(mappingPanel!=null)
 		{
-//			mappingPanel.removeMouseListener(this);
-//			mappingPanel.addMouseListener(this);
 			JTree tree = mappingPanel.getSourceTree();
 			if(tree!=null)
 			{
@@ -113,27 +105,12 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 		}
 	}
 
-//	public LinkSelectionHighlighter(HL7MappingPanel mappingPanel)
-//	{
-//		this.mappingPanel = mappingPanel;
-//	}
-//
+
 //	void setGraph(JGraph newGraph)
 //	{
 //		graph = newGraph;
 //	}
 
-//	private void clearSelections(short clearWhichSelection)
-//	{
-//		switch(clearWhichSelection)
-//		{
-//			case CLEAR_SELECTION_GRAPH:
-//				graph.clearSelection();
-//				break;
-//		}
-//		mappingPanel.getSourceTree().clearSelection();
-//		mappingPanel.getTargetTree().clearSelection();
-//	}
 
 	/**
 	 * Called whenever the value of the selection changes.
@@ -215,6 +192,24 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 			}
 		}
 		graphInSelection = false;
+		
+//      The following codes update the property pane with link information
+//      if (graph.getSelectionCount() == 0)
+//      {
+//			setSelectedItem(null);
+//			ChangeEvent changeEvent = new ChangeEvent(this);
+//			propertiesPage.updateProptiesDisplay(changeEvent);
+//      }
+//		else 
+		if(e.getCell() instanceof DefaultGraphCell)
+		{
+			Object newSelection = ((DefaultGraphCell)e.getCell()).getUserObject();
+			DefaultPropertiesSwitchController propertySwitchConroller =(DefaultPropertiesSwitchController)mappingPanel.getMiddlePanelJGraphController().getPropertiesSwitchController();
+			propertySwitchConroller.setSelectedItem(newSelection);
+		}
+		ChangeEvent changeEvent = new ChangeEvent(this);
+		mappingPanel.getMiddlePanelJGraphController().getPropertiesSwitchController().getPropertiesPage().updateProptiesDisplay(changeEvent);
+
 	}
 
 	/**
@@ -274,7 +269,7 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 	 */
 	public void valueChanged(TreeSelectionEvent e)
 	{
-        try
+		try
         {
             if (mappingPanel.isInDragDropMode())
 		    {//if in dragging mode, ignore.
@@ -422,21 +417,16 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
         if(previousValue)
 		{//previously in drag and drop mode, so to ensure the highlight back up, generate the corresponding tree or graph selection event.
 			Object source = e.getSource();
-//			String name = source == null ? "null" : source.getClass().getName();
-//			System.out.println("Source is ' " + name + "'," + "LinkSelectionHighlighter's mouseClicked is called");
 			//following code tries to trigger the valueChanged() methods above to mimic and restore the "highlight" command
 			if(source instanceof JGraph)
 			{
 				JGraph mGraph = (JGraph) source;			
 				mGraph.setSelectionCells(mGraph.getSelectionCells());
-//				GraphSelectionEvent event = new GraphSelectionEvent(source, new Object[]{}, )
 			}
 			else if(source instanceof JTree)
 			{
 				JTree mTree = (JTree) source;
 				//following code does not trigger valueChanged(TreeSelectionEvent) above.
-				//mTree.setSelectionPaths(mTree.getSelectionPaths());
-				//mTree.setSelectionRows(mTree.getSelectionRows());
 				TreePath[] paths = mTree.getSelectionPaths();
 				int size = paths==null? 0 : paths.length;
 				if(size>0)
@@ -513,6 +503,9 @@ public class LinkSelectionHighlighter extends MouseAdapter implements GraphSelec
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/04 21:34:20  linc
+ * HISTORY: Drap and Drop support with new Swing.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:
