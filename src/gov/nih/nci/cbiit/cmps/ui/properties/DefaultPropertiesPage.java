@@ -27,8 +27,8 @@ import javax.swing.event.ChangeEvent;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2009-10-27 18:23:25 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-10-28 15:01:45 $
  */
 public class DefaultPropertiesPage extends JPanel
 {
@@ -68,11 +68,15 @@ public class DefaultPropertiesPage extends JPanel
 	{
 		titledBorder.setTitle(propertiesController.getTitleOfPropertiesPage());
 		tableModel.setPropertiesResult(propertiesController.getPropertyDescriptors());
+		this.repaint();
 	}
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2009/10/27 18:23:25  wangeug
+ * HISTORY      : hook property panel with tree nodes
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
  * HISTORY      : function UI added.
  * HISTORY      :
