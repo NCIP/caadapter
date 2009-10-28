@@ -8,7 +8,14 @@
 package gov.nih.nci.cbiit.cmps.ui.jgraph;
 
 import org.jgraph.JGraph;
-import org.jgraph.graph.*;
+import org.jgraph.graph.AttributeMap;
+import org.jgraph.graph.ConnectionSet;
+import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.DefaultGraphModel;
+import org.jgraph.graph.DefaultPort;
+import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.ParentMap;
 
 import gov.nih.nci.cbiit.cmps.core.Component;
 import gov.nih.nci.cbiit.cmps.core.FunctionData;
@@ -24,7 +31,6 @@ import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxCell;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPort;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxDefaultPortView;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxUserObject;
-import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxView;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionBoxViewManager;
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
@@ -38,8 +44,6 @@ import javax.swing.JTree;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -47,11 +51,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Collections;
@@ -66,8 +67,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.8 $
- * @date       $Date: 2009-10-27 18:22:44 $
+ * @version    $Revision: 1.9 $
+ * @date       $Date: 2009-10-28 15:03:11 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -159,7 +160,7 @@ public class MiddlePanelJGraphController
 		graph.setEditable(false);
 		graph.setMoveable(true);
 		graph.setBackground(graphBackgroundColor);
-		//		graph.getSelectionModel().addGraphSelectionListener(getPropertiesSwitchController());
+
 		// setMappingPairCellMap(Collections.synchronizedMap(new HashMap()));
 		setMappingViewList(Collections.synchronizedList(new ArrayList<MappingViewCommonComponent>()));
 		//		if ( this.mappingData != null && keepSourceTargetComponent ) {// just to clear graphs but not the source and target component if any.
@@ -1065,7 +1066,6 @@ public class MiddlePanelJGraphController
 	
 	public PropertiesSwitchController getPropertiesSwitchController() {
 		if ( propertiesSwitchController == null ) {
-			// propertiesSwitchController = new MappingPanelPropertiesSwitchController();
 			propertiesSwitchController = new DefaultPropertiesSwitchController();//graph);
 		}
 		return propertiesSwitchController; // To change body of implemented methods use File | Settings | File Templates.
@@ -1073,6 +1073,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.8  2009/10/27 18:22:44  wangeug
+ * HISTORY: hook property panel with tree nodes
+ * HISTORY:
  * HISTORY: Revision 1.7  2009/01/02 16:05:17  linc
  * HISTORY: updated.
  * HISTORY:
