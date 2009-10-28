@@ -19,6 +19,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -28,8 +29,8 @@ import java.awt.event.FocusListener;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2009-10-27 18:23:57 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-10-28 15:05:31 $
  */
 public class DefaultPropertiesSwitchController implements PropertiesSwitchController, TreeSelectionListener, FocusListener
 {
@@ -40,10 +41,7 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 
 	private DefaultPropertiesPage propertiesPage;
 
-	public DefaultPropertiesSwitchController()
-	{
-	}
-
+ 
 	/**
 	 * Called whenever the value of the selection changes.
 	 *
@@ -55,8 +53,6 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 		if(newPath==null)
 		{
 			setSelectedItem(null);
-			ChangeEvent changeEvent = new ChangeEvent(this);
-			notifyPropertiesPageSelectionChanged(changeEvent);
 		}
 		else
 		{
@@ -66,14 +62,9 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getObj();
 			
 			setSelectedItem(newSelection);
-			ChangeEvent changeEvent = new ChangeEvent(this);
-			notifyPropertiesPageSelectionChanged(changeEvent);
 		}
-	}
-
-	protected void notifyPropertiesPageSelectionChanged(ChangeEvent e)
-	{
-		propertiesPage.updateProptiesDisplay(e);
+		ChangeEvent changeEvent = new ChangeEvent(this);
+		propertiesPage.updateProptiesDisplay(changeEvent);
 	}
 
 	public DefaultPropertiesPage getPropertiesPage()
@@ -123,7 +114,7 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 	 * To faciliate sub-classes to set new selected item from different occassions.
 	 * @param newSelectedItem
 	 */
-	protected void setSelectedItem(Object newSelectedItem)
+	public void setSelectedItem(Object newSelectedItem)
 	{
 		if(!GeneralUtilities.areEqual(newSelectedItem, selectedItem))
 		{
@@ -156,25 +147,23 @@ public class DefaultPropertiesSwitchController implements PropertiesSwitchContro
 		return result;
 	}
 
-	/**
-	 * Invoked when a component gains the keyboard focus.
-	 */
-	public void focusGained(FocusEvent e)
-	{
-//		System.out.println(e.getSource() + " Gained focus.");
+	public void focusGained(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	/**
-	 * Invoked when a component loses the keyboard focus.
-	 */
-	public void focusLost(FocusEvent e)
-	{
-//		System.out.println(e.getSource() + " Lost focus.");
+	public void focusLost(FocusEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
+
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2009/10/27 18:23:57  wangeug
+ * HISTORY      : hook property panel with tree nodes
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
  * HISTORY      : function UI added.
  * HISTORY      :
