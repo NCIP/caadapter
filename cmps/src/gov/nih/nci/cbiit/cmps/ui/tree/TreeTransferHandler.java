@@ -7,8 +7,6 @@
  */
 package gov.nih.nci.cbiit.cmps.ui.tree;
 
-import gov.nih.nci.cbiit.cmps.core.AttributeMeta;
-import gov.nih.nci.cbiit.cmps.core.ElementMeta;
 import gov.nih.nci.cbiit.cmps.core.FunctionDef;
 import gov.nih.nci.cbiit.cmps.ui.common.MappableNode;
 import gov.nih.nci.cbiit.cmps.ui.common.UIHelper;
@@ -34,8 +32,8 @@ import javax.swing.tree.TreePath;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2009-10-27 18:23:10 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-10-28 16:45:56 $
  *
  */
 public class TreeTransferHandler extends TransferHandler {
@@ -143,7 +141,6 @@ public class TreeTransferHandler extends TransferHandler {
         }
         JTree.DropLocation dl = (JTree.DropLocation)info.getDropLocation();
         TreePath path = dl.getPath();
-        int childIndex = dl.getChildIndex();
 
         String data;
         try {
@@ -167,6 +164,9 @@ public class TreeTransferHandler extends TransferHandler {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2009/10/27 18:23:10  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/12/29 22:18:18  linc
  * HISTORY: function UI added.
  * HISTORY:

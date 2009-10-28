@@ -14,10 +14,10 @@ package gov.nih.nci.cbiit.cmps.ui.properties;
  * This class defines the controller to provide the UI selected item for its properties.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-10-28 16:46:28 $
  */
 public interface PropertiesSwitchController
 {
@@ -33,10 +33,14 @@ public interface PropertiesSwitchController
 	PropertiesResult getPropertyDescriptors();
 
 	Object getSelectedItem();
-
+	public void setSelectedItem(Object newSelectedItem);
+	
 	String getTitleOfPropertiesPage();
 }
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/29 22:18:18  linc
+ * HISTORY      : function UI added.
+ * HISTORY      :
  */
