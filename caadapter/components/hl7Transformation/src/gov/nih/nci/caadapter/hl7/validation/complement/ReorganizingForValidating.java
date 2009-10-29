@@ -184,7 +184,15 @@ public class ReorganizingForValidating
                     for(int i=0;i<tempNameList.size();i++)
                     {
                         //System.out.println("FFFFF 7 : "  + nodeName + ", parent: " + getName(parent) +" => " + tempNameList.get(i));
-                        if (tempNameList.get(i).equalsIgnoreCase(nodeName)) n = i;
+                        String xsdNodeName = tempNameList.get(i);
+                        if (xsdNodeName.equalsIgnoreCase(nodeName))
+                        {
+                            n = i;
+                            if (!xsdNodeName.equals(nodeName))
+                            {
+                                ((XmlTreeBrowsingNode)node.getUserObject()).setName(xsdNodeName);
+                            }
+                        }
                     }
                     if (n < 0) throw new ApplicationException("Invalid child node name 3: " + nodeName + ", parent: " + getName(parent));
 
