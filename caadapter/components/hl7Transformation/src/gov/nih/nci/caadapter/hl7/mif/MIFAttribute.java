@@ -27,7 +27,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version Since caAdapter v4.0 revision $Revision: 1.23 $ date $Date: 2009-10-29 21:33:55 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.24 $ date $Date: 2009-10-29 21:35:09 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -141,7 +141,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public int getMaximumMultiplicity() {
 		return maximumMultiplicity;
 	}
-	
+
 	public int getMultiplicityIndex() {
 		return multiplicityIndex;
 	}
@@ -191,14 +191,14 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		this.name = name;
 	}
 	/**
-	 * Build nodeXmlName with node name and multiplicityIndex 
+	 * Build nodeXmlName with node name and multiplicityIndex
 	 * @return
 	 */
 	public String getNodeXmlName()
 	{
 		if (getMaximumMultiplicity()==1)
 			return getName();
-		
+
 		String stB="";
 		if (getMultiplicityIndex()<10)
 			stB="0";
@@ -302,7 +302,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		this.strutural = strutural;
 	}
 	public int compareTo(MIFAttribute attr) {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 		int mySortKey=Integer.valueOf( getSortKey());
 		int myIndex= getMultiplicityIndex();
 		int attrSortKey=Integer.valueOf(attr.getSortKey());
@@ -318,7 +318,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		else if (mySortKey>attrSortKey)
 			rtnValue= 1;
 		else
-			rtnValue= -1;	
+			rtnValue= -1;
 		return rtnValue;
 	}
 	@Override
@@ -331,7 +331,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		// TODO Auto-generated method stub
 		optionChosen=option;
 	}
-	
+
 	public Object clone()
 	{
 		 try {
@@ -340,7 +340,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 				 clonnedObj.setDatatype((Datatype)getDatatype().clone());
 			 if (getConcreteDatatype()!=null)
 				 clonnedObj.setConcreteDatatype((Datatype)getConcreteDatatype().clone());
-			 
+
 			 return clonnedObj;
          }
          catch (CloneNotSupportedException e) {
@@ -414,7 +414,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public void setCsvSegment(String csvSegment) {
 		this.csvSegment = csvSegment;
 	}
-	
+
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		// TODO Auto-generated method stub
 		Class beanClass = this.getClass();
@@ -442,7 +442,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		propList.add(new PropertyDescriptor("Coding Strength", beanClass, "getCodingStrength", null));
 		PropertiesResult result = new PropertiesResult();
 		result.addPropertyDescriptors(this, propList);
-		
+
 		return result;
 	}
 
@@ -460,7 +460,7 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 	public String findIsMultiple() {
 		if (this.getMaximumMultiplicity()==1)
 			return "false";
-		
+
 		return "true";
 	}
 
@@ -468,14 +468,14 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		if (getDatatype()!=null
 				&&getDatatype().isAbstract())
 			return "true";
-		
+
 		return "false";
 	}
 	public String findTypeProperty() {
 		// TODO Auto-generated method stub
 		return "Attribute";
 	}
-	
+
 	public String findDomainNameOidProperty() {
 		// TODO Auto-generated method stub
 		String dmName=getDomainName();
@@ -498,7 +498,6 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 			if (oid!=null&&!oid.equals(""))
             {
                 dmName=dmName+" ("+oid +")";
-/*#umk*/        System.out.println("MIFAttribute.findDomainNameOidProperty() domainNameAndODI:"+dmName+"..searchODI time:"+(System.currentTimeMillis()-sTime));
             }
         } catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -536,6 +535,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.23  2009/10/29 21:33:55  altturbo
+ * HISTORY :upgrade FileUtil.findODIWithDomainName()
+ * HISTORY :
  * HISTORY :Revision 1.22  2009/04/21 17:06:58  altturbo
  * HISTORY :minor change -- add comment
  * HISTORY :

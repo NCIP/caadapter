@@ -49,7 +49,7 @@ import java.util.StringTokenizer;
  * @author OWNER: Kisung Um
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v3.3
- *          revision    $Revision: 1.22 $
+ *          revision    $Revision: 1.23 $
  *          date        Jul 6, 2007
  *          Time:       2:43:54 PM $
  */
@@ -69,7 +69,7 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
      *
      * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
      */
-    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.22 2009-06-05 21:27:34 altturbo Exp $";
+    public static String RCSID = "$Header: /share/content/gforge/caadapter/caadapter/components/userInterface/src/gov/nih/nci/caadapter/ui/hl7message/instanceGen/H3SInstanceMetaTree.java,v 1.23 2009-10-29 21:36:30 altturbo Exp $";
 
     boolean isCode = false;
 
@@ -228,8 +228,43 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             if ((changeFileName == null)||(changeFileName.trim().equals("")))
             {
                 changeFileName = "instanceGen/changeList.txt";
-                ClassLoaderUtil loaderUtil = new ClassLoaderUtil(changeFileName);
-                List<String> list = loaderUtil.getFileNames();
+
+                ClassLoaderUtil loaderUtil = null;
+                File f = new File("./lib");
+                if ((f.exists())&&(f.isDirectory()))
+                {
+                    File[] files = f.listFiles();
+                    for(File ff:files)
+                    {
+                        if (!ff.isFile()) continue;
+                        String ffN = ff.getAbsolutePath();
+                        if (!ffN.toLowerCase().endsWith(".zip")) continue;
+                        try
+                        {
+                            loaderUtil = new ClassLoaderUtil(changeFileName, ffN, true);
+                        }
+                        catch(IOException ie)
+                        {
+                            loaderUtil = null;
+                        }
+                        if (loaderUtil != null) break;
+                    }
+                }
+
+                if (loaderUtil == null)
+                {
+                    try
+                    {
+                        loaderUtil = new ClassLoaderUtil(changeFileName);
+                    }
+                    catch(IOException ie)
+                    {
+                        loaderUtil = null;
+                    }
+                }
+                List<String> list = null;
+
+                if (loaderUtil != null) list = loaderUtil.getFileNames();
                 if ((list == null)||(list.size() == 0))
                 {
                     throw new ApplicationException("Not found class loader : changeList.txt");
@@ -252,8 +287,43 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
             if ((replaceFileName == null)||(replaceFileName.trim().equals("")))
             {
                 replaceFileName = "instanceGen/replaceList.txt";
-                ClassLoaderUtil loaderUtil = new ClassLoaderUtil(replaceFileName);
-                List<String> list = loaderUtil.getFileNames();
+
+                ClassLoaderUtil loaderUtil = null;
+                File f = new File("./lib");
+                if ((f.exists())&&(f.isDirectory()))
+                {
+                    File[] files = f.listFiles();
+                    for(File ff:files)
+                    {
+                        if (!ff.isFile()) continue;
+                        String ffN = ff.getAbsolutePath();
+                        if (!ffN.toLowerCase().endsWith(".zip")) continue;
+                        try
+                        {
+                            loaderUtil = new ClassLoaderUtil(replaceFileName, ffN, true);
+                        }
+                        catch(IOException ie)
+                        {
+                            loaderUtil = null;
+                        }
+                        if (loaderUtil != null) break;
+                    }
+                }
+
+                if (loaderUtil == null)
+                {
+                    try
+                    {
+                        loaderUtil = new ClassLoaderUtil(replaceFileName);
+                    }
+                    catch(IOException ie)
+                    {
+                        loaderUtil = null;
+                    }
+                }
+                List<String> list = null;
+
+                if (loaderUtil != null)list = loaderUtil.getFileNames();
                 if ((list == null)||(list.size() == 0))
                 {
                     throw new ApplicationException("Not found class loader : replaceList.txt");
@@ -2160,6 +2230,9 @@ public class H3SInstanceMetaTree extends MetaTreeMetaImpl
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.22  2009/06/05 21:27:34  altturbo
+ * HISTORY      : update for PQ data type
+ * HISTORY      :
  * HISTORY      : Revision 1.21  2009/05/21 14:06:16  altturbo
  * HISTORY      : update and add checkExceptionCaseOfLine()
  * HISTORY      :
