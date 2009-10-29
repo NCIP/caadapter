@@ -14,6 +14,7 @@ import edu.knu.medinfo.hl7.v2tree.MetaDataLoader;
 import gov.nih.nci.caadapter.common.Log;
 import gov.nih.nci.caadapter.common.function.DateFunction;
 import gov.nih.nci.caadapter.common.function.FunctionException;
+
 //import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 
 public class FileUtil
@@ -791,13 +792,56 @@ public class FileUtil
     {
         if ((str == null)||(str.trim().equals(""))) return "";
 
-        if (ODI_FILE == null)
+        while(ODI_FILE == null)
         {
-            ClassLoaderUtil loaderUtil = new ClassLoaderUtil("instanceGen/HL7_ODI.csv");
-            if (loaderUtil.getFileNames().size() == 0) throw new IOException("HL7_ODI.csv file class loading failure.");
+            ClassLoaderUtil loaderUtil = null;
+            File f = new File("./lib");
+            if ((f.exists())&&(f.isDirectory()))
+            {
+                File[] files = f.listFiles();
+                for(File ff:files)
+                {
+                    if (!ff.isFile()) continue;
+                    String ffN = ff.getAbsolutePath();
+                    if (!ffN.toLowerCase().endsWith(".zip")) continue;
+                    try
+                    {
+                        loaderUtil = new ClassLoaderUtil("instanceGen/HL7_ODI.csv", ffN, true);
+                    }
+                    catch(IOException ie)
+                    {
+                        loaderUtil = null;
+                    }
+                    if (loaderUtil != null) break;
+                }
+            }
+            else return null;
+
+            if (loaderUtil == null)
+            {
+                try
+                {
+                    loaderUtil = new ClassLoaderUtil("instanceGen/HL7_ODI.csv");
+                }
+                catch(IOException ie)
+                {
+                    loaderUtil = null;
+                }
+            }
+            if ((loaderUtil == null)||(loaderUtil.getFileNames().size() == 0))
+            {
+                ODI_FILE = f;
+                break;
+            }
+
+            //if (loaderUtil.getFileNames().size() == 0) throw new IOException("HL7_ODI.csv file class loading failure.");
             ODI_FILE = new File(loaderUtil.getFileNames().get(0));
             ODI_FILE.deleteOnExit();
+            break;
         }
+
+        if (ODI_FILE.isDirectory()) return null;
+
         FileReader fr = null;
         //String fileName = ODI_FILE_NAME;
         try { fr = new FileReader(ODI_FILE); }
@@ -1512,7 +1556,47 @@ public class FileUtil
                 for (File f:list)
                 {
                     String fN = f.getAbsolutePath();
-                    if ((fN.toLowerCase().endsWith(".zip"))||(fN.toLowerCase().endsWith(".jar")))
+                    if (f.isFile())
+                    {
+                        if (f.getName().equals(fileName))
+                        {
+                            boolean cTag = false;
+
+                            if (middle.equals("")) cTag = true;
+                            else
+                            {
+                                String middle2 = middle;
+                                String fN2 = f.getParentFile().getAbsolutePath();
+                                if (!fN2.endsWith(File.separator)) fN2 = fN2 + File.separator;
+                                if ((!File.separator.equals("/"))&&(middle2.indexOf("/") >= 0)) middle2 = middle2.replace("/", File.separator);
+                                if (!middle2.endsWith(File.separator)) middle2 = middle2 + File.separator;
+                                if (!middle2.startsWith(File.separator)) middle2 =  File.separator + middle2;
+                                if (fN2.endsWith(middle2)) cTag = true;
+                            }
+                            if (cTag)
+                            {
+                                try
+                                {
+                                    url = f.toURI().toURL();
+                                }
+                                catch(MalformedURLException me)
+                                {
+                                    url = null;
+                                }
+                                if (url != null) break;
+                            }
+                        }
+                        if ((fN.toLowerCase().endsWith(".zip"))||(fN.toLowerCase().endsWith(".jar")))
+                        {
+                            URL res = retrieveResourceURL(fN, middle, fileName);
+                            if (res != null)
+                            {
+                                url = res;
+                                break;
+                            }
+                        }
+                    }
+                    else if (f.isDirectory())
                     {
                         URL res = retrieveResourceURL(fN, middle, fileName);
                         if (res != null)
@@ -1521,14 +1605,57 @@ public class FileUtil
                             break;
                         }
                     }
+                    else continue;
                 }
                 break;
             }
             if (!ff.isFile()) break;
 
+            String fN = ff.getAbsolutePath();
+            if ((fN.toLowerCase().endsWith(".zip"))||(fN.toLowerCase().endsWith(".jar"))) {}
+            else break;
+
             try
             {
-                String fN = ff.getAbsolutePath();
+
+                /*
+                ZipUtil zipUtil = new ZipUtil(fN);
+
+                ZipEntry entry = zipUtil.searchEntryWithWholeName(fileName);
+
+                if (entry == null) break;
+                boolean cTag = false;
+                if (middle.equals("")) cTag = true;
+                else
+                {
+                    String entryName = entry.getName();
+                    String fN2 = entryName.substring(0, entryName.indexOf(fileName));
+                    String middle2 = middle;
+                    if ((!File.separator.equals("/"))&&(middle2.indexOf(File.separator) >= 0)) middle2 = middle2.replace(File.separator, "/");
+                    if (!middle2.endsWith("/")) middle2 = middle2 + "/";
+                    if (middle2.startsWith("/")) middle2 =  middle2.substring(1);
+                    if (fN2.indexOf(middle2) >= 0) cTag = true;
+                }
+
+                if (!cTag) break;
+
+                String uuri = zipUtil.getAccessURL(entry);
+
+                URL res = null;
+
+                try
+                {
+                    res = new URL(uuri);
+                }
+                catch(MalformedURLException me)
+                {
+                    res = null;
+                }
+
+                if (res != null) url = res;
+                */
+
+
                 ZipFile zip = null;
                 //String pref = "";
                 if (fN.toLowerCase().endsWith(".zip"))
@@ -1546,6 +1673,23 @@ public class FileUtil
                 ZipEntry ee = zip.getEntry(tt);
                 if (ee == null) break;
 
+                if ((!File.separator.equals("/"))&&(fN.indexOf(File.separator) >= 0)) fN = fN.replace(File.separator, "/");
+                String uuri = "jar:file:///" + fN + "!/" + ee.getName();
+
+                URL res = null;
+
+                try
+                {
+                    res = new URL(uuri);
+                }
+                catch(MalformedURLException me)
+                {
+                    res = null;
+                }
+
+                if (res != null) url = res;
+
+                /*
                 InputStream stream = zip.getInputStream(ee);
 
                 String fileName2 = FileUtil.getTemporaryFileName();
@@ -1567,6 +1711,7 @@ public class FileUtil
                 File file = new File(fileName2);
                 file.deleteOnExit();
                 url = file.toURI().toURL();
+                */
             }
             catch(Exception ee)
             {
@@ -1584,6 +1729,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.38  2009/10/13 18:15:54  altturbo
+ * error debugging on searchProperty()
+ *
  * Revision 1.37  2009/10/12 21:06:11  altturbo
  * change searchProperty()
  *
