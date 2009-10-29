@@ -27,7 +27,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version Since caAdapter v4.0 revision $Revision: 1.22 $ date $Date: 2009-04-21 17:06:58 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.23 $ date $Date: 2009-10-29 21:33:55 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -485,7 +485,10 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
         {
             odiSetting=FileUtil.searchProperty(Config.CAADAPTER_COMPONENT_HL7_SPECFICATION_ODI_ENABLED);
-            if (odiSetting==null||!odiSetting.equalsIgnoreCase("true")) return dmName; 
+            if (odiSetting==null||!odiSetting.equalsIgnoreCase("true"))
+            {
+                return dmName;
+            }
         }
 
 		long sTime=System.currentTimeMillis();
@@ -499,7 +502,8 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
             }
         } catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+            //System.out.println(" ### Failure => FileUtil.findODIWithDomainName(domainName='"+dmName+"') : " + e.getMessage());
+            //e.printStackTrace();
 		}
 		return dmName;
 	}
@@ -532,6 +536,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.22  2009/04/21 17:06:58  altturbo
+ * HISTORY :minor change -- add comment
+ * HISTORY :
  * HISTORY :Revision 1.21  2009/04/15 21:20:09  altturbo
  * HISTORY :Upgrade findDomainNameOdiProperty()
  * HISTORY :
