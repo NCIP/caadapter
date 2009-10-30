@@ -7,7 +7,6 @@
  */
 package gov.nih.nci.cbiit.cmps.ui.mapping;
 
-
 import org.jgraph.graph.GraphModel;
 
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelGraphModel;
@@ -20,42 +19,41 @@ import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelScrollAdjustmentCoordinator;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
+import javax.swing.ScrollPaneConstants;
+
 import java.awt.Graphics;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.dnd.DnDConstants;
 
 /**
  * The panel is used to render graphical respresentation of the mapping relations between
  * source and target tree panel.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-04 21:34:20 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-10-30 14:45:09 $
  *
  */
 public class MappingMiddlePanel extends JPanel //implements ActionListener
 {
-	private MiddlePanelJGraph graph = null;
-	private MiddlePanelJGraphController graphController = null;
-	private MiddlePanelJGraphViewFactory graphViewFactory = null;
-	private CmpsMappingPanel mappingPanel = null;
-	private String kind ="";
-	private JScrollPane graphScrollPane = new JScrollPane();
 	private MiddlePanelScrollAdjustmentCoordinator adjustmentCoordinator = null;
-	private MiddlePanelJGraphScrollAdjustmentAdapter graphAdjustmentAdapter = null;
-	//for test purpose
-	private GraphModel model = null;
+	private MiddlePanelJGraph graph = null;
 
-    public MappingMiddlePanel(CmpsMappingPanel mappingPanel)
+	private MiddlePanelJGraphScrollAdjustmentAdapter graphAdjustmentAdapter = null;
+
+	private MiddlePanelJGraphController graphController = null;
+	private JScrollPane graphScrollPane = new JScrollPane();
+	private CmpsMappingPanel mappingPanel = null;
+
+	public MappingMiddlePanel(CmpsMappingPanel mappingPanel)
 	{
         this.mappingPanel = mappingPanel;
 		setBorder(BorderFactory.createRaisedBevelBorder());
 		setLayout(new BorderLayout());
-		graphScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		graphScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		graphScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		graphScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		MappingPanelAdjustmentHandler listener=new MappingPanelAdjustmentHandler();
 		listener.addAdjustmentObserver(mappingPanel.getSourceScrollPane());
 		listener.addAdjustmentObserver(mappingPanel.getTargetScrollPane());
@@ -63,24 +61,53 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 		add(graphScrollPane, BorderLayout.CENTER);
 		initGraph();
     }
-
-	public void resetGraph()
+	public MiddlePanelScrollAdjustmentCoordinator getAdjustmentCoordinator()
 	{
-		if(graphController.isGraphChanged())
-		{
-			initGraph();
-		}
+		return adjustmentCoordinator;
 	}
 
-	public JScrollPane getGraphScrollPane()
+    public Object getFunctionBoxSelection()
+	{
+    	return null;
+		//return mappingPanel.getFunctionPane().getFunctionSelection();
+	}
+
+	/**
+	 * @return the graph
+	 */
+	public MiddlePanelJGraph getGraph() {
+		return graph;
+	}
+
+	public MiddlePanelJGraphScrollAdjustmentAdapter getGraphAdjustmentAdapter()
+	{
+		return graphAdjustmentAdapter;
+	}
+
+	public MiddlePanelJGraphController getGraphController(){
+        return this.graphController;
+    }
+
+   
+    public JScrollPane getGraphScrollPane()
 	{
 		return graphScrollPane;
+	}
+
+	public CmpsMappingPanel getMappingPanel()
+	{
+		return mappingPanel;
+	}
+
+    public MiddlePanelJGraphController getMiddlePanelJGraphController()
+	{
+		return this.graphController;
 	}
 
 	private void initGraph()
 	{
 		boolean changed = false;
-		model = new MiddlePanelGraphModel();
+		GraphModel model = new MiddlePanelGraphModel();
 		if (graph == null)
 		{
 			graph = new MiddlePanelJGraph(model);
@@ -105,21 +132,12 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 		}
 		if(changed)
 		{
-			graphViewFactory = new MiddlePanelJGraphViewFactory();
+			MiddlePanelJGraphViewFactory	graphViewFactory = new MiddlePanelJGraphViewFactory();
 			graph.getGraphLayoutCache().setFactory(graphViewFactory);
 		}
 	}
 
-   
-    public MiddlePanelJGraphController getGraphController(){
-        return this.graphController;
-    }
-
-    public MiddlePanelJGraphController getMiddlePanelJGraphController()
-	{
-		return this.graphController;
-	}
-
+	@Override
 	public void paintComponent(Graphics g)
 	{
 //        System.out.println("test.gov.nih.nci.hl7.jgraph.MiddlePanel.paintComponent");
@@ -131,43 +149,33 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 		graphController.renderInJGraph(g);
 	}
 
-    public Object getFunctionBoxSelection()
+	public void resetGraph()
 	{
-    	return null;
-		//return mappingPanel.getFunctionPane().getFunctionSelection();
+		if(graphController.isGraphChanged())
+		{
+			initGraph();
+		}
 	}
 
+	/**
+	 * @param graph the graph to set
+	 */
+	public void setGraph(MiddlePanelJGraph graph) {
+		this.graph = graph;
+	}
+
+	@Override
 	public void setPreferredSize(Dimension preferredSize)
 	{
 //		System.out.println("MappingMiddlePanel's setPreferredSize()");
 		graph.setPreferredSize(new Dimension(preferredSize.width - 4, preferredSize.height - 25));
 	}
-
-	public MiddlePanelScrollAdjustmentCoordinator getAdjustmentCoordinator()
-	{
-		return adjustmentCoordinator;
-	}
-
-	public MiddlePanelJGraphScrollAdjustmentAdapter getGraphAdjustmentAdapter()
-	{
-		return graphAdjustmentAdapter;
-	}
-
-	public CmpsMappingPanel getMappingPanel()
-	{
-		return mappingPanel;
-	}
-
-	public String getKind() {
-		return kind;
-	}
-
-	public void setKind(String kind) {
-		this.kind = kind;
-	}
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/04 21:34:20  linc
+ * HISTORY: Drap and Drop support with new Swing.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:

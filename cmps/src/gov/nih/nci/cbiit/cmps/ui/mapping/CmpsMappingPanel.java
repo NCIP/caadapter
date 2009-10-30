@@ -52,7 +52,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -64,26 +63,28 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.12 $
- * @date       $Date: 2009-10-28 16:47:06 $
+ * @version    $Revision: 1.13 $
+ * @date       $Date: 2009-10-30 14:45:30 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
 
-	private File saveFile = null;
+	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
 
-	private FunctionLibraryPane functionPane;
-	private MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
-	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
+	private static final Object CSV_METADATA_FILE_DEFAULT_EXTENTION = ".xsd";
+	private static final Object HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION = ".xsd";
+	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = "Open source data schema";
 
-	private JTextField sourceLocationArea = new JTextField();
-	private JTextField targetLocationArea = new JTextField();
-	private MappingMiddlePanel middlePanel = null;
-	private MappingSourceTree sTree = null;
-	private MappingTargetTree tTree = null;
+	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE = "Open target data schema";
+	private static final String SELECT_CSV_TIP = "select CSV";
+	private static final String SELECT_HMD_TIP = "select HMD";
+	private static final String SELECT_SOURCE = "Open Source...";
+	private static final String SELECT_TARGET = "Open Target...";
 
+	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
+
+	private static final String TARGET_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
 	private TreeTransferHandler dndHandler = null;
-	private TreeSelectionHandler treeSelectionHanderl=null;
 	//	protected TreeCollapseAllAction sourceTreeCollapseAllAction;
 	//	protected TreeExpandAllAction sourceTreeExpandAllAction;
 	//	
@@ -92,22 +93,19 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	//
 	//	protected MappingFileSynchronizer fileSynchronizer;
 	//	
+	private FunctionLibraryPane functionPane;
 
+	private Mapping mapping = null;
 	private File mappingSourceFile = null;
 	private File mappingTargetFile = null;
-	private Mapping mapping = null;
-
-	private static final String SELECT_SOURCE = "Open Source...";
-	private static final String SELECT_TARGET = "Open Target...";
-	private static final String SELECT_CSV_TIP = "select CSV";
-	private static final String SELECT_HMD_TIP = "select HMD";
-	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_SOURCE_FILE = "Open source data schema";
-	private static final String OPEN_DIALOG_TITLE_FOR_DEFAULT_TARGET_FILE = "Open target data schema";
-	private static final String SOURCE_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
-	private static final String TARGET_TREE_FILE_DEFAULT_EXTENTION = ".xsd";
-	private static final String Cmps_V3_MESSAGE_FILE_DEFAULT_EXTENSION = ".map";
-	private static final Object CSV_METADATA_FILE_DEFAULT_EXTENTION = ".xsd";
-	private static final Object HSM_META_DEFINITION_FILE_DEFAULT_EXTENSION = ".xsd";
+	private MappingMiddlePanel middlePanel = null;
+	private File saveFile = null;
+	private JTextField sourceLocationArea = new JTextField();
+	private MappingTreeScrollPane sourceScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_RIGHT);
+	private MappingSourceTree sTree = null;
+	private JTextField targetLocationArea = new JTextField();
+	private MappingTreeScrollPane targetScrollPane = new MappingTreeScrollPane(MappingTreeScrollPane.DRAW_NODE_TO_LEFT);
+	private MappingTargetTree tTree = null;
 
 	//	private TargetTreeDropTransferHandler targetTreeDropTransferHandler = null;
 
@@ -125,8 +123,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		this.setBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new BorderLayout());
 		this.add(getCenterPanel(true), BorderLayout.CENTER);
-		//		fileSynchronizer = new MappingFileSynchronizer(this);
-
+	
 		if (!sourceFile.equals(""))
 			processOpenSourceTree(new File(sourceFile), false, false);
 
@@ -139,148 +136,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 			boolean success = processOpenTargetTree(file, true, true);
 			if (!success) throw new Exception("GEN3");
 		}
-	}
-
-	protected JComponent getCenterPanel(boolean functionPaneRequired)
-	{//construct the top level layout of mapping panel
-		/**
-		 * GUI Layout:
-		 * JSplitPane - Horizontal:   --> leftRightSplitPane
-		 *      left: JSplitPane - Horizontal: --> topCenterPanel, centerSplitPane
-		 *				left: source panel; --> sourceButtonPanel
-		 *				right: JSplitPane - Horizontal: --> rightSplitPane
-		 *							left: middle panel for graph; -->middleContainerPanel
-		 *							right: target panel; -->targetButtonPanel
-		 * 		right: JSplitPane - Vertical:  -->topBottomSplitPane
-		 * 				top: functional pane; -->functionPane
-		 *				bottom: properties panel; -->propertiesPane
-		 */
-
-		JSplitPane leftRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
-		leftRightSplitPane.setDividerLocation(0.85);
-		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
-		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
-		return leftRightSplitPane;
-	}
-
-	/**
-	 * This constructs function and properties panels.
-	 *
-	 * @return the top level right pane.
-	 */
-	private JComponent getTopLevelRightPanel(boolean functionPaneRequired)
-	{
-		JSplitPane topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
-		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
-		topBottomSplitPane.setDividerLocation(0.5);
-
-		functionPane = new FunctionLibraryPane(this);
-		functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
-		if(functionPaneRequired)
-		{
-			topBottomSplitPane.setTopComponent(functionPane);
-		}
-		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(middlePanel.getMiddlePanelJGraphController().getPropertiesSwitchController());//this.getMappingDataManager().getPropertiesSwitchController());
-		topBottomSplitPane.setBottomComponent(propertiesPane);
-
-		double topCenterFactor = 0.3;
-		Dimension rightMostDim = new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
-		propertiesPane.setPreferredSize(rightMostDim);
-		functionPane.setPreferredSize(rightMostDim);
-		//functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
-
-		topCenterFactor = 1.5;
-		rightMostDim = new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
-		topBottomSplitPane.setPreferredSize(rightMostDim);
-
-		return topBottomSplitPane;
-	}
-
-	protected JPanel getTopLevelLeftPanel()
-	{
-		JPanel topCenterPanel = new JPanel(new BorderLayout());
-		topCenterPanel.setBorder(BorderFactory.createEtchedBorder());
-		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		DefaultSettings.setDefaultFeatureForJSplitPane(centerSplitPane);
-
-		//construct source panel
-		JPanel sourceButtonPanel = new JPanel(new BorderLayout());
-		sourceButtonPanel.setBorder(BorderFactory.createEmptyBorder());
-		JPanel sourceLocationPanel = new JPanel(new BorderLayout(2, 0));
-		sourceLocationPanel.setBorder(BorderFactory.createEmptyBorder());
-		//		sourceTreeCollapseAllAction = new TreeCollapseAllAction(sTree);
-		//		sourceTreeExpandAllAction = new TreeExpandAllAction(sTree);
-
-		JToolBar sourceTreeToolBar = new JToolBar("Source Tree Tool Bar");
-		sourceTreeToolBar.setFloatable(false);
-		//		sourceTreeToolBar.add(sourceTreeExpandAllAction);
-		//		sourceTreeToolBar.add(sourceTreeCollapseAllAction);
-		sourceLocationPanel.add(sourceTreeToolBar, BorderLayout.WEST);
-
-		sourceLocationArea.setEditable(false);
-		sourceLocationArea.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
-		sourceLocationPanel.add(sourceLocationArea, BorderLayout.CENTER);
-		
-		JButton openSourceButton = new JButton(SELECT_SOURCE);
-		sourceLocationPanel.add(openSourceButton, BorderLayout.EAST);
-		openSourceButton.setMnemonic('S');
-		openSourceButton.setToolTipText(SELECT_CSV_TIP);
-		openSourceButton.addActionListener(this);
-		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
-		sourceScrollPane.setSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
-
-		//construct target panel
-		JPanel targetButtonPanel = new JPanel(new BorderLayout());
-		targetButtonPanel.setBorder(BorderFactory.createEmptyBorder());
-		JPanel targetLocationPanel = new JPanel(new BorderLayout(2, 0));
-		targetLocationPanel.setBorder(BorderFactory.createEmptyBorder());
-		//		targetTreeCollapseAllAction = new TreeCollapseAllAction(tTree);
-		//		targetTreeExpandAllAction = new TreeExpandAllAction(tTree);
-		JToolBar targetTreeToolBar = new JToolBar("Target Tree Tool Bar");
-		targetTreeToolBar.setFloatable(false);
-		//		targetTreeToolBar.add(targetTreeExpandAllAction);
-		//		targetTreeToolBar.add(targetTreeCollapseAllAction);
-		targetLocationPanel.add(targetTreeToolBar, BorderLayout.WEST);
-		targetLocationArea.setEditable(false);
-		targetLocationArea.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
-		targetLocationPanel.add(targetLocationArea, BorderLayout.CENTER);
-
-		JButton openTargetButton = new JButton(SELECT_TARGET);
-		targetLocationPanel.add(openTargetButton, BorderLayout.EAST);
-		openTargetButton.setMnemonic('T');
-		openTargetButton.setToolTipText(SELECT_HMD_TIP);
-		openTargetButton.addActionListener(this);
-		targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
-		targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
-		targetButtonPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-
-		//construct middle panel
-		JPanel middleContainerPanel = new JPanel(new BorderLayout());
-		JLabel placeHolderLabel = new JLabel();
-		placeHolderLabel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3.5), 24));
-		middlePanel = new MappingMiddlePanel(this);
-		middlePanel.setSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-		middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
-		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
-
-		JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		DefaultSettings.setDefaultFeatureForJSplitPane(rightSplitPane);
-		rightSplitPane.setDividerLocation(0.5);
-		rightSplitPane.setLeftComponent(middleContainerPanel);
-		rightSplitPane.setRightComponent(targetButtonPanel);
-
-		centerSplitPane.setLeftComponent(sourceButtonPanel);
-		centerSplitPane.setRightComponent(rightSplitPane);
-
-		topCenterPanel.add(centerSplitPane, BorderLayout.CENTER);
-		topCenterPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH * 0.8), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-
-		return topCenterPanel;
-
-
 	}
 
 	public void actionPerformed(ActionEvent e)
@@ -326,66 +181,14 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		}
 	}
 
-
-	/**
-	 * @return the dndHandler
-	 */
-	public TreeTransferHandler getDndHandler() {
-		if(this.dndHandler == null)
-			this.dndHandler = new TreeTransferHandler(this);
-		return dndHandler;
-	}
-
-	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
-	{
-		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
-		TreeNode node = null;
-		if(metaInfo instanceof Mapping){
-			Mapping.Components components = ((Mapping)metaInfo).getComponents();
-			List<Component> l = components.getComponent();
-			for(Component c:l){
-				if(c.getType().equals(ComponentType.SOURCE))
-					node = new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE).loadData(c);
-			}
-		}else{
-			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
-					"not recognized. " + metaInfo);
-		}
-
-		return node;
-	}
-
-	protected TreeNode loadTargetTreeData( Object metaInfo, File absoluteFile)throws Exception
-	{
-		TreeNode node = null;
-		if(metaInfo instanceof Mapping){
-			Mapping.Components components = ((Mapping)metaInfo).getComponents();
-			List<Component> l = components.getComponent();
-			for(Component c:l){
-				if(c.getType().equals(ComponentType.TARGET))
-					node = new ElementMetaLoader(ElementMetaLoader.TARGET_MODE).loadData(c);
-			}
-		}else{
-			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
-					"not recognized. " + metaInfo);
-		}
-
-		return node;
-	}
-	
- private TreeSelectionHandler getTreeSelectionHandler()
- {
-	 if (treeSelectionHanderl==null)
-			treeSelectionHanderl=new TreeSelectionHandler (getMiddlePanelJGraphController().getPropertiesSwitchController());
-	 return treeSelectionHanderl;
- }
 	protected void buildSourceTree(Object metaInfo, File absoluteFile, boolean isToResetGraph) throws Exception
 	{
 		TreeNode nodes=loadSourceTreeData(metaInfo,absoluteFile);
 
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
-		sTree.getSelectionModel().addTreeSelectionListener(getTreeSelectionHandler());
+		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getMiddlePanelJGraphController());
+		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		sTree.setTransferHandler(getDndHandler());
 		sTree.setDragEnabled(true);
 		sTree.setDropMode(DropMode.ON);
@@ -428,7 +231,8 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
-		tTree.getSelectionModel().addTreeSelectionListener(this.getTreeSelectionHandler());
+		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getMiddlePanelJGraphController());
+		tTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		tTree.setTransferHandler(getDndHandler());
 		tTree.setDropMode(DropMode.ON);
 		targetScrollPane.setViewportView(tTree);
@@ -468,91 +272,104 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	}
 
 	/**
-	 * Called by actionPerformed() and overridable by descendant classes.
+	 * Provide the extended implementation of this method by adding additional files of source and target;
 	 *
-	 * @param file
-	 * @throws Exception
+	 * @return a list of file objects that this context is associated with.
 	 */
-	protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
+	public java.util.List<File> getAssociatedFileList()
 	{
-//		String fileExtension = FileUtil.getFileExtension(file, true);
-		XSDParser p = new XSDParser();
-		p.loadSchema(file);
-		CellRenderXSObject srcRoot = userSelectRoot(p);
-		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
-			return false;
-		 
-		MappingFactory.loadMetaSourceXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName());
+		List<File> resultList = new ArrayList<java.io.File>();
+		if(saveFile!=null)
+		{
+			resultList.add(saveFile);
+		}
+		if (mappingSourceFile != null)
+		{
+			resultList.add(mappingSourceFile);
+		}
+		if (mappingTargetFile != null)
+		{
+			resultList.add(mappingTargetFile);
+		}
+		return resultList;
+	}
 
-		buildSourceTree(getMapping(), file, isToResetGraph);
-		return true;
+
+	protected JComponent getCenterPanel(boolean functionPaneRequired)
+	{//construct the top level layout of mapping panel
+		/**
+		 * GUI Layout:
+		 * JSplitPane - Horizontal:   --> leftRightSplitPane
+		 *      left: JSplitPane - Horizontal: --> topCenterPanel, centerSplitPane
+		 *				left: source panel; --> sourceButtonPanel
+		 *				right: JSplitPane - Horizontal: --> rightSplitPane
+		 *							left: middle panel for graph; -->middleContainerPanel
+		 *							right: target panel; -->targetButtonPanel
+		 * 		right: JSplitPane - Vertical:  -->topBottomSplitPane
+		 * 				top: functional pane; -->functionPane
+		 *				bottom: properties panel; -->propertiesPane
+		 */
+
+		JSplitPane leftRightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
+		leftRightSplitPane.setDividerLocation(0.85);
+		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
+		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
+		return leftRightSplitPane;
 	}
 
 	/**
-	 * Promote user to select a root node:Element or Complex type
-	 * @param xsdParser
-	 * @return
+	 * return the close action inherited with this client.
+	 * @return the close action inherited with this client.
 	 */
-	private CellRenderXSObject userSelectRoot(XSDParser xsdParser)
-	{
-		XSNamedMap[] map = xsdParser.getMappableNames();
-		CellRenderXSObject[] choices = new CellRenderXSObject[map[0].getLength()+map[1].getLength()];
-		int pos = 0;
-		for(int i=0; i<map[0].getLength(); i++)
-			choices[pos++] =new CellRenderXSObject(map[0].item(i));//.getName();
-		for(int i=0; i<map[1].getLength(); i++)
-			choices[pos++] = new CellRenderXSObject(map[1].item(i));//.getNamespace() +":" +map[1].item(i).getName();
-
-		CellRenderXSObject chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
-		return chosenRoot;
-	}
-	/**
-	 * Called by actionPerformed() and overridable by descendant classes.
-	 *
-	 * @param file
-	 * @throws Exception
-	 */
-	protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
-	{
-//		String fileExtension = FileUtil.getFileExtension(file, true);
-		XSDParser p = new XSDParser();
-		p.loadSchema(file);
-		CellRenderXSObject trgtRoot = userSelectRoot(p);
-		if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
-			return false;
-		MappingFactory.loadMetaTargetXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName());
-
-		buildTargetTree(getMapping(), file, isToResetGraph);
-		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
-		return true;
+	public Action getDefaultCloseAction()
+	{//by doing this way, the menu and the panel will use the same close action.
+		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
+		Action closeAction = (Action) actionMap.get(ActionConstants.CLOSE);
+		return closeAction;
 	}
 
 	/**
-	 * Called by actionPerformed() and overridable by descendant classes.
-	 *
-	 * @param file
-	 * @throws Exception changed from protected to pulic by sean
+	 * return the open action inherited with this client.
 	 */
-	public void processOpenMapFile(File file) throws Exception
+	public Action getDefaultOpenAction()
 	{
-		System.out.println("CmpsMappingPanel.processOpenMapFile()...:"+file.getAbsolutePath());
-		long stTime=System.currentTimeMillis();
-		// parse the file.
-		Mapping mapping = MappingFactory.loadMapping(file);
+		ContextManager contextManager = ContextManager.getContextManager();
+		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_MAP_FILE);
+		return openAction;
+	}
+	
 
-		//build source tree
-		buildSourceTree(mapping, null, false);
-		//build target tree
-		buildTargetTree(mapping, null, false);
-
-		System.out.println("before setMappingData");
-		middlePanel.getGraphController().setMappingData(mapping);
-		System.out.println("after setMappingData");
-
-		setSaveFile(file);
-		System.out.println("CmpsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
+	/**
+	 * return the save action inherited with this client.
+	 * @return the save action inherited with this client.
+	 */
+	public Action getDefaultSaveAction()
+	{
+		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
+		Action saveAction = (Action) actionMap.get(ActionConstants.SAVE);
+		return saveAction;
 	}
 
+	/**
+	 * @return the dndHandler
+	 */
+	public TreeTransferHandler getDndHandler() {
+		if(this.dndHandler == null)
+			this.dndHandler = new TreeTransferHandler(this);
+		return dndHandler;
+	}
+
+	/**
+	 * @return the mapping
+	 */
+	public Mapping getMapping() {
+		if(this.mapping == null){
+			this.mapping = new Mapping();
+			this.getMiddlePanel().getMiddlePanelJGraphController().setMappingData(mapping);
+		}
+		return mapping;
+	}
 
 	public Map getMenuItems(String menu_name)
 	{
@@ -593,25 +410,35 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		actionMap = contextManager.getClientMenuActions("CMPS", menu_name);
 		return actionMap;
 	}
+	public MappingMiddlePanel getMiddlePanel() {
+		return middlePanel;
+	}
+
+	public MiddlePanelJGraphController getMiddlePanelJGraphController() {
+		return middlePanel.getGraphController();
+	}
+
 
 	/**
-	 * return the open action inherited with this client.
+	 * Return the top root container (frame or dialog or window) this panel is associated with.
+	 * @return the top root container (frame or dialog or window) this panel is associated with.
 	 */
-	public Action getDefaultOpenAction()
+	public Container getRootContainer()
 	{
-		ContextManager contextManager = ContextManager.getContextManager();
-		Action openAction=contextManager.getDefinedAction(ActionConstants.OPEN_MAP_FILE);
-		return openAction;
+		return DefaultSettings.findRootContainer(this);
 	}
 
 	/**
-	 * Explicitly reload information from the internal given file.
-	 *
-	 * @throws Exception
+	 * Return the save file.
+	 * @return the save file.
 	 */
-	public void reload() throws Exception
+	public File getSaveFile()
 	{
-		//		processOpenMapFile(getSaveFile());
+		return saveFile;
+	}
+
+	public JScrollPane getSourceScrollPane() {
+		return sourceScrollPane;
 	}
 
 	//	protected TreeDefaultDropTransferHandler getTargetTreeDropTransferHandler()
@@ -678,32 +505,161 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 
 
-	/**
-	 * @return the mapping
-	 */
-	public Mapping getMapping() {
-		if(this.mapping == null){
-			this.mapping = new Mapping();
-			this.getMiddlePanel().getMiddlePanelJGraphController().setMappingData(mapping);
-		}
-		return mapping;
-	}
-
-	/**
-	 * @param mapping the mapping to set
-	 */
-	public void setMapping(Mapping mapping) {
-		this.mapping = mapping;
-	}
-
-
-	private void resetMiddlePanel()
+	public JTree getSourceTree()
 	{
-		if (middlePanel != null)
+		return sTree;
+	}
+
+	public JScrollPane getTargetScrollPane() {
+		return targetScrollPane;
+	}
+
+
+	public JTree getTargetTree()
+	{
+		return tTree;
+	}
+
+	/**
+	 * Return a list of Action objects that is included in this Context manager.
+	 * @return a list of Action objects that is included in this Context manager.
+	 */
+	public java.util.List<Action> getToolbarActionList()
+	{
+		java.util.List<Action> actions = new ArrayList<Action>();
+		actions.add(getDefaultOpenAction());
+		//the menu bar display its buttons inorder
+		Map <String, Action>actionMap = getMenuItems(MenuConstants.TOOLBAR_MENU_NAME);
+		actions.add(actionMap.get(ActionConstants.SAVE));
+		actions.add(actionMap.get(ActionConstants.VALIDATE));
+		//add the "Refresh" menu if exist
+		actions.add(actionMap.get(ActionConstants.REFRESH));
+		return actions;
+	}
+
+
+	protected JPanel getTopLevelLeftPanel()
+	{
+		JPanel topCenterPanel = new JPanel(new BorderLayout());
+		topCenterPanel.setBorder(BorderFactory.createEtchedBorder());
+		JSplitPane centerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		DefaultSettings.setDefaultFeatureForJSplitPane(centerSplitPane);
+
+		//construct source panel
+		JPanel sourceButtonPanel = new JPanel(new BorderLayout());
+		sourceButtonPanel.setBorder(BorderFactory.createEmptyBorder());
+		JPanel sourceLocationPanel = new JPanel(new BorderLayout(2, 0));
+		sourceLocationPanel.setBorder(BorderFactory.createEmptyBorder());
+		//		sourceTreeCollapseAllAction = new TreeCollapseAllAction(sTree);
+		//		sourceTreeExpandAllAction = new TreeExpandAllAction(sTree);
+
+		JToolBar sourceTreeToolBar = new JToolBar("Source Tree Tool Bar");
+		sourceTreeToolBar.setFloatable(false);
+		//		sourceTreeToolBar.add(sourceTreeExpandAllAction);
+		//		sourceTreeToolBar.add(sourceTreeCollapseAllAction);
+		sourceLocationPanel.add(sourceTreeToolBar, BorderLayout.WEST);
+
+		sourceLocationArea.setEditable(false);
+		sourceLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
+		sourceLocationPanel.add(sourceLocationArea, BorderLayout.CENTER);
+		
+		JButton openSourceButton = new JButton(SELECT_SOURCE);
+		sourceLocationPanel.add(openSourceButton, BorderLayout.EAST);
+		openSourceButton.setMnemonic('S');
+		openSourceButton.setToolTipText(SELECT_CSV_TIP);
+		openSourceButton.addActionListener(this);
+		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
+		sourceScrollPane.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
+
+		//construct target panel
+		JPanel targetButtonPanel = new JPanel(new BorderLayout());
+		targetButtonPanel.setBorder(BorderFactory.createEmptyBorder());
+		JPanel targetLocationPanel = new JPanel(new BorderLayout(2, 0));
+		targetLocationPanel.setBorder(BorderFactory.createEmptyBorder());
+		//		targetTreeCollapseAllAction = new TreeCollapseAllAction(tTree);
+		//		targetTreeExpandAllAction = new TreeExpandAllAction(tTree);
+		JToolBar targetTreeToolBar = new JToolBar("Target Tree Tool Bar");
+		targetTreeToolBar.setFloatable(false);
+		//		targetTreeToolBar.add(targetTreeExpandAllAction);
+		//		targetTreeToolBar.add(targetTreeCollapseAllAction);
+		targetLocationPanel.add(targetTreeToolBar, BorderLayout.WEST);
+		targetLocationArea.setEditable(false);
+		targetLocationArea.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), 24));
+		targetLocationPanel.add(targetLocationArea, BorderLayout.CENTER);
+
+		JButton openTargetButton = new JButton(SELECT_TARGET);
+		targetLocationPanel.add(openTargetButton, BorderLayout.EAST);
+		openTargetButton.setMnemonic('T');
+		openTargetButton.setToolTipText(SELECT_HMD_TIP);
+		openTargetButton.addActionListener(this);
+		targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
+		targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
+		targetButtonPanel.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+
+		//construct middle panel
+		JPanel middleContainerPanel = new JPanel(new BorderLayout());
+		JLabel placeHolderLabel = new JLabel();
+		placeHolderLabel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH / 3.5), 24));
+		middlePanel = new MappingMiddlePanel(this);
+		middlePanel.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 3), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+		middleContainerPanel.add(placeHolderLabel, BorderLayout.NORTH);
+		middleContainerPanel.add(middlePanel, BorderLayout.CENTER);
+
+		JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		DefaultSettings.setDefaultFeatureForJSplitPane(rightSplitPane);
+		rightSplitPane.setDividerLocation(0.5);
+		rightSplitPane.setLeftComponent(middleContainerPanel);
+		rightSplitPane.setRightComponent(targetButtonPanel);
+
+		centerSplitPane.setLeftComponent(sourceButtonPanel);
+		centerSplitPane.setRightComponent(rightSplitPane);
+
+		topCenterPanel.add(centerSplitPane, BorderLayout.CENTER);
+		topCenterPanel.setPreferredSize(new Dimension((int) (DefaultSettings.FRAME_DEFAULT_WIDTH * 0.8), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
+
+		return topCenterPanel;
+
+
+	}
+
+	/**
+	 * This constructs function and properties panels.
+	 *
+	 * @return the top level right pane.
+	 */
+	private JComponent getTopLevelRightPanel(boolean functionPaneRequired)
+	{
+		JSplitPane topBottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		DefaultSettings.setDefaultFeatureForJSplitPane(topBottomSplitPane);
+		//topBottomSplitPane.setBorder(BorderFactory.createEtchedBorder());
+		topBottomSplitPane.setDividerLocation(0.5);
+
+		functionPane = new FunctionLibraryPane(this);
+		functionPane.setBorder(BorderFactory.createTitledBorder("Functions"));
+		if(functionPaneRequired)
 		{
-			middlePanel.resetGraph();
-			middlePanel.repaint();
+			topBottomSplitPane.setTopComponent(functionPane);
 		}
+		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(middlePanel.getMiddlePanelJGraphController().getPropertiesSwitchController());//this.getMappingDataManager().getPropertiesSwitchController());
+		topBottomSplitPane.setBottomComponent(propertiesPane);
+
+		double topCenterFactor = 0.3;
+		Dimension rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 11), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT * topCenterFactor));
+		propertiesPane.setPreferredSize(rightMostDim);
+		functionPane.setPreferredSize(rightMostDim);
+		//functionPane.getFunctionTree().getSelectionModel().addTreeSelectionListener((TreeSelectionListener) (getMappingDataManager().getPropertiesSwitchController()));
+
+		topCenterFactor = 1.5;
+		rightMostDim = new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 10), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / topCenterFactor));
+		topBottomSplitPane.setPreferredSize(rightMostDim);
+
+		return topBottomSplitPane;
+	}
+
+	public boolean isChanged() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	/**
@@ -715,68 +671,132 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return dndHandler.getState()!=TreeTransferHandler.READY;
 	}
 
-
-	public JScrollPane getSourceScrollPane() {
-		return sourceScrollPane;
-	}
-
-	public JScrollPane getTargetScrollPane() {
-		return targetScrollPane;
-	}
-
-	public MappingMiddlePanel getMiddlePanel() {
-		return middlePanel;
-	}
-
-	public JTree getSourceTree()
+	protected TreeNode loadSourceTreeData(Object metaInfo, File absoluteFile)throws Exception
 	{
-		return sTree;
+		String fileExtension = FileUtil.getFileExtension(absoluteFile, true);
+		TreeNode node = null;
+		if(metaInfo instanceof Mapping){
+			Mapping.Components components = ((Mapping)metaInfo).getComponents();
+			List<Component> l = components.getComponent();
+			for(Component c:l){
+				if(c.getType().equals(ComponentType.SOURCE))
+					node = new ElementMetaLoader(ElementMetaLoader.SOURCE_MODE).loadData(c);
+			}
+		}else{
+			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
+					"not recognized. " + metaInfo);
+		}
+
+		return node;
 	}
 
-	public JTree getTargetTree()
+	protected TreeNode loadTargetTreeData( Object metaInfo, File absoluteFile)throws Exception
 	{
-		return tTree;
+		TreeNode node = null;
+		if(metaInfo instanceof Mapping){
+			Mapping.Components components = ((Mapping)metaInfo).getComponents();
+			List<Component> l = components.getComponent();
+			for(Component c:l){
+				if(c.getType().equals(ComponentType.TARGET))
+					node = new ElementMetaLoader(ElementMetaLoader.TARGET_MODE).loadData(c);
+			}
+		}else{
+			throw new RuntimeException("ElementMetaNodeLoader.loadData() input " +
+					"not recognized. " + metaInfo);
+		}
+
+		return node;
 	}
 
 	/**
-	 * Provide the extended implementation of this method by adding additional files of source and target;
+	 * Called by actionPerformed() and overridable by descendant classes.
 	 *
-	 * @return a list of file objects that this context is associated with.
+	 * @param file
+	 * @throws Exception changed from protected to pulic by sean
 	 */
-	public java.util.List<File> getAssociatedFileList()
+	public void processOpenMapFile(File file) throws Exception
 	{
-		List<File> resultList = new ArrayList<java.io.File>();
-		if(saveFile!=null)
-		{
-			resultList.add(saveFile);
-		}
-		if (mappingSourceFile != null)
-		{
-			resultList.add(mappingSourceFile);
-		}
-		if (mappingTargetFile != null)
-		{
-			resultList.add(mappingTargetFile);
-		}
-		return resultList;
-	}
+		System.out.println("CmpsMappingPanel.processOpenMapFile()...:"+file.getAbsolutePath());
+		long stTime=System.currentTimeMillis();
+		// parse the file.
+		Mapping mapping = MappingFactory.loadMapping(file);
 
-	public void setSize(int width, int height)
-	{
-		double topCenterFactor = 1;
-		sourceLocationArea.setSize(new Dimension((int) (width / 6), 25));
-		sourceScrollPane.setSize(new Dimension((int) (width / 4.5), (int) (height * topCenterFactor)));
-		targetLocationArea.setSize(new Dimension(width / 6, 25));
-		targetScrollPane.setSize(new Dimension((int) (width / 4.5), (int) (height * topCenterFactor)));
-		middlePanel.setSize(new Dimension((int) (width / 4), (int) (height * topCenterFactor)));
+		//build source tree
+		buildSourceTree(mapping, null, false);
+		//build target tree
+		buildTargetTree(mapping, null, false);
 
-		topCenterFactor = 0.5;
-		Dimension rightMostDim = new Dimension((int) (width / 5), (int) (height * topCenterFactor));
-		//		propertiesPane.setSize(rightMostDim);
-		//		functionPane.setSize(rightMostDim);
+		System.out.println("before setMappingData");
+		middlePanel.getGraphController().setMappingData(mapping);
+		System.out.println("after setMappingData");
+
+		setSaveFile(file);
+		System.out.println("CmpsMappingPanel.processOpenMapFile()..timespending:"+(System.currentTimeMillis()-stTime));
 	}
 
 
+	/**
+	 * Called by actionPerformed() and overridable by descendant classes.
+	 *
+	 * @param file
+	 * @throws Exception
+	 */
+	protected boolean processOpenSourceTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
+	{
+//		String fileExtension = FileUtil.getFileExtension(file, true);
+		XSDParser p = new XSDParser();
+		p.loadSchema(file);
+		CellRenderXSObject srcRoot = userSelectRoot(p);
+		if(srcRoot == null || srcRoot.getCoreObject().getName().trim().length() == 0)
+			return false;
+		 
+		MappingFactory.loadMetaSourceXSD(getMapping(), p,srcRoot.getCoreObject().getNamespace(), srcRoot.getCoreObject().getName());
+
+		buildSourceTree(getMapping(), file, isToResetGraph);
+		return true;
+	}
+
+
+	/**
+	 * Called by actionPerformed() and overridable by descendant classes.
+	 *
+	 * @param file
+	 * @throws Exception
+	 */
+	protected boolean processOpenTargetTree(File file, boolean isToResetGraph, boolean supressReportIssuesToUI) throws Exception
+	{
+//		String fileExtension = FileUtil.getFileExtension(file, true);
+		XSDParser p = new XSDParser();
+		p.loadSchema(file);
+		CellRenderXSObject trgtRoot = userSelectRoot(p);
+		if(trgtRoot == null || trgtRoot.getCoreObject().getName().trim().length() == 0)
+			return false;
+		MappingFactory.loadMetaTargetXSD(getMapping(), p, trgtRoot.getCoreObject().getNamespace(), trgtRoot.getCoreObject().getName());
+
+		buildTargetTree(getMapping(), file, isToResetGraph);
+		//		middlePanel.getMappingDataManager().registerTargetComponent(metaInfo, file);
+		return true;
+	}
+
+	/**
+	 * Explicitly reload information from the internal given file.
+	 *
+	 * @throws Exception
+	 */
+	public void reload() throws Exception
+	{
+		//		processOpenMapFile(getSaveFile());
+	}
+
+	
+	private void resetMiddlePanel()
+	{
+		if (middlePanel != null)
+		{
+			middlePanel.resetGraph();
+			middlePanel.repaint();
+		}
+	}
 	/**
 	 * Explicitly set the value.
 	 *
@@ -787,14 +807,11 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		middlePanel.getGraphController().setGraphChanged(newValue);
 	}
 
-
 	/**
-	 * Return the save file.
-	 * @return the save file.
+	 * @param mapping the mapping to set
 	 */
-	public File getSaveFile()
-	{
-		return saveFile;
+	public void setMapping(Mapping mapping) {
+		this.mapping = mapping;
 	}
 
 	/**
@@ -823,11 +840,28 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		return true;
 	}
 
-	
+	@Override
+	public void setSize(int width, int height)
+	{
+		double topCenterFactor = 1;
+		sourceLocationArea.setSize(new Dimension((width / 6), 25));
+		sourceScrollPane.setSize(new Dimension((int) (width / 4.5), (int) (height * topCenterFactor)));
+		targetLocationArea.setSize(new Dimension(width / 6, 25));
+		targetScrollPane.setSize(new Dimension((int) (width / 4.5), (int) (height * topCenterFactor)));
+		middlePanel.setSize(new Dimension((width / 4), (int) (height * topCenterFactor)));
+
+		topCenterFactor = 0.5;
+		Dimension rightMostDim = new Dimension((width / 5), (int) (height * topCenterFactor));
+		//		propertiesPane.setSize(rightMostDim);
+		//		functionPane.setSize(rightMostDim);
+	}
+
+
 	public void synchronizeRegisteredFile(boolean notigyOberver)
 	{
 		//do nothing, only the "MappingFilePanel" will implement it
 	}
+
 	/**
 	 * Overridable function to update Title in the tabbed pane.
 	 * @param newTitle
@@ -846,61 +880,22 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	}
 
 	/**
-	 * return the close action inherited with this client.
-	 * @return the close action inherited with this client.
+	 * Promote user to select a root node:Element or Complex type
+	 * @param xsdParser
+	 * @return
 	 */
-	public Action getDefaultCloseAction()
-	{//by doing this way, the menu and the panel will use the same close action.
-		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
-		Action closeAction = (Action) actionMap.get(ActionConstants.CLOSE);
-		return closeAction;
-	}
-
-	/**
-	 * return the save action inherited with this client.
-	 * @return the save action inherited with this client.
-	 */
-	public Action getDefaultSaveAction()
+	private CellRenderXSObject userSelectRoot(XSDParser xsdParser)
 	{
-		Map actionMap = getMenuItems(MenuConstants.FILE_MENU_NAME);
-		Action saveAction = (Action) actionMap.get(ActionConstants.SAVE);
-		return saveAction;
-	}
+		XSNamedMap[] map = xsdParser.getMappableNames();
+		CellRenderXSObject[] choices = new CellRenderXSObject[map[0].getLength()+map[1].getLength()];
+		int pos = 0;
+		for(int i=0; i<map[0].getLength(); i++)
+			choices[pos++] =new CellRenderXSObject(map[0].item(i));//.getName();
+		for(int i=0; i<map[1].getLength(); i++)
+			choices[pos++] = new CellRenderXSObject(map[1].item(i));//.getNamespace() +":" +map[1].item(i).getName();
 
-	/**
-	 * Return the top root container (frame or dialog or window) this panel is associated with.
-	 * @return the top root container (frame or dialog or window) this panel is associated with.
-	 */
-	public Container getRootContainer()
-	{
-		return DefaultSettings.findRootContainer(this);
-	}
-
-
-	/**
-	 * Return a list of Action objects that is included in this Context manager.
-	 * @return a list of Action objects that is included in this Context manager.
-	 */
-	public java.util.List<Action> getToolbarActionList()
-	{
-		java.util.List<Action> actions = new ArrayList<Action>();
-		actions.add(getDefaultOpenAction());
-		//the menu bar display its buttons inorder
-		Map <String, Action>actionMap = getMenuItems(MenuConstants.TOOLBAR_MENU_NAME);
-		actions.add((Action) actionMap.get(ActionConstants.SAVE));
-		actions.add((Action) actionMap.get(ActionConstants.VALIDATE));
-		//add the "Refresh" menu if exist
-		actions.add((Action) actionMap.get(ActionConstants.REFRESH));
-		return actions;
-	}
-
-	public MiddlePanelJGraphController getMiddlePanelJGraphController() {
-		return middlePanel.getGraphController();
-	}
-
-	public boolean isChanged() {
-		// TODO Auto-generated method stub
-		return false;
+		CellRenderXSObject chosenRoot = (CellRenderXSObject)DefaultSettings.showListChoiceDialog(MainFrame.getInstance(), "choose root element", "Please choose root element", choices);
+		return chosenRoot;
 	}
 
 
@@ -909,6 +904,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.12  2009/10/28 16:47:06  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.11  2009/10/27 19:26:16  wangeug
  * HISTORY: clean codes
  * HISTORY:
