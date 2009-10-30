@@ -33,10 +33,10 @@ import java.awt.geom.Rectangle2D;
  * and mainly focuses on drag-and-drop and handlings of repaint of graph, for example.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-10 15:43:02 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-10-30 14:35:52 $
  *
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
@@ -44,12 +44,6 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	private MiddlePanelJGraph graph;
 	private MiddlePanelJGraphController controller;
 
-	// Custom MarqueeHandler
-	// MarqueeHandler that Connects Vertices and Displays PopupMenus
-
-	//	// Holds the Start and the Current Point
-	//	protected Point2D start, current;
-	//
 	// Holds the First and the Current Port
 	protected PortView port, firstPort;
 
@@ -94,15 +88,12 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		{
 			return false;
 		}
-		// Else Call Superclass
-		//		return super.isForceMarqueeEvent(e);
 	}
 
 	// Display PopupMenu or Remember Start Location and First Port
 	public void mousePressed(final MouseEvent e)
 	{
-		System.out.println("mousePressed().:(x="+e.getX()+",y="+e.getY()+")" );
-
+		System.out.println("MiddlePanelMarqueeHandler.mousePressed() mousePressed().:(x="+e.getX()+",y="+e.getY()+")" );
 		// following if block was inserted by umkis   (defect# 196)
 		// For selection clearing when mouse clicking(pressing) on any empty place of middle (JGraph) panel.
 		if (SwingUtilities.isLeftMouseButton(e))
@@ -110,6 +101,8 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			//System.out.println("mouse Left Pressed().");
 			GraphSelectionModel gModel = graph.getSelectionModel();
 			gModel.clearSelection();
+			controller.getMappingPanel().getSourceTree().clearSelection();
+			controller.getMappingPanel().getTargetTree().clearSelection();
 		}
 
 		currentPoint = e.getPoint();
@@ -130,11 +123,6 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			startPoint = graph.toScreen(port.getLocation(null));
 			// Remember First Port
 			firstPort = port;
-		}
-		else
-		{//do nothing
-			// Call Superclass
-			//			super.mousePressed(e);
 		}
 	}
 
@@ -211,11 +199,6 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 				controller.handleConnect((DefaultPort) firstPort.getCell(), (DefaultPort) port.getCell());
 				e.consume();
 			}
-			// Else Repaint the Graph
-			//			else
-			//			{
-			//				graph.repaint();
-			//			}
 		}
 		else
 		{
@@ -243,12 +226,6 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			// MouseHandle to stop further event processing.
 			e.consume();
 		}
-		else
-		{//do nothing
-
-		}
-		// Call Superclass
-		//			super.mouseMoved(e);
 	}
 
 	// Use Xor-Mode on Graphics to Paint Connector
@@ -375,15 +352,6 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 			{//return false if the port has been linked by edge.
 				return false;
 			}
-			//			if (portCell.getParent() instanceof FunctionBoxCell)
-			//			{
-			////				System.out.println("port " + localPort + "'s parent is FunctionBoxCell. Will return true.");
-			//				return true;
-			//			}
-			//			else
-			//			{
-			//				return false;
-			//			}
 		}
 		else
 		{
@@ -395,6 +363,9 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/10 15:43:02  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:
