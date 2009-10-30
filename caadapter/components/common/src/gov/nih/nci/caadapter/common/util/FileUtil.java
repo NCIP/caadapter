@@ -33,7 +33,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 
 public class FileUtil
@@ -484,7 +484,7 @@ public class FileUtil
         if (data.equals("")) return null;
 
         if (data.toLowerCase().startsWith(Config.CAADAPTER_HOME_DIR_TAG.toLowerCase()))
-        {   
+        {
             String homeDir = getWorkingDirPath().trim();
             String subDir = data.substring(Config.CAADAPTER_HOME_DIR_TAG.length()).trim();
             if (!File.separator.equals("/")) subDir = subDir.replace("/", File.separator);
@@ -1542,6 +1542,7 @@ public class FileUtil
 
         System.out.println("## Searching Resource ("+tt+") to file : " + rscName);
         if ((fileName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(rscName);
+        if ((rscName.equals(""))&&(middle.equals(""))) return retrieveResourceURL(fileName);
         URL url = null;
 
         while(true)
@@ -1552,6 +1553,7 @@ public class FileUtil
 
             if (ff.isDirectory())
             {
+                if (ff.getName().equals("CVS")) return null;
                 File[] list = ff.listFiles();
                 for (File f:list)
                 {
@@ -1671,7 +1673,19 @@ public class FileUtil
                 else break;
 
                 ZipEntry ee = zip.getEntry(tt);
-                if (ee == null) break;
+                if (ee == null)
+                {
+                    Enumeration<? extends ZipEntry> enumer = zip.entries();
+                    List<ZipEntry> listEntry = new ArrayList<ZipEntry>();
+                    while(enumer.hasMoreElements())
+                    {
+                        ZipEntry entry = enumer.nextElement();
+                        if (entry.getName().endsWith(fileName)) listEntry.add(entry);
+                    }
+                    if (listEntry.size() == 1) ee = listEntry.get(0);
+                    
+                    if (ee == null) break;
+                }
 
                 if ((!File.separator.equals("/"))&&(fN.indexOf(File.separator) >= 0)) fN = fN.replace(File.separator, "/");
                 String uuri = "jar:file:///" + fN + "!/" + ee.getName();
@@ -1729,6 +1743,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.39  2009/10/29 21:33:17  altturbo
+ * upgrade findODIWithDomainName() and retrieveResourceURL(String rscName, String middle, String fileName)
+ *
  * Revision 1.38  2009/10/13 18:15:54  altturbo
  * error debugging on searchProperty()
  *
