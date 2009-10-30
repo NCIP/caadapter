@@ -8,15 +8,18 @@
 
 package gov.nih.nci.cbiit.cmps.ui.jgraph;
 
-import org.jgraph.graph.*;
-
 import gov.nih.nci.cbiit.cmps.ui.actions.GraphDeleteAction;
 import gov.nih.nci.cbiit.cmps.ui.actions.GraphDeleteAllAction;
 
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.JPopupMenu;
 import javax.swing.JMenuItem;
+
+import org.jgraph.graph.BasicMarqueeHandler;
+import org.jgraph.graph.DefaultPort;
+import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.GraphSelectionModel;
+import org.jgraph.graph.PortView;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -35,8 +38,8 @@ import java.awt.geom.Rectangle2D;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2009-10-30 14:35:52 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2009-10-30 15:25:59 $
  *
  */
 public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
@@ -47,23 +50,17 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 	// Holds the First and the Current Port
 	protected PortView port, firstPort;
 
-	private GraphDeleteAction deleteAction;
 	//	private AddFunctionalBoxAction addFunctionalBoxAction;
 	//	private ConstantEditAction constantEditAction;
 	//    private VacabularyMappingEditAction vacabularyMappingEditAction;
-	private GraphDeleteAllAction deleteAllAction;
-
+	GraphDeleteAction deleteAction = null;
 	private JPopupMenu popupMenu = null;
 
-	public MiddlePanelMarqueeHandler(MiddlePanelJGraph graph, MiddlePanelJGraphController controller)
+	public MiddlePanelMarqueeHandler(MiddlePanelJGraphController graphController)
 	{
-		this.graph = graph;
-		this.controller = controller;
-		deleteAction = new GraphDeleteAction(controller);
-		//register it in graph to map the "Delete" key stroke.
-		graph.registerKeyboardAction(deleteAction, deleteAction.getAcceleratorKey(), JComponent.WHEN_FOCUSED);
-		this.graph.getInputMap().put(deleteAction.getAcceleratorKey(), deleteAction.getName());
-		this.graph.getActionMap().put(deleteAction.getName(), deleteAction);
+		controller = graphController;
+		deleteAction=new GraphDeleteAction(controller);
+		graph =(MiddlePanelJGraph) controller.getGraph();
 	}
 
 	// Override to Gain Control (for PopupMenu and ConnectMode)
@@ -275,6 +272,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 		{
 			popupMenu = new JPopupMenu();
 			System.out.println("delete action's mnemonic is: " + deleteAction.getMnemonic());
+			
 			JMenuItem menuItem = new JMenuItem(deleteAction);
 
 			popupMenu.add(menuItem);
@@ -296,7 +294,7 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 //			popupMenu.add(menuItem);
 
 			//Delete All Action
-			deleteAllAction = new GraphDeleteAllAction(controller.getMiddlePanel(), controller);
+			GraphDeleteAllAction deleteAllAction = new GraphDeleteAllAction(controller.getMiddlePanel(), controller);
 			menuItem = new JMenuItem(deleteAllAction);
 			popupMenu.add(menuItem);
 
@@ -363,6 +361,9 @@ public class MiddlePanelMarqueeHandler extends BasicMarqueeHandler
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2009/10/30 14:35:52  wangeug
+ * HISTORY: clean codes, clean selection on tree nodes and graph
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/12/10 15:43:02  linc
  * HISTORY: Fixed component id generator and delete link.
  * HISTORY:
