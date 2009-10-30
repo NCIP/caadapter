@@ -1,7 +1,7 @@
 package gov.nih.nci.cbiit.cmps.ui.tree;
 
+import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
 import gov.nih.nci.cbiit.cmps.ui.mapping.ElementMetaLoader;
-import gov.nih.nci.cbiit.cmps.ui.properties.PropertiesSwitchController;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -10,10 +10,10 @@ import javax.swing.tree.TreePath;
 
 public class TreeSelectionHandler implements TreeSelectionListener {
 
-	private PropertiesSwitchController propertyController;
-	public TreeSelectionHandler(PropertiesSwitchController controller)
+	private MiddlePanelJGraphController graphController;
+	public TreeSelectionHandler(MiddlePanelJGraphController controller)
 	{
-		propertyController=controller;
+		graphController=controller;
 	}
 	// TODO Auto-generated method stub
 	/**
@@ -23,21 +23,32 @@ public class TreeSelectionHandler implements TreeSelectionListener {
 	 */
 	public void valueChanged(TreeSelectionEvent e)
 	{
+		if (graphController.isGraphSelected())
+			return;
+		
 		TreePath newPath = e.getNewLeadSelectionPath();
 		if(newPath==null)
 		{
-			propertyController.setSelectedItem(null);
+			graphController.getPropertiesSwitchController().setSelectedItem(null);
 		}
 		else
 		{
+			//clear graph selection
+			graphController.getMiddlePanel().getGraph().clearSelection();
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) newPath.getLastPathComponent();
+			//clear selection of "the other tree"
+			if (treeNode instanceof DefaultSourceTreeNode)
+				graphController.getMappingPanel().getTargetTree().clearSelection();
+			else if (treeNode instanceof DefaultTargetTreeNode)
+				graphController.getMappingPanel().getSourceTree().clearSelection();
+			
 			Object newSelection = treeNode.getUserObject();
 			if(newSelection instanceof ElementMetaLoader.MyTreeObject)
 				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getObj();
 			
-			propertyController.setSelectedItem(newSelection);
+			graphController.getPropertiesSwitchController().setSelectedItem(newSelection);
 		}
-		propertyController.getPropertiesPage().updateProptiesDisplay(null);
+		graphController.getPropertiesSwitchController().getPropertiesPage().updateProptiesDisplay(null);
 	}
 
 }
