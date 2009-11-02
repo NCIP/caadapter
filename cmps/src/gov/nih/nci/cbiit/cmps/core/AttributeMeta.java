@@ -48,126 +48,16 @@ public class AttributeMeta
 {
 
     @XmlAttribute
-    protected Boolean isRequired;
+    protected String defaultValue;
+    protected String fixedValue;
     @XmlAttribute
     protected Boolean isEnabled;
     @XmlAttribute
-    protected Boolean isValid;
-    @XmlAttribute
     protected Boolean isFixed;
     @XmlAttribute
-    protected String defaultValue;
-    protected String fixedValue;
-
-    /**
-	 * @return the fixedValue
-	 */
-	public String getFixedValue() {
-		return fixedValue;
-	}
-
-	/**
-	 * @param fixedValue the fixedValue to set
-	 */
-	public void setFixedValue(String fixedValue) {
-		this.fixedValue = fixedValue;
-	}
-
-	/**
-     * Gets the value of the isRequired property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsRequired() {
-        return isRequired;
-    }
-
-    /**
-     * Sets the value of the isRequired property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsRequired(Boolean value) {
-        this.isRequired = value;
-    }
-
-    /**
-     * Gets the value of the isEnabled property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsEnabled() {
-        return isEnabled;
-    }
-
-    /**
-     * Sets the value of the isEnabled property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsEnabled(Boolean value) {
-        this.isEnabled = value;
-    }
-
-    /**
-     * Gets the value of the isValid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsValid() {
-        return isValid;
-    }
-
-    /**
-     * Sets the value of the isValid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsValid(Boolean value) {
-        this.isValid = value;
-    }
-
-    /**
-     * Gets the value of the isFixed property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsFixed() {
-        return isFixed;
-    }
-
-    /**
-     * Sets the value of the isFixed property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsFixed(Boolean value) {
-        this.isFixed = value;
-    }
+    protected Boolean isRequired;
+    @XmlAttribute
+    protected Boolean isValid;
 
     /**
      * Gets the value of the defaultValue property.
@@ -181,37 +71,14 @@ public class AttributeMeta
         return defaultValue;
     }
 
-    /**
-     * Sets the value of the defaultValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefaultValue(String value) {
-        this.defaultValue = value;
-    }
-    
-    public String toString()
-    {
-    	StringBuffer rtBuffer=new StringBuffer();
-    	rtBuffer.append(getName());
- 
-    	if (isIsRequired())
-    		rtBuffer.append(" [Required");
-    	else
-    		rtBuffer.append(" [Optional");
-    	
-    	if (getFixedValue()!=null)
-    		rtBuffer.append(":fixed/"+getFixedValue());
-    	else if (getDefaultValue()!=null)
-    		rtBuffer.append(":default/"+getDefaultValue());
-    	
-    	rtBuffer.append("]");
-    	return rtBuffer.toString();
-    }
+	/**
+	 * @return the fixedValue
+	 */
+	public String getFixedValue() {
+		return fixedValue;
+	}
 
+	@Override
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class beanClass = this.getClass();
 
@@ -230,8 +97,143 @@ public class AttributeMeta
 		return result;
 	}
 
-	public String getTitle() {
+    public String getTitle() {
 		// TODO Auto-generated method stub
 		return "Attribute Properties";
 	}
+
+    /**
+     * Gets the value of the isEnabled property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsEnabled() {
+        return isEnabled;
+    }
+
+    /**
+     * Gets the value of the isFixed property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsFixed() {
+        return isFixed;
+    }
+
+    /**
+     * Gets the value of the isRequired property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsRequired() {
+        return isRequired;
+    }
+
+    /**
+     * Gets the value of the isValid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsValid() {
+        return isValid;
+    }
+
+    /**
+     * Sets the value of the defaultValue property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDefaultValue(String value) {
+        this.defaultValue = value;
+    }
+
+    /**
+	 * @param fixedValue the fixedValue to set
+	 */
+	public void setFixedValue(String fixedValue) {
+		this.fixedValue = fixedValue;
+	}
+
+    /**
+     * Sets the value of the isEnabled property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsEnabled(Boolean value) {
+        this.isEnabled = value;
+    }
+
+    /**
+     * Sets the value of the isFixed property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsFixed(Boolean value) {
+        this.isFixed = value;
+    }
+    
+    /**
+     * Sets the value of the isRequired property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsRequired(Boolean value) {
+        this.isRequired = value;
+    }
+
+	/**
+     * Sets the value of the isValid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsValid(Boolean value) {
+        this.isValid = value;
+    }
+
+	@Override
+	public String toString()
+    {
+    	StringBuffer rtBuffer=new StringBuffer();
+    	rtBuffer.append(super.toString());
+ 
+    	if (isIsRequired())
+    		rtBuffer.append(" [Required");
+    	else
+    		rtBuffer.append(" [Optional");
+    	
+    	if (getFixedValue()!=null)
+    		rtBuffer.append(":fixed/"+getFixedValue());
+    	else if (getDefaultValue()!=null)
+    		rtBuffer.append(":default/"+getDefaultValue());
+    	
+    	rtBuffer.append("]");
+    	return rtBuffer.toString();
+    }
 }

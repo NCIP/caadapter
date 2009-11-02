@@ -63,27 +63,27 @@ public class ElementMeta
     protected List<AttributeMeta> attrData;
     protected List<ElementMeta> childElement;
     @XmlAttribute
-    protected BigInteger multiplicityIndex;
-    @XmlAttribute
-    protected Boolean isSimple;
-    @XmlAttribute
-    protected Boolean isRequired;
-    @XmlAttribute
-    protected Boolean isEnabled;
+    protected String defaultValue;
     @XmlAttribute
     protected Boolean isChoice;
     @XmlAttribute
-    protected Boolean isValid;
-    @XmlAttribute
-    protected Boolean isRecursive;
+    protected Boolean isEnabled;
     @XmlAttribute
     protected Boolean isFixed;
     @XmlAttribute
-    protected String defaultValue;
+    protected Boolean isRecursive;
+    @XmlAttribute
+    protected Boolean isRequired;
+    @XmlAttribute
+    protected Boolean isSimple;
+    @XmlAttribute
+    protected Boolean isValid;
+    @XmlAttribute
+    protected BigInteger maxOccurs;
     @XmlAttribute
     protected BigInteger minOccurs;
     @XmlAttribute
-    protected BigInteger maxOccurs;
+    protected BigInteger multiplicityIndex;
 
     /**
      * Gets the value of the attrData property.
@@ -144,198 +144,6 @@ public class ElementMeta
     }
 
     /**
-     * Gets the value of the multiplicityIndex property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getMultiplicityIndex() {
-        return multiplicityIndex;
-    }
-
-    /**
-     * Sets the value of the multiplicityIndex property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setMultiplicityIndex(BigInteger value) {
-        this.multiplicityIndex = value;
-    }
-
-    /**
-     * Gets the value of the isSimple property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsSimple() {
-        return isSimple;
-    }
-
-    /**
-     * Sets the value of the isSimple property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsSimple(Boolean value) {
-        this.isSimple = value;
-    }
-
-    /**
-     * Gets the value of the isRequired property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsRequired() {
-        return isRequired;
-    }
-
-    /**
-     * Sets the value of the isRequired property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsRequired(Boolean value) {
-        this.isRequired = value;
-    }
-
-    /**
-     * Gets the value of the isEnabled property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsEnabled() {
-        return isEnabled;
-    }
-
-    /**
-     * Sets the value of the isEnabled property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsEnabled(Boolean value) {
-        this.isEnabled = value;
-    }
-
-    /**
-     * Gets the value of the isChoice property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsChoice() {
-        return isChoice;
-    }
-
-    /**
-     * Sets the value of the isChoice property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsChoice(Boolean value) {
-        this.isChoice = value;
-    }
-
-    /**
-     * Gets the value of the isValid property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsValid() {
-        return isValid;
-    }
-
-    /**
-     * Sets the value of the isValid property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsValid(Boolean value) {
-        this.isValid = value;
-    }
-
-    /**
-     * Gets the value of the isRecursive property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsRecursive() {
-        return isRecursive;
-    }
-
-    /**
-     * Sets the value of the isRecursive property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsRecursive(Boolean value) {
-        this.isRecursive = value;
-    }
-
-    /**
-     * Gets the value of the isFixed property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Boolean }
-     *     
-     */
-    public Boolean isIsFixed() {
-        return isFixed;
-    }
-
-    /**
-     * Sets the value of the isFixed property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Boolean }
-     *     
-     */
-    public void setIsFixed(Boolean value) {
-        this.isFixed = value;
-    }
-
-    /**
      * Gets the value of the defaultValue property.
      * 
      * @return
@@ -345,42 +153,6 @@ public class ElementMeta
      */
     public String getDefaultValue() {
         return defaultValue;
-    }
-
-    /**
-     * Sets the value of the defaultValue property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setDefaultValue(String value) {
-        this.defaultValue = value;
-    }
-
-    /**
-     * Gets the value of the minOccurs property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getMinOccurs() {
-        return minOccurs;
-    }
-
-    /**
-     * Sets the value of the minOccurs property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
-     */
-    public void setMinOccurs(BigInteger value) {
-        this.minOccurs = value;
     }
 
     /**
@@ -396,32 +168,30 @@ public class ElementMeta
     }
 
     /**
-     * Sets the value of the maxOccurs property.
+     * Gets the value of the minOccurs property.
      * 
-     * @param value
-     *     allowed object is
+     * @return
+     *     possible object is
      *     {@link BigInteger }
      *     
      */
-    public void setMaxOccurs(BigInteger value) {
-        this.maxOccurs = value;
+    public BigInteger getMinOccurs() {
+        return minOccurs;
     }
 
-    public String toString()
-    {
-    	StringBuffer rtBuffer=new StringBuffer();
-    	rtBuffer.append(getName());
-    	if (getMinOccurs()==null)
-    		return rtBuffer.toString();
-    	
-    	rtBuffer.append("["+getMinOccurs()+"...");
-    	if (getMaxOccurs()!=null&&getMaxOccurs().intValue()==-1)
-    		rtBuffer.append("*]");
-    	else
-    		rtBuffer.append(getMaxOccurs()+"]");
-    	return rtBuffer.toString();
+    /**
+     * Gets the value of the multiplicityIndex property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
+     */
+    public BigInteger getMultiplicityIndex() {
+        return multiplicityIndex;
     }
 
+    @Override
 	public PropertiesResult getPropertyDescriptors() throws Exception {
 		Class beanClass = this.getClass();
 		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
@@ -436,8 +206,240 @@ public class ElementMeta
 		return result;
 	}
 
-	public String getTitle() {
+    public String getTitle() {
 		// TODO Auto-generated method stub
 		return "Element Properties";
 	}
+
+    /**
+     * Gets the value of the isChoice property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsChoice() {
+        return isChoice;
+    }
+
+    /**
+     * Gets the value of the isEnabled property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsEnabled() {
+        return isEnabled;
+    }
+
+    /**
+     * Gets the value of the isFixed property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsFixed() {
+        return isFixed;
+    }
+
+    /**
+     * Gets the value of the isRecursive property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsRecursive() {
+        return isRecursive;
+    }
+
+    /**
+     * Gets the value of the isRequired property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsRequired() {
+        return isRequired;
+    }
+
+    /**
+     * Gets the value of the isSimple property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsSimple() {
+        return isSimple;
+    }
+
+    /**
+     * Gets the value of the isValid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isIsValid() {
+        return isValid;
+    }
+
+    /**
+     * Sets the value of the defaultValue property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDefaultValue(String value) {
+        this.defaultValue = value;
+    }
+
+    /**
+     * Sets the value of the isChoice property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsChoice(Boolean value) {
+        this.isChoice = value;
+    }
+
+    /**
+     * Sets the value of the isEnabled property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsEnabled(Boolean value) {
+        this.isEnabled = value;
+    }
+
+    /**
+     * Sets the value of the isFixed property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsFixed(Boolean value) {
+        this.isFixed = value;
+    }
+
+    /**
+     * Sets the value of the isRecursive property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsRecursive(Boolean value) {
+        this.isRecursive = value;
+    }
+
+    /**
+     * Sets the value of the isRequired property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsRequired(Boolean value) {
+        this.isRequired = value;
+    }
+
+    /**
+     * Sets the value of the isSimple property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsSimple(Boolean value) {
+        this.isSimple = value;
+    }
+
+    /**
+     * Sets the value of the isValid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setIsValid(Boolean value) {
+        this.isValid = value;
+    }
+
+    /**
+     * Sets the value of the maxOccurs property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setMaxOccurs(BigInteger value) {
+        this.maxOccurs = value;
+    }
+
+    /**
+     * Sets the value of the minOccurs property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setMinOccurs(BigInteger value) {
+        this.minOccurs = value;
+    }
+
+	/**
+     * Sets the value of the multiplicityIndex property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setMultiplicityIndex(BigInteger value) {
+        this.multiplicityIndex = value;
+    }
+
+	@Override
+	public String toString()
+    {
+    	StringBuffer rtBuffer=new StringBuffer();
+    	rtBuffer.append(super.toString());
+    	if (getMinOccurs()==null)
+    		return rtBuffer.toString();
+    	
+    	rtBuffer.append("["+getMinOccurs()+"...");
+    	if (getMaxOccurs()!=null&&getMaxOccurs().intValue()==-1)
+    		rtBuffer.append("*]");
+    	else
+    		rtBuffer.append(getMaxOccurs()+"]");
+    	return rtBuffer.toString();
+    }
 }

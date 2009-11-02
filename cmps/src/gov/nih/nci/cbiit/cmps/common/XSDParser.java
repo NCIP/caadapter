@@ -30,8 +30,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.12 $
- * @date       $Date: 2009-10-27 18:21:12 $
+ * @version    $Revision: 1.13 $
+ * @date       $Date: 2009-11-02 14:47:33 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -241,7 +241,8 @@ public class XSDParser implements DOMErrorHandler {
 		ctStack.push(qname);
 		try {
 			ret = new ElementMeta();
-			ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
+			ret.setNameSpace(item.getNamespace());
+			ret.setName(item.getName());
 			List<ElementMeta> childs = ret.getChildElement();
 			List<AttributeMeta> attrs = ret.getAttrData(); 
 			List<BaseMeta> l = processList(item.getAttributeUses(), depth);
@@ -325,12 +326,16 @@ public class XSDParser implements DOMErrorHandler {
 				processSimpleType((XSSimpleTypeDefinition)type, depth);
 			}
 
-			if(ret == null) ret = new ElementMeta();
-			ret.setName(((item.getNamespace()==null || item.getNamespace().equals(defaultNS))?"":(item.getNamespace()+":"))+item.getName());
+			if(ret == null) 
+				ret = new ElementMeta();
+			ret.setNameSpace(item.getNamespace());
+			ret.setName(item.getName());
 		}finally{
 			elStack.pop();
 		}
-
+		ret.setType((item.getTypeDefinition().getNamespace()==null||item.getTypeDefinition().getNamespace().equals(defaultNS))?
+					item.getTypeDefinition().getName()
+					:item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
 		//processParticle(item.getParticle(), indent+1);
 		return ret;
 	}
@@ -341,9 +346,14 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		XSAttributeDeclaration 	attr = item.getAttrDeclaration();
 		AttributeMeta ret = new AttributeMeta();
-		ret.setName(((attr.getNamespace()==null || attr.getNamespace().equals(defaultNS))?"":(attr.getNamespace()+":"))+attr.getName());
+		ret.setNameSpace(attr.getNamespace());
+		ret.setName(attr.getName());
 		ret.setIsRequired(item.getRequired());
 
+		ret.setType((attr.getTypeDefinition().getNamespace()==null||attr.getTypeDefinition().getNamespace().equals(defaultNS))?
+				attr.getTypeDefinition().getName()
+				:attr.getTypeDefinition().getNamespace()+":"+attr.getTypeDefinition().getName());
+	
 		if (item.getConstraintType()==XSConstants.VC_DEFAULT) {
 			ret.setDefaultValue(item.getConstraintValue());
 		} else if (item.getConstraintType()==XSConstants.VC_FIXED) {
@@ -377,6 +387,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.12  2009/10/27 18:21:12  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.11  2009/10/16 17:37:39  wangeug
  * HISTORY: parse default value or fixed value for an Attribute
  * HISTORY:
