@@ -51,36 +51,15 @@ import javax.xml.bind.annotation.XmlType;
 public abstract class BaseMeta implements PropertiesProvider{
 
     @XmlAttribute
-    protected String name;
+    private String id;
     @XmlAttribute
-    protected String id;
+    private String idSpec;
     @XmlAttribute
-    protected String idSpec;
-
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
-
+    private String name;
+	@XmlAttribute
+    private String nameSpace;
+	@XmlAttribute
+    private String type;
     /**
      * Gets the value of the id property.
      * 
@@ -92,19 +71,6 @@ public abstract class BaseMeta implements PropertiesProvider{
     public String getId() {
         return id;
     }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setId(String value) {
-        this.id = value;
-    }
-
     /**
      * Gets the value of the idSpec property.
      * 
@@ -120,6 +86,56 @@ public abstract class BaseMeta implements PropertiesProvider{
             return idSpec;
         }
     }
+    /**
+     * Gets the value of the name property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getName() {
+        return name;
+    }
+
+	/**
+	 * @return the nameSpace
+	 */
+	public String getNameSpace() {
+		return nameSpace;
+	}
+
+	public PropertiesResult getPropertyDescriptors() throws Exception {
+		Class beanClass = this.getClass();
+		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
+		propList.add(new PropertyDescriptor("Name Space", beanClass, "getNameSpace", null));
+		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
+		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
+		propList.add(new PropertyDescriptor("IdSpec", beanClass, "getIdSpec", null));
+		propList.add(new PropertyDescriptor("Type", beanClass, "getType", null));
+		PropertiesResult result = new PropertiesResult();
+		result.addPropertyDescriptors(this, propList);
+		return result;
+	}
+
+    /**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+    /**
+     * Sets the value of the id property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setId(String value) {
+        this.id = value;
+    }
 
     /**
      * Sets the value of the idSpec property.
@@ -132,15 +148,38 @@ public abstract class BaseMeta implements PropertiesProvider{
     public void setIdSpec(String value) {
         this.idSpec = value;
     }
-	public PropertiesResult getPropertyDescriptors() throws Exception {
-		Class beanClass = this.getClass();
-		List<PropertyDescriptor> propList = new ArrayList<PropertyDescriptor>();
-		propList.add(new PropertyDescriptor("Name", beanClass, "getName", null));
-		propList.add( new PropertyDescriptor("Id", beanClass, "getId", null));
-		propList.add(new PropertyDescriptor("IdSpec", beanClass, "getIdSpec", null));
+
+    /**
+     * Sets the value of the name property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
+
+    /**
+	 * @param nameSpace the nameSpace to set
+	 */
+	public void setNameSpace(String nameSpace) {
+		this.nameSpace = nameSpace;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	@Override
+	public String toString()
+	{
+		if (getNameSpace()==null||getNameSpace().equals(""))
+			return getName();
 		
-		PropertiesResult result = new PropertiesResult();
-		result.addPropertyDescriptors(this, propList);
-		return result;
+		return getNameSpace()+":"+getName();
 	}
 }
