@@ -38,10 +38,15 @@ public class TreeSelectionHandler implements TreeSelectionListener {
 			DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) newPath.getLastPathComponent();
 			//clear selection of "the other tree"
 			if (treeNode instanceof DefaultSourceTreeNode)
-				graphController.getMappingPanel().getTargetTree().clearSelection();
+			{
+				if (graphController.getMappingPanel().getTargetTree()!=null)
+					graphController.getMappingPanel().getTargetTree().clearSelection();
+			}
 			else if (treeNode instanceof DefaultTargetTreeNode)
-				graphController.getMappingPanel().getSourceTree().clearSelection();
-			
+			{
+				if ( graphController.getMappingPanel().getSourceTree()!=null)
+					graphController.getMappingPanel().getSourceTree().clearSelection();
+			}
 			Object newSelection = treeNode.getUserObject();
 			if(newSelection instanceof ElementMetaLoader.MyTreeObject)
 				newSelection = ((ElementMetaLoader.MyTreeObject)newSelection).getObj();
