@@ -67,8 +67,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.10 $
- * @date       $Date: 2009-10-30 14:45:46 $
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2009-11-02 14:54:53 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -76,7 +76,6 @@ public class MiddlePanelJGraphController
 	private Color graphBackgroundColor = new Color(222, 238, 255);
 	private boolean graphSelected=false;
 	private boolean isGraphChanged = false;
-	private LinkSelectionHighlighter linkSelectionHighlighter;
 	private Mapping mappingData = null;
 
 	private CmpsMappingPanel mappingPanel = null;
@@ -664,7 +663,7 @@ public class MiddlePanelJGraphController
 	{
 		// dropTarget = new DropTarget(graph, DnDConstants.ACTION_LINK, this);
 		// Use a Custom Marquee Handler
-		MiddlePanelMarqueeHandler marqueeHandler = new MiddlePanelMarqueeHandler(middlePanel.getGraph(), this);
+		MiddlePanelMarqueeHandler marqueeHandler = new MiddlePanelMarqueeHandler(this);
 		middlePanel.getGraph().setMarqueeHandler(marqueeHandler); 
 		// Make Ports Visible by Default
 		this.middlePanel.getGraph().setPortsVisible(true);
@@ -972,12 +971,7 @@ public class MiddlePanelJGraphController
 
 	public void setJGraph(MiddlePanelJGraph newGraph)
 	{
-//		this.graph = null;
-//		if ( linkSelectionHighlighter != null && this.graph != null ) {
-//			this.graph.removeGraphSelectionListener(linkSelectionHighlighter);
-//		}
-//		this.graph = newGraph;
-		newGraph.removeGraphSelectionListener(linkSelectionHighlighter);
+//		newGraph.removeGraphSelectionListener(linkSelectionHighlighter);
 		initialization(true);
 	}
 	
@@ -994,9 +988,7 @@ public class MiddlePanelJGraphController
 			setGraphChanged(false);
 			
 			//register graph selection listener
-			if (linkSelectionHighlighter!=null)
-				getMiddlePanel().getGraph().removeGraphSelectionListener(linkSelectionHighlighter);
-			linkSelectionHighlighter = new LinkSelectionHighlighter(this);//mappingPanel, middlePanel);
+			LinkSelectionHighlighter linkSelectionHighlighter = new LinkSelectionHighlighter(this);
 			this.getMiddlePanel().getGraph().addGraphSelectionListener(linkSelectionHighlighter);
 		}
 	}
@@ -1049,6 +1041,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.10  2009/10/30 14:45:46  wangeug
+ * HISTORY: simplify code: only respond to link highter
+ * HISTORY:
  * HISTORY: Revision 1.9  2009/10/28 15:03:11  wangeug
  * HISTORY: clean codes
  * HISTORY:

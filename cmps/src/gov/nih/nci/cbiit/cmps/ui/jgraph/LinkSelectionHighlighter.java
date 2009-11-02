@@ -10,24 +10,14 @@ package gov.nih.nci.cbiit.cmps.ui.jgraph;
 
 
 import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
 import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesSwitchController;
-import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
-import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.jgraph.JGraph;
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.graph.DefaultEdge;
@@ -40,8 +30,8 @@ import org.jgraph.graph.DefaultPort;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2009-10-30 14:35:01 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-11-02 14:52:08 $
  */
 public class LinkSelectionHighlighter implements GraphSelectionListener
 {
@@ -57,7 +47,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.4 2009-10-30 14:35:01 wangeug Exp $";  
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.5 2009-11-02 14:52:08 wangeug Exp $";  
 	private MiddlePanelJGraphController graphController;
 	public LinkSelectionHighlighter(MiddlePanelJGraphController controller)
 	{
@@ -71,7 +61,6 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	 */
 	public void valueChanged(GraphSelectionEvent e)
 	{
-//		Log.logInfo(this, "A new Graph Cell is selected. '" + (e == null ? e : e.getCell()) + "'");
 		CmpsMappingPanel mappingPanel= graphController.getMappingPanel();
 		try
         {
@@ -159,6 +148,9 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2009/10/30 14:35:01  wangeug
+ * HISTORY: simplify code: only respond to link highter
+ * HISTORY:
  * HISTORY: Revision 1.3  2009/10/28 15:02:44  wangeug
  * HISTORY: hook property panel with link graph
  * HISTORY:
