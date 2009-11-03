@@ -32,8 +32,8 @@ import javax.swing.tree.TreePath;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2009-10-28 16:45:56 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-11-03 18:31:15 $
  *
  */
 public class TreeTransferHandler extends TransferHandler {
@@ -155,7 +155,7 @@ public class TreeTransferHandler extends TransferHandler {
         String targetData = UIHelper.getPathStringForNode(targetNode);
         DefaultMutableTreeNode sourceNode = UIHelper.findTreeNodeWithXmlPath((DefaultMutableTreeNode)panel.getSourceTree().getModel().getRoot(), data);
         
-        boolean ret = this.panel.getMiddlePanel().getMiddlePanelJGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);//.getMappingDataManager().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
+        boolean ret = this.panel.getMiddlePanel().getGraphController().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);//.getMappingDataManager().createMapping((MappableNode)sourceNode, (MappableNode)targetNode);
         this.state = IMPORT;
 
         return true;
@@ -164,6 +164,9 @@ public class TreeTransferHandler extends TransferHandler {
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2009/10/28 16:45:56  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.5  2009/10/27 18:23:10  wangeug
  * HISTORY: clean codes
  * HISTORY:

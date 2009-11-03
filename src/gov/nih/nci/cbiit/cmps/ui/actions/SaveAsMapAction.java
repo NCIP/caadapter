@@ -28,8 +28,8 @@ import java.io.FileOutputStream;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2009-10-27 19:25:33 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2009-11-03 18:30:56 $
  */
 public class SaveAsMapAction extends DefaultSaveAsAction
 {
@@ -96,7 +96,7 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 	protected boolean processSaveFile(File file) throws Exception
 	{
 		preActionPerformed(mappingPanel);
-		MiddlePanelJGraphController mappingManager = mappingPanel.getMiddlePanel().getMiddlePanelJGraphController();//.getMappingDataManager();
+		MiddlePanelJGraphController mappingManager = mappingPanel.getMiddlePanel().getGraphController();
 		Mapping mappingData = mappingManager.retrieveMappingData(true);
 		MappingFactory.saveMapping(file, mappingData);
 		boolean oldChangeValue = mappingPanel.isChanged();
@@ -131,6 +131,9 @@ public class SaveAsMapAction extends DefaultSaveAsAction
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.3  2009/10/27 19:25:33  wangeug
+ * HISTORY      : clean codes
+ * HISTORY      :
  * HISTORY      : Revision 1.2  2009/10/27 18:22:05  wangeug
  * HISTORY      : clean codes
  * HISTORY      :

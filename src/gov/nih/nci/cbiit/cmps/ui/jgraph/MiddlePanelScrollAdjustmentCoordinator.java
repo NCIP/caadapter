@@ -25,10 +25,10 @@ import java.awt.event.AdjustmentListener;
  * This class defines ...
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-10 15:43:02 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-11-03 18:31:32 $
  *
  */
 public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListener
@@ -107,9 +107,6 @@ public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListene
 			int heightHidden = (int) localScrollPane.getViewport().getViewPosition().getY();
 
 			double ratio = ((double) scrollValue) / ((double) (localMax - localMin));
-//			System.out.println("scroll min: '" + localMin + "',max='" + localMax + "',scrollValue='" + scrollValue + "'.");
-//			System.out.println("ratio:'" + ratio + "'.");
-//			System.out.println("hidden: '" + heightHidden + "'.");
 			scrollAffectedScrollPane(ratio);
 		}
 
@@ -131,7 +128,7 @@ public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListene
 		int localMin = verticalBar.getMinimum();
 		int localMax = verticalBar.getMaximum();
 
-		int scrollValue = (int) (((double)(localMax - localMin)) * ratio);
+		int scrollValue = (int) (((localMax - localMin)) * ratio);
 //		System.out.println("MiddlePanelScrollAdjustmentCoordinator: affected scroll min: '" + localMin + "',max='" + localMax + "',scrollValue='" + scrollValue + "'.");
 		verticalBar.setValue(scrollValue);
 	}
@@ -144,6 +141,9 @@ public class MiddlePanelScrollAdjustmentCoordinator implements AdjustmentListene
 }
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.2  2008/12/10 15:43:02  linc
+ * HISTORY      : Fixed component id generator and delete link.
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY      : updated.
  * HISTORY      :
