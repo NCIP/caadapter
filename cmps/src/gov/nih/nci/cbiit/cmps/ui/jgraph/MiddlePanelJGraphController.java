@@ -67,24 +67,24 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.12 $
- * @date       $Date: 2009-11-03 18:13:21 $
+ * @version    $Revision: 1.13 $
+ * @date       $Date: 2009-11-03 18:33:37 $
  *
  */
 public class MiddlePanelJGraphController 
 {
 	private Color graphBackgroundColor = new Color(222, 238, 255);
+	private JScrollPane graphScroll;
 	private boolean graphSelected=false;
 	private boolean isGraphChanged = false;
-	private Mapping mappingData = null;
 
+	private Mapping mappingData = null;
 	private CmpsMappingPanel mappingPanel = null;
+
 	// a list of MappingViewCommonComponent
 	private List<MappingViewCommonComponent> mappingViewList = null;
-
 	// the parent panels
 	private MappingMiddlePanel middlePanel = null;
-	private JScrollPane graphScroll;
 	private DefaultPropertiesSwitchController propertiesSwitchController;
 
 	public MiddlePanelJGraphController(JScrollPane scrollPane, CmpsMappingPanel mappingPan) {
@@ -492,20 +492,6 @@ public class MiddlePanelJGraphController
 	}
 
 	/**
-	 * Return a more concrete implementation of original interface to provide graph selection listener interface.
-	 * 
-	 * @return MappingPanelPropertiesSwitchController
-	 */
-	//	public MappingPanelPropertiesSwitchController getPropertiesSwitchController()
-	//	{
-	//		if ( propertiesSwitchController == null ) {
-	//			// propertiesSwitchController = new MappingPanelPropertiesSwitchController();
-	//			propertiesSwitchController = new MappingPanelPropertiesSwitchController(graph);
-	//		}
-	//		return propertiesSwitchController; // To change body of implemented methods use File | Settings | File Templates.
-	//	}
-
-	/**
 	 * @param node
 	 * @param searchMode
 	 *            any of the SEARCH_BY constants defined above.
@@ -552,13 +538,6 @@ public class MiddlePanelJGraphController
 	{
 		return middlePanel;
 	}
-
-//	public void setMappingData(Mapping mappingData, boolean flag)
-//	{
-//		constructMappingGraph();
-//		setGraphChanged(false);
-//		registerLinkHighlighter();
-//	}
 
 
 	public PropertiesSwitchController getPropertiesSwitchController() {
@@ -1042,6 +1021,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.12  2009/11/03 18:13:21  wangeug
+ * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
+ * HISTORY:
  * HISTORY: Revision 1.11  2009/11/02 14:54:53  wangeug
  * HISTORY: clean codes
  * HISTORY:
