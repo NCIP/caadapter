@@ -67,8 +67,8 @@ import java.util.List;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.11 $
- * @date       $Date: 2009-11-02 14:54:53 $
+ * @version    $Revision: 1.12 $
+ * @date       $Date: 2009-11-03 18:13:21 $
  *
  */
 public class MiddlePanelJGraphController 
@@ -84,14 +84,15 @@ public class MiddlePanelJGraphController
 
 	// the parent panels
 	private MappingMiddlePanel middlePanel = null;
+	private JScrollPane graphScroll;
 	private DefaultPropertiesSwitchController propertiesSwitchController;
 
-	// 
-	// Construct the Graph using the Model as its Data Source
-	public MiddlePanelJGraphController(MiddlePanelJGraph graph, MappingMiddlePanel middlePanel, CmpsMappingPanel mappingPanel) {
-		// this.model = graph.getModel();
-		this.middlePanel = middlePanel;
-		this.mappingPanel = mappingPanel;
+	public MiddlePanelJGraphController(JScrollPane scrollPane, CmpsMappingPanel mappingPan) {
+		graphScroll=scrollPane;
+		mappingPanel = mappingPan;
+		System.out
+				.println("MiddlePanelJGraphController.MiddlePanelJGraphController()..middle panel:"+mappingPanel.getMiddlePanel());
+		middlePanel=mappingPanel.getMiddlePanel();
 		initialization(false);
 	}
 
@@ -270,7 +271,7 @@ public class MiddlePanelJGraphController
 			if ( row > 0 ) {
 				Rectangle r = tree.getRowBounds(row);
 				Point point = r.getLocation();
-				int graphHeightHidden = (int) middlePanel.getGraphScrollPane().getViewport().getViewPosition().getY();
+				int graphHeightHidden = (int) graphScroll.getViewport().getViewPosition().getY();
 				int treeHeightHidden = (int) treeScrollPane.getViewport().getViewPosition().getY();
 				nodePositionBasedOnTotalPanel = (int) point.getY() + (int) r.getHeight() / 2 + graphHeightHidden - treeHeightHidden;
 			} else {
@@ -535,10 +536,10 @@ public class MiddlePanelJGraphController
 
 	private int getMaximalXValueOnPane()
 	{
-		int visibleWidth = (int) this.middlePanel.getGraphScrollPane().getVisibleRect().getWidth();
-		int viewPortVisibleWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getVisibleRect().getWidth();
-		int viewPortViewSizeWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getViewSize().getWidth();
-		int viewPortViewRectWidth = (int) this.middlePanel.getGraphScrollPane().getViewport().getViewRect().getWidth();
+		int visibleWidth = (int) graphScroll.getVisibleRect().getWidth();
+		int viewPortVisibleWidth = (int) graphScroll.getViewport().getVisibleRect().getWidth();
+		int viewPortViewSizeWidth = (int) graphScroll.getViewport().getViewSize().getWidth();
+		int viewPortViewRectWidth = (int) graphScroll.getViewport().getViewRect().getWidth();
 		int middlePanelWidth = this.middlePanel.getWidth();
 		// Log.logInfo(this, "middlePanelWidth='" + middlePanelWidth + "',visibleWidth='" + visibleWidth + "'.");
 		// Log.logInfo(this, "viewPortVisibleWidth='" + viewPortVisibleWidth + "',viewPortViewSizeWidth='" + viewPortViewSizeWidth + "'," +
@@ -1041,6 +1042,9 @@ public class MiddlePanelJGraphController
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.11  2009/11/02 14:54:53  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.10  2009/10/30 14:45:46  wangeug
  * HISTORY: simplify code: only respond to link highter
  * HISTORY:

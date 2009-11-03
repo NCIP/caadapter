@@ -30,8 +30,8 @@ import org.jgraph.graph.DefaultPort;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2009-11-02 14:52:08 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-11-03 18:13:21 $
  */
 public class LinkSelectionHighlighter implements GraphSelectionListener
 {
@@ -47,7 +47,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 	 *
 	 * @see <a href="http://www.visi.com/~gyles19/cgi-bin/fom.cgi?file=63">JBuilder vice javac serial version UID</a>
 	 */
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.5 2009-11-02 14:52:08 wangeug Exp $";  
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/jgraph/LinkSelectionHighlighter.java,v 1.6 2009-11-03 18:13:21 wangeug Exp $";  
 	private MiddlePanelJGraphController graphController;
 	public LinkSelectionHighlighter(MiddlePanelJGraphController controller)
 	{
@@ -72,7 +72,7 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
             JOptionPane.showMessageDialog(mappingPanel, "You should input the source and target file names first(2).", "No Source or Target file", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        mappingPanel.getMiddlePanelJGraphController().setGraphSelected(true);
+        mappingPanel.getMiddlePanel().getGraphController().setGraphSelected(true);
 		//the graph is in selection mode, do not set property pan for Element or Attribute
         if(!isAClearSelectionEvent(e))
 		{//ignore if it is a clear selection event
@@ -97,11 +97,11 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 		if(e.getCell() instanceof DefaultGraphCell)
 		{
 			Object newSelection = ((DefaultGraphCell)e.getCell()).getUserObject();
-			DefaultPropertiesSwitchController propertySwitchConroller =(DefaultPropertiesSwitchController)mappingPanel.getMiddlePanelJGraphController().getPropertiesSwitchController();
+			DefaultPropertiesSwitchController propertySwitchConroller =(DefaultPropertiesSwitchController)mappingPanel.getMiddlePanel().getGraphController().getPropertiesSwitchController();
 			propertySwitchConroller.setSelectedItem(newSelection);
 		}
-		mappingPanel.getMiddlePanelJGraphController().getPropertiesSwitchController().getPropertiesPage().updateProptiesDisplay(null);
-		mappingPanel.getMiddlePanelJGraphController().setGraphSelected(false);
+		mappingPanel.getMiddlePanel().getGraphController().getPropertiesSwitchController().getPropertiesPage().updateProptiesDisplay(null);
+		mappingPanel.getMiddlePanel().getGraphController().setGraphSelected(false);
 	}
 
 	/**
@@ -148,6 +148,9 @@ public class LinkSelectionHighlighter implements GraphSelectionListener
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2009/11/02 14:52:08  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.4  2009/10/30 14:35:01  wangeug
  * HISTORY: simplify code: only respond to link highter
  * HISTORY:
