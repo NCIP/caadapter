@@ -8,8 +8,7 @@
 package gov.nih.nci.cbiit.cmps.ui.jgraph;
 
 
-import gov.nih.nci.cbiit.cmps.ui.mapping.MappingMiddlePanel;
-
+import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JScrollBar;
 
@@ -20,26 +19,26 @@ import java.awt.event.AdjustmentListener;
  * This class defines ...
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2008-12-10 15:43:02 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-11-03 18:31:54 $
  *
  */
 public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListener
 {
-	private MappingMiddlePanel middlePanel;
 
 	private boolean inScrollingMode = false;
+	private CmpsMappingPanel mappingPanel;
 
 	public boolean isInScrollingMode()
 	{
 		return inScrollingMode;
 	}
 
-	public MiddlePanelJGraphScrollAdjustmentAdapter(MappingMiddlePanel middlePanel)
+	public MiddlePanelJGraphScrollAdjustmentAdapter(CmpsMappingPanel mappingPane)
 	{
-		this.middlePanel = middlePanel;
+		mappingPanel = mappingPane;
 	}
 
 	/**
@@ -48,12 +47,12 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 	public void adjustmentValueChanged(AdjustmentEvent e)
 	{
 		System.out.println("enter MiddlePanelJGraphScrollAdjustmentAdapter.adjustmentValueChanged:"+e);
-		if(middlePanel!=null)
+		if(mappingPanel.getMiddlePanel()!=null)
 		{
-			middlePanel.repaint();
+			mappingPanel.getMiddlePanel().repaint();
 		}
 
-		if(middlePanel.getAdjustmentCoordinator().isInScrollingMode())
+		if(mappingPanel.getMiddlePanel().getAdjustmentCoordinator().isInScrollingMode())
 		{//ignore if the other one is scrolling mode.
 			return;
 		}
@@ -65,8 +64,8 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 		int localMax = localScrollBar.getMaximum();
 		int scrollValue = e.getValue();
 		double ratio = ((double) scrollValue) / ((double) (localMax - localMin));
-		scrollAffectedScrollPane(middlePanel.getMappingPanel().getSourceScrollPane(), ratio);
-		scrollAffectedScrollPane(middlePanel.getMappingPanel().getTargetScrollPane(), ratio);
+		scrollAffectedScrollPane(mappingPanel.getSourceScrollPane(), ratio);
+		scrollAffectedScrollPane(mappingPanel.getTargetScrollPane(), ratio);
 
 		//end scrolling
 		inScrollingMode = false;
@@ -94,6 +93,9 @@ public class MiddlePanelJGraphScrollAdjustmentAdapter implements AdjustmentListe
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2008/12/10 15:43:02  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:13  linc
  * HISTORY: updated.
  * HISTORY:

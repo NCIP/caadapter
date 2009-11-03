@@ -63,8 +63,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.13 $
- * @date       $Date: 2009-10-30 14:45:30 $
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2009-11-03 18:32:54 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -187,7 +187,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 		//Build the source tree
 		sTree = new MappingSourceTree(middlePanel, nodes);
-		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getMiddlePanelJGraphController());
+		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(middlePanel.getGraphController());
 		sTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		sTree.setTransferHandler(getDndHandler());
 		sTree.setDragEnabled(true);
@@ -231,7 +231,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		TreeNode nodes=loadTargetTreeData(metaInfo,absoluteFile);
 		//Build the target tree
 		tTree = new MappingTargetTree(this.getMiddlePanel(), nodes);
-		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(getMiddlePanelJGraphController());
+		TreeSelectionHandler treeSelectionHanderl=new TreeSelectionHandler(middlePanel.getGraphController());
 		tTree.getSelectionModel().addTreeSelectionListener(treeSelectionHanderl);
 		tTree.setTransferHandler(getDndHandler());
 		tTree.setDropMode(DropMode.ON);
@@ -314,6 +314,8 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		DefaultSettings.setDefaultFeatureForJSplitPane(leftRightSplitPane);
 		leftRightSplitPane.setDividerLocation(0.85);
 		leftRightSplitPane.setLeftComponent(getTopLevelLeftPanel());
+		MiddlePanelJGraphController graphController = new MiddlePanelJGraphController(middlePanel.getGraphScrollPane(), this);
+		middlePanel.setGraphController(graphController);
 		leftRightSplitPane.setRightComponent(getTopLevelRightPanel(functionPaneRequired));
 		return leftRightSplitPane;
 	}
@@ -366,7 +368,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	public Mapping getMapping() {
 		if(this.mapping == null){
 			this.mapping = new Mapping();
-			this.getMiddlePanel().getMiddlePanelJGraphController().setMappingData(mapping);
+			this.getMiddlePanel().getGraphController().setMappingData(mapping);
 		}
 		return mapping;
 	}
@@ -413,11 +415,6 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	public MappingMiddlePanel getMiddlePanel() {
 		return middlePanel;
 	}
-
-	public MiddlePanelJGraphController getMiddlePanelJGraphController() {
-		return middlePanel.getGraphController();
-	}
-
 
 	/**
 	 * Return the top root container (frame or dialog or window) this panel is associated with.
@@ -571,6 +568,8 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		sourceButtonPanel.add(sourceLocationPanel, BorderLayout.NORTH);
 		sourceScrollPane.setSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 4), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
 		sourceButtonPanel.add(sourceScrollPane, BorderLayout.CENTER);
+		MappingPanelAdjustmentHandler scrollHandler=new MappingPanelAdjustmentHandler();
+		scrollHandler.addAdjustmentObserver(sourceScrollPane);
 
 		//construct target panel
 		JPanel targetButtonPanel = new JPanel(new BorderLayout());
@@ -596,7 +595,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		targetButtonPanel.add(targetLocationPanel, BorderLayout.NORTH);
 		targetButtonPanel.add(targetScrollPane, BorderLayout.CENTER);
 		targetButtonPanel.setPreferredSize(new Dimension((DefaultSettings.FRAME_DEFAULT_WIDTH / 5), (int) (DefaultSettings.FRAME_DEFAULT_HEIGHT / 1.5)));
-
+		scrollHandler.addAdjustmentObserver(targetScrollPane);
 		//construct middle panel
 		JPanel middleContainerPanel = new JPanel(new BorderLayout());
 		JLabel placeHolderLabel = new JLabel();
@@ -641,7 +640,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 		{
 			topBottomSplitPane.setTopComponent(functionPane);
 		}
-		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(middlePanel.getMiddlePanelJGraphController().getPropertiesSwitchController());//this.getMappingDataManager().getPropertiesSwitchController());
+		DefaultPropertiesPage propertiesPane = new DefaultPropertiesPage(middlePanel.getGraphController().getPropertiesSwitchController());
 		topBottomSplitPane.setBottomComponent(propertiesPane);
 
 		double topCenterFactor = 0.3;
@@ -793,7 +792,7 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 	{
 		if (middlePanel != null)
 		{
-			middlePanel.resetGraph();
+	//			middlePanel.resetGraph();
 			middlePanel.repaint();
 		}
 	}
@@ -904,6 +903,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.13  2009/10/30 14:45:30  wangeug
+ * HISTORY: simplify code: only respond to link highter
+ * HISTORY:
  * HISTORY: Revision 1.12  2009/10/28 16:47:06  wangeug
  * HISTORY: clean codes
  * HISTORY:
