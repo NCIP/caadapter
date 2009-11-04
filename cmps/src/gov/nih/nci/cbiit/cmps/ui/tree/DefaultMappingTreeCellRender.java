@@ -28,8 +28,8 @@ import java.awt.Component;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2009-10-16 17:35:08 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2009-11-04 19:11:11 $
  *
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
@@ -51,12 +51,17 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 			Object userObj = node.getUserObject();
 			if(userObj instanceof ElementMetaLoader.MyTreeObject)
 				userObj = ((ElementMetaLoader.MyTreeObject)userObj).getObj();
-			setText(userObj.toString());
-			if (userObj instanceof ElementMeta)
+			BaseMeta baseMeta=(BaseMeta)userObj;
+			if (baseMeta.getNameSpace()!=null &&!baseMeta.getNameSpace().equals(""))
+				setText(cardinalityView(baseMeta) +" ("+baseMeta.getNameSpace() +")");
+			else
+				setText(cardinalityView(baseMeta));
+			
+			if (baseMeta instanceof ElementMeta)
 			{
 				if (node.isLeaf())
-					setIcon(elementNodeIcon);
-			}else if (userObj instanceof AttributeMeta){
+					setIcon(elementNodeIcon);				
+			}else if (baseMeta instanceof AttributeMeta){
 				setIcon(attributeNodeIcon);
 			}
 		} catch (Exception e) {
@@ -65,11 +70,44 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 		}
 		return returnValue;
 	}
+	
+	private String cardinalityView( BaseMeta baseMeta )
+	{
+		StringBuffer rtBuffer=new StringBuffer(baseMeta.getName());
+		if (baseMeta instanceof ElementMeta )
+		{
+			ElementMeta elMeta=(ElementMeta)baseMeta;
+			rtBuffer.append("["+elMeta.getMinOccurs()+"...");
+	    	if (elMeta.getMaxOccurs()!=null&&elMeta.getMaxOccurs().intValue()==-1)
+	    		rtBuffer.append("*]");
+	    	else
+	    		rtBuffer.append(elMeta.getMaxOccurs()+"]");
+		}
+		else if (baseMeta instanceof AttributeMeta )
+		{
+			AttributeMeta attMeta=(AttributeMeta)baseMeta;
+			if (attMeta.isIsRequired())
+	    		rtBuffer.append(" [Required");
+	    	else
+	    		rtBuffer.append(" [Optional");
+	    	
+	    	if (attMeta.getFixedValue()!=null)
+	    		rtBuffer.append(":fixed/"+attMeta.getFixedValue());
+	    	else if (attMeta.getDefaultValue()!=null)
+	    		rtBuffer.append(":default/"+attMeta.getDefaultValue());
+	    	
+	    	rtBuffer.append("]");
+		}
+		return rtBuffer.toString();
+	}
 }
 
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.3  2009/10/16 17:35:08  wangeug
+ * HISTORY: add icon to tree node
+ * HISTORY:
  * HISTORY: Revision 1.2  2008/12/03 20:46:14  linc
  * HISTORY: UI update.
  * HISTORY:
