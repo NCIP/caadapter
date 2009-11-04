@@ -23,7 +23,6 @@ import javax.swing.ScrollPaneConstants;
 
 import java.awt.Graphics;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 /**
  * The panel is used to render graphical respresentation of the mapping relations between
@@ -32,11 +31,11 @@ import java.awt.Dimension;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2009-11-03 18:32:26 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-11-04 19:11:59 $
  *
  */
-public class MappingMiddlePanel extends JPanel //implements ActionListener
+public class MappingMiddlePanel extends JPanel
 {
 	private MiddlePanelScrollAdjustmentCoordinator adjustmentCoordinator = null;
 	private MiddlePanelJGraph graph = null;
@@ -136,6 +135,9 @@ public class MappingMiddlePanel extends JPanel //implements ActionListener
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2009/11/03 18:32:26  wangeug
+ * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
+ * HISTORY:
  * HISTORY: Revision 1.3  2009/10/30 14:45:09  wangeug
  * HISTORY: simplify code: only respond to link highter
  * HISTORY:
