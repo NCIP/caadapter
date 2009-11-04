@@ -34,8 +34,8 @@ import java.util.StringTokenizer;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.5 $
- * @date       $Date: 2009-10-15 18:35:41 $
+ * @version    $Revision: 1.6 $
+ * @date       $Date: 2009-11-04 19:08:36 $
  *
  */
 public class DefaultSettings
@@ -525,7 +525,7 @@ public class DefaultSettings
 	public static Object showListChoiceDialog(Component parent, String title, String msg, Object[] choices){
 		JOptionPane p = new JOptionPane(msg, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		JDialog dlg = p.createDialog(parent, title);
-//		Arrays.sort(choices);
+		Arrays.sort(choices);
 		JComboBox c = new JComboBox( choices);
 		dlg.getContentPane().add(c,BorderLayout.NORTH);
 		dlg.pack();
@@ -540,6 +540,9 @@ public class DefaultSettings
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.5  2009/10/15 18:35:41  wangeug
+ * HISTORY: clean codes
+ * HISTORY:
  * HISTORY: Revision 1.4  2008/12/29 22:18:18  linc
  * HISTORY: function UI added.
  * HISTORY:
