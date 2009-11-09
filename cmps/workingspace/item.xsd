@@ -40,6 +40,13 @@
  <xs:attribute name="orderid" type="orderidtype" use="required"/>
 </xs:complexType>
 
+<xs:element name="items">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="item" maxOccurs="unbounded" type="itemtype"/>
+		</xs:sequence>
+ 	</xs:complexType>
+</xs:element>
 <xs:element name="item" type="itemtype"/>
 
 </xs:schema>
