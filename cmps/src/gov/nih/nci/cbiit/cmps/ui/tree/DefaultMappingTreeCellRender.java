@@ -28,8 +28,8 @@ import java.awt.Component;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2009-11-04 19:11:11 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-11-09 18:33:59 $
  *
  */
 public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //extends JPanel implements TreeCellRenderer
@@ -77,6 +77,9 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 		if (baseMeta instanceof ElementMeta )
 		{
 			ElementMeta elMeta=(ElementMeta)baseMeta;
+			if (elMeta.getMaxOccurs()==null|elMeta.getMinOccurs()==null)
+				return rtBuffer.toString();
+				
 			rtBuffer.append("["+elMeta.getMinOccurs()+"...");
 	    	if (elMeta.getMaxOccurs()!=null&&elMeta.getMaxOccurs().intValue()==-1)
 	    		rtBuffer.append("*]");
@@ -105,6 +108,9 @@ public class DefaultMappingTreeCellRender extends DefaultTreeCellRenderer //exte
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.4  2009/11/04 19:11:11  wangeug
+ * HISTORY: display metaMeta element nameSpace
+ * HISTORY:
  * HISTORY: Revision 1.3  2009/10/16 17:35:08  wangeug
  * HISTORY: add icon to tree node
  * HISTORY:
