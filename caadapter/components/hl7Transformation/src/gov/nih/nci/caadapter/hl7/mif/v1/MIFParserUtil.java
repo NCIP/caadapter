@@ -21,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import gov.nih.nci.caadapter.common.util.FileUtil;
@@ -34,8 +35,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.20 $
- *          date        $Date: 2009-08-18 15:18:41 $
+ *          revision    $Revision: 1.21 $
+ *          date        $Date: 2009-11-09 21:45:38 $
  */
 public class MIFParserUtil {
 
@@ -272,13 +273,69 @@ public class MIFParserUtil {
 		return rtnHash;
 	}
 
-	public static void main(String[] args) throws Exception {
+    public static String searchAnnotation(Node node)
+    {
+        //System.out.println("FFFF search annotation : " );
+
+        if (node == null) return null;
+        Node n = node;
+        String str = n.getTextContent();
+        if ((str != null)||(!str.trim().equals("")))
+        {
+            str = str.trim();
+            char[] cc = str.toCharArray();
+            String stt = "";
+            String before = " ";
+            for (char ch:cc)
+            {
+                int inn = (int)((byte) ch);
+                if (inn <= 32)
+                {
+                    if (before.equals(" ")) {}
+                    else stt = stt + " ";
+                    before = " ";
+                }
+                else
+                {
+                    stt = stt + ch;
+                    before = "" + ch;
+                }
+            }
+
+            if (!stt.trim().equals("")) return stt;
+            else
+            {
+                str = null;
+                System.out.println("FFFF annotation : " + stt);
+            }
+        }
+        else str = null;
+
+        if (!n.hasChildNodes()) return null;
+
+        NodeList nlist = n.getChildNodes();
+
+        for (int i=0;i<nlist.getLength();i++)
+        {
+            Node nn = nlist.item(i);
+            str = searchAnnotation(nn);
+            if ((str != null)&&(!str.trim().equals(""))) return str;
+        }
+
+        return null;
+    }
+    
+
+    public static void main(String[] args) throws Exception {
 		MIFParserUtil.loadMIFClassWithVersion("mif","Normative_2006");
 
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.20  2009/08/18 15:18:41  altturbo
+ * HISTORY :minor change
+ * HISTORY :
  * HISTORY :Revision 1.19  2009/08/17 20:26:50  altturbo
  * HISTORY :Change the searching priority for resource file
  * HISTORY :
