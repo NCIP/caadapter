@@ -35,8 +35,8 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.21 $
- *          date        $Date: 2009-11-09 21:45:38 $
+ *          revision    $Revision: 1.22 $
+ *          date        $Date: 2009-11-09 21:46:05 $
  */
 public class MIFParserUtil {
 
@@ -306,7 +306,7 @@ public class MIFParserUtil {
             else
             {
                 str = null;
-                System.out.println("FFFF annotation : " + stt);
+                //System.out.println("FFFF annotation : " + stt);
             }
         }
         else str = null;
@@ -324,7 +324,7 @@ public class MIFParserUtil {
 
         return null;
     }
-    
+
 
     public static void main(String[] args) throws Exception {
 		MIFParserUtil.loadMIFClassWithVersion("mif","Normative_2006");
@@ -333,6 +333,9 @@ public class MIFParserUtil {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.21  2009/11/09 21:45:38  altturbo
+ * HISTORY :add searchAnnotation(Node node)
+ * HISTORY :
  * HISTORY :Revision 1.20  2009/08/18 15:18:41  altturbo
  * HISTORY :minor change
  * HISTORY :
