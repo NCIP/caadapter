@@ -14,8 +14,9 @@ import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
 import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
-import gov.nih.nci.cbiit.cmps.ui.mapping.CmpsMappingPanel;
+import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame;
+import gov.nih.nci.cbiit.cmps.ui.message.MessagePanel;
 import gov.nih.nci.cbiit.cmps.ui.message.OpenMessageWizard;
 import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
@@ -24,18 +25,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.FileWriter;
-import java.util.ArrayList;
 
 /**
  * This class defines the new message transformation action.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.3 $
- * @date       $Date: 2008-12-29 22:18:18 $
+ * @version    $Revision: 1.4 $
+ * @date       $Date: 2009-11-10 19:14:11 $
  */
 public class NewMessageAction extends AbstractContextAction
 		{
@@ -87,8 +86,12 @@ public class NewMessageAction extends AbstractContextAction
 	protected boolean doAction(ActionEvent e) throws Exception
 	{
 		OpenMessageWizard w = new OpenMessageWizard(mainFrame, COMMAND_NAME, true);
+		DefaultSettings.centerWindow(w);
 		w.setVisible(true);
 		if(w.isOkButtonClicked()){
+			MessagePanel newMsgPane=new MessagePanel();
+			
+			mainFrame.addNewTab(newMsgPane);
 			Mapping map = MappingFactory.loadMapping(w.getMapFile());
 			XQueryBuilder builder = new XQueryBuilder(map);
 			String queryString = builder.getXQuery();
@@ -97,9 +100,12 @@ public class NewMessageAction extends AbstractContextAction
 			String srcFile = FileUtil.getRelativePath(w.getDataFile());
 			tester.setFilename(srcFile);
 			tester.setQuery(queryString);
+			String xmlResult=tester.executeQuery();
+			newMsgPane.setMessageText(xmlResult);
 			FileWriter writer = new FileWriter(w.getDestFile());
-			writer.write(tester.executeQuery());
+			writer.write(xmlResult);
 			writer.close();
+			
 		}
 		setSuccessfullyPerformed(true);
 		JOptionPane.showMessageDialog(mainFrame, "Transformation has completed successfully.", "Save Complete", JOptionPane.INFORMATION_MESSAGE);
@@ -121,10 +127,5 @@ public class NewMessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
- * HISTORY      : Revision 1.2  2008/12/10 15:43:02  linc
- * HISTORY      : Fixed component id generator and delete link.
- * HISTORY      :
- * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
- * HISTORY      : First GUI release
  * HISTORY      :
  */
