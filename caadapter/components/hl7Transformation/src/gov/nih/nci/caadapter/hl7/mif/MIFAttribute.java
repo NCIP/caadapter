@@ -27,7 +27,7 @@ import gov.nih.nci.caadapter.hl7.datatype.Datatype;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version Since caAdapter v4.0 revision $Revision: 1.24 $ date $Date: 2009-10-29 21:35:09 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.25 $ date $Date: 2009-11-11 20:27:09 $
  */
 
 public class MIFAttribute extends DatatypeBaseObject implements Serializable, Comparable <MIFAttribute>, Cloneable{
@@ -518,8 +518,15 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 		return getMnemonic();
 	}
 
-//&umkis    public String getAnnotation() {
-//&umkis		return annotation;
+//&umkis    public String getAnnotation()
+//&umkis    {
+//&umkis        if ((annotation != null)&&(!annotation.trim().equals(""))) return annotation;
+//&umkis        if (this.getDatatype()!= null)
+//&umkis        {
+//&umkis            String annot = this.getDatatype().getAnnotation();
+//&umkis            if ((annot != null)&&(!annot.trim().equals(""))) return annot;
+//&umkis        }
+//&umkis        return null;
 //&umkis	}
 
 //&umkis	public void setAnnotation(String annotation) {
@@ -535,6 +542,9 @@ public class MIFAttribute extends DatatypeBaseObject implements Serializable, Co
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.24  2009/10/29 21:35:09  altturbo
+ * HISTORY :upgrade FileUtil.findODIWithDomainName()
+ * HISTORY :
  * HISTORY :Revision 1.23  2009/10/29 21:33:55  altturbo
  * HISTORY :upgrade FileUtil.findODIWithDomainName()
  * HISTORY :

@@ -29,10 +29,10 @@ import org.w3c.dom.Node;
  * The class load a MIF document into the MIF class object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.9 $
- *          date        $Date: 2009-01-16 15:13:32 $
+ *          revision    $Revision: 1.10 $
+ *          date        $Date: 2009-11-11 20:26:29 $
  */
 
 public class MIFParser {
@@ -59,6 +59,7 @@ public class MIFParser {
         Node child = document.getDocumentElement().getFirstChild();
         Hashtable<String, String> mifPackageLocation=new Hashtable<String, String>();
         String copyYear=null;
+        String annotation = null;
         while (child != null) {
         	if (child.getNodeName().equals(prefix+"packageLocation")
         			||child.getNodeName().equals("packageLocation"))
@@ -78,7 +79,12 @@ public class MIFParser {
         			headerChild=headerChild.getNextSibling();
         		}
         	}
-        	else if (child.getNodeName().equals(prefix+"ownedEntryPoint")
+            else if (child.getNodeName().equals(prefix+"annotation")||child.getNodeName().equals("annotation")||
+                     child.getNodeName().equals(prefix+"annotations")||child.getNodeName().equals("annotations"))
+            {
+                annotation = MIFParserUtil.searchAnnotation(child);
+            }
+            else if (child.getNodeName().equals(prefix+"ownedEntryPoint")
         			||child.getNodeName().equals("ownedEntryPoint")) {
         		Node ownedEntryPointChild = child.getFirstChild();
         		while (ownedEntryPointChild != null) {
@@ -96,6 +102,8 @@ public class MIFParser {
         	return false;
         mifClass.setPackageLocation(mifPackageLocation);
         mifClass.setCopyrightYears(copyYear);
+//&umkis        if (annotation != null)  mifClass.setAnnotation(annotation);
+
         return true;
 	}
 	
@@ -178,6 +186,9 @@ public class MIFParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.9  2009/01/16 15:13:32  wangeug
+ * HISTORY :	read copyrightYears attribute from MIF header and set it to mifClass.copyrightYears attribute
+ * HISTORY :
  * HISTORY :Revision 1.8  2008/09/29 15:42:44  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

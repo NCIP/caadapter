@@ -22,8 +22,8 @@ import org.w3c.dom.Node;
  * The class will parse a MIF class from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.10 $ date $Date: 2009-01-05 16:40:07 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version Since caAdapter v4.0 revision $Revision: 1.11 $ date $Date: 2009-11-11 20:26:39 $
  */
 public class ClassParser {
 	public MIFClass parseClass(Node node, String prefix, Hashtable<String, String> participantTraversalName) {
@@ -41,6 +41,9 @@ public class ClassParser {
 				mifClass.setAbstractDefined(true);
  
         Node child = node.getFirstChild();
+
+        String annotation = null;
+
         while (child != null) {
         	if (child.getNodeName().equals(prefix+"attribute")
         			||child.getNodeName().equals("attribute")) {
@@ -76,13 +79,22 @@ public class ClassParser {
         		mifClass.addAssociation(mifAssociation);
         		
         	}
+            if (child.getNodeName().equals(prefix+"annotation")||child.getNodeName().equals("annotation")||
+                child.getNodeName().equals(prefix+"annotations")||child.getNodeName().equals("annotations"))
+            {
+                annotation = MIFParserUtil.searchAnnotation(child);
+            }
             child = child.getNextSibling();
         }
-		return mifClass;
+//&umkis        if ((mifClass != null)&&(annotation != null)) mifClass.setAnnotation(annotation);
+        return mifClass;
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.10  2009/01/05 16:40:07  wangeug
+ * HISTORY :Process MIFClass with isAbstract=true
+ * HISTORY :
  * HISTORY :Revision 1.9  2008/12/30 14:54:02  wangeug
  * HISTORY :Process MIFClass with isAbstract=true: create MIF class as abstract and make all its MIFAssociation abstract
  * HISTORY :

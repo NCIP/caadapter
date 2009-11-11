@@ -20,8 +20,8 @@ import org.w3c.dom.NodeList;
  * The class will parse an MIF association section  from the mif XML file.
  * 
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version Since caAdapter v4.0 revision $Revision: 1.8 $ date $Date: 2008-12-11 17:05:37 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version Since caAdapter v4.0 revision $Revision: 1.9 $ date $Date: 2009-11-11 20:27:28 $
  */
 public class AssociationParser {
 	public MIFAssociation parseAttribute(Node node, String prefix) {
@@ -30,8 +30,10 @@ public class AssociationParser {
 		Node child = node.getFirstChild();
 //		set the association sortedKey
 		mifAssociation.setSortKey(XSDParserUtil.getAttribute(node, "sortKey"));
-       
-		while (child != null) {
+
+        String annotation = null;
+
+        while (child != null) {
         	if (child.getNodeName().endsWith("targetConnection")){//.equals(prefix+"targetConnection")) {
         		mifAssociation.setName(XSDParserUtil.getAttribute(child, "name"));
         		mifAssociation.setConformance(XSDParserUtil.getAttribute(child, "conformance"));
@@ -104,14 +106,22 @@ public class AssociationParser {
         			targetConnectionChild = targetConnectionChild.getNextSibling();
         		}
         	}
-			child = child.getNextSibling();
+            if (child.getNodeName().equals(prefix+"annotation")||child.getNodeName().equals("annotation")||
+                child.getNodeName().equals(prefix+"annotations")||child.getNodeName().equals("annotations"))
+            {
+                annotation = MIFParserUtil.searchAnnotation(child);
+            }
+            child = child.getNextSibling();
 		}
-		 
+//&umkis        if ((mifAssociation != null)&&(annotation != null)) mifAssociation.setAnnotation(annotation);
         return mifAssociation;
 	}
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.8  2008/12/11 17:05:37  wangeug
+ * HISTORY :MIF Parsing: A item of a choice is a list of other MIFClass.
+ * HISTORY :
  * HISTORY :Revision 1.7  2008/09/29 15:42:45  wangeug
  * HISTORY :enforce code standard: license file, file description, changing history
  * HISTORY :

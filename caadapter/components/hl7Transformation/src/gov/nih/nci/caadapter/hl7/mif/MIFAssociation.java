@@ -20,7 +20,7 @@ import java.util.Hashtable;
  * 
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version Since caAdapter v4.0 revision $Revision: 1.24 $ date $Date: 2009-04-02 20:34:40 $
+ * @version Since caAdapter v4.0 revision $Revision: 1.25 $ date $Date: 2009-11-11 20:26:59 $
  */
 
 public class MIFAssociation extends DatatypeBaseObject implements Serializable,Comparable <MIFAssociation>, Cloneable {
@@ -405,9 +405,15 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 		this.participantTraversalNames = participantTraversalNames;
 	}
 
-//&umkis    public String getAnnotation() {
-//&umkis		return annotation;
-//&umkis	}
+//&umkis    public String getAnnotation()
+//&umkis    {
+//&umkis        String annot = null;
+//&umkis        if (this.getMifClass()!= null) annot = this.getMifClass().getAnnotation();
+//&umkis        else if (this.findChoiceSelectedMifClass() != null) annot = this.findChoiceSelectedMifClass().getAnnotation();
+//&umkis        if ((annot != null)&&(!annot.trim().equals(""))) return annot;
+//&umkis		if ((annotation != null)&&(!annotation.trim().equals(""))) return annotation;
+//&umkis        return null;
+//&umkis    }
 
 //&umkis	public void setAnnotation(String annotation) {
 //&umkis		this.annotation = annotation;
@@ -422,6 +428,9 @@ public class MIFAssociation extends DatatypeBaseObject implements Serializable,C
 }	
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.24  2009/04/02 20:34:40  altturbo
+ * HISTORY :add comment and annotation items but deactivated
+ * HISTORY :
  * HISTORY :Revision 1.23  2009/02/23 19:34:37  wangeug
  * HISTORY :if MIFAssociation being cloned is OptionalChosen, the coloned new MIFAssociation should be same
  * HISTORY :

@@ -11,10 +11,10 @@ package gov.nih.nci.caadapter.hl7.mif.v1;
  * The class defines an object parsing CMET information.
  *
  * @author OWNER: Eugene Wang
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2009-03-18 15:50:53 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-11-11 20:27:19 $
  */
 
 import java.io.FileOutputStream;
@@ -41,10 +41,10 @@ import gov.nih.nci.caadapter.hl7.mif.NormativeVersionUtil;
  * The class load a MIF document into the MIF class object.
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
+ * @author LAST UPDATE $Author: altturbo $
  * @version Since caAdapter v4.0
- *          revision    $Revision: 1.10 $
- *          date        $Date: 2009-03-18 15:50:53 $
+ *          revision    $Revision: 1.11 $
+ *          date        $Date: 2009-11-11 20:27:19 $
  */
 
 public class CMETInfoParser {
@@ -76,8 +76,13 @@ public class CMETInfoParser {
 		Node node = XSDParserUtil.getFirstChildElement(ownedCommonModelElementNode);
 		
 		while (node != null) {
-			if (node.getNodeName().endsWith("annotations")); //Ignore for now
-			if (node.getNodeName().endsWith("supplierStructuralDomain")); //Ignore for now
+			//if (node.getNodeName().endsWith("annotations")); //Ignore for now
+            if ((node.getNodeName().endsWith("annotations"))||(node.getNodeName().endsWith("annotation"))) //Ignore for now
+            {
+                String str = MIFParserUtil.searchAnnotation(node);
+                if ((str != null)||(!str.trim().equals(""))) System.out.println("##FFF# CmetInfoParser Annotation : " + str);
+            }
+            if (node.getNodeName().endsWith("supplierStructuralDomain")); //Ignore for now
 			if (node.getNodeName().endsWith("specializationChildStaticModel")) //Ignore for now
 			{
 				String filename = XSDParserUtil.getAttribute(node, "subSection");
@@ -156,6 +161,9 @@ public class CMETInfoParser {
 }
 /**
  * HISTORY :$Log: not supported by cvs2svn $
+ * HISTORY :Revision 1.10  2009/03/18 15:50:53  wangeug
+ * HISTORY :enable wesstart to support multiple normatives
+ * HISTORY :
  * HISTORY :Revision 1.9  2009/03/13 14:54:01  wangeug
  * HISTORY :support multiple HL& normatives
  * HISTORY :
