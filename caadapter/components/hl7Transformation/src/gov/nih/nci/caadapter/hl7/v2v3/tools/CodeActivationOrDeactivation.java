@@ -186,6 +186,12 @@ public class CodeActivationOrDeactivation
 
         if (!textTag)
         {
+            if (fileName.equals("mif.zip"))
+            {
+                String tempFile = downloadFileFromURL(fileName);
+                if ((tempFile != null)&&(!tempFile.trim().equals(""))) file = new File(tempFile);
+                else System.out.println("##### Binary file download failure : " + fileName);
+            }
 
             copyBinaryFile(file, targetDirName);
             //copyBinaryFileWithURI(file, targetDirName);
@@ -200,9 +206,8 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("StringFunction.java")) downloadTag = true;
         if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
         if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
-        if (fileName.equals("mif.zip")) downloadTag = true;
         if (fileName.equals("run.bat")) downloadTag = true;
-        //if (fileName.equals("build.properties")) downloadTag = true;
+        if (fileName.equals("build.properties")) downloadTag = true;
         if (fileName.equals("Attribute.java"))
         {
             if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
@@ -251,22 +256,9 @@ public class CodeActivationOrDeactivation
         String oriFile = "";
         if (downloadTag)
         {
-            String tempFile = "";
-            String[] urls = new String[] {"http://10.1.1.61:8080/file_exchange/",
-                                          "http://155.230.210.233:8080/file_exchange/"};
-            for(int i=0;i<urls.length;i++)
-            {
-                try
-                {
-                    tempFile = FileUtil.downloadFromURLtoTempFile(urls[i] + fileName);
-                }
-                catch(IOException ie)
-                {
-                    tempFile = "";
-                }
-                if (!tempFile.equals("")) break;
-            }
-            if (tempFile.equals(""))
+            String tempFile = downloadFileFromURL(fileName);
+
+            if ((tempFile == null)||(tempFile.equals("")))
             {
                 System.out.println("##### ERROR File Download failure : " + fileName);
                 return;
@@ -281,6 +273,29 @@ public class CodeActivationOrDeactivation
 
         System.out.println("Copy file (text)   : " + targetDirName + fileName);
         saveStringIntoFile(targetDirName + fileName, FileUtil.readFileIntoList(oriFile));
+    }
+    private String downloadFileFromURL(String fileName)
+    {
+        String[] urls = new String[] {"http://10.1.1.61:8080/file_exchange/",
+                                      "http://155.230.210.233:8080/file_exchange/"};
+        String tempFile = null;
+        for(int i=0;i<urls.length;i++)
+        {
+            try
+            {
+                tempFile = FileUtil.downloadFromURLtoTempFile(urls[i] + fileName);
+            }
+            catch(IOException ie)
+            {
+                tempFile = null;
+            }
+            if ((tempFile != null)&&(!tempFile.trim().equals("")))
+            {
+                tempFile = tempFile.trim();
+                break;
+            }
+        }
+        return tempFile;
     }
     private void copyBinaryFileWithURI(File file, String targetDirName) throws IOException
     {
