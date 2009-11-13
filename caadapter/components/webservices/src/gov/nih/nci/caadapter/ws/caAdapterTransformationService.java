@@ -10,8 +10,10 @@ package gov.nih.nci.caadapter.ws;
 import gov.nih.nci.caadapter.hl7.transformation.TransformationService;
 import gov.nih.nci.caadapter.hl7.transformation.data.XMLElement;
 import gov.nih.nci.caadapter.ws.object.ScenarioRegistration;
+import gov.nih.nci.caadapter.common.util.FileUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +21,9 @@ import java.util.List;
  * caadapter Web Service to provide transformation service
  *
  * @author OWNER: Ye Wu
- * @author LAST UPDATE $Author: wangeug $
- * @version $Revision: 1.8 $
- * @date $$Date: 2009-04-14 20:02:40 $
+ * @author LAST UPDATE $Author: altturbo $
+ * @version $Revision: 1.9 $
+ * @date $$Date: 2009-11-13 17:35:01 $
  * @since caadapter v1.3.1
  */
 
@@ -34,12 +36,28 @@ public class caAdapterTransformationService {
      * @param csvString csv data in String format 
      * @return A collection of the transformed HL7 v3 message
      */
-
-	public ArrayList<String> transformationService(String mappingScenario, String csvString) {
+    public ArrayList<String> transformationService(String mappingScenario, String csvString)
+    {
+        return transformationService(mappingScenario, csvString, null);
+    }
+	public ArrayList<String> transformationService(String mappingScenario, String csvString, String controlMessage)
+    {
 
 		  ArrayList<String> result = new ArrayList<String>(); 
-		  
-		  try {
+
+          String controlMessageFile = null;
+            if ((controlMessage != null)||(controlMessage.trim().equals("")))
+            {
+                try
+                {
+                    controlMessageFile = FileUtil.saveStringIntoTemporaryFile(controlMessage);
+                }
+                catch(IOException ie)
+                {
+                    controlMessageFile = null;
+                }
+            }
+          try {
 			  ScenarioRegistration scenario=ScenarioUtil.findScenario(mappingScenario);
 			  if (scenario==null)
 			  {
@@ -58,7 +76,7 @@ public class caAdapterTransformationService {
 				  TransformationService transformationService = 
 					  new TransformationService(mappingFileName,csvString,true);
 				  System.out.println("caAdapterTransformationService.transformationService()..start transformation");
-				  List<XMLElement> mapGenerateResults = transformationService.process();
+				  List<XMLElement> mapGenerateResults = transformationService.process(controlMessageFile);
 				  System.out
 						.println("caAdapterTransformationService.transformationService()..generated message count:"+mapGenerateResults.size());
 				  for (int i = 0; i < mapGenerateResults.size(); i++)
@@ -81,4 +99,6 @@ public class caAdapterTransformationService {
 		  result.add("no HL7 message");
 		  return result;
 	}
+
+//&umkis:INSERT=caAdapterTransformationServiceINSERT.java
 }

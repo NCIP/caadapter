@@ -51,6 +51,14 @@ public class CodeActivationOrDeactivation
             System.out.println("Directory is not exist. : " + dirS);
             return;
         }
+
+        String res = downloadFileFromURL("TestIPAddress.java");
+        if ((res == null)||(res.trim().equals("")))
+        {
+            System.out.println("Stellar customization server is not working. : " + dirS);
+            return;
+        }
+
         String dirName = dir.getAbsolutePath();
         if (!dirName.endsWith(File.separator)) dirName = dirName + File.separator;
 
@@ -184,19 +192,7 @@ public class CodeActivationOrDeactivation
         if (fileName.toLowerCase().endsWith(".hl7")) textTag = true;
 
 
-        if (!textTag)
-        {
-            if (fileName.equals("mif.zip"))
-            {
-                String tempFile = downloadFileFromURL(fileName);
-                if ((tempFile != null)&&(!tempFile.trim().equals(""))) file = new File(tempFile);
-                else System.out.println("##### Binary file download failure : " + fileName);
-            }
 
-            copyBinaryFile(file, targetDirName);
-            //copyBinaryFileWithURI(file, targetDirName);
-            return;
-        }
 
         boolean downloadTag = false;
         //if (fileName.equals("HSMNodePropertiesPane.java")) downloadTag = true;
@@ -205,9 +201,8 @@ public class CodeActivationOrDeactivation
         if (fileName.equals("XMLElement.java")) downloadTag = true;
         if (fileName.equals("StringFunction.java")) downloadTag = true;
         if (fileName.equals("MapProcessorHelper.java")) downloadTag = true;
-        if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
-        if (fileName.equals("run.bat")) downloadTag = true;
-        if (fileName.equals("build.properties")) downloadTag = true;
+        //if (fileName.equals("caAdapterTransformationService.java")) downloadTag = true;
+        if (fileName.equals("mif.zip")) downloadTag = true;
         if (fileName.equals("Attribute.java"))
         {
             if (targetDirName.indexOf("transformation") > 0) downloadTag = true;
@@ -253,6 +248,20 @@ public class CodeActivationOrDeactivation
             downloadTag = true;
         }
 
+        if (!textTag)
+        {
+            if (downloadTag)
+            {
+                String tempFile = downloadFileFromURL(fileName);
+                if ((tempFile != null)&&(!tempFile.trim().equals(""))) file = new File(tempFile);
+                else System.out.println("##### Binary file download failure : " + fileName);
+            }
+
+            copyBinaryFile(file, targetDirName);
+            //copyBinaryFileWithURI(file, targetDirName);
+            return;
+        }
+
         String oriFile = "";
         if (downloadTag)
         {
@@ -260,7 +269,7 @@ public class CodeActivationOrDeactivation
 
             if ((tempFile == null)||(tempFile.equals("")))
             {
-                System.out.println("##### ERROR File Download failure : " + fileName);
+                System.out.println("##### ERROR Text File Download failure : " + fileName);
                 return;
             }
             else
@@ -536,6 +545,14 @@ public class CodeActivationOrDeactivation
                     line = replaceDeactivateTag(line, CODE_TAG_SOURCE_DEACTIVATE);
                     line = replaceActivateTag(line, CODE_TAG_SOURCE_ACTIVATE, CODE_TAG_TARGET_DEACTIVATE);
                 }
+                //if (fileName.equals("run.bat"))
+                if (fileName.toLowerCase().endsWith("run.bat"))
+                {
+                    if (line.toLowerCase().startsWith("java ")) line = "java -Xmx150000000" + line.substring(4);
+                }
+                //if (fileName.equals("build.properties"))
+                if (fileName.toLowerCase().endsWith("build.properties"))
+                    line = modifyBuildProperties(line);
                 fw.write(line + "\r\n");
             }
         }
@@ -549,6 +566,32 @@ public class CodeActivationOrDeactivation
         }
     }
 
+    private String modifyBuildProperties(String line)
+    {
+        String ln = line.trim();
+
+        if (ln.startsWith("project."))
+        {
+            if ((ln.indexOf("MTS") > 0)||(ln.indexOf("HL7") > 0)) {}
+            else
+            {
+                if (ln.startsWith("project.release.version")) line = "project.release.version=caadapter_HL7";
+                if (ln.startsWith("project.docs.home")) line = "project.docs.home=docs/4.3";
+                if (ln.startsWith("project.user.guide")) line = "project.user.guide=caAdapter_HL7_MTS_v4.3_UsersGuide";
+                if (ln.startsWith("project.installation.guide")) line = "project.installation.guide=caAdapter HL7 MTS v4.3 Installation Guide.pdf";
+                if (ln.startsWith("proejct.online.help")) line = "proejct.online.help=help_4.3.zip";
+            }
+        }
+        if (ln.startsWith("caadapter.release.mms.only")) line = "caadapter.release.mms.only=false";
+        if (ln.startsWith("caadapter.release.mms.gme.only")) line = "caadapter.release.mms.gme.only=false";
+        if (ln.startsWith("caadapter.release.hl7.only")) line = "caadapter.release.hl7.only=true";
+        if (ln.startsWith("caadapter.release.ws.include")) line = "caadapter.release.ws.include=true";
+        if (ln.startsWith("caadapter.release.all.modules")) line = "caadapter.release.all.modules=false";
+
+        //System.out.println("XXXX : " + line);
+        return line;
+    }
+
     private String replaceActivateTag(String line, String from, String to)
     {
         int idx = line.toLowerCase().indexOf(from);
@@ -560,10 +603,24 @@ public class CodeActivationOrDeactivation
     }
     private String replaceDeactivateTag(String line, String from)
     {
-        int idx = line.toLowerCase().indexOf(from);
+        String line2 = line.trim();
+        int idx = line2.toLowerCase().indexOf(from);
 
         if (idx < 0) return line;
-        else if (idx == 0) return line.substring(from.length()) + "     " +from;
+        else if (idx == 0)
+        {
+            String tTag = CODE_TAG_SOURCE_DEACTIVATE + ":INSERT=";
+            if (line2.startsWith(tTag))
+            {
+                String res = downloadFileFromURL(line2.substring(tTag.length()));
+                if ((res != null)&&(!res.trim().equals("")))
+                {
+                    String rr = FileUtil.readFileIntoString(res);
+                    if ((rr != null)&&(!rr.trim().equals(""))) return rr;
+                }
+            }
+            else return line2.substring(from.length()) + "     " +from;
+        }
 
         return line;
     }
