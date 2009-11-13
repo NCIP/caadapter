@@ -18,24 +18,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.StringTokenizer;
 
 /**
  * This class generates XQuery from Mapping
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.9 $
- * @date       $Date: 2008-12-10 15:43:02 $
+ * @version    $Revision: 1.10 $
+ * @date       $Date: 2009-11-13 20:49:51 $
  *
  */
 public class XQueryBuilder {
 	private Mapping mapping;
 	private StringBuffer sbQuery;
 	private Map<String, LinkType> links;
+	private Map<String, String> varMap;
 	private Stack<String> xpathStack;
-	private Stack<String> srcIdStack;
 	private Stack<String> varStack;
 
 	final static String sep = System.getProperty("line.separator");
@@ -74,80 +73,56 @@ public class XQueryBuilder {
 			}
 		}
 		xpathStack = new Stack<String>();
-		srcIdStack = new Stack<String>();
 		varStack = new Stack<String>();
 		sbQuery = new StringBuffer();
+		varMap=new HashMap<String, String>();
 		sbQuery.append("declare variable $docName as xs:string external;" + sep);
-		processTargetElement(tgt.getRootElement());
+		processTargetElement(tgt.getRootElement(),null);
 		return sbQuery.toString();
 	}
 	
-	private static String getRelativePath(String current, String path) {
-		String ret = "";
-		StringBuilder sb = new StringBuilder();
-		StringTokenizer stCur = new StringTokenizer(current, "/@");
-		StringTokenizer stNew = new StringTokenizer(path, "/@");
-		int count = 0;
-		while(stCur.hasMoreTokens() && stNew.hasMoreTokens()) {
-			String t = stCur.nextToken(); 
-			if (t.equals(stNew.nextToken())) {
-				count++;
-				sb.append("/").append(t);
-			} else {
-				break;
-			}
-		}
-		if(count==0) return null;
-		
-		if(sb.toString().equals(current)){
-			ret = path.substring(current.length());
-		} else {
-			ret += "/..";
-			while(stCur.hasMoreTokens()) {
-				ret += "/..";
-			}
-			ret += path.substring(sb.toString().length());
-		}		
-		
-		return ret;		
-	}
 
-	private void processTargetElement(ElementMeta tgt) {
+	private void processTargetElement(ElementMeta tgt,String parentXPath) {
 		xpathStack.push(tgt.getName());
 		StringBuilder sb = new StringBuilder();
 		for (String s:xpathStack) {
 			sb.append("/").append(s);
 		}
-		
+		String tgtMappingSrc=null;
+		boolean loopRequired=false;
 		LinkType link = links.get(sb.toString());
 		if(link!=null) {
 			link = links.get(sb.toString());
-			String srcId = link.getSource().getId();
-			String var = "item"+String.valueOf(varStack.size());
-			if(xpathStack.size()>1) {
-				sbQuery.append(sep).append("{");
+			tgtMappingSrc = link.getSource().getId();
+			String var = "item_temp"+String.valueOf(varStack.size());
+			//mapping source is an element,loop through it
+			if (tgtMappingSrc.indexOf("@")<0)
+			{
+				if(xpathStack.size()>1) 
+				{
+					sbQuery.append("{");
+					loopRequired=true;
+				}
+				sbQuery.append("for $"+var+" in ");
+				String localpath = null;
+				if (parentXPath!=null)
+					localpath =QueryBuilderUtil.retrieveRelativePath(parentXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
+ 
+				if(localpath == null) {
+					sbQuery.append("doc($docName)");
+					sbQuery.append(tgtMappingSrc);
+				}else {
+					sbQuery.append("$"+varStack.peek()).append(localpath);
+				}
+				sbQuery.append(" return ");
+				varMap.put(tgtMappingSrc, var);
 			}
-			sbQuery.append("for $"+var+" in ");
-			String localpath = null;
-			if(srcIdStack.size()>0)
-				localpath = getRelativePath(srcIdStack.peek(), srcId);
-			if(localpath == null) {
-				sbQuery.append("doc($docName)");
-				sbQuery.append(srcId);
-			}else {
-				sbQuery.append("$"+varStack.peek()).append(localpath);
-			}
-			sbQuery.append(" return ");
 			varStack.push(var);
-			srcIdStack.push(srcId);
-		}else{
-			//xpathStack.pop();
-			//return;
 		}
 		
 		//start tag and attributes
 		sbQuery.append("<"+tgt.getName());
-		processAttributes(tgt);
+		processAttributes(tgt, tgtMappingSrc);
 		sbQuery.append(">");
 		
 		//inline text
@@ -159,35 +134,46 @@ public class XQueryBuilder {
 			srcTextId = links.get(sb.toString()+"#inlinetext").getSource().getId();
 		}
 		if(srcTextId!=null) {
-			String localpath = null;
-			if(srcIdStack.size()>0)
-				localpath = getRelativePath(srcIdStack.peek(), srcTextId);
-			if(localpath!=null){
-				String var = varStack.peek();
-				if(localpath.indexOf("@")>0){
-					sbQuery.append("{$").append(var).append(localpath).append("}");
-				}else {
-					sbQuery.append("{$").append(var).append(localpath).append("/text()").append("}");
-				}
+			String srcDynamicPath=null;
+			if (srcTextId.indexOf("@")>-1)
+			{
+				String mappingSrcElementId=srcTextId.substring(0, srcTextId.lastIndexOf("/"));
+				String mappingSrcElementVar=varMap.get(mappingSrcElementId);
+				String srcAttrName=srcTextId.substring(srcTextId.indexOf("@"));
+				if (mappingSrcElementVar!=null)
+					srcDynamicPath=mappingSrcElementVar+"/"+srcAttrName;
 			}
+			else
+			{
+				String localpath =QueryBuilderUtil.retrieveRelativePath(tgtMappingSrc, tgtMappingSrc);
+				if(localpath!=null)
+					srcDynamicPath=varStack.peek()+localpath;
+			}
+			
+			if (srcDynamicPath!=null)
+				sbQuery.append("{data($").append(srcDynamicPath).append(")}");
+			else //use the absolute path of the attribute/element in case its parent element are not mapped
+				sbQuery.append("{data(doc($docName)").append(srcTextId+")}");			
 		}
-		
+		 
 		//child elements
-		for(ElementMeta e:tgt.getChildElement()) {
-			processTargetElement(e);
-		}
+		for(ElementMeta e:tgt.getChildElement()) 
+			processTargetElement(e, tgtMappingSrc);
 		
 		//end tag
 		sbQuery.append("</"+tgt.getName()+">");
-		if(link!=null && xpathStack.size()>1) sbQuery.append(sep).append("}");
-		if(link!=null) {
-			srcIdStack.pop();
+
+		//clear temporary varible stack
+		if(link!=null) 
 			varStack.pop();
-		}
+		
+		//close loop
+		if(loopRequired) 
+			sbQuery.append("}").append(sep);
 		xpathStack.pop();
 	}
 
-	private void processAttributes(ElementMeta tgt) {
+	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
 		StringBuilder sb = new StringBuilder();
 		for (String s:xpathStack) {
 			sb.append("/").append(s);
@@ -195,28 +181,32 @@ public class XQueryBuilder {
 		for(AttributeMeta a:tgt.getAttrData()) {
 			if(links.get(sb.toString()+"/@"+a.getName())!=null) {
 				LinkType l = links.get(sb.toString()+"/@"+a.getName());
-				String srcId = l.getSource().getId();
+				String attrMappingSrc = l.getSource().getId();
 				String var = varStack.peek();
 				String localpath = null;
-				if(srcIdStack.size()>0)
-					localpath = getRelativePath(srcIdStack.peek(), srcId);
+				if(elementMapingSourceId!=null)
+					localpath =QueryBuilderUtil.retrieveRelativePath(elementMapingSourceId, attrMappingSrc);
+				//xquery data function return the value of an element or attribute
 				sbQuery.append(" ").append(a.getName()).append("=\"{data(");
 				sbQuery.append("$").append(var).append(localpath);
-//				if(localpath.indexOf("@")<0)
-//					sbQuery.append("/text()");
 				sbQuery.append(")}\"");
-			} else if(a.getDefaultValue()!=null) {
+			}else if(a.getFixedValue()!=null) { //use fixed value first
 				sbQuery.append(" ").append(a.getName()).append("=");
-				sbQuery.append(a.getDefaultValue());
+				sbQuery.append("\""+a.getFixedValue()+"\"");
+			} 
+			else if(a.getDefaultValue()!=null) {//use default value
+				sbQuery.append(" ").append(a.getName()).append("=");
+				sbQuery.append("\""+a.getDefaultValue()+"\"");
 			}
 		}
-		
 	}
-
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.9  2008/12/10 15:43:02  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.8  2008/11/04 21:19:34  linc
  * HISTORY: core mapping and transform demo.
  * HISTORY:
