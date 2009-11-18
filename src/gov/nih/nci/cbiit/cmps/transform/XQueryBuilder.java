@@ -25,8 +25,8 @@ import java.util.Stack;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.10 $
- * @date       $Date: 2009-11-13 20:49:51 $
+ * @version    $Revision: 1.11 $
+ * @date       $Date: 2009-11-18 16:44:52 $
  *
  */
 public class XQueryBuilder {
@@ -82,105 +82,205 @@ public class XQueryBuilder {
 	}
 	
 
+	/**
+	 * Process a target element:
+	 * Case I: The element is mapped
+	 * Case II: The element is not mapped, but its attribute is mapped
+	 * Case III: Neither the element nor its attribute is mapped. But its descendant
+	 * is mapped
+	 * @param tgt
+	 * @param parentXPath
+	 */
 	private void processTargetElement(ElementMeta tgt,String parentXPath) {
 		xpathStack.push(tgt.getName());
-		StringBuilder sb = new StringBuilder();
-		for (String s:xpathStack) {
-			sb.append("/").append(s);
-		}
+		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
 		String tgtMappingSrc=null;
-		boolean loopRequired=false;
-		LinkType link = links.get(sb.toString());
-		if(link!=null) {
-			link = links.get(sb.toString());
+		LinkType link = links.get(elementXpath);
+		if(link!=null) 
+		{
+			link = links.get(elementXpath);
 			tgtMappingSrc = link.getSource().getId();
-			String var = "item_temp"+String.valueOf(varStack.size());
-			//mapping source is an element,loop through it
-			if (tgtMappingSrc.indexOf("@")<0)
-			{
-				if(xpathStack.size()>1) 
-				{
-					sbQuery.append("{");
-					loopRequired=true;
-				}
-				sbQuery.append("for $"+var+" in ");
-				String localpath = null;
-				if (parentXPath!=null)
-					localpath =QueryBuilderUtil.retrieveRelativePath(parentXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
- 
-				if(localpath == null) {
-					sbQuery.append("doc($docName)");
-					sbQuery.append(tgtMappingSrc);
-				}else {
-					sbQuery.append("$"+varStack.peek()).append(localpath);
-				}
-				sbQuery.append(" return ");
-				varMap.put(tgtMappingSrc, var);
-			}
-			varStack.push(var);
 		}
+		else if (hasAnyMappedAttribute(tgt)!=null)
+		{
+			tgtMappingSrc=hasAnyMappedAttribute(tgt);
+		}
+		else if (hasMappedDescenant(tgt))
+		{
+			sbQuery.append("<"+tgt.getName()+">");
+			//child elements
+			for(ElementMeta e:tgt.getChildElement()) 
+				processTargetElement(e, tgtMappingSrc);
+			sbQuery.append("</"+tgt.getName()+">");
+			
+			xpathStack.pop();
+			return;
+		}
+		else
+		{
+			//neither the element and its attribute 
+			//nor any of its descendant is mapped,
+			//ignore this element
+			sbQuery.append("<"+tgt.getName()+"/>");
+			xpathStack.pop();
+			return;
+			
+		}
+		
+		//create loop to pull source data
+		String var = "item_temp"+String.valueOf(varStack.size());
+		if (xpathStack.size()>1) 
+			sbQuery.append("{");
+
+		sbQuery.append("for $"+var+" in ");
+		String localpath = null;
+		if (parentXPath!=null)
+			localpath =QueryBuilderUtil.retrieveRelativePath(parentXPath, tgtMappingSrc);// getRelativePath(srcIdStack.peek(), srcId);
+
+		if(localpath == null) {
+			sbQuery.append("doc($docName)");
+			sbQuery.append(tgtMappingSrc);
+		}else {
+			sbQuery.append("$"+varStack.peek()).append(localpath);
+		}
+		sbQuery.append(" return ");
+		varMap.put(tgtMappingSrc, var);
+		varStack.push(var);
 		
 		//start tag and attributes
 		sbQuery.append("<"+tgt.getName());
 		processAttributes(tgt, tgtMappingSrc);
 		sbQuery.append(">");
 		
-		//inline text
-		String srcTextId = null;
-		if(link!=null && (tgt.getChildElement().size()==0)) {//map text element
-			srcTextId = link.getSource().getId();
-		}
-		if(links.get(sb.toString()+"#inlinetext")!=null) { //map inline text for mixed node
-			srcTextId = links.get(sb.toString()+"#inlinetext").getSource().getId();
-		}
-		if(srcTextId!=null) {
-			String srcDynamicPath=null;
-			if (srcTextId.indexOf("@")>-1)
-			{
-				String mappingSrcElementId=srcTextId.substring(0, srcTextId.lastIndexOf("/"));
-				String mappingSrcElementVar=varMap.get(mappingSrcElementId);
-				String srcAttrName=srcTextId.substring(srcTextId.indexOf("@"));
-				if (mappingSrcElementVar!=null)
-					srcDynamicPath=mappingSrcElementVar+"/"+srcAttrName;
-			}
-			else
-			{
-				String localpath =QueryBuilderUtil.retrieveRelativePath(tgtMappingSrc, tgtMappingSrc);
-				if(localpath!=null)
-					srcDynamicPath=varStack.peek()+localpath;
-			}
-			
-			if (srcDynamicPath!=null)
-				sbQuery.append("{data($").append(srcDynamicPath).append(")}");
-			else //use the absolute path of the attribute/element in case its parent element are not mapped
-				sbQuery.append("{data(doc($docName)").append(srcTextId+")}");			
-		}
-		 
+		pullInlineText(tgt, tgtMappingSrc);
+		
 		//child elements
 		for(ElementMeta e:tgt.getChildElement()) 
 			processTargetElement(e, tgtMappingSrc);
 		
 		//end tag
-		sbQuery.append("</"+tgt.getName()+">");
-
-		//clear temporary varible stack
-		if(link!=null) 
-			varStack.pop();
-		
+		sbQuery.append("</"+tgt.getName()+">");	
 		//close loop
-		if(loopRequired) 
-			sbQuery.append("}").append(sep);
+		if(xpathStack.size()>1) 
+			sbQuery.append("}");
+		sbQuery.append(sep);
+		
+		//clear temporary variable stack
+		varStack.pop();
 		xpathStack.pop();
 	}
+	
+	/**
+	 * Pull online text
+	 * Case I: The source is an attribute
+	 * Case II: The source is an element, but the target is a leave element
+	 * Case III: Both the source and target are an element, but the target does have any child element mapped
+	 * @param tgtMeta
+	 */
+	private void pullInlineText(ElementMeta tgtMeta, String tgtMappingSrc)
+	{
+		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+		
+		LinkType link = links.get(elementXpath);
+		if (link==null)
+			return;
+ 		String srcTextId = link.getSource().getId();
+ 		if (srcTextId==null)
+ 			return;
+ 		boolean inlineTextRequred=false;
+ 		if (srcTextId.indexOf("@")>-1)
+ 			inlineTextRequred=true;
+ 		else if (tgtMeta.getChildElement().isEmpty())
+ 			inlineTextRequred=true;
+ 		else if (!hasMappedDescenant(tgtMeta))
+ 			inlineTextRequred=true;
+ 
+//		if(links.get(elementXpath+"#inlinetext")!=null) 
+//		{ //map inline text for mixed node
+//			srcTextId = links.get(elementXpath+"#inlinetext").getSource().getId();
+//		}
+ 
+ 		if (!inlineTextRequred)
+ 			return;
+ 		
+		String srcDynamicPath=null;
+		if (srcTextId.indexOf("@")>-1)
+		{
+			String mappingSrcElementId=srcTextId.substring(0, srcTextId.lastIndexOf("/"));
+			String mappingSrcElementVar=varMap.get(mappingSrcElementId);
+			String srcAttrName=srcTextId.substring(srcTextId.indexOf("@"));
+			if (mappingSrcElementVar!=null)
+				srcDynamicPath=mappingSrcElementVar+"/"+srcAttrName;
+		}
+		else
+		{
+			String localTextpath =QueryBuilderUtil.retrieveRelativePath(tgtMappingSrc, tgtMappingSrc);
+			if(localTextpath!=null)
+				srcDynamicPath=varStack.peek()+localTextpath;
+		}
+		
+		if (srcDynamicPath!=null)
+			sbQuery.append("{data($").append(srcDynamicPath).append(")}");
+		else //use the absolute path of the attribute/element in case its parent element are not mapped
+			sbQuery.append("{data(doc($docName)").append(srcTextId+")}");				
+	}
+/**
+ * Check if any descendant is mapped
+ * @param tgtElement
+ * @return
+ */
+	private boolean hasMappedDescenant(ElementMeta tgtElement){
+		boolean rtnValue=false;
+		for (ElementMeta childMeta:tgtElement.getChildElement())
+		{
+			xpathStack.push(childMeta.getName());
+			String childXPath=QueryBuilderUtil.buildXPath(xpathStack);		
+			if (links.get(childXPath)!=null)
+				rtnValue=true;
+			else if ( hasAnyMappedAttribute(childMeta)!=null)
+				rtnValue=true;
+			else if (hasMappedDescenant(childMeta))
+				rtnValue=true;
 
-	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
+			xpathStack.pop();
+			if (rtnValue)
+				break;
+		}
+		return rtnValue;
+	}
+	/**
+	 * Check if any attribute is mapped
+	 * @param tgtElement
+	 * @return
+	 */
+	private String hasAnyMappedAttribute(ElementMeta tgtElement)
+	{
 		StringBuilder sb = new StringBuilder();
 		for (String s:xpathStack) {
 			sb.append("/").append(s);
 		}
-		for(AttributeMeta a:tgt.getAttrData()) {
-			if(links.get(sb.toString()+"/@"+a.getName())!=null) {
+
+		String rtnValue=null;
+		for(AttributeMeta a:tgtElement.getAttrData()) 
+			if(links.get(sb.toString()+"/@"+a.getName())!=null)
+			{
 				LinkType l = links.get(sb.toString()+"/@"+a.getName());
+				String attrMappingSrc = l.getSource().getId();
+				return attrMappingSrc;
+			}
+		
+		return rtnValue;
+	}
+	/**
+	 * Set attribute value
+	 * @param tgt
+	 * @param elementMapingSourceId
+	 */
+	private void processAttributes(ElementMeta tgt, String elementMapingSourceId) {
+		String elementXpath=QueryBuilderUtil.buildXPath(xpathStack);
+		for(AttributeMeta a:tgt.getAttrData()) {
+			if(links.get(elementXpath+"/@"+a.getName())!=null) {
+				LinkType l = links.get(elementXpath+"/@"+a.getName());
 				String attrMappingSrc = l.getSource().getId();
 				String var = varStack.peek();
 				String localpath = null;
@@ -204,6 +304,9 @@ public class XQueryBuilder {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.10  2009/11/13 20:49:51  wangeug
+ * HISTORY: set element text from an attribute of source element
+ * HISTORY:
  * HISTORY: Revision 1.9  2008/12/10 15:43:02  linc
  * HISTORY: Fixed component id generator and delete link.
  * HISTORY:
