@@ -1,5 +1,6 @@
 package gov.nih.nci.cbiit.cmps.transform;
 
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class QueryBuilderUtil {
@@ -41,5 +42,15 @@ public class QueryBuilderUtil {
 		
 		ret += path.substring(ancestorPath.toString().length());	
 		return ret;	
+	}
+	
+	public static String buildXPath(Stack<String>  pathStack) 
+	{
+		StringBuilder sb = new StringBuilder();
+		for (String s:pathStack) {
+			sb.append("/").append(s);
+		}
+		
+		return sb.toString();
 	}
 }
