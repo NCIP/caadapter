@@ -26,8 +26,8 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.13 $
- * @date $$Date: 2009-11-19 04:22:44 $
+ * @version $Revision: 1.14 $
+ * @date $$Date: 2009-11-19 04:32:59 $
  * @since caadapter v1.3.1
  */
 
@@ -88,9 +88,6 @@ public class caAdapterTransformationService
                   String outputZip = FileUtil.getTemporaryFileName(".zip");
                   transformationService.setOutputFile(new File(outputZip));
                   System.out.println("caAdapterTransformationService.transformationService()2..start transformation");
-
-
-                  FileUtil.saveStringIntoTemporaryFile(controlMessage);
 
                   transformationService.process(controlMessageFile);
 
