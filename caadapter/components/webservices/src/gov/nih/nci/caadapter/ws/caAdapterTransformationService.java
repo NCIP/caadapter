@@ -26,8 +26,8 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.12 $
- * @date $$Date: 2009-11-19 04:18:20 $
+ * @version $Revision: 1.13 $
+ * @date $$Date: 2009-11-19 04:22:44 $
  * @since caadapter v1.3.1
  */
 
@@ -138,30 +138,6 @@ public class caAdapterTransformationService
                       }
 
                       result.add(xmlMsg);
-                      if (nam.equals("i")) integratedMessage = xmlMsg;
-                      else
-                      {
-                          if (generatedMessage == null) generatedMessage = new ArrayList<String>();
-                          generatedMessage.add(xmlMsg);
-                      }
-
-                      ValidatorResults validatorsToShow=new ValidatorResults();
-
-                        try
-                        {
-                            validatorsToShow.addValidatorResults((ValidatorResults)TransformationServiceUtil.readObjFromZip(outputZipFile ,nam + ".ser"));
-                        }
-                        catch(Exception ee)
-                        {
-                            validatorsToShow=new ValidatorResults();
-                        }
-
-                      if (nam.equals("i")) integratedValidator = validatorsToShow;
-                      else
-                      {
-                          if (generatedValidator == null) generatedValidator = new ArrayList<ValidatorResults>();
-                          generatedValidator.add(validatorsToShow);
-                      }
                   }
                   outputZipFile.delete();
                   System.out.println("caAdapterTransformationService.transformationService()2..generated message count:"+result.size());
@@ -180,8 +156,6 @@ public class caAdapterTransformationService
 		  result.add("no HL7 message");
 		  return result;
 	}
-
-
 
 //&umkis:INSERT=caAdapterTransformationServiceINSERT.java
 }
