@@ -26,18 +26,13 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.11 $
- * @date $$Date: 2009-11-19 04:17:56 $
+ * @version $Revision: 1.12 $
+ * @date $$Date: 2009-11-19 04:18:20 $
  * @since caadapter v1.3.1
  */
 
 public class caAdapterTransformationService
 {
-    private String integratedMessage = null;
-    private ValidatorResults integratedValidator = null;
-    private List<String> generatedMessage = null;
-    private List<ValidatorResults> generatedValidator = null;
-
     /**
      * caadapter Web Service to provide transformation service
      *
