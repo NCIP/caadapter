@@ -10,7 +10,7 @@ package gov.nih.nci.cbiit.cmps.ui.actions;
 
 import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame;
+import gov.nih.nci.cbiit.cmps.ui.main.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,10 +23,10 @@ import java.awt.event.KeyEvent;
  * Please see SaveObjectToDbMapAction defined in ui.map.actions for some reference.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-11-23 18:32:47 $
  */
 public class DefaultSaveAction extends DefaultSaveAsAction
 {
@@ -37,7 +37,7 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 	public static final String TOOL_TIP_DESCRIPTION = "Save";
 
 	private static final String LOGID = "$RCSfile: DefaultSaveAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/DefaultSaveAction.java,v 1.1 2008-12-09 19:04:17 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/DefaultSaveAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
 
 	/**
 	 * Defines an <code>Action</code> object with a default
@@ -77,6 +77,9 @@ public class DefaultSaveAction extends DefaultSaveAsAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY      : First GUI release
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/03 20:46:14  linc
  * HISTORY      : UI update.
  * HISTORY      :

@@ -13,7 +13,7 @@ import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmps.ui.common.ContextManager;
 import gov.nih.nci.cbiit.cmps.ui.common.ContextManagerClient;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame;
+import gov.nih.nci.cbiit.cmps.ui.main.MainFrame;
 
 import javax.swing.*;
 
@@ -25,10 +25,10 @@ import java.util.ArrayList;
  * This class defines the closeAll action.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.1 $
- * @date       $Date: 2008-12-09 19:04:17 $
+ * @version    $Revision: 1.2 $
+ * @date       $Date: 2009-11-23 18:32:47 $
  */
 public class CloseAllAction extends AbstractContextAction
 {
@@ -38,7 +38,7 @@ public class CloseAllAction extends AbstractContextAction
 //	protected static final KeyStroke ACCELERATOR_KEY_STROKE = KeyStroke.getKeyStroke(KeyEvent.VK_F4, Event.CTRL_MASK, false);
 
 	private static final String LOGID = "$RCSfile: CloseAllAction.java,v $";
-	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/CloseAllAction.java,v 1.1 2008-12-09 19:04:17 linc Exp $";
+	public static String RCSID = "$Header: /share/content/gforge/caadapter/cmps/src/gov/nih/nci/cbiit/cmps/ui/actions/CloseAllAction.java,v 1.2 2009-11-23 18:32:47 wangeug Exp $";
 
 	protected MainFrame mainFrame = null;
 
@@ -135,6 +135,9 @@ public class CloseAllAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2008/12/09 19:04:17  linc
+ * HISTORY      : First GUI release
+ * HISTORY      :
  * HISTORY      : Revision 1.1  2008/12/03 20:46:14  linc
  * HISTORY      : UI update.
  * HISTORY      :

@@ -15,7 +15,7 @@ import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
 import gov.nih.nci.cbiit.cmps.ui.common.ActionConstants;
 import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
-import gov.nih.nci.cbiit.cmps.ui.mapping.MainFrame;
+import gov.nih.nci.cbiit.cmps.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmps.ui.message.MessagePanel;
 import gov.nih.nci.cbiit.cmps.ui.message.OpenMessageWizard;
 import gov.nih.nci.cbiit.cmps.util.FileUtil;
@@ -33,8 +33,8 @@ import java.io.FileWriter;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.4 $
- * @date       $Date: 2009-11-10 19:14:11 $
+ * @version    $Revision: 1.5 $
+ * @date       $Date: 2009-11-23 18:32:47 $
  */
 public class NewMessageAction extends AbstractContextAction
 		{
@@ -127,5 +127,8 @@ public class NewMessageAction extends AbstractContextAction
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.4  2009/11/10 19:14:11  wangeug
+ * HISTORY      : setup message panel
+ * HISTORY      :
  * HISTORY      :
  */

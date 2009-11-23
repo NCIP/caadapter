@@ -21,6 +21,7 @@ import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
 import gov.nih.nci.cbiit.cmps.ui.common.MenuConstants;
 import gov.nih.nci.cbiit.cmps.ui.function.FunctionLibraryPane;
 import gov.nih.nci.cbiit.cmps.ui.jgraph.MiddlePanelJGraphController;
+import gov.nih.nci.cbiit.cmps.ui.main.MainFrame;
 import gov.nih.nci.cbiit.cmps.ui.properties.DefaultPropertiesPage;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingSourceTree;
 import gov.nih.nci.cbiit.cmps.ui.tree.MappingTargetTree;
@@ -63,8 +64,8 @@ import org.apache.xerces.xs.XSNamedMap;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.14 $
- * @date       $Date: 2009-11-03 18:32:54 $
+ * @version    $Revision: 1.15 $
+ * @date       $Date: 2009-11-23 18:31:44 $
  *
  */
 public class CmpsMappingPanel extends JPanel implements ActionListener, ContextManagerClient{
@@ -903,6 +904,9 @@ public class CmpsMappingPanel extends JPanel implements ActionListener, ContextM
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.14  2009/11/03 18:32:54  wangeug
+ * HISTORY: clean codes: keep MiddlePanelJGraphController only with MiddleMappingPanel
+ * HISTORY:
  * HISTORY: Revision 1.13  2009/10/30 14:45:30  wangeug
  * HISTORY: simplify code: only respond to link highter
  * HISTORY:
