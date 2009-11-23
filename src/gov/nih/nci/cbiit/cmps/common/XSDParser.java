@@ -11,16 +11,11 @@ import java.io.File;
 import java.math.BigInteger;
 import java.util.*;
 
-import org.apache.xerces.impl.xs.SchemaGrammar;
-import org.apache.xerces.impl.xs.XSImplementationImpl;
-import org.apache.xerces.impl.xs.XSLoaderImpl;
-import org.apache.xerces.util.JAXPNamespaceContextWrapper;
 import org.apache.xerces.xs.*;
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.DOMError;
 import org.w3c.dom.DOMErrorHandler;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.DOMStringList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import gov.nih.nci.cbiit.cmps.core.*; 
 
@@ -30,8 +25,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.13 $
- * @date       $Date: 2009-11-02 14:47:33 $
+ * @version    $Revision: 1.14 $
+ * @date       $Date: 2009-11-23 20:38:16 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -153,9 +148,6 @@ public class XSDParser implements DOMErrorHandler {
 			ctStack.clear();
 			elStack.clear();
 			return processXSObject(map.itemByName(namespace, name), 0);
-			//map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
-			//map = model.getComponents(XSConstants.TYPE_DEFINITION);
-			//map = model.getComponents(XSConstants.NOTATION_DECLARATION);
 		} else {
 			return null;
 		}
@@ -177,8 +169,6 @@ public class XSDParser implements DOMErrorHandler {
 			ctStack.clear();
 			elStack.clear();
 			return processXSObject(map.itemByName(namespace, name), 0);
-			//map = model.getComponents(XSConstants.ATTRIBUTE_DECLARATION);
-			//map = model.getComponents(XSConstants.NOTATION_DECLARATION);
 		} else {
 			return null;
 		}
@@ -196,21 +186,6 @@ public class XSDParser implements DOMErrorHandler {
 		}
 		return null;
 	}
-
-//	private List<ElementMeta> processMap(XSNamedMap map, int depth){
-//		ArrayList<ElementMeta> ret = new ArrayList<ElementMeta>();
-//		for (int i = 0; i < map.getLength(); i++) {
-//			XSObject item = map.item(i);
-//			if(item instanceof XSComplexTypeDefinition){
-//				ret.add(processComplexType((XSComplexTypeDefinition)item, depth));
-//			}else if(item instanceof XSSimpleTypeDefinition){
-//				processSimpleType((XSSimpleTypeDefinition)item, depth);
-//			}else if(item instanceof XSElementDeclaration){
-//				ret.add(processElement((XSElementDeclaration)item, depth));
-//			}
-//		}
-//		return ret;
-//	}
 
 	private List<BaseMeta> processList(XSObjectList map, int depth){
 		ArrayList<BaseMeta> ret = new ArrayList<BaseMeta>();
@@ -279,8 +254,10 @@ public class XSDParser implements DOMErrorHandler {
 			return null;
 		}
 		List<BaseMeta> l = processTerm(item.getTerm(), depth+1);
-		if(l.size() == 1){
-			ElementMeta e = (ElementMeta)l.get(0);
+		ElementMeta e = (ElementMeta)l.get(0);
+		if (item.getTerm()!=null&&item.getTerm().getName()!=null&&
+				item.getTerm().getName().equals(e.getName()))
+		{
 			int maxOccur = item.getMaxOccurs();
 			int minOccur = item.getMinOccurs();
 			boolean unbound = item.getMaxOccursUnbounded();
@@ -288,6 +265,7 @@ public class XSDParser implements DOMErrorHandler {
 			e.setMaxOccurs(BigInteger.valueOf(maxOccur));
 			e.setMinOccurs(BigInteger.valueOf(minOccur));
 			if(unbound) e.setMaxOccurs(BigInteger.valueOf(-1));
+ 
 		}
 		return l;
 	}
@@ -314,10 +292,6 @@ public class XSDParser implements DOMErrorHandler {
 		String qname = "{" + item.getNamespace() + "}" + item.getName();
 		elStack.push(qname);
 		ElementMeta ret = null;
-		//		if(indent>MAX_INDENT) {
-		//			System.out.println("MMMMMMMMM Reached max depth, skipping the lower levels......");
-		//			return;
-		//		}
 		try{
 			XSTypeDefinition type = item.getTypeDefinition();
 			if(type instanceof XSComplexTypeDefinition){
@@ -336,7 +310,6 @@ public class XSDParser implements DOMErrorHandler {
 		ret.setType((item.getTypeDefinition().getNamespace()==null||item.getTypeDefinition().getNamespace().equals(defaultNS))?
 					item.getTypeDefinition().getName()
 					:item.getTypeDefinition().getNamespace()+":"+item.getTypeDefinition().getName());
-		//processParticle(item.getParticle(), indent+1);
 		return ret;
 	}
 	private AttributeMeta processAttribute(XSAttributeUse item, int depth){
@@ -380,13 +353,14 @@ public class XSDParser implements DOMErrorHandler {
 			System.out.println("[xs-warning]: "+error.getMessage());
 		}
 		return true;
-
 	}
-
 }
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.13  2009/11/02 14:47:33  wangeug
+ * HISTORY: read nameSpace and data type
+ * HISTORY:
  * HISTORY: Revision 1.12  2009/10/27 18:21:12  wangeug
  * HISTORY: clean codes
  * HISTORY:
