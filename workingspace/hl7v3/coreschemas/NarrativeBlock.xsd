@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<!-- $Id: NarrativeBlock.xsd,v 1.1 2008-12-09 19:04:17 linc Exp $ -->
+<!-- $Id: NarrativeBlock.xsd,v 1.2 2009-11-24 18:32:46 wangeug Exp $ -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:hl7-org:v3" targetNamespace="urn:hl7-org:v3" elementFormDefault="qualified">
    <xs:complexType name="StrucDoc.Text" mixed="true">
       <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -33,10 +33,15 @@
       <xs:attribute name="language" type="xs:NMTOKEN"/>
       <xs:attribute name="styleCode" type="xs:NMTOKENS"/>
       <xs:attribute name="mediaType" type="xs:string" fixed="text/x-hl7-title+xml"/>
-   </xs:complexType><!-- DELETE THIS, we don't need to define a global element for text
+  </xs:complexType>
+  <!-- DELETE THIS, we don't need to define a global element for text
 	<xs:element name="text" type="text"/>
  -->
-   <xs:complexType name="StrucDoc.Br"/>
+  <xs:simpleType name="StrucDoc.Br">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
    <xs:complexType name="StrucDoc.Caption" mixed="true">
       <xs:choice minOccurs="0" maxOccurs="unbounded">
          <xs:element name="linkHtml" type="StrucDoc.LinkHtml"/>

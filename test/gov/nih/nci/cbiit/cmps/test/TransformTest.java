@@ -11,6 +11,7 @@ import gov.nih.nci.cbiit.cmps.core.Mapping;
 import gov.nih.nci.cbiit.cmps.mapping.MappingFactory;
 import gov.nih.nci.cbiit.cmps.transform.XQueryBuilder;
 import gov.nih.nci.cbiit.cmps.transform.XQueryTransformer;
+import gov.nih.nci.cbiit.cmps.util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -33,10 +34,10 @@ import org.junit.Test;
  * This class 
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.6 $
- * @date       $Date: 2008-12-10 15:43:03 $
+ * @version    $Revision: 1.7 $
+ * @date       $Date: 2009-11-24 18:30:14 $
  *
  */
 public class TransformTest {
@@ -69,6 +70,27 @@ public class TransformTest {
 	public void tearDown() throws Exception {
 	}
 
+	/*
+	 * 
+	 */
+	@Test
+	public void testMappingAndTransformation() throws JAXBException, XQException
+	{
+		String mappingFile="workingspace/ISO_21090/example/mapping.xml";
+		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
+//		String mappingFile="workingspace/mapping1.xml";
+//		String srcFile = "workingspace/shiporder.xml";
+		Mapping map = MappingFactory.loadMapping(new File(mappingFile));
+		XQueryBuilder builder = new XQueryBuilder(map);
+		String queryString = builder.getXQuery();
+		System.out.println("$$$$$$ query: \n"+queryString);
+		XQueryTransformer tester= new XQueryTransformer();
+
+		tester.setFilename(srcFile);
+		tester.setQuery(queryString);
+		String xmlResult=tester.executeQuery();
+		System.out.println("TransformTest.testMappingAndTransformation()\n"+xmlResult);
+	}
 	/**
 	 * Test method for {@link gov.nih.nci.cbiit.cmps.transform.XQueryBuilder#getXQuery()}.
 	 * @throws XQException 
@@ -78,24 +100,37 @@ public class TransformTest {
 		final String sep = System.getProperty("line.separator");
 		String queryString =
 			"declare variable $docName as xs:string external;" + sep +
-			"<result>{" +
-			"      for $item in doc($docName)//item " +
-			"    where $item/price > 10 " +
-			"      and $item/quantity > 0 " +
-			" order by $item/title " +
-			"   return " +
-			"<shipitem><name>{$item/title/text()}</name>" +
-			" <quantity>{$item/quantity/text()}</quantity></shipitem>" +
-			"}</result>";
+			"for $item_temp0 in doc($docName)/grouporder return <deliveries><item> {for $item_temp1 in $item_temp0/orderperson return <name>{data($item_temp1)}</name>}"+
+			" </item></deliveries>";
+
+//			"<result>" +
+//			"{" +
+//			"      for $item in doc($docName)//item " +
+//			"    where $item/price > 10 " +
+//			"      and $item/quantity > 0 " +
+//			" order by $item/title " +
+//			"   return " +
+//			"<shipitem><name>{$item/title/text()}</name>" +
+//			" <buyer>{data($item/../@orderid)}</buyer>" +
+//			" {for $subItem in $item/../@orderid return <buyer1>{data($subItem)}</buyer1>}" +
+//			" <quantity>{$item/quantity/text()}</quantity></shipitem>" +
+//			"}</result>";
+		
+
+		
+		System.out.println("TransformTest.testXQueryTransform()\n"+queryString);
 		XQueryTransformer tester= new XQueryTransformer();
-		tester.setFilename("workingspace/shiporder.xml");
+		String srcFile="workingspace/parentChildInverted/order.xml";
+//		String srcFile = "workingspace/simpleMapping/shiporder.xml";//purchase.xml";
+//		String srcFile = "workingspace/ISO_21090/example/purchase.xml";
+		tester.setFilename(srcFile);
 		tester.setQuery(queryString);
 		System.out.println(tester.executeQuery());
 	}
 
 	@Test
 	public void testCMPSTransform() throws XQException, JAXBException, IOException {
-		Mapping map = MappingFactory.loadMapping(new File("workingspace/mapping.xml"));
+		Mapping map = MappingFactory.loadMapping(new File("workingspace/mapping1.xml"));
 		XQueryBuilder builder = new XQueryBuilder(map);
 		String queryString = builder.getXQuery();
 		//System.out.println("$$$$$$ query: \n"+queryString);
@@ -154,6 +189,9 @@ public class TransformTest {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.6  2008/12/10 15:43:03  linc
+ * HISTORY: Fixed component id generator and delete link.
+ * HISTORY:
  * HISTORY: Revision 1.5  2008/12/09 19:04:17  linc
  * HISTORY: First GUI release
  * HISTORY:
