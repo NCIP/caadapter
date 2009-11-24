@@ -33,7 +33,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 
 public class FileUtil
@@ -692,6 +692,7 @@ public class FileUtil
      */
     public static String getTemporaryFileName(String extension) // inserted by umkis 08/09/2006
     {
+        tidyWorkingDir();
         DateFunction dateFunction = new DateFunction();
         String dateFormat = dateFunction.getDefaultDateFormatString();
         if (!dateFormat.endsWith("SSS")) dateFormat = dateFormat + "SSS";
@@ -1738,11 +1739,82 @@ public class FileUtil
         if (url != null) System.out.println("## Find this resource file : " + url.toString());
         return url;
     }
+    public static void tidyWorkingDir()
+    {
+        tidyWorkingDir(null);
+    }
+    public static void tidyWorkingDir(String extension)
+    {
+        String deleteFilePath = FileUtil.getUIWorkingDirectoryPath();
+
+        File dir = new File(deleteFilePath);
+        if ((!dir.exists())||(!dir.isDirectory())) return;
+
+        File[] files = dir.listFiles();
+
+        if ((files == null)||(files.length == 0)) return;
+
+        for (File file:files)
+        {
+            if (!file.isFile()) continue;
+            String fileName = file.getName().trim();
+
+            if ((extension == null)||(extension.trim().equals(""))) {}
+            else
+            {
+                extension = extension.trim();
+                if (fileName.toLowerCase().endsWith(extension.toLowerCase())) {}
+                else continue;
+            }
+
+            if (fileName.toLowerCase().startsWith(Config.TEMPORARY_FILE_PREFIX.toLowerCase())) fileName = fileName.substring(Config.TEMPORARY_FILE_PREFIX.length());
+            else continue;
+
+            int idx = fileName.indexOf("_");
+            if (idx < 0)
+            {
+                file.delete();
+                continue;
+            }
+
+            String createdDateOfFile = fileName.substring(0, idx);
+
+            long millis = 0l;
+            DateFunction dateUtil = new DateFunction();
+            try
+            {
+                millis = dateUtil.getMillisBetweenDates(dateUtil.getCurrentTime(), dateUtil.getDefaultDateFormatString(), createdDateOfFile, dateUtil.getDefaultDateFormatString());
+
+                if (millis < 0l) millis = millis * -1l;
+            }
+            catch(FunctionException fe)
+            {
+                continue;
+            }
+
+            int seconds = (int) ( millis / 1000l);
+
+
+            if ((seconds < 0)||(seconds > 1200))
+            {
+                //System.out.println("Deleting : " +file.getName()+", createdDate:"+createdDateOfFile + ":"+seconds);
+                file.delete();
+            }
+            //else System.out.println("Not Deleting : " +file.getName()+", createdDate:"+createdDateOfFile + ":"+seconds);
+
+        }
+
+        return;
+    }
+
 
 }
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.40  2009/10/30 16:21:54  altturbo
+ * minor change
+ *
  * Revision 1.39  2009/10/29 21:33:17  altturbo
  * upgrade findODIWithDomainName() and retrieveResourceURL(String rscName, String middle, String fileName)
  *
