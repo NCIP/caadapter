@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
-<purchaseOrder xmlns="http://cbiit.nci.nih.gov/po.xsd" orderDate="1999-10-20">
+<purchaseOrder orderDate="1999-10-20"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:NamespaceSchemaLocation="purchase.xsd">
+<!--
+xsi:noNamespaceSchemaLocation="purchase.xsd">
+xmlns="http://cbiit.nci.nih.gov/po.xsd" >
+-->
     <shipTo country="US">
         <name>Alice Smith</name>
         <street>123 Maple Street</street>
