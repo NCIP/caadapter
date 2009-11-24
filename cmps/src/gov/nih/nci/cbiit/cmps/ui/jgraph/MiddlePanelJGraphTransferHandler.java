@@ -30,10 +30,10 @@ import java.util.List;
  * to represent a drag from a component, and a drop to a component.
  *
  * @author Chunqing Lin
- * @author LAST UPDATE $Author: linc $
+ * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.2 $
- * @date       $Date: 2009-01-02 16:05:17 $
+ * @version    $Revision: 1.3 $
+ * @date       $Date: 2009-11-24 18:30:36 $
  *
  */
 public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//TransferHandler
@@ -55,16 +55,16 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 	 */
 	public boolean canImport(JComponent comp, DataFlavor[] transferFlavors)
 	{
-		System.out.println("MiddlePanelJGraphTransferHandler.canImport() is called.");
+//		System.out.println("MiddlePanelJGraphTransferHandler.canImport() is called.");
 		for (int i = 0; i < transferFlavors.length; i++)
 		{
 			if (acceptableFlavorsList.contains(transferFlavors[i]))
 			{
-				System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
+//				System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
 				return true;
 			}
 		}
-		System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return true.");
+//		System.out.println("MiddlePanelJGraphTransferHandler.canImport() will return false.");
 		return false;
 	}
 
@@ -134,6 +134,9 @@ public class MiddlePanelJGraphTransferHandler extends GraphTransferHandler//Tran
 }
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.2  2009/01/02 16:05:17  linc
+ * HISTORY: updated.
+ * HISTORY:
  * HISTORY: Revision 1.1  2008/10/30 16:02:14  linc
  * HISTORY: updated.
  * HISTORY:
