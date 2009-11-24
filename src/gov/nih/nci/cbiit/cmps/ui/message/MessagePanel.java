@@ -10,6 +10,8 @@ http://ncicb.nci.nih.gov/infrastructure/cacore_overview/caadapter/indexContent/d
 package gov.nih.nci.cbiit.cmps.ui.message;
 
 
+import gov.nih.nci.cbiit.cmps.ui.common.DefaultSettings;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -18,8 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.JSplitPane;
 import javax.swing.JLabel;
 import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import javax.swing.JOptionPane;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 
@@ -42,8 +42,8 @@ import java.util.Map;
  * @author OWNER: Scott Jiang
  * @author LAST UPDATE $Author: wangeug $
  * @version Since caAdapter v1.0
- *          revision    $Revision: 1.1 $
- *          date        $Date: 2009-11-10 19:13:33 $
+ *          revision    $Revision: 1.2 $
+ *          date        $Date: 2009-11-24 18:31:25 $
  */
 public class MessagePanel extends JPanel implements ActionListener
 {
@@ -113,7 +113,7 @@ public class MessagePanel extends JPanel implements ActionListener
 		nextButton.addActionListener(this);
 
 //		RegenerateHL7V3MessageAction regenerateAction = new RegenerateHL7V3MessageAction(this);
-		JButton regenerateButton = new JButton();//regenerateAction);
+		JButton regenerateButton = new JButton("Regenerate");//regenerateAction);
 		navigationPanel.add(regenerateButton);
 		leftPanel.add(navigationPanel, BorderLayout.NORTH);
 
@@ -160,7 +160,7 @@ public class MessagePanel extends JPanel implements ActionListener
 	private JComponent contructCenterPanel()
 	{
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-//		DefaultSettings.setDefaultFeatureForJSplitPane(splitPane);
+		DefaultSettings.setDefaultFeatureForJSplitPane(splitPane);
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 
 		scrollPane = new JScrollPane();
@@ -427,5 +427,8 @@ public class MessagePanel extends JPanel implements ActionListener
 
 /**
  * HISTORY      : $Log: not supported by cvs2svn $
+ * HISTORY      : Revision 1.1  2009/11/10 19:13:33  wangeug
+ * HISTORY      : setup message panel
+ * HISTORY      :
  *
  */
