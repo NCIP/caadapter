@@ -1,0 +1,41 @@
+<deliveries>
+   <item orderid="889923">
+      <name>Empire Burlesque</name>
+      <description>Special Edition</description>
+      <quantity>1</quantity>
+      <price>10.90</price>
+      <buyer>John Smith</buyer>
+      <shipping>
+         <name>Ola Nordmann</name>
+         <street>Langgt 23</street>
+         <city>4000 Stavanger</city>
+         <country>Norway</country>
+      </shipping>
+   </item>
+   <item orderid="889923">
+      <name>Hide your heart</name>
+
+      <quantity>1</quantity>
+      <price>9.90</price>
+      <buyer>John Smith</buyer>
+      <shipping>
+         <name>Ola Nordmann</name>
+         <street>Langgt 23</street>
+         <city>4000 Stavanger</city>
+         <country>Norway</country>
+      </shipping>
+   </item>
+   <item orderid="889923">
+      <name>Java Exercise</name>
+
+      <quantity>2</quantity>
+      <price>30.00</price>
+      <buyer>John Smith</buyer>
+      <shipping>
+         <name>Ola Nordmann</name>
+         <street>Langgt 23</street>
+         <city>4000 Stavanger</city>
+         <country>Norway</country>
+      </shipping>
+   </item>
+</deliveries>

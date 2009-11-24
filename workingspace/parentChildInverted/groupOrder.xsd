@@ -19,34 +19,45 @@
  </xs:restriction>
 </xs:simpleType>
 
-<xs:complexType name="addresstype">
+<xs:complexType name="shiptotype">
  <xs:sequence>
   <xs:element name="name" type="stringtype"/>
-  <xs:element name="street" type="stringtype"/>
+  <xs:element name="address" type="stringtype"/>
   <xs:element name="city" type="stringtype"/>
   <xs:element name="country" type="stringtype"/>
+  <xs:element name="item" maxOccurs="unbounded" type="itemtype"/>
  </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="itemtype">
  <xs:sequence>
-  <xs:element name="name" type="stringtype"/>
-  <xs:element name="description" type="stringtype" minOccurs="0"/>
+  <xs:element name="title" type="stringtype"/>
+  <xs:element name="note" type="stringtype" minOccurs="0"/>
   <xs:element name="quantity" type="inttype"/>
   <xs:element name="price" type="dectype"/>
-  <xs:element name="buyer" type="stringtype"/>
-  <xs:element name="address" type="addresstype"/>
+ </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fulliteminfo" mixed="true">
+ <xs:sequence>
+  <xs:element name="title" type="stringtype"/>
+  <xs:element name="note" type="stringtype" minOccurs="0" maxOccurs="3"/>
+  <xs:element name="quantity" type="inttype"/>
+  <xs:element name="price" type="dectype"/>
+  <xs:element name="weight" type="xs:decimal"/>
+  <xs:any minOccurs="0"/>
+ </xs:sequence>
+ <xs:anyAttribute/>
+</xs:complexType>
+
+<xs:complexType name="shipordertype">
+ <xs:sequence>
+  <xs:element name="orderperson" type="stringtype"/>
+  <xs:element name="shipto" type="shiptotype"/>
  </xs:sequence>
  <xs:attribute name="orderid" type="orderidtype" use="required"/>
 </xs:complexType>
 
-<xs:element name="items">
-	<xs:complexType>
-		<xs:sequence>
-			<xs:element name="item" maxOccurs="unbounded" type="itemtype"/>
-		</xs:sequence>
- 	</xs:complexType>
-</xs:element>
-<xs:element name="item" type="itemtype"/>
+<xs:element name="grouporder" type="shipordertype"/>
 
 </xs:schema>
