@@ -13,7 +13,7 @@ public class QueryBuilderUtil {
 	 */
 	public static String  retrieveRelativePath(String currentHome, String path)
 	{
-		System.out.println("QueryBuilderUtil.retrieveRelativePath()..currentHome="+currentHome+"...path="+path);
+		
 		if (path.startsWith(currentHome))
 			return path.substring(currentHome.length());
 		
@@ -38,9 +38,11 @@ public class QueryBuilderUtil {
 		ret += "/..";
 		while(stCur.hasMoreTokens()) {
 			ret += "/..";
+			stCur.nextToken();
 		}
 		
-		ret += path.substring(ancestorPath.toString().length());	
+		ret += path.substring(ancestorPath.toString().length());
+		System.out.println("QueryBuilderUtil.retrieveRelativePath()...home="+currentHome+"...path="+path+"..relative="+ret);
 		return ret;	
 	}
 	
