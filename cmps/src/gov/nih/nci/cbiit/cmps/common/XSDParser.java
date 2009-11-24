@@ -25,8 +25,8 @@ import gov.nih.nci.cbiit.cmps.core.*;
  * @author Chunqing Lin
  * @author LAST UPDATE $Author: wangeug $
  * @since     CMPS v1.0
- * @version    $Revision: 1.14 $
- * @date       $Date: 2009-11-23 20:38:16 $
+ * @version    $Revision: 1.15 $
+ * @date       $Date: 2009-11-24 16:00:59 $
  *
  */
 public class XSDParser implements DOMErrorHandler {
@@ -254,6 +254,8 @@ public class XSDParser implements DOMErrorHandler {
 			return null;
 		}
 		List<BaseMeta> l = processTerm(item.getTerm(), depth+1);
+		if (l==null||l.isEmpty())
+			return l;
 		ElementMeta e = (ElementMeta)l.get(0);
 		if (item.getTerm()!=null&&item.getTerm().getName()!=null&&
 				item.getTerm().getName().equals(e.getName()))
@@ -358,6 +360,9 @@ public class XSDParser implements DOMErrorHandler {
 
 /**
  * HISTORY: $Log: not supported by cvs2svn $
+ * HISTORY: Revision 1.14  2009/11/23 20:38:16  wangeug
+ * HISTORY: set element cardinality
+ * HISTORY:
  * HISTORY: Revision 1.13  2009/11/02 14:47:33  wangeug
  * HISTORY: read nameSpace and data type
  * HISTORY:
