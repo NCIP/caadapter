@@ -1,0 +1,16 @@
+<printorder orderid="889923">
+   <buyer>John Smith</buyer>
+   <address>
+      <name>Ola Nordmann</name>
+      <street>Langgt 23</street>
+      <city>4000 Stavanger</city>
+      <country>Norway</country>
+   </address>
+   <item price="10.90" name="Empire Burlesque" quantity="1">
+      <description>Special Edition</description>
+   </item>
+   <item price="9.90" name="Hide your heart" quantity="1">
+</item>
+   <item price="30.00" name="Java Exercise" quantity="2">
+</item>
+</printorder>
