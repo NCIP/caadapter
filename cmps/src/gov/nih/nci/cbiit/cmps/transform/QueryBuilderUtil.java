@@ -15,7 +15,12 @@ public class QueryBuilderUtil {
 	{
 		
 		if (path.startsWith(currentHome))
-			return path.substring(currentHome.length());
+		{
+			String pathEnd=path.substring(currentHome.length());
+			if (pathEnd.startsWith("/")||pathEnd.equals(""))
+				return pathEnd;
+//			return path.substring(currentHome.length());
+		}
 		
 		StringBuilder ancestorPath = new StringBuilder();
 		StringTokenizer stCur = new StringTokenizer(currentHome, "/");
@@ -42,7 +47,7 @@ public class QueryBuilderUtil {
 		}
 		
 		ret += path.substring(ancestorPath.toString().length());
-		System.out.println("QueryBuilderUtil.retrieveRelativePath()...home="+currentHome+"...path="+path+"..relative="+ret);
+		System.out.println("QueryBuilderUtil.retrieveRelativePath()...return...home="+currentHome+"...path="+path+"..relative="+ret);
 		return ret;	
 	}
 	
