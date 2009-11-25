@@ -33,7 +33,7 @@ import java.util.logging.FileHandler;
  *
  * @author OWNER: Matthew Giordano
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 
 public class FileUtil
@@ -1684,7 +1684,7 @@ public class FileUtil
                         if (entry.getName().endsWith(fileName)) listEntry.add(entry);
                     }
                     if (listEntry.size() == 1) ee = listEntry.get(0);
-                    
+
                     if (ee == null) break;
                 }
 
@@ -1770,38 +1770,58 @@ public class FileUtil
             if (fileName.toLowerCase().startsWith(Config.TEMPORARY_FILE_PREFIX.toLowerCase())) fileName = fileName.substring(Config.TEMPORARY_FILE_PREFIX.length());
             else continue;
 
-            int idx = fileName.indexOf("_");
-            if (idx < 0)
+
+//            int idx = fileName.indexOf("_");
+//            if (idx < 0)
+//            {
+//                //System.out.println("Not Deleting 1 : " +file.getName());
+//                continue;
+//            }
+
+            String createdDateOfFile = "";//fileName.substring(0, idx);
+
+            for (int i=0;i<fileName.length();i++)
             {
-                file.delete();
-                continue;
+                String achar = fileName.substring(i, i+1);
+                try
+                {
+                    Integer.parseInt(achar);
+                }
+                catch(NumberFormatException ne)
+                {
+                    break;
+                }
+                createdDateOfFile = createdDateOfFile + achar;
             }
 
-            String createdDateOfFile = fileName.substring(0, idx);
-
-            long millis = 0l;
+            long millis;
             DateFunction dateUtil = new DateFunction();
+            String dFormat = dateUtil.getDefaultDateFormatString();
+            if (dFormat.length() < createdDateOfFile.length())
+            {
+                int start = dFormat.length();
+                for (int i=start;i!=createdDateOfFile.length();i++) dFormat = dFormat + "S";
+            }
+            else if (dFormat.length() > createdDateOfFile.length())
+            {
+                int start = createdDateOfFile.length();
+                for (int i=start;i!=dFormat.length();i++) createdDateOfFile = createdDateOfFile + "0";
+            }
             try
             {
-                millis = dateUtil.getMillisBetweenDates(dateUtil.getCurrentTime(), dateUtil.getDefaultDateFormatString(), createdDateOfFile, dateUtil.getDefaultDateFormatString());
+                millis = dateUtil.getMillisBetweenDates(dateUtil.getCurrentTime(), dateUtil.getDefaultDateFormatString(), createdDateOfFile, dFormat);
 
                 if (millis < 0l) millis = millis * -1l;
             }
             catch(FunctionException fe)
             {
+                //System.out.println("Not Deleting 2 : " +file.getName()+", createdDate:"+createdDateOfFile);
                 continue;
             }
 
             int seconds = (int) ( millis / 1000l);
 
-
-            if ((seconds < 0)||(seconds > 1200))
-            {
-                //System.out.println("Deleting : " +file.getName()+", createdDate:"+createdDateOfFile + ":"+seconds);
-                file.delete();
-            }
-            //else System.out.println("Not Deleting : " +file.getName()+", createdDate:"+createdDateOfFile + ":"+seconds);
-
+            if (seconds > 600) file.delete();
         }
 
         return;
@@ -1812,6 +1832,9 @@ public class FileUtil
 
 /**
  * $Log: not supported by cvs2svn $
+ * Revision 1.41  2009/11/24 19:46:29  altturbo
+ * add tidyWorkingDir()
+ *
  * Revision 1.40  2009/10/30 16:21:54  altturbo
  * minor change
  *
