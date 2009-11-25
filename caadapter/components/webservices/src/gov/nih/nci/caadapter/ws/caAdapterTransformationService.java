@@ -26,8 +26,8 @@ import java.util.List;
  *
  * @author OWNER: Ye Wu
  * @author LAST UPDATE $Author: altturbo $
- * @version $Revision: 1.14 $
- * @date $$Date: 2009-11-19 04:32:59 $
+ * @version $Revision: 1.15 $
+ * @date $$Date: 2009-11-25 02:14:48 $
  * @since caadapter v1.3.1
  */
 
@@ -79,7 +79,7 @@ public class caAdapterTransformationService
 				  System.out.println("mapping file:"+mappingFileName);
 	
 
-                  String tempCSVFile = FileUtil.getTemporaryFileName("csv");
+                  String tempCSVFile = FileUtil.getTemporaryFileName(".csv");
                   FileUtil.saveStringIntoTemporaryFile(tempCSVFile, csvString);
 
                   TransformationService transformationService =
